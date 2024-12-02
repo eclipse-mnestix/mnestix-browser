@@ -1,6 +1,11 @@
-<img width="20%" src="src/assets/XitasoLogoBlack.svg" alt="XITASO Logo">
-<p style="text-align: center">
-  <img src="public/android-chrome-192x192.png" alt="Mnestix Logo">
+<p align="right">
+  <picture>
+    <source srcset="src/assets/XitasoLogo.svg"  media="(prefers-color-scheme: dark)">
+    <img src="src/assets/XitasoLogoBlack.svg" width=20%>
+  </picture>
+</p>
+<p align="center">
+ <img src="public/android-chrome-192x192.png" alt="Mnestix Logo">
 </p>
 <h1 style="text-align: center">Mnestix</h1>
 
