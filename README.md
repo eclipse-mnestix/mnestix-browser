@@ -7,7 +7,7 @@
 [![Made by XITASO](https://img.shields.io/badge/Made_by_XITASO-005962?style=flat-square)](https://xitaso.com/)
 [![MIT License](https://img.shields.io/badge/License-MIT-005962.svg?style=flat-square)](https://choosealicense.com/licenses/mit/)
 [![Yarn License](https://img.shields.io/badge/YARN-V1.22.22-005962?style=flat-square)]()
-[![Join our Community](https://img.shields.io/badge/Join_our_Community-005962?style=flat-square)](https://mnestix.io/)
+[![Join our Community](https://img.shields.io/badge/Join_our_Community-005962?style=flat-square)](https://xitaso.com/kompetenzen/mnestix/#support)
 
 ### Welcome to the Mnestix Community!
 
@@ -22,7 +22,7 @@ implementation of standardized digital twins. It opens the way for use cases suc
 You can find a demo [here](https://mnestix-prod.azurewebsites.net/).
 Some screenshots can be found in the [screenshots folder](screenshots).
 
-### **If you need support feel free to contact us through our website [Mnestix.io](https://mnestix.io/).**
+### **If you need support feel free to contact us through our website [here](https://xitaso.com/kompetenzen/mnestix/#support).**
 
 ## Quickstart
 
@@ -707,7 +707,7 @@ Right now, we are building a community around Mnestix.
 If you are looking for a way to support us, you can start contributing to Mnestix right away.
 For this purpose, issues which are particularly suitable for a first contribution are labeled with the tag
 `good first issue`.  
-If this is your first time contributing to a github project, we recommend having a look at this
-guide: [Contributing to a project](https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project).  
+If this is your first time contributing to a eclipse project, we recommend having a look at this
+guide: [Contributing to a Eclipse project](https://www.eclipse.org/contribute/).  
 We would be more than happy to have you onboard. If there is anything you want to know, feel free to contact
-us [mnestix@xitaso.com](mailto:mnestix@xitaso.com).   
+us [mnestix@xitaso.com](mailto:mnestix@xitaso.com) or through our website [here](https://xitaso.com/kompetenzen/mnestix/#support).   
