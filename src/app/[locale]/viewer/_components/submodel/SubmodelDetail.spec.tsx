@@ -26,6 +26,8 @@ jest.mock('recharts', () => {
     };
 });
 
+jest.mock('next-auth', jest.fn());
+
 describe('Submodel Detail', () => {
     it('should render CarbonFootprintVisualizations for irdi id', async () => {
         CustomRenderReactIntl(
