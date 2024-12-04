@@ -11,6 +11,7 @@ export const getEnv = async (): Promise<EnvironmentalVariables> => {
         AUTHENTICATION_FEATURE_FLAG: false,
         COMPARISON_FEATURE_FLAG: process.env.COMPARISON_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
         AAS_LIST_FEATURE_FLAG: false,
+        AAS_LIST_V2_FEATURE_FLAG:  process.env.AAS_LIST_V2_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
         TRANSFER_FEATURE_FLAG: process.env.TRANSFER_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
     };
 
@@ -65,6 +66,7 @@ export type EnvironmentalVariables = {
     AUTHENTICATION_FEATURE_FLAG: boolean;
     COMPARISON_FEATURE_FLAG: boolean;
     AAS_LIST_FEATURE_FLAG: boolean;
+    AAS_LIST_V2_FEATURE_FLAG: boolean;
     TRANSFER_FEATURE_FLAG: boolean;
     DISCOVERY_API_URL: string | undefined;
     REGISTRY_API_URL: string | undefined;

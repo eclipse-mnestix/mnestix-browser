@@ -1,0 +1,77 @@
+{
+  "assetAdministrationShells": [
+    {
+      "modelType": "AssetAdministrationShell",
+      "assetInformation": {
+        "assetKind": "Instance",
+        "assetType": "",
+        "defaultThumbnail": {
+          "contentType": "image/jpeg",
+          "path": "https://i40.xitaso.com/testListAas_thumbnail"
+        },
+        "globalAssetId": "https://i40.xitaso.com/testListAas_00",
+        "specificAssetIds": [
+          {
+            "name": "assetIdShort",
+            "value": "testListAas_00"
+          }
+        ]
+      },
+      "submodels": [],
+      "id": "https://i40.xitaso.com/aas/testListAas_00",
+      "idShort": "testListAas_00"
+    },
+    {
+      "modelType": "AssetAdministrationShell",
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "https://i40.xitaso.com/testListAas_01",
+        "specificAssetIds": [
+          {
+            "name": "assetIdShort",
+            "value": "testListAas_01"
+          }
+        ]
+      },
+      "id": "https://i40.xitaso.com/aas/testListAas_01",
+      "idShort": "testListAas_01"
+    },
+    {
+      "modelType": "AssetAdministrationShell",
+      "assetInformation": {
+        "assetKind": "Instance",
+        "globalAssetId": "https://i40.xitaso.com/testListAas_02",
+        "specificAssetIds": [
+          {
+            "name": "assetIdShort",
+            "value": "testListAas_02"
+          }
+        ]
+      },
+      "submodels": [],
+      "id": "https://i40.xitaso.com/aas/testListAas_02",
+      "idShort": "testListAas_02"
+    }
+  ],
+  "expectedResult": {
+    "success": true,
+    "entities": [
+      {
+        "aasId": "https://i40.xitaso.com/aas/testListAas_00",
+        "assetId": "https://i40.xitaso.com/testListAas_00",
+        "thumbnail": "https://i40.xitaso.com/testListAas_thumbnail"
+      },
+      {
+        "aasId": "https://i40.xitaso.com/aas/testListAas_01",
+        "assetId": "https://i40.xitaso.com/testListAas_01",
+        "thumbnail": ""
+      },
+      {
+        "aasId": "https://i40.xitaso.com/aas/testListAas_02",
+        "assetId": "https://i40.xitaso.com/testListAas_02",
+        "thumbnail": ""
+      }
+    ],
+    "cursor": "aHR0cHM6Ly9pNDAueGl0YXNvLmNvbS9hYXMvdGVzdExpc3RBYXNfMDI"
+  }
+}

@@ -1,31 +1,34 @@
 {
-    "comment": "wir werden hier deutsche Übersetzungs-Keys haben",
-    "aas-list": {
-        "header": "AAS Liste",
-        "picture": "Bild",
-        "manufacturerHeading": "Hersteller Name",
-        "productDesignationHeading": "Hersteller Produktbezeichnung",
-        "assetIdHeading": "Asset ID",
-        "aasIdHeading": "AAS ID",
-        "productClassHeading": "Produktklasse"
-    },
-    "dashboard": {
-        "welcome-text": "Willkommen bei Mnestix",
-        "digitalTwinMadeEasy-text": "Digitaler Zwilling leicht gemacht.",
-        "findOutMore-text": "Mehr Informationen",
-        "list-btn-label": "oder über Liste suchen",
-        "list-btn-text": "Zur Aas Liste",
-        "scan-id-label": "AAS ID oder Asset ID scannen",
-        "enter-manually-label": "oder manuell eingeben"
-    },
-    "submodels": {
-        "timeSeries": {
-            "internalSegments": "Interne Segmente",
-            "linkedSegments": "Verlinkte Segmente",
-            "selectTimeframe": "Auswahl des Zeitabschnitts"
-        }
-    },
-    "settings": {
-        "header": "Einstellungen"
+  "comment": "wir werden hier deutsche Übersetzungs-Keys haben",
+  "aas-list": {
+    "header": "AAS Liste",
+    "subHeader": "Lister aller Verwaltungsschalen im gewählten Repository.",
+    "picture": "Bild",
+    "manufacturerHeading": "Hersteller Name",
+    "productDesignationHeading": "Hersteller Produktbezeichnung",
+    "assetIdHeading": "Asset ID",
+    "aasIdHeading": "AAS ID",
+    "productClassHeading": "Produktklasse",
+    "page": "Seite",
+    "repository-dropdown": "AAS Repository"
+  },
+  "dashboard": {
+    "welcome-text": "Willkommen bei Mnestix",
+    "digitalTwinMadeEasy-text": "Digitaler Zwilling leicht gemacht.",
+    "findOutMore-text": "Mehr Informationen",
+    "list-btn-label": "oder über Liste suchen",
+    "list-btn-text": "Zur Aas Liste",
+    "scan-id-label": "AAS ID oder Asset ID scannen",
+    "enter-manually-label": "oder manuell eingeben"
+  },
+  "submodels": {
+    "timeSeries": {
+      "internalSegments": "Interne Segmente",
+      "linkedSegments": "Verlinkte Segmente",
+      "selectTimeframe": "Auswahl des Zeitabschnitts"
     }
+  },
+  "settings": {
+    "header": "Einstellungen"
+  }
 }

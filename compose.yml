@@ -24,6 +24,7 @@ services:
       SUBMODEL_REPO_API_URL: 'http://mnestix-api:5064/repo'
       MNESTIX_BACKEND_API_URL: 'http://mnestix-api:5064'
       AAS_LIST_FEATURE_FLAG: "true"
+      AAS_LIST_V2_FEATURE_FLAG: "false"
       TRANSFER_FEATURE_FLAG: "false"
       COMPARISON_FEATURE_FLAG: "true"
       AUTHENTICATION_FEATURE_FLAG: "false"

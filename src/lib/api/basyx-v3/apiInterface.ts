@@ -2,12 +2,19 @@ import { AssetAdministrationShell, Reference } from '@aas-core-works/aas-core3.0
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import { AttachmentDetails } from 'lib/types/TransferServiceData';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { AasRepositoryResponse } from 'lib/api/basyx-v3/api';
 
 export interface IAssetAdministrationShellRepositoryApi {
     /**
      * Returns the base URL of this repository endpoint.
      */
     getBaseUrl(): string;
+
+    getAllAssetAdministrationShells(
+        limit?: number,
+        cursor?: string,
+        options?: object,
+    ): Promise<ApiResponseWrapper<AasRepositoryResponse>>;
 
     /**
      * @summary Retrieves a specific Asset Administration Shell from the Asset Administration Shell repository

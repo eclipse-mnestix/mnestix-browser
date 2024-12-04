@@ -8,14 +8,14 @@ import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { Box } from '@mui/material';
 import { showError } from 'lib/util/ErrorHandlerUtil';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { SelectProductType } from 'app/[locale]/list/_components/SelectProductType';
-import { AasListComparisonHeader } from 'app/[locale]/list/_components/AasListComparisonHeader';
-import AasList from 'app/[locale]/list/_components/AasList';
+import { SelectProductType } from 'app/[locale]/list/_components-deprecated/SelectProductType';
+import { AasListComparisonHeader } from 'app/[locale]/list/_components-deprecated/AasListComparisonHeader';
+import AasList from 'app/[locale]/list/_components-deprecated/AasList';
 import { useIntl } from 'react-intl';
 import { messages } from 'lib/i18n/localization';
-import { getAasListEntries } from 'lib/services/aasListApiActions';
+import { getAasListEntries } from 'lib/services/list-service/aasListApiActions';
 
-export const AasListView = () => {
+export const AasListViewDeprecated = () => {
     const [isLoadingList, setIsLoadingList] = useState(false);
     const [aasList, setAasList] = useState<AasListEntry[]>();
     const [aasListFiltered, setAasListFiltered] = useState<AasListEntry[]>();

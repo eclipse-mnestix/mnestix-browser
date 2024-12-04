@@ -1,31 +1,34 @@
 {
-    "comment": "we will have english translation keys here",
-    "aas-list": {
-        "header": "AAS List",
-        "picture": "Picture",
-        "manufacturerHeading": "Manufacturer Name",
-        "productDesignationHeading": "Manufacturer Product Designation",
-        "assetIdHeading": "Asset ID",
-        "aasIdHeading": "AAS ID",
-        "productClassHeading": "Product Class"
-    },
-    "dashboard": {
-        "welcome-text": "Welcome to Mnestix",
-        "digitalTwinMadeEasy-text": "Digital Twin made easy.",
-        "findOutMore-text": "Find out more",
-        "list-btn-label": "or select via list",
-        "list-btn-text": "Go to Aas List",
-        "scan-id-label": "Scan AAS ID or Asset ID",
-        "enter-manually-label": "or enter manually"
-    },
-    "submodels": {
-        "timeSeries": {
-            "internalSegments": "Internal segments",
-            "linkedSegments": "Linked segments",
-            "selectTimeframe": "Select timeframe"
-        }
-    },
-    "settings": {
-        "header": "Settings"
+  "comment": "we will have english translation keys here",
+  "aas-list": {
+    "header": "AAS List",
+    "subHeader": "List of all AAS in the chosen repository.",
+    "picture": "Picture",
+    "manufacturerHeading": "Manufacturer Name",
+    "productDesignationHeading": "Manufacturer Product Designation",
+    "assetIdHeading": "Asset ID",
+    "aasIdHeading": "AAS ID",
+    "productClassHeading": "Product Class",
+    "page": "Page",
+    "repository-dropdown": "AAS Repository"
+  },
+  "dashboard": {
+    "welcome-text": "Welcome to Mnestix",
+    "digitalTwinMadeEasy-text": "Digital Twin made easy.",
+    "findOutMore-text": "Find out more",
+    "list-btn-label": "or select via list",
+    "list-btn-text": "Go to Aas List",
+    "scan-id-label": "Scan AAS ID or Asset ID",
+    "enter-manually-label": "or enter manually"
+  },
+  "submodels": {
+    "timeSeries": {
+      "internalSegments": "Internal segments",
+      "linkedSegments": "Linked segments",
+      "selectTimeframe": "Select timeframe"
     }
+  },
+  "settings": {
+    "header": "Settings"
+  }
 }

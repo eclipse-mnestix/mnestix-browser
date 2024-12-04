@@ -22,7 +22,7 @@ import { encodeBase64 } from 'lib/util/Base64Util';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useRouter } from 'next/navigation';
 import { useAasState } from 'components/contexts/CurrentAasContext';
-import { ImageWithFallback } from 'app/[locale]/list/_components/StyledImageWithFallBack';
+import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
 import { getThumbnailFromShell } from 'lib/services/repository-access/repositorySearchActions';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 
