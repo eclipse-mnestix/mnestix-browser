@@ -33,9 +33,8 @@ export default function AasList(props: AasListProps) {
         { label: t('picture') },
         { label: t('manufacturerHeading') },
         { label: t('productDesignationHeading') },
-        {
-            label: t('assetIdHeading') + ' / ' + t('aasIdHeading'),
-        },
+        { label: t('assetIdHeading') },
+        { label: t('aasIdHeading') },
         { label: t('productClassHeading') },
     ];
 

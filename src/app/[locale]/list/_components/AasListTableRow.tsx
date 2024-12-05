@@ -108,14 +108,14 @@ export const AasListTableRow = (props: AasTableRowProps) => {
                 {/*{tooltipText(translateListText(aasListEntry.manufacturerProductDesignation), 80)}*/}
             </TableCell>
             <TableCell align="left" sx={tableBodyText}>
-                <Typography fontWeight="bold" sx={{ letterSpacing: '0.16px' }}>
-                    {t('assetIdHeading')}
+                <Typography >
+                    {tooltipText(aasListEntry.assetId, 35)}
                 </Typography>
-                {tooltipText(aasListEntry.assetId, 80)} <br />
-                <Typography fontWeight="bold" sx={{ letterSpacing: '0.16px' }}>
-                    {t('aasIdHeading')}
+            </TableCell>
+            <TableCell align="left" sx={tableBodyText}>
+                <Typography>
+                    {tooltipText(aasListEntry.aasId, 35)}
                 </Typography>
-                {tooltipText(aasListEntry.aasId, 80)}
             </TableCell>
             <TableCell align="left">
                 {/*  {aasListEntry.productGroup ? (

@@ -8,7 +8,7 @@ export function tooltipText(property: string | undefined, maxChars: number) {
     else {
         return property.length > maxChars ? (
             <Tooltip title={property} arrow>
-                <Box component="span">{`${property.slice(0, maxChars)} (...)`}</Box>
+                <Box component="span">{`${property.slice(0, maxChars)}(...)`}</Box>
             </Tooltip>
         ) : (
             <>{property}</>
