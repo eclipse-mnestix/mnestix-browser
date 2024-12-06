@@ -59,7 +59,7 @@ export default function MainMenu() {
     const env = useEnv();
     const useAuthentication = env.AUTHENTICATION_FEATURE_FLAG;
     const versionString = 'Version ' + packageJson.version;
-    const impressString = env.IMPRESS_URL;
+    const imprintString = env.IMPRINT_URL;
     const dataPrivacyString = env.DATA_PRIVACY_URL;
 
     const handleMenuInteraction = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -184,7 +184,7 @@ export default function MainMenu() {
                     {
                         <Link
                             color="primary.contrastText"
-                            href={impressString}
+                            href={imprintString}
                             rel="noopener noreferrer"
                             target="_blank"
                         >
