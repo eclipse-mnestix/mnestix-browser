@@ -26,6 +26,7 @@ import {
     createSubmodelDescriptorFromSubmodel,
 } from 'lib/services/transfer-service/TransferUtil';
 import { ApiResponseWrapperError } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { isValidUrl } from 'lib/util/UrlUtil';
 
 export enum ServiceReachable {
     Yes = 'Yes',
@@ -467,9 +468,13 @@ export class TransferService {
         }
 
         if (modelType === KeyTypes.File) {
+            const submodelEl = subEl as aasCoreFile;
+            if (isValidUrl(submodelEl.value ?? '')) {
+                return;
+            }
             submodelAttachmentsDetails.push({
                 idShortPath: idShortPath,
-                fileName: [(subEl as aasCoreFile).idShort, generateRandomId()].join(''),
+                fileName: [submodelEl.idShort, generateRandomId()].join(''),
             });
         }
     }

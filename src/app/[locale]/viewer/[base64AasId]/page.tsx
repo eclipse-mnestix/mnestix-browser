@@ -48,7 +48,7 @@ export default function Page() {
     const [aasFromContext, setAasFromContext] = useAasState();
     const [submodels, setSubmodels] = useSubmodelState();
     const [isSubmodelsLoading, setIsSubmodelsLoading] = useState(true);
-    const [registryAasData] = useRegistryAasState();
+    const [registryAasData, setRegistryAasData] = useRegistryAasState();
 
     useAsyncEffect(async () => {
         await fetchSubmodels();
@@ -84,6 +84,7 @@ export default function Page() {
             showError(new LocalizedError(messages.mnestix.aasUrlNotFound), notificationSpawner);
         } else if (result.aas) {
             setAasOriginUrl(result.aasData?.aasRepositoryOrigin ?? null);
+            setRegistryAasData(result.aasData);
             setAasFromContext(result.aas);
         } else {
             navigate.push(result.redirectUrl);

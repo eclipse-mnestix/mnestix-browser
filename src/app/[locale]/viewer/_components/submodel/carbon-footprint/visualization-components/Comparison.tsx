@@ -20,18 +20,21 @@ export function Comparison(props: { co2Equivalents: number }) {
     return (
         <Box data-testid="co2-comparison-box">
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2 }}>
-                <Tree alt="Tree" />
+                <Tree alt="Tree" data-testid="co2-comparison-tree" />
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <Typography sx={{ fontSize: [28, 36], color: 'primary.main', fontWeight: 'bold' }}>
                         1 {intl.formatMessage(messages.mnestix.productCarbonFootprint.beech)}
                     </Typography>
-                    <Typography sx={{ fontSize: [28, 36], color: 'primary.main', fontWeight: 'bold' }}>
+                    <Typography
+                        sx={{ fontSize: [28, 36], color: 'primary.main', fontWeight: 'bold' }}
+                        data-testid="co2-comparison-value"
+                    >
                         {timePeriod} {intl.formatMessage(messages.mnestix.productCarbonFootprint[unitOfTimePeriod])}
                     </Typography>
                 </Box>
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 2 }}>
-                <Typography variant="caption">
+                <Typography variant="caption" data-testid="co2-comparison-assumption">
                     {intl.formatMessage(messages.mnestix.productCarbonFootprint.comparisonAssumption)}
                 </Typography>
             </Box>

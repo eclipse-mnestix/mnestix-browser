@@ -1,7 +1,7 @@
 import { Link, Typography } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
-const LinkGHG = 'https://ghgprotocol.org/';
+export const LinkGHG = 'https://ghgprotocol.org/';
 
 export function CalculationMethod(props: { calculationMethod: string }) {
     const { calculationMethod } = props;
@@ -11,7 +11,7 @@ export function CalculationMethod(props: { calculationMethod: string }) {
                     data-testid="co2-calculation-method-text">
             {calculationMethod}{' '}
             {calculationMethod === 'GHG Protocol' && (
-                <Link href={LinkGHG} target="_blank">
+                <Link href={LinkGHG} target="_blank" data-testid="co2-calculation-method-link">
                     <OpenInNewIcon fontSize="small" />
                 </Link>
             )}
