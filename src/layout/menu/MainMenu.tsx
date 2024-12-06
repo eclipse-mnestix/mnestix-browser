@@ -182,13 +182,23 @@ export default function MainMenu() {
                     style={{ opacity: '0.6' }}
                 >
                     {
-                        <Link color="primary.contrastText" href={impressString}>
+                        <Link
+                            color="primary.contrastText"
+                            href={impressString}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                        >
                             <FormattedMessage {...messages.mnestix.imprint} />
                         </Link>
                     }
                     <br />
                     {
-                        <Link color="primary.contrastText" href={dataPrivacyString}>
+                        <Link
+                            color="primary.contrastText"
+                            href={dataPrivacyString}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                        >
                             <FormattedMessage {...messages.mnestix.dataPrivacy} />
                         </Link>
                     }
