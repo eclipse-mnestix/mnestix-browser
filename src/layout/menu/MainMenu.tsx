@@ -177,19 +177,21 @@ export default function MainMenu() {
                     align="left"
                     paddingLeft="16px"
                     paddingBottom="10px"
-                    // style={{ opacity: '0.6' }}
-                >
-                    {<Link color="primary.contrastText" href="https://xitaso.com/en/imprint/">Imprint</Link>}
-                    <br/>
-                    {<Link color="primary.contrastText" href="https://xitaso.com/en/data-privacy-policy/">Data Privacy</Link>}
-                </Typography>
-                <Typography
-                    className="bottom-menu"
-                    align="left"
-                    paddingLeft="16px"
-                    paddingBottom="10px"
                     style={{ opacity: '0.6' }}
                 >
+                    {
+                        <Link color="primary.contrastText" href="https://xitaso.com/en/imprint/">
+                            <FormattedMessage {...messages.mnestix.imprint} />
+                        </Link>
+                    }
+                    <br />
+                    {
+                        <Link color="primary.contrastText" href="https://xitaso.com/en/data-privacy-policy/">
+                            <FormattedMessage {...messages.mnestix.dataPrivacy} />
+                        </Link>
+                    }
+                    <br />
+                    <br />
                     {`Copyright © ${new Date().getFullYear()} XITASO GmbH`}
                 </Typography>
                 <List>
