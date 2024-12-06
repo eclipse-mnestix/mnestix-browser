@@ -1,10 +1,14 @@
 import { ListItem, ListItemProps, Typography } from '@mui/material';
 
-export function MenuHeading(props: ListItemProps) {
+export interface MenuHeadingProps extends ListItemProps {
+    marginTop?: string | number;
+}
+
+export function MenuHeading({ children, marginTop = 2 }: MenuHeadingProps) {
     return (
-        <ListItem sx={{ mt: 2 }}>
+        <ListItem sx={{ mt: marginTop }}>
             <Typography color="primary.contrastText" variant="body2" sx={{ opacity: 0.8 }}>
-                {props.children}
+                {children}
             </Typography>
         </ListItem>
     );
