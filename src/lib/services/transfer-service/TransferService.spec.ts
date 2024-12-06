@@ -1,5 +1,5 @@
 import { expect } from '@jest/globals';
-import { ServiceReachable, TransferService } from 'lib/services/transfer-service/TransferService';
+import { TransferService } from 'lib/services/transfer-service/TransferService';
 import testData from './TransferService.data.json';
 import { AssetAdministrationShell, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import {
@@ -7,6 +7,7 @@ import {
     createSubmodelDescriptorFromSubmodel,
 } from 'lib/services/transfer-service/TransferUtil';
 import { TransferAas, TransferResult, TransferSubmodel } from 'lib/types/TransferServiceData';
+import ServiceReachable from 'test-utils/TestUtils';
 
 const aas = testData.transferAas as unknown as AssetAdministrationShell;
 const transferAas = { aas: aas, originalAasId: aas.id } as TransferAas;

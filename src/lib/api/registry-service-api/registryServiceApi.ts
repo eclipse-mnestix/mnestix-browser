@@ -7,8 +7,8 @@ import {
 } from 'lib/api/registry-service-api/registryServiceApiInMemory';
 import { AssetAdministrationShell } from '@aas-core-works/aas-core3.0-typescript/types';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { ServiceReachable } from 'lib/services/transfer-service/TransferService';
 import path from 'node:path';
+import ServiceReachable from 'test-utils/TestUtils';
 
 export class RegistryServiceApi implements IRegistryServiceApi {
     constructor(

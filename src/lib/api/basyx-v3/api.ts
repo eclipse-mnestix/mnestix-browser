@@ -6,12 +6,12 @@ import { encodeBase64 } from 'lib/util/Base64Util';
 import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import {
     AssetAdministrationShellRepositoryApiInMemory,
-    SubmodelRepositoryApiInMemory
+    SubmodelRepositoryApiInMemory,
 } from 'lib/api/basyx-v3/apiInMemory';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { AttachmentDetails } from 'lib/types/TransferServiceData';
 import { mnestixFetch } from 'lib/api/infrastructure';
-import { ServiceReachable } from 'lib/services/transfer-service/TransferService';
+import ServiceReachable from 'test-utils/TestUtils';
 
 export type FetchAPI = {
     fetch: <T>(url: RequestInfo, init?: RequestInit) => Promise<ApiResponseWrapper<T>>;

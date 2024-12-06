@@ -2,9 +2,9 @@ import { encodeBase64 } from 'lib/util/Base64Util';
 import { DiscoveryEntry, IDiscoveryServiceApi } from 'lib/api/discovery-service-api/discoveryServiceApiInterface';
 import { DiscoveryServiceApiInMemory } from 'lib/api/discovery-service-api/discoveryServiceApiInMemory';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { ServiceReachable } from 'lib/services/transfer-service/TransferService';
 import { SpecificAssetId } from '@aas-core-works/aas-core3.0-typescript/types';
 import * as path from 'node:path';
+import ServiceReachable from 'test-utils/TestUtils';
 
 type DiscoveryEntryResponse = {
     paging_metadata: object;
@@ -87,10 +87,9 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
             method: 'GET',
             headers,
         });
-        
-        if (!response.isSuccess)
-            return wrapErrorCode(response.errorCode, response.message);
-        
+
+        if (!response.isSuccess) return wrapErrorCode(response.errorCode, response.message);
+
         return wrapSuccess(response.result.result);
     }
 

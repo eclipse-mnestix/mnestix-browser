@@ -5,9 +5,9 @@ import {
     wrapErrorCode,
     wrapSuccess,
 } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { ServiceReachable } from 'lib/services/transfer-service/TransferService';
 import { SpecificAssetId } from '@aas-core-works/aas-core3.0-typescript/types';
 import { isEqual } from 'lodash';
+import ServiceReachable from 'test-utils/TestUtils';
 
 export class DiscoveryServiceApiInMemory implements IDiscoveryServiceApi {
     constructor(
@@ -20,14 +20,18 @@ export class DiscoveryServiceApiInMemory implements IDiscoveryServiceApi {
         return this.baseUrl;
     }
 
-    async linkAasIdAndAssetId(aasId: string, assetId: string, _apikey?: string): Promise<ApiResponseWrapper<DiscoveryEntry>> {
+    async linkAasIdAndAssetId(
+        aasId: string,
+        assetId: string,
+        _apikey?: string,
+    ): Promise<ApiResponseWrapper<DiscoveryEntry>> {
         if (this.reachable !== ServiceReachable.Yes)
             return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Service not reachable');
         const newEntry = {
             aasId: aasId,
             assetId: assetId,
         };
-        if (this.discoveryEntries.find(value => isEqual(value, newEntry))) {
+        if (this.discoveryEntries.find((value) => isEqual(value, newEntry))) {
             return wrapErrorCode(
                 ApiResultStatus.UNKNOWN_ERROR,
                 `Link for AAS '${aasId}' and asset '${assetId}' already in Discovery '${this.baseUrl}'`,

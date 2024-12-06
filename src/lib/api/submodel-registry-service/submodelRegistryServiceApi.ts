@@ -9,8 +9,8 @@ import {
     wrapSuccess,
 } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
-import { ServiceReachable } from 'lib/services/transfer-service/TransferService';
 import path from 'node:path';
+import ServiceReachable from 'test-utils/TestUtils';
 
 export class SubmodelRegistryServiceApi implements ISubmodelRegistryServiceApi {
     constructor(
@@ -180,7 +180,10 @@ class SubmodelRegistryServiceApiInMemory implements ISubmodelRegistryServiceApi 
         if (this.reachable !== ServiceReachable.Yes)
             return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Service not reachable');
         if (this.registrySubmodelDescriptors.has(submodelDescriptor.id))
-            return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, `Submodel registry '${this.getBasePath()}' already has a submodel descriptor for '${submodelDescriptor.id}'`);
+            return wrapErrorCode(
+                ApiResultStatus.UNKNOWN_ERROR,
+                `Submodel registry '${this.getBasePath()}' already has a submodel descriptor for '${submodelDescriptor.id}'`,
+            );
         this.registrySubmodelDescriptors.set(submodelDescriptor.id, submodelDescriptor);
         return wrapSuccess(submodelDescriptor);
     }

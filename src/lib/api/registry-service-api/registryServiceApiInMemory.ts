@@ -8,7 +8,7 @@ import {
     wrapResponse,
     wrapSuccess,
 } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { ServiceReachable } from 'lib/services/transfer-service/TransferService';
+import ServiceReachable from 'test-utils/TestUtils';
 
 export type AasRegistryEndpointEntryInMemory = {
     endpoint: URL | string;
@@ -82,7 +82,7 @@ export class RegistryServiceApiInMemory implements IRegistryServiceApi {
             );
         }
 
-        const response = new Response(JSON.stringify(foundEndpoint.aas), options)
+        const response = new Response(JSON.stringify(foundEndpoint.aas), options);
         const value = await wrapResponse<AssetAdministrationShell>(response);
         return Promise.resolve(value);
     }

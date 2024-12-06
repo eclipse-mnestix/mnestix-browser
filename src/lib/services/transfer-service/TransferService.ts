@@ -27,11 +27,7 @@ import {
 } from 'lib/services/transfer-service/TransferUtil';
 import { ApiResponseWrapperError } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { isValidUrl } from 'lib/util/UrlUtil';
-
-export enum ServiceReachable {
-    Yes = 'Yes',
-    No = 'No',
-}
+import { ServiceReachable } from 'test-utils/TestUtils';
 
 export type TransferServiceNullParams = {
     targetAasRepository: ServiceReachable;

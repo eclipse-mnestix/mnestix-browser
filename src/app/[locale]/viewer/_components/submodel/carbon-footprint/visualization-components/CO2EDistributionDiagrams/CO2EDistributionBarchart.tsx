@@ -50,7 +50,7 @@ export function CO2EBarchart(props: {
     };
 
     return (
-        <Box sx={{ width: '100%', height: '400px' }}>
+        <Box sx={{ width: '100%', height: '400px' }} data-testid="co2e-barchart">
             <ResponsiveContainer>
                 <BarChart data={data}>
                     <XAxis dataKey="name" />
