@@ -1,5 +1,5 @@
 import MenuIcon from '@mui/icons-material/Menu';
-import { alpha, Box, Divider, Drawer, IconButton, List, styled, Typography } from '@mui/material';
+import { alpha, Box, Divider, Drawer, IconButton, Link, List, styled, Typography } from '@mui/material';
 import { Dashboard, Login, Logout, OpenInNew, Settings } from '@mui/icons-material';
 import React, { useState } from 'react';
 import { useAuth } from 'lib/hooks/UseAuth';
@@ -171,8 +171,18 @@ export default function MainMenu() {
                             </>
                         )}
                     </List>
-
                 </Box>
+                <Typography
+                    className="bottom-menu"
+                    align="left"
+                    paddingLeft="16px"
+                    paddingBottom="10px"
+                    // style={{ opacity: '0.6' }}
+                >
+                    {<Link color="primary.contrastText" href="https://xitaso.com/en/imprint/">Imprint</Link>}
+                    <br/>
+                    {<Link color="primary.contrastText" href="https://xitaso.com/en/data-privacy-policy/">Data Privacy</Link>}
+                </Typography>
                 <Typography
                     className="bottom-menu"
                     align="left"
