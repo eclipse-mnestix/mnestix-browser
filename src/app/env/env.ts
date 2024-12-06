@@ -32,6 +32,8 @@ export const getEnv = async (): Promise<EnvironmentalVariables> => {
         SUBMODEL_REPO_API_URL: process.env.SUBMODEL_REPO_API_URL,
         MNESTIX_BACKEND_API_URL: process.env.MNESTIX_BACKEND_API_URL,
         KEYCLOAK_ENABLED: process.env.KEYCLOAK_ENABLED?.toLowerCase() === 'true'.toLowerCase(),
+        IMPRESS_URL: process.env.IMPRESS_URL,
+        DATA_PRIVACY_URL: process.env.DATA_PRIVACY_URL,
     };
 
     const themingVariables = {
@@ -77,4 +79,6 @@ export type EnvironmentalVariables = {
     THEME_BASE64_LOGO: string | undefined;
     THEME_LOGO_URL: string | undefined;
     KEYCLOAK_ENABLED: boolean;
+    IMPRESS_URL: string | undefined;
+    DATA_PRIVACY_URL: string | undefined;
 };

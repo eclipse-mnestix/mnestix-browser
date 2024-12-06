@@ -59,6 +59,8 @@ export default function MainMenu() {
     const env = useEnv();
     const useAuthentication = env.AUTHENTICATION_FEATURE_FLAG;
     const versionString = 'Version ' + packageJson.version;
+    const impressString = env.IMPRESS_URL;
+    const dataPrivacyString = env.DATA_PRIVACY_URL;
 
     const handleMenuInteraction = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
         if (
@@ -150,7 +152,7 @@ export default function MainMenu() {
                         <MenuHeading>
                             <FormattedMessage {...messages.mnestix.repository} />
                         </MenuHeading>
-                        {(!useAuthentication || auth.isLoggedIn) ? (
+                        {!useAuthentication || auth.isLoggedIn ? (
                             <>
                                 {adminMainMenu.map((props, i) => (
                                     <MenuListItem {...props} key={'adminMainMenu' + i} />
@@ -180,13 +182,13 @@ export default function MainMenu() {
                     style={{ opacity: '0.6' }}
                 >
                     {
-                        <Link color="primary.contrastText" href="https://xitaso.com/en/imprint/">
+                        <Link color="primary.contrastText" href={impressString}>
                             <FormattedMessage {...messages.mnestix.imprint} />
                         </Link>
                     }
                     <br />
                     {
-                        <Link color="primary.contrastText" href="https://xitaso.com/en/data-privacy-policy/">
+                        <Link color="primary.contrastText" href={dataPrivacyString}>
                             <FormattedMessage {...messages.mnestix.dataPrivacy} />
                         </Link>
                     }
