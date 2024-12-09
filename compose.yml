@@ -41,7 +41,7 @@ services:
       - mnestix-database:/app/prisma/database
 
   mnestix-api:
-    image: mnestix/mnestix-api:1.2.3
+    image: mnestix/mnestix-api:1.2.4
     container_name: mnestix-api
     profiles: [ "", "backend", "tests" ]
     ports:
