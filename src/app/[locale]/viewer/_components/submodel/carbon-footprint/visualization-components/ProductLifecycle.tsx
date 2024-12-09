@@ -30,9 +30,9 @@ export function ProductLifecycle(props: { completedStages: ProductLifecycleStage
             data-testid="product-lifecycle-stepper"
         >
             {props.completedStages.map((step, index) => (
-                <Step key={index}>
+                <Step key={index} data-testid="product-lifecycle-completed-step">
                     <StepLabel>
-                        <Typography fontSize={24}>
+                        <Typography fontSize={24} data-testid="product-lifecycle-step-text">
                             {!!step &&
                                 intl.formatMessage(messages.mnestix.productCarbonFootprint.lifecycleStages[step])}
                         </Typography>
@@ -40,8 +40,8 @@ export function ProductLifecycle(props: { completedStages: ProductLifecycleStage
                 </Step>
             ))}
             {nextStage && (
-                <Step key="20" active={false}>
-                    <StepLabel StepIconComponent={CustomCircle}>
+                <Step key="20" active={false} data-testid="product-lifecycle-next-step">
+                    <StepLabel StepIconComponent={CustomCircle} data-testid="product-lifecycle-step-label">
                         <Typography fontSize={24} color={colorOfNextStep}>
                             {intl.formatMessage(messages.mnestix.productCarbonFootprint.lifecycleStages[nextStage])}{' '}
                             (not yet included)
