@@ -4,6 +4,7 @@ FROM base AS deps
 WORKDIR /app
 COPY package*.json yarn.lock* ./
 RUN yarn install --frozen-lockfile --production
+RUN apk update && apk add --no-cache openssl
 
 # Next.js collects completely anonymous telemetry data about general usage. Learn more here: https://nextjs.org/telemetry
 # Comment the following line to enable telemetry at run time
