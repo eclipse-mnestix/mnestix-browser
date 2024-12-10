@@ -32,9 +32,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: yarn-install
-        run: yarn install
-
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into docker hub
