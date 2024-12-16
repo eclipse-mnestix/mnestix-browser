@@ -7,7 +7,6 @@ import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import AasList from './AasList';
 import { useEnv } from 'app/env/provider';
-import { SelectProductType } from './filter/SelectProductType';
 import { AasListComparisonHeader } from './AasListComparisonHeader';
 import { Box, IconButton, Typography } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
@@ -105,7 +104,6 @@ export default function AasListDataWrapper() {
             <Box display="flex" justifyContent="space-between" marginBottom={2}>
                 <Box display="flex" gap={4}>
                     <SelectRepository onSelectedRepositoryChanged={setSelectedRepository} />
-                    <SelectProductType aasList={aasList?.entities} setAasListFiltered={setAasListFiltered} />
                 </Box>
                 {env.COMPARISON_FEATURE_FLAG && (
                     <AasListComparisonHeader

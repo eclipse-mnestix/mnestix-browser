@@ -127,21 +127,6 @@ export const AasListTableRow = (props: AasTableRowProps) => {
                     {tooltipText(aasListEntry.aasId, 35)}
                 </Typography>
             </TableCell>
-            <TableCell align="left">
-                {/*  {aasListEntry.productGroup ? (
-                    <ProductClassChip productClassId={getProductClassId(aasListEntry.productGroup)} maxChars={25} />
-                ) : (
-                    <Chip
-                        sx={{ paddingX: '16px', paddingY: '6px' }}
-                        color={'primary'}
-                        label={<FormattedMessage {...messages.mnestix.aasList.notAvailable} />}
-                        variant="outlined"
-                        icon={<LabelOffIcon color={'primary'} />}
-                        data-testid="product-class-chip"
-                        title={intl.formatMessage(messages.mnestix.aasList.titleProductChipNotAvailable)}
-                    />
-                )}*/}
-            </TableCell>
             <TableCell align="center">
                 <RoundedIconButton
                     endIcon={<ArrowForward />}
