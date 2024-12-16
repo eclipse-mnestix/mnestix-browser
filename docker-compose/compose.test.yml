@@ -2,7 +2,6 @@ services:
   cypress-test:
     container_name: cypress-test
     profiles: ['', 'tests']
-    image: mnestix/cypress-test:latest
     build:
       dockerfile: cypress.dockerfile
     environment:
