@@ -62,12 +62,12 @@ export default function Page() {
     const env = useEnv();
     const fetchCustom = async () => {
         if (!id) return;
-        const custom = await getCustomTemplateById(bearerToken, id);
+        const custom = await getCustomTemplateById(id);
         setLocalFrontendTemplate(generateSubmodelViewObject(custom));
     };
 
     const fetchDefaultTemplates = async () => {
-        const defaultTemplates = await getDefaultTemplates(bearerToken);
+        const defaultTemplates = await getDefaultTemplates();
         setDefaultTemplates(defaultTemplates);
     };
 
@@ -134,7 +134,7 @@ export default function Page() {
     const deleteTemplate = async () => {
         if (!id) return;
         try {
-            await deleteCustomTemplateById(bearerToken, id);
+            await deleteCustomTemplateById(id);
             notificationSpawner.spawn({
                 message: intl.formatMessage(messages.mnestix.templateDeletedSuccessfully),
                 severity: 'success',

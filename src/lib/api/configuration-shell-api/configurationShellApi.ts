@@ -60,19 +60,17 @@ export class ConfigurationShellApi implements IConfigurationShellApi {
 
     async putSingleIdGenerationSetting(
         idShort: string,
-        bearerToken: string,
         values: {
             prefix: string;
             dynamicPart: string;
         },
     ) {
-        await this.putSingleSettingValue(`${idShort}.Prefix`, bearerToken, values.prefix, 'idGeneration');
-        await this.putSingleSettingValue(`${idShort}.DynamicPart`, bearerToken, values.dynamicPart, 'idGeneration');
+        await this.putSingleSettingValue(`${idShort}.Prefix`, values.prefix, 'idGeneration');
+        await this.putSingleSettingValue(`${idShort}.DynamicPart`, values.dynamicPart, 'idGeneration');
     }
 
     async putSingleSettingValue(
         path: string,
-        bearerToken: string,
         value: string,
         settingsType: string,
     ): Promise<Response> {

@@ -49,7 +49,7 @@ export default function Page() {
     const bearerToken = auth.getBearerToken();
     const fetchAll = async () => {
         // fetching defaults first
-        const _defaults = await getDefaultTemplates(bearerToken);
+        const _defaults = await getDefaultTemplates();
         _defaults.sort((a: Submodel, b: Submodel) => sortWithNullableValues(a.idShort, b.idShort));
         setDefaults(_defaults);
         const _defaultItems: TabSelectorItem[] = [
@@ -80,7 +80,7 @@ export default function Page() {
 
     const fetchCustoms = async (_defaultItems: Array<TabSelectorItem>) => {
         const _customTemplateItems: CustomTemplateItemType[] = [];
-        const customs = (await getCustomTemplates(bearerToken)) as Submodel[];
+        const customs = (await getCustomTemplates()) as Submodel[];
         customs?.forEach((customSubmodel: Submodel) => {
             // get displayName out of Qualifiers or use idShort of Submodel
             const displayName =
@@ -185,7 +185,7 @@ export default function Page() {
     const deleteTemplate = async (item: CustomTemplateItemType) => {
         if (!item.id) return;
         try {
-            await deleteCustomTemplateById(bearerToken, item.id);
+            await deleteCustomTemplateById(item.id);
             notificationSpawner.spawn({
                 message: intl.formatMessage(messages.mnestix.templateDeletedSuccessfully),
                 severity: 'success',

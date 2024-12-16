@@ -129,7 +129,7 @@ export function IdSettingsCard() {
             setIsLoading(true);
             for (const setting of data.idSettings) {
                 if (setting.prefix.value && setting.dynamicPart.value) {
-                    await putSingleIdGenerationSetting(setting.name, bearerToken, {
+                    await putSingleIdGenerationSetting(setting.name, {
                         prefix: setting.prefix.value,
                         dynamicPart: setting.dynamicPart.value,
                     });

@@ -26,12 +26,13 @@ export class TemplateShellApi {
         return new TemplateShellApi(backendApiUrl, enable_authentication, http);
     }
 
-    public async getDefaults(token: string): Promise<Submodel[]> {
-        const headers = this.prepareHeader(token);
+    public async getDefaults(): Promise<Submodel[]> {
 
         const response = await this.http.fetch(`${this.basePathOwnApi}/allDefaultSubmodels`, {
             method: 'GET',
-            headers,
+            headers: {
+                'Accept': 'application/json',
+            },
         });
 
         if (response.status >= 200 && response.status < 300) {
@@ -41,12 +42,13 @@ export class TemplateShellApi {
         }
     }
 
-    public async getCustoms(token: string): Promise<Submodel[]> {
-        const headers = this.prepareHeader(token);
+    public async getCustoms(): Promise<Submodel[]> {
 
         const response = await this.http.fetch(`${this.basePathOwnApi}/allCustomSubmodels`, {
             method: 'GET',
-            headers,
+            headers: {
+                'Accept': 'application/json',
+            },
         });
 
         if (response.status >= 200 && response.status < 300) {
@@ -56,14 +58,15 @@ export class TemplateShellApi {
         }
     }
 
-    public async getCustom(token: string, submodelIdShort: string): Promise<Submodel> {
-        const headers = this.prepareHeader(token);
+    public async getCustom(submodelIdShort: string): Promise<Submodel> {
 
         const response = await this.http.fetch(
             `${this.basePathOwnApi}/CustomSubmodel/${encodeBase64(submodelIdShort)}`,
             {
                 method: 'GET',
-                headers,
+                headers: {
+                    'Accept': 'application/json',
+                },
             },
         );
 
@@ -74,14 +77,15 @@ export class TemplateShellApi {
         }
     }
 
-    public async deleteCustomById(token: string, id: string): Promise<string | number> {
-        const headers = this.prepareHeader(token);
+    public async deleteCustomById(id: string): Promise<string | number> {
 
         // We use the regular delete endpoint, which expects an idShort, but because of our backend interception, we saved the actual id in the idShort field earlier.
         // That's why this works.
         const response = await this.http.fetch(`${this.basePathCustoms}/${encodeBase64(id)}`, {
             method: 'DELETE',
-            headers,
+            headers: {
+                'Accept': 'application/json',
+            },
         });
 
         if (response.status >= 200 && response.status < 300) {
@@ -89,15 +93,5 @@ export class TemplateShellApi {
         } else {
             throw response;
         }
-    }
-
-    private prepareHeader(token: string) {
-        const headers = {
-            Accept: 'application/json',
-        };
-        if (this.enable_authentication) {
-            headers['Authorization'] = token;
-        }
-        return headers;
     }
 }
