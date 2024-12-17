@@ -10,7 +10,7 @@ import {
 import { DataRow } from 'components/basics/DataRow';
 import { PdfDocumentIcon } from 'components/custom-icons/PdfDocumentIcon';
 import { messages } from 'lib/i18n/localization';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getTranslationText, hasSemanticId } from 'lib/util/SubmodelResolverUtil';
 import { DocumentDetailsDialog } from './DocumentDetailsDialog';
@@ -83,6 +83,26 @@ export function DocumentComponent(props: MarkingsComponentProps) {
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
     const [aasOriginUrl] = useAasOriginSourceState();
     const [imageError, setImageError] = useState(false);
+    const [fileExists, setFileExists] = useState(true);
+
+    useEffect(() => {
+        const checkFileExists = async (url : string) => {
+            try {
+                const response = await fetch(url, { method: 'HEAD' });
+                if (response.ok) {
+                    setFileExists(true);
+                } else {
+                    setFileExists(false);
+                }
+            } catch (error) {
+                setFileExists(false);
+            }
+        };
+
+        if (fileViewObject?.digitalFileUrl) {
+            checkFileExists(fileViewObject.digitalFileUrl);
+        }
+    }, [fileViewObject?.digitalFileUrl]);
 
     useAsyncEffect(async () => {
         setFileViewObject(await getFileViewObject());
@@ -99,6 +119,24 @@ export function DocumentComponent(props: MarkingsComponentProps) {
     const handleImageError = () => {
         setImageError(true);
     };
+
+    const renderImage = () => (
+        <StyledImageWrapper>
+            {!imageError && fileViewObject?.previewImgUrl ? (
+                <img
+                    src={fileViewObject.previewImgUrl}
+                    height={90}
+                    width={90}
+                    alt="File Preview"
+                    onError={handleImageError}
+                />
+            ) : fileViewObject?.mimeType === 'application/pdf' ? (
+                <PdfDocumentIcon color="primary" />
+            ) : (
+                <InsertDriveFileOutlined color="primary" />
+            )}
+        </StyledImageWrapper>
+    );
 
     function findIdShortForLatestElement(
         submodelElement: SubmodelElementCollection,
@@ -301,23 +339,13 @@ export function DocumentComponent(props: MarkingsComponentProps) {
             {fileViewObject && (
                 <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
                     <Box display="flex">
-                        <Link href={fileViewObject.digitalFileUrl} target="_blank">
-                            <StyledImageWrapper>
-                                {!imageError && fileViewObject.previewImgUrl ? (
-                                    <img
-                                        src={fileViewObject.previewImgUrl}
-                                        height={90}
-                                        width={90}
-                                        alt="File Preview"
-                                        onError={handleImageError}
-                                    />
-                                ) : fileViewObject.mimeType === 'application/pdf' ? (
-                                    <PdfDocumentIcon color="primary" />
-                                ) : (
-                                    <InsertDriveFileOutlined color="primary" />
-                                )}
-                            </StyledImageWrapper>
-                        </Link>
+                        {fileExists ? (
+                            <Link href={fileViewObject.digitalFileUrl} target="_blank">
+                                {renderImage()}
+                            </Link>
+                        ) : (
+                            renderImage()
+                        )}
                         <Box>
                             <Typography>{fileViewObject.title}</Typography>
                             {fileViewObject.organizationName && (
@@ -327,13 +355,13 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                             )}
                             <Button
                                 variant="outlined"
-                                startIcon={fileViewObject.digitalFileUrl ? <OpenInNew /> : ''}
+                                startIcon={fileExists ? <OpenInNew /> : ''}
                                 sx={{ mt: 1 }}
                                 href={fileViewObject.digitalFileUrl}
                                 target="_blank"
-                                disabled={!fileViewObject.digitalFileUrl}
+                                disabled={!fileExists}
                             >
-                                {!fileViewObject.digitalFileUrl ? (
+                                {!fileExists ? (
                                     <FormattedMessage {...messages.mnestix.fileNotFound} />
                                 ) : (
                                     <FormattedMessage {...messages.mnestix.open} />
