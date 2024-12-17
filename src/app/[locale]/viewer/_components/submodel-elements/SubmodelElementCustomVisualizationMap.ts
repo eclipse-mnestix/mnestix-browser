@@ -7,8 +7,11 @@ import { DocumentComponent } from './document-component/DocumentComponent';
 export const submodelElementCustomVisualizationMap = {
     [SubmodelElementSemanticId.Address]: AddressComponent,
     [SubmodelElementSemanticId.ContactInformation]: ContactInformationComponent,
-    [SubmodelElementSemanticId.Markings]: MarkingsComponent,
-    [SubmodelElementSemanticId.MarkingsIrdi]: MarkingsComponent,
+    [SubmodelElementSemanticId.MarkingsV1]: MarkingsComponent,
+    [SubmodelElementSemanticId.MarkingsV2]: MarkingsComponent,
+    [SubmodelElementSemanticId.MarkingsV3]: MarkingsComponent,
+    [SubmodelElementSemanticId.MarkingsIrdiV1]: MarkingsComponent,
+    [SubmodelElementSemanticId.MarkingsIrdiV3]: MarkingsComponent,
     [SubmodelElementSemanticId.Document]: DocumentComponent,
     [SubmodelElementSemanticId.DocumentIrdi]: DocumentComponent,
 };

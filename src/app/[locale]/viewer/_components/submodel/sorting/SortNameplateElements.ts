@@ -21,7 +21,12 @@ export function SortNameplateElements(submodel: Submodel | SubmodelElementCollec
     }
 
     // Sorting
-    if (key === SubmodelSemanticId.Nameplate) {
+    const nameplateKeys = [
+        SubmodelSemanticId.NameplateV1,
+        SubmodelSemanticId.NameplateV2,
+        SubmodelSemanticId.NameplateV3
+    ];
+    if (nameplateKeys.includes(<SubmodelSemanticId>key)) {
         SortSubmodelElements(submodels, NameplateSorting);
     }
 
