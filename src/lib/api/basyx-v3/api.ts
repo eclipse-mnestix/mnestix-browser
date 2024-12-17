@@ -1,7 +1,12 @@
 ﻿/* eslint-disable */
 import url from 'url';
 import { Configuration } from './configuration';
-import { AssetAdministrationShell, Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import {
+    AssetAdministrationShell,
+    ISubmodelElement,
+    Reference,
+    Submodel,
+} from '@aas-core-works/aas-core3.0-typescript/types';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import {
@@ -11,7 +16,7 @@ import {
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { AttachmentDetails } from 'lib/types/TransferServiceData';
 import { mnestixFetch } from 'lib/api/infrastructure';
-import ServiceReachable from 'test-utils/TestUtils';
+import { ServiceReachable } from 'test-utils/TestUtils';
 
 export type FetchAPI = {
     fetch: <T>(url: RequestInfo, init?: RequestInit) => Promise<ApiResponseWrapper<T>>;
@@ -389,6 +394,20 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
         );
     }
 
+    async getSubmodelMetaData(submodelId: string, options?: object): Promise<ApiResponseWrapper<Submodel>> {
+        return SubmodelRepositoryApiFp(this.configuration).getSubmodelMetadataById(submodelId, options)(
+            this.http,
+            this.baseUrl,
+        );
+    }
+
+    async getSubmodelElement(submodelId: string, idShortPath: string, options?: object): Promise<ApiResponseWrapper<ISubmodelElement>> {
+        return SubmodelRepositoryApiFp(this.configuration).getSubmodelElement(submodelId, idShortPath, options)(
+            this.http,
+            this.baseUrl,
+        );
+    }
+
     async getAttachmentFromSubmodelElement(
         submodelId: string,
         submodelElementPath: string,
@@ -436,6 +455,38 @@ export const SubmodelRepositoryApiFp = function (configuration?: Configuration) 
             );
             return async (requestHandler: FetchAPI, baseUrl: string) => {
                 return requestHandler.fetch<Submodel>(baseUrl + localVarFetchArgs.url, localVarFetchArgs.options);
+            };
+        },
+        /**
+         * @summary Retrieves the submodel metadata
+         * @param {string} submodelId The Submodels unique id
+         * @param {*} [options] Override http request option
+         * @throws {RequiredError}
+         */
+        getSubmodelMetadataById(submodelId: string, options?: any) {
+            const localVarFetchArgs = SubmodelRepositoryApiFetchParamCreator(configuration).getSubmodelMetaDataById(
+                encodeBase64(submodelId),
+                options,
+            );
+            return async (requestHandler: FetchAPI, baseUrl: string) => {
+                return requestHandler.fetch<Submodel>(baseUrl + localVarFetchArgs.url, localVarFetchArgs.options);
+            };
+        },
+        /**
+         * @summary Retrieves the submodel metadata
+         * @param {string} submodelId The Submodels unique id
+         * @param idShortPath the ID short path
+         * @param {*} [options] Override http request option
+         * @throws {RequiredError}
+         */
+        getSubmodelElement(submodelId: string, idShortPath: string, options?: any) {
+            const localVarFetchArgs = SubmodelRepositoryApiFetchParamCreator(configuration).getSubmodelElement(
+                encodeBase64(submodelId),
+                idShortPath, // ???????
+                options,
+            );
+            return async (requestHandler: FetchAPI, baseUrl: string) => {
+                return requestHandler.fetch<ISubmodelElement>(baseUrl + localVarFetchArgs.url, localVarFetchArgs.options);
             };
         },
         /**
@@ -613,5 +664,38 @@ export const SubmodelRepositoryApiFetchParamCreator = function (configuration?: 
                 options: localVarRequestOptions,
             };
         },
+
+        getSubmodelElement(
+            submodelId: string,
+            idShortPath: string,
+            options: any = {},
+        ): FetchArgs {
+            // verify required parameter 'submodelId' is not null or undefined
+            if (submodelId === null || submodelId === undefined) {
+                throw new RequiredError(
+                    'submodelId',
+                    'Required parameter submodelId was null or undefined when calling getSubmodelMetaDataById.',
+                );
+            }
+            const localVarPath = `/submodels/{submodelId}/submodel-elements/{idShortPath}/$value`.replace(
+                `{submodelId}`,
+                encodeURIComponent(String(submodelId)),
+            ).replace(`{idShortPath}`,
+                String(idShortPath),);
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            localVarUrlObj.search = null;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }
     };
 };

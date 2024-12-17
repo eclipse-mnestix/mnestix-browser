@@ -11,6 +11,7 @@ import { AttachmentDetails } from 'lib/types/TransferServiceData';
 import { AasRepositoryResponse } from 'lib/api/basyx-v3/api';
 import { encodeBase64, safeBase64Decode } from 'lib/util/Base64Util';
 import ServiceReachable from 'test-utils/TestUtils';
+import { ISubmodelElement } from '@aas-core-works/aas-core3.0-typescript/types';
 
 const options = {
     headers: { 'Content-type': 'application/json; charset=utf-8' },
@@ -167,6 +168,14 @@ export class SubmodelRepositoryApiInMemory implements ISubmodelRepositoryApi {
         _submodelElementPath: string,
         _options?: object,
     ): Promise<ApiResponseWrapper<Blob>> {
+        throw new Error('Method not implemented.');
+    }
+
+    getSubmodelElement(submodelId: string, idShortPath: string, options?: object): Promise<ApiResponseWrapper<ISubmodelElement>> {
+        throw new Error('Method not implemented.');
+    }
+
+    getSubmodelMetaData(submodelId: string, options?: object): Promise<ApiResponseWrapper<Submodel>> {
         throw new Error('Method not implemented.');
     }
 }

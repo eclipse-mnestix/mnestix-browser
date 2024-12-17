@@ -16,6 +16,7 @@ import { isValidUrl } from 'lib/util/UrlUtil';
 import { useState } from 'react';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ListEntityDto } from 'lib/services/list-service/ListService';
+import { getNameplateForAAS, getNameplateValuesForAAS } from 'lib/services/list-service/aasListApiActions';
 import { useTranslations } from 'next-intl';
 
 type AasTableRowProps = {
@@ -77,6 +78,24 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         }
     }, [aasListEntry.thumbnail]);
 
+    useAsyncEffect(async () => {
+        if (!aasListEntry.aasId) return;
+
+        const nameplate = getNameplateValuesForAAS(repositoryUrl, aasListEntry.aasId);
+
+        if (isValidUrl(aasListEntry.thumbnail)) {
+           // setThumbnailUrl(aasListEntry.thumbnail);
+        } else if (aasListEntry.aasId && repositoryUrl) {
+            /*const response = await getThumbnailFromShell(aasListEntry.aasId, repositoryUrl);
+            if (response.isSuccess) {
+                const blob = mapFileDtoToBlob(response.result);
+                const blobUrl = URL.createObjectURL(blob);
+                setThumbnailUrl(blobUrl);
+            }*/
+        }
+    }, [aasListEntry.aasId]);
+
+
     const showMaxElementsNotification = () => {
         notificationSpawner.spawn({
             message: (
@@ -86,7 +105,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
             ),
             severity: 'warning',
         });
-    };
+     };
 
     return (
         <>

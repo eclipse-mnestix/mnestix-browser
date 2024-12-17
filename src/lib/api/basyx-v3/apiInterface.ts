@@ -1,4 +1,4 @@
-import { AssetAdministrationShell, Reference } from '@aas-core-works/aas-core3.0-typescript/types';
+import { AssetAdministrationShell, ISubmodelElement, Reference } from '@aas-core-works/aas-core3.0-typescript/types';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import { AttachmentDetails } from 'lib/types/TransferServiceData';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
@@ -90,6 +90,25 @@ export interface ISubmodelRepositoryApi {
      * @memberof SubmodelRepositoryApi
      */
     getSubmodelById(submodelId: string, options?: object): Promise<ApiResponseWrapper<Submodel>>;
+
+    /**
+     * @summary Retrieves the submodel metadata (submodel in metadata representation)
+     * @param {string} submodelId The Submodels unique id
+     * @param {*} [options] Override http request option
+     * @throws {RequiredError}
+     * @memberof SubmodelRepositoryApi
+     */
+    getSubmodelMetaData(submodelId: string, options?: object): Promise<ApiResponseWrapper<Submodel>>;
+
+    /**
+     * @summary Retrieves the submodel elements
+     * @param {string} submodelId The Submodels unique id
+     * @param {string} idShortPath The ID short path
+     * @param {*} [options] Override http request option
+     * @throws {RequiredError}
+     * @memberof SubmodelRepositoryApi
+     */
+    getSubmodelElement(submodelId: string, idShortPath: string, options?: object): Promise<ApiResponseWrapper<ISubmodelElement>>;
 
     /**
      * @summary Retrieves the attachment from a submodel element
