@@ -51,6 +51,12 @@ export function CompareSubmodelElement(props: CompareSubmodelElementProps) {
                         submodelElementCollection={props.submodelElement as SubmodelElementCollection}
                     />
                 );
+            case KeyTypes.SubmodelElementList:
+                return (
+                    <SubmodelElementCollectionComponent
+                        submodelElementCollection={props.submodelElement as SubmodelElementCollection}
+                    />
+                );
             case KeyTypes.File:
                 return <FileComponent file={props.submodelElement as File} />;
             case KeyTypes.MultiLanguageProperty:

@@ -93,6 +93,8 @@ export function TemplateEditFields(props: TemplateEditFieldsProps) {
                 );
             case KeyTypes.SubmodelElementCollection:
                 return <></>;
+            case KeyTypes.SubmodelElementList:
+                return <></>;
 
             default:
                 return (

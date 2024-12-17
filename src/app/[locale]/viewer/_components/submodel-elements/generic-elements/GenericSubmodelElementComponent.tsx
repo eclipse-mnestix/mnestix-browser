@@ -51,6 +51,17 @@ export function GenericSubmodelElementComponent(props: GenericSubmodelElementCom
                         )}
                     />
                 );
+            case KeyTypes.SubmodelElementList:
+                return (
+                    <SubmodelElementCollectionComponent
+                        submodelElementCollection={props.submodelElement as SubmodelElementCollection}
+                        submodelId={props.submodelId}
+                        submodelElementPath={buildSubmodelElementPath(
+                            props.submodelElementPath,
+                            props.submodelElement.idShort,
+                        )}
+                    />
+                );
             case KeyTypes.File:
                 return (
                     <FileComponent
