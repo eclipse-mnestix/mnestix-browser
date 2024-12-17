@@ -1,7 +1,7 @@
 services:
   cypress-test:
     container_name: cypress-test
-    profiles: ["", "tests"]
+    profiles: ['', 'tests']
     build:
       dockerfile: cypress.dockerfile
     environment:
@@ -12,6 +12,8 @@ services:
       CYPRESS_AAS_DISCOVERY_API_URL: 'http://mnestix-api:5064/discovery'
       MNESTIX_BACKEND_API_KEY: ${MNESTIX_BACKEND_API_KEY:-verySecureApiKey}
       ELECTRON_ENABLE_LOGGING: 1
+      SPLIT: ${SPLIT:-0}
+      SPLIT_INDEX: ${SPLIT_INDEX:-0}
     volumes:
       - ./cypress-artifacts/screenshots:/cypress_Tests/cypress/screenshots
       - ./cypress-artifacts/videos:/cypress_Tests/cypress/videos

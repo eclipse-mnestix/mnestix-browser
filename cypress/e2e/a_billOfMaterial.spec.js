@@ -1,4 +1,5 @@
-﻿import resolutions from '../fixtures/resolutions.json';
+﻿// intentionally named a_ to run this test in first batch
+import resolutions from '../fixtures/resolutions.json';
 import testAAS from '../fixtures/testAAS.json';
 import AASBomComponent from '../fixtures/cypress_e2e/cyTestAas_BoM_Component.json';
 

@@ -1,5 +1,6 @@
 import { defineConfig } from 'cypress';
 import * as dotenv from 'dotenv';
+import cypressSplit from 'cypress-split';
 
 dotenv.config();
 
@@ -21,6 +22,10 @@ export default defineConfig({
         excludeSpecPattern: '**/ignoredTestFiles/*.js',
         specPattern: 'cypress/e2e/**/*.spec.{js,jsx,ts,tsx}',
         experimentalRunAllSpecs: true,
+        setupNodeEvents(on, config) {
+            cypressSplit(on, config);
+            return config;
+        },
     },
     env: {
         AAS_REPO_API_URL: 'http://localhost:5064/repo',
