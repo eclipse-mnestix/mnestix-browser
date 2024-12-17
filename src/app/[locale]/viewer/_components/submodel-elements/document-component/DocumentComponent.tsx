@@ -20,6 +20,7 @@ import { getAttachmentFromSubmodelElement } from 'lib/services/repository-access
 import { useAasOriginSourceState } from 'components/contexts/CurrentAasContext';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import Image from 'next/image';
+import { encodeBase64 } from 'lib/util/Base64Util';
 
 enum DocumentSpecificSemanticId {
     DocumentVersion = 'https://admin-shell.io/vdi/2770/1/0/DocumentVersion',
@@ -84,7 +85,6 @@ export function DocumentComponent(props: MarkingsComponentProps) {
     const [fileViewObject, setFileViewObject] = useState<FileViewObject>();
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
     const [aasOriginUrl] = useAasOriginSourceState();
-    const [fileNotFound, setFileNotFound] = useState(false);
 
     useAsyncEffect(async () => {
         setFileViewObject(await getFileViewObject());
@@ -160,6 +160,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
         if (isValidUrl((versionSubmodelEl as File).value)) {
             digitalFile.digitalFileUrl = (versionSubmodelEl as File).value || '';
             digitalFile.mimeType = (versionSubmodelEl as File).contentType;
+
         } else if (props.submodelId && submodelElement.idShort && props.submodelElement?.idShort) {
             const submodelElementPath =
                 props.submodelElement.idShort +
@@ -168,20 +169,15 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                 '.' +
                 findIdShortForLatestDocument(submodelElement as SubmodelElementCollection);
 
-            digitalFile.mimeType = (versionSubmodelEl as File).contentType;
+            digitalFile.digitalFileUrl =
+                aasOriginUrl +
+                '/submodels/' +
+                encodeBase64(props.submodelId) +
+                '/submodel-elements/' +
+                submodelElementPath +
+                '/attachment';
 
-            const fileResponse = await getAttachmentFromSubmodelElement(
-                props.submodelId,
-                submodelElementPath,
-                aasOriginUrl ?? undefined,
-            );
-            if (!fileResponse.isSuccess) {
-                console.error('File not found' + fileResponse.message);
-                setFileNotFound(true);
-            } else {
-                const image = mapFileDtoToBlob(fileResponse.result);
-                digitalFile.digitalFileUrl = URL.createObjectURL(image);
-            }
+            digitalFile.mimeType = (versionSubmodelEl as File).contentType;
         }
 
         return digitalFile;
@@ -327,13 +323,13 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                             )}
                             <Button
                                 variant="outlined"
-                                startIcon={!fileNotFound ?? <OpenInNew />}
+                                startIcon={fileViewObject.digitalFileUrl ? <OpenInNew /> : ''}
                                 sx={{ mt: 1 }}
                                 href={fileViewObject.digitalFileUrl}
                                 target="_blank"
-                                disabled={fileNotFound}
+                                disabled={!fileViewObject.digitalFileUrl}
                             >
-                                {fileNotFound ? (
+                                {!fileViewObject.digitalFileUrl ? (
                                     <FormattedMessage {...messages.mnestix.fileNotFound} />
                                 ) : (
                                     <FormattedMessage {...messages.mnestix.open} />
