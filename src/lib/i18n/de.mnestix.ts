@@ -189,6 +189,7 @@ export const deMnestix = {
     },
     documentDetails: 'Dokumentendetails',
     open: 'Öffnen',
+    fileNotFound: 'Datei nicht gefunden',
     mappingInfo: 'Mapping-Info',
     mappingInfoDescription: 'Frei wählbarer Identifikator, auf den Sie bei Datenimporten zurückgreifen können.',
     multiplicity: 'Multiplicity',

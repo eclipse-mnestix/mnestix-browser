@@ -15,11 +15,11 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { getTranslationText, hasSemanticId } from 'lib/util/SubmodelResolverUtil';
 import { DocumentDetailsDialog } from './DocumentDetailsDialog';
 import { isValidUrl } from 'lib/util/UrlUtil';
-import { encodeBase64 } from 'lib/util/Base64Util';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { getAttachmentFromSubmodelElement } from 'lib/services/repository-access/repositorySearchActions';
 import { useAasOriginSourceState } from 'components/contexts/CurrentAasContext';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import Image from 'next/image';
 
 enum DocumentSpecificSemanticId {
     DocumentVersion = 'https://admin-shell.io/vdi/2770/1/0/DocumentVersion',
@@ -84,6 +84,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
     const [fileViewObject, setFileViewObject] = useState<FileViewObject>();
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
     const [aasOriginUrl] = useAasOriginSourceState();
+    const [fileNotFound, setFileNotFound] = useState(false);
 
     useAsyncEffect(async () => {
         setFileViewObject(await getFileViewObject());
@@ -166,23 +167,19 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                 submodelElement.idShort +
                 '.' +
                 findIdShortForLatestDocument(submodelElement as SubmodelElementCollection);
-            digitalFile.digitalFileUrl =
-                '/submodels/' +
-                encodeBase64(props.submodelId) +
-                '/submodel-elements/' +
-                submodelElementPath +
-                '/attachment';
+
             digitalFile.mimeType = (versionSubmodelEl as File).contentType;
 
-            const imageResponse = await getAttachmentFromSubmodelElement(
+            const fileResponse = await getAttachmentFromSubmodelElement(
                 props.submodelId,
                 submodelElementPath,
                 aasOriginUrl ?? undefined,
             );
-            if (!imageResponse.isSuccess) {
-                console.error('Image not found' + imageResponse.message);
+            if (!fileResponse.isSuccess) {
+                console.error('File not found' + fileResponse.message);
+                setFileNotFound(true);
             } else {
-                const image = mapFileDtoToBlob(imageResponse.result);
+                const image = mapFileDtoToBlob(fileResponse.result);
                 digitalFile.digitalFileUrl = URL.createObjectURL(image);
             }
         }
@@ -202,13 +199,6 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                 submodelElement.idShort +
                 '.' +
                 findIdShortForLatestPreviewImage(submodelElement as SubmodelElementCollection);
-
-            previewImgUrl =
-                '/submodels/' +
-                encodeBase64(props.submodelId) +
-                '/submodel-elements/' +
-                submodelElementPath +
-                '/attachment';
 
             const imageResponse = await getAttachmentFromSubmodelElement(
                 props.submodelId,
@@ -320,7 +310,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                         <Link href={fileViewObject.digitalFileUrl} target="_blank">
                             <StyledImageWrapper>
                                 {fileViewObject.previewImgUrl ? (
-                                    <img src={fileViewObject.previewImgUrl} height={90} width={90} alt="Document" />
+                                    <Image src={fileViewObject.previewImgUrl} height={90} width={90} alt="Document" />
                                 ) : fileViewObject.mimeType === 'application/pdf' ? (
                                     <PdfDocumentIcon color="primary" />
                                 ) : (
@@ -337,12 +327,17 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                             )}
                             <Button
                                 variant="outlined"
-                                startIcon={<OpenInNew />}
+                                startIcon={!fileNotFound ?? <OpenInNew />}
                                 sx={{ mt: 1 }}
                                 href={fileViewObject.digitalFileUrl}
                                 target="_blank"
+                                disabled={fileNotFound}
                             >
-                                <FormattedMessage {...messages.mnestix.open} />
+                                {fileNotFound ? (
+                                    <FormattedMessage {...messages.mnestix.fileNotFound} />
+                                ) : (
+                                    <FormattedMessage {...messages.mnestix.open} />
+                                )}
                             </Button>
                         </Box>
                     </Box>
