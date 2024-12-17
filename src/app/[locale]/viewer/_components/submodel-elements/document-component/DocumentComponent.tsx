@@ -16,10 +16,7 @@ import { getTranslationText, hasSemanticId } from 'lib/util/SubmodelResolverUtil
 import { DocumentDetailsDialog } from './DocumentDetailsDialog';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { getAttachmentFromSubmodelElement } from 'lib/services/repository-access/repositorySearchActions';
 import { useAasOriginSourceState } from 'components/contexts/CurrentAasContext';
-import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import Image from 'next/image';
 import { encodeBase64 } from 'lib/util/Base64Util';
 
 enum DocumentSpecificSemanticId {
@@ -85,6 +82,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
     const [fileViewObject, setFileViewObject] = useState<FileViewObject>();
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
     const [aasOriginUrl] = useAasOriginSourceState();
+    const [imageError, setImageError] = useState(false);
 
     useAsyncEffect(async () => {
         setFileViewObject(await getFileViewObject());
@@ -96,6 +94,10 @@ export function DocumentComponent(props: MarkingsComponentProps) {
 
     const handleDetailsModalClose = () => {
         setDetailsModalOpen(false);
+    };
+
+    const handleImageError = () => {
+        setImageError(true);
     };
 
     function findIdShortForLatestElement(
@@ -196,17 +198,13 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                 '.' +
                 findIdShortForLatestPreviewImage(submodelElement as SubmodelElementCollection);
 
-            const imageResponse = await getAttachmentFromSubmodelElement(
-                props.submodelId,
-                submodelElementPath,
-                aasOriginUrl ?? undefined,
-            );
-            if (!imageResponse.isSuccess) {
-                console.error('Image not found' + imageResponse.message);
-            } else {
-                const image = mapFileDtoToBlob(imageResponse.result);
-                previewImgUrl = URL.createObjectURL(image);
-            }
+            previewImgUrl =
+                aasOriginUrl +
+                '/submodels/' +
+                encodeBase64(props.submodelId) +
+                '/submodel-elements/' +
+                submodelElementPath +
+                '/attachment';
         }
 
         return previewImgUrl ?? '';
@@ -305,8 +303,14 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                     <Box display="flex">
                         <Link href={fileViewObject.digitalFileUrl} target="_blank">
                             <StyledImageWrapper>
-                                {fileViewObject.previewImgUrl ? (
-                                    <Image src={fileViewObject.previewImgUrl} height={90} width={90} alt="Document" />
+                                {!imageError && fileViewObject.previewImgUrl ? (
+                                    <img
+                                        src={fileViewObject.previewImgUrl}
+                                        height={90}
+                                        width={90}
+                                        alt="File Preview"
+                                        onError={handleImageError}
+                                    />
                                 ) : fileViewObject.mimeType === 'application/pdf' ? (
                                     <PdfDocumentIcon color="primary" />
                                 ) : (
