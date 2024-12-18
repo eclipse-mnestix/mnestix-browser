@@ -5,7 +5,7 @@ import { AssetAdministrationShell, Submodel } from '@aas-core-works/aas-core3.0-
 import ServiceReachable from 'test-utils/TestUtils';
 import { SubmodelSemanticId } from 'lib/enums/SubmodelSemanticId.enum';
 import { encodeBase64 } from 'lib/util/Base64Util';
-import { multiLanguageValue } from 'app/[locale]/list/_components/AasListTableRow';
+import { MultiLanguageValueOnly } from 'lib/api/basyx-v3/types';
 
 export type ListEntityDto = {
     aasId: string;
@@ -16,8 +16,8 @@ export type ListEntityDto = {
 export type NameplateValuesDto = {
     success: boolean;
     error?: object;
-    manufacturerName: multiLanguageValue | undefined;
-    manufacturerProductDesignation: multiLanguageValue | undefined;
+    manufacturerName: MultiLanguageValueOnly | undefined;
+    manufacturerProductDesignation: MultiLanguageValueOnly | undefined;
 };
 
 export type AasListDto = {
@@ -86,7 +86,7 @@ export class ListService {
             encodeBase64(aasId),
         );
         const submodelReferences = submodelReferencesResponse.result;
-        if (!submodelReferencesResponse.isSuccess || !submodelReferences || submodelReferences.length === 0) {
+        if (!submodelReferencesResponse.isSuccess || !submodelReferences) {
             return {
                 success: false,
                 manufacturerName: undefined,
@@ -94,7 +94,6 @@ export class ListService {
                 error: submodelReferencesResponse,
             };
         }
-        // @ts-expect-error todo replace with acutal type
         for (const reference of submodelReferences.result) {
             const submodelId = reference.keys[0].value;
             const submodelResponse = await this.submodelRepositoryClient.getSubmodelMetaData(submodelId);

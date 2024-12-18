@@ -17,6 +17,7 @@ import { useState } from 'react';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ListEntityDto, NameplateValuesDto } from 'lib/services/list-service/ListService';
 import { getNameplateValuesForAAS } from 'lib/services/list-service/aasListApiActions';
+import { MultiLanguageValueOnly } from 'lib/api/basyx-v3/types';
 
 type AasTableRowProps = {
     repositoryUrl: string;
@@ -26,8 +27,6 @@ type AasTableRowProps = {
     selectedAasList: string[] | undefined;
     updateSelectedAasList: (isChecked: boolean, aasId: string | undefined) => void;
 };
-
-export type multiLanguageValue = { [key: string]: string }[];
 
 const tableBodyText = {
     lineHeight: '150%',
@@ -58,7 +57,9 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         if (listEntry.aasId) navigate.push(`/viewer/${encodeBase64(listEntry.aasId)}`);
     };
 
-    const translateListText = (property: multiLanguageValue | undefined) => {
+    // todo create reusable types +  translation for ValueOnly Representation
+    // create reusable wrapper for "paging-metadata" results
+    const translateListText = (property: MultiLanguageValueOnly | undefined) => {
         if (!property) return '';
         // try the current locale first
         const translatedString = property.find((prop) => prop[intl.locale]);

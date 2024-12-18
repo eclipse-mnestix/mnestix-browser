@@ -1,9 +1,8 @@
-import { AssetAdministrationShell, ISubmodelElement, Reference } from '@aas-core-works/aas-core3.0-typescript/types';
+import { AssetAdministrationShell, Reference } from '@aas-core-works/aas-core3.0-typescript/types';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import { AttachmentDetails } from 'lib/types/TransferServiceData';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { AasRepositoryResponse } from 'lib/api/basyx-v3/api';
-import { multiLanguageValue } from 'app/[locale]/list/_components/AasListTableRow';
+import { MultiLanguageValueOnly, PaginationData } from 'lib/api/basyx-v3/types';
 
 export interface IAssetAdministrationShellRepositoryApi {
     /**
@@ -15,7 +14,7 @@ export interface IAssetAdministrationShellRepositoryApi {
         limit?: number,
         cursor?: string,
         options?: object,
-    ): Promise<ApiResponseWrapper<AasRepositoryResponse>>;
+    ): Promise<ApiResponseWrapper<PaginationData<AssetAdministrationShell[]>>>;
 
     /**
      * @summary Retrieves a specific Asset Administration Shell from the Asset Administration Shell repository
@@ -37,8 +36,10 @@ export interface IAssetAdministrationShellRepositoryApi {
      * @throws {RequiredError}
      * @memberof AssetAdministrationShellRepositoryApi
      */
-    // todo this type is not correct
-    getSubmodelReferencesFromShell(aasId: string, options?: object): Promise<ApiResponseWrapper<Reference[]>>;
+    getSubmodelReferencesFromShell(
+        aasId: string,
+        options?: object,
+    ): Promise<ApiResponseWrapper<PaginationData<Reference[]>>>;
 
     /**
      * @summary Retrieves the thumbnail from the Asset Administration Shell.
@@ -114,7 +115,7 @@ export interface ISubmodelRepositoryApi {
         submodelId: string,
         idShortPath: string,
         options?: object,
-    ): Promise<ApiResponseWrapper<multiLanguageValue>>;
+    ): Promise<ApiResponseWrapper<MultiLanguageValueOnly>>;
 
     /**
      * @summary Retrieves the attachment from a submodel element

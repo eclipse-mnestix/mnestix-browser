@@ -1,12 +1,7 @@
 ﻿/* eslint-disable */
 import url from 'url';
 import { Configuration } from './configuration';
-import {
-    AssetAdministrationShell,
-    ISubmodelElement,
-    Reference,
-    Submodel,
-} from '@aas-core-works/aas-core3.0-typescript/types';
+import { AssetAdministrationShell, Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import {
@@ -17,7 +12,7 @@ import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapp
 import { AttachmentDetails } from 'lib/types/TransferServiceData';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { ServiceReachable } from 'test-utils/TestUtils';
-import { multiLanguageValue } from 'app/[locale]/list/_components/AasListTableRow';
+import { MultiLanguageValueOnly, PaginationData } from 'lib/api/basyx-v3/types';
 
 export type FetchAPI = {
     fetch: <T>(url: RequestInfo, init?: RequestInit) => Promise<ApiResponseWrapper<T>>;
@@ -38,11 +33,6 @@ export class RequiredError extends Error {
         super(msg);
     }
 }
-
-export type AasRepositoryResponse = {
-    paging_metadata: { cursor: string };
-    result: AssetAdministrationShell[];
-};
 
 /**
  * AssetAdministrationShellRepositoryApi - object-oriented interface
@@ -147,7 +137,7 @@ export const AssetAdministrationShellRepositoryApiFp = function (configuration?:
 
                 localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options?.headers);
 
-                return await requestHandler.fetch<AasRepositoryResponse>(
+                return await requestHandler.fetch<PaginationData<AssetAdministrationShell[]>>(
                     basePath + `/shells?limit=${limit}&cursor=${cursorQueryParameter}`,
                     localVarRequestOptions,
                 );
@@ -183,7 +173,10 @@ export const AssetAdministrationShellRepositoryApiFp = function (configuration?:
                 configuration,
             ).getSubmodelReferencesFromShell(aasId, options);
             return async (requestHandler: FetchAPI, basePath: string) => {
-                return requestHandler.fetch<Reference[]>(basePath + localVarFetchArgs.url, localVarFetchArgs.options);
+                return requestHandler.fetch<PaginationData<Reference[]>>(
+                    basePath + localVarFetchArgs.url,
+                    localVarFetchArgs.options,
+                );
             };
         },
 
@@ -407,7 +400,7 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
         submodelId: string,
         idShortPath: string,
         options?: object,
-    ): Promise<ApiResponseWrapper<multiLanguageValue>> {
+    ): Promise<ApiResponseWrapper<MultiLanguageValueOnly>> {
         return SubmodelRepositoryApiFp(this.configuration).getSubmodelElement(
             submodelId,
             idShortPath,
@@ -493,7 +486,7 @@ export const SubmodelRepositoryApiFp = function (configuration?: Configuration) 
                 options,
             );
             return async (requestHandler: FetchAPI, baseUrl: string) => {
-                return requestHandler.fetch<multiLanguageValue>(
+                return requestHandler.fetch<MultiLanguageValueOnly>(
                     baseUrl + localVarFetchArgs.url,
                     localVarFetchArgs.options,
                 );
