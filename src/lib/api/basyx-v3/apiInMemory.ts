@@ -12,6 +12,7 @@ import { AasRepositoryResponse } from 'lib/api/basyx-v3/api';
 import { encodeBase64, safeBase64Decode } from 'lib/util/Base64Util';
 import ServiceReachable from 'test-utils/TestUtils';
 import { ISubmodelElement } from '@aas-core-works/aas-core3.0-typescript/types';
+import { multiLanguageValue } from 'app/[locale]/list/_components/AasListTableRow';
 
 const options = {
     headers: { 'Content-type': 'application/json; charset=utf-8' },
@@ -171,7 +172,11 @@ export class SubmodelRepositoryApiInMemory implements ISubmodelRepositoryApi {
         throw new Error('Method not implemented.');
     }
 
-    getSubmodelElement(submodelId: string, idShortPath: string, options?: object): Promise<ApiResponseWrapper<ISubmodelElement>> {
+    getSubmodelElement(
+        submodelId: string,
+        idShortPath: string,
+        options?: object,
+    ): Promise<ApiResponseWrapper<multiLanguageValue>> {
         throw new Error('Method not implemented.');
     }
 

@@ -17,6 +17,7 @@ import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapp
 import { AttachmentDetails } from 'lib/types/TransferServiceData';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { ServiceReachable } from 'test-utils/TestUtils';
+import { multiLanguageValue } from 'app/[locale]/list/_components/AasListTableRow';
 
 export type FetchAPI = {
     fetch: <T>(url: RequestInfo, init?: RequestInit) => Promise<ApiResponseWrapper<T>>;
@@ -406,7 +407,7 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
         submodelId: string,
         idShortPath: string,
         options?: object,
-    ): Promise<ApiResponseWrapper<ISubmodelElement>> {
+    ): Promise<ApiResponseWrapper<multiLanguageValue>> {
         return SubmodelRepositoryApiFp(this.configuration).getSubmodelElement(
             submodelId,
             idShortPath,
@@ -492,7 +493,7 @@ export const SubmodelRepositoryApiFp = function (configuration?: Configuration) 
                 options,
             );
             return async (requestHandler: FetchAPI, baseUrl: string) => {
-                return requestHandler.fetch<ISubmodelElement>(
+                return requestHandler.fetch<multiLanguageValue>(
                     baseUrl + localVarFetchArgs.url,
                     localVarFetchArgs.options,
                 );

@@ -1,10 +1,11 @@
 import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { AssetAdministrationShellRepositoryApi, SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { mnestixFetch } from 'lib/api/infrastructure';
-import { AssetAdministrationShell, ISubmodelElement, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { AssetAdministrationShell, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import ServiceReachable from 'test-utils/TestUtils';
 import { SubmodelSemanticId } from 'lib/enums/SubmodelSemanticId.enum';
 import { encodeBase64 } from 'lib/util/Base64Util';
+import { multiLanguageValue } from 'app/[locale]/list/_components/AasListTableRow';
 
 export type ListEntityDto = {
     aasId: string;
@@ -15,8 +16,8 @@ export type ListEntityDto = {
 export type NameplateValuesDto = {
     success: boolean;
     error?: object;
-    manufacturerName: ISubmodelElement | undefined;
-    manufacturerProductDesignation: ISubmodelElement | undefined;
+    manufacturerName: multiLanguageValue | undefined;
+    manufacturerProductDesignation: multiLanguageValue | undefined;
 };
 
 export type AasListDto = {

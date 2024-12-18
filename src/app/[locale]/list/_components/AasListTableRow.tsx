@@ -17,8 +17,6 @@ import { useState } from 'react';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ListEntityDto, NameplateValuesDto } from 'lib/services/list-service/ListService';
 import { getNameplateValuesForAAS } from 'lib/services/list-service/aasListApiActions';
-import { useTranslations } from 'next-intl';
-import { ISubmodelElement } from '@aas-core-works/aas-core3.0-typescript/types';
 
 type AasTableRowProps = {
     repositoryUrl: string;
@@ -28,6 +26,8 @@ type AasTableRowProps = {
     selectedAasList: string[] | undefined;
     updateSelectedAasList: (isChecked: boolean, aasId: string | undefined) => void;
 };
+
+export type multiLanguageValue = { [key: string]: string }[];
 
 const tableBodyText = {
     lineHeight: '150%',
@@ -58,10 +58,13 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         if (listEntry.aasId) navigate.push(`/viewer/${encodeBase64(listEntry.aasId)}`);
     };
 
-    const translateListText = (property: ISubmodelElement | undefined) => {
+    const translateListText = (property: multiLanguageValue | undefined) => {
         if (!property) return '';
-        console.log(property[0][intl.locale]);
-        return property[intl.locale] ?? Object.values(property)[0] ?? '';
+        // try the current locale first
+        const translatedString = property.find((prop) => prop[intl.locale]);
+        // if there is any locale, better show it instead of nothing
+        const fallback = property[0] ? Object.values(property[0])[0] : '';
+        return translatedString ? translatedString[intl.locale] : fallback;
     };
 
     useAsyncEffect(async () => {
@@ -89,7 +92,6 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         if (!nameplate.success) {
             console.log(nameplate.error);
         } else {
-            translateListText(nameplate.manufacturerName);
             setNameplateData(nameplate);
         }
     }, [aasListEntry.aasId]);
@@ -129,10 +131,10 @@ export const AasListTableRow = (props: AasTableRowProps) => {
                 <ImageWithFallback src={thumbnailUrl} alt={'Thumbnail image for: ' + aasListEntry.assetId} size={88} />
             </PictureTableCell>
             <TableCell align="left" sx={tableBodyText}>
-                {/*{nameplateData && translateListText(nameplateData.manufacturerName)}*/}
+                {nameplateData && translateListText(nameplateData.manufacturerName)}
             </TableCell>
             <TableCell align="left" sx={tableBodyText}>
-                {/*{nameplateData && (translateListText(nameplateData.manufacturerProductDesignation), 80)}*/}
+                {nameplateData && tooltipText(translateListText(nameplateData.manufacturerProductDesignation), 80)}
             </TableCell>
             <TableCell align="left" sx={tableBodyText}>
                 <Typography>{tooltipText(aasListEntry.assetId, 35)}</Typography>

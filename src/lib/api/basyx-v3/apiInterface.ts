@@ -3,6 +3,7 @@ import { Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/type
 import { AttachmentDetails } from 'lib/types/TransferServiceData';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { AasRepositoryResponse } from 'lib/api/basyx-v3/api';
+import { multiLanguageValue } from 'app/[locale]/list/_components/AasListTableRow';
 
 export interface IAssetAdministrationShellRepositoryApi {
     /**
@@ -113,7 +114,7 @@ export interface ISubmodelRepositoryApi {
         submodelId: string,
         idShortPath: string,
         options?: object,
-    ): Promise<ApiResponseWrapper<ISubmodelElement>>;
+    ): Promise<ApiResponseWrapper<multiLanguageValue>>;
 
     /**
      * @summary Retrieves the attachment from a submodel element
