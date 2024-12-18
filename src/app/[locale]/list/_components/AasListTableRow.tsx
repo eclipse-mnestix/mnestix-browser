@@ -57,8 +57,6 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         if (listEntry.aasId) navigate.push(`/viewer/${encodeBase64(listEntry.aasId)}`);
     };
 
-    // todo create reusable types +  translation for ValueOnly Representation
-    // create reusable wrapper for "paging-metadata" results
     const translateListText = (property: MultiLanguageValueOnly | undefined) => {
         if (!property) return '';
         // try the current locale first

@@ -114,29 +114,6 @@ export class ListService {
                         'ManufacturerProductDesignation',
                     );
 
-                    console.log(manufacturerName.result);
-                    console.log(manufacturerProduct.result);
-                    // Multi language properties
-                    //submodelResponse.result.;
-
-                    // Recursive submodel elements
-                    /*submodelResponse.result.submodelElements.forEach((submodelElement) => {
-                    if (submodelElement instanceof SubmodelElementCollection) {
-                        for (const reference: Reference of submodelReferences) {
-                            reference.
-                        }
-                    }
-                    });*/
-                    /* return {
-                         manufacturerName: submodelResponse.result..value,
-                         error: submodelResponse
-                     };
- 
-                     return {
-                         id: submodelResponse.result.id,
-                         submodel: submodelResponse.result,
-                     };*/
-
                     return {
                         success: true,
                         manufacturerName: manufacturerName.result,
