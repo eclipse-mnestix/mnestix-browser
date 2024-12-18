@@ -307,6 +307,7 @@ export const AssetAdministrationShellRepositoryApiFetchParamCreator = function (
                     'Required parameter aasId was null or undefined when calling shellRepoGetSubmodelsFromShell.',
                 );
             }
+            console.log(aasId);
             const localVarPath = `/shells/{aasId}/submodel-refs`.replace(`{aasId}`, encodeURIComponent(String(aasId)));
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
@@ -401,11 +402,16 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
         );
     }
 
-    async getSubmodelElement(submodelId: string, idShortPath: string, options?: object): Promise<ApiResponseWrapper<ISubmodelElement>> {
-        return SubmodelRepositoryApiFp(this.configuration).getSubmodelElement(submodelId, idShortPath, options)(
-            this.http,
-            this.baseUrl,
-        );
+    async getSubmodelElement(
+        submodelId: string,
+        idShortPath: string,
+        options?: object,
+    ): Promise<ApiResponseWrapper<ISubmodelElement>> {
+        return SubmodelRepositoryApiFp(this.configuration).getSubmodelElement(
+            submodelId,
+            idShortPath,
+            options,
+        )(this.http, this.baseUrl);
     }
 
     async getAttachmentFromSubmodelElement(
@@ -486,7 +492,10 @@ export const SubmodelRepositoryApiFp = function (configuration?: Configuration) 
                 options,
             );
             return async (requestHandler: FetchAPI, baseUrl: string) => {
-                return requestHandler.fetch<ISubmodelElement>(baseUrl + localVarFetchArgs.url, localVarFetchArgs.options);
+                return requestHandler.fetch<ISubmodelElement>(
+                    baseUrl + localVarFetchArgs.url,
+                    localVarFetchArgs.options,
+                );
             };
         },
         /**
@@ -665,11 +674,7 @@ export const SubmodelRepositoryApiFetchParamCreator = function (configuration?: 
             };
         },
 
-        getSubmodelElement(
-            submodelId: string,
-            idShortPath: string,
-            options: any = {},
-        ): FetchArgs {
+        getSubmodelElement(submodelId: string, idShortPath: string, options: any = {}): FetchArgs {
             // verify required parameter 'submodelId' is not null or undefined
             if (submodelId === null || submodelId === undefined) {
                 throw new RequiredError(
@@ -677,11 +682,9 @@ export const SubmodelRepositoryApiFetchParamCreator = function (configuration?: 
                     'Required parameter submodelId was null or undefined when calling getSubmodelMetaDataById.',
                 );
             }
-            const localVarPath = `/submodels/{submodelId}/submodel-elements/{idShortPath}/$value`.replace(
-                `{submodelId}`,
-                encodeURIComponent(String(submodelId)),
-            ).replace(`{idShortPath}`,
-                String(idShortPath),);
+            const localVarPath = `/submodels/{submodelId}/submodel-elements/{idShortPath}/$value`
+                .replace(`{submodelId}`, encodeURIComponent(String(submodelId)))
+                .replace(`{idShortPath}`, String(idShortPath));
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
             const localVarHeaderParameter = {} as any;
@@ -696,6 +699,6 @@ export const SubmodelRepositoryApiFetchParamCreator = function (configuration?: 
                 url: url.format(localVarUrlObj),
                 options: localVarRequestOptions,
             };
-        }
+        },
     };
 };

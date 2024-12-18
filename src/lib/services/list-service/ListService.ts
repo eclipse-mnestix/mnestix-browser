@@ -1,9 +1,10 @@
 import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { AssetAdministrationShellRepositoryApi, SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { mnestixFetch } from 'lib/api/infrastructure';
-import { AssetAdministrationShell, Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { AssetAdministrationShell, ISubmodelElement, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import ServiceReachable from 'test-utils/TestUtils';
 import { SubmodelSemanticId } from 'lib/enums/SubmodelSemanticId.enum';
+import { encodeBase64 } from 'lib/util/Base64Util';
 
 export type ListEntityDto = {
     aasId: string;
@@ -14,8 +15,8 @@ export type ListEntityDto = {
 export type NameplateValuesDto = {
     success: boolean;
     error?: object;
-    manufacturerName: string;
-    manufacturerProductDesignation: string;
+    manufacturerName: ISubmodelElement | undefined;
+    manufacturerProductDesignation: ISubmodelElement | undefined;
 };
 
 export type AasListDto = {
@@ -28,20 +29,17 @@ export type AasListDto = {
 export class ListService {
     private constructor(
         readonly targetAasRepositoryClient: IAssetAdministrationShellRepositoryApi,
-        readonly submodelRepositoryClient: ISubmodelRepositoryApi) {}
+        readonly submodelRepositoryClient: ISubmodelRepositoryApi,
+    ) {}
 
     static create(targetAasRepositoryBaseUrl: string): ListService {
-
         const targetAasRepositoryClient = AssetAdministrationShellRepositoryApi.create(
             targetAasRepositoryBaseUrl,
             mnestixFetch(),
         );
 
         // TODO for now we only use the same repository.
-        const submodelRepositoryClient = SubmodelRepositoryApi.create(
-            targetAasRepositoryBaseUrl,
-            mnestixFetch(),
-        );
+        const submodelRepositoryClient = SubmodelRepositoryApi.create(targetAasRepositoryBaseUrl, mnestixFetch());
         return new ListService(targetAasRepositoryClient, submodelRepositoryClient);
     }
 
@@ -83,34 +81,41 @@ export class ListService {
     }
 
     async getNameplateValuesForAAS(aasId: string): Promise<NameplateValuesDto> {
-        const submodelReferencesResponse = await this.targetAasRepositoryClient.getSubmodelReferencesFromShell(aasId);
+        const submodelReferencesResponse = await this.targetAasRepositoryClient.getSubmodelReferencesFromShell(
+            encodeBase64(aasId),
+        );
         const submodelReferences = submodelReferencesResponse.result;
-        if (!submodelReferences || submodelReferences.length === 0) {
-            return  {
+        if (!submodelReferencesResponse.isSuccess || !submodelReferences || submodelReferences.length === 0) {
+            return {
                 success: false,
-                manufacturerName: 'dew',
-                manufacturerProductDesignation: 'edwdw'
+                manufacturerName: undefined,
+                manufacturerProductDesignation: undefined,
+                error: submodelReferencesResponse,
             };
         }
-        for (const reference of submodelReferences) {
-
+        // @ts-expect-error todo replace with acutal type
+        for (const reference of submodelReferences.result) {
             const submodelId = reference.keys[0].value;
             const submodelResponse = await this.submodelRepositoryClient.getSubmodelMetaData(submodelId);
-            if (!submodelResponse.isSuccess) {
-
+            if (submodelResponse.isSuccess) {
                 const semanticId = submodelResponse.result?.semanticId?.keys[0].value;
                 const nameplateKeys = [
                     SubmodelSemanticId.NameplateV1,
                     SubmodelSemanticId.NameplateV2,
-                    SubmodelSemanticId.NameplateV3
+                    SubmodelSemanticId.NameplateV3,
                 ];
                 if (nameplateKeys.includes(<SubmodelSemanticId>semanticId)) {
+                    const manufacturerName = await this.submodelRepositoryClient.getSubmodelElement(
+                        submodelId,
+                        'ManufacturerName',
+                    );
+                    const manufacturerProduct = await this.submodelRepositoryClient.getSubmodelElement(
+                        submodelId,
+                        'ManufacturerProductDesignation',
+                    );
 
-                    const manufacturerName = await this.submodelRepositoryClient.getSubmodelElement(submodelId, 'ManufacturerName');
-                    const manufacturerProduct = await this.submodelRepositoryClient.getSubmodelElement(submodelId, 'ManufacturerProductDesignation');
-
-                    console.log(manufacturerName);
-                    console.log(manufacturerProduct);
+                    console.log(manufacturerName.result);
+                    console.log(manufacturerProduct.result);
                     // Multi language properties
                     //submodelResponse.result.;
 
@@ -122,26 +127,25 @@ export class ListService {
                         }
                     }
                     });*/
-                   /* return {
-                        manufacturerName: submodelResponse.result..value,
-                        error: submodelResponse
-                    };
+                    /* return {
+                         manufacturerName: submodelResponse.result..value,
+                         error: submodelResponse
+                     };
+ 
+                     return {
+                         id: submodelResponse.result.id,
+                         submodel: submodelResponse.result,
+                     };*/
 
                     return {
-                        id: submodelResponse.result.id,
-                        submodel: submodelResponse.result,
-                    };*/
+                        success: true,
+                        manufacturerName: manufacturerName.result,
+                        manufacturerProductDesignation: manufacturerProduct.result,
+                    };
                 }
-
-                return  {
-                    success: true,
-                    manufacturerName: 'dew',
-                    manufacturerProductDesignation: 'edwdw'
-                };
             }
-
         }
         // no nameplate found
-        return {success: true, manufacturerProductDesignation: 'ddd', manufacturerName: 'dddff' }
+        return { success: true, manufacturerProductDesignation: undefined, manufacturerName: undefined };
     }
 }

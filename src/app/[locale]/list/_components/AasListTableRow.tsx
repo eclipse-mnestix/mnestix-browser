@@ -15,9 +15,10 @@ import { getThumbnailFromShell } from 'lib/services/repository-access/repository
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { useState } from 'react';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { ListEntityDto } from 'lib/services/list-service/ListService';
-import { getNameplateForAAS, getNameplateValuesForAAS } from 'lib/services/list-service/aasListApiActions';
+import { ListEntityDto, NameplateValuesDto } from 'lib/services/list-service/ListService';
+import { getNameplateValuesForAAS } from 'lib/services/list-service/aasListApiActions';
 import { useTranslations } from 'next-intl';
+import { ISubmodelElement } from '@aas-core-works/aas-core3.0-typescript/types';
 
 type AasTableRowProps = {
     repositoryUrl: string;
@@ -48,7 +49,8 @@ export const AasListTableRow = (props: AasTableRowProps) => {
     const [, setAasOriginUrl] = useAasOriginSourceState();
     const notificationSpawner = useNotificationSpawner();
     const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
-    const t = useTranslations('aas-list');
+    const [nameplateData, setNameplateData] = useState<NameplateValuesDto>();
+    // const t = useTranslations('aas-list');
 
     const navigateToAas = (listEntry: ListEntityDto) => {
         setAas(null);
@@ -56,10 +58,11 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         if (listEntry.aasId) navigate.push(`/viewer/${encodeBase64(listEntry.aasId)}`);
     };
 
-    /*    const translateListText = (property: { [key: string]: string } | undefined) => {
-            if (!property) return '';
-            return property[intl.locale] ?? Object.values(property)[0] ?? '';
-        };*/
+    const translateListText = (property: ISubmodelElement | undefined) => {
+        if (!property) return '';
+        console.log(property[0][intl.locale]);
+        return property[intl.locale] ?? Object.values(property)[0] ?? '';
+    };
 
     useAsyncEffect(async () => {
         if (!aasListEntry.thumbnail) {
@@ -81,20 +84,15 @@ export const AasListTableRow = (props: AasTableRowProps) => {
     useAsyncEffect(async () => {
         if (!aasListEntry.aasId) return;
 
-        const nameplate = getNameplateValuesForAAS(repositoryUrl, aasListEntry.aasId);
+        const nameplate = await getNameplateValuesForAAS(repositoryUrl, aasListEntry.aasId);
 
-        if (isValidUrl(aasListEntry.thumbnail)) {
-           // setThumbnailUrl(aasListEntry.thumbnail);
-        } else if (aasListEntry.aasId && repositoryUrl) {
-            /*const response = await getThumbnailFromShell(aasListEntry.aasId, repositoryUrl);
-            if (response.isSuccess) {
-                const blob = mapFileDtoToBlob(response.result);
-                const blobUrl = URL.createObjectURL(blob);
-                setThumbnailUrl(blobUrl);
-            }*/
+        if (!nameplate.success) {
+            console.log(nameplate.error);
+        } else {
+            translateListText(nameplate.manufacturerName);
+            setNameplateData(nameplate);
         }
     }, [aasListEntry.aasId]);
-
 
     const showMaxElementsNotification = () => {
         notificationSpawner.spawn({
@@ -105,7 +103,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
             ),
             severity: 'warning',
         });
-     };
+    };
 
     return (
         <>
@@ -131,20 +129,16 @@ export const AasListTableRow = (props: AasTableRowProps) => {
                 <ImageWithFallback src={thumbnailUrl} alt={'Thumbnail image for: ' + aasListEntry.assetId} size={88} />
             </PictureTableCell>
             <TableCell align="left" sx={tableBodyText}>
-                {/*{translateListText(aasListEntry.manufacturerName)}*/}
+                {/*{nameplateData && translateListText(nameplateData.manufacturerName)}*/}
             </TableCell>
             <TableCell align="left" sx={tableBodyText}>
-                {/*{tooltipText(translateListText(aasListEntry.manufacturerProductDesignation), 80)}*/}
+                {/*{nameplateData && (translateListText(nameplateData.manufacturerProductDesignation), 80)}*/}
             </TableCell>
             <TableCell align="left" sx={tableBodyText}>
-                <Typography >
-                    {tooltipText(aasListEntry.assetId, 35)}
-                </Typography>
+                <Typography>{tooltipText(aasListEntry.assetId, 35)}</Typography>
             </TableCell>
             <TableCell align="left" sx={tableBodyText}>
-                <Typography>
-                    {tooltipText(aasListEntry.aasId, 35)}
-                </Typography>
+                <Typography>{tooltipText(aasListEntry.aasId, 35)}</Typography>
             </TableCell>
             <TableCell align="center">
                 <RoundedIconButton

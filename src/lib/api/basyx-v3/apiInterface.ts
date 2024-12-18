@@ -36,6 +36,7 @@ export interface IAssetAdministrationShellRepositoryApi {
      * @throws {RequiredError}
      * @memberof AssetAdministrationShellRepositoryApi
      */
+    // todo this type is not correct
     getSubmodelReferencesFromShell(aasId: string, options?: object): Promise<ApiResponseWrapper<Reference[]>>;
 
     /**
@@ -108,7 +109,11 @@ export interface ISubmodelRepositoryApi {
      * @throws {RequiredError}
      * @memberof SubmodelRepositoryApi
      */
-    getSubmodelElement(submodelId: string, idShortPath: string, options?: object): Promise<ApiResponseWrapper<ISubmodelElement>>;
+    getSubmodelElement(
+        submodelId: string,
+        idShortPath: string,
+        options?: object,
+    ): Promise<ApiResponseWrapper<ISubmodelElement>>;
 
     /**
      * @summary Retrieves the attachment from a submodel element
