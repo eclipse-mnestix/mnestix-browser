@@ -17,7 +17,17 @@
           }
         ]
       },
-      "submodels": [],
+      "submodels": [
+        {
+          "keys": [
+            {
+              "type": "Submodel",
+              "value": "https://i40.xitaso.com/testNameplate_01"
+            }
+          ],
+          "type": "ModelReference"
+        }
+      ],
       "id": "https://i40.xitaso.com/aas/testListAas_00",
       "idShort": "testListAas_00"
     },
