@@ -2,7 +2,7 @@ import { AssetAdministrationShell, Reference } from '@aas-core-works/aas-core3.0
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import { AttachmentDetails } from 'lib/types/TransferServiceData';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { AasRepositoryResponse } from 'lib/api/basyx-v3/api';
+import { MultiLanguageValueOnly, PaginationData } from 'lib/api/basyx-v3/types';
 
 export interface IAssetAdministrationShellRepositoryApi {
     /**
@@ -14,7 +14,7 @@ export interface IAssetAdministrationShellRepositoryApi {
         limit?: number,
         cursor?: string,
         options?: object,
-    ): Promise<ApiResponseWrapper<AasRepositoryResponse>>;
+    ): Promise<ApiResponseWrapper<PaginationData<AssetAdministrationShell[]>>>;
 
     /**
      * @summary Retrieves a specific Asset Administration Shell from the Asset Administration Shell repository
@@ -36,7 +36,10 @@ export interface IAssetAdministrationShellRepositoryApi {
      * @throws {RequiredError}
      * @memberof AssetAdministrationShellRepositoryApi
      */
-    getSubmodelReferencesFromShell(aasId: string, options?: object): Promise<ApiResponseWrapper<Reference[]>>;
+    getSubmodelReferencesFromShell(
+        aasId: string,
+        options?: object,
+    ): Promise<ApiResponseWrapper<PaginationData<Reference[]>>>;
 
     /**
      * @summary Retrieves the thumbnail from the Asset Administration Shell.
@@ -90,6 +93,29 @@ export interface ISubmodelRepositoryApi {
      * @memberof SubmodelRepositoryApi
      */
     getSubmodelById(submodelId: string, options?: object): Promise<ApiResponseWrapper<Submodel>>;
+
+    /**
+     * @summary Retrieves the submodel metadata (submodel in metadata representation)
+     * @param {string} submodelId The Submodels unique id
+     * @param {*} [options] Override http request option
+     * @throws {RequiredError}
+     * @memberof SubmodelRepositoryApi
+     */
+    getSubmodelMetaData(submodelId: string, options?: object): Promise<ApiResponseWrapper<Submodel>>;
+
+    /**
+     * @summary Retrieves the submodel elements
+     * @param {string} submodelId The Submodels unique id
+     * @param {string} idShortPath The ID short path
+     * @param {*} [options] Override http request option
+     * @throws {RequiredError}
+     * @memberof SubmodelRepositoryApi
+     */
+    getSubmodelElement(
+        submodelId: string,
+        idShortPath: string,
+        options?: object,
+    ): Promise<ApiResponseWrapper<MultiLanguageValueOnly>>;
 
     /**
      * @summary Retrieves the attachment from a submodel element
