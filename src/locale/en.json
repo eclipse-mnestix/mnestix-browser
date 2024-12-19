@@ -11,7 +11,10 @@
     "productClassHeading": "Product Class",
     "page": "Page",
     "repository-dropdown": "AAS Repository",
-    "select-repository": "Please select a repository"
+    "select-repository": "Please select a repository",
+    "titleComparisonAddButton": "Add AAS to comparison",
+    "titleViewAASButton": "View AAS",
+    "maxElementsWarning": "Cannot compare more than 3 elements"
   },
   "dashboard": {
     "welcome-text": "Welcome to Mnestix",

@@ -1,6 +1,4 @@
 import { Box, Checkbox, TableCell, Typography } from '@mui/material';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { useRouter } from 'next/navigation';
 import { useAasOriginSourceState, useAasState } from 'components/contexts/CurrentAasContext';
@@ -18,6 +16,7 @@ import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper
 import { ListEntityDto, NameplateValuesDto } from 'lib/services/list-service/ListService';
 import { getNameplateValuesForAAS } from 'lib/services/list-service/aasListApiActions';
 import { MultiLanguageValueOnly } from 'lib/api/basyx-v3/types';
+import { useLocale, useTranslations } from 'next-intl';
 
 type AasTableRowProps = {
     repositoryUrl: string;
@@ -43,13 +42,13 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         updateSelectedAasList,
     } = props;
     const navigate = useRouter();
-    const intl = useIntl();
     const [, setAas] = useAasState();
     const [, setAasOriginUrl] = useAasOriginSourceState();
     const notificationSpawner = useNotificationSpawner();
     const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
     const [nameplateData, setNameplateData] = useState<NameplateValuesDto>();
-    // const t = useTranslations('aas-list');
+    const t = useTranslations('aas-list');
+    const locale = useLocale();
 
     const navigateToAas = (listEntry: ListEntityDto) => {
         setAas(null);
@@ -60,10 +59,10 @@ export const AasListTableRow = (props: AasTableRowProps) => {
     const translateListText = (property: MultiLanguageValueOnly | undefined) => {
         if (!property) return '';
         // try the current locale first
-        const translatedString = property.find((prop) => prop[intl.locale]);
+        const translatedString = property.find((prop) => prop[locale]);
         // if there is any locale, better show it instead of nothing
         const fallback = property[0] ? Object.values(property[0])[0] : '';
-        return translatedString ? translatedString[intl.locale] : fallback;
+        return translatedString ? translatedString[locale] : fallback;
     };
 
     useAsyncEffect(async () => {
@@ -99,7 +98,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         notificationSpawner.spawn({
             message: (
                 <Typography variant="body2" sx={{ opacity: 0.7 }}>
-                    <FormattedMessage {...messages.mnestix.aasList.maxElementsWarning} />
+                    {t('maxElementsWarning')}
                 </Typography>
             ),
             severity: 'warning',
@@ -121,12 +120,12 @@ export const AasListTableRow = (props: AasTableRowProps) => {
                             disabled={checkBoxDisabled(aasListEntry.aasId)}
                             onChange={(evt) => updateSelectedAasList(evt.target.checked, aasListEntry.aasId)}
                             data-testid="list-checkbox"
-                            title={intl.formatMessage(messages.mnestix.aasList.titleComparisonAddButton)}
+                            title={t('titleComparisonAddButton')}
                         />
                     </Box>
                 </TableCell>
             )}
-            <PictureTableCell title={intl.formatMessage(messages.mnestix.aasList.titleViewAASButton)}>
+            <PictureTableCell>
                 <ImageWithFallback src={thumbnailUrl} alt={'Thumbnail image for: ' + aasListEntry.assetId} size={88} />
             </PictureTableCell>
             <TableCell align="left" sx={tableBodyText}>
@@ -145,7 +144,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
                 <RoundedIconButton
                     endIcon={<ArrowForward />}
                     onClick={() => navigateToAas(aasListEntry)}
-                    title={intl.formatMessage(messages.mnestix.aasList.titleViewAASButton)}
+                    title={t('titleViewAASButton')}
                     data-testid="list-to-detailview-button"
                 />
             </TableCell>

@@ -39,7 +39,7 @@ export class ListService {
             mnestixFetch(),
         );
 
-        // TODO for now we only use the same repository.
+        // For now, we only use the same repository.
         const submodelRepositoryClient = SubmodelRepositoryApi.create(targetAasRepositoryBaseUrl, mnestixFetch());
         return new ListService(targetAasRepositoryClient, submodelRepositoryClient);
     }
