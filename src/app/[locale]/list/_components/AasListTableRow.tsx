@@ -128,16 +128,16 @@ export const AasListTableRow = (props: AasTableRowProps) => {
             <PictureTableCell>
                 <ImageWithFallback src={thumbnailUrl} alt={'Thumbnail image for: ' + aasListEntry.assetId} size={88} />
             </PictureTableCell>
-            <TableCell align="left" sx={tableBodyText}>
+            <TableCell data-testid="list-manufacturer-name" align="left" sx={tableBodyText}>
                 {nameplateData && translateListText(nameplateData.manufacturerName)}
             </TableCell>
-            <TableCell align="left" sx={tableBodyText}>
+            <TableCell data-testid="list-product-designation" align="left" sx={tableBodyText}>
                 {nameplateData && tooltipText(translateListText(nameplateData.manufacturerProductDesignation), 80)}
             </TableCell>
-            <TableCell align="left" sx={tableBodyText}>
+            <TableCell data-testid="list-assetId" align="left" sx={tableBodyText}>
                 <Typography>{tooltipText(aasListEntry.assetId, 35)}</Typography>
             </TableCell>
-            <TableCell align="left" sx={tableBodyText}>
+            <TableCell data-testid="list-aasId" align="left" sx={tableBodyText}>
                 <Typography>{tooltipText(aasListEntry.aasId, 35)}</Typography>
             </TableCell>
             <TableCell align="center">
