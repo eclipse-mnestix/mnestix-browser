@@ -46,102 +46,28 @@ describe('ListService: Return List Entities', function () {
         expect(listServiceResult).toHaveProperty('error');
     });
 
-    const submodel = {
-        modelType: 'Submodel',
-        kind: 'Instance',
-        displayName: 'Nameplate',
-        semanticId: {
-            keys: [
-                {
-                    type: 'Submodel',
-                    value: 'https://admin-shell.io/zvei/nameplate/1/0/Nameplate',
-                },
-            ],
-            type: 'ExternalReference',
-        },
-        administration: {
-            revision: '0',
-            version: '1',
-        },
-        id: 'https://i40.xitaso.com/testNameplate_01',
-        idShort: 'Nameplate',
-        submodelElements: [
-            {
-                modelType: 'MultiLanguageProperty',
-                semanticId: {
-                    keys: [
-                        {
-                            type: 'ConceptDescription',
-                            value: '0173-1#02-AAO677#002',
-                        },
-                    ],
-                    type: 'ExternalReference',
-                },
-                value: [
-                    {
-                        language: 'de',
-                        text: 'Gottfried Wilhelm Leibniz Universität Hannover',
-                    },
-                    {
-                        language: 'en',
-                        text: 'Gottfried Wilhelm Leibniz Universität Hannover',
-                    },
-                ],
-                category: 'PARAMETER',
-                idShort: 'ManufacturerName',
-            },
-            {
-                modelType: 'MultiLanguageProperty',
-                semanticId: {
-                    keys: [
-                        {
-                            type: 'ConceptDescription',
-                            value: '0173-1#02-AAW338#001',
-                        },
-                    ],
-                    type: 'ExternalReference',
-                },
-                value: [
-                    {
-                        language: 'de',
-                        text: 'Individueller Kugelschreiber',
-                    },
-                    {
-                        language: 'en',
-                        text: 'Individual ballpen',
-                    },
-                ],
-                category: 'PARAMETER',
-                idShort: 'ManufacturerProductDesignation',
-            },
-        ],
-        extensions: '',
-        category: '',
-        description: '',
-        supplementalSemanticIds: '',
-    };
-
-    const expectedResult = {
-        success: true,
-        manufacturerName: {
-            de: 'Gottfried Wilhelm Leibniz Universität Hannover',
-            en: 'Gottfried Wilhelm Leibniz Universität Hannover',
-        },
-        manufacturerProductDesignation: {
-            de: 'Individueller Kugelschreiber',
-            en: 'Individual ballpen',
-        },
-    };
-
     it('returns nameplate data when existing in the repository', async () => {
         const listService = ListService.createNull(
             assetAdministrationShells,
-            [submodel as unknown as Submodel],
+            [testData.nameplate as unknown as Submodel],
             ServiceReachable.Yes,
         );
 
         const nameplateResult = await listService.getNameplateValuesForAAS('https://i40.xitaso.com/aas/testListAas_00');
 
-        expect(nameplateResult).toEqual(expectedResult);
+        expect(nameplateResult).toEqual(testData.nameplateResult);
+    });
+
+    it('returns undefined if there is no nameplate reference', async () => {
+        const listService = ListService.createNull(
+            assetAdministrationShells,
+            [testData.nameplate as unknown as Submodel],
+            ServiceReachable.Yes,
+        );
+
+        const nameplateResult = await listService.getNameplateValuesForAAS('https://i40.xitaso.com/aas/testListAas_01');
+
+        expect(nameplateResult.manufacturerName).toEqual(undefined);
+        expect(nameplateResult.manufacturerProductDesignation).toEqual(undefined);
     });
 });
