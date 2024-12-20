@@ -11,7 +11,8 @@ import {
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { AttachmentDetails } from 'lib/types/TransferServiceData';
 import { mnestixFetch } from 'lib/api/infrastructure';
-import ServiceReachable from 'test-utils/TestUtils';
+import { ServiceReachable } from 'test-utils/TestUtils';
+import { MultiLanguageValueOnly, PaginationData } from 'lib/api/basyx-v3/types';
 
 export type FetchAPI = {
     fetch: <T>(url: RequestInfo, init?: RequestInit) => Promise<ApiResponseWrapper<T>>;
@@ -32,11 +33,6 @@ export class RequiredError extends Error {
         super(msg);
     }
 }
-
-export type AasRepositoryResponse = {
-    paging_metadata: { cursor: string };
-    result: AssetAdministrationShell[];
-};
 
 /**
  * AssetAdministrationShellRepositoryApi - object-oriented interface
@@ -141,7 +137,7 @@ export const AssetAdministrationShellRepositoryApiFp = function (configuration?:
 
                 localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options?.headers);
 
-                return await requestHandler.fetch<AasRepositoryResponse>(
+                return await requestHandler.fetch<PaginationData<AssetAdministrationShell[]>>(
                     basePath + `/shells?limit=${limit}&cursor=${cursorQueryParameter}`,
                     localVarRequestOptions,
                 );
@@ -177,7 +173,10 @@ export const AssetAdministrationShellRepositoryApiFp = function (configuration?:
                 configuration,
             ).getSubmodelReferencesFromShell(aasId, options);
             return async (requestHandler: FetchAPI, basePath: string) => {
-                return requestHandler.fetch<Reference[]>(basePath + localVarFetchArgs.url, localVarFetchArgs.options);
+                return requestHandler.fetch<PaginationData<Reference[]>>(
+                    basePath + localVarFetchArgs.url,
+                    localVarFetchArgs.options,
+                );
             };
         },
 
@@ -302,6 +301,7 @@ export const AssetAdministrationShellRepositoryApiFetchParamCreator = function (
                     'Required parameter aasId was null or undefined when calling shellRepoGetSubmodelsFromShell.',
                 );
             }
+            console.log(aasId);
             const localVarPath = `/shells/{aasId}/submodel-refs`.replace(`{aasId}`, encodeURIComponent(String(aasId)));
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
@@ -389,6 +389,25 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
         );
     }
 
+    async getSubmodelMetaData(submodelId: string, options?: object): Promise<ApiResponseWrapper<Submodel>> {
+        return SubmodelRepositoryApiFp(this.configuration).getSubmodelMetadataById(submodelId, options)(
+            this.http,
+            this.baseUrl,
+        );
+    }
+
+    async getSubmodelElement(
+        submodelId: string,
+        idShortPath: string,
+        options?: object,
+    ): Promise<ApiResponseWrapper<MultiLanguageValueOnly>> {
+        return SubmodelRepositoryApiFp(this.configuration).getSubmodelElement(
+            submodelId,
+            idShortPath,
+            options,
+        )(this.http, this.baseUrl);
+    }
+
     async getAttachmentFromSubmodelElement(
         submodelId: string,
         submodelElementPath: string,
@@ -436,6 +455,41 @@ export const SubmodelRepositoryApiFp = function (configuration?: Configuration) 
             );
             return async (requestHandler: FetchAPI, baseUrl: string) => {
                 return requestHandler.fetch<Submodel>(baseUrl + localVarFetchArgs.url, localVarFetchArgs.options);
+            };
+        },
+        /**
+         * @summary Retrieves the submodel metadata
+         * @param {string} submodelId The Submodels unique id
+         * @param {*} [options] Override http request option
+         * @throws {RequiredError}
+         */
+        getSubmodelMetadataById(submodelId: string, options?: any) {
+            const localVarFetchArgs = SubmodelRepositoryApiFetchParamCreator(configuration).getSubmodelMetaDataById(
+                encodeBase64(submodelId),
+                options,
+            );
+            return async (requestHandler: FetchAPI, baseUrl: string) => {
+                return requestHandler.fetch<Submodel>(baseUrl + localVarFetchArgs.url, localVarFetchArgs.options);
+            };
+        },
+        /**
+         * @summary Retrieves the submodel metadata
+         * @param {string} submodelId The Submodels unique id
+         * @param idShortPath the ID short path
+         * @param {*} [options] Override http request option
+         * @throws {RequiredError}
+         */
+        getSubmodelElement(submodelId: string, idShortPath: string, options?: any) {
+            const localVarFetchArgs = SubmodelRepositoryApiFetchParamCreator(configuration).getSubmodelElement(
+                encodeBase64(submodelId),
+                idShortPath,
+                options,
+            );
+            return async (requestHandler: FetchAPI, baseUrl: string) => {
+                return requestHandler.fetch<MultiLanguageValueOnly>(
+                    baseUrl + localVarFetchArgs.url,
+                    localVarFetchArgs.options,
+                );
             };
         },
         /**
@@ -598,6 +652,33 @@ export const SubmodelRepositoryApiFetchParamCreator = function (configuration?: 
             const localVarPath = `/submodels/{submodelId}/submodel-elements/{submodelElementPath}/attachment`
                 .replace(`{submodelId}`, encodeURIComponent(String(encodeBase64(submodelId))))
                 .replace(`{submodelElementPath}`, submodelElementPath);
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            localVarUrlObj.search = null;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+
+        getSubmodelElement(submodelId: string, idShortPath: string, options: any = {}): FetchArgs {
+            // verify required parameter 'submodelId' is not null or undefined
+            if (submodelId === null || submodelId === undefined) {
+                throw new RequiredError(
+                    'submodelId',
+                    'Required parameter submodelId was null or undefined when calling getSubmodelMetaDataById.',
+                );
+            }
+            const localVarPath = `/submodels/{submodelId}/submodel-elements/{idShortPath}/$value`
+                .replace(`{submodelId}`, encodeURIComponent(String(submodelId)))
+                .replace(`{idShortPath}`, String(idShortPath));
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
             const localVarHeaderParameter = {} as any;

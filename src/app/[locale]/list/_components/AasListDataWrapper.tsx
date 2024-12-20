@@ -146,7 +146,7 @@ export default function AasListDataWrapper() {
                         </>
                     ) : (
                         <Box>
-                            <Typography data-testid="select-repository-text">{t('select-repository')}</Typography>
+                            <Typography data-testid="select-repository-text">{t('selectRepository')}</Typography>
                         </Box>
                     )}
                 </>

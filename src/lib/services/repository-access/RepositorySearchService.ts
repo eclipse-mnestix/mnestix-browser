@@ -12,6 +12,7 @@ import {
     wrapSuccess,
 } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
+import { PaginationData } from 'lib/api/basyx-v3/types';
 
 export type RepoSearchResult<T> = {
     searchResult: T;
@@ -197,7 +198,9 @@ export class RepositorySearchService {
         );
     }
 
-    async getSubmodelReferencesFromShellFromDefaultRepo(aasId: string): Promise<ApiResponseWrapper<Reference[]>> {
+    async getSubmodelReferencesFromShellFromDefaultRepo(
+        aasId: string,
+    ): Promise<ApiResponseWrapper<PaginationData<Reference[]>>> {
         const client = this.getDefaultAasRepositoryClient();
         if (!client) return noDefaultAasRepository();
         const response = await client.getSubmodelReferencesFromShell(aasId);

@@ -14,3 +14,8 @@ export async function getAasListEntities(targetRepository: string, limit: number
     const listService = ListService.create(targetRepository);
     return listService.getAasListEntities(limit, cursor);
 }
+
+export async function getNameplateValuesForAAS(targetRepository: string, aasId: string) {
+    const listService = ListService.create(targetRepository);
+    return listService.getNameplateValuesForAAS(aasId);
+}
