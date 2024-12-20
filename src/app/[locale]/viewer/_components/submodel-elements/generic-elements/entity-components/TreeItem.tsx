@@ -35,7 +35,8 @@ export const getTreeItemStyle = (theme: Theme) => ({
     },
 });
 
-export const ExpandableTreeitem = React.forwardRef(function CustomContent(props: ExpandableTreeItemContentProps) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const ExpandableTreeitem = React.forwardRef(function CustomContent(props: ExpandableTreeItemContentProps, ref) {
     const theme = useTheme();
     const { classes, label, icon: iconProp, expansionIcon, displayIcon, dataIcon } = props;
 
