@@ -8,9 +8,9 @@ import {
     wrapSuccess,
 } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { AttachmentDetails } from 'lib/types/TransferServiceData';
-import { AasRepositoryResponse } from 'lib/api/basyx-v3/api';
 import { encodeBase64, safeBase64Decode } from 'lib/util/Base64Util';
 import ServiceReachable from 'test-utils/TestUtils';
+import { MultiLanguageValueOnly, PaginationData } from 'lib/api/basyx-v3/types';
 
 const options = {
     headers: { 'Content-type': 'application/json; charset=utf-8' },
@@ -36,7 +36,7 @@ export class AssetAdministrationShellRepositoryApiInMemory implements IAssetAdmi
         _limit?: number | undefined,
         _cursor?: string | undefined,
         _options?: object | undefined,
-    ): Promise<ApiResponseWrapper<AasRepositoryResponse>> {
+    ): Promise<ApiResponseWrapper<PaginationData<AssetAdministrationShell[]>>> {
         if (this.reachable !== ServiceReachable.Yes)
             return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Service not reachable');
 
@@ -101,7 +101,7 @@ export class AssetAdministrationShellRepositoryApiInMemory implements IAssetAdmi
     async getSubmodelReferencesFromShell(
         _aasId: string,
         _options?: object | undefined,
-    ): Promise<ApiResponseWrapper<Reference[]>> {
+    ): Promise<ApiResponseWrapper<PaginationData<Reference[]>>> {
         throw new Error('Method not implemented.');
     }
 
@@ -167,6 +167,18 @@ export class SubmodelRepositoryApiInMemory implements ISubmodelRepositoryApi {
         _submodelElementPath: string,
         _options?: object,
     ): Promise<ApiResponseWrapper<Blob>> {
+        throw new Error('Method not implemented.');
+    }
+
+    getSubmodelElement(
+        _submodelId: string,
+        _idShortPath: string,
+        _options?: object,
+    ): Promise<ApiResponseWrapper<MultiLanguageValueOnly>> {
+        throw new Error('Method not implemented.');
+    }
+
+    getSubmodelMetaData(_submodelId: string, _options?: object): Promise<ApiResponseWrapper<Submodel>> {
         throw new Error('Method not implemented.');
     }
 }

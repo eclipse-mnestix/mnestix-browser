@@ -60,7 +60,7 @@ export async function getThumbnailFromShellFromAllRepos(aasId: string): Promise<
 export async function getSubmodelReferencesFromShell(searchInput: string): Promise<ApiResponseWrapper<Reference[]>> {
     const response = await searcher.getFirstSubmodelReferencesFromShellFromAllRepos(searchInput);
     if (!response.isSuccess) return wrapErrorCode(response.errorCode, response.message);
-    return wrapSuccess(response.result.searchResult);
+    return wrapSuccess(response.result.searchResult.result);
 }
 
 export async function getSubmodelById(id: string): Promise<ApiResponseWrapper<Submodel>> {
