@@ -12,9 +12,6 @@ import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import { clone, cloneDeep, escapeRegExp, parseInt } from 'lodash';
 import { getKeyType } from './KeyTypeUtil';
 
-//TODO disable checks until MNES-244 is fixed
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-
 export function generateSubmodelViewObject(sm: Submodel): SubmodelViewObject {
     const localSm = cloneDeep(sm);
     // Ids are unique for the tree, start with 0, children have 0-0, 0-1, and so on
@@ -27,11 +24,6 @@ export function generateSubmodelViewObject(sm: Submodel): SubmodelViewObject {
     }
     frontend.data = localSm;
 
-    //TODO siehe MNES-244
-    // if (checkIfSorted(frontend)) {
-    //     sortAll(frontend);
-    // }
-
     return frontend;
 }
 
@@ -39,7 +31,7 @@ export function generateSubmodelViewObjectFromSubmodelElement(el: ISubmodelEleme
     const localEl = cloneDeep(el);
     const frontend: SubmodelViewObject = {
         id,
-        name: localEl.idShort!, //TEMP SOLUTION WITH "!"
+        name: localEl.idShort ?? '',
         children: [],
         hasValue: false,
         isAboutToBeDeleted: false,
@@ -49,15 +41,17 @@ export function generateSubmodelViewObjectFromSubmodelElement(el: ISubmodelEleme
     if (getKeyType(localEl) === KeyTypes.SubmodelElementCollection) {
         const col = localEl as SubmodelElementCollection;
         const arr = col.value || [];
-        arr.forEach((child, i) =>
-            frontend.children?.push(generateSubmodelViewObjectFromSubmodelElement(child, id + '-' + i)),
-        );
+        arr.forEach((child, i) => {
+            if (!child) return;
+            frontend.children?.push(generateSubmodelViewObjectFromSubmodelElement(child, id + '-' + i));
+        });
         col.value = [];
     } else if (getKeyType(localEl) === KeyTypes.Entity) {
         const entity = localEl as Entity;
-        entity.statements?.forEach((child, i) =>
-            frontend.children?.push(generateSubmodelViewObjectFromSubmodelElement(child, id + '-' + i)),
-        );
+        entity.statements?.forEach((child, i) => {
+            if (!child) return;
+            frontend.children?.push(generateSubmodelViewObjectFromSubmodelElement(child, id + '-' + i));
+        });
         entity.statements = [];
     }
     frontend.data = localEl;
@@ -187,6 +181,7 @@ export async function rewriteNodeIds(elementToUpdate: SubmodelViewObject, newId:
         await rewriteNodeIds(elementToUpdate.children[i], newId + '-' + i);
     }
 }
+
 export function findElementsToDelete(elementToCheck: SubmodelViewObject): string[] {
     let returnArray: string[] = [];
     for (const child of elementToCheck.children) {
@@ -240,100 +235,3 @@ function generateNameOfDuplicatedElement(
     }
     return originalName + '_' + currentSmallestIndex;
 }
-
-//TODO siehe MNES-244
-// function updateIndizes(submodel: SubmodelViewObject, parentElement: SubmodelViewObject) {
-//     if (checkIfSorted(submodel)) {
-//         for (let i = 0; i < parentElement.children.length; i++) {
-//             parentElement.children[i] = setIndexQualifier(parentElement.children[i], i.toString());
-//         }
-//     }
-// }
-//
-// function getIndexQualifier(element: SubmodelViewObject) {
-//     if (element.data) {
-//         if (element.data.constraints) {
-//             const constraint = element.data.constraints.find((q) => {
-//                 return (q as Qualifier)?.type?.toString() == indexDataJson.qualifierType;
-//             });
-//             return (constraint as Qualifier)?.value?.toString();
-//         }
-//         if (element.data.qualifiers) {
-//             const qualifier = element.data.qualifiers.find((q) => {
-//                 return (q as Qualifier)?.type?.toString() == indexDataJson.qualifierType;
-//             });
-//             return (qualifier as Qualifier)?.value?.toString();
-//         }
-//     }
-//     return undefined;
-// }
-//
-// function setIndexQualifier(element: SubmodelViewObject, newIndex: string) {
-//     if (element.data) {
-//         if (element.data.constraints) {
-//             const constraint = element.data.constraints.find((q) => {
-//                 return q.modelType.name.toString() == indexDataJson.qualifierType;
-//             }) as Qualifier;
-//             if (constraint?.value) {
-//                 constraint.value = newIndex;
-//             }
-//         } else if (element.data.qualifiers) {
-//             const qualifier = element.data.qualifiers.find((q) => {
-//                 return q.modelType.name.toString() == indexDataJson.qualifierType;
-//             }) as Qualifier;
-//             if (qualifier?.value) {
-//                 qualifier.value = newIndex;
-//             }
-//         }
-//     }
-//     return element;
-// }
-// export function sortChildrenBasedOnIndexQualifier(parent: SubmodelViewObject) {
-//     return parent.children.sort((a, b) => {
-//         const qualifierA = getIndexQualifier(a);
-//         const qualifierB = getIndexQualifier(b);
-//         if (qualifierA && qualifierB) {
-//             if (parseInt(qualifierA) > parseInt(qualifierB)) {
-//                 return 1;
-//             } else if (parseInt(qualifierA) < parseInt(qualifierB)) {
-//                 return -1;
-//             }
-//         }
-//         return 0;
-//     });
-// }
-//
-// function checkIfSorted(submodel: SubmodelViewObject) {
-//     let sorted = false;
-//     if (submodel.data) {
-//         if (submodel.data.constraints) {
-//             const constraint = submodel.data.constraints.find((q) => {
-//                 return (
-//                     q.modelType.name.toString() == 'Qualifier' &&
-//                     (q as Qualifier).type == indexDataJson.qualifierTypeSubmodel
-//                 );
-//             });
-//             if (!!constraint && !!(constraint as Qualifier).value) {
-//                 sorted = true;
-//             }
-//         } else if (submodel.data.qualifiers) {
-//             const qualifier = submodel.data.qualifiers.find((q) => {
-//                 return (
-//                     q.modelType.name.toString() == 'Qualifier' &&
-//                     (q as Qualifier).type == indexDataJson.qualifierTypeSubmodel
-//                 );
-//             });
-//             if (!!qualifier && !!(qualifier as Qualifier).value) {
-//                 sorted = true;
-//             }
-//         }
-//     }
-//     return sorted;
-// }
-//
-// function sortAll(submodel: SubmodelViewObject) {
-//     for (const child of submodel.children) {
-//         sortAll(child);
-//         submodel.children = sortChildrenBasedOnIndexQualifier(submodel);
-//     }
-// }

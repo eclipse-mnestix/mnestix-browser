@@ -23,11 +23,13 @@
     "enter-manually-label": "or enter manually"
   },
   "submodels": {
+    "title": "Submodels",
     "timeSeries": {
       "internalSegments": "Internal segments",
       "linkedSegments": "Linked segments",
       "selectTimeframe": "Select timeframe"
-    }
+    },
+    "renderError": "Submodel can't be rendered."
   },
   "settings": {
     "header": "Settings"
