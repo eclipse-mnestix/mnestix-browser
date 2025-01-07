@@ -7,6 +7,7 @@ import * as connectionServerActions from 'lib/services/database/connectionServer
 import { ListEntityDto } from 'lib/services/list-service/ListService';
 import { CurrentAasContextProvider } from 'components/contexts/CurrentAasContext';
 import { Internationalization } from 'lib/i18n/Internationalization';
+import * as nameplateDataActions from 'lib/services/list-service/aasListApiActions';
 
 jest.mock('./../../../../lib/services/list-service/aasListApiActions');
 jest.mock('./../../../../lib/services/database/connectionServerActions');
@@ -18,6 +19,9 @@ jest.mock('next/navigation', () => ({
         return {
             prefetch: () => null,
         };
+    },
+    useParams() {
+        return {};
     },
 }));
 jest.mock('next-auth', jest.fn());
@@ -59,6 +63,14 @@ const mockActionSecondPage = jest.fn(() => {
     };
 });
 
+const mockNameplateData = jest.fn(() => {
+    return {
+        success: true,
+        manufacturerName: [],
+        manufacturerProductDesignation: [],
+    };
+});
+
 describe('AASListDataWrapper', () => {
     beforeEach(async () => {
         (serverActions.getAasListEntities as jest.Mock).mockImplementation(mockActionFirstPage);
@@ -67,6 +79,7 @@ describe('AASListDataWrapper', () => {
             return [REPOSITORY_URL];
         });
         (connectionServerActions.getConnectionDataByTypeAction as jest.Mock).mockImplementation(mockDB);
+        (nameplateDataActions.getNameplateValuesForAAS as jest.Mock).mockImplementation(mockNameplateData);
 
         CustomRender(
             <Internationalization>
