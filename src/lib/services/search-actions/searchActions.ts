@@ -2,7 +2,12 @@
 
 import { AasSearcher, AasSearchResult } from 'lib/services/search-actions/AasSearcher';
 import { AssetAdministrationShell } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
-import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import {
+    ApiResponseWrapper,
+    ApiResultStatus,
+    wrapErrorCode,
+    wrapSuccess,
+} from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { SubmodelSearcher } from 'lib/services/searchUtilActions/SubmodelSearcher';
@@ -47,11 +52,11 @@ export async function performSubmodelFullSearch(
     return searcher.performSubmodelFullSearch(submodelReference, submodelDescriptor);
 }
 
-export async function checkFileExists(url: string) {
+export async function checkFileExists(url: string): Promise<ApiResponseWrapper<boolean>> {
     try {
         const response = await fetch(url, { method: 'HEAD' });
-        return response.ok;
+        return wrapSuccess(response.ok);
     } catch (error) {
-        return false;
+        return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Exception during network fetch');
     }
 }

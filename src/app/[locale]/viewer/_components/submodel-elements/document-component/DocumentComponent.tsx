@@ -88,8 +88,8 @@ export function DocumentComponent(props: MarkingsComponentProps) {
 
     useAsyncEffect(async () => {
         if (fileViewObject?.digitalFileUrl) {
-            const check = await checkFileExists(fileViewObject.digitalFileUrl);
-            setFileExists(check);
+            const checkResponse = await checkFileExists(fileViewObject.digitalFileUrl);
+            setFileExists(checkResponse.isSuccess && checkResponse.result);
         }
     }, [fileViewObject?.digitalFileUrl]);
 
