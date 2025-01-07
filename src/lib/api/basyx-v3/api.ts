@@ -482,7 +482,7 @@ export const SubmodelRepositoryApiFp = function (configuration?: Configuration) 
         getSubmodelElement(submodelId: string, idShortPath: string, options?: any) {
             const localVarFetchArgs = SubmodelRepositoryApiFetchParamCreator(configuration).getSubmodelElement(
                 encodeBase64(submodelId),
-                idShortPath, // ???????
+                idShortPath,
                 options,
             );
             return async (requestHandler: FetchAPI, baseUrl: string) => {
