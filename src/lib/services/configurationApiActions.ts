@@ -16,11 +16,10 @@ export async function getIdGenerationSettings(): Promise<Submodel> {
 
 export async function putSingleIdGenerationSetting(
     idShort: string,
-    bearerToken: string,
     values: {
         prefix: string;
         dynamicPart: string;
     },
 ): Promise<void> {
-    return configurationShellApi.putSingleIdGenerationSetting(idShort, bearerToken, values);
+    return configurationShellApi.putSingleIdGenerationSetting(idShort, values);
 }

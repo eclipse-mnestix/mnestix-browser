@@ -1,14 +1,14 @@
 import { Box, Card, CardContent, Divider, Skeleton, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
-import { messages } from 'lib/i18n/localization';
-import { FormattedMessage } from 'react-intl';
 import { SubmodelDetail } from './submodel/SubmodelDetail';
 import { TabSelectorItem, VerticalTabSelector } from 'components/basics/VerticalTabSelector';
 import { MobileModal } from 'components/basics/MobileModal';
 import ErrorIcon from '@mui/icons-material/Error';
 import { SortNameplateElements } from 'app/[locale]/viewer/_components/submodel/sorting/SortNameplateElements';
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
+import ErrorBoundary from 'components/basics/ErrorBoundary';
+import { useTranslations } from 'next-intl';
 
 export type SubmodelsOverviewCardProps = {
     readonly submodelIds: SubmodelOrIdReference[] | undefined;
@@ -18,6 +18,7 @@ export type SubmodelsOverviewCardProps = {
 export function SubmodelsOverviewCard({ submodelIds, submodelsLoading }: SubmodelsOverviewCardProps) {
     const [submodelSelectorItems, setSubmodelSelectorItems] = useState<TabSelectorItem[]>([]);
     const [selectedItem, setSelectedItem] = useState<TabSelectorItem>();
+    const t = useTranslations('submodels');
 
     SortNameplateElements(selectedItem?.submodelData);
 
@@ -75,7 +76,11 @@ export function SubmodelsOverviewCard({ submodelIds, submodelsLoading }: Submode
 
     function SelectedContent() {
         if (selectedItem?.submodelData) {
-            return <SubmodelDetail submodel={selectedItem?.submodelData} />;
+            return (
+                <ErrorBoundary message={t('renderError')}>
+                    <SubmodelDetail submodel={selectedItem?.submodelData} />
+                </ErrorBoundary>
+            );
         } else if (submodelsLoading) {
             return (
                 <Box sx={{ mb: 2 }}>
@@ -97,7 +102,7 @@ export function SubmodelsOverviewCard({ submodelIds, submodelsLoading }: Submode
         <Card>
             <CardContent>
                 <Typography variant="h3" marginBottom="15px">
-                    <FormattedMessage {...messages.mnestix.submodels} />
+                    {t('title')}
                 </Typography>
                 <Box display="grid" gridTemplateColumns={isMobile ? '1fr' : '1fr 2fr'} gap="40px">
                     <Box>

@@ -3,13 +3,19 @@ import { performServerFetch, performServerFetchLegacy } from 'lib/api/serverFetc
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { authOptions } from 'authConfig';
 
+
 const initializeRequestOptions = async (bearerToken: string, init?: RequestInit) => {
     init = init || {};
-
-    if (bearerToken) {
+    const isAuthenticationFeatureEnabled = process.env.AUTHENTICATION_FEATURE_FLAG === 'true';
+    if (isAuthenticationFeatureEnabled && bearerToken) {
         init.headers = {
             ...init.headers,
             Authorization: `Bearer ${bearerToken}`,
+        };
+    } else if (!isAuthenticationFeatureEnabled) {
+        init.headers = {
+            ...init.headers,
+            ApiKey: process.env.MNESTIX_BACKEND_API_KEY ? process.env.MNESTIX_BACKEND_API_KEY : '',
         };
     }
 

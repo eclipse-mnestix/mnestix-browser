@@ -7,14 +7,13 @@ export interface IConfigurationShellApi {
 
     putSingleIdGenerationSetting(
         idShort: string,
-        bearerToken: string,
         values: {
             prefix: string;
             dynamicPart: string;
         },
     ): Promise<void>;
 
-    putSingleSettingValue(path: string, bearerToken: string, value: string, settingsType: string): Promise<Response>;
+    putSingleSettingValue(path: string, value: string, settingsType: string): Promise<Response>;
 
     processPutSingleSettingValue(response: Response): Promise<Response>;
 }

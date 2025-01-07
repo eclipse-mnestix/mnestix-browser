@@ -26,11 +26,13 @@
     "enter-manually-label": "oder manuell eingeben"
   },
   "submodels": {
+    "title": "Teilmodelle",
     "timeSeries": {
       "internalSegments": "Interne Segmente",
       "linkedSegments": "Verlinkte Segmente",
       "selectTimeframe": "Auswahl des Zeitabschnitts"
-    }
+    },
+    "renderError": "Teilmodell konnte nicht gerendert werden."
   },
   "settings": {
     "header": "Einstellungen"

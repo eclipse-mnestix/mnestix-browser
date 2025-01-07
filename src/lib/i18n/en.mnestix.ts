@@ -186,6 +186,7 @@ export const enMnestix = {
     },
     documentDetails: 'Document details',
     open: 'Open',
+    fileNotFound: 'File not found',
     mappingInfo: 'Mapping info',
     mappingInfoDescription: 'Arbitrary identifier that you can use for your data imports.',
     multiplicity: 'Multiplicity',
