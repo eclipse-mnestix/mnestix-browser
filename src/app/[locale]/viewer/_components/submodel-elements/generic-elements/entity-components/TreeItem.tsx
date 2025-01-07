@@ -35,7 +35,7 @@ export const getTreeItemStyle = (theme: Theme) => ({
     },
 });
 
-export const ExpandableTreeitem = React.forwardRef(function CustomContent(props: ExpandableTreeItemContentProps) {
+export const ExpandableTreeitem = React.forwardRef(function CustomContent(props: ExpandableTreeItemContentProps, _ref) {
     const theme = useTheme();
     const { classes, label, icon: iconProp, expansionIcon, displayIcon, dataIcon } = props;
 
