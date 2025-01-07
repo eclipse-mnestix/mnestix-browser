@@ -46,3 +46,12 @@ export async function performSubmodelFullSearch(
     const searcher = SubmodelSearcher.create();
     return searcher.performSubmodelFullSearch(submodelReference, submodelDescriptor);
 }
+
+export async function checkFileExists(url: string) {
+    try {
+        const response = await fetch(url, { method: 'HEAD' });
+        return response.ok;
+    } catch (error) {
+        return false;
+    }
+}

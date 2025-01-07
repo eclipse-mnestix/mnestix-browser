@@ -10,7 +10,7 @@ import {
 import { DataRow } from 'components/basics/DataRow';
 import { PdfDocumentIcon } from 'components/custom-icons/PdfDocumentIcon';
 import { messages } from 'lib/i18n/localization';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getTranslationText, hasSemanticId } from 'lib/util/SubmodelResolverUtil';
 import { DocumentDetailsDialog } from './DocumentDetailsDialog';
@@ -18,6 +18,7 @@ import { isValidUrl } from 'lib/util/UrlUtil';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useAasOriginSourceState } from 'components/contexts/CurrentAasContext';
 import { encodeBase64 } from 'lib/util/Base64Util';
+import { checkFileExists } from 'lib/services/search-actions/searchActions';
 
 enum DocumentSpecificSemanticId {
     DocumentVersion = 'https://admin-shell.io/vdi/2770/1/0/DocumentVersion',
@@ -85,22 +86,10 @@ export function DocumentComponent(props: MarkingsComponentProps) {
     const [imageError, setImageError] = useState(false);
     const [fileExists, setFileExists] = useState(true);
 
-    useEffect(() => {
-        const checkFileExists = async (url : string) => {
-            try {
-                const response = await fetch(url, { method: 'HEAD' });
-                if (response.ok) {
-                    setFileExists(true);
-                } else {
-                    setFileExists(false);
-                }
-            } catch (error) {
-                setFileExists(false);
-            }
-        };
-
+    useAsyncEffect(async () => {
         if (fileViewObject?.digitalFileUrl) {
-            checkFileExists(fileViewObject.digitalFileUrl);
+            const check = await checkFileExists(fileViewObject.digitalFileUrl);
+            setFileExists(check);
         }
     }, [fileViewObject?.digitalFileUrl]);
 
