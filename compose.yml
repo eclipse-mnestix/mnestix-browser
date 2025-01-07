@@ -9,7 +9,7 @@ volumes:
 services:
   mnestix-browser:
     container_name: mnestix-browser
-    image: mnestix/mnestix-browser:latest
+    image: mnestix/mnestix-browser:dev
     profiles: [ "", "frontend", "tests" ]
     build:
       dockerfile: Dockerfile
@@ -23,7 +23,7 @@ services:
       AAS_REPO_API_URL: 'http://mnestix-api:5064/repo'
       SUBMODEL_REPO_API_URL: 'http://mnestix-api:5064/repo'
       MNESTIX_BACKEND_API_URL: 'http://mnestix-api:5064'
-      MNESTIX_BACKEND_API_KEY: 'verySecureApiKey'
+      MNESTIX_BACKEND_API_KEY: ${MNESTIX_BACKEND_API_KEY:-verySecureApiKey}
       AAS_LIST_FEATURE_FLAG: "true"
       AAS_LIST_V2_FEATURE_FLAG: "false"
       TRANSFER_FEATURE_FLAG: "false"
