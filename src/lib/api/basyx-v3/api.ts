@@ -301,7 +301,6 @@ export const AssetAdministrationShellRepositoryApiFetchParamCreator = function (
                     'Required parameter aasId was null or undefined when calling shellRepoGetSubmodelsFromShell.',
                 );
             }
-            console.log(aasId);
             const localVarPath = `/shells/{aasId}/submodel-refs`.replace(`{aasId}`, encodeURIComponent(String(aasId)));
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
