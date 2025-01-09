@@ -106,8 +106,8 @@
     "docker:stop": "docker compose -f compose.yml -f docker-compose/compose.dev.yml -f docker-compose/compose.test.yml kill",
     "docker:down": "docker compose -f compose.yml -f docker-compose/compose.dev.yml -f docker-compose/compose.test.yml down",
     "docker:prune": "docker compose -f compose.yml -f docker-compose/compose.dev.yml -f docker-compose/compose.test.yml down -v && docker network prune && docker network rm mnestix-network",
-    "docker:keycloak": "docker compose -f compose.yml -f docker-compose/compose.dev.yml -f docker-compose/compose.keycloak.yml up -d",
-    "docker:azure": "docker compose -f compose.yml -f docker-compose/compose.dev.yml -f docker-compose/compose.azure_ad.yml up -d"
+    "docker:keycloak": "docker compose -f compose.yml -f docker-compose/compose.dev.yml -f docker-compose/compose.keycloak.yml up",
+    "docker:azure": "docker compose -f compose.yml -f docker-compose/compose.dev.yml -f docker-compose/compose.azure_ad.yml up"
   },
   "browserslist": {
     "production": [
