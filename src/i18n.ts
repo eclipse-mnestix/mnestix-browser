@@ -7,7 +7,9 @@ const locales = ['en', 'de'];
 export default getRequestConfig(async ({ locale }) => {
     if (!locales.includes(locale)) notFound();
 
+    const pluginMessages = (await import(`./user-plugins/locale/${locale}.json`)).default;
+    const messages = { ...(await import(`./locale/${locale}.json`)).default, ...pluginMessages };
     return {
-        messages: (await import(`./locale/${locale}.json`)).default,
+        messages,
     };
 });
