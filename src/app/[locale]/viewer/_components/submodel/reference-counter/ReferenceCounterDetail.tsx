@@ -1,14 +1,10 @@
-import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { ReferenceCounterVisualizations } from './ReferenceCounterVisualizations';
+import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
 
-type ReferenceCounterDetailProps = {
-    readonly submodel: Submodel;
-};
-
-export function ReferenceCounterDetail(props: ReferenceCounterDetailProps) {
+export function ReferenceCounterDetail({ submodel }: SubmodelVisualizationProps) {
     return (
         <>
-            <ReferenceCounterVisualizations submodel={props.submodel} />
+            <ReferenceCounterVisualizations submodel={submodel} />
         </>
     );
 }
