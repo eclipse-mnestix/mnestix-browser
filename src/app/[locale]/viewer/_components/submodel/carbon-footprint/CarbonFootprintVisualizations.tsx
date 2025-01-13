@@ -11,17 +11,13 @@ import { ProductLifecycle } from './visualization-components/ProductLifecycle';
 import { hasSemanticId } from 'lib/util/SubmodelResolverUtil';
 import { ProductLifecycleStage } from 'lib/enums/ProductLifecycleStage.enum';
 import { StyledDataRow } from 'components/basics/StyledDataRow';
-import {
-    ISubmodelElement,
-    Property,
-    Submodel,
-    SubmodelElementCollection,
-} from '@aas-core-works/aas-core3.0-typescript/types';
+import { ISubmodelElement, Property, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
+import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
 
-export function CarbonFootprintVisualizations(props: { submodel: Submodel }) {
+export function CarbonFootprintVisualizations({ submodel }: SubmodelVisualizationProps) {
     const intl = useIntl();
 
-    const pcfSubmodelElements = props.submodel.submodelElements?.filter((el) =>
+    const pcfSubmodelElements = submodel.submodelElements?.filter((el) =>
         hasSemanticId(
             el,
             SubmodelElementSemanticId.ProductCarbonFootprint,

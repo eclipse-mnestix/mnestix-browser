@@ -1,0 +1,9 @@
+{
+  "user-plugins": {
+    "submodels": {
+      "hello-world-component": {
+        "title": "Hello World!"
+      }
+    }
+  }
+}

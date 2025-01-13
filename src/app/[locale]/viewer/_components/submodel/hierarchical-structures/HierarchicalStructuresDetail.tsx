@@ -5,7 +5,6 @@ import {
     KeyTypes,
     Property,
     RelationshipElement,
-    Submodel,
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { EntityComponent } from '../../submodel-elements/generic-elements/entity-components/EntityComponent';
 import { cloneDeep } from 'lodash';
@@ -17,13 +16,10 @@ import { GenericSubmodelElementComponent } from '../../submodel-elements/generic
 import { InfoOutlined } from '@mui/icons-material';
 import React from 'react';
 import { ArchetypeDetailsDialog } from './ArchetypeDetailsDialog';
+import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
 
-type HierarchicalStructuresDetailProps = {
-    readonly submodel: Submodel;
-};
-
-export function HierarchicalStructuresDetail(props: HierarchicalStructuresDetailProps) {
-    const submodelElements = props.submodel.submodelElements as ISubmodelElement[];
+export function HierarchicalStructuresDetail({ submodel }: SubmodelVisualizationProps) {
+    const submodelElements = submodel.submodelElements as ISubmodelElement[];
 
     const isSubmodelFlattened = checkSubmodelsElements(submodelElements);
 
@@ -73,7 +69,7 @@ export function HierarchicalStructuresDetail(props: HierarchicalStructuresDetail
                     <Box sx={{ mt: 2, display: 'flex' }}>
                         <GenericSubmodelElementComponent
                             key={archeTypePropertylElement.idShort}
-                            submodelId={props.submodel.id}
+                            submodelId={submodel.id}
                             submodelElement={archeTypePropertylElement}
                             hasDivider={false}
                         />
