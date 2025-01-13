@@ -19,7 +19,6 @@ export const getEnv = async (): Promise<EnvironmentalVariables> => {
     if (process.env.MNESTIX_BACKEND_API_URL) {
         featureFlags.AUTHENTICATION_FEATURE_FLAG =
             process.env.AUTHENTICATION_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase();
-
     }
 
     const otherVariables = {
