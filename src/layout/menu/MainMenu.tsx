@@ -185,17 +185,6 @@ export default function MainMenu() {
                     </List>
                 </Box>
                 <Box sx={{ mt: 'auto', mb: 0, p: '16px', opacity: 0.6 }}>
-                    {imprintString && (
-                        <Typography>
-                            <ExternalLink href={imprintString} descriptor={messages.mnestix.imprint} />
-                        </Typography>
-                    )}
-                    {dataPrivacyString && (
-                        <Typography paddingBottom="20px">
-                            <ExternalLink href={dataPrivacyString} descriptor={messages.mnestix.dataPrivacy} />
-                        </Typography>
-                    )}
-                    <Typography paddingBottom="12px">{copyrightString}</Typography>
                     <Typography>{versionString}</Typography>
                 </Box>
                 {useAuthentication && (
