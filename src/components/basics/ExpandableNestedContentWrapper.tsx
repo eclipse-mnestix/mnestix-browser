@@ -5,12 +5,12 @@ import { NestedContentWrapper } from 'components/basics/NestedContentWrapper';
 import { messages } from 'lib/i18n/localization';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { GenericSubmodelDetailComponent } from 'app/[locale]/viewer/_components/submodel/generic-submodel/GenericSubmodelDetailComponent';
+import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
 
-export function ExpandableDefaultSubmodelDisplay(props: { submodel: Submodel }) {
+export function ExpandableDefaultSubmodelDisplay({ submodel }: SubmodelVisualizationProps) {
     const [isExpanded, setIsExpanded] = useState(false);
-    return props.submodel.submodelElements && props.submodel.submodelElements.length ? (
+    return submodel.submodelElements && submodel.submodelElements.length ? (
         <DataRow title="All available data" hasDivider={true}>
             <Box>
                 <Button
@@ -22,12 +22,12 @@ export function ExpandableDefaultSubmodelDisplay(props: { submodel: Submodel }) 
                 >
                     <FormattedMessage
                         {...messages.mnestix.showEntriesButton[isExpanded ? 'hide' : 'show']}
-                        values={{ count: props.submodel.submodelElements.length }}
+                        values={{ count: submodel.submodelElements.length }}
                     />
                 </Button>
                 {isExpanded && (
                     <NestedContentWrapper>
-                        <GenericSubmodelDetailComponent submodel={props.submodel} />
+                        <GenericSubmodelDetailComponent submodel={submodel} />
                     </NestedContentWrapper>
                 )}
             </Box>

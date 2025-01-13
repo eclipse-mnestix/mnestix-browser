@@ -1,16 +1,12 @@
 import { ExpandableDefaultSubmodelDisplay } from 'components/basics/ExpandableNestedContentWrapper';
-import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { CarbonFootprintVisualizations } from './CarbonFootprintVisualizations';
+import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
 
-type CarbonFootprintDetailProps = {
-    readonly submodel: Submodel;
-};
-
-export function CarbonFootprintDetail(props: CarbonFootprintDetailProps) {
+export function CarbonFootprintDetail({ submodel }: SubmodelVisualizationProps) {
     return (
         <>
-            <CarbonFootprintVisualizations submodel={props.submodel} />
-            <ExpandableDefaultSubmodelDisplay submodel={props.submodel} />
+            <CarbonFootprintVisualizations submodel={submodel} />
+            <ExpandableDefaultSubmodelDisplay submodel={submodel} />
         </>
     );
 }
