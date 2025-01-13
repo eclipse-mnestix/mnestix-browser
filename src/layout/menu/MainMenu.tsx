@@ -89,11 +89,6 @@ export default function MainMenu() {
             icon: <Dashboard />,
         },
         {
-            label: <FormattedMessage {...messages.mnestix.templates} />,
-            to: '/templates',
-            icon: <TemplateIcon />,
-        },
-        {
             label: <FormattedMessage {...messages.mnestix.settings} />,
             to: '/settings',
             icon: <Settings />,
@@ -142,8 +137,17 @@ export default function MainMenu() {
         };
 
         guestMainMenu.push(listItemToAdd);
-
         adminMainMenu.splice(1, 0, listItemToAdd);
+    }
+
+    if (env.MNESTIX_BACKEND_API_URL){
+        const templateItemToAdd = {
+            label: <FormattedMessage {...messages.mnestix.templates} />,
+                to: '/templates',
+            icon: <TemplateIcon />,
+        };
+
+        adminMainMenu.push(templateItemToAdd);
     }
 
     return (
