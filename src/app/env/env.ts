@@ -2,6 +2,7 @@
 
 import * as path from 'node:path';
 import * as fs from 'node:fs';
+import * as process from 'node:process';
 
 export const getEnv = async (): Promise<EnvironmentalVariables> => {
     // Feature Flags
@@ -10,15 +11,19 @@ export const getEnv = async (): Promise<EnvironmentalVariables> => {
             process.env.LOCK_TIMESERIES_PERIOD_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
         AUTHENTICATION_FEATURE_FLAG: false,
         COMPARISON_FEATURE_FLAG: process.env.COMPARISON_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
-        AAS_LIST_V2_FEATURE_FLAG:  process.env.AAS_LIST_V2_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
         TRANSFER_FEATURE_FLAG: process.env.TRANSFER_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
         AAS_LIST_FEATURE_FLAG: process.env.AAS_LIST_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
+        AAS_LIST_V2_FEATURE_FLAG:  process.env.AAS_LIST_V2_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
     };
 
     // If BackendAPI is present evaluate the FeatureFlags else they stay the default value
     if (process.env.MNESTIX_BACKEND_API_URL) {
         featureFlags.AUTHENTICATION_FEATURE_FLAG =
             process.env.AUTHENTICATION_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase();
+    }
+
+    if(!process.env.MNESTIX_BACKEND_API_URL && process.env.AAS_LIST_FEATURE_FLAG) {
+        featureFlags.AAS_LIST_V2_FEATURE_FLAG = process.env.AAS_LIST_V2_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase();
     }
 
     const otherVariables = {
