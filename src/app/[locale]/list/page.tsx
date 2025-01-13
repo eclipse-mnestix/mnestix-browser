@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { Box } from '@mui/material';
 import { AasListViewDeprecated } from 'app/[locale]/list/_components-deprecated/AasListViewDeprecated';
@@ -17,8 +17,10 @@ export default function Page() {
     return (
         <Box display="flex" flexDirection="column" marginTop="20px" marginBottom="50px" width="100%">
             <Box width="90%" margin="auto">
-                <ListHeader namespace={'aasList'} keyValue={'header'}/>
-                {env.AAS_LIST_V2_FEATURE_FLAG ? <AasListDataWrapper/> : <AasListViewDeprecated/>}
+                <Box marginY="2rem">
+                    <ListHeader namespace={'aas-list'} header={'header'} subHeader={'subHeader'} />
+                </Box>
+                {env.AAS_LIST_V2_FEATURE_FLAG ? <AasListDataWrapper /> : <AasListViewDeprecated />}
             </Box>
         </Box>
     );

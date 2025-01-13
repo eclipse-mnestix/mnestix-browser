@@ -8,7 +8,7 @@ import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner
 import AasList from './AasList';
 import { useEnv } from 'app/env/provider';
 import { AasListComparisonHeader } from './AasListComparisonHeader';
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { SelectRepository } from './filter/SelectRepository';
@@ -96,61 +96,59 @@ export default function AasListDataWrapper() {
     };
 
     return (
-        <>
-            <Typography marginBottom={2} marginTop={-1}>
-                {t('subHeader')}
-            </Typography>
-
-            <Box display="flex" justifyContent="space-between" marginBottom={2}>
-                <Box display="flex" gap={4}>
-                    <SelectRepository onSelectedRepositoryChanged={setSelectedRepository} />
-                </Box>
-                {env.COMPARISON_FEATURE_FLAG && (
-                    <AasListComparisonHeader
-                        selectedAasList={selectedAasList}
-                        updateSelectedAasList={updateSelectedAasList}
-                    />
-                )}
-            </Box>
-            {isLoadingList ? (
-                <CenteredLoadingSpinner sx={{ mt: 10 }} />
-            ) : (
-                <>
-                    {selectedRepository ? (
-                        <>
-                            <AasList
-                                data-testid="aas-list"
-                                repositoryUrl={selectedRepository}
-                                shells={aasList}
-                                selectedAasList={selectedAasList}
-                                updateSelectedAasList={updateSelectedAasList}
-                                comparisonFeatureFlag={env.COMPARISON_FEATURE_FLAG}
-                            ></AasList>
-                            <Box display="flex" justifyContent="flex-end" alignItems="center" gap={4} marginTop={2}>
-                                <IconButton
-                                    onClick={handleGoBack}
-                                    disabled={currentPage === 0}
-                                    data-testid="list-back-button"
-                                >
-                                    <ArrowBackIosNewIcon />
-                                </IconButton>
-                                <Typography>{t('page') + ' ' + (currentPage + 1)}</Typography>
-                                <IconButton
-                                    onClick={handleNextPage}
-                                    disabled={!currentCursor}
-                                    data-testid="list-next-button"
-                                >
-                                    <ArrowForwardIosIcon />
-                                </IconButton>
-                            </Box>
-                        </>
-                    ) : (
-                        <Box>
-                            <Typography data-testid="select-repository-text">{t('select-repository')}</Typography>
-                        </Box>
+        <Card>
+            <CardContent>
+                <Box display="flex" justifyContent="space-between" marginBottom={2}>
+                    <Box display="flex" gap={4}>
+                        <SelectRepository onSelectedRepositoryChanged={setSelectedRepository} />
+                    </Box>
+                    {env.COMPARISON_FEATURE_FLAG && (
+                        <AasListComparisonHeader
+                            selectedAasList={selectedAasList}
+                            updateSelectedAasList={updateSelectedAasList}
+                        />
                     )}
-                </>
-            )}
-        </>
+                </Box>
+                {isLoadingList ? (
+                    <CenteredLoadingSpinner sx={{ mt: 10 }} />
+                ) : (
+                    <>
+                        {selectedRepository ? (
+                            <>
+                                <AasList
+                                    data-testid="aas-list"
+                                    repositoryUrl={selectedRepository}
+                                    shells={aasList}
+                                    selectedAasList={selectedAasList}
+                                    updateSelectedAasList={updateSelectedAasList}
+                                    comparisonFeatureFlag={env.COMPARISON_FEATURE_FLAG}
+                                ></AasList>
+                                <Box display="flex" justifyContent="flex-end" alignItems="center" gap={4} marginTop={2}>
+                                    <IconButton
+                                        onClick={handleGoBack}
+                                        disabled={currentPage === 0}
+                                        data-testid="list-back-button"
+                                    >
+                                        <ArrowBackIosNewIcon />
+                                    </IconButton>
+                                    <Typography>{t('page') + ' ' + (currentPage + 1)}</Typography>
+                                    <IconButton
+                                        onClick={handleNextPage}
+                                        disabled={!currentCursor}
+                                        data-testid="list-next-button"
+                                    >
+                                        <ArrowForwardIosIcon />
+                                    </IconButton>
+                                </Box>
+                            </>
+                        ) : (
+                            <Box>
+                                <Typography data-testid="select-repository-text">{t('select-repository')}</Typography>
+                            </Box>
+                        )}
+                    </>
+                )}
+            </CardContent>
+        </Card>
     );
 }

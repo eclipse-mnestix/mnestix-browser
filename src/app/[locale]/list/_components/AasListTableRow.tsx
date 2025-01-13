@@ -29,8 +29,9 @@ type AasTableRowProps = {
 
 const tableBodyText = {
     lineHeight: '150%',
-    fontSize: '16px',
+    fontSize: '14px',
     color: 'text.primary',
+    wordWrap: 'break-word',
 };
 export const AasListTableRow = (props: AasTableRowProps) => {
     const {
@@ -126,7 +127,12 @@ export const AasListTableRow = (props: AasTableRowProps) => {
                 </TableCell>
             )}
             <PictureTableCell>
-                <ImageWithFallback src={thumbnailUrl} alt={'Thumbnail image for: ' + aasListEntry.assetId} size={88} />
+                <ImageWithFallback
+                    src={thumbnailUrl}
+                    alt={'Thumbnail image for: ' + aasListEntry.assetId}
+                    size={88}
+                    onClickHandler={() => navigateToAas(aasListEntry)}
+                />
             </PictureTableCell>
             <TableCell data-testid="list-manufacturer-name" align="left" sx={tableBodyText}>
                 {nameplateData && translateListText(nameplateData.manufacturerName)}

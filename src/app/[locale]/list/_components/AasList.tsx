@@ -66,7 +66,12 @@ export default function AasList(props: AasListProps) {
                                         arrow
                                     >
                                         <CompareArrowsIcon
-                                            sx={{ width: '35px', height: '35px', verticalAlign: 'middle' }}
+                                            color="secondary"
+                                            sx={{
+                                                width: '35px',
+                                                height: '35px',
+                                                verticalAlign: 'middle',
+                                            }}
                                         />
                                     </Tooltip>
                                 </TableCell>
@@ -74,7 +79,14 @@ export default function AasList(props: AasListProps) {
                             {!!tableHeaders &&
                                 tableHeaders.map((header: { label: string }, index) => (
                                     <TableCell key={index}>
-                                        <Typography fontWeight="bold">{header.label}</Typography>
+                                        <Typography
+                                            variant="h5"
+                                            color="secondary"
+                                            letterSpacing={0.16}
+                                            fontWeight={700}
+                                        >
+                                            {header.label}
+                                        </Typography>
                                     </TableCell>
                                 ))}
                         </TableRow>

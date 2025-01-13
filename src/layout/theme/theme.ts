@@ -61,7 +61,7 @@ const palette: PaletteOptions = {
         main: '#147f8a',
     },
     background: {
-        default: '#F6F9F9'
+        default: '#F6F9F9',
     },
     info: {
         main: '#ff6900',
@@ -79,7 +79,7 @@ const palette: PaletteOptions = {
         '900': '#1C2526',
     },
     text: {
-        primary: 'rgba(4, 20, 22, 0.87)',
+        primary: 'rgba(0, 0, 0, 0.87)', //update
         secondary: 'rgba(6, 23, 24, 0.6)',
         disabled: 'rgba(9, 26, 27, 0.38)',
     },
@@ -145,6 +145,7 @@ declare module '@mui/material/styles' {
             logo: string;
         };
     }
+
     interface ThemeOptions {
         productLogo?: {
             logo?: string;
