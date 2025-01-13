@@ -9,9 +9,10 @@ volumes:
 services:
   mnestix-browser:
     container_name: mnestix-browser
-    image: !reset null
+    image: mnestix/mnestix-browser:latest
     build:
-      target: dev
+      dockerfile: ../Dockerfile
+      target: production
     ports:
       - '3000:3000'
     environment:
