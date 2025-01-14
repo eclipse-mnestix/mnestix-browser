@@ -20,7 +20,7 @@ export default function ListHeader(props: ListHeaderProps) {
                 {optionalID && ` "${optionalID}"`}
             </Typography>
             {subHeader && (
-                <Typography variant="h6" color="text.secondary" marginBottom={2} marginTop={-1}>
+                <Typography variant="body1" color="text.secondary" marginBottom={2} marginTop={-1}>
                     {t(subHeader)}
                 </Typography>
             )}

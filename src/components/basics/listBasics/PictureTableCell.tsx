@@ -20,8 +20,8 @@ export default function PictureTableCell(props: PictureTableCellProps) {
         <TableCell component="th" scope="row" sx={tableBodyText}>
             <Paper
                 sx={{
-                    width: '88px',
-                    height: '88px',
+                    width: '100px',
+                    height: '100px',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',

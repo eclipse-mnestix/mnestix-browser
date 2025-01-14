@@ -36,6 +36,7 @@ export default function AasList(props: AasListProps) {
         { label: t('productDesignationHeading') },
         { label: t('assetIdHeading') },
         { label: t('aasIdHeading') },
+        '',
     ];
 
     /**

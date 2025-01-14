@@ -1,6 +1,4 @@
 import { Box, Checkbox, TableCell, Typography } from '@mui/material';
-import { encodeBase64 } from 'lib/util/Base64Util';
-import { useRouter } from 'next/navigation';
 import { useAasOriginSourceState, useAasState } from 'components/contexts/CurrentAasContext';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
@@ -17,6 +15,7 @@ import { ListEntityDto, NameplateValuesDto } from 'lib/services/list-service/Lis
 import { getNameplateValuesForAAS } from 'lib/services/list-service/aasListApiActions';
 import { MultiLanguageValueOnly } from 'lib/api/basyx-v3/types';
 import { useLocale, useTranslations } from 'next-intl';
+import { encodeBase64 } from 'lib/util/Base64Util';
 
 type AasTableRowProps = {
     repositoryUrl: string;
@@ -42,7 +41,6 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         selectedAasList,
         updateSelectedAasList,
     } = props;
-    const navigate = useRouter();
     const [, setAas] = useAasState();
     const [, setAasOriginUrl] = useAasOriginSourceState();
     const notificationSpawner = useNotificationSpawner();
@@ -54,7 +52,8 @@ export const AasListTableRow = (props: AasTableRowProps) => {
     const navigateToAas = (listEntry: ListEntityDto) => {
         setAas(null);
         setAasOriginUrl(null);
-        if (listEntry.aasId) navigate.push(`/viewer/${encodeBase64(listEntry.aasId)}`);
+        const baseUrl = window.location.origin;
+        window.open(baseUrl + `/viewer/${encodeBase64(listEntry.aasId)}`, '_blank');
     };
 
     const translateListText = (property: MultiLanguageValueOnly | undefined) => {
@@ -130,7 +129,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
                 <ImageWithFallback
                     src={thumbnailUrl}
                     alt={'Thumbnail image for: ' + aasListEntry.assetId}
-                    size={88}
+                    size={100}
                     onClickHandler={() => navigateToAas(aasListEntry)}
                 />
             </PictureTableCell>
@@ -141,10 +140,10 @@ export const AasListTableRow = (props: AasTableRowProps) => {
                 {nameplateData && tooltipText(translateListText(nameplateData.manufacturerProductDesignation), 80)}
             </TableCell>
             <TableCell data-testid="list-assetId" align="left" sx={tableBodyText}>
-                <Typography>{tooltipText(aasListEntry.assetId, 35)}</Typography>
+                <Typography sx={{ all: 'unset' }}>{tooltipText(aasListEntry.assetId, 35)}</Typography>
             </TableCell>
             <TableCell data-testid="list-aasId" align="left" sx={tableBodyText}>
-                <Typography>{tooltipText(aasListEntry.aasId, 35)}</Typography>
+                <Typography sx={{ all: 'unset' }}>{tooltipText(aasListEntry.aasId, 35)}</Typography>
             </TableCell>
             <TableCell align="center">
                 <RoundedIconButton

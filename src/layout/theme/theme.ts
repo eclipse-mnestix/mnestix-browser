@@ -51,6 +51,13 @@ const typography: TypographyOptions = {
         lineHeight: 1.33,
         letterSpacing: 0,
     },
+    body1: {
+        fontFamily: 'Saira, sans-serif',
+        fontSize: '1rem',
+        fontStyle: 'normal',
+        fontWeight: 400,
+        lineHeight: 1.5,
+    },
 };
 
 const palette: PaletteOptions = {
@@ -58,10 +65,10 @@ const palette: PaletteOptions = {
         main: '#005962',
     },
     secondary: {
-        main: '#147f8a',
+        main: '#508785',
     },
     background: {
-        default: '#F6F9F9',
+        default: '#F3F7F7',
     },
     info: {
         main: '#ff6900',
@@ -79,7 +86,7 @@ const palette: PaletteOptions = {
         '900': '#1C2526',
     },
     text: {
-        primary: 'rgba(0, 0, 0, 0.87)', //update
+        primary: 'rgba(0, 0, 0, 0.87)',
         secondary: 'rgba(6, 23, 24, 0.6)',
         disabled: 'rgba(9, 26, 27, 0.38)',
     },
