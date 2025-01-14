@@ -89,11 +89,6 @@ export default function MainMenu() {
             icon: <Dashboard />,
         },
         {
-            label: <FormattedMessage {...messages.mnestix.templates} />,
-            to: '/templates',
-            icon: <TemplateIcon />,
-        },
-        {
             label: <FormattedMessage {...messages.mnestix.settings} />,
             to: '/settings',
             icon: <Settings />,
@@ -142,8 +137,17 @@ export default function MainMenu() {
         };
 
         guestMainMenu.push(listItemToAdd);
-
         adminMainMenu.splice(1, 0, listItemToAdd);
+    }
+
+    if (env.MNESTIX_BACKEND_API_URL){
+        const templateItemToAdd = {
+            label: <FormattedMessage {...messages.mnestix.templates} />,
+                to: '/templates',
+            icon: <TemplateIcon />,
+        };
+
+        adminMainMenu.push(templateItemToAdd);
     }
 
     return (
@@ -185,17 +189,6 @@ export default function MainMenu() {
                     </List>
                 </Box>
                 <Box sx={{ mt: 'auto', mb: 0, p: '16px', opacity: 0.6 }}>
-                    {imprintString && (
-                        <Typography>
-                            <ExternalLink href={imprintString} descriptor={messages.mnestix.imprint} />
-                        </Typography>
-                    )}
-                    {dataPrivacyString && (
-                        <Typography paddingBottom="20px">
-                            <ExternalLink href={dataPrivacyString} descriptor={messages.mnestix.dataPrivacy} />
-                        </Typography>
-                    )}
-                    <Typography paddingBottom="12px">{copyrightString}</Typography>
                     <Typography>{versionString}</Typography>
                 </Box>
                 {useAuthentication && (

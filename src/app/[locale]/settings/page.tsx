@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { IdSettingsCard } from './_components/id-settings/IdSettingsCard';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { MnestixConnectionsCard } from 'app/[locale]/settings/_components/mnestix-connections/MnestixConnectionsCard';
+import { useEnv } from 'app/env/provider';
 
 enum settingsPageTypes {
     ID_STRUCTURE,
@@ -19,16 +20,22 @@ enum settingsPageTypes {
 export default function Page() {
     const intl = useIntl();
     const isMobile = useIsMobile();
+    const env = useEnv();
 
     const settingsTabItems: TabSelectorItem[] = [
-        {
-            id: settingsPageTypes[settingsPageTypes.ID_STRUCTURE],
-            label: intl.formatMessage(messages.mnestix.idStructure)
-        },
         {
             id: settingsPageTypes[settingsPageTypes.MNESTIX_CONNECTIONS],
             label: intl.formatMessage(messages.mnestix.connections.title)
         }]
+
+    if(env.MNESTIX_BACKEND_API_URL){
+        const settingsTabToAdd = {
+            id: settingsPageTypes[settingsPageTypes.ID_STRUCTURE],
+                label: intl.formatMessage(messages.mnestix.idStructure)
+        };
+        settingsTabItems.splice(0, 0, settingsTabToAdd);
+    }
+
     const [selectedTab, setSelectedTab] = useState<TabSelectorItem>(settingsTabItems[0]);
 
     const renderActiveSettingsTab = () => {
