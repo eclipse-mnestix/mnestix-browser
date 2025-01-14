@@ -1,9 +1,5 @@
 ﻿import { ThemeSettings } from 'lib/types/ThemeSettings';
 
-/**
- * The default theme used for resetting the custom theme.
- * If they need to be changed, make sure that the values in 'RequiredShellsResources' are adapted as well.
- */
 export const DefaultThemeSettings: ThemeSettings = {
     primaryColor: '#005962',
     secondaryColor: '#508785',

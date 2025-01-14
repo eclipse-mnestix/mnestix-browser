@@ -97,8 +97,8 @@ export default function AasListDataWrapper() {
 
     return (
         <Card>
-            <CardContent>
-                <Box display="flex" justifyContent="space-between" marginBottom={2}>
+            <CardContent sx={{ paddingX: 0 }}>
+                <Box display="flex" justifyContent="space-between" marginBottom={2} paddingX="16px">
                     <Box display="flex" gap={4}>
                         <SelectRepository onSelectedRepositoryChanged={setSelectedRepository} />
                     </Box>
