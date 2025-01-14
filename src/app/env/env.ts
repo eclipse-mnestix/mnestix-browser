@@ -22,8 +22,13 @@ export const getEnv = async (): Promise<EnvironmentalVariables> => {
             process.env.AUTHENTICATION_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase();
     }
 
-    if(!process.env.MNESTIX_BACKEND_API_URL && process.env.AAS_LIST_FEATURE_FLAG) {
-        featureFlags.AAS_LIST_V2_FEATURE_FLAG = process.env.AAS_LIST_V2_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase();
+    if (
+        !process.env.MNESTIX_BACKEND_API_URL &&
+        featureFlags.AAS_LIST_FEATURE_FLAG &&
+        !featureFlags.AAS_LIST_V2_FEATURE_FLAG
+    ) {
+        Console.warn('Only AAS_LIST_V2_FEATURE_FLAG environment variables can be set without Mnestix API');
+        featureFlags.AAS_LIST_V2_FEATURE_FLAG = true;
     }
 
     const otherVariables = {
