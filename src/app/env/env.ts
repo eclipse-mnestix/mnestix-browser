@@ -27,7 +27,7 @@ export const getEnv = async (): Promise<EnvironmentalVariables> => {
         featureFlags.AAS_LIST_FEATURE_FLAG &&
         !featureFlags.AAS_LIST_V2_FEATURE_FLAG
     ) {
-        Console.warn('Only AAS_LIST_V2_FEATURE_FLAG environment variables can be set without Mnestix API');
+        console.warn('Only AAS_LIST_V2_FEATURE_FLAG environment variables can be set without Mnestix API');
         featureFlags.AAS_LIST_V2_FEATURE_FLAG = true;
     }
 
