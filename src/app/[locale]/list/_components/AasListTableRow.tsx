@@ -152,10 +152,10 @@ export const AasListTableRow = (props: AasTableRowProps) => {
                 )}
             </TableCell>
             <TableCell data-testid="list-assetId" align="left" sx={tableBodyText}>
-                <Typography sx={{ all: 'unset' }}>{tooltipText(aasListEntry.assetId, 35)}</Typography>
+                <Typography sx={{ all: 'unset' }}>{tooltipText(aasListEntry.assetId, 70)}</Typography>
             </TableCell>
             <TableCell data-testid="list-aasId" align="left" sx={tableBodyText}>
-                <Typography sx={{ all: 'unset' }}>{tooltipText(aasListEntry.aasId, 35)}</Typography>
+                <Typography sx={{ all: 'unset' }}>{tooltipText(aasListEntry.aasId, 70)}</Typography>
             </TableCell>
             <TableCell align="center">
                 <RoundedIconButton

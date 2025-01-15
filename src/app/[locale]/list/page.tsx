@@ -15,9 +15,9 @@ export default function Page() {
      * we can remove the "AAS_LIST_V2_FEATURE_FLAG" feature flag and the corresponding render condition.
      */
     return (
-        <Box display="flex" flexDirection="column" marginTop="20px" marginBottom="50px" width="100%">
+        <Box display="flex" flexDirection="column" marginTop="0px" marginBottom="50px" width="100%">
             <Box width="90%" margin="auto">
-                <Box marginY="2rem">
+                <Box marginTop="2rem" marginBottom="2.25rem">
                     <ListHeader namespace={'aas-list'} header={'header'} subHeader={'subHeader'} />
                 </Box>
                 {env.AAS_LIST_V2_FEATURE_FLAG ? <AasListDataWrapper /> : <AasListViewDeprecated />}

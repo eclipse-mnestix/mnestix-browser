@@ -97,8 +97,8 @@ export default function AasListDataWrapper() {
 
     return (
         <Card>
-            <CardContent sx={{ paddingX: 0 }}>
-                <Box display="flex" justifyContent="space-between" marginBottom={2} paddingX="16px">
+            <CardContent sx={{ paddingX: 0, paddingY: '1.625rem', '&:last-child': { paddingBottom: '0' } }}>
+                <Box display="flex" justifyContent="space-between" marginBottom="1.625rem" paddingX="1rem">
                     <Box display="flex" gap={4}>
                         <SelectRepository onSelectedRepositoryChanged={setSelectedRepository} />
                     </Box>
@@ -110,7 +110,7 @@ export default function AasListDataWrapper() {
                     )}
                 </Box>
                 {isLoadingList ? (
-                    <CenteredLoadingSpinner sx={{ mt: 10 }} />
+                    <CenteredLoadingSpinner sx={{ my: 10 }} />
                 ) : (
                     <>
                         {selectedRepository ? (
@@ -123,21 +123,23 @@ export default function AasListDataWrapper() {
                                     updateSelectedAasList={updateSelectedAasList}
                                     comparisonFeatureFlag={env.COMPARISON_FEATURE_FLAG}
                                 ></AasList>
-                                <Box display="flex" justifyContent="flex-end" alignItems="center" gap={4} marginTop={2}>
+                                <Box display="flex" justifyContent="flex-end" alignItems="center" marginTop={0}>
+                                    <Typography paddingRight="1.625rem" fontSize="0.75rem">
+                                        {t('page') + ' ' + (currentPage + 1)}
+                                    </Typography>
                                     <IconButton
                                         onClick={handleGoBack}
                                         disabled={currentPage === 0}
                                         data-testid="list-back-button"
                                     >
-                                        <ArrowBackIosNewIcon />
+                                        <ArrowBackIosNewIcon fontSize="small" />
                                     </IconButton>
-                                    <Typography>{t('page') + ' ' + (currentPage + 1)}</Typography>
                                     <IconButton
                                         onClick={handleNextPage}
                                         disabled={!currentCursor}
                                         data-testid="list-next-button"
                                     >
-                                        <ArrowForwardIosIcon />
+                                        <ArrowForwardIosIcon fontSize="small" />
                                     </IconButton>
                                 </Box>
                             </>

@@ -98,7 +98,6 @@ export default function AasList(props: AasListProps) {
                                 <TableRow
                                     key={aasListEntry.aasId}
                                     sx={{
-                                        '&:last-child td, &:last-child th': { border: 0 },
                                         backgroundColor: theme.palette?.common?.white,
                                         '&:hover': { backgroundColor: theme.palette.action.hover },
                                     }}

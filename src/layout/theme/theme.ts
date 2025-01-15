@@ -92,7 +92,7 @@ const palette: PaletteOptions = {
     },
     divider: 'rgba(17, 43, 45, 0.12)',
     action: {
-        hover: 'rgba(15, 44, 46, 0.04)',
+        hover: 'rgba(235, 240, 241, 1.00)',
         selected: 'rgba(11, 33, 34, 0.08)',
         disabledBackground: 'rgba(13, 37, 38, 0.12)',
         focus: 'rgba(13, 37, 38, 0.12)',
