@@ -18,9 +18,9 @@ services:
     environment:
       REGISTRY_API_URL: 'https://aas-registry:8083/' # 'https://registry.dpp40-2-v2.industrialdigitaltwin.org/'
       SUBMODEL_REGISTRY_API_URL: 'http://submodel-registry:8084'
-      DISCOVERY_API_URL: 'http://aas-discovery:8081/'
-      AAS_REPO_API_URL: 'http://aas-environment:8081/'
-      SUBMODEL_REPO_API_URL: 'http://aas-environment:8081/'
+      DISCOVERY_API_URL: 'http://aas-discovery:8081'
+      AAS_REPO_API_URL: 'http://aas-environment:8081'
+      SUBMODEL_REPO_API_URL: 'http://aas-environment:8081'
       AAS_LIST_FEATURE_FLAG: "true"
       AAS_LIST_V2_FEATURE_FLAG: "true"
       MNESTIX_BACKEND_API_URL: ""
