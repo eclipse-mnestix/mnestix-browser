@@ -120,13 +120,6 @@ export const enMnestix = {
         count: 'Count',
         elementName: 'Element',
     },
-    coffeeConsumption: {
-        initialHeadingText: 'To see your personal coffee consumption here, book your first coffee in our ',
-        initialHeadingLink: 'WebApp',
-        title: 'Your personal coffee consumption',
-        drunken: 'Cups',
-        coffeeKind: 'Coffee type',
-    },
     successfullyUpdated: 'Updated successfully',
     templates: 'Templates',
     all: 'All',

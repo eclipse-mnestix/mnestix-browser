@@ -123,13 +123,6 @@ export const deMnestix = {
         count: 'Anzahl',
         elementName: 'Element',
     },
-    coffeeConsumption: {
-        initialHeadingText: 'Um hier deinen persönlichen Kaffeekonsum zu sehen, buche deinen ersten Kaffee in unserer ',
-        initialHeadingLink: 'WebApp',
-        title: 'Dein persönlicher Kaffeekonsum',
-        drunken: 'Anzahl getrunken',
-        coffeeKind: 'Kaffeesorte',
-    },
     successfullyUpdated: 'Erfolgreich aktualisiert',
     templates: 'Vorlagen',
     all: 'Alle',
