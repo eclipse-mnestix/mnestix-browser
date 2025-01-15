@@ -2,7 +2,7 @@
   "comment": "we will have english translation keys here",
   "aas-list": {
     "header": "AAS List",
-    "subHeader": "You wil find all AASs from your repository here. You can select an AAS repository to switch between data sources.",
+    "subHeader": "You will find all AASs from your repository here. You can select an AAS repository to switch between data sources.",
     "picture": "Picture",
     "manufacturerHeading": "Manufacturer Name",
     "productDesignationHeading": "Manufacturer Product Designation",
