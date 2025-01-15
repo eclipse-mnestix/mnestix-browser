@@ -1,4 +1,4 @@
-import { Box, Checkbox, TableCell, Typography } from '@mui/material';
+import { Box, Checkbox, Skeleton, TableCell, Typography } from '@mui/material';
 import { useAasOriginSourceState, useAasState } from 'components/contexts/CurrentAasContext';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
@@ -46,6 +46,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
     const notificationSpawner = useNotificationSpawner();
     const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
     const [nameplateData, setNameplateData] = useState<NameplateValuesDto>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const t = useTranslations('aas-list');
     const locale = useLocale();
 
@@ -84,6 +85,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
 
     useAsyncEffect(async () => {
         if (!aasListEntry.aasId) return;
+        setIsLoading(true);
 
         const nameplate = await getNameplateValuesForAAS(repositoryUrl, aasListEntry.aasId);
 
@@ -92,6 +94,8 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         } else {
             setNameplateData(nameplate);
         }
+
+        setIsLoading(false);
     }, [aasListEntry.aasId]);
 
     const showMaxElementsNotification = () => {
@@ -134,10 +138,18 @@ export const AasListTableRow = (props: AasTableRowProps) => {
                 />
             </PictureTableCell>
             <TableCell data-testid="list-manufacturer-name" align="left" sx={tableBodyText}>
-                {nameplateData && translateListText(nameplateData.manufacturerName)}
+                {!isLoading ? (
+                    nameplateData?.manufacturerName && translateListText(nameplateData.manufacturerName)
+                ) : (
+                    <Skeleton variant="text" width="80%" height={26} />
+                )}
             </TableCell>
             <TableCell data-testid="list-product-designation" align="left" sx={tableBodyText}>
-                {nameplateData && tooltipText(translateListText(nameplateData.manufacturerProductDesignation), 80)}
+                {!isLoading ? (
+                    nameplateData && tooltipText(translateListText(nameplateData.manufacturerProductDesignation), 80)
+                ) : (
+                    <Skeleton variant="text" width="80%" height={26} />
+                )}
             </TableCell>
             <TableCell data-testid="list-assetId" align="left" sx={tableBodyText}>
                 <Typography sx={{ all: 'unset' }}>{tooltipText(aasListEntry.assetId, 35)}</Typography>
