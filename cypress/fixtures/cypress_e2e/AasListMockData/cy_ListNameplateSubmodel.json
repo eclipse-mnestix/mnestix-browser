@@ -1,0 +1,224 @@
+﻿[
+  {
+    "modelType": "Submodel",
+    "kind": "Instance",
+    "semanticId": {
+      "keys": [
+        {
+          "type": "ConceptDescription",
+          "value": "https://admin-shell.io/zvei/nameplate/2/0/Nameplate"
+        }
+      ],
+      "type": "ExternalReference"
+    },
+    "administration": {
+      "revision": "0",
+      "version": "2"
+    },
+    "id": "https://i40.xitaso.com/sm/nameplateListTest1",
+    "description": [
+      {
+        "language": "en",
+        "text": "Contains the nameplate information attached to the product"
+      }
+    ],
+    "idShort": "Nameplate",
+    "submodelElements": [
+      {
+        "modelType": "MultiLanguageProperty",
+        "semanticId": {
+          "keys": [
+            {
+              "type": "ConceptDescription",
+              "value": "0173-1#02-AAO677#002"
+            }
+          ],
+          "type": "ExternalReference"
+        },
+        "value": [
+          {
+            "language": "de",
+            "text": "listTest1 Manufacturer Name"
+          }
+        ],
+        "qualifiers": [
+          {
+            "semanticId": {
+              "keys": [
+                {
+                  "type": "GlobalReference",
+                  "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
+                }
+              ],
+              "type": "ExternalReference"
+            },
+            "kind": "TemplateQualifier",
+            "type": "SMT/Cardinality",
+            "value": "One",
+            "valueType": "xs:string"
+          }
+        ],
+        "description": [
+          {
+            "language": "en",
+            "text": "Note: see also [IRDI] 0112/2///61987#ABA565#007 manufacturer Note: mandatory property according to EU Machine Directive 2006/42/EC. "
+          }
+        ],
+        "idShort": "ManufacturerName"
+      },
+      {
+        "modelType": "MultiLanguageProperty",
+        "semanticId": {
+          "keys": [
+            {
+              "type": "ConceptDescription",
+              "value": "0173-1#02-AAW338#001"
+            }
+          ],
+          "type": "ExternalReference"
+        },
+        "value": [
+          {
+            "language": "en",
+            "text": "listTest1 Product Designation"
+          }
+        ],
+        "qualifiers": [
+          {
+            "semanticId": {
+              "keys": [
+                {
+                  "type": "GlobalReference",
+                  "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
+                }
+              ],
+              "type": "ExternalReference"
+            },
+            "kind": "TemplateQualifier",
+            "type": "SMT/Cardinality",
+            "value": "One",
+            "valueType": "xs:string"
+          }
+        ],
+        "description": [
+          {
+            "language": "en",
+            "text": "Note: see also [IRDI] 0112/2///61987#ABA567#007 name of product Note: Short designation of the product is meant. Note: mandatory property according to EU Machine Directive 2006/42/EC. "
+          }
+        ],
+        "idShort": "ManufacturerProductDesignation"
+      }
+    ]
+  },
+  {
+    "modelType": "Submodel",
+    "kind": "Instance",
+    "semanticId": {
+      "keys": [
+        {
+          "type": "ConceptDescription",
+          "value": "https://admin-shell.io/zvei/nameplate/2/0/Nameplate"
+        }
+      ],
+      "type": "ExternalReference"
+    },
+    "administration": {
+      "revision": "0",
+      "version": "2"
+    },
+    "id": "https://i40.xitaso.com/sm/nameplateListTest2",
+    "description": [
+      {
+        "language": "en",
+        "text": "Contains the nameplate information attached to the product"
+      }
+    ],
+    "idShort": "Nameplate",
+    "submodelElements": [
+      {
+        "modelType": "MultiLanguageProperty",
+        "semanticId": {
+          "keys": [
+            {
+              "type": "ConceptDescription",
+              "value": "0173-1#02-AAO677#002"
+            }
+          ],
+          "type": "ExternalReference"
+        },
+        "value": [
+          {
+            "language": "de",
+            "text": "listTest2 Manufacturer Name"
+          }
+        ],
+        "qualifiers": [
+          {
+            "semanticId": {
+              "keys": [
+                {
+                  "type": "GlobalReference",
+                  "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
+                }
+              ],
+              "type": "ExternalReference"
+            },
+            "kind": "TemplateQualifier",
+            "type": "SMT/Cardinality",
+            "value": "One",
+            "valueType": "xs:string"
+          }
+        ],
+        "description": [
+          {
+            "language": "en",
+            "text": "Note: see also [IRDI] 0112/2///61987#ABA565#007 manufacturer Note: mandatory property according to EU Machine Directive 2006/42/EC. "
+          }
+        ],
+        "idShort": "ManufacturerName"
+      },
+      {
+        "modelType": "MultiLanguageProperty",
+        "semanticId": {
+          "keys": [
+            {
+              "type": "ConceptDescription",
+              "value": "0173-1#02-AAW338#001"
+            }
+          ],
+          "type": "ExternalReference"
+        },
+        "value": [
+          {
+            "language": "en",
+            "text": "listTest2 Product Designation"
+          }
+        ],
+        "qualifiers": [
+          {
+            "semanticId": {
+              "keys": [
+                {
+                  "type": "GlobalReference",
+                  "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
+                }
+              ],
+              "type": "ExternalReference"
+            },
+            "kind": "TemplateQualifier",
+            "type": "SMT/Cardinality",
+            "value": "One",
+            "valueType": "xs:string"
+          }
+        ],
+        "description": [
+          {
+            "language": "en",
+            "text": "Note: see also [IRDI] 0112/2///61987#ABA567#007 name of product Note: Short designation of the product is meant. Note: mandatory property according to EU Machine Directive 2006/42/EC. "
+          }
+        ],
+        "idShort": "ManufacturerProductDesignation"
+      }
+    ]
+  }
+]

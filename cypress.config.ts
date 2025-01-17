@@ -32,6 +32,6 @@ export default defineConfig({
         SUBMODEL_REPO_API_URL: 'http://localhost:5064/repo',
         MNESTIX_BACKEND_API_URL: 'http://localhost:5064',
         AAS_DISCOVERY_API_URL: 'http://localhost:5064/discovery',
-        MNESTIX_API_KEY: process.env.MNESTIX_BACKEND_API_KEY,
+        MNESTIX_API_KEY: 'verySecureApiKey',
     },
 });

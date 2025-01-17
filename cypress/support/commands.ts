@@ -9,7 +9,7 @@ import compareSubmodels from '../fixtures/cypress_e2e/CompareMockData/cy_compare
 import qrAAS from '../fixtures/cypress_e2e/QrScannerMockData/cy_qrScannerAas.json';
 import qrSubmodels from '../fixtures/cypress_e2e/QrScannerMockData/cy_qrScannerNameplateSubmodel.json';
 import listAasMockData from '../fixtures/cypress_e2e/AasListMockData/cyListAasMockData.json';
-import listAasSubmodelMockData from '../fixtures/cypress_e2e/AasListMockData/cyListAasTechnicalDataSubmodel.json';
+import listAasSubmodelMockData from '../fixtures/cypress_e2e/AasListMockData/cy_ListNameplateSubmodel.json';
 import thumbnailAasMockData from '../fixtures/cypress_e2e/ThumbnailFileMockData/thumbnailAasMockData.json';
 import toBase64 from './base64-conversion';
 
@@ -133,7 +133,7 @@ Cypress.Commands.add('deleteListAasMockData', () => {
 
 Cypress.Commands.add('callScannerCallback', (value: string) => {
     cy.window().then((window) => {
-        // @ts-ignore
+        // @ts-expect-error scannerCallback does not exist in type
         const func = window.Cypress.scannerCallback;
         expect(func).to.be.a('function');
         func(value).catch();
@@ -171,7 +171,7 @@ Cypress.Commands.add('uploadThumbnailToAas', (aasId: string) => {
                 encoding: 'binary',
                 headers: {
                     ApiKey: Cypress.env('MNESTIX_API_KEY'),
-                }
+                },
             });
         });
 });
