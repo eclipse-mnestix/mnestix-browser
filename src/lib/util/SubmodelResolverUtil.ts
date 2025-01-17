@@ -14,7 +14,7 @@ import { getKeyType } from 'lib/util/KeyTypeUtil';
 
 export function getTranslationTextNext(element: MultiLanguageProperty, locale: string) {
     const value = element.value?.find((el) => el.language == locale)?.text;
-    return value || null;
+    return value || element.value?.at(0) || null;
 }
 
 export function findSubmodelElementByIdShort(
