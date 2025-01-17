@@ -6,7 +6,7 @@ export default async function AasListHeader() {
 
     return (
         <>
-            <Typography variant="h2" textAlign="left" marginBottom={2}>
+            <Typography variant="h2" color="text.primary" textAlign="left" marginBottom={2}>
                 {t('header')}
             </Typography>
         </>

@@ -2,7 +2,7 @@
   "comment": "wir werden hier deutsche Übersetzungs-Keys haben",
   "aas-list": {
     "header": "AAS Liste",
-    "subHeader": "Lister aller Verwaltungsschalen im gewählten Repository.",
+    "subHeader": "Hier finden Sie alle AAS aus Ihrem Repository. Sie können ein AAS-Repository auswählen, um zwischen den Datenquellen zu wechseln.",
     "picture": "Bild",
     "manufacturerHeading": "Hersteller Name",
     "productDesignationHeading": "Hersteller Produktbezeichnung",

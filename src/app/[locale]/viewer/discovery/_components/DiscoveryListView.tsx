@@ -90,7 +90,7 @@ export const DiscoveryListView = () => {
 
     return (
         <>
-            <ListHeader namespace={'discoveryList'} keyValue={'header'} optionalID={assetId ?? aasId} />
+            <ListHeader namespace={'discoveryList'} header={'header'} optionalID={assetId ?? aasId} />
             {isLoadingList && <CenteredLoadingSpinner sx={{ mt: 10 }} />}
             {!isLoadingList && !isError && (
                 <>

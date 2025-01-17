@@ -49,7 +49,9 @@ export function SelectRepository(props: { onSelectedRepositoryChanged: Dispatch<
                 <Skeleton sx={{ mt: 2 }} width="200px" height="40px" variant="rectangular"></Skeleton>
             ) : (
                 <FormControl variant="standard" sx={{ minWidth: 200, maxWidth: 300 }}>
-                    <InputLabel id="aas-repository-select">{t('repository-dropdown')}</InputLabel>
+                    <InputLabel id="aas-repository-select" sx={{ color: 'text.secondary' }}>
+                        {t('repository-dropdown')}
+                    </InputLabel>
                     <Select
                         data-testid="repository-select"
                         labelId="aas-repository-select"

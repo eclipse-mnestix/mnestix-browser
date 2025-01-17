@@ -1,8 +1,9 @@
 'use client';
-import { Box, styled } from '@mui/material';
+import { Box, styled, Typography } from '@mui/material';
 import { NotificationOutlet } from 'components/basics/NotificationOutlet';
 import { Header } from './Header';
-import { ReactNode } from 'react';
+import { Footer } from './Footer';
+import React, { ReactNode } from 'react';
 
 const StyledBox = styled(Box)(() => ({
         // toolbar min-height is 56px
@@ -18,6 +19,7 @@ type Props = {
 };
 
 export function LayoutRoot({ children }: Props) {
+
     return (
         <Box display="flex" height="100%" flexDirection="column">
             <Box display="flex" flex={1} flexDirection="column">
@@ -25,6 +27,7 @@ export function LayoutRoot({ children }: Props) {
                     <Header />
                     {children}
                 </StyledBox>
+                <Footer />
                 <NotificationOutlet />
             </Box>
         </Box>

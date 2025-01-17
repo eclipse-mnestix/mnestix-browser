@@ -145,6 +145,9 @@ NEXTAUTH_SECRET: '<<YOUR_SECRET>>'
   **Mnestix Browser on port 3000 - http://localhost:3000**
   <br><br>
 
+- **docker-compose/compose.frontend.yml** - runs Mnestix Browser with a Basyx environment (AAS-Environment with MongoDB, Discovery Service, AAS/Submodel Registry) but without the Mnestix-API.<br>
+  **Mnestix Browser on port 3000 - http://localhost:3000**
+
 - **docker-compose/compose.dev.yml** - override file to run Mnestix Browser in a development environment. A development
   image will be built if it is not found in the local Docker Image Cache.<br>
   **Mnestix Browser on port 3000 - http://localhost:3000** <br>
@@ -416,7 +419,7 @@ MNESTIX_BACKEND_API_URL: '{{MNESTIX_BACKEND_API_URL}}'
 This is the easiest configuration, for when you only want to visualize and browse through AAS.
 If you choose to run the Mnestix Browser without the Mnestix API, the Feature Flags `AUTHENTICATION_FEATURE_FLAG`
 and `AAS_LIST_FEATURE_FLAG` will be overwritten to `false` as these Features use the functionality of the API.
-The other environment variables should be configured [as described](#frontend-configuration).
+The other environment variables should be configured [as described](#frontend-configuration). If you want to run Mnestix Browser with an Basyx environment you can simply use the compose.frontend file which is described [here](#Docker-Compose-files).
 
 #### How to configure the BaSyx AAS Repository
 

@@ -1,6 +1,4 @@
-import { Box, Checkbox, TableCell, Typography } from '@mui/material';
-import { encodeBase64 } from 'lib/util/Base64Util';
-import { useRouter } from 'next/navigation';
+import { Box, Checkbox, Skeleton, TableCell, Typography } from '@mui/material';
 import { useAasOriginSourceState, useAasState } from 'components/contexts/CurrentAasContext';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
@@ -17,6 +15,7 @@ import { ListEntityDto, NameplateValuesDto } from 'lib/services/list-service/Lis
 import { getNameplateValuesForAAS } from 'lib/services/list-service/aasListApiActions';
 import { MultiLanguageValueOnly } from 'lib/api/basyx-v3/types';
 import { useLocale, useTranslations } from 'next-intl';
+import { encodeBase64 } from 'lib/util/Base64Util';
 
 type AasTableRowProps = {
     repositoryUrl: string;
@@ -29,8 +28,9 @@ type AasTableRowProps = {
 
 const tableBodyText = {
     lineHeight: '150%',
-    fontSize: '16px',
+    fontSize: '14px',
     color: 'text.primary',
+    wordWrap: 'break-word',
 };
 export const AasListTableRow = (props: AasTableRowProps) => {
     const {
@@ -41,19 +41,20 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         selectedAasList,
         updateSelectedAasList,
     } = props;
-    const navigate = useRouter();
     const [, setAas] = useAasState();
     const [, setAasOriginUrl] = useAasOriginSourceState();
     const notificationSpawner = useNotificationSpawner();
     const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
     const [nameplateData, setNameplateData] = useState<NameplateValuesDto>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const t = useTranslations('aas-list');
     const locale = useLocale();
 
     const navigateToAas = (listEntry: ListEntityDto) => {
         setAas(null);
         setAasOriginUrl(null);
-        if (listEntry.aasId) navigate.push(`/viewer/${encodeBase64(listEntry.aasId)}`);
+        const baseUrl = window.location.origin;
+        window.open(baseUrl + `/viewer/${encodeBase64(listEntry.aasId)}`, '_blank');
     };
 
     const translateListText = (property: MultiLanguageValueOnly | undefined) => {
@@ -84,6 +85,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
 
     useAsyncEffect(async () => {
         if (!aasListEntry.aasId) return;
+        setIsLoading(true);
 
         const nameplate = await getNameplateValuesForAAS(repositoryUrl, aasListEntry.aasId);
 
@@ -92,6 +94,8 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         } else {
             setNameplateData(nameplate);
         }
+
+        setIsLoading(false);
     }, [aasListEntry.aasId]);
 
     const showMaxElementsNotification = () => {
@@ -126,19 +130,32 @@ export const AasListTableRow = (props: AasTableRowProps) => {
                 </TableCell>
             )}
             <PictureTableCell>
-                <ImageWithFallback src={thumbnailUrl} alt={'Thumbnail image for: ' + aasListEntry.assetId} size={88} />
+                <ImageWithFallback
+                    src={thumbnailUrl}
+                    alt={'Thumbnail image for: ' + aasListEntry.assetId}
+                    size={100}
+                    onClickHandler={() => navigateToAas(aasListEntry)}
+                />
             </PictureTableCell>
             <TableCell data-testid="list-manufacturer-name" align="left" sx={tableBodyText}>
-                {nameplateData && translateListText(nameplateData.manufacturerName)}
+                {!isLoading ? (
+                    nameplateData?.manufacturerName && translateListText(nameplateData.manufacturerName)
+                ) : (
+                    <Skeleton variant="text" width="80%" height={26} />
+                )}
             </TableCell>
             <TableCell data-testid="list-product-designation" align="left" sx={tableBodyText}>
-                {nameplateData && tooltipText(translateListText(nameplateData.manufacturerProductDesignation), 80)}
+                {!isLoading ? (
+                    nameplateData && tooltipText(translateListText(nameplateData.manufacturerProductDesignation), 80)
+                ) : (
+                    <Skeleton variant="text" width="80%" height={26} />
+                )}
             </TableCell>
             <TableCell data-testid="list-assetId" align="left" sx={tableBodyText}>
-                <Typography>{tooltipText(aasListEntry.assetId, 35)}</Typography>
+                <Typography sx={{ all: 'unset' }}>{tooltipText(aasListEntry.assetId, 70)}</Typography>
             </TableCell>
             <TableCell data-testid="list-aasId" align="left" sx={tableBodyText}>
-                <Typography>{tooltipText(aasListEntry.aasId, 35)}</Typography>
+                <Typography sx={{ all: 'unset' }}>{tooltipText(aasListEntry.aasId, 70)}</Typography>
             </TableCell>
             <TableCell align="center">
                 <RoundedIconButton

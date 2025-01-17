@@ -36,6 +36,7 @@ export default function AasList(props: AasListProps) {
         { label: t('productDesignationHeading') },
         { label: t('assetIdHeading') },
         { label: t('aasIdHeading') },
+        '',
     ];
 
     /**
@@ -66,7 +67,12 @@ export default function AasList(props: AasListProps) {
                                         arrow
                                     >
                                         <CompareArrowsIcon
-                                            sx={{ width: '35px', height: '35px', verticalAlign: 'middle' }}
+                                            color="secondary"
+                                            sx={{
+                                                width: '35px',
+                                                height: '35px',
+                                                verticalAlign: 'middle',
+                                            }}
                                         />
                                     </Tooltip>
                                 </TableCell>
@@ -74,7 +80,14 @@ export default function AasList(props: AasListProps) {
                             {!!tableHeaders &&
                                 tableHeaders.map((header: { label: string }, index) => (
                                     <TableCell key={index}>
-                                        <Typography fontWeight="bold">{header.label}</Typography>
+                                        <Typography
+                                            variant="h5"
+                                            color="secondary"
+                                            letterSpacing={0.16}
+                                            fontWeight={700}
+                                        >
+                                            {header.label}
+                                        </Typography>
                                     </TableCell>
                                 ))}
                         </TableRow>
@@ -85,7 +98,6 @@ export default function AasList(props: AasListProps) {
                                 <TableRow
                                     key={aasListEntry.aasId}
                                     sx={{
-                                        '&:last-child td, &:last-child th': { border: 0 },
                                         backgroundColor: theme.palette?.common?.white,
                                         '&:hover': { backgroundColor: theme.palette.action.hover },
                                     }}
