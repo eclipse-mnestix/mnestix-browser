@@ -83,7 +83,7 @@ export const DiscoveryListView = () => {
     }, []);
 
     const tableHeaders = [
-        { label: intl.formatMessage(messages.mnestix.aasList.picture) },
+        { label: intl.formatMessage(messages.mnestix.discoveryList.picture) },
         { label: intl.formatMessage(messages.mnestix.discoveryList.aasIdHeading) },
         { label: intl.formatMessage(messages.mnestix.discoveryList.repositoryUrl) },
     ];

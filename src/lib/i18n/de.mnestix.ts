@@ -233,6 +233,7 @@ export const deMnestix = {
         logoHelperText: 'base64 encoded',
     },
     discoveryList: {
+        picture: 'Bild',
         header: 'Verwandte AAS für ID',
         aasIdHeading: 'AAS ID',
         repositoryUrl: 'Repository Url',
