@@ -125,16 +125,6 @@ export default function MainMenu() {
         },
     ];
 
-    if (env.AAS_LIST_FEATURE_FLAG) {
-        const listItemToAdd = {
-            label: <FormattedMessage {...messages.mnestix.list} />,
-            to: '/list',
-            icon: <ListIcon />,
-        };
-        
-        adminMainMenu.splice(1, 0, listItemToAdd);
-    }
-
     if (env.MNESTIX_BACKEND_API_URL) {
         const templateItemToAdd = {
             label: <FormattedMessage {...messages.mnestix.templates} />,
@@ -142,7 +132,17 @@ export default function MainMenu() {
             icon: <TemplateIcon />,
         };
 
-        adminMainMenu.push(templateItemToAdd);
+        adminMainMenu.splice(1, 0, templateItemToAdd);
+    }
+
+    if (env.AAS_LIST_FEATURE_FLAG) {
+        const listItemToAdd = {
+            label: <FormattedMessage {...messages.mnestix.list} />,
+            to: '/list',
+            icon: <ListIcon />,
+        };
+
+        adminMainMenu.splice(1, 0, listItemToAdd);
     }
 
     return (
