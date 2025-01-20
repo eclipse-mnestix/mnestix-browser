@@ -3,9 +3,15 @@ import { Box, Divider, Link, Typography } from '@mui/material';
 import { getTranslations } from 'next-intl/server';
 import { DashboardInput } from './_components/DashboardInput';
 import { GoToListButton } from './_components/GoToListButton';
+import * as process from 'node:process';
+import { authOptions } from 'authConfig';
+import { getServerSession } from 'next-auth';
 
 export default async function page() {
     const t = await getTranslations('dashboard');
+    const session = await getServerSession(authOptions);
+    const showList = !!(session && process.env.AUTHENTICATION_FEATURE_FLAG?.toLowerCase() === 'true');
+
     return (
         <Box sx={{ p: 2, m: 'auto' }}>
             <Typography data-testid="welcome-text" variant="h1" color="primary" align="center" sx={{ mt: 2 }}>
@@ -17,8 +23,7 @@ export default async function page() {
             <Divider sx={{ my: 2 }} />
 
             <DashboardInput />
-            <GoToListButton />
-
+            {showList && <GoToListButton />}
             <Typography align="center" sx={{ mt: 4 }}>
                 {t('findOutMore-text')}:
             </Typography>

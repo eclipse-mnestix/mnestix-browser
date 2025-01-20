@@ -13,7 +13,7 @@ export const getEnv = async (): Promise<EnvironmentalVariables> => {
         COMPARISON_FEATURE_FLAG: process.env.COMPARISON_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
         TRANSFER_FEATURE_FLAG: process.env.TRANSFER_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
         AAS_LIST_FEATURE_FLAG: process.env.AAS_LIST_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
-        AAS_LIST_V2_FEATURE_FLAG:  process.env.AAS_LIST_V2_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
+        AAS_LIST_V2_FEATURE_FLAG: process.env.AAS_LIST_V2_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
     };
 
     // If BackendAPI is present evaluate the FeatureFlags else they stay the default value
@@ -23,12 +23,17 @@ export const getEnv = async (): Promise<EnvironmentalVariables> => {
     }
 
     if (
-        !process.env.MNESTIX_BACKEND_API_URL &&
+        process.env.MNESTIX_BACKEND_API_URL?.toLowerCase() === 'false' &&
         featureFlags.AAS_LIST_FEATURE_FLAG &&
         !featureFlags.AAS_LIST_V2_FEATURE_FLAG
     ) {
         console.warn('Only AAS_LIST_V2_FEATURE_FLAG environment variables can be set without Mnestix API');
         featureFlags.AAS_LIST_V2_FEATURE_FLAG = true;
+    }
+
+    if (process.env.AUTHENTICATION_FEATURE_FLAG?.toLowerCase() === 'false') {
+        console.warn('AAS List feature is available only for logged in users.');
+        featureFlags.AAS_LIST_V2_FEATURE_FLAG = false;
     }
 
     const otherVariables = {

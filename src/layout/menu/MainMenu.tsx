@@ -11,7 +11,6 @@ import { MenuListItem, MenuListItemProps } from './MenuListItem';
 import ListIcon from '@mui/icons-material/List';
 import packageJson from '../../../package.json';
 import { useEnv } from 'app/env/provider';
-import { ExternalLink } from 'layout/menu/ExternalLink';
 
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
     '.MuiDrawer-paper': {
@@ -59,10 +58,7 @@ export default function MainMenu() {
     const auth = useAuth();
     const env = useEnv();
     const useAuthentication = env.AUTHENTICATION_FEATURE_FLAG;
-    const copyrightString = `Copyright © ${new Date().getFullYear()} XITASO GmbH`;
     const versionString = 'Version ' + packageJson.version;
-    const imprintString = env.IMPRINT_URL;
-    const dataPrivacyString = env.DATA_PRIVACY_URL;
 
     const getAuthName = () => {
         const user = auth?.getAccount()?.user;
@@ -135,15 +131,14 @@ export default function MainMenu() {
             to: '/list',
             icon: <ListIcon />,
         };
-
-        guestMainMenu.push(listItemToAdd);
+        
         adminMainMenu.splice(1, 0, listItemToAdd);
     }
 
-    if (env.MNESTIX_BACKEND_API_URL){
+    if (env.MNESTIX_BACKEND_API_URL) {
         const templateItemToAdd = {
             label: <FormattedMessage {...messages.mnestix.templates} />,
-                to: '/templates',
+            to: '/templates',
             icon: <TemplateIcon />,
         };
 
