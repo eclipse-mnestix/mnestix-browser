@@ -3,16 +3,15 @@ import { SimpleTreeView } from '@mui/x-tree-view';
 import { SyntheticEvent, useState } from 'react';
 import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import {
-    duplicateItem,
     viewObjectHasDataValue,
-    findElementsToDelete,
-    rewriteNodeIds,
+    rewriteNodeIds, splitIdIntoArray, updateNodeIds,
 } from 'lib/util/SubmodelViewObjectUtil';
 import { TemplateEditTreeItem } from './TemplateEditTreeItem';
 import multiplicityData from './edit-components/multiplicity/multiplicity-data.json';
 import cloneDeep from 'lodash/cloneDeep';
 import { Qualifier } from '@aas-core-works/aas-core3.0-typescript/types';
 import { MultiplicityEnum } from 'lib/enums/Multiplicity.enum';
+import { escapeRegExp, parseInt } from 'lodash';
 
 type TemplateEditTreeProps = {
     rootTree?: SubmodelViewObject;
@@ -101,6 +100,79 @@ export function TemplateEditTree(props: TemplateEditTreeProps) {
             setDeletedItems(newDeletedItems);
             props.onTreeChange(newRootTree, newDeletedItems);
         }
+    }
+
+    function findElementsToDelete(elementToCheck: SubmodelViewObject): string[] {
+        let returnArray: string[] = [];
+        for (const child of elementToCheck.children) {
+            returnArray = returnArray.concat(findElementsToDelete(child));
+        }
+        if (elementToCheck.isAboutToBeDeleted == true) {
+            returnArray.push(elementToCheck.id);
+        }
+        return returnArray;
+    }
+
+    function duplicateItem(elementToDuplicateId: string, submodel: SubmodelViewObject) {
+        const parentElement = getParentOfElement(elementToDuplicateId, submodel);
+        const idArray = splitIdIntoArray(elementToDuplicateId);
+        const elementToDuplicate = cloneDeep(parentElement?.children[idArray[idArray.length - 1]]);
+        if (elementToDuplicate && parentElement) {
+            //rename the duplicated element
+            const matchingNames = findMatchingNames(parentElement, elementToDuplicate.name);
+            const elementName = generateNameOfDuplicatedElement(parentElement, elementToDuplicate.name, matchingNames);
+            elementToDuplicate.name = elementName; //Name needs to be adjusted, otherwise only one element will be saved
+            if (elementToDuplicate.data?.idShort) {
+                elementToDuplicate.data.idShort = elementName;
+            }
+            //insert the duplicated element after the original element and already existing duplicates
+            parentElement.children.splice(idArray[idArray.length - 1] + matchingNames.length + 1, 0, elementToDuplicate);
+            //rewrite the id
+            for (let i = idArray[idArray.length - 1] + matchingNames.length + 1; i < parentElement.children.length; i++) {
+                const newIndexArray = idArray;
+                newIndexArray.pop();
+                newIndexArray.push(i);
+                const newId = newIndexArray.join('-');
+                updateNodeIds(parentElement.children[i].id, newId, parentElement.children[i]);
+            }
+        }
+        return submodel;
+    }
+
+    function findMatchingNames(tree: SubmodelViewObject, originalName: string): string[] {
+        const matchingNames: string[] = [];
+        //go through the tree and find all names with pattern "originalName_number"
+        tree.children.map((child) => {
+            if (new RegExp('^' + escapeRegExp(originalName) + '_([1-9]\\d*|0)$').test(child.name)) {
+                matchingNames.push(child.name);
+            }
+        });
+        return matchingNames;
+    }
+
+    function generateNameOfDuplicatedElement(
+        tree: SubmodelViewObject,
+        originalName: string,
+        matchingNames: string[],
+    ): string {
+        let currentSmallestIndex = 0;
+        const matchingNameIndexes: number[] = [];
+        matchingNames.map((name) => {
+            //split the index off of the names with pattern 'name_index'
+            const index = name.split(new RegExp('^.*(_([1-9]\\d*|0))$'))[1].split('_')[1];
+            matchingNameIndexes.push(parseInt(index));
+        });
+        let anotherLoop = true;
+        while (anotherLoop) {
+            anotherLoop = false;
+            for (const i of matchingNameIndexes) {
+                if (i == currentSmallestIndex) {
+                    anotherLoop = true;
+                    currentSmallestIndex++;
+                }
+            }
+        }
+        return originalName + '_' + currentSmallestIndex;
     }
 
     function deleteTreeItem(nodeId: string, rootTree: SubmodelViewObject | undefined) {
