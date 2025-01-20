@@ -229,6 +229,7 @@ export const enMnestix = {
         logoHelperText: 'base64 encoded',
     },
     discoveryList: {
+        titleViewAASButton: 'View AAS',
         picture: 'Picture',
         header: 'Related AAS to ID',
         aasIdHeading: 'AAS ID',
