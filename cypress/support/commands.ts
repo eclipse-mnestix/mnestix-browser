@@ -133,7 +133,7 @@ Cypress.Commands.add('deleteListAasMockData', () => {
 
 Cypress.Commands.add('callScannerCallback', (value: string) => {
     cy.window().then((window) => {
-        // @ts-expect-error scannerCallback does not exist in type
+        // @ts-ignore
         const func = window.Cypress.scannerCallback;
         expect(func).to.be.a('function');
         func(value).catch();
