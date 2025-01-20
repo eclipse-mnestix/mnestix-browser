@@ -17,18 +17,14 @@ export default function Page() {
      */
     return (
         <PrivateRoute>
-            <>
-                {env.AUTHENTICATION_FEATURE_FLAG && (
-                    <Box display="flex" flexDirection="column" marginTop="0px" marginBottom="50px" width="100%">
-                        <Box width="90%" margin="auto">
-                            <Box marginTop="2rem" marginBottom="2.25rem">
-                                <ListHeader namespace={'aas-list'} header={'header'} subHeader={'subHeader'} />
-                            </Box>
-                            {env.AAS_LIST_V2_FEATURE_FLAG ? <AasListDataWrapper /> : <AasListViewDeprecated />}
-                        </Box>
+            <Box display="flex" flexDirection="column" marginTop="0px" marginBottom="50px" width="100%">
+                <Box width="90%" margin="auto">
+                    <Box marginTop="2rem" marginBottom="2.25rem">
+                        <ListHeader namespace={'aas-list'} header={'header'} subHeader={'subHeader'} />
                     </Box>
-                )}
-            </>
+                    {env.AAS_LIST_V2_FEATURE_FLAG ? <AasListDataWrapper /> : <AasListViewDeprecated />}
+                </Box>
+            </Box>
         </PrivateRoute>
     );
 }

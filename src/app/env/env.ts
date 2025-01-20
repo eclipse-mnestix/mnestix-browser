@@ -31,11 +31,6 @@ export const getEnv = async (): Promise<EnvironmentalVariables> => {
         featureFlags.AAS_LIST_V2_FEATURE_FLAG = true;
     }
 
-    if (process.env.AUTHENTICATION_FEATURE_FLAG?.toLowerCase() === 'false') {
-        console.warn('AAS List feature is available only for logged in users.');
-        featureFlags.AAS_LIST_V2_FEATURE_FLAG = false;
-    }
-
     const otherVariables = {
         AD_CLIENT_ID: process.env.AD_CLIENT_ID,
         AD_TENANT_ID: process.env.AD_TENANT_ID,

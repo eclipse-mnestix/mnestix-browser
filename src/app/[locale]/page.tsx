@@ -10,7 +10,7 @@ import { getServerSession } from 'next-auth';
 export default async function page() {
     const t = await getTranslations('dashboard');
     const session = await getServerSession(authOptions);
-    const showList = !!(session && process.env.AUTHENTICATION_FEATURE_FLAG?.toLowerCase() === 'true');
+    const showList = !!(session || process.env.AUTHENTICATION_FEATURE_FLAG?.toLowerCase() === 'false');
 
     return (
         <Box sx={{ p: 2, m: 'auto' }}>
