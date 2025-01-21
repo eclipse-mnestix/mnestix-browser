@@ -1,9 +1,8 @@
 import { AasListDto, ListEntityDto } from 'lib/services/list-service/ListService';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { getAasListEntities } from 'lib/services/list-service/aasListApiActions';
-import { showError } from 'lib/util/ErrorHandlerUtil';
+import { useShowError } from 'lib/hooks/UseShowError';
 import { useState } from 'react';
-import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import AasList from './AasList';
 import { useEnv } from 'app/env/provider';
@@ -19,15 +18,22 @@ export default function AasListDataWrapper() {
     const [aasList, setAasList] = useState<AasListDto>();
     const [, setAasListFiltered] = useState<ListEntityDto[]>();
     const [selectedAasList, setSelectedAasList] = useState<string[]>();
-    const notificationSpawner = useNotificationSpawner();
     const [selectedRepository, setSelectedRepository] = useState<string | undefined>();
     const env = useEnv();
     const t = useTranslations('aas-list');
+    const { showError } = useShowError();
 
     //Pagination
     const [currentCursor, setCurrentCursor] = useState<string>();
     const [cursorHistory, setCursorHistory] = useState<(string | undefined)[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
+
+    const clearResults = () => {
+        setAasList(undefined);
+        setCurrentCursor(undefined);
+        setCursorHistory(['']);
+        setCurrentPage(0);
+    };
 
     useAsyncEffect(async () => {
         resetPagination();
@@ -38,6 +44,7 @@ export default function AasListDataWrapper() {
         if (!selectedRepository) return;
 
         setIsLoadingList(true);
+        clearResults();
         const response = await getAasListEntities(selectedRepository!, 10, newCursor);
 
         if (response.success) {
@@ -49,7 +56,7 @@ export default function AasListDataWrapper() {
                 setCursorHistory((prevHistory) => [...prevHistory, newCursor]);
             }
         } else {
-            showError(response.error, notificationSpawner);
+            showError(response.error);
         }
         setIsLoadingList(false);
     };

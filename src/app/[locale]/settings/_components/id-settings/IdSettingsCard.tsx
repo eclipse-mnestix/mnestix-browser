@@ -8,7 +8,7 @@ import { IdSettingEntry } from './IdSettingEntry';
 import { AssetIdRedirectDocumentationDialog } from './AssetIdRedirectDocumentationDialog';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { showError } from 'lib/util/ErrorHandlerUtil';
+
 import {
     ISubmodelElement,
     Property,
@@ -20,6 +20,7 @@ import { useAuth } from 'lib/hooks/UseAuth';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { SettingsCardHeader } from 'app/[locale]/settings/_components/SettingsCardHeader';
 import { getIdGenerationSettings, putSingleIdGenerationSetting } from 'lib/services/configurationApiActions';
+import { useShowError } from 'lib/hooks/UseShowError';
 
 const StyledDocumentationButton = styled(Box)(({ theme }) => ({
     display: 'flex',
@@ -51,6 +52,7 @@ export function IdSettingsCard() {
     const intl = useIntl();
     const [isLoading, setIsLoading] = useState(false);
     const [settings, setSettings] = useState<IdGenerationSettingFrontend[]>([]);
+    const { showError } = useShowError();
 
     const {
         register,
@@ -118,7 +120,7 @@ export function IdSettingsCard() {
             // set form state
             reset({ idSettings: _settings });
         } catch (e) {
-            showError(e, notificationSpawner);
+            showError(e);
         } finally {
             setIsLoading(false);
         }
@@ -142,7 +144,7 @@ export function IdSettingsCard() {
             });
             setIsEditMode(false);
         } catch (e) {
-            showError(e, notificationSpawner);
+            showError(e);
         } finally {
             setIsLoading(false);
         }

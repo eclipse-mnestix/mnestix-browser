@@ -1,9 +1,7 @@
-import { MessageDescriptorWithId } from 'lib/i18n/localization';
-
 export class LocalizedError extends Error {
-    descriptor: MessageDescriptorWithId;
+    descriptor: string;
 
-    constructor(message: MessageDescriptorWithId) {
+    constructor(message: string) {
         const trueProto = new.target.prototype;
         super();
         Object.setPrototypeOf(this, trueProto);

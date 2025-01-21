@@ -36,5 +36,23 @@
   },
   "settings": {
     "header": "Einstellungen"
+  },
+  "errors": {
+    "unexpected-error": "Unerwarteter Fehler",
+    "unauthorized-error": {
+      "title": "Unautorisierter Zugriff",
+      "content": "Sie haben keinen Zugang zu dieser Ressource. Bitte loggen Sie sich ein oder fragen sie Ihren Administrator um Zugriff."
+    },
+    "not-found": "Nicht gefunden",
+    "url-not-found": "Keine Verwaltungsschale unter dieser ID.",
+    "compare-error": {
+      "more-aas-found": "Mehr als eine Verwaltungsschale im Discovery Service gefunden, bitte geben Sie die AAS-ID an.",
+      "aas-already-added": "Verwaltungsschale kann nicht mehrmals hinzugefügt werden",
+      "aas-add-error": "Verwaltungsschale konnte nicht hinzugefügt werden."
+    },
+    "qr-scanner": {
+      "default-callback-error-msg": "QR Code konnte nicht geöffnet werden!",
+      "error-on-qr-scanner-open": "QR Scanner konnte nicht geöffnet werden!"
+    }
   }
 }

@@ -4,9 +4,7 @@ import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner
 import { useEnv } from 'app/env/provider';
 import { useState } from 'react';
 import { AasListEntry } from 'lib/api/generated-api/clients.g';
-import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { Box } from '@mui/material';
-import { showError } from 'lib/util/ErrorHandlerUtil';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { SelectProductType } from 'app/[locale]/list/_components-deprecated/SelectProductType';
 import { AasListComparisonHeader } from 'app/[locale]/list/_components-deprecated/AasListComparisonHeader';
@@ -14,15 +12,16 @@ import AasList from 'app/[locale]/list/_components-deprecated/AasList';
 import { useIntl } from 'react-intl';
 import { messages } from 'lib/i18n/localization';
 import { getAasListEntries } from 'lib/services/list-service/aasListApiActions';
+import { useShowError } from 'lib/hooks/UseShowError';
 
 export const AasListViewDeprecated = () => {
     const [isLoadingList, setIsLoadingList] = useState(false);
     const [aasList, setAasList] = useState<AasListEntry[]>();
     const [aasListFiltered, setAasListFiltered] = useState<AasListEntry[]>();
     const [selectedAasList, setSelectedAasList] = useState<string[]>();
-    const notificationSpawner = useNotificationSpawner();
     const env = useEnv();
     const intl = useIntl();
+    const { showError } = useShowError();
 
     useAsyncEffect(async () => {
         try {
@@ -31,7 +30,7 @@ export const AasListViewDeprecated = () => {
             setAasList(list);
             setAasListFiltered(list);
         } catch (e) {
-            showError(e, notificationSpawner);
+            showError(e);
         } finally {
             setIsLoadingList(false);
         }

@@ -2,12 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { Box, Button, Skeleton, Typography } from '@mui/material';
-import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { messages } from 'lib/i18n/localization';
 import { safeBase64Decode } from 'lib/util/Base64Util';
 import { ArrowForward } from '@mui/icons-material';
-import { showError } from 'lib/util/ErrorHandlerUtil';
 import { LangStringNameType, Reference } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
@@ -31,6 +29,7 @@ import {
 } from 'components/contexts/CurrentAasContext';
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { TransferButton } from 'app/[locale]/viewer/_components/transfer/TransferButton';
+import { useShowError } from 'lib/hooks/UseShowError';
 
 export default function Page() {
     const navigate = useRouter();
@@ -38,7 +37,6 @@ export default function Page() {
     const base64AasId = searchParams.base64AasId;
     const aasIdDecoded = safeBase64Decode(base64AasId);
     const [isLoadingAas, setIsLoadingAas] = useState(false);
-    const notificationSpawner = useNotificationSpawner();
     const isMobile = useIsMobile();
     const intl = useIntl();
     const env = useEnv();
@@ -49,6 +47,7 @@ export default function Page() {
     const [submodels, setSubmodels] = useSubmodelState();
     const [isSubmodelsLoading, setIsSubmodelsLoading] = useState(true);
     const [registryAasData, setRegistryAasData] = useRegistryAasState();
+    const { showError } = useShowError();
 
     useAsyncEffect(async () => {
         await fetchSubmodels();
@@ -81,7 +80,7 @@ export default function Page() {
 
         const { isSuccess, result } = await performFullAasSearch(aasIdDecoded);
         if (!isSuccess) {
-            showError(new LocalizedError(messages.mnestix.aasUrlNotFound), notificationSpawner);
+            showError(new LocalizedError('url-not-found'));
         } else if (result.aas) {
             setAasOriginUrl(result.aasData?.aasRepositoryOrigin ?? null);
             setRegistryAasData(result.aasData);

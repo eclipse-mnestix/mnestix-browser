@@ -16,8 +16,8 @@ export const DashboardInput = () => {
     const navigate = useRouter();
 
     const browseAasUrl = async (searchString: string) => {
-        const { isSuccess, result }  = await performFullAasSearch(searchString.trim());
-        if (!isSuccess) throw new LocalizedError(messages.mnestix.aasUrlNotFound);
+        const { isSuccess, result } = await performFullAasSearch(searchString.trim());
+        if (!isSuccess) throw new LocalizedError('url-not-found');
 
         if (result.aas) {
             setAas(result.aas);

@@ -11,7 +11,7 @@ import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { messages } from 'lib/i18n/localization';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { showError } from 'lib/util/ErrorHandlerUtil';
+import { useShowError } from 'lib/hooks/UseShowError';
 import TemplatesInfoGraphic from 'assets/templates_infographic.svg';
 import EmptyDefaultTemplate from 'assets/submodels/defaultEmptySubmodel.json';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
@@ -47,6 +47,8 @@ export default function Page() {
 
     const auth = useAuth();
     const bearerToken = auth.getBearerToken();
+
+    const { showError } = useShowError();
     const fetchAll = async () => {
         // fetching defaults first
         const _defaults = await getDefaultTemplates();
@@ -128,7 +130,7 @@ export default function Page() {
             setIsLoading(true);
             await fetchAll();
         } catch (e) {
-            showError(e, notificationSpawner);
+            showError(e);
         } finally {
             setIsLoading(false);
         }
@@ -178,7 +180,7 @@ export default function Page() {
             navigate.push(`/templates/${encodeURIComponent(newId)}`);
         } catch (e) {
             setIsCreatingTemplate(false);
-            showError(e, notificationSpawner);
+            showError(e);
         }
     };
 
@@ -192,7 +194,7 @@ export default function Page() {
             });
             await fetchCustoms(defaultItems);
         } catch (e) {
-            showError(e, notificationSpawner);
+            showError(e);
         }
     };
 

@@ -1,9 +1,7 @@
 'use client';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { encodeBase64 } from 'lib/util/Base64Util';
-import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { Box } from '@mui/material';
-import { showError } from 'lib/util/ErrorHandlerUtil';
 import { NotFoundError } from 'lib/errors/NotFoundError';
 import { useState } from 'react';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
@@ -13,17 +11,17 @@ import { useAasOriginSourceState, useAasState } from 'components/contexts/Curren
 import { performDiscoveryAasSearch } from 'lib/services/search-actions/searchActions';
 import { wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { LocalizedError } from 'lib/util/LocalizedError';
-import { messages } from 'lib/i18n/localization';
+import { useShowError } from 'lib/hooks/UseShowError';
 
 export const RedirectToViewer = () => {
     const navigate = useRouter();
     const searchParams = useSearchParams();
     const assetIdParam = searchParams.get('assetId')?.toString();
-    const notificationSpawner = useNotificationSpawner();
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
     const [, setAas] = useAasState();
     const [, setAasOriginUrl] = useAasOriginSourceState();
+    const { showError } = useShowError();
 
     useAsyncEffect(async () => {
         try {
@@ -32,19 +30,19 @@ export const RedirectToViewer = () => {
         } catch (e) {
             setIsLoading(false);
             setIsError(true);
-            showError(e, notificationSpawner);
+            showError(e);
         }
     }, []);
 
     async function navigateToViewerOfAsset(assetId: string | undefined): Promise<void> {
         const { isSuccess, result: aasIds } = await getAasIdsOfAsset(assetId);
 
-        if (!isSuccess) throw new LocalizedError(messages.mnestix.aasUrlNotFound);
+        if (!isSuccess) throw new LocalizedError('url-not-found');
 
         assertAtLeastOneAasIdExists(aasIds);
         const targetUrl = determineViewerTargetUrl(aasIds);
         setAas(null);
-        setAasOriginUrl(null)
+        setAasOriginUrl(null);
         navigate.replace(targetUrl);
     }
 

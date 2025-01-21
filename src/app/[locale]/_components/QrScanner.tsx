@@ -6,12 +6,11 @@ import { Box, CircularProgress, IconButton, useTheme } from '@mui/material';
 import { QrStream } from 'app/[locale]/_components/QrStream';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
-import { messages } from 'lib/i18n/localization';
-import { useIntl } from 'react-intl';
 import { LocalizedError } from 'lib/util/LocalizedError';
 import { keyframes, styled } from '@mui/system';
 import { ThemeProvider } from '@mui/material/styles';
 import CircleIcon from '@mui/icons-material/Circle';
+import { useTranslations } from 'next-intl';
 
 enum State {
     Stopped,
@@ -24,7 +23,7 @@ export function QrScanner(props: { onScan: (scanResult: string) => Promise<void>
     const [state, setState] = useState<State>(State.Stopped);
 
     const notificationSpawner = useNotificationSpawner();
-    const intl = useIntl();
+    const t = useTranslations('errors');
 
     const theme = useTheme();
     const size = props.size || 250;
@@ -34,7 +33,7 @@ export function QrScanner(props: { onScan: (scanResult: string) => Promise<void>
             setState(State.ShowVideo);
         } else {
             notificationSpawner.spawn({
-                message: intl.formatMessage(messages.mnestix.qrScanner.errorOnQrScannerOpen),
+                message: t('qr-scanner.error-on-qr-scanner-open'),
                 severity: 'error',
             });
             setState(State.Stopped);
@@ -87,10 +86,9 @@ export function QrScanner(props: { onScan: (scanResult: string) => Promise<void>
                 await props.onScan(result);
                 setState(State.Stopped);
             } catch (e) {
-                const msg =
-                    e instanceof LocalizedError ? e.descriptor : messages.mnestix.qrScanner.defaultCallbackErrorMsg;
+                const msg = e instanceof LocalizedError ? e.descriptor : 'qr-scanner.default-callback-error-msg';
                 notificationSpawner.spawn({
-                    message: intl.formatMessage(msg),
+                    message: t(msg),
                     severity: 'error',
                 });
                 setState(State.LoadScanner);

@@ -36,5 +36,23 @@
   },
   "settings": {
     "header": "Settings"
+  },
+  "errors": {
+    "unexpected-error": "Unexpected error",
+    "unauthorized-error": {
+      "title": "Unauthorized access",
+      "content": "You don`t have access to this resource. You may login or contact your administrator to get access."
+    },
+    "not-found": "Not found",
+    "url-not-found": "No AAS with the given ID.",
+    "compare-error": {
+      "more-aas-found": "More than one AAS found in the discovery service, please provide the AAS ID instead.",
+      "aas-already-added": "AAS cannot be added more than once.",
+      "aas-add-error": "AAS could not be added."
+    },
+    "qr-scanner": {
+      "default-callback-error-msg": "Could not open the QR code!",
+      "error-on-qr-scanner-open": "Could not open the QR scanner!"
+    }
   }
 }

@@ -4,8 +4,7 @@ import { DataRow } from 'components/basics/DataRow';
 import { FormattedMessage } from 'react-intl';
 import { messages } from 'lib/i18n/localization';
 import { useEffect, useState } from 'react';
-import { showError } from 'lib/util/ErrorHandlerUtil';
-import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
+import { useShowError } from 'lib/hooks/UseShowError';
 import { useParams } from 'next/navigation';
 import { useEnv } from 'app/env/provider';
 import {
@@ -24,12 +23,12 @@ export function RelationShipDetailsDialog(props: RelationShipDetailsModalProps) 
     const relationship = props.relationship;
     const searchParams = useParams<{ base64AasId: string }>();
     const base64AasId = searchParams.base64AasId;
-    const notificationSpawner = useNotificationSpawner();
 
     const submodelId = relationship.second.keys[0]?.value;
 
     const [subIdShort, setSubIdShort] = useState<string>();
     const env = useEnv();
+    const { showError } = useShowError();
 
     useEffect(() => {
         async function _fetchSubmodels() {
@@ -68,7 +67,7 @@ export function RelationShipDetailsDialog(props: RelationShipDetailsModalProps) 
                 const submodelIdShort = submodel?.idShort;
                 setSubIdShort(submodelIdShort as string);
             } catch (e) {
-                showError(e, notificationSpawner);
+                showError(e);
             }
         }
 

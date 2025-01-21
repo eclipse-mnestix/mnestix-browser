@@ -8,21 +8,20 @@ import { CompareSubmodelsAccordion } from 'app/[locale]/compare/_components/Comp
 import { CompareAasAddDialog } from 'app/[locale]/compare/_components/add-aas/CompareAasAddDialog';
 import { useCompareAasContext } from 'components/contexts/CompareAasContext';
 import { useEffect, useState } from 'react';
-import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { useSearchParams } from 'next/navigation';
-import { showError } from 'lib/util/ErrorHandlerUtil';
 import { LocalizedError } from 'lib/util/LocalizedError';
 import { performFullAasSearch } from 'lib/services/search-actions/searchActions';
+import { useShowError } from 'lib/hooks/UseShowError';
 
 export function CompareView() {
     const { compareAas, addSeveralAas, deleteAas, addAas } = useCompareAasContext();
     const [isLoadingAas, setIsLoadingAas] = useState(false);
-    const notificationSpawner = useNotificationSpawner();
     const searchParams = useSearchParams();
     const aasIds = searchParams.getAll('aasId').map((aasId) => {
         return decodeURIComponent(aasId);
     });
     const [addModalOpen, setAddModalOpen] = useState(false);
+    const { showError } = useShowError();
 
     useEffect(() => {
         async function _fetchAas() {
@@ -32,14 +31,14 @@ export function CompareView() {
                     addSeveralAas(aasIds);
                 }
             } catch (e) {
-                showError(e, notificationSpawner);
+                showError(e);
             } finally {
                 setIsLoadingAas(false);
             }
         }
 
         _fetchAas().catch((reason) => {
-            showError(reason, notificationSpawner);
+            showError(reason);
         });
     }, []);
 
@@ -57,21 +56,21 @@ export function CompareView() {
 
     const handleAddAas = async (aasId: string) => {
         const { isSuccess, result } = await performFullAasSearch(aasId);
-        if (!isSuccess) throw new LocalizedError(messages.mnestix.aasUrlNotFound);
+        if (!isSuccess) throw new LocalizedError('url-not-found');
 
         if (!result.aas) {
-            throw new LocalizedError(messages.mnestix.compare.moreAasFound);
+            throw new LocalizedError('compare-error.more-aas-found');
         }
 
         const aasExists = compareAas.find((compareAas) => compareAas.aas.id === result.aas!.id);
         if (aasExists) {
-            throw new LocalizedError(messages.mnestix.compare.aasAlreadyAdded);
+            throw new LocalizedError('compare-error.aas-already-added');
         }
 
         try {
             await addAas(result.aas, result.aasData);
         } catch (e) {
-            throw new LocalizedError(messages.mnestix.compare.aasAddError);
+            throw new LocalizedError('compare-error.aas-add-error');
         }
 
         setAddModalOpen(false);
