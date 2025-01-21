@@ -36,10 +36,10 @@ export const authOptions: AuthOptions = {
               ]
             : [
                   AzureADProvider({
-                      clientId: process.env.AD_CLIENT_ID ? process.env.AD_CLIENT_ID : '',
+                      clientId: process.env.AD_CLIENT_ID ?? '',
                       clientSecret: process.env.AD_SECRET_VALUE ?? '',
                       tenantId: process.env.AD_TENANT_ID,
-                      authorization: { params: { scope: `openid ${requestedResource}admin.write` } },
+                      authorization: { params: { scope: `openid ${requestedResource}admin.write offline_access` } },
                   }),
               ]),
     ],
@@ -60,11 +60,13 @@ export const authOptions: AuthOptions = {
                 return token;
             }
 
-            if (!keycloakEnabled) return token;
-
             try {
                 console.warn('Refreshing access token...');
-                return await refreshAccessToken(token);
+                if (keycloakEnabled) {
+                    return await refreshAccessToken(token);
+                } else {
+                    return await refreshAzureADToken(token);
+                }
             } catch (error) {
                 console.error('Error refreshing access token', error);
                 return { ...token, error: 'RefreshAccessTokenError' };
@@ -82,8 +84,8 @@ const refreshAccessToken = async (token: JWT) => {
     const resp = await fetch(`${keycloakIssuer}/realms/${realm}/protocol/openid-connect/token`, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({
-            client_id: process.env.KEYCLOAK_CLIENT_ID ? process.env.KEYCLOAK_CLIENT_ID : '',
-            client_secret: '-', // not required by the AuthFlow but required by NextAuth Provider, here placeholder only
+            client_id: process.env.KEYCLOAK_CLIENT_ID ?? '',
+            client_secret: '-', // placeholder
             grant_type: 'refresh_token',
             refresh_token: token.refresh_token as string,
         }),
@@ -100,3 +102,35 @@ const refreshAccessToken = async (token: JWT) => {
         refresh_token: refreshToken.refresh_token,
     };
 };
+
+const refreshAzureADToken = async (token: JWT) => {
+    const response = await fetch(`https://login.microsoftonline.com/${process.env.AD_TENANT_ID}/oauth2/v2.0/token`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            client_id: process.env.AD_CLIENT_ID ?? '',
+            client_secret: process.env.AD_SECRET_VALUE ?? '',
+            grant_type: 'refresh_token',
+            refresh_token: token.refresh_token as string,
+            scope: `openid ${requestedResource}admin.write offline_access`,
+        }),
+    });
+
+    const refreshedTokens = await response.json();
+
+    if (!response.ok) {
+        console.error('Error refreshing Azure AD token', refreshedTokens);
+        throw new Error(`Failed to refresh token: ${refreshedTokens.error_description || 'An error occurred'}`);
+    }
+
+    return {
+        ...token,
+        access_token: refreshedTokens.access_token,
+        id_token: refreshedTokens.id_token,
+        expires_at: Math.floor(Date.now() / 1000) + refreshedTokens.expires_in,
+        refresh_token: refreshedTokens.refresh_token ?? token.refresh_token, // Fallback to old refresh token if not provided
+    };
+};
+
