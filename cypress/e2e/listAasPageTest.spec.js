@@ -32,7 +32,7 @@ describe('Test all Aas List features (Resolution 1920 x 1080)', function () {
             .contains('https://mnestix.io/listTest2');
         cy.get('[data-testid="list-row-https://mnestix.io/aas/listTest2"]')
             .findByTestId('list-manufacturer-name')
-            .contains('listTest2 Manufacturer Name - faaail');
+            .contains('listTest2 Manufacturer Name');
         cy.get('[data-testid="list-row-https://mnestix.io/aas/listTest2"]')
             .findByTestId('list-product-designation')
             .contains('listTest2 Product Designation');
