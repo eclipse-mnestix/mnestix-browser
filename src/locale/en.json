@@ -54,5 +54,8 @@
       "default-callback-error-msg": "Could not open the QR code!",
       "error-on-qr-scanner-open": "Could not open the QR scanner!"
     }
+  },
+  "authentication": {
+    "authentication-needed": "Authentication needed"
   }
 }

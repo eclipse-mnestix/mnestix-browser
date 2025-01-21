@@ -54,5 +54,8 @@
       "default-callback-error-msg": "QR Code konnte nicht geöffnet werden!",
       "error-on-qr-scanner-open": "QR Scanner konnte nicht geöffnet werden!"
     }
+  },
+  "authentication": {
+    "authentication-needed": "Authentifizierung erforderlich"
   }
 }
