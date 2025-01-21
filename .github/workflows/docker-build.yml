@@ -94,7 +94,6 @@ jobs:
         run: |
           docker compose -f compose.yml -f docker-compose/compose.test.yml --profile tests up -d &&
           docker compose -f compose.yml -f docker-compose/compose.test.yml attach cypress-test
-        continue-on-error: true
         env:
           SPLIT: ${{ strategy.job-total }}
           SPLIT_INDEX: ${{ strategy.job-index }}
@@ -105,6 +104,10 @@ jobs:
         with:
           name: cypress-artifacts-${{ matrix.containers }}
           path: cypress-artifacts/
+
+      - name: Fail if e2e tests failed
+        if: ${{ failure() }}
+        run: exit 1
 
   push-image:
     name: Push image to registry
