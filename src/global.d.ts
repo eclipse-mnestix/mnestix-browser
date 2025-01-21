@@ -1,7 +1,7 @@
 import en from './locale/en.json';
 import userPluginEn from './user-plugins/locale/en.json';
 
-type Messages = typeof en & userPluginEn;
+type Messages = typeof en & typeof userPluginEn;
 
 declare global {
     interface Window {
