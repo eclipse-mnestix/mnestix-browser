@@ -36,6 +36,12 @@
     },
     "renderError": "Teilmodell konnte nicht gerendert werden."
   },
+  "qr-scanner": {
+    "errors": {
+      "default-callback-error-msg": "QR Code konnte nicht geöffnet werden!",
+      "error-on-qr-scanner-open": "QR Scanner konnte nicht geöffnet werden!"
+    }
+  },
   "settings": {
     "header": "Einstellungen"
   },
@@ -51,10 +57,6 @@
       "more-aas-found": "Mehr als eine Verwaltungsschale im Discovery Service gefunden, bitte geben Sie die AAS-ID an.",
       "aas-already-added": "Verwaltungsschale kann nicht mehrmals hinzugefügt werden",
       "aas-add-error": "Verwaltungsschale konnte nicht hinzugefügt werden."
-    },
-    "qr-scanner": {
-      "default-callback-error-msg": "QR Code konnte nicht geöffnet werden!",
-      "error-on-qr-scanner-open": "QR Scanner konnte nicht geöffnet werden!"
     }
   },
   "authentication": {

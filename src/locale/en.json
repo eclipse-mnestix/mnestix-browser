@@ -36,6 +36,12 @@
     },
     "renderError": "Submodel can't be rendered."
   },
+  "qr-scanner": {
+    "errors": {
+      "default-callback-error-msg": "Could not open the QR code!",
+      "error-on-qr-scanner-open": "Could not open the QR scanner!"
+    }
+  },
   "settings": {
     "header": "Settings"
   },
@@ -51,10 +57,6 @@
       "more-aas-found": "More than one AAS found in the discovery service, please provide the AAS ID instead.",
       "aas-already-added": "AAS cannot be added more than once.",
       "aas-add-error": "AAS could not be added."
-    },
-    "qr-scanner": {
-      "default-callback-error-msg": "Could not open the QR code!",
-      "error-on-qr-scanner-open": "Could not open the QR scanner!"
     }
   },
   "authentication": {
