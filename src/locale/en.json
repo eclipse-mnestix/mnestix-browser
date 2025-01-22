@@ -35,7 +35,8 @@
       "linkedSegments": "Linked segments",
       "selectTimeframe": "Select timeframe"
     },
-    "renderError": "Submodel can't be rendered."
+    "renderError": "Submodel can't be rendered.",
+    "unknownModelType": "Unknown ModelType: {type}"
   },
   "qr-scanner": {
     "errors": {

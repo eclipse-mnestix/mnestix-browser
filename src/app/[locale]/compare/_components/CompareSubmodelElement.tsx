@@ -1,6 +1,4 @@
 ﻿import { Box, Typography } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
 import {
     Entity,
     File,
@@ -17,6 +15,7 @@ import { MultiLanguagePropertyComponent } from 'app/[locale]/viewer/_components/
 import { FileComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/FileComponent';
 import { SubmodelElementCollectionComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/SubmodelElementCollectionComponent';
 import { DifferenceSymbol } from 'components/basics/DifferenceSymbol';
+import { useTranslations } from 'next-intl';
 
 type CompareSubmodelElementProps = {
     readonly submodelElement?: ISubmodelElement;
@@ -25,6 +24,7 @@ type CompareSubmodelElementProps = {
 
 export function CompareSubmodelElement(props: CompareSubmodelElementProps) {
     const isMarked = props.isMarked;
+    const t = useTranslations('submodels');
 
     function getRenderElement() {
         if (!props.submodelElement) {
@@ -77,10 +77,7 @@ export function CompareSubmodelElement(props: CompareSubmodelElementProps) {
             default:
                 return (
                     <Typography color="error" variant="body2">
-                        <FormattedMessage
-                            {...messages.mnestix.unknownModelType}
-                            values={{ type: `${submodelElementType}` }}
-                        />
+                        {t('unknownModelType', { type: `${submodelElementType}` })}
                     </Typography>
                 );
         }
