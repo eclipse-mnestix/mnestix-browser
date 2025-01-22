@@ -36,8 +36,6 @@ export default function AasListDataWrapper() {
     const clearResults = () => {
         setAasList(undefined);
         setCurrentCursor(undefined);
-        setCursorHistory(['']);
-        setCurrentPage(0);
         setNeedAuthentication(false);
     };
 
