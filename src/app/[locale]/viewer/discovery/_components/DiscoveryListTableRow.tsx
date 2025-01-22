@@ -27,13 +27,13 @@ export const DiscoveryListTableRow = (props: DiscoveryListTableRowProps) => {
 
     const navigateToAas = (aasId: string, repoUrl?: string) => {
         setAas(null);
-        setAasOriginUrl(null)
+        setAasOriginUrl(null);
         navigate.push(`/viewer/${encodeBase64(aasId)}${repoUrl ? `?repoUrl=${encodeURI(repoUrl)}` : ''}`);
     };
 
     return (
         <>
-            <PictureTableCell/>
+            <PictureTableCell />
             <TableCell align="left" sx={tableBodyText}>
                 {aasListEntry.aasId}
             </TableCell>
@@ -44,7 +44,7 @@ export const DiscoveryListTableRow = (props: DiscoveryListTableRowProps) => {
                 <RoundedIconButton
                     endIcon={<ArrowForward />}
                     onClick={() => navigateToAas(aasListEntry.aasId, aasListEntry.repositoryUrl)}
-                    title={intl.formatMessage(messages.mnestix.aasList.titleViewAASButton)}
+                    title={intl.formatMessage(messages.mnestix.discoveryList.titleViewAASButton)}
                 />
             </TableCell>
         </>

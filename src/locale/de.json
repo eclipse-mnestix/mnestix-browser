@@ -14,7 +14,9 @@
     "select-repository": "Bitte wählen Sie ein Repository aus",
     "titleComparisonAddButton": "Füge VWS zum Vergleich hinzu",
     "titleViewAASButton": "VWS anzeigen",
-    "maxElementsWarning": "Maximal 3 Elemente selektierbar"
+    "maxElementsWarning": "Maximal 3 Elemente selektierbar",
+    "goToCompare": "Zum Vergleich",
+    "compareTooltip": "Vergleichen"
   },
   "dashboard": {
     "welcome-text": "Willkommen bei Mnestix",

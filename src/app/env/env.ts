@@ -13,17 +13,7 @@ export const getEnv = async (): Promise<EnvironmentalVariables> => {
         COMPARISON_FEATURE_FLAG: process.env.COMPARISON_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
         TRANSFER_FEATURE_FLAG: process.env.TRANSFER_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
         AAS_LIST_FEATURE_FLAG: process.env.AAS_LIST_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
-        AAS_LIST_V2_FEATURE_FLAG: process.env.AAS_LIST_V2_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
     };
-    
-    if (
-        process.env.MNESTIX_BACKEND_API_URL?.toLowerCase() === 'false' &&
-        featureFlags.AAS_LIST_FEATURE_FLAG &&
-        !featureFlags.AAS_LIST_V2_FEATURE_FLAG
-    ) {
-        console.warn('Only AAS_LIST_V2_FEATURE_FLAG environment variables can be set without Mnestix API');
-        featureFlags.AAS_LIST_V2_FEATURE_FLAG = true;
-    }
 
     const otherVariables = {
         AD_CLIENT_ID: process.env.AD_CLIENT_ID,
@@ -71,7 +61,6 @@ export type EnvironmentalVariables = {
     AUTHENTICATION_FEATURE_FLAG: boolean;
     COMPARISON_FEATURE_FLAG: boolean;
     AAS_LIST_FEATURE_FLAG: boolean;
-    AAS_LIST_V2_FEATURE_FLAG: boolean;
     TRANSFER_FEATURE_FLAG: boolean;
     DISCOVERY_API_URL: string | undefined;
     REGISTRY_API_URL: string | undefined;

@@ -9,8 +9,6 @@
     Typography,
     useTheme,
 } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import { AasListTableRow } from 'app/[locale]/list/_components/AasListTableRow';
 import { AasListDto } from 'lib/services/list-service/ListService';
@@ -62,10 +60,7 @@ export default function AasList(props: AasListProps) {
                         >
                             {comparisonFeatureFlag && (
                                 <TableCell align="center" width="50px">
-                                    <Tooltip
-                                        title={<FormattedMessage {...messages.mnestix.aasList.compareTooltip} />}
-                                        arrow
-                                    >
+                                    <Tooltip title={t('compareTooltip')} arrow>
                                         <CompareArrowsIcon
                                             color="secondary"
                                             sx={{

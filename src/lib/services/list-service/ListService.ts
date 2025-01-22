@@ -62,6 +62,14 @@ export class ListService {
         return new ListService(targetAasRepositoryClient, targetSubmodelRepositoryClient);
     }
 
+    /**
+     * Returns all AASs from the chosen repository.
+     * Special Behaviour: If the AssetInformation contains a specificAssetId with the name "aasListFilterId",
+     * the whole AAS is filtered out and not returned from this service.
+     * This logic is needed to hide the configuration AASs created by the mnestix-api.
+     * @param limit
+     * @param cursor
+     */
     async getAasListEntities(limit: number, cursor?: string): Promise<AasListDto> {
         const response = await this.targetAasRepositoryClient.getAllAssetAdministrationShells(limit, cursor);
 
@@ -72,11 +80,18 @@ export class ListService {
         const { result: assetAdministrationShells, paging_metadata } = response.result;
         const nextCursor = paging_metadata.cursor;
 
-        const aasListDtos = assetAdministrationShells.map((aas) => ({
-            aasId: aas.id,
-            assetId: aas.assetInformation?.globalAssetId ?? '',
-            thumbnail: aas.assetInformation?.defaultThumbnail?.path ?? '',
-        }));
+        const aasListDtos = assetAdministrationShells
+            .filter((aas) => {
+                const aasToRemove = aas.assetInformation.specificAssetIds?.find(
+                    (specificAssetId) => specificAssetId.name === 'aasListFilterId',
+                );
+                return !aasToRemove;
+            })
+            .map((aas) => ({
+                aasId: aas.id,
+                assetId: aas.assetInformation?.globalAssetId ?? '',
+                thumbnail: aas.assetInformation?.defaultThumbnail?.path ?? '',
+            }));
 
         return { success: true, entities: aasListDtos, cursor: nextCursor };
     }

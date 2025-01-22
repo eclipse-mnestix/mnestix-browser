@@ -1,90 +1,86 @@
 ﻿[
-    {
-        "modelType": "AssetAdministrationShell",
-        "assetInformation": {
-            "assetKind": "Instance",
-            "globalAssetId": "https://mnestix.io/listTest1",
-            "specificAssetIds": [
-                {
-                    "name": "assetIdShort",
-                    "value": "testElement_1"
-                }
-            ]
-        },
-        "id": "https://mnestix.io/aas/listTest1",
-        "idShort": "aas_cypressTest1",
-
-        "submodels": [
-            {
-                "keys": [
-                    {
-                        "type": "Submodel",
-                        "value": "https://mnestix.io/sm/aHR0cHM6Ly9hYXMyLnVuaS1oLmRlL2Fhcy9sbmkwNzI6_TD"
-                    }
-                ],
-                "type": "ModelReference"
-            }
-        ]
+  {
+    "modelType": "AssetAdministrationShell",
+    "assetInformation": {
+      "assetKind": "Instance",
+      "globalAssetId": "https://mnestix.io/listTest1",
+      "specificAssetIds": [
+        {
+          "name": "assetIdShort",
+          "value": "testElement_1"
+        }
+      ]
     },
-    {
-        "modelType": "AssetAdministrationShell",
-        "assetInformation": {
-            "assetKind": "Instance",
-            "globalAssetId": "https://mnestix.io/listTest2",
-            "specificAssetIds": [
-                {
-                    "name": "assetIdShort",
-                    "value": "testElement_2"
-                }
-            ]
-        },
-        "id": "https://mnestix.io/aas/listTest2",
-        "idShort": "aas_cypressTest2",
-
-        "submodels": [
-            {
-                "keys": [
-                    {
-                        "type": "Submodel",
-                        "value": "https://mnestix.io/sm/aHR0cHM6Ly9hYXMyLnVuaS1oLmRlL2Fhcy9sbmkwNzI4_TD"
-                    }
-                ],
-                "type": "ModelReference"
-            }
-        ]
+    "id": "https://mnestix.io/aas/listTest1",
+    "idShort": "aas_cypressTest1",
+    "submodels": [
+      {
+        "keys": [
+          {
+            "type": "Submodel",
+            "value": "https://i40.xitaso.com/sm/nameplateListTest1"
+          }
+        ],
+        "type": "ModelReference"
+      }
+    ]
+  },
+  {
+    "modelType": "AssetAdministrationShell",
+    "assetInformation": {
+      "assetKind": "Instance",
+      "globalAssetId": "https://mnestix.io/listTest2",
+      "specificAssetIds": [
+        {
+          "name": "assetIdShort",
+          "value": "testElement_2"
+        }
+      ]
     },
-    {
-        "modelType": "AssetAdministrationShell",
-        "assetInformation": {
-            "assetKind": "Instance",
-            "globalAssetId": "https://mnestix.io/listTest3",
-            "specificAssetIds": [
-                {
-                    "name": "assetIdShort",
-                    "value": "testElement_3"
-                }
-            ]
-        },
-        "id": "https://mnestix.io/aas/listTest3",
-        "idShort": "aas_cypressTest3",
-
-        "submodels": []
+    "id": "https://mnestix.io/aas/listTest2",
+    "idShort": "aas_cypressTest2",
+    "submodels": [
+      {
+        "keys": [
+          {
+            "type": "Submodel",
+            "value": "https://i40.xitaso.com/sm/nameplateListTest2"
+          }
+        ],
+        "type": "ModelReference"
+      }
+    ]
+  },
+  {
+    "modelType": "AssetAdministrationShell",
+    "assetInformation": {
+      "assetKind": "Instance",
+      "globalAssetId": "https://mnestix.io/listTest3",
+      "specificAssetIds": [
+        {
+          "name": "assetIdShort",
+          "value": "testElement_3"
+        }
+      ]
     },
-    {
-        "modelType": "AssetAdministrationShell",
-        "assetInformation": {
-            "assetKind": "Instance",
-            "globalAssetId": "https://mnestix.io/listTest4",
-            "specificAssetIds": [
-                {
-                    "name": "assetIdShort",
-                    "value": "testElement_4"
-                }
-            ]
-        },
-        "id": "https://mnestix.io/aas/listTest4",
-        "idShort": "aas_cypressTest4",
-
-        "submodels": []
-    }
+    "id": "https://mnestix.io/aas/listTest3",
+    "idShort": "aas_cypressTest3",
+    "submodels": []
+  },
+  {
+    "modelType": "AssetAdministrationShell",
+    "assetInformation": {
+      "assetKind": "Instance",
+      "globalAssetId": "https://mnestix.io/listTest4",
+      "specificAssetIds": [
+        {
+          "name": "assetIdShort",
+          "value": "testElement_4"
+        }
+      ]
+    },
+    "id": "https://mnestix.io/aas/listTest4",
+    "idShort": "aas_cypressTest4",
+    "submodels": []
+  }
 ]
