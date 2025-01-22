@@ -53,7 +53,6 @@ export const deMnestix = {
         },
     },
     submodels: 'Teilmodelle',
-    unknownModelType: 'Unbekannter ModelType: {type}',
     nameplateAddressTypes: {
         office: 'Geschäftlich',
         'office mobile': 'Geschäftl. Mobil',

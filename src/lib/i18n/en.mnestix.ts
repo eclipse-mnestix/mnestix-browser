@@ -50,7 +50,6 @@ export const enMnestix = {
         },
     },
     submodels: 'Submodels',
-    unknownModelType: 'Unknown ModelType: {type}',
     nameplateAddressTypes: {
         office: 'Office',
         'office mobile': 'Office mobile',

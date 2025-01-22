@@ -1,8 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { LockedTextField } from 'components/basics/LockedTextField';
-import { messages } from 'lib/i18n/localization';
 import { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import { PropertyEditComponent } from './edit-components/property/PropertyEditComponent';
 import debounce from 'lodash/debounce';
@@ -20,6 +18,7 @@ import { MultiplicityEditComponent } from './edit-components/multiplicity/Multip
 import { MultiLangEditComponent } from './edit-components/multi-lang/MultiLangEditComponent';
 import { SubmodelEditComponent } from './edit-components/SubmodelEditComponent';
 import { FileEditComponent } from './edit-components/file/FileEditComponent';
+import { useTranslations } from 'next-intl';
 
 export type TemplateEditFieldsProps = {
     templatePart?: SubmodelViewObject;
@@ -30,8 +29,10 @@ export type TemplateEditFieldsProps = {
     ) => void;
     isCustomTemplate?: boolean | undefined;
 };
+
 export function TemplateEditFields(props: TemplateEditFieldsProps) {
     const [templatePart, setTemplatePart] = useState(props.templatePart);
+    const t = useTranslations('submodels');
 
     useEffect(() => {
         setTemplatePart(props.templatePart);
@@ -99,10 +100,7 @@ export function TemplateEditFields(props: TemplateEditFieldsProps) {
             default:
                 return (
                     <Typography color="error" variant="body2" sx={{ mt: 2 }}>
-                        <FormattedMessage
-                            {...messages.mnestix.unknownModelType}
-                            values={{ type: `${templatePartType}` }}
-                        />
+                        {t('unknownModelType', { type: `${templatePartType}` })}
                     </Typography>
                 );
         }
