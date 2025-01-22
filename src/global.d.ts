@@ -1,7 +1,7 @@
 import en from './locale/en.json';
 import userPluginEn from './user-plugins/locale/en.json';
 
-type Messages = typeof en & userPluginEn;
+type Messages = typeof en & typeof userPluginEn;
 
 declare global {
     interface Window {
@@ -10,7 +10,7 @@ declare global {
         };
     }
 
-    // Use type safe message keys with `next-intl`, "no usages" is intended.
+    // Use type safe message keys with `next-intl`; intl uses this, do not delete
     interface IntlMessages extends Messages {}
 }
 

@@ -1,7 +1,18 @@
-export class LocalizedError extends Error {
-    descriptor: string;
+type Paths<Schema, Path extends string = ''> = Schema extends string
+    ? Path
+    : Schema extends object
+        ? {
+            [K in keyof Schema & string]: Paths<
+                Schema[K],
+                `${Path}${Path extends '' ? '' : '.'}${K}`
+            >;
+        }[keyof Schema & string]
+        : never;
 
-    constructor(message: string) {
+export class LocalizedError extends Error {
+    descriptor: Paths<IntlMessages>;
+
+    constructor(message: Paths<IntlMessages>) {
         const trueProto = new.target.prototype;
         super();
         Object.setPrototypeOf(this, trueProto);
