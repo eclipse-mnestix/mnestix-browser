@@ -59,18 +59,18 @@ export function CompareView() {
         if (!isSuccess) throw new LocalizedError('errors.url-not-found');
 
         if (!result.aas) {
-            throw new LocalizedError('errors.compare-error.more-aas-found');
+            throw new LocalizedError('compare.errors.moreAasFound');
         }
 
         const aasExists = compareAas.find((compareAas) => compareAas.aas.id === result.aas!.id);
         if (aasExists) {
-            throw new LocalizedError('errors.compare-error.aas-already-added');
+            throw new LocalizedError('compare.errors.aasAlreadyAdded');
         }
 
         try {
             await addAas(result.aas, result.aasData);
         } catch (e) {
-            throw new LocalizedError('errors.compare-error.aas-add-error');
+            throw new LocalizedError('compare.errors.aasAddError');
         }
 
         setAddModalOpen(false);
