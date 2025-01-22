@@ -1,9 +1,8 @@
 ﻿import { Box, Button, IconButton, Typography } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
 import CloseIcon from '@mui/icons-material/Close';
 import { useRouter } from 'next/navigation';
 import { tooltipText } from 'lib/util/ToolTipText';
+import { useTranslations } from 'next-intl';
 
 type CompareAasListBarType = {
     selectedAasList: string[] | undefined;
@@ -12,6 +11,7 @@ type CompareAasListBarType = {
 
 export const AasListComparisonHeader = (props: CompareAasListBarType) => {
     const { selectedAasList, updateSelectedAasList } = props;
+    const t = useTranslations('aas-list');
 
     const navigate = useRouter();
     const navigateToCompare = () => {
@@ -39,7 +39,7 @@ export const AasListComparisonHeader = (props: CompareAasListBarType) => {
                     disabled={!selectedAasList || selectedAasList.length < 1}
                     data-testid="compare-button"
                 >
-                    <FormattedMessage {...messages.mnestix.aasList.goToCompare} />
+                    {t('goToCompare')}
                 </Button>
             </Box>
         </>

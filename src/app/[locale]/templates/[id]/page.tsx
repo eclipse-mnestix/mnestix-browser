@@ -22,10 +22,10 @@ import React, { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { showError } from 'lib/util/ErrorHandlerUtil';
 import {
-    deleteItem,
-    generateSubmodel,
-    generateSubmodelViewObject,
-    rewriteNodeIds,
+    updateNodeIds,
+    getParentOfElement,
+    splitIdIntoArray,
+    rewriteNodeIds, generateSubmodelViewObjectFromSubmodelElement,
 } from 'lib/util/SubmodelViewObjectUtil';
 import { TemplateEditFields, TemplateEditFieldsProps } from '../_components/template-edit/TemplateEditFields';
 import { useAuth } from 'lib/hooks/UseAuth';
@@ -39,6 +39,8 @@ import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import { updateCustomSubmodelTemplate } from 'lib/services/templateApiWithAuthActions';
 import { deleteCustomTemplateById, getCustomTemplateById, getDefaultTemplates } from 'lib/services/templatesApiActions';
 import { TemplateDeleteDialog } from 'app/[locale]/templates/_components/TemplateDeleteDialog';
+import { ISubmodelElement, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import { clone } from 'lodash';
 
 export default function Page() {
     const { id } = useParams<{ id: string }>();
@@ -65,6 +67,21 @@ export default function Page() {
         const custom = await getCustomTemplateById(id);
         setLocalFrontendTemplate(generateSubmodelViewObject(custom));
     };
+
+    function generateSubmodelViewObject(sm: Submodel): SubmodelViewObject {
+        const localSm = cloneDeep(sm);
+        // Ids are unique for the tree, start with 0, children have 0-0, 0-1, and so on
+        const frontend: SubmodelViewObject = { id: '0', name: localSm.idShort!, children: [], isAboutToBeDeleted: false };
+
+        if (localSm.submodelElements) {
+            const arr = localSm.submodelElements;
+            arr.forEach((el, i) => frontend.children?.push(generateSubmodelViewObjectFromSubmodelElement(el, '0-' + i)));
+            localSm.submodelElements = [];
+        }
+        frontend.data = localSm;
+
+        return frontend;
+    }
 
     const fetchDefaultTemplates = async () => {
         const defaultTemplates = await getDefaultTemplates();
@@ -198,6 +215,33 @@ export default function Page() {
         }
     };
 
+    function generateSubmodel(viewObject: SubmodelViewObject): Submodel {
+        const submodel = viewObject.data as Submodel;
+        if (viewObject.children.length) {
+            submodel.submodelElements = [];
+            viewObject.children.forEach((child) => {
+                if (child.children.length) {
+                    const collection = child.data as SubmodelElementCollection;
+                    collection.value = generateSubmodelElements(child.children);
+                    child.data = collection;
+                }
+                submodel.submodelElements?.push(child.data as ISubmodelElement);
+            });
+        }
+        return submodel;
+    }
+
+    function generateSubmodelElements(viewObjects: SubmodelViewObject[]): ISubmodelElement[] {
+        return viewObjects.map((vo) => {
+            if (vo.children.length) {
+                const collection = vo.data as SubmodelElementCollection;
+                collection.value = generateSubmodelElements(vo.children);
+                vo.data = collection;
+            }
+            return vo.data as ISubmodelElement;
+        });
+    }
+
     async function deleteElements() {
         if (localFrontendTemplate) {
             let newLocalFrontendTemplate = cloneDeep(localFrontendTemplate);
@@ -208,6 +252,33 @@ export default function Page() {
             return newLocalFrontendTemplate;
         }
         return undefined;
+    }
+
+
+    function deleteItem(elementToDeleteId: string, submodel: SubmodelViewObject): SubmodelViewObject {
+        const idArray = splitIdIntoArray(elementToDeleteId);
+        const parentElement = getParentOfElement(elementToDeleteId, submodel);
+        if (parentElement) {
+            //search for the current index of the element to delete because through deleting, the arrays shift
+            let childIndex = -1;
+            parentElement.children.filter((el, index) => {
+                if ((el as SubmodelViewObject).id == idArray.join('-')) {
+                    childIndex = index;
+                }
+            });
+            if (childIndex >= 0) {
+                parentElement.children.splice(childIndex, 1);
+            }
+            //update all element ids after the deleted one
+            for (let i = idArray[idArray.length - 1]; i < parentElement.children.length; i++) {
+                const oldId = clone(idArray);
+                oldId[oldId.length - 1] = i + 1;
+                const newId = clone(idArray);
+                newId[newId.length - 1] = i;
+                updateNodeIds(oldId.join('-'), newId.join('-'), parentElement.children[i]);
+            }
+        }
+        return submodel;
     }
 
     const handleSuccessfulSave = () => {

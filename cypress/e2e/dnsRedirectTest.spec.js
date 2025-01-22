@@ -8,7 +8,7 @@ describe('Test the DNS Redirect', function () {
         cy.postTestAas();
     });
     it('Visits the "/asset/URLEncodedAssetID" page and gets redirected to the corresponding viewer page', function () {
-        cy.intercept({ method: 'POST', url: `/en/viewer/*` }).as('redirectedViewer');
+        cy.intercept({ method: 'POST', url: '/en/viewer/*' }).as('redirectedViewer');
         let encodedUrl = encodeURIComponent(testAssetId);
 
         cy.visit('/asset?assetId=' + encodedUrl);
