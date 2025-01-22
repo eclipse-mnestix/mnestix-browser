@@ -14,7 +14,6 @@ export const deMnestix = {
     manufacturer: 'Hersteller: {manufacturerName}',
     aasId: 'AAS ID',
     assetId: 'Asset ID',
-    aasOrAssetId: 'AAS ID oder Asset ID',
     orEnterManual: 'oder manuell eingeben',
     orSelectFromList: 'oder über Liste suchen',
     goToListButton: 'Zur AAS Liste',

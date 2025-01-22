@@ -14,7 +14,6 @@ export const enMnestix = {
     manufacturer: 'Manufacturer: {manufacturerName}',
     aasId: 'AAS ID',
     assetId: 'Asset ID',
-    aasOrAssetId: 'AAS ID or Asset ID',
     orEnterManual: 'or enter manually',
     orSelectFromList: 'or select via list',
     goToListButton: 'Go to Aas List',
