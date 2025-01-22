@@ -6,7 +6,6 @@ import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner
 
 const initialValues: EnvironmentalVariables = {
     AAS_LIST_FEATURE_FLAG: false,
-    AAS_LIST_V2_FEATURE_FLAG: false,
     COMPARISON_FEATURE_FLAG: false,
     TRANSFER_FEATURE_FLAG: false,
     AUTHENTICATION_FEATURE_FLAG: false,

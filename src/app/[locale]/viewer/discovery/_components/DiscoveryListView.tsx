@@ -16,6 +16,7 @@ import { performDiscoveryAasSearch, performRegistryAasSearch } from 'lib/service
 import { performSearchAasFromAllRepositories } from 'lib/services/repository-access/repositorySearchActions';
 import { RepoSearchResult } from 'lib/services/repository-access/RepositorySearchService';
 import { AssetAdministrationShell } from '@aas-core-works/aas-core3.0-typescript/types';
+import { useTranslations } from 'next-intl';
 
 async function getRepositoryUrl(aasId: string): Promise<string | undefined> {
     const registrySearchResult = await performRegistryAasSearch(aasId);
@@ -38,6 +39,8 @@ export const DiscoveryListView = () => {
     const assetId = encodedAssetId ? decodeURI(encodedAssetId) : undefined;
     const encodedAasId = searchParams.get('aasId');
     const aasId = encodedAasId ? decodeURI(encodedAasId) : undefined;
+
+    const t = useTranslations('aas-list');
 
     useAsyncEffect(async () => {
         setIsLoadingList(true);
@@ -83,14 +86,14 @@ export const DiscoveryListView = () => {
     }, []);
 
     const tableHeaders = [
-        { label: intl.formatMessage(messages.mnestix.aasList.picture) },
+        { label: intl.formatMessage(messages.mnestix.discoveryList.picture) },
         { label: intl.formatMessage(messages.mnestix.discoveryList.aasIdHeading) },
         { label: intl.formatMessage(messages.mnestix.discoveryList.repositoryUrl) },
     ];
 
     return (
         <>
-            <ListHeader namespace={'discoveryList'} header={'header'} optionalID={assetId ?? aasId} />
+            <ListHeader header={t('header')} optionalID={assetId ?? aasId} />
             {isLoadingList && <CenteredLoadingSpinner sx={{ mt: 10 }} />}
             {!isLoadingList && !isError && (
                 <>

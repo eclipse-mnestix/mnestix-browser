@@ -14,7 +14,9 @@
     "select-repository": "Please select a repository",
     "titleComparisonAddButton": "Add AAS to comparison",
     "titleViewAASButton": "View AAS",
-    "maxElementsWarning": "Cannot compare more than 3 elements"
+    "maxElementsWarning": "Cannot compare more than 3 elements",
+    "goToCompare": "Compare",
+    "compareTooltip": "Compare"
   },
   "dashboard": {
     "welcome-text": "Welcome to Mnestix",
