@@ -23,7 +23,7 @@ export function QrScanner(props: { onScan: (scanResult: string) => Promise<void>
     const [state, setState] = useState<State>(State.Stopped);
 
     const notificationSpawner = useNotificationSpawner();
-    const t = useTranslations('errors');
+    const t = useTranslations();
 
     const theme = useTheme();
     const size = props.size || 250;
@@ -33,7 +33,7 @@ export function QrScanner(props: { onScan: (scanResult: string) => Promise<void>
             setState(State.ShowVideo);
         } else {
             notificationSpawner.spawn({
-                message: t('qr-scanner.error-on-qr-scanner-open'),
+                message: t('qr-scanner.errors.error-on-qr-scanner-open'),
                 severity: 'error',
             });
             setState(State.Stopped);
@@ -86,7 +86,7 @@ export function QrScanner(props: { onScan: (scanResult: string) => Promise<void>
                 await props.onScan(result);
                 setState(State.Stopped);
             } catch (e) {
-                const msg = e instanceof LocalizedError ? e.descriptor : 'qr-scanner.default-callback-error-msg';
+                const msg = e instanceof LocalizedError ? e.descriptor : 'qr-scanner.errors.default-callback-error-msg';
                 notificationSpawner.spawn({
                     message: t(msg),
                     severity: 'error',
