@@ -10,7 +10,7 @@ declare global {
         };
     }
 
-    // Use type safe message keys with `next-intl`, "no usages" is intended.
+    // Use type safe message keys with `next-intl`; intl uses this, do not delete
     interface IntlMessages extends Messages {}
 }
 

@@ -6,20 +6,20 @@ import { ApiResponseWrapperError } from 'lib/util/apiResponseWrapper/apiResponse
 import { useTranslations } from 'next-intl';
 
 export function useShowError() {
-    const t = useTranslations('errors');
+    const t = useTranslations();
     const notificationSpawner = useNotificationSpawner();
 
     function showNotFoundError(notificationSpawner: NotificationSpawner) {
         notificationSpawner.spawn({
-            message: t('not-found'),
+            message: t('errors.not-found'),
             severity: 'error',
         });
     }
 
     function showUnauthorizedError(notificationSpawner: NotificationSpawner) {
         notificationSpawner.spawn({
-            title: t('unauthorized-error.title'),
-            message: t('unauthorized-error.content'),
+            title: t('errors.unauthorized-error.title'),
+            message: t('errors.unauthorized-error.content'),
             severity: 'error',
         });
     }
@@ -48,7 +48,7 @@ export function useShowError() {
                         notificationSpawner.spawn({
                             message: (
                                 <>
-                                    {t('unexpected-error')}
+                                    {t('errors.unexpected-error')}
                                     <Typography variant="body2" sx={{ mt: 1, opacity: 0.7 }}>
                                         {e.status}: &quot;{e.statusText}&quot;
                                     </Typography>
@@ -74,7 +74,7 @@ export function useShowError() {
                         notificationSpawner.spawn({
                             message: (
                                 <>
-                                    {t('unexpected-error')}
+                                    {t('errors.unexpected-error')}
                                     <Typography variant="body2" sx={{ mt: 1, opacity: 0.7 }}>
                                         {e.errorCode}: &quot;{e.message}&quot;
                                     </Typography>
@@ -87,7 +87,7 @@ export function useShowError() {
             }
 
             notificationSpawner.spawn({
-                message: t('unexpected-error'),
+                message: t('errors.unexpected-error'),
                 severity: 'error',
             });
         },
