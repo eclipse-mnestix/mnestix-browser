@@ -24,6 +24,7 @@
     "findOutMore-text": "Find out more",
     "list-btn-label": "or select via list",
     "list-btn-text": "Go to Aas List",
+    "aasOrAssetId": "AAS ID or Asset ID",
     "scan-id-label": "Scan AAS ID or Asset ID",
     "enter-manually-label": "or enter manually"
   },
