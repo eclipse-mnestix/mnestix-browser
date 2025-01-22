@@ -16,7 +16,7 @@ export function ManualAasInput(props: { onSubmit: (input: string) => Promise<voi
     const [errorText, setErrorText] = useState<string>('');
     const inputRef = useRef<HTMLInputElement>(null);
     const { showError } = useShowError();
-    const t = useTranslations('errors');
+    const t = useTranslations();
     
     useEffect(() => {
         inputRef?.current?.focus();
@@ -38,7 +38,7 @@ export function ManualAasInput(props: { onSubmit: (input: string) => Promise<voi
             await props.onSubmit(inputValue);
         } catch (e) {
             setIsLoading(false);
-            const msg = e instanceof LocalizedError ? e.descriptor : 'unexpected-error';
+            const msg = e instanceof LocalizedError ? e.descriptor : 'errors.unexpected-error';
             setError(t(msg));
             if (!(e instanceof LocalizedError)) showError(e);
         }
