@@ -44,6 +44,20 @@
       "error-on-qr-scanner-open": "QR Scanner konnte nicht geöffnet werden!"
     }
   },
+  "compare": {
+    "title": "Verwaltungsschalen vergleichen",
+    "addButton": "Eine weitere Verwaltungsschale hinzufügen",
+    "addFirstAasButton": "Eine Verwaltungsschale hinzufügen",
+    "addAnother": "Eine weitere Verwaltungsschale hinzufügen",
+    "assetIdNotFound": "Asset Id nicht gefunden.",
+    "aasAlreadyAdded": "Verwaltungsschale kann nicht mehrmals hinzugefügt werden.",
+    "moreAasFound": "Mehr als eine Verwaltungsschale im Discovery Service gefunden, bitte geben Sie die AAS-ID an.",
+    "aasAddError": "Verwaltungsschale konnte nicht hinzugefügt werden.",
+    "collection": {
+      "show": "{idShort}",
+      "hide": "Verbergen"
+    }
+  },
   "settings": {
     "header": "Einstellungen"
   },

@@ -184,20 +184,6 @@ export const enMnestix = {
     multiplicityDescription: 'A qualifier used to identify obligatory elements.',
     deleted: 'deleted',
     compareButton: 'Compare',
-    compare: {
-        title: 'Compare AAS',
-        addButton: 'Add another AAS',
-        addFirstAasButton: 'Add AAS',
-        addAnother: 'Add another AAS',
-        assetIdNotFound: 'Asset Id not found.',
-        aasAlreadyAdded: 'AAS cannot be added more than once.',
-        moreAasFound: 'More than one AAS found in the discovery service, please provide the AAS ID instead.',
-        aasAddError: 'AAS could not be added.',
-    },
-    compareCollection: {
-        show: '{idShort}',
-        hide: 'Hide',
-    },
     transfer: {
         title: 'Import',
         subtitle: 'To import this AAS to another repository, fill out the following steps.',
@@ -233,9 +219,5 @@ export const enMnestix = {
         aasIdHeading: 'AAS ID',
         repositoryUrl: 'Repository Url',
         subtitle: 'Here you will find all related AAS to the given ID.',
-    },
-    qrScanner: {
-        defaultCallbackErrorMsg: 'Could not open the QR code!',
-        errorOnQrScannerOpen: 'Could not open the QR scanner!',
     },
 };

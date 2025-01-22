@@ -1,8 +1,7 @@
 ﻿import { Box, Card, CardContent, Typography } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
 import ScannerLogo from 'assets/ScannerLogo.svg';
 import { useTheme } from '@mui/material/styles';
+import { useTranslations } from 'next-intl';
 
 type AddAasToCompareCardProps = {
     onClick: () => void;
@@ -12,6 +11,7 @@ type AddAasToCompareCardProps = {
 export function AddAasToCompareCard(props: AddAasToCompareCardProps) {
     const isFirst = props.isFirst !== undefined ? props.isFirst : false;
     const theme = useTheme();
+    const t = useTranslations('compare');
 
     return (
         <Box
@@ -25,11 +25,11 @@ export function AddAasToCompareCard(props: AddAasToCompareCardProps) {
                 <CardContent>
                     {isFirst ? (
                         <Typography variant="h2" textAlign="center" margin="30px 0">
-                            <FormattedMessage {...messages.mnestix.compare.addFirstAasButton} />
+                            {t('addFirstAasButton')}
                         </Typography>
                     ) : (
                         <Typography variant="h2" textAlign="center" margin="30px 0">
-                            <FormattedMessage {...messages.mnestix.compare.addButton} />
+                            {t('addButton')}
                         </Typography>
                     )}
                     <Box
