@@ -1,9 +1,8 @@
 ﻿import { Box, Dialog, DialogContent, IconButton, Typography } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
 import CloseIcon from '@mui/icons-material/Close';
 import { QrScanner } from 'app/[locale]/_components/QrScanner';
 import { ManualAasInput } from 'app/[locale]/_components/ManualAasInput';
+import { useTranslations } from 'next-intl';
 
 type AddAasModalProps = {
     readonly onSubmit: (result: string) => Promise<void>;
@@ -12,6 +11,8 @@ type AddAasModalProps = {
 };
 
 export function CompareAasAddDialog(props: AddAasModalProps) {
+    const t = useTranslations();
+
     return (
         <Dialog
             open={props.open}
@@ -35,15 +36,15 @@ export function CompareAasAddDialog(props: AddAasModalProps) {
             <DialogContent style={{ paddingLeft: '60px', paddingRight: '60px' }}>
                 <Box display="flex" flexDirection="column" gap="20px">
                     <Typography variant="h2" textAlign="center" margin="30px 0">
-                        <FormattedMessage {...messages.mnestix.compare.addAnother} />:
+                        {t('compare.addAnother')}:
                     </Typography>
                     <Box>
                         <Typography color="text.secondary" textAlign="center">
-                            <FormattedMessage {...messages.mnestix.scanAasId} />
+                            {t('dashboard.scan-id-label')}
                         </Typography>
-                        <QrScanner onScan={props.onSubmit} size={400}  />
+                        <QrScanner onScan={props.onSubmit} size={400} />
                         <Typography color="text.secondary" textAlign="center" sx={{ mb: 2, fontSize: '14px' }}>
-                            <FormattedMessage {...messages.mnestix.orEnterManual} />:
+                            {t('dashboard.enter-manually-label')}
                         </Typography>
                     </Box>
                 </Box>

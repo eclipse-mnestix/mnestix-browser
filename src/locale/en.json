@@ -44,6 +44,20 @@
       "error-on-qr-scanner-open": "Could not open the QR scanner!"
     }
   },
+  "compare": {
+    "title": "Compare AAS",
+    "addButton": "Add another AAS",
+    "addFirstAasButton": "Add AAS",
+    "addAnother": "Add another AAS",
+    "assetIdNotFound": "Asset Id not found.",
+    "aasAlreadyAdded": "AAS cannot be added more than once.",
+    "moreAasFound": "More than one AAS found in the discovery service, please provide the AAS ID instead.",
+    "aasAddError": "AAS could not be added.",
+    "collection": {
+      "show": "{idShort}",
+      "hide": "Hide"
+    }
+  },
   "settings": {
     "header": "Settings"
   },
