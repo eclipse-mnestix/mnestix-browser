@@ -56,21 +56,21 @@ export function CompareView() {
 
     const handleAddAas = async (aasId: string) => {
         const { isSuccess, result } = await performFullAasSearch(aasId);
-        if (!isSuccess) throw new LocalizedError('url-not-found');
+        if (!isSuccess) throw new LocalizedError('errors.url-not-found');
 
         if (!result.aas) {
-            throw new LocalizedError('compare-error.more-aas-found');
+            throw new LocalizedError('errors.compare-error.more-aas-found');
         }
 
         const aasExists = compareAas.find((compareAas) => compareAas.aas.id === result.aas!.id);
         if (aasExists) {
-            throw new LocalizedError('compare-error.aas-already-added');
+            throw new LocalizedError('errors.compare-error.aas-already-added');
         }
 
         try {
             await addAas(result.aas, result.aasData);
         } catch (e) {
-            throw new LocalizedError('compare-error.aas-add-error');
+            throw new LocalizedError('errors.compare-error.aas-add-error');
         }
 
         setAddModalOpen(false);

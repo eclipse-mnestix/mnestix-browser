@@ -80,7 +80,7 @@ export default function Page() {
 
         const { isSuccess, result } = await performFullAasSearch(aasIdDecoded);
         if (!isSuccess) {
-            showError(new LocalizedError('url-not-found'));
+            showError(new LocalizedError('errors.url-not-found'));
         } else if (result.aas) {
             setAasOriginUrl(result.aasData?.aasRepositoryOrigin ?? null);
             setRegistryAasData(result.aasData);
