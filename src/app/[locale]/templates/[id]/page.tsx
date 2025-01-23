@@ -1,6 +1,6 @@
 'use client';
 
-import { PrivateRoute } from 'components/azureAuthentication/PrivateRoute';
+import { PrivateRoute } from 'components/authentication/PrivateRoute';
 import { CheckCircle, CloudUploadOutlined, Delete, MoreVert, Restore } from '@mui/icons-material';
 import {
     Box,
@@ -25,7 +25,8 @@ import {
     updateNodeIds,
     getParentOfElement,
     splitIdIntoArray,
-    rewriteNodeIds, generateSubmodelViewObjectFromSubmodelElement,
+    rewriteNodeIds,
+    generateSubmodelViewObjectFromSubmodelElement,
 } from 'lib/util/SubmodelViewObjectUtil';
 import { TemplateEditFields, TemplateEditFieldsProps } from '../_components/template-edit/TemplateEditFields';
 import { useAuth } from 'lib/hooks/UseAuth';
@@ -74,11 +75,18 @@ export default function Page() {
     function generateSubmodelViewObject(sm: Submodel): SubmodelViewObject {
         const localSm = cloneDeep(sm);
         // Ids are unique for the tree, start with 0, children have 0-0, 0-1, and so on
-        const frontend: SubmodelViewObject = { id: '0', name: localSm.idShort!, children: [], isAboutToBeDeleted: false };
+        const frontend: SubmodelViewObject = {
+            id: '0',
+            name: localSm.idShort!,
+            children: [],
+            isAboutToBeDeleted: false,
+        };
 
         if (localSm.submodelElements) {
             const arr = localSm.submodelElements;
-            arr.forEach((el, i) => frontend.children?.push(generateSubmodelViewObjectFromSubmodelElement(el, '0-' + i)));
+            arr.forEach((el, i) =>
+                frontend.children?.push(generateSubmodelViewObjectFromSubmodelElement(el, '0-' + i)),
+            );
             localSm.submodelElements = [];
         }
         frontend.data = localSm;
@@ -256,7 +264,6 @@ export default function Page() {
         }
         return undefined;
     }
-
 
     function deleteItem(elementToDeleteId: string, submodel: SubmodelViewObject): SubmodelViewObject {
         const idArray = splitIdIntoArray(elementToDeleteId);

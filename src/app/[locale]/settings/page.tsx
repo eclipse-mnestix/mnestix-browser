@@ -1,6 +1,6 @@
 'use client';
 
-import { PrivateRoute } from 'components/azureAuthentication/PrivateRoute';
+import { PrivateRoute } from 'components/authentication/PrivateRoute';
 import { Box, Card } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { ViewHeading } from 'components/basics/ViewHeading';
@@ -14,7 +14,7 @@ import { useEnv } from 'app/env/provider';
 
 enum settingsPageTypes {
     ID_STRUCTURE,
-    MNESTIX_CONNECTIONS
+    MNESTIX_CONNECTIONS,
 }
 
 export default function Page() {
@@ -25,13 +25,14 @@ export default function Page() {
     const settingsTabItems: TabSelectorItem[] = [
         {
             id: settingsPageTypes[settingsPageTypes.MNESTIX_CONNECTIONS],
-            label: intl.formatMessage(messages.mnestix.connections.title)
-        }]
+            label: intl.formatMessage(messages.mnestix.connections.title),
+        },
+    ];
 
-    if(env.MNESTIX_BACKEND_API_URL){
+    if (env.MNESTIX_BACKEND_API_URL) {
         const settingsTabToAdd = {
             id: settingsPageTypes[settingsPageTypes.ID_STRUCTURE],
-                label: intl.formatMessage(messages.mnestix.idStructure)
+            label: intl.formatMessage(messages.mnestix.idStructure),
         };
         settingsTabItems.splice(0, 0, settingsTabToAdd);
     }
@@ -41,24 +42,27 @@ export default function Page() {
     const renderActiveSettingsTab = () => {
         switch (selectedTab.id) {
             case settingsPageTypes[settingsPageTypes.ID_STRUCTURE]:
-                return <IdSettingsCard/>
+                return <IdSettingsCard />;
             case settingsPageTypes[settingsPageTypes.MNESTIX_CONNECTIONS]:
-                return <MnestixConnectionsCard/>
+                return <MnestixConnectionsCard />;
             default:
-                return <></>
+                return <></>;
         }
-    }
+    };
 
     return (
         <PrivateRoute>
-            <Box sx={{ p:4, width: '100%', margin: '0 auto' }}>
+            <Box sx={{ p: 4, width: '100%', margin: '0 auto' }}>
                 <Box sx={{ mb: 3 }}>
-                    <ViewHeading title={<FormattedMessage {...messages.mnestix.settings} />}/>
+                    <ViewHeading title={<FormattedMessage {...messages.mnestix.settings} />} />
                 </Box>
                 <Card sx={{ p: 2 }}>
                     <Box display="grid" gridTemplateColumns={isMobile ? '1fr' : '1fr 3fr'}>
-                        <VerticalTabSelector items={settingsTabItems} selected={selectedTab}
-                                             setSelected={setSelectedTab}/>
+                        <VerticalTabSelector
+                            items={settingsTabItems}
+                            selected={selectedTab}
+                            setSelected={setSelectedTab}
+                        />
                         {renderActiveSettingsTab()}
                     </Box>
                 </Card>

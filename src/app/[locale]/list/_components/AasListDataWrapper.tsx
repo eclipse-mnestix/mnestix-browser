@@ -13,7 +13,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { SelectRepository } from './filter/SelectRepository';
 import { useTranslations } from 'next-intl';
 import { ApiResponseWrapperError, ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { AuthenticationPrompt } from 'components/azureAuthentication/AuthenticationPrompt';
+import { AuthenticationPrompt } from 'components/authentication/AuthenticationPrompt';
 
 export default function AasListDataWrapper() {
     const [isLoadingList, setIsLoadingList] = useState(false);

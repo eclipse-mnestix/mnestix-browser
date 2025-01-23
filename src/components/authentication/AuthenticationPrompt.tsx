@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import AuthenticationLock from 'assets/authentication_lock.svg';
-import SignInButton from 'components/azureAuthentication/SignInButton';
+import SignInButton from 'components/authentication/SignInButton';
 import { useTranslations } from 'next-intl';
 
 export function AuthenticationPrompt() {

@@ -1,6 +1,6 @@
 'use client';
 
-import { PrivateRoute } from 'components/azureAuthentication/PrivateRoute';
+import { PrivateRoute } from 'components/authentication/PrivateRoute';
 import { Add, FolderOutlined } from '@mui/icons-material';
 import { Box, Button, Divider, Paper, Skeleton, Typography } from '@mui/material';
 import { TabSelectorItem, VerticalTabSelector } from 'components/basics/VerticalTabSelector';
