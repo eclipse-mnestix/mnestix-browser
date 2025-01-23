@@ -1,7 +1,8 @@
 import { AuthOptions } from 'next-auth';
 import KeycloakProvider from 'next-auth/providers/keycloak';
 import AzureADProvider from 'next-auth/providers/azure-ad';
-import type { JWT } from 'next-auth/jwt';
+import { JWT } from 'next-auth/jwt';
+import { decodeJwt } from 'jose';
 
 const isEmptyOrWhiteSpace = (input: string | undefined) => {
     return !input || input.trim() === '';
@@ -48,6 +49,8 @@ export const authOptions: AuthOptions = {
     },
     callbacks: {
         async jwt({ token, account }) {
+            let roles = null;
+
             const nowTimeStamp = Math.floor(Date.now() / 1000);
 
             if (account) {
@@ -55,7 +58,16 @@ export const authOptions: AuthOptions = {
                 token.id_token = account.id_token;
                 token.expires_at = account.expires_at;
                 token.refresh_token = account.refresh_token;
-                return token;
+
+                // The Roles are stored inside the access_token
+                if (account.access_token) {
+                    const decodedToken = decodeJwt(account.access_token);
+                    if (decodedToken) {
+                        roles = decodedToken?.role;
+                    }
+                }
+                // Store Roles inside token
+                return { ...token, roles: roles };
             } else if (nowTimeStamp < (token.expires_at as number)) {
                 return token;
             }
@@ -75,6 +87,7 @@ export const authOptions: AuthOptions = {
         async session({ session, token }) {
             session.accessToken = token.access_token as string;
             session.idToken = token.id_token as string;
+            session.user.role = token.roles as string[];
             return session;
         },
     },
@@ -133,4 +146,3 @@ const refreshAzureADToken = async (token: JWT) => {
         refresh_token: refreshedTokens.refresh_token ?? token.refresh_token, // Fallback to old refresh token if not provided
     };
 };
-

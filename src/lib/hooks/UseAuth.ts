@@ -7,9 +7,9 @@ import { useEnv } from 'app/env/provider';
 
 export function useAuth(): Auth {
     const [bearerToken, setBearerToken] = useState<string>('');
-    const { data: session, status } = useSession()
+    const { data: session, status } = useSession();
     const env = useEnv();
-    
+
     useAsyncEffect(async () => {
         if (session) {
             setBearerToken('Bearer ' + session.accessToken);
@@ -17,9 +17,9 @@ export function useAuth(): Auth {
             // TODO forward to login
         }
     }, [session]);
-    
+
     const providerType = env.KEYCLOAK_ENABLED ? 'keycloak' : 'azure-ad';
-    
+
     return {
         getBearerToken: (): string => {
             return bearerToken;
@@ -30,11 +30,14 @@ export function useAuth(): Auth {
             });
         },
         logout: async (): Promise<void> => {
-            await sessionLogOut(env.KEYCLOAK_ENABLED).then(() => signOut({ callbackUrl: '/' }).catch((e) => {
-                console.error(e);
-            }));
+            await sessionLogOut(env.KEYCLOAK_ENABLED).then(() =>
+                signOut({ callbackUrl: '/' }).catch((e) => {
+                    console.error(e);
+                }),
+            );
         },
         getAccount: (): Session | null => {
+            session?.user?.role;
             return session;
         },
         isLoggedIn: status === 'authenticated',

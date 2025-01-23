@@ -68,6 +68,10 @@ export default function MainMenu() {
         return;
     };
 
+    const getAuthRole = () => {
+        return auth?.getAccount()?.user.role;
+    };
+
     const handleMenuInteraction = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
         if (
             event.type === 'keydown' &&
@@ -193,7 +197,9 @@ export default function MainMenu() {
                         <List>
                             {auth.isLoggedIn && (
                                 <>
-                                    {getAuthName() && <MenuHeading marginTop={0}>{getAuthName()}</MenuHeading>}
+                                    {getAuthName() && (
+                                        <MenuHeading marginTop={0}>{getAuthName() + ' ' + getAuthRole()}</MenuHeading>
+                                    )}
                                     {adminBottomMenu.map((props, i) => (
                                         <MenuListItem {...props} key={'adminBottomMenu' + i} />
                                     ))}
