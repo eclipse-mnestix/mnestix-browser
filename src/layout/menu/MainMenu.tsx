@@ -1,6 +1,6 @@
 import MenuIcon from '@mui/icons-material/Menu';
 import { alpha, Box, Divider, Drawer, IconButton, List, styled, Typography } from '@mui/material';
-import { Dashboard, Login, Logout, OpenInNew, Settings } from '@mui/icons-material';
+import { AdminPanelSettings, AccountCircle, Dashboard, Login, Logout, OpenInNew, Settings } from '@mui/icons-material';
 import React, { useState } from 'react';
 import { useAuth } from 'lib/hooks/UseAuth';
 import { FormattedMessage } from 'react-intl';
@@ -68,8 +68,9 @@ export default function MainMenu() {
         return;
     };
 
-    const getAuthRole = () => {
-        return auth?.getAccount()?.user.role;
+    const getIsAdmin = () => {
+        const roles = auth?.getAccount()?.user.role;
+        return !!(roles && roles.find((role) => role === 'mnestix-admin'));
     };
 
     const handleMenuInteraction = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -198,7 +199,10 @@ export default function MainMenu() {
                             {auth.isLoggedIn && (
                                 <>
                                     {getAuthName() && (
-                                        <MenuHeading marginTop={0}>{getAuthName() + ' ' + getAuthRole()}</MenuHeading>
+                                        <MenuHeading marginTop={0}>
+                                            {getIsAdmin() ? <AdminPanelSettings /> : <AccountCircle />}
+                                            {getAuthName()}
+                                        </MenuHeading>
                                     )}
                                     {adminBottomMenu.map((props, i) => (
                                         <MenuListItem {...props} key={'adminBottomMenu' + i} />
