@@ -62,5 +62,15 @@
   "authentication": {
     "authentication-needed": "Authentication needed",
     "contactAdmin": "You cannot visit this page. Please contact your administrator."
+  },
+  "mainMenu": {
+    "dashboard": "Dashboard",
+    "aasList": "AAS List",
+    "templates": "Templates",
+    "settings": "Settings",
+    "repository": "Repository",
+    "findOutMore": "Find out more",
+    "login": "Login",
+    "logout": "Logout"
   }
 }

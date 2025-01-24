@@ -1,10 +1,9 @@
 import { MenuListItem, MenuListItemProps } from 'layout/menu/MenuListItem';
-import { FormattedMessage } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
 import { AccountCircle, AdminPanelSettings, Login, Logout } from '@mui/icons-material';
 import { Box, Divider, List, styled } from '@mui/material';
 import { MenuHeading } from 'layout/menu/MenuHeading';
 import { useAuth } from 'lib/hooks/UseAuth';
+import { useTranslations } from 'next-intl';
 
 const StyledDivider = styled(Divider)(({ theme }) => ({
     borderColor: theme.palette.common.white,
@@ -12,10 +11,11 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
 }));
 export default function BottomMenu(props: { isLoggedIn: boolean; name: string; isAdmin: boolean }) {
     const auth = useAuth();
+    const t = useTranslations('mainMenu');
 
     const guestBottomMenu: MenuListItemProps[] = [
         {
-            label: <FormattedMessage {...messages.mnestix.login} />,
+            label: t('login'),
             icon: <Login />,
             onClick: () => auth.login(),
         },
@@ -23,7 +23,7 @@ export default function BottomMenu(props: { isLoggedIn: boolean; name: string; i
 
     const loggedInBottomMenu: MenuListItemProps[] = [
         {
-            label: <FormattedMessage {...messages.mnestix.logout} />,
+            label: t('logout'),
             icon: <Logout />,
             onClick: () => auth.logout(),
         },

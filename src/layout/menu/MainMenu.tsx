@@ -3,8 +3,6 @@ import { alpha, Box, Divider, Drawer, IconButton, List, styled, Typography } fro
 import { Dashboard, OpenInNew, Settings } from '@mui/icons-material';
 import React, { useState } from 'react';
 import { useAuth } from 'lib/hooks/UseAuth';
-import { FormattedMessage } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
 import { TemplateIcon } from 'components/custom-icons/TemplateIcon';
 import { MenuHeading } from './MenuHeading';
 import { MenuListItem, MenuListItemProps } from './MenuListItem';
@@ -13,6 +11,7 @@ import packageJson from '../../../package.json';
 import { useEnv } from 'app/env/provider';
 import Roles from 'components/authentication/Roles';
 import BottomMenu from 'layout/menu/BottomMenu';
+import { useTranslations } from 'next-intl';
 
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
     '.MuiDrawer-paper': {
@@ -63,6 +62,7 @@ export default function MainMenu() {
     const versionString = 'Version ' + packageJson.version;
     const isAdmin = !!auth.getAccount()?.user.isAdmin;
     const allowedRoutes = isAdmin ? Roles.mnestixAdmin : Roles.mnestixUser;
+    const t = useTranslations('mainMenu');
 
     const getAuthName = () => {
         const user = auth?.getAccount()?.user;
@@ -88,7 +88,7 @@ export default function MainMenu() {
 
     const basicMenu: MenuListItemProps[] = [
         {
-            label: <FormattedMessage {...messages.mnestix.dashboard} />,
+            label: t('dashboard'),
             to: '/',
             icon: <Dashboard />,
         },
@@ -96,7 +96,7 @@ export default function MainMenu() {
 
     if (env.AAS_LIST_FEATURE_FLAG) {
         const listItemToAdd = {
-            label: <FormattedMessage {...messages.mnestix.list} />,
+            label: t('aasList'),
             to: '/list',
             icon: <ListIcon />,
         };
@@ -105,7 +105,7 @@ export default function MainMenu() {
 
     if (env.MNESTIX_BACKEND_API_URL && checkIfRouteIsAllowed('/templates')) {
         const templateItemToAdd = {
-            label: <FormattedMessage {...messages.mnestix.templates} />,
+            label: t('templates'),
             to: '/templates',
             icon: <TemplateIcon />,
         };
@@ -114,7 +114,7 @@ export default function MainMenu() {
 
     if (checkIfRouteIsAllowed('/settings')) {
         const settingsMenu = {
-            label: <FormattedMessage {...messages.mnestix.settings} />,
+            label: t('settings'),
             to: '/settings',
             icon: <Settings />,
         };
@@ -144,9 +144,7 @@ export default function MainMenu() {
             <StyledDrawer anchor="left" open={drawerOpen} onClose={handleMenuInteraction(false)}>
                 <Box onClick={handleMenuInteraction(false)} onKeyDown={handleMenuInteraction(false)}>
                     <List>
-                        <MenuHeading>
-                            <FormattedMessage {...messages.mnestix.repository} />
-                        </MenuHeading>
+                        <MenuHeading>{t('repository')}</MenuHeading>
                         <>
                             {basicMenu.map((props, i) => (
                                 <MenuListItem {...props} key={'adminMainMenu' + i} />
@@ -155,9 +153,7 @@ export default function MainMenu() {
                         {useAuthentication && auth.isLoggedIn && (
                             <>
                                 <StyledDivider />
-                                <MenuHeading>
-                                    <FormattedMessage {...messages.mnestix.findOutMore} />
-                                </MenuHeading>
+                                <MenuHeading>{t('findOutMore')}</MenuHeading>
                                 {guestMoreMenu.map((props, i) => (
                                     <MenuListItem {...props} key={'guestMoreMenu' + i} />
                                 ))}
