@@ -2,7 +2,7 @@ import { AuthOptions } from 'next-auth';
 import KeycloakProvider from 'next-auth/providers/keycloak';
 import AzureADProvider from 'next-auth/providers/azure-ad';
 import { JWT } from 'next-auth/jwt';
-import { decodeJwt } from 'jose';
+import jwt from 'jsonwebtoken';
 
 const isEmptyOrWhiteSpace = (input: string | undefined) => {
     return !input || input.trim() === '';
@@ -61,8 +61,9 @@ export const authOptions: AuthOptions = {
 
                 // The Roles are stored inside the access_token
                 if (account.access_token) {
-                    const decodedToken = decodeJwt(account.access_token);
+                    const decodedToken = jwt.decode(account.access_token);
                     if (decodedToken) {
+                        // @ts-expect-error role exits
                         roles = decodedToken?.role;
                     }
                 }
