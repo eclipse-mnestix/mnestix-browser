@@ -1,6 +1,6 @@
 import MenuIcon from '@mui/icons-material/Menu';
 import { alpha, Box, Divider, Drawer, IconButton, List, styled, Typography } from '@mui/material';
-import { AdminPanelSettings, AccountCircle, Dashboard, Login, Logout, OpenInNew, Settings } from '@mui/icons-material';
+import { Dashboard, OpenInNew, Settings } from '@mui/icons-material';
 import React, { useState } from 'react';
 import { useAuth } from 'lib/hooks/UseAuth';
 import { FormattedMessage } from 'react-intl';
@@ -12,6 +12,7 @@ import ListIcon from '@mui/icons-material/List';
 import packageJson from '../../../package.json';
 import { useEnv } from 'app/env/provider';
 import Roles from 'components/authentication/Roles';
+import BottomMenu from 'layout/menu/BottomMenu';
 
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
     '.MuiDrawer-paper': {
@@ -60,7 +61,7 @@ export default function MainMenu() {
     const env = useEnv();
     const useAuthentication = env.AUTHENTICATION_FEATURE_FLAG;
     const versionString = 'Version ' + packageJson.version;
-    const isAdmin = auth.getAccount()?.user.isAdmin;
+    const isAdmin = !!auth.getAccount()?.user.isAdmin;
     const allowedRoutes = isAdmin ? Roles.mnestixAdmin : Roles.mnestixUser;
 
     const getAuthName = () => {
@@ -130,22 +131,6 @@ export default function MainMenu() {
         },
     ];
 
-    const guestBottomMenu: MenuListItemProps[] = [
-        {
-            label: <FormattedMessage {...messages.mnestix.login} />,
-            icon: <Login />,
-            onClick: () => auth.login(),
-        },
-    ];
-
-    const loggedInBottomMenu: MenuListItemProps[] = [
-        {
-            label: <FormattedMessage {...messages.mnestix.logout} />,
-            icon: <Logout />,
-            onClick: () => auth.logout(),
-        },
-    ];
-
     return (
         <>
             <IconButton
@@ -184,31 +169,7 @@ export default function MainMenu() {
                     <Typography>{versionString}</Typography>
                 </Box>
                 {useAuthentication && (
-                    <>
-                        <StyledDivider />
-                        <List>
-                            {auth.isLoggedIn && (
-                                <>
-                                    {getAuthName() && (
-                                        <MenuHeading marginTop={0}>
-                                            {isAdmin ? <AdminPanelSettings /> : <AccountCircle />}
-                                            {getAuthName()}
-                                        </MenuHeading>
-                                    )}
-                                    {loggedInBottomMenu.map((props, i) => (
-                                        <MenuListItem {...props} key={'adminBottomMenu' + i} />
-                                    ))}
-                                </>
-                            )}
-                            {!auth.isLoggedIn && (
-                                <>
-                                    {guestBottomMenu.map((props, i) => (
-                                        <MenuListItem {...props} key={'guestBottomMenu' + i} />
-                                    ))}
-                                </>
-                            )}
-                        </List>
-                    </>
+                    <BottomMenu isAdmin={isAdmin} name={getAuthName() ?? ''} isLoggedIn={auth.isLoggedIn} />
                 )}
             </StyledDrawer>
         </>
