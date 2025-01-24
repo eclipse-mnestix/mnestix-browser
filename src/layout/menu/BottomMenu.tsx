@@ -2,7 +2,7 @@ import { MenuListItem, MenuListItemProps } from 'layout/menu/MenuListItem';
 import { FormattedMessage } from 'react-intl';
 import { messages } from 'lib/i18n/localization';
 import { AccountCircle, AdminPanelSettings, Login, Logout } from '@mui/icons-material';
-import { Divider, List, styled } from '@mui/material';
+import { Box, Divider, List, styled } from '@mui/material';
 import { MenuHeading } from 'layout/menu/MenuHeading';
 import { useAuth } from 'lib/hooks/UseAuth';
 
@@ -36,8 +36,10 @@ export default function BottomMenu(props: { isLoggedIn: boolean; name: string; i
                 {props.isLoggedIn && (
                     <>
                         <MenuHeading marginTop={0}>
-                            {props.isAdmin ? <AdminPanelSettings /> : <AccountCircle />}
-                            {props.name}
+                            <Box component="span" display="flex" gap={1}>
+                                {props.isAdmin ? <AdminPanelSettings /> : <AccountCircle />}
+                                {props.name}
+                            </Box>
                         </MenuHeading>
                         {loggedInBottomMenu.map((props, i) => (
                             <MenuListItem {...props} key={'adminBottomMenu' + i} />
