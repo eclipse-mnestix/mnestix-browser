@@ -9,6 +9,7 @@ declare module 'next-auth' {
         accessToken: string;
         idToken: string;
         user: {
+            isAdmin: boolean;
             role: string[];
         } & User;
     }

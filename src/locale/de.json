@@ -60,6 +60,7 @@
     }
   },
   "authentication": {
-    "authentication-needed": "Authentifizierung erforderlich"
+    "authentication-needed": "Authentifizierung erforderlich",
+    "contactAdmin": "You cannot visit this page. Please contact your administrator."
   }
 }

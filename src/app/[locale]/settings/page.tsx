@@ -51,7 +51,7 @@ export default function Page() {
     };
 
     return (
-        <PrivateRoute>
+        <PrivateRoute currentRoute={'/settings'}>
             <Box sx={{ p: 4, width: '100%', margin: '0 auto' }}>
                 <Box sx={{ mb: 3 }}>
                     <ViewHeading title={<FormattedMessage {...messages.mnestix.settings} />} />

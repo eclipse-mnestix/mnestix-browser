@@ -37,7 +37,11 @@ export function useAuth(): Auth {
             );
         },
         getAccount: (): Session | null => {
-            session?.user?.role;
+            if (session) {
+                session.user.isAdmin = !!(
+                    session.user.role && session.user.role.find((role) => role === 'mnestix-admin')
+                );
+            }
             return session;
         },
         isLoggedIn: status === 'authenticated',

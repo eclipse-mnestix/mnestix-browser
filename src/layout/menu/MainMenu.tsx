@@ -11,6 +11,7 @@ import { MenuListItem, MenuListItemProps } from './MenuListItem';
 import ListIcon from '@mui/icons-material/List';
 import packageJson from '../../../package.json';
 import { useEnv } from 'app/env/provider';
+import Roles from 'components/authentication/Roles';
 
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
     '.MuiDrawer-paper': {
@@ -59,6 +60,8 @@ export default function MainMenu() {
     const env = useEnv();
     const useAuthentication = env.AUTHENTICATION_FEATURE_FLAG;
     const versionString = 'Version ' + packageJson.version;
+    const isAdmin = auth.getAccount()?.user.isAdmin;
+    const allowedRoutes = isAdmin ? Roles.mnestixAdmin : Roles.mnestixUser;
 
     const getAuthName = () => {
         const user = auth?.getAccount()?.user;
@@ -66,11 +69,6 @@ export default function MainMenu() {
         if (user.email) return user.email;
         if (user.name) return user.name;
         return;
-    };
-
-    const getIsAdmin = () => {
-        const roles = auth?.getAccount()?.user.role;
-        return !!(roles && roles.find((role) => role === 'mnestix-admin'));
     };
 
     const handleMenuInteraction = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -83,34 +81,44 @@ export default function MainMenu() {
         setDrawerOpen(open);
     };
 
-    const adminMainMenu: MenuListItemProps[] = [
+    const checkIfRouteIsAllowed = (route: string) => {
+        return (useAuthentication && auth.isLoggedIn && allowedRoutes.includes(route)) || !useAuthentication;
+    };
+
+    const basicMenu: MenuListItemProps[] = [
         {
             label: <FormattedMessage {...messages.mnestix.dashboard} />,
             to: '/',
             icon: <Dashboard />,
         },
-        {
+    ];
+
+    if (env.AAS_LIST_FEATURE_FLAG) {
+        const listItemToAdd = {
+            label: <FormattedMessage {...messages.mnestix.list} />,
+            to: '/list',
+            icon: <ListIcon />,
+        };
+        basicMenu.push(listItemToAdd);
+    }
+
+    if (env.MNESTIX_BACKEND_API_URL && checkIfRouteIsAllowed('/templates')) {
+        const templateItemToAdd = {
+            label: <FormattedMessage {...messages.mnestix.templates} />,
+            to: '/templates',
+            icon: <TemplateIcon />,
+        };
+        basicMenu.push(templateItemToAdd);
+    }
+
+    if (checkIfRouteIsAllowed('/settings')) {
+        const settingsMenu = {
             label: <FormattedMessage {...messages.mnestix.settings} />,
             to: '/settings',
             icon: <Settings />,
-        },
-    ];
-
-    const adminBottomMenu: MenuListItemProps[] = [
-        {
-            label: <FormattedMessage {...messages.mnestix.logout} />,
-            icon: <Logout />,
-            onClick: () => auth.logout(),
-        },
-    ];
-
-    const guestMainMenu: MenuListItemProps[] = [
-        {
-            label: <FormattedMessage {...messages.mnestix.dashboard} />,
-            to: '/',
-            icon: <Dashboard />,
-        },
-    ];
+        };
+        basicMenu.push(settingsMenu);
+    }
 
     const guestMoreMenu: MenuListItemProps[] = [
         {
@@ -130,26 +138,13 @@ export default function MainMenu() {
         },
     ];
 
-    if (env.AAS_LIST_FEATURE_FLAG) {
-        const listItemToAdd = {
-            label: <FormattedMessage {...messages.mnestix.list} />,
-            to: '/list',
-            icon: <ListIcon />,
-        };
-
-        guestMainMenu.push(listItemToAdd);
-        adminMainMenu.splice(1, 0, listItemToAdd);
-    }
-
-    if (env.MNESTIX_BACKEND_API_URL) {
-        const templateItemToAdd = {
-            label: <FormattedMessage {...messages.mnestix.templates} />,
-            to: '/templates',
-            icon: <TemplateIcon />,
-        };
-
-        adminMainMenu.push(templateItemToAdd);
-    }
+    const loggedInBottomMenu: MenuListItemProps[] = [
+        {
+            label: <FormattedMessage {...messages.mnestix.logout} />,
+            icon: <Logout />,
+            onClick: () => auth.logout(),
+        },
+    ];
 
     return (
         <>
@@ -167,17 +162,13 @@ export default function MainMenu() {
                         <MenuHeading>
                             <FormattedMessage {...messages.mnestix.repository} />
                         </MenuHeading>
-                        {!useAuthentication || auth.isLoggedIn ? (
+                        <>
+                            {basicMenu.map((props, i) => (
+                                <MenuListItem {...props} key={'adminMainMenu' + i} />
+                            ))}
+                        </>
+                        {useAuthentication && auth.isLoggedIn && (
                             <>
-                                {adminMainMenu.map((props, i) => (
-                                    <MenuListItem {...props} key={'adminMainMenu' + i} />
-                                ))}
-                            </>
-                        ) : (
-                            <>
-                                {guestMainMenu.map((props, i) => (
-                                    <MenuListItem {...props} key={'guestMainMenu' + i} />
-                                ))}
                                 <StyledDivider />
                                 <MenuHeading>
                                     <FormattedMessage {...messages.mnestix.findOutMore} />
@@ -200,11 +191,11 @@ export default function MainMenu() {
                                 <>
                                     {getAuthName() && (
                                         <MenuHeading marginTop={0}>
-                                            {getIsAdmin() ? <AdminPanelSettings /> : <AccountCircle />}
+                                            {isAdmin ? <AdminPanelSettings /> : <AccountCircle />}
                                             {getAuthName()}
                                         </MenuHeading>
                                     )}
-                                    {adminBottomMenu.map((props, i) => (
+                                    {loggedInBottomMenu.map((props, i) => (
                                         <MenuListItem {...props} key={'adminBottomMenu' + i} />
                                     ))}
                                 </>
