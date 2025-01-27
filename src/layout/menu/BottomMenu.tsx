@@ -4,12 +4,13 @@ import { Box, Divider, List, styled } from '@mui/material';
 import { MenuHeading } from 'layout/menu/MenuHeading';
 import { useAuth } from 'lib/hooks/UseAuth';
 import { useTranslations } from 'next-intl';
+import { MnestixRole } from 'components/authentication/AllowedRoutes';
 
 const StyledDivider = styled(Divider)(({ theme }) => ({
     borderColor: theme.palette.common.white,
     opacity: 0.3,
 }));
-export default function BottomMenu(props: { isLoggedIn: boolean; name: string; isAdmin: boolean }) {
+export default function BottomMenu(props: { isLoggedIn: boolean; name: string; mnestixRole: MnestixRole }) {
     const auth = useAuth();
     const t = useTranslations('mainMenu');
 
@@ -37,7 +38,11 @@ export default function BottomMenu(props: { isLoggedIn: boolean; name: string; i
                     <>
                         <MenuHeading marginTop={0}>
                             <Box component="span" display="flex" gap={1}>
-                                {props.isAdmin ? <AdminPanelSettings /> : <AccountCircle />}
+                                {props.mnestixRole === MnestixRole.MnestixAdmin ? (
+                                    <AdminPanelSettings />
+                                ) : (
+                                    <AccountCircle />
+                                )}
                                 {props.name}
                             </Box>
                         </MenuHeading>

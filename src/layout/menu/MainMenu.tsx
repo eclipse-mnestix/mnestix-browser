@@ -9,9 +9,9 @@ import { MenuListItem, MenuListItemProps } from './MenuListItem';
 import ListIcon from '@mui/icons-material/List';
 import packageJson from '../../../package.json';
 import { useEnv } from 'app/env/provider';
-import Roles from 'components/authentication/Roles';
 import BottomMenu from 'layout/menu/BottomMenu';
 import { useTranslations } from 'next-intl';
+import { MnestixRole } from 'components/authentication/AllowedRoutes';
 
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
     '.MuiDrawer-paper': {
@@ -60,8 +60,8 @@ export default function MainMenu() {
     const env = useEnv();
     const useAuthentication = env.AUTHENTICATION_FEATURE_FLAG;
     const versionString = 'Version ' + packageJson.version;
-    const isAdmin = !!auth.getAccount()?.user.isAdmin;
-    const allowedRoutes = isAdmin ? Roles.mnestixAdmin : Roles.mnestixUser;
+    const menstixRole = auth.getAccount()?.user.menstixRole ?? MnestixRole.MnestixGuest;
+    const allowedRoutes = auth.getAccount()?.user.allowedRoutes ?? [];
     const t = useTranslations('mainMenu');
 
     const getAuthName = () => {
@@ -165,7 +165,7 @@ export default function MainMenu() {
                     <Typography>{versionString}</Typography>
                 </Box>
                 {useAuthentication && (
-                    <BottomMenu isAdmin={isAdmin} name={getAuthName() ?? ''} isLoggedIn={auth.isLoggedIn} />
+                    <BottomMenu mnestixRole={menstixRole} name={getAuthName() ?? ''} isLoggedIn={auth.isLoggedIn} />
                 )}
             </StyledDrawer>
         </>

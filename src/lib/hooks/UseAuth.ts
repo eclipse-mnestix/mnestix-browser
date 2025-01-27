@@ -4,6 +4,7 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import { Session } from 'next-auth';
 import { sessionLogOut } from 'lib/api/infrastructure';
 import { useEnv } from 'app/env/provider';
+import AllowedRoutes, { MnestixRole } from 'components/authentication/AllowedRoutes';
 
 export function useAuth(): Auth {
     const [bearerToken, setBearerToken] = useState<string>('');
@@ -37,10 +38,15 @@ export function useAuth(): Auth {
             );
         },
         getAccount: (): Session | null => {
-            if (session) {
-                session.user.isAdmin = !!(
-                    session.user.role && session.user.role.find((role) => role === 'mnestix-admin')
-                );
+            if (session && session.user.roles) {
+                if (session.user.roles.find((role) => role === MnestixRole.MnestixUser)) {
+                    session.user.menstixRole = MnestixRole.MnestixUser;
+                    session.user.allowedRoutes = AllowedRoutes.mnestixUser;
+                }
+                if (session.user.roles.find((role) => role === MnestixRole.MnestixAdmin)) {
+                    session.user.menstixRole = MnestixRole.MnestixAdmin;
+                    session.user.allowedRoutes = AllowedRoutes.mnestixAdmin;
+                }
             }
             return session;
         },
