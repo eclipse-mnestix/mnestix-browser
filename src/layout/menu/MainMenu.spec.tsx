@@ -66,7 +66,7 @@ describe('MainMenu', () => {
         (useEnv as jest.Mock).mockImplementation(mockEnvVariables);
     });
 
-    it('Should be able to open the menu', () => {
+    it('should be able to open the menu', () => {
         (useAuth as jest.Mock).mockImplementation(mockUseAuthAdmin);
         renderAndOpenMenu();
 

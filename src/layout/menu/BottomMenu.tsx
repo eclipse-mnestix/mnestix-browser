@@ -37,7 +37,7 @@ export default function BottomMenu(props: { isLoggedIn: boolean; name: string; m
                 {props.isLoggedIn && (
                     <>
                         <MenuHeading marginTop={0}>
-                            <Box component="span" display="flex" gap={1}>
+                            <Box component="span" display="flex" gap={1} data-testid="user-info-box">
                                 {props.mnestixRole === MnestixRole.MnestixAdmin ? (
                                     <AdminPanelSettings />
                                 ) : (
