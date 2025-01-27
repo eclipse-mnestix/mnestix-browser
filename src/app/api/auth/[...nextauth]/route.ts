@@ -11,7 +11,7 @@ declare module 'next-auth' {
         idToken: string;
         user: {
             roles: string[];
-            menstixRole: MnestixRole;
+            mnestixRole: MnestixRole;
             allowedRoutes: string[];
         } & User;
     }
