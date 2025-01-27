@@ -154,7 +154,7 @@ export default function MainMenu() {
                                 <MenuListItem {...props} key={'adminMainMenu' + i} />
                             ))}
                         </>
-                        {useAuthentication && auth.isLoggedIn && (
+                        {useAuthentication && !auth.isLoggedIn && (
                             <>
                                 <StyledDivider />
                                 <MenuHeading>{t('findOutMore')}</MenuHeading>

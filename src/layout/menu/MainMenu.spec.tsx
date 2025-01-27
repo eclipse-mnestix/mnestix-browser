@@ -55,26 +55,29 @@ const mockUseAuthNotLoggedIn = jest.fn(() => {
     };
 });
 
+function renderAndOpenMenu() {
+    CustomRender(<MainMenu></MainMenu>);
+    const burgerMenu = screen.getByTestId('header-burgermenu');
+    fireEvent.click(burgerMenu);
+}
+
 describe('MainMenu', () => {
-    it('Should be able to open the menu', () => {
+    beforeAll(() => {
         (useEnv as jest.Mock).mockImplementation(mockEnvVariables);
+    });
+
+    it('Should be able to open the menu', () => {
         (useAuth as jest.Mock).mockImplementation(mockUseAuthAdmin);
-        CustomRender(<MainMenu></MainMenu>);
-        const burgerMenu = screen.getByTestId('header-burgermenu');
-        fireEvent.click(burgerMenu);
+        renderAndOpenMenu();
+
         const mainMenu = screen.getByTestId('main-menu');
         expect(mainMenu).toBeInTheDocument();
     });
     describe('logged in as admin', () => {
-        beforeAll(() => {
-            (useEnv as jest.Mock).mockImplementation(mockEnvVariables);
-            (useAuth as jest.Mock).mockImplementation(mockUseAuthAdmin);
-
-            CustomRender(<MainMenu></MainMenu>);
-            const burgerMenu = screen.getByTestId('header-burgermenu');
-            fireEvent.click(burgerMenu);
-        });
         it('should show all allowed admin actions', () => {
+            (useAuth as jest.Mock).mockImplementation(mockUseAuthAdmin);
+            renderAndOpenMenu();
+
             const templates = screen.getByTestId('/templates');
             expect(templates).toBeInTheDocument();
 
@@ -83,29 +86,20 @@ describe('MainMenu', () => {
         });
     });
     describe('logged in user', () => {
-        beforeAll(() => {
-            (useEnv as jest.Mock).mockImplementation(mockEnvVariables);
-            (useAuth as jest.Mock).mockImplementation(mockUseAuthUser);
-
-            CustomRender(<MainMenu></MainMenu>);
-            const burgerMenu = screen.getByTestId('header-burgermenu');
-            fireEvent.click(burgerMenu);
-        });
         it('should show all allowed user actions', () => {
+            (useAuth as jest.Mock).mockImplementation(mockUseAuthUser);
+            renderAndOpenMenu();
+
             const templates = screen.getByTestId('/templates');
             expect(templates).toBeInTheDocument();
         });
     });
     describe('not logged in', () => {
-        beforeAll(() => {
+        it('should show all allowed not-logged-in actions', () => {
             (useEnv as jest.Mock).mockImplementation(mockEnvVariables);
             (useAuth as jest.Mock).mockImplementation(mockUseAuthNotLoggedIn);
+            renderAndOpenMenu();
 
-            CustomRender(<MainMenu></MainMenu>);
-            const burgerMenu = screen.getByTestId('header-burgermenu');
-            fireEvent.click(burgerMenu);
-        });
-        it('should show all allowed not-logged-in actions', () => {
             const templates = screen.getByTestId('/');
             expect(templates).toBeInTheDocument();
 
