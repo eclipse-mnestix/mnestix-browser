@@ -40,11 +40,11 @@ export function CompareAasAddDialog(props: AddAasModalProps) {
                     </Typography>
                     <Box>
                         <Typography color="text.secondary" textAlign="center">
-                            {t('dashboard.scan-id-label')}
+                            {t('dashboard.scanIdLabel')}
                         </Typography>
                         <QrScanner onScan={props.onSubmit} size={400} />
                         <Typography color="text.secondary" textAlign="center" sx={{ mb: 2, fontSize: '14px' }}>
-                            {t('dashboard.enter-manually-label')}
+                            {t('dashboard.enterManuallyLabel')}
                         </Typography>
                     </Box>
                 </Box>

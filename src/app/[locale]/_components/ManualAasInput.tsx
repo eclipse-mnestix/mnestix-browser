@@ -36,7 +36,7 @@ export function ManualAasInput(props: { onSubmit: (input: string) => Promise<voi
             await props.onSubmit(inputValue);
         } catch (e) {
             setIsLoading(false);
-            const msg = e instanceof LocalizedError ? e.descriptor : 'errors.unexpected-error';
+            const msg = e instanceof LocalizedError ? e.descriptor : 'errors.unexpectedError';
             setError(t(msg));
             if (!(e instanceof LocalizedError)) showError(e);
         }

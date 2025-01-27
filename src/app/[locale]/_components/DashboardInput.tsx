@@ -17,7 +17,7 @@ export const DashboardInput = () => {
 
     const browseAasUrl = async (searchString: string) => {
         const { isSuccess, result } = await performFullAasSearch(searchString.trim());
-        if (!isSuccess) throw new LocalizedError('errors.url-not-found');
+        if (!isSuccess) throw new LocalizedError('errors.urlNotFound');
 
         if (result.aas) {
             setAas(result.aas);
@@ -30,11 +30,11 @@ export const DashboardInput = () => {
     return (
         <>
             <Typography color="text.secondary" textAlign="center">
-                {t('scan-id-label')}
+                {t('scanIdLabel')}
             </Typography>
             <QrScanner onScan={browseAasUrl} size={250} />
             <Typography color="text.secondary" textAlign="center" sx={{ mb: 2 }}>
-                {t('enter-manually-label')}:
+                {t('enterManuallyLabel')}:
             </Typography>
             <ManualAasInput onSubmit={browseAasUrl} />
         </>

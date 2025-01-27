@@ -25,8 +25,8 @@
     "list-btn-label": "oder über Liste suchen",
     "list-btn-text": "Zur Aas Liste",
     "aasOrAssetId": "AAS ID oder Asset ID",
-    "scan-id-label": "AAS ID oder Asset ID scannen",
-    "enter-manually-label": "oder manuell eingeben"
+    "scanIdLabel": "AAS ID oder Asset ID scannen",
+    "enterManuallyLabel": "oder manuell eingeben"
   },
   "submodels": {
     "title": "Teilmodelle",
@@ -63,13 +63,13 @@
     "header": "Einstellungen"
   },
   "errors": {
-    "unexpected-error": "Unerwarteter Fehler",
-    "unauthorized-error": {
+    "unexpectedError": "Unerwarteter Fehler",
+    "unauthorizedError": {
       "title": "Unautorisierter Zugriff",
       "content": "Sie haben keinen Zugang zu dieser Ressource. Bitte loggen Sie sich ein oder fragen sie Ihren Administrator um Zugriff."
     },
     "not-found": "Nicht gefunden",
-    "url-not-found": "Keine Verwaltungsschale unter dieser ID."
+    "urlNotFound": "Keine Verwaltungsschale unter dieser ID."
   },
   "authentication": {
     "authentication-needed": "Authentifizierung erforderlich"

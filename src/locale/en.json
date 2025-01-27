@@ -25,8 +25,8 @@
     "list-btn-label": "or select via list",
     "list-btn-text": "Go to Aas List",
     "aasOrAssetId": "AAS ID or Asset ID",
-    "scan-id-label": "Scan AAS ID or Asset ID",
-    "enter-manually-label": "or enter manually"
+    "scanIdLabel": "Scan AAS ID or Asset ID",
+    "enterManuallyLabel": "or enter manually"
   },
   "submodels": {
     "title": "Submodels",
@@ -63,13 +63,13 @@
     "header": "Settings"
   },
   "errors": {
-    "unexpected-error": "Unexpected error",
-    "unauthorized-error": {
+    "unexpectedError": "Unexpected error",
+    "unauthorizedError": {
       "title": "Unauthorized access",
       "content": "You don`t have access to this resource. You may login or contact your administrator to get access."
     },
-    "not-found": "Not found",
-    "url-not-found": "No AAS with the given ID."
+    "notFound": "Not found",
+    "urlNotFound": "No AAS with the given ID."
   },
   "authentication": {
     "authentication-needed": "Authentication needed"
