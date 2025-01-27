@@ -1,13 +1,15 @@
-import { alpha, Box, Button, styled, SvgIconProps, Typography } from '@mui/material';
+import { alpha, Box, Button, styled, SvgIconProps, Tooltip, Typography } from '@mui/material';
 import { ArrowForward } from '@mui/icons-material';
 import { ReactElement } from 'react';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { tooltipText } from 'lib/util/ToolTipText';
 
 export type TabSelectorItem = {
     readonly id: string;
     readonly label: string;
     readonly startIcon?: ReactElement<SvgIconProps>;
     readonly submodelData?: Submodel;
+    readonly submodelError?: string | Error;
 };
 
 type VerticalTabSelectorProps = {
@@ -44,6 +46,12 @@ const Tab = styled(Button)(({ theme }) => ({
     '&:active': {
         borderColor: 'transparent',
     },
+    '&.Mui-disabled': {
+        pointerEvents: 'auto',
+        '&:hover': {
+            background: 'none',
+        },
+    },
 }));
 
 export function VerticalTabSelector(props: VerticalTabSelectorProps) {
@@ -58,18 +66,22 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
                         key={index}
                         onClick={() => props.setSelected && props.setSelected(item)}
                         className={`tab-item ${selectedCSSClass(item.id)}`}
+                        disabled={!!item.submodelError}
                     >
-                        {item.startIcon ? (
-                            <Box display="flex" alignItems="center">
-                                <Box display="flex" alignItems="center" sx={{ mr: 1 }}>
-                                    {item.startIcon}
-                                </Box>
-                                <Typography>{item.label || ''}</Typography>
-                            </Box>
-                        ) : (
-                            <Typography>{item.label || ''}</Typography>
-                        )}
-                        <ArrowForward color="primary" />
+                        <Box display="flex" alignItems="left" style={{ whiteSpace: 'nowrap', paddingRight: '20px' }}>
+                            <Typography>{tooltipText(item.label, 40) || ''}</Typography>
+                        </Box>
+
+                        <Box display="flex" alignItems="center" gap={2}>
+                            {item.submodelError ? (
+                                <Tooltip title={item.submodelError.toString()}>
+                                    <span>{item.startIcon}</span>
+                                </Tooltip>
+                            ) : (
+                                item.startIcon
+                            )}
+                            <ArrowForward color={item.submodelError ? 'disabled' : 'primary'} />
+                        </Box>
                     </Tab>
                 );
             })}

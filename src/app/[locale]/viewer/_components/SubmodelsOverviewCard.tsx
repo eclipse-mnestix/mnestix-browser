@@ -4,7 +4,8 @@ import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { SubmodelDetail } from './submodel/SubmodelDetail';
 import { TabSelectorItem, VerticalTabSelector } from 'components/basics/VerticalTabSelector';
 import { MobileModal } from 'components/basics/MobileModal';
-import ErrorIcon from '@mui/icons-material/Error';
+import InfoIcon from '@mui/icons-material/Info';
+import LinkOffIcon from '@mui/icons-material/LinkOff';
 import { SortNameplateElements } from 'app/[locale]/viewer/_components/submodel/sorting/SortNameplateElements';
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import ErrorBoundary from 'components/basics/ErrorBoundary';
@@ -43,12 +44,14 @@ export function SubmodelsOverviewCard({ submodelIds, submodelsLoading }: Submode
                 id: submodelId.id,
                 label: submodelId.submodel.idShort ?? '',
                 submodelData: submodelId.submodel,
+                startIcon: <InfoIcon/>,
             };
         } else {
             return {
                 id: submodelId.id,
                 label: submodelId.id,
-                startIcon: <ErrorIcon />,
+                startIcon: <LinkOffIcon />,
+                submodelError: submodelId.error ?? ''
             };
         }
     }
