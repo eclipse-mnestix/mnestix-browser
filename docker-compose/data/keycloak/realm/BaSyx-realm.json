@@ -1,4 +1,4 @@
-﻿{
+{
   "id" : "bcb69552-bf11-4249-a3eb-d0c3ab54a570",
   "realm" : "BaSyx",
   "notBefore" : 0,
@@ -348,6 +348,22 @@
       "mnestixApi-demo" : [ {
         "id" : "e5b0745b-b2b7-4f93-8217-e254fcd50143",
         "name" : "mnestix-default-role",
+        "description" : "",
+        "composite" : false,
+        "clientRole" : true,
+        "containerId" : "08582273-4c73-482c-944f-ad3945539587",
+        "attributes" : { }
+      }, {
+        "id" : "3987d3b3-6a87-41a6-869c-a9625cff0d74",
+        "name" : "mnestix-admin",
+        "description" : "",
+        "composite" : false,
+        "clientRole" : true,
+        "containerId" : "08582273-4c73-482c-944f-ad3945539587",
+        "attributes" : { }
+      }, {
+        "id" : "25c6012e-8554-4f0d-9885-1bf4b7f043c4",
+        "name" : "mnestix-user",
         "description" : "",
         "composite" : false,
         "clientRole" : true,
@@ -1472,6 +1488,9 @@
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
     "realmRoles" : [ "admin", "default-roles-basyx" ],
+    "clientRoles" : {
+      "mnestixApi-demo" : [ "mnestix-admin" ]
+    },
     "notBefore" : 0,
     "groups" : [ "/BaSyxGroup", "/mnestix" ]
   }, {
@@ -2140,6 +2159,22 @@
         "jsonType.label" : "String"
       }
     }, {
+      "id" : "dc11a561-d1a9-433f-89c4-b69279b27a61",
+      "name" : "mnestix-roles-mapper",
+      "protocol" : "openid-connect",
+      "protocolMapper" : "oidc-usermodel-client-role-mapper",
+      "consentRequired" : false,
+      "config" : {
+        "introspection.token.claim" : "true",
+        "multivalued" : "true",
+        "userinfo.token.claim" : "true",
+        "id.token.claim" : "true",
+        "lightweight.claim" : "false",
+        "access.token.claim" : "true",
+        "claim.name" : "role",
+        "jsonType.label" : "String"
+      }
+    }, {
       "id" : "2fe9cc2c-3f61-446e-9cf4-f34fe1964a1d",
       "name" : "client roles",
       "protocol" : "openid-connect",
@@ -2259,9 +2294,10 @@
       "consentRequired" : false,
       "config" : {
         "included.client.audience" : "mnestixApi-demo",
+        "introspection.token.claim" : "true",
+        "userinfo.token.claim" : "false",
         "id.token.claim" : "false",
         "lightweight.claim" : "false",
-        "introspection.token.claim" : "true",
         "access.token.claim" : "true"
       }
     } ]
@@ -2565,7 +2601,7 @@
       "subType" : "anonymous",
       "subComponents" : { },
       "config" : {
-        "allowed-protocol-mapper-types" : [ "saml-user-attribute-mapper", "oidc-sha256-pairwise-sub-mapper", "oidc-address-mapper", "oidc-usermodel-property-mapper", "oidc-full-name-mapper", "saml-role-list-mapper", "oidc-usermodel-attribute-mapper", "saml-user-property-mapper" ]
+        "allowed-protocol-mapper-types" : [ "saml-user-property-mapper", "oidc-usermodel-attribute-mapper", "oidc-usermodel-property-mapper", "oidc-full-name-mapper", "oidc-address-mapper", "saml-role-list-mapper", "oidc-sha256-pairwise-sub-mapper", "saml-user-attribute-mapper" ]
       }
     }, {
       "id" : "7256d195-1e91-4f63-a9c4-6bef95243a92",
@@ -2602,7 +2638,7 @@
       "subType" : "authenticated",
       "subComponents" : { },
       "config" : {
-        "allowed-protocol-mapper-types" : [ "oidc-usermodel-property-mapper", "oidc-sha256-pairwise-sub-mapper", "oidc-full-name-mapper", "oidc-address-mapper", "saml-user-property-mapper", "saml-role-list-mapper", "saml-user-attribute-mapper", "oidc-usermodel-attribute-mapper" ]
+        "allowed-protocol-mapper-types" : [ "oidc-usermodel-property-mapper", "oidc-full-name-mapper", "oidc-usermodel-attribute-mapper", "saml-user-property-mapper", "saml-user-attribute-mapper", "oidc-address-mapper", "oidc-sha256-pairwise-sub-mapper", "saml-role-list-mapper" ]
       }
     }, {
       "id" : "face2c9e-4d23-44e2-9a09-74e1d8448bd3",
