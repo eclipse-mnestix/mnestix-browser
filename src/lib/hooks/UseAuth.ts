@@ -39,7 +39,8 @@ export function useAuth(): Auth {
         },
         getAccount: (): Session | null => {
             if (session && session.user.roles) {
-                if (session.user.roles.find((role) => role === MnestixRole.MnestixUser)) {
+                // MnestixUser is the default role for a logged-in user
+                if (session.user) {
                     session.user.menstixRole = MnestixRole.MnestixUser;
                     session.user.allowedRoutes = AllowedRoutes.mnestixUser;
                 }
