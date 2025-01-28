@@ -180,3 +180,15 @@ Cypress.Commands.add('deleteThumbnailFromAas', (aasId: string) => {
     const encodedAasId = btoa(aasId).replace(/=+$/g, '');
     cy.repoRequest('DELETE', '/shells/' + encodedAasId + '/asset-information/thumbnail', null);
 });
+
+Cypress.Commands.add('keycloakLogin', (login: string, password: string) => {
+    cy.getByTestId('header-burgermenu').click();
+    cy.getByTestId('login-button').click();
+    cy.get('#username').type(login);
+    cy.get('#password').type(password, { log: false });
+    cy.get('#kc-login').click();
+});
+
+Cypress.Commands.add('keycloakLogout', () => {
+    cy.getByTestId('logout-button').click();
+});

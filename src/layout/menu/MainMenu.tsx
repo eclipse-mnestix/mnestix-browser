@@ -116,7 +116,7 @@ export default function MainMenu() {
         const settingsMenu = {
             label: t('settings'),
             to: '/settings',
-            icon: <Settings />,
+            icon: <Settings data-testid="settings-menu-icon" />,
         };
         basicMenu.push(settingsMenu);
     }

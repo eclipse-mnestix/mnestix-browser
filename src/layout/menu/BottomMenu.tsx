@@ -17,7 +17,7 @@ export default function BottomMenu(props: { isLoggedIn: boolean; name: string; m
     const guestBottomMenu: MenuListItemProps[] = [
         {
             label: t('login'),
-            icon: <Login />,
+            icon: <Login data-testid="login-button" />,
             onClick: () => auth.login(),
         },
     ];
@@ -25,7 +25,7 @@ export default function BottomMenu(props: { isLoggedIn: boolean; name: string; m
     const loggedInBottomMenu: MenuListItemProps[] = [
         {
             label: t('logout'),
-            icon: <Logout />,
+            icon: <Logout data-testid="logout-button" />,
             onClick: () => auth.logout(),
         },
     ];
@@ -37,11 +37,11 @@ export default function BottomMenu(props: { isLoggedIn: boolean; name: string; m
                 {props.isLoggedIn && (
                     <>
                         <MenuHeading marginTop={0}>
-                            <Box component="span" display="flex" gap={1}>
+                            <Box component="span" display="flex" gap={1} data-testid="user-label">
                                 {props.mnestixRole === MnestixRole.MnestixAdmin ? (
-                                    <AdminPanelSettings />
+                                    <AdminPanelSettings data-testid="admin-icon" />
                                 ) : (
-                                    <AccountCircle />
+                                    <AccountCircle data-testid="user-icon" />
                                 )}
                                 {props.name}
                             </Box>

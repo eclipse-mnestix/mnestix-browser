@@ -119,6 +119,10 @@ declare global {
             uploadThumbnailToAas(aasId: string): Chainable;
 
             deleteThumbnailFromAas(aasId: string): Chainable;
+
+            keycloakLogin(login: string, password: string): Chainable;
+
+            keycloakLogout(): Chainable;
         }
     }
 }
