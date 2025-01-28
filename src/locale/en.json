@@ -24,8 +24,9 @@
     "findOutMore-text": "Find out more",
     "list-btn-label": "or select via list",
     "list-btn-text": "Go to Aas List",
-    "scan-id-label": "Scan AAS ID or Asset ID",
-    "enter-manually-label": "or enter manually"
+    "aasOrAssetId": "AAS ID or Asset ID",
+    "scanIdLabel": "Scan AAS ID or Asset ID",
+    "enterManuallyLabel": "or enter manually"
   },
   "submodels": {
     "title": "Submodels",
@@ -34,7 +35,8 @@
       "linkedSegments": "Linked segments",
       "selectTimeframe": "Select timeframe"
     },
-    "renderError": "Submodel can't be rendered."
+    "renderError": "Submodel can't be rendered.",
+    "unknownModelType": "Unknown ModelType: {type}"
   },
   "qr-scanner": {
     "errors": {
@@ -42,22 +44,32 @@
       "error-on-qr-scanner-open": "Could not open the QR scanner!"
     }
   },
+  "compare": {
+    "title": "Compare AAS",
+    "addButton": "Add another AAS",
+    "addFirstAasButton": "Add AAS",
+    "addAnother": "Add another AAS",
+    "collection": {
+      "show": "{idShort}",
+      "hide": "Hide"
+    },
+    "errors": {
+      "aasAlreadyAdded": "AAS cannot be added more than once.",
+      "moreAasFound": "More than one AAS found in the discovery service, please provide the AAS ID instead.",
+      "aasAddError": "AAS could not be added."
+    }
+  },
   "settings": {
     "header": "Settings"
   },
   "errors": {
-    "unexpected-error": "Unexpected error",
-    "unauthorized-error": {
+    "unexpectedError": "Unexpected error",
+    "unauthorizedError": {
       "title": "Unauthorized access",
       "content": "You don`t have access to this resource. You may login or contact your administrator to get access."
     },
-    "not-found": "Not found",
-    "url-not-found": "No AAS with the given ID.",
-    "compare-error": {
-      "more-aas-found": "More than one AAS found in the discovery service, please provide the AAS ID instead.",
-      "aas-already-added": "AAS cannot be added more than once.",
-      "aas-add-error": "AAS could not be added."
-    }
+    "notFound": "Not found",
+    "urlNotFound": "No AAS with the given ID."
   },
   "authentication": {
     "authentication-needed": "Authentication needed",

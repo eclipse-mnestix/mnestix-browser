@@ -1,8 +1,6 @@
 import { Box, IconButton, InputAdornment, TextField } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowForward } from '@mui/icons-material';
-import { messages } from 'lib/i18n/localization';
 import CloseIcon from '@mui/icons-material/Close';
 import { SquaredIconButton } from 'components/basics/Buttons';
 import { LocalizedError } from 'lib/util/LocalizedError';
@@ -17,7 +15,7 @@ export function ManualAasInput(props: { onSubmit: (input: string) => Promise<voi
     const inputRef = useRef<HTMLInputElement>(null);
     const { showError } = useShowError();
     const t = useTranslations();
-    
+
     useEffect(() => {
         inputRef?.current?.focus();
     }, []);
@@ -38,7 +36,7 @@ export function ManualAasInput(props: { onSubmit: (input: string) => Promise<voi
             await props.onSubmit(inputValue);
         } catch (e) {
             setIsLoading(false);
-            const msg = e instanceof LocalizedError ? e.descriptor : 'errors.unexpected-error';
+            const msg = e instanceof LocalizedError ? e.descriptor : 'errors.unexpectedError';
             setError(t(msg));
             if (!(e instanceof LocalizedError)) showError(e);
         }
@@ -60,7 +58,7 @@ export function ManualAasInput(props: { onSubmit: (input: string) => Promise<voi
         <Box display="flex" justifyContent="center">
             <TextField
                 id="manual-input"
-                label={<FormattedMessage {...messages.mnestix.aasOrAssetId} />}
+                label={t('dashboard.aasOrAssetId')}
                 error={isError}
                 helperText={errorText}
                 onChange={handleChange}

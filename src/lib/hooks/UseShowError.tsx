@@ -11,15 +11,15 @@ export function useShowError() {
 
     function showNotFoundError(notificationSpawner: NotificationSpawner) {
         notificationSpawner.spawn({
-            message: t('errors.not-found'),
+            message: t('errors.notFound'),
             severity: 'error',
         });
     }
 
     function showUnauthorizedError(notificationSpawner: NotificationSpawner) {
         notificationSpawner.spawn({
-            title: t('errors.unauthorized-error.title'),
-            message: t('errors.unauthorized-error.content'),
+            title: t('errors.unauthorizedError.title'),
+            message: t('errors.unauthorizedError.content'),
             severity: 'error',
         });
     }
@@ -48,7 +48,7 @@ export function useShowError() {
                         notificationSpawner.spawn({
                             message: (
                                 <>
-                                    {t('errors.unexpected-error')}
+                                    {t('errors.unexpectedError')}
                                     <Typography variant="body2" sx={{ mt: 1, opacity: 0.7 }}>
                                         {e.status}: &quot;{e.statusText}&quot;
                                     </Typography>
@@ -74,7 +74,7 @@ export function useShowError() {
                         notificationSpawner.spawn({
                             message: (
                                 <>
-                                    {t('errors.unexpected-error')}
+                                    {t('errors.unexpectedError')}
                                     <Typography variant="body2" sx={{ mt: 1, opacity: 0.7 }}>
                                         {e.errorCode}: &quot;{e.message}&quot;
                                     </Typography>
@@ -87,7 +87,7 @@ export function useShowError() {
             }
 
             notificationSpawner.spawn({
-                message: t('errors.unexpected-error'),
+                message: t('errors.unexpectedError'),
                 severity: 'error',
             });
         },

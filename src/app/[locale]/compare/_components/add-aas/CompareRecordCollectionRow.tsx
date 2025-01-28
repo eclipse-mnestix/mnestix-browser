@@ -1,19 +1,13 @@
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { Box, Button, Grid } from '@mui/material';
 import { NestedContentWrapper } from 'components/basics/NestedContentWrapper';
-import { messages } from 'lib/i18n/localization';
-import { ReactNode, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { Fragment, ReactNode, useState } from 'react';
 import { SubmodelCompareData } from 'lib/types/SubmodelCompareData';
 import { useCompareAasContext } from 'components/contexts/CompareAasContext';
 import { DataRow } from 'components/basics/DataRow';
 import { isCompareData, isCompareDataRecord } from 'lib/util/CompareAasUtil';
 import { CompareRecordValueRow } from './CompareRecordValueRow';
-
-enum ExpandButtonText {
-    show = 'show',
-    hide = 'hide',
-}
+import { useTranslations } from 'next-intl';
 
 type SubmodelCompareDataComponentProps = {
     readonly submodelCompareData: SubmodelCompareData;
@@ -24,6 +18,7 @@ export function CompareRecordCollectionRow(props: SubmodelCompareDataComponentPr
     const componentList: ReactNode[] = [];
     const { submodelCompareData } = props;
     const { compareAas } = useCompareAasContext();
+    const t = useTranslations('compare');
 
     const columnWidthCount = 12 / compareAas.length;
 
@@ -62,12 +57,9 @@ export function CompareRecordCollectionRow(props: SubmodelCompareDataComponentPr
                 onClick={() => setIsExpanded(!isExpanded)}
                 data-testid="submodel-dropdown-button"
             >
-                <FormattedMessage
-                    {...messages.mnestix.compareCollection[isExpanded ? ExpandButtonText.hide : ExpandButtonText.show]}
-                    values={{
-                        idShort: `${submodelCompareData.idShort ?? '-'}`,
-                    }}
-                />
+                {isExpanded
+                    ? t('collection.hide')
+                    : t('collection.show', { idShort: `${submodelCompareData.idShort ?? '-'}` })}
             </Button>
             {isExpanded && <NestedContentWrapper>{componentList}</NestedContentWrapper>}
         </Box>

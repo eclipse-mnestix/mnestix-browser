@@ -14,7 +14,6 @@ export const deMnestix = {
     manufacturer: 'Hersteller: {manufacturerName}',
     aasId: 'AAS ID',
     assetId: 'Asset ID',
-    aasOrAssetId: 'AAS ID oder Asset ID',
     orEnterManual: 'oder manuell eingeben',
     orSelectFromList: 'oder über Liste suchen',
     goToListButton: 'Zur AAS Liste',
@@ -54,7 +53,6 @@ export const deMnestix = {
         },
     },
     submodels: 'Teilmodelle',
-    unknownModelType: 'Unbekannter ModelType: {type}',
     nameplateAddressTypes: {
         office: 'Geschäftlich',
         'office mobile': 'Geschäftl. Mobil',
@@ -182,20 +180,6 @@ export const deMnestix = {
     multiplicityDescription: 'Parameter, mit dem Sie festlegen können, welche Elemente verpflichtend sind.',
     deleted: 'gelöscht',
     compareButton: 'Vergleichen',
-    compare: {
-        title: 'Verwaltungsschalen vergleichen',
-        addButton: 'Eine weitere Verwaltungsschale hinzufügen',
-        addFirstAasButton: 'Eine Verwaltungsschale hinzufügen',
-        addAnother: 'Eine weitere Verwaltungsschale hinzufügen',
-        assetIdNotFound: 'Asset Id nicht gefunden',
-        aasAlreadyAdded: 'Verwaltungsschale kann nicht mehrmals hinzugefügt werden',
-        moreAasFound: 'Mehr als eine Verwaltungsschale im Discovery Service gefunden, bitte geben Sie die AAS-ID an.',
-        aasAddError: 'Verwaltungsschale konnte nicht hinzugefügt werden.',
-    },
-    compareCollection: {
-        show: '{idShort}',
-        hide: 'Verbergen',
-    },
     transfer: {
         title: 'Import',
         subtitle:
@@ -222,9 +206,5 @@ export const deMnestix = {
         aasIdHeading: 'AAS ID',
         repositoryUrl: 'Repository Url',
         subtitle: 'Hier finden Sie alle zugehörigen AAS für die angegebene ID.',
-    },
-    qrScanner: {
-        defaultCallbackErrorMsg: 'QR Code konnte nicht geöffnet werden!',
-        errorOnQrScannerOpen: 'QR Scanner konnte nicht geöffnet werden!',
     },
 };
