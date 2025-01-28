@@ -60,7 +60,7 @@ export default function MainMenu() {
     const env = useEnv();
     const useAuthentication = env.AUTHENTICATION_FEATURE_FLAG;
     const versionString = 'Version ' + packageJson.version;
-    const menstixRole = auth.getAccount()?.user.menstixRole ?? MnestixRole.MnestixGuest;
+    const mnestixRole = auth.getAccount()?.user.mnestixRole ?? MnestixRole.MnestixGuest;
     const allowedRoutes = auth.getAccount()?.user.allowedRoutes ?? [];
     const t = useTranslations('mainMenu');
 
@@ -169,7 +169,7 @@ export default function MainMenu() {
                     <Typography>{versionString}</Typography>
                 </Box>
                 {useAuthentication && (
-                    <BottomMenu mnestixRole={menstixRole} name={getAuthName() ?? ''} isLoggedIn={auth.isLoggedIn} />
+                    <BottomMenu mnestixRole={mnestixRole} name={getAuthName() ?? ''} isLoggedIn={auth.isLoggedIn} />
                 )}
             </StyledDrawer>
         </>
