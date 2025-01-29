@@ -105,8 +105,6 @@ services:
     image: eclipsebasyx/aas-environment:2.0.0-milestone-03.1
     container_name: aas-environment
     profiles: [ "", "basyx", "tests" ]
-    ports:
-      - '8081:8081'
     depends_on:
       - mongodb
     environment:

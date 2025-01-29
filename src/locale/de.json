@@ -34,7 +34,8 @@
       "linkedSegments": "Verlinkte Segmente",
       "selectTimeframe": "Auswahl des Zeitabschnitts"
     },
-    "renderError": "Teilmodell konnte nicht gerendert werden."
+    "renderError": "Teilmodell konnte nicht gerendert werden.",
+    "idLabel": "ID:"
   },
   "qr-scanner": {
     "errors": {
