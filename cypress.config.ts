@@ -33,5 +33,9 @@ export default defineConfig({
         MNESTIX_BACKEND_API_URL: 'http://localhost:5064',
         AAS_DISCOVERY_API_URL: 'http://localhost:5064/discovery',
         MNESTIX_API_KEY: process.env.MNESTIX_BACKEND_API_KEY,
+        TEST_ADMIN_USER_LOGIN: process.env.TEST_ADMIN_USER_LOGIN,
+        TEST_ADMIN_USER_PASSWORD: process.env.TEST_ADMIN_USER_PASSWORD,
+        TEST_USER_LOGIN: process.env.TEST_USER_LOGIN,
+        TEST_USER_PASSWORD: process.env.TEST_USER_PASSWORD,
     },
 });

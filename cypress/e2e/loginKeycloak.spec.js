@@ -1,36 +1,54 @@
-import resolutions from '../fixtures/resolutions.json';
-import users from '../fixtures/cypress_e2e/Users/testUsers.json';
+describe('Login Keycloak user roles', function () {
+    const adminTestUser = {
+        login: Cypress.env('TEST_ADMIN_USER_LOGIN'),
+        password: Cypress.env('TEST_ADMIN_USER_PASSWORD'),
+    };
+    const testUser = {
+        login: Cypress.env('TEST_USER_LOGIN'),
+        password: Cypress.env('TEST_USER_PASSWORD'),
+    };
 
-resolutions.forEach((res) => {
-    describe.skip(`Login Keycloak (${res})`, function () {
-        const adminUser = {
-            login: users.adminUser.login,
-            password: users.adminUser.password,
-        };
-        beforeEach(function () {
-            cy.visit('/');
-        });
-        it.skip('should be possible to login', () => {
-            cy.getByTestId('header-burgermenu').click();
-            cy.getByTestId('login-button').should('exist');
-        });
+    beforeEach(function () {
+        cy.visit('/');
+    });
+    it('should be possible to login', () => {
+        cy.getByTestId('header-burgermenu').click();
+        cy.getByTestId('login-button').should('exist');
+    });
 
-        it.skip('should show correct admin user login and icon', () => {
-            cy.keycloakLogin(adminUser.login, adminUser.password);
-            cy.getByTestId('header-burgermenu').click();
+    it('should show correct admin user login and icon', () => {
+        cy.keycloakLogin(adminTestUser.login, adminTestUser.password);
+        cy.getByTestId('header-burgermenu').click();
 
-            cy.getByTestId('user-label').should('have.text', 'test');
-            cy.getByTestId('admin-icon').should('exist');
-            cy.getByTestId('login-button').should('be.not.exist');
-            cy.keycloakLogout();
-        });
+        cy.getByTestId('user-label').should('have.text', 'test');
+        cy.getByTestId('admin-icon').should('exist');
+        cy.getByTestId('login-button').should('be.not.exist');
+        cy.keycloakLogout();
+    });
 
-        it.skip('should show settings when logged in as admin user', () => {
-            cy.keycloakLogin(adminUser.login, adminUser.password);
-            cy.getByTestId('header-burgermenu').click();
+    it('should show settings when logged in as admin user', () => {
+        cy.keycloakLogin(adminTestUser.login, adminTestUser.password);
+        cy.getByTestId('header-burgermenu').click();
 
-            cy.getByTestId('settings-menu-icon').should('exist');
-            cy.keycloakLogout();
-        });
+        cy.getByTestId('settings-menu-icon').should('exist');
+        cy.keycloakLogout();
+    });
+
+    it('should show correct user login and icon', () => {
+        cy.keycloakLogin(testUser.login, testUser.password);
+        cy.getByTestId('header-burgermenu').click();
+
+        cy.getByTestId('user-label').should('have.text', 'test_user');
+        cy.getByTestId('user-icon').should('exist');
+        cy.getByTestId('login-button').should('be.not.exist');
+        cy.keycloakLogout();
+    });
+
+    it('should not show settings when logged in as user', () => {
+        cy.keycloakLogin(testUser.login, testUser.password);
+        cy.getByTestId('header-burgermenu').click();
+
+        cy.getByTestId('settings-menu-icon').should('not.exist');
+        cy.keycloakLogout();
     });
 });
