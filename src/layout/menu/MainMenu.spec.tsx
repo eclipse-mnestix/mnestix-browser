@@ -7,7 +7,7 @@ import AllowedRoutes, { MnestixRole } from 'components/authentication/AllowedRou
 import { useEnv } from 'app/env/provider';
 
 jest.mock('next-auth/react');
-jest.mock('../../lib/hooks/useAuth');
+jest.mock('../../lib/hooks/UseAuth');
 jest.mock('../../app/env/provider');
 
 const mockEnvVariables = jest.fn(() => {

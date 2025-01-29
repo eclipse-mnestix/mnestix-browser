@@ -5,7 +5,7 @@ import { useAuth } from 'lib/hooks/UseAuth';
 import BottomMenu from 'layout/menu/BottomMenu';
 import { MnestixRole } from 'components/authentication/AllowedRoutes';
 
-jest.mock('../../lib/hooks/useAuth');
+jest.mock('../../lib/hooks/UseAuth');
 
 const mockUseAuth = jest.fn(() => {
     return {
