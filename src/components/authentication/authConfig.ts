@@ -50,6 +50,7 @@ export const authOptions: AuthOptions = {
     callbacks: {
         async jwt({ token, account }) {
             let roles = null;
+            let userName = null;
 
             const nowTimeStamp = Math.floor(Date.now() / 1000);
 
@@ -63,12 +64,17 @@ export const authOptions: AuthOptions = {
                 if (account.access_token) {
                     const decodedToken = jwt.decode(account.access_token);
                     if (decodedToken) {
+                        if (account.provider === 'azure-ad') {
+                            // @ts-expect-error name exits
+                            userName = decodedToken.name;
+                        }
                         // @ts-expect-error role exits
                         roles = decodedToken?.role;
                     }
                 }
+
                 // Store Roles inside token
-                return { ...token, roles: roles };
+                return { ...token, roles: roles, name: userName };
             } else if (nowTimeStamp < (token.expires_at as number)) {
                 return token;
             }
@@ -89,6 +95,10 @@ export const authOptions: AuthOptions = {
             session.accessToken = token.access_token as string;
             session.idToken = token.id_token as string;
             session.user.roles = token.roles as string[];
+            // Azure Entra ID:
+            if (token.name) {
+                session.user.name = token.name;
+            }
             return session;
         },
     },
