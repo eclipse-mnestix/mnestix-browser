@@ -1,7 +1,7 @@
 services:
   cypress-test:
     container_name: cypress-test
-    profiles: ['', 'tests']
+    profiles: [ '', 'tests' ]
     build:
       dockerfile: cypress.dockerfile
     environment:
@@ -12,7 +12,12 @@ services:
       CYPRESS_AAS_DISCOVERY_API_URL: 'http://mnestix-api:5064/discovery'
       MNESTIX_BACKEND_API_KEY: ${MNESTIX_BACKEND_API_KEY:-verySecureApiKey}
       ELECTRON_ENABLE_LOGGING: 1
-      SPLIT: ${SPLIT:-0}
+      TEST_ADMIN_USER_LOGIN: ${TEST_ADMIN_USER_LOGIN:-test_admin}
+      TEST_ADMIN_USER_PASSWORD: ${TEST_ADMIN_USER_PASSWORD:-test_admin}
+      TEST_USER_LOGIN: ${TEST_USER_LOGIN:-test_user}
+      TEST_USER_PASSWORD: ${TEST_USER_PASSWORD:-test_user}
+      KEYCLOAK_ISSUER: 'https://mnestix-keycloak.azurewebsites.net'
+      SPLIT: ${SPLIT:-1}
       SPLIT_INDEX: ${SPLIT_INDEX:-0}
     volumes:
       - ./cypress-artifacts/screenshots:/cypress_Tests/cypress/screenshots
@@ -31,3 +36,9 @@ services:
       SUBMODEL_REPO_API_URL: 'http://mnestix-api:5064/repo'
       DISCOVERY_API_URL: 'http://mnestix-api:5064/discovery'
       MNESTIX_BACKEND_API_URL: 'http://mnestix-api:5064'
+      AUTHENTICATION_FEATURE_FLAG: 'true'
+      NEXTAUTH_URL: 'http://mnestix-browser:3000/'
+      KEYCLOAK_ENABLED: 'true'
+      KEYCLOAK_CLIENT_ID: 'mnestix-cypress-e2e-client'
+      KEYCLOAK_ISSUER: 'https://mnestix-keycloak.azurewebsites.net'
+      KEYCLOAK_REALM: 'Mnestix'

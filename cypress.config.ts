@@ -37,5 +37,6 @@ export default defineConfig({
         TEST_ADMIN_USER_PASSWORD: process.env.TEST_ADMIN_USER_PASSWORD,
         TEST_USER_LOGIN: process.env.TEST_USER_LOGIN,
         TEST_USER_PASSWORD: process.env.TEST_USER_PASSWORD,
+        KEYCLOAK_ISSUER: process.env.KEYCLOAK_ISSUER,
     },
 });

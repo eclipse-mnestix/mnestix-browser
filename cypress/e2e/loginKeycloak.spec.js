@@ -20,7 +20,7 @@ describe('Login Keycloak user roles', function () {
         cy.keycloakLogin(adminTestUser.login, adminTestUser.password);
         cy.getByTestId('header-burgermenu').click();
 
-        cy.getByTestId('user-label').should('have.text', 'test');
+        cy.getByTestId('user-label').should('have.text', 'admin@test.com');
         cy.getByTestId('admin-icon').should('exist');
         cy.getByTestId('login-button').should('be.not.exist');
         cy.keycloakLogout();
@@ -38,7 +38,7 @@ describe('Login Keycloak user roles', function () {
         cy.keycloakLogin(testUser.login, testUser.password);
         cy.getByTestId('header-burgermenu').click();
 
-        cy.getByTestId('user-label').should('have.text', 'test_user');
+        cy.getByTestId('user-label').should('have.text', 'user@test.com');
         cy.getByTestId('user-icon').should('exist');
         cy.getByTestId('login-button').should('be.not.exist');
         cy.keycloakLogout();
