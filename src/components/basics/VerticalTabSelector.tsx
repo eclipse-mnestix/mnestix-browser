@@ -77,6 +77,8 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
                         onMouseLeave={() => setHoveredItem(undefined)}>
                     <Tab
                         data-testid="submodel-tab"
+                        onMouseEnter={() => setHoveredItem(item)}
+                        onMouseLeave={() => setHoveredItem(undefined)}
                         onClick={() => props.setSelected && props.setSelected(item)}
                         className={`tab-item ${selectedCSSClass(item.id)}`}
                         disabled={!!item.submodelError}
