@@ -50,7 +50,7 @@ export const authOptions: AuthOptions = {
     callbacks: {
         async jwt({ token, account }) {
             let roles = null;
-            let userName = null;
+            let userName: string | null = null;
 
             const nowTimeStamp = Math.floor(Date.now() / 1000);
 
@@ -60,26 +60,21 @@ export const authOptions: AuthOptions = {
                 token.expires_at = account.expires_at;
                 token.refresh_token = account.refresh_token;
 
-                // With keycloak, the roles are stored inside the access_token
-                // With azure entra id, the roles are stored inside the id_token
-                if (account.access_token) {
-                    const decodedToken = jwt.decode(account.access_token);
+                // The roles are stored inside the id_token
+                if (account.id_token) {
+                    const decodedToken = jwt.decode(account.id_token);
                     if (decodedToken) {
-                        if (account.provider === 'azure-ad' && account.id_token) {
+                        if (account.provider === 'azure-ad') {
                             // @ts-expect-error name exits
                             userName = decodedToken.name;
-                            const decodedIdToken = jwt.decode(account.id_token);
-                            // @ts-expect-error name exits
-                            roles = decodedIdToken.roles;
-                        } else {
-                            // @ts-expect-error role exits
-                            roles = decodedToken?.role;
                         }
+                        // @ts-expect-error role exits
+                        roles = decodedToken.roles;
                     }
                 }
 
                 // Store Roles inside token
-                return { ...token, roles: roles, name: userName };
+                return { ...token, roles: roles, ad_name: userName };
             } else if (nowTimeStamp < (token.expires_at as number)) {
                 return token;
             }
@@ -101,8 +96,8 @@ export const authOptions: AuthOptions = {
             session.idToken = token.id_token as string;
             session.user.roles = token.roles as string[];
             // Azure Entra ID:
-            if (token.name) {
-                session.user.name = token.name;
+            if (token.ad_name) {
+                session.user.name = token.ad_name as string;
             }
             return session;
         },
