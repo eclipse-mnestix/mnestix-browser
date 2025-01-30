@@ -71,11 +71,12 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
         <Box sx={{ 'Button:nth-of-type(1)': { borderColor: 'transparent' } }}>
             {props.items.map((item, index) => {
                 return (
-                    <Tab
-                        data-testid="submodel-tab"
+                    <Box
                         key={index}
                         onMouseEnter={() => setHoveredItem(item)}
-                        onMouseLeave={() => setHoveredItem(undefined)}
+                        onMouseLeave={() => setHoveredItem(undefined)}>
+                    <Tab
+                        data-testid="submodel-tab"
                         onClick={() => props.setSelected && props.setSelected(item)}
                         className={`tab-item ${selectedCSSClass(item.id)}`}
                         disabled={!!item.submodelError}
@@ -109,6 +110,7 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
                             <ArrowForward color={item.submodelError ? 'disabled' : 'primary'} />
                         </Box>
                     </Tab>
+                    </Box>
                 );
             })}
             <SubmodelInfoDialog
