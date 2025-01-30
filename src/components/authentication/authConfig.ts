@@ -64,12 +64,16 @@ export const authOptions: AuthOptions = {
                 if (account.access_token) {
                     const decodedToken = jwt.decode(account.access_token);
                     if (decodedToken) {
-                        if (account.provider === 'azure-ad') {
+                        if (account.provider === 'azure-ad' && account.id_token) {
                             // @ts-expect-error name exits
                             userName = decodedToken.name;
+                            const decodedIdToken = jwt.decode(account.id_token);
+                            // @ts-expect-error name exits
+                            roles = decodedIdToken.roles;
+                        } else {
+                            // @ts-expect-error role exits
+                            roles = decodedToken?.role;
                         }
-                        // @ts-expect-error role exits
-                        roles = decodedToken?.role;
                     }
                 }
 
