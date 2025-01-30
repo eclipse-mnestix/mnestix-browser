@@ -2,8 +2,6 @@ import { Typography } from '@mui/material';
 import { PropertyComponent } from './PropertyComponent';
 import { SubmodelElementCollectionComponent } from './SubmodelElementCollectionComponent';
 import { DataRow } from 'components/basics/DataRow';
-import { FormattedMessage } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
 import { FileComponent } from './FileComponent';
 import { MultiLanguagePropertyComponent } from './MultiLanguagePropertyComponent';
 import {
@@ -17,9 +15,8 @@ import {
 import { EntityComponent } from './entity-components/EntityComponent';
 import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { buildSubmodelElementPath } from 'lib/util/SubmodelResolverUtil';
-import {
-    SubmodelElementComponentProps
-} from '../SubmodelElementComponentProps';
+import { SubmodelElementComponentProps } from '../SubmodelElementComponentProps';
+import { useTranslations } from 'next-intl';
 
 type GenericSubmodelElementComponentProps = SubmodelElementComponentProps & {
     readonly submodelElementPath?: string | null;
@@ -27,6 +24,8 @@ type GenericSubmodelElementComponentProps = SubmodelElementComponentProps & {
 };
 
 export function GenericSubmodelElementComponent(props: GenericSubmodelElementComponentProps) {
+    const t = useTranslations('submodels');
+
     function getRenderElement() {
         if (!props.submodelElement) {
             return;
@@ -80,10 +79,7 @@ export function GenericSubmodelElementComponent(props: GenericSubmodelElementCom
             default:
                 return (
                     <Typography color="error" variant="body2">
-                        <FormattedMessage
-                            {...messages.mnestix.unknownModelType}
-                            values={{ type: `${submodelElementType}` }}
-                        />
+                        {t('unknownModelType', { type: `${submodelElementType}` })}
                     </Typography>
                 );
         }

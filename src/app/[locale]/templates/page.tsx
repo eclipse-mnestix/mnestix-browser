@@ -199,7 +199,7 @@ export default function Page() {
     };
 
     return (
-        <PrivateRoute>
+        <PrivateRoute currentRoute={'/templates'}>
             <Box sx={{ p: 3, maxWidth: '1125px', width: '100%', margin: '0 auto' }}>
                 <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <ViewHeading title={<FormattedMessage {...messages.mnestix.templates} />} />

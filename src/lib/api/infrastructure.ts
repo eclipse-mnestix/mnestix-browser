@@ -1,8 +1,7 @@
 ﻿import { getServerSession } from 'next-auth';
 import { performServerFetch, performServerFetchLegacy } from 'lib/api/serverFetch';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { authOptions } from 'authConfig';
-
+import { authOptions } from 'components/authentication/authConfig';
 
 const initializeRequestOptions = async (bearerToken: string, init?: RequestInit) => {
     init = init || {};
