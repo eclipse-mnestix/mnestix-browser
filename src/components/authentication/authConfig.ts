@@ -60,7 +60,8 @@ export const authOptions: AuthOptions = {
                 token.expires_at = account.expires_at;
                 token.refresh_token = account.refresh_token;
 
-                // The Roles are stored inside the access_token
+                // With keycloak, the roles are stored inside the access_token
+                // With azure entra id, the roles are stored inside the id_token
                 if (account.access_token) {
                     const decodedToken = jwt.decode(account.access_token);
                     if (decodedToken) {
