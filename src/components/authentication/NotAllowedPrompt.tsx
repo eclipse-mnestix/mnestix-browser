@@ -18,7 +18,7 @@ export function NotAllowedPrompt() {
             <Typography variant="h2" sx={{ mb: 2 }} color="primary" align="center">
                 {t('contactAdmin')}
             </Typography>
-            <AuthenticationLock />
+            <AuthenticationLock data-testid="not-allowed-prompt-lock" />
         </Box>
     );
 }

@@ -16,6 +16,11 @@ describe('Login Keycloak user roles', function () {
         cy.getByTestId('login-button').should('exist');
     });
 
+    it('should not be able to access templates without login', () => {
+        cy.visit('/templates');
+        cy.getByTestId('authentication-prompt-lock').should('exist');
+    });
+
     it('should show correct admin user login and icon', () => {
         cy.keycloakLogin(adminTestUser.login, adminTestUser.password);
         cy.getByTestId('header-burgermenu').click();
@@ -26,11 +31,15 @@ describe('Login Keycloak user roles', function () {
         cy.keycloakLogout();
     });
 
-    it('should show settings when logged in as admin user', () => {
+    it('should navigate to settings when logged in as admin user', () => {
         cy.keycloakLogin(adminTestUser.login, adminTestUser.password);
         cy.getByTestId('header-burgermenu').click();
 
-        cy.getByTestId('settings-menu-icon').should('exist');
+        cy.getByTestId('settings-menu-icon').should('exist').click();
+        cy.getByTestId('settings-route-page').should('exist');
+        cy.getByTestId('settings-header').should('have.text', 'Settings');
+
+        cy.getByTestId('header-burgermenu').click();
         cy.keycloakLogout();
     });
 
@@ -44,11 +53,26 @@ describe('Login Keycloak user roles', function () {
         cy.keycloakLogout();
     });
 
-    it('should not show settings when logged in as user', () => {
+    it('should navigate to template when logged in as a user', () => {
         cy.keycloakLogin(testUser.login, testUser.password);
-        cy.getByTestId('header-burgermenu').click();
 
+        cy.visit('/templates');
+        cy.getByTestId('templates-route-page').should('exist');
+        cy.getByTestId('templates-header').should('include.text', 'Templates');
+
+        cy.getByTestId('header-burgermenu').click();
+        cy.keycloakLogout();
+    });
+
+    it('should block settings route when logged in as s user', () => {
+        cy.keycloakLogin(testUser.login, testUser.password);
+
+        cy.visit('/settings');
+        cy.getByTestId('not-allowed-prompt-lock').should('exist');
+
+        cy.getByTestId('header-burgermenu').click();
         cy.getByTestId('settings-menu-icon').should('not.exist');
+
         cy.keycloakLogout();
     });
 });

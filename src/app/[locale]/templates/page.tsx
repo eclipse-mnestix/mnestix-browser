@@ -200,8 +200,11 @@ export default function Page() {
 
     return (
         <PrivateRoute currentRoute={'/templates'}>
-            <Box sx={{ p: 3, maxWidth: '1125px', width: '100%', margin: '0 auto' }}>
-                <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Box sx={{ p: 3, maxWidth: '1125px', width: '100%', margin: '0 auto' }} data-testid="templates-route-page">
+                <Box
+                    sx={{ mb: 3, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+                    data-testid="templates-header"
+                >
                     <ViewHeading title={<FormattedMessage {...messages.mnestix.templates} />} />
                     <Button
                         variant="contained"

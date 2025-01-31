@@ -52,8 +52,8 @@ export default function Page() {
 
     return (
         <PrivateRoute currentRoute={'/settings'}>
-            <Box sx={{ p: 4, width: '100%', margin: '0 auto' }}>
-                <Box sx={{ mb: 3 }}>
+            <Box sx={{ p: 4, width: '100%', margin: '0 auto' }} data-testid="settings-route-page">
+                <Box sx={{ mb: 3 }} data-testid="settings-header">
                     <ViewHeading title={<FormattedMessage {...messages.mnestix.settings} />} />
                 </Box>
                 <Card sx={{ p: 2 }}>
