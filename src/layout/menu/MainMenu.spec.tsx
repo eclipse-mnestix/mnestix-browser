@@ -103,8 +103,8 @@ describe('MainMenu', () => {
             const templates = screen.getByTestId('/');
             expect(templates).toBeInTheDocument();
 
-            const settings = screen.getByTestId('/list');
-            expect(settings).toBeInTheDocument();
+            const list = screen.getByTestId('/list');
+            expect(list).toBeInTheDocument();
         });
     });
 });
