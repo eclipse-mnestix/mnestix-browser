@@ -64,17 +64,19 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
     const selectedCSSClass = (id: string) => (id === props.selected?.id ? 'selected' : '');
 
     const handleSubmodelInfoModalClose = () => {
+        setHoveredItem(undefined)
         setSubmodelInfoDialogOpen(false);
     }
 
     return (
-        <Box sx={{ 'Button:nth-of-type(1)': { borderColor: 'transparent' } }}>
+        <Box sx={{ 'Button:nth-of-type(1)': { borderColor: 'transparent' } }}
+             onMouseLeave={() => setHoveredItem(undefined)}
+        >
             {props.items.map((item, index) => {
                 return (
                     <Box
                         key={index}
-                        onMouseEnter={() => setHoveredItem(item)}
-                        onMouseLeave={() => setHoveredItem(undefined)}>
+                        onMouseEnter={() => setHoveredItem(item)}>
                     <Tab
                         data-testid="submodel-tab"
                         onClick={() => props.setSelected && props.setSelected(item)}
@@ -86,7 +88,7 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
                         </Box>
 
                         <Box display="flex" alignItems="center" gap={2} >
-                            <Box visibility={item.id === hoveredItem?.id ? 'visible' : 'hidden'}>
+                            <Box visibility={ (item.id === props.selected?.id) || (item.id === hoveredItem?.id) ? 'visible' : 'hidden'}>
                                 {item.submodelError ? (
                                     <Tooltip title={item.submodelError.toString()}>
                                         <Box display="flex"
@@ -116,8 +118,8 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
             <SubmodelInfoDialog
                 open={submodelInfoDialogOpen}
                 onClose={handleSubmodelInfoModalClose}
-                id={props.selected?.id}
-                idShort={props.selected?.submodelData?.idShort}
+                id={hoveredItem?.id}
+                idShort={hoveredItem?.submodelData?.idShort}
             />
         </Box>
 

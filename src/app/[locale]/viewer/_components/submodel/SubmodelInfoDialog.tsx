@@ -16,7 +16,7 @@ export function SubmodelInfoDialog(props: SubmodelInfoDialogProps) {
         <Dialog
             open={props.open}
             onClose={props.onClose}
-            maxWidth="md"
+            maxWidth="sm"
             fullWidth={true}
         >
             <IconButton
@@ -31,7 +31,7 @@ export function SubmodelInfoDialog(props: SubmodelInfoDialogProps) {
             >
                 <CloseIcon />
             </IconButton>
-            <DialogContent style={{ padding: '40px'}}>
+            <DialogContent style={{ padding: '40px' }}>
                 <Box display="flex" flexDirection="column" gap="20px">
                     <Typography variant="h2" color={'primary'}>
                         {props.idShort}
