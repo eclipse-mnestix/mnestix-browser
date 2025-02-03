@@ -115,7 +115,7 @@ export default function Page() {
         if (!submodelResponse.isSuccess)
             return {
                 id: reference.keys[0].value,
-                error: 'Submodel failed to load', // TODO error localization
+                error: submodelResponse.errorCode,
             };
 
         return {

@@ -20,6 +20,7 @@ export function MenuListItem(props: MenuListItemProps) {
 
     return props.to ? (
         <ListItemButton
+            data-testid={props.to}
             component={!props.external ? Link : 'a'}
             href={props.to}
             target={props.target}

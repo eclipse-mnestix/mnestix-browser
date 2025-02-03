@@ -36,6 +36,7 @@
       "selectTimeframe": "Select timeframe"
     },
     "renderError": "Submodel can't be rendered.",
+    "idLabel": "ID:",
     "unknownModelType": "Unknown ModelType: {type}"
   },
   "qr-scanner": {

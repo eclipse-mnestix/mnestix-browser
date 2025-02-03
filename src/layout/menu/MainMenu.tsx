@@ -142,7 +142,11 @@ export default function MainMenu() {
                 <MenuIcon />
             </IconButton>
             <StyledDrawer anchor="left" open={drawerOpen} onClose={handleMenuInteraction(false)}>
-                <Box onClick={handleMenuInteraction(false)} onKeyDown={handleMenuInteraction(false)}>
+                <Box
+                    onClick={handleMenuInteraction(false)}
+                    onKeyDown={handleMenuInteraction(false)}
+                    data-testid="main-menu"
+                >
                     <List>
                         <MenuHeading>{t('repository')}</MenuHeading>
                         <>
@@ -150,7 +154,7 @@ export default function MainMenu() {
                                 <MenuListItem {...props} key={'adminMainMenu' + i} />
                             ))}
                         </>
-                        {useAuthentication && auth.isLoggedIn && (
+                        {useAuthentication && !auth.isLoggedIn && (
                             <>
                                 <StyledDivider />
                                 <MenuHeading>{t('findOutMore')}</MenuHeading>

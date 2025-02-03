@@ -4,7 +4,7 @@ import { EnvironmentalVariables, getEnv } from './env';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 
-const initialValues: EnvironmentalVariables = {
+export const initialEnvValues: EnvironmentalVariables = {
     AAS_LIST_FEATURE_FLAG: false,
     COMPARISON_FEATURE_FLAG: false,
     TRANSFER_FEATURE_FLAG: false,
@@ -28,14 +28,14 @@ const initialValues: EnvironmentalVariables = {
     DATA_PRIVACY_URL: '',
 };
 
-export const EnvContext = createContext(initialValues);
+export const EnvContext = createContext(initialEnvValues);
 
 export const EnvProvider = ({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) => {
-    const [env, setEnv] = useState<EnvironmentalVariables>(initialValues);
+    const [env, setEnv] = useState<EnvironmentalVariables>(initialEnvValues);
     const [renderChildren, setChildren] = useState<boolean>(false);
     useAsyncEffect(async () => {
         const env = await getEnv();

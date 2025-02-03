@@ -36,6 +36,7 @@
       "selectTimeframe": "Auswahl des Zeitabschnitts"
     },
     "renderError": "Teilmodell konnte nicht gerendert werden.",
+    "idLabel": "ID:",
     "unknownModelType": "Unbekannter ModelType: {type}"
   },
   "qr-scanner": {

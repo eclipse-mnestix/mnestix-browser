@@ -50,6 +50,7 @@ export const authOptions: AuthOptions = {
     callbacks: {
         async jwt({ token, account }) {
             let roles = null;
+            let userName: string | null = null;
 
             const nowTimeStamp = Math.floor(Date.now() / 1000);
 
@@ -59,16 +60,21 @@ export const authOptions: AuthOptions = {
                 token.expires_at = account.expires_at;
                 token.refresh_token = account.refresh_token;
 
-                // The Roles are stored inside the access_token
-                if (account.access_token) {
-                    const decodedToken = jwt.decode(account.access_token);
+                // The roles are stored inside the id_token
+                if (account.id_token) {
+                    const decodedToken = jwt.decode(account.id_token);
                     if (decodedToken) {
+                        if (account.provider === 'azure-ad') {
+                            // @ts-expect-error name exits
+                            userName = decodedToken.name;
+                        }
                         // @ts-expect-error role exits
-                        roles = decodedToken?.role;
+                        roles = decodedToken.roles;
                     }
                 }
+
                 // Store Roles inside token
-                return { ...token, roles: roles };
+                return { ...token, roles: roles, ad_name: userName };
             } else if (nowTimeStamp < (token.expires_at as number)) {
                 return token;
             }
@@ -89,6 +95,10 @@ export const authOptions: AuthOptions = {
             session.accessToken = token.access_token as string;
             session.idToken = token.id_token as string;
             session.user.roles = token.roles as string[];
+            // Azure Entra ID:
+            if (token.ad_name) {
+                session.user.name = token.ad_name as string;
+            }
             return session;
         },
     },
