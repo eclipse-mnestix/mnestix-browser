@@ -37,7 +37,13 @@
     },
     "renderError": "Submodel can't be rendered.",
     "idLabel": "ID:",
-    "unknownModelType": "Unknown ModelType: {type}"
+    "unknownModelType": "Unknown ModelType: {type}",
+    "errors": {
+      "NOT_FOUND": "Submodel not found",
+      "UNAUTHORIZED": "Unauthorized",
+      "INTERNAL_SERVER_ERROR": "Internal server error",
+      "UNKNOWN": "Unknown Error"
+    }
   },
   "qr-scanner": {
     "errors": {

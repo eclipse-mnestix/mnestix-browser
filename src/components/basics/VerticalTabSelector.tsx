@@ -4,6 +4,7 @@ import { ReactElement, useState } from 'react';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { tooltipText } from 'lib/util/ToolTipText';
 import { SubmodelInfoDialog } from 'app/[locale]/viewer/_components/submodel/SubmodelInfoDialog';
+import { useTranslations } from 'next-intl';
 
 export type TabSelectorItem = {
     readonly id: string;
@@ -60,6 +61,7 @@ const Tab = styled(Button)(({ theme }) => ({
 export function VerticalTabSelector(props: VerticalTabSelectorProps) {
     const [submodelInfoDialogOpen, setSubmodelInfoDialogOpen] = useState(false);
     const [hoveredItem, setHoveredItem] = useState<TabSelectorItem>();
+    const t = useTranslations('submodels.errors');
 
     const selectedCSSClass = (id: string) => (id === props.selected?.id ? 'selected' : '');
 
@@ -67,6 +69,19 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
         setHoveredItem(undefined)
         setSubmodelInfoDialogOpen(false);
     }
+
+    const getTranslationKey = (errorCode: string) => {
+        switch (errorCode) {
+            case 'NOT_FOUND':
+                return 'NOT_FOUND';
+            case 'UNAUTHORIZED':
+                return 'UNAUTHORIZED';
+            case 'INTERNAL_SERVER_ERROR':
+                return 'INTERNAL_SERVER_ERROR';
+            default:
+                return 'UNKNOWN';
+        }
+    };
 
     return (
         <Box sx={{ 'Button:nth-of-type(1)': { borderColor: 'transparent' } }}
@@ -90,7 +105,7 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
                         <Box display="flex" alignItems="center" gap={2} >
                             <Box visibility={ (item.id === props.selected?.id) || (item.id === hoveredItem?.id) ? 'visible' : 'hidden'}>
                                 {item.submodelError ? (
-                                    <Tooltip title={item.submodelError.toString()}>
+                                    <Tooltip title={t(getTranslationKey(item.submodelError?.toString()))}>
                                         <Box display="flex"
                                              sx={{ cursor: 'pointer' }}>
                                             {item.startIcon}
