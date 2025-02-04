@@ -62,25 +62,13 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
     const [submodelInfoDialogOpen, setSubmodelInfoDialogOpen] = useState(false);
     const [hoveredItem, setHoveredItem] = useState<TabSelectorItem>();
     const t = useTranslations('submodels.errors');
+    type message = 'NOT_FOUND'|'UNAUTHORIZED'|'INTERNAL_SERVER_ERROR'|'UNKNOWN';
 
     const selectedCSSClass = (id: string) => (id === props.selected?.id ? 'selected' : '');
 
     const handleSubmodelInfoModalClose = () => {
         setHoveredItem(undefined);
         setSubmodelInfoDialogOpen(false);
-    };
-
-    const getTranslationKey = (errorCode: string) => {
-        switch (errorCode) {
-            case 'NOT_FOUND':
-                return 'NOT_FOUND';
-            case 'UNAUTHORIZED':
-                return 'UNAUTHORIZED';
-            case 'INTERNAL_SERVER_ERROR':
-                return 'INTERNAL_SERVER_ERROR';
-            default:
-                return 'UNKNOWN';
-        }
     };
 
     return (
@@ -114,7 +102,7 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
                                     }
                                 >
                                     {item.submodelError ? (
-                                        <Tooltip title={t(getTranslationKey(item.submodelError.toString()))}>
+                                        <Tooltip title={t(item.submodelError.toString() as message)}>
                                             <Box display="flex" sx={{ cursor: 'pointer' }}>
                                                 {item.startIcon}
                                             </Box>

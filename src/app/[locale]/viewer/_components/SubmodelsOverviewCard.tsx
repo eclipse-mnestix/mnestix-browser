@@ -51,7 +51,7 @@ export function SubmodelsOverviewCard({ submodelIds, submodelsLoading }: Submode
                 id: submodelId.id,
                 label: submodelId.id,
                 startIcon: <LinkOffIcon />,
-                submodelError: submodelId.error ?? ''
+                submodelError: submodelId.error ?? 'UNKNOWN'
             };
         }
     }
