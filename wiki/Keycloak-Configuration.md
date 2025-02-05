@@ -25,7 +25,7 @@ eliminating the need for any initial Keycloak configuration.
 
 The Keycloak Admin Console will be accessible at [http://localhost:8080/admin](http://localhost:8080/admin).
 
-For initial access, use the following temporary credentials:
+For initial access of the Keycloak Admin Console, use the following temporary credentials:
 
 - **Username:** admin
 - **Password:** admin
@@ -33,7 +33,9 @@ For initial access, use the following temporary credentials:
 A test user is preconfigured with the following credentials allowing login to Mnestix Browser:
 
 - **Username:** test
-- **Password:** test
+- **Password:** test  
+  The role mnestix-admin is assigned to this test user by default. More information regarding Role Based Access Control
+  can be found [here](Role-Based-Access-Control)
 
 ### Configuration Variables for Keycloak Setup
 

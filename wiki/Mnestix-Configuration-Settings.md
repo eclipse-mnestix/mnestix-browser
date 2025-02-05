@@ -11,7 +11,6 @@ Mnestix provides the following configuration options. You can adapt the values i
 | `SUBMODEL_REPO_API_URL`               |                             | Default Submodel Repository to display when Submodel Id is not in Submodel Registry                                                                                                                                                | required |
 | `MNESTIX_BACKEND_API_URL`             |                             | Mnestix Backend with a lot of business comfort features like the Repository-Proxy or the Template builder                                                                                                                          | optional |
 | `AAS_LIST_FEATURE_FLAG`               | false                       | Enables or disables the AasList in the frontend. This only works in combination with `Features__AllowRetrievingAllShellsAndSubmodels` being set to `true` (Needs the Mnestix Backend to work)                                      | optional |
-| `AAS_LIST_V2_FEATURE_FLAG`            | false                       | The functionality controlled by this flag is under active development and may change without notice. Please see [details](#aas-list-v2-feature-details)                                                                            | optional |
 | `TRANSFER_FEATURE_FLAG`               | false                       | Enables or disables the Transfer Feature in the frontend. If enabled, it is possible to import a viewed AAS to a configured repository. This feature is currently being developed.                                                 | optional |
 | `AUTHENTICATION_FEATURE_FLAG`         | false                       | Enable or disable the authentication in the frontend. (Needs the Mnestix Backend to work)                                                                                                                                          | optional |
 | `COMPARISON_FEATURE_FLAG`             | false                       | Enables or disables the comparison feature.                                                                                                                                                                                        | optional |
@@ -44,8 +43,10 @@ volumes:
   - /path/to/my/logo.svg:/app/public/logo
 ```
 
-When using the provided [`compose.yaml` File](https://github.com/eclipse-mnestix/mnestix-browser/blob/main/compose.yml) you can just replace the [image in the
-`data` folder](https://github.com/eclipse-mnestix/mnestix-browser/tree/main/docker-compose/data/logo.svg) with your preferred logo.
+When using the provided [`compose.yaml` File](https://github.com/eclipse-mnestix/mnestix-browser/blob/main/compose.yml)
+you can just replace the [image in the
+`data` folder](https://github.com/eclipse-mnestix/mnestix-browser/tree/main/docker-compose/data/logo.svg) with your
+preferred logo.
 
 Remember to set the mime type correctly in order for the browser to parse your image correctly.
 Only image mime types are allowed.
@@ -146,7 +147,9 @@ MNESTIX_BACKEND_API_URL: '{{MNESTIX_BACKEND_API_URL}}'
 This is the easiest configuration, for when you only want to visualize and browse through AAS.
 If you choose to run the Mnestix Browser without the Mnestix API, the Feature Flags `AUTHENTICATION_FEATURE_FLAG`
 and `AAS_LIST_FEATURE_FLAG` will be overwritten to `false` as these Features use the functionality of the API.
-The other environment variables should be configured [as described](#frontend-configuration). If you want to run Mnestix Browser with an Basyx environment you can simply use the compose.frontend file which is described [here](Docker-compose-files).
+The other environment variables should be configured [as described](#frontend-configuration). If you want to run Mnestix
+Browser with an Basyx environment you can simply use the compose.frontend file which is
+described [here](Docker-compose-files).
 
 #### How to configure the BaSyx AAS Repository
 
