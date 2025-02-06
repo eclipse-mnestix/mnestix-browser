@@ -33,11 +33,11 @@
     "timeSeries": {
       "internalSegments": "Interne Segmente",
       "linkedSegments": "Verlinkte Segmente",
-      "selectTimeframe": "Auswahl des Zeitabschnitts",
-      "renderError": "Teilmodell konnte nicht gerendert werden.",
-      "idLabel": "ID:",
-      "unknownModelType": "Unbekannter ModelType: {type}"
+      "selectTimeframe": "Auswahl des Zeitabschnitts"
     },
+    "renderError": "Teilmodell konnte nicht gerendert werden.",
+    "idLabel": "ID:",
+    "unknownModelType": "Unbekannter ModelType: {type}",
     "errors": {
       "NOT_FOUND": "Submodel nicht gefunden",
       "UNAUTHORIZED": "Nicht autorisiert",
