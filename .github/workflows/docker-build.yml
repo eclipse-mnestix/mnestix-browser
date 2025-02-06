@@ -16,7 +16,7 @@ env:
   IMAGE_NAME: mnestix-browser
   IMAGE_TAG: latest
   # Update the version manually
-  IMAGE_TAG_VERSION: 1.3.3
+  IMAGE_TAG_VERSION: 1.4.0
   REGISTRY_USER: ${{ secrets.DOCKER_USERNAME }}
   REGISTRY_PASS: ${{ secrets.DOCKER_API_TOKEN }}
 
