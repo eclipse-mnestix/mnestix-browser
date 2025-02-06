@@ -61,8 +61,9 @@ const Tab = styled(Button)(({ theme }) => ({
 export function VerticalTabSelector(props: VerticalTabSelectorProps) {
     const [submodelInfoDialogOpen, setSubmodelInfoDialogOpen] = useState(false);
     const [hoveredItem, setHoveredItem] = useState<TabSelectorItem>();
+    const [dialogItem, setDialogItem] = useState<TabSelectorItem>();
     const t = useTranslations('submodels.errors');
-    type message = 'NOT_FOUND'|'UNAUTHORIZED'|'INTERNAL_SERVER_ERROR'|'UNKNOWN';
+    type message = 'NOT_FOUND' | 'UNAUTHORIZED' | 'INTERNAL_SERVER_ERROR' | 'UNKNOWN';
 
     const selectedCSSClass = (id: string) => (id === props.selected?.id ? 'selected' : '');
 
@@ -113,6 +114,7 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
                                                 display="flex"
                                                 sx={{ cursor: 'pointer' }}
                                                 onClick={(event) => {
+                                                    setDialogItem(hoveredItem);
                                                     setSubmodelInfoDialogOpen(true);
                                                     event.stopPropagation(); // don't open the tab
                                                 }}
@@ -131,8 +133,8 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
             <SubmodelInfoDialog
                 open={submodelInfoDialogOpen}
                 onClose={handleSubmodelInfoModalClose}
-                id={hoveredItem?.id}
-                idShort={hoveredItem?.submodelData?.idShort}
+                id={dialogItem?.id}
+                idShort={dialogItem?.submodelData?.idShort}
             />
         </Box>
     );
