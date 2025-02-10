@@ -135,9 +135,15 @@ export class AasSearcher {
         if (!aasSearchResult.isSuccess) {
             return wrapErrorCode(aasSearchResult.errorCode, aasSearchResult.message);
         }
+
+        /**
+         * Extracts the base URL(aasRepositoryOrigin) of the AAS repository, considering that the endpoint URL
+         * may contain a path after the repository root. We take the substring up to '/shells'
+         * to isolate the base URL.
+         */
         const data = {
             submodelDescriptors: registrySearchResult.result.submodelDescriptors,
-            aasRepositoryOrigin: endpoint.origin,
+            aasRepositoryOrigin: endpoint.origin + endpoint.pathname.substring(0, endpoint.pathname.indexOf('/shells')),
         };
         return wrapSuccess(this.createAasResult(aasSearchResult.result, data));
     }
