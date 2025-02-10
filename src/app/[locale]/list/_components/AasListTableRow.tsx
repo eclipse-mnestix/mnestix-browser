@@ -11,11 +11,12 @@ import { getThumbnailFromShell } from 'lib/services/repository-access/repository
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { useState } from 'react';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { ListEntityDto, NameplateValuesDto } from 'lib/services/list-service/ListService';
+import { ListEntityDto } from 'lib/services/list-service/ListService';
 import { getNameplateValuesForAAS } from 'lib/services/list-service/aasListApiActions';
 import { MultiLanguageValueOnly } from 'lib/api/basyx-v3/types';
 import { useLocale, useTranslations } from 'next-intl';
 import { encodeBase64 } from 'lib/util/Base64Util';
+import useSWR from 'swr';
 
 type AasTableRowProps = {
     repositoryUrl: string;
@@ -45,10 +46,21 @@ export const AasListTableRow = (props: AasTableRowProps) => {
     const [, setAasOriginUrl] = useAasOriginSourceState();
     const notificationSpawner = useNotificationSpawner();
     const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
-    const [nameplateData, setNameplateData] = useState<NameplateValuesDto>();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
     const t = useTranslations('aas-list');
     const locale = useLocale();
+    const { data: nameplateValues, isLoading: isNaplateValueLoading } = useSWR(
+        [repositoryUrl, aasListEntry.aasId],
+        async ([url, aasId]) => await getNameplateValuesForAAS(url, aasId),
+    );
+    const { data: thumbnailResponse } = useSWR(
+        [aasListEntry.aasId, repositoryUrl],
+        async ([aasId, repositoryUrl]) => await getThumbnailFromShell(aasId, repositoryUrl),
+        {
+            revalidateIfStale: false,
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+        },
+    );
 
     const navigateToAas = (listEntry: ListEntityDto) => {
         setAas(null);
@@ -74,29 +86,13 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         if (isValidUrl(aasListEntry.thumbnail)) {
             setThumbnailUrl(aasListEntry.thumbnail);
         } else if (aasListEntry.aasId && repositoryUrl) {
-            const response = await getThumbnailFromShell(aasListEntry.aasId, repositoryUrl);
-            if (response.isSuccess) {
-                const blob = mapFileDtoToBlob(response.result);
+            if (thumbnailResponse?.isSuccess) {
+                const blob = mapFileDtoToBlob(thumbnailResponse?.result);
                 const blobUrl = URL.createObjectURL(blob);
                 setThumbnailUrl(blobUrl);
             }
         }
-    }, [aasListEntry.thumbnail]);
-
-    useAsyncEffect(async () => {
-        if (!aasListEntry.aasId) return;
-        setIsLoading(true);
-
-        const nameplate = await getNameplateValuesForAAS(repositoryUrl, aasListEntry.aasId);
-
-        if (!nameplate.success) {
-            console.log(nameplate.error);
-        } else {
-            setNameplateData(nameplate);
-        }
-
-        setIsLoading(false);
-    }, [aasListEntry.aasId]);
+    }, [aasListEntry.thumbnail, thumbnailResponse]);
 
     const showMaxElementsNotification = () => {
         notificationSpawner.spawn({
@@ -138,15 +134,16 @@ export const AasListTableRow = (props: AasTableRowProps) => {
                 />
             </PictureTableCell>
             <TableCell data-testid="list-manufacturer-name" align="left" sx={tableBodyText}>
-                {!isLoading ? (
-                    nameplateData?.manufacturerName && translateListText(nameplateData.manufacturerName)
+                {!isNaplateValueLoading ? (
+                    nameplateValues?.manufacturerName && translateListText(nameplateValues.manufacturerName)
                 ) : (
                     <Skeleton variant="text" width="80%" height={26} />
                 )}
             </TableCell>
             <TableCell data-testid="list-product-designation" align="left" sx={tableBodyText}>
-                {!isLoading ? (
-                    nameplateData && tooltipText(translateListText(nameplateData.manufacturerProductDesignation), 80)
+                {!isNaplateValueLoading ? (
+                    nameplateValues &&
+                    tooltipText(translateListText(nameplateValues.manufacturerProductDesignation), 80)
                 ) : (
                     <Skeleton variant="text" width="80%" height={26} />
                 )}
