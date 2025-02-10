@@ -7,11 +7,10 @@ RUN mkdir /cypress_Tests
 
 WORKDIR /cypress_Tests
 
-COPY ./cypress ./cypress
-COPY ./cypress.config.ts ./cypress.config.ts
 COPY ./package.json ./package.json
 COPY ./yarn.lock ./yarn.lock
 
 RUN yarn install
  
-ENTRYPOINT ["yarn", "run", "cypress", "run"]
+# Enable setting additional argument on bin directly
+ENTRYPOINT ["./node_modules/.bin/cypress"]

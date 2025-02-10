@@ -1,0 +1,77 @@
+{
+    "id": "mnestix-realm",
+    "realm": "mnestix-realm",
+    "enabled": true,
+    "userManagedAccessAllowed": false,
+    "registrationAllowed": false,
+    "editUsernameAllowed": false,
+    "bruteForceProtected": true,
+    "requiredActions": [],
+    "roles": {
+        "client": {
+            "mnestix-browser-client-demo": [
+                {
+                    "name": "mnestix-admin",
+                    "description": "Administrator role for Mnestix"
+                }
+            ]
+        }
+    },
+    "clients": [
+        {
+            "clientId": "mnestix-browser-client-demo",
+            "rootUrl": "http://mnestix-browser:3000",
+            "adminUrl": "http://mnestix-browser:3000",
+            "baseUrl": "http://mnestix-browser:3000",
+            "enabled": true,
+            "publicClient": true,
+            "redirectUris": ["*"],
+            "webOrigins": ["http://mnestix-browser:3000"],
+            "frontchannelLogout": true,
+            "protocol": "openid-connect",
+            "defaultClientScopes": ["web-origins", "acr", "roles", "profile", "email"],
+            "protocolMappers": [
+                {
+                    "name": "mnestix-role",
+                    "protocol": "openid-connect",
+                    "protocolMapper": "oidc-usermodel-client-role-mapper",
+                    "consentRequired": false,
+                    "config": {
+                        "introspection.token.claim": "true",
+                        "multivalued": "true",
+                        "userinfo.token.claim": "true",
+                        "id.token.claim": "true",
+                        "lightweight.claim": "false",
+                        "access.token.claim": "true",
+                        "claim.name": "roles",
+                        "jsonType.label": "String",
+                        "usermodel.clientRoleMapping.clientId": "mnestix-browser-client-demo"
+                    }
+                }
+            ]
+        }
+    ],
+    "users": [
+        {
+            "username": "mnestix-admin",
+            "enabled": true,
+            "email": "admin@test.com",
+            "firstName": "Admin",
+            "lastName": "User",
+            "credentials": [{ "type": "password", "value": "mnestix-admin" }],
+            "realmRoles": ["mnestix-admin"],
+            "clientRoles": {
+                "mnestix-browser-client-demo": ["mnestix-admin"]
+            }
+        },
+        {
+            "username": "mnestix-user",
+            "enabled": true,
+            "email": "user@test.com",
+            "firstName": "Normal",
+            "lastName": "User",
+            "credentials": [{ "type": "password", "value": "mnestix-user" }],
+            "realmRoles": ["mnestix-user"]
+        }
+    ]
+}
