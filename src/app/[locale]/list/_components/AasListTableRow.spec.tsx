@@ -82,7 +82,7 @@ describe('AasListTableRow', () => {
         );
         listRowWrapper(
             <AasListTableRow
-                repositoryUrl={'https://test-repository.de'}
+                repositoryUrl={'https://test-repository.de/repo'}
                 aasListEntry={listEntry}
                 checkBoxDisabled={() => undefined}
                 comparisonFeatureFlag={true}
