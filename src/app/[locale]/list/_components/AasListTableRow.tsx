@@ -48,7 +48,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
     const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
     const t = useTranslations('aas-list');
     const locale = useLocale();
-    const { data: nameplateValues, isLoading: isNaplateValueLoading } = useSWR(
+    const { data: nameplateValues, isLoading: isNameplateValueLoading } = useSWR(
         [repositoryUrl, aasListEntry.aasId],
         async ([url, aasId]) => await getNameplateValuesForAAS(url, aasId),
     );
@@ -134,14 +134,14 @@ export const AasListTableRow = (props: AasTableRowProps) => {
                 />
             </PictureTableCell>
             <TableCell data-testid="list-manufacturer-name" align="left" sx={tableBodyText}>
-                {!isNaplateValueLoading ? (
+                {!isNameplateValueLoading ? (
                     nameplateValues?.manufacturerName && translateListText(nameplateValues.manufacturerName)
                 ) : (
                     <Skeleton variant="text" width="80%" height={26} />
                 )}
             </TableCell>
             <TableCell data-testid="list-product-designation" align="left" sx={tableBodyText}>
-                {!isNaplateValueLoading ? (
+                {!isNameplateValueLoading ? (
                     nameplateValues &&
                     tooltipText(translateListText(nameplateValues.manufacturerProductDesignation), 80)
                 ) : (
