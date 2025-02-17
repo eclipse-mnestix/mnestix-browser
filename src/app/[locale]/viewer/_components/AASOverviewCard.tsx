@@ -70,7 +70,7 @@ export function AASOverviewCard(props: AASOverviewCardProps) {
             setProductImageUrl('');
             return;
         }
-        
+
         const response = await getThumbnailFromShell(props.aas.id, props.repositoryURL);
         if (!response.isSuccess) {
             console.error('Image not found');
