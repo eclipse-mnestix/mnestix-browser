@@ -143,7 +143,8 @@ export class AasSearcher {
          */
         const data = {
             submodelDescriptors: registrySearchResult.result.submodelDescriptors,
-            aasRepositoryOrigin: endpoint.origin + endpoint.pathname.substring(0, endpoint.pathname.indexOf('/shells')),
+            aasRepositoryOrigin:
+                endpoint.origin + endpoint.pathname.substring(0, endpoint.pathname.lastIndexOf('/shells')),
         };
         return wrapSuccess(this.createAasResult(aasSearchResult.result, data));
     }
