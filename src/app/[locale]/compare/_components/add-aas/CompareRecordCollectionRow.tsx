@@ -1,7 +1,7 @@
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { Box, Button, Grid } from '@mui/material';
 import { NestedContentWrapper } from 'components/basics/NestedContentWrapper';
-import { Fragment, ReactNode, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { SubmodelCompareData } from 'lib/types/SubmodelCompareData';
 import { useCompareAasContext } from 'components/contexts/CompareAasContext';
 import { DataRow } from 'components/basics/DataRow';
