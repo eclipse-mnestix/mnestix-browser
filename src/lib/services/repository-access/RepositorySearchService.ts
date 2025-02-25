@@ -193,7 +193,7 @@ export class RepositorySearchService {
     async getSubmodelReferencesFromShellFromAllRepos(aasId: string) {
         return this.getFromAllRepos(
             await this.getAasRepositories(),
-            (basePath) => this.getSubmodelReferencesFromShellFromRepo(basePath, aasId),
+            (basePath) => this.getSubmodelReferencesFromShellFromRepo(aasId, basePath),
             `Submodel references for '${aasId}' not found in any repository`,
         );
     }
@@ -221,7 +221,7 @@ export class RepositorySearchService {
     async getFirstSubmodelReferencesFromShellFromAllRepos(aasId: string) {
         return this.getFirstFromAllRepos(
             await this.getAasRepositories(),
-            (basePath) => this.getSubmodelReferencesFromShellFromRepo(basePath, aasId),
+            (basePath) => this.getSubmodelReferencesFromShellFromRepo(aasId, basePath),
             `Submodel references for '${aasId}' not found in any repository`,
         );
     }
