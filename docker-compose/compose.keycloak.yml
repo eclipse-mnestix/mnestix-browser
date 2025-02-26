@@ -32,7 +32,7 @@ services:
       basyx.feature.authorization.type: rbac
       basyx.feature.authorization.jwtBearerTokenProvider: keycloak
       basyx.feature.authorization.rbac.file: file:/data/rbac_rules.json
-      spring.security.oauth2.resourceserver.jwt.issuer-uri: "http://keycloak:8080/realms/BaSyx"
+      spring.security.oauth2.resourceserver.jwt.issuer-uri: "http://keycloak:8080/realms/Mnestix"
     volumes:
       - ./docker-compose/data/keycloak/rbac_rules.json:/data/rbac_rules.json:ro
 
@@ -44,22 +44,22 @@ services:
       KEYCLOAK_CLIENT_ID: "mnestix-browser-client-demo"
       KEYCLOAK_ISSUER: "http://keycloak:8080"
       KEYCLOAK_LOCAL_URL: "http://localhost:8080"
-      KEYCLOAK_REALM: "BaSyx"
+      KEYCLOAK_REALM: "Mnestix"
 
   mnestix-api:
     environment:
       Features__UseAuthentication: "true"
       # OpenId repository settings
       RepositoryOpenIdConnect__EnableRepositoryOpenIdAuth: "true"
-      RepositoryOpenIdConnect__Authority: "http://keycloak:8080/realms/BaSyx"
+      RepositoryOpenIdConnect__Authority: "http://keycloak:8080/realms/Mnestix"
       RepositoryOpenIdConnect__DiscoveryEndpoint: ".well-known/openid-configuration"
       RepositoryOpenIdConnect__ClientId: "mnestix-repo-client-demo"
       RepositoryOpenIdConnect__ClientSecret: ${REPOSITORY_API_CLIENT_SECRET:-WLOB68nSllHTlr7ViUOZWWxildWFT2nN}
       RepositoryOpenIdConnect__ValidateIssuer: "false"
-      RepositoryOpenIdConnect__TokenEndpoint: "http://keycloak:8080/realms/BaSyx/protocol/openid-connect/token"
+      RepositoryOpenIdConnect__TokenEndpoint: "http://keycloak:8080/realms/Mnestix/protocol/openid-connect/token"
       # OpenID Configuration
       OpenId__EnableOpenIdAuth: "true"
-      OpenId__Issuer: "http://keycloak:8080/realms/BaSyx"
+      OpenId__Issuer: "http://keycloak:8080/realms/Mnestix"
       OpenId__ClientID: "mnestixApi-demo"
       OpenId__RequireHttpsMetadata: "false"
     depends_on:
