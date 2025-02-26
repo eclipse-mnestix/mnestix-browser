@@ -20,7 +20,7 @@ yarn docker:keycloak
 On the first startup, the Keycloak Docker image (`docker-compose/data/keycloak/Dockerfile`) will be built with an
 initializer configured for the BaSyx repository.
 This setup ensures that localhost can be resolved within the Docker network. Additionally, a preconfigured Keycloak
-realm (`docker-compose/data/keycloak/realm/BaSyx-realm.json`) will be imported,
+realm (`docker-compose/data/keycloak/realm/Mnestix-realm.json`) will be imported,
 eliminating the need for any initial Keycloak configuration.
 
 The Keycloak Admin Console will be accessible at [http://localhost:8080/admin](http://localhost:8080/admin).
@@ -34,8 +34,29 @@ A test user is preconfigured with the following credentials allowing login to Mn
 
 - **Username:** test
 - **Password:** test  
-  The role mnestix-admin is assigned to this test user by default. More information regarding Role Based Access Control
+  The role 'mnestix-admin' is not assigned to this test user by default. More information regarding Role Based Access
+  Control
   can be found [here](Role-Based-Access-Control)
+
+To access Mnestix as a test admin user, an additional account has been configured with the 'mnestix-admin' role. The
+login credentials for this account are as follows:
+
+- **Username:** test-admin
+- **Password:** admin
+
+**Note:** This is not an admin account for accessing the Keycloak Admin Console.
+
+Additionally, two more test users have been configured to demonstrate role-based access control (RBAC):
+
+- **'mnestix-visitor'**: This user has access to only a specific Asset Administration Shell (AAS) with the ID **"https://vws.xitaso.com/aas/mnestix"**.
+  - **Username:** mnestix-visitor
+  - **Password:** mnestix
+
+- **'test-aas'**: This user can view AAS data but does not have permission to access submodel data.
+  - **Username:** test-aas
+  - **Password:** aas
+
+**Note:** These accounts are created solely for testing purposes and to showcase the RBAC implementation.
 
 ### Configuration Variables for Keycloak Setup
 
