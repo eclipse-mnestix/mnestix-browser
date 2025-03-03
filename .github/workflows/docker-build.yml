@@ -158,7 +158,9 @@ jobs:
     name: Push image to registry
     needs: ['ci-success', 'build-arm-cache']
     runs-on: ubuntu-latest
-    if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/dev')
+    if: github.event_name != 'pull_request' &&
+      github.repository_owner == 'eclipse-mnestix' &&
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/dev')
     permissions:
       contents: read
       packages: write
