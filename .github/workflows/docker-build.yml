@@ -5,7 +5,7 @@ on:
     branches: ['main', 'dev', 'staging']
     tags: ['v*.*.*']
   pull_request:
-    branches: ['main', 'dev', 'staging']
+    branches: ['dev']
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
