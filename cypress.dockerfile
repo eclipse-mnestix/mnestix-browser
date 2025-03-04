@@ -1,5 +1,5 @@
 #the tag latest ist not available for the cypress/included image
-FROM cypress/included:13.9.0
+FROM cypress/included:14.1.0
 
 ENV NO_COLOR=1
 
