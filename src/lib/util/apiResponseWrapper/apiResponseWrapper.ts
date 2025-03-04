@@ -4,6 +4,7 @@ export const ApiResultStatus = {
     SUCCESS: 'SUCCESS',
     NOT_FOUND: 'NOT_FOUND',
     UNAUTHORIZED: 'UNAUTHORIZED',
+    FORBIDDEN: 'FORBIDDEN',
     UNKNOWN_ERROR: 'UNKNOWN_ERROR',
     INTERNAL_SERVER_ERROR: 'INTERNAL_SERVER_ERROR',
 } as const;
@@ -18,6 +19,7 @@ export type ApiFileDto = {
 const httpStatusMessage: Record<number, ApiResultStatus> = {
     200: ApiResultStatus.SUCCESS,
     401: ApiResultStatus.UNAUTHORIZED,
+    403: ApiResultStatus.FORBIDDEN,
     404: ApiResultStatus.NOT_FOUND,
     500: ApiResultStatus.INTERNAL_SERVER_ERROR,
 };

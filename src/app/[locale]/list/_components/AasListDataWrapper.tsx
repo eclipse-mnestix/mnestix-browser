@@ -14,6 +14,7 @@ import { SelectRepository } from './filter/SelectRepository';
 import { useTranslations } from 'next-intl';
 import { ApiResponseWrapperError, ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { AuthenticationPrompt } from 'components/authentication/AuthenticationPrompt';
+import { NotAllowedPrompt } from 'components/authentication/NotAllowedPrompt';
 
 export default function AasListDataWrapper() {
     const [isLoadingList, setIsLoadingList] = useState(false);
@@ -32,11 +33,13 @@ export default function AasListDataWrapper() {
 
     //Authentication
     const [needAuthentication, setNeedAuthentication] = useState<boolean>(false);
+    const [needPermissions, setNeedPermissions] = useState<boolean>(false);
 
     const clearResults = () => {
         setAasList(undefined);
         setCurrentCursor(undefined);
         setNeedAuthentication(false);
+        setNeedPermissions(false);
     };
 
     useAsyncEffect(async () => {
@@ -60,8 +63,11 @@ export default function AasListDataWrapper() {
                 setCursorHistory((prevHistory) => [...prevHistory, newCursor]);
             }
         } else {
-            if ((response.error as ApiResponseWrapperError<AasListDto>).errorCode == ApiResultStatus.UNAUTHORIZED) {
+            const errorCode = (response.error as ApiResponseWrapperError<AasListDto>).errorCode;
+            if (errorCode == ApiResultStatus.UNAUTHORIZED) {
                 setNeedAuthentication(true);
+            } else if (errorCode == ApiResultStatus.FORBIDDEN) {
+                setNeedPermissions(true);
             } else {
                 showError(response.error);
             }
@@ -136,6 +142,10 @@ export default function AasListDataWrapper() {
 
         if (needAuthentication) {
             return <AuthenticationPrompt />;
+        }
+        
+        if (needPermissions) {
+            return <NotAllowedPrompt />;
         }
 
         return (
