@@ -1,4 +1,3 @@
-#the tag latest ist not available for the cypress/included image
 FROM cypress/included:14.1.0
 
 ENV NO_COLOR=1
@@ -10,6 +9,7 @@ WORKDIR /cypress_Tests
 COPY ./package.json ./package.json
 COPY ./yarn.lock ./yarn.lock
 
+RUN apt-get update && apt-get install -y python3 python3-setuptools make g++
 RUN yarn install
  
 # Enable setting additional argument on bin directly
