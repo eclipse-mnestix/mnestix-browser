@@ -17,7 +17,18 @@ import { GenericSubmodelElementComponent } from 'app/[locale]/viewer/_components
 type AddressComponentProps = {
     readonly submodelElement?: SubmodelElementCollection;
     readonly hasDivider?: boolean;
+    readonly submodelId?: string;
 };
+
+type NameplateAddressTypes = keyof typeof messages.mnestix.nameplateAddressTypes;
+function parseAddressType(el: SubmodelElementCollection, key: string): NameplateAddressTypes | null {
+    return (
+        el &&
+        el.value &&
+        ((Object.values(el.value).find((obj) => obj.idShort === key) as Property | null)
+            ?.value as NameplateAddressTypes | null)
+    );
+}
 
 export function AddressComponent(props: AddressComponentProps) {
     const intl = useIntl();
@@ -81,19 +92,15 @@ export function AddressComponent(props: AddressComponentProps) {
             el &&
             el.value &&
             (Object.values(el.value).find((obj) => obj.idShort === 'TelephoneNumber') as MultiLanguageProperty);
-        const typeOfNumber: Property | undefined | null =
-            el && el.value && (Object.values(el.value).find((obj) => obj.idShort === 'TypeOfTelephone') as Property);
+        const typeOfNumber = parseAddressType(el, 'TypeOfTelephone');
 
         return (
             <Box key={index} sx={{ display: 'flex' }}>
                 {typeOfNumber && (
                     <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
-                        {!!typeOfNumber.value &&
-                            !!messages.mnestix.nameplateAddressTypes[typeOfNumber.value.toString()] && (
-                                <FormattedMessage
-                                    {...messages.mnestix.nameplateAddressTypes[typeOfNumber.value?.toString()]}
-                                />
-                            )}
+                        {!!typeOfNumber && (
+                            <FormattedMessage {...messages.mnestix.nameplateAddressTypes[typeOfNumber]} />
+                        )}
                     </Typography>
                 )}
                 {actualNumber && (
@@ -111,19 +118,15 @@ export function AddressComponent(props: AddressComponentProps) {
             el &&
             el.value &&
             (Object.values(el.value).find((obj) => obj.idShort === 'FaxNumber') as MultiLanguageProperty);
-        const typeOfNumber: Property | undefined | null =
-            el && el.value && (Object.values(el.value).find((obj) => obj.idShort === 'TypeOfFaxNumber') as Property);
+        const typeOfNumber = parseAddressType(el, 'TypeOfFaxNumber');
 
         return (
             <Box key={index} sx={{ display: 'flex' }}>
                 {typeOfNumber && (
                     <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
-                        {!!typeOfNumber.value &&
-                            !!messages.mnestix.nameplateAddressTypes[typeOfNumber.value.toString()] && (
-                                <FormattedMessage
-                                    {...messages.mnestix.nameplateAddressTypes[typeOfNumber.value?.toString()]}
-                                />
-                            )}
+                        {!!typeOfNumber && (
+                            <FormattedMessage {...messages.mnestix.nameplateAddressTypes[typeOfNumber]} />
+                        )}
                     </Typography>
                 )}
                 {actualNumber && <Typography>{getTranslationText(actualNumber, intl)}</Typography>}
@@ -135,19 +138,13 @@ export function AddressComponent(props: AddressComponentProps) {
     const emailAddresses = email.map((el, index) => {
         const actualAddress: Property | undefined | null =
             el && el.value && (Object.values(el.value).find((obj) => obj.idShort === 'EmailAddress') as Property);
-        const typeOfEmail: Property | undefined | null =
-            el && el.value && (Object.values(el.value).find((obj) => obj.idShort === 'TypeOfEmailAddress') as Property);
+        const typeOfEmail = parseAddressType(el, 'TypeOfEmailAddress');
 
         return (
             <Box key={index} sx={{ display: 'flex' }}>
                 {typeOfEmail && (
                     <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
-                        {!!typeOfEmail.value &&
-                            !!messages.mnestix.nameplateAddressTypes[typeOfEmail.value.toString()] && (
-                                <FormattedMessage
-                                    {...messages.mnestix.nameplateAddressTypes[typeOfEmail.value?.toString()]}
-                                />
-                            )}
+                        {!!typeOfEmail && <FormattedMessage {...messages.mnestix.nameplateAddressTypes[typeOfEmail]} />}
                     </Typography>
                 )}
                 {actualAddress && (
