@@ -11,7 +11,7 @@ export default getRequestConfig(async ({ locale }) => {
     let pluginMessages = {};
     try {
         pluginMessages = (await import(`./user-plugins/locale/${locale}.json`)).default;
-    } catch (e) {
+    } catch {
         console.error('Plugin localization messages not found');
     }
 
