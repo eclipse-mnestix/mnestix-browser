@@ -1,0 +1,44 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    target-branch: dev
+    directory: '/'
+    schedule:
+      interval: weekly
+      day: monday
+      time: '07:00'
+      timezone: 'Europe/Berlin'
+    groups:
+      yarn-patch:
+        update-types: ['patch']
+      yarn-minor:
+        update-types: ['minor']
+      yarn-major:
+        update-types: ['major']
+  - package-ecosystem: 'docker'
+    target-branch: dev
+    directory: '/'
+    groups:
+      docker-all:
+        patterns:
+          - '*'
+    schedule:
+      interval: weekly
+  - package-ecosystem: docker-compose
+    target-branch: dev
+    directory: '/'
+    groups:
+      compose-all:
+        patterns:
+          - '*'
+    schedule:
+      interval: weekly
+  - package-ecosystem: github-actions
+    target-branch: dev
+    directory: '/'
+    groups:
+      actions-all:
+        patterns:
+          - '*'
+    schedule:
+      interval: weekly
