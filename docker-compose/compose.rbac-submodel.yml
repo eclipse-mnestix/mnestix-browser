@@ -1,0 +1,40 @@
+
+aas-rbac-submodel:
+  image: eclipsebasyx/submodel-repository:2.0.0-milestone-05
+  container_name: rbac-repository
+  ports:
+    - '8089:8081'
+  depends_on:
+    - keycloak:
+      condition: service_healthy
+  environment:
+    SPRING_DATA_MONGODB_URI: mongodb://mongoAdmin:mongoPassword@mongodb:27017/?authSource=admin
+    BASYX__CORS__ALLOWED-ORIGINS: '*'
+    BASYX__CORS__ALLOWED-METHODS: GET,POST,PATCH,DELETE,PUT,OPTIONS,HEAD
+    # Dynamic Roles configuration part:
+    basyx.feature.authorization.rules.backend: "Submodel"
+    basyx.feature.authorization.rules.backend.submodel.authorization.endpoint: 'http://submodel-repository:8081/submodels/U2VjdXJpdHlTdWJtb2RlbA=='
+    basyx.feature.authorization.rules.backend.submodel.authorization.token-endpoint: "http://keycloak:8080/realms/BaSyx/protocol/openid-connect/token"
+    basyx.feature.authorization.rules.backend.submodel.authorization.grant-type: 'CLIENT_CREDENTIALS'
+    basyx.feature.authorization.rules.backend.submodel.authorization.client-id: 'mnestix-repo-client-demo'
+    basyx.feature.authorization.rules.backend.submodel.authorization.client-secret: '-' #Secret for Keycloak client
+  healthcheck: # check the endpoint for a valid response (service ready)
+    test: curl -f http://localhost:8081/actuator/health
+    interval: 10s
+    timeout: 10s
+    retries: 6
+  networks:
+    - mnestix-network
+  
+
+aas-environment:
+  environment:
+    # Dynamic Roles configuration part:
+    basyx.feature.authorization.rules.backend: "Submodel"
+    basyx.feature.authorization.rules.backend.submodel.authorization.endpoint: 'http://submodel-repository:8081/submodels/U2VjdXJpdHlTdWJtb2RlbA=='
+    basyx.feature.authorization.rules.backend.submodel.authorization.token-endpoint: "http://keycloak:8080/realms/BaSyx/protocol/openid-connect/token"
+    basyx.feature.authorization.rules.backend.submodel.authorization.grant-type: 'CLIENT_CREDENTIALS'
+    basyx.feature.authorization.rules.backend.submodel.authorization.client-id: 'mnestix-repo-client-demo'
+    basyx.feature.authorization.rules.backend.submodel.authorization.client-secret: '-' #Secret for Keycloak client
+  depends_on:
+    - aas-rbac-submodel
