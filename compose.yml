@@ -136,7 +136,7 @@ services:
       - mnestix-network
 
   aas-discovery:
-    image: eclipsebasyx/aas-discovery:2.0.0-milestone-03.1
+    image: eclipsebasyx/aas-discovery:2.0.0-milestone-05
     container_name: aas-discovery
     profiles: [ '', 'basyx', 'tests' ]
     depends_on:
@@ -164,7 +164,7 @@ services:
       - mnestix-network
 
   aas-registry:
-    image: eclipsebasyx/aas-registry-log-mongodb:2.0.0-milestone-03.1
+    image: eclipsebasyx/aas-registry-log-mongodb:2.0.0-milestone-05
     container_name: aas-registry
     profiles: [ '', 'basyx' ]
     ports:
@@ -184,7 +184,7 @@ services:
       - mnestix-network
 
   submodel-registry:
-    image: eclipsebasyx/submodel-registry-log-mongodb:2.0.0-milestone-03.1
+    image: eclipsebasyx/submodel-registry-log-mongodb:2.0.0-milestone-05
     container_name: submodel-registry
     profiles: [ '', 'basyx' ]
     ports:

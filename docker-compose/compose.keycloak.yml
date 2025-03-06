@@ -15,10 +15,11 @@ services:
       KC_HEALTH_ENABLED: "true"
     command: [ "start-dev", "--import-realm" ]
     healthcheck: # check the endpoint for a valid response (service ready)
-      test: [
-        "CMD-SHELL",
-        'exec 3<>/dev/tcp/localhost/8080; echo -e "GET /health/ready HTTP/1.1\nhost: localhost:8080\n" >&3; timeout --preserve-status 1 cat <&3 | grep -m 1 status | grep -m 1 UP; ERROR=$?; exec 3<&-; exec 3>&-; exit $ERROR'
-      ]
+      test: #keycloak has no curl in image
+        [
+          'CMD-SHELL',
+          "exec 3<>/dev/tcp/localhost/8080 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'",
+        ]
       interval: 30s
       timeout: 10s
       retries: 6

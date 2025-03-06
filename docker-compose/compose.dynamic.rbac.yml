@@ -17,7 +17,7 @@ services:
       BASYX__CORS__ALLOWED-ORIGINS: '*'
       BASYX__CORS__ALLOWED-METHODS: GET,POST,PATCH,DELETE,PUT,OPTIONS,HEAD
       # Authentication - for the future
-      basyx.feature.authorization.enabled: "false"
+      basyx.feature.authorization.enabled: "true"
       basyx.feature.authorization.type: rbac
       basyx.feature.authorization.jwtBearerTokenProvider: keycloak
       basyx.feature.authorization.rbac.file: file:/data/rbac_rules.json
@@ -30,9 +30,10 @@ services:
       interval: 10s
       timeout: 10s
       retries: 6
+    volumes:
+      - ./docker-compose/data/keycloak/sec_sm_roles.json:/data/rbac_rules.json:ro
     networks:
       - mnestix-network
-  
   
   aas-environment:
     environment:
@@ -50,7 +51,6 @@ services:
         condition: service_completed_successfully
   
   security-sm-setup:
-    image: security-submodel-seed
     container_name: security-sm-setup
     build:
       context: ./docker-compose/dynamic-rbac
