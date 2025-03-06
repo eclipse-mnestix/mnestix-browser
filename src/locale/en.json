@@ -69,7 +69,14 @@
   "settings": {
     "header": "Settings",
     "roles": {
-      "title": "Role Management"
+      "title": "Role Management",
+      "tableHeader": {
+        "name": "Role",
+        "action": "Action",
+        "type": "Type",
+        "aasIds": "AAS IDs",
+        "submodelIds": "Submodel IDs"
+      }
     }
   },
   "errors": {
