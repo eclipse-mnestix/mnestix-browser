@@ -11,16 +11,20 @@ import { IdSettingsCard } from './_components/id-settings/IdSettingsCard';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { MnestixConnectionsCard } from 'app/[locale]/settings/_components/mnestix-connections/MnestixConnectionsCard';
 import { useEnv } from 'app/env/provider';
+import { RoleSettings } from 'app/[locale]/settings/_components/role-settings/RoleSettings';
+import { useTranslations } from 'next-intl';
 
 enum settingsPageTypes {
     ID_STRUCTURE,
     MNESTIX_CONNECTIONS,
+    ROLES,
 }
 
 export default function Page() {
     const intl = useIntl();
     const isMobile = useIsMobile();
     const env = useEnv();
+    const t = useTranslations('settings');
 
     const settingsTabItems: TabSelectorItem[] = [
         {
@@ -37,6 +41,14 @@ export default function Page() {
         settingsTabItems.splice(0, 0, settingsTabToAdd);
     }
 
+    if (env.AUTHENTICATION_FEATURE_FLAG) {
+        const settingsTabToAdd = {
+            id: settingsPageTypes[settingsPageTypes.ROLES],
+            label: t('roles.title'),
+        };
+        settingsTabItems.push(settingsTabToAdd);
+    }
+
     const [selectedTab, setSelectedTab] = useState<TabSelectorItem>(settingsTabItems[0]);
 
     const renderActiveSettingsTab = () => {
@@ -45,6 +57,8 @@ export default function Page() {
                 return <IdSettingsCard />;
             case settingsPageTypes[settingsPageTypes.MNESTIX_CONNECTIONS]:
                 return <MnestixConnectionsCard />;
+            case settingsPageTypes[settingsPageTypes.ROLES]:
+                return <RoleSettings />;
             default:
                 return <></>;
         }

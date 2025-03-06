@@ -67,7 +67,10 @@
     }
   },
   "settings": {
-    "header": "Settings"
+    "header": "Settings",
+    "roles": {
+      "title": "Role Management"
+    }
   },
   "errors": {
     "unexpectedError": "Unexpected error",
