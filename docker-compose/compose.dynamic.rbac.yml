@@ -1,0 +1,59 @@
+services:
+  security-submodel:
+    image: eclipsebasyx/submodel-repository:2.0.0-milestone-05
+    container_name: security-submodel
+    ports:
+      - '8089:8081'
+    depends_on:
+      keycloak:
+        condition: service_healthy
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongoAdmin:mongoPassword@mongodb:27017/?authSource=admin
+      BASYX__CORS__ALLOWED-ORIGINS: '*'
+      BASYX__CORS__ALLOWED-METHODS: GET,POST,PATCH,DELETE,PUT,OPTIONS,HEAD
+      # Authentication
+      basyx.feature.authorization.enabled: "false"
+      basyx.feature.authorization.type: rbac
+      basyx.feature.authorization.jwtBearerTokenProvider: keycloak
+      basyx.feature.authorization.rbac.file: file:/data/rbac_rules.json
+      spring.security.oauth2.resourceserver.jwt.issuer-uri: "http://keycloak:8080/realms/BaSyx"
+      # Allow mnestix frontend and backend to call basyx
+      BASYX_CORS_ALLOWED-ORIGINS: '*'
+      BASYX_CORS_ALLOWED-METHODS: GET,POST,PATCH,DELETE,PUT,OPTIONS,HEAD
+    healthcheck: # check the endpoint for a valid response (service ready)
+      test: curl -f http://localhost:8081/actuator/health
+      interval: 10s
+      timeout: 10s
+      retries: 6
+    networks:
+      - mnestix-network
+  
+  
+  aas-environment:
+    environment:
+      # Dynamic Roles configuration part:
+      basyx.feature.authorization.rules.backend: "Submodel"
+      basyx.feature.authorization.rules.backend.submodel.authorization.endpoint: 'http://security-submodel:8081/submodels/U2VjdXJpdHlTdWJtb2RlbA=='
+      basyx.feature.authorization.rules.backend.submodel.authorization.token-endpoint: "http://keycloak:8080/realms/BaSyx/protocol/openid-connect/token"
+      basyx.feature.authorization.rules.backend.submodel.authorization.grant-type: 'CLIENT_CREDENTIALS'
+      basyx.feature.authorization.rules.backend.submodel.authorization.client-id: 'mnestix-repo-client-demo'
+      basyx.feature.authorization.rules.backend.submodel.authorization.client-secret: '-' #Secret for Keycloak client
+    depends_on:
+      - security-submodel
+  
+  security-sm-setup:
+    image: security-submodel-seed
+    container_name: security-sm-setup
+    build:
+      context: ./dynamic-rbac/
+      dockerfile: Dockerfile
+    depends_on:
+      security-submodel:
+        condition: service_healthy
+    restart: "no"
+    volumes:
+      - ./dynamic-rbac/entrypoint.sh:/entrypoint.sh
+      - ./dynamic-rbac/initial-submodel.json:/initial-submodel.json
+    entrypoint: [ "bash", "-c", "sh /entrypoint.sh" ]
+    networks:
+      - mnestix-network

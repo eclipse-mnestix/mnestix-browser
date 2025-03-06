@@ -27,7 +27,7 @@ services:
 
   aas-environment:
     environment:
-      # Authorization
+      # Authorization basic
       basyx.feature.authorization.enabled: "true"
       basyx.feature.authorization.type: rbac
       basyx.feature.authorization.jwtBearerTokenProvider: keycloak

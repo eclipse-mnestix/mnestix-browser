@@ -10,7 +10,7 @@ services:
   mnestix-browser:
     container_name: mnestix-browser
     image: mnestix/mnestix-browser:latest
-    profiles: ['', 'frontend', 'tests']
+    profiles: [ '', 'frontend', 'tests' ]
     build:
       dockerfile: Dockerfile
       target: production
@@ -43,7 +43,7 @@ services:
   mnestix-api:
     image: mnestix/mnestix-api:1.3.0
     container_name: mnestix-api
-    profiles: ['', 'backend', 'tests']
+    profiles: [ '', 'backend', 'tests' ]
     ports:
       - '5064:5064'
     environment:
@@ -83,7 +83,9 @@ services:
   mongodb:
     image: mongo:5
     container_name: mongodb
-    profiles: ['', 'basyx', 'tests']
+    profiles: [ '', 'basyx', 'tests' ]
+    ports:
+      - '27017-27017'
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongoAdmin
       MONGO_INITDB_ROOT_PASSWORD: mongoPassword
@@ -102,9 +104,9 @@ services:
       - mnestix-network
 
   aas-environment:
-    image: eclipsebasyx/aas-environment:2.0.0-milestone-03.1
+    image: eclipsebasyx/aas-environment:2.0.0-milestone-05
     container_name: aas-environment
-    profiles: ['', 'basyx', 'tests']
+    profiles: [ '', 'basyx', 'tests' ]
     depends_on:
       - mongodb
     environment:
@@ -136,7 +138,7 @@ services:
   aas-discovery:
     image: eclipsebasyx/aas-discovery:2.0.0-milestone-03.1
     container_name: aas-discovery
-    profiles: ['', 'basyx', 'tests']
+    profiles: [ '', 'basyx', 'tests' ]
     depends_on:
       - mongodb
     environment:
@@ -164,7 +166,7 @@ services:
   aas-registry:
     image: eclipsebasyx/aas-registry-log-mongodb:2.0.0-milestone-03.1
     container_name: aas-registry
-    profiles: ['', 'basyx']
+    profiles: [ '', 'basyx' ]
     ports:
       - '8083:8080'
     depends_on:
@@ -184,7 +186,7 @@ services:
   submodel-registry:
     image: eclipsebasyx/submodel-registry-log-mongodb:2.0.0-milestone-03.1
     container_name: submodel-registry
-    profiles: ['', 'basyx']
+    profiles: [ '', 'basyx' ]
     ports:
       - '8084:8080'
     depends_on:
