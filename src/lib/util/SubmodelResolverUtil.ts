@@ -21,7 +21,7 @@ export function findSubmodelElementByIdShort(
     elements: ISubmodelElement[] | null,
     idShort: string | null,
 ): ISubmodelElement | null {
-    if (!elements || !idShort) return null;
+    if (!elements) return null;
     for (const el of elements) {
         if (el.idShort == idShort) {
             return el;
@@ -63,7 +63,7 @@ export function getTranslationText(
     if (Array.isArray(input)) {
         langStrings = input as IAbstractLangString[];
     } else {
-        langStrings = (input as MultiLanguageProperty)?.value ?? [];
+        langStrings = (input as MultiLanguageProperty | undefined)?.value ?? [];
     }
     // reduce array to object (e.g. {en: 'some string'} )
     const reducedStrings = langStrings?.reduce(
@@ -79,8 +79,7 @@ export function getTranslationText(
     return (
         reducedStrings[userLang] ||
         // Fallback to first translation
-        reducedStrings[Object.keys(reducedStrings)[0]] ||
-        ''
+        reducedStrings[Object.keys(reducedStrings)[0]]
     );
 }
 
