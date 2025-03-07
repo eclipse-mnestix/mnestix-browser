@@ -1,5 +1,13 @@
 import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
-import { AssetAdministrationShell, Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import type {
+    AssetAdministrationShell,
+    ISubmodelElement,
+    Property,
+    Reference,
+    Submodel,
+    SubmodelElementCollection,
+    SubmodelElementList,
+} from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import {
     ApiResponseWrapper,
     ApiResultStatus,
@@ -11,7 +19,7 @@ import { AttachmentDetails } from 'lib/types/TransferServiceData';
 import { encodeBase64, safeBase64Decode } from 'lib/util/Base64Util';
 import { ServiceReachable } from 'test-utils/TestUtils';
 import { MultiLanguageValueOnly, PaginationData } from 'lib/api/basyx-v3/types';
-import { LangStringTextType, MultiLanguageProperty } from '@aas-core-works/aas-core3.0-typescript/types';
+import { LangStringTextType, MultiLanguageProperty, ModelType } from '@aas-core-works/aas-core3.0-typescript/types';
 
 const options = {
     headers: { 'Content-type': 'application/json; charset=utf-8' },
@@ -176,6 +184,20 @@ export class SubmodelRepositoryApiInMemory implements ISubmodelRepositoryApi {
         );
     }
 
+    async getSubmodelByIdValueOnly(submodelId: string, _options?: object) {
+        if (this.reachable !== ServiceReachable.Yes)
+            return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Service not reachable');
+        const foundAas = this.submodelsInRepository.get(submodelId);
+        if (foundAas) {
+            const response = new Response(JSON.stringify(submodelValueOnly(foundAas)), options);
+            return wrapResponse(response);
+        }
+        return wrapErrorCode(
+            ApiResultStatus.NOT_FOUND,
+            `no submodel found in the repository: '${this.baseUrl}' for submodel: '${submodelId}'`,
+        );
+    }
+
     async getAttachmentFromSubmodelElement(
         _submodelId: string,
         _submodelElementPath: string,
@@ -234,4 +256,25 @@ export function convertDesignation(mlpValue: LangStringTextType[] | null): Recor
         },
         {} as Record<string, string>,
     );
+}
+
+function submodelValueOnly(submodel: Submodel) {
+    function parse(e: ISubmodelElement): Record<string, unknown> | string | Array<Record<string, unknown> | string> {
+        switch (e.modelType()) {
+            case ModelType.SubmodelElementCollection:
+                return Object.fromEntries(
+                    Object.entries((e as SubmodelElementCollection).value ?? {}).map(([k, v]) => [k, parse(v as any)]),
+                );
+            case ModelType.SubmodelElementList:
+                const value = (e as SubmodelElementList).value;
+                return value ? value.map((e) => parse(e) as string | Record<string, unknown>) : [];
+            case ModelType.Property:
+                return JSON.stringify((e as Property).value);
+            default:
+                throw new Error(`Unknown model type: ${e.modelType()}. Please add to apiInMemory.ts`);
+        }
+    }
+    const res = submodel.submodelElements?.filter((e) => (e as any).value !== undefined).map((e) => parse(e));
+    if (res?.length === 1) return res[0];
+    return res;
 }
