@@ -2,7 +2,7 @@
 
 import { PrivateRoute } from 'components/authentication/PrivateRoute';
 import { Box, Card } from '@mui/material';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { ViewHeading } from 'components/basics/ViewHeading';
 import { TabSelectorItem, VerticalTabSelector } from 'components/basics/VerticalTabSelector';
 import { messages } from 'lib/i18n/localization';
@@ -68,7 +68,7 @@ export default function Page() {
         <PrivateRoute currentRoute={'/settings'}>
             <Box sx={{ p: 4, width: '100%', margin: '0 auto' }} data-testid="settings-route-page">
                 <Box sx={{ mb: 3 }} data-testid="settings-header">
-                    <ViewHeading title={<FormattedMessage {...messages.mnestix.settings} />} />
+                    <ViewHeading title={t('header')} subtitle={t('subHeader')} />
                 </Box>
                 <Card sx={{ p: 2 }}>
                     <Box display="grid" gridTemplateColumns={isMobile ? '1fr' : '1fr 3fr'}>

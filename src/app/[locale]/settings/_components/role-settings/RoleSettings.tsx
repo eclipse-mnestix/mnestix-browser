@@ -1,4 +1,15 @@
-import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import {
+    Box,
+    Divider,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography,
+} from '@mui/material';
+import { CardHeading } from 'components/basics/CardHeading';
 import { useTranslations } from 'next-intl';
 
 export type RbacDto = {
@@ -33,7 +44,20 @@ export const RoleSettings = () => {
             name: 'basyx-reader-serialization-two',
             action: [rbacAction.DELETE, rbacAction.CREATE],
             type: 'aas-environment',
-            aasIds: ['https://aas2.uni-h.de/lni0729', 'https://aas2.uni-h.de/lni0729', 'https://aas2.uni-h.de/lni0729'],
+            aasIds: [
+                'https://aas2.uni-h.de/lni0729',
+                'https://aas2.uni-h.de/lni0729',
+                'https://aas2.uni-h.de/lni0729',
+                'https://aas2.uni-h.de/lni0729',
+                'https://aas2.uni-h.de/lni0729',
+                'https://aas2.uni-h.de/lni0729',
+                'https://aas2.uni-h.de/lni0729',
+                'https://aas2.uni-h.de/lni0729',
+                'https://aas2.uni-h.de/lni0729',
+                'https://aas2.uni-h.de/lni0729',
+                'https://aas2.uni-h.de/lni0729',
+                'https://aas2.uni-h.de/lni0729',
+            ],
             submodelIds: ['submodel1', 'submodel2', 'submodel3', 'submodel4', 'submodel5', 'submodel6'],
         },
         {
@@ -43,13 +67,24 @@ export const RoleSettings = () => {
             aasIds: ['https://aas2.uni-h.de/lni0729', 'https://aas2.uni-h.de/lni0729'],
             submodelIds: ['submodel1', 'submodel2', 'submodel3', 'submodel6'],
         },
+        {
+            name: 'admin',
+            action: [rbacAction.DELETE, rbacAction.CREATE, rbacAction.EXECUTE, rbacAction.UPDATE, rbacAction.UPDATE],
+            type: 'aas-repository',
+            aasIds: ['*'],
+            submodelIds: ['*'],
+        },
     ];
+    // TODO add subheader
+    // "more" dialog for aas Ids and submodel Ids, 3 rows max
+    // action pills
+    // role bold
 
     return (
         <Box sx={{ p: 3, width: '100%', minHeight: '600px' }}>
-            <Typography variant="h3" color="primary">
-                {t('roles.title')}
-            </Typography>
+            <CardHeading title={t('roles.title')} subtitle={t('roles.subtitle')}></CardHeading>
+            <Divider sx={{ my: 2 }} />
+
             <TableContainer>
                 <Table>
                     <TableHead>
@@ -66,7 +101,7 @@ export const RoleSettings = () => {
                         {dummyData.map((entry) => (
                             <TableRow key={entry.name}>
                                 <TableCell>{entry.name}</TableCell>
-                                <TableCell>{entry.action}</TableCell>
+                                <TableCell>{entry.action.map((action) => rbacAction[action]).join(', ')}</TableCell>
                                 <TableCell>{entry.type}</TableCell>
                                 <TableCell>{entry.aasIds.join(', ')}</TableCell>
                                 <TableCell>{entry.submodelIds.join(', ')}</TableCell>

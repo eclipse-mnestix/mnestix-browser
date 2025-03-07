@@ -68,8 +68,10 @@
   },
   "settings": {
     "header": "Settings",
+    "subHeader": "Add, remove, or modify settings and configurations to various features within your AAS environment.",
     "roles": {
       "title": "Role Management",
+      "subtitle": "Manage roles and permissions.",
       "tableHeader": {
         "name": "Role",
         "action": "Action",

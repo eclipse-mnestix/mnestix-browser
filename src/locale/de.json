@@ -68,8 +68,10 @@
   },
   "settings": {
     "header": "Einstellungen",
+    "subHeader": "Hinzufügen, Entfernen oder Ändern von Einstellungen und Konfigurationen für verschiedene Funktionen innerhalb Ihrer AAS-Umgebung.",
     "roles": {
       "title": "Rollen Management",
+      "subtitle": "Verwalten von Rollen und Berechtigungen.",
       "tableHeader": {
         "name": "Rolle",
         "action": "Aktion",
