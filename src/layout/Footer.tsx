@@ -1,14 +1,21 @@
-import { BottomNavigation, Typography } from '@mui/material';
+import { BottomNavigation, Dialog, Typography } from '@mui/material';
 import Link from '@mui/material/Link';
 import { useEnv } from 'app/env/provider';
-import { messages } from 'lib/i18n/localization';
-import { FormattedMessage } from 'react-intl';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+import { AboutDialog } from 'components/basics/AboutDialog';
 
 export function Footer() {
     const env = useEnv();
     const imprintString = env.IMPRINT_URL;
     const dataPrivacyString = env.DATA_PRIVACY_URL;
     const copyrightString = `Copyright © ${new Date().getFullYear()} XITASO GmbH`;
+    const [aboutDialogOpen, setAboutDialogOpen] = useState(false);
+    const handleAboutDialogClose = () => {
+        setAboutDialogOpen(false);
+    };
+
+    const t = useTranslations('footer');
 
     return (
         <>
@@ -37,16 +44,16 @@ export function Footer() {
                         }}
                     >
                         <Link href={dataPrivacyString} target="_blank">
-                            <FormattedMessage {...messages.mnestix.dataPrivacy} />
+                            <Typography>{t('dataPrivacy')}</Typography>
                         </Link>
                     </Typography>
                 )}
 
                 {dataPrivacyString && imprintString && (
-                    <Typography
+                    <Typography margin={2}
                         color="text.secondary"
                         fontSize="small"
-                        sx={{ margin: '5px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
                         |
                     </Typography>
@@ -63,11 +70,39 @@ export function Footer() {
                         }}
                     >
                         <Link href={imprintString} target="_blank">
-                            <FormattedMessage {...messages.mnestix.imprint} />
+                            <Typography>{t('imprint')}</Typography>
+                        </Link>
+                    </Typography>
+                )}
+
+                { imprintString && (
+                    <Typography margin={2}
+                                color="text.secondary"
+                                fontSize="small"
+                                display='flex'
+                                sx={{ alignItems: 'center', justifyContent: 'center' }}
+                    >
+                        |
+                    </Typography>
+                )}
+
+                {imprintString && (
+                    <Typography
+                        fontSize="small"
+                        sx={{
+                            display: 'flex',
+                            maxWidth: '150px',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <Link onClick={setAboutDialogOpen}>
+                            <Typography>{t('about')}</Typography>
                         </Link>
                     </Typography>
                 )}
             </BottomNavigation>
+            <AboutDialog open={aboutDialogOpen} onClose={handleAboutDialogClose}>rjfwperp</AboutDialog>
         </>
     );
 }
