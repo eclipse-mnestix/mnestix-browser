@@ -85,7 +85,8 @@
     "swr": "^2.3.2",
     "typescript": "^5.4.5",
     "url": "^0.11.3",
-    "web-vitals": "^3.5.2"
+    "web-vitals": "^3.5.2",
+    "zod": "^3.24.2"
   },
   "resolutions": {
     "string-width": "4.2.3"

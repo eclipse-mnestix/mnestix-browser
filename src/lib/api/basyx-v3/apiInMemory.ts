@@ -258,6 +258,7 @@ export function convertDesignation(mlpValue: LangStringTextType[] | null): Recor
     );
 }
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 function submodelValueOnly(submodel: Submodel) {
     function parse(e: ISubmodelElement): Record<string, unknown> | string | Array<Record<string, unknown> | string> {
         switch (e.modelType()) {
@@ -266,8 +267,7 @@ function submodelValueOnly(submodel: Submodel) {
                     Object.entries((e as SubmodelElementCollection).value ?? {}).map(([k, v]) => [k, parse(v as any)]),
                 );
             case ModelType.SubmodelElementList:
-                const value = (e as SubmodelElementList).value;
-                return value ? value.map((e) => parse(e) as string | Record<string, unknown>) : [];
+                return (e as SubmodelElementList).value?.map((e) => parse(e) as string | Record<string, unknown>) ?? [];
             case ModelType.Property:
                 return JSON.stringify((e as Property).value);
             default:
@@ -278,3 +278,4 @@ function submodelValueOnly(submodel: Submodel) {
     if (res?.length === 1) return res[0];
     return res;
 }
+/* eslint-enable @typescript-eslint/no-explicit-any */
