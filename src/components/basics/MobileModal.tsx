@@ -1,11 +1,13 @@
 import { Box, IconButton, Modal, Slide, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import React from 'react';
+import { SubmodelInfoTooltip, TabSelectorItem } from 'components/basics/VerticalTabSelector';
 
 type MobileModalProps = {
-    readonly title?: string;
+    readonly selectedItem?: TabSelectorItem;
     readonly content: React.ReactNode;
     readonly handleClose: () => void;
+    readonly setInfoItem: (infoItem: TabSelectorItem) => void;
     readonly open: boolean;
 };
 
@@ -41,7 +43,14 @@ export function MobileModal(props: MobileModalProps) {
             <Slide direction="up" in={props.open} mountOnEnter unmountOnExit>
                 <Box sx={modalStyle} width="100%">
                     <Box sx={headerStyle}>
-                        <Typography variant="h3">{props.title || ''}</Typography>
+                        <Box display="flex" alignItems="center">
+                            <Typography variant="h3" sx={{ pr: '0.5rem' }}>
+                                {props.selectedItem?.label || ''}
+                            </Typography>
+                            {!!props.selectedItem && (
+                                <SubmodelInfoTooltip item={props.selectedItem} setInfoItem={props.setInfoItem} />
+                            )}
+                        </Box>
                         <IconButton onClick={props.handleClose}>
                             <CloseIcon />
                         </IconButton>

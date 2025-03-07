@@ -3,24 +3,26 @@ import { ArrowForward } from '@mui/icons-material';
 import { ReactElement, useState } from 'react';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { tooltipText } from 'lib/util/ToolTipText';
-import { SubmodelInfoDialog } from 'app/[locale]/viewer/_components/submodel/SubmodelInfoDialog';
 import { useTranslations } from 'next-intl';
+import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 
 export type TabSelectorItem = {
     readonly id: string;
     readonly label: string;
     readonly startIcon?: ReactElement<SvgIconProps>;
     readonly submodelData?: Submodel;
-    readonly submodelError?: string | Error;
+    readonly submodelError?: ErrorMessage;
 };
 
 type VerticalTabSelectorProps = {
     readonly items: TabSelectorItem[];
     readonly selected?: TabSelectorItem;
     readonly hovered?: TabSelectorItem;
-    readonly setSelected?: (selected: TabSelectorItem) => void;
-    readonly setHovered?: (hovered: TabSelectorItem | undefined) => void;
+    readonly setSelected: (selected: TabSelectorItem) => void;
+    readonly setInfoItem: (infoItem: TabSelectorItem) => void;
 };
+
+export type ErrorMessage = 'NOT_FOUND' | 'UNAUTHORIZED' | 'INTERNAL_SERVER_ERROR' | 'UNKNOWN';
 
 const Tab = styled(Button)(({ theme }) => ({
     textTransform: 'none',
@@ -58,19 +60,46 @@ const Tab = styled(Button)(({ theme }) => ({
     },
 }));
 
-export function VerticalTabSelector(props: VerticalTabSelectorProps) {
-    const [submodelInfoDialogOpen, setSubmodelInfoDialogOpen] = useState(false);
-    const [hoveredItem, setHoveredItem] = useState<TabSelectorItem>();
-    const [dialogItem, setDialogItem] = useState<TabSelectorItem>();
+export function SubmodelInfoTooltip({
+    item,
+    setInfoItem,
+}: {
+    item: TabSelectorItem;
+    setInfoItem: (item: TabSelectorItem) => void;
+}) {
     const t = useTranslations('submodels.errors');
-    type message = 'NOT_FOUND' | 'UNAUTHORIZED' | 'INTERNAL_SERVER_ERROR' | 'UNKNOWN';
+
+    return (
+        <>
+            {item.submodelError ? (
+                <Tooltip title={t(item.submodelError)}>
+                    <Box display="flex" sx={{ cursor: 'pointer' }}>
+                        {item.startIcon}
+                    </Box>
+                </Tooltip>
+            ) : (
+                <Tooltip title={item.id.toString()}>
+                    <Box
+                        display="flex"
+                        sx={{ cursor: 'pointer' }}
+                        onClick={(event) => {
+                            setInfoItem(item);
+                            event.stopPropagation(); // don't open the tab
+                        }}
+                    >
+                        {item.startIcon}
+                    </Box>
+                </Tooltip>
+            )}
+        </>
+    );
+}
+
+export function VerticalTabSelector(props: VerticalTabSelectorProps) {
+    const [hoveredItem, setHoveredItem] = useState<TabSelectorItem>();
+    const isMobile = useIsMobile();
 
     const selectedCSSClass = (id: string) => (id === props.selected?.id ? 'selected' : '');
-
-    const handleSubmodelInfoModalClose = () => {
-        setHoveredItem(undefined);
-        setSubmodelInfoDialogOpen(false);
-    };
 
     return (
         <Box
@@ -97,32 +126,12 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
                             <Box display="flex" alignItems="center" gap={2}>
                                 <Box
                                     visibility={
-                                        item.id === props.selected?.id || item.id === hoveredItem?.id
+                                        !isMobile && (item.id === props.selected?.id || item.id === hoveredItem?.id)
                                             ? 'visible'
                                             : 'hidden'
                                     }
                                 >
-                                    {item.submodelError ? (
-                                        <Tooltip title={t(item.submodelError.toString() as message)}>
-                                            <Box display="flex" sx={{ cursor: 'pointer' }}>
-                                                {item.startIcon}
-                                            </Box>
-                                        </Tooltip>
-                                    ) : (
-                                        <Tooltip title={item.id.toString()}>
-                                            <Box
-                                                display="flex"
-                                                sx={{ cursor: 'pointer' }}
-                                                onClick={(event) => {
-                                                    setDialogItem(hoveredItem);
-                                                    setSubmodelInfoDialogOpen(true);
-                                                    event.stopPropagation(); // don't open the tab
-                                                }}
-                                            >
-                                                {item.startIcon}
-                                            </Box>
-                                        </Tooltip>
-                                    )}
+                                    <SubmodelInfoTooltip item={item} setInfoItem={props.setInfoItem} />
                                 </Box>
                                 <ArrowForward color={item.submodelError ? 'disabled' : 'primary'} />
                             </Box>
@@ -130,12 +139,6 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
                     </Box>
                 );
             })}
-            <SubmodelInfoDialog
-                open={submodelInfoDialogOpen}
-                onClose={handleSubmodelInfoModalClose}
-                id={dialogItem?.id}
-                idShort={dialogItem?.submodelData?.idShort}
-            />
         </Box>
     );
 }
