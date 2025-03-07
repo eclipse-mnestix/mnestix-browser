@@ -1,5 +1,6 @@
 import {
     Box,
+    Button,
     Divider,
     Table,
     TableBody,
@@ -11,6 +12,8 @@ import {
 } from '@mui/material';
 import { CardHeading } from 'components/basics/CardHeading';
 import { useTranslations } from 'next-intl';
+import { RoleDialog } from 'app/[locale]/settings/_components/role-settings/RoleDialog';
+import { useState } from 'react';
 
 export type RbacDto = {
     name: string;
@@ -30,6 +33,10 @@ enum rbacAction {
 
 export const RoleSettings = () => {
     const t = useTranslations('settings');
+    const [roleDialogOpen, setRoleDialogOpen] = useState(false);
+    const [selectedRole, setSelectedRole] = useState<RbacDto | undefined>(undefined);
+    const MAX_IDS = 3;
+    const MAX_IDS_CHARS = 50;
 
     const tableHeaders = [
         { label: t('roles.tableHeader.name') },
@@ -45,18 +52,18 @@ export const RoleSettings = () => {
             action: [rbacAction.DELETE, rbacAction.CREATE],
             type: 'aas-environment',
             aasIds: [
-                'https://aas2.uni-h.de/lni0729',
-                'https://aas2.uni-h.de/lni0729',
-                'https://aas2.uni-h.de/lni0729',
-                'https://aas2.uni-h.de/lni0729',
-                'https://aas2.uni-h.de/lni0729',
-                'https://aas2.uni-h.de/lni0729',
-                'https://aas2.uni-h.de/lni0729',
-                'https://aas2.uni-h.de/lni0729',
-                'https://aas2.uni-h.de/lni0729',
-                'https://aas2.uni-h.de/lni0729',
-                'https://aas2.uni-h.de/lni0729',
-                'https://aas2.uni-h.de/lni0729',
+                'https://aas2.uni-h.de/lnidsafdsafdfasdfsdfadfdsfdsfadsfdsfdsfsdafdsfdassdfsdfs0721',
+                'https://aas2.uni-h.de/lni0722',
+                'https://aas2.uni-h.de/lni0dsafdsafdas723',
+                'https://aas2.uni-h.de/lni0ddsafdf724',
+                'https://aas2.uni-h.de/lni0725',
+                'https://aas2.uni-h.de/lni0726',
+                'https://aas2.uni-h.de/lni0727',
+                'https://aas2.uni-h.de/lni0728',
+                'https://aas2.uni-h.de/lni07210',
+                'https://aas2.uni-h.de/lni072911',
+                'https://aas2.uni-h.de/lni07212',
+                'https://aas2.uni-h.de/lni07214',
             ],
             submodelIds: ['submodel1', 'submodel2', 'submodel3', 'submodel4', 'submodel5', 'submodel6'],
         },
@@ -64,7 +71,7 @@ export const RoleSettings = () => {
             name: 'basyx-reader',
             action: [rbacAction.DELETE, rbacAction.CREATE, rbacAction.EXECUTE],
             type: 'aas-repository',
-            aasIds: ['https://aas2.uni-h.de/lni0729', 'https://aas2.uni-h.de/lni0729'],
+            aasIds: ['https://aas2.uni-h.de/lhö', 'https://aas2.uni-h.de/hi'],
             submodelIds: ['submodel1', 'submodel2', 'submodel3', 'submodel6'],
         },
         {
@@ -75,43 +82,85 @@ export const RoleSettings = () => {
             submodelIds: ['*'],
         },
     ];
-    // TODO add subheader
     // "more" dialog for aas Ids and submodel Ids, 3 rows max
+    // 1 id per row -> ... per id
     // action pills
-    // role bold
+    // Test all List implementation and align styling
+    // mobile: hide aas Ids + submodel Ids
+
+    const idTableCell = (ids: string[], entry: RbacDto) => {
+        const showMore = ids.length > MAX_IDS;
+
+        const elementsToShow = ids.slice(0, MAX_IDS);
+        return (
+            <span>
+                {elementsToShow.map((id) => (
+                    <Box component="span" key={id} sx={{ whiteSpace: 'nowrap' }}>
+                        {id.length > MAX_IDS_CHARS ? `${id.slice(0, MAX_IDS_CHARS)}...` : id} <br />
+                    </Box>
+                ))}
+                {showMore && (
+                    <Button size="small" onClick={() => openDetailDialog(entry)}>
+                        show more
+                    </Button>
+                )}
+            </span>
+        );
+    };
+
+    const openDetailDialog = (entry: RbacDto) => {
+        setSelectedRole(entry);
+        setRoleDialogOpen(true);
+    };
 
     return (
-        <Box sx={{ p: 3, width: '100%', minHeight: '600px' }}>
-            <CardHeading title={t('roles.title')} subtitle={t('roles.subtitle')}></CardHeading>
-            <Divider sx={{ my: 2 }} />
+        <>
+            <Box sx={{ p: 3, width: '100%', minHeight: '600px' }}>
+                <CardHeading title={t('roles.title')} subtitle={t('roles.subtitle')}></CardHeading>
+                <Divider sx={{ my: 2 }} />
 
-            <TableContainer>
-                <Table>
-                    <TableHead>
-                        {!!tableHeaders &&
-                            tableHeaders.map((header: { label: string }, index) => (
-                                <TableCell key={index}>
-                                    <Typography variant="h5" color="secondary" letterSpacing={0.16} fontWeight={700}>
-                                        {header.label}
-                                    </Typography>
-                                </TableCell>
-                            ))}
-                    </TableHead>
-                    <TableBody>
-                        {dummyData.map((entry) => (
-                            <TableRow key={entry.name}>
-                                <TableCell>{entry.name}</TableCell>
-                                <TableCell>{entry.action.map((action) => rbacAction[action]).join(', ')}</TableCell>
-                                <TableCell>{entry.type}</TableCell>
-                                <TableCell>{entry.aasIds.join(', ')}</TableCell>
-                                <TableCell>{entry.submodelIds.join(', ')}</TableCell>
+                <TableContainer>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                {!!tableHeaders &&
+                                    tableHeaders.map((header: { label: string }, index) => (
+                                        <TableCell key={index}>
+                                            <Typography
+                                                variant="h5"
+                                                color="secondary"
+                                                letterSpacing={0.16}
+                                                fontWeight={700}
+                                            >
+                                                {header.label}
+                                            </Typography>
+                                        </TableCell>
+                                    ))}
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </Box>
+                        </TableHead>
+                        <TableBody>
+                            {dummyData.map((entry) => (
+                                <TableRow key={entry.name}>
+                                    <TableCell>
+                                        <Typography fontWeight="bold">{entry.name}</Typography>
+                                    </TableCell>
+                                    <TableCell>{entry.action.map((action) => rbacAction[action]).join(', ')}</TableCell>
+                                    <TableCell>{entry.type}</TableCell>
+                                    <TableCell>{idTableCell(entry.aasIds, entry)}</TableCell>
+                                    <TableCell>{idTableCell(entry.submodelIds, entry)}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Box>
+            <RoleDialog
+                onClose={() => {
+                    setRoleDialogOpen(false);
+                }}
+                open={roleDialogOpen}
+                role={selectedRole}
+            ></RoleDialog>
+        </>
     );
 };
-// TODO: Batches for Action? Length of AASIDS and SubmodelIDS, how can I view a huge List?
-// Test all List implementation and align styling
