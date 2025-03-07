@@ -14,7 +14,7 @@ services:
       SPRING__DATA__MONGODB__PASSWORD: mongoPassword
       BASYX__CORS__ALLOWED-ORIGINS: '*'
       BASYX__CORS__ALLOWED-METHODS: GET,POST,PATCH,DELETE,PUT,OPTIONS,HEAD
-      # Authentication - for the future
+      # Authentication
       basyx.feature.authorization.enabled: "true"
       basyx.feature.authorization.type: rbac
       basyx.feature.authorization.jwtBearerTokenProvider: keycloak
