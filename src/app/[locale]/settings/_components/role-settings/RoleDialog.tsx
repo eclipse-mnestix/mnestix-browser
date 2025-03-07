@@ -1,6 +1,7 @@
 import { Box, Dialog, DialogContent, IconButton, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { RbacDto } from 'app/[locale]/settings/_components/role-settings/RoleSettings';
+import { rbacAction, RbacDto } from 'app/[locale]/settings/_components/role-settings/RoleSettings';
+import { useTranslations } from 'next-intl';
 
 type RoleDialogProps = {
     readonly onClose: () => void;
@@ -8,8 +9,26 @@ type RoleDialogProps = {
     readonly role: RbacDto | undefined;
 };
 export const RoleDialog = (props: RoleDialogProps) => {
+    const t = useTranslations('settings');
+
+    const permissions = (entry: RbacDto) => {
+        const permissions = [];
+        for (const elem in entry.targetInformation) {
+            if (elem !== 'type')
+                permissions.push(
+                    <Box>
+                        <Typography color="text.secondary" variant="body2">
+                            {elem}
+                        </Typography>
+                        <Typography>{entry.targetInformation[elem]}</Typography>
+                    </Box>,
+                );
+        }
+        return permissions;
+    };
+
     return (
-        <Dialog open={props.open} onClose={props.onClose} maxWidth="sm" fullWidth={true}>
+        <Dialog open={props.open} onClose={props.onClose} maxWidth="md" fullWidth={true}>
             <IconButton
                 aria-label="close"
                 onClick={props.onClose}
@@ -23,12 +42,24 @@ export const RoleDialog = (props: RoleDialogProps) => {
                 <CloseIcon />
             </IconButton>
             <DialogContent style={{ padding: '40px' }}>
-                <Box display="flex" flexDirection="column" gap="20px">
+                <Box display="flex" flexDirection="column" gap="1em">
                     <Typography variant="h2" color={'primary'}>
-                        {props.role?.name}
+                        Role: {props.role?.name}
                     </Typography>
-                    <Box>
-                        <Typography color="text.secondary">{props.role?.aasIds}</Typography>
+                    <Box display="flex" flexDirection="column" gap="1em">
+                        <Box>
+                            <Typography color="text.secondary" variant="body2">
+                                {t('roles.tableHeader.action')}
+                            </Typography>
+                            <Typography>{props.role?.action.map((action) => rbacAction[action]).join(', ')}</Typography>{' '}
+                        </Box>
+                        <Box>
+                            <Typography color="text.secondary" variant="body2">
+                                {t('roles.tableHeader.type')}
+                            </Typography>
+                            <Typography>{props.role?.targetInformation.type}</Typography>
+                        </Box>
+                        {props.role && permissions(props.role)}
                     </Box>
                 </Box>
             </DialogContent>
