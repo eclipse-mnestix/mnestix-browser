@@ -3,7 +3,7 @@ services:
     image: eclipsebasyx/submodel-repository:2.0.0-milestone-05
     container_name: security-submodel
     ports:
-      - '8089:8081'
+      - '8081'
     depends_on:
       keycloak:
         condition: service_healthy
@@ -42,8 +42,8 @@ services:
       basyx.feature.authorization.rules.backend.submodel.authorization.endpoint: 'http://security-submodel:8081/submodels/U2VjdXJpdHlTdWJtb2RlbA=='
       basyx.feature.authorization.rules.backend.submodel.authorization.token-endpoint: "http://keycloak:8080/realms/Mnestix/protocol/openid-connect/token"
       basyx.feature.authorization.rules.backend.submodel.authorization.grant-type: 'CLIENT_CREDENTIALS'
-      basyx.feature.authorization.rules.backend.submodel.authorization.client-id: 'mnestix-repo-client-demo'
-      basyx.feature.authorization.rules.backend.submodel.authorization.client-secret: ${REPOSITORY_API_CLIENT_SECRET:-WLOB68nSllHTlr7ViUOZWWxildWFT2nN} #Secret for Keycloak client
+      basyx.feature.authorization.rules.backend.submodel.authorization.client-id: 'workstation-1'
+      basyx.feature.authorization.rules.backend.submodel.authorization.client-secret: ${WORKSTATION_API_CLIENT_SECRET:-nY0mjyECF60DGzNmQUjL81XurSl8etom} #Secret for Keycloak client
     depends_on:
       security-submodel:
         condition: service_healthy
@@ -58,6 +58,9 @@ services:
       security-submodel:
         condition: service_healthy
     restart: "no"
+    environment:
+      CLIENT_ID: 'workstation-1'
+      CLIENT_SECRET: ${WORKSTATION_API_CLIENT_SECRET:-nY0mjyECF60DGzNmQUjL81XurSl8etom}
     volumes:
       - ./docker-compose/dynamic-rbac/entrypoint.sh:/entrypoint.sh
       - ./docker-compose/dynamic-rbac/initial-submodel.json:/initial-submodel.json
