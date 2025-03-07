@@ -84,8 +84,6 @@ services:
     image: mongo:5
     container_name: mongodb
     profiles: [ '', 'basyx', 'tests' ]
-    ports:
-      - '27017-27017'
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongoAdmin
       MONGO_INITDB_ROOT_PASSWORD: mongoPassword

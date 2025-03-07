@@ -2,8 +2,6 @@ services:
   security-submodel:
     image: eclipsebasyx/submodel-repository:2.0.0-milestone-05
     container_name: security-submodel
-    ports:
-      - '8081'
     depends_on:
       keycloak:
         condition: service_healthy
