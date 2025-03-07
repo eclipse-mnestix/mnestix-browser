@@ -6,8 +6,6 @@ CLIENT_SECRET="$CLIENT_SECRET"
 TOKEN_URL="http://keycloak:8080/realms/Mnestix/protocol/openid-connect/token"
 BODY="client_id=$CLIENT_ID&client_secret=$CLIENT_SECRET&grant_type=client_credentials&scope=openid"
 
-echo "Authentication start..."
-
 # Fetch the OAuth2 token
 ACCESS_TOKEN=$(curl -X POST $TOKEN_URL -d $BODY -H "Content-Type: application/x-www-form-urlencoded" | jq -r .access_token)
 
