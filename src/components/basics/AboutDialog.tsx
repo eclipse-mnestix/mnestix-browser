@@ -1,6 +1,7 @@
-﻿import { Box, Dialog, DialogContent, IconButton, Typography } from '@mui/material';
+﻿import { Box, Dialog, DialogContent, IconButton, Typography, useTheme } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslations } from 'next-intl';
+import { MnestixLogo } from './MnestixLogo';
 
 type AboutDialogProps = {
     readonly onClose: () => void;
@@ -9,6 +10,8 @@ type AboutDialogProps = {
 
 export function AboutDialog(props: AboutDialogProps) {
     const t = useTranslations('footer');
+    const theme = useTheme();
+
     return (
         <Dialog open={props.open} onClose={props.onClose} maxWidth="md" fullWidth={true}>
             <IconButton
@@ -25,17 +28,26 @@ export function AboutDialog(props: AboutDialogProps) {
             </IconButton>
             <DialogContent style={{ padding: '40px' }}>
                 <Box display="flex" flexDirection="column" gap="20px">
-                    <Typography variant="h2" color={'primary'}>
-                        {t('about')}
-                    </Typography>
-                    <Box>
-                        <Typography color="text.secondary">
+                    <Box display="flex" flexDirection="row" justifyContent="space-between">
+                        <Typography variant="h2" color={'primary'}>
+                            {t('about')}
                             <Typography>MIT License</Typography>
                             <Typography>Copyright (c) 2024 XITASO GmbH</Typography>
-                            <br />
-                            <br />
+                        </Typography>
+                        <Box
+                            bgcolor={theme.palette.primary.main}
+                            borderRadius="3%"
+                            justifyContent={'center'}
+                            alignItems={'center'}
+                            display={'flex'}
+                            p={2}>
+                            <MnestixLogo width={'230px'}/>
+                        </Box>
+                    </Box>
+                    <Box>
+                        <Typography color="text.secondary">
                             Permission is hereby granted, free of charge, to any person obtaining a copy of this
-                            software and associated documentation files (the "Software"), to deal in the Software
+                            software and associated documentation files (the &quot;Software&quot;), to deal in the Software
                             without restriction, including without limitation the rights to use, copy, modify, merge,
                             publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
                             to whom the Software is furnished to do so, subject to the following conditions:
@@ -45,7 +57,7 @@ export function AboutDialog(props: AboutDialogProps) {
                             substantial portions of the Software.
                             <br />
                             <br />
-                                THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+                                THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF
                             ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
                             MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
                             AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN

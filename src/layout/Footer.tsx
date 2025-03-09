@@ -1,4 +1,4 @@
-import { BottomNavigation, Dialog, Typography } from '@mui/material';
+import { BottomNavigation, Typography } from '@mui/material';
 import Link from '@mui/material/Link';
 import { useEnv } from 'app/env/provider';
 import { useTranslations } from 'next-intl';
@@ -23,25 +23,18 @@ export function Footer() {
                 <Typography
                     color="text.secondary"
                     fontSize="small"
-                    sx={{
-                        marginRight: '15px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}
-                >
+                    mr={2}
+                    display='flex'
+                    alignItems='center'
+                    justifyContent='center'>
                     {copyrightString}
                 </Typography>
 
                 {dataPrivacyString && (
                     <Typography
-                        fontSize="small"
-                        sx={{
-                            display: 'flex',
-                            maxWidth: '150px',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
+                        fontSize="small" display='flex' maxWidth='150px'
+                        alignItems={'center'}
+                        justifyContent={'center'}
                     >
                         <Link href={dataPrivacyString} target="_blank">
                             <Typography>{t('dataPrivacy')}</Typography>
@@ -53,7 +46,9 @@ export function Footer() {
                     <Typography margin={2}
                         color="text.secondary"
                         fontSize="small"
-                        sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        display='flex'
+                        alignItems='center'
+                        justifyContent='center'
                     >
                         |
                     </Typography>
@@ -61,14 +56,7 @@ export function Footer() {
 
                 {imprintString && (
                     <Typography
-                        fontSize="small"
-                        sx={{
-                            display: 'flex',
-                            maxWidth: '150px',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                    >
+                        fontSize="small" maxWidth='150px' display='flex' alignItems='center' justifyContent='center'>
                         <Link href={imprintString} target="_blank">
                             <Typography>{t('imprint')}</Typography>
                         </Link>
@@ -80,29 +68,25 @@ export function Footer() {
                                 color="text.secondary"
                                 fontSize="small"
                                 display='flex'
-                                sx={{ alignItems: 'center', justifyContent: 'center' }}
-                    >
+                                alignItems='center'
+                                justifyContent='center'>
                         |
                     </Typography>
                 )}
 
-                {imprintString && (
-                    <Typography
-                        fontSize="small"
-                        sx={{
-                            display: 'flex',
-                            maxWidth: '150px',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <Link onClick={setAboutDialogOpen}>
-                            <Typography>{t('about')}</Typography>
-                        </Link>
-                    </Typography>
-                )}
+                <Typography
+                    fontSize="small"
+                    display='flex'
+                    alignItems='center'
+                    justifyContent='center'
+                    maxWidth='250px'
+                >
+                    <Link href='#'>
+                        <Typography onClick={() => setAboutDialogOpen(!aboutDialogOpen)}>{t('about')}</Typography>
+                    </Link>
+                </Typography>
             </BottomNavigation>
-            <AboutDialog open={aboutDialogOpen} onClose={handleAboutDialogClose}>rjfwperp</AboutDialog>
+            <AboutDialog open={aboutDialogOpen} onClose={handleAboutDialogClose}></AboutDialog>
         </>
     );
 }
