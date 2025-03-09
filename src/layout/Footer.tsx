@@ -1,14 +1,21 @@
 import { BottomNavigation, Typography } from '@mui/material';
 import Link from '@mui/material/Link';
 import { useEnv } from 'app/env/provider';
-import { messages } from 'lib/i18n/localization';
-import { FormattedMessage } from 'react-intl';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+import { AboutDialog } from 'components/basics/AboutDialog';
 
 export function Footer() {
     const env = useEnv();
     const imprintString = env.IMPRINT_URL;
     const dataPrivacyString = env.DATA_PRIVACY_URL;
     const copyrightString = `Copyright © ${new Date().getFullYear()} XITASO GmbH`;
+    const [aboutDialogOpen, setAboutDialogOpen] = useState(false);
+    const handleAboutDialogClose = () => {
+        setAboutDialogOpen(false);
+    };
+
+    const t = useTranslations('footer');
 
     return (
         <>
@@ -16,37 +23,32 @@ export function Footer() {
                 <Typography
                     color="text.secondary"
                     fontSize="small"
-                    sx={{
-                        marginRight: '15px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}
-                >
+                    mr={2}
+                    display='flex'
+                    alignItems='center'
+                    justifyContent='center'>
                     {copyrightString}
                 </Typography>
 
                 {dataPrivacyString && (
                     <Typography
-                        fontSize="small"
-                        sx={{
-                            display: 'flex',
-                            maxWidth: '150px',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
+                        fontSize="small" display='flex' maxWidth='150px'
+                        alignItems={'center'}
+                        justifyContent={'center'}
                     >
                         <Link href={dataPrivacyString} target="_blank">
-                            <FormattedMessage {...messages.mnestix.dataPrivacy} />
+                            <Typography>{t('dataPrivacy')}</Typography>
                         </Link>
                     </Typography>
                 )}
 
                 {dataPrivacyString && imprintString && (
-                    <Typography
+                    <Typography margin={2}
                         color="text.secondary"
                         fontSize="small"
-                        sx={{ margin: '5px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        display='flex'
+                        alignItems='center'
+                        justifyContent='center'
                     >
                         |
                     </Typography>
@@ -54,20 +56,37 @@ export function Footer() {
 
                 {imprintString && (
                     <Typography
-                        fontSize="small"
-                        sx={{
-                            display: 'flex',
-                            maxWidth: '150px',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                    >
+                        fontSize="small" maxWidth='150px' display='flex' alignItems='center' justifyContent='center'>
                         <Link href={imprintString} target="_blank">
-                            <FormattedMessage {...messages.mnestix.imprint} />
+                            <Typography>{t('imprint')}</Typography>
                         </Link>
                     </Typography>
                 )}
+
+                { imprintString && (
+                    <Typography margin={2}
+                                color="text.secondary"
+                                fontSize="small"
+                                display='flex'
+                                alignItems='center'
+                                justifyContent='center'>
+                        |
+                    </Typography>
+                )}
+
+                <Typography
+                    fontSize="small"
+                    display='flex'
+                    alignItems='center'
+                    justifyContent='center'
+                    maxWidth='250px'
+                >
+                    <Link href='#'>
+                        <Typography onClick={() => setAboutDialogOpen(!aboutDialogOpen)}>{t('about')}</Typography>
+                    </Link>
+                </Typography>
             </BottomNavigation>
+            <AboutDialog open={aboutDialogOpen} onClose={handleAboutDialogClose}></AboutDialog>
         </>
     );
 }

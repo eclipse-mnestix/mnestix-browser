@@ -91,5 +91,10 @@
     "findOutMore": "Find out more",
     "login": "Login",
     "logout": "Logout"
+  },
+  "footer": {
+    "imprint": "Imprint",
+    "dataPrivacy": "Data Privacy",
+    "about": "About Mnestix"
   }
 }
