@@ -44,6 +44,20 @@ const nextConfig: NextConfig = {
         // Modify the file loader rule to ignore *.svg, since we have it handled now.
         fileLoaderRule.exclude = /\.svg$/i;
 
+        /* Note: warning in webpack does not introduce bugs the ProductJourney.tsx
+        ./node_modules/web-worker/node.js
+        Critical dependency: the request of a dependency is an expression
+
+        Import trace for requested module:
+        ./node_modules/web-worker/node.js
+        ./node_modules/geotiff/dist-module/worker/decoder.js
+        ./node_modules/geotiff/dist-module/pool.js
+        ./node_modules/geotiff/dist-module/geotiff.js
+        ./node_modules/ol/source/GeoTIFF.js
+        ./node_modules/ol/source.js
+        ./src/app/[locale]/viewer/_components/submodel/carbon-footprint/visualization-components/ProductJourney.tsx
+        */
+
         return config;
     },
 };
