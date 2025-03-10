@@ -1,18 +1,18 @@
 import { Box, Link, Typography } from '@mui/material';
 import { DataRow } from 'components/basics/DataRow';
-import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { getTranslationTextNext } from 'lib/util/SubmodelResolverUtil';
 import { DialerSip, Info, Mail, Phone, Place, Print, Public } from '@mui/icons-material';
-import { messages } from 'lib/i18n/localization';
 import { getMailToHref, getSanitizedHref, getTelHref } from 'lib/util/HrefUtil';
 import { AddressGroupWithIcon } from './AddressGroupWithIcon';
 import {
+    ISubmodelElement,
     MultiLanguageProperty,
     Property,
-    ISubmodelElement,
     SubmodelElementCollection,
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { GenericSubmodelElementComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/GenericSubmodelElementComponent';
+import { useLocale, useTranslations } from 'next-intl';
+import enMessages from 'locale/en.json';
 
 type AddressComponentProps = {
     readonly submodelElement?: SubmodelElementCollection;
@@ -20,7 +20,17 @@ type AddressComponentProps = {
 };
 
 export function AddressComponent(props: AddressComponentProps) {
-    const intl = useIntl();
+    const componentTypes = useTranslations('components.addressComponent.addressTypes');
+    const t = useTranslations('components.addressComponent');
+    const locale = useLocale();
+
+    const getAddressType = (type: string) => {
+        type translation_params = Parameters<typeof componentTypes>[0];
+        if (type in enMessages.components.addressComponent.addressTypes) {
+            return componentTypes(type as translation_params);
+        }
+        return null;
+    };
 
     if (!props.submodelElement?.value) {
         return <></>;
@@ -71,7 +81,7 @@ export function AddressComponent(props: AddressComponentProps) {
                 <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
                     {el.idShort}
                 </Typography>
-                <Typography>{getTranslationText(data, intl)}</Typography>
+                <Typography>{getTranslationTextNext(data, locale)}</Typography>
             </Box>
         );
     });
@@ -84,21 +94,18 @@ export function AddressComponent(props: AddressComponentProps) {
         const typeOfNumber: Property | undefined | null =
             el && el.value && (Object.values(el.value).find((obj) => obj.idShort === 'TypeOfTelephone') as Property);
 
+        const addressType = typeOfNumber?.value ? getAddressType(typeOfNumber.value) : '';
+
         return (
             <Box key={index} sx={{ display: 'flex' }}>
-                {typeOfNumber && (
+                {addressType && (
                     <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
-                        {!!typeOfNumber.value &&
-                            !!messages.mnestix.nameplateAddressTypes[typeOfNumber.value.toString()] && (
-                                <FormattedMessage
-                                    {...messages.mnestix.nameplateAddressTypes[typeOfNumber.value?.toString()]}
-                                />
-                            )}
+                        {addressType}
                     </Typography>
                 )}
                 {actualNumber && (
-                    <Link href={getTelHref(getTranslationText(actualNumber, intl))} target="_blank" rel="noreferrer">
-                        <Typography>{getTranslationText(actualNumber, intl)}</Typography>
+                    <Link href={getTelHref(getTranslationTextNext(actualNumber, locale))} target="_blank" rel="noreferrer">
+                        <Typography>{getTranslationTextNext(actualNumber, locale)}</Typography>
                     </Link>
                 )}
             </Box>
@@ -114,19 +121,16 @@ export function AddressComponent(props: AddressComponentProps) {
         const typeOfNumber: Property | undefined | null =
             el && el.value && (Object.values(el.value).find((obj) => obj.idShort === 'TypeOfFaxNumber') as Property);
 
+        const addressType = typeOfNumber?.value ? getAddressType(typeOfNumber.value) : '';
+
         return (
             <Box key={index} sx={{ display: 'flex' }}>
-                {typeOfNumber && (
+                {addressType && (
                     <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
-                        {!!typeOfNumber.value &&
-                            !!messages.mnestix.nameplateAddressTypes[typeOfNumber.value.toString()] && (
-                                <FormattedMessage
-                                    {...messages.mnestix.nameplateAddressTypes[typeOfNumber.value?.toString()]}
-                                />
-                            )}
+                        {addressType}
                     </Typography>
                 )}
-                {actualNumber && <Typography>{getTranslationText(actualNumber, intl)}</Typography>}
+                {actualNumber && <Typography>{getTranslationTextNext(actualNumber, locale)}</Typography>}
             </Box>
         );
     });
@@ -138,16 +142,13 @@ export function AddressComponent(props: AddressComponentProps) {
         const typeOfEmail: Property | undefined | null =
             el && el.value && (Object.values(el.value).find((obj) => obj.idShort === 'TypeOfEmailAddress') as Property);
 
+        const addressType = typeOfEmail?.value ? getAddressType(typeOfEmail.value) : '';
+
         return (
             <Box key={index} sx={{ display: 'flex' }}>
-                {typeOfEmail && (
+                {addressType && (
                     <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
-                        {!!typeOfEmail.value &&
-                            !!messages.mnestix.nameplateAddressTypes[typeOfEmail.value.toString()] && (
-                                <FormattedMessage
-                                    {...messages.mnestix.nameplateAddressTypes[typeOfEmail.value?.toString()]}
-                                />
-                            )}
+                        {addressType}
                     </Typography>
                 )}
                 {actualAddress && (
@@ -210,9 +211,9 @@ export function AddressComponent(props: AddressComponentProps) {
                 <AddressGroupWithIcon icon={<Info color="primary" fontSize="small" />}>
                     <Box sx={{ display: 'flex' }}>
                         <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
-                            <FormattedMessage {...messages.mnestix.VAT} />
+                            {t('VAT')}
                         </Typography>
-                        <Typography>{getTranslationText(VATNumber, intl)}</Typography>
+                        <Typography>{getTranslationTextNext(VATNumber, locale)}</Typography>
                     </Box>
                 </AddressGroupWithIcon>
             )}

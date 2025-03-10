@@ -91,5 +91,24 @@
     "findOutMore": "Find out more",
     "login": "Login",
     "logout": "Logout"
+  },
+  "components": {
+    "addressComponent": {
+      "addressTypes": {
+        "office": "Office",
+        "office mobile": "Office mobile",
+        "secretary": "Secretary",
+        "substitute": "Substitute",
+        "home": "Home",
+        "home mobile": "Home mobile",
+        "0173-1#07-AAS754#001": "Office",
+        "0173-1#07-AAS755#001": "Office mobile",
+        "0173-1#07-AAS756#001": "Secretary",
+        "0173-1#07-AAS757#001": "Substitute",
+        "0173-1#07-AAS758#001": "Home",
+        "0173-1#07-AAS759#001": "Private mobile"
+      },
+      "VAT": "VAT-Number"
+    }
   }
 }
