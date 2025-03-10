@@ -18,6 +18,25 @@ env:
   IMAGE_TAG_VERSION: 1.4.1
 
 jobs:
+  type-checking:
+    name: Type checking
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Linting check
+        run: yarn lint
+
+      - name: Typescript check
+        run: tsc --noEmit
+        
   build-browser-image:
     name: Build browser image
     runs-on: ubuntu-latest
@@ -61,25 +80,6 @@ jobs:
         with:
           path: mnestix-browser.tar
           key: docker-image-${{github.ref}}-${{ github.run_id }}
-          
-  type-checking:
-    name: Type checking
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install dependencies
-        run: yarn install
-        
-      - name: Linting check
-        run: yarn lint
-        
-      - name: Typescript check
-        run: tsc --noEmit
 
   e2e-tests:
     name: e2e test matrix
