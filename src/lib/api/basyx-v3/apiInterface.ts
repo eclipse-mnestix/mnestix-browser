@@ -95,6 +95,15 @@ export interface ISubmodelRepositoryApi {
     getSubmodelById(submodelId: string, options?: object): Promise<ApiResponseWrapper<Submodel>>;
 
     /**
+     * @summary Retrieves the value-only serialized submodel
+     * @param {string} submodelId The Submodels unique id
+     * @param {*} [options] Override http request option
+     * @returns Wrapped unknown. unknown because value only can be primitive or complex type.
+     * @throws {RequiredError}
+     */
+    getSubmodelByIdValueOnly(submodelId: string, options?: object): Promise<ApiResponseWrapper<unknown>>;
+
+    /**
      * @summary Retrieves the submodel metadata (submodel in metadata representation)
      * @param {string} submodelId The Submodels unique id
      * @param {*} [options] Override http request option
