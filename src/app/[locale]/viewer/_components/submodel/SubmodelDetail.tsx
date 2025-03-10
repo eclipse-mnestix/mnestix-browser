@@ -15,10 +15,11 @@ export function SubmodelDetail(props: SubmodelDetailProps) {
     const semanticId = props.submodel.semanticId?.keys?.[0]?.value;
 
     // We have to use the idEquals function here to correctly handle IRDIs
-    const key =
-        (Object.keys(submodelCustomVisualizationMap) as Array<string>).find((key) => idEquals(semanticId, key)) ?? '';
+    const key = Object.keys(submodelCustomVisualizationMap).find((key) => idEquals(semanticId, key)) as
+        | keyof typeof submodelCustomVisualizationMap
+        | undefined;
 
-    const CustomSubmodelComponent = submodelCustomVisualizationMap[key];
+    const CustomSubmodelComponent = key ? submodelCustomVisualizationMap[key] : undefined;
 
     return (
         <Box width="100%">

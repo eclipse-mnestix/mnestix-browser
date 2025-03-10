@@ -11,7 +11,7 @@ declare global {
     }
 
     // Use type safe message keys with `next-intl`; intl uses this, do not delete
-    interface IntlMessages extends Messages {}
+    type IntlMessages = Messages;
 }
 
 export {};

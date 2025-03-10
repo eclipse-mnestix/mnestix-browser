@@ -1,6 +1,5 @@
 // Import commands.js
 import './commands';
-import 'cypress-msal-login';
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace

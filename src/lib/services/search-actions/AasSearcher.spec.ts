@@ -208,6 +208,8 @@ async function assertThatFunctionThrows(
         await searcher.performFullSearch(searchString);
         fail('Your method was expected to throw but did not throw at all.');
     } catch (e) {
-        partOfExpectedErrorMessage && expect(e).toContain(partOfExpectedErrorMessage);
+        if (partOfExpectedErrorMessage) {
+            expect(e).toContain(partOfExpectedErrorMessage);
+        }
     }
 }

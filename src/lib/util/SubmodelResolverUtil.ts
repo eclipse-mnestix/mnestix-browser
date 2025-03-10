@@ -12,7 +12,7 @@ import { IntlShape } from 'react-intl';
 import { idEquals } from './IdValidationUtil';
 import { getKeyType } from 'lib/util/KeyTypeUtil';
 
-export function getTranslationTextNext(element: MultiLanguageProperty, locale: string) {
+export function getTranslationTextNext(element: MultiLanguageProperty, locale: string): string | null {
     const value = element.value?.find((el) => el.language == locale)?.text;
     return value || element.value?.at(0)?.text || null;
 }
@@ -36,13 +36,18 @@ export function findSubmodelElementByIdShort(
     return null;
 }
 
-export function findValueByIdShort(elements: ISubmodelElement[] | null, idShort: string | null, locale: string) {
+export function findValueByIdShort(
+    elements: ISubmodelElement[] | null,
+    idShort: string | null,
+    locale: string,
+): string | null {
     const element = findSubmodelElementByIdShort(elements, idShort);
-    switch (!element || getKeyType(element)) {
+    if (!element) return null;
+    switch (getKeyType(element)) {
         case KeyTypes.MultiLanguageProperty:
             return getTranslationTextNext(element as MultiLanguageProperty, locale);
         case KeyTypes.Property:
-            return (element as Property).value;
+            return (element as Property).value ?? null;
         default:
             return null;
     }
@@ -55,19 +60,21 @@ export function getTranslationText(
     const userLang = intl.locale || intl.defaultLocale;
     let langStrings: IAbstractLangString[] | undefined;
 
-    const mLangProp = input as MultiLanguageProperty;
     if (Array.isArray(input)) {
         langStrings = input as IAbstractLangString[];
     } else {
-        langStrings = (mLangProp.value as IAbstractLangString[]) ?? [];
+        langStrings = (input as MultiLanguageProperty | undefined)?.value ?? [];
     }
     // reduce array to object (e.g. {en: 'some string'} )
-    const reducedStrings = langStrings?.reduce((el, obj) => {
-        if (obj.language && obj.text) {
-            el[obj.language] = obj.text;
-        }
-        return el;
-    }, {});
+    const reducedStrings = langStrings?.reduce(
+        (el, obj) => {
+            if (obj.language && obj.text) {
+                el[obj.language] = obj.text;
+            }
+            return el;
+        },
+        {} as Record<string, string>,
+    );
 
     return (
         reducedStrings[userLang] ||
@@ -82,7 +89,7 @@ export function getArrayFromString(v: string): Array<string> {
     return stripped.split('|');
 }
 
-export function hasSemanticId(el: Submodel | ISubmodelElement, ...semanticIds: string[]) {
+export function hasSemanticId(el: Submodel | ISubmodelElement, ...semanticIds: string[]): boolean {
     for (const id of semanticIds) {
         if (el.semanticId?.keys?.some((key) => idEquals(key.value.trim(), id.trim()))) return true;
     }

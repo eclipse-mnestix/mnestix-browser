@@ -29,7 +29,11 @@ export function Comparison(props: { co2Equivalents: number }) {
                         sx={{ fontSize: [28, 36], color: 'primary.main', fontWeight: 'bold' }}
                         data-testid="co2-comparison-value"
                     >
-                        {timePeriod} {intl.formatMessage(messages.mnestix.productCarbonFootprint[unitOfTimePeriod])}
+                        {timePeriod}{' '}
+                        {intl.formatMessage(
+                            //@ts-expect-error fix with next-intl
+                            messages.mnestix.productCarbonFootprint[unitOfTimePeriod],
+                        )}
                     </Typography>
                 </Box>
             </Box>

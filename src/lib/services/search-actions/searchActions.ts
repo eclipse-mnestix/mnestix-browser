@@ -56,7 +56,7 @@ export async function checkFileExists(url: string): Promise<ApiResponseWrapper<b
     try {
         const response = await fetch(url, { method: 'HEAD' });
         return wrapSuccess(response.ok);
-    } catch (error) {
+    } catch {
         return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Exception during network fetch');
     }
 }

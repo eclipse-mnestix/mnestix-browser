@@ -43,7 +43,10 @@ export function ProductLifecycle(props: { completedStages: ProductLifecycleStage
                 <Step key="20" active={false} data-testid="product-lifecycle-next-step">
                     <StepLabel StepIconComponent={CustomCircle} data-testid="product-lifecycle-step-label">
                         <Typography fontSize={24} color={colorOfNextStep}>
-                            {intl.formatMessage(messages.mnestix.productCarbonFootprint.lifecycleStages[nextStage])}{' '}
+                            {intl.formatMessage(
+                                //@ts-expect-error fix with next-intl
+                                messages.mnestix.productCarbonFootprint.lifecycleStages[nextStage],
+                            )}{' '}
                             (not yet included)
                         </Typography>
                     </StepLabel>

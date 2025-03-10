@@ -14,7 +14,7 @@ export interface CustomTreeItemContentProps extends TreeItemContentProps {
 
 export interface ExpandableTreeItemContentProps extends TreeItemContentProps {
     icon: React.ReactNode;
-    dataIcon: JSX.Element;
+    dataIcon: React.JSX.Element;
 }
 
 export const getTreeItemStyle = (theme: Theme) => ({

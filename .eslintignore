@@ -1,6 +1,0 @@
-node_modules
-build
-obj/
-*/generated-api/
-src/api/*
-src/middleware.ts

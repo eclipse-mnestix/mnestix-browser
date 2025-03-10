@@ -12,7 +12,7 @@ export function QrStream(props: {
 }) {
     const videoEl = useRef<HTMLVideoElement>(null);
     const overlay = useRef<HTMLDivElement>(null);
-    const scanner = useRef<Scanner>();
+    const scanner = useRef<Scanner>(null);
 
     const onScanSuccess = useCallback(
         async (result: Scanner.ScanResult) => {

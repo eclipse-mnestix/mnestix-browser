@@ -17,6 +17,5 @@ export const useAsyncEffect = (
                 cleanUpFunction();
             }
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, dependencies); // dynamic hook dependencies cannot be statically verified
 };
