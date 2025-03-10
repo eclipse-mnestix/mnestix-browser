@@ -1,5 +1,6 @@
 import {
     Box,
+    Chip,
     Divider,
     IconButton,
     Table,
@@ -15,6 +16,7 @@ import { useTranslations } from 'next-intl';
 import { RoleDialog } from 'app/[locale]/settings/_components/role-settings/RoleDialog';
 import { useState } from 'react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { RoundedIconButton } from 'components/basics/Buttons';
 
 export type RbacDto = {
     name: string;
@@ -98,7 +100,7 @@ export const RoleSettings = () => {
         const permissions = [];
         for (const elem in entry.targetInformation) {
             if (elem !== 'type') {
-                const content = entry.targetInformation[elem].toString();
+                const content = entry.targetInformation[elem].join(', ');
                 permissions.push(
                     <Box component="span" key={elem}>
                         <Box component="span" fontWeight="bold">
@@ -151,13 +153,21 @@ export const RoleSettings = () => {
                                     <TableCell>
                                         <Typography fontWeight="bold">{entry.name}</Typography>
                                     </TableCell>
-                                    <TableCell>{entry.action.map((action) => rbacAction[action]).join(', ')}</TableCell>
+                                    <TableCell>
+                                        {entry.action.map((action) => (
+                                            <Chip
+                                                sx={{ fontWeight: 'normal', m: 0.5 }}
+                                                key={action}
+                                                label={rbacAction[action]}
+                                            />
+                                        ))}
+                                    </TableCell>
                                     <TableCell>{entry.targetInformation.type}</TableCell>
                                     <TableCell>{permissionCell(entry)}</TableCell>
                                     <TableCell>
-                                        <IconButton onClick={() => openDetailDialog(entry)} color="primary">
+                                        <RoundedIconButton onClick={() => openDetailDialog(entry)} color="primary">
                                             <ArrowForwardIcon />
-                                        </IconButton>
+                                        </RoundedIconButton>
                                     </TableCell>
                                 </TableRow>
                             ))}

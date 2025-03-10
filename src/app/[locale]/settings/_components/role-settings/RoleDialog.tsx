@@ -20,7 +20,7 @@ export const RoleDialog = (props: RoleDialogProps) => {
                         <Typography color="text.secondary" variant="body2">
                             {elem}
                         </Typography>
-                        <Typography>{entry.targetInformation[elem]}</Typography>
+                        <Typography>{entry.targetInformation[elem].join(', ')}</Typography>
                     </Box>,
                 );
         }
