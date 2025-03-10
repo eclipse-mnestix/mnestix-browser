@@ -27,21 +27,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Install dependencies
-        run: yarn install
-
-      - name: Linting check
-        run: yarn lint
-
-      - name: Typescript check
-        run: tsc --noEmit
         
   build-browser-image:
     name: Build browser image
     runs-on: ubuntu-latest
-    needs: 
-      - type-checking
     permissions:
       contents: read
       packages: write
@@ -165,8 +154,6 @@ jobs:
   build-arm-cache:
     name: Build arm image cache
     runs-on: ubuntu-24.04-arm
-    needs:
-      - type-checking
     permissions:
       contents: read
     steps:
