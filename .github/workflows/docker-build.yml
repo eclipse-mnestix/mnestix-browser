@@ -27,6 +27,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Linting check
+        run: yarn lint
+
+      - name: Typescript check
+        run: tsc --noEmit
         
   build-browser-image:
     name: Build browser image
