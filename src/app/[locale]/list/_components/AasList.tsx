@@ -50,14 +50,7 @@ export default function AasList(props: AasListProps) {
             <TableContainer>
                 <Table>
                     <TableHead>
-                        <TableRow
-                            sx={{
-                                color: 'primary',
-                                lineHeight: '150%',
-                                letterSpacing: '0.16px',
-                                fontSize: '16px',
-                            }}
-                        >
+                        <TableRow>
                             {comparisonFeatureFlag && (
                                 <TableCell align="center" width="50px">
                                     <Tooltip title={t('compareTooltip')} arrow>
@@ -90,14 +83,7 @@ export default function AasList(props: AasListProps) {
                     <TableBody>
                         {shells &&
                             shells.entities?.map((aasListEntry) => (
-                                <TableRow
-                                    key={aasListEntry.aasId}
-                                    sx={{
-                                        backgroundColor: theme.palette?.common?.white,
-                                        '&:hover': { backgroundColor: theme.palette.action.hover },
-                                    }}
-                                    data-testid={`list-row-${aasListEntry.aasId}`}
-                                >
+                                <TableRow key={aasListEntry.aasId} data-testid={`list-row-${aasListEntry.aasId}`}>
                                     <AasListTableRow
                                         repositoryUrl={repositoryUrl}
                                         aasListEntry={aasListEntry}
