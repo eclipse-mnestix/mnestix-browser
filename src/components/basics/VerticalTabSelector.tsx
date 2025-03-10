@@ -2,7 +2,6 @@ import { alpha, Box, Button, styled, SvgIconProps, Tooltip, Typography } from '@
 import { ArrowForward } from '@mui/icons-material';
 import { ReactElement, useState } from 'react';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
-import { tooltipText } from 'lib/util/ToolTipText';
 import { useTranslations } from 'next-intl';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 
@@ -67,44 +66,54 @@ export function SubmodelInfoTooltip({
     item: TabSelectorItem;
     setInfoItem: (item: TabSelectorItem) => void;
 }) {
-    const t = useTranslations('submodels.errors');
-
     return (
-        <>
-            {item.submodelError ? (
-                <Tooltip title={t(item.submodelError)}>
-                    <Box display="flex" sx={{ cursor: 'pointer' }}>
-                        {item.startIcon}
-                    </Box>
-                </Tooltip>
-            ) : (
-                <Tooltip title={item.id.toString()}>
-                    <Box
-                        display="flex"
-                        sx={{ cursor: 'pointer' }}
-                        onClick={(event) => {
-                            setInfoItem(item);
-                            event.stopPropagation(); // don't open the tab
-                        }}
-                    >
-                        {item.startIcon}
-                    </Box>
-                </Tooltip>
-            )}
-        </>
+        <Tooltip title={item.id.toString()}>
+            <Box
+                display="flex"
+                sx={{ cursor: 'pointer' }}
+                onClick={(event) => {
+                    setInfoItem(item);
+                    event.stopPropagation(); // don't open the tab
+                }}
+            >
+                {item.startIcon}
+            </Box>
+        </Tooltip>
     );
 }
 
 export function VerticalTabSelector(props: VerticalTabSelectorProps) {
     const [hoveredItem, setHoveredItem] = useState<TabSelectorItem>();
     const isMobile = useIsMobile();
+    const t = useTranslations('submodels.errors');
 
     const selectedCSSClass = (id: string) => (id === props.selected?.id ? 'selected' : '');
+
+    const TooltipContent = ({ item }: { item: TabSelectorItem }) => {
+        if (item.submodelError) {
+            return (
+                <Tooltip title={t(item.submodelError)}>
+                    <Box display="flex" sx={{ cursor: 'pointer' }}>
+                        {item.startIcon}
+                    </Box>
+                </Tooltip>
+            );
+        }
+
+        const showInfoTooltip = !isMobile && (item.id === props.selected?.id || item.id === hoveredItem?.id);
+
+        if (showInfoTooltip) {
+            return <SubmodelInfoTooltip item={item} setInfoItem={props.setInfoItem} />;
+        }
+
+        return <></>;
+    };
 
     return (
         <Box
             sx={{ 'Button:nth-of-type(1)': { borderColor: 'transparent' } }}
             onMouseLeave={() => setHoveredItem(undefined)}
+            id="yolo1"
         >
             {props.items.map((item, index) => {
                 return (
@@ -118,21 +127,22 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
                             <Box
                                 display="flex"
                                 alignItems="left"
-                                style={{ whiteSpace: 'nowrap', paddingRight: '20px' }}
+                                style={{ whiteSpace: 'nowrap', paddingRight: '20px', maxWidth: '100%' }}
                             >
-                                <Typography>{tooltipText(item.label, 40) || ''}</Typography>
+                                <Typography
+                                    sx={{
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        whiteSpace: 'nowrap',
+                                        maxWidth: '50vw',
+                                    }}
+                                >
+                                    {item.label || ''}
+                                </Typography>
                             </Box>
 
                             <Box display="flex" alignItems="center" gap={2}>
-                                <Box
-                                    visibility={
-                                        !isMobile && (item.id === props.selected?.id || item.id === hoveredItem?.id)
-                                            ? 'visible'
-                                            : 'hidden'
-                                    }
-                                >
-                                    <SubmodelInfoTooltip item={item} setInfoItem={props.setInfoItem} />
-                                </Box>
+                                <TooltipContent item={item} />
                                 <ArrowForward color={item.submodelError ? 'disabled' : 'primary'} />
                             </Box>
                         </Tab>

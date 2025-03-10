@@ -102,7 +102,7 @@ export function SubmodelsOverviewCard({ submodelIds, submodelsLoading }: Submode
                     <Typography variant="h3" marginBottom="15px">
                         {t('title')}
                     </Typography>
-                    <Box display="grid" gridTemplateColumns={isMobile ? '1fr' : '1fr 2fr'} gap="40px">
+                    <Box display="grid" gridTemplateColumns={isMobile ? '1fr' : '1fr 2fr'} gap="2rem">
                         <Box>
                             <VerticalTabSelector
                                 items={submodelSelectorItems}
