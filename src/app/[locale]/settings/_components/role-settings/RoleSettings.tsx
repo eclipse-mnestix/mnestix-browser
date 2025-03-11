@@ -92,7 +92,6 @@ export const RoleSettings = () => {
             },
         },
     ];
-    // action pills
     // Test all List implementation and align styling
     // mobile: hide permissions
 
