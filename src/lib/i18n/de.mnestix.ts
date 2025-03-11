@@ -159,8 +159,6 @@ export const deMnestix = {
     language: 'Sprache',
     redirectsTo: 'Leitet weiter auf',
     endResult: 'Endergebnis',
-    imprint: 'Imprint',
-    dataPrivacy: 'Data Privacy',
     assetIdDocumentation: {
         title: 'Wie Sie Ihre Asset ID mit Ihrem Repository verbinden',
         industry40Heading: 'Industrie 4.0 Kontext',
