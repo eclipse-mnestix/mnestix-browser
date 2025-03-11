@@ -21,21 +21,21 @@ export function Footer() {
     return (
         <>
             <Box
-                sx={{ bottom: 0, left: 0, right: 0, backgroundColor: 'transparent' }}
+                sx={{ my: 2, backgroundColor: 'transparent' }}
                 flexGrow={1}
                 display={'flex'}
                 justifyContent={'center'}
                 alignItems={'center'}
                 flexDirection={'row'}
             >
-                <Grid container>
+                <Grid container spacing={2}>
                     <Grid
                         size={{ xs: 12, md: 'auto' }}
                         display={'flex'}
                         justifyContent={'center'}
                         alignItems={'center'}
                     >
-                        <Typography color="text.secondary" fontSize="small" mr={2}>
+                        <Typography color="text.secondary" fontSize="small">
                             {copyrightString}
                         </Typography>
                     </Grid>
@@ -48,36 +48,36 @@ export function Footer() {
                         alignItems={'center'}
                     >
                         {dataPrivacyString && (
-                            <Typography fontSize="small" maxWidth="150px">
+                            <Typography fontSize="small" maxWidth="10rem">
                                 <Link href={dataPrivacyString} target="_blank">
                                     {t('dataPrivacy')}
                                 </Link>
                             </Typography>
                         )}
 
-                        {dataPrivacyString && imprintString && (
-                            <Typography margin={2} color="text.secondary" fontSize="small">
+                        {dataPrivacyString && (
+                            <Typography mx={2} color="text.secondary" fontSize="small">
                                 |
                             </Typography>
                         )}
 
                         {imprintString && (
-                            <Typography fontSize="small" maxWidth="150px">
+                            <Typography fontSize="small" maxWidth="10rem">
                                 <Link href={imprintString} target="_blank">
                                     {t('imprint')}
                                 </Link>
                             </Typography>
                         )}
-
+                        
                         {imprintString && (
-                            <Typography margin={2} color="text.secondary" fontSize="small">
+                            <Typography mx={2} color="text.secondary" fontSize="small">
                                 |
                             </Typography>
                         )}
 
                         <Typography
                             fontSize="small"
-                            maxWidth="250px"
+                            maxWidth="10rem"
                             onClick={() => setAboutDialogOpen(!aboutDialogOpen)}
                         >
                             <Link href="#">{t('about')}</Link>
