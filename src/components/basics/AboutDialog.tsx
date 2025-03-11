@@ -31,11 +31,12 @@ export function AboutDialog(props: AboutDialogProps) {
             <DialogContent style={{ padding: '40px' }}>
                 <Box display="flex" flexDirection="column" gap="20px">
                     <Box display="flex" flexDirection="row" justifyContent="space-between">
-                        <Typography variant="h2" color={'primary'}>
-                            {t('about')}
-                            <Typography>MIT License</Typography>
-                            <Typography>Copyright (c) 2024 XITASO GmbH</Typography>
-                        </Typography>
+                        <Box>
+                            <Typography variant="h2" color={'primary'}>
+                                {t('about')}
+                            </Typography>
+                            <Typography color={'primary'}>MIT License</Typography>
+                            <Typography color={'primary'}>Copyright (c) 2024 XITASO GmbH</Typography>
                         </Box>
                         {!isMobile && (
                             <Box

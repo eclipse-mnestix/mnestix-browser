@@ -24,31 +24,35 @@ export function Footer() {
                     color="text.secondary"
                     fontSize="small"
                     mr={2}
-                    display='flex'
-                    alignItems='center'
-                    justifyContent='center'>
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                >
                     {copyrightString}
                 </Typography>
 
                 {dataPrivacyString && (
                     <Typography
-                        fontSize="small" display='flex' maxWidth='150px'
+                        fontSize="small"
+                        display="flex"
+                        maxWidth="150px"
                         alignItems={'center'}
                         justifyContent={'center'}
                     >
                         <Link href={dataPrivacyString} target="_blank">
-                            <Typography>{t('dataPrivacy')}</Typography>
+                            {t('dataPrivacy')}
                         </Link>
                     </Typography>
                 )}
 
                 {dataPrivacyString && imprintString && (
-                    <Typography margin={2}
+                    <Typography
+                        margin={2}
                         color="text.secondary"
                         fontSize="small"
-                        display='flex'
-                        alignItems='center'
-                        justifyContent='center'
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
                     >
                         |
                     </Typography>
@@ -56,34 +60,40 @@ export function Footer() {
 
                 {imprintString && (
                     <Typography
-                        fontSize="small" maxWidth='150px' display='flex' alignItems='center' justifyContent='center'>
+                        fontSize="small"
+                        maxWidth="150px"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                    >
                         <Link href={imprintString} target="_blank">
-                            <Typography>{t('imprint')}</Typography>
+                            {t('imprint')}
                         </Link>
                     </Typography>
                 )}
 
-                { imprintString && (
-                    <Typography margin={2}
-                                color="text.secondary"
-                                fontSize="small"
-                                display='flex'
-                                alignItems='center'
-                                justifyContent='center'>
+                {imprintString && (
+                    <Typography
+                        margin={2}
+                        color="text.secondary"
+                        fontSize="small"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                    >
                         |
                     </Typography>
                 )}
 
                 <Typography
                     fontSize="small"
-                    display='flex'
-                    alignItems='center'
-                    justifyContent='center'
-                    maxWidth='250px'
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    maxWidth="250px"
+                    onClick={() => setAboutDialogOpen(!aboutDialogOpen)}
                 >
-                    <Link href='#'>
-                        <Typography onClick={() => setAboutDialogOpen(!aboutDialogOpen)}>{t('about')}</Typography>
-                    </Link>
+                    <Link href="#">{t('about')}</Link>
                 </Typography>
             </BottomNavigation>
             <AboutDialog open={aboutDialogOpen} onClose={handleAboutDialogClose}></AboutDialog>
