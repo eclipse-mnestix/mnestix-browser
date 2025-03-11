@@ -6,13 +6,13 @@ import { messages } from 'lib/i18n/localization';
 
 describe('ExternalLink', () => {
     it('should render the component', async () => {
-        CustomRenderReactIntl(<ExternalLink href="https://xitaso.com/" descriptor={messages.mnestix.imprint} />);
+        CustomRenderReactIntl(<ExternalLink href="https://xitaso.com/" descriptor={messages.mnestix.welcome} />);
         const component = screen.getByTestId('external-link');
         expect(component).toBeInTheDocument();
     });
 
     it('should open link in new tab natively', async () => {
-        CustomRenderReactIntl(<ExternalLink href="https://xitaso.com/" descriptor={messages.mnestix.imprint} />);
+        CustomRenderReactIntl(<ExternalLink href="https://xitaso.com/" descriptor={messages.mnestix.welcome} />);
         const component = screen.getByTestId('external-link');
         expect(component).toHaveAttribute('href', 'https://xitaso.com/');
         expect(component).toHaveAttribute('target', '_blank');
@@ -20,8 +20,8 @@ describe('ExternalLink', () => {
     });
 
     it('should show the translated text', async () => {
-        CustomRenderReactIntl(<ExternalLink href="https://xitaso.com/" descriptor={messages.mnestix.imprint} />);
+        CustomRenderReactIntl(<ExternalLink href="https://xitaso.com/" descriptor={messages.mnestix.welcome} />);
         const component = screen.getByTestId('external-link');
-        expect(component).toHaveTextContent('Imprint');
+        expect(component).toHaveTextContent('Welcome to Mnestix');
     });
 });
