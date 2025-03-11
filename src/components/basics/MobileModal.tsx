@@ -44,7 +44,7 @@ export function MobileModal(props: MobileModalProps) {
                 <Box sx={modalStyle} width="100%">
                     <Box sx={headerStyle}>
                         <Box display="flex" alignItems="center">
-                            <Typography variant="h3" sx={{ pr: '0.5rem' }}>
+                            <Typography variant="h3" sx={{ pr: '0.5rem' }} color={'primary'}>
                                 {props.selectedItem?.label || ''}
                             </Typography>
                             {!!props.selectedItem && (

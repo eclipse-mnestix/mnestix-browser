@@ -46,7 +46,7 @@ export function SubmodelsOverviewCard({ submodelIds, submodelsLoading }: Submode
                 id: submodelId.id,
                 label: submodelId.submodel.idShort ?? '',
                 submodelData: submodelId.submodel,
-                startIcon: <InfoIcon />,
+                startIcon: <InfoIcon color={'primary'} />,
             };
         } else {
             const error = submodelId.error?.toString() as ErrorMessage;
