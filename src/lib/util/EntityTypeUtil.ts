@@ -10,7 +10,7 @@ export function GetEntityType(el: Class): EntityType {
             default:
                 return EntityType.CoManagedEntity;
         }
-    } catch (error: unknown) {
+    } catch {
         return NaN;
     }
 }

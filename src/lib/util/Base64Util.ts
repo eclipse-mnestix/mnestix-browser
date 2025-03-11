@@ -25,10 +25,10 @@ export function safeBase64Decode(str: string): string {
 
     try {
         return Buffer.from(str, 'base64').toString();
-    } catch (error) {
+    } catch {
         throw new Error('Failed to decode base64 input');
     }
-}   
+}
 
 export async function blobToBase64(blob: Blob): Promise<string> {
     const arrayBuffer = await blob.arrayBuffer();
@@ -57,4 +57,3 @@ export function base64ToBlob(base64: string, blobType: string): Blob {
 function Base64EncodeUrl(str: string) {
     return str.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
-
