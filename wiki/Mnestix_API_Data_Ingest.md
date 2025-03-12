@@ -3,7 +3,7 @@ In the following you will learn how you can use the AAS Generator together with 
 ![General process](https://github.com/user-attachments/assets/7f087e28-3bac-496a-af60-31d4d9f9f158)
 ### Prerequisites
 
-To use this you need a fully configured Mnestix Browser and Mnestix API instance, like when starting our [`compose.yml` file](https://github.com/hofermo/mnestix-browser/blob/main/compose.yml).
+To use this you need a fully configured Mnestix Browser and Mnestix API instance, like when starting our [`compose.yml` file](https://github.com/eclipse-mnestix/mnestix-browser/blob/main/compose.yml).
 For beginners we recommend to use Mnestix API without additional Authentication as it complicates using the AAS Generator.
 
 - Mnestix API
@@ -12,7 +12,7 @@ For beginners we recommend to use Mnestix API without additional Authentication 
 
 ### 1. Setup
 
-Setup a full Mnestix Infrastructure deployment by running `docker compose -f `[`compose.yml`](https://github.com/hofermo/mnestix-browser/blob/main/compose.yml)` up`. 
+Setup a full Mnestix Infrastructure deployment by running `docker compose -f `[`compose.yml`](https://github.com/eclipse-mnestix/mnestix-browser/blob/main/compose.yml)` up`. 
 This will start everything.
 
 ### 2. Creating a Data JSON using ETL tools
