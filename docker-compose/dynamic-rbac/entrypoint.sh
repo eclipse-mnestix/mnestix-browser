@@ -21,5 +21,6 @@ export ACCESS_TOKEN
 echo "Sending POST request to the service..."
 curl -v POST http://security-submodel:8081/submodels \
     -H "Content-Type: application/json" \
-    -d "$(cat initial-submodel.json)" \
-    -H "Authorization: Bearer $ACCESS_TOKEN"
+    -H "Authorization: Bearer $ACCESS_TOKEN" \
+    -d "$(cat initial-submodel.json)"
+    

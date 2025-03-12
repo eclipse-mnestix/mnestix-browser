@@ -1,32 +1,42 @@
 import { ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
-import { SecuritySmRepoClient } from './SecuritySmRepoClient';
-
 import { z, ZodError } from 'zod';
+import { SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
+import { mnestixFetch } from 'lib/api/infrastructure';
+import {
+    ApiResponseWrapper,
+    ApiResultStatus,
+    wrapErrorCode,
+    wrapSuccess,
+} from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 
 const SEC_SUB_ID = 'SecuritySubmodel';
+
+export type RbacRolesFetchResult = {
+    roles: BaSyxRbacRule[];
+    warrnings: string[][];
+};
 
 /**
  * Service for interacting with BaSyx Dynamic RBAC rules
  */
 export class RbacRulesService {
-    private constructor(private readonly submodelRepositoryClient: ISubmodelRepositoryApi) {}
+    private constructor(private readonly getSubmodelRepositoryClient: (basePath: string) => ISubmodelRepositoryApi) {}
 
     static create(): RbacRulesService {
-        return new RbacRulesService(SecuritySmRepoClient(process.env.SEC_SM_API_URL!));
+        return new RbacRulesService((baseUrl) => SubmodelRepositoryApi.create(baseUrl, mnestixFetch()));
     }
 
     /**
      * Get all rbac rules
      */
-    async getRules(): Promise<
-        { isSuccess: false; error: string } | { isSuccess: true; result: BaSyxRbacRule[]; warnings: string[][] }
-    > {
-        const { isSuccess, result: secSM } = await this.submodelRepositoryClient.getSubmodelByIdValueOnly(SEC_SUB_ID);
+    async getRules(basePath: string): Promise<ApiResponseWrapper<RbacRolesFetchResult>> {
+        const submodelRepositoryClient = this.getSubmodelRepositoryClient(basePath);
+        const { isSuccess, result: secSM } = await submodelRepositoryClient.getSubmodelByIdValueOnly(SEC_SUB_ID);
         if (!isSuccess) {
-            return { isSuccess: false, error: 'Failed to get RBAC' };
+            return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Failed to get RBAC');
         }
         if (!secSM || typeof secSM !== 'object') {
-            return { isSuccess: false, error: 'Submodel in wrong Format' };
+            return wrapErrorCode(ApiResultStatus.BAD_REQUEST, 'Submodel in wrong Format');
         }
 
         const parsedRoles = Object.entries(secSM).map(([_key, roleElement]) => {
@@ -42,7 +52,7 @@ export class RbacRulesService {
         const roles = parsedRoles.filter((r): r is BaSyxRbacRule => !('error' in r));
         const warnings = parsedRoles.filter((r): r is { error: string[] } => 'error' in r).map((e) => e.error);
 
-        return { isSuccess: true, result: roles, warnings: warnings };
+        return wrapSuccess({ roles: roles, warrnings: warnings });
     }
 }
 
