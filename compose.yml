@@ -32,7 +32,7 @@ services:
       NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-verySecureNextAuthSecret}
       IMPRINT_URL: ''
       DATA_PRIVACY_URL: ''
-      USE_BASYX_RBAC: 'false'
+      USE_BASYX_RBAC: 'true'
     depends_on:
       aas-environment:
         condition: service_healthy # only after the healthcheck in aas is successful, the mnestix container is being created
