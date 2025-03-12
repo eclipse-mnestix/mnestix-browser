@@ -2,7 +2,6 @@ import {
     Box,
     Chip,
     Divider,
-    IconButton,
     Table,
     TableBody,
     TableCell,

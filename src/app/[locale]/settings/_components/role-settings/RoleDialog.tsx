@@ -14,13 +14,13 @@ export const RoleDialog = (props: RoleDialogProps) => {
     const permissions = (entry: RbacDto) => {
         const permissions = [];
         for (const elem in entry.targetInformation) {
-            if (elem !== 'type')
+            if (elem !== 'type' && Array.isArray(elem))
                 permissions.push(
                     <Box>
                         <Typography color="text.secondary" variant="body2">
                             {elem}
                         </Typography>
-                        <Typography>{entry.targetInformation[elem].join(', ')}</Typography>
+                        <Typography>{elem[elem].join(', ')}</Typography>
                     </Box>,
                 );
         }

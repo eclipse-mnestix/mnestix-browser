@@ -1,14 +1,4 @@
-﻿import {
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Tooltip,
-    Typography,
-    useTheme,
-} from '@mui/material';
+﻿import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import { AasListTableRow } from 'app/[locale]/list/_components/AasListTableRow';
 import { AasListDto } from 'lib/services/list-service/ListService';
@@ -24,7 +14,6 @@ type AasListProps = {
 
 export default function AasList(props: AasListProps) {
     const { repositoryUrl, shells, selectedAasList, updateSelectedAasList, comparisonFeatureFlag } = props;
-    const theme = useTheme();
     const t = useTranslations('aas-list');
     const MAX_SELECTED_ITEMS = 3;
 
