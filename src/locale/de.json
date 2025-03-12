@@ -103,5 +103,10 @@
     "findOutMore": "Mehr Informationen",
     "login": "Anmelden",
     "logout": "Abmelden"
+  },
+  "footer": {
+    "imprint": "Impressum",
+    "dataPrivacy": "Datenschutz",
+    "about": "Über Mnestix"
   }
 }

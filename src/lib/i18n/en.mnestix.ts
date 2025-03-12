@@ -156,8 +156,6 @@ export const enMnestix = {
     language: 'Language',
     redirectsTo: 'Redirects to',
     endResult: 'End result',
-    imprint: 'Imprint',
-    dataPrivacy: 'Data Privacy',
     assetIdDocumentation: {
         title: 'How to connect your Asset ID with your AAS Repository',
         industry40Heading: 'Industry 4.0 context',

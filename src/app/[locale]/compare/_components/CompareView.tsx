@@ -69,7 +69,7 @@ export function CompareView() {
 
         try {
             await addAas(result.aas, result.aasData);
-        } catch (e) {
+        } catch {
             throw new LocalizedError('compare.errors.aasAddError');
         }
 
