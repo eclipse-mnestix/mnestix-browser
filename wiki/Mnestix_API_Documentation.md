@@ -174,9 +174,9 @@ When using Basyx with authorization and Keycloak as an OpenID Connect (OIDC) pro
 > **⚠️ Important Note for `TokenEndpoint` Configuration**
 > For production, this setting should be left empty. In a production environment, relying on environment-specific configurations can introduce security risks and maintenance challenges. The system should be configured to use the default discovery mechanisms provided by OIDC to dynamically determine the token endpoint, ensuring a more robust and secure setup.
 
-<details>
-<summary>compose.yml</summary>
-```
+#### compose.yml
+(Last update: 06.02.2025)
+```yaml
 services:
   mnestix-api:
     image: mnestix/mnestix-api:1.3.0
@@ -321,4 +321,3 @@ services:
         max-file: "5"
         max-size: "100m"
 ```
-</details>

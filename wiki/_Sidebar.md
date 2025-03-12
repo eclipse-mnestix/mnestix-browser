@@ -25,5 +25,6 @@
 
 - [How to Create Custom Submodel Views](How-to-create-custom-submodel-visualizations)
 - [Mnestix API Documentation](Mnestix_API_Documentation.md)
+  - [AAS Generator (Data Ingest Endpoint) Usage](Mnestix_API_Data_Ingest.md)
   <br></br>
   <br></br>
