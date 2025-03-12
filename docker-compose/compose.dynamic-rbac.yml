@@ -1,9 +1,4 @@
 services:
-  mnestix-browser:
-    environment:
-      SEC_SM_API_URL: 'http://security-submodel:8081'
-      SEC_SM_KEYCLOAK_CLIENT_ID: 'workstation-1'
-      SEC_SM_KEYCLOAK_CLIENT_SECRET: ${WORKSTATION_API_CLIENT_SECRET:-nY0mjyECF60DGzNmQUjL81XurSl8etom}
 
   security-submodel:
     image: eclipsebasyx/submodel-repository:2.0.0-milestone-05
@@ -21,6 +16,7 @@ services:
       BASYX__CORS__ALLOWED-ORIGINS: '*'
       BASYX__CORS__ALLOWED-METHODS: GET,POST,PATCH,DELETE,PUT,OPTIONS,HEAD
       # Authentication
+
       basyx.feature.authorization.enabled: 'true'
       basyx.feature.authorization.type: rbac
       basyx.feature.authorization.jwtBearerTokenProvider: keycloak
@@ -39,12 +35,14 @@ services:
     networks:
       - mnestix-network
 
+
   aas-environment:
     environment:
       # Dynamic Roles configuration part:
       basyx.feature.authorization.rules.backend: 'Submodel'
       basyx.feature.authorization.rules.backend.submodel.authorization.endpoint: 'http://security-submodel:8081/submodels/U2VjdXJpdHlTdWJtb2RlbA=='
       basyx.feature.authorization.rules.backend.submodel.authorization.token-endpoint: 'http://keycloak:8080/realms/Mnestix/protocol/openid-connect/token'
+
       basyx.feature.authorization.rules.backend.submodel.authorization.grant-type: 'CLIENT_CREDENTIALS'
       basyx.feature.authorization.rules.backend.submodel.authorization.client-id: 'workstation-1'
       basyx.feature.authorization.rules.backend.submodel.authorization.client-secret: ${WORKSTATION_API_CLIENT_SECRET:-nY0mjyECF60DGzNmQUjL81XurSl8etom} #Secret for Keycloak client
@@ -62,6 +60,7 @@ services:
       security-submodel:
         condition: service_healthy
     restart: 'no'
+
     environment:
       CLIENT_ID: 'workstation-1'
       CLIENT_SECRET: ${WORKSTATION_API_CLIENT_SECRET:-nY0mjyECF60DGzNmQUjL81XurSl8etom}
@@ -69,5 +68,6 @@ services:
       - ./docker-compose/dynamic-rbac/entrypoint.sh:/entrypoint.sh
       - ./docker-compose/dynamic-rbac/initial-submodel.json:/initial-submodel.json
     entrypoint: ['bash', '-c', 'sh /entrypoint.sh']
+
     networks:
       - mnestix-network

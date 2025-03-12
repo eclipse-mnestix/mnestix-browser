@@ -18,11 +18,12 @@ export function GenericSubmodelDetailComponent({ submodel }: SubmodelVisualizati
                 const semanticId = el.semanticId?.keys?.[0]?.value;
 
                 // We have to use the idEquals function here to correctly handle IRDIs
-                const visualizationMapKey =
-                    (Object.keys(submodelElementCustomVisualizationMap) as Array<string>).find((key) =>
-                        idEquals(semanticId, key),
-                    ) ?? '';
-                const CustomSubmodelElementComponent = submodelElementCustomVisualizationMap[visualizationMapKey];
+                const visualizationMapKey = (Object.keys(submodelElementCustomVisualizationMap) as Array<string>).find(
+                    (key) => idEquals(semanticId, key),
+                ) as keyof typeof submodelElementCustomVisualizationMap | undefined;
+                const CustomSubmodelElementComponent = visualizationMapKey
+                    ? submodelElementCustomVisualizationMap[visualizationMapKey]
+                    : undefined;
 
                 return (
                     <Fragment key={index}>

@@ -6,7 +6,7 @@ import { Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/type
 
 const templateApiClient = TemplateShellApi.create(
     process.env.MNESTIX_BACKEND_API_URL ? process.env.MNESTIX_BACKEND_API_URL : '',
-    process.env.AUTHENTICATION_FEATURE_FLAG?.toLowerCase().trim() === 'true' ?? false,
+    process.env.AUTHENTICATION_FEATURE_FLAG?.toLowerCase().trim() === 'true' || false,
     mnestixFetchLegacy(),
 );
 

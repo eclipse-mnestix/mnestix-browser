@@ -59,7 +59,11 @@ export function compareRowValues(smElements: (ISubmodelElement | null)[], intl: 
     });
 
     if (valuesLength == 2 && values[0] !== values[1]) {
-        values[1] !== null ? marked.push(1) : marked.push(0);
+        if (values[1] !== null) {
+            marked.push(1);
+        } else {
+            marked.push(0);
+        }
     }
 
     if (valuesLength == 3) {
