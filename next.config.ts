@@ -1,10 +1,9 @@
-// @ts-check
-const createNextIntlPlugin = require('next-intl/plugin');
+import { NextConfig } from 'next';
+import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin();
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig: NextConfig = {
     output: 'standalone', // Outputs a Single-Page Application (SPA).
     distDir: './dist', // Changes the build output directory to `./dist/`.
     experimental: {
@@ -14,22 +13,18 @@ const nextConfig = {
                     loaders: ['@svgr/webpack'],
                     as: '*.js',
                 },
-            }
-        }
-    },
-    typescript: {
-        // !! WARN !!
-        // Dangerously allow production builds to successfully complete even if
-        // your project has type errors.
-        // !! WARN !!
-        ignoreBuildErrors: true,
+            },
+        },
     },
     eslint: {
-        ignoreDuringBuilds: true,
+        ignoreDuringBuilds: !!process.env.NO_LINT,
     },
-    webpack(config) {
+    typescript: {
+        ignoreBuildErrors: !!process.env.NO_TYPECHECK,
+    },
+    webpack(config: any) {
         // Grab the existing rule that handles SVG imports
-        const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.('.svg'));
+        const fileLoaderRule = config.module.rules.find((rule: any) => rule.test?.test?.('.svg'));
         config.module.rules.push(
             // Reapply the existing rule, but only for svg imports ending in ?url
             {
@@ -49,8 +44,22 @@ const nextConfig = {
         // Modify the file loader rule to ignore *.svg, since we have it handled now.
         fileLoaderRule.exclude = /\.svg$/i;
 
+        /* Note: warning in webpack does not introduce bugs the ProductJourney.tsx
+        ./node_modules/web-worker/node.js
+        Critical dependency: the request of a dependency is an expression
+
+        Import trace for requested module:
+        ./node_modules/web-worker/node.js
+        ./node_modules/geotiff/dist-module/worker/decoder.js
+        ./node_modules/geotiff/dist-module/pool.js
+        ./node_modules/geotiff/dist-module/geotiff.js
+        ./node_modules/ol/source/GeoTIFF.js
+        ./node_modules/ol/source.js
+        ./src/app/[locale]/viewer/_components/submodel/carbon-footprint/visualization-components/ProductJourney.tsx
+        */
+
         return config;
-    }
+    },
 };
 
-module.exports = withNextIntl(nextConfig);
+export default withNextIntl(nextConfig);

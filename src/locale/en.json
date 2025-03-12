@@ -110,5 +110,10 @@
       },
       "VAT": "VAT-Number"
     }
+  },
+  "footer": {
+    "imprint": "Imprint",
+    "dataPrivacy": "Data Privacy",
+    "about": "About Mnestix"
   }
 }

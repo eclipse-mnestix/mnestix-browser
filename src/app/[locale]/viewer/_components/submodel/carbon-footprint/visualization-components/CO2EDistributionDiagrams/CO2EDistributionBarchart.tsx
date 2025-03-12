@@ -11,8 +11,8 @@ export function CO2EBarchart(props: {
     const theme = useTheme();
     const data = [{ name: 'CO2 Equivalents', ...props.co2EquivalentsPerLifecycleStage }];
 
-    const bars = Object.keys(props.co2EquivalentsPerLifecycleStage)
-        .sort((a, b) => data[0][b] - data[0][a])
+    const bars = (Object.keys(props.co2EquivalentsPerLifecycleStage) as ProductLifecycleStage[])
+        .sort((a, b) => data[0][b]! - data[0][a]!)
         .map((val, index, arr) => (
             <Bar
                 dataKey={val}

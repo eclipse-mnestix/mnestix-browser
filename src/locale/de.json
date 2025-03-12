@@ -110,5 +110,10 @@
       },
       "VAT": "USt-IdNr."
     }
+  },
+  "footer": {
+    "imprint": "Impressum",
+    "dataPrivacy": "Datenschutz",
+    "about": "Über Mnestix"
   }
 }

@@ -7,10 +7,10 @@ export function getKeyType(el: Class) {
         try {
             // Detailed explanation on why this works: https://stackoverflow.com/a/62764510
             return KeyTypes[jsonable.modelType as keyof typeof KeyTypes];
-        } catch (_) {
+        } catch {
             return KeyTypes.SubmodelElement;
         }
-    } catch (error: unknown) {
+    } catch {
         return NaN;
     }
 }

@@ -20,7 +20,8 @@ services:
       - ./cypress.config.ts:/cypress_Tests/cypress.config.ts
       - ./cypress-artifacts/screenshots:/cypress_Tests/cypress/screenshots
       - ./cypress-artifacts/videos:/cypress_Tests/cypress/videos
-      - ./cypress:/cypress
+      # esm compatibility
+      - ./tsconfig.json:/cypress_Tests/tsconfig.json
     depends_on:
       mnestix-browser:
         condition: service_started
