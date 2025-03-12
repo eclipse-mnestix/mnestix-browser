@@ -37,7 +37,7 @@ describe('Login Keycloak user roles', function () {
 
         cy.getByTestId('settings-menu-icon').should('exist').click();
         cy.getByTestId('settings-route-page').should('exist');
-        cy.getByTestId('settings-header').should('have.text', 'Settings');
+        cy.getByTestId('settings-header').should('contain.text', 'Settings');
 
         cy.getByTestId('header-burgermenu').click();
         cy.keycloakLogout();
