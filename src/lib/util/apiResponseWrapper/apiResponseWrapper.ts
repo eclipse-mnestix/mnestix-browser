@@ -51,10 +51,9 @@ export async function wrapFile(content: Blob): Promise<ApiResponseWrapperSuccess
 }
 
 export async function wrapResponse<T>(response: Response): Promise<ApiResponseWrapper<T>> {
-    const status = getStatus(response.status);
-
     if (!(response.status >= 200 && response.status < 300)) {
         const result = await response.json().catch((e) => console.warn(e.message));
+        const status = getStatus(response.status);
         return wrapErrorCode(status, response.statusText, result);
     }
 
