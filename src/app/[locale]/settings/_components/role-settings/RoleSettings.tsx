@@ -13,109 +13,65 @@ import {
 import { CardHeading } from 'components/basics/CardHeading';
 import { useTranslations } from 'next-intl';
 import { RoleDialog } from 'app/[locale]/settings/_components/role-settings/RoleDialog';
-import { useState } from 'react';
+import { JSX, useState } from 'react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { RoundedIconButton } from 'components/basics/Buttons';
-
-export type RbacDto = {
-    name: string;
-    action: rbacAction[];
-    targetInformation: {
-        type: string;
-        aasIds: string[];
-        submodelIds: string[];
-    };
-};
-
-export enum rbacAction {
-    CREATE,
-    READ,
-    UPDATE,
-    DELETE,
-    EXECUTE,
-}
+import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
+import { getRbacRules } from 'lib/services/rbac-service/RbacActions';
+import { BaSyxRbacRule, RbacRolesFetchResult } from 'lib/services/rbac-service/RbacRulesService';
 
 export const RoleSettings = () => {
     const t = useTranslations('settings');
     const [roleDialogOpen, setRoleDialogOpen] = useState(false);
-    const [selectedRole, setSelectedRole] = useState<RbacDto | undefined>(undefined);
+    const [selectedRole, setSelectedRole] = useState<BaSyxRbacRule | undefined>(undefined);
+    const [rbacRoles, setRbacRoles] = useState<RbacRolesFetchResult | undefined>();
     const MAX_PERMISSIONS_CHARS = 40;
+
+    useAsyncEffect(async () => {
+        const rbacRoles = await getRbacRules();
+        if (rbacRoles.isSuccess) {
+            setRbacRoles(rbacRoles.result);
+        }
+    }, []);
 
     const tableHeaders = [
         { label: t('roles.tableHeader.name') },
         { label: t('roles.tableHeader.action') },
         { label: t('roles.tableHeader.type') },
-        { label: 'Permissions' },
+        { label: 'Permissions' }, // TODO intl
         { label: '' },
     ];
 
-    const dummyData: RbacDto[] = [
-        {
-            name: 'basyx-reader-serialization-two',
-            action: [rbacAction.DELETE, rbacAction.CREATE],
-            targetInformation: {
-                type: 'aas-environment',
-                aasIds: [
-                    'https://aas2.uni-h.de/lnidsafdsafdfasdfsdfadfdsfdsfadsfdsfdsfsdafdsfdassdfsdfs0721',
-                    'https://aas2.uni-h.de/lni0722',
-                    'https://aas2.uni-h.de/lni0dsafdsafdas723',
-                    'https://aas2.uni-h.de/lni0ddsafdf724',
-                    'https://aas2.uni-h.de/lni0725',
-                    'https://aas2.uni-h.de/lni0726',
-                    'https://aas2.uni-h.de/lni0727',
-                    'https://aas2.uni-h.de/lni0728',
-                    'https://aas2.uni-h.de/lni07210',
-                    'https://aas2.uni-h.de/lni072911',
-                    'https://aas2.uni-h.de/lni07212',
-                    'https://aas2.uni-h.de/lni07214',
-                ],
-                submodelIds: ['submodel1', 'submodel2', 'submodel3', 'submodel4', 'submodel5', 'submodel6'],
-            },
-        },
-        {
-            name: 'basyx-reader',
-            action: [rbacAction.DELETE, rbacAction.CREATE, rbacAction.EXECUTE],
-            targetInformation: {
-                type: 'aas-repository',
-                aasIds: ['https://aas2.uni-h.de/lhö', 'https://aas2.uni-h.de/hi'],
-                submodelIds: ['submodel1', 'submodel2', 'submodel3', 'submodel6'],
-            },
-        },
-        {
-            name: 'admin',
-            action: [rbacAction.DELETE, rbacAction.CREATE, rbacAction.EXECUTE, rbacAction.UPDATE, rbacAction.UPDATE],
-            targetInformation: {
-                type: 'aas-repository',
-                aasIds: ['*'],
-                submodelIds: ['*'],
-            },
-        },
-    ];
     // Test all List implementation and align styling
     // mobile: hide permissions
 
-    const permissionCell = (entry: RbacDto) => {
-        const permissions = [];
-        for (const elem in entry.targetInformation) {
-            if (elem !== 'type') {
-                const content = entry.targetInformation[elem].join(', ');
+    const permissionCell = (entry: BaSyxRbacRule) => {
+        const permissions: JSX.Element[] = [];
+        const keys = Object.keys(entry.targetInformation);
+        keys.forEach((key) => {
+            // @ts-expect-error zod type
+            let element = entry.targetInformation[key];
+            if (Array.isArray(element)) {
+                element = element.join(', ');
+            }
+            if (key !== '@type') {
                 permissions.push(
-                    <Box component="span" key={elem}>
+                    <Box component="span" key={element}>
                         <Box component="span" fontWeight="bold">
-                            {`${elem}: `}
+                            {`${key}: `}
                         </Box>
-                        {content.length > MAX_PERMISSIONS_CHARS
-                            ? `${content.slice(0, MAX_PERMISSIONS_CHARS)}...`
-                            : content}
+                        {element.length > MAX_PERMISSIONS_CHARS
+                            ? `${element.slice(0, MAX_PERMISSIONS_CHARS)}...`
+                            : element}
                         <br />
                     </Box>,
                 );
             }
-        }
+        });
         return permissions;
     };
 
-    const openDetailDialog = (entry: RbacDto) => {
+    const openDetailDialog = (entry: BaSyxRbacRule) => {
         setSelectedRole(entry);
         setRoleDialogOpen(true);
     };
@@ -146,21 +102,15 @@ export const RoleSettings = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {dummyData.map((entry) => (
-                                <TableRow key={entry.name}>
+                            {rbacRoles?.roles.map((entry) => (
+                                <TableRow key={entry.role}>
                                     <TableCell>
-                                        <Typography fontWeight="bold">{entry.name}</Typography>
+                                        <Typography fontWeight="bold">{entry.role}</Typography>
                                     </TableCell>
                                     <TableCell>
-                                        {entry.action.map((action) => (
-                                            <Chip
-                                                sx={{ fontWeight: 'normal', m: 0.5 }}
-                                                key={action}
-                                                label={rbacAction[action]}
-                                            />
-                                        ))}
+                                        <Chip sx={{ fontWeight: 'normal', m: 0.5 }} label={entry.action} />
                                     </TableCell>
-                                    <TableCell>{entry.targetInformation.type}</TableCell>
+                                    <TableCell>{entry.targetInformation['@type']}</TableCell>
                                     <TableCell>{permissionCell(entry)}</TableCell>
                                     <TableCell>
                                         <RoundedIconButton onClick={() => openDetailDialog(entry)} color="primary">
