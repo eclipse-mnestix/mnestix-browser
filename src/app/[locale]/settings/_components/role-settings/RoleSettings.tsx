@@ -39,6 +39,7 @@ export const RoleSettings = () => {
         const response = await getRbacRules();
         if (response.isSuccess) {
             // sort by role name
+            console.log(response);
             response.result.roles.sort((a, b) => a.role.localeCompare(b.role));
             setRbacRoles(response.result);
         } else {
@@ -126,7 +127,13 @@ export const RoleSettings = () => {
                                             <Typography fontWeight="bold">{entry.role}</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Chip sx={{ fontWeight: 'normal', m: 0.5 }} label={entry.action} />
+                                            {entry.action.map((action) => (
+                                                <Chip
+                                                    key={action}
+                                                    sx={{ fontWeight: 'normal', m: 0.5 }}
+                                                    label={action}
+                                                />
+                                            ))}
                                         </TableCell>
                                         <TableCell>{entry.targetInformation['@type']}</TableCell>
                                         {!isMobile && <TableCell>{permissionCell(entry)}</TableCell>}

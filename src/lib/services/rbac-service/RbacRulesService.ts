@@ -113,7 +113,7 @@ const roleSpec = z.object({
             .strict(),
     ]),
     role: z.string(),
-    action: z.union([actions, z.array(actions)]),
+    action: z.array(actions),
 });
 
 export type BaSyxRbacRule = z.infer<typeof roleSpec>;
