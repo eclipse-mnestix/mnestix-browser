@@ -77,7 +77,8 @@
         "action": "Action",
         "type": "Type",
         "aasIds": "AAS IDs",
-        "submodelIds": "Submodel IDs"
+        "submodelIds": "Submodel IDs",
+        "permissions": "Berechtigungen"
       }
     }
   },

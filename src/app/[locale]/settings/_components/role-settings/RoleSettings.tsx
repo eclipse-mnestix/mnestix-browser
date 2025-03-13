@@ -19,31 +19,47 @@ import { RoundedIconButton } from 'components/basics/Buttons';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { getRbacRules } from 'lib/services/rbac-service/RbacActions';
 import { BaSyxRbacRule, RbacRolesFetchResult } from 'lib/services/rbac-service/RbacRulesService';
+import { useIsMobile } from 'lib/hooks/UseBreakpoints';
+import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
+import { useShowError } from 'lib/hooks/UseShowError';
 
 export const RoleSettings = () => {
     const t = useTranslations('settings');
     const [roleDialogOpen, setRoleDialogOpen] = useState(false);
     const [selectedRole, setSelectedRole] = useState<BaSyxRbacRule | undefined>(undefined);
     const [rbacRoles, setRbacRoles] = useState<RbacRolesFetchResult | undefined>();
+    const isMobile = useIsMobile();
+    const [isLoading, setIsLoading] = useState(false);
+    const { showError } = useShowError();
+
     const MAX_PERMISSIONS_CHARS = 40;
 
     useAsyncEffect(async () => {
-        const rbacRoles = await getRbacRules();
-        if (rbacRoles.isSuccess) {
-            setRbacRoles(rbacRoles.result);
+        setIsLoading(true);
+        const response = await getRbacRules();
+        if (response.isSuccess) {
+            // sort by role name
+            response.result.roles.sort((a, b) => a.role.localeCompare(b.role));
+            setRbacRoles(response.result);
+        } else {
+            showError(response.message);
         }
+        setIsLoading(false);
     }, []);
 
-    const tableHeaders = [
-        { label: t('roles.tableHeader.name') },
-        { label: t('roles.tableHeader.action') },
-        { label: t('roles.tableHeader.type') },
-        { label: 'Permissions' }, // TODO intl
-        { label: '' },
-    ];
-
-    // Test all List implementation and align styling
-    // mobile: hide permissions
+    const prepareTableHeaders = () => {
+        const tableHeaders = [
+            { label: t('roles.tableHeader.name') },
+            { label: t('roles.tableHeader.action') },
+            { label: t('roles.tableHeader.type') },
+            { label: t('roles.tableHeader.permissions') },
+            { label: '' },
+        ];
+        if (isMobile) {
+            tableHeaders.splice(3, 1);
+        }
+        return tableHeaders;
+    };
 
     const permissionCell = (entry: BaSyxRbacRule) => {
         const permissions: JSX.Element[] = [];
@@ -56,7 +72,7 @@ export const RoleSettings = () => {
             }
             if (key !== '@type') {
                 permissions.push(
-                    <Box component="span" key={element}>
+                    <Box component="span" key={key + element}>
                         <Box component="span" fontWeight="bold">
                             {`${key}: `}
                         </Box>
@@ -81,47 +97,50 @@ export const RoleSettings = () => {
             <Box sx={{ p: 3, width: '100%', minHeight: '600px' }}>
                 <CardHeading title={t('roles.title')} subtitle={t('roles.subtitle')}></CardHeading>
                 <Divider sx={{ my: 2 }} />
-
-                <TableContainer>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                {!!tableHeaders &&
-                                    tableHeaders.map((header: { label: string }, index) => (
-                                        <TableCell key={index}>
-                                            <Typography
-                                                variant="h5"
-                                                color="secondary"
-                                                letterSpacing={0.16}
-                                                fontWeight={700}
-                                            >
-                                                {header.label}
-                                            </Typography>
-                                        </TableCell>
-                                    ))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {rbacRoles?.roles.map((entry) => (
-                                <TableRow key={entry.role}>
-                                    <TableCell>
-                                        <Typography fontWeight="bold">{entry.role}</Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Chip sx={{ fontWeight: 'normal', m: 0.5 }} label={entry.action} />
-                                    </TableCell>
-                                    <TableCell>{entry.targetInformation['@type']}</TableCell>
-                                    <TableCell>{permissionCell(entry)}</TableCell>
-                                    <TableCell>
-                                        <RoundedIconButton onClick={() => openDetailDialog(entry)} color="primary">
-                                            <ArrowForwardIcon />
-                                        </RoundedIconButton>
-                                    </TableCell>
+                {isLoading ? (
+                    <CenteredLoadingSpinner sx={{ my: 10 }} />
+                ) : (
+                    <TableContainer>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    {!!prepareTableHeaders() &&
+                                        prepareTableHeaders().map((header: { label: string }, index) => (
+                                            <TableCell key={index}>
+                                                <Typography
+                                                    variant="h5"
+                                                    color="secondary"
+                                                    letterSpacing={0.16}
+                                                    fontWeight={700}
+                                                >
+                                                    {header.label}
+                                                </Typography>
+                                            </TableCell>
+                                        ))}
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                            </TableHead>
+                            <TableBody>
+                                {rbacRoles?.roles.map((entry) => (
+                                    <TableRow key={entry.role + entry.action + entry.targetInformation['@type']}>
+                                        <TableCell>
+                                            <Typography fontWeight="bold">{entry.role}</Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Chip sx={{ fontWeight: 'normal', m: 0.5 }} label={entry.action} />
+                                        </TableCell>
+                                        <TableCell>{entry.targetInformation['@type']}</TableCell>
+                                        {!isMobile && <TableCell>{permissionCell(entry)}</TableCell>}
+                                        <TableCell>
+                                            <RoundedIconButton onClick={() => openDetailDialog(entry)} color="primary">
+                                                <ArrowForwardIcon />
+                                            </RoundedIconButton>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                )}
             </Box>
             <RoleDialog
                 onClose={() => {
