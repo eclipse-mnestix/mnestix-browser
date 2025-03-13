@@ -12,8 +12,9 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { SelectRepository } from './filter/SelectRepository';
 import { useTranslations } from 'next-intl';
-import { ApiResponseWrapperError, ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { ApiResponseWrapperError } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { AuthenticationPrompt } from 'components/authentication/AuthenticationPrompt';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 export default function AasListDataWrapper() {
     const [isLoadingList, setIsLoadingList] = useState(false);

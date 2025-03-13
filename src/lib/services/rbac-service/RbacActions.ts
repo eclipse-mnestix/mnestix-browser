@@ -4,7 +4,8 @@ import { MnestixRole } from 'components/authentication/AllowedRoutes';
 import { authOptions } from 'components/authentication/authConfig';
 import { getServerSession } from 'next-auth';
 import { RbacRulesService } from './RbacRulesService';
-import { ApiResultStatus, wrapErrorCode } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { wrapErrorCode } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 export async function getRbacRules() {
     const session = await getServerSession(authOptions);

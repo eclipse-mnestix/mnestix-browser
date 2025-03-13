@@ -10,7 +10,6 @@ import type {
 } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import {
     ApiResponseWrapper,
-    ApiResultStatus,
     wrapErrorCode,
     wrapResponse,
     wrapSuccess,
@@ -19,7 +18,8 @@ import { AttachmentDetails } from 'lib/types/TransferServiceData';
 import { encodeBase64, safeBase64Decode } from 'lib/util/Base64Util';
 import { ServiceReachable } from 'test-utils/TestUtils';
 import { MultiLanguageValueOnly, PaginationData } from 'lib/api/basyx-v3/types';
-import { LangStringTextType, MultiLanguageProperty, ModelType } from '@aas-core-works/aas-core3.0-typescript/types';
+import { LangStringTextType, ModelType, MultiLanguageProperty } from '@aas-core-works/aas-core3.0-typescript/types';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 const options = {
     headers: { 'Content-type': 'application/json; charset=utf-8' },
@@ -274,8 +274,10 @@ function submodelValueOnly(submodel: Submodel) {
                 throw new Error(`Unknown model type: ${e.modelType()}. Please add to apiInMemory.ts`);
         }
     }
+
     const res = submodel.submodelElements?.filter((e) => (e as any).value !== undefined).map((e) => parse(e));
     if (res?.length === 1) return res[0];
     return res;
 }
+
 /* eslint-enable @typescript-eslint/no-explicit-any */

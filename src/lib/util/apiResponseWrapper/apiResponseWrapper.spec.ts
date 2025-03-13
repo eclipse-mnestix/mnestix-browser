@@ -1,11 +1,11 @@
 import {
     ApiResponseWrapperError,
-    ApiResultStatus,
     wrapErrorCode,
     wrapResponse,
     wrapSuccess,
 } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { expect } from '@jest/globals';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 const options = {
     headers: { 'Content-type': 'application/json; charset=utf-8' },

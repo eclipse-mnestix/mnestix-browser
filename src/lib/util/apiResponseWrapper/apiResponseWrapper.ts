@@ -1,29 +1,9 @@
 import { base64ToBlob, blobToBase64 } from 'lib/util/Base64Util';
-
-export const ApiResultStatus = {
-    SUCCESS: 'SUCCESS',
-    BAD_REQUEST: 'BAD_REQUEST',
-    UNAUTHORIZED: 'UNAUTHORIZED',
-    FORBIDDEN: 'FORBIDDEN',
-    NOT_FOUND: 'NOT_FOUND',
-    UNKNOWN_ERROR: 'UNKNOWN_ERROR',
-    INTERNAL_SERVER_ERROR: 'INTERNAL_SERVER_ERROR',
-} as const;
-
-export type ApiResultStatus = (typeof ApiResultStatus)[keyof typeof ApiResultStatus];
+import { ApiResultStatus, httpStatusMessage } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 export type ApiFileDto = {
     fileContent: string;
     fileType: string;
-};
-
-const httpStatusMessage: Record<number, ApiResultStatus> = {
-    200: ApiResultStatus.SUCCESS,
-    400: ApiResultStatus.BAD_REQUEST,
-    401: ApiResultStatus.UNAUTHORIZED,
-    403: ApiResultStatus.FORBIDDEN,
-    404: ApiResultStatus.NOT_FOUND,
-    500: ApiResultStatus.INTERNAL_SERVER_ERROR,
 };
 
 const getStatus = (statusCode: number): ApiResultStatus => {
