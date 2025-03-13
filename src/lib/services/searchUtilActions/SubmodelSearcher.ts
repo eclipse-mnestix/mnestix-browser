@@ -3,13 +3,9 @@ import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { ISubmodelRegistryServiceApi } from 'lib/api/submodel-registry-service/submodelRegistryServiceApiInterface';
 import { SubmodelRegistryServiceApi } from 'lib/api/submodel-registry-service/submodelRegistryServiceApi';
-import {
-    ApiResponseWrapper,
-    ApiResultStatus,
-    wrapErrorCode,
-    wrapSuccess,
-} from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { RepositorySearchService } from 'lib/services/repository-access/RepositorySearchService';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 export class SubmodelSearcher {
     private constructor(

@@ -1,13 +1,9 @@
 import { DiscoveryEntry, IDiscoveryServiceApi } from 'lib/api/discovery-service-api/discoveryServiceApiInterface';
-import {
-    ApiResponseWrapper,
-    ApiResultStatus,
-    wrapErrorCode,
-    wrapSuccess,
-} from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { SpecificAssetId } from '@aas-core-works/aas-core3.0-typescript/types';
 import { isEqual } from 'lodash';
 import ServiceReachable from 'test-utils/TestUtils';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 export class DiscoveryServiceApiInMemory implements IDiscoveryServiceApi {
     constructor(

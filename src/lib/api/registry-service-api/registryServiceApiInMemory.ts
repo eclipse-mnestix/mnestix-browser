@@ -3,12 +3,12 @@ import { AssetAdministrationShellDescriptor } from 'lib/types/registryServiceTyp
 import { AssetAdministrationShell } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import {
     ApiResponseWrapper,
-    ApiResultStatus,
     wrapErrorCode,
     wrapResponse,
     wrapSuccess,
 } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import ServiceReachable from 'test-utils/TestUtils';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 export type AasRegistryEndpointEntryInMemory = {
     endpoint: URL | string;

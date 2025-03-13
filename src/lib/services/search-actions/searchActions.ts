@@ -2,17 +2,13 @@
 
 import { AasSearcher, AasSearchResult } from 'lib/services/search-actions/AasSearcher';
 import { AssetAdministrationShell } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
-import {
-    ApiResponseWrapper,
-    ApiResultStatus,
-    wrapErrorCode,
-    wrapSuccess,
-} from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { SubmodelSearcher } from 'lib/services/searchUtilActions/SubmodelSearcher';
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { AssetAdministrationShellRepositoryApi } from 'lib/api/basyx-v3/api';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 export async function performFullAasSearch(searchInput: string): Promise<ApiResponseWrapper<AasSearchResult>> {
     const searcher = AasSearcher.create();

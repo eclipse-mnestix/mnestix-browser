@@ -2,15 +2,11 @@ import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { ISubmodelRegistryServiceApi } from 'lib/api/submodel-registry-service/submodelRegistryServiceApiInterface';
 import { FetchAPI } from 'lib/api/basyx-v3/api';
-import {
-    ApiResponseWrapper,
-    ApiResultStatus,
-    wrapErrorCode,
-    wrapSuccess,
-} from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import path from 'node:path';
 import ServiceReachable from 'test-utils/TestUtils';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 export class SubmodelRegistryServiceApi implements ISubmodelRegistryServiceApi {
     constructor(
