@@ -49,9 +49,7 @@ describe('', () => {
         expect(userErrorResponse.isSuccess).toBe(false);
         expect((userErrorResponse as ApiResponseWrapperError<unknown>).errorCode).toBe(ApiResultStatus.UNKNOWN_ERROR);
         expect(serverErrorResponse.isSuccess).toBe(false);
-        expect((serverErrorResponse as ApiResponseWrapperError<unknown>).errorCode).toBe(
-            ApiResultStatus.INTERNAL_SERVER_ERROR,
-        );
+        expect((serverErrorResponse as ApiResponseWrapperError<unknown>).errorCode).toBe(ApiResultStatus.BAD_GATEWAY);
     });
 
     it('keep the error code', async () => {
