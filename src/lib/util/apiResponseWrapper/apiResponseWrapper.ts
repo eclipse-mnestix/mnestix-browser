@@ -63,7 +63,7 @@ export async function wrapResponse<T>(response: Response): Promise<ApiResponseWr
         const result = await response.json().catch((e) => console.warn(e.message));
         return wrapSuccess(result);
     }
-
+    
     const fileFromResponse = await response.blob();
     return wrapSuccess(fileFromResponse as T);
 }
