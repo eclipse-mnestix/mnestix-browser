@@ -26,6 +26,7 @@ export const initialEnvValues: EnvironmentalVariables = {
     KEYCLOAK_ENABLED: false,
     IMPRINT_URL: '',
     DATA_PRIVACY_URL: '',
+    USE_BASYX_RBAC: false,
 };
 
 export const EnvContext = createContext(initialEnvValues);
