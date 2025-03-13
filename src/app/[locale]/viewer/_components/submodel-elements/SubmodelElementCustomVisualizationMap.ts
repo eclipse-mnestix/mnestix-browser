@@ -1,5 +1,5 @@
 import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
-import { ContactInformationComponent } from './contact-information-component/ContactInformationComponent';
+import { ContactInformationComponent } from './address-component/ContactInformationComponent';
 import { MarkingsComponent } from './marking-components/MarkingsComponent';
 import { AddressComponent } from './address-component/AddressComponent';
 import { DocumentComponent } from './document-component/DocumentComponent';

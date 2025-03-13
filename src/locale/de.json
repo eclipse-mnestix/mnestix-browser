@@ -95,6 +95,21 @@
   "components": {
     "addressComponent": {
       "addressTypes": {
+        "Department": "Abteilung",
+        "Company": "Firma",
+        "Street": "Straße",
+        "Zipcode": "PLZ",
+        "CityTown": "Ort",
+        "StateCounty": "Bundesland/Kreis",
+        "NationalCode": "Landescode",
+        "TimeZone": "Zeitzone",
+        "POBox": "Postfach",
+        "ZipCodeOfPOBox": "PLZ des Postfachs"
+      },
+      "VAT": "USt-IdNr."
+    },
+    "ContactInformation": {
+      "contactTypes": {
         "office": "Geschäftlich",
         "office mobile": "Geschäftl. Mobil",
         "secretary": "Sekretariat",
@@ -107,8 +122,7 @@
         "0173-1#07-AAS757#001": "Vertretung",
         "0173-1#07-AAS758#001": "Privat",
         "0173-1#07-AAS759#001": "Privat Mobil"
-      },
-      "VAT": "USt-IdNr."
+      }
     }
   },
   "footer": {

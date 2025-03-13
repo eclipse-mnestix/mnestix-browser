@@ -95,6 +95,21 @@
   "components": {
     "addressComponent": {
       "addressTypes": {
+        "Department": "Department",
+        "Company": "Company",
+        "Street": "Street",
+        "Zipcode": "Zipcode",
+        "CityTown": "City/Town",
+        "StateCounty": "State/County",
+        "NationalCode": "National Code",
+        "TimeZone": "Time Zone",
+        "POBox": "PO Box",
+        "ZipCodeOfPOBox": "Zip Code of PO Box"
+      },
+      "VAT": "VAT-Number"
+    },
+    "ContactInformation": {
+      "contactTypes": {
         "office": "Office",
         "office mobile": "Office mobile",
         "secretary": "Secretary",
@@ -107,8 +122,7 @@
         "0173-1#07-AAS757#001": "Substitute",
         "0173-1#07-AAS758#001": "Home",
         "0173-1#07-AAS759#001": "Private mobile"
-      },
-      "VAT": "VAT-Number"
+      }
     }
   },
   "footer": {
