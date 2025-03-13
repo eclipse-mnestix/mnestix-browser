@@ -5,6 +5,7 @@ import { screen, waitFor } from '@testing-library/react';
 import { AasListTableRow } from 'app/[locale]/list/_components/AasListTableRow';
 import { ListEntityDto } from 'lib/services/list-service/ListService';
 import * as nameplateDataActions from 'lib/services/list-service/aasListApiActions';
+import { JSX } from 'react';
 
 jest.mock('next/navigation', () => ({
     useRouter() {
