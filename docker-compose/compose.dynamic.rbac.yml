@@ -1,6 +1,7 @@
 services:
   mnestix-browser:
     environment:
+      USE_BASYX_RBAC: 'true'
       SEC_SM_API_URL: 'http://security-submodel:8081'
   
   security-submodel:
@@ -32,6 +33,8 @@ services:
       interval: 10s
       timeout: 10s
       retries: 6
+    ports:
+      - '8089:8081'
     volumes:
       - ./docker-compose/data/keycloak/sec_sm_roles.json:/data/rbac_rules.json:ro
     networks:

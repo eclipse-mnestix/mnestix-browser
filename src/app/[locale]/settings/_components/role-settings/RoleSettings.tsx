@@ -39,7 +39,6 @@ export const RoleSettings = () => {
         const response = await getRbacRules();
         if (response.isSuccess) {
             // sort by role name
-            console.log(response);
             response.result.roles.sort((a, b) => a.role.localeCompare(b.role));
             setRbacRoles(response.result);
         } else {
