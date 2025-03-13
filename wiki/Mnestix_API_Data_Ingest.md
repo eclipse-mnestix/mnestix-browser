@@ -18,8 +18,6 @@ This will start everything.
 ### 2. Creating a Data JSON using ETL tools
 
 The Data JSON comes from an ETL (Extract Transform Load) Tool, like [Apache Camel](https://camel.apache.org/) (Open Source), [Soffico Orchestra](https://soffico.de/produkte/) (Paid) or similar tools.
-This JSON file can have 
-
 Example data that is extracted from your existing system could look like this
 ```json
 {
