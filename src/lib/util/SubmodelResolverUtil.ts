@@ -1,6 +1,7 @@
 import {
     DataTypeDefXsd,
     IAbstractLangString,
+    IDataElement,
     ISubmodelElement,
     KeyTypes,
     MultiLanguageProperty,
@@ -15,6 +16,17 @@ import { getKeyType } from 'lib/util/KeyTypeUtil';
 export function getTranslationTextNext(element: MultiLanguageProperty, locale: string): string | null {
     const value = element.value?.find((el) => el.language == locale)?.text;
     return value || element.value?.at(0)?.text || null;
+}
+
+export function getTranslationValue(element: IDataElement, locale: string): string | null {
+    switch (getKeyType(element)) {
+        case KeyTypes.MultiLanguageProperty:
+            return getTranslationTextNext(element as MultiLanguageProperty, locale);
+        case KeyTypes.Property:
+            return (element as Property).value ?? null;
+        default:
+            return null;
+    }
 }
 
 export function findSubmodelElementByIdShort(
@@ -53,6 +65,10 @@ export function findValueByIdShort(
     }
 }
 
+/**
+ * @deprecated This function is deprecated and will be removed in future versions.
+ * Use getTranslationTextNext instead.
+ */
 export function getTranslationText(
     input: MultiLanguageProperty | IAbstractLangString[] | undefined,
     intl: IntlShape,

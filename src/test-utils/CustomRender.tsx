@@ -9,9 +9,9 @@ interface WrapperProps {
     children: ReactNode;
 }
 
-const messages = {
+const messages: { [key: string]: typeof enMessages } = {
     en: enMessages,
-    es: deMessages,
+    de: deMessages,
 };
 
 const loadMessages = (locale: 'en' | 'es') => {

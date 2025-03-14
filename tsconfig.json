@@ -24,7 +24,6 @@
     "strict": false,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "emitDeclarationOnly": true,
     "strictPropertyInitialization": false,
     "baseUrl": "src",
     "incremental": true,

@@ -1,47 +1,48 @@
 import { DataRow } from 'components/basics/DataRow';
-import { DialerSip, Info, Mail, Phone, Place, Print, Public } from '@mui/icons-material';
+import { DialerSip, Mail, Person, Phone, Place, Print, Public } from '@mui/icons-material';
 import { AddressGroupWithIcon } from './AddressGroupWithIcon';
 import {
     IDataElement,
     ISubmodelElement,
     SubmodelElementCollection,
 } from '@aas-core-works/aas-core3.0-typescript/types';
+import { SubModelElementCollectionContactInfo } from 'lib/util/ApiExtensions/ExtendISubmodelElement';
 import {
     AddressElement,
     EmailElement,
     FaxElement,
     IpElement,
     LinkElement,
+    PersonElement,
     PhoneElement,
-    VatElement,
 } from './ContactElements';
+import { idShortsOfSubmodelElementsContainingAddressData } from './AddressComponent';
 
-type AddressComponentProps = {
+type ContactInformationComponentProps = {
     readonly submodelElement?: SubmodelElementCollection;
     readonly hasDivider?: boolean;
 };
 
-export const idShortsOfSubmodelElementsContainingAddressData: string[] = [
-    'Company',
+export const idShortsOfSubmodelElementsContainingPersonData: string[] = [
+    'NameOfContact',
+    'FirstName',
+    'MiddleNames',
+    'Title',
+    'AcademicTitle',
+    'RoleOfContactPerson',
     'Department',
-    'Street',
-    'Zipcode',
-    'CityTown',
-    'StateCounty',
-    'NationalCode',
-    'TimeZone',
-    'POBox',
-    'ZipCodeOfPOBox',
+    'Language',
+    'FurtherDetailsOfContact',
 ];
 
-export function AddressComponent(props: AddressComponentProps) {
+export function ContactInformationComponent(props: ContactInformationComponentProps) {
     if (!props.submodelElement?.value) {
         return <></>;
     }
 
     const addressData: Array<ISubmodelElement> = Object.values(props.submodelElement.value) as Array<ISubmodelElement>;
     const additionalLink: Array<IDataElement> = [];
-    const vatNumber: Array<IDataElement> = [];
+    const personData: Array<SubModelElementCollectionContactInfo> = [];
     const phone: Array<SubmodelElementCollection> = [];
     const fax: Array<SubmodelElementCollection> = [];
     const email: Array<SubmodelElementCollection> = [];
@@ -66,15 +67,21 @@ export function AddressComponent(props: AddressComponentProps) {
             additionalLink.push(entry as IDataElement);
             return false;
         }
-        if (id === 'VATNumber') {
-            vatNumber.push(entry as IDataElement);
-            return false;
-        }
         if (id?.startsWith('IPCommunication')) {
             ipCommunication.push(entry as SubmodelElementCollection);
             return false;
         }
+        if (id !== null && idShortsOfSubmodelElementsContainingPersonData.includes(id)) {
+            personData.push(entry as SubModelElementCollectionContactInfo);
+            return false;
+        }
         return true;
+    });
+
+    const sortedPerson = personData.toSorted((a, b) => {
+        const indexA = idShortsOfSubmodelElementsContainingPersonData.indexOf(a.idShort || '');
+        const indexB = idShortsOfSubmodelElementsContainingPersonData.indexOf(b.idShort || '');
+        return (indexA === -1 ? 1000 : indexA) - (indexB === -1 ? 1000 : indexB);
     });
 
     const sortedAddress = filteredAddressData.toSorted((a, b) => {
@@ -86,6 +93,13 @@ export function AddressComponent(props: AddressComponentProps) {
     // render all
     return (
         <DataRow title={props.submodelElement.idShort} hasDivider={props.hasDivider}>
+            {sortedPerson.length > 0 && (
+                <AddressGroupWithIcon icon={<Person color="primary" fontSize="small" />} sx={{ mt: 1 }}>
+                    {sortedPerson.map((value) => (
+                        <PersonElement el={value} />
+                    ))}
+                </AddressGroupWithIcon>
+            )}
             {sortedAddress.length > 0 && (
                 <AddressGroupWithIcon icon={<Place color="primary" fontSize="small" />} sx={{ mt: 1 }}>
                     {sortedAddress.map((value) => (
@@ -125,13 +139,6 @@ export function AddressComponent(props: AddressComponentProps) {
                 <AddressGroupWithIcon icon={<Public color="primary" fontSize="small" />}>
                     {additionalLink.map((value) => (
                         <LinkElement el={value} />
-                    ))}
-                </AddressGroupWithIcon>
-            )}
-            {vatNumber.length > 0 && (
-                <AddressGroupWithIcon icon={<Info color="primary" fontSize="small" />}>
-                    {vatNumber.map((value) => (
-                        <VatElement el={value} />
                     ))}
                 </AddressGroupWithIcon>
             )}
