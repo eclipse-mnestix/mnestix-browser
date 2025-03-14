@@ -1,9 +1,11 @@
-> ℹ️ **Info**: 
+> [!IMPORTANT]  
 >
 > This part of the documentation is for the [Mnestix API](https://hub.docker.com/r/mnestix/mnestix-api) and will be moved once the API is Open Source.
 > For now the different functionalities are all combined in the Mnestix API.
 
-> **⚠ Warning**: When using the Mnestix API version `1.2.0` or above, you have to adjust the Environment variable for the `repoCluster`. It is now split into `aasRepoCluster` and `submodelRepoCluster`
+
+> [!WARNING] 
+> When using the Mnestix API version `1.2.0` or above, you have to adjust the Environment variable for the `repoCluster`. It is now split into `aasRepoCluster` and `submodelRepoCluster`
 
 # What is Mnestix API?
 
@@ -170,5 +172,6 @@ When using Basyx with authorization and Keycloak as an OpenID Connect (OIDC) pro
 | **RepositoryOpenIdConnect__ValidateIssuer**    | Indicates whether to validate the issuer of the OpenID Connect tokens. Set this to `true` to ensure tokens are issued by the expected authority. | -                                          | For enhanced security, it is recommended to set this to `true` in production environments. | `false`           |
 | **TokenEndpoint**     | Used to explicitly define the token endpoint URL that your application will use to obtain access tokens. This is crucial in a Dockerized environment where the internal network configuration might differ from the external one. |                                          |                                                                                            | -                |
 
-> **⚠️ Important Note for `TokenEndpoint` Configuration**
+> [!IMPORTANT]  
+> **`TokenEndpoint` Configuration**
 > For production, this setting should be left empty. In a production environment, relying on environment-specific configurations can introduce security risks and maintenance challenges. The system should be configured to use the default discovery mechanisms provided by OIDC to dynamically determine the token endpoint, ensuring a more robust and secure setup.
