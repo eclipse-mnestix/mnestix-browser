@@ -50,7 +50,7 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
 
             const { isSuccess, result: aasIds } = await performDiscoveryAasSearch(assetId);
             if (isSuccess && aasIds.length === 0) {
-                window.open(assetId, '_blank');
+                window.open(assetId, '_top');
             } else {
                 navigate.push('/asset?assetId=' + encodeURIComponent(assetId));
             }
