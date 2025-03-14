@@ -18,7 +18,7 @@ type VerticalTabSelectorProps = {
     readonly selected?: TabSelectorItem;
     readonly hovered?: TabSelectorItem;
     readonly setSelected: (selected: TabSelectorItem) => void;
-    readonly setInfoItem: (infoItem: TabSelectorItem) => void;
+    readonly setInfoItem?: (infoItem: TabSelectorItem) => void;
 };
 
 export type ErrorMessage = 'NOT_FOUND' | 'UNAUTHORIZED' | 'INTERNAL_SERVER_ERROR' | 'UNKNOWN';
@@ -64,7 +64,7 @@ export function SubmodelInfoTooltip({
     setInfoItem,
 }: {
     item: TabSelectorItem;
-    setInfoItem: (item: TabSelectorItem) => void;
+    setInfoItem?: (item: TabSelectorItem) => void;
 }) {
     return (
         <Tooltip title={item.id.toString()}>
@@ -72,7 +72,7 @@ export function SubmodelInfoTooltip({
                 display="flex"
                 sx={{ cursor: 'pointer' }}
                 onClick={(event) => {
-                    setInfoItem(item);
+                    setInfoItem?.(item);
                     event.stopPropagation(); // don't open the tab
                 }}
             >
