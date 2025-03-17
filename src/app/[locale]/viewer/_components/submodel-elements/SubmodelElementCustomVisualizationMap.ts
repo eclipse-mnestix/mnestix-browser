@@ -12,6 +12,7 @@ import { DocumentComponent } from './document-component/DocumentComponent';
  */
 export const submodelElementCustomVisualizationMap = {
     [SubmodelElementSemanticId.Address]: AddressComponent,
+    [SubmodelElementSemanticId.NameplateAddressV3]: AddressComponent,
     [SubmodelElementSemanticId.ContactInformation]: ContactInformationComponent,
     [SubmodelElementSemanticId.MarkingsV1]: MarkingsComponent,
     [SubmodelElementSemanticId.MarkingsV2]: MarkingsComponent,
