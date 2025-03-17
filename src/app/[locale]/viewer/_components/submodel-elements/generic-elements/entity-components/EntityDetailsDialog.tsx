@@ -3,7 +3,7 @@ import { Entity } from '@aas-core-works/aas-core3.0-typescript/types';
 import { DataRow } from 'components/basics/DataRow';
 import { FormattedMessage } from 'react-intl';
 import { messages } from 'lib/i18n/localization';
-import { DialogCloseButton } from 'app/[locale]/_components/DialogCloseButton';
+import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 
 type EntityDetailsModalProps = {
     readonly entity: Entity;

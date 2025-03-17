@@ -1,5 +1,5 @@
 import { Dialog, DialogContent } from '@mui/material';
-import { DialogCloseButton } from 'app/[locale]/_components/DialogCloseButton';
+import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 
 type ArchetypeDetailsModalProps = {
     readonly handleClose: () => void;

@@ -1,6 +1,6 @@
 ﻿import { Box, Dialog, DialogContent, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import { DialogCloseButton } from 'app/[locale]/_components/DialogCloseButton';
+import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 
 type SubmodelInfoDialogProps = {
     readonly onClose: () => void;

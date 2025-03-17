@@ -3,7 +3,7 @@ import { ISubmodelElement, SubmodelElementCollection } from '@aas-core-works/aas
 import { messages } from 'lib/i18n/localization';
 import { FormattedMessage } from 'react-intl';
 import { GenericSubmodelElementComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/GenericSubmodelElementComponent';
-import { DialogCloseButton } from 'app/[locale]/_components/DialogCloseButton';
+import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 
 type DocumentDetailsModalProps = {
     readonly document: SubmodelElementCollection;

@@ -12,7 +12,7 @@ import {
     getSubmodelReferencesFromShell,
 } from 'lib/services/repository-access/repositorySearchActions';
 import { getSubmodelDescriptorsById } from 'lib/services/submodelRegistryApiActions';
-import { DialogCloseButton } from 'app/[locale]/_components/DialogCloseButton';
+import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 
 type RelationShipDetailsModalProps = {
     readonly relationship: RelationshipElement;
