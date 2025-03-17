@@ -49,7 +49,7 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
             // if not, just navigate to the specified URL which might lead anywhere.
 
             const { isSuccess, result: aasIds } = await performDiscoveryAasSearch(assetId);
-            if (!isSuccess || (isSuccess && aasIds.length === 0)) {
+            if (!isSuccess || (isSuccess && aasIds.length === 0)) {
                 const popup = window.open(''); // Try to open a new tab
                 if (popup) { // if not null -> new tab was opened
                     popup.location.href = assetId;    
