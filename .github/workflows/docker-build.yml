@@ -34,6 +34,10 @@ jobs:
       - name: Linting check
         run: yarn lint
 
+# TODO: This will show multiple errors for now, mostly .wait() and chaining related. run eslint cypress\e2e to see
+#      - name: Tests check
+#        run: eslint cypress\e2e
+
       - name: Typescript check
         run: tsc --noEmit
         
