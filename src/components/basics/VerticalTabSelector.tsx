@@ -113,7 +113,6 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
         <Box
             sx={{ 'Button:nth-of-type(1)': { borderColor: 'transparent' } }}
             onMouseLeave={() => setHoveredItem(undefined)}
-            id="yolo1"
         >
             {props.items.map((item, index) => {
                 return (
