@@ -8,7 +8,7 @@
 To start Mnestix along with Keycloak as the authorization server, use one of the following commands:
 
 ```sh
-docker compose -f compose.yml -f docker-compose/compose.dev.yml -f docker-compose/compose.keycloak.yml up -d
+docker compose -f compose.yml -f docker-compose/compose.keycloak.yml up -d
 ```
 
 or, alternatively:
