@@ -1,5 +1,5 @@
-import { Dialog, DialogContent, IconButton } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import { Dialog, DialogContent } from '@mui/material';
+import { DialogCloseButton } from 'app/[locale]/_components/DialogCloseButton';
 
 type ArchetypeDetailsModalProps = {
     readonly handleClose: () => void;
@@ -9,18 +9,7 @@ type ArchetypeDetailsModalProps = {
 export function ArchetypeDetailsDialog(props: ArchetypeDetailsModalProps) {
     return (
         <Dialog open={props.open} onClose={props.handleClose} fullWidth maxWidth="md" >
-            <IconButton
-                aria-label="close"
-                onClick={props.handleClose}
-                sx={{
-                    position: 'absolute',
-                    right: 8,
-                    top: 8,
-                    color: (theme) => theme.palette.grey[500],
-                }}
-            >
-                <CloseIcon />
-            </IconButton>
+            <DialogCloseButton handleClose={props.handleClose} />
             <DialogContent style={{ padding: '40px' }}>
                 <div>
                     <h3>Full</h3>
