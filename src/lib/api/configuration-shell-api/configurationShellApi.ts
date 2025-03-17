@@ -50,10 +50,10 @@ export class ConfigurationShellApi implements IConfigurationShellApi {
             return response.json();
         } else if (status === 400) {
             const _responseText1 = await response.text();
-            return _responseText1 === '' ? null : JSON.parse(_responseText1);
+            return _responseText1 === '' ? Promise.resolve<Submodel>(null as never) : JSON.parse(_responseText1);
         } else if (status !== 200 && status !== 204) {
             const _responseText2 = await response.text();
-            return _responseText2 === '' ? null : JSON.parse(_responseText2);
+            return _responseText2 === '' ? Promise.resolve<Submodel>(null as never) : JSON.parse(_responseText2);
         }
         return Promise.resolve<Submodel>(null as never);
     }

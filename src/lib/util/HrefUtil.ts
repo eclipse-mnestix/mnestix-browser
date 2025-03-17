@@ -1,4 +1,4 @@
-export function getSanitizedHref(link: string | undefined): string {
+export function getSanitizedHref(link: string | undefined | null): string {
     if (!link) {
         return '';
     }
@@ -9,7 +9,7 @@ export function getSanitizedHref(link: string | undefined): string {
     return sanitizedLink;
 }
 
-export function getTelHref(tel: string | undefined): string {
+export function getTelHref(tel: string | undefined | null): string {
     if (!tel) {
         return '';
     }
@@ -18,7 +18,7 @@ export function getTelHref(tel: string | undefined): string {
     return 'tel:' + sanitizedTel;
 }
 
-export function getMailToHref(email: string | undefined): string {
+export function getMailToHref(email: string | undefined | null): string {
     if (!email) {
         return '';
     }
