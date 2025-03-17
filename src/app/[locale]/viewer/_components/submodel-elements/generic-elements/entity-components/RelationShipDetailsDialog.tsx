@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, Typography } from '@mui/material';
+import { Dialog, DialogContent, IconButton, Typography } from '@mui/material';
 import { Reference, RelationshipElement, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { DataRow } from 'components/basics/DataRow';
 import { FormattedMessage } from 'react-intl';
@@ -12,6 +12,7 @@ import {
     getSubmodelReferencesFromShell,
 } from 'lib/services/repository-access/repositorySearchActions';
 import { getSubmodelDescriptorsById } from 'lib/services/submodelRegistryApiActions';
+import CloseIcon from '@mui/icons-material/Close';
 
 type RelationShipDetailsModalProps = {
     readonly relationship: RelationshipElement;
@@ -76,8 +77,20 @@ export function RelationShipDetailsDialog(props: RelationShipDetailsModalProps) 
 
     return (
         <Dialog open={props.open} onClose={props.handleClose}>
-            <DialogContent data-testid="bom-info-popup">
-                <Typography variant="h3" sx={{ mb: 2 }}>
+            <IconButton
+                aria-label="close"
+                onClick={props.handleClose}
+                sx={{
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: (theme) => theme.palette.grey[500],
+                }}
+            >
+                <CloseIcon />
+            </IconButton>
+            <DialogContent data-testid="bom-info-popup" style={{ padding: '40px' }}>
+                <Typography variant="h3" sx={{ mb: 2 , mr: 4 }}>
                     {relationship.idShort}
                 </Typography>
                 <DataRow title="Same entity submodel - idShort" hasDivider={false}>

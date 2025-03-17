@@ -1,4 +1,5 @@
-import { Dialog, DialogContent } from '@mui/material';
+import { Dialog, DialogContent, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 type ArchetypeDetailsModalProps = {
     readonly handleClose: () => void;
@@ -7,8 +8,20 @@ type ArchetypeDetailsModalProps = {
 
 export function ArchetypeDetailsDialog(props: ArchetypeDetailsModalProps) {
     return (
-        <Dialog open={props.open} onClose={props.handleClose} fullWidth maxWidth="md">
-            <DialogContent>
+        <Dialog open={props.open} onClose={props.handleClose} fullWidth maxWidth="md" >
+            <IconButton
+                aria-label="close"
+                onClick={props.handleClose}
+                sx={{
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: (theme) => theme.palette.grey[500],
+                }}
+            >
+                <CloseIcon />
+            </IconButton>
+            <DialogContent style={{ padding: '40px' }}>
                 <div>
                     <h3>Full</h3>
                     This Submodel Template allows to model a full hierarchy (including sub assets) in a single Submodel.
