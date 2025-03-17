@@ -14,6 +14,15 @@ const unlocalizedPathsRegex = RegExp(
 // next-intl does also provide methods for navigation (useRouter etc.) but we
 // use the middleware as MUI does not use these methods
 export function middleware(req: NextRequest) {
+    const { pathname } = req.nextUrl;
+    //paths which should be redirected to 404 page if feature flag is disabled
+    if (process.env.AAS_LIST_FEATURE_FLAG === 'false' && pathname.includes('list')) {
+        return NextResponse.rewrite(new URL('/404', req.url));
+    }
+    if (process.env.COMPARISON_FEATURE_FLAG === 'false' && pathname.includes('compare')) {
+        return NextResponse.rewrite(new URL('/404', req.url));
+    }
+
     if (req.nextUrl.pathname.match(unlocalizedPathsRegex)) {
         return NextResponse.next();
     }
