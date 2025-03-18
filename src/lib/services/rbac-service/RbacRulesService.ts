@@ -4,10 +4,10 @@ import { SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import {
     ApiResponseWrapper,
-    ApiResultStatus,
     wrapErrorCode,
     wrapSuccess,
 } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 const SEC_SUB_ID = 'SecuritySubmodel';
 
