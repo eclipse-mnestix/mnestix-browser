@@ -1,13 +1,9 @@
 import { base64ToBlob, blobToBase64 } from 'lib/util/Base64Util';
 import { ApiResultStatus, httpStatusMessage } from 'lib/util/apiResponseWrapper/apiResultStatus';
-    FORBIDDEN: 'FORBIDDEN',
-    NOT_FOUND: 'NOT_FOUND',
 
 export type ApiFileDto = {
     fileContent: string;
     fileType: string;
-    400: ApiResultStatus.BAD_REQUEST,
-    403: ApiResultStatus.FORBIDDEN,
 };
 
 const getStatus = (statusCode: number): ApiResultStatus => {

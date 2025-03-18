@@ -21,4 +21,3 @@ export async function getRbacRules() {
     const roles = await client.getRules(securitySubmodel);
     return roles;
 }
-}
