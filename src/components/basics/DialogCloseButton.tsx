@@ -14,6 +14,7 @@ export function DialogCloseButton({ handleClose }: CloseIconButtonProps) {
                 position: 'absolute',
                 right: 8,
                 top: 8,
+                zIndex: 1,
                 color: (theme) => theme.palette.grey[500],
             }}
         >
