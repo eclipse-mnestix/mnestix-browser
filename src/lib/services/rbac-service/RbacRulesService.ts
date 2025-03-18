@@ -8,12 +8,14 @@ import {
     wrapSuccess,
 } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
+import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import ServiceReachable from 'test-utils/TestUtils';
 
 const SEC_SUB_ID = 'SecuritySubmodel';
 
 export type RbacRolesFetchResult = {
     roles: BaSyxRbacRule[];
-    warrnings: string[][];
+    warnings: string[][];
 };
 
 /**
@@ -24,6 +26,10 @@ export class RbacRulesService {
 
     static create(): RbacRulesService {
         return new RbacRulesService((baseUrl) => SubmodelRepositoryApi.create(baseUrl, mnestixFetch()));
+    }
+
+    static createNull(submodel: Submodel, reachable = ServiceReachable.Yes): RbacRulesService {
+        return new RbacRulesService(() => SubmodelRepositoryApi.createNull('', [submodel], reachable));
     }
 
     /**
@@ -52,7 +58,7 @@ export class RbacRulesService {
         const roles = parsedRoles.filter((r): r is BaSyxRbacRule => !('error' in r));
         const warnings = parsedRoles.filter((r): r is { error: string[] } => 'error' in r).map((e) => e.error);
 
-        return wrapSuccess({ roles: roles, warrnings: warnings });
+        return wrapSuccess({ roles: roles, warnings: warnings });
     }
 }
 
