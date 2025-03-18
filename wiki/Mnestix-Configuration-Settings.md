@@ -26,6 +26,7 @@ Mnestix provides the following configuration options. You can adapt the values i
 | `KEYCLOAK_REALM`                      | BaSyx                       | Configuration variable that specifies the name of the Keycloak realm your application will use for authentication and authorization.                                                                                               | optional |
 | `IMPRINT_URL`                         |                             | Address that will be used in the imprint link. Will only show the link, if a value has been set.                                                                                                                                   | optional |
 | `DATA_PRIVACY_URL`                    |                             | Address that will be used in the data privacy link. Will only show the link, if a value has been set.                                                                                                                              | optional |
+| `USE_BASYX_RBAC`                      | false                       | Set to true, if BaSyx is used together with RBAC. This will enable the administration of RBAC configuration inside Mnestix.                                                                                                        | optional |
 
 ### How to set a custom logo
 

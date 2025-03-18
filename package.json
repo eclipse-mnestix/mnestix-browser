@@ -1,6 +1,6 @@
 {
   "name": "mnestix-browser",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "type": "module",
   "private": true,
   "license": "MIT",
@@ -84,7 +84,7 @@
     "swr": "^2.3.2",
     "typescript": "~5.7",
     "url": "^0.11.3",
-    "web-vitals": "^4.2.4",
+    "web-vitals": "^3.5.2",
     "zod": "^3.24.2"
   },
   "resolutions": {
@@ -110,7 +110,8 @@
     "docker:down": "docker compose -f compose.yml -f docker-compose/compose.test.yml down",
     "docker:prune": "docker compose -f compose.yml  -f docker-compose/compose.test.yml -f docker-compose/compose.keycloak.yml down -v && docker network prune && docker network rm mnestix-network",
     "docker:keycloak": "docker compose -f compose.yml -f docker-compose/compose.keycloak.yml up",
-    "docker:azure": "docker compose -f compose.yml -f docker-compose/compose.azure_ad.yml up"
+    "docker:azure": "docker compose -f compose.yml -f docker-compose/compose.azure_ad.yml up",
+    "docker:rbac": "docker compose -f compose.yml -f docker-compose/compose.keycloak.yml -f docker-compose/compose.dynamic.rbac.yml up"
   },
   "browserslist": {
     "production": [

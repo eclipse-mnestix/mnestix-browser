@@ -104,7 +104,6 @@ export function TransferDialog(props: DialogProps) {
         try {
             setIsSubmitting(true);
             const response = await transferAasWithSubmodels(dtoToSubmit);
-            console.log(response);
             processResult(response);
         } catch {
             notificationSpawner.spawn({

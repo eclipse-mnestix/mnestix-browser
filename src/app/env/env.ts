@@ -13,6 +13,7 @@ export const getEnv = async (): Promise<EnvironmentalVariables> => {
         COMPARISON_FEATURE_FLAG: process.env.COMPARISON_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
         TRANSFER_FEATURE_FLAG: process.env.TRANSFER_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
         AAS_LIST_FEATURE_FLAG: process.env.AAS_LIST_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
+        USE_BASYX_RBAC: process.env.USE_BASYX_RBAC?.toLowerCase() === 'true'.toLowerCase(),
     };
 
     const otherVariables = {
@@ -75,4 +76,5 @@ export type EnvironmentalVariables = {
     KEYCLOAK_ENABLED: boolean;
     IMPRINT_URL: string | undefined;
     DATA_PRIVACY_URL: string | undefined;
+    USE_BASYX_RBAC: boolean;
 };

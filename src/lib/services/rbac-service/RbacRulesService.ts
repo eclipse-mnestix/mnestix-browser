@@ -2,7 +2,11 @@ import { ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { z, ZodError } from 'zod';
 import { SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { mnestixFetch } from 'lib/api/infrastructure';
-import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import {
+    ApiResponseWrapper,
+    wrapErrorCode,
+    wrapSuccess,
+} from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 const SEC_SUB_ID = 'SecuritySubmodel';
@@ -109,7 +113,7 @@ const roleSpec = z.object({
             .strict(),
     ]),
     role: z.string(),
-    action: z.union([actions, z.array(actions)]),
+    action: z.array(actions),
 });
 
 export type BaSyxRbacRule = z.infer<typeof roleSpec>;
