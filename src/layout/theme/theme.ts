@@ -134,6 +134,16 @@ const components: Components = {
             },
         },
     },
+    MuiTableRow: {
+        styleOverrides: {
+            root: {
+                backgroundColor: palette.common?.white,
+                '&:hover': {
+                    backgroundColor: palette.action?.hover,
+                },
+            },
+        },
+    },
 };
 
 export const theme: ThemeOptions = {
