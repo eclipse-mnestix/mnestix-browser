@@ -1,11 +1,11 @@
 import {
     ApiResponseWrapperError,
-    ApiResultStatus,
     wrapErrorCode,
     wrapResponse,
     wrapSuccess,
 } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { expect } from '@jest/globals';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 const options = {
     headers: { 'Content-type': 'application/json; charset=utf-8' },
@@ -49,9 +49,7 @@ describe('', () => {
         expect(userErrorResponse.isSuccess).toBe(false);
         expect((userErrorResponse as ApiResponseWrapperError<unknown>).errorCode).toBe(ApiResultStatus.UNKNOWN_ERROR);
         expect(serverErrorResponse.isSuccess).toBe(false);
-        expect((serverErrorResponse as ApiResponseWrapperError<unknown>).errorCode).toBe(
-            ApiResultStatus.INTERNAL_SERVER_ERROR,
-        );
+        expect((serverErrorResponse as ApiResponseWrapperError<unknown>).errorCode).toBe(ApiResultStatus.BAD_GATEWAY);
     });
 
     it('keep the error code', async () => {

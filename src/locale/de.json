@@ -88,7 +88,7 @@
       "title": "Unautorisierter Zugriff",
       "content": "Sie haben keinen Zugang zu dieser Ressource. Bitte loggen Sie sich ein oder fragen sie Ihren Administrator um Zugriff."
     },
-    "not-found": "Nicht gefunden",
+    "notFound": "Nicht gefunden",
     "urlNotFound": "Keine Verwaltungsschale unter dieser ID."
   },
   "authentication": {
@@ -104,6 +104,39 @@
     "findOutMore": "Mehr Informationen",
     "login": "Anmelden",
     "logout": "Abmelden"
+  },
+  "components": {
+    "addressComponent": {
+      "addressTypes": {
+        "Department": "Abteilung",
+        "Company": "Firma",
+        "Street": "Straße",
+        "Zipcode": "PLZ",
+        "CityTown": "Ort",
+        "StateCounty": "Bundesland/Kreis",
+        "NationalCode": "Landescode",
+        "TimeZone": "Zeitzone",
+        "POBox": "Postfach",
+        "ZipCodeOfPOBox": "PLZ des Postfachs"
+      },
+      "VAT": "USt-IdNr."
+    },
+    "ContactInformation": {
+      "contactTypes": {
+        "office": "Geschäftlich",
+        "office mobile": "Geschäftl. Mobil",
+        "secretary": "Sekretariat",
+        "substitute": "Vertretung",
+        "home": "Privat",
+        "home mobile": "Privat Mobil",
+        "0173-1#07-AAS754#001": "Geschäftlich",
+        "0173-1#07-AAS755#001": "Geschäftlich Mobil",
+        "0173-1#07-AAS756#001": "Sekretariat",
+        "0173-1#07-AAS757#001": "Vertretung",
+        "0173-1#07-AAS758#001": "Privat",
+        "0173-1#07-AAS759#001": "Privat Mobil"
+      }
+    }
   },
   "footer": {
     "imprint": "Impressum",

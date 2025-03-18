@@ -56,7 +56,7 @@ export function CompareView() {
 
     const handleAddAas = async (aasId: string) => {
         const { isSuccess, result } = await performFullAasSearch(aasId);
-        if (!isSuccess) throw new LocalizedError('errors.urlNotFound');
+        if (!isSuccess) throw new LocalizedError('errors.unexpectedError');
 
         if (!result.aas) {
             throw new LocalizedError('compare.errors.moreAasFound');

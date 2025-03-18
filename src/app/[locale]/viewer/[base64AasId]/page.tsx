@@ -133,7 +133,7 @@ export default function Page() {
         flexDirection: 'column',
         gap: '30px',
         alignItems: 'center',
-        width: '100%',
+        width: '100vw',
         marginBottom: '50px',
         marginTop: '20px',
     };

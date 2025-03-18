@@ -29,6 +29,20 @@ Some screenshots can be found in the [screenshots folder](screenshots).
 
 ### **If you need support feel free to contact us through our website [here](https://xitaso.com/kompetenzen/mnestix/#support).**
 
+### **Join our Mnestix Community Hour, register [here](https://xitaso.com/event/mnestix-open-hour/).**
+
+## Quickstart
+
+All you need to start your first Mnestix instance is the `compose.yml` (or clone the repository).
+In the root directory run the following command and open http://localhost:3000 in your web browser.
+
+```shell
+docker compose up
+```
+
+### If you want to further configure your mnestix instance, go to our [wiki](https://github.com/eclipse-mnestix/mnestix-browser/wiki).
+
+
 ## Feature Overview
 
 The Mnestix Browser enables you to browse through the different AAS Dataspaces.
@@ -49,14 +63,3 @@ in an extra user-friendly manner**. These are:
 - **and more!**
 
 Moreover, dedicated visualizations for submodels can be added as a further feature.
-
-## Quickstart
-
-All you need to start your first Mnestix instance is the `compose.yml` (or clone the repository).
-In the root directory run the following command and open http://localhost:3000 in your web browser.
-
-```shell
-docker compose up
-```
-
-### If you want to further configure your mnestix instance, go to our [wiki](https://github.com/eclipse-mnestix/mnestix-browser/wiki).

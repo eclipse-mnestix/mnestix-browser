@@ -47,7 +47,7 @@ describe('Login Keycloak user roles', function () {
         cy.keycloakLogin(testUser.login, testUser.password);
         cy.getByTestId('header-burgermenu').click();
 
-        cy.getByTestId('user-info-box').should('have.text', 'user@test.com');
+        cy.getByTestId('user-info-box').should('have.text', 'test@test.com');
         cy.getByTestId('user-icon').should('exist');
         cy.getByTestId('login-button').should('be.not.exist');
         cy.keycloakLogout();

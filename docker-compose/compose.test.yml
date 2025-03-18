@@ -1,7 +1,7 @@
 services:
   cypress-test:
     container_name: cypress-test
-    profiles: ['', 'tests']
+    profiles: [ '', 'tests' ]
     build:
       dockerfile: cypress.dockerfile
     environment:
@@ -11,7 +11,6 @@ services:
       CYPRESS_MNESTIX_BACKEND_API_URL: 'http://mnestix-api:5064'
       CYPRESS_AAS_DISCOVERY_API_URL: 'http://mnestix-api:5064/discovery'
       ELECTRON_ENABLE_LOGGING: 1
-
       SPLIT: ${SPLIT:-1}
       SPLIT_INDEX: ${SPLIT_INDEX:-0}
     command: run
@@ -45,14 +44,14 @@ services:
       KEYCLOAK_ENABLED: 'true'
       KEYCLOAK_CLIENT_ID: 'mnestix-browser-client-demo'
       KEYCLOAK_ISSUER: 'http://keycloak:8080'
-      KEYCLOAK_REALM: mnestix-realm
+      KEYCLOAK_REALM: "Mnestix"
 
   keycloak:
-    profiles: ['', 'tests']
+    profiles: [ '', 'tests' ]
     image: keycloak/keycloak:24.0.4
     container_name: keycloak
     volumes:
-      - ./docker-compose/data/keycloak/minimal-mnestix-realm.json:/opt/keycloak/data/import/realm-config.json
+      - ./docker-compose/data/keycloak/realm/Mnestix-realm.json:/opt/keycloak/data/import/realm-config.json
     ports:
       - 8080:8080
     environment:
@@ -62,7 +61,7 @@ services:
       KC_HOSTNAME_DEBUG: 'true'
       KC_SPI_INITIALIZER_ISSUER_BASE_URI: http://keycloak:8080
       KC_HEALTH_ENABLED: 'true'
-    command: ['start-dev', '--import-realm']
+    command: [ 'start-dev', '--import-realm' ]
     healthcheck:
       test: #keycloak has no curl in image
         [

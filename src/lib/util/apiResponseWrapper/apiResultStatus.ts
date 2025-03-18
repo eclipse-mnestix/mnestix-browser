@@ -1,0 +1,50 @@
+export const ApiResultStatus = {
+    SUCCESS: 'SUCCESS',
+    CREATED: 'CREATED',
+    ACCEPTED: 'ACCEPTED',
+    NO_CONTENT: 'NO_CONTENT',
+
+    BAD_REQUEST: 'BAD_REQUEST',
+    UNAUTHORIZED: 'UNAUTHORIZED',
+    FORBIDDEN: 'FORBIDDEN',
+    NOT_FOUND: 'NOT_FOUND',
+    METHOD_NOT_ALLOWED: 'METHOD_NOT_ALLOWED',
+    CONFLICT: 'CONFLICT',
+    PAYLOAD_TOO_LARGE: 'PAYLOAD_TOO_LARGE',
+    UNSUPPORTED_MEDIA_TYPE: 'UNSUPPORTED_MEDIA_TYPE',
+    UNPROCESSABLE_ENTITY: 'UNPROCESSABLE_ENTITY',
+    TOO_MANY_REQUESTS: 'TOO_MANY_REQUESTS',
+
+    INTERNAL_SERVER_ERROR: 'INTERNAL_SERVER_ERROR',
+    NOT_IMPLEMENTED: 'NOT_IMPLEMENTED',
+    BAD_GATEWAY: 'BAD_GATEWAY',
+    SERVICE_UNAVAILABLE: 'SERVICE_UNAVAILABLE',
+    GATEWAY_TIMEOUT: 'GATEWAY_TIMEOUT',
+    UNKNOWN_ERROR: 'UNKNOWN_ERROR',
+} as const;
+
+export type ApiResultStatus = (typeof ApiResultStatus)[keyof typeof ApiResultStatus];
+
+export const httpStatusMessage: Record<number, ApiResultStatus> = {
+    200: ApiResultStatus.SUCCESS,
+    201: ApiResultStatus.CREATED,
+    202: ApiResultStatus.ACCEPTED,
+    204: ApiResultStatus.NO_CONTENT,
+
+    400: ApiResultStatus.BAD_REQUEST,
+    401: ApiResultStatus.UNAUTHORIZED,
+    403: ApiResultStatus.FORBIDDEN,
+    404: ApiResultStatus.NOT_FOUND,
+    405: ApiResultStatus.METHOD_NOT_ALLOWED,
+    409: ApiResultStatus.CONFLICT,
+    413: ApiResultStatus.PAYLOAD_TOO_LARGE,
+    415: ApiResultStatus.UNSUPPORTED_MEDIA_TYPE,
+    422: ApiResultStatus.UNPROCESSABLE_ENTITY,
+    429: ApiResultStatus.TOO_MANY_REQUESTS,
+
+    500: ApiResultStatus.INTERNAL_SERVER_ERROR,
+    501: ApiResultStatus.NOT_IMPLEMENTED,
+    502: ApiResultStatus.BAD_GATEWAY,
+    503: ApiResultStatus.SERVICE_UNAVAILABLE,
+    504: ApiResultStatus.GATEWAY_TIMEOUT,
+};

@@ -1,5 +1,5 @@
 import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
-import { ContactInformationComponent } from './contact-information-component/ContactInformationComponent';
+import { ContactInformationComponent } from './address-component/ContactInformationComponent';
 import { MarkingsComponent } from './marking-components/MarkingsComponent';
 import { AddressComponent } from './address-component/AddressComponent';
 import { DocumentComponent } from './document-component/DocumentComponent';
@@ -12,6 +12,7 @@ import { DocumentComponent } from './document-component/DocumentComponent';
  */
 export const submodelElementCustomVisualizationMap = {
     [SubmodelElementSemanticId.Address]: AddressComponent,
+    [SubmodelElementSemanticId.NameplateAddressV3]: AddressComponent,
     [SubmodelElementSemanticId.ContactInformation]: ContactInformationComponent,
     [SubmodelElementSemanticId.MarkingsV1]: MarkingsComponent,
     [SubmodelElementSemanticId.MarkingsV2]: MarkingsComponent,

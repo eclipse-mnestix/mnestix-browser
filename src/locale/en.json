@@ -105,6 +105,39 @@
     "login": "Login",
     "logout": "Logout"
   },
+  "components": {
+    "addressComponent": {
+      "addressTypes": {
+        "Department": "Department",
+        "Company": "Company",
+        "Street": "Street",
+        "Zipcode": "Zipcode",
+        "CityTown": "City/Town",
+        "StateCounty": "State/County",
+        "NationalCode": "National Code",
+        "TimeZone": "Time Zone",
+        "POBox": "PO Box",
+        "ZipCodeOfPOBox": "Zip Code of PO Box"
+      },
+      "VAT": "VAT-Number"
+    },
+    "ContactInformation": {
+      "contactTypes": {
+        "office": "Office",
+        "office mobile": "Office mobile",
+        "secretary": "Secretary",
+        "substitute": "Substitute",
+        "home": "Home",
+        "home mobile": "Home mobile",
+        "0173-1#07-AAS754#001": "Office",
+        "0173-1#07-AAS755#001": "Office mobile",
+        "0173-1#07-AAS756#001": "Secretary",
+        "0173-1#07-AAS757#001": "Substitute",
+        "0173-1#07-AAS758#001": "Home",
+        "0173-1#07-AAS759#001": "Private mobile"
+      }
+    }
+  },
   "footer": {
     "imprint": "Imprint",
     "dataPrivacy": "Data Privacy",
