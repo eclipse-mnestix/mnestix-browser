@@ -97,7 +97,7 @@
     "start": "yarn prisma migrate deploy && yarn prisma generate && next start",
     "prettier": "prettier --check ./",
     "format": "prettier --write ./",
-    "lint": "next lint",
+    "lint": "eslint src cypress --no-warn-ignored",
     "test": "cypress open",
     "test:headless": "cypress run",
     "test:unit": "jest",

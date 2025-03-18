@@ -90,7 +90,7 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
         if (selected) {
             customOnSelect();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+         
     }, []);
 
     const handleMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {

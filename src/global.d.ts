@@ -6,7 +6,7 @@ type Messages = typeof en & typeof userPluginEn;
 declare global {
     interface Window {
         Cypress: {
-            scannerCallback: (string) => Promise<void>;
+            scannerCallback: (string: string) => Promise<void>;
         };
     }
 

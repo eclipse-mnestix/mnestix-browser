@@ -18,7 +18,7 @@ export function BooleanPropertyEditComponent(props: BooleanPropertyEditComponent
             setRealBoolean(true);
             props.onChange('true');
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+         
     }, [props.defaultValueEnabled]);
 
     const onValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
