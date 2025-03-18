@@ -21,7 +21,7 @@ COPY . .
 RUN yarn prisma migrate deploy
 RUN yarn prisma generate
 
-RUN yarn build
+RUN NO_TYPECHECK=1 NO_LINT=1 yarn build
 
 FROM base AS production
 WORKDIR /app

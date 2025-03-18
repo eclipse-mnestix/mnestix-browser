@@ -98,6 +98,7 @@
     "prettier": "prettier --check ./",
     "format": "prettier --write ./",
     "lint": "eslint src cypress --no-warn-ignored",
+    "typecheck": "tsc --noEmit",
     "test": "cypress open",
     "test:headless": "cypress run",
     "test:unit": "jest",
