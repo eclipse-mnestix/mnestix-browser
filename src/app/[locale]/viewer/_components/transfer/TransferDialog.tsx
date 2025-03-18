@@ -175,6 +175,7 @@ export function TransferDialog(props: DialogProps) {
                     right: 8,
                     top: 8,
                     color: theme.palette.grey[500],
+                    zIndex: 1,
                 })}
             >
                 <CloseIcon />
