@@ -11,7 +11,7 @@ resolutions.forEach((res) => {
 
             it('should load thumbnail from file and visualize it in detail view', function () {
                 cy.setResolution(res);
-                cy.visitViewer(thumbnailAasMockData.id).wait(5000);
+                cy.visitViewer(thumbnailAasMockData.id);
                 cy.getByTestId('default-thumbnail-image-with-fallback', { timeout: 1000 }).should('not.exist');
                 cy.getByTestId('image-with-fallback', { timeout: 1000 })
                     .should('exist')
@@ -24,7 +24,7 @@ resolutions.forEach((res) => {
 
             it('should load thumbnail from file and visualize it in list view', function () {
                 cy.setResolution(res);
-                cy.visit('/list').wait(2000);
+                cy.visit('/list');
                 cy.get('[data-testid="list-row-https://mnestix.io/aas/thumbnail_1"]').as('testAas');
                 cy.get('@testAas')
                     .findByTestId('image-with-fallback')
@@ -42,7 +42,6 @@ resolutions.forEach((res) => {
                 cy.getByTestId('detail-compare-button').click();
                 cy.getByTestId('compare-aas-0')
                     .findByTestId('image-with-fallback')
-                    .wait(2000)
                     .should('exist')
                     .should('be.visible')
                     .and((img) => {
@@ -67,14 +66,14 @@ resolutions.forEach((res) => {
 
             it('should not load thumbnail from file and show default image in detail view', function () {
                 cy.setResolution(res);
-                cy.visitViewer(thumbnailAasMockData.id).wait(5000);
+                cy.visitViewer(thumbnailAasMockData.id);
                 cy.getByTestId('default-thumbnail-image-with-fallback', { timeout: 1000 }).should('exist');
                 cy.getByTestId('image-with-fallback', { timeout: 1000 }).should('not.exist');
             });
 
             it('should not load thumbnail from file and show default image in list view', function () {
                 cy.setResolution(res);
-                cy.visit('/list').wait(2000);
+                cy.visit('/list');
                 cy.get('[data-testid="list-row-https://mnestix.io/aas/thumbnail_1"]').as('testAas');
                 cy.get('@testAas').findByTestId('image-with-fallback').should('not.exist');
                 cy.get('@testAas').findByTestId('default-thumbnail-image-with-fallback').should('exist');
@@ -82,7 +81,8 @@ resolutions.forEach((res) => {
 
             it('should not load thumbnail from file and show default image in compare view', function () {
                 cy.visitViewer(thumbnailAasMockData.id);
-                cy.getByTestId('detail-compare-button').click().wait(2000);
+                cy.getByTestId('detail-compare-button').click();
+                cy.getByTestId('detail-compare-button');
                 cy.getByTestId('compare-aas-0').findByTestId('image-with-fallback').should('not.exist');
                 cy.getByTestId('compare-aas-0').findByTestId('default-thumbnail-image-with-fallback').should('exist');
             });
