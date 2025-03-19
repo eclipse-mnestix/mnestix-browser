@@ -48,13 +48,12 @@ export default function Page() {
     const [isSubmodelsLoading, setIsSubmodelsLoading] = useState(true);
     const [registryAasData, setRegistryAasData] = useRegistryAasState();
     const { showError } = useShowError();
-    
-    const whitelistFeatureFlag = process.env.WHITELIST_FEATURE_FLAG.toLowerCase() == 'true';
-    const whitelist: string[] = JSON.parse(process.env.WHITELIST || '[]');
+
+    const submodelWhitelist: string[] = JSON.parse(env.SUBMODEL_WHITELIST || '[]');
 
     function whitelistContains(sm: Submodel) {
-        const semanticIds = sm.semanticId.keys.map(key => key.value);
-        return semanticIds.some(id => whitelist.includes(id));
+        const semanticIds = sm.semanticId?.keys.map(key => key.value);
+        return semanticIds?.some(id => submodelWhitelist.includes(id));
     }
 
     useAsyncEffect(async () => {
@@ -107,7 +106,7 @@ export default function Page() {
                     setSubmodels((submodels) => {
                         const exists = submodels.some((sm) => sm.id === newSm.id);
                         if (exists) return submodels;
-                        if (whitelistFeatureFlag && newSm.submodel && !whitelistContains(newSm.submodel)) return submodels;
+                        if (env.WHITELIST_FEATURE_FLAG && newSm.submodel && !whitelistContains(newSm.submodel)) return submodels;
                         return [...submodels, newSm];
                     });
                 }),
