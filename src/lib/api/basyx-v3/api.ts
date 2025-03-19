@@ -3,7 +3,11 @@ import url from 'url';
 import { Configuration } from './configuration';
 import { AssetAdministrationShell, Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { encodeBase64 } from 'lib/util/Base64Util';
-import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
+import {
+    IAssetAdministrationShellRepositoryApi,
+    ISubmodelRepositoryApi,
+    SubmodelElementValue,
+} from 'lib/api/basyx-v3/apiInterface';
 import {
     AssetAdministrationShellRepositoryApiInMemory,
     SubmodelRepositoryApiInMemory,
@@ -388,10 +392,37 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
         );
     }
 
-    async getSubmodelByIdValueOnly(submodelId: string, options?: any): Promise<ApiResponseWrapper<Submodel>> {
+    async getSubmodelByIdValueOnly(
+        submodelId: string,
+        options?: any,
+    ): Promise<ApiResponseWrapper<SubmodelElementValue>> {
         return SubmodelRepositoryApiFp(this.configuration).getSubmodelByIdValueOnly(submodelId, options)(
             this.http,
             this.baseUrl,
+        );
+    }
+
+    async patchSubmodelElementByPath(
+        submodelId: string,
+        idShortPath: string,
+        submodelElement: SubmodelElementValue,
+        options: Omit<RequestInit, 'body' | 'method'> = {},
+    ): Promise<ApiResponseWrapper<Response>> {
+        options.headers = Object.assign(
+            {},
+            {
+                'Content-Type': 'application/json',
+            },
+            options.headers,
+        );
+
+        return this.http.fetch<Response>(
+            `${this.baseUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${idShortPath}/$value`,
+            {
+                ...options,
+                body: JSON.stringify(submodelElement),
+                method: 'PATCH',
+            },
         );
     }
 

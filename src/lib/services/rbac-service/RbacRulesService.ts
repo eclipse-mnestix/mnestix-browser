@@ -2,14 +2,11 @@ import { ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { z, ZodError } from 'zod';
 import { SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { mnestixFetch } from 'lib/api/infrastructure';
-import {
-    ApiResponseWrapper,
-    wrapErrorCode,
-    wrapSuccess,
-} from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 const SEC_SUB_ID = 'SecuritySubmodel';
+const BASYX_TARGET_CLASS = 'org.eclipse.digitaltwin.basyx.aasrepository.feature.authorization.AasTargetInformation';
 
 export type RbacRolesFetchResult = {
     roles: BaSyxRbacRule[];
@@ -54,6 +51,26 @@ export class RbacRulesService {
 
         return wrapSuccess({ roles: roles, warrnings: warnings });
     }
+
+    /**
+     * Update a rbac rule
+     */
+    async update(basePath: string, rule: BaSyxRbacRule): Promise<ApiResponseWrapper<undefined>> {
+        const submodelRepositoryClient = this.getSubmodelRepositoryClient(basePath);
+
+        const idShort = toRuleIdShort(rule.role, rule.action);
+
+        const { isSuccess } = await submodelRepositoryClient.patchSubmodelElementByPath(SEC_SUB_ID, idShort, rule);
+        if (!isSuccess) {
+            return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Failed to set Rule in SecuritySubmodel Repo');
+        }
+        return wrapSuccess(undefined);
+    }
+}
+
+function toRuleIdShort(role: string, action: Action[]) {
+    const str = `${role}${action.toSorted().join('+')}${BASYX_TARGET_CLASS}`;
+    return btoa(str);
 }
 
 const strOrArray = z.union([z.string(), z.array(z.string())]);
@@ -64,6 +81,7 @@ const actions = z.union([
     z.literal('DELETE'),
     z.literal('EXECUTE'),
 ]);
+type Action = z.infer<typeof actions>;
 const roleSpec = z.object({
     targetInformation: z.discriminatedUnion('@type', [
         z

@@ -79,6 +79,14 @@ export interface IAssetAdministrationShellRepositoryApi {
     ): Promise<ApiResponseWrapper<AssetAdministrationShell>>;
 }
 
+type PropertyValue = string | number | boolean;
+
+export type SubmodelElementValue =
+    | Array<SubmodelElementValue>
+    | PropertyValue
+    // unfortunately typescript does not support recursive types
+    | object;
+
 export interface ISubmodelRepositoryApi {
     /**
      * Returns the base URL of this repository.
@@ -101,7 +109,14 @@ export interface ISubmodelRepositoryApi {
      * @returns Wrapped unknown. unknown because value only can be primitive or complex type.
      * @throws {RequiredError}
      */
-    getSubmodelByIdValueOnly(submodelId: string, options?: object): Promise<ApiResponseWrapper<unknown>>;
+    getSubmodelByIdValueOnly(submodelId: string, options?: object): Promise<ApiResponseWrapper<SubmodelElementValue>>;
+
+    patchSubmodelElementByPath(
+        submodelId: string,
+        idShortPath: string,
+        submodelElement: SubmodelElementValue,
+        options?: Omit<RequestInit, 'body' | 'method'>,
+    ): Promise<ApiResponseWrapper<Response>>;
 
     /**
      * @summary Retrieves the submodel metadata (submodel in metadata representation)

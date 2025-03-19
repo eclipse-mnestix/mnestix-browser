@@ -1,4 +1,8 @@
-import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
+import {
+    IAssetAdministrationShellRepositoryApi,
+    ISubmodelRepositoryApi,
+    SubmodelElementValue,
+} from 'lib/api/basyx-v3/apiInterface';
 import type {
     AssetAdministrationShell,
     ISubmodelElement,
@@ -184,7 +188,10 @@ export class SubmodelRepositoryApiInMemory implements ISubmodelRepositoryApi {
         );
     }
 
-    async getSubmodelByIdValueOnly(submodelId: string, _options?: object) {
+    async getSubmodelByIdValueOnly(
+        submodelId: string,
+        _options?: object,
+    ): Promise<ApiResponseWrapper<SubmodelElementValue>> {
         if (this.reachable !== ServiceReachable.Yes)
             return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Service not reachable');
         const foundAas = this.submodelsInRepository.get(submodelId);
@@ -196,6 +203,10 @@ export class SubmodelRepositoryApiInMemory implements ISubmodelRepositoryApi {
             ApiResultStatus.NOT_FOUND,
             `no submodel found in the repository: '${this.baseUrl}' for submodel: '${submodelId}'`,
         );
+    }
+
+    patchSubmodelElementByPath(): Promise<ApiResponseWrapper<Response>> {
+        throw 'Unimplemented in test api';
     }
 
     async getAttachmentFromSubmodelElement(
