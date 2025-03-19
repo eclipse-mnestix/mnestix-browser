@@ -30,7 +30,7 @@ export function middleware(req: NextRequest) {
     const { locales, defaultLocale } = routing;
     const locale = pathname.split('/')[1] as typeof locales[number];
 
-    if (!locales.includes(locale)) {
+    if (locale.length === 2 && !locales.includes(locale)) {
         const newPathname = pathname.replace(`/${locale}`, '');
         const newUrl = new URL(`/${defaultLocale}${newPathname}`, req.url);
 
