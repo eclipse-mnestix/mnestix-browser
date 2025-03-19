@@ -205,4 +205,6 @@ export const deMnestix = {
         repositoryUrl: 'Repository Url',
         subtitle: 'Hier finden Sie alle zugehörigen AAS für die angegebene ID.',
     },
+    copyTemplateId: 'Vorlagen-ID kopieren',
+    templateIdCopied: 'Vorlagen-ID in die Zwischenablage kopiert: {id}',
 };
