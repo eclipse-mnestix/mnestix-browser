@@ -127,6 +127,8 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Typescript check
         run: yarn typecheck
+      - name: Typescript e2e check
+        run: yarn typecheck:e2e
       - name: Linting check
         run: yarn lint
       - name: Run unit tests

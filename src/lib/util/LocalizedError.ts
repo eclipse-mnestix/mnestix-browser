@@ -1,13 +1,12 @@
+import { IntlMessages } from 'i18n/messages';
+
 type Paths<Schema, Path extends string = ''> = Schema extends string
     ? Path
     : Schema extends object
-        ? {
-            [K in keyof Schema & string]: Paths<
-                Schema[K],
-                `${Path}${Path extends '' ? '' : '.'}${K}`
-            >;
+      ? {
+            [K in keyof Schema & string]: Paths<Schema[K], `${Path}${Path extends '' ? '' : '.'}${K}`>;
         }[keyof Schema & string]
-        : never;
+      : never;
 
 export class LocalizedError extends Error {
     descriptor: Paths<IntlMessages>;
