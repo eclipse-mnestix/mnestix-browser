@@ -93,7 +93,7 @@
   },
   "authentication": {
     "authentication-needed": "Authentifizierung erforderlich",
-    "contactAdmin": "You cannot visit this page. Please contact your administrator."
+    "contactAdmin": "Sie können diese Seite nicht besuchen. Bitte wenden Sie sich an Ihren Administrator."
   },
   "mainMenu": {
     "dashboard": "Dashboard",
