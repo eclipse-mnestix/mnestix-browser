@@ -94,7 +94,7 @@ function extractCompletedStages(pcfSubmodelElements: SubmodelElementCollection[]
     return pcfSubmodelElements.map(
         (el) =>
             ((el.value?.find((v) => hasSemanticId(v, SubmodelElementSemanticId.PCFLiveCyclePhase)) as Property)?.value
-                ?.split(" ")[0]
+                ?.split(' ')[0]
                 .trim() as ProductLifecycleStage) ?? [],
     );
 }
@@ -106,7 +106,7 @@ function ExtractCO2EquivalentsPerLifeCycleStage(
         (o, key) => ({
             ...o,
             [(key.value?.find((v) => hasSemanticId(v, SubmodelElementSemanticId.PCFLiveCyclePhase)) as Property)?.value
-                ?.split(" ")[0]
+                ?.split(' ')[0]
                 .trim() as ProductLifecycleStage ?? ProductLifecycleStage.A3Production]: Number.parseFloat(
                 (key.value?.find((v) => hasSemanticId(v, SubmodelElementSemanticId.PCFCO2eq)) as Property)?.value ?? '',
             ),
@@ -131,7 +131,7 @@ function extractAddressPerLifeCyclePhaseFromPCFSubmodel(el: SubmodelElementColle
     const lifeCyclePhase = (
         el.value?.find((v) => hasSemanticId(v, SubmodelElementSemanticId.PCFLiveCyclePhase)) as Property
     )?.value
-        ?.split(" ")[0]
+        ?.split(' ')[0]
         .trim() as ProductLifecycleStage;
 
     const pcfGoodsAddressHandover = (
