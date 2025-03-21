@@ -52,14 +52,21 @@ export async function wrapFile(content: Blob): Promise<ApiResponseWrapperSuccess
 
 export async function wrapResponse<T>(response: Response): Promise<ApiResponseWrapper<T>> {
     if (!(response.status >= 200 && response.status < 300)) {
-
-        const result = await response.json().catch((e) => console.warn(e.message));
         const status = getStatus(response.status);
+        if (response.headers.get('content-length') === '0') {
+            return wrapErrorCode(status, response.statusText);
+        }
+        const result = await response.json().catch((e) => console.warn(e.message));
         return wrapErrorCode(status, response.statusText, result);
     }
 
     const contentType = response.headers.get('Content-Type') || '';
     if (!contentType || contentType.includes('application/json')) {
+        if (response.body === null) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            return wrapSuccess(undefined as any);
+        }
+
         const result = await response.json().catch((e) => console.warn(e.message));
         return wrapSuccess(result);
     }
