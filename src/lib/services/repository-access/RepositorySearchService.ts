@@ -215,8 +215,16 @@ export class RepositorySearchService {
     }
 
     async getFirstSubmodelReferencesFromShellFromAllRepos(aasId: string) {
+        let allRepoUrls: string[] = [];
+        const defaultRepositoryClient = process.env.AAS_REPO_API_URL;
+        const repositories = await this.getAasRepositories(); //TODO: (1599)Answer question, why from all repos and yet default is not included?
+
+        if (defaultRepositoryClient) {
+            allRepoUrls = [defaultRepositoryClient, ...repositories];
+        }
+
         return this.getFirstFromAllRepos(
-            await this.getAasRepositories(),
+            allRepoUrls,
             (basePath) => this.getSubmodelReferencesFromShellFromRepo(aasId, basePath),
             `Submodel references for '${aasId}' not found in any repository`,
         );
