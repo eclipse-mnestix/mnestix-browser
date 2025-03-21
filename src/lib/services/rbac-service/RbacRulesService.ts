@@ -143,7 +143,8 @@ function submodelToRule(submodelElement: any): BaSyxRbacRule {
         const targets = targetInformationElement?.value
             .filter((e: any) => e.idShort !== '@type')
             .reduce((acc: Record<string, string[] | string>, elem: any) => {
-                const values = elem.value.map((item: any) => item.value);
+                const values =
+                    typeof elem.value === 'string' ? [elem.value] : elem.value.map((item: any) => item.value);
                 acc[elem.idShort] = values.length === 1 ? values[0] : values;
                 return acc;
             }, {});
@@ -157,8 +158,8 @@ function submodelToRule(submodelElement: any): BaSyxRbacRule {
                 ...targets,
             },
         };
-    } catch {
-        throw new ParseError();
+    } catch (err) {
+        throw new ParseError(err);
     }
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */

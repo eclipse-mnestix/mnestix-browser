@@ -10,7 +10,7 @@ const warningRules = testData.warning as JsonValue;
 describe('RbacRulesService', () => {
     it('should parse correct SecuritySubmodel', async () => {
         const service = RbacRulesService.createNull(submodelFromJsonable(correctRules).mustValue());
-        const res = await service.getRules('SecuritySubmodel');
+        const res = await service.getRules();
         expect(res.isSuccess).toBeTruthy();
         expect(res.result?.warnings).toHaveLength(0);
         expect(res.result?.roles).toHaveLength(2);
@@ -18,7 +18,7 @@ describe('RbacRulesService', () => {
 
     it('should add warnings if unknown data is in SecuritySubmodel', async () => {
         const service = RbacRulesService.createNull(submodelFromJsonable(warningRules).mustValue());
-        const res = await service.getRules('SecuritySubmodel');
+        const res = await service.getRules();
         expect(res.isSuccess).toBeTruthy();
         expect(res.result?.warnings).toHaveLength(1);
     });
@@ -28,7 +28,7 @@ describe('RbacRulesService', () => {
             submodelFromJsonable(warningRules).mustValue(),
             ServiceReachable.No,
         );
-        const res = await service.getRules('SecuritySubmodel');
+        const res = await service.getRules();
         expect(res.isSuccess).toBeFalsy();
     });
 });

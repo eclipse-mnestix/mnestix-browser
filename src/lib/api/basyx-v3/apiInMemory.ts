@@ -223,10 +223,6 @@ export class SubmodelRepositoryApiInMemory implements ISubmodelRepositoryApi {
         );
     }
 
-    patchSubmodelElementByPath(): Promise<ApiResponseWrapper<Response>> {
-        throw 'Unimplemented in test api';
-    }
-
     async getAttachmentFromSubmodelElement(
         _submodelId: string,
         _submodelElementPath: string,
