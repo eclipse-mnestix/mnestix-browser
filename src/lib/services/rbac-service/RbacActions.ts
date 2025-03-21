@@ -7,6 +7,22 @@ import { BaSyxRbacRule, RbacRulesService } from './RbacRulesService';
 import { wrapErrorCode } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
+export async function createRbacRule(newRule: Omit<BaSyxRbacRule, 'idShort'>) {
+    const session = await getServerSession(authOptions);
+    if (!session?.user.roles || !session?.user.roles?.includes(MnestixRole.MnestixAdmin)) {
+        return wrapErrorCode(ApiResultStatus.FORBIDDEN, 'Forbidden');
+    }
+
+    const securitySubmodel = process.env.SEC_SM_API_URL ?? '';
+    if (!securitySubmodel || securitySubmodel === '') {
+        return wrapErrorCode(ApiResultStatus.BAD_REQUEST, 'Security Submodel not configured!');
+    }
+
+    const client = RbacRulesService.create();
+    const res = await client.createRule(securitySubmodel, newRule);
+    return res;
+}
+
 export async function getRbacRules() {
     const session = await getServerSession(authOptions);
     if (!session?.user.roles || !session?.user.roles?.includes(MnestixRole.MnestixAdmin)) {

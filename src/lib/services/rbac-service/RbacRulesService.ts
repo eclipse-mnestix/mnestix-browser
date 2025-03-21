@@ -22,6 +22,29 @@ export class RbacRulesService {
         return new RbacRulesService((baseUrl) => SubmodelRepositoryApi.create(baseUrl, mnestixFetch()));
     }
 
+    async createRule(
+        basePath: string,
+        newRule: Omit<BaSyxRbacRule, 'idShort'>,
+    ): Promise<ApiResponseWrapper<BaSyxRbacRule>> {
+        const submodelRepositoryClient = this.getSubmodelRepositoryClient(basePath);
+
+        const newIdShort = ruleToIdShort(newRule);
+        const ruleSubmodelElement = ruleToSubmodelElement(newIdShort, newRule);
+
+        const { isSuccess, result } = await submodelRepositoryClient.postSubmodelElementByPath(
+            SEC_SUB_ID,
+            newIdShort,
+            ruleSubmodelElement,
+        );
+        if (!isSuccess) {
+            return wrapErrorCode(
+                ApiResultStatus.INTERNAL_SERVER_ERROR,
+                'Failed to create Rule in SecuritySubmodel Repo',
+            );
+        }
+        return wrapSuccess(submodelToRule(result));
+    }
+
     /**
      * Get all rbac rules
      */
@@ -59,19 +82,6 @@ export class RbacRulesService {
     }
 
     /**
-     * Delete a rule
-     */
-    async delete(basePath: string, idShort: string): Promise<ApiResponseWrapper<undefined>> {
-        const submodelRepositoryClient = this.getSubmodelRepositoryClient(basePath);
-
-        const { isSuccess } = await submodelRepositoryClient.deleteSubmodelElementByPath(SEC_SUB_ID, idShort);
-        if (isSuccess) {
-            return wrapSuccess(undefined);
-        }
-        return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Failed to set Rule in SecuritySubmodel Repo');
-    }
-
-    /**
      * Deletes a rule and creates a new rule
      */
     async deleteAndCreate(
@@ -98,13 +108,26 @@ export class RbacRulesService {
 
         const { isSuccess, result } = await submodelRepositoryClient.postSubmodelElementByPath(
             SEC_SUB_ID,
-            idShort,
+            newIdShort,
             ruleSubmodelElement,
         );
         if (!isSuccess) {
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Failed to set Rule in SecuritySubmodel Repo');
         }
         return wrapSuccess(submodelToRule(result));
+    }
+
+    /**
+     * Delete a rule
+     */
+    async delete(basePath: string, idShort: string): Promise<ApiResponseWrapper<undefined>> {
+        const submodelRepositoryClient = this.getSubmodelRepositoryClient(basePath);
+
+        const { isSuccess } = await submodelRepositoryClient.deleteSubmodelElementByPath(SEC_SUB_ID, idShort);
+        if (isSuccess) {
+            return wrapSuccess(undefined);
+        }
+        return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Failed to set Rule in SecuritySubmodel Repo');
     }
 }
 
@@ -141,7 +164,7 @@ function submodelToRule(submodelElement: any): BaSyxRbacRule {
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
-function ruleToSubmodelElement(idShort: string, rule: BaSyxRbacRule) {
+function ruleToSubmodelElement(idShort: string, rule: Omit<BaSyxRbacRule, 'idShort'>) {
     const targets = Object.entries(rule.targetInformation).filter(([k]) => k !== '@type');
     return {
         modelType: 'SubmodelElementCollection',
@@ -208,7 +231,7 @@ const BASYX_TARGET_CLASSES: Record<BaSyxRbacRule['targetInformation']['@type'], 
         'org.eclipse.digitaltwin.basyx.submodelregistry.feature.authorization.SubmodelRegistryTargetInformation',
 };
 
-function ruleToIdShort(rule: BaSyxRbacRule) {
+function ruleToIdShort(rule: Omit<BaSyxRbacRule, 'idShort'>) {
     const targetClass = BASYX_TARGET_CLASSES[rule.targetInformation['@type']];
     const str = `${rule.role}${rule.action.toSorted().join('+')}${targetClass}`;
     return btoa(str);
