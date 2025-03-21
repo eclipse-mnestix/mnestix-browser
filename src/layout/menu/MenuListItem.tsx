@@ -8,6 +8,7 @@ export interface MenuListItemProps {
     label?: React.ReactElement | string;
     target?: string;
     onClick?: React.MouseEventHandler<HTMLElement>;
+    testId?: string;
 }
 
 export function MenuListItem(props: MenuListItemProps) {
@@ -20,7 +21,7 @@ export function MenuListItem(props: MenuListItemProps) {
 
     return props.to ? (
         <ListItemButton
-            data-testid={props.to}
+            data-testid={props.testId}
             component={!props.external ? Link : 'a'}
             href={props.to}
             target={props.target}
