@@ -418,7 +418,6 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
 
     async postSubmodelElementByPath(
         submodelId: string,
-        idShortPath: string,
         submodelElement: unknown,
         options: Omit<RequestInit, 'body' | 'method'> = {},
     ): Promise<ApiResponseWrapper<Response>> {

@@ -113,7 +113,7 @@ export interface ISubmodelRepositoryApi {
 
     postSubmodelElementByPath(
         submodelId: string,
-        idShortPath: string,
+        // TODO MNES-1605
         submodelElement: unknown,
         options?: Omit<RequestInit, 'body' | 'method'>,
     ): Promise<ApiResponseWrapper<Response>>;

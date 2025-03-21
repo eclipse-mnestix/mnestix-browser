@@ -16,7 +16,7 @@ export type RbacRolesFetchResult = {
  * Service for interacting with BaSyx Dynamic RBAC rules
  */
 export class RbacRulesService {
-    constructor(private readonly securitySubmodelRepositoryClient: ISubmodelRepositoryApi) {}
+    private constructor(private readonly securitySubmodelRepositoryClient: ISubmodelRepositoryApi) {}
 
     static createService(): RbacRulesService {
         const baseUrl = process.env.SEC_SM_API_URL;
@@ -34,7 +34,6 @@ export class RbacRulesService {
 
         const { isSuccess, result } = await this.securitySubmodelRepositoryClient.postSubmodelElementByPath(
             SEC_SUB_ID,
-            newIdShort,
             ruleSubmodelElement,
         );
         if (!isSuccess) {
@@ -101,7 +100,6 @@ export class RbacRulesService {
 
         const { isSuccess, result } = await this.securitySubmodelRepositoryClient.postSubmodelElementByPath(
             SEC_SUB_ID,
-            newIdShort,
             ruleSubmodelElement,
         );
         if (!isSuccess) {
