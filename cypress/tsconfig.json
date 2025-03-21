@@ -1,14 +1,15 @@
 ﻿{
   "compilerOptions": {
-    "noImplicitAny": true,
     "module": "es6",
     "target": "es5",
     "jsx": "react",
     "allowJs": true,
-    "types": ["cypress"],
+    "types": ["cypress", "node"],
     "moduleResolution": "Node",
+    "noImplicitAny": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
-  }
+  },
+  "include": ["**/*.ts"]
 }

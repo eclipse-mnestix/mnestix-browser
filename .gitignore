@@ -10,3 +10,4 @@ cypress-artifacts
 /cypress/screenshots/
 /prisma/database/
 /cypress/results/*
+/tsconfig.tsbuildinfo

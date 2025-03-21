@@ -112,6 +112,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
     const renderImage = () => (
         <StyledImageWrapper>
             {!imageError && fileViewObject?.previewImgUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element -- logo can be an arbitrary url which conflicts with https://nextjs.org/docs/pages/api-reference/components/image#remotepatterns
                 <img
                     src={fileViewObject.previewImgUrl}
                     height={90}
@@ -189,7 +190,6 @@ export function DocumentComponent(props: MarkingsComponentProps) {
         if (isValidUrl((versionSubmodelEl as File).value)) {
             digitalFile.digitalFileUrl = (versionSubmodelEl as File).value || '';
             digitalFile.mimeType = (versionSubmodelEl as File).contentType;
-
         } else if (props.submodelId && submodelElement.idShort && props.submodelElement?.idShort) {
             const submodelElementPath =
                 props.submodelElement.idShort +
