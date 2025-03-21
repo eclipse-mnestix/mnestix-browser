@@ -27,14 +27,17 @@ export const RedirectToViewer = () => {
     useAsyncEffect(async () => {
         try {
             setIsLoading(true);
-            if (assetIdParam) {
+            if (assetIdParam) { // if assetId is present navigate to the viewer of the asset
                 await navigateToViewerOfAsset(decodeURIComponent(assetIdParam ?? ''));
-            } else if (aasIdParam) {
+            } else if (aasIdParam) { // if instead the aasId is present we dont need to search
                 const targetUrl = determineViewerTargetUrl([aasIdParam]);
+                // Clear the context
                 setAas(null);
                 setAasOriginUrl(null);
+                // Navigate directly to the viewer
                 navigate.replace(targetUrl); 
             } else {
+                // If neither assetId nor aasId is present, we cannot proceed
                 throw new NotFoundError();
             }
         } catch (e) {
