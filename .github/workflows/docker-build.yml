@@ -61,11 +61,13 @@ jobs:
         with:
           platforms: linux/amd64
           context: '.'
+          cache-from: mnestix/mnestix-browser:dev
           cache-to: type=local,dest=/tmp/buildx-amd64-cache,mode=max
           target: production
           push: false
           tags: mnestix/mnestix-browser:latest
           load: true
+          
 
       - name: Cache buildx
         uses: actions/cache/save@v4
