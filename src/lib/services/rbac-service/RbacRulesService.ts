@@ -9,7 +9,7 @@ import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescrip
 const SEC_SUB_ID = 'SecuritySubmodel';
 export type RbacRolesFetchResult = {
     roles: BaSyxRbacRule[];
-    warrnings: string[][];
+    warnings: string[][];
 };
 
 /**
@@ -32,7 +32,7 @@ export class RbacRulesService {
         const newIdShort = ruleToIdShort(newRule);
         const ruleSubmodelElement = ruleToSubmodelElement(newIdShort, newRule);
 
-        const { isSuccess, result } = await this.securitySubmodelRepositoryClient.postSubmodelElementByPath(
+        const { isSuccess, result } = await this.securitySubmodelRepositoryClient.postSubmodelElement(
             SEC_SUB_ID,
             ruleSubmodelElement,
         );
@@ -43,6 +43,10 @@ export class RbacRulesService {
             );
         }
         return wrapSuccess(submodelToRule(result));
+    }
+
+    static createNull(subRepoApi: ISubmodelRepositoryApi): RbacRulesService {
+        return new RbacRulesService(subRepoApi);
     }
 
     /**
@@ -76,7 +80,7 @@ export class RbacRulesService {
         const roles = parsedRoles.filter((r): r is BaSyxRbacRule => !('error' in r));
         const warnings = parsedRoles.filter((r): r is { error: string[] } => 'error' in r).map((e) => e.error);
 
-        return wrapSuccess({ roles: roles, warrnings: warnings });
+        return wrapSuccess({ roles: roles, warnings: warnings });
     }
 
     /**
@@ -90,7 +94,7 @@ export class RbacRulesService {
         if (isSuccessDelete) {
             return wrapErrorCode(
                 ApiResultStatus.INTERNAL_SERVER_ERROR,
-                // todo 404
+                // todo 404 from wrapper status code cannot be read MNES-1605
                 'Failed to delete Rule in SecuritySubmodel Repo',
             );
         }
@@ -98,7 +102,7 @@ export class RbacRulesService {
         const newIdShort = ruleToIdShort(newRule);
         const ruleSubmodelElement = ruleToSubmodelElement(newIdShort, newRule);
 
-        const { isSuccess, result } = await this.securitySubmodelRepositoryClient.postSubmodelElementByPath(
+        const { isSuccess, result } = await this.securitySubmodelRepositoryClient.postSubmodelElement(
             SEC_SUB_ID,
             ruleSubmodelElement,
         );
@@ -137,7 +141,8 @@ function submodelToRule(submodelElement: any): BaSyxRbacRule {
         const targets = targetInformationElement?.value
             .filter((e: any) => e.idShort !== '@type')
             .reduce((acc: Record<string, string[] | string>, elem: any) => {
-                const values = elem.value.map((item: any) => item.value);
+                const values =
+                    typeof elem.value === 'string' ? [elem.value] : elem.value.map((item: any) => item.value);
                 acc[elem.idShort] = values.length === 1 ? values[0] : values;
                 return acc;
             }, {});
@@ -151,8 +156,8 @@ function submodelToRule(submodelElement: any): BaSyxRbacRule {
                 ...targets,
             },
         };
-    } catch {
-        throw new ParseError();
+    } catch (err) {
+        throw new ParseError(err);
     }
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */

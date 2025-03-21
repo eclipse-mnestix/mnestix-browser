@@ -12,6 +12,7 @@ import {
     getSubmodelReferencesFromShell,
 } from 'lib/services/repository-access/repositorySearchActions';
 import { getSubmodelDescriptorsById } from 'lib/services/submodelRegistryApiActions';
+import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 
 type RelationShipDetailsModalProps = {
     readonly relationship: RelationshipElement;
@@ -76,8 +77,9 @@ export function RelationShipDetailsDialog(props: RelationShipDetailsModalProps) 
 
     return (
         <Dialog open={props.open} onClose={props.handleClose}>
-            <DialogContent data-testid="bom-info-popup">
-                <Typography variant="h3" sx={{ mb: 2 }}>
+            <DialogCloseButton handleClose={props.handleClose} />
+            <DialogContent data-testid="bom-info-popup" style={{ padding: '40px' }}>
+                <Typography variant="h3" color={'primary'} sx={{ mb: 2 , mr: 4 }}>
                     {relationship.idShort}
                 </Typography>
                 <DataRow title="Same entity submodel - idShort" hasDivider={false}>

@@ -1,0 +1,193 @@
+{
+  "correct": {
+    "modelType": "Submodel",
+    "id": "SecuritySubmodel",
+    "idShort": "SecuritySubmodel",
+    "kind": "Instance",
+    "submodelElements": [
+      {
+        "modelType": "SubmodelElementCollection",
+        "idShort": "YWRtaW5ERUxFVEVvcmcuZWNsaXBzZS5kaWdpdGFsdHdpbi5iYXN5eC5hYXNyZXBvc2l0b3J5LmZlYXR1cmUuYXV0aG9yaXphdGlvbi5BYXNUYXJnZXRJbmZvcm1hdGlvbg==",
+        "value": [
+          {
+            "modelType": "Property",
+            "value": "admin",
+            "idShort": "role",
+            "valueType": "xs:string"
+          },
+          {
+            "modelType": "SubmodelElementList",
+            "idShort": "action",
+            "orderRelevant": true,
+            "typeValueListElement": "Property",
+            "value": [
+              {
+                "modelType": "Property",
+                "valueType": "xs:string",
+                "value": "DELETE"
+              }
+            ]
+          },
+          {
+            "modelType": "SubmodelElementCollection",
+            "idShort": "targetInformation",
+            "value": [
+              {
+                "modelType": "Property",
+                "idShort": "submodelElementIdShortPaths",
+                "value": "*",
+                "valueType": "xs:string"
+              },
+              {
+                "modelType": "SubmodelElementList",
+                "idShort": "submodelIds",
+                "orderRelevant": true,
+                "typeValueListElement": "Property",
+                "value": [
+                  {
+                    "modelType": "Property",
+                    "value": "*",
+                    "valueType": "xs:string"
+                  }
+                ]
+              },
+              {
+                "modelType": "Property",
+                "value": "submodel",
+                "idShort": "@type",
+                "valueType": "xs:string"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "modelType": "SubmodelElementCollection",
+        "idShort": "YWRtaW5SRUFEb3JnLmVjbGlwc2UuZGlnaXRhbHR3aW4uYmFzeXguYWFzcmVwb3NpdG9yeS5mZWF0dXJlLmF1dGhvcml6YXRpb24uQWFzVGFyZ2V0SW5mb3JtYXRpb24=",
+        "value": [
+          {
+            "modelType": "Property",
+            "value": "admin",
+            "idShort": "role",
+            "valueType": "xs:string"
+          },
+          {
+            "modelType": "SubmodelElementList",
+            "idShort": "action",
+            "orderRelevant": true,
+            "typeValueListElement": "Property",
+            "value": [
+              {
+                "modelType": "Property",
+                "valueType": "xs:string",
+                "value": "READ"
+              }
+            ]
+          },
+          {
+            "modelType": "SubmodelElementCollection",
+            "idShort": "targetInformation",
+            "value": [
+              {
+                "modelType": "SubmodelElementList",
+                "idShort": "aasIds",
+                "orderRelevant": true,
+                "typeValueListElement": "Property",
+                "value": [
+                  {
+                    "modelType": "Property",
+                    "value": "*",
+                    "valueType": "xs:string"
+                  }
+                ]
+              },
+              {
+                "modelType": "Property",
+                "value": "aas",
+                "idShort": "@type",
+                "valueType": "xs:string"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "semanticId": {
+      "keys": [
+        {
+          "type": "GlobalReference",
+          "value": "0173-1#01-AFZ615#016"
+        }
+      ],
+      "type": "ExternalReference"
+    }
+  },
+  "warning": {
+    "modelType": "Submodel",
+    "id": "SecuritySubmodel",
+    "idShort": "SecuritySubmodel",
+    "kind": "Instance",
+    "submodelElements": [
+      {
+        "modelType": "SubmodelElementCollection",
+        "idShort": "YWRtaW5SRUFEb3JnLmVjbGlwc2UuZGlnaXRhbHR3aW4uYmFzeXguYWFzcmVwb3NpdG9yeS5mZWF0dXJlLmF1dGhvcml6YXRpb24uQWFzVGFyZ2V0SW5mb3JtYXRpb24=",
+
+        "value": [
+          {
+            "modelType": "Property",
+            "value": "admin",
+            "idShort": "role",
+            "valueType": "xs:string"
+          },
+          {
+            "modelType": "SubmodelElementList",
+            "idShort": "action",
+            "orderRelevant": true,
+            "typeValueListElement": "Property",
+            "value": [
+              {
+                "modelType": "Property",
+                "valueType": "xs:string",
+                "value": "READ"
+              }
+            ]
+          },
+          {
+            "modelType": "SubmodelElementCollection",
+            "idShort": "targetInformation",
+            "value": [
+              {
+                "modelType": "SubmodelElementList",
+                "idShort": "FaultyId",
+                "orderRelevant": true,
+                "typeValueListElement": "Property",
+                "value": [
+                  {
+                    "modelType": "Property",
+                    "value": "*",
+                    "valueType": "xs:string"
+                  }
+                ]
+              },
+              {
+                "modelType": "Property",
+                "value": "FaultyTarget",
+                "idShort": "@type",
+                "valueType": "xs:string"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "semanticId": {
+      "keys": [
+        {
+          "type": "GlobalReference",
+          "value": "0173-1#01-AFZ615#016"
+        }
+      ],
+      "type": "ExternalReference"
+    }
+  }
+}
