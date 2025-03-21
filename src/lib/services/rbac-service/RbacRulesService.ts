@@ -55,6 +55,19 @@ export class RbacRulesService {
     }
 
     /**
+     * Delete a rule
+     */
+    async delete(basePath: string, idShort: string): Promise<ApiResponseWrapper<undefined>> {
+        const submodelRepositoryClient = this.getSubmodelRepositoryClient(basePath);
+
+        const { isSuccess } = await submodelRepositoryClient.deleteSubmodelElementByPath(SEC_SUB_ID, idShort);
+        if (isSuccess) {
+            return wrapSuccess(undefined);
+        }
+        return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Failed to set Rule in SecuritySubmodel Repo');
+    }
+
+    /**
      * Deletes a rule and creates a new rule
      */
     async deleteAndCreate(

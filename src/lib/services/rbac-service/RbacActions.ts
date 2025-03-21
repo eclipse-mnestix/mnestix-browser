@@ -23,11 +23,26 @@ export async function getRbacRules() {
     return rules;
 }
 
+export async function deleteRbacRule(idShort: string) {
+    const session = await getServerSession(authOptions);
+    if (!session?.user.roles || !session?.user.roles?.includes(MnestixRole.MnestixAdmin)) {
+        return wrapErrorCode(ApiResultStatus.FORBIDDEN, 'Forbidden');
+    }
+
+    const securitySubmodel = process.env.SEC_SM_API_URL ?? '';
+    if (!securitySubmodel || securitySubmodel === '') {
+        return wrapErrorCode(ApiResultStatus.BAD_REQUEST, 'Security Submodel not configured!');
+    }
+
+    const client = RbacRulesService.create();
+    const res = await client.delete(securitySubmodel, idShort);
+    return res;
+}
+
 /**
- * @param rule Rule with only targetInformation Ids changed all other props have to stay the same
- * @returns
+ * @returns newIdShort
  */
-export async function updateRbacRule(idShort: string, rule: BaSyxRbacRule) {
+export async function deleteAndCreateRbacRule(idShort: string, rule: BaSyxRbacRule) {
     const session = await getServerSession(authOptions);
     if (!session?.user.roles || !session?.user.roles?.includes(MnestixRole.MnestixAdmin)) {
         return wrapErrorCode(ApiResultStatus.FORBIDDEN, 'Forbidden');
