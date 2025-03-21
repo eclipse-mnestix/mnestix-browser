@@ -23,7 +23,11 @@ export async function getRbacRules() {
     return rules;
 }
 
-export async function updateRbacRule(rule: BaSyxRbacRule) {
+/**
+ * @param rule Rule with only targetInformation Ids changed all other props have to stay the same
+ * @returns
+ */
+export async function updateRbacRule(idShort: string, rule: BaSyxRbacRule) {
     const session = await getServerSession(authOptions);
     if (!session?.user.roles || !session?.user.roles?.includes(MnestixRole.MnestixAdmin)) {
         return wrapErrorCode(ApiResultStatus.FORBIDDEN, 'Forbidden');
@@ -35,6 +39,6 @@ export async function updateRbacRule(rule: BaSyxRbacRule) {
     }
 
     const client = RbacRulesService.create();
-    const res = await client.update(securitySubmodel, rule);
+    const res = await client.deleteAndCreate(securitySubmodel, idShort, rule);
     return res;
 }

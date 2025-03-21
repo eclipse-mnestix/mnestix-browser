@@ -111,10 +111,16 @@ export interface ISubmodelRepositoryApi {
      */
     getSubmodelByIdValueOnly(submodelId: string, options?: object): Promise<ApiResponseWrapper<SubmodelElementValue>>;
 
-    patchSubmodelElementByPath(
+    postSubmodelElementByPath(
         submodelId: string,
         idShortPath: string,
-        submodelElement: SubmodelElementValue,
+        submodelElement: unknown,
+        options?: Omit<RequestInit, 'body' | 'method'>,
+    ): Promise<ApiResponseWrapper<Response>>;
+
+    deleteSubmodelElementByPath(
+        submodelId: string,
+        idShortPath: string,
         options?: Omit<RequestInit, 'body' | 'method'>,
     ): Promise<ApiResponseWrapper<Response>>;
 

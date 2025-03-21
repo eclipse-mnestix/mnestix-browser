@@ -402,10 +402,24 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
         );
     }
 
-    async patchSubmodelElementByPath(
+    async deleteSubmodelElementByPath(
         submodelId: string,
         idShortPath: string,
-        submodelElement: SubmodelElementValue,
+        options: Omit<RequestInit, 'body' | 'method'> = {},
+    ): Promise<ApiResponseWrapper<Response>> {
+        options.headers = Object.assign({}, {}, options.headers);
+        const url = `${this.baseUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${idShortPath}`;
+        const reqOptions = {
+            ...options,
+            method: 'DELETE',
+        };
+        return this.http.fetch<Response>(url, reqOptions);
+    }
+
+    async postSubmodelElementByPath(
+        submodelId: string,
+        idShortPath: string,
+        submodelElement: unknown,
         options: Omit<RequestInit, 'body' | 'method'> = {},
     ): Promise<ApiResponseWrapper<Response>> {
         options.headers = Object.assign(
@@ -415,15 +429,13 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
             },
             options.headers,
         );
-
-        return this.http.fetch<Response>(
-            `${this.baseUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${idShortPath}/$value`,
-            {
-                ...options,
-                body: JSON.stringify(submodelElement),
-                method: 'PATCH',
-            },
-        );
+        const url = `${this.baseUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements`;
+        const reqOptions = {
+            ...options,
+            body: JSON.stringify(submodelElement),
+            method: 'POST',
+        };
+        return this.http.fetch<Response>(url, reqOptions);
     }
 
     async getSubmodelMetaData(submodelId: string, options?: object): Promise<ApiResponseWrapper<Submodel>> {
