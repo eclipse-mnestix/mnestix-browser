@@ -6,7 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { messages } from 'lib/i18n/localization';
 import { safeBase64Decode } from 'lib/util/Base64Util';
 import { ArrowForward } from '@mui/icons-material';
-import { LangStringNameType, Reference } from '@aas-core-works/aas-core3.0-typescript/types';
+import { LangStringNameType, Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
@@ -48,6 +48,13 @@ export default function Page() {
     const [isSubmodelsLoading, setIsSubmodelsLoading] = useState(true);
     const [registryAasData, setRegistryAasData] = useRegistryAasState();
     const { showError } = useShowError();
+
+    const submodelWhitelist: string[] = JSON.parse(env.SUBMODEL_WHITELIST || '[]');
+
+    function whitelistContains(sm: Submodel) {
+        const semanticIds = sm.semanticId?.keys.map(key => key.value);
+        return semanticIds?.some(id => submodelWhitelist.includes(id));
+    }
 
     useAsyncEffect(async () => {
         await fetchSubmodels();
@@ -99,6 +106,7 @@ export default function Page() {
                     setSubmodels((submodels) => {
                         const exists = submodels.some((sm) => sm.id === newSm.id);
                         if (exists) return submodels;
+                        if (env.WHITELIST_FEATURE_FLAG && newSm.submodel && !whitelistContains(newSm.submodel)) return submodels;
                         return [...submodels, newSm];
                     });
                 }),

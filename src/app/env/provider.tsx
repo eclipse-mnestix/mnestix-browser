@@ -27,6 +27,8 @@ export const initialEnvValues: EnvironmentalVariables = {
     IMPRINT_URL: '',
     DATA_PRIVACY_URL: '',
     USE_BASYX_RBAC: false,
+    WHITELIST_FEATURE_FLAG: false,
+    SUBMODEL_WHITELIST: '',
 };
 
 export const EnvContext = createContext(initialEnvValues);
