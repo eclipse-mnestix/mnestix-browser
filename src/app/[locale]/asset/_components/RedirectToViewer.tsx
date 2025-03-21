@@ -82,7 +82,7 @@ export const RedirectToViewer = () => {
     return (
         <Box sx={{ p: 2, m: 'auto' }}>
             {isLoading && <CenteredLoadingSpinner />}
-            {isError && <AssetNotFound id={assetIdParam} />}
+            {isError && <AssetNotFound id={assetIdParam ? assetIdParam: aasIdParam} />}
         </Box>
     );
 };
