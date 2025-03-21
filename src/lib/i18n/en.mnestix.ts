@@ -201,4 +201,6 @@ export const enMnestix = {
         repositoryUrl: 'Repository Url',
         subtitle: 'Here you will find all related AAS to the given ID.',
     },
+    copyTemplateId: 'Copy Template ID',
+    templateIdCopied: 'Template ID copied to clipboard: {id}',
 };
