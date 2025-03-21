@@ -17,6 +17,7 @@ export const RedirectToViewer = () => {
     const navigate = useRouter();
     const searchParams = useSearchParams();
     const assetIdParam = searchParams.get('assetId')?.toString();
+    const aasIdParam = searchParams.get('aasId')?.toString();
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
     const [, setAas] = useAasState();
@@ -26,7 +27,14 @@ export const RedirectToViewer = () => {
     useAsyncEffect(async () => {
         try {
             setIsLoading(true);
-            await navigateToViewerOfAsset(decodeURIComponent(assetIdParam ?? ''));
+            if (assetIdParam) {
+                await navigateToViewerOfAsset(decodeURIComponent(assetIdParam ?? ''));
+            } else if (aasIdParam) {
+                const targetUrl = determineViewerTargetUrl([aasIdParam]);
+                setAas(null);
+                setAasOriginUrl(null);
+                navigate.replace(targetUrl); 
+            }
         } catch (e) {
             setIsLoading(false);
             setIsError(true);
