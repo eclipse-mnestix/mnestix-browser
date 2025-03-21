@@ -4,8 +4,6 @@ import { SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
-import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
-import ServiceReachable from 'test-utils/TestUtils';
 import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
 
 const SEC_SUB_ID = 'SecuritySubmodel';
@@ -34,7 +32,7 @@ export class RbacRulesService {
         const newIdShort = ruleToIdShort(newRule);
         const ruleSubmodelElement = ruleToSubmodelElement(newIdShort, newRule);
 
-        const { isSuccess, result } = await this.securitySubmodelRepositoryClient.postSubmodelElementByPath(
+        const { isSuccess, result } = await this.securitySubmodelRepositoryClient.postSubmodelElement(
             SEC_SUB_ID,
             ruleSubmodelElement,
         );
@@ -47,8 +45,8 @@ export class RbacRulesService {
         return wrapSuccess(submodelToRule(result));
     }
 
-    static createNull(submodel: Submodel, reachable = ServiceReachable.Yes): RbacRulesService {
-        return new RbacRulesService(SubmodelRepositoryApi.createNull('', [submodel], reachable));
+    static createNull(subRepoApi: ISubmodelRepositoryApi): RbacRulesService {
+        return new RbacRulesService(subRepoApi);
     }
 
     /**
@@ -96,7 +94,7 @@ export class RbacRulesService {
         if (isSuccessDelete) {
             return wrapErrorCode(
                 ApiResultStatus.INTERNAL_SERVER_ERROR,
-                // todo 404
+                // todo 404 from wrapper status code cannot be read MNES-1605
                 'Failed to delete Rule in SecuritySubmodel Repo',
             );
         }
@@ -104,7 +102,7 @@ export class RbacRulesService {
         const newIdShort = ruleToIdShort(newRule);
         const ruleSubmodelElement = ruleToSubmodelElement(newIdShort, newRule);
 
-        const { isSuccess, result } = await this.securitySubmodelRepositoryClient.postSubmodelElementByPath(
+        const { isSuccess, result } = await this.securitySubmodelRepositoryClient.postSubmodelElement(
             SEC_SUB_ID,
             ruleSubmodelElement,
         );

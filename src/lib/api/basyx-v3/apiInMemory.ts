@@ -154,7 +154,7 @@ export class SubmodelRepositoryApiInMemory implements ISubmodelRepositoryApi {
             this.submodelsInRepository.set(submodel.id, submodel);
         });
     }
-    postSubmodelElementByPath() // submodelId: string,
+    postSubmodelElement() // submodelId: string,
     // idShortPath: string,
     // submodelElement: unknown,
     // options?: Omit<RequestInit, 'body' | 'method'>,

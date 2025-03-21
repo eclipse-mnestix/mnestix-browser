@@ -416,7 +416,7 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
         return this.http.fetch<Response>(url, reqOptions);
     }
 
-    async postSubmodelElementByPath(
+    async postSubmodelElement(
         submodelId: string,
         submodelElement: unknown,
         options: Omit<RequestInit, 'body' | 'method'> = {},
