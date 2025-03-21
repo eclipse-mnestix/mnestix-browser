@@ -149,6 +149,19 @@ export class SubmodelRepositoryApiInMemory implements ISubmodelRepositoryApi {
             this.submodelsInRepository.set(submodel.id, submodel);
         });
     }
+    postSubmodelElementByPath() // submodelId: string,
+    // idShortPath: string,
+    // submodelElement: unknown,
+    // options?: Omit<RequestInit, 'body' | 'method'>,
+    : Promise<ApiResponseWrapper<Response>> {
+        throw new Error('Method not implemented.');
+    }
+    deleteSubmodelElementByPath() // submodelId: string,
+    // idShortPath: string,
+    // options?: Omit<RequestInit, 'body' | 'method'>,
+    : Promise<ApiResponseWrapper<Response>> {
+        throw new Error('Method not implemented.');
+    }
 
     getBaseUrl(): string {
         return this.baseUrl;
