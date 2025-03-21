@@ -34,6 +34,8 @@ export const RedirectToViewer = () => {
                 setAas(null);
                 setAasOriginUrl(null);
                 navigate.replace(targetUrl); 
+            } else {
+                throw new NotFoundError();
             }
         } catch (e) {
             setIsLoading(false);
