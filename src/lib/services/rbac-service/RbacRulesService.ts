@@ -16,22 +16,23 @@ export type RbacRolesFetchResult = {
  * Service for interacting with BaSyx Dynamic RBAC rules
  */
 export class RbacRulesService {
-    private constructor(private readonly getSubmodelRepositoryClient: (basePath: string) => ISubmodelRepositoryApi) {}
+    constructor(private readonly securitySubmodelRepositoryClient: ISubmodelRepositoryApi) {}
 
-    static create(): RbacRulesService {
-        return new RbacRulesService((baseUrl) => SubmodelRepositoryApi.create(baseUrl, mnestixFetch()));
+    static createService(): RbacRulesService {
+        const baseUrl = process.env.SEC_SM_API_URL;
+
+        if (!baseUrl) {
+            throw 'Security Submodel not configured! Check beforehand!';
+        }
+
+        return new RbacRulesService(SubmodelRepositoryApi.create(baseUrl, mnestixFetch()));
     }
 
-    async createRule(
-        basePath: string,
-        newRule: Omit<BaSyxRbacRule, 'idShort'>,
-    ): Promise<ApiResponseWrapper<BaSyxRbacRule>> {
-        const submodelRepositoryClient = this.getSubmodelRepositoryClient(basePath);
-
+    async createRule(newRule: Omit<BaSyxRbacRule, 'idShort'>): Promise<ApiResponseWrapper<BaSyxRbacRule>> {
         const newIdShort = ruleToIdShort(newRule);
         const ruleSubmodelElement = ruleToSubmodelElement(newIdShort, newRule);
 
-        const { isSuccess, result } = await submodelRepositoryClient.postSubmodelElementByPath(
+        const { isSuccess, result } = await this.securitySubmodelRepositoryClient.postSubmodelElementByPath(
             SEC_SUB_ID,
             newIdShort,
             ruleSubmodelElement,
@@ -48,13 +49,11 @@ export class RbacRulesService {
     /**
      * Get all rbac rules
      */
-    async getRules(basePath: string): Promise<ApiResponseWrapper<RbacRolesFetchResult>> {
-        const submodelRepositoryClient = this.getSubmodelRepositoryClient(basePath);
-        const { isSuccess, result: secSM } = await submodelRepositoryClient.getSubmodelById(SEC_SUB_ID);
+    async getRules(): Promise<ApiResponseWrapper<RbacRolesFetchResult>> {
+        const { isSuccess, result: secSM } = await this.securitySubmodelRepositoryClient.getSubmodelById(SEC_SUB_ID);
         if (!isSuccess) {
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Failed to get RBAC');
         }
-        // console.log(JSON.stringify(secSM));
         if (!secSM || typeof secSM !== 'object') {
             return wrapErrorCode(ApiResultStatus.BAD_REQUEST, 'Submodel in wrong Format');
         }
@@ -82,16 +81,10 @@ export class RbacRulesService {
     }
 
     /**
-     * Deletes a rule and creates a new rule
+     * Deletes a rule and creates a new rule with new idShort
      */
-    async deleteAndCreate(
-        basePath: string,
-        idShort: string,
-        newRule: BaSyxRbacRule,
-    ): Promise<ApiResponseWrapper<BaSyxRbacRule>> {
-        const submodelRepositoryClient = this.getSubmodelRepositoryClient(basePath);
-
-        const { isSuccess: isSuccessDelete } = await submodelRepositoryClient.deleteSubmodelElementByPath(
+    async deleteAndCreate(idShort: string, newRule: BaSyxRbacRule): Promise<ApiResponseWrapper<BaSyxRbacRule>> {
+        const { isSuccess: isSuccessDelete } = await this.securitySubmodelRepositoryClient.deleteSubmodelElementByPath(
             SEC_SUB_ID,
             idShort,
         );
@@ -106,7 +99,7 @@ export class RbacRulesService {
         const newIdShort = ruleToIdShort(newRule);
         const ruleSubmodelElement = ruleToSubmodelElement(newIdShort, newRule);
 
-        const { isSuccess, result } = await submodelRepositoryClient.postSubmodelElementByPath(
+        const { isSuccess, result } = await this.securitySubmodelRepositoryClient.postSubmodelElementByPath(
             SEC_SUB_ID,
             newIdShort,
             ruleSubmodelElement,
@@ -118,12 +111,13 @@ export class RbacRulesService {
     }
 
     /**
-     * Delete a rule
+     * Deletes a rule
      */
-    async delete(basePath: string, idShort: string): Promise<ApiResponseWrapper<undefined>> {
-        const submodelRepositoryClient = this.getSubmodelRepositoryClient(basePath);
-
-        const { isSuccess } = await submodelRepositoryClient.deleteSubmodelElementByPath(SEC_SUB_ID, idShort);
+    async delete(idShort: string): Promise<ApiResponseWrapper<undefined>> {
+        const { isSuccess } = await this.securitySubmodelRepositoryClient.deleteSubmodelElementByPath(
+            SEC_SUB_ID,
+            idShort,
+        );
         if (isSuccess) {
             return wrapSuccess(undefined);
         }
@@ -131,6 +125,7 @@ export class RbacRulesService {
     }
 }
 
+// TODO MNES-1605
 /* eslint-disable @typescript-eslint/no-explicit-any */
 function submodelToRule(submodelElement: any): BaSyxRbacRule {
     try {
@@ -164,6 +159,7 @@ function submodelToRule(submodelElement: any): BaSyxRbacRule {
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
+// TODO MNES-1605
 function ruleToSubmodelElement(idShort: string, rule: Omit<BaSyxRbacRule, 'idShort'>) {
     const targets = Object.entries(rule.targetInformation).filter(([k]) => k !== '@type');
     return {
