@@ -1,0 +1,3 @@
+services:
+  mnestix-browser:
+    image: mnestix/mnestix-browser:dev
