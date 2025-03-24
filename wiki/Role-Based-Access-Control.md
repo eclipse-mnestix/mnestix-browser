@@ -36,8 +36,8 @@ The default Mnestix realm is preconfigured with the **'mnestix-admin'** role. To
 
 To change roles and repository permissions during runtime, we use the Basyx security repository and security submodel.
 If set up correctly with the corresponding docker compose file 
-(see [here](https://github.com/eclipse-mnestix/mnestix-browser/wiki/Docker-Compose-Files)), 
-the mnestix-admin can currently view all configured roles
+(see [here](https://github.com/eclipse-mnestix/mnestix-browser/wiki/Docker-Compose-Files)) and `USE_BASYX_RBAC` 
+is set to `true`, the `mnestix-admin` can view all configured roles
 and their permissions to AAS IDs or Submodel IDs on the Settings UI under the role management section.
 In future implementations it will also be possible to change these roles and permissions in the UI.
 More information about the Basyx role based access control management can be found 
