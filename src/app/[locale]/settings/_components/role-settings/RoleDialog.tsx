@@ -1,8 +1,8 @@
-import { Box, Dialog, DialogContent, IconButton, Typography } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import { Box, Dialog, DialogContent, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { BaSyxRbacRule } from 'lib/services/rbac-service/RbacRulesService';
 import { JSX } from 'react';
+import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 
 type RoleDialogProps = {
     readonly onClose: () => void;
@@ -34,18 +34,7 @@ export const RoleDialog = (props: RoleDialogProps) => {
 
     return (
         <Dialog open={props.open} onClose={props.onClose} maxWidth="md" fullWidth={true}>
-            <IconButton
-                aria-label="close"
-                onClick={props.onClose}
-                sx={{
-                    position: 'absolute',
-                    right: 8,
-                    top: 8,
-                    color: (theme) => theme.palette.grey[500],
-                }}
-            >
-                <CloseIcon />
-            </IconButton>
+            <DialogCloseButton handleClose={props.onClose}/>
             <DialogContent style={{ padding: '40px' }}>
                 <Box display="flex" flexDirection="column" gap="1em">
                     <Typography variant="h2" color={'primary'}>

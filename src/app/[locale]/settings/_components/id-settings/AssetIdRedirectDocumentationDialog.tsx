@@ -3,6 +3,7 @@ import documentationI40AppPng from 'assets/settings/docu-i40-app.png';
 import documentationBrowserPng from 'assets/settings/docu-browser.png';
 import { FormattedMessage } from 'react-intl';
 import { messages } from 'lib/i18n/localization';
+import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 
 const StyledImg = styled('img')(({ theme }) => ({
     maxWidth: '100%',
@@ -14,9 +15,14 @@ const StyledImg = styled('img')(({ theme }) => ({
     marginBottom: theme.spacing(2),
 }));
 
-export function AssetIdRedirectDocumentationDialog(props: DialogProps) {
+interface AssetIdRedirectDocumentationDialogProps extends DialogProps {
+    onClose: () => void;
+}
+
+export function AssetIdRedirectDocumentationDialog(props: AssetIdRedirectDocumentationDialogProps) {
     return (
         <Dialog open={props.open} onClose={props.onClose} maxWidth="lg">
+            <DialogCloseButton handleClose={props.onClose}/>
             <DialogContent sx={{ pb: 6 }}>
                 <Typography variant="h2" sx={{ mb: 5 }}>
                     <FormattedMessage {...messages.mnestix.assetIdDocumentation.title} />
