@@ -7,6 +7,7 @@ services:
   security-submodel:
     image: eclipsebasyx/submodel-repository:2.0.0-milestone-05
     container_name: security-submodel
+    profiles: [ '', 'basyx', 'tests' ]
     depends_on:
       keycloak:
         condition: service_healthy
@@ -58,6 +59,7 @@ services:
 
   security-sm-setup:
     container_name: security-sm-setup
+    profiles: [ '', 'basyx', 'tests' ]
     build:
       context: ./docker-compose/dynamic-rbac
     depends_on:

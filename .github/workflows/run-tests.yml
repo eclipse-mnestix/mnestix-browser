@@ -1,0 +1,20 @@
+name: Run Cypress Tests
+
+on:
+  push:
+    branches: "*"
+
+jobs:
+  cypress-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        #with:
+        #  ref: dev
+
+      - name: Echo Hello
+        run: echo "Hello, world!"
+      # - name: Run Cypress tests
+      #   run: "docker compose -f compose.yml --profile tests up -d --build && docker compose -f compose.yml -f docker-compose/compose.test.yml attach cypress-test"

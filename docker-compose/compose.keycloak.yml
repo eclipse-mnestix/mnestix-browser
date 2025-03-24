@@ -3,6 +3,7 @@ services:
     build:
       context: ./docker-compose/data/keycloak
     container_name: keycloak
+    profiles: [ '', 'backend', 'tests' ]
     volumes:
       - ./docker-compose/data/keycloak/realm:/opt/jboss/keycloak/imports
     ports:
