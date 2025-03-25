@@ -32,7 +32,7 @@ Mnestix provides the following configuration options. You can adapt the values i
 
 There are multiple ways to set a logo, you can either use Option 1 or Option 2:
 
-#### Option 1
+#### Option 1: Mount a logo
 
 First you need to mount your logo to the container, e.g. by adding it to the docker compose file
 
@@ -49,18 +49,33 @@ you can just replace the [image in the
 `data` folder](https://github.com/eclipse-mnestix/mnestix-browser/tree/main/docker-compose/data/logo.svg) with your
 preferred logo.
 
-Remember to set the mime type correctly in order for the browser to parse your image correctly.
+Remember to set the mime type correctly in order for the browser to parse your image correctly. 
+E.g. for an SVG image, set the mime type to `image/svg+xml`:
+
+```yaml
+environment:
+  THEME_LOGO_MIME_TYPE: 'image/svg+xml'
+```
+
 Only image mime types are allowed.
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 
-#### Option 2
+#### Option 2: Base64 encoded logo
 
-This version overwrites the previous settings, you can either use one or the other.
+This version overwrites the previous setting. 
+To use this, provide a base64 encoded image in the environment variable:
+
+```yaml
+environment:
+  THEME_BASE64_LOGO: '<<BASE64_ENCODED_IMAGE>>'
+```
+
+#### Option 3: Link to a hosted logo
+
+This version overwrites both of the previous settings.
 To use this just set an environment variable to a link hosted that is publicly accessible:
 
 ```yaml
-
----
 environment:
   THEME_LOGO_URL: https://xitaso.com/wp-content/uploads/XITASO-Logo-quer.svg
 ```
