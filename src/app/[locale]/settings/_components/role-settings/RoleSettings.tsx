@@ -39,7 +39,7 @@ export const RoleSettings = () => {
         const response = await getRbacRules();
         if (response.isSuccess) {
             // sort by role name
-            response.result.roles.sort((a, b) => a.role.localeCompare(b.role));
+            response.result.roles.sort((a: { role: string }, b: { role: string }) => a.role.localeCompare(b.role));
             setRbacRoles(response.result);
         } else {
             showError(response.message);
