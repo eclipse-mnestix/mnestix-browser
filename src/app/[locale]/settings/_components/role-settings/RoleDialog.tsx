@@ -1,4 +1,15 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, IconButton, Typography } from '@mui/material';
+import {
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    FormControl,
+    IconButton,
+    MenuItem,
+    Select,
+    Typography,
+} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslations } from 'next-intl';
 import { BaSyxRbacRule } from 'lib/services/rbac-service/RbacRulesService';
@@ -17,6 +28,8 @@ type RoleDialogProps = {
 export const RoleDialog = (props: RoleDialogProps) => {
     const t = useTranslations('settings');
     const [isEditMode, setIsEditMode] = useState(false);
+
+    const actions = ['READ', 'CREATE', 'UPDATE', 'DELETE', 'EXECUTE'];
 
     return (
         <Dialog open={props.open} onClose={props.onClose} maxWidth="md" fullWidth={true}>
@@ -43,12 +56,21 @@ export const RoleDialog = (props: RoleDialogProps) => {
                     <Box display="flex" flexDirection="column" gap="1em">
                         <Box>
                             <Typography variant="h5">{t('roles.tableHeader.action')}</Typography>
-                            <Typography>{props.role?.action}</Typography>{' '}
+                            {isEditMode ? (
+                                <FormControl fullWidth>
+                                    <Select labelId="role-type-select-label" variant="outlined">
+                                        {actions.map((type) => (
+                                            <MenuItem key={type} value={type}>
+                                                {type}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            ) : (
+                                <Typography>{props.role?.action}</Typography>
+                            )}
                         </Box>
-                        <Box>
-                            <Typography variant="h5">{t('roles.tableHeader.type')}</Typography>
-                            <Typography>{props.role?.targetInformation['@type']}</Typography>
-                        </Box>
+
                         {props.role && (
                             <TargetInformation
                                 targetInformation={props.role.targetInformation}
