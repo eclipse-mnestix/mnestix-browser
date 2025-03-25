@@ -83,15 +83,14 @@ export class RbacRulesService {
      * Deletes a rule and creates a new rule with new idShort
      */
     async deleteAndCreate(idShort: string, newRule: BaSyxRbacRule): Promise<ApiResponseWrapper<BaSyxRbacRule>> {
-        const { isSuccess: isSuccessDelete } = await this.securitySubmodelRepositoryClient.deleteSubmodelElementByPath(
-            SEC_SUB_ID,
-            idShort,
-        );
-        if (isSuccessDelete) {
+        const deleteRes = await this.securitySubmodelRepositoryClient.deleteSubmodelElementByPath(SEC_SUB_ID, idShort);
+        if (!deleteRes.isSuccess) {
+            if (deleteRes.errorCode === ApiResultStatus.NOT_FOUND) {
+                return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'Rule not found in SecuritySubmodel. Try reloading.');
+            }
             return wrapErrorCode(
                 ApiResultStatus.INTERNAL_SERVER_ERROR,
-                // todo 404
-                'Failed to delete Rule in SecuritySubmodel Repo',
+                'Failed to delete Rule in SecuritySubmodel Repo due to unknown error.',
             );
         }
 
