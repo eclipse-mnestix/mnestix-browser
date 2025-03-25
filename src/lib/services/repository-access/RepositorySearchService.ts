@@ -66,11 +66,19 @@ export class RepositorySearchService {
         );
     }
 
+    //TODO (MNES-1608): Split this file into multiple files, refactor its methods and add tests
     async getAasRepositories() {
-        return this.prismaConnector.getConnectionDataByTypeAction({
+        let allRepoUrls: string[] = [];
+        const defaultRepositoryClient = process.env.AAS_REPO_API_URL;
+        const repositories = await this.prismaConnector.getConnectionDataByTypeAction({
             id: '0',
             typeName: 'AAS_REPOSITORY',
         });
+
+        if (defaultRepositoryClient) {
+            allRepoUrls = [defaultRepositoryClient, ...repositories];
+        }
+        return allRepoUrls;
     }
 
     async getSubmodelRepositories() {
@@ -215,16 +223,8 @@ export class RepositorySearchService {
     }
 
     async getFirstSubmodelReferencesFromShellFromAllRepos(aasId: string) {
-        let allRepoUrls: string[] = [];
-        const defaultRepositoryClient = process.env.AAS_REPO_API_URL;
-        const repositories = await this.getAasRepositories(); //TODO: (1599)Answer question, why from all repos and yet default is not included?
-
-        if (defaultRepositoryClient) {
-            allRepoUrls = [defaultRepositoryClient, ...repositories];
-        }
-
         return this.getFirstFromAllRepos(
-            allRepoUrls,
+            await this.getAasRepositories(),
             (basePath) => this.getSubmodelReferencesFromShellFromRepo(aasId, basePath),
             `Submodel references for '${aasId}' not found in any repository`,
         );
