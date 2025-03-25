@@ -111,7 +111,7 @@ export interface ISubmodelRepositoryApi {
      */
     getSubmodelByIdValueOnly(submodelId: string, options?: object): Promise<ApiResponseWrapper<SubmodelElementValue>>;
 
-    postSubmodelElementByPath(
+    postSubmodelElement(
         submodelId: string,
         // TODO MNES-1605
         submodelElement: unknown,

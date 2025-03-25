@@ -8,7 +8,7 @@ import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescrip
 const SEC_SUB_ID = 'SecuritySubmodel';
 export type RbacRolesFetchResult = {
     roles: BaSyxRbacRule[];
-    warrnings: string[][];
+    warnings: string[][];
 };
 
 /**
@@ -31,7 +31,7 @@ export class RbacRulesService {
         const newIdShort = ruleToIdShort(newRule);
         const ruleSubmodelElement = ruleToSubmodelElement(newIdShort, newRule);
 
-        const { isSuccess, result } = await this.securitySubmodelRepositoryClient.postSubmodelElementByPath(
+        const { isSuccess, result } = await this.securitySubmodelRepositoryClient.postSubmodelElement(
             SEC_SUB_ID,
             ruleSubmodelElement,
         );
@@ -42,6 +42,10 @@ export class RbacRulesService {
             );
         }
         return wrapSuccess(submodelToRule(result));
+    }
+
+    static createNull(subRepoApi: ISubmodelRepositoryApi): RbacRulesService {
+        return new RbacRulesService(subRepoApi);
     }
 
     /**
@@ -75,7 +79,7 @@ export class RbacRulesService {
         const roles = parsedRoles.filter((r): r is BaSyxRbacRule => !('error' in r));
         const warnings = parsedRoles.filter((r): r is { error: string[] } => 'error' in r).map((e) => e.error);
 
-        return wrapSuccess({ roles: roles, warrnings: warnings });
+        return wrapSuccess({ roles: roles, warnings: warnings });
     }
 
     /**
@@ -96,7 +100,7 @@ export class RbacRulesService {
         const newIdShort = ruleToIdShort(newRule);
         const ruleSubmodelElement = ruleToSubmodelElement(newIdShort, newRule);
 
-        const { isSuccess, result } = await this.securitySubmodelRepositoryClient.postSubmodelElementByPath(
+        const { isSuccess, result } = await this.securitySubmodelRepositoryClient.postSubmodelElement(
             SEC_SUB_ID,
             ruleSubmodelElement,
         );
