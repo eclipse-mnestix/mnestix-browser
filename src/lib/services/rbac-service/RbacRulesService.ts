@@ -128,54 +128,49 @@ export class RbacRulesService {
 // TODO MNES-1605 add typing for submodelElement
 /* eslint-disable @typescript-eslint/no-explicit-any */
 function submodelToRule(submodelElement: any): BaSyxRbacRule {
-    try {
-        const role = submodelElement.value.find((e: any) => e.idShort === 'role')?.value;
-        const actions =
-            submodelElement.value.find((e: any) => e.idShort === 'action')?.value.map((e: any) => e.value) || [];
+    const role = submodelElement.value.find((e: any) => e.idShort === 'role')?.value;
+    const actions =
+        submodelElement.value.find((e: any) => e.idShort === 'action')?.value.map((e: any) => e.value) || [];
 
-        const invalidActions = actions.filter((e: any) => !rbacRuleActions.includes(e));
-        if (invalidActions.length > 0) {
-            throw new ParseError(`Invalid action(s): ${invalidActions.join(', ')}`);
-        }
-
-        const targetInformationElement = submodelElement.value.find((e: any) => e.idShort === 'targetInformation');
-        const targetType: keyof typeof rbacRuleTargets = targetInformationElement?.value.find(
-            (e: any) => e.idShort === '@type',
-        )?.value;
-
-        if (!Object.keys(rbacRuleTargets).includes(targetType)) {
-            throw new ParseError(`Invalid target type: ${targetType}`);
-        }
-
-        const targets: [string, StrOrArray][] = targetInformationElement?.value
-            .filter((e: { idShort: string }) => e.idShort !== '@type')
-            .map((elem: { idShort: string; value: StrOrArray }) => {
-                const values = (typeof elem.value === 'string' ? [elem.value] : elem.value).map(
-                    (item: any) => item.value,
-                );
-                return [elem.idShort, values];
-            });
-
-        const invalidTargets = targets.filter(([id]) =>
-            //@ts-expect-error typescript does not support computed keys
-            rbacRuleTargets[targetType].includes(id),
-        );
-        if (invalidTargets.length > 0) {
-            throw new ParseError(`Invalid target(s): ${invalidTargets.map(([id]) => id).join(', ')}`);
-        }
-
-        return {
-            idShort: submodelElement.idShort,
-            role,
-            action: actions,
-            targetInformation: {
-                '@type': targetType,
-                ...Object.fromEntries(targets),
-            } as BaSyxRbacRule['targetInformation'],
-        };
-    } catch (err) {
-        throw new ParseError(undefined, { cause: err });
+    const invalidActions = actions.filter((e: any) => !rbacRuleActions.includes(e));
+    if (invalidActions.length > 0) {
+        throw new ParseError(`Invalid action(s): ${invalidActions.join(', ')}`);
     }
+
+    const targetInformationElement = submodelElement.value.find((e: any) => e.idShort === 'targetInformation');
+    const targetType: keyof typeof rbacRuleTargets = targetInformationElement?.value.find(
+        (e: any) => e.idShort === '@type',
+    )?.value;
+
+    if (!Object.keys(rbacRuleTargets).includes(targetType)) {
+        throw new ParseError(`Invalid target type: ${targetType}`);
+    }
+
+    const targets: [string, StrOrArray][] = targetInformationElement?.value
+        .filter((e: { idShort: string }) => e.idShort !== '@type')
+        .map((elem: { idShort: string; value: StrOrArray }) => {
+            const values = (typeof elem.value === 'string' ? [elem.value] : elem.value).map((item: any) => item.value);
+            return [elem.idShort, values];
+        });
+
+    const invalidTargets = targets.filter(
+        ([id]) =>
+            //@ts-expect-error typescript does not support computed keys
+            !rbacRuleTargets[targetType].includes(id),
+    );
+    if (invalidTargets.length > 0) {
+        throw new ParseError(`Invalid target(s): ${invalidTargets.map(([id]) => id).join(', ')}`);
+    }
+
+    return {
+        idShort: submodelElement.idShort,
+        role,
+        action: actions,
+        targetInformation: {
+            '@type': targetType,
+            ...Object.fromEntries(targets),
+        } as BaSyxRbacRule['targetInformation'],
+    };
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
