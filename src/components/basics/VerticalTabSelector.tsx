@@ -116,7 +116,7 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
         >
             {props.items.map((item, index) => {
                 return (
-                    <Box key={index} onMouseEnter={() => setHoveredItem(item)}>
+                    <Box key={index} onMouseEnter={() => setHoveredItem(item)} data-testid={`tab-selector-${item.label.replaceAll(' ', '-') || ''}`}>
                         <Tab
                             data-testid="submodel-tab"
                             onClick={() => props.setSelected && props.setSelected(item)}

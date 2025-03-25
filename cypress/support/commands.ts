@@ -189,9 +189,10 @@ Cypress.Commands.add('keycloakLogin', (login: string, password: string) => {
         cy.get('#password').invoke('focus').type(password, { log: false });
         cy.get('#kc-login').invoke('focus').click();
     });
-    cy.get('button').click();
+    //cy.get('button').click();
 });
 
 Cypress.Commands.add('keycloakLogout', () => {
+    cy.getByTestId('header-burgermenu').click();
     cy.getByTestId('logout-button').click();
 });

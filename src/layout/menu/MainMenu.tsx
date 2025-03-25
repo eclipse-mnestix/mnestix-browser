@@ -91,6 +91,7 @@ export default function MainMenu() {
             label: t('dashboard'),
             to: '/',
             icon: <Dashboard />,
+            testId: 'dashboard-menu-item',
         },
     ];
 
@@ -99,6 +100,7 @@ export default function MainMenu() {
             label: t('aasList'),
             to: '/list',
             icon: <ListIcon />,
+            testId: 'aas-list-menu-item',
         };
         basicMenu.push(listItemToAdd);
     }
@@ -108,6 +110,7 @@ export default function MainMenu() {
             label: t('templates'),
             to: '/templates',
             icon: <TemplateIcon />,
+            testId: 'templates-menu-item',
         };
         basicMenu.push(templateItemToAdd);
     }
@@ -117,6 +120,7 @@ export default function MainMenu() {
             label: t('settings'),
             to: '/settings',
             icon: <Settings data-testid="settings-menu-icon" />,
+            testId: 'settings-menu-item',
         };
         basicMenu.push(settingsMenu);
     }

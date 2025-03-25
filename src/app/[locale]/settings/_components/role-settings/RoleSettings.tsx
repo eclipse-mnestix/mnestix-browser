@@ -94,7 +94,7 @@ export const RoleSettings = () => {
 
     return (
         <>
-            <Box sx={{ p: 3, width: '100%', minHeight: '600px' }}>
+            <Box sx={{ p: 3, width: '100%', minHeight: '600px' }} data-testid="rbac-role-list-page">
                 <CardHeading title={t('roles.title')} subtitle={t('roles.subtitle')}></CardHeading>
                 <Divider sx={{ my: 2 }} />
                 {isLoading ? (
@@ -106,7 +106,7 @@ export const RoleSettings = () => {
                                 <TableRow>
                                     {!!prepareTableHeaders() &&
                                         prepareTableHeaders().map((header: { label: string }, index) => (
-                                            <TableCell key={index}>
+                                            <TableCell key={index} data-testid={`rbac-table-header-${index}`}>
                                                 <Typography
                                                     variant="h5"
                                                     color="secondary"
@@ -120,24 +120,25 @@ export const RoleSettings = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {rbacRoles?.roles.map((entry) => (
-                                    <TableRow key={entry.role + entry.action + entry.targetInformation['@type']}>
+                                {rbacRoles?.roles.map((entry, entryIndex) => (
+                                    <TableRow key={entry.role + entry.action + entry.targetInformation['@type']} data-testid={`rbac-role-row-${entryIndex}`}>
                                         <TableCell>
-                                            <Typography fontWeight="bold">{entry.role}</Typography>
+                                            <Typography fontWeight="bold" data-testid={`rbac-role-name-${entryIndex}`}>{entry.role}</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            {entry.action.map((action) => (
+                                            {entry.action.map((action, actionIndex) => (
                                                 <Chip
                                                     key={action}
                                                     sx={{ fontWeight: 'normal', m: 0.5 }}
                                                     label={action}
+                                                    data-testid={`rbac-role-action-${entryIndex}-${actionIndex}`}
                                                 />
                                             ))}
                                         </TableCell>
-                                        <TableCell>{entry.targetInformation['@type']}</TableCell>
-                                        {!isMobile && <TableCell>{permissionCell(entry)}</TableCell>}
+                                        <TableCell data-testid={`rbac-role-type-${entryIndex}`}>{entry.targetInformation['@type']}</TableCell>
+                                        {!isMobile && <TableCell data-testid={`rbac-role-permissions-${entryIndex}`}>{permissionCell(entry)}</TableCell>}
                                         <TableCell>
-                                            <RoundedIconButton onClick={() => openDetailDialog(entry)} color="primary">
+                                            <RoundedIconButton onClick={() => openDetailDialog(entry)} color="primary" data-testid={`rbac-open-dialog-button-${entryIndex}`}>
                                                 <ArrowForwardIcon />
                                             </RoundedIconButton>
                                         </TableCell>
@@ -154,7 +155,8 @@ export const RoleSettings = () => {
                 }}
                 open={roleDialogOpen}
                 role={selectedRole}
+                data-testid="rbac-role-dialog"
             ></RoleDialog>
         </>
     );
-};
+}
