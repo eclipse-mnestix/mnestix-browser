@@ -26,5 +26,18 @@ export function middleware(req: NextRequest) {
     if (req.nextUrl.pathname.match(unlocalizedPathsRegex)) {
         return NextResponse.next();
     }
+
+    const { locales, defaultLocale } = routing;
+    const locale = pathname.split('/')[1] as typeof locales[number];
+
+    // if a non-existing language (for example 'es') is used, redirect to default language
+    // and remove 'es' from the url.
+    if (locale.length === 2 && !locales.includes(locale)) {
+        const newPathname = pathname.replace(`/${locale}`, '');
+        const newUrl = new URL(`/${defaultLocale}${newPathname}`, req.url);
+
+        return NextResponse.redirect(newUrl);
+    }
+
     return i18nMiddleware(req);
 }
