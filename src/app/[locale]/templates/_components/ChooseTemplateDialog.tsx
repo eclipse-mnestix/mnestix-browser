@@ -5,11 +5,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { ChooseTemplateItem } from './ChooseTemplateItem';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
+import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 
 interface ChooseTemplateDialogProps extends DialogProps {
     defaultTemplates?: Submodel[];
     isLoading?: boolean;
     handleTemplateClick?: (template?: Submodel) => void;
+    onClose: () => void;
 }
 
 const StyledLoadingOverlay = styled(Box)(({ theme }) => ({
@@ -34,6 +36,7 @@ export function ChooseTemplateDialog(props: ChooseTemplateDialogProps) {
                     <CenteredLoadingSpinner />
                 </StyledLoadingOverlay>
             )}
+            <DialogCloseButton handleClose={props.onClose} />
             <Paper sx={{ p: 2 }}>
                 <Typography variant="h3" align="center">
                     <FormattedMessage {...messages.mnestix.chooseAStartingPoint} />

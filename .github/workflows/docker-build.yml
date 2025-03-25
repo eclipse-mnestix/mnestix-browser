@@ -37,11 +37,13 @@ jobs:
         with:
           platforms: linux/amd64
           context: '.'
+          cache-from: mnestix/mnestix-browser:dev
           cache-to: type=local,dest=/tmp/buildx-amd64-cache,mode=max
           target: production
           push: false
           tags: mnestix/mnestix-browser:latest
           load: true
+          
 
       - name: Cache buildx
         uses: actions/cache/save@v4
@@ -85,9 +87,14 @@ jobs:
       # image too big to be reused
       - name: Build test image
         run: docker compose -f compose.yml -f docker-compose/compose.test.yml --profile tests build cypress-test
-
+        
       - name: Pull images
         run: docker compose -f compose.yml -f docker-compose/compose.test.yml --profile tests pull
+
+      # Remove old image to avoid conflicts, before sometimes the old image wasnt loaded
+      # If this step fails please check docker-compose/compose.test.yml if tag is still correct
+      - name: Remove Docker image mnestix/mnestix-browser:latest, to avoid conflicts
+        run: docker rmi mnestix/mnestix-browser:latest
 
       # overwrite the pulled image with the new image
       - name: Load mnestix-browser image
