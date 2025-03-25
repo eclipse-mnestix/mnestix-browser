@@ -34,13 +34,17 @@ export const getEnv = async (): Promise<EnvironmentalVariables> => {
     const themingVariables = {
         THEME_PRIMARY_COLOR: process.env.THEME_PRIMARY_COLOR,
         THEME_SECONDARY_COLOR: process.env.THEME_SECONDARY_COLOR,
-        THEME_BASE64_LOGO: process.env.THEME_LOGO_MIME_TYPE ? '' : undefined,
+        THEME_BASE64_LOGO: process.env.THEME_BASE64_LOGO,
         THEME_LOGO_URL: process.env.THEME_LOGO_URL,
     };
 
     // Load the image from the public folder and provide it to the theming as base64 image with mime type
     // possible TODO automatically parse mimetype but not based on file path but on file content
-    if (process.env.THEME_LOGO_MIME_TYPE && process.env.THEME_LOGO_MIME_TYPE.startsWith('image/')) {
+    if (
+        !process.env.THEME_BASE64_LOGO &&
+        process.env.THEME_LOGO_MIME_TYPE &&
+        process.env.THEME_LOGO_MIME_TYPE.startsWith('image/')
+    ) {
         try {
             const imagePath = path.resolve('./public/logo');
             const imageBuffer = fs.readFileSync(imagePath);

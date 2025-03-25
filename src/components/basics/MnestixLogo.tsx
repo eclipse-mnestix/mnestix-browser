@@ -3,7 +3,7 @@ import Logo from '../../assets/logo.svg';
 
 // May be extended with monochrome, reduced or other needed variants
 
-type MnestixLogoLogoProps = {
+type MnestixLogoProps = {
     readonly width?: string;
     readonly height?: string;
 };
@@ -17,7 +17,7 @@ const StyledLogo = styled(Logo)<{ width?: string; height?: string }>(({ width, h
     display: 'block',
 }));
 
-export function MnestixLogo(props: MnestixLogoLogoProps) {
+export function MnestixLogo(props: MnestixLogoProps) {
     // Differentiate between the logo variants
     const theme = useTheme();
     const color = theme.palette.common.white;
