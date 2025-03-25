@@ -23,6 +23,10 @@
   Configuration can be found [here](keycloak-configuration).<br>
   **keycloak admin page - http://localhost:8080**
 
+- **docker-compose/compose.dynamic.rbac.yml** - override file to activate dynamic role based access control using the 
+  Basyx security submodel.
+  More information can be found [here](https://github.com/eclipse-mnestix/mnestix-browser/wiki/Role-Based-Access-Control).
+
 The files in the `docker-compose` directory
 are [override compose files](https://docs.docker.com/compose/multiple-compose-files/merge/), which must be added with
 the `-f <filename>` flag (Look inside the `package.json` for examples).<br>

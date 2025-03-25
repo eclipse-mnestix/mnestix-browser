@@ -34,6 +34,7 @@ services:
       - mnestix-network
 
   mnestix-browser:
+    image: mnestix/mnestix-browser:latest
     environment:
       AAS_REPO_API_URL: 'http://mnestix-api:5064/repo'
       SUBMODEL_REPO_API_URL: 'http://mnestix-api:5064/repo'
