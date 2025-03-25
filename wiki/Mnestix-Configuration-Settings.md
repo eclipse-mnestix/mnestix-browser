@@ -27,6 +27,8 @@ Mnestix provides the following configuration options. You can adapt the values i
 | `IMPRINT_URL`                         |                             | Address that will be used in the imprint link. Will only show the link, if a value has been set.                                                                                                                                   | optional |
 | `DATA_PRIVACY_URL`                    |                             | Address that will be used in the data privacy link. Will only show the link, if a value has been set.                                                                                                                              | optional |
 | `USE_BASYX_RBAC`                      | false                       | Set to true, if BaSyx is used together with RBAC. This will enable the administration of RBAC configuration inside Mnestix.                                                                                                        | optional |
+| `WHITELIST_FEATURE_FLAG`              | false                       | Enables or disables the feature for showing/hiding specific submodels.                                                                                                                                                             | optional |
+| `SUBMODEL_WHITELIST`                  |                             | This variable can be used to specify a list of submodel semantic ids in order to show them when the `WHITELIST_FEATURE_FLAG` is set to true.                                                                                       | optional |
 
 ### How to set a custom logo
 

@@ -13,6 +13,7 @@ export const getEnv = async (): Promise<EnvironmentalVariables> => {
         COMPARISON_FEATURE_FLAG: process.env.COMPARISON_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
         TRANSFER_FEATURE_FLAG: process.env.TRANSFER_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
         AAS_LIST_FEATURE_FLAG: process.env.AAS_LIST_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
+        WHITELIST_FEATURE_FLAG: process.env.WHITELIST_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
         USE_BASYX_RBAC: process.env.USE_BASYX_RBAC?.toLowerCase() === 'true'.toLowerCase(),
     };
 
@@ -29,6 +30,7 @@ export const getEnv = async (): Promise<EnvironmentalVariables> => {
         KEYCLOAK_ENABLED: process.env.KEYCLOAK_ENABLED?.toLowerCase() === 'true'.toLowerCase(),
         IMPRINT_URL: process.env.IMPRINT_URL,
         DATA_PRIVACY_URL: process.env.DATA_PRIVACY_URL,
+        SUBMODEL_WHITELIST: process.env.SUBMODEL_WHITELIST,
     };
 
     const themingVariables = {
@@ -81,4 +83,6 @@ export type EnvironmentalVariables = {
     IMPRINT_URL: string | undefined;
     DATA_PRIVACY_URL: string | undefined;
     USE_BASYX_RBAC: boolean;
+    WHITELIST_FEATURE_FLAG: boolean;
+    SUBMODEL_WHITELIST: string | undefined;
 };
