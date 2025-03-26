@@ -6,8 +6,8 @@ import { KeyTypes, RelationshipElement } from '@aas-core-works/aas-core3.0-types
 import { RelationShipTypes } from 'lib/enums/RelationShipTypes.enum';
 
 const handleClose = jest.fn();
-let completeMockRelationship: RelationshipElement;
-const mockRelationship = (relationshipType: RelationShipTypes) => ({
+let mockRelationship: RelationshipElement;
+const mockRelationshipType = (relationshipType: RelationShipTypes) => ({
     idShort: 'Test Relationship',
     semanticId: {
         keys: [{ type: KeyTypes.GlobalReference, value: relationshipType }],
@@ -22,32 +22,32 @@ const mockRelationship = (relationshipType: RelationShipTypes) => ({
 
 describe('Relationship Details Dialog', () => {
     beforeEach(() => {
-        completeMockRelationship = mockRelationship(RelationShipTypes.HasPart) as RelationshipElement;
+        mockRelationship = mockRelationshipType(RelationShipTypes.HasPart) as RelationshipElement;
     });
     it('renders dialog when open', () => {
         const { getByTestId } = CustomRender(
-            <RelationShipDetailsDialog open={true} handleClose={handleClose} relationship={completeMockRelationship} />,
+            <RelationShipDetailsDialog open={true} handleClose={handleClose} relationship={mockRelationship} />,
         );
         expect(getByTestId('bom-info-popup')).toBeInTheDocument();
     });
 
     it('renders dialog with correct title', () => {
         const { getByText } = CustomRender(
-            <RelationShipDetailsDialog open={true} handleClose={handleClose} relationship={completeMockRelationship} />,
+            <RelationShipDetailsDialog open={true} handleClose={handleClose} relationship={mockRelationship} />,
         );
         expect(getByText('Test Relationship')).toBeInTheDocument();
     });
 
     it('displays the correct first entity', () => {
         const { getByText } = CustomRender(
-            <RelationShipDetailsDialog open={true} handleClose={handleClose} relationship={completeMockRelationship} />,
+            <RelationShipDetailsDialog open={true} handleClose={handleClose} relationship={mockRelationship} />,
         );
         expect(getByText('Entity1')).toBeInTheDocument();
     });
 
     it('displays the correct second entity', () => {
         const { getByText } = CustomRender(
-            <RelationShipDetailsDialog open={true} handleClose={handleClose} relationship={completeMockRelationship} />,
+            <RelationShipDetailsDialog open={true} handleClose={handleClose} relationship={mockRelationship} />,
         );
         expect(getByText('Entity2')).toBeInTheDocument();
     });
@@ -60,7 +60,7 @@ describe('Relationship Details Dialog', () => {
         ];
 
         relationshipTypes.forEach(({ type, text }) => {
-            const relationship = mockRelationship(type) as RelationshipElement;
+            const relationship = mockRelationshipType(type) as RelationshipElement;
             const { getByText } = CustomRender(
                 <RelationShipDetailsDialog open={true} handleClose={handleClose} relationship={relationship} />,
             );
@@ -70,19 +70,16 @@ describe('Relationship Details Dialog', () => {
 
     it('displays the correct tooltip for semanticId', () => {
         const { getByTestId } = CustomRender(
-            <RelationShipDetailsDialog open={true} handleClose={handleClose} relationship={completeMockRelationship} />,
+            <RelationShipDetailsDialog open={true} handleClose={handleClose} relationship={mockRelationship} />,
         );
         const tooltip = getByTestId('relShip-dialog-tooltip');
         expect(tooltip).toBeInTheDocument();
-        expect(tooltip).toHaveAttribute(
-            'aria-label',
-            `Semantic ID: ${completeMockRelationship.semanticId?.keys[0].value}`,
-        );
+        expect(tooltip).toHaveAttribute('aria-label', `Semantic ID: ${mockRelationship.semanticId?.keys[0].value}`);
     });
 
     it('calls handleClose when close button is clicked', () => {
         const { getByRole } = CustomRender(
-            <RelationShipDetailsDialog open={true} handleClose={handleClose} relationship={completeMockRelationship} />,
+            <RelationShipDetailsDialog open={true} handleClose={handleClose} relationship={mockRelationship} />,
         );
         getByRole('button', { name: /close/i }).click();
         expect(handleClose).toHaveBeenCalled();
