@@ -12,8 +12,6 @@ type TargetInformationProps = {
 };
 export const TargetInformationForm = (props: TargetInformationProps) => {
     const t = useTranslations('settings');
-    console.log(props.targetInformation);
-    console.log(props.getValues());
 
     const ruleTypes = Object.keys(rbacRuleTargets);
 
@@ -75,12 +73,9 @@ export const TargetInformationForm = (props: TargetInformationProps) => {
 import { useState } from 'react';
 import { Checkbox, FormControlLabel, TextField } from '@mui/material';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
-import { FormattedMessage } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { Control, Controller, useFieldArray, UseFormGetValues } from 'react-hook-form';
 import { RoleFormModel } from 'app/[locale]/settings/_components/role-settings/RoleDialog';
-import { ConnectionFormData } from 'app/[locale]/settings/_components/mnestix-connections/MnestixConnectionsCard';
 
 type WildcardOrStringArrayInputProps = {
     rule: string;
@@ -89,6 +84,7 @@ type WildcardOrStringArrayInputProps = {
     initialValue: string | string[];
 };
 export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProps) => {
+    const t = useTranslations('settings');
     const checkIfWildcard = (value: string | string[]) => {
         if (value === '*') {
             return true;
@@ -96,7 +92,7 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
         return Array.isArray(value) && value[0] === '*';
     };
     const [isWildcard, setIsWildcard] = useState(checkIfWildcard(props.initialValue));
-    // TODO check if its fine to always use array
+    // @ts-expect-error we expect an type error here since react-hook-form doesn't support fields for arrays of strings
     const { fields, append, remove } = useFieldArray({
         name: `targetInformation.${props.rule}`,
         control: props.control,
@@ -118,11 +114,15 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
                 <>
                     {fields.map((_, idx) => (
                         <Controller
+                            key={`targetInformation.${props.rule}.${idx}`}
                             name={`targetInformation.${props.rule}.${idx}`}
                             control={props.control}
                             render={({ field }) => (
-                                <Box display="flex" flexDirection="row">
+                                <Box display="flex" flexDirection="row" mb="1em">
                                     <TextField
+                                        onChange={field.onChange}
+                                        onBlur={field.onBlur}
+                                        inputRef={field.ref}
                                         fullWidth
                                         key={idx}
                                         variant="outlined"
@@ -131,14 +131,24 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
                                     />
 
                                     <IconButton>
-                                        <RemoveCircleOutlineIcon onClick={() => {}} />
+                                        <RemoveCircleOutlineIcon
+                                            onClick={() => {
+                                                remove(idx);
+                                            }}
+                                        />
                                     </IconButton>
                                 </Box>
                             )}
                         />
                     ))}
-                    <Button variant="text" startIcon={<ControlPointIcon />} onClick={() => {}}>
-                        <FormattedMessage {...messages.mnestix.connections.addButton} />
+                    <Button
+                        variant="text"
+                        startIcon={<ControlPointIcon />}
+                        onClick={() => {
+                            append('');
+                        }}
+                    >
+                        {t('roles.addButton')}
                     </Button>
                 </>
             )}

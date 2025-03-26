@@ -79,7 +79,8 @@
         "aasIds": "AAS IDs",
         "submodelIds": "Submodel IDs",
         "permissions": "Berechtigungen"
-      }
+      },
+      "addButton": "Hinzufügen"
     }
   },
   "errors": {
