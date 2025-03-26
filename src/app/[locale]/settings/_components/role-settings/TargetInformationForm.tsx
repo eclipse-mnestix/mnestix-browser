@@ -8,6 +8,7 @@ type TargetInformationProps = {
     readonly isEditMode: boolean;
     readonly control: Control<RoleFormModel, never>;
     readonly setValue: (name: string, value: any) => void;
+    readonly getValues: UseFormGetValues<RoleFormModel>;
 };
 export const TargetInformationForm = (props: TargetInformationProps) => {
     const t = useTranslations('settings');
@@ -24,7 +25,13 @@ export const TargetInformationForm = (props: TargetInformationProps) => {
         if (key !== '@type') {
             if (props.isEditMode) {
                 permissions.push(
-                    <WildcardOrStringArrayInput control={props.control} rule={key} setValue={props.setValue} />,
+                    <WildcardOrStringArrayInput
+                        key={key}
+                        initialValue={element}
+                        control={props.control}
+                        rule={key}
+                        setValue={props.setValue}
+                    />,
                 );
             } else {
                 permissions.push(
@@ -69,16 +76,23 @@ import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import { FormattedMessage } from 'react-intl';
 import { messages } from 'lib/i18n/localization';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import { Control, Controller } from 'react-hook-form';
+import { Control, Controller, UseFormGetValues } from 'react-hook-form';
 import { RoleFormModel } from 'app/[locale]/settings/_components/role-settings/RoleDialog';
 
 type WildcardOrStringArrayInputProps = {
     rule: string;
     control: Control<RoleFormModel, never>;
     setValue: (name: string, value: any) => void;
+    initialValue: string | string[];
 };
 export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProps) => {
-    const [isWildcard, setIsWildcard] = useState(true);
+    const checkIfWildcard = (value: string | string[]) => {
+        if (value === '*') {
+            return true;
+        }
+        return Array.isArray(value) && value[0] === '*';
+    };
+    const [isWildcard, setIsWildcard] = useState(checkIfWildcard(props.initialValue));
 
     const wildcardValueChanged = (value: boolean) => {
         setIsWildcard(value);

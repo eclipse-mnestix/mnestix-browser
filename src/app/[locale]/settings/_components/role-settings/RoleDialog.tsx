@@ -50,14 +50,20 @@ export const RoleDialog = (props: RoleDialogProps) => {
         handleSubmit,
         formState: { errors },
         setValue,
+        getValues,
     } = useForm({ defaultValues: mapBaSyxRbacRuleToFormModel(props.role as BaSyxRbacRule) });
     const onSubmit: SubmitHandler<RoleFormModel> = (data) => {
         console.log(data);
     };
 
+    const onCloseDialog = () => {
+        setIsEditMode(false);
+        props.onClose();
+    };
+
     return (
-        <Dialog open={props.open} onClose={props.onClose} maxWidth="md" fullWidth={true}>
-            <DialogCloseButton handleClose={props.onClose} />
+        <Dialog open={props.open} onClose={onCloseDialog} maxWidth="md" fullWidth={true}>
+            <DialogCloseButton handleClose={onCloseDialog} />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <IconButton
                     aria-label="close"
@@ -109,6 +115,7 @@ export const RoleDialog = (props: RoleDialogProps) => {
                                     isEditMode={isEditMode}
                                     control={control}
                                     setValue={setValue}
+                                    getValues={getValues}
                                 />
                             )}
                         </Box>
