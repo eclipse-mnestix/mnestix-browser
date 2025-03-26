@@ -47,9 +47,7 @@ export const RoleDialog = (props: RoleDialogProps) => {
 
     const {
         control,
-        register,
         handleSubmit,
-        watch,
         formState: { errors },
         setValue,
     } = useForm({ defaultValues: mapBaSyxRbacRuleToFormModel(props.role as BaSyxRbacRule) });
@@ -110,6 +108,7 @@ export const RoleDialog = (props: RoleDialogProps) => {
                                     targetInformation={props.role.targetInformation}
                                     isEditMode={isEditMode}
                                     control={control}
+                                    setValue={setValue}
                                 />
                             )}
                         </Box>

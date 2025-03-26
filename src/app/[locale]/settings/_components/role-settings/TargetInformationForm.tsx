@@ -7,6 +7,7 @@ type TargetInformationProps = {
     readonly targetInformation: BaSyxRbacRule['targetInformation'];
     readonly isEditMode: boolean;
     readonly control: Control<RoleFormModel, never>;
+    readonly setValue: (name: string, value: any) => void;
 };
 export const TargetInformationForm = (props: TargetInformationProps) => {
     const t = useTranslations('settings');
@@ -22,7 +23,9 @@ export const TargetInformationForm = (props: TargetInformationProps) => {
 
         if (key !== '@type') {
             if (props.isEditMode) {
-                permissions.push(<WildcardOrStringArrayInput rule={key} value={element} />);
+                permissions.push(
+                    <WildcardOrStringArrayInput control={props.control} rule={key} setValue={props.setValue} />,
+                );
             } else {
                 permissions.push(
                     <Box key={key} mt="1em">
@@ -69,15 +72,25 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { Control, Controller } from 'react-hook-form';
 import { RoleFormModel } from 'app/[locale]/settings/_components/role-settings/RoleDialog';
 
-export const WildcardOrStringArrayInput = (props: { rule: string; value: string | string[] }) => {
+type WildcardOrStringArrayInputProps = {
+    rule: string;
+    control: Control<RoleFormModel, never>;
+    setValue: (name: string, value: any) => void;
+};
+export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProps) => {
     const [isWildcard, setIsWildcard] = useState(true);
+
+    const wildcardValueChanged = (value: boolean) => {
+        setIsWildcard(value);
+        props.setValue(`targetInformation.${props.rule}`, value ? '*' : []);
+    };
 
     return (
         <Box mt="1em">
             <Typography variant="h5">{props.rule}</Typography>
 
             <FormControlLabel
-                control={<Checkbox checked={isWildcard} onChange={(e) => setIsWildcard(e.target.checked)} />}
+                control={<Checkbox checked={isWildcard} onChange={(e) => wildcardValueChanged(e.target.checked)} />}
                 label="Wildcard"
             />
             {!isWildcard && (
