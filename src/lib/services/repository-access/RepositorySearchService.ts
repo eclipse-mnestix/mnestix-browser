@@ -68,17 +68,17 @@ export class RepositorySearchService {
 
     //TODO (MNES-1608): Split this file into multiple files, refactor its methods and add tests
     async getAasRepositories() {
-        let allRepoUrls: string[] = [];
         const defaultRepositoryClient = process.env.AAS_REPO_API_URL;
-        const repositories = await this.prismaConnector.getConnectionDataByTypeAction({
-            id: '0',
-            typeName: 'AAS_REPOSITORY',
-        });
-
-        if (defaultRepositoryClient) {
-            allRepoUrls = [defaultRepositoryClient, ...repositories];
+        let repositories: string[] = [];
+        try {
+            repositories = await this.prismaConnector.getConnectionDataByTypeAction({
+                id: '0',
+                typeName: 'AAS_REPOSITORY',
+            });
+        } catch (error) {
+            this.log.warn('Failed to get AAS repositories', error);
         }
-        return allRepoUrls;
+        return defaultRepositoryClient ? [defaultRepositoryClient, ...repositories] : repositories;
     }
 
     async getSubmodelRepositories() {
