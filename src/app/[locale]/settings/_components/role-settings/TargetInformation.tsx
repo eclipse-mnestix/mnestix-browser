@@ -1,6 +1,6 @@
 import { JSX } from 'react';
-import { Box, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
-import { BaSyxRbacRule } from 'lib/services/rbac-service/RbacRulesService';
+import { Box, FormControl, MenuItem, Select, Typography } from '@mui/material';
+import { BaSyxRbacRule, rbacRuleTargets } from 'lib/services/rbac-service/RbacRulesService';
 import { useTranslations } from 'next-intl';
 
 type TargetInformationProps = {
@@ -10,15 +10,7 @@ type TargetInformationProps = {
 export const TargetInformation = (props: TargetInformationProps) => {
     const t = useTranslations('settings');
 
-    const ruleTypes = [
-        'aas',
-        'aas-environment',
-        'submodel',
-        'submodel-environment',
-        'submodel-registry',
-        'aas-registry',
-        'aas-discovery-service',
-    ];
+    const ruleTypes = Object.keys(rbacRuleTargets);
 
     const permissions: JSX.Element[] = [];
     const keys = Object.keys(props.targetInformation);
@@ -27,12 +19,12 @@ export const TargetInformation = (props: TargetInformationProps) => {
     // implement mapping to sent the correct data to the backend
 
     keys.forEach((key) => {
-        // @ts-expect-error zod type
-        const element = props.targetInformation[key];
+        // @ts-expect-error todo
+        const element: string | string[] = props.targetInformation[key];
 
         if (key !== '@type') {
             permissions.push(
-                <Box key={key}>
+                <Box key={key} mt="1em">
                     <Typography variant="h5">{key}</Typography>
                     <Typography>{Array.isArray(element) ? element.join(', ') : element}</Typography>
                 </Box>,

@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslations } from 'next-intl';
-import { BaSyxRbacRule } from 'lib/services/rbac-service/RbacRulesService';
+import { BaSyxRbacRule, rbacRuleActions } from 'lib/services/rbac-service/RbacRulesService';
 import { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import { ArrowBack } from '@mui/icons-material';
@@ -29,16 +29,13 @@ type RoleDialogProps = {
 
 type RoleFormModel = {
     type: string;
-    actions: string[];
+    actions: (typeof rbacRuleActions)[number];
     targetInformation: Record<string, string>;
 };
 
 export const RoleDialog = (props: RoleDialogProps) => {
     const t = useTranslations('settings');
     const [isEditMode, setIsEditMode] = useState(false);
-
-    // TODO can we get this type/enum from the backend part?
-    const actions = ['READ', 'CREATE', 'UPDATE', 'DELETE', 'EXECUTE'];
 
     const {
         control,
@@ -54,7 +51,7 @@ export const RoleDialog = (props: RoleDialogProps) => {
 
     return (
         <Dialog open={props.open} onClose={props.onClose} maxWidth="md" fullWidth={true}>
-            <DialogCloseButton handleClose={props.onClose}/>
+            <DialogCloseButton handleClose={props.onClose} />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <IconButton
                     aria-label="close"
@@ -86,9 +83,9 @@ export const RoleDialog = (props: RoleDialogProps) => {
                                         render={({ field }) => (
                                             <FormControl fullWidth>
                                                 <Select labelId="role-type-select-label" variant="outlined" {...field}>
-                                                    {actions.map((type) => (
-                                                        <MenuItem key={type} value={type}>
-                                                            {type}
+                                                    {rbacRuleActions.map((action) => (
+                                                        <MenuItem key={action} value={action}>
+                                                            {action}
                                                         </MenuItem>
                                                     ))}
                                                 </Select>
