@@ -12,6 +12,8 @@ type TargetInformationProps = {
 };
 export const TargetInformationForm = (props: TargetInformationProps) => {
     const t = useTranslations('settings');
+    console.log(props.targetInformation);
+    console.log(props.getValues());
 
     const ruleTypes = Object.keys(rbacRuleTargets);
 
@@ -76,8 +78,9 @@ import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import { FormattedMessage } from 'react-intl';
 import { messages } from 'lib/i18n/localization';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import { Control, Controller, UseFormGetValues } from 'react-hook-form';
+import { Control, Controller, useFieldArray, UseFormGetValues } from 'react-hook-form';
 import { RoleFormModel } from 'app/[locale]/settings/_components/role-settings/RoleDialog';
+import { ConnectionFormData } from 'app/[locale]/settings/_components/mnestix-connections/MnestixConnectionsCard';
 
 type WildcardOrStringArrayInputProps = {
     rule: string;
@@ -93,7 +96,11 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
         return Array.isArray(value) && value[0] === '*';
     };
     const [isWildcard, setIsWildcard] = useState(checkIfWildcard(props.initialValue));
-
+    // TODO check if its fine to always use array
+    const { fields, append, remove } = useFieldArray({
+        name: `targetInformation.${props.rule}`,
+        control: props.control,
+    });
     const wildcardValueChanged = (value: boolean) => {
         setIsWildcard(value);
         props.setValue(`targetInformation.${props.rule}`, value ? '*' : []);
@@ -109,12 +116,27 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
             />
             {!isWildcard && (
                 <>
-                    <Box display="flex" flexDirection="row">
-                        <TextField fullWidth variant="outlined" placeholder="Enter specific values" />
-                        <IconButton>
-                            <RemoveCircleOutlineIcon onClick={() => {}} />
-                        </IconButton>
-                    </Box>
+                    {fields.map((_, idx) => (
+                        <Controller
+                            name={`targetInformation.${props.rule}.${idx}`}
+                            control={props.control}
+                            render={({ field }) => (
+                                <Box display="flex" flexDirection="row">
+                                    <TextField
+                                        fullWidth
+                                        key={idx}
+                                        variant="outlined"
+                                        placeholder="Enter specific values"
+                                        value={field.value}
+                                    />
+
+                                    <IconButton>
+                                        <RemoveCircleOutlineIcon onClick={() => {}} />
+                                    </IconButton>
+                                </Box>
+                            )}
+                        />
+                    ))}
                     <Button variant="text" startIcon={<ControlPointIcon />} onClick={() => {}}>
                         <FormattedMessage {...messages.mnestix.connections.addButton} />
                     </Button>
