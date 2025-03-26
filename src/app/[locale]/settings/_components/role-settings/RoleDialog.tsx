@@ -12,30 +12,38 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslations } from 'next-intl';
-import { BaSyxRbacRule, rbacRuleActions } from 'lib/services/rbac-service/RbacRulesService';
+import { BaSyxRbacRule, rbacRuleActions, rbacRuleTargets } from 'lib/services/rbac-service/RbacRulesService';
 import { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import { ArrowBack } from '@mui/icons-material';
 import CheckIcon from '@mui/icons-material/Check';
-import { TargetInformation } from 'app/[locale]/settings/_components/role-settings/TargetInformation';
+import { TargetInformationForm } from 'app/[locale]/settings/_components/role-settings/TargetInformationForm';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 
 type RoleDialogProps = {
     readonly onClose: () => void;
     readonly open: boolean;
-    readonly role: BaSyxRbacRule | undefined;
+    readonly role: BaSyxRbacRule;
 };
 
-type RoleFormModel = {
-    type: string;
-    actions: (typeof rbacRuleActions)[number];
-    targetInformation: Record<string, string>;
+export type RoleFormModel = {
+    type: keyof typeof rbacRuleTargets;
+    action: (typeof rbacRuleActions)[number];
+    targetInformation: BaSyxRbacRule['targetInformation'];
 };
 
 export const RoleDialog = (props: RoleDialogProps) => {
     const t = useTranslations('settings');
     const [isEditMode, setIsEditMode] = useState(false);
+
+    const mapBaSyxRbacRuleToFormModel = (role: BaSyxRbacRule): RoleFormModel => {
+        return {
+            type: role.targetInformation['@type'],
+            action: role.action[0], // Right now BaSyx only supports one action per role
+            targetInformation: role.targetInformation,
+        };
+    };
 
     const {
         control,
@@ -44,7 +52,7 @@ export const RoleDialog = (props: RoleDialogProps) => {
         watch,
         formState: { errors },
         setValue,
-    } = useForm();
+    } = useForm({ defaultValues: mapBaSyxRbacRuleToFormModel(props.role as BaSyxRbacRule) });
     const onSubmit: SubmitHandler<RoleFormModel> = (data) => {
         console.log(data);
     };
@@ -78,7 +86,7 @@ export const RoleDialog = (props: RoleDialogProps) => {
                                 <Typography variant="h5">{t('roles.tableHeader.action')}</Typography>
                                 {isEditMode ? (
                                     <Controller
-                                        name="actions"
+                                        name="action"
                                         control={control}
                                         render={({ field }) => (
                                             <FormControl fullWidth>
@@ -98,9 +106,10 @@ export const RoleDialog = (props: RoleDialogProps) => {
                             </Box>
 
                             {props.role && (
-                                <TargetInformation
+                                <TargetInformationForm
                                     targetInformation={props.role.targetInformation}
                                     isEditMode={isEditMode}
+                                    control={control}
                                 />
                             )}
                         </Box>

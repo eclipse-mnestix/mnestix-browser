@@ -147,13 +147,15 @@ export const RoleSettings = () => {
                     </TableContainer>
                 )}
             </Box>
-            <RoleDialog
-                onClose={() => {
-                    setRoleDialogOpen(false);
-                }}
-                open={roleDialogOpen}
-                role={selectedRole}
-            ></RoleDialog>
+            {selectedRole && (
+                <RoleDialog
+                    onClose={() => {
+                        setRoleDialogOpen(false);
+                    }}
+                    open={roleDialogOpen}
+                    role={selectedRole}
+                ></RoleDialog>
+            )}
         </>
     );
 };
