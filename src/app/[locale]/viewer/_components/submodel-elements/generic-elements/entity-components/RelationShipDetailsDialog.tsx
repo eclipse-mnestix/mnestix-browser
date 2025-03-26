@@ -46,7 +46,10 @@ export function RelationShipDetailsDialog(props: RelationShipDetailsModalProps) 
                 <DataRow hasDivider={false}>
                     <Box display="flex" justifyContent="space-between" width="100%">
                         <Typography color={'primary'}>{getRelationshipType(semanticId ?? '')} </Typography>
-                        <Tooltip title={`${t('semanticId')}: ${semanticId ?? t('error.semanticError')}`}>
+                        <Tooltip
+                            data-testid="relShip-dialog-tooltip"
+                            title={`${t('semanticId')}: ${semanticId ?? t('error.semanticError')}`}
+                        >
                             <InfoOutlined sx={{ color: 'text.secondary' }} />
                         </Tooltip>
                     </Box>
