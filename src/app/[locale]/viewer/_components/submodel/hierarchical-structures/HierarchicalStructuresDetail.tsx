@@ -17,6 +17,7 @@ import { InfoOutlined } from '@mui/icons-material';
 import React from 'react';
 import { ArchetypeDetailsDialog } from './ArchetypeDetailsDialog';
 import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
+import { RelationShipTypes } from 'lib/enums/RelationShipTypes.enum';
 
 export function HierarchicalStructuresDetail({ submodel }: SubmodelVisualizationProps) {
     const submodelElements = submodel.submodelElements as ISubmodelElement[];
@@ -154,12 +155,6 @@ const selectRelationship = (entryNode: Entity, relationShips: RelationshipElemen
             return entityNodes;
     }
 };
-
-enum RelationShipTypes {
-    SameAs = 'https://admin-shell.io/idta/HierarchicalStructures/SameAs/1/0',
-    IsPartOf = 'https://admin-shell.io/idta/HierarchicalStructures/IsPartOf/1/0',
-    HasPart = 'https://admin-shell.io/idta/HierarchicalStructures/HasPart/1/0',
-}
 
 function buildSameAsRelationship(entryNode: Entity, rel: RelationshipElement, entityNodes: Entity[]) {
     const entityName = rel.first.keys[rel.first.keys.length - 1]?.value;
