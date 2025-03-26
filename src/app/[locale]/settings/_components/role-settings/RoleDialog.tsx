@@ -19,6 +19,7 @@ import { ArrowBack } from '@mui/icons-material';
 import CheckIcon from '@mui/icons-material/Check';
 import { TargetInformation } from 'app/[locale]/settings/_components/role-settings/TargetInformation';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 
 type RoleDialogProps = {
     readonly onClose: () => void;
@@ -53,6 +54,7 @@ export const RoleDialog = (props: RoleDialogProps) => {
 
     return (
         <Dialog open={props.open} onClose={props.onClose} maxWidth="md" fullWidth={true}>
+            <DialogCloseButton handleClose={props.onClose}/>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <IconButton
                     aria-label="close"
