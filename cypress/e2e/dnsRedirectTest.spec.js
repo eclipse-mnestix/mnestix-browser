@@ -17,7 +17,6 @@ describe('Test the DNS Redirect', function () {
         cy.url().should('contain', '/viewer/' + btoa(testAasId).replace(new RegExp('=*$', 'g'), ''));
         cy.getByTestId('aas-data').findByTestId('data-row-value').should('contain', testAasId);
         cy.getByTestId('asset-data').findByTestId('data-row-value').should('contain', testAssetId);
-        cy.wait(100);
     });
     it('Visits the "/asset?aasId=URLEncodedAaasId" page and gets redirected to the corresponding viewer page', function () {
         cy.intercept({ method: 'POST', url: '/en/viewer/*' }).as('redirectedViewer');
@@ -28,7 +27,6 @@ describe('Test the DNS Redirect', function () {
 
         cy.url().should('contain', '/viewer/' + btoa(testAasId).replace(new RegExp('=*$', 'g'), ''));
         cy.getByTestId('aas-data').findByTestId('data-row-value').should('contain', testAasId);
-        cy.wait(100);
     });
     after(function () {
         cy.deleteTestAas();

@@ -44,7 +44,6 @@ describe('Test all Aas List features (Resolution 1920 x 1080)', function () {
             cy.get('[data-testid="selected-https://mnestix.io/aas/listTest1').should('exist');
             cy.getByTestId('compare-button').should('not.be.disabled');
             cy.getByTestId('compare-button').click();
-            cy.wait(100);
             cy.url().should('contain', '/compare');
         });
         it('should remove the aas from the comparison list when deselected and disable the button', function () {

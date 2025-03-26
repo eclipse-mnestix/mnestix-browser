@@ -60,5 +60,11 @@ export default tseslint.config(
             '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
         },
     },
+    {
+        files: ['**/*.spec.ts', 'cypress'],
+        rules: {
+            '@typescript-eslint/ban-ts-comment': 'off',
+        },
+    },
     cypress.configs.recommended,
 );
