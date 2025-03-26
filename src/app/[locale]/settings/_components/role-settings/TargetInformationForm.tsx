@@ -12,8 +12,6 @@ type TargetInformationProps = {
 };
 export const TargetInformationForm = (props: TargetInformationProps) => {
     const t = useTranslations('settings');
-    console.log(props.targetInformation);
-    console.log(props.getValues());
 
     const ruleTypes = Object.keys(rbacRuleTargets);
 
@@ -80,7 +78,6 @@ import { messages } from 'lib/i18n/localization';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { Control, Controller, useFieldArray, UseFormGetValues } from 'react-hook-form';
 import { RoleFormModel } from 'app/[locale]/settings/_components/role-settings/RoleDialog';
-import { ConnectionFormData } from 'app/[locale]/settings/_components/mnestix-connections/MnestixConnectionsCard';
 
 type WildcardOrStringArrayInputProps = {
     rule: string;
@@ -121,8 +118,11 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
                             name={`targetInformation.${props.rule}.${idx}`}
                             control={props.control}
                             render={({ field }) => (
-                                <Box display="flex" flexDirection="row">
+                                <Box display="flex" flexDirection="row" mb="1em">
                                     <TextField
+                                        onChange={field.onChange}
+                                        onBlur={field.onBlur}
+                                        inputRef={field.ref}
                                         fullWidth
                                         key={idx}
                                         variant="outlined"
@@ -131,13 +131,23 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
                                     />
 
                                     <IconButton>
-                                        <RemoveCircleOutlineIcon onClick={() => {}} />
+                                        <RemoveCircleOutlineIcon
+                                            onClick={() => {
+                                                remove(idx);
+                                            }}
+                                        />
                                     </IconButton>
                                 </Box>
                             )}
                         />
                     ))}
-                    <Button variant="text" startIcon={<ControlPointIcon />} onClick={() => {}}>
+                    <Button
+                        variant="text"
+                        startIcon={<ControlPointIcon />}
+                        onClick={() => {
+                            append('');
+                        }}
+                    >
                         <FormattedMessage {...messages.mnestix.connections.addButton} />
                     </Button>
                 </>
