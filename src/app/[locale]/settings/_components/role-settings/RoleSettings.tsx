@@ -65,24 +65,23 @@ export const RoleSettings = () => {
         const permissions: JSX.Element[] = [];
         const keys = Object.keys(entry.targetInformation);
         keys.forEach((key) => {
-            // @ts-expect-error zod type
-            let element = entry.targetInformation[key];
+            if (key === '@type') {
+                return;
+            }
+            //@ts-expect-error keys for union not indexable
+            let element: string | string[] = entry.targetInformation[key];
             if (Array.isArray(element)) {
                 element = element.join(', ');
             }
-            if (key !== '@type') {
-                permissions.push(
-                    <Box component="span" key={key + element}>
-                        <Box component="span" fontWeight="bold">
-                            {`${key}: `}
-                        </Box>
-                        {element.length > MAX_PERMISSIONS_CHARS
-                            ? `${element.slice(0, MAX_PERMISSIONS_CHARS)}...`
-                            : element}
-                        <br />
-                    </Box>,
-                );
-            }
+            permissions.push(
+                <Box component="span" key={key + element}>
+                    <Box component="span" fontWeight="bold">
+                        {`${key}: `}
+                    </Box>
+                    {element.length > MAX_PERMISSIONS_CHARS ? `${element.slice(0, MAX_PERMISSIONS_CHARS)}...` : element}
+                    <br />
+                </Box>,
+            );
         });
         return permissions;
     };

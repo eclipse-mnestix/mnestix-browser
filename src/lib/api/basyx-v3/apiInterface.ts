@@ -79,6 +79,14 @@ export interface IAssetAdministrationShellRepositoryApi {
     ): Promise<ApiResponseWrapper<AssetAdministrationShell>>;
 }
 
+type PropertyValue = string | number | boolean;
+
+export type SubmodelElementValue =
+    | Array<SubmodelElementValue>
+    | PropertyValue
+    // workaround for infinite direct type recursion
+    | { [key: string]: SubmodelElementValue };
+
 export interface ISubmodelRepositoryApi {
     /**
      * Returns the base URL of this repository.
@@ -101,7 +109,20 @@ export interface ISubmodelRepositoryApi {
      * @returns Wrapped unknown. unknown because value only can be primitive or complex type.
      * @throws {RequiredError}
      */
-    getSubmodelByIdValueOnly(submodelId: string, options?: object): Promise<ApiResponseWrapper<unknown>>;
+    getSubmodelByIdValueOnly(submodelId: string, options?: object): Promise<ApiResponseWrapper<SubmodelElementValue>>;
+
+    postSubmodelElement(
+        submodelId: string,
+        // TODO MNES-1605
+        submodelElement: unknown,
+        options?: Omit<RequestInit, 'body' | 'method'>,
+    ): Promise<ApiResponseWrapper<Response>>;
+
+    deleteSubmodelElementByPath(
+        submodelId: string,
+        idShortPath: string,
+        options?: Omit<RequestInit, 'body' | 'method'>,
+    ): Promise<ApiResponseWrapper<Response>>;
 
     /**
      * @summary Retrieves the submodel metadata (submodel in metadata representation)

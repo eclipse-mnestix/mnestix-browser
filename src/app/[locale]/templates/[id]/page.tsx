@@ -31,7 +31,6 @@ import {
 } from 'lib/util/SubmodelViewObjectUtil';
 import { TemplateEditFields, TemplateEditFieldsProps } from '../_components/template-edit/TemplateEditFields';
 import { useAuth } from 'lib/hooks/UseAuth';
-import { LoadingButton } from '@mui/lab';
 import cloneDeep from 'lodash/cloneDeep';
 import { Qualifier, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
@@ -367,7 +366,7 @@ export default function Page() {
                             >
                                 {intl.formatMessage(messages.mnestix.copyTemplateId)}
                             </Button>
-                            <LoadingButton
+                            <Button
                                 variant="contained"
                                 startIcon={<CloudUploadOutlined />}
                                 disabled={!changesMade}
@@ -375,7 +374,7 @@ export default function Page() {
                                 onClick={onSaveChanges}
                             >
                                 <FormattedMessage {...messages.mnestix.saveChanges} />
-                            </LoadingButton>
+                            </Button>
                             <IconButton sx={{ ml: 1 }} onClick={handleMenuClick} className="more-button">
                                 <MoreVert />
                             </IconButton>

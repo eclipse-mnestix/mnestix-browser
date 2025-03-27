@@ -12,7 +12,7 @@ export function ProductJourneyAddressList(props: { addressesPerLifeCyclePhase: A
                     </Typography>
                     {`${phase.address.street} ${phase.address.houseNumber}, ${phase.address.zipCode} ${
                         phase.address.cityTown
-                    }${phase.address.country ? `, ${phase.address.country}` : undefined}`}
+                    }${phase.address.country ? `, ${phase.address.country}` : ''}`}
                 </Typography>
             );
         });
