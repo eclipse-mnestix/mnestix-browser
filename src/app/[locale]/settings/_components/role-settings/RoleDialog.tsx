@@ -12,7 +12,12 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslations } from 'next-intl';
-import { BaSyxRbacRule, rbacRuleActions, rbacRuleTargets } from 'lib/services/rbac-service/RbacRulesService';
+import {
+    BaSyxRbacRule,
+    rbacRuleActions,
+    rbacRuleTargets,
+    TargetInformation,
+} from 'lib/services/rbac-service/RbacRulesService';
 import { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import { ArrowBack } from '@mui/icons-material';
@@ -20,6 +25,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import { TargetInformationForm } from 'app/[locale]/settings/_components/role-settings/TargetInformationForm';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
+import { TargetInformationView } from 'app/[locale]/settings/_components/role-settings/TargetInformationView';
 
 type RoleDialogProps = {
     readonly onClose: () => void;
@@ -27,21 +33,115 @@ type RoleDialogProps = {
     readonly role: BaSyxRbacRule;
 };
 
+type TargetInformationFormModel = {
+    aasEnvironment: { aasIds: string[]; submodelIds: string[] } | undefined;
+    aas: { aasIds: string[] } | undefined;
+    submodel: { submodelIds: string[]; submodelElementIdShortPaths: string[] } | undefined;
+    conceptDescription: { conceptDescriptionIds: string[] } | undefined;
+    aasRegistry: { aasIds: string[] } | undefined;
+    submodelRegistry: { submodelIds: string[] } | undefined;
+    aasDiscoveryService: { aasIds: string[]; assetIds: string[] } | undefined;
+};
+
 export type RoleFormModel = {
     type: keyof typeof rbacRuleTargets;
     action: (typeof rbacRuleActions)[number];
-    targetInformation: { [key: string]: string[] | string };
+    targetInformation: TargetInformationFormModel;
 };
 
 export const RoleDialog = (props: RoleDialogProps) => {
     const t = useTranslations('settings');
     const [isEditMode, setIsEditMode] = useState(false);
 
+    const mapDtoToTargetInformationFormModel = (targetInformation: TargetInformation): TargetInformationFormModel => {
+        const targetInformationFormModel: TargetInformationFormModel = {
+            aasEnvironment: undefined,
+            aas: undefined,
+            submodel: undefined,
+            conceptDescription: undefined,
+            aasRegistry: undefined,
+            submodelRegistry: undefined,
+            aasDiscoveryService: undefined,
+        };
+
+        switch (targetInformation['@type']) {
+            case 'aas-environment':
+                targetInformationFormModel.aasEnvironment = {
+                    aasIds: targetInformation.aasIds,
+                    submodelIds: targetInformation.submodelIds,
+                };
+                break;
+            case 'aas':
+                targetInformationFormModel.aas = { aasIds: targetInformation.aasIds };
+                break;
+            case 'submodel':
+                targetInformationFormModel.submodel = {
+                    submodelIds: targetInformation.submodelIds,
+                    submodelElementIdShortPaths: targetInformation.submodelElementIdShortPaths,
+                };
+                break;
+            case 'concept-description':
+                targetInformationFormModel.conceptDescription = {
+                    conceptDescriptionIds: targetInformation.conceptDescriptionIds,
+                };
+                break;
+            case 'aas-registry':
+                targetInformationFormModel.aasRegistry = { aasIds: targetInformation.aasIds };
+                break;
+            case 'submodel-registry':
+                targetInformationFormModel.submodelRegistry = { submodelIds: targetInformation.submodelIds };
+                break;
+            case 'aas-discovery-service':
+                targetInformationFormModel.aasDiscoveryService = {
+                    aasIds: targetInformation.aasIds,
+                    assetIds: targetInformation.assetIds,
+                };
+                break;
+            default:
+                throw new Error(`Unknown target type: ${targetInformation['@type']}`);
+        }
+        return targetInformationFormModel;
+    };
+
+    const mapTargetInformationFormModelToDto = (
+        formModel: TargetInformationFormModel,
+        type: keyof typeof rbacRuleTargets,
+    ): TargetInformation => {
+        switch (type) {
+            case 'aas-environment':
+                return { '@type': 'aas-environment', ...formModel.aasEnvironment };
+            case 'aas':
+                return { '@type': 'aas', ...formModel.aas };
+            case 'submodel':
+                return { '@type': 'submodel', ...formModel.submodel };
+            case 'concept-description':
+                return { '@type': 'concept-description', ...formModel.conceptDescription };
+            case 'aas-registry':
+                return { '@type': 'aas-registry', ...formModel.aasRegistry };
+            case 'submodel-registry':
+                return { '@type': 'submodel-registry', ...formModel.submodelRegistry };
+            case 'aas-discovery-service':
+                return { '@type': 'aas-discovery-service', ...formModel.aasDiscoveryService };
+            default:
+                throw new Error(`Unknown target type: ${type}`);
+        }
+    };
+
+    const mapFormModelToBaSyxRbacRule = (formModel: RoleFormModel): BaSyxRbacRule => {
+        const targetInformation = mapTargetInformationFormModelToDto(formModel.targetInformation, formModel.type);
+        return {
+            idShort: props.role.idShort,
+            role: props.role.role,
+            action: [formModel.action],
+            targetInformation: targetInformation,
+        };
+    };
+
     const mapBaSyxRbacRuleToFormModel = (role: BaSyxRbacRule): RoleFormModel => {
         return {
             type: role.targetInformation['@type'],
             action: role.action[0], // Right now BaSyx only supports one action per role
-            targetInformation: role.targetInformation,
+            targetInformation: mapDtoToTargetInformationFormModel(role.targetInformation),
         };
     };
 
@@ -49,7 +149,8 @@ export const RoleDialog = (props: RoleDialogProps) => {
         defaultValues: mapBaSyxRbacRuleToFormModel(props.role as BaSyxRbacRule),
     });
     const onSubmit: SubmitHandler<RoleFormModel> = (data) => {
-        console.log(data);
+        mapFormModelToBaSyxRbacRule(data);
+        console.log('send: ' + data);
     };
 
     const onCloseDialog = () => {
@@ -105,15 +206,18 @@ export const RoleDialog = (props: RoleDialogProps) => {
                                 )}
                             </Box>
 
-                            {props.role && (
-                                <TargetInformationForm
-                                    targetInformation={props.role.targetInformation}
-                                    isEditMode={isEditMode}
-                                    control={control}
-                                    setValue={setValue}
-                                    getValues={getValues}
-                                />
-                            )}
+                            {props.role &&
+                                (isEditMode ? (
+                                    <TargetInformationForm
+                                        targetInformation={props.role.targetInformation}
+                                        isEditMode={isEditMode}
+                                        control={control}
+                                        setValue={setValue}
+                                        getValues={getValues}
+                                    />
+                                ) : (
+                                    <TargetInformationView targetInformation={props.role.targetInformation} />
+                                ))}
                         </Box>
                     </Box>
                 </DialogContent>

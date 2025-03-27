@@ -7,14 +7,15 @@ import { RoleFormModel } from 'app/[locale]/settings/_components/role-settings/R
 import { useTranslations } from 'next-intl';
 
 type WildcardOrStringArrayInputProps = {
+    type: string;
     rule: string;
     control: Control<RoleFormModel, never>;
     setValue: (name: string, value: string | string[]) => void;
     initialValue: string | string[];
 };
 
-const getTargetInformationKey = (rule: string): keyof RoleFormModel => {
-    return `targetInformation.${rule}` as keyof RoleFormModel;
+const getTargetInformationKey = (type: string, rule: string): keyof RoleFormModel => {
+    return `targetInformation.${type}.${rule}` as keyof RoleFormModel;
 };
 
 export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProps) => {
@@ -30,11 +31,11 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
     // TODO fix the typing issue here.
     const { fields, append, remove } = useFieldArray({
         control,
-        name: getTargetInformationKey(props.rule),
+        name: getTargetInformationKey(props.type, props.rule),
     });
     const wildcardValueChanged = (value: boolean) => {
         setIsWildcard(value);
-        props.setValue(`targetInformation.${props.rule}`, value ? '*' : []);
+        props.setValue(`targetInformation.${props.type}.${props.rule}`, value ? ['*'] : []);
     };
 
     return (
@@ -49,8 +50,8 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
                 <>
                     {fields.map((_, idx) => (
                         <Controller
-                            key={`targetInformation.${props.rule}.${idx}`}
-                            name={`targetInformation.${props.rule}.${idx}`}
+                            key={`targetInformation.${props.type}.${props.rule}.${idx}`}
+                            name={`targetInformation.${props.type}.${props.rule}.${idx}`}
                             control={control}
                             render={({ field }) => (
                                 <Box display="flex" flexDirection="row" mb="1em">

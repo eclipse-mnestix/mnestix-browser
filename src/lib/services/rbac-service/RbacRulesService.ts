@@ -172,6 +172,7 @@ function submodelToRule(submodelElement: any): BaSyxRbacRule {
         } as BaSyxRbacRule['targetInformation'],
     };
 }
+
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 // TODO MNES-1605
@@ -262,9 +263,9 @@ export const rbacRuleTargets = {
     'aas-discovery-service': ['aasIds', 'assetIds'],
 } as const;
 
-type StrOrArray = string | string[];
+type StrOrArray = string[];
 
-type TargetInformation =
+export type TargetInformation =
     | { '@type': 'aas-environment'; aasIds: StrOrArray; submodelIds: StrOrArray }
     | { '@type': 'aas'; aasIds: StrOrArray }
     | { '@type': 'submodel'; submodelIds: StrOrArray; submodelElementIdShortPaths: StrOrArray }
