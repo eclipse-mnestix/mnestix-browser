@@ -30,7 +30,7 @@ type RoleDialogProps = {
 export type RoleFormModel = {
     type: keyof typeof rbacRuleTargets;
     action: (typeof rbacRuleActions)[number];
-    targetInformation: BaSyxRbacRule['targetInformation'];
+    targetInformation: { [key: string]: string[] | string };
 };
 
 export const RoleDialog = (props: RoleDialogProps) => {
@@ -45,13 +45,9 @@ export const RoleDialog = (props: RoleDialogProps) => {
         };
     };
 
-    const {
-        control,
-        handleSubmit,
-        formState: { errors },
-        setValue,
-        getValues,
-    } = useForm({ defaultValues: mapBaSyxRbacRuleToFormModel(props.role as BaSyxRbacRule) });
+    const { control, handleSubmit, setValue, getValues } = useForm({
+        defaultValues: mapBaSyxRbacRuleToFormModel(props.role as BaSyxRbacRule),
+    });
     const onSubmit: SubmitHandler<RoleFormModel> = (data) => {
         console.log(data);
     };

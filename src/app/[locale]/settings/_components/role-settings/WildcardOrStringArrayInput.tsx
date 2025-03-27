@@ -9,11 +9,17 @@ import { useTranslations } from 'next-intl';
 type WildcardOrStringArrayInputProps = {
     rule: string;
     control: Control<RoleFormModel, never>;
-    setValue: (name: string, value: any) => void;
+    setValue: (name: string, value: string | string[]) => void;
     initialValue: string | string[];
 };
+
+const getTargetInformationKey = (rule: string): keyof RoleFormModel => {
+    return `targetInformation.${rule}` as keyof RoleFormModel;
+};
+
 export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProps) => {
     const t = useTranslations('settings');
+    const control = props.control;
     const checkIfWildcard = (value: string | string[]) => {
         if (value === '*') {
             return true;
@@ -21,10 +27,10 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
         return Array.isArray(value) && value[0] === '*';
     };
     const [isWildcard, setIsWildcard] = useState(checkIfWildcard(props.initialValue));
-    // @ts-expect-error we expect an type error here since react-hook-form doesn't support fields for arrays of strings
+    // TODO fix the typing issue here.
     const { fields, append, remove } = useFieldArray({
-        name: `targetInformation.${props.rule}`,
-        control: props.control,
+        control,
+        name: getTargetInformationKey(props.rule),
     });
     const wildcardValueChanged = (value: boolean) => {
         setIsWildcard(value);
@@ -45,7 +51,7 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
                         <Controller
                             key={`targetInformation.${props.rule}.${idx}`}
                             name={`targetInformation.${props.rule}.${idx}`}
-                            control={props.control}
+                            control={control}
                             render={({ field }) => (
                                 <Box display="flex" flexDirection="row" mb="1em">
                                     <TextField
