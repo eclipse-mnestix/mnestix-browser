@@ -1,6 +1,6 @@
 services:
   mnestix-api:
-    image: mnestix/mnestix-api:1.3.0
+    image: mnestix/mnestix-api:1.3.2
     container_name: mnestix-api
     # Port Mapping
     # Map host port 5064 to container port 5064
