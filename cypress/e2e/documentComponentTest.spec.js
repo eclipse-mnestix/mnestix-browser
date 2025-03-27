@@ -36,7 +36,7 @@ describe('Test DocumentComponent', function () {
                 cy.getByTestId('document-details-dialog')
                     .should('exist')
                     .should('be.visible');
-                // Schließe Dialog
+                //Check if the dialog closes when the close button is clicked
                 cy.get('[aria-label="close"]').click();
                 cy.getByTestId('document-details-dialog').should('not.exist');
             });
