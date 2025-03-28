@@ -172,6 +172,7 @@ function submodelToRule(submodelElement: any): BaSyxRbacRule {
         } as BaSyxRbacRule['targetInformation'],
     };
 }
+
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 // TODO MNES-1605
@@ -264,14 +265,14 @@ export const rbacRuleTargets = {
 
 type StrOrArray = string | string[];
 
-type TargetInformation =
-    | { '@type': 'aas-environment'; aasIds: StrOrArray; submodelIds: StrOrArray }
-    | { '@type': 'aas'; aasIds: StrOrArray }
-    | { '@type': 'submodel'; submodelIds: StrOrArray; submodelElementIdShortPaths: StrOrArray }
-    | { '@type': 'concept-description'; conceptDescriptionIds: StrOrArray }
-    | { '@type': 'aas-registry'; aasIds: StrOrArray }
-    | { '@type': 'submodel-registry'; submodelIds: StrOrArray }
-    | { '@type': 'aas-discovery-service'; aasIds: StrOrArray; assetIds: StrOrArray };
+export type TargetInformation =
+    | { '@type': 'aas-environment'; aasIds: string[]; submodelIds: string[] }
+    | { '@type': 'aas'; aasIds: string[] }
+    | { '@type': 'submodel'; submodelIds: string[]; submodelElementIdShortPaths: string[] }
+    | { '@type': 'concept-description'; conceptDescriptionIds: string[] }
+    | { '@type': 'aas-registry'; aasIds: string[] }
+    | { '@type': 'submodel-registry'; submodelIds: string[] }
+    | { '@type': 'aas-discovery-service'; aasIds: string[]; assetIds: string[] };
 
 export type BaSyxRbacRule = {
     idShort: string;
