@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Box, Button, Checkbox, FormControlLabel, IconButton, TextField, Typography } from '@mui/material';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import { Control, Controller, useFieldArray } from 'react-hook-form';
+import { Control, Controller, useFieldArray, UseFormGetValues, UseFormSetValue } from 'react-hook-form';
 import { RoleFormModel } from 'app/[locale]/settings/_components/role-settings/RoleDialog';
 import { useTranslations } from 'next-intl';
 
@@ -10,8 +10,8 @@ type WildcardOrStringArrayInputProps = {
     type: string;
     rule: string;
     control: Control<RoleFormModel, never>;
-    setValue: (name: string, value: string | string[]) => void;
-    initialValue: string | string[];
+    setValue: UseFormSetValue<RoleFormModel>;
+    getValues: UseFormGetValues<RoleFormModel>;
 };
 
 const getTargetInformationKey = (type: string, rule: string): keyof RoleFormModel => {
@@ -21,13 +21,11 @@ const getTargetInformationKey = (type: string, rule: string): keyof RoleFormMode
 export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProps) => {
     const t = useTranslations('settings');
     const control = props.control;
-    const checkIfWildcard = (value: string | string[]) => {
-        if (value === '*') {
-            return true;
-        }
+    const checkIfWildcard = () => {
+        const value = props.getValues(`targetInformation.${props.type}.${props.rule}`);
         return Array.isArray(value) && value[0] === '*';
     };
-    const [isWildcard, setIsWildcard] = useState(checkIfWildcard(props.initialValue));
+    const [isWildcard, setIsWildcard] = useState(checkIfWildcard());
     // TODO fix the typing issue here.
     const { fields, append, remove } = useFieldArray({
         control,

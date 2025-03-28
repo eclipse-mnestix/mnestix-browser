@@ -62,7 +62,7 @@ export class RbacRulesService {
 
         const parsedRoles =
             secSM.submodelElements
-                ?.filter((e) => (e as SubmodelElementCollection).value)
+                ?.filter((e) => e && (e as SubmodelElementCollection).value)
                 .map((roleElement) => {
                     try {
                         return submodelToRule(roleElement);
@@ -152,12 +152,15 @@ function submodelToRule(submodelElement: any): BaSyxRbacRule {
             const values = (typeof elem.value === 'string' ? [elem.value] : elem.value).map((item: any) => item.value);
             return [elem.idShort, values];
         });
+    console.log(targets);
+    console.log(targetType);
 
     const invalidTargets = targets.filter(
         ([id]) =>
             //@ts-expect-error typescript does not support computed keys
             !rbacRuleTargets[targetType].includes(id),
     );
+    console.log(rbacRuleTargets[targetType]); // when sending submodel, it complains that its type aas?
     if (invalidTargets.length > 0) {
         throw new ParseError(`Invalid target(s): ${invalidTargets.map(([id]) => id).join(', ')}`);
     }
@@ -266,13 +269,13 @@ export const rbacRuleTargets = {
 type StrOrArray = string[];
 
 export type TargetInformation =
-    | { '@type': 'aas-environment'; aasIds: StrOrArray; submodelIds: StrOrArray }
-    | { '@type': 'aas'; aasIds: StrOrArray }
-    | { '@type': 'submodel'; submodelIds: StrOrArray; submodelElementIdShortPaths: StrOrArray }
-    | { '@type': 'concept-description'; conceptDescriptionIds: StrOrArray }
-    | { '@type': 'aas-registry'; aasIds: StrOrArray }
-    | { '@type': 'submodel-registry'; submodelIds: StrOrArray }
-    | { '@type': 'aas-discovery-service'; aasIds: StrOrArray; assetIds: StrOrArray };
+    | { '@type': 'aas-environment'; aasIds: string[]; submodelIds: string[] }
+    | { '@type': 'aas'; aasIds: string[] }
+    | { '@type': 'submodel'; submodelIds: string[]; submodelElementIdShortPaths: string[] }
+    | { '@type': 'concept-description'; conceptDescriptionIds: string[] }
+    | { '@type': 'aas-registry'; aasIds: string[] }
+    | { '@type': 'submodel-registry'; submodelIds: string[] }
+    | { '@type': 'aas-discovery-service'; aasIds: string[]; assetIds: string[] };
 
 export type BaSyxRbacRule = {
     idShort: string;
