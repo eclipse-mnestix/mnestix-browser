@@ -138,6 +138,17 @@
         "0173-1#07-AAS758#001": "Privat",
         "0173-1#07-AAS759#001": "Privat Mobil"
       }
+    },
+    "relationShipDetailsDialog": {
+      "hasPart": "hat Teil",
+      "isPartOf": "ist Teil von",
+      "sameAs": "gleich wie",
+      "semanticId": "Semantische ID",
+      "error": {
+        "unknownRelationship": "Unbekannte Relation",
+        "semanticError": "Semantische ID nicht gefunden",
+        "entityError": "Relationselement nicht gefunden"
+      }
     }
   },
   "footer": {

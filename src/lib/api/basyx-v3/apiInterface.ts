@@ -84,8 +84,8 @@ type PropertyValue = string | number | boolean;
 export type SubmodelElementValue =
     | Array<SubmodelElementValue>
     | PropertyValue
-    // unfortunately typescript does not support recursive types
-    | object;
+    // workaround for infinite direct type recursion
+    | { [key: string]: SubmodelElementValue };
 
 export interface ISubmodelRepositoryApi {
     /**

@@ -20,9 +20,9 @@ describe('Test the internal TimeSeries', function () {
 
             it('Test for the internal timeseries submodel', function () {
                 cy.getByTestId('submodel-tab').contains('TimeSeries').should('be.visible').click();
-                const wrapper = cy.getByTestId('timeseries-internal-wrapper');
-                wrapper.should('exist');
-                const lineChart = wrapper.getByTestId('timeseries-line-chart');
+                const wrapper = () => cy.getByTestId('timeseries-internal-wrapper');
+                wrapper().should('exist');
+                const lineChart = wrapper().getByTestId('timeseries-line-chart');
                 lineChart.should('exist');
 
                 // six points

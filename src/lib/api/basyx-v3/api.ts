@@ -512,7 +512,10 @@ export const SubmodelRepositoryApiFp = function (configuration?: Configuration) 
                 options,
             );
             return async (requestHandler: FetchAPI, baseUrl: string) => {
-                return requestHandler.fetch<Submodel>(baseUrl + localVarFetchArgs.url, localVarFetchArgs.options);
+                return requestHandler.fetch<SubmodelElementValue>(
+                    baseUrl + localVarFetchArgs.url,
+                    localVarFetchArgs.options,
+                );
             };
         },
         /**
