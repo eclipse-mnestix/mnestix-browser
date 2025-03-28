@@ -5,10 +5,9 @@ const config: Config = {
     transform: {
         '^.+\\.(t|j)sx?$': '@swc/jest',
     },
-    preset: 'ts-jest',
     testEnvironment: 'node',
     testMatch: ['**/__tests__/**/*.ts', '**/?(*.)+(spec|test).ts'],
-    modulePathIgnorePatterns: ['cypress'],
+    modulePathIgnorePatterns: ['cypress', 'dist/standalone/'],
 };
 
 export default config;

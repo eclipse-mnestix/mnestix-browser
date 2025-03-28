@@ -12,10 +12,12 @@ const de = { mnestix: deMnestix };
 const en = { mnestix: enMnestix };
 
 export const translationLists: Record<string, Record<string, string>> = {
+    // TODO MNES-1136 remove flat lib when removing react-intl
     de: flatten(de),
     en: flatten(en),
 };
 
+// TODO MNES-1136 Remove react-intl
 /**
  * @deprecated Please use t() of useTranslations(... instead as shown in TimeSeriesVisualizations.tsx
  */
