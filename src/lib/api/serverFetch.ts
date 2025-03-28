@@ -1,5 +1,6 @@
 'use server';
 
+import dedent from 'dedent';
 import { ApiResponseWrapper, wrapErrorCode, wrapResponse } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
@@ -22,6 +23,14 @@ export async function performServerFetch<T>(
 ): Promise<ApiResponseWrapper<T>> {
     try {
         const response = await fetch(input, init);
+        if (response.status >= 500) {
+            console.warn(dedent`
+                Server error encountered:
+                Request URL: ${input}
+                Status: ${response.status} (${response.statusText})
+                Request Options: ${JSON.stringify(init?.body /* only logging body to limit data */, null, 2)}
+            `);
+        }
         return await wrapResponse<T>(response);
     } catch (e) {
         const message = 'this could be a network error';
