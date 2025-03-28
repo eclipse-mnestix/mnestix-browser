@@ -210,4 +210,6 @@ export const enMnestix = {
     },
     copyTemplateId: 'Copy Template ID',
     templateIdCopied: 'Template ID copied to clipboard: {id}',
+    copy: 'Copy',
+    copied: 'Copied to clipboard',
 };

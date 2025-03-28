@@ -214,4 +214,6 @@ export const deMnestix = {
     },
     copyTemplateId: 'Vorlagen-ID kopieren',
     templateIdCopied: 'Vorlagen-ID in die Zwischenablage kopiert: {id}',
+    copy: 'Kopieren',
+    copied: 'In Zwischenablage kopiert',
 };
