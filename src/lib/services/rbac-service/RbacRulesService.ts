@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { mnestixFetch } from 'lib/api/infrastructure';
@@ -31,17 +32,23 @@ export class RbacRulesService {
         const newIdShort = ruleToIdShort(newRule);
         const ruleSubmodelElement = ruleToSubmodelElement(newIdShort, newRule);
 
-        const { isSuccess, result } = await this.securitySubmodelRepositoryClient.postSubmodelElement(
+        const resPostSub = await this.securitySubmodelRepositoryClient.postSubmodelElement(
             SEC_SUB_ID,
             ruleSubmodelElement,
         );
-        if (!isSuccess) {
+        if (!resPostSub.isSuccess) {
+            if (resPostSub.errorCode === ApiResultStatus.CONFLICT) {
+                const msg = `Rule with idShort ${newIdShort} base64 value of ${{ action: newRule.action, role: newRule.role, target: newRule.targetInformation['@type'] }} already exists`;
+                console.warn(`RbacRuleCreation failed: ${msg}`);
+                return wrapErrorCode(ApiResultStatus.CONFLICT, msg);
+            }
             return wrapErrorCode(
                 ApiResultStatus.INTERNAL_SERVER_ERROR,
                 'Failed to create Rule in SecuritySubmodel Repo',
             );
         }
-        return wrapSuccess(submodelToRule(result));
+        console.info(`RbacRule: ${newIdShort} created`);
+        return wrapSuccess(submodelToRule(resPostSub.result));
     }
 
     static createNull(subRepoApi: ISubmodelRepositoryApi): RbacRulesService {
@@ -89,7 +96,9 @@ export class RbacRulesService {
         const deleteRes = await this.securitySubmodelRepositoryClient.deleteSubmodelElementByPath(SEC_SUB_ID, idShort);
         if (!deleteRes.isSuccess) {
             if (deleteRes.errorCode === ApiResultStatus.NOT_FOUND) {
-                return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'Rule not found in SecuritySubmodel. Try reloading.');
+                const msg = `Rule with idShort ${idShort} not found in SecuritySubmodel. Try reloading.`;
+                console.warn(`RbacRuleDeletion failed: ${msg}`);
+                return wrapErrorCode(ApiResultStatus.NOT_FOUND, msg);
             }
             return wrapErrorCode(
                 ApiResultStatus.INTERNAL_SERVER_ERROR,
@@ -100,27 +109,36 @@ export class RbacRulesService {
         const newIdShort = ruleToIdShort(newRule);
         const ruleSubmodelElement = ruleToSubmodelElement(newIdShort, newRule);
 
-        const { isSuccess, result } = await this.securitySubmodelRepositoryClient.postSubmodelElement(
+        const resPostSub = await this.securitySubmodelRepositoryClient.postSubmodelElement(
             SEC_SUB_ID,
             ruleSubmodelElement,
         );
-        if (!isSuccess) {
+        if (!resPostSub.isSuccess) {
+            if (resPostSub.errorCode === ApiResultStatus.CONFLICT) {
+                const msg = `Rule with idShort ${newIdShort} already exists`;
+                console.warn(`RbacRuleUpdate failed: ${msg}`);
+                return wrapErrorCode(ApiResultStatus.CONFLICT, msg);
+            }
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Failed to set Rule in SecuritySubmodel Repo');
         }
-        return wrapSuccess(submodelToRule(result));
+        console.info(`RbacRule: ${idShort} deleted and ${newIdShort} created`);
+        return wrapSuccess(submodelToRule(resPostSub.result));
     }
 
     /**
      * Deletes a rule
      */
     async delete(idShort: string): Promise<ApiResponseWrapper<undefined>> {
-        const { isSuccess } = await this.securitySubmodelRepositoryClient.deleteSubmodelElementByPath(
-            SEC_SUB_ID,
-            idShort,
-        );
-        if (isSuccess) {
+        const resDelete = await this.securitySubmodelRepositoryClient.deleteSubmodelElementByPath(SEC_SUB_ID, idShort);
+        if (!resDelete.isSuccess) {
+            if (resDelete.errorCode === ApiResultStatus.NOT_FOUND) {
+                const msg = `Rule with idShort ${idShort} not found in SecuritySubmodel. Try reloading.`;
+                console.warn(`RbacRuleDeletion failed: ${msg}`);
+                return wrapErrorCode(ApiResultStatus.NOT_FOUND, msg);
+            }
             return wrapSuccess(undefined);
         }
+        console.info(`RbacRule: ${idShort} deleted`);
         return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Failed to set Rule in SecuritySubmodel Repo');
     }
 }
