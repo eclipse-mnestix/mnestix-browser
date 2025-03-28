@@ -82,6 +82,12 @@
       },
       "addButton": "Hinzufügen",
       "saveSuccess": "Rolle erfolgreich gespeichert."
+    },
+    "buttons": {
+      "save": "Speichern",
+      "cancel": "Abbrechen",
+      "back": "Zurück",
+      "edit": "Bearbeiten"
     }
   },
   "errors": {

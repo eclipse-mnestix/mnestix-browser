@@ -13,7 +13,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslations } from 'next-intl';
 import { BaSyxRbacRule, rbacRuleActions, rbacRuleTargets } from 'lib/services/rbac-service/RbacRulesService';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import { ArrowBack } from '@mui/icons-material';
 import CheckIcon from '@mui/icons-material/Check';
@@ -35,9 +35,9 @@ type RoleDialogProps = {
     readonly role: BaSyxRbacRule;
 };
 /**
- * Type assumptions:
+ * Type assumptions for this FormModel:
  * - It is fine to always use string arrays here.
- * - It is fine to always take the first element of the action array, since basyx only supports one action per role.
+ * - It is fine to always take the first element of the action array, since BaSyx only supports one action per role.
  */
 export type TargetInformationFormModel = {
     aasEnvironment: { aasIds: string[]; submodelIds: string[] } | undefined;
@@ -69,9 +69,13 @@ export const RoleDialog = (props: RoleDialogProps) => {
         };
     };
 
-    const { control, handleSubmit, setValue, getValues } = useForm({
+    const { control, handleSubmit, setValue, getValues, reset } = useForm({
         defaultValues: mapBaSyxRbacRuleToFormModel(props.role as BaSyxRbacRule),
     });
+
+    useEffect(() => {
+        reset(mapBaSyxRbacRuleToFormModel(props.role as BaSyxRbacRule));
+    }, [props.role, reset]);
 
     const mapFormModelToBaSyxRbacRule = (formModel: RoleFormModel): BaSyxRbacRule => {
         const targetInformation = mapTargetInformationFormModelToDto(formModel.targetInformation, formModel.type);
@@ -100,6 +104,7 @@ export const RoleDialog = (props: RoleDialogProps) => {
 
     const onCloseDialog = () => {
         setIsEditMode(false);
+        reset();
         props.onClose();
     };
 
@@ -168,19 +173,19 @@ export const RoleDialog = (props: RoleDialogProps) => {
                     {isEditMode ? (
                         <>
                             <Button startIcon={<CloseIcon />} variant="outlined" onClick={() => setIsEditMode(false)}>
-                                Cancel
+                                {t('buttons.cancel')}
                             </Button>
                             <Button variant="contained" startIcon={<CheckIcon />} onClick={handleSubmit(onSubmit)}>
-                                Save
+                                {t('buttons.save')}
                             </Button>
                         </>
                     ) : (
                         <>
                             <Button startIcon={<ArrowBack />} variant="outlined" onClick={props.onClose}>
-                                Back
+                                {t('buttons.back')}
                             </Button>
                             <Button variant="contained" startIcon={<EditIcon />} onClick={() => setIsEditMode(true)}>
-                                Edit
+                                {t('buttons.edit')}
                             </Button>
                         </>
                     )}

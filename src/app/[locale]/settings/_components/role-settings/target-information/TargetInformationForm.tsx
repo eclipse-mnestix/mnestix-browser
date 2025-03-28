@@ -7,12 +7,13 @@ import { RoleFormModel } from 'app/[locale]/settings/_components/role-settings/R
 import { Control, Controller, UseFormGetValues, UseFormSetValue } from 'react-hook-form';
 
 type TargetInformationProps = {
-    readonly control: Control<RoleFormModel, never>;
+    readonly control: Control<RoleFormModel>;
     readonly setValue: UseFormSetValue<RoleFormModel>;
     readonly getValues: UseFormGetValues<RoleFormModel>;
 };
 export const TargetInformationForm = (props: TargetInformationProps) => {
     const t = useTranslations('settings');
+    // TODO react on change of chosen role (closing and opening another role dialog)
 
     const ruleTypes = Object.keys(rbacRuleTargets);
     const currentType = props.getValues('type') as keyof typeof rbacRuleTargets;

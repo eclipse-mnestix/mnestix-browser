@@ -82,6 +82,12 @@
       },
       "addButton": "Add",
       "saveSuccess": "Role saved successfully."
+    },
+    "buttons": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "back": "Back",
+      "edit": "Edit"
     }
   },
   "errors": {

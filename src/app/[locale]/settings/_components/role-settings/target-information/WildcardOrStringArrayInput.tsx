@@ -9,13 +9,9 @@ import { useTranslations } from 'next-intl';
 type WildcardOrStringArrayInputProps = {
     type: string;
     rule: string;
-    control: Control<RoleFormModel, never>;
+    control: Control<RoleFormModel>;
     setValue: UseFormSetValue<RoleFormModel>;
     getValues: UseFormGetValues<RoleFormModel>;
-};
-
-const getTargetInformationKey = (type: string, rule: string): keyof RoleFormModel => {
-    return `targetInformation.${type}.${rule}` as keyof RoleFormModel;
 };
 
 export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProps) => {
@@ -29,10 +25,12 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
     // TODO fix the typing issue here.
     const { fields, append, remove } = useFieldArray({
         control,
-        name: getTargetInformationKey(props.type, props.rule),
+        name: `targetInformation.${props.type}.${props.rule}`,
     });
+
     const wildcardValueChanged = (value: boolean) => {
         setIsWildcard(value);
+        // @ts-expect-error types are not correct here
         props.setValue(`targetInformation.${props.type}.${props.rule}`, value ? ['*'] : []);
     };
 
