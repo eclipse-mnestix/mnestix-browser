@@ -3,6 +3,7 @@ import type { BaSyxRbacRule } from './RbacRulesService';
 // TODO MNES-1605
 export function ruleToSubmodelElement(idShort: string, rule: Omit<BaSyxRbacRule, 'idShort'>) {
     const targets = Object.entries(rule.targetInformation).filter(([k]) => k !== '@type');
+
     return {
         modelType: 'SubmodelElementCollection',
         idShort,
@@ -18,11 +19,11 @@ export function ruleToSubmodelElement(idShort: string, rule: Omit<BaSyxRbacRule,
                 idShort: 'action',
                 orderRelevant: true,
                 typeValueListElement: 'Property',
-                value: rule.action.map((e) => ({
+                value: {
                     modelType: 'Property',
                     valueType: 'xs:string',
-                    value: e,
-                })),
+                    value: rule.action,
+                },
             },
             {
                 modelType: 'SubmodelElementCollection',
@@ -70,7 +71,7 @@ const BASYX_TARGET_CLASSES: Record<BaSyxRbacRule['targetInformation']['@type'], 
 
 export function ruleToIdShort(rule: Omit<BaSyxRbacRule, 'idShort'>) {
     const targetClass = BASYX_TARGET_CLASSES[rule.targetInformation['@type']];
-    const str = `${rule.role}${rule.action.toSorted().join('+')}${targetClass}`;
+    const str = `${rule.role}${rule.action}${targetClass}`;
     return btoa(str);
 }
 

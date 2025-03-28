@@ -133,9 +133,15 @@ export function submodelToRule(submodelElement: any): BaSyxRbacRule {
     const actions =
         submodelElement.value.find((e: any) => e.idShort === 'action')?.value.map((e: any) => e.value) || [];
 
-    const invalidActions = actions.filter((e: any) => !rbacRuleActions.includes(e));
-    if (invalidActions.length > 0) {
-        throw new RuleParseError(`Invalid action(s): ${invalidActions.join(', ')}`);
+    if (actions.length > 1) {
+        throw new RuleParseError(' is allowed');
+    }
+    const action: (typeof rbacRuleActions)[number] = actions[0];
+
+    if (!rbacRuleActions.includes(action)) {
+        throw new RuleParseError(
+            `Invalid action: '${action}' is not allowed for the rule with idShort: '${submodelElement.idShort}'.`,
+        );
     }
 
     const targetInformationElement = submodelElement.value.find((e: any) => e.idShort === 'targetInformation');
@@ -166,7 +172,7 @@ export function submodelToRule(submodelElement: any): BaSyxRbacRule {
     return {
         idShort: submodelElement.idShort,
         role,
-        action: actions,
+        action: action,
         targetInformation: {
             '@type': targetType,
             ...Object.fromEntries(targets),
@@ -175,7 +181,7 @@ export function submodelToRule(submodelElement: any): BaSyxRbacRule {
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
-export const rbacRuleActions = ['READ', 'CREATE', 'UPDATE', 'DELETE', 'EXECUTE'];
+export const rbacRuleActions = ['READ', 'CREATE', 'UPDATE', 'DELETE', 'EXECUTE'] as const;
 
 export const rbacRuleTargets = {
     'aas-environment': ['aasIds', 'submodelIds'],
@@ -187,20 +193,18 @@ export const rbacRuleTargets = {
     'aas-discovery-service': ['aasIds', 'assetIds'],
 } as const;
 
-type StrOrArray = string | string[];
-
 type TargetInformation =
-    | { '@type': 'aas-environment'; aasIds: StrOrArray; submodelIds: StrOrArray }
-    | { '@type': 'aas'; aasIds: StrOrArray }
-    | { '@type': 'submodel'; submodelIds: StrOrArray; submodelElementIdShortPaths: StrOrArray }
-    | { '@type': 'concept-description'; conceptDescriptionIds: StrOrArray }
-    | { '@type': 'aas-registry'; aasIds: StrOrArray }
-    | { '@type': 'submodel-registry'; submodelIds: StrOrArray }
-    | { '@type': 'aas-discovery-service'; aasIds: StrOrArray; assetIds: StrOrArray };
+    | { '@type': 'aas-environment'; aasIds: string[]; submodelIds: string[] }
+    | { '@type': 'aas'; aasIds: string[] }
+    | { '@type': 'submodel'; submodelIds: string[]; submodelElementIdShortPaths: string[] }
+    | { '@type': 'concept-description'; conceptDescriptionIds: string[] }
+    | { '@type': 'aas-registry'; aasIds: string[] }
+    | { '@type': 'submodel-registry'; submodelIds: string[] }
+    | { '@type': 'aas-discovery-service'; aasIds: string[]; assetIds: string[] };
 
 export type BaSyxRbacRule = {
     idShort: string;
     targetInformation: TargetInformation;
     role: string;
-    action: typeof rbacRuleActions;
+    action: (typeof rbacRuleActions)[number];
 };
