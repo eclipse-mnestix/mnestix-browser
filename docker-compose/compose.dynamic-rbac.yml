@@ -1,0 +1,135 @@
+services:
+  mnestix-browser:
+    environment:
+      AUTHENTICATION_FEATURE_FLAG: 'true'
+      NEXTAUTH_URL: 'http://localhost:3000'
+      KEYCLOAK_ENABLED: 'true'
+      KEYCLOAK_CLIENT_ID: 'mnestix-browser-client-demo'
+      KEYCLOAK_ISSUER: 'http://keycloak:8080'
+      KEYCLOAK_LOCAL_URL: 'http://localhost:8080'
+      KEYCLOAK_REALM: 'Mnestix'
+      USE_BASYX_RBAC: 'true'
+      SEC_SM_API_URL: 'http://security-submodel:8081'
+
+  mnestix-api:
+    environment:
+      Features__UseAuthentication: 'true'
+      # OpenId repository settings
+      RepositoryOpenIdConnect__EnableRepositoryOpenIdAuth: 'true'
+      RepositoryOpenIdConnect__Authority: 'http://keycloak:8080/realms/Mnestix'
+      RepositoryOpenIdConnect__DiscoveryEndpoint: '.well-known/openid-configuration'
+      RepositoryOpenIdConnect__ClientId: 'mnestix-repo-client-demo'
+      RepositoryOpenIdConnect__ClientSecret: ${REPOSITORY_API_CLIENT_SECRET:-WLOB68nSllHTlr7ViUOZWWxildWFT2nN}
+      RepositoryOpenIdConnect__ValidateIssuer: 'false'
+      RepositoryOpenIdConnect__TokenEndpoint: 'http://keycloak:8080/realms/Mnestix/protocol/openid-connect/token'
+      # OpenID Configuration
+      OpenId__EnableOpenIdAuth: 'true'
+      OpenId__Issuer: 'http://keycloak:8080/realms/Mnestix'
+      OpenId__ClientID: 'mnestixApi-demo'
+      OpenId__RequireHttpsMetadata: 'false'
+    depends_on:
+      keycloak:
+        condition: service_healthy
+
+  aas-environment:
+    environment:
+      # Dynamic Roles configuration part:
+      basyx.feature.authorization.rules.backend: 'Submodel'
+      basyx.feature.authorization.rules.backend.submodel.authorization.endpoint: 'http://security-submodel:8081/submodels/U2VjdXJpdHlTdWJtb2RlbA=='
+      basyx.feature.authorization.rules.backend.submodel.authorization.token-endpoint: 'http://keycloak:8080/realms/Mnestix/protocol/openid-connect/token'
+      basyx.feature.authorization.rules.backend.submodel.authorization.grant-type: 'CLIENT_CREDENTIALS'
+      basyx.feature.authorization.rules.backend.submodel.authorization.client-id: 'workstation-1'
+      basyx.feature.authorization.rules.backend.submodel.authorization.client-secret: ${WORKSTATION_API_CLIENT_SECRET:-nY0mjyECF60DGzNmQUjL81XurSl8etom} #Secret for Keycloak client
+      # Authorization basic
+      basyx.feature.authorization.enabled: 'true'
+      basyx.feature.authorization.type: rbac
+      basyx.feature.authorization.jwtBearerTokenProvider: keycloak
+      spring.security.oauth2.resourceserver.jwt.issuer-uri: 'http://keycloak:8080/realms/Mnestix'
+    depends_on:
+      security-submodel:
+        condition: service_healthy
+      security-sm-setup:
+        condition: service_completed_successfully
+
+  security-submodel:
+    image: eclipsebasyx/submodel-repository:2.0.0-milestone-05
+    container_name: security-submodel
+    depends_on:
+      keycloak:
+        condition: service_healthy
+    environment:
+      BASYX__BACKEND: MongoDB
+      SPRING__DATA__MONGODB__HOST: mongodb
+      SPRING__DATA__MONGODB__DATABASE: basyxdb-security
+      SPRING__DATA__MONGODB__authentication-database: admin
+      SPRING__DATA__MONGODB__USERNAME: mongoAdmin
+      SPRING__DATA__MONGODB__PASSWORD: mongoPassword
+      BASYX__CORS__ALLOWED-ORIGINS: '*'
+      BASYX__CORS__ALLOWED-METHODS: GET,POST,PATCH,DELETE,PUT,OPTIONS,HEAD
+      # Authentication
+      basyx.feature.authorization.enabled: 'true'
+      basyx.feature.authorization.type: rbac
+      basyx.feature.authorization.jwtBearerTokenProvider: keycloak
+      basyx.feature.authorization.rbac.file: file:/data/rbac_rules.json
+      spring.security.oauth2.resourceserver.jwt.issuer-uri: 'http://keycloak:8080/realms/Mnestix'
+      # Allow mnestix frontend and backend to call basyx
+      BASYX_CORS_ALLOWED-ORIGINS: '*'
+      BASYX_CORS_ALLOWED-METHODS: GET,POST,PATCH,DELETE,PUT,OPTIONS,HEAD
+    healthcheck: # check the endpoint for a valid response (service ready)
+      test: curl -f http://localhost:8081/actuator/health
+      interval: 10s
+      timeout: 10s
+      retries: 6
+    # Remove for production use
+    ports:
+      - '8089:8081'
+    volumes:
+      - ./docker-compose/data/keycloak/sec_sm_roles.json:/data/rbac_rules.json:ro
+    networks:
+      - mnestix-network
+
+  security-sm-setup:
+    container_name: security-sm-setup
+    build:
+      context: ./docker-compose/dynamic-rbac
+    depends_on:
+      security-submodel:
+        condition: service_healthy
+    restart: 'no'
+    environment:
+      CLIENT_ID: 'workstation-1'
+      CLIENT_SECRET: ${WORKSTATION_API_CLIENT_SECRET:-nY0mjyECF60DGzNmQUjL81XurSl8etom}
+    volumes:
+      - ./docker-compose/dynamic-rbac/entrypoint.sh:/entrypoint.sh
+      - ./docker-compose/dynamic-rbac/initial-submodel.json:/initial-submodel.json
+    entrypoint: ['bash', '-c', 'sh /entrypoint.sh']
+
+    networks:
+      - mnestix-network
+
+  keycloak:
+    build:
+      context: ./docker-compose/data/keycloak
+    container_name: keycloak
+    volumes:
+      - ./docker-compose/data/keycloak/realm:/opt/jboss/keycloak/imports
+    ports:
+      - 8080:8080
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HOSTNAME: localhost
+      KC_SPI_INITIALIZER_ISSUER_BASE_URI: http://keycloak:8080
+      KC_HEALTH_ENABLED: 'true'
+    command: ['start-dev', '--import-realm']
+    healthcheck: # check the endpoint for a valid response (service ready)
+      test: #keycloak has no curl in image
+        [
+          'CMD-SHELL',
+          "exec 3<>/dev/tcp/localhost/8080 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 6
+    networks:
+      - mnestix-network
