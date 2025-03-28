@@ -15,17 +15,17 @@ export const RoleDialog = (props: RoleDialogProps) => {
     const permissions = (entry: BaSyxRbacRule) => {
         const permissions: JSX.Element[] = [];
         const keys = Object.keys(entry.targetInformation);
-        keys.forEach((key) => {
+        keys.forEach((key, index) => {
             // @ts-expect-error zod type
             const element = entry.targetInformation[key];
 
             if (element !== '@type' && Array.isArray(element))
                 permissions.push(
                     <Box>
-                        <Typography color="text.secondary" variant="body2">
+                        <Typography color="text.secondary" variant="body2" data-testid={`permissions-key-${index}`}>
                             {key}
                         </Typography>
-                        <Typography>{element.join(', ')}</Typography>
+                        <Typography data-testid={`permissions-list-${index}`}>{element.join(', ')}</Typography>
                     </Box>,
                 );
         });
@@ -34,10 +34,10 @@ export const RoleDialog = (props: RoleDialogProps) => {
 
     return (
         <Dialog open={props.open} onClose={props.onClose} maxWidth="md" fullWidth={true}>
-            <DialogCloseButton handleClose={props.onClose}/>
+            <DialogCloseButton handleClose={props.onClose} dataTestId={'rbac-close-dialog-button'}/>
             <DialogContent style={{ padding: '40px' }}>
                 <Box display="flex" flexDirection="column" gap="1em">
-                    <Typography variant="h2" color={'primary'}>
+                    <Typography variant="h2" color={'primary'} data-testid="rbac-role-dialog-title">
                         Role: {props.role?.role}
                     </Typography>
                     <Box display="flex" flexDirection="column" gap="1em">
@@ -45,13 +45,13 @@ export const RoleDialog = (props: RoleDialogProps) => {
                             <Typography color="text.secondary" variant="body2">
                                 {t('roles.tableHeader.action')}
                             </Typography>
-                            <Typography>{props.role?.action}</Typography>{' '}
+                            <Typography data-testid="rbac-role-dialog-action">{props.role?.action}</Typography>{' '}
                         </Box>
                         <Box>
                             <Typography color="text.secondary" variant="body2">
                                 {t('roles.tableHeader.type')}
                             </Typography>
-                            <Typography>{props.role?.targetInformation['@type']}</Typography>
+                            <Typography data-testid="rbac-role-dialog-type">{props.role?.targetInformation['@type']}</Typography>
                         </Box>
                         {props.role && permissions(props.role)}
                     </Box>

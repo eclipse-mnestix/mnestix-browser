@@ -37,6 +37,6 @@ export default defineConfig({
         TEST_ADMIN_USER_PASSWORD: 'admin',
         TEST_USER_LOGIN: 'test',
         TEST_USER_PASSWORD: 'test',
-        KEYCLOAK_ISSUER: 'http://keycloak:8080',
+        KEYCLOAK_ISSUER: 'http://localhost:8080',
     },
 });
