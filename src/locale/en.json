@@ -136,6 +136,17 @@
         "0173-1#07-AAS758#001": "Home",
         "0173-1#07-AAS759#001": "Private mobile"
       }
+    },
+    "relationShipDetailsDialog": {
+      "hasPart": "has part",
+      "isPartOf": "is part of",
+      "sameAs": "same as",
+      "semanticId": "Semantic ID",
+      "error": {
+        "unknownRelationship": "Unknown relationship",
+        "semanticError": "Semantic ID not found",
+        "entityError": "Relation entity not found"
+      }
     }
   },
   "footer": {

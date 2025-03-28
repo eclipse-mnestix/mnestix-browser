@@ -13,6 +13,7 @@ export const getEnv = async (): Promise<EnvironmentalVariables> => {
         COMPARISON_FEATURE_FLAG: process.env.COMPARISON_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
         TRANSFER_FEATURE_FLAG: process.env.TRANSFER_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
         AAS_LIST_FEATURE_FLAG: process.env.AAS_LIST_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
+        WHITELIST_FEATURE_FLAG: process.env.WHITELIST_FEATURE_FLAG?.toLowerCase() === 'true'.toLowerCase(),
         USE_BASYX_RBAC: process.env.USE_BASYX_RBAC?.toLowerCase() === 'true'.toLowerCase(),
     };
 
@@ -29,18 +30,23 @@ export const getEnv = async (): Promise<EnvironmentalVariables> => {
         KEYCLOAK_ENABLED: process.env.KEYCLOAK_ENABLED?.toLowerCase() === 'true'.toLowerCase(),
         IMPRINT_URL: process.env.IMPRINT_URL,
         DATA_PRIVACY_URL: process.env.DATA_PRIVACY_URL,
+        SUBMODEL_WHITELIST: process.env.SUBMODEL_WHITELIST,
     };
 
     const themingVariables = {
         THEME_PRIMARY_COLOR: process.env.THEME_PRIMARY_COLOR,
         THEME_SECONDARY_COLOR: process.env.THEME_SECONDARY_COLOR,
-        THEME_BASE64_LOGO: process.env.THEME_LOGO_MIME_TYPE ? '' : undefined,
+        THEME_BASE64_LOGO: process.env.THEME_BASE64_LOGO,
         THEME_LOGO_URL: process.env.THEME_LOGO_URL,
     };
 
     // Load the image from the public folder and provide it to the theming as base64 image with mime type
     // possible TODO automatically parse mimetype but not based on file path but on file content
-    if (process.env.THEME_LOGO_MIME_TYPE && process.env.THEME_LOGO_MIME_TYPE.startsWith('image/')) {
+    if (
+        !process.env.THEME_BASE64_LOGO &&
+        process.env.THEME_LOGO_MIME_TYPE &&
+        process.env.THEME_LOGO_MIME_TYPE.startsWith('image/')
+    ) {
         try {
             const imagePath = path.resolve('./public/logo');
             const imageBuffer = fs.readFileSync(imagePath);
@@ -77,4 +83,6 @@ export type EnvironmentalVariables = {
     IMPRINT_URL: string | undefined;
     DATA_PRIVACY_URL: string | undefined;
     USE_BASYX_RBAC: boolean;
+    WHITELIST_FEATURE_FLAG: boolean;
+    SUBMODEL_WHITELIST: string | undefined;
 };

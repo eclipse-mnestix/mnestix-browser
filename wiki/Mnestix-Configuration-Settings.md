@@ -15,8 +15,8 @@ Mnestix provides the following configuration options. You can adapt the values i
 | `AUTHENTICATION_FEATURE_FLAG`         | false                       | Enable or disable the authentication in the frontend. (Needs the Mnestix Backend to work)                                                                                                                                          | optional |
 | `COMPARISON_FEATURE_FLAG`             | false                       | Enables or disables the comparison feature.                                                                                                                                                                                        | optional |
 | `LOCK_TIMESERIES_PERIOD_FEATURE_FLAG` | false                       | Enables or disables the selection of the timerange in the TimeSeries submodel.                                                                                                                                                     | optional |
-| `THEME_PRIMARY_COLOR`                 | Mnestix Primary Color       | Changes the primary color of Mnestix Browser, e.g. #00ff00. The following formats are supported: #nnn, #nnnnnn, rgb(), rgba(), hsl(), hsla(), color()                                                                              | optional |
-| `THEME_SECONDARY_COLOR`               | Mnestix Secondary Color     | Changes the secondary color of Mnestix Browser, e.g. #0d2. The following formats are supported: #nnn, #nnnnnn, rgb(), rgba(), hsl(), hsla(), color()                                                                               | optional |
+| `THEME_PRIMARY_COLOR`                 | Mnestix Primary Color       | Changes the primary color of Mnestix Browser, e.g. '#00ff00'. The following formats are supported: #nnn, #nnnnnn, rgb(), rgba(), hsl(), hsla(), color()                                                                            | optional |
+| `THEME_SECONDARY_COLOR`               | Mnestix Secondary Color     | Changes the secondary color of Mnestix Browser, e.g. '#0d2'. The following formats are supported: #nnn, #nnnnnn, rgb(), rgba(), hsl(), hsla(), color()                                                                             | optional |
 | `THEME_LOGO_MIME_TYPE`                |                             | Used in parsing the logo mounted `-v /path/to/logo:/app/public/logo` the mime type is needed, e.g. `image/svg+xml`, `image/png`, `image/jpg`                                                                                       | optional |
 | `THEME_LOGO_URL`                      |                             | This variable **overwrites** the Logo in the theme, and thus the environment variable `THEME_LOGO_MIME_TYPE` will not be evaluated and it is not necessary to mount the image as specified below                                   | optional |
 | `KEYCLOAK_ENABLED`                    | false                       | By default, it is set to false, meaning Keycloak authentication will be disabled, and the default authentication method will be Azure Entra ID. If you set this variable to true, Keycloak authentication will be enabled instead. | optional |
@@ -27,12 +27,14 @@ Mnestix provides the following configuration options. You can adapt the values i
 | `IMPRINT_URL`                         |                             | Address that will be used in the imprint link. Will only show the link, if a value has been set.                                                                                                                                   | optional |
 | `DATA_PRIVACY_URL`                    |                             | Address that will be used in the data privacy link. Will only show the link, if a value has been set.                                                                                                                              | optional |
 | `USE_BASYX_RBAC`                      | false                       | Set to true, if BaSyx is used together with RBAC. This will enable the administration of RBAC configuration inside Mnestix.                                                                                                        | optional |
+| `WHITELIST_FEATURE_FLAG`              | false                       | Enables or disables the feature for showing/hiding specific submodels.                                                                                                                                                             | optional |
+| `SUBMODEL_WHITELIST`                  |                             | This variable can be used to specify a list of submodel semantic ids in order to show them when the `WHITELIST_FEATURE_FLAG` is set to true.                                                                                       | optional |
 
 ### How to set a custom logo
 
 There are multiple ways to set a logo, you can either use Option 1 or Option 2:
 
-#### Option 1
+#### Option 1: Mount a logo
 
 First you need to mount your logo to the container, e.g. by adding it to the docker compose file
 
@@ -49,18 +51,33 @@ you can just replace the [image in the
 `data` folder](https://github.com/eclipse-mnestix/mnestix-browser/tree/main/docker-compose/data/logo.svg) with your
 preferred logo.
 
-Remember to set the mime type correctly in order for the browser to parse your image correctly.
+Remember to set the mime type correctly in order for the browser to parse your image correctly. 
+E.g. for an SVG image, set the mime type to `image/svg+xml`:
+
+```yaml
+environment:
+  THEME_LOGO_MIME_TYPE: 'image/svg+xml'
+```
+
 Only image mime types are allowed.
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 
-#### Option 2
+#### Option 2: Base64 encoded logo
 
-This version overwrites the previous settings, you can either use one or the other.
+This version overwrites the previous setting. 
+To use this, provide a base64 encoded image in the environment variable:
+
+```yaml
+environment:
+  THEME_BASE64_LOGO: '<<BASE64_ENCODED_IMAGE>>'
+```
+
+#### Option 3: Link to a hosted logo
+
+This version overwrites both of the previous settings.
 To use this just set an environment variable to a link hosted that is publicly accessible:
 
 ```yaml
-
----
 environment:
   THEME_LOGO_URL: https://xitaso.com/wp-content/uploads/XITASO-Logo-quer.svg
 ```

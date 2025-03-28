@@ -17,7 +17,8 @@ describe('Visit the Viewer page', function () {
                 ')',
             function () {
                 cy.setResolution(el);
-                cy.get('@IDInput').click().type(testAAS.aasId);
+                cy.get('@IDInput').click();
+                cy.get('@IDInput').type(testAAS.aasId);
                 cy.getByTestId('aasId-submit-button').click();
                 cy.url().should('contain', '/viewer/' + btoa(testAAS.aasId).replace(new RegExp('=*$', 'g'), ''));
             },
@@ -28,7 +29,8 @@ describe('Visit the Viewer page', function () {
                 ')',
             function () {
                 cy.setResolution(el);
-                cy.get('@IDInput').click().type(testAAS.assetId);
+                cy.get('@IDInput').click();
+                cy.get('@IDInput').type(testAAS.assetId);
                 cy.getByTestId('aasId-submit-button').click();
                 cy.url().should('contain', '/viewer/' + btoa(testAAS.aasId).replace(new RegExp('=*$', 'g'), ''));
             },
