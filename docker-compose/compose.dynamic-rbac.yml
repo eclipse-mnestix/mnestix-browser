@@ -44,10 +44,7 @@ services:
       basyx.feature.authorization.enabled: 'true'
       basyx.feature.authorization.type: rbac
       basyx.feature.authorization.jwtBearerTokenProvider: keycloak
-      basyx.feature.authorization.rbac.file: file:/data/rbac_rules.json
       spring.security.oauth2.resourceserver.jwt.issuer-uri: 'http://keycloak:8080/realms/Mnestix'
-    volumes:
-      - ./docker-compose/data/keycloak/rbac_rules.json:/data/rbac_rules.json:ro
     depends_on:
       security-submodel:
         condition: service_healthy
