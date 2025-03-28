@@ -80,7 +80,8 @@
         "submodelIds": "Submodel IDs",
         "permissions": "Berechtigungen"
       },
-      "addButton": "Hinzufügen"
+      "addButton": "Hinzufügen",
+      "saveSuccess": "Rolle erfolgreich gespeichert."
     }
   },
   "errors": {

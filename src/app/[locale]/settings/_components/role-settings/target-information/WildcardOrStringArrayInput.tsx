@@ -22,7 +22,7 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
     const t = useTranslations('settings');
     const control = props.control;
     const checkIfWildcard = () => {
-        const value = props.getValues(`targetInformation.${props.type}.${props.rule}`);
+        const value = props.getValues(`targetInformation.${props.type}.${props.rule}` as keyof typeof props.getValues);
         return Array.isArray(value) && value[0] === '*';
     };
     const [isWildcard, setIsWildcard] = useState(checkIfWildcard());

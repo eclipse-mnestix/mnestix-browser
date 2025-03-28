@@ -16,7 +16,7 @@ export const TargetInformationForm = (props: TargetInformationProps) => {
 
     const ruleTypes = Object.keys(rbacRuleTargets);
     const currentType = props.getValues('type') as keyof typeof rbacRuleTargets;
-    const currentTypeInformation = props.getValues(`targetInformation.${currentType}` as const);
+    const currentTypeInformation = props.getValues(`targetInformation.${currentType}` as keyof typeof props.getValues);
 
     const permissions: JSX.Element[] = [];
     const keys = currentTypeInformation ? Object.keys(currentTypeInformation) : [];
@@ -35,6 +35,7 @@ export const TargetInformationForm = (props: TargetInformationProps) => {
             );
         }
     });
+    // TODO  MNES-1629 implement ability to change type of role + temporarily saving previous values
     return (
         <Box>
             <Typography variant="h5">{t('roles.tableHeader.type')}</Typography>
@@ -43,7 +44,7 @@ export const TargetInformationForm = (props: TargetInformationProps) => {
                 control={props.control}
                 render={({ field }) => (
                     <FormControl fullWidth>
-                        <Select labelId="role-type-select-label" variant="outlined" {...field}>
+                        <Select labelId="role-type-select-label" variant="outlined" {...field} disabled>
                             {ruleTypes.map((type) => (
                                 <MenuItem key={type} value={type}>
                                     {type}

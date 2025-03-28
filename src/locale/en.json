@@ -80,7 +80,8 @@
         "submodelIds": "Submodel IDs",
         "permissions": "Permissions"
       },
-      "addButton": "Add"
+      "addButton": "Add",
+      "saveSuccess": "Role saved successfully."
     }
   },
   "errors": {

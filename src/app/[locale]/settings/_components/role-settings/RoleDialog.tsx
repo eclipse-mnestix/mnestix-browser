@@ -18,7 +18,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { ArrowBack } from '@mui/icons-material';
 import CheckIcon from '@mui/icons-material/Check';
 import { TargetInformationForm } from 'app/[locale]/settings/_components/role-settings/target-information/TargetInformationForm';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 import { TargetInformationView } from 'app/[locale]/settings/_components/role-settings/target-information/TargetInformationView';
 import { deleteAndCreateRbacRule } from 'lib/services/rbac-service/RbacActions';
@@ -26,13 +26,19 @@ import {
     mapDtoToTargetInformationFormModel,
     mapTargetInformationFormModelToDto,
 } from 'app/[locale]/settings/_components/role-settings/FormMappingHelper';
+import { useShowError } from 'lib/hooks/UseShowError';
+import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 
 type RoleDialogProps = {
     readonly onClose: () => void;
     readonly open: boolean;
     readonly role: BaSyxRbacRule;
 };
-
+/**
+ * Type assumptions:
+ * - It is fine to always use string arrays here.
+ * - It is fine to always take the first element of the action array, since basyx only supports one action per role.
+ */
 export type TargetInformationFormModel = {
     aasEnvironment: { aasIds: string[]; submodelIds: string[] } | undefined;
     aas: { aasIds: string[] } | undefined;
@@ -52,6 +58,20 @@ export type RoleFormModel = {
 export const RoleDialog = (props: RoleDialogProps) => {
     const t = useTranslations('settings');
     const [isEditMode, setIsEditMode] = useState(false);
+    const { showError } = useShowError();
+    const notificationSpawner = useNotificationSpawner();
+
+    const mapBaSyxRbacRuleToFormModel = (role: BaSyxRbacRule): RoleFormModel => {
+        return {
+            type: role.targetInformation['@type'],
+            action: role.action[0],
+            targetInformation: mapDtoToTargetInformationFormModel(role.targetInformation),
+        };
+    };
+
+    const { control, handleSubmit, setValue, getValues } = useForm({
+        defaultValues: mapBaSyxRbacRuleToFormModel(props.role as BaSyxRbacRule),
+    });
 
     const mapFormModelToBaSyxRbacRule = (formModel: RoleFormModel): BaSyxRbacRule => {
         const targetInformation = mapTargetInformationFormModelToDto(formModel.targetInformation, formModel.type);
@@ -63,28 +83,20 @@ export const RoleDialog = (props: RoleDialogProps) => {
         };
     };
 
-    const mapBaSyxRbacRuleToFormModel = (role: BaSyxRbacRule): RoleFormModel => {
-        return {
-            type: role.targetInformation['@type'],
-            action: role.action[0], // Right now BaSyx only supports one action per role
-            targetInformation: mapDtoToTargetInformationFormModel(role.targetInformation),
-        };
-    };
-
-    const { control, handleSubmit, setValue, getValues } = useForm({
-        defaultValues: mapBaSyxRbacRuleToFormModel(props.role as BaSyxRbacRule),
-    });
-
-    const onSubmit: SubmitHandler<RoleFormModel> = async (data) => {
+    async function onSubmit(data: RoleFormModel) {
         const mappedDto = mapFormModelToBaSyxRbacRule(data);
         console.log(mappedDto);
         const response = await deleteAndCreateRbacRule(props.role.idShort, mappedDto);
         if (response.isSuccess) {
+            notificationSpawner.spawn({
+                message: 'Saved successfully',
+                severity: 'success',
+            });
             onCloseDialog();
         } else {
-            console.log(response.errorCode);
+            showError(response.message);
         }
-    };
+    }
 
     const onCloseDialog = () => {
         setIsEditMode(false);
@@ -155,21 +167,16 @@ export const RoleDialog = (props: RoleDialogProps) => {
                 <DialogActions sx={{ padding: '1em' }}>
                     {isEditMode ? (
                         <>
-                            <Button
-                                autoFocus
-                                startIcon={<CloseIcon />}
-                                variant="outlined"
-                                onClick={() => setIsEditMode(false)}
-                            >
+                            <Button startIcon={<CloseIcon />} variant="outlined" onClick={() => setIsEditMode(false)}>
                                 Cancel
                             </Button>
-                            <Button variant="contained" startIcon={<CheckIcon />} type="submit">
+                            <Button variant="contained" startIcon={<CheckIcon />} onClick={handleSubmit(onSubmit)}>
                                 Save
                             </Button>
                         </>
                     ) : (
                         <>
-                            <Button autoFocus startIcon={<ArrowBack />} variant="outlined" onClick={props.onClose}>
+                            <Button startIcon={<ArrowBack />} variant="outlined" onClick={props.onClose}>
                                 Back
                             </Button>
                             <Button variant="contained" startIcon={<EditIcon />} onClick={() => setIsEditMode(true)}>
