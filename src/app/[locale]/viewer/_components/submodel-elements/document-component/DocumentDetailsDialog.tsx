@@ -21,12 +21,16 @@ export function DocumentDetailsDialog(props: DocumentDetailsModalProps) {
     return (
         <Dialog open={props.open} onClose={props.handleClose} fullWidth maxWidth="md">
             <DialogCloseButton handleClose={props.handleClose} />
-            <DialogContent style={{ padding: '40px' }}>
+            <DialogContent style={{ padding: '40px' }} data-testid="document-details-dialog">
                 <Typography variant="h3" sx={{ mb: 3 }}>
                     <FormattedMessage {...messages.mnestix.documentDetails} />
                 </Typography>
                 {document.value.map((el, i) => (
-                    <GenericSubmodelElementComponent submodelElement={el as ISubmodelElement} key={i} hasDivider={i !== 0} />
+                    <GenericSubmodelElementComponent 
+                        submodelElement={el as ISubmodelElement} 
+                        key={i} 
+                        hasDivider={i !== 0}
+                    />
                 ))}
             </DialogContent>
         </Dialog>
