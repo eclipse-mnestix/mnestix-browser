@@ -1,8 +1,9 @@
 import { Button } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
 import { TransferDialog } from 'app/[locale]/viewer/_components/transfer/TransferDialog';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
+
+const t = useTranslations('transfer');
 
 export function TransferButton() {
     const [transferDialogOpen, setTransferDialogOpen] = useState(false);
@@ -18,7 +19,7 @@ export function TransferButton() {
     return (  
         <>
             <Button variant="outlined" onClick={startTransfer} data-testid="detail-transfer-button">
-                <FormattedMessage {...messages.mnestix.transfer.title} />
+                {t('title')}
             </Button>
             <TransferDialog open={transferDialogOpen} onClose={closeDialog}/>
         </>
