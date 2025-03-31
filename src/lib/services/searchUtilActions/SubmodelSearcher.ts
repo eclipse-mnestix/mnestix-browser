@@ -6,6 +6,7 @@ import { SubmodelRegistryServiceApi } from 'lib/api/submodel-registry-service/su
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { RepositorySearchService } from 'lib/services/repository-access/RepositorySearchService';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
+import { envs } from 'MnestixEnv';
 
 export class SubmodelSearcher {
     private constructor(
@@ -31,7 +32,7 @@ export class SubmodelSearcher {
         const descriptorById = await this.getSubmodelDescriptorById(submodelId);
         const descriptor =
             submodelDescriptor ||
-            (process.env.SUBMODEL_REGISTRY_API_URL && descriptorById.isSuccess ? descriptorById.result : null);
+            (envs.SUBMODEL_REGISTRY_API_URL && descriptorById.isSuccess ? descriptorById.result : null);
         const endpoint = descriptor?.endpoints[0].protocolInformation.href;
 
         if (endpoint) {
@@ -52,7 +53,7 @@ export class SubmodelSearcher {
     }
 
     async getSubmodelDescriptorById(submodelId: string): Promise<ApiResponseWrapper<SubmodelDescriptor>> {
-        const defaultUrl = process.env.SUBMODEL_REGISTRY_API_URL;
+        const defaultUrl = envs.SUBMODEL_REGISTRY_API_URL;
         if (!defaultUrl)
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'No default Submodel registry defined');
         const response = await this.getSubmodelRegistryClient(defaultUrl).getSubmodelDescriptorById(submodelId);

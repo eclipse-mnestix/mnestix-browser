@@ -3,44 +3,43 @@ import KeycloakProvider from 'next-auth/providers/keycloak';
 import AzureADProvider from 'next-auth/providers/azure-ad';
 import { JWT } from 'next-auth/jwt';
 import jwt from 'jsonwebtoken';
+import { envs } from 'MnestixEnv';
 
 const isEmptyOrWhiteSpace = (input: string | undefined) => {
     return !input || input.trim() === '';
 };
 
-const keycloakEnabled = (process.env.KEYCLOAK_ENABLED || 'false').toLowerCase() === 'true'.toLowerCase();
-const keycloakLocalUrl = process.env.KEYCLOAK_LOCAL_URL;
-const keycloakIssuer = process.env.KEYCLOAK_ISSUER;
-const serverUrlFromConfig = isEmptyOrWhiteSpace(keycloakLocalUrl) ? keycloakIssuer : keycloakLocalUrl;
-const realm = process.env.KEYCLOAK_REALM;
-const requestedResource = process.env.APPLICATION_ID_URI?.endsWith('/')
-    ? process.env.APPLICATION_ID_URI
-    : `${process.env.APPLICATION_ID_URI}/`;
+const keycloakServerUrlFromConfig = isEmptyOrWhiteSpace(envs.KEYCLOAK_LOCAL_URL)
+    ? envs.KEYCLOAK_ISSUER
+    : envs.KEYCLOAK_LOCAL_URL;
+const adRequestedResource = envs.APPLICATION_ID_URI?.endsWith('/')
+    ? envs.APPLICATION_ID_URI
+    : `${envs.APPLICATION_ID_URI}/`;
 
 export const authOptions: AuthOptions = {
     providers: [
-        ...(keycloakEnabled
+        ...(envs.KEYCLOAK_ENABLED
             ? [
                   KeycloakProvider({
-                      clientId: process.env.KEYCLOAK_CLIENT_ID ?? '',
+                      clientId: envs.KEYCLOAK_CLIENT_ID ?? '',
                       clientSecret: '-', // not required by the AuthFlow but required by NextAuth Provider, here placeholder only
-                      issuer: `${keycloakIssuer}/realms/${realm}`,
+                      issuer: `${envs.KEYCLOAK_ISSUER}/realms/${envs.KEYCLOAK_REALM}`,
                       authorization: {
                           params: {
                               scope: 'openid email profile',
                           },
-                          url: `${serverUrlFromConfig}/realms/${realm}/protocol/openid-connect/auth`,
+                          url: `${keycloakServerUrlFromConfig}/realms/${envs.KEYCLOAK_REALM}/protocol/openid-connect/auth`,
                       },
-                      token: `${keycloakIssuer}/realms/${realm}/protocol/openid-connect/token`,
-                      userinfo: `${keycloakIssuer}/realms/${realm}/protocol/openid-connect/userinfo`,
+                      token: `${envs.KEYCLOAK_ISSUER}/realms/${envs.KEYCLOAK_REALM}/protocol/openid-connect/token`,
+                      userinfo: `${envs.KEYCLOAK_ISSUER}/realms/${envs.KEYCLOAK_REALM}/protocol/openid-connect/userinfo`,
                   }),
               ]
             : [
                   AzureADProvider({
-                      clientId: process.env.AD_CLIENT_ID ?? '',
-                      clientSecret: process.env.AD_SECRET_VALUE ?? '',
-                      tenantId: process.env.AD_TENANT_ID,
-                      authorization: { params: { scope: `openid ${requestedResource}admin.write offline_access` } },
+                      clientId: envs.AD_CLIENT_ID ?? '',
+                      clientSecret: envs.AD_SECRET_VALUE ?? '',
+                      tenantId: envs.AD_TENANT_ID,
+                      authorization: { params: { scope: `openid ${adRequestedResource}admin.write offline_access` } },
                   }),
               ]),
     ],
@@ -83,7 +82,7 @@ export const authOptions: AuthOptions = {
 
             try {
                 console.warn('Refreshing access token...');
-                if (keycloakEnabled) {
+                if (envs.KEYCLOAK_ENABLED) {
                     return await refreshAccessToken(token);
                 } else {
                     return await refreshAzureADToken(token);
@@ -107,10 +106,10 @@ export const authOptions: AuthOptions = {
 };
 
 const refreshAccessToken = async (token: JWT) => {
-    const resp = await fetch(`${keycloakIssuer}/realms/${realm}/protocol/openid-connect/token`, {
+    const resp = await fetch(`${envs.KEYCLOAK_ISSUER}/realms/${envs.KEYCLOAK_REALM}/protocol/openid-connect/token`, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({
-            client_id: process.env.KEYCLOAK_CLIENT_ID ?? '',
+            client_id: envs.KEYCLOAK_CLIENT_ID ?? '',
             client_secret: '-', // placeholder
             grant_type: 'refresh_token',
             refresh_token: token.refresh_token as string,
@@ -130,17 +129,17 @@ const refreshAccessToken = async (token: JWT) => {
 };
 
 const refreshAzureADToken = async (token: JWT) => {
-    const response = await fetch(`https://login.microsoftonline.com/${process.env.AD_TENANT_ID}/oauth2/v2.0/token`, {
+    const response = await fetch(`https://login.microsoftonline.com/${envs.AD_TENANT_ID}/oauth2/v2.0/token`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: new URLSearchParams({
-            client_id: process.env.AD_CLIENT_ID ?? '',
-            client_secret: process.env.AD_SECRET_VALUE ?? '',
+            client_id: envs.AD_CLIENT_ID ?? '',
+            client_secret: envs.AD_SECRET_VALUE ?? '',
             grant_type: 'refresh_token',
             refresh_token: token.refresh_token as string,
-            scope: `openid ${requestedResource}admin.write offline_access`,
+            scope: `openid ${adRequestedResource}admin.write offline_access`,
         }),
     });
 
