@@ -5,7 +5,7 @@ dist
 node_modules
 cypress-artifacts
 /.idea/.idea.mnestix-frontend.dir/.idea/
-.env
+.env*.local
 /cypress/videos/
 /cypress/screenshots/
 /prisma/database/
