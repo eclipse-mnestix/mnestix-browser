@@ -1,16 +1,20 @@
+/**
+ * This file is for typing the environment variables of Mnestix.
+ * Keep in sync with the wiki: /wiki/Mnestix-Configuration-Settings.md
+ */
+
 const process_env: Record<string, string | undefined> = process.env;
 
 const privateEnvs = mapEnvVariables(['MNESTIX_BACKEND_API_KEY', 'SEC_SM_API_URL'] as const);
 
 const privateAzure = mapEnvVariables([
-    'APPLICATION_ID',
     'AD_CLIENT_ID',
     'AD_TENANT_ID',
     'AD_SECRET_VALUE',
     'APPLICATION_ID_URI',
 ] as const);
 
-const privatKeycloak =
+const privateKeycloak =
     process_env.KEYCLOAK_ENABLED === 'true'
         ? {
               KEYCLOAK_ENABLED: true as const,
@@ -57,9 +61,17 @@ const themingVariables = mapEnvVariables([
     'THEME_LOGO_MIME_TYPE',
 ] as const);
 
+/**
+ * Public envs that are sent to the client and can be used with the `useEnv` hook.
+ */
 export const publicEnvs = { ...featureFlags, ...otherVariables, ...themingVariables };
 
-export const envs = { ...publicEnvs, ...privateEnvs, ...privatKeycloak, ...privateAzure };
+/**
+ * Mnestix envs
+ *
+ * Can be used in the backend. When used in frontend all envs are undefined.
+ */
+export const envs = { ...publicEnvs, ...privateEnvs, ...privateKeycloak, ...privateAzure };
 
 function parseFlag(value: string | undefined) {
     if (value === undefined) {

@@ -31,7 +31,7 @@ export const initialEnvValues: EnvironmentalVariables = {
     THEME_LOGO_MIME_TYPE: undefined,
 };
 
-export const EnvContext = createContext(initialEnvValues);
+const EnvContext = createContext(initialEnvValues);
 
 export const EnvProvider = ({
     children,
@@ -53,6 +53,9 @@ export const EnvProvider = ({
     );
 };
 
+/**
+ * Hook for using environmental variables in client components.
+ */
 export const useEnv = () => {
     return useContext(EnvContext);
 };

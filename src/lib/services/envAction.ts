@@ -1,9 +1,18 @@
 'use server';
 
+/**
+ * NextJs application normally use NEX_PUBLIC_ prefix for public envs. https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables#bundling-environment-variables-for-the-browser
+ * This is not the case for Mnestix, because we don't want to have the prefix
+ * before all our public envs.
+ */
+
 import { publicEnvs } from 'MnestixEnv';
 import path from 'node:path';
 import fs from 'node:fs';
 
+/**
+ * Action to load the public envs from server.
+ */
 export const getEnv = async () => {
     const THEME_BASE64_LOGO = loadImage() || publicEnvs.THEME_BASE64_LOGO;
 

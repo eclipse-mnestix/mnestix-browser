@@ -13,7 +13,7 @@ async function requestInvalid() {
     if (!session?.user.roles || !session?.user.roles?.includes(MnestixRole.MnestixAdmin)) {
         return wrapErrorCode(ApiResultStatus.FORBIDDEN, 'Forbidden');
     }
-    // TODO MNES-1607
+    // TODO MNES-1633 validate on app startup
     const baseUrl = envs.SEC_SM_API_URL;
     if (!baseUrl) {
         return wrapErrorCode(ApiResultStatus.BAD_REQUEST, 'Security Submodel not configured!');

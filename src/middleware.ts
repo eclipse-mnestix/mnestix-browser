@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 import { routing } from 'i18n/routing';
+import { envs } from 'MnestixEnv';
 // import { envs } from 'MnestixEnv';
 
 const i18nMiddleware = createMiddleware(routing);
@@ -17,10 +18,10 @@ const unlocalizedPathsRegex = RegExp(
 export function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
     //paths which should be redirected to 404 page if feature flag is disabled
-    if (!process.env.AAS_LIST_FEATURE_FLAG && pathname.includes('list')) {
+    if (!envs.AAS_LIST_FEATURE_FLAG && pathname.includes('list')) {
         return NextResponse.rewrite(new URL('/404', req.url));
     }
-    if (!process.env.COMPARISON_FEATURE_FLAG && pathname.includes('compare')) {
+    if (!envs.COMPARISON_FEATURE_FLAG && pathname.includes('compare')) {
         return NextResponse.rewrite(new URL('/404', req.url));
     }
 
