@@ -1,9 +1,10 @@
 /**
  * This file is for typing the environment variables of Mnestix.
  * Keep in sync with the wiki: /wiki/Mnestix-Configuration-Settings.md
+ * Set Defaults in .env.local and compose.yml
  */
 
-const process_env: Record<string, string | undefined> = process.env;
+const process_env: Record<string, string | undefined> = typeof process !== 'undefined' ? process.env : {};
 
 const privateEnvs = mapEnvVariables(['MNESTIX_BACKEND_API_KEY', 'SEC_SM_API_URL'] as const);
 
