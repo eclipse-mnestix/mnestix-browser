@@ -17,6 +17,8 @@
 ## API Integration
 - RESTful API communication is handled via fetch
 - Backend API integrations should include proper error handling
+- All frontend-backend communication is wrapped in `apiResponseWrapper.ts` to ensure correct typing. It also helps with error handling.
+- The primary call from the frontend to the backend should be a stateless async function in a file ending in `Actions.ts` in the `src/lib/services` directory. The file should be marked with `use server;` at the top of the file.
 
 ## Documentation
 - Add JSDoc comments for exported functions and components
