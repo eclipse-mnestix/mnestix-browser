@@ -10,13 +10,13 @@ const createJestConfig = nextJest({
 const config: Config = {
     setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
     testEnvironment: 'jsdom',
-    modulePathIgnorePatterns: ['cypress'],
+    modulePathIgnorePatterns: ['cypress', 'dist/standalone/'],
     globals: {
-        'ts-jest': {
-            tsConfigFile: 'tsconfig.json',
-        },
         TextEncoder: TextEncoder,
         TextDecoder: TextDecoder,
+    },
+    transform: {
+        '^.+\\.(t|j)sx?$': '@swc/jest',
     },
     // mock all svg files
     moduleNameMapper: {
