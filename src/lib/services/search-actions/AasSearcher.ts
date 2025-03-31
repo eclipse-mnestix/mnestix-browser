@@ -12,7 +12,7 @@ import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResp
 import { AasRegistryEndpointEntryInMemory } from 'lib/api/registry-service-api/registryServiceApiInMemory';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
-import { envs } from 'MnestixEnv';
+import { envs } from 'lib/env/MnestixEnv';
 
 export type AasData = {
     submodelDescriptors: SubmodelDescriptor[] | undefined;

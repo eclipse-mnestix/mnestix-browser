@@ -3,7 +3,7 @@
 import { mnestixFetchLegacy } from 'lib/api/infrastructure';
 import { AasListClient, AasListEntry } from 'lib/api/generated-api/clients.g';
 import { ListService } from 'lib/services/list-service/ListService';
-import { envs } from 'MnestixEnv';
+import { envs } from 'lib/env/MnestixEnv';
 
 const aasListApi = AasListClient.create(envs.MNESTIX_BACKEND_API_URL, mnestixFetchLegacy());
 

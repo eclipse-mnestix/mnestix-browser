@@ -4,7 +4,7 @@ import { mnestixFetchLegacy } from 'lib/api/infrastructure';
 import { TemplateClient } from 'lib/api/generated-api/clients.g';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import EmptyDefaultTemplate from 'assets/submodels/defaultEmptySubmodel.json';
-import { envs } from 'MnestixEnv';
+import { envs } from 'lib/env/MnestixEnv';
 
 const templateApiClientWithAuth = TemplateClient.create(envs.MNESTIX_BACKEND_API_URL, mnestixFetchLegacy());
 

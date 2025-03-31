@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 import { routing } from 'i18n/routing';
-import { envs } from 'MnestixEnv';
-// import { envs } from 'MnestixEnv';
+import { envs } from 'lib/env/MnestixEnv';
+// import { envs } from 'lib/env/MnestixEnv';
 
 const i18nMiddleware = createMiddleware(routing);
 

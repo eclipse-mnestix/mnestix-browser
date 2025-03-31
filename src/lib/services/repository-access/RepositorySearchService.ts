@@ -9,7 +9,7 @@ import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResp
 import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { PaginationData } from 'lib/api/basyx-v3/types';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
-import { envs } from 'MnestixEnv';
+import { envs } from 'lib/env/MnestixEnv';
 
 export type RepoSearchResult<T> = {
     searchResult: T;

@@ -3,7 +3,7 @@ import KeycloakProvider from 'next-auth/providers/keycloak';
 import AzureADProvider from 'next-auth/providers/azure-ad';
 import { JWT } from 'next-auth/jwt';
 import jwt from 'jsonwebtoken';
-import { envs } from 'MnestixEnv';
+import { envs } from 'lib/env/MnestixEnv';
 
 const isEmptyOrWhiteSpace = (input: string | undefined) => {
     return !input || input.trim() === '';

@@ -9,7 +9,7 @@
  * which is tolerable for us.
  */
 
-import { publicEnvs } from 'MnestixEnv';
+import { publicEnvs } from 'lib/env/MnestixEnv';
 import path from 'node:path';
 import fs from 'node:fs';
 

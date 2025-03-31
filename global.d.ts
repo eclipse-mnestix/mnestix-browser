@@ -6,7 +6,7 @@ declare global {
         interface ProcessEnv {
             NODE_ENV: 'development' | 'production' | 'test';
             /**
-             * @deprecated use MnestixEnv.ts:envs
+             * @deprecated use lib/env/MnestixEnv.ts:envs
              */
             [key: string]: never;
         }

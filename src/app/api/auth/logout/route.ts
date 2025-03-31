@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from 'components/authentication/authConfig';
 import { NextResponse } from 'next/server';
-import { envs } from 'MnestixEnv';
+import { envs } from 'lib/env/MnestixEnv';
 
 export async function GET() {
     const session = await getServerSession(authOptions);

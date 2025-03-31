@@ -5,7 +5,7 @@ import { SubmodelRegistryServiceApi } from 'lib/api/submodel-registry-service/su
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { ApiResponseWrapper, wrapErrorCode } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
-import { envs } from 'MnestixEnv';
+import { envs } from 'lib/env/MnestixEnv';
 
 const submodelRegistryServiceClient = SubmodelRegistryServiceApi.create(
     envs.SUBMODEL_REGISTRY_API_URL ?? '',

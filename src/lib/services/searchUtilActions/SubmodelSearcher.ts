@@ -6,7 +6,7 @@ import { SubmodelRegistryServiceApi } from 'lib/api/submodel-registry-service/su
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { RepositorySearchService } from 'lib/services/repository-access/RepositorySearchService';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
-import { envs } from 'MnestixEnv';
+import { envs } from 'lib/env/MnestixEnv';
 
 export class SubmodelSearcher {
     private constructor(

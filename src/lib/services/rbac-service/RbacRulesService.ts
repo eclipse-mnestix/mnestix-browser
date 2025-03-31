@@ -4,7 +4,7 @@ import { mnestixFetch } from 'lib/api/infrastructure';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
-import { envs } from 'MnestixEnv';
+import { envs } from 'lib/env/MnestixEnv';
 
 const SEC_SUB_ID = 'SecuritySubmodel';
 export type RbacRolesFetchResult = {

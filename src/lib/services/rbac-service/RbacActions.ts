@@ -6,7 +6,7 @@ import { getServerSession } from 'next-auth';
 import { BaSyxRbacRule, RbacRulesService } from './RbacRulesService';
 import { wrapErrorCode } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
-import { envs } from 'MnestixEnv';
+import { envs } from 'lib/env/MnestixEnv';
 
 async function requestInvalid() {
     const session = await getServerSession(authOptions);
