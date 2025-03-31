@@ -4,6 +4,9 @@
  * NextJs application normally use NEX_PUBLIC_ prefix for public envs. https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables#bundling-environment-variables-for-the-browser
  * This is not the case for Mnestix, because we don't want to have the prefix
  * before all our public envs.
+ *
+ * This decision costs about 100ms from out LCP (Largest Contentful Paint) time
+ * which is tolerable for us.
  */
 
 import { publicEnvs } from 'MnestixEnv';
