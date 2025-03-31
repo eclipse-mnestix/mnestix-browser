@@ -8,8 +8,11 @@
 ## Code Style
 - We use TypeScript for all new code
 - We prefer functional components with hooks over class components
+- We use absolute imports instead of relative imports
+- We prefer normal functions over arrow functionsfor better readability
 - We use Material-UI (MUI) for our UI components
 - we use single quotes
+- see eslint.config.js
 
 ## State Management
 - We use React Context for global state where needed
