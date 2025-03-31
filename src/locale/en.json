@@ -1,363 +1,327 @@
 {
-  "comment": "we will have english translation keys here",
-  "aas-list": {
-    "header": "AAS List",
-    "subHeader": "You will find all AASs from your repository here. You can select an AAS repository to switch between data sources.",
-    "picture": "Picture",
-    "manufacturerHeading": "Manufacturer Name",
-    "productDesignationHeading": "Manufacturer Product Designation",
-    "assetIdHeading": "Asset ID",
-    "aasIdHeading": "AAS ID",
-    "productClassHeading": "Product Class",
-    "page": "Page",
-    "repository-dropdown": "AAS Repository",
-    "select-repository": "Please select a repository",
-    "titleComparisonAddButton": "Add AAS to comparison",
-    "titleViewAASButton": "View AAS",
-    "maxElementsWarning": "Cannot compare more than 3 elements",
-    "goToCompare": "Compare",
-    "compareTooltip": "Compare"
-  },
-  "dashboard": {
-    "welcome-text": "Welcome to Mnestix",
-    "digitalTwinMadeEasy-text": "Digital Twin made easy.",
-    "findOutMore-text": "Find out more",
-    "list-btn-label": "or select via list",
-    "list-btn-text": "Go to AAS List",
-    "aasOrAssetId": "AAS ID or Asset ID",
-    "scanIdLabel": "Scan AAS ID or Asset ID",
-    "enterManuallyLabel": "or enter manually"
-  },
-  "submodels": {
-    "title": "Submodels",
-    "timeSeries": {
-      "internalSegments": "Internal segments",
-      "linkedSegments": "Linked segments",
-      "selectTimeframe": "Select timeframe"
+  "common": {
+    "actions": {
+      "add": "Add",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "duplicate": "Duplicate",
+      "edit": "Edit",
+      "open": "Open",
+      "remove": "Remove",
+      "restore": "Restore",
+      "revertChanges": "Revert changes",
+      "saveChanges": "Save changes",
+      "view": "View"
     },
-    "renderError": "Submodel can't be rendered.",
-    "idLabel": "ID:",
-    "unknownModelType": "Unknown ModelType: {type}",
-    "errors": {
-      "NOT_FOUND": "Submodel not found",
-      "UNAUTHORIZED": "Unauthorized",
-      "INTERNAL_SERVER_ERROR": "Internal server error",
-      "UNKNOWN": "Unknown Error"
-    }
-  },
-  "qr-scanner": {
-    "errors": {
-      "default-callback-error-msg": "Could not open the QR code!",
-      "error-on-qr-scanner-open": "Could not open the QR scanner!"
-    }
-  },
-  "compare": {
-    "title": "Compare AAS",
-    "addButton": "Add another AAS",
-    "addFirstAasButton": "Add AAS",
-    "addAnother": "Add another AAS",
-    "collection": {
-      "show": "{idShort}",
-      "hide": "Hide"
+    "boolean": {
+      "false": "false",
+      "true": "true"
     },
-    "errors": {
-      "aasAlreadyAdded": "AAS cannot be added more than once.",
-      "moreAasFound": "More than one AAS found in the discovery service, please provide the AAS ID instead.",
-      "aasAddError": "AAS could not be added."
-    }
-  },
-  "settings": {
-    "header": "Settings",
-    "subHeader": "Add, remove, or modify settings and configurations to various features within your AAS environment.",
-    "roles": {
-      "title": "Role Management",
-      "subtitle": "Manage roles and permissions.",
-      "tableHeader": {
-        "name": "Role",
-        "action": "Action",
-        "type": "Type",
-        "aasIds": "AAS IDs",
-        "submodelIds": "Submodel IDs",
-        "permissions": "Permissions"
-      }
-    }
-  },
-  "errors": {
-    "unexpectedError": "Unexpected error",
-    "unauthorizedError": {
-      "title": "Unauthorized access",
-      "content": "You don`t have access to this resource. You may login or contact your administrator to get access."
+    "labels": {
+      "aasId": "AAS ID",
+      "assetId": "Asset ID",
+      "defaultValue": "Default value",
+      "displayName": "Display name",
+      "dynamicPart": "dynamic part",
+      "endResult": "End result",
+      "idShort": "idShort: {idShort}",
+      "language": "Language",
+      "manufacturer": "Manufacturer: {manufacturerName}",
+      "notAvailable": "-",
+      "page": "Page",
+      "redirectsTo": "Redirects to",
+      "semanticId": "semanticId",
+      "staticPrefix": "static prefix",
+      "text": "Text",
+      "value": "Value"
     },
-    "notFound": "Not found",
-    "urlNotFound": "No AAS with the given ID."
-  },
-  "authentication": {
-    "authentication-needed": "Authentication needed",
-    "contactAdmin": "You cannot visit this page. Please contact your administrator."
-  },
-  "mainMenu": {
-    "dashboard": "Dashboard",
-    "aasList": "AAS List",
-    "templates": "Templates",
-    "settings": "Settings",
-    "repository": "Repository",
-    "findOutMore": "Find out more",
-    "login": "Login",
-    "logout": "Logout"
+    "messages": {
+      "changesSavedSuccessfully": "Changes saved successfully",
+      "deleted": "deleted",
+      "noDataFound": "No Data found",
+      "noDataFoundFor": "No data found for \"{name}\".",
+      "successfullyUpdated": "Updated successfully",
+      "templateDeletedSuccessfully": "Template deleted successfully",
+      "templateIdCopied": "Template ID copied to clipboard: {id}"
+    }
   },
   "components": {
     "addressComponent": {
       "addressTypes": {
-        "Department": "Department",
-        "Company": "Company",
-        "Street": "Street",
-        "Zipcode": "Zipcode",
         "CityTown": "City/Town",
-        "StateCounty": "State/County",
+        "Company": "Company",
+        "Department": "Department",
         "NationalCode": "National Code",
-        "TimeZone": "Time Zone",
         "POBox": "PO Box",
-        "ZipCodeOfPOBox": "Zip Code of PO Box"
+        "StateCounty": "State/County",
+        "Street": "Street",
+        "TimeZone": "Time Zone",
+        "ZipCodeOfPOBox": "Zip Code of PO Box",
+        "Zipcode": "Zipcode"
       },
       "VAT": "VAT-Number"
     },
     "ContactInformation": {
       "contactTypes": {
-        "office": "Office",
-        "office mobile": "Office mobile",
-        "secretary": "Secretary",
-        "substitute": "Substitute",
-        "home": "Home",
-        "home mobile": "Home mobile",
         "0173-1#07-AAS754#001": "Office",
         "0173-1#07-AAS755#001": "Office mobile",
         "0173-1#07-AAS756#001": "Secretary",
         "0173-1#07-AAS757#001": "Substitute",
         "0173-1#07-AAS758#001": "Home",
-        "0173-1#07-AAS759#001": "Private mobile"
+        "0173-1#07-AAS759#001": "Private mobile",
+        "home": "Home",
+        "home mobile": "Home mobile",
+        "office": "Office",
+        "office mobile": "Office mobile",
+        "secretary": "Secretary",
+        "substitute": "Substitute"
       }
     },
     "relationShipDetailsDialog": {
+      "error": {
+        "entityError": "Relation entity not found",
+        "semanticError": "Semantic ID not found",
+        "unknownRelationship": "Unknown relationship"
+      },
       "hasPart": "has part",
       "isPartOf": "is part of",
       "sameAs": "same as",
-      "semanticId": "Semantic ID",
-      "error": {
-        "unknownRelationship": "Unknown relationship",
-        "semanticError": "Semantic ID not found",
-        "entityError": "Relation entity not found"
-      }
+      "semanticId": "Semantic ID"
     }
   },
-  "footer": {
-    "imprint": "Imprint",
-    "dataPrivacy": "Data Privacy",
-    "about": "About Mnestix"
-  },
-  "welcome": "Welcome to Mnestix",
-  "digitalTwinMadeEasy": "Digital Twin made easy.",
-  "notFound": "Not found",
-  "aasUrlNotFound": "No AAS with the given ID.",
-  "cannotLoadAasId": {
-    "header": "AAS could not be loaded.",
-    "text": "Unable to load AAS for the given ID \"{id}\""
-  },
-  "idShort": "idShort: {idShort}",
-  "manufacturer": "Manufacturer: {manufacturerName}",
-  "aasId": "AAS ID",
-  "assetId": "Asset ID",
-  "orEnterManual": "or enter manually",
-  "orSelectFromList": "or select via list",
-  "goToListButton": "Go to AAS List",
-  "scanAasId": "Scan AAS ID or Asset ID",
-  "unexpectedError": "Unexpected error",
-  "unauthorizedError": {
-    "title": "Unauthorized access",
-    "content": "You don`t have access to this AAS. You may login or contact your administrator to get access."
-  },
-  "settings": "Settings",
-  "idStructure": "ID structure",
-  "idStructureExplanation": "Define, how your IDs are represented. This is a standard setting that can be adjusted for individual imports.",
-  "connections": {
-    "title": "Data sources",
-    "subtitle": "Define which data connections should be used.",
-    "addButton": "Add more",
-    "editButton": "Edit all",
-    "saveButton": "Save all",
-    "resetButton": "Reset to default",
-    "resetSuccessfull": "Connections were reset.",
-    "urlFieldRequired": "URL field is required",
-    "aasRepository": {
-      "repositories": "AAS Repositories",
-      "repositoryLabel": "AAS Repository",
-      "repositoryUrlLabel": "AAS Repository URL",
-      "repositoryDefaultLabel": "Default AAS Repository",
-      "connectionType": "AAS_REPOSITORY"
+  "features": {
+    "assetIdDocumentation": {
+      "dnsHeading": "Access via DNS",
+      "dnsText": "Especially for the brownfield approach and the distributor of a product, it makes sense to additionally set up DNS access through the asset ID and thus enable data retrieval from conventional browser applications.",
+      "exampleHeading": "Example Case",
+      "industry40Heading": "Industry 4.0 context",
+      "industry40Text": "Products have a globally unique ID which can be assigned to one or more asset administration shells. In the Industry 4.0 context, the connection between asset and AAS is established via the I4.0 infrastructure.",
+      "title": "How to connect your Asset ID with your AAS Repository"
     },
-    "submodelRepository": {
-      "repositories": "Submodel Repositories",
-      "repositoryLabel": "Submodel Repository",
-      "repositoryUrlLabel": "Submodel Repository URL",
-      "repositoryDefaultLabel": "Default Submodel Repository",
-      "connectionType": "SUBMODEL_REPOSITORY"
+    "carbon": {
+      "co2EComparison": "Comparison",
+      "co2EDistribution": "CO2e distribution",
+      "comparisonAssumption": "Assuming one beech tree stores 12.5 kg CO2e per year.",
+      "completedStages": "Emissions calculated based on product life cycle",
+      "productJourney": "Product Journey",
+      "totalCO2Equivalents": "CO2 emissions from product (so far)",
+      "units": {
+        "beech": "Beech Tree",
+        "months": "Months",
+        "years": "Years"
+      }
+    },
+    "compare": {
+      "addAnother": "Add another AAS",
+      "addButton": "Add another AAS",
+      "addFirstAasButton": "Add AAS",
+      "collection": {
+        "hide": "Hide",
+        "show": "{idShort}"
+      },
+      "compareButton": "Compare",
+      "errors": {
+        "aasAddError": "AAS could not be added.",
+        "aasAlreadyAdded": "AAS cannot be added more than once.",
+        "moreAasFound": "More than one AAS found in the discovery service, please provide the AAS ID instead."
+      },
+      "goToCompare": "Compare",
+      "maxElementsWarning": "Cannot compare more than 3 elements",
+      "title": "Compare AAS"
+    },
+    "lifecycle": {
+      "stages": {
+        "A1": "A1 - raw material supply (and upstream production)",
+        "A1-A3": "A1-A3 - Raw material supply to production",
+        "A2": "A2 - cradle-to-gate transport to factory",
+        "A3": "A3 - production",
+        "A4": "A4 - transport to final destination",
+        "A4-A5": "A4-A5 - Transport to assembly",
+        "A5": "A5 - installation",
+        "B1": "B1 - usage phase",
+        "B1-B7": "B1-B7 - Usage phase",
+        "B2": "B2 - maintenance",
+        "B3": "B3 - repair",
+        "B4": "B4 - replacement",
+        "B5": "B5 - update/upgrade, refurbishing",
+        "B6": "B6 - usage energy consumption",
+        "B7": "B7 - usage water consumption",
+        "C1": "C1 - reassembly",
+        "C1-C4": "C1-C4 - Disposal phase",
+        "C2": "C2 - transport to recycler",
+        "C2-C4": "C2-C4 - Recycling to landfill",
+        "C3": "C3 - recycling, waste treatment",
+        "C4": "C4 - landfill",
+        "D": "D - reuse"
+      }
+    },
+    "templates": {
+      "chooseAStartingPoint": "Choose a starting point",
+      "copyTemplateId": "Copy Template ID",
+      "custom": "Custom",
+      "deleteTemplateQuestion": "Delete template \"{name}\" irretrievably?",
+      "emptyCustom": "Empty (Custom)",
+      "emptyCustomDescription": "Is not based upon a standardized template",
+      "noTemplatesFound": "No templates found",
+      "templatesUseExplanation": "Templates allow you to create a reusable submodel structure, adjusted to your requirements."
+    },
+    "transfer": {
+      "aasRepository": "AAS Repository",
+      "chooseRepository": "Choose AAS Repository",
+      "chooseSubmodelRepository": "Choose Submodel Repository (optional)",
+      "errorToast": "Transfer of AAS not successful",
+      "partiallyFailedToast": "Failed to transfer element",
+      "repositoryApiKey": "AAS Repository ApiKey",
+      "repositoryLabel": "List of AAS Repositories",
+      "repositoryRequired": "AAS Repository is required",
+      "submodelRepository": "Submodel Repository",
+      "submodelRepositoryApiKey": "Submodel Repository ApiKey",
+      "submodelRepositoryLabel": "List of Submodel Repositories",
+      "subtitle": "To import this AAS to another repository, fill out the following steps.",
+      "successfullToast": "Transfer of AAS successful",
+      "title": "Import",
+      "useAasRepository": "Use AAS Repository",
+      "warningToast": "AAS was only partially transferred."
     }
   },
-  "submodels": "Submodels",
-  "nameplateAddressTypes": {
-    "office": "Office",
-    "office mobile": "Office mobile",
-    "secretary": "Secretary",
-    "substitute": "Substitute",
-    "home": "Home",
-    "home mobile": "Home mobile",
-    "0173-1#07-AAS754#001": "Office",
-    "0173-1#07-AAS755#001": "Office mobile",
-    "0173-1#07-AAS756#001": "Secretary",
-    "0173-1#07-AAS757#001": "Substitute",
-    "0173-1#07-AAS758#001": "Home",
-    "0173-1#07-AAS759#001": "Private mobile"
-  },
-  "VAT": "VAT-Number",
-  "showEntriesButton": {
-    "show": "Show {count} entries",
-    "hide": "Hide"
-  },
-  "boolean": {
-    "true": "true",
-    "false": "false"
-  },
-  "notAvailable": "-",
-  "staticPrefix": "static prefix",
-  "dynamicPart": "dynamic part",
-  "assetAdministrationShell": "Asset Administration Shell",
-  "asset": "Asset",
-  "errorMessages": {
-    "invalidIri": "Has to be a valid IRI, e.g. https://example.com/",
-    "invalidIriPart": "Has to work as part of an IRI (no \"/\", spaces or special characters)",
-    "invalidDate": "Has to be a valid date in format \"yyyy-mm-dd\"",
-    "invalidLong": "Has to be a valid long",
-    "influxError": "There was a problem retrieving the time series data."
-  },
-  "productCarbonFootprint": {
-    "totalCO2Equivalents": "CO2 emissions from product (so far)",
-    "completedStages": "Emissions calculated based on product life cycle",
-    "co2EDistribution": "CO2e distribution",
-    "co2EComparison": "Comparison",
-    "beech": "Beech Tree",
-    "years": "Years",
-    "months": "Months",
-    "comparisonAssumption": "Assuming one beech tree stores 12.5 kg CO2e per year.",
-    "productJourney": "Product Journey",
-    "calculationMethod": "Calculation Method",
-    "lifecycleStages": {
-      "A1": "A1 - raw material supply (and upstream production)",
-      "A2": "A2 - cradle-to-gate transport to factory",
-      "A3": "A3 - production",
-      "A1-A3": "A1-A3 - Raw material supply to production",
-      "A4": "A4 - transport to final destination",
-      "A4-A5": "A4-A5 - Transport to assembly",
-      "A5": "A5 - installation",
-      "B1": "B1 - usage phase",
-      "B2": "B2 - maintenance",
-      "B3": "B3 - repair",
-      "B4": "B4 - replacement",
-      "B5": "B5 - update/upgrade, refurbishing",
-      "B6": "B6 - usage energy consumption",
-      "B7": "B7 - usage water consumption",
-      "B1-B7": "B1-B7 - Usage phase",
-      "C1": "C1 - reassembly",
-      "C2": "C2 - transport to recycler",
-      "C3": "C3 - recycling, waste treatment",
-      "C4": "C4 - landfill",
-      "C1-C4": "C1-C4 - Disposal phase",
-      "C2-C4": "C2-C4 - Recycling to landfill",
-      "D": "D - reuse"
+  "navigation": {
+    "footer": {
+      "about": "About Mnestix",
+      "dataPrivacy": "Data Privacy",
+      "imprint": "Imprint"
+    },
+    "mainMenu": {
+      "aasList": "AAS List",
+      "dashboard": "Dashboard",
+      "findOutMore": "Find out more",
+      "login": "Login",
+      "logout": "Logout",
+      "repository": "Repository",
+      "settings": "Settings",
+      "templates": "Templates"
     }
   },
-  "referenceCounter": {
-    "count": "Count",
-    "elementName": "Element"
+  "pages": {
+    "aasList": {
+      "header": "AAS List",
+      "repositoryDropdown": "AAS Repository",
+      "selectRepository": "Please select a repository",
+      "subHeader": "You will find all AASs from your repository here. You can select an AAS repository to switch between data sources.",
+      "tableHeaders": {
+        "aasIdHeading": "AAS ID",
+        "assetIdHeading": "Asset ID",
+        "manufacturerHeading": "Manufacturer Name",
+        "picture": "Picture",
+        "productClassHeading": "Product Class",
+        "productDesignationHeading": "Manufacturer Product Designation"
+      },
+      "titleComparisonAddButton": "Add AAS to comparison",
+      "titleViewAASButton": "View AAS"
+    },
+    "dashboard": {
+      "aasOrAssetId": "AAS ID or Asset ID",
+      "digitalTwinMadeEasyText": "Digital Twin made easy.",
+      "enterManuallyLabel": "or enter manually",
+      "findOutMoreText": "Find out more",
+      "listBtnLabel": "or select via list",
+      "listBtnText": "Go to AAS List",
+      "scanIdLabel": "Scan AAS ID or Asset ID",
+      "welcomeText": "Welcome to Mnestix"
+    },
+    "discoveryList": {
+      "aasIdHeading": "AAS ID",
+      "header": "Related AAS to ID",
+      "picture": "Picture",
+      "repositoryUrl": "Repository Url",
+      "subtitle": "Here you will find all related AAS to the given ID.",
+      "titleViewAASButton": "View AAS"
+    },
+    "settings": {
+      "connections": {
+        "aasRepository": {
+          "connectionType": "AAS_REPOSITORY",
+          "repositoryDefaultLabel": "Default AAS Repository",
+          "repositoryLabel": "AAS Repository",
+          "repositoryUrlLabel": "AAS Repository URL",
+          "repositories": "AAS Repositories"
+        },
+        "addButton": "Add more",
+        "editButton": "Edit all",
+        "resetButton": "Reset to default",
+        "resetSuccessfull": "Connections were reset.",
+        "saveButton": "Save all",
+        "submodelRepository": {
+          "connectionType": "SUBMODEL_REPOSITORY",
+          "repositoryDefaultLabel": "Default Submodel Repository",
+          "repositoryLabel": "Submodel Repository",
+          "repositoryUrlLabel": "Submodel Repository URL",
+          "repositories": "Submodel Repositories"
+        },
+        "subtitle": "Define which data connections should be used.",
+        "title": "Data sources",
+        "urlFieldRequired": "URL field is required"
+      },
+      "header": "Settings",
+      "idStructure": "ID structure",
+      "idStructureExplanation": "Define, how your IDs are represented. This is a standard setting that can be adjusted for individual imports.",
+      "roles": {
+        "subtitle": "Manage roles and permissions.",
+        "tableHeader": {
+          "aasIds": "AAS IDs",
+          "action": "Action",
+          "name": "Role",
+          "permissions": "Permissions",
+          "submodelIds": "Submodel IDs",
+          "type": "Type"
+        },
+        "title": "Role Management"
+      },
+      "subHeader": "Add, remove, or modify settings and configurations to various features within your AAS environment."
+    },
+    "submodels": {
+      "errors": {
+        "INTERNAL_SERVER_ERROR": "Internal server error",
+        "NOT_FOUND": "Submodel not found",
+        "UNAUTHORIZED": "Unauthorized",
+        "UNKNOWN": "Unknown Error"
+      },
+      "idLabel": "ID:",
+      "renderError": "Submodel can't be rendered.",
+      "timeSeries": {
+        "internalSegments": "Internal segments",
+        "linkedSegments": "Linked segments",
+        "selectTimeframe": "Select timeframe"
+      },
+      "title": "Submodels",
+      "unknownModelType": "Unknown ModelType: {type}"
+    }
   },
-  "successfullyUpdated": "Updated successfully",
-  "templates": "Templates",
-  "all": "All",
-  "custom": "Custom",
-  "noTemplatesFound": "No templates found",
-  "templatesUseExplanation": "Templates allow you to create a reusable submodel structure, adjusted to your requirements.",
-  "semanticId": "semanticId",
-  "createNew": "Create New",
-  "chooseAStartingPoint": "Choose a starting point",
-  "emptyCustom": "Empty (Custom)",
-  "emptyCustomDescription": "Is not based upon a standardized template",
-  "edit": "Edit",
-  "delete": "Delete",
-  "deleteTemplateQuestion": "Delete template \"{name}\" irretrievably?",
-  "cancel": "Cancel",
-  "duplicate": "Duplicate",
-  "saveChanges": "Save changes",
-  "noDataFound": "No Data found",
-  "noDataFoundFor": "No data found for \"{name}\".",
-  "toHome": "To Home",
-  "authenticationNeeded": "Authentication needed",
-  "templateDeletedSuccessfully": "Template deleted successfully.",
-  "defaultValue": "Default value",
-  "add": "Add",
-  "remove": "Remove",
-  "value": "Value",
-  "revertChanges": "Revert changes",
-  "restore": "Restore",
-  "changesSavedSuccessfully": "Changes saved successfully.",
-  "mnestix": "Mnestix",
-  "displayName": "Display name",
-  "view": "View",
-  "details": "Details",
-  "text": "Text",
-  "language": "Language",
-  "redirectsTo": "Redirects to",
-  "endResult": "End result",
-  "assetIdDocumentation": {
-    "title": "How to connect your Asset ID with your AAS Repository",
-    "industry40Heading": "Industry 4.0 context",
-    "industry40Text": "Products have a globally unique ID which can be assigned to one or more asset administration shells. In the Industry 4.0 context, the connection between asset and AAS is established via the I4.0 infrastructure.",
-    "dnsHeading": "Access via DNS",
-    "dnsText": "Especially for the brownfield approach and the distributor of a product, it makes sense to additionally set up DNS access through the asset ID and thus enable data retrieval from conventional browser applications.",
-    "exampleHeading": "Example Case"
-  },
-  "documentDetails": "Document details",
-  "open": "Open",
-  "fileNotFound": "File not found",
-  "mappingInfo": "Mapping info",
-  "mappingInfoDescription": "Arbitrary identifier that you can use for your data imports.",
-  "multiplicity": "Multiplicity",
-  "multiplicityDescription": "A qualifier used to identify obligatory elements.",
-  "deleted": "deleted",
-  "compareButton": "Compare",
-  "transfer": {
-    "title": "Import",
-    "subtitle": "To import this AAS to another repository, fill out the following steps.",
-    "aasRepository": "AAS Repository",
-    "submodelRepository": "Submodel Repository",
-    "chooseRepository": "Choose AAS Repository",
-    "repositoryRequired": "AAS Repository is required",
-    "repositoryLabel": "List of AAS Repositories",
-    "repositoryApiKey": "AAS Repository ApiKey",
-    "submodelRepositoryApiKey": "Submodel Repository ApiKey",
-    "chooseSubmodelRepository": "Choose Submodel Repository (optional)",
-    "submodelRepositoryLabel": "List of Submodel Repositories",
-    "useAasRepository": "Use AAS Repository",
-    "successfullToast": "Transfer of AAS successful",
-    "errorToast": "Transfer of AAS not successful",
-    "partiallyFailedToast": "Failed to transfer element",
-    "warningToast": "AAS was only partially transferred."
-  },
-  "discoveryList": {
-    "titleViewAASButton": "View AAS",
-    "picture": "Picture",
-    "header": "Related AAS to ID",
-    "aasIdHeading": "AAS ID",
-    "repositoryUrl": "Repository Url",
-    "subtitle": "Here you will find all related AAS to the given ID."
-  },
-  "copyTemplateId": "Copy Template ID",
-  "templateIdCopied": "Template ID copied to clipboard: {id}"
+  "validation": {
+    "authentication": {
+      "authentication-needed": "Authentication needed",
+      "contactAdmin": "You cannot visit this page. Please contact your administrator."
+    },
+    "errors": {
+      "notFound": "Not found",
+      "unauthorizedError": {
+        "content": "You don`t have access to this resource. You may login or contact your administrator to get access.",
+        "title": "Unauthorized access"
+      },
+      "unexpectedError": "Unexpected error",
+      "urlNotFound": "No AAS with the given ID."
+    },
+    "qr-scanner": {
+      "errors": {
+        "default-callback-error-msg": "Could not open the QR code!",
+        "error-on-qr-scanner-open": "Could not open the QR scanner!"
+      }
+    },
+    "validation": {
+      "invalidDate": "Has to be a valid date in format \"yyyy-mm-dd\"",
+      "invalidIri": "Has to be a valid IRI, e.g. https://example.com/",
+      "invalidIriPart": "Has to work as part of an IRI (no \"/\", spaces or special characters)",
+      "invalidLong": "Has to be a valid long",
+      "influxError": "There was a problem retrieving the time series data."
+    }
+  }
 }
