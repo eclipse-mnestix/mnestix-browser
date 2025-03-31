@@ -4,6 +4,7 @@
  * Set Defaults in .env.local and compose.yml
  */
 
+// In production builds `process` is not defined on client side
 const process_env: Record<string, string | undefined> = typeof process !== 'undefined' ? process.env : {};
 
 const privateEnvs = mapEnvVariables(['MNESTIX_BACKEND_API_KEY', 'SEC_SM_API_URL'] as const);
