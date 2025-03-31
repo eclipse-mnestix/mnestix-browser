@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAuth } from 'lib/hooks/UseAuth';
-import { useEnv } from 'app/env/provider';
+import { useEnv } from 'app/EnvProvider';
 import { AuthenticationPrompt } from 'components/authentication/AuthenticationPrompt';
 import { NotAllowedPrompt } from 'components/authentication/NotAllowedPrompt';
 

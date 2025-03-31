@@ -1,6 +1,6 @@
 'use client';
 import { Box, Button, Typography } from '@mui/material';
-import { useEnv } from 'app/env/provider';
+import { useEnv } from 'app/EnvProvider';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { messages } from 'lib/i18n/localization';
 import { useRouter } from 'next/navigation';

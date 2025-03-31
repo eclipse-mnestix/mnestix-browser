@@ -1,8 +1,8 @@
 'use client';
 import React, { createContext, useContext, useState } from 'react';
-import { getEnv } from './env';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
+import { getEnv } from 'lib/services/envAction';
 
 type EnvironmentalVariables = Awaited<ReturnType<typeof getEnv>>;
 
@@ -28,6 +28,7 @@ export const initialEnvValues: EnvironmentalVariables = {
     USE_BASYX_RBAC: false,
     WHITELIST_FEATURE_FLAG: false,
     SUBMODEL_WHITELIST: '',
+    THEME_LOGO_MIME_TYPE: undefined,
 };
 
 export const EnvContext = createContext(initialEnvValues);

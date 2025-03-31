@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { Session } from 'next-auth';
 import { sessionLogOut } from 'lib/api/infrastructure';
-import { useEnv } from 'app/env/provider';
 import AllowedRoutes, { MnestixRole } from 'components/authentication/AllowedRoutes';
+import { useEnv } from 'app/EnvProvider';
 
 export function useAuth(): Auth {
     const [bearerToken, setBearerToken] = useState<string>('');
@@ -42,7 +42,7 @@ export function useAuth(): Auth {
                 // MnestixUser is the default role for a logged-in user
                 session.user.mnestixRole = MnestixRole.MnestixUser;
                 session.user.allowedRoutes = AllowedRoutes.mnestixUser;
-                
+
                 if (session.user.roles && session.user.roles.find((role) => role === MnestixRole.MnestixAdmin)) {
                     session.user.mnestixRole = MnestixRole.MnestixAdmin;
                     session.user.allowedRoutes = AllowedRoutes.mnestixAdmin;

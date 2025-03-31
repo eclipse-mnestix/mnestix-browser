@@ -12,7 +12,7 @@ import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { SubmodelsOverviewCard } from '../_components/SubmodelsOverviewCard';
 import { AASOverviewCard } from 'app/[locale]/viewer/_components/AASOverviewCard';
-import { useEnv } from 'app/env/provider';
+import { useEnv } from 'app/EnvProvider';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import {
     getAasFromRepository,
@@ -52,8 +52,8 @@ export default function Page() {
     const submodelWhitelist: string[] = JSON.parse(env.SUBMODEL_WHITELIST || '[]');
 
     function whitelistContains(sm: Submodel) {
-        const semanticIds = sm.semanticId?.keys.map(key => key.value);
-        return semanticIds?.some(id => submodelWhitelist.includes(id));
+        const semanticIds = sm.semanticId?.keys.map((key) => key.value);
+        return semanticIds?.some((id) => submodelWhitelist.includes(id));
     }
 
     useAsyncEffect(async () => {
@@ -106,7 +106,8 @@ export default function Page() {
                     setSubmodels((submodels) => {
                         const exists = submodels.some((sm) => sm.id === newSm.id);
                         if (exists) return submodels;
-                        if (env.WHITELIST_FEATURE_FLAG && newSm.submodel && !whitelistContains(newSm.submodel)) return submodels;
+                        if (env.WHITELIST_FEATURE_FLAG && newSm.submodel && !whitelistContains(newSm.submodel))
+                            return submodels;
                         return [...submodels, newSm];
                     });
                 }),

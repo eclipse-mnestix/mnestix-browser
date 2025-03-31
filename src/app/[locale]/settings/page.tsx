@@ -10,7 +10,7 @@ import { useState } from 'react';
 import { IdSettingsCard } from './_components/id-settings/IdSettingsCard';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { MnestixConnectionsCard } from 'app/[locale]/settings/_components/mnestix-connections/MnestixConnectionsCard';
-import { useEnv } from 'app/env/provider';
+import { useEnv } from 'app/EnvProvider';
 import { RoleSettings } from 'app/[locale]/settings/_components/role-settings/RoleSettings';
 import { useTranslations } from 'next-intl';
 

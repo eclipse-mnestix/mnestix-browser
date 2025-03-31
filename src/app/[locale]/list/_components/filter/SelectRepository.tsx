@@ -4,7 +4,7 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { getConnectionDataByTypeAction } from 'lib/services/database/connectionServerActions';
 import { ConnectionTypeEnum, getTypeAction } from 'lib/services/database/ConnectionTypeEnum';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
-import { useEnv } from 'app/env/provider';
+import { useEnv } from 'app/EnvProvider';
 import { useTranslations } from 'next-intl';
 
 export function SelectRepository(props: { onSelectedRepositoryChanged: Dispatch<SetStateAction<string | undefined>> }) {

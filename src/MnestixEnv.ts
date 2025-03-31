@@ -1,6 +1,3 @@
-import * as path from 'node:path';
-import * as fs from 'node:fs';
-
 const process_env: Record<string, string | undefined> = process.env;
 
 const privateEnvs = mapEnvVariables(['MNESTIX_BACKEND_API_KEY', 'SEC_SM_API_URL'] as const);
@@ -57,24 +54,8 @@ const themingVariables = mapEnvVariables([
     'THEME_SECONDARY_COLOR',
     'THEME_BASE64_LOGO',
     'THEME_LOGO_URL',
+    'THEME_LOGO_MIME_TYPE',
 ] as const);
-
-// Load the image from the public folder and provide it to the theming as base64 image with mime type
-// possible TODO automatically parse mimetype but not based on file path but on file content
-if (
-    !process_env.THEME_BASE64_LOGO &&
-    process_env.THEME_LOGO_MIME_TYPE &&
-    process_env.THEME_LOGO_MIME_TYPE.startsWith('image/')
-) {
-    try {
-        const imagePath = path.resolve('./public/logo');
-        const imageBuffer = fs.readFileSync(imagePath);
-        const imageBase64 = imageBuffer.toString('base64');
-        themingVariables.THEME_BASE64_LOGO = `data:${process_env.THEME_LOGO_MIME_TYPE};base64,${imageBase64}`;
-    } catch {
-        console.error('Could not load Logo, using default...');
-    }
-}
 
 export const publicEnvs = { ...featureFlags, ...otherVariables, ...themingVariables };
 

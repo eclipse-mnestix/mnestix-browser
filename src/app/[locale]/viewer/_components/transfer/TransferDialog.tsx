@@ -21,7 +21,7 @@ import { useAasOriginSourceState, useAasState, useSubmodelState } from 'componen
 import { transferAasWithSubmodels } from 'lib/services/transfer-service/transferActions';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { TransferAas, TransferDto, TransferResult, TransferSubmodel } from 'lib/types/TransferServiceData';
-import { useEnv } from 'app/env/provider';
+import { useEnv } from 'app/EnvProvider';
 import { Reference } from '@aas-core-works/aas-core3.0-typescript/types';
 
 export type TransferFormModel = {
