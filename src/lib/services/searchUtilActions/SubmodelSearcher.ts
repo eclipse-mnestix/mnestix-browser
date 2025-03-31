@@ -6,18 +6,20 @@ import { SubmodelRegistryServiceApi } from 'lib/api/submodel-registry-service/su
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { RepositorySearchService } from 'lib/services/repository-access/RepositorySearchService';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
+import Logger from 'lib/util/Logger';
 
 export class SubmodelSearcher {
     private constructor(
         protected readonly getSubmodelRegistryClient: (basePath: string) => ISubmodelRegistryServiceApi,
         protected readonly multipleDataSource: RepositorySearchService,
+        private readonly logger?: typeof Logger,
     ) {}
 
-    static create(): SubmodelSearcher {
+    static create(logger?: typeof Logger): SubmodelSearcher {
         const getRegistryClient = (baseUrl: string) => SubmodelRegistryServiceApi.create(baseUrl, mnestixFetch());
-        const multipleDataSource = RepositorySearchService.create();
+        const multipleDataSource = RepositorySearchService.create(logger);
 
-        return new SubmodelSearcher(getRegistryClient, multipleDataSource);
+        return new SubmodelSearcher(getRegistryClient, multipleDataSource, logger);
     }
 
     private readonly failureMessage = 'Submodel not found';
@@ -59,7 +61,7 @@ export class SubmodelSearcher {
         if (response.isSuccess) return response;
         else {
             if (response.errorCode === ApiResultStatus.NOT_FOUND) {
-                console.error(response.message);
+                this.logger?.error(response.message);
             }
             return wrapErrorCode<SubmodelDescriptor>(ApiResultStatus.NOT_FOUND, 'Submodel not found');
         }
@@ -69,7 +71,7 @@ export class SubmodelSearcher {
         const response = await this.multipleDataSource.getFirstSubmodelFromAllRepos(submodelId);
         if (response.isSuccess) return wrapSuccess(response.result.searchResult);
         if (response.errorCode === ApiResultStatus.NOT_FOUND) {
-            console.error(response.message);
+            this.logger?.error(response.message);
         }
         return wrapErrorCode<Submodel>(ApiResultStatus.NOT_FOUND, 'Submodel not found');
     }
@@ -78,7 +80,7 @@ export class SubmodelSearcher {
         const response = await this.getSubmodelRegistryClient('').getSubmodelFromEndpoint(endpoint);
         if (response.isSuccess) return response;
         if (response.errorCode === ApiResultStatus.NOT_FOUND) {
-            console.error(response.message);
+            this.logger?.error(response.message);
         }
         return wrapErrorCode<Submodel>(ApiResultStatus.NOT_FOUND, `Submodel not found at endpoint '${endpoint}'`);
     }

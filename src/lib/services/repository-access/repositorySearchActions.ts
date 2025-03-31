@@ -12,22 +12,31 @@ import {
 } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { AssetAdministrationShellRepositoryApi, SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { mnestixFetch } from 'lib/api/infrastructure';
-
-const searcher = RepositorySearchService.create();
+import { headers } from 'next/headers';
+import { createLogger, getCorrelationId } from 'lib/util/Logger';
 
 export async function performSearchAasFromAllRepositories(
     searchInput: string,
 ): Promise<ApiResponseWrapper<RepoSearchResult<AssetAdministrationShell>[]>> {
+    const correlationId = getCorrelationId(await headers());
+    const logger = createLogger(correlationId);
+    const searcher = RepositorySearchService.create(logger);
     return searcher.getAasFromAllRepos(searchInput);
 }
 
 export async function performSearchSubmodelFromAllRepos(searchInput: string): Promise<ApiResponseWrapper<Submodel>> {
+    const correlationId = getCorrelationId(await headers());
+    const logger = createLogger(correlationId);
+    const searcher = RepositorySearchService.create(logger);
     const response = await searcher.getFirstSubmodelFromAllRepos(searchInput);
     if (!response.isSuccess) return wrapErrorCode(response.errorCode, response.message);
     return wrapSuccess(response.result.searchResult);
 }
 
 export async function performGetAasThumbnailFromAllRepos(searchInput: string): Promise<ApiResponseWrapper<Blob>> {
+    const correlationId = getCorrelationId(await headers());
+    const logger = createLogger(correlationId);
+    const searcher = RepositorySearchService.create(logger);
     const response = await searcher.getFirstAasThumbnailFromAllRepos(searchInput);
     if (!response.isSuccess) return wrapErrorCode(response.errorCode, response.message);
     return wrapSuccess(response.result.searchResult);
@@ -45,6 +54,9 @@ export async function getThumbnailFromShell(
 
 // Thumbnail function if explicit endpoint is not known; maybe use for new List else YAGNI
 export async function getThumbnailFromShellFromAllRepos(aasId: string): Promise<ApiResponseWrapper<ApiFileDto>> {
+    const correlationId = getCorrelationId(await headers());
+    const logger = createLogger(correlationId);
+    const searcher = RepositorySearchService.create(logger);
     const defaultResponsePromise = searcher.getAasThumbnailFromDefaultRepo(aasId);
     const allResponsePromise = searcher.getFirstAasThumbnailFromAllRepos(aasId);
 
@@ -58,12 +70,18 @@ export async function getThumbnailFromShellFromAllRepos(aasId: string): Promise<
 }
 
 export async function getSubmodelReferencesFromShell(searchInput: string): Promise<ApiResponseWrapper<Reference[]>> {
+    const correlationId = getCorrelationId(await headers());
+    const logger = createLogger(correlationId);
+    const searcher = RepositorySearchService.create(logger);
     const response = await searcher.getFirstSubmodelReferencesFromShellFromAllRepos(searchInput);
     if (!response.isSuccess) return wrapErrorCode(response.errorCode, response.message);
     return wrapSuccess(response.result.searchResult.result);
 }
 
 export async function getSubmodelById(id: string): Promise<ApiResponseWrapper<Submodel>> {
+    const correlationId = getCorrelationId(await headers());
+    const logger = createLogger(correlationId);
+    const searcher = RepositorySearchService.create(logger);
     const response = await searcher.getFirstSubmodelFromAllRepos(id);
     if (!response.isSuccess) return wrapErrorCode(response.errorCode, response.message);
     return wrapSuccess(response.result.searchResult);
@@ -74,6 +92,9 @@ export async function getAttachmentFromSubmodelElement(
     submodelElementPath: string,
     baseRepositoryUrl?: string,
 ): Promise<ApiResponseWrapper<ApiFileDto>> {
+    const correlationId = getCorrelationId(await headers());
+    const logger = createLogger(correlationId);
+    const searcher = RepositorySearchService.create(logger);
     if (baseRepositoryUrl) {
         const fileSearcher = SubmodelRepositoryApi.create(baseRepositoryUrl, mnestixFetch());
         const searchResponse = await fileSearcher.getAttachmentFromSubmodelElement(submodelId, submodelElementPath);

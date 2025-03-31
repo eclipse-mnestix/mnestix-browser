@@ -1,4 +1,3 @@
-import { Log } from 'lib/util/Log';
 import { AssetAdministrationShellRepositoryApi, SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { AssetAdministrationShell, Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
@@ -9,6 +8,7 @@ import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResp
 import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { PaginationData } from 'lib/api/basyx-v3/types';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
+import Logger from 'lib/util/Logger';
 
 export type RepoSearchResult<T> = {
     searchResult: T;
@@ -25,24 +25,23 @@ export class RepositorySearchService {
         protected readonly prismaConnector: IPrismaConnector,
         protected readonly getAasRepositoryClient: (basePath: string) => IAssetAdministrationShellRepositoryApi,
         protected readonly getSubmodelRepositoryClient: (basePath: string) => ISubmodelRepositoryApi,
-        protected readonly log: Log,
+        private readonly logger?: typeof Logger,
     ) {}
 
-    static create(): RepositorySearchService {
-        const log = Log.create();
+    static create(logger?: typeof Logger): RepositorySearchService {
         const prismaConnector = PrismaConnector.create();
+        const searcherLogger = logger?.child({ service: RepositorySearchService.name });
         return new RepositorySearchService(
             prismaConnector,
             (baseUrl) => AssetAdministrationShellRepositoryApi.create(baseUrl, mnestixFetch()),
             (baseUrl) => SubmodelRepositoryApi.create(baseUrl, mnestixFetch()),
-            log,
+            searcherLogger,
         );
     }
 
     static createNull(
         shellsInRepositories: RepoSearchResult<AssetAdministrationShell>[] = [],
         submodelsInRepositories: RepoSearchResult<Submodel>[] = [],
-        log = null,
     ): RepositorySearchService {
         const shellUrls = new Set(shellsInRepositories.map((value) => value.location));
         const submodelUrls = new Set(submodelsInRepositories.map((value) => value.location));
@@ -62,7 +61,6 @@ export class RepositorySearchService {
                         .filter((value) => value.location == baseUrl)
                         .map((value) => value.searchResult),
                 ),
-            log ?? Log.createNull(),
         );
     }
 
@@ -76,7 +74,7 @@ export class RepositorySearchService {
                 typeName: 'AAS_REPOSITORY',
             });
         } catch (error) {
-            this.log.warn('Failed to get AAS repositories', error);
+            this.logger?.warn('Failed to get AAS repositories', error);
         }
         return defaultRepositoryClient ? [defaultRepositoryClient, ...repositories] : repositories;
     }
@@ -91,6 +89,12 @@ export class RepositorySearchService {
     async getAasFromDefaultRepo(aasId: string): Promise<ApiResponseWrapper<AssetAdministrationShell>> {
         const client = this.getDefaultAasRepositoryClient();
         if (!client) return noDefaultAasRepository();
+        this.logger?.info(
+            {
+                aasId: aasId,
+            },
+            `Repository search: ${client.getBaseUrl()}`,
+        );
         const response = await client.getAssetAdministrationShellById(aasId);
         if (response.isSuccess) return response;
         return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'AAS not found');
@@ -335,6 +339,12 @@ export class RepositorySearchService {
         repoUrl: string,
     ): Promise<ApiResponseWrapper<AssetAdministrationShell>> {
         const client = this.getAasRepositoryClient(repoUrl);
+        this.logger?.info(
+            {
+                aasId: aasId,
+            },
+            `Repository search: ${client.getBaseUrl()}`,
+        );
         const response = await client.getAssetAdministrationShellById(aasId);
         if (response.isSuccess) return response;
         return wrapErrorCode(ApiResultStatus.NOT_FOUND, `AAS '${aasId}' not found in repository '${repoUrl}'`);

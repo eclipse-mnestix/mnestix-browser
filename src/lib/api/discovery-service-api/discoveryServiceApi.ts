@@ -5,6 +5,8 @@ import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResp
 import { SpecificAssetId } from '@aas-core-works/aas-core3.0-typescript/types';
 import * as path from 'node:path';
 import ServiceReachable from 'test-utils/TestUtils';
+import Logger from 'lib/util/Logger';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 type DiscoveryEntryResponse = {
     paging_metadata: object;
@@ -17,6 +19,7 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
         protected http: {
             fetch<T>(url: RequestInfo, init?: RequestInit): Promise<ApiResponseWrapper<T>>;
         },
+        private readonly logger?: typeof Logger,
     ) {}
 
     static create(
@@ -24,8 +27,10 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
         http: {
             fetch<T>(url: RequestInfo, init?: RequestInit): Promise<ApiResponseWrapper<T>>;
         },
+        logger?: typeof Logger,
     ): DiscoveryServiceApi {
-        return new DiscoveryServiceApi(baseUrl, http);
+        const discoveryLogger = logger?.child({ service: DiscoveryServiceApi.name });
+        return new DiscoveryServiceApi(baseUrl, http, discoveryLogger);
     }
 
     static createNull(
@@ -88,7 +93,16 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
             headers,
         });
 
-        if (!response.isSuccess) return wrapErrorCode(response.errorCode, response.message);
+        if (!response.isSuccess) {
+            this.logger?.info({ errorCode: response.errorCode }, `Discovery search: ${this.getBaseUrl()}`);
+            return wrapErrorCode(response.errorCode, response.message);
+        }
+
+        if (response.result.result.length === 0) {
+            this.logger?.info({ errorCode: ApiResultStatus.NOT_FOUND }, `Discovery search: ${this.getBaseUrl()}`);
+
+            return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'No AAS found for assetIds');
+        }
 
         return wrapSuccess(response.result.result);
     }

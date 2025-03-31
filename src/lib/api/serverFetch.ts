@@ -2,6 +2,8 @@
 
 import { ApiResponseWrapper, wrapErrorCode, wrapResponse } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
+import { headers } from 'next/headers';
+import { createLogger, getCorrelationId } from 'lib/util/Logger';
 
 /**
  * @deprecated use performServerFetch() instead
@@ -20,12 +22,25 @@ export async function performServerFetch<T>(
     input: string | Request | URL,
     init?: RequestInit | undefined,
 ): Promise<ApiResponseWrapper<T>> {
+    const correlationId = getCorrelationId(await headers());
+    const logger = createLogger(correlationId);
     try {
         const response = await fetch(input, init);
+        logger.debug(
+            {
+                httpStatus: response.status,
+                statusText: response.statusText,
+            },
+            `Request: ${input}`,
+        );
         return await wrapResponse<T>(response);
     } catch (e) {
-        const message = 'this could be a network error';
-        console.warn(message, '\nException message:', e.message);
-        return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, message);
+        if (e instanceof Error) {
+            logger.warn({ http: e }, `Request: ${input}`);
+            return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, e.message);
+        } else {
+            logger.error({ http: e }, `Request: ${input}`);
+            return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Unknown error');
+        }
     }
 }

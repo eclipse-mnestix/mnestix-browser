@@ -9,9 +9,14 @@ import { SubmodelSearcher } from 'lib/services/searchUtilActions/SubmodelSearche
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { AssetAdministrationShellRepositoryApi } from 'lib/api/basyx-v3/api';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
+import { headers } from 'next/headers';
+import { createLogger, getCorrelationId } from 'lib/util/Logger';
 
 export async function performFullAasSearch(searchInput: string): Promise<ApiResponseWrapper<AasSearchResult>> {
-    const searcher = AasSearcher.create();
+    const correlationId = getCorrelationId(await headers());
+    const logger = createLogger(correlationId);
+    logger.info({ action: performFullAasSearch.name, requestedId: searchInput }, 'Requested AAS/AssetId');
+    const searcher = AasSearcher.create(logger);
     return searcher.performFullSearch(searchInput);
 }
 
@@ -24,12 +29,16 @@ export async function getAasFromRepository(
 }
 
 export async function performRegistryAasSearch(searchInput: string): Promise<ApiResponseWrapper<AasSearchResult>> {
-    const searcher = AasSearcher.create();
+    const correlationId = getCorrelationId(await headers());
+    const logger = createLogger(correlationId);
+    const searcher = AasSearcher.create(logger);
     return searcher.performRegistrySearch(searchInput);
 }
 
 export async function performDiscoveryAasSearch(searchInput: string): Promise<ApiResponseWrapper<string[]>> {
-    const searcher = AasSearcher.create();
+    const correlationId = getCorrelationId(await headers());
+    const logger = createLogger(correlationId);
+    const searcher = AasSearcher.create(logger);
     return searcher.performAasDiscoverySearch(searchInput);
 }
 
@@ -44,7 +53,16 @@ export async function performSubmodelFullSearch(
     submodelReference: Reference,
     submodelDescriptor?: SubmodelDescriptor,
 ): Promise<ApiResponseWrapper<Submodel>> {
-    const searcher = SubmodelSearcher.create();
+    const correlationId = getCorrelationId(await headers());
+    const logger = createLogger(correlationId);
+    logger.info(
+        {
+            action: performSubmodelFullSearch.name,
+            referenceId: submodelReference.keys,
+        },
+        'Requested SubmodelReference',
+    );
+    const searcher = SubmodelSearcher.create(logger);
     return searcher.performSubmodelFullSearch(submodelReference, submodelDescriptor);
 }
 
