@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 import { routing } from 'i18n/routing';
+import { v4 as uuidv4 } from 'uuid';
 
 const i18nMiddleware = createMiddleware(routing);
 
@@ -23,12 +24,16 @@ export function middleware(req: NextRequest) {
         return NextResponse.rewrite(new URL('/404', req.url));
     }
 
+    // Generate a unique correlation ID for tracking requests
+    const correlationId = uuidv4();
+    req.headers.set('x-correlation-id', correlationId);
+
     if (req.nextUrl.pathname.match(unlocalizedPathsRegex)) {
         return NextResponse.next();
     }
 
     const { locales, defaultLocale } = routing;
-    const locale = pathname.split('/')[1] as typeof locales[number];
+    const locale = pathname.split('/')[1] as (typeof locales)[number];
 
     // if a non-existing language (for example 'es') is used, redirect to default language
     // and remove 'es' from the url.
