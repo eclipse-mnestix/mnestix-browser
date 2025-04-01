@@ -2,7 +2,6 @@ import { screen } from '@testing-library/react';
 import { expect } from '@jest/globals';
 import { CustomRenderReactIntl } from 'test-utils/CustomRenderReactIntl';
 import { ExternalLink } from 'layout/menu/ExternalLink';
-import { messages } from 'lib/i18n/localization';
 
 describe('ExternalLink', () => {
     it('should render the component', async () => {
