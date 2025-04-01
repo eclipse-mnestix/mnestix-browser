@@ -34,7 +34,7 @@ export const RoleSettings = () => {
 
     const MAX_PERMISSIONS_CHARS = 40;
 
-    useAsyncEffect(async () => {
+    async function loadRbacData() {
         setIsLoading(true);
         const response = await getRbacRules();
         if (response.isSuccess) {
@@ -45,6 +45,10 @@ export const RoleSettings = () => {
             showError(response.message);
         }
         setIsLoading(false);
+    }
+
+    useAsyncEffect(async () => {
+        await loadRbacData();
     }, []);
 
     const prepareTableHeaders = () => {
@@ -147,7 +151,10 @@ export const RoleSettings = () => {
             </Box>
             {selectedRole && (
                 <RoleDialog
-                    onClose={() => {
+                    onClose={async (reload) => {
+                        if (reload) {
+                            await loadRbacData();
+                        }
                         setRoleDialogOpen(false);
                     }}
                     open={roleDialogOpen}

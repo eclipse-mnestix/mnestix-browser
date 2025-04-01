@@ -30,7 +30,7 @@ import { useShowError } from 'lib/hooks/UseShowError';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 
 type RoleDialogProps = {
-    readonly onClose: () => void;
+    readonly onClose: (reload: boolean) => void;
     readonly open: boolean;
     readonly role: BaSyxRbacRule;
 };
@@ -94,25 +94,25 @@ export const RoleDialog = (props: RoleDialogProps) => {
                 message: 'Saved successfully',
                 severity: 'success',
             });
-            onCloseDialog();
+            onCloseDialog(true);
         } else {
             showError(response.message);
         }
     }
 
-    const onCloseDialog = () => {
+    const onCloseDialog = (reload: boolean) => {
         setIsEditMode(false);
         reset();
-        props.onClose();
+        props.onClose(reload);
     };
 
     return (
-        <Dialog open={props.open} onClose={onCloseDialog} maxWidth="md" fullWidth={true}>
-            <DialogCloseButton handleClose={onCloseDialog} />
+        <Dialog open={props.open} onClose={() => onCloseDialog(false)} maxWidth="md" fullWidth={true}>
+            <DialogCloseButton handleClose={() => onCloseDialog(false)} />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <IconButton
                     aria-label="close"
-                    onClick={props.onClose}
+                    onClick={() => props.onClose(false)}
                     sx={{
                         position: 'absolute',
                         right: 8,
@@ -179,7 +179,7 @@ export const RoleDialog = (props: RoleDialogProps) => {
                         </>
                     ) : (
                         <>
-                            <Button startIcon={<ArrowBack />} variant="outlined" onClick={props.onClose}>
+                            <Button startIcon={<ArrowBack />} variant="outlined" onClick={() => onCloseDialog(false)}>
                                 {t('buttons.back')}
                             </Button>
                             <Button variant="contained" startIcon={<EditIcon />} onClick={() => setIsEditMode(true)}>
