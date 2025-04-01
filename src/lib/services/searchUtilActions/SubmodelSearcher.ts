@@ -18,11 +18,9 @@ export class SubmodelSearcher {
     static create(logger?: typeof Logger): SubmodelSearcher {
         const getRegistryClient = (baseUrl: string) => SubmodelRegistryServiceApi.create(baseUrl, mnestixFetch());
         const multipleDataSource = RepositorySearchService.create(logger);
-
-        return new SubmodelSearcher(getRegistryClient, multipleDataSource, logger);
+        const submodelLogger = logger?.child({ service: SubmodelSearcher.name });
+        return new SubmodelSearcher(getRegistryClient, multipleDataSource, submodelLogger);
     }
-
-    private readonly failureMessage = 'Submodel not found';
 
     async performSubmodelFullSearch(
         submodelReference: Reference,
@@ -49,8 +47,8 @@ export class SubmodelSearcher {
         if (submodelFromAllRepos.isSuccess) {
             return wrapSuccess(submodelFromAllRepos.result.searchResult);
         }
-
-        return wrapErrorCode<Submodel>(ApiResultStatus.NOT_FOUND, this.failureMessage);
+        this.logSubmodelSearch(submodelFromAllRepos, this.performSubmodelFullSearch.name);
+        return wrapErrorCode<Submodel>(ApiResultStatus.NOT_FOUND, 'Submodel not found');
     }
 
     async getSubmodelDescriptorById(submodelId: string): Promise<ApiResponseWrapper<SubmodelDescriptor>> {
@@ -58,10 +56,12 @@ export class SubmodelSearcher {
         if (!defaultUrl)
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'No default Submodel registry defined');
         const response = await this.getSubmodelRegistryClient(defaultUrl).getSubmodelDescriptorById(submodelId);
-        if (response.isSuccess) return response;
-        else {
+        if (response.isSuccess) {
+            this.logSubmodelSearch(response, this.getSubmodelDescriptorById.name);
+            return response;
+        } else {
             if (response.errorCode === ApiResultStatus.NOT_FOUND) {
-                this.logger?.error(response.message);
+                this.logSubmodelSearch(response, this.getSubmodelDescriptorById.name);
             }
             return wrapErrorCode<SubmodelDescriptor>(ApiResultStatus.NOT_FOUND, 'Submodel not found');
         }
@@ -69,19 +69,37 @@ export class SubmodelSearcher {
 
     async getSubmodelFromAllRepos(submodelId: string): Promise<ApiResponseWrapper<Submodel>> {
         const response = await this.multipleDataSource.getFirstSubmodelFromAllRepos(submodelId);
-        if (response.isSuccess) return wrapSuccess(response.result.searchResult);
+        if (response.isSuccess) {
+            this.logSubmodelSearch(response, this.getSubmodelFromAllRepos.name);
+            return wrapSuccess(response.result.searchResult);
+        }
         if (response.errorCode === ApiResultStatus.NOT_FOUND) {
-            this.logger?.error(response.message);
+            this.logSubmodelSearch(response, this.getSubmodelFromAllRepos.name);
         }
         return wrapErrorCode<Submodel>(ApiResultStatus.NOT_FOUND, 'Submodel not found');
     }
 
     async getSubmodelFromEndpoint(endpoint: string): Promise<ApiResponseWrapper<Submodel>> {
         const response = await this.getSubmodelRegistryClient('').getSubmodelFromEndpoint(endpoint);
-        if (response.isSuccess) return response;
-        if (response.errorCode === ApiResultStatus.NOT_FOUND) {
-            this.logger?.error(response.message);
+        if (response.isSuccess) {
+            this.logSubmodelSearch(response, this.getSubmodelFromEndpoint.name);
+            return response;
         }
+        if (response.errorCode === ApiResultStatus.NOT_FOUND) {
+            this.logSubmodelSearch(response, this.getSubmodelFromEndpoint.name);
+        }
+        this.logSubmodelSearch(response, this.getSubmodelFromEndpoint.name);
         return wrapErrorCode<Submodel>(ApiResultStatus.NOT_FOUND, `Submodel not found at endpoint '${endpoint}'`);
+    }
+
+    private logSubmodelSearch<T>(response: ApiResponseWrapper<T>, methodName: string): void {
+        this.logger?.info(
+            {
+                methodName: methodName,
+                httpStatus: response.httpStatus,
+                httpText: response.httpText,
+            },
+            'Submodel search',
+        );
     }
 }
