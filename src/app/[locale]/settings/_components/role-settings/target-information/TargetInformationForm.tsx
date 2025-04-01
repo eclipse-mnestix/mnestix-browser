@@ -13,7 +13,6 @@ type TargetInformationProps = {
 };
 export const TargetInformationForm = (props: TargetInformationProps) => {
     const t = useTranslations('settings');
-    // TODO react on change of chosen role (closing and opening another role dialog)
 
     const ruleTypes = Object.keys(rbacRuleTargets);
     const currentType = props.getValues('type') as keyof typeof rbacRuleTargets;
