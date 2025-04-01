@@ -11,7 +11,6 @@ import {
 import React, { useState } from 'react';
 import { DataRow } from 'components/basics/DataRow';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { messages } from 'lib/i18n/localization';
 import { AssetAdministrationShell, SpecificAssetId } from '@aas-core-works/aas-core3.0-typescript/types';
 import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
