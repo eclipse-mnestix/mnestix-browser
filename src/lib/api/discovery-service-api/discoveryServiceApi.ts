@@ -94,16 +94,29 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
         });
 
         if (!response.isSuccess) {
-            this.logger?.info({ errorCode: response.errorCode }, `Discovery search: ${this.getBaseUrl()}`);
+            this.logDiscoverySearch(
+                this.getAllAssetAdministrationShellIdsByAssetLink.name,
+                response.httpStatus,
+                response.httpText,
+                { message: response.message },
+            );
             return wrapErrorCode(response.errorCode, response.message);
         }
 
         if (response.result.result.length === 0) {
-            this.logger?.info({ errorCode: ApiResultStatus.NOT_FOUND }, `Discovery search: ${this.getBaseUrl()}`);
-
+            this.logDiscoverySearch(
+                this.getAllAssetAdministrationShellIdsByAssetLink.name,
+                404,
+                ApiResultStatus.NOT_FOUND,
+            );
             return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'No AAS found for assetIds');
         }
-
+        this.logDiscoverySearch(
+            this.getAllAssetAdministrationShellIdsByAssetLink.name,
+            response.httpStatus,
+            response.httpText,
+            { result: response.result.result },
+        );
         return wrapSuccess(response.result.result);
     }
 
@@ -158,5 +171,17 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
             method: 'DELETE',
             headers,
         });
+    }
+
+    private logDiscoverySearch(methodName: string, httpStatus?: number, httpText?: string, optional?: object): void {
+        this.logger?.info(
+            {
+                methodName: methodName,
+                httpStatus: httpStatus,
+                httpText: httpText,
+                ...optional,
+            },
+            'Discovery search',
+        );
     }
 }
