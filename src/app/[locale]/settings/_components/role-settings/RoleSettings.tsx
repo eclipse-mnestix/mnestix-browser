@@ -158,7 +158,7 @@ export const RoleSettings = () => {
                         setRoleDialogOpen(false);
                     }}
                     open={roleDialogOpen}
-                    role={selectedRole}
+                    rule={selectedRole}
                 ></RoleDialog>
             )}
         </>

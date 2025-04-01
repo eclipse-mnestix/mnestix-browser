@@ -32,7 +32,7 @@ import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 type RoleDialogProps = {
     readonly onClose: (reload: boolean) => void;
     readonly open: boolean;
-    readonly role: BaSyxRbacRule;
+    readonly rule: BaSyxRbacRule;
 };
 
 export type ArrayOfIds = [{ id: string }];
@@ -68,18 +68,18 @@ export const RoleDialog = (props: RoleDialogProps) => {
     };
 
     const { control, handleSubmit, setValue, getValues, reset } = useForm({
-        defaultValues: mapBaSyxRbacRuleToFormModel(props.role as BaSyxRbacRule),
+        defaultValues: mapBaSyxRbacRuleToFormModel(props.rule as BaSyxRbacRule),
     });
 
     useEffect(() => {
-        reset(mapBaSyxRbacRuleToFormModel(props.role as BaSyxRbacRule));
-    }, [props.role, reset]);
+        reset(mapBaSyxRbacRuleToFormModel(props.rule as BaSyxRbacRule));
+    }, [props.rule, reset]);
 
     const mapFormModelToBaSyxRbacRule = (formModel: RoleFormModel): BaSyxRbacRule => {
         const targetInformation = mapTargetInformationFormModelToDto(formModel.targetInformation, formModel.type);
         return {
-            idShort: props.role.idShort,
-            role: props.role.role,
+            idShort: props.rule.idShort,
+            role: props.rule.role,
             action: formModel.action,
             targetInformation: targetInformation,
         };
@@ -88,7 +88,7 @@ export const RoleDialog = (props: RoleDialogProps) => {
     async function onSubmit(data: RoleFormModel) {
         const mappedDto = mapFormModelToBaSyxRbacRule(data);
         console.log(mappedDto);
-        const response = await deleteAndCreateRbacRule(props.role.idShort, mappedDto);
+        const response = await deleteAndCreateRbacRule(props.rule.idShort, mappedDto);
         if (response.isSuccess) {
             notificationSpawner.spawn({
                 message: 'Saved successfully',
@@ -128,7 +128,7 @@ export const RoleDialog = (props: RoleDialogProps) => {
                             {t('roles.tableHeader.name')}
                         </Typography>
                         <Typography variant="h2" mb="1em">
-                            {props.role?.role}
+                            {props.rule?.role}
                         </Typography>
                         <Box display="flex" flexDirection="column" gap="1em">
                             <Box>
@@ -150,20 +150,14 @@ export const RoleDialog = (props: RoleDialogProps) => {
                                         )}
                                     />
                                 ) : (
-                                    <Typography>{props.role?.action}</Typography>
+                                    <Typography>{props.rule?.action}</Typography>
                                 )}
                             </Box>
-
-                            {props.role &&
-                                (isEditMode ? (
-                                    <TargetInformationForm
-                                        control={control}
-                                        setValue={setValue}
-                                        getValues={getValues}
-                                    />
-                                ) : (
-                                    <TargetInformationView targetInformation={props.role.targetInformation} />
-                                ))}
+                            (isEditMode ? (
+                            <TargetInformationForm control={control} setValue={setValue} getValues={getValues} />
+                            ) : (
+                            <TargetInformationView targetInformation={props.rule.targetInformation} />
+                            ))
                         </Box>
                     </Box>
                 </DialogContent>
