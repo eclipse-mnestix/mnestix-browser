@@ -19,10 +19,10 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
     const control = props.control;
     const checkIfWildcard = () => {
         const value = props.getValues(`targetInformation.${props.type}.${props.rule}` as keyof typeof props.getValues);
-        return Array.isArray(value) && value[0] === '*';
+        // @ts-expect-error id exists
+        return value[0].id === '*';
     };
     const [isWildcard, setIsWildcard] = useState(checkIfWildcard());
-    // TODO fix the typing issue here.
     const { fields, append, remove } = useFieldArray<RoleFormModel>({
         control,
         name: `targetInformation.${props.type}.${props.rule}` as 'targetInformation.aas.aasIds',
@@ -30,8 +30,10 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
 
     const wildcardValueChanged = (value: boolean) => {
         setIsWildcard(value);
-        // @ts-expect-error types are not correct here
-        props.setValue(`targetInformation.${props.type}.${props.rule}`, value ? ['*'] : []);
+        props.setValue(
+            `targetInformation.${props.type}.${props.rule}.id` as 'targetInformation.aas.aasIds.0.id',
+            value ? '*' : '',
+        );
     };
 
     return (
@@ -48,7 +50,7 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
                         <Controller
                             key={`targetInformation.${props.type}.${props.rule}.${idx}`}
                             name={
-                                `targetInformation.${props.type}.${props.rule}.${idx}` as 'targetInformation.aas.aasIds.0'
+                                `targetInformation.${props.type}.${props.rule}.${idx}.id` as 'targetInformation.aas.aasIds.0.id'
                             }
                             control={control}
                             render={({ field }) => (

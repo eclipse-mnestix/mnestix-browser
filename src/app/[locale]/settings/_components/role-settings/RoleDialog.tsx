@@ -37,11 +37,6 @@ type RoleDialogProps = {
 
 export type ArrayOfIds = [{ id: string }];
 
-/**
- * Type assumptions for this FormModel:
- * - It is fine to always use string arrays here.
- * - It is fine to always take the first element of the action array, since BaSyx only supports one action per role.
- */
 export type TargetInformationFormModel = {
     aasEnvironment: { aasIds: ArrayOfIds; submodelIds: ArrayOfIds } | undefined;
     aas: { aasIds: ArrayOfIds } | undefined;
