@@ -179,6 +179,7 @@ export function submodelToRule(submodelElement: any): BaSyxRbacRule {
         } as BaSyxRbacRule['targetInformation'],
     };
 }
+
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 export const rbacRuleActions = ['READ', 'CREATE', 'UPDATE', 'DELETE', 'EXECUTE'] as const;
@@ -193,7 +194,7 @@ export const rbacRuleTargets = {
     'aas-discovery-service': ['aasIds', 'assetIds'],
 } as const;
 
-type TargetInformation =
+export type TargetInformation =
     | { '@type': 'aas-environment'; aasIds: string[]; submodelIds: string[] }
     | { '@type': 'aas'; aasIds: string[] }
     | { '@type': 'submodel'; submodelIds: string[]; submodelElementIdShortPaths: string[] }

@@ -34,19 +34,22 @@ type RoleDialogProps = {
     readonly open: boolean;
     readonly role: BaSyxRbacRule;
 };
+
+export type ArrayOfIds = [{ id: string }];
+
 /**
  * Type assumptions for this FormModel:
  * - It is fine to always use string arrays here.
  * - It is fine to always take the first element of the action array, since BaSyx only supports one action per role.
  */
 export type TargetInformationFormModel = {
-    aasEnvironment: { aasIds: string[]; submodelIds: string[] } | undefined;
-    aas: { aasIds: string[] } | undefined;
-    submodel: { submodelIds: string[]; submodelElementIdShortPaths: string[] } | undefined;
-    conceptDescription: { conceptDescriptionIds: string[] } | undefined;
-    aasRegistry: { aasIds: string[] } | undefined;
-    submodelRegistry: { submodelIds: string[] } | undefined;
-    aasDiscoveryService: { aasIds: string[]; assetIds: string[] } | undefined;
+    aasEnvironment: { aasIds: ArrayOfIds; submodelIds: ArrayOfIds } | undefined;
+    aas: { aasIds: ArrayOfIds } | undefined;
+    submodel: { submodelIds: ArrayOfIds; submodelElementIdShortPaths: ArrayOfIds } | undefined;
+    conceptDescription: { conceptDescriptionIds: ArrayOfIds } | undefined;
+    aasRegistry: { aasIds: ArrayOfIds } | undefined;
+    submodelRegistry: { submodelIds: ArrayOfIds } | undefined;
+    aasDiscoveryService: { aasIds: ArrayOfIds; assetIds: ArrayOfIds } | undefined;
 };
 
 export type RoleFormModel = {
@@ -64,7 +67,7 @@ export const RoleDialog = (props: RoleDialogProps) => {
     const mapBaSyxRbacRuleToFormModel = (role: BaSyxRbacRule): RoleFormModel => {
         return {
             type: role.targetInformation['@type'],
-            action: role.action[0],
+            action: role.action,
             targetInformation: mapDtoToTargetInformationFormModel(role.targetInformation),
         };
     };
@@ -82,7 +85,7 @@ export const RoleDialog = (props: RoleDialogProps) => {
         return {
             idShort: props.role.idShort,
             role: props.role.role,
-            action: [formModel.action],
+            action: formModel.action,
             targetInformation: targetInformation,
         };
     };

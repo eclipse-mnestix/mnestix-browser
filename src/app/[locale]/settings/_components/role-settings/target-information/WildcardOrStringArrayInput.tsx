@@ -23,9 +23,9 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
     };
     const [isWildcard, setIsWildcard] = useState(checkIfWildcard());
     // TODO fix the typing issue here.
-    const { fields, append, remove } = useFieldArray({
+    const { fields, append, remove } = useFieldArray<RoleFormModel>({
         control,
-        name: `targetInformation.${props.type}.${props.rule}`,
+        name: `targetInformation.${props.type}.${props.rule}` as 'targetInformation.aas.aasIds',
     });
 
     const wildcardValueChanged = (value: boolean) => {
@@ -47,7 +47,9 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
                     {fields.map((_, idx) => (
                         <Controller
                             key={`targetInformation.${props.type}.${props.rule}.${idx}`}
-                            name={`targetInformation.${props.type}.${props.rule}.${idx}`}
+                            name={
+                                `targetInformation.${props.type}.${props.rule}.${idx}` as 'targetInformation.aas.aasIds.0'
+                            }
                             control={control}
                             render={({ field }) => (
                                 <Box display="flex" flexDirection="row" mb="1em">
@@ -77,7 +79,7 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
                         variant="text"
                         startIcon={<ControlPointIcon />}
                         onClick={() => {
-                            append('');
+                            append({ id: '' });
                         }}
                     >
                         {t('roles.addButton')}
