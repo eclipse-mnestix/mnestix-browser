@@ -11,7 +11,8 @@
       "restore": "Wiederherstellen",
       "revertChanges": "Änderungen zurücksetzen",
       "saveChanges": "Änderungen speichern",
-      "view": "Ansehen"
+      "view": "Ansehen",
+      "toHome": "Zur Startseite"
     },
     "boolean": {
       "false": "Falsch",
@@ -30,14 +31,20 @@
       "semanticId": "semanticId",
       "staticPrefix": "statisches Präfix",
       "text": "Text",
-      "value": "Wert"
+      "value": "Wert",
+      "documentDetails": "Dokumentendetails"
     },
     "messages": {
       "deleted": "gelöscht",
       "noDataFound": "Keine Daten gefunden",
       "noDataFoundFor": "Es wurden keine Daten für \"{name}\" gefunden.",
       "successfullyUpdated": "Erfolgreich aktualisiert",
-      "changesSavedSuccessfully": "Änderungen erfolgreich gespeichert."
+      "changesSavedSuccessfully": "Änderungen erfolgreich gespeichert.",
+      "fileNotFound": "Datei nicht gefunden",
+      "cannotLoadAasId": {
+        "header": "Verwaltungsschale konnte nicht geladen werden.",
+        "text": "Es konnte keine Verwaltungsschale für die angegebene ID \"{id}\" geladen werden."
+      }
     }
   },
   "components": {
@@ -121,6 +128,12 @@
         "C4": "C4 - Deponie",
         "D": "D - Wiederverwendung"
       }
+    },
+    "submodelElementCollection": {
+      "showEntriesButton": {
+        "show": "{count} Einträge anzeigen",
+        "hide": "Verbergen"
+    }
     }
   },
   "navigation": {

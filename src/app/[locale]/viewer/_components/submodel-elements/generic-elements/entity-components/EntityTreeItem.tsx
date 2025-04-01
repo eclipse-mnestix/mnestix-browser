@@ -5,8 +5,6 @@ import { Box, Button, IconButton, styled } from '@mui/material';
 import { Entity, ISubmodelElement, KeyTypes, RelationshipElement } from '@aas-core-works/aas-core3.0-typescript/types';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
 import { ArrowForward, ArticleOutlined, InfoOutlined, PinDropOutlined } from '@mui/icons-material';
-import { FormattedMessage } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
 import { useRouter } from 'next/navigation';
 import { GenericSubmodelElementComponent } from '../GenericSubmodelElementComponent';
 import { EntityDetailsDialog } from './EntityDetailsDialog';
@@ -19,8 +17,10 @@ import {
     getTreeItemStyle,
 } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/TreeItem';
 import { performDiscoveryAasSearch } from 'lib/services/search-actions/searchActions';
+import { useTranslations } from 'next-intl';
 
 const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeItemContentProps, ref) {
+    const t = useTranslations('common');
     const navigate = useRouter();
     const { classes, className, label, itemId, icon: iconProp, data, ...other } = props;
     const { disabled, expanded, selected, focused, handleExpansion } = useTreeItemState(itemId);
@@ -104,7 +104,7 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
                                 onClick={handleAssetNavigateClick}
                                 data-testid="view-asset-button"
                             >
-                                <FormattedMessage {...messages.mnestix.view} />
+                                {t('actions.view')}
                             </Button>
                         </>
                     )}

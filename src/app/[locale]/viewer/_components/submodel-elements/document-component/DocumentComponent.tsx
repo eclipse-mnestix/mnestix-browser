@@ -9,9 +9,7 @@ import {
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { DataRow } from 'components/basics/DataRow';
 import { PdfDocumentIcon } from 'components/custom-icons/PdfDocumentIcon';
-import { messages } from 'lib/i18n/localization';
 import { useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { getTranslationText, hasSemanticId } from 'lib/util/SubmodelResolverUtil';
 import { DocumentDetailsDialog } from './DocumentDetailsDialog';
 import { isValidUrl } from 'lib/util/UrlUtil';
@@ -19,6 +17,8 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useAasOriginSourceState } from 'components/contexts/CurrentAasContext';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { checkFileExists } from 'lib/services/search-actions/searchActions';
+import { useTranslations } from 'next-intl';
+import { useIntl } from 'react-intl';
 
 enum DocumentSpecificSemanticId {
     DocumentVersion = 'https://admin-shell.io/vdi/2770/1/0/DocumentVersion',
@@ -79,6 +79,7 @@ const StyledImageWrapper = styled(Box)(({ theme }) => ({
 }));
 
 export function DocumentComponent(props: MarkingsComponentProps) {
+    const t = useTranslations('common');
     const intl = useIntl();
     const [fileViewObject, setFileViewObject] = useState<FileViewObject>();
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
@@ -353,9 +354,9 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                                 data-testid="document-open-button"
                             >
                                 {!fileExists ? (
-                                    <FormattedMessage {...messages.mnestix.fileNotFound} />
+                                    t('messages.fileNotFound')
                                 ) : (
-                                    <FormattedMessage {...messages.mnestix.open} />
+                                    t('actions.open')
                                 )}
                             </Button>
                         </Box>

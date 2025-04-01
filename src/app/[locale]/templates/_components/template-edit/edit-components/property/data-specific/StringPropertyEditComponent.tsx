@@ -1,6 +1,5 @@
 import { TextField } from '@mui/material';
-import { messages } from 'lib/i18n/localization';
-import { FormattedMessage } from 'react-intl';
+import { useTranslations } from 'next-intl';
 
 interface StringPropertyEditComponentProps {
     dataValue: string;
@@ -8,6 +7,7 @@ interface StringPropertyEditComponentProps {
 }
 
 export function StringPropertyEditComponent(props: StringPropertyEditComponentProps) {
+    const t = useTranslations();
     const onValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         props.onChange(event.target.value);
     };
@@ -15,7 +15,7 @@ export function StringPropertyEditComponent(props: StringPropertyEditComponentPr
     return (
         <TextField
             defaultValue={props.dataValue}
-            label={<FormattedMessage {...messages.mnestix.value} />}
+            label={t('common.labels.value')}
             onChange={onValueChange}
             fullWidth
         />

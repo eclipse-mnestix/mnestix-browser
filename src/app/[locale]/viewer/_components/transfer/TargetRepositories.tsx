@@ -1,6 +1,4 @@
 import { Box, DialogActions, Divider, FormControl, MenuItem, Skeleton, TextField, Typography } from '@mui/material';
-import { messages } from 'lib/i18n/localization';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { getConnectionDataByTypeAction } from 'lib/services/database/connectionServerActions';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { Fragment, useState } from 'react';
@@ -9,6 +7,7 @@ import { ConnectionTypeEnum, getTypeAction } from 'lib/services/database/Connect
 import { Controller, useForm } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
 import { useEnv } from 'app/env/provider';
+import { useTranslations } from 'next-intl';
 
 export type TargetRepositoryFormData = {
     repository?: string;
@@ -26,8 +25,9 @@ export function TargetRepositories(props: TargetRepositoryProps) {
     const [isLoading, setIsLoading] = useState(false);
     const [aasRepositories, setAasRepositories] = useState<string[]>([]);
     const [submodelRepositories, setSubmodelRepositories] = useState<string[]>([]);
-    const intl = useIntl();
     const env = useEnv();
+    const t = useTranslations('pages.transfer');
+    
 
     useAsyncEffect(async () => {
         try {
@@ -69,18 +69,18 @@ export function TargetRepositories(props: TargetRepositoryProps) {
                     <Box display="flex" flexDirection="column">
                         <Box display="flex" flexDirection="row" alignItems="flex-start">
                             <Typography variant="h4"
-                                        sx={{ minWidth: '250px', mr: 2 }}><FormattedMessage {...messages.mnestix.transfer.chooseRepository} /></Typography>
+                                        sx={{ minWidth: '250px', mr: 2 }}>{t('chooseRepository')}</Typography>
                             <Box display="flex" flexDirection="column" width="100%">
                             <FormControl fullWidth>
                                 <Controller
                                     name="repository"
                                     control={control}
                                     defaultValue=""
-                                    rules={{ required: intl.formatMessage(messages.mnestix.transfer.repositoryRequired) }}
+                                    rules={{ required: t('repositoryRequired') }}
                                     render={({ field, fieldState }) => (
                                         <TextField fullWidth 
                                                    select
-                                                   label={intl.formatMessage(messages.mnestix.transfer.repositoryLabel)}
+                                                   label={ t('repositoryLabel') }
                                                    error={!!fieldState.error}
                                                    helperText={fieldState.error ? fieldState.error.message : null}
                                                    required {...field}>
@@ -96,7 +96,7 @@ export function TargetRepositories(props: TargetRepositoryProps) {
                                     control={control}
                                     defaultValue=""
                                     render={({ field }) => (
-                                        <TextField type="password" label={intl.formatMessage(messages.mnestix.transfer.repositoryApiKey)}
+                                        <TextField type="password" label={ t('repositoryApiKey') }
                                                    {...field}/>)}
                                 />
                             </FormControl>
@@ -104,7 +104,7 @@ export function TargetRepositories(props: TargetRepositoryProps) {
                         </Box>
                         <Box display="flex" flexDirection="row" mt={5} alignItems="flex-start">
                             <Typography variant="h4"
-                                        sx={{ minWidth: '250px', mr: 2 }}><FormattedMessage {...messages.mnestix.transfer.chooseSubmodelRepository} /></Typography>
+                                        sx={{ minWidth: '250px', mr: 2 }}>{t('chooseSubmodelRepository')}</Typography>
                             <FormControl fullWidth>
                                 <Controller
                                     name="submodelRepository"
@@ -113,9 +113,9 @@ export function TargetRepositories(props: TargetRepositoryProps) {
                                     render={({ field }) => (
                                         <TextField fullWidth
                                                    select
-                                                   label={intl.formatMessage(messages.mnestix.transfer.submodelRepositoryLabel)}
+                                                   label={ t('submodelRepositoryLabel') }
                                                    {...field}>
-                                            <MenuItem key="none" value="0"><FormattedMessage {...messages.mnestix.transfer.useAasRepository} /></MenuItem>
+                                            <MenuItem key="none" value="0">{t('useAasRepository')}</MenuItem>
                                             { submodelRepositories.map((repo, index) => {
                                                 return <MenuItem key={index} value={repo}>{repo}</MenuItem>
                                             })}
@@ -126,7 +126,7 @@ export function TargetRepositories(props: TargetRepositoryProps) {
                         <Divider sx={{ mt: 6, mb: 4 }}/>
                         <DialogActions>
                             <LoadingButton sx={{ mr: 1 }} variant="outlined" disabled={!formState.isValid} loading={props.isSubmitting}
-                                    onClick={handleSubmit(onSubmit)}><FormattedMessage {...messages.mnestix.transfer.title} /></LoadingButton>
+                                    onClick={handleSubmit(onSubmit)}>{t('title')}</LoadingButton>
                         </DialogActions>
                     </Box>
                 </form>

@@ -1,9 +1,8 @@
 import { Dialog, DialogContent, Typography } from '@mui/material';
 import { ISubmodelElement, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
-import { messages } from 'lib/i18n/localization';
-import { FormattedMessage } from 'react-intl';
 import { GenericSubmodelElementComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/GenericSubmodelElementComponent';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
+import { useTranslations } from 'next-intl';
 
 type DocumentDetailsModalProps = {
     readonly document: SubmodelElementCollection;
@@ -13,6 +12,7 @@ type DocumentDetailsModalProps = {
 
 export function DocumentDetailsDialog(props: DocumentDetailsModalProps) {
     const document = props.document;
+    const t = useTranslations('common');
 
     if (!document.value) {
         return <></>;
@@ -23,7 +23,7 @@ export function DocumentDetailsDialog(props: DocumentDetailsModalProps) {
             <DialogCloseButton handleClose={props.handleClose} />
             <DialogContent style={{ padding: '40px' }} data-testid="document-details-dialog">
                 <Typography variant="h3" sx={{ mb: 3 }}>
-                    <FormattedMessage {...messages.mnestix.documentDetails} />
+                    {t('labels.documentDetails')}
                 </Typography>
                 {document.value.map((el, i) => (
                     <GenericSubmodelElementComponent 

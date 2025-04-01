@@ -11,7 +11,8 @@
       "restore": "Restore",
       "revertChanges": "Revert changes",
       "saveChanges": "Save changes",
-      "view": "View"
+      "view": "View",
+      "toHome": "To Home"
     },
     "boolean": {
       "false": "false",
@@ -30,14 +31,20 @@
       "semanticId": "semanticId",
       "staticPrefix": "static prefix",
       "text": "Text",
-      "value": "Value"
+      "value": "Value",
+      "documentDetails": "Document details"
     },
     "messages": {
       "deleted": "deleted",
       "noDataFound": "No Data found",
       "noDataFoundFor": "No data found for \"{name}\".",
       "successfullyUpdated": "Updated successfully",
-      "changesSavedSuccessfully": "Changes saved successfully"
+      "changesSavedSuccessfully": "Changes saved successfully",
+      "fileNotFound": "File not found",
+      "cannotLoadAasId": {
+        "header": "AAS could not be loaded.",
+        "text": "Unable to load AAS for the given ID \"{id}\""
+      }
     }
   },
   "components": {
@@ -121,6 +128,12 @@
         "C4": "C4 - landfill",
         "D": "D - reuse"
       }
+    },
+    "submodelElementCollection": {
+      "showEntriesButton": {
+        "show": "Show {count} entries",
+        "hide": "Hide"
+    }
     }
   },
   "navigation": {
