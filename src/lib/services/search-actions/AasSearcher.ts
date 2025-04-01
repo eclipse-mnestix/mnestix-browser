@@ -73,7 +73,7 @@ export class AasSearcher {
         );
     }
 
-    async performFullSearch(searchInput: string): Promise<ApiResponseWrapper<AasSearchResult>> {
+    public async performFullSearch(searchInput: string): Promise<ApiResponseWrapper<AasSearchResult>> {
         const aasIds = await this.performAasDiscoverySearch(searchInput);
         const foundMultipleDiscoveryResults = aasIds.isSuccess && aasIds.result.length > 1;
         const foundOneDiscoveryResult = aasIds.isSuccess && aasIds.result.length === 1;
@@ -148,8 +148,20 @@ export class AasSearcher {
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Discovery service is not defined');
         const response = await this.discoveryServiceClient.getAasIdsByAssetId(searchAssetId);
         if (response.isSuccess) {
+            this.logSearchResult(
+                response.isSuccess,
+                searchAssetId,
+                this.performAasDiscoverySearch.name,
+                'Discovery search',
+            );
             return wrapSuccess(response.result);
         }
+        this.logSearchResult(
+            response.isSuccess,
+            searchAssetId,
+            this.performAasDiscoverySearch.name,
+            'Discovery search',
+        );
         return wrapErrorCode(
             ApiResultStatus.NOT_FOUND,
             `Could not find the asset '${searchAssetId}' in the discovery service`,
@@ -176,19 +188,12 @@ export class AasSearcher {
         if (!this.registryService)
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'AAS Registry service is not defined');
         const shellDescription = await this.registryService.getAssetAdministrationShellDescriptorById(searchAasId);
-        this.logger?.info(
-            {
-                aasId: searchAasId,
-            },
-            `Registry search: ${this.registryService.getBaseUrl()}`,
-        );
         if (!shellDescription.isSuccess) {
-            this.logger?.info(
-                {
-                    aasId: searchAasId,
-                    response: shellDescription.errorCode,
-                },
-                `Registry search: ${this.registryService.getBaseUrl()}`,
+            this.logSearchResult(
+                shellDescription.isSuccess,
+                searchAasId,
+                this.performAasRegistrySearch.name,
+                'Registry search',
             );
             return wrapErrorCode(
                 ApiResultStatus.NOT_FOUND,
@@ -198,6 +203,12 @@ export class AasSearcher {
         const endpoints = shellDescription.result.endpoints as Endpoint[];
         const submodelDescriptors = shellDescription.result.submodelDescriptors as SubmodelDescriptor[];
         const endpointUrls = endpoints.map((endpoint) => new URL(endpoint.protocolInformation.href));
+        this.logSearchResult(
+            shellDescription.isSuccess,
+            searchAasId,
+            this.performAasRegistrySearch.name,
+            'Registry search',
+        );
         return wrapSuccess<RegistrySearchResult>({
             endpoints: endpointUrls,
             submodelDescriptors: submodelDescriptors,
@@ -207,20 +218,34 @@ export class AasSearcher {
     private async getAasFromEndpoint(endpoint: URL): Promise<ApiResponseWrapper<AssetAdministrationShell>> {
         if (!this.registryService)
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'AAS Registry service is not defined');
-        this.logger?.info(
-            {
-                endpoint: endpoint,
-            },
-            `Registery search: ${this.registryService.getBaseUrl()}`,
-        );
         const response = await this.registryService.getAssetAdministrationShellFromEndpoint(endpoint);
-        if (!response.isSuccess) this.logger?.warn(response.message);
+        if (!response.isSuccess)
+            this.logSearchResult(
+                response.isSuccess,
+                endpoint.toString(),
+                this.getAasFromEndpoint.name,
+                'Registry search',
+            );
+        this.logSearchResult(response.isSuccess, endpoint.toString(), this.getAasFromEndpoint.name, 'Registry search');
         return response;
     }
 
     private async getAasFromDefaultRepository(aasId: string): Promise<ApiResponseWrapper<AssetAdministrationShell>> {
         const response = await this.multipleDataSource.getAasFromDefaultRepo(aasId);
-        if (!response.isSuccess) this.logger?.info(response.message);
+        if (!response.isSuccess) {
+            this.logSearchResult(
+                response.isSuccess,
+                aasId,
+                this.getAasFromDefaultRepository.name,
+                'Default repository search',
+            );
+        }
+        this.logSearchResult(
+            response.isSuccess,
+            aasId,
+            this.getAasFromDefaultRepository.name,
+            'Default repository search',
+        );
         return response;
     }
 
@@ -228,8 +253,31 @@ export class AasSearcher {
         aasId: string,
     ): Promise<ApiResponseWrapper<RepoSearchResult<AssetAdministrationShell>[]>> {
         const response = await this.multipleDataSource.getAasFromAllRepos(aasId);
-        if (!response.isSuccess)
-            this.logger?.warn(`${this.getAasFromAllRepositories.name} failed with ${response.message}`);
+        if (!response.isSuccess) {
+            this.logSearchResult(
+                response.isSuccess,
+                aasId,
+                this.getAasFromAllRepositories.name,
+                'Configured repositories search',
+            );
+        }
+        this.logSearchResult(
+            response.isSuccess,
+            aasId,
+            this.getAasFromAllRepositories.name,
+            'Configured repositories search',
+        );
         return response;
+    }
+
+    private logSearchResult(isSuccess: boolean, searchInput: string, methodName: string, message: string): void {
+        this.logger?.info(
+            {
+                method: methodName,
+                requestedId: searchInput,
+                isSuccess: isSuccess,
+            },
+            `${message}`,
+        );
     }
 }
