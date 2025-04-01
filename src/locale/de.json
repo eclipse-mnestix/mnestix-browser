@@ -44,6 +44,10 @@
       "cannotLoadAasId": {
         "header": "Verwaltungsschale konnte nicht geladen werden.",
         "text": "Es konnte keine Verwaltungsschale für die angegebene ID \"{id}\" geladen werden."
+      },
+      "referenceCounter": {
+        "count": "Anzahl",
+        "elementName": "Element"
       }
     }
   },
@@ -97,13 +101,10 @@
       "completedStages": "Emissionen berechnet basierend auf folgenden Lebenszyklusphasen",
       "productJourney": "Produktreise",
       "totalCO2Equivalents": "(Bisherige) CO2 Emissionen des Produkts",
-      "units": {
-        "beech": "Buche",
-        "months": "Monate",
-        "years": "Jahre"
-      }
-    },
-    "lifecycle": {
+      "calculationMethod": "Berechnungsmethode",
+      "beech": "Buche",
+      "months": "Monate",
+      "years": "Jahre",
       "stages": {
         "A1": "A1 - Rohstoffversorgung (und vorgelagerte Produktion)",
         "A1-A3": "A1-A3 - Rohstoffversorgung bis Produktion",
@@ -133,7 +134,8 @@
       "showEntriesButton": {
         "show": "{count} Einträge anzeigen",
         "hide": "Verbergen"
-    }
+      },
+      "allAvailableData": "Alle verfügbaren Daten"
     }
   },
   "navigation": {

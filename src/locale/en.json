@@ -44,6 +44,10 @@
       "cannotLoadAasId": {
         "header": "AAS could not be loaded.",
         "text": "Unable to load AAS for the given ID \"{id}\""
+      },
+      "referenceCounter": {
+        "count": "Count",
+        "elementName": "Element"
       }
     }
   },
@@ -97,13 +101,10 @@
       "completedStages": "Emissions calculated based on product life cycle",
       "productJourney": "Product Journey",
       "totalCO2Equivalents": "CO2 emissions from product (so far)",
-      "units": {
-        "beech": "Beech Tree",
-        "months": "Months",
-        "years": "Years"
-      }
-    },
-    "lifecycle": {
+      "calculationMethod": "Calculation Method",
+      "beech": "Beech Tree",
+      "months": "Months",
+      "years": "Years",
       "stages": {
         "A1": "A1 - raw material supply (and upstream production)",
         "A1-A3": "A1-A3 - Raw material supply to production",
@@ -133,7 +134,8 @@
       "showEntriesButton": {
         "show": "Show {count} entries",
         "hide": "Hide"
-    }
+      },
+      "allAvailableData": "All available data"
     }
   },
   "navigation": {

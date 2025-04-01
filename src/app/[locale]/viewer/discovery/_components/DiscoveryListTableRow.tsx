@@ -6,8 +6,7 @@ import { encodeBase64 } from 'lib/util/Base64Util';
 import { useRouter } from 'next/navigation';
 import { RoundedIconButton } from 'components/basics/Buttons';
 import { ArrowForward } from '@mui/icons-material';
-import { messages } from 'lib/i18n/localization';
-import { useIntl } from 'react-intl';
+import { useTranslations } from 'next-intl';
 
 type DiscoveryListTableRowProps = {
     aasListEntry: IDiscoveryListEntry;
@@ -23,7 +22,7 @@ export const DiscoveryListTableRow = (props: DiscoveryListTableRowProps) => {
     const [, setAas] = useAasState();
     const [, setAasOriginUrl] = useAasOriginSourceState();
     const navigate = useRouter();
-    const intl = useIntl();
+    const t = useTranslations('pages.assList');
 
     const navigateToAas = (aasId: string, repoUrl?: string) => {
         setAas(null);
@@ -44,7 +43,7 @@ export const DiscoveryListTableRow = (props: DiscoveryListTableRowProps) => {
                 <RoundedIconButton
                     endIcon={<ArrowForward />}
                     onClick={() => navigateToAas(aasListEntry.aasId, aasListEntry.repositoryUrl)}
-                    title={intl.formatMessage(messages.mnestix.discoveryList.titleViewAASButton)}
+                    title={t('titleViewAASButton')}
                 />
             </TableCell>
         </>

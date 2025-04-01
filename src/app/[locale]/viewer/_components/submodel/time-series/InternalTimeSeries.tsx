@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Alert, Box, CircularProgress, Typography } from '@mui/material';
-import { useIntl } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
 import { TimeSeriesLineDiagram } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesLineDiagram';
 import {
     extractIntlValueBySemanticId,
@@ -11,8 +9,11 @@ import {
 import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import { StyledDataRow } from 'components/basics/StyledDataRow';
 import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
+import { useTranslations } from 'next-intl';
+import { useIntl } from 'react-intl';
 
 export function InternalTimeSeries(props: { submodelElement: SubmodelElementCollection }) {
+    const t = useTranslations('validations.errors');
     const intl = useIntl();
     const [data, setData] = useState<TimeSeriesDataSet>({ names: [], points: [] });
     const [error, setError] = useState<boolean>(false);
@@ -49,7 +50,7 @@ export function InternalTimeSeries(props: { submodelElement: SubmodelElementColl
         return (
             <Box sx={{ display: 'flex', justifyContent: 'center', padding: 2 }}>
                 <Alert icon={false} severity="warning">
-                    {intl.formatMessage(messages.mnestix.errorMessages.influxError)}
+                    {t('influxError')}
                 </Alert>
             </Box>
         );

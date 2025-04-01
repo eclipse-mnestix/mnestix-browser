@@ -11,7 +11,7 @@ export function ExpandableDefaultSubmodelDisplay({ submodel }: SubmodelVisualiza
     const [isExpanded, setIsExpanded] = useState(false);
     const t = useTranslations('components.submodelElementCollection');
     return submodel.submodelElements && submodel.submodelElements.length ? (
-        <DataRow title="All available data" hasDivider={true}>
+        <DataRow title={t('allAvailableData')} hasDivider={true}>
             <Box>
                 <Button
                     variant="outlined"
