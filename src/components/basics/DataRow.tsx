@@ -1,9 +1,6 @@
 import { Box, Divider, IconButton, Link, SxProps, Theme, Tooltip, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import { ContentCopy, OpenInNew } from '@mui/icons-material';
-import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
-import { useIntl } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
+import { OpenInNew } from '@mui/icons-material';
 import { CopyButton } from './CopyButton';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 
@@ -25,17 +22,17 @@ export function DataRow(props: DataRowProps) {
         if (!props.value || isMobile) return null;
         return (
             <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
-                <CopyButton 
-                    value={props.value} 
+                <CopyButton
+                    value={props.value}
                     isVisible={isHovered}
-                    data-testid={props.testId || "copy-datarow-value"}
+                    data-testid={props.testId || 'copy-datarow-value'}
                 />
                 {props.withBase64 && (
                     <CopyButton 
-                    value={props.value}
-                    isVisible={isHovered}
-                    withBase64={true}
-                    data-testid={props.testId + "-b64" || "copy-datarow-value-secondary"}
+                        value={props.value}
+                        isVisible={isHovered}
+                        withBase64={true}
+                        data-testid={props.testId + '-b64' || 'copy-datarow-value-secondary'}
                     />
                 )}
             </Box>
@@ -44,7 +41,7 @@ export function DataRow(props: DataRowProps) {
 
     return (
         <Box
-            data-testid="data-row"
+            data-testid='data-row'
             sx={{ display: 'flex', flexDirection: 'column', gap: '5px', marginBottom: '15px', ...props.sx }}
         >
             {props.hasDivider !== false && <Divider style={{ marginBottom: '10px' }} />}
@@ -62,7 +59,7 @@ export function DataRow(props: DataRowProps) {
                 >
                     <Typography
                         style={{ overflowWrap: 'break-word', wordBreak: 'break-word', display: 'inline-block' }}
-                        data-testid="data-row-value"
+                        data-testid='data-row-value'
                     >
                         {props.isLink ? (
                             <Link component="a" href={props.value} target="_blank" rel="noopener noreferrer">

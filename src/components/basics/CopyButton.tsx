@@ -21,7 +21,7 @@ export function CopyButton({ value, isVisible = true, withBase64 = false, 'data-
             const textToCopy = withBase64 ? encodeBase64(value) : value;
             navigator.clipboard.writeText(textToCopy);
             notificationSpawner.spawn({
-                message: intl.formatMessage(messages.mnestix.copied) + ": " + textToCopy,
+                message: intl.formatMessage(messages.mnestix.copied) + ': ' + textToCopy,
                 severity: 'success',
             });
         }
@@ -35,7 +35,7 @@ export function CopyButton({ value, isVisible = true, withBase64 = false, 'data-
                 onClick={handleCopyValue}
                 size="small"
                 sx={{ ml: 1, opacity: isVisible ? 1 : 0 }}
-                data-testid={testId || "copy-button"}
+                data-testid={testId || 'copy-button'}
             >
                 {withBase64 ? (
                     <Box sx={{ position: 'relative' }}>
