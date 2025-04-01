@@ -16,7 +16,25 @@
     "titleViewAASButton": "VWS anzeigen",
     "maxElementsWarning": "Maximal 3 Elemente selektierbar",
     "goToCompare": "Zum Vergleich",
-    "compareTooltip": "Vergleichen"
+    "compareTooltip": "Vergleichen",
+    "listHeader": {
+      "picture": "Bild",
+      "aasId": "AAS ID",
+      "assetId": "Asset ID",
+      "repositoryUrl": "Repository Url",
+      "discoveryUrl": "Discovery Url",
+      "registryUrl": "Registry Url",
+      "viewAASButton": "AAS anzeigen"
+    }
+  },
+  "discoveryList": {
+    "errors": {
+      "searchFailed": "Suche fehlgeschlagen",
+      "noAasFound": "Keine AAS für die angegebene ID gefunden"
+    },
+    "title": "AAS mit ID",
+    "subtitle": "Hier finden Sie alle AAS, die mit der angegebenen ID verknüpft sind.",
+    "buttonTooltip": "Zur AAS wechseln"
   },
   "dashboard": {
     "welcome-text": "Willkommen bei Mnestix",

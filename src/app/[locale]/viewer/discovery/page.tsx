@@ -1,5 +1,5 @@
 ﻿import { Box } from '@mui/material';
-import { DiscoveryListView } from 'app/[locale]/viewer/discovery/_components/DiscoveryListView';
+import { DiscoveryListView } from './_components/DiscoveryListView';
 
 export default async function page() {
     return (

@@ -16,7 +16,25 @@
     "titleViewAASButton": "View AAS",
     "maxElementsWarning": "Cannot compare more than 3 elements",
     "goToCompare": "Compare",
-    "compareTooltip": "Compare"
+    "compareTooltip": "Compare",
+    "listHeader": {
+      "picture": "Picture",
+      "aasId": "AAS ID",
+      "assetId": "Asset ID",
+      "repositoryUrl": "Repository Url",
+      "discoveryUrl": "Discovery Url",
+      "registryUrl": "Registry Url",
+      "viewAASButton": "View AAS"
+    }
+  },
+  "discoveryList": {
+    "errors": {
+      "searchFailed": "Search failed",
+      "noAasFound": "No AAS found for the given ID"
+    },
+    "title": "Related AAS to Asset ID",
+    "subtitle": "Here you will find all related AAS to the given Asset ID.",
+    "buttonTooltip": "Go to AAS"
   },
   "dashboard": {
     "welcome-text": "Welcome to Mnestix",

@@ -1,26 +1,22 @@
 'use client';
 
-import { FormattedMessage, useIntl } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { useState } from 'react';
-import DiscoveryList from 'app/[locale]/viewer/discovery/_components/DiscoveryList';
+import GenericAasList from 'app/[locale]/viewer/discovery/_components/GenericAasList';
 import { useSearchParams } from 'next/navigation';
-import { Typography } from '@mui/material';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { IDiscoveryListEntry } from 'lib/types/DiscoveryListEntry';
 import AssetNotFound from 'components/basics/AssetNotFound';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import ListHeader from 'components/basics/ListHeader';
 import { performDiscoveryAasSearch, performRegistryAasSearch } from 'lib/services/search-actions/searchActions';
 import { performSearchAasFromAllRepositories } from 'lib/services/repository-access/repositorySearchActions';
-import { RepoSearchResult } from 'lib/services/repository-access/RepositorySearchService';
-import { AssetAdministrationShell } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useTranslations } from 'next-intl';
+import { LocalizedError } from 'lib/util/LocalizedError';
+import { AasListEntry } from 'lib/types/AasListEntry';
 
 async function getRepositoryUrl(aasId: string): Promise<string | undefined> {
     const registrySearchResult = await performRegistryAasSearch(aasId);
-    if (registrySearchResult.isSuccess) return registrySearchResult?.result.aasData?.aasRepositoryOrigin;
+    if (registrySearchResult.isSuccess) return registrySearchResult.result.aasData?.aasRepositoryOrigin;
 
     const allRepositorySearchResult = await performSearchAasFromAllRepositories(encodeBase64(aasId));
     if (allRepositorySearchResult.isSuccess) return allRepositorySearchResult.result[0].location;
@@ -29,81 +25,90 @@ async function getRepositoryUrl(aasId: string): Promise<string | undefined> {
     return undefined;
 }
 
+/**
+ * This component is responsible for displaying the list of AAS entries based on a given assetId.
+ * This may occur, when multiple AAS are registered to the same assetId.
+ * The user can then choose which AAS to view based on AasId and repositoryUrl.
+ * // TODO MNES-906: show discoveryUrl
+ */
 export const DiscoveryListView = () => {
+    const [discoveryListEntries, setDiscoveryListEntries] = useState<AasListEntry[]>([]);
     const [isLoadingList, setIsLoadingList] = useState(false);
-    const [discoveryListEntries, setDiscoveryListEntries] = useState<IDiscoveryListEntry[]>([]);
     const [isError, setIsError] = useState<boolean>(false);
-    const intl = useIntl();
+
     const searchParams = useSearchParams();
     const encodedAssetId = searchParams.get('assetId');
     const assetId = encodedAssetId ? decodeURI(encodedAssetId) : undefined;
-    const encodedAasId = searchParams.get('aasId');
-    const aasId = encodedAasId ? decodeURI(encodedAasId) : undefined;
 
-    const t = useTranslations('aas-list');
+    const t = useTranslations('discoveryList');
+
+    async function loadContent(assetId: string) {
+        const response = await performDiscoveryAasSearch(assetId);
+
+        if (!response.isSuccess) {
+            throw new LocalizedError('discoveryList.errors.searchFailed');
+        }
+
+        if (response.result.length === 0) {
+            throw new LocalizedError('discoveryList.errors.noAasFound');
+        }
+
+        const entryList: AasListEntry[] = [];
+
+        await Promise.all(
+            response.result.map(async (aasId) => {
+                const repositoryUrl = await getRepositoryUrl(aasId);
+                entryList.push({
+                    aasId: aasId,
+                    repositoryUrl: repositoryUrl,
+                });
+            }),
+        );
+
+        if (entryList.length === 0) {
+            throw new LocalizedError('discoveryList.errors.noAasFound');
+        }
+
+        return entryList;
+    }
 
     useAsyncEffect(async () => {
         setIsLoadingList(true);
-        const entryList: IDiscoveryListEntry[] = [];
 
         if (assetId) {
-            const response = await performDiscoveryAasSearch(assetId);
-
-            if (!response.isSuccess || response.result.length === 0) {
-                setIsLoadingList(false);
-                return;
+            try {
+                const newListEntries = await loadContent(assetId);
+                setDiscoveryListEntries(newListEntries);
+            } catch (error) {
+                if (error instanceof LocalizedError) {
+                    console.error(error.message);
+                }
+                console.error('Error while loading content:', error);
+                setIsError(true);
             }
-            const aasIds = response.result!;
-            await Promise.all(
-                aasIds.map(async (aasId) => {
-                    const repositoryUrl = await getRepositoryUrl(aasId);
-                    entryList.push({
-                        aasId: aasId,
-                        repositoryUrl: repositoryUrl,
-                    });
-                }),
-            );
-        } else if (aasId) {
-            const response = await performSearchAasFromAllRepositories(encodeBase64(aasId));
-            let searchResults: RepoSearchResult<AssetAdministrationShell>[] = [];
-            if (response.isSuccess) searchResults = response.result;
-            else setIsError(true);
-            for (const searchResult of searchResults) {
-                entryList.push({
-                    aasId: searchResult.searchResult.id,
-                    repositoryUrl: searchResult.location,
-                });
-            }
-        }
-
-        if (entryList.length < 1) {
-            setIsError(true);
-        } else {
-            setDiscoveryListEntries(entryList);
         }
 
         setIsLoadingList(false);
     }, []);
 
-    const tableHeaders = [
-        { label: intl.formatMessage(messages.mnestix.discoveryList.picture) },
-        { label: intl.formatMessage(messages.mnestix.discoveryList.aasIdHeading) },
-        { label: intl.formatMessage(messages.mnestix.discoveryList.repositoryUrl) },
-    ];
+    if (!assetId) {
+        return <AssetNotFound />;
+    }
 
     return (
         <>
-            <ListHeader header={t('header')} optionalID={assetId ?? aasId} />
+            <ListHeader header={t('title')} subHeader={t('subtitle')} optionalID={assetId} />
             {isLoadingList && <CenteredLoadingSpinner sx={{ mt: 10 }} />}
-            {!isLoadingList && !isError && (
-                <>
-                    <Typography marginBottom={3}>
-                        <FormattedMessage {...messages.mnestix.discoveryList.subtitle} />
-                    </Typography>
-                    <DiscoveryList tableHeaders={tableHeaders} data={discoveryListEntries} />
-                </>
+            {isError ? (
+                <AssetNotFound id={assetId} />
+            ) : (
+                <GenericAasList
+                    data={discoveryListEntries}
+                    buttonTooltip={t('buttonTooltip')}
+                    showAasId
+                    showRepositoryUrl
+                />
             )}
-            {isError && <AssetNotFound id={assetId ?? aasId} />}
         </>
     );
 };
