@@ -153,11 +153,11 @@ export const RoleDialog = (props: RoleDialogProps) => {
                                     <Typography>{props.rule?.action}</Typography>
                                 )}
                             </Box>
-                            (isEditMode ? (
-                            <TargetInformationForm control={control} setValue={setValue} getValues={getValues} />
+                            {isEditMode ? (
+                                <TargetInformationForm control={control} setValue={setValue} getValues={getValues} />
                             ) : (
-                            <TargetInformationView targetInformation={props.rule.targetInformation} />
-                            ))
+                                <TargetInformationView targetInformation={props.rule.targetInformation} />
+                            )}
                         </Box>
                     </Box>
                 </DialogContent>

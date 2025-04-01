@@ -12,17 +12,19 @@ export const TargetInformationView = (props: TargetInformationProps) => {
     const keys = Object.keys(props.targetInformation);
 
     keys.forEach((key) => {
-        // @ts-expect-error todo
-        const element: string | string[] = props.targetInformation[key];
+        // @ts-expect-error implicit any
+        const element = props.targetInformation[key];
 
-        if (key !== '@type') {
-            permissions.push(
-                <Box key={key} mt="1em">
-                    <Typography variant="h5">{key}</Typography>
-                    <Typography>{Array.isArray(element) ? element.join(', ') : element}</Typography>
-                </Box>,
-            );
+        if (key === '@type') {
+            return;
         }
+        const ids = element as string[];
+        permissions.push(
+            <Box key={key} mt="1em">
+                <Typography variant="h5">{key}</Typography>
+                <Typography>{ids.join(', ')}</Typography>
+            </Box>,
+        );
     });
     return (
         <Box>
