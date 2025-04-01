@@ -125,13 +125,11 @@ export const RoleSettings = () => {
                                             <Typography fontWeight="bold">{entry.role}</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            {entry.action.map((action) => (
-                                                <Chip
-                                                    key={action}
-                                                    sx={{ fontWeight: 'normal', m: 0.5 }}
-                                                    label={action}
-                                                />
-                                            ))}
+                                            <Chip
+                                                key={entry.action}
+                                                sx={{ fontWeight: 'normal', m: 0.5 }}
+                                                label={entry.action}
+                                            />
                                         </TableCell>
                                         <TableCell>{entry.targetInformation['@type']}</TableCell>
                                         {!isMobile && <TableCell>{permissionCell(entry)}</TableCell>}

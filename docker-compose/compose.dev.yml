@@ -11,7 +11,6 @@ services:
     volumes:
       - ./src:/app/src
       - ./public:/app/public
-#      - ./data/logo.svg:/app/public/logo
 
   mongodb:
     ports:
