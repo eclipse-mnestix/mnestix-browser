@@ -1,13 +1,13 @@
 import { InfoOutlined, Mediation, Numbers, TextSnippet, Visibility } from '@mui/icons-material';
 import { Box, Divider, Tooltip, Typography } from '@mui/material';
-import { messages } from 'lib/i18n/localization';
-import { FormattedMessage } from 'react-intl';
+import { useTranslations } from 'next-intl';
 
 type TemplateEditSectionHeadingProps = {
     readonly type: 'defaultValue' | 'displayName' | 'mappingInfo' | 'multiplicity';
 };
 
 export function TemplateEditSectionHeading(props: TemplateEditSectionHeadingProps) {
+    const t = useTranslations('pages.templates');
     const getIcon = () => {
         switch (props.type) {
             case 'displayName':
@@ -25,26 +25,26 @@ export function TemplateEditSectionHeading(props: TemplateEditSectionHeadingProp
     const getTitle = () => {
         switch (props.type) {
             case 'displayName':
-                return <FormattedMessage {...messages.mnestix.displayName} />;
+                return t('displayName');
             case 'mappingInfo':
-                return <FormattedMessage {...messages.mnestix.mappingInfo} />;
+                return t('mappingInfo');
             case 'defaultValue':
-                return <FormattedMessage {...messages.mnestix.defaultValue} />;
+                return t('defaultValue');
             case 'multiplicity':
-                return <FormattedMessage {...messages.mnestix.multiplicity} />;
+                return t('multiplicity');
             default:
-                return <></>;
+                return '';
         }
     };
 
     const getDescription = () => {
         switch (props.type) {
             case 'mappingInfo':
-                return <FormattedMessage {...messages.mnestix.mappingInfoDescription} />;
+                return t('mappingInfoDescription');
             case 'multiplicity':
-                return <FormattedMessage {...messages.mnestix.multiplicityDescription} />;
+                return t('multiplicityDescription');
             default:
-                return;
+                return undefined;
         }
     };
     return (

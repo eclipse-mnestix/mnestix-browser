@@ -20,8 +20,6 @@
     "labels": {
       "aasId": "AAS ID",
       "assetId": "Asset ID",
-      "defaultValue": "Vorgegebener Wert",
-      "displayName": "Anzeigename",
       "dynamicPart": "dynamischer Teil",
       "endResult": "Endergebnis",
       "idShort": "idShort: {idShort}",
@@ -35,13 +33,10 @@
       "value": "Wert"
     },
     "messages": {
-      "changesSavedSuccessfully": "Änderungen erfolgreich gespeichert.",
       "deleted": "gelöscht",
       "noDataFound": "Keine Daten gefunden",
       "noDataFoundFor": "Es wurden keine Daten für \"{name}\" gefunden.",
-      "successfullyUpdated": "Erfolgreich aktualisiert",
-      "templateDeletedSuccessfully": "Vorlage erfolgreich gelöscht.",
-      "templateIdCopied": "Vorlagen-ID in die Zwischenablage kopiert: {id}"
+      "successfullyUpdated": "Erfolgreich aktualisiert"
     }
   },
   "components": {
@@ -268,6 +263,8 @@
       "title": "Verwaltungsschalen vergleichen"
     },
     "templates": {
+      "title": "Vorlagen",
+      "createNew": "Neu erstellen",
       "chooseAStartingPoint": "Wählen Sie einen Ausgangspunkt",
       "copyTemplateId": "Vorlagen-ID kopieren",
       "custom": "Individuell",
@@ -275,7 +272,17 @@
       "emptyCustom": "Leer (Individuell)",
       "emptyCustomDescription": "Basiert auf keiner standardisierten Vorlage",
       "noTemplatesFound": "Keine Vorlagen gefunden",
-      "templatesUseExplanation": "Vorlagen erlauben es Ihnen, eine wiederverwendbare Teilmodell-Struktur zu definieren, angepasst auf Ihre Bedürfnisse."
+      "templatesUseExplanation": "Vorlagen erlauben es Ihnen, eine wiederverwendbare Teilmodell-Struktur zu definieren, angepasst auf Ihre Bedürfnisse.",
+      "all": "Alle",
+      "templateDeletedSuccessfully": "Vorlage erfolgreich gelöscht.",
+      "templateIdCopied": "Vorlagen-ID in die Zwischenablage kopiert: {id}",
+      "mappingInfo": "Mapping-Info",
+      "mappingInfoDescription": "Frei wählbarer Identifikator, auf den Sie bei Datenimporten zurückgreifen können.",
+      "multiplicity": "Multiplicity",
+      "multiplicityDescription": "Parameter, mit dem Sie festlegen können, welche Elemente verpflichtend sind.",
+      "displayName": "Anzeigename",
+      "defaultValue": "Vorgegebener Wert",
+      "changesSavedSuccessfully": "Änderungen erfolgreich gespeichert."
     },
     "transfer": {
       "aasRepository": "AAS Repository",

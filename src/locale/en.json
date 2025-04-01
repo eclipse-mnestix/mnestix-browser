@@ -20,8 +20,6 @@
     "labels": {
       "aasId": "AAS ID",
       "assetId": "Asset ID",
-      "defaultValue": "Default value",
-      "displayName": "Display name",
       "dynamicPart": "dynamic part",
       "endResult": "End result",
       "idShort": "idShort: {idShort}",
@@ -35,13 +33,10 @@
       "value": "Value"
     },
     "messages": {
-      "changesSavedSuccessfully": "Changes saved successfully",
       "deleted": "deleted",
       "noDataFound": "No Data found",
       "noDataFoundFor": "No data found for \"{name}\".",
-      "successfullyUpdated": "Updated successfully",
-      "templateDeletedSuccessfully": "Template deleted successfully",
-      "templateIdCopied": "Template ID copied to clipboard: {id}"
+      "successfullyUpdated": "Updated successfully"
     }
   },
   "components": {
@@ -268,6 +263,8 @@
       "title": "Compare AAS"
     },
     "templates": {
+      "title": "Templates",
+      "createNew": "Create New",
       "chooseAStartingPoint": "Choose a starting point",
       "copyTemplateId": "Copy Template ID",
       "custom": "Custom",
@@ -275,7 +272,17 @@
       "emptyCustom": "Empty (Custom)",
       "emptyCustomDescription": "Is not based upon a standardized template",
       "noTemplatesFound": "No templates found",
-      "templatesUseExplanation": "Templates allow you to create a reusable submodel structure, adjusted to your requirements."
+      "templatesUseExplanation": "Templates allow you to create a reusable submodel structure, adjusted to your requirements.",
+      "all": "All",
+      "templateDeletedSuccessfully": "Template deleted successfully",
+      "templateIdCopied": "Template ID copied to clipboard: {id}",
+      "mappingInfo": "Mapping info",
+      "mappingInfoDescription": "Arbitrary identifier that you can use for your data imports.",
+      "multiplicity": "Multiplicity",
+      "multiplicityDescription": "A qualifier used to identify obligatory elements.",
+      "displayName": "Display name",
+      "defaultValue": "Default value",
+      "changesSavedSuccessfully": "Changes saved successfully"
     },
     "transfer": {
       "aasRepository": "AAS Repository",

@@ -18,6 +18,7 @@ export function getTranslationTextNext(element: MultiLanguageProperty, locale: s
     return value || element.value?.at(0)?.text || null;
 }
 
+
 export function getTranslationValue(element: IDataElement, locale: string): string | null {
     switch (getKeyType(element)) {
         case KeyTypes.MultiLanguageProperty:
