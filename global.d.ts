@@ -5,6 +5,7 @@ declare global {
     namespace NodeJS {
         interface ProcessEnv {
             NODE_ENV: 'development' | 'production' | 'test';
+            NEXT_RUNTIME: 'edge' | 'nodejs';
             /**
              * @deprecated use lib/env/MnestixEnv.ts:envs
              */
