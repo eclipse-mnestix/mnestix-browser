@@ -1,13 +1,13 @@
 'use client';
 
 import { Box } from '@mui/material';
-import { useTranslations } from 'next-intl';
+import { FormattedMessage } from 'react-intl';
+import { messages } from 'lib/i18n/localization';
 
 export function DummyComponentReactIntl() {
-    const t = useTranslations('common');
     return (
         <Box data-testid="test-text">
-            {t('labels.aasId')}
+            <FormattedMessage {...messages.mnestix.aasId} />
         </Box>
     );
 }
