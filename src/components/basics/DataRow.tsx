@@ -1,4 +1,4 @@
-import { Box, Divider, IconButton, Link, SxProps, Theme, Tooltip, Typography } from '@mui/material';
+import { Box, Divider, Link, SxProps, Theme, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { OpenInNew } from '@mui/icons-material';
 import { CopyButton } from './CopyButton';
@@ -19,7 +19,7 @@ export function DataRow(props: DataRowProps) {
     const [isHovered, setIsHovered] = useState(false);
     const isMobile = useIsMobile();
     const renderCopyButtons = () => {
-        if (!props.value || isMobile) return null;
+        if (!props.value || isMobile) return null;
         return (
             <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
                 <CopyButton

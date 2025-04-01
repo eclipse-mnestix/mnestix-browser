@@ -5,15 +5,12 @@ import {
     Box,
     Card,
     CardContent,
-    IconButton,
     Skeleton,
-    Tooltip,
     Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
 import { DataRow } from 'components/basics/DataRow';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { messages } from 'lib/i18n/localization';
 import { AssetAdministrationShell, SpecificAssetId } from '@aas-core-works/aas-core3.0-typescript/types';
@@ -28,7 +25,6 @@ import { useAasState } from 'components/contexts/CurrentAasContext';
 import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
 import { getThumbnailFromShell } from 'lib/services/repository-access/repositorySearchActions';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 
 type AASOverviewCardProps = {
     readonly aas: AssetAdministrationShell | null;
