@@ -5,7 +5,7 @@ import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResp
 import { SpecificAssetId } from '@aas-core-works/aas-core3.0-typescript/types';
 import * as path from 'node:path';
 import ServiceReachable from 'test-utils/TestUtils';
-import Logger from 'lib/util/Logger';
+import Logger, { logResponseInfo } from 'lib/util/Logger';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 type DiscoveryEntryResponse = {
@@ -94,27 +94,31 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
         });
 
         if (!response.isSuccess) {
-            this.logDiscoverySearch(
+            logResponseInfo(
+                this.logger ?? Logger,
                 this.getAllAssetAdministrationShellIdsByAssetLink.name,
-                response.httpStatus,
-                response.httpText,
+                'Discovery search failed',
+                response,
                 { message: response.message },
             );
             return wrapErrorCode(response.errorCode, response.message);
         }
 
         if (response.result.result.length === 0) {
-            this.logDiscoverySearch(
+            logResponseInfo(
+                this.logger ?? Logger,
                 this.getAllAssetAdministrationShellIdsByAssetLink.name,
-                404,
-                ApiResultStatus.NOT_FOUND,
+                'Discovery search failed',
+                response,
+                { result: response.result.result },
             );
             return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'No AAS found for assetIds');
         }
-        this.logDiscoverySearch(
+        logResponseInfo(
+            this.logger ?? Logger,
             this.getAllAssetAdministrationShellIdsByAssetLink.name,
-            response.httpStatus,
-            response.httpText,
+            'Discovery search successful',
+            response,
             { result: response.result.result },
         );
         return wrapSuccess(response.result.result);
@@ -171,17 +175,5 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
             method: 'DELETE',
             headers,
         });
-    }
-
-    private logDiscoverySearch(methodName: string, httpStatus?: number, httpText?: string, optional?: object): void {
-        this.logger?.info(
-            {
-                methodName: methodName,
-                httpStatus: httpStatus,
-                httpText: httpText,
-                ...optional,
-            },
-            'Discovery search',
-        );
     }
 }

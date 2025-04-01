@@ -8,7 +8,7 @@ import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResp
 import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { PaginationData } from 'lib/api/basyx-v3/types';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
-import Logger from 'lib/util/Logger';
+import Logger, { logResponseInfo } from 'lib/util/Logger';
 
 export type RepoSearchResult<T> = {
     searchResult: T;
@@ -92,21 +92,21 @@ export class RepositorySearchService {
 
         const response = await client.getAssetAdministrationShellById(aasId);
         if (response.isSuccess) {
-            this.logRepoAasSearchInfo(
+            logResponseInfo(
+                this.logger ?? Logger,
                 this.getAasFromDefaultRepo.name,
-                aasId,
-                client.getBaseUrl(),
-                response.httpStatus,
-                response.httpText,
+                `Aas repository search: ${client.getBaseUrl()}`,
+                response,
+                { aasId: aasId },
             );
             return response;
         }
-        this.logRepoAasSearchInfo(
+        logResponseInfo(
+            this.logger ?? Logger,
             this.getAasFromDefaultRepo.name,
-            aasId,
-            client.getBaseUrl(),
-            response.httpStatus,
-            response.httpText,
+            `Aas repository search: ${client.getBaseUrl()}`,
+            response,
+            { aasId: aasId },
         );
         return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'AAS not found');
     }
@@ -142,21 +142,21 @@ export class RepositorySearchService {
         if (!client) return noDefaultSubmodelRepository();
         const response = await client.getSubmodelById(submodelId);
         if (response.isSuccess) {
-            this.logRepoSubmodelSearchInfo(
+            logResponseInfo(
+                this.logger ?? Logger,
                 this.getSubmodelFromDefaultRepo.name,
-                submodelId,
-                client.getBaseUrl(),
-                response.httpStatus,
-                response.httpText,
+                `Submodel repository search: ${client.getBaseUrl()}`,
+                response,
+                { submodelId: submodelId },
             );
             return response;
         }
-        this.logRepoSubmodelSearchInfo(
+        logResponseInfo(
+            this.logger ?? Logger,
             this.getSubmodelFromDefaultRepo.name,
-            submodelId,
-            client.getBaseUrl(),
-            response.httpStatus,
-            response.httpText,
+            `Submodel repository search: ${client.getBaseUrl()}`,
+            response,
+            { submodelId: submodelId },
         );
         return wrapErrorCode(ApiResultStatus.NOT_FOUND, `Submodel with id '${submodelId}' not found`);
     }
@@ -165,21 +165,21 @@ export class RepositorySearchService {
         const client = this.getSubmodelRepositoryClient(repoUrl);
         const response = await client.getSubmodelById(submodelId);
         if (response.isSuccess) {
-            this.logRepoSubmodelSearchInfo(
+            logResponseInfo(
+                this.logger ?? Logger,
                 this.getSubmodelFromRepo.name,
-                submodelId,
-                repoUrl,
-                response.httpStatus,
-                response.httpText,
+                `Submodel repository search: ${client.getBaseUrl()}`,
+                response,
+                { submodelId: submodelId },
             );
             return response;
         }
-        this.logRepoSubmodelSearchInfo(
+        logResponseInfo(
+            this.logger ?? Logger,
             this.getSubmodelFromRepo.name,
-            submodelId,
-            repoUrl,
-            response.httpStatus,
-            response.httpText,
+            `Submodel repository search: ${client.getBaseUrl()}`,
+            response,
+            { submodelId: submodelId },
         );
         return Promise.reject(`Unable to fetch Submodel '${submodelId}' from '${repoUrl}'`);
     }
@@ -211,27 +211,21 @@ export class RepositorySearchService {
         if (!client) return noDefaultSubmodelRepository();
         const response = await client.getAttachmentFromSubmodelElement(submodelId, submodelElementPath);
         if (response.isSuccess) {
-            this.logRepoSubmodelSearchInfo(
+            logResponseInfo(
+                this.logger ?? Logger,
                 this.getAttachmentFromSubmodelElementFromDefaultRepo.name,
-                submodelId,
-                client.getBaseUrl(),
-                response.httpStatus,
-                response.httpText,
-                {
-                    submodelElementPath: submodelElementPath,
-                },
+                `Submodel repository search: ${client.getBaseUrl()}`,
+                response,
+                { submodelId: submodelId, submodelElementPath: submodelElementPath },
             );
             return response;
         }
-        this.logRepoSubmodelSearchInfo(
+        logResponseInfo(
+            this.logger ?? Logger,
             this.getAttachmentFromSubmodelElementFromDefaultRepo.name,
-            submodelId,
-            client.getBaseUrl(),
-            response.httpStatus,
-            response.httpText,
-            {
-                submodelElementPath: submodelElementPath,
-            },
+            `Submodel repository search: ${client.getBaseUrl()}`,
+            response,
+            { submodelId: submodelId, submodelElementPath: submodelElementPath },
         );
         return wrapErrorCode(
             ApiResultStatus.NOT_FOUND,
@@ -247,27 +241,21 @@ export class RepositorySearchService {
         const client = this.getSubmodelRepositoryClient(repoUrl);
         const response = await client.getAttachmentFromSubmodelElement(submodelId, submodelElementPath);
         if (response.isSuccess) {
-            this.logRepoSubmodelSearchInfo(
+            logResponseInfo(
+                this.logger ?? Logger,
                 this.getAttachmentFromSubmodelElementFromRepo.name,
-                submodelId,
-                client.getBaseUrl(),
-                response.httpStatus,
-                response.httpText,
-                {
-                    submodelElementPath: submodelElementPath,
-                },
+                `Submodel repository search: ${client.getBaseUrl()}`,
+                response,
+                { submodelId: submodelId, submodelElementPath: submodelElementPath },
             );
             return response;
         }
-        this.logRepoSubmodelSearchInfo(
+        logResponseInfo(
+            this.logger ?? Logger,
             this.getAttachmentFromSubmodelElementFromRepo.name,
-            submodelId,
-            client.getBaseUrl(),
-            response.httpStatus,
-            response.httpText,
-            {
-                submodelElementPath: submodelElementPath,
-            },
+            `Submodel repository search: ${client.getBaseUrl()}`,
+            response,
+            { submodelId: submodelId, submodelElementPath: submodelElementPath },
         );
         return Promise.reject(
             `Unable to fetch Attachment '${submodelElementPath}' in submodel '${submodelId}' from '${repoUrl}'`,
@@ -300,21 +288,21 @@ export class RepositorySearchService {
         if (!client) return noDefaultAasRepository();
         const response = await client.getSubmodelReferencesFromShell(aasId);
         if (response.isSuccess) {
-            this.logRepoAasSearchInfo(
+            logResponseInfo(
+                this.logger ?? Logger,
                 this.getSubmodelReferencesFromShellFromDefaultRepo.name,
-                aasId,
-                client.getBaseUrl(),
-                response.httpStatus,
-                response.httpText,
+                `Aas repository search: ${client.getBaseUrl()}`,
+                response,
+                { aasId: aasId },
             );
             return response;
         }
-        this.logRepoAasSearchInfo(
+        logResponseInfo(
+            this.logger ?? Logger,
             this.getSubmodelReferencesFromShellFromDefaultRepo.name,
-            aasId,
-            client.getBaseUrl(),
-            response.httpStatus,
-            response.httpText,
+            `Aas repository search: ${client.getBaseUrl()}`,
+            response,
+            { aasId: aasId },
         );
         return wrapErrorCode(
             ApiResultStatus.NOT_FOUND,
@@ -326,21 +314,21 @@ export class RepositorySearchService {
         const client = this.getAasRepositoryClient(repoUrl);
         const response = await client.getSubmodelReferencesFromShell(aasId);
         if (response.isSuccess) {
-            this.logRepoAasSearchInfo(
+            logResponseInfo(
+                this.logger ?? Logger,
                 this.getSubmodelReferencesFromShellFromRepo.name,
-                aasId,
-                client.getBaseUrl(),
-                response.httpStatus,
-                response.httpText,
+                `Aas repository search: ${client.getBaseUrl()}`,
+                response,
+                { aasId: aasId },
             );
             return response;
         }
-        this.logRepoAasSearchInfo(
+        logResponseInfo(
+            this.logger ?? Logger,
             this.getSubmodelReferencesFromShellFromRepo.name,
-            aasId,
-            client.getBaseUrl(),
-            response.httpStatus,
-            response.httpText,
+            `Aas repository search: ${client.getBaseUrl()}`,
+            response,
+            { aasId: aasId },
         );
         return Promise.reject(`Unable to fetch submodel references for AAS '${aasId}' from '${repoUrl}'`);
     }
@@ -366,21 +354,21 @@ export class RepositorySearchService {
         if (!client) return noDefaultAasRepository();
         const response = await client.getThumbnailFromShell(aasId);
         if (response.isSuccess) {
-            this.logRepoAasSearchInfo(
+            logResponseInfo(
+                this.logger ?? Logger,
                 this.getAasThumbnailFromDefaultRepo.name,
-                aasId,
-                client.getBaseUrl(),
-                response.httpStatus,
-                response.httpText,
+                `Aas repository search: ${client.getBaseUrl()}`,
+                response,
+                { aasId: aasId },
             );
             return response;
         }
-        this.logRepoAasSearchInfo(
+        logResponseInfo(
+            this.logger ?? Logger,
             this.getAasThumbnailFromDefaultRepo.name,
-            aasId,
-            client.getBaseUrl(),
-            response.httpStatus,
-            response.httpText,
+            `Aas repository search: ${client.getBaseUrl()}`,
+            response,
+            { aasId: aasId },
         );
         return wrapErrorCode(ApiResultStatus.NOT_FOUND, `Thumbnail for '${aasId}' not found in default repository`);
     }
@@ -389,31 +377,31 @@ export class RepositorySearchService {
         const client = this.getAasRepositoryClient(repoUrl);
         const response = await client.getThumbnailFromShell(aasId);
         if (!response.isSuccess) {
-            this.logRepoAasSearchInfo(
+            logResponseInfo(
+                this.logger ?? Logger,
                 this.getAasThumbnailFromRepo.name,
-                aasId,
-                client.getBaseUrl(),
-                response.httpStatus,
-                response.httpText,
+                `Aas repository search: ${client.getBaseUrl()}`,
+                response,
+                { aasId: aasId },
             );
             return Promise.reject(`Unable to fetch thumbnail for AAS '${aasId}' from '${repoUrl}'`);
         }
         if (response.result instanceof Blob && response.result.size === 0) {
-            this.logRepoAasSearchInfo(
+            logResponseInfo(
+                this.logger ?? Logger,
                 this.getAasThumbnailFromRepo.name,
-                aasId,
-                client.getBaseUrl(),
-                response.httpStatus,
-                response.httpText,
+                `Aas repository search: ${client.getBaseUrl()}`,
+                response,
+                { aasId: aasId },
             );
             return Promise.reject(`Empty thumbnail image in AAS '${aasId}' from '${repoUrl}'`);
         }
-        this.logRepoAasSearchInfo(
+        logResponseInfo(
+            this.logger ?? Logger,
             this.getAasThumbnailFromRepo.name,
-            aasId,
-            client.getBaseUrl(),
-            response.httpStatus,
-            response.httpText,
+            `Aas repository search: ${client.getBaseUrl()}`,
+            response,
+            { aasId: aasId },
         );
         return response;
     }
@@ -497,62 +485,21 @@ export class RepositorySearchService {
         const client = this.getAasRepositoryClient(repoUrl);
         const response = await client.getAssetAdministrationShellById(aasId);
         if (response.isSuccess) {
-            this.logRepoAasSearchInfo(
+            logResponseInfo(
+                this.logger ?? Logger,
                 this.getAasFromRepo.name,
-                aasId,
-                client.getBaseUrl(),
-                response.httpStatus,
-                response.httpText,
+                `Aas repository search: ${client.getBaseUrl()}`,
+                response,
+                { aasId: aasId },
             );
-            return response;
         }
-        this.logRepoAasSearchInfo(
+        logResponseInfo(
+            this.logger ?? Logger,
             this.getAasFromRepo.name,
-            aasId,
-            client.getBaseUrl(),
-            response.httpStatus,
-            response.httpText,
+            `Aas repository search: ${client.getBaseUrl()}`,
+            response,
+            { aasId: aasId },
         );
         return wrapErrorCode(ApiResultStatus.NOT_FOUND, `AAS '${aasId}' not found in repository '${repoUrl}'`);
-    }
-
-    private logRepoAasSearchInfo(
-        methodName: string,
-        aasId: string,
-        baseUrl: string,
-        httpStatus?: number,
-        httpText?: string,
-        optional?: object,
-    ) {
-        this.logger?.info(
-            {
-                methodName: methodName,
-                aasId: aasId,
-                ...optional,
-                httpStatus: httpStatus,
-                httpText: httpText,
-            },
-            `Aas repository search: ${baseUrl}`,
-        );
-    }
-
-    private logRepoSubmodelSearchInfo(
-        methodName: string,
-        submodelId: string,
-        baseUrl: string,
-        httpStatus?: number,
-        httpText?: string,
-        optional?: object,
-    ) {
-        this.logger?.info(
-            {
-                methodName: methodName,
-                submodelId: submodelId,
-                ...optional,
-                httpStatus: httpStatus,
-                httpText: httpText,
-            },
-            `Submodel repository search: ${baseUrl}`,
-        );
     }
 }

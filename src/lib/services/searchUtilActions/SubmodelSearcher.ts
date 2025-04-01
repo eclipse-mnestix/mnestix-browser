@@ -6,7 +6,7 @@ import { SubmodelRegistryServiceApi } from 'lib/api/submodel-registry-service/su
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { RepositorySearchService } from 'lib/services/repository-access/RepositorySearchService';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
-import Logger from 'lib/util/Logger';
+import Logger, { logResponseInfo } from 'lib/util/Logger';
 
 export class SubmodelSearcher {
     private constructor(
@@ -47,7 +47,12 @@ export class SubmodelSearcher {
         if (submodelFromAllRepos.isSuccess) {
             return wrapSuccess(submodelFromAllRepos.result.searchResult);
         }
-        this.logSubmodelSearch(submodelFromAllRepos, this.performSubmodelFullSearch.name);
+        logResponseInfo(
+            this.logger ?? Logger,
+            this.performSubmodelFullSearch.name,
+            'Submodel search',
+            submodelFromAllRepos,
+        );
         return wrapErrorCode<Submodel>(ApiResultStatus.NOT_FOUND, 'Submodel not found');
     }
 
@@ -57,11 +62,16 @@ export class SubmodelSearcher {
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'No default Submodel registry defined');
         const response = await this.getSubmodelRegistryClient(defaultUrl).getSubmodelDescriptorById(submodelId);
         if (response.isSuccess) {
-            this.logSubmodelSearch(response, this.getSubmodelDescriptorById.name);
+            logResponseInfo(this.logger ?? Logger, this.getSubmodelDescriptorById.name, 'Submodel search', response);
             return response;
         } else {
             if (response.errorCode === ApiResultStatus.NOT_FOUND) {
-                this.logSubmodelSearch(response, this.getSubmodelDescriptorById.name);
+                logResponseInfo(
+                    this.logger ?? Logger,
+                    this.getSubmodelDescriptorById.name,
+                    'Submodel search',
+                    response,
+                );
             }
             return wrapErrorCode<SubmodelDescriptor>(ApiResultStatus.NOT_FOUND, 'Submodel not found');
         }
@@ -70,11 +80,11 @@ export class SubmodelSearcher {
     async getSubmodelFromAllRepos(submodelId: string): Promise<ApiResponseWrapper<Submodel>> {
         const response = await this.multipleDataSource.getFirstSubmodelFromAllRepos(submodelId);
         if (response.isSuccess) {
-            this.logSubmodelSearch(response, this.getSubmodelFromAllRepos.name);
+            logResponseInfo(this.logger ?? Logger, this.getSubmodelFromAllRepos.name, 'Submodel search', response);
             return wrapSuccess(response.result.searchResult);
         }
         if (response.errorCode === ApiResultStatus.NOT_FOUND) {
-            this.logSubmodelSearch(response, this.getSubmodelFromAllRepos.name);
+            logResponseInfo(this.logger ?? Logger, this.getSubmodelFromAllRepos.name, 'Submodel search', response);
         }
         return wrapErrorCode<Submodel>(ApiResultStatus.NOT_FOUND, 'Submodel not found');
     }
@@ -82,24 +92,13 @@ export class SubmodelSearcher {
     async getSubmodelFromEndpoint(endpoint: string): Promise<ApiResponseWrapper<Submodel>> {
         const response = await this.getSubmodelRegistryClient('').getSubmodelFromEndpoint(endpoint);
         if (response.isSuccess) {
-            this.logSubmodelSearch(response, this.getSubmodelFromEndpoint.name);
+            logResponseInfo(this.logger ?? Logger, this.getSubmodelFromEndpoint.name, 'Submodel search', response);
             return response;
         }
         if (response.errorCode === ApiResultStatus.NOT_FOUND) {
-            this.logSubmodelSearch(response, this.getSubmodelFromEndpoint.name);
+            logResponseInfo(this.logger ?? Logger, this.getSubmodelFromEndpoint.name, 'Submodel search', response);
         }
-        this.logSubmodelSearch(response, this.getSubmodelFromEndpoint.name);
+        logResponseInfo(this.logger ?? Logger, this.getSubmodelFromEndpoint.name, 'Submodel search', response);
         return wrapErrorCode<Submodel>(ApiResultStatus.NOT_FOUND, `Submodel not found at endpoint '${endpoint}'`);
-    }
-
-    private logSubmodelSearch<T>(response: ApiResponseWrapper<T>, methodName: string): void {
-        this.logger?.info(
-            {
-                methodName: methodName,
-                httpStatus: response.httpStatus,
-                httpText: response.httpText,
-            },
-            'Submodel search',
-        );
     }
 }

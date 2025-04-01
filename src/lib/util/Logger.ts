@@ -1,6 +1,7 @@
 import pino from 'pino';
 import pretty from 'pino-pretty';
 import { v4 as uuidv4 } from 'uuid';
+import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -30,3 +31,29 @@ export const getCorrelationId = (headers: Headers) => {
     }
     return correlationId;
 };
+
+/**
+ * Logs an informational message with optional metadata and an API response.
+ *
+ * @param logger - The logger instance to use for logging.
+ * @param methodName - The name of the method where the log is being generated.
+ * @param message - The log message.
+ * @param response - An API response wrapper containing HTTP status and text.
+ * @param optional - Additional optional metadata to include in the log.
+ */
+export const logResponseInfo = <T>(
+    logger: typeof baseLogger,
+    methodName: string,
+    message: string,
+    response: ApiResponseWrapper<T>,
+    optional?: object,
+): void =>
+    logger.info(
+        {
+            methodName: methodName,
+            httpStatus: response?.httpStatus,
+            httpText: response?.httpText,
+            ...optional,
+        },
+        message,
+    );

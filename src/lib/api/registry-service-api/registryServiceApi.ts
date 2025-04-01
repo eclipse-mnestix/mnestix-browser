@@ -9,6 +9,7 @@ import { AssetAdministrationShell } from '@aas-core-works/aas-core3.0-typescript
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import path from 'node:path';
 import ServiceReachable from 'test-utils/TestUtils';
+import Logger, { logResponseInfo } from 'lib/util/Logger';
 
 export class RegistryServiceApi implements IRegistryServiceApi {
     constructor(
@@ -16,6 +17,7 @@ export class RegistryServiceApi implements IRegistryServiceApi {
         protected http: {
             fetch<T>(url: RequestInfo | URL, init?: RequestInit): Promise<ApiResponseWrapper<T>>;
         },
+        private readonly logger?: typeof Logger,
     ) {}
 
     static create(
@@ -23,8 +25,10 @@ export class RegistryServiceApi implements IRegistryServiceApi {
         mnestixFetch: {
             fetch<T>(url: RequestInfo, init?: RequestInit): Promise<ApiResponseWrapper<T>>;
         },
+        logger?: typeof Logger,
     ) {
-        return new RegistryServiceApi(baseUrl, mnestixFetch);
+        const registryLogger = logger?.child({ service: RegistryServiceApi.name });
+        return new RegistryServiceApi(baseUrl, mnestixFetch, registryLogger);
     }
 
     static createNull(
@@ -52,10 +56,28 @@ export class RegistryServiceApi implements IRegistryServiceApi {
 
         const url = new URL(path.posix.join(this.baseUrl, 'shell-descriptors', b64_aasId));
 
-        return this.http.fetch(url, {
+        const response = await this.http.fetch<AssetAdministrationShellDescriptor>(url, {
             method: 'GET',
             headers,
         });
+
+        if (!response.isSuccess) {
+            logResponseInfo(
+                this.logger ?? Logger,
+                this.getAssetAdministrationShellDescriptorById.name,
+                'Registry search failed',
+                response,
+                { message: response.message },
+            );
+            return response;
+        }
+        logResponseInfo(
+            this.logger ?? Logger,
+            this.getAssetAdministrationShellDescriptorById.name,
+            'Registry search successful',
+            response,
+        );
+        return response;
     }
 
     async postAssetAdministrationShellDescriptor(
@@ -98,8 +120,23 @@ export class RegistryServiceApi implements IRegistryServiceApi {
     async getAssetAdministrationShellFromEndpoint(
         endpoint: URL,
     ): Promise<ApiResponseWrapper<AssetAdministrationShell>> {
-        return this.http.fetch<AssetAdministrationShell>(endpoint.toString(), {
-            method: 'GET',
-        });
+        const response = await this.http.fetch<AssetAdministrationShell>(endpoint.toString(), { method: 'GET' });
+        if (!response.isSuccess) {
+            logResponseInfo(
+                this.logger ?? Logger,
+                this.getAssetAdministrationShellFromEndpoint.name,
+                'Registry search failed',
+                response,
+                { message: response.message },
+            );
+            return response;
+        }
+        logResponseInfo(
+            this.logger ?? Logger,
+            this.getAssetAdministrationShellFromEndpoint.name,
+            'Registry search successful',
+            response,
+        );
+        return response;
     }
 }
