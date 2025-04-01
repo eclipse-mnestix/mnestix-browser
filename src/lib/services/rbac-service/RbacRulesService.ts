@@ -63,7 +63,7 @@ export class RbacRulesService {
 
         const parsedRoles =
             secSM.submodelElements
-                ?.filter((e) => (e as SubmodelElementCollection).value)
+                ?.filter((e) => (e as SubmodelElementCollection | undefined)?.value)
                 .map((roleElement) => {
                     try {
                         return submodelToRule(roleElement);
