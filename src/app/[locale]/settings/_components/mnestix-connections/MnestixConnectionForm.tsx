@@ -1,13 +1,12 @@
 import { Box, Button, Divider, FormControl, IconButton, Skeleton, TextField, Typography } from '@mui/material';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
-import { Dispatch, Fragment, SetStateAction } from 'react';
+import { Dispatch, Fragment, SetStateAction, use } from 'react';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import { Control, Controller, FieldArrayWithId, useFieldArray, UseFormGetValues } from 'react-hook-form';
 import { ConnectionFormData } from 'app/[locale]/settings/_components/mnestix-connections/MnestixConnectionsCard';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { tooltipText } from 'lib/util/ToolTipText';
 import { ConnectionTypeEnum } from 'lib/services/database/ConnectionTypeEnum';
+import { useTranslations } from 'next-intl';
 
 const ConnectionTypeMap: Record<string, ConnectionTypeEnum> = {
     aasRepository: ConnectionTypeEnum.AAS_REPOSITORY,
@@ -45,7 +44,7 @@ export type MnestixConnectionsFormProps = {
 export function MnestixConnectionsForm(props: MnestixConnectionsFormProps) {
     const { connectionType, defaultUrl, getValues, isLoading, setIsEditMode, isEditMode } = props;
     const control = props.control as Control<ConnectionFormData, never>;
-    const intl = useIntl();
+    const t = useTranslations('pages.settings.connections');
 
     const dataConnectionName = getConnectionTypeName(connectionType);
     const dataConnectionType = ConnectionTypeMap[connectionType];
@@ -64,8 +63,7 @@ export function MnestixConnectionsForm(props: MnestixConnectionsFormProps) {
             <FormControl fullWidth variant="filled" key={field.id}>
                 <Box display="flex" flex={1} flexDirection="row" mb={2} alignItems="center">
                     <Typography variant="h4" mr={4} width="200px">
-                        <FormattedMessage {...messages.mnestix.connections[dataConnectionName].repositoryLabel} />{' '}
-                        {index + 1}
+                        {t(`${dataConnectionName}.repositoryLabel`)} {index + 1}
                     </Typography>
                     {isEditMode ? (
                         <Box display="flex" alignItems="center" flex={1}>
@@ -74,16 +72,12 @@ export function MnestixConnectionsForm(props: MnestixConnectionsFormProps) {
                                 control={control}
                                 defaultValue={field.url}
                                 rules={{
-                                    required: intl.formatMessage(messages.mnestix.connections.urlFieldRequired),
+                                    required: t('urlFieldRequired'),
                                 }}
                                 render={({ field, fieldState: { error } }) => (
                                     <TextField
                                         {...field}
-                                        label={
-                                            <FormattedMessage
-                                                {...messages.mnestix.connections[dataConnectionName].repositoryUrlLabel}
-                                            />
-                                        }
+                                        label={t(`${dataConnectionName}.repositoryLabelUrl`)}
                                         sx={{ flexGrow: 1, mr: 1 }}
                                         fullWidth={true}
                                         error={!!error}
@@ -109,11 +103,11 @@ export function MnestixConnectionsForm(props: MnestixConnectionsFormProps) {
         <Box sx={{ my: 2 }}>
             <Divider />
             <Typography variant="h3" sx={{ my: 2 }}>
-                <FormattedMessage {...messages.mnestix.connections[dataConnectionName].repositories} />
+                {t(`${dataConnectionName}.repositories`)}
             </Typography>
             <Box display="flex" flexDirection="row" mb={4} alignItems="center">
                 <Typography variant="h4" mr={4} width="200px">
-                    <FormattedMessage {...messages.mnestix.connections[dataConnectionName].repositoryDefaultLabel} />
+                {t(`${dataConnectionName}.repositoryDefaultLabel`)}
                 </Typography>
                 <Typography>{defaultUrl}</Typography>
             </Box>
@@ -136,7 +130,7 @@ export function MnestixConnectionsForm(props: MnestixConnectionsFormProps) {
                         append({ id: 'temp', type: dataConnectionType, url: '' });
                     }}
                 >
-                    <FormattedMessage {...messages.mnestix.connections.addButton} />
+                    {t('addButton')}
                 </Button>
             </Box>
         </Box>

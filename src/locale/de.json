@@ -36,7 +36,8 @@
       "deleted": "gelöscht",
       "noDataFound": "Keine Daten gefunden",
       "noDataFoundFor": "Es wurden keine Daten für \"{name}\" gefunden.",
-      "successfullyUpdated": "Erfolgreich aktualisiert"
+      "successfullyUpdated": "Erfolgreich aktualisiert",
+      "changesSavedSuccessfully": "Änderungen erfolgreich gespeichert."
     }
   },
   "components": {
@@ -281,8 +282,7 @@
       "multiplicity": "Multiplicity",
       "multiplicityDescription": "Parameter, mit dem Sie festlegen können, welche Elemente verpflichtend sind.",
       "displayName": "Anzeigename",
-      "defaultValue": "Vorgegebener Wert",
-      "changesSavedSuccessfully": "Änderungen erfolgreich gespeichert."
+      "defaultValue": "Vorgegebener Wert"
     },
     "transfer": {
       "aasRepository": "AAS Repository",

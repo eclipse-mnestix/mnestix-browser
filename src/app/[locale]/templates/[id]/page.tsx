@@ -293,7 +293,7 @@ export default function Page() {
     const handleSuccessfulSave = () => {
         notificationSpawner.spawn({
             severity: 'success',
-            message: t('pages.templates.changesSavedSuccessfully'),
+            message: t('common.messages.changesSavedSuccessfully'),
         });
         setChangesMade(false);
         setWasRecentlySaved(true);
