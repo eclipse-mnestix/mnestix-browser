@@ -77,7 +77,7 @@ export function MnestixConnectionsForm(props: MnestixConnectionsFormProps) {
                                 render={({ field, fieldState: { error } }) => (
                                     <TextField
                                         {...field}
-                                        label={t(`${dataConnectionName}.repositoryLabelUrl`)}
+                                        label={t(`${dataConnectionName}.repositoryUrlLabel`)}
                                         sx={{ flexGrow: 1, mr: 1 }}
                                         fullWidth={true}
                                         error={!!error}
