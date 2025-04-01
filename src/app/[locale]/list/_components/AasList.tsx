@@ -14,7 +14,7 @@ type AasListProps = {
 
 export default function AasList(props: AasListProps) {
     const { repositoryUrl, shells, selectedAasList, updateSelectedAasList, comparisonFeatureFlag } = props;
-    const t = useTranslations('aas-list');
+    const t = useTranslations('pages.aasList');
     const MAX_SELECTED_ITEMS = 3;
 
     const tableHeaders = [
@@ -42,7 +42,7 @@ export default function AasList(props: AasListProps) {
                         <TableRow>
                             {comparisonFeatureFlag && (
                                 <TableCell align="center" width="50px">
-                                    <Tooltip title={t('compareTooltip')} arrow>
+                                    <Tooltip title={t('compare')} arrow>
                                         <CompareArrowsIcon
                                             color="secondary"
                                             sx={{

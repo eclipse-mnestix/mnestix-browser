@@ -28,7 +28,6 @@
       "language": "Language",
       "manufacturer": "Manufacturer: {manufacturerName}",
       "notAvailable": "-",
-      "page": "Page",
       "redirectsTo": "Redirects to",
       "semanticId": "semanticId",
       "staticPrefix": "static prefix",
@@ -87,16 +86,6 @@
       "isPartOf": "is part of",
       "sameAs": "same as",
       "semanticId": "Semantic ID"
-    }
-  },
-  "features": {
-    "assetIdDocumentation": {
-      "dnsHeading": "Access via DNS",
-      "dnsText": "Especially for the brownfield approach and the distributor of a product, it makes sense to additionally set up DNS access through the asset ID and thus enable data retrieval from conventional browser applications.",
-      "exampleHeading": "Example Case",
-      "industry40Heading": "Industry 4.0 context",
-      "industry40Text": "Products have a globally unique ID which can be assigned to one or more asset administration shells. In the Industry 4.0 context, the connection between asset and AAS is established via the I4.0 infrastructure.",
-      "title": "How to connect your Asset ID with your AAS Repository"
     },
     "carbon": {
       "co2EComparison": "Comparison",
@@ -110,24 +99,6 @@
         "months": "Months",
         "years": "Years"
       }
-    },
-    "compare": {
-      "addAnother": "Add another AAS",
-      "addButton": "Add another AAS",
-      "addFirstAasButton": "Add AAS",
-      "collection": {
-        "hide": "Hide",
-        "show": "{idShort}"
-      },
-      "compareButton": "Compare",
-      "errors": {
-        "aasAddError": "AAS could not be added.",
-        "aasAlreadyAdded": "AAS cannot be added more than once.",
-        "moreAasFound": "More than one AAS found in the discovery service, please provide the AAS ID instead."
-      },
-      "goToCompare": "Compare",
-      "maxElementsWarning": "Cannot compare more than 3 elements",
-      "title": "Compare AAS"
     },
     "lifecycle": {
       "stages": {
@@ -154,34 +125,6 @@
         "C4": "C4 - landfill",
         "D": "D - reuse"
       }
-    },
-    "templates": {
-      "chooseAStartingPoint": "Choose a starting point",
-      "copyTemplateId": "Copy Template ID",
-      "custom": "Custom",
-      "deleteTemplateQuestion": "Delete template \"{name}\" irretrievably?",
-      "emptyCustom": "Empty (Custom)",
-      "emptyCustomDescription": "Is not based upon a standardized template",
-      "noTemplatesFound": "No templates found",
-      "templatesUseExplanation": "Templates allow you to create a reusable submodel structure, adjusted to your requirements."
-    },
-    "transfer": {
-      "aasRepository": "AAS Repository",
-      "chooseRepository": "Choose AAS Repository",
-      "chooseSubmodelRepository": "Choose Submodel Repository (optional)",
-      "errorToast": "Transfer of AAS not successful",
-      "partiallyFailedToast": "Failed to transfer element",
-      "repositoryApiKey": "AAS Repository ApiKey",
-      "repositoryLabel": "List of AAS Repositories",
-      "repositoryRequired": "AAS Repository is required",
-      "submodelRepository": "Submodel Repository",
-      "submodelRepositoryApiKey": "Submodel Repository ApiKey",
-      "submodelRepositoryLabel": "List of Submodel Repositories",
-      "subtitle": "To import this AAS to another repository, fill out the following steps.",
-      "successfullToast": "Transfer of AAS successful",
-      "title": "Import",
-      "useAasRepository": "Use AAS Repository",
-      "warningToast": "AAS was only partially transferred."
     }
   },
   "navigation": {
@@ -202,21 +145,26 @@
     }
   },
   "pages": {
+    "aasViewer":{
+      "assetAdministrationShell": "Asset Administration Shell",
+      "asset": "Asset"
+    },
     "aasList": {
       "header": "AAS List",
       "repositoryDropdown": "AAS Repository",
       "selectRepository": "Please select a repository",
       "subHeader": "You will find all AASs from your repository here. You can select an AAS repository to switch between data sources.",
-      "tableHeaders": {
-        "aasIdHeading": "AAS ID",
-        "assetIdHeading": "Asset ID",
-        "manufacturerHeading": "Manufacturer Name",
-        "picture": "Picture",
-        "productClassHeading": "Product Class",
-        "productDesignationHeading": "Manufacturer Product Designation"
-      },
+      "aasIdHeading": "AAS ID",
+      "assetIdHeading": "Asset ID",
+      "manufacturerHeading": "Manufacturer Name",
+      "picture": "Picture",
+      "productClassHeading": "Product Class",
+      "productDesignationHeading": "Manufacturer Product Designation",
       "titleComparisonAddButton": "Add AAS to comparison",
-      "titleViewAASButton": "View AAS"
+      "titleViewAASButton": "View AAS",
+      "maxElementsWarning": "Cannot compare more than 3 elements",
+      "page": "Page",
+      "compare": "Compare"
     },
     "dashboard": {
       "aasOrAssetId": "AAS ID or Asset ID",
@@ -294,11 +242,63 @@
       },
       "title": "Submodels",
       "unknownModelType": "Unknown ModelType: {type}"
+    },
+    "assetIdDocumentation": {
+      "dnsHeading": "Access via DNS",
+      "dnsText": "Especially for the brownfield approach and the distributor of a product, it makes sense to additionally set up DNS access through the asset ID and thus enable data retrieval from conventional browser applications.",
+      "exampleHeading": "Example Case",
+      "industry40Heading": "Industry 4.0 context",
+      "industry40Text": "Products have a globally unique ID which can be assigned to one or more asset administration shells. In the Industry 4.0 context, the connection between asset and AAS is established via the I4.0 infrastructure.",
+      "title": "How to connect your Asset ID with your AAS Repository"
+    },
+    "compare": {
+      "addAnother": "Add another AAS",
+      "addButton": "Add another AAS",
+      "addFirstAasButton": "Add AAS",
+      "collection": {
+        "hide": "Hide",
+        "show": "{idShort}"
+      },
+      "compareButton": "Compare",
+      "errors": {
+        "aasAddError": "AAS could not be added.",
+        "aasAlreadyAdded": "AAS cannot be added more than once.",
+        "moreAasFound": "More than one AAS found in the discovery service, please provide the AAS ID instead."
+      },
+      "title": "Compare AAS"
+    },
+    "templates": {
+      "chooseAStartingPoint": "Choose a starting point",
+      "copyTemplateId": "Copy Template ID",
+      "custom": "Custom",
+      "deleteTemplateQuestion": "Delete template \"{name}\" irretrievably?",
+      "emptyCustom": "Empty (Custom)",
+      "emptyCustomDescription": "Is not based upon a standardized template",
+      "noTemplatesFound": "No templates found",
+      "templatesUseExplanation": "Templates allow you to create a reusable submodel structure, adjusted to your requirements."
+    },
+    "transfer": {
+      "aasRepository": "AAS Repository",
+      "chooseRepository": "Choose AAS Repository",
+      "chooseSubmodelRepository": "Choose Submodel Repository (optional)",
+      "errorToast": "Transfer of AAS not successful",
+      "partiallyFailedToast": "Failed to transfer element",
+      "repositoryApiKey": "AAS Repository ApiKey",
+      "repositoryLabel": "List of AAS Repositories",
+      "repositoryRequired": "AAS Repository is required",
+      "submodelRepository": "Submodel Repository",
+      "submodelRepositoryApiKey": "Submodel Repository ApiKey",
+      "submodelRepositoryLabel": "List of Submodel Repositories",
+      "subtitle": "To import this AAS to another repository, fill out the following steps.",
+      "successfullToast": "Transfer of AAS successful",
+      "title": "Import",
+      "useAasRepository": "Use AAS Repository",
+      "warningToast": "AAS was only partially transferred."
     }
   },
   "validation": {
     "authentication": {
-      "authentication-needed": "Authentication needed",
+      "authenticationNeeded": "Authentication needed",
       "contactAdmin": "You cannot visit this page. Please contact your administrator."
     },
     "errors": {
@@ -308,20 +308,18 @@
         "title": "Unauthorized access"
       },
       "unexpectedError": "Unexpected error",
-      "urlNotFound": "No AAS with the given ID."
-    },
-    "qr-scanner": {
-      "errors": {
-        "default-callback-error-msg": "Could not open the QR code!",
-        "error-on-qr-scanner-open": "Could not open the QR scanner!"
-      }
-    },
-    "validation": {
+      "urlNotFound": "No AAS with the given ID.",
       "invalidDate": "Has to be a valid date in format \"yyyy-mm-dd\"",
       "invalidIri": "Has to be a valid IRI, e.g. https://example.com/",
       "invalidIriPart": "Has to work as part of an IRI (no \"/\", spaces or special characters)",
       "invalidLong": "Has to be a valid long",
       "influxError": "There was a problem retrieving the time series data."
+    },
+    "qrScanner": {
+      "errors": {
+        "defaultCallbackErrorMsg": "Could not open the QR code!",
+        "errorOnQrScannerOpen": "Could not open the QR scanner!"
+      }
     }
   }
 }

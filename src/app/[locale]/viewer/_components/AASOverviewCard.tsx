@@ -11,7 +11,6 @@ import {
 import React, { useState } from 'react';
 import { DataRow } from 'components/basics/DataRow';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { messages } from 'lib/i18n/localization';
 import { AssetAdministrationShell, SpecificAssetId } from '@aas-core-works/aas-core3.0-typescript/types';
 import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
@@ -25,6 +24,7 @@ import { useAasState } from 'components/contexts/CurrentAasContext';
 import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
 import { getThumbnailFromShell } from 'lib/services/repository-access/repositorySearchActions';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { useTranslations } from 'next-intl';
 
 type AASOverviewCardProps = {
     readonly aas: AssetAdministrationShell | null;
@@ -56,12 +56,12 @@ function MobileAccordion(props: MobileAccordionProps) {
 }
 
 export function AASOverviewCard(props: AASOverviewCardProps) {
-    const intl = useIntl();
     const isAccordion = props.isAccordion;
     const specificAssetIds = props.aas?.assetInformation?.specificAssetIds as SpecificAssetId[];
     const navigate = useRouter();
     const [productImageUrl, setProductImageUrl] = useState<string>('');
     const [, setAasState] = useAasState();
+    const t = useTranslations('pages.aasViewer');
 
     async function createAndSetUrlForImageFile() {
         if (!props.aas) return;
@@ -125,7 +125,7 @@ export function AASOverviewCard(props: AASOverviewCardProps) {
                         <ShellIcon fontSize="small" color="primary" />
                     </IconCircleWrapper>
                     <Typography sx={titleStyle} variant="h3">
-                        <FormattedMessage {...messages.mnestix.assetAdministrationShell} />
+                        {t('assetAdministrationShell')}
                     </Typography>
                 </Box>
             )}
@@ -150,7 +150,7 @@ export function AASOverviewCard(props: AASOverviewCardProps) {
                         <AssetIcon fontSize="small" color="primary" />
                     </IconCircleWrapper>
                     <Typography sx={titleStyle} variant="h3">
-                        <FormattedMessage {...messages.mnestix.asset} />
+                        {t('asset')}
                     </Typography>
                 </Box>
             )}
@@ -214,12 +214,12 @@ export function AASOverviewCard(props: AASOverviewCardProps) {
                             <>
                                 <MobileAccordion
                                     content={aasInfo}
-                                    title={intl.formatMessage(messages.mnestix.assetAdministrationShell)}
+                                    title={t('assetAdministrationShell')}
                                     icon={<ShellIcon fontSize="small" color="primary" />}
                                 />
                                 <MobileAccordion
                                     content={assetInfo}
-                                    title={intl.formatMessage(messages.mnestix.asset)}
+                                    title={t('asset')}
                                     icon={<AssetIcon fontSize="small" color="primary" />}
                                 />
                             </>

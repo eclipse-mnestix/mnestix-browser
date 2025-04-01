@@ -28,7 +28,6 @@
       "language": "Sprache",
       "manufacturer": "Hersteller: {manufacturerName}",
       "notAvailable": "-",
-      "page": "Seite",
       "redirectsTo": "Leitet weiter auf",
       "semanticId": "semanticId",
       "staticPrefix": "statisches Präfix",
@@ -87,16 +86,6 @@
       "isPartOf": "ist Teil von",
       "sameAs": "gleich wie",
       "semanticId": "Semantische ID"
-    }
-  },
-  "features": {
-    "assetIdDocumentation": {
-      "dnsHeading": "Zugriff via DNS",
-      "dnsText": "Besonders beim \"Brownfield\"-Ansatz und als Vertreiber eines Produkts ist es sinnvoll, zusätzlich einen DNS-Zugang über die Asset ID einzurichten, um so einen Datenzugriff über einen herkömmlichen Browser zu ermöglichen.",
-      "exampleHeading": "Beispiel",
-      "industry40Heading": "Industrie 4.0 Kontext",
-      "industry40Text": "Produkte haben eine global einzigartige ID, welche einer oder mehreren Verwaltungsschale(n) zugewiesen werden kann. Im Industrie 4.0 Kontext wird die Verbindung zwischen Asset und Verwaltungsschale über die I4.0 Infrastruktur hergestellt.",
-      "title": "Wie Sie Ihre Asset ID mit Ihrem Repository verbinden"
     },
     "carbon": {
       "co2EComparison": "Vergleich",
@@ -110,24 +99,6 @@
         "months": "Monate",
         "years": "Jahre"
       }
-    },
-    "compare": {
-      "addAnother": "Eine weitere Verwaltungsschale hinzufügen",
-      "addButton": "Eine weitere Verwaltungsschale hinzufügen",
-      "addFirstAasButton": "Eine Verwaltungsschale hinzufügen",
-      "collection": {
-        "hide": "Verbergen",
-        "show": "{idShort}"
-      },
-      "compareButton": "Vergleichen",
-      "errors": {
-        "aasAddError": "Verwaltungsschale konnte nicht hinzugefügt werden.",
-        "aasAlreadyAdded": "Verwaltungsschale kann nicht mehrmals hinzugefügt werden",
-        "moreAasFound": "Mehr als eine Verwaltungsschale im Discovery Service gefunden, bitte geben Sie die AAS-ID an."
-      },
-      "goToCompare": "Zum Vergleich",
-      "maxElementsWarning": "Maximal 3 Elemente selektierbar",
-      "title": "Verwaltungsschalen vergleichen"
     },
     "lifecycle": {
       "stages": {
@@ -154,34 +125,6 @@
         "C4": "C4 - Deponie",
         "D": "D - Wiederverwendung"
       }
-    },
-    "templates": {
-      "chooseAStartingPoint": "Wählen Sie einen Ausgangspunkt",
-      "copyTemplateId": "Vorlagen-ID kopieren",
-      "custom": "Individuell",
-      "deleteTemplateQuestion": "Vorlage \"{name}\" unwiderruflich löschen?",
-      "emptyCustom": "Leer (Individuell)",
-      "emptyCustomDescription": "Basiert auf keiner standardisierten Vorlage",
-      "noTemplatesFound": "Keine Vorlagen gefunden",
-      "templatesUseExplanation": "Vorlagen erlauben es Ihnen, eine wiederverwendbare Teilmodell-Struktur zu definieren, angepasst auf Ihre Bedürfnisse."
-    },
-    "transfer": {
-      "aasRepository": "AAS Repository",
-      "chooseRepository": "AAS Repository auswählen",
-      "chooseSubmodelRepository": "Submodel Repository auswählen (optional)",
-      "errorToast": "Transfer der AAS nicht erfolgreich",
-      "partiallyFailedToast": "Teil des Transfers fehlgeschlagen",
-      "repositoryApiKey": "AAS Repository ApiKey",
-      "repositoryLabel": "Liste der AAS Repositories",
-      "repositoryRequired": "AAS Repository wird benötigt",
-      "submodelRepository": "Submodel Repository",
-      "submodelRepositoryApiKey": "Submodel Repository ApiKey",
-      "submodelRepositoryLabel": "Liste der Submodel Repositories",
-      "subtitle": "Füllen sie die folgenden Schritte aus, um eine Verwaltungsschale in ein anderes Repository zu importieren",
-      "successfullToast": "Transfer der AAS erfolgreich",
-      "title": "Import",
-      "useAasRepository": "AAS Repository verwenden",
-      "warningToast": "Transfer der AAS nur teilweise erfolgreich."
     }
   },
   "navigation": {
@@ -202,21 +145,26 @@
     }
   },
   "pages": {
+    "aasViewer":{
+      "assetAdministrationShell": "Verwaltungsschale",
+      "asset": "Asset"
+    },
     "aasList": {
       "header": "AAS Liste",
       "repositoryDropdown": "AAS Repository",
       "selectRepository": "Bitte wählen Sie ein Repository aus",
       "subHeader": "Hier finden Sie alle AAS aus Ihrem Repository. Sie können ein AAS-Repository auswählen, um zwischen den Datenquellen zu wechseln.",
-      "tableHeaders": {
-        "aasIdHeading": "AAS ID",
-        "assetIdHeading": "Asset ID",
-        "manufacturerHeading": "Hersteller Name",
-        "picture": "Bild",
-        "productClassHeading": "Produktklasse",
-        "productDesignationHeading": "Hersteller Produktbezeichnung"
-      },
+      "aasIdHeading": "AAS ID",
+      "assetIdHeading": "Asset ID",
+      "manufacturerHeading": "Hersteller Name",
+      "picture": "Bild",
+      "productClassHeading": "Produktklasse",
+      "productDesignationHeading": "Hersteller Produktbezeichnung",
       "titleComparisonAddButton": "Füge VWS zum Vergleich hinzu",
-      "titleViewAASButton": "VWS anzeigen"
+      "titleViewAASButton": "VWS anzeigen",
+      "maxElementsWarning": "Maximal 3 Elemente selektierbar",
+      "page": "Seite",
+      "compare": "Vergleichen"
     },
     "dashboard": {
       "aasOrAssetId": "AAS ID oder Asset ID",
@@ -294,11 +242,63 @@
       },
       "title": "Teilmodelle",
       "unknownModelType": "Unbekannter ModelType: {type}"
+    },
+    "assetIdDocumentation": {
+      "dnsHeading": "Zugriff via DNS",
+      "dnsText": "Besonders beim \"Brownfield\"-Ansatz und als Vertreiber eines Produkts ist es sinnvoll, zusätzlich einen DNS-Zugang über die Asset ID einzurichten, um so einen Datenzugriff über einen herkömmlichen Browser zu ermöglichen.",
+      "exampleHeading": "Beispiel",
+      "industry40Heading": "Industrie 4.0 Kontext",
+      "industry40Text": "Produkte haben eine global einzigartige ID, welche einer oder mehreren Verwaltungsschale(n) zugewiesen werden kann. Im Industrie 4.0 Kontext wird die Verbindung zwischen Asset und Verwaltungsschale über die I4.0 Infrastruktur hergestellt.",
+      "title": "Wie Sie Ihre Asset ID mit Ihrem Repository verbinden"
+    },
+    "compare": {
+      "addAnother": "Eine weitere Verwaltungsschale hinzufügen",
+      "addButton": "Eine weitere Verwaltungsschale hinzufügen",
+      "addFirstAasButton": "Eine Verwaltungsschale hinzufügen",
+      "collection": {
+        "hide": "Verbergen",
+        "show": "{idShort}"
+      },
+      "compareButton": "Vergleichen",
+      "errors": {
+        "aasAddError": "Verwaltungsschale konnte nicht hinzugefügt werden.",
+        "aasAlreadyAdded": "Verwaltungsschale kann nicht mehrmals hinzugefügt werden",
+        "moreAasFound": "Mehr als eine Verwaltungsschale im Discovery Service gefunden, bitte geben Sie die AAS-ID an."
+      },
+      "title": "Verwaltungsschalen vergleichen"
+    },
+    "templates": {
+      "chooseAStartingPoint": "Wählen Sie einen Ausgangspunkt",
+      "copyTemplateId": "Vorlagen-ID kopieren",
+      "custom": "Individuell",
+      "deleteTemplateQuestion": "Vorlage \"{name}\" unwiderruflich löschen?",
+      "emptyCustom": "Leer (Individuell)",
+      "emptyCustomDescription": "Basiert auf keiner standardisierten Vorlage",
+      "noTemplatesFound": "Keine Vorlagen gefunden",
+      "templatesUseExplanation": "Vorlagen erlauben es Ihnen, eine wiederverwendbare Teilmodell-Struktur zu definieren, angepasst auf Ihre Bedürfnisse."
+    },
+    "transfer": {
+      "aasRepository": "AAS Repository",
+      "chooseRepository": "AAS Repository auswählen",
+      "chooseSubmodelRepository": "Submodel Repository auswählen (optional)",
+      "errorToast": "Transfer der AAS nicht erfolgreich",
+      "partiallyFailedToast": "Teil des Transfers fehlgeschlagen",
+      "repositoryApiKey": "AAS Repository ApiKey",
+      "repositoryLabel": "Liste der AAS Repositories",
+      "repositoryRequired": "AAS Repository wird benötigt",
+      "submodelRepository": "Submodel Repository",
+      "submodelRepositoryApiKey": "Submodel Repository ApiKey",
+      "submodelRepositoryLabel": "Liste der Submodel Repositories",
+      "subtitle": "Füllen sie die folgenden Schritte aus, um eine Verwaltungsschale in ein anderes Repository zu importieren",
+      "successfullToast": "Transfer der AAS erfolgreich",
+      "title": "Import",
+      "useAasRepository": "AAS Repository verwenden",
+      "warningToast": "Transfer der AAS nur teilweise erfolgreich."
     }
   },
   "validation": {
     "authentication": {
-      "authentication-needed": "Authentifizierung erforderlich",
+      "authenticationNeeded": "Authentifizierung erforderlich",
       "contactAdmin": "Sie können diese Seite nicht besuchen. Bitte wenden Sie sich an Ihren Administrator."
     },
     "errors": {
@@ -308,20 +308,18 @@
         "title": "Unautorisierter Zugriff"
       },
       "unexpectedError": "Unerwarteter Fehler",
-      "urlNotFound": "Keine Verwaltungsschale unter dieser ID."
+      "urlNotFound": "Keine Verwaltungsschale unter dieser ID.",
+      "invalidDate": "Muss ein gültiges Datum sein, im Format \"yyyy-mm-dd\"",
+      "invalidIri": "Muss eine valide IRI sein. Z.B. https://example.com/",
+      "invalidIriPart": "Muss als Teil einer IRI funktionieren können (kein \"/\", Leer- und Sonderzeichen)",
+      "invalidLong": "Muss eine valide Zahl sein",
+      "influxError": "Beim Abrufen der Daten ist ein Fehler aufgetreten."
     },
     "qrScanner": {
       "errors": {
         "defaultCallbackErrorMsg": "QR Code konnte nicht geöffnet werden!",
         "errorOnQrScannerOpen": "QR Scanner konnte nicht geöffnet werden!"
       }
-    },
-    "validation": {
-      "invalidDate": "Muss ein gültiges Datum sein, im Format \"yyyy-mm-dd\"",
-      "invalidIri": "Muss eine valide IRI sein. Z.B. https://example.com/",
-      "invalidIriPart": "Muss als Teil einer IRI funktionieren können (kein \"/\", Leer- und Sonderzeichen)",
-      "invalidLong": "Muss eine valide Zahl sein",
-      "influxError": "Beim Abrufen der Daten ist ein Fehler aufgetreten."
     }
   }
 }

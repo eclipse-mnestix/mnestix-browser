@@ -11,7 +11,7 @@ type CompareAasListBarType = {
 
 export const AasListComparisonHeader = (props: CompareAasListBarType) => {
     const { selectedAasList, updateSelectedAasList } = props;
-    const t = useTranslations('aas-list');
+    const t = useTranslations('pages.aasList');
 
     const navigate = useRouter();
     const navigateToCompare = () => {
@@ -39,7 +39,7 @@ export const AasListComparisonHeader = (props: CompareAasListBarType) => {
                     disabled={!selectedAasList || selectedAasList.length < 1}
                     data-testid="compare-button"
                 >
-                    {t('goToCompare')}
+                    {t('compare')}
                 </Button>
             </Box>
         </>
