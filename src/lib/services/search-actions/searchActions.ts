@@ -24,6 +24,16 @@ export async function getAasFromRepository(
     aasId: string,
     repositoryUrl: string,
 ): Promise<ApiResponseWrapper<AssetAdministrationShell>> {
+    const correlationId = getCorrelationId(await headers());
+    const logger = createLogger(correlationId);
+    logger.info(
+        {
+            action: getAasFromRepository.name,
+            requestedId: aasId,
+            repositoryUrl: repositoryUrl,
+        },
+        'Requested AAS/AssetId',
+    );
     const api = AssetAdministrationShellRepositoryApi.create(repositoryUrl, mnestixFetch());
     return api.getAssetAdministrationShellById(aasId);
 }
@@ -31,6 +41,7 @@ export async function getAasFromRepository(
 export async function performRegistryAasSearch(searchInput: string): Promise<ApiResponseWrapper<AasSearchResult>> {
     const correlationId = getCorrelationId(await headers());
     const logger = createLogger(correlationId);
+    logger.info({ action: performRegistryAasSearch.name, requestedId: searchInput }, 'Requested AAS');
     const searcher = AasSearcher.create(logger);
     return searcher.performRegistrySearch(searchInput);
 }
@@ -38,11 +49,15 @@ export async function performRegistryAasSearch(searchInput: string): Promise<Api
 export async function performDiscoveryAasSearch(searchInput: string): Promise<ApiResponseWrapper<string[]>> {
     const correlationId = getCorrelationId(await headers());
     const logger = createLogger(correlationId);
+    logger.info({ action: performDiscoveryAasSearch.name, requestedId: searchInput }, 'Requested AssetId');
     const searcher = AasSearcher.create(logger);
     return searcher.performAasDiscoverySearch(searchInput);
 }
 
 export async function getSubmodelFromSubmodelDescriptor(url: string): Promise<ApiResponseWrapper<Submodel>> {
+    const correlationId = getCorrelationId(await headers());
+    const logger = createLogger(correlationId);
+    logger.info({ action: getSubmodelFromSubmodelDescriptor.name, submodelDescriptor: url }, 'Requested Submodel');
     const localFetch = mnestixFetch();
     return localFetch.fetch<Submodel>(url, {
         method: 'GET',
