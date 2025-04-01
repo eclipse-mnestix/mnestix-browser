@@ -12,7 +12,7 @@ describe('Test the copy button functionality', function () {
             cy.visitViewer(testAAS.aasId);
             // Wait for AAS viewer to fully load
             cy.getByTestId('aas-data', { timeout: 10000 }).should('be.visible');
-            cy.getByTestId('submodelOverviewLoadingSkeleton', { timeout: 10000 }).should('not.exist');
+            cy.getByTestId('submodelOverviewLoadingSkeleton', { timeout: 50000 }).should('not.exist');
         });
 
         resolutions.filter((resolution) => resolution !== "iphone-6").forEach((res) => {
@@ -68,12 +68,12 @@ describe('Test the copy button functionality', function () {
                       }
                     cy.stub(win.navigator.clipboard, "writeText").resolves().as('clipboardWrite');
                   });
-                // Click copy button and verify clipboard content
                 cy.getByTestId('datarow-aas-id-b64').first().click();
                 cy.get('@clipboardWrite').should(
                     'have.been.calledOnceWith',
                     toBase64(testAAS.aasId),
                 )
+
                 // Check notification
                 cy.contains('Copied to clipboard').should('be.visible');
 

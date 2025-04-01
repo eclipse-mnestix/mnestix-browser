@@ -24,20 +24,20 @@ export function DataRow(props: DataRowProps) {
     const renderCopyButtons = () => {
         if (!props.value || isMobile) return null;
         return (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <CopyButton 
-                value={props.value} 
-                isVisible={isHovered}
-                data-testid={props.testId || "copy-datarow-value"}
-            />
-            {props.withBase64 && (
+            <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
                 <CopyButton 
-                value={props.value}
-                isVisible={isHovered}
-                withBase64={true}
-                data-testid={props.testId + "-b64" || "copy-datarow-value-secondary"}
+                    value={props.value} 
+                    isVisible={isHovered}
+                    data-testid={props.testId || "copy-datarow-value"}
                 />
-            )}
+                {props.withBase64 && (
+                    <CopyButton 
+                    value={props.value}
+                    isVisible={isHovered}
+                    withBase64={true}
+                    data-testid={props.testId + "-b64" || "copy-datarow-value-secondary"}
+                    />
+                )}
             </Box>
         );
     };
