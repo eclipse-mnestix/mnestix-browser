@@ -3,7 +3,7 @@ import AuthenticationLock from 'assets/authentication_lock.svg';
 import { useTranslations } from 'next-intl';
 
 export function NotAllowedPrompt() {
-    const t = useTranslations('authentication');
+    const t = useTranslations('validation.authentication');
     return (
         <Box
             sx={{

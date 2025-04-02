@@ -13,7 +13,7 @@ import { useTranslations } from 'next-intl';
 import { useIntl } from 'react-intl';
 
 export function InternalTimeSeries(props: { submodelElement: SubmodelElementCollection }) {
-    const t = useTranslations('validations.errors');
+    const t = useTranslations('validation.errors');
     const intl = useIntl();
     const [data, setData] = useState<TimeSeriesDataSet>({ names: [], points: [] });
     const [error, setError] = useState<boolean>(false);
