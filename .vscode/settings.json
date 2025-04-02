@@ -3,10 +3,5 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "eslint.workingDirectories": ["src"],
-    "chat.agent.enabled": true,
-    "github.copilot.advanced": {
-        "instruction": {
-            "defaultFile": "copilot-instructions.md"
-        }
-    }
+    "github.copilot.chat.codeGeneration.useInstructionFiles": true
 }
