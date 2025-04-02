@@ -34,7 +34,7 @@ import { useTranslations } from 'next-intl';
 export default function Page() {
     const navigate = useRouter();
     const searchParams = useParams<{ base64AasId: string }>();
-    const base64AasId = searchParams.base64AasId;
+    const base64AasId = decodeURIComponent(searchParams.base64AasId).replace(/=+$|[%3D]+$/, '');
     const aasIdDecoded = safeBase64Decode(base64AasId);
     const [isLoadingAas, setIsLoadingAas] = useState(false);
     const isMobile = useIsMobile();
