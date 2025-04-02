@@ -21,6 +21,8 @@
     "labels": {
       "aasId": "AAS ID",
       "assetId": "Asset ID",
+      "copied": "In Zwischenablage kopiert",
+      "copy": "Kopieren",
       "documentDetails": "Dokumentendetails",
       "dynamicPart": "dynamischer Teil",
       "endResult": "Endergebnis",

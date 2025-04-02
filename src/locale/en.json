@@ -21,6 +21,8 @@
     "labels": {
       "aasId": "AAS ID",
       "assetId": "Asset ID",
+      "copied": "Copied to clipboard",
+      "copy": "Copy",
       "documentDetails": "Document details",
       "dynamicPart": "dynamic part",
       "endResult": "End result",
