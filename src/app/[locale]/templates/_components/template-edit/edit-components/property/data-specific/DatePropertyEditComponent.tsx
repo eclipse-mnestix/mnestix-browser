@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DesktopDatePicker, MobileDatePicker, DateValidationError } from '@mui/x-date-pickers';
+import { DateValidationError, DesktopDatePicker, MobileDatePicker } from '@mui/x-date-pickers';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { parse } from 'date-fns';
 import { useTranslations } from 'next-intl';
@@ -58,9 +58,7 @@ export function DatePropertyEditComponent(props: DatePropertyEditComponentProps)
                     onError={onInvalidInput}
                     slotProps={{
                         textField: {
-                            helperText: !isValid && (
-                                t('validation.errorMessages.invalidDate')
-                            ),
+                            helperText: !isValid && t('validation.errors.invalidDate'),
                         },
                     }}
                 />
@@ -72,9 +70,7 @@ export function DatePropertyEditComponent(props: DatePropertyEditComponentProps)
                     onError={onInvalidInput}
                     slotProps={{
                         textField: {
-                            helperText: !isValid && (
-                                t('validation.errorMessages.invalidDate')
-                            ),
+                            helperText: !isValid && t('validation.errors.invalidDate'),
                             fullWidth: true,
                         },
                     }}

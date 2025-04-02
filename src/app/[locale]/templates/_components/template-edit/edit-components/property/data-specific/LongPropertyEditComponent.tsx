@@ -32,7 +32,7 @@ export function LongPropertyEditComponent(props: LongPropertyEditComponentProps)
             onChange={onValueChange}
             fullWidth
             error={!isValidInput}
-            helperText={!isValidInput && t('validation.errorMessages.invalidLong')}
+            helperText={!isValidInput && t('validation.errors.invalidLong')}
         />
     );
 }
