@@ -22,7 +22,7 @@ export const DiscoveryListTableRow = (props: DiscoveryListTableRowProps) => {
     const [, setAas] = useAasState();
     const [, setAasOriginUrl] = useAasOriginSourceState();
     const navigate = useRouter();
-    const t = useTranslations('pages.assList');
+    const t = useTranslations('pages.aasList');
 
     const navigateToAas = (aasId: string, repoUrl?: string) => {
         setAas(null);
