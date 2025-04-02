@@ -104,7 +104,7 @@
     "test:headless": "cypress run",
     "test:unit": "jest",
     "docker:basyx": "docker compose -f compose.yml -f docker-compose/compose.dev.yml --profile basyx up",
-    "docker:dev": "docker compose -f compose.yml -f docker-compose/compose.dev.yml --profile basyx --profile backend  up",
+    "docker:dev": "docker compose -f compose.yml -f docker-compose/compose.dev.yml --profile basyx --profile backend --profile frontend up",
     "docker:backend": "docker compose -f compose.yml -f docker-compose/compose.dev.yml --profile basyx --profile backend up",
     "docker:prod": "docker compose up",
     "docker:test": "docker compose -f compose.yml --profile tests up -d --build && docker compose -f compose.yml -f docker-compose/compose.test.yml attach cypress-test",
