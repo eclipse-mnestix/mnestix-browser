@@ -53,13 +53,19 @@ export class SubmodelSearcher {
 
     async getSubmodelDescriptorById(submodelId: string): Promise<ApiResponseWrapper<SubmodelDescriptor>> {
         const defaultUrl = process.env.SUBMODEL_REGISTRY_API_URL;
-        if (!defaultUrl)
+        if (!defaultUrl) {
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'No default Submodel registry defined');
+        }
         const response = await this.getSubmodelRegistryClient(defaultUrl).getSubmodelDescriptorById(submodelId);
         if (response.isSuccess) return response;
         else {
+            if (response.errorCode === ApiResultStatus.UNKNOWN_ERROR) {
+                console.error(
+                    `Configuration Error: Default Submodel registry ${process.env.SUBMODEL_REGISTRY_API_URL} is not reachable.`,
+                );
+            }
             if (response.errorCode === ApiResultStatus.NOT_FOUND) {
-                console.error(response.message);
+                console.warn(response.message);
             }
             return wrapErrorCode<SubmodelDescriptor>(ApiResultStatus.NOT_FOUND, 'Submodel not found');
         }

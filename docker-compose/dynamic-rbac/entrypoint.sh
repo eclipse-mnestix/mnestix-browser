@@ -19,8 +19,22 @@ fi
 export ACCESS_TOKEN
 
 echo "Sending POST request to the service..."
-curl -v POST http://security-submodel:8081/submodels \
+RESPONSE=$(curl -s -o response_body.txt -w "%{http_code}" -X POST http://security-submodel:8081/submodels \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer $ACCESS_TOKEN" \
-    -d "$(cat initial-submodel.json)"
-    
+    -d "$(cat initial-submodel.json)")
+
+if [ "$RESPONSE" -eq 201 ]; then
+    echo "Request succeeded with status code $RESPONSE."
+elif [ "$RESPONSE" -eq 409 ]; then
+    echo "Request succeeded with status code $RESPONSE. The submodel might already be initialized."
+    echo Response body:
+    cat response_body.txt
+else
+    echo "Request failed with status code $RESPONSE."
+    echo Response body:
+    cat response_body.txt
+    exit 1
+fi
+
+rm -f response_body.txt

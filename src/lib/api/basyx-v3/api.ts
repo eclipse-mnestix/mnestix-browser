@@ -1,9 +1,14 @@
 ﻿/* eslint-disable */
+// TODO MNES-1605 remove url lib together with this file
 import url from 'url';
 import { Configuration } from './configuration';
 import { AssetAdministrationShell, Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { encodeBase64 } from 'lib/util/Base64Util';
-import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
+import {
+    IAssetAdministrationShellRepositoryApi,
+    ISubmodelRepositoryApi,
+    SubmodelElementValue,
+} from 'lib/api/basyx-v3/apiInterface';
 import {
     AssetAdministrationShellRepositoryApiInMemory,
     SubmodelRepositoryApiInMemory,
@@ -388,11 +393,49 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
         );
     }
 
-    async getSubmodelByIdValueOnly(submodelId: string, options?: any): Promise<ApiResponseWrapper<Submodel>> {
+    async getSubmodelByIdValueOnly(
+        submodelId: string,
+        options?: any,
+    ): Promise<ApiResponseWrapper<SubmodelElementValue>> {
         return SubmodelRepositoryApiFp(this.configuration).getSubmodelByIdValueOnly(submodelId, options)(
             this.http,
             this.baseUrl,
         );
+    }
+
+    async deleteSubmodelElementByPath(
+        submodelId: string,
+        idShortPath: string,
+        options: Omit<RequestInit, 'body' | 'method'> = {},
+    ): Promise<ApiResponseWrapper<Response>> {
+        options.headers = Object.assign({}, {}, options.headers);
+        const url = `${this.baseUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${idShortPath}`;
+        const reqOptions = {
+            ...options,
+            method: 'DELETE',
+        };
+        return this.http.fetch<Response>(url, reqOptions);
+    }
+
+    async postSubmodelElement(
+        submodelId: string,
+        submodelElement: unknown,
+        options: Omit<RequestInit, 'body' | 'method'> = {},
+    ): Promise<ApiResponseWrapper<Response>> {
+        options.headers = Object.assign(
+            {},
+            {
+                'Content-Type': 'application/json',
+            },
+            options.headers,
+        );
+        const url = `${this.baseUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements`;
+        const reqOptions = {
+            ...options,
+            body: JSON.stringify(submodelElement),
+            method: 'POST',
+        };
+        return this.http.fetch<Response>(url, reqOptions);
     }
 
     async getSubmodelMetaData(submodelId: string, options?: object): Promise<ApiResponseWrapper<Submodel>> {
@@ -470,7 +513,10 @@ export const SubmodelRepositoryApiFp = function (configuration?: Configuration) 
                 options,
             );
             return async (requestHandler: FetchAPI, baseUrl: string) => {
-                return requestHandler.fetch<Submodel>(baseUrl + localVarFetchArgs.url, localVarFetchArgs.options);
+                return requestHandler.fetch<SubmodelElementValue>(
+                    baseUrl + localVarFetchArgs.url,
+                    localVarFetchArgs.options,
+                );
             };
         },
         /**
