@@ -8,7 +8,7 @@ type AssetNotFoundProps = {
 };
 
 export default function AssetNotFound(props: AssetNotFoundProps) {
-    const { id } = props;
+    const id = props.id;
     const navigate = useRouter();
     const t = useTranslations('common');
 
@@ -18,7 +18,7 @@ export default function AssetNotFound(props: AssetNotFoundProps) {
                 {t('messages.cannotLoadAasId.header')}
             </Typography>
             <Typography align="center" sx={{ mt: 2 }}>
-                {t('messages.cannotLoadAasId.text', { id })}
+                {t('messages.cannotLoadAasId.text', { id: id || '' })}
                 <Box display="flex" justifyContent="center" sx={{ mt: 2 }}>
                     <Button variant="contained" onClick={() => navigate.push('/')}>
                         {t('actions.toHome')}
