@@ -24,7 +24,7 @@ import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner
 import { useShowError } from 'lib/hooks/UseShowError';
 
 export const RoleSettings = () => {
-    const t = useTranslations('settings');
+    const t = useTranslations('pages.settings.roles');
     const [roleDialogOpen, setRoleDialogOpen] = useState(false);
     const [selectedRole, setSelectedRole] = useState<BaSyxRbacRule | undefined>(undefined);
     const [rbacRoles, setRbacRoles] = useState<RbacRolesFetchResult | undefined>();
@@ -34,25 +34,29 @@ export const RoleSettings = () => {
 
     const MAX_PERMISSIONS_CHARS = 40;
 
-    useAsyncEffect(async () => {
+    async function loadRbacData() {
         setIsLoading(true);
         const response = await getRbacRules();
         if (response.isSuccess) {
             // sort by role name
-            response.result.roles.sort((a, b) => a.role.localeCompare(b.role));
+            response.result.roles.sort((a: { role: string }, b: { role: string }) => a.role.localeCompare(b.role));
             setRbacRoles(response.result);
         } else {
             showError(response.message);
         }
         setIsLoading(false);
+    }
+
+    useAsyncEffect(async () => {
+        await loadRbacData();
     }, []);
 
     const prepareTableHeaders = () => {
         const tableHeaders = [
-            { label: t('roles.tableHeader.name') },
-            { label: t('roles.tableHeader.action') },
-            { label: t('roles.tableHeader.type') },
-            { label: t('roles.tableHeader.permissions') },
+            { label: t('tableHeader.name') },
+            { label: t('tableHeader.action') },
+            { label: t('tableHeader.type') },
+            { label: t('tableHeader.permissions') },
             { label: '' },
         ];
         if (isMobile) {
@@ -94,7 +98,7 @@ export const RoleSettings = () => {
     return (
         <>
             <Box sx={{ p: 3, width: '100%', minHeight: '600px' }}>
-                <CardHeading title={t('roles.title')} subtitle={t('roles.subtitle')}></CardHeading>
+                <CardHeading title={t('title')} subtitle={t('subtitle')}></CardHeading>
                 <Divider sx={{ my: 2 }} />
                 {isLoading ? (
                     <CenteredLoadingSpinner sx={{ my: 10 }} />
@@ -125,13 +129,11 @@ export const RoleSettings = () => {
                                             <Typography fontWeight="bold">{entry.role}</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            {entry.action.map((action) => (
-                                                <Chip
-                                                    key={action}
-                                                    sx={{ fontWeight: 'normal', m: 0.5 }}
-                                                    label={action}
-                                                />
-                                            ))}
+                                            <Chip
+                                                key={entry.action}
+                                                sx={{ fontWeight: 'normal', m: 0.5 }}
+                                                label={entry.action}
+                                            />
                                         </TableCell>
                                         <TableCell>{entry.targetInformation['@type']}</TableCell>
                                         {!isMobile && <TableCell>{permissionCell(entry)}</TableCell>}
@@ -147,13 +149,18 @@ export const RoleSettings = () => {
                     </TableContainer>
                 )}
             </Box>
-            <RoleDialog
-                onClose={() => {
-                    setRoleDialogOpen(false);
-                }}
-                open={roleDialogOpen}
-                role={selectedRole}
-            ></RoleDialog>
+            {selectedRole && (
+                <RoleDialog
+                    onClose={async (reload) => {
+                        if (reload) {
+                            await loadRbacData();
+                        }
+                        setRoleDialogOpen(false);
+                    }}
+                    open={roleDialogOpen}
+                    rule={selectedRole}
+                ></RoleDialog>
+            )}
         </>
     );
 };

@@ -1,157 +1,357 @@
 {
-  "comment": "wir werden hier deutsche Übersetzungs-Keys haben",
-  "aas-list": {
-    "header": "AAS Liste",
-    "subHeader": "Hier finden Sie alle AAS aus Ihrem Repository. Sie können ein AAS-Repository auswählen, um zwischen den Datenquellen zu wechseln.",
-    "picture": "Bild",
-    "manufacturerHeading": "Hersteller Name",
-    "productDesignationHeading": "Hersteller Produktbezeichnung",
-    "assetIdHeading": "Asset ID",
-    "aasIdHeading": "AAS ID",
-    "productClassHeading": "Produktklasse",
-    "page": "Seite",
-    "repository-dropdown": "AAS Repository",
-    "select-repository": "Bitte wählen Sie ein Repository aus",
-    "titleComparisonAddButton": "Füge VWS zum Vergleich hinzu",
-    "titleViewAASButton": "VWS anzeigen",
-    "maxElementsWarning": "Maximal 3 Elemente selektierbar",
-    "goToCompare": "Zum Vergleich",
-    "compareTooltip": "Vergleichen"
-  },
-  "dashboard": {
-    "welcome-text": "Willkommen bei Mnestix",
-    "digitalTwinMadeEasy-text": "Digitaler Zwilling leicht gemacht.",
-    "findOutMore-text": "Mehr Informationen",
-    "list-btn-label": "oder über Liste suchen",
-    "list-btn-text": "Zur Aas Liste",
-    "aasOrAssetId": "AAS ID oder Asset ID",
-    "scanIdLabel": "AAS ID oder Asset ID scannen",
-    "enterManuallyLabel": "oder manuell eingeben"
-  },
-  "submodels": {
-    "title": "Teilmodelle",
-    "timeSeries": {
-      "internalSegments": "Interne Segmente",
-      "linkedSegments": "Verlinkte Segmente",
-      "selectTimeframe": "Auswahl des Zeitabschnitts"
+  "common": {
+    "actions": {
+      "add": "Hinzufügen",
+      "cancel": "Abbrechen",
+      "delete": "Löschen",
+      "duplicate": "Duplizieren",
+      "edit": "Bearbeiten",
+      "open": "Öffnen",
+      "remove": "Entfernen",
+      "restore": "Wiederherstellen",
+      "revertChanges": "Änderungen zurücksetzen",
+      "saveChanges": "Änderungen speichern",
+      "toHome": "Zur Startseite",
+      "view": "Ansehen"
     },
-    "renderError": "Teilmodell konnte nicht gerendert werden.",
-    "idLabel": "ID:",
-    "unknownModelType": "Unbekannter ModelType: {type}",
-    "errors": {
-      "NOT_FOUND": "Submodel nicht gefunden",
-      "UNAUTHORIZED": "Nicht autorisiert",
-      "INTERNAL_SERVER_ERROR": "Interner Server Error",
-      "UNKNOWN": "Unbekannter Fehler"
-    }
-  },
-  "qr-scanner": {
-    "errors": {
-      "default-callback-error-msg": "QR Code konnte nicht geöffnet werden!",
-      "error-on-qr-scanner-open": "QR Scanner konnte nicht geöffnet werden!"
-    }
-  },
-  "compare": {
-    "title": "Verwaltungsschalen vergleichen",
-    "addButton": "Eine weitere Verwaltungsschale hinzufügen",
-    "addFirstAasButton": "Eine Verwaltungsschale hinzufügen",
-    "addAnother": "Eine weitere Verwaltungsschale hinzufügen",
-    "collection": {
-      "show": "{idShort}",
-      "hide": "Verbergen"
+    "boolean": {
+      "false": "Falsch",
+      "true": "Wahr"
     },
-    "errors": {
-      "aasAlreadyAdded": "Verwaltungsschale kann nicht mehrmals hinzugefügt werden",
-      "moreAasFound": "Mehr als eine Verwaltungsschale im Discovery Service gefunden, bitte geben Sie die AAS-ID an.",
-      "aasAddError": "Verwaltungsschale konnte nicht hinzugefügt werden."
-    }
-  },
-  "settings": {
-    "header": "Einstellungen",
-    "subHeader": "Hinzufügen, Entfernen oder Ändern von Einstellungen und Konfigurationen für verschiedene Funktionen innerhalb Ihrer AAS-Umgebung.",
-    "roles": {
-      "title": "Rollen Management",
-      "subtitle": "Verwalten von Rollen und Berechtigungen.",
-      "tableHeader": {
-        "name": "Rolle",
-        "action": "Aktion",
-        "type": "Typ",
-        "aasIds": "AAS IDs",
-        "submodelIds": "Submodel IDs",
-        "permissions": "Berechtigungen"
-      }
-    }
-  },
-  "errors": {
-    "unexpectedError": "Unerwarteter Fehler",
-    "unauthorizedError": {
-      "title": "Unautorisierter Zugriff",
-      "content": "Sie haben keinen Zugang zu dieser Ressource. Bitte loggen Sie sich ein oder fragen sie Ihren Administrator um Zugriff."
+    "labels": {
+      "aasId": "AAS ID",
+      "assetId": "Asset ID",
+      "copied": "In Zwischenablage kopiert",
+      "copy": "Kopieren",
+      "documentDetails": "Dokumentendetails",
+      "dynamicPart": "dynamischer Teil",
+      "endResult": "Endergebnis",
+      "idShort": "idShort: {idShort}",
+      "language": "Sprache",
+      "manufacturer": "Hersteller: {manufacturerName}",
+      "notAvailable": "-",
+      "redirectsTo": "Leitet weiter auf",
+      "semanticId": "semanticId",
+      "staticPrefix": "statisches Präfix",
+      "text": "Text",
+      "value": "Wert"
     },
-    "notFound": "Nicht gefunden",
-    "urlNotFound": "Keine Verwaltungsschale unter dieser ID."
-  },
-  "authentication": {
-    "authentication-needed": "Authentifizierung erforderlich",
-    "contactAdmin": "Sie können diese Seite nicht besuchen. Bitte wenden Sie sich an Ihren Administrator."
-  },
-  "mainMenu": {
-    "dashboard": "Dashboard",
-    "aasList": "AAS Liste",
-    "templates": "Vorlagen",
-    "settings": "Einstellungen",
-    "repository": "Repository",
-    "findOutMore": "Mehr Informationen",
-    "login": "Anmelden",
-    "logout": "Abmelden"
+    "messages": {
+      "cannotLoadAasId": {
+        "header": "Verwaltungsschale konnte nicht geladen werden.",
+        "text": "Es konnte keine Verwaltungsschale für die angegebene ID \"{id}\" geladen werden."
+      },
+      "changesSavedSuccessfully": "Änderungen erfolgreich gespeichert.",
+      "deleted": "gelöscht",
+      "fileNotFound": "Datei nicht gefunden",
+      "noDataFound": "Keine Daten gefunden",
+      "noDataFoundFor": "Es wurden keine Daten für \"{name}\" gefunden.",
+      "referenceCounter": {
+        "count": "Anzahl",
+        "elementName": "Element"
+      },
+      "successfullyUpdated": "Erfolgreich aktualisiert"
+    }
   },
   "components": {
-    "addressComponent": {
-      "addressTypes": {
-        "Department": "Abteilung",
-        "Company": "Firma",
-        "Street": "Straße",
-        "Zipcode": "PLZ",
-        "CityTown": "Ort",
-        "StateCounty": "Bundesland/Kreis",
-        "NationalCode": "Landescode",
-        "TimeZone": "Zeitzone",
-        "POBox": "Postfach",
-        "ZipCodeOfPOBox": "PLZ des Postfachs"
-      },
-      "VAT": "USt-IdNr."
-    },
     "ContactInformation": {
       "contactTypes": {
-        "office": "Geschäftlich",
-        "office mobile": "Geschäftl. Mobil",
-        "secretary": "Sekretariat",
-        "substitute": "Vertretung",
-        "home": "Privat",
-        "home mobile": "Privat Mobil",
         "0173-1#07-AAS754#001": "Geschäftlich",
         "0173-1#07-AAS755#001": "Geschäftlich Mobil",
         "0173-1#07-AAS756#001": "Sekretariat",
         "0173-1#07-AAS757#001": "Vertretung",
         "0173-1#07-AAS758#001": "Privat",
-        "0173-1#07-AAS759#001": "Privat Mobil"
+        "0173-1#07-AAS759#001": "Privat Mobil",
+        "home": "Privat",
+        "home mobile": "Privat Mobil",
+        "office": "Geschäftlich",
+        "office mobile": "Geschäftl. Mobil",
+        "secretary": "Sekretariat",
+        "substitute": "Vertretung"
+      }
+    },
+    "addressComponent": {
+      "VAT": "USt-IdNr.",
+      "addressTypes": {
+        "CityTown": "Ort",
+        "Company": "Firma",
+        "Department": "Abteilung",
+        "NationalCode": "Landescode",
+        "POBox": "Postfach",
+        "StateCounty": "Bundesland/Kreis",
+        "Street": "Straße",
+        "TimeZone": "Zeitzone",
+        "ZipCodeOfPOBox": "PLZ des Postfachs",
+        "Zipcode": "PLZ"
+      }
+    },
+    "carbon": {
+      "beech": "Buche",
+      "calculationMethod": "Berechnungsmethode",
+      "co2EComparison": "Vergleich",
+      "co2EDistribution": "CO2e Verteilung",
+      "comparisonAssumption": "Unter der Annahme von 12,5 kg CO2e Speicherung pro Jahr.",
+      "completedStages": "Emissionen berechnet basierend auf folgenden Lebenszyklusphasen",
+      "months": "Monate",
+      "productJourney": "Produktreise",
+      "stages": {
+        "A1": "A1 - Rohstoffversorgung (und vorgelagerte Produktion)",
+        "A1-A3": "A1-A3 - Rohstoffversorgung bis Produktion",
+        "A2": "A2 - Transport zum Werk",
+        "A3": "A3 - Produktion",
+        "A4": "A4 - Transport zum Bestimmungsort",
+        "A4-A5": "A4-A5 - Transport bis Montage",
+        "A5": "A5 - Installation",
+        "B1": "B1 - Nutzungsphase",
+        "B1-B7": "B1-B7 - Nutzungsphase",
+        "B2": "B2 - Wartung",
+        "B3": "B3 - Reparatur",
+        "B4": "B4 - Ersatz",
+        "B5": "B5 - Aktualisierung/Aufrüstung, Aufarbeitung",
+        "B6": "B6 - Energieverbrauch während der Nutzung",
+        "B7": "B7 - Wasserverbrauch während der Nutzung",
+        "C1": "C1 - Demontage",
+        "C1-C4": "C1-C4 - Entsorgungsphase",
+        "C2": "C2 - Transport zum Recycler",
+        "C2-C4": "C2-C4 - Recycling bis Deponie",
+        "C3": "C3 - Recycling, Abfallbehandlung",
+        "C4": "C4 - Deponie",
+        "D": "D - Wiederverwendung"
+      },
+      "totalCO2Equivalents": "(Bisherige) CO2 Emissionen des Produkts",
+      "years": "Jahre"
+    },
+    "qrScanner": {
+      "errors": {
+        "defaultCallbackErrorMsg": "QR Code konnte nicht geöffnet werden!",
+        "errorOnQrScannerOpen": "QR Scanner konnte nicht geöffnet werden!"
       }
     },
     "relationShipDetailsDialog": {
+      "error": {
+        "entityError": "Relationselement nicht gefunden",
+        "semanticError": "Semantische ID nicht gefunden",
+        "unknownRelationship": "Unbekannte Relation"
+      },
       "hasPart": "hat Teil",
       "isPartOf": "ist Teil von",
       "sameAs": "gleich wie",
-      "semanticId": "Semantische ID",
-      "error": {
-        "unknownRelationship": "Unbekannte Relation",
-        "semanticError": "Semantische ID nicht gefunden",
-        "entityError": "Relationselement nicht gefunden"
+      "semanticId": "Semantische ID"
+    },
+    "submodelElementCollection": {
+      "allAvailableData": "Alle verfügbaren Daten",
+      "showEntriesButton": {
+        "hide": "Verbergen",
+        "show": "{count} Einträge anzeigen"
       }
     }
   },
-  "footer": {
-    "imprint": "Impressum",
-    "dataPrivacy": "Datenschutz",
-    "about": "Über Mnestix"
+  "navigation": {
+    "footer": {
+      "about": "Über Mnestix",
+      "dataPrivacy": "Datenschutz",
+      "imprint": "Impressum"
+    },
+    "mainMenu": {
+      "aasList": "AAS Liste",
+      "dashboard": "Dashboard",
+      "findOutMore": "Mehr Informationen",
+      "login": "Anmelden",
+      "logout": "Abmelden",
+      "repository": "Repository",
+      "settings": "Einstellungen",
+      "templates": "Vorlagen"
+    }
+  },
+  "pages": {
+    "aasList": {
+      "aasIdHeading": "AAS ID",
+      "assetIdHeading": "Asset ID",
+      "compare": "Vergleichen",
+      "header": "AAS Liste",
+      "manufacturerHeading": "Hersteller Name",
+      "maxElementsWarning": "Maximal 3 Elemente selektierbar",
+      "page": "Seite",
+      "picture": "Bild",
+      "productClassHeading": "Produktklasse",
+      "productDesignationHeading": "Hersteller Produktbezeichnung",
+      "repositoryDropdown": "AAS Repository",
+      "selectRepository": "Bitte wählen Sie ein Repository aus",
+      "subHeader": "Hier finden Sie alle AAS aus Ihrem Repository. Sie können ein AAS-Repository auswählen, um zwischen den Datenquellen zu wechseln.",
+      "titleComparisonAddButton": "Füge VWS zum Vergleich hinzu",
+      "titleViewAASButton": "VWS anzeigen"
+    },
+    "aasViewer": {
+      "asset": "Asset",
+      "assetAdministrationShell": "Verwaltungsschale"
+    },
+    "assetIdDocumentation": {
+      "dnsHeading": "Zugriff via DNS",
+      "dnsText": "Besonders beim \"Brownfield\"-Ansatz und als Vertreiber eines Produkts ist es sinnvoll, zusätzlich einen DNS-Zugang über die Asset ID einzurichten, um so einen Datenzugriff über einen herkömmlichen Browser zu ermöglichen.",
+      "exampleHeading": "Beispiel",
+      "industry40Heading": "Industrie 4.0 Kontext",
+      "industry40Text": "Produkte haben eine global einzigartige ID, welche einer oder mehreren Verwaltungsschale(n) zugewiesen werden kann. Im Industrie 4.0 Kontext wird die Verbindung zwischen Asset und Verwaltungsschale über die I4.0 Infrastruktur hergestellt.",
+      "title": "Wie Sie Ihre Asset ID mit Ihrem Repository verbinden"
+    },
+    "compare": {
+      "addAnother": "Eine weitere Verwaltungsschale hinzufügen",
+      "addButton": "Eine weitere Verwaltungsschale hinzufügen",
+      "addFirstAasButton": "Eine Verwaltungsschale hinzufügen",
+      "collection": {
+        "hide": "Verbergen",
+        "show": "{idShort}"
+      },
+      "compareButton": "Vergleichen",
+      "errors": {
+        "aasAddError": "Verwaltungsschale konnte nicht hinzugefügt werden.",
+        "aasAlreadyAdded": "Verwaltungsschale kann nicht mehrmals hinzugefügt werden",
+        "moreAasFound": "Mehr als eine Verwaltungsschale im Discovery Service gefunden, bitte geben Sie die AAS-ID an."
+      },
+      "title": "Verwaltungsschalen vergleichen"
+    },
+    "dashboard": {
+      "aasOrAssetId": "AAS ID oder Asset ID",
+      "digitalTwinMadeEasyText": "Digitaler Zwilling leicht gemacht.",
+      "enterManuallyLabel": "oder manuell eingeben",
+      "findOutMoreText": "Mehr Informationen",
+      "listBtnLabel": "oder über Liste suchen",
+      "listBtnText": "Zur AAS Liste",
+      "scanIdLabel": "AAS ID oder Asset ID scannen",
+      "welcomeText": "Willkommen bei Mnestix"
+    },
+    "discoveryList": {
+      "aasIdHeading": "AAS ID",
+      "header": "Verwandte AAS für ID",
+      "picture": "Bild",
+      "repositoryUrl": "Repository Url",
+      "subtitle": "Hier finden Sie alle zugehörigen AAS für die angegebene ID.",
+      "titleViewAASButton": "VWS anzeigen"
+    },
+    "settings": {
+      "connections": {
+        "aasRepository": {
+          "connectionType": "AAS_REPOSITORY",
+          "repositories": "AAS Repositorys",
+          "repositoryDefaultLabel": "Default AAS Repository",
+          "repositoryLabel": "AAS Repository",
+          "repositoryUrlLabel": "AAS Repository URL"
+        },
+        "addButton": "Hinzufügen",
+        "editButton": "Alle bearbeiten",
+        "resetButton": "Auf Default zurücksetzen",
+        "resetSuccessfull": "Quellen wurden zurückgesetzt.",
+        "saveButton": "Alle speichern",
+        "submodelRepository": {
+          "connectionType": "SUBMODEL_REPOSITORY",
+          "repositories": "Submodel Repositorys",
+          "repositoryDefaultLabel": "Default Submodel Repository",
+          "repositoryLabel": "Submodel Repository",
+          "repositoryUrlLabel": "Submodel Repository URL"
+        },
+        "subtitle": "Definieren Sie, welche Datenquellen verwendet werden sollen.",
+        "title": "Datenquellen",
+        "urlFieldRequired": "URL wird benötigt"
+      },
+      "header": "Einstellungen",
+      "idStructure": "ID Struktur",
+      "idStructureExplanation": "Definieren Sie, wie Ihre IDs aussehen sollen. Dies ist eine Basis-Einstellung, die für individuelle Importe angepasst werden kann.",
+      "roles": {
+        "subtitle": "Verwalten von Rollen und Berechtigungen.",
+        "tableHeader": {
+          "aasIds": "AAS IDs",
+          "action": "Aktion",
+          "name": "Rolle",
+          "permissions": "Berechtigungen",
+          "submodelIds": "Submodel IDs",
+          "type": "Typ"
+        },
+        "saveSuccess": "Rolle erfolgreich gespeichert.",
+        "title": "Rollen Management",
+        "buttons": {
+          "save": "Speichern",
+          "cancel": "Abbrechen",
+          "back": "Zurück",
+          "edit": "Bearbeiten",
+          "add": "Hinzufügen"
+        },
+        "subHeader": "Hinzufügen, Entfernen oder Ändern von Einstellungen und Konfigurationen für verschiedene Funktionen innerhalb Ihrer AAS-Umgebung."
+      }
+    },
+    "submodels": {
+      "errors": {
+        "INTERNAL_SERVER_ERROR": "Interner Server Error",
+        "NOT_FOUND": "Submodel nicht gefunden",
+        "UNAUTHORIZED": "Nicht autorisiert",
+        "UNKNOWN": "Unbekannter Fehler"
+      },
+      "idLabel": "ID:",
+      "renderError": "Teilmodell konnte nicht gerendert werden.",
+      "timeSeries": {
+        "internalSegments": "Interne Segmente",
+        "linkedSegments": "Verlinkte Segmente",
+        "selectTimeframe": "Auswahl des Zeitabschnitts"
+      },
+      "title": "Teilmodelle",
+      "unknownModelType": "Unbekannter ModelType: {type}"
+    },
+    "templates": {
+      "all": "Alle",
+      "chooseAStartingPoint": "Wählen Sie einen Ausgangspunkt",
+      "copyTemplateId": "Vorlagen-ID kopieren",
+      "createNew": "Neu erstellen",
+      "custom": "Individuell",
+      "defaultValue": "Vorgegebener Wert",
+      "deleteTemplateQuestion": "Vorlage \"{name}\" unwiderruflich löschen?",
+      "displayName": "Anzeigename",
+      "emptyCustom": "Leer (Individuell)",
+      "emptyCustomDescription": "Basiert auf keiner standardisierten Vorlage",
+      "mappingInfo": "Mapping-Info",
+      "mappingInfoDescription": "Frei wählbarer Identifikator, auf den Sie bei Datenimporten zurückgreifen können.",
+      "multiplicity": "Multiplicity",
+      "multiplicityDescription": "Parameter, mit dem Sie festlegen können, welche Elemente verpflichtend sind.",
+      "noTemplatesFound": "Keine Vorlagen gefunden",
+      "templateDeletedSuccessfully": "Vorlage erfolgreich gelöscht.",
+      "templateIdCopied": "Vorlagen-ID in die Zwischenablage kopiert: {id}",
+      "templatesUseExplanation": "Vorlagen erlauben es Ihnen, eine wiederverwendbare Teilmodell-Struktur zu definieren, angepasst auf Ihre Bedürfnisse.",
+      "title": "Vorlagen"
+    },
+    "transfer": {
+      "aasRepository": "AAS Repository",
+      "chooseRepository": "AAS Repository auswählen",
+      "chooseSubmodelRepository": "Submodel Repository auswählen (optional)",
+      "errorToast": "Transfer der AAS nicht erfolgreich",
+      "partiallyFailedToast": "Teil des Transfers fehlgeschlagen",
+      "repositoryApiKey": "AAS Repository ApiKey",
+      "repositoryLabel": "Liste der AAS Repositories",
+      "repositoryRequired": "AAS Repository wird benötigt",
+      "submodelRepository": "Submodel Repository",
+      "submodelRepositoryApiKey": "Submodel Repository ApiKey",
+      "submodelRepositoryLabel": "Liste der Submodel Repositories",
+      "subtitle": "Füllen sie die folgenden Schritte aus, um eine Verwaltungsschale in ein anderes Repository zu importieren",
+      "successfullToast": "Transfer der AAS erfolgreich",
+      "title": "Import",
+      "useAasRepository": "AAS Repository verwenden",
+      "warningToast": "Transfer der AAS nur teilweise erfolgreich."
+    }
+  },
+  "validation": {
+    "authentication": {
+      "authenticationNeeded": "Authentifizierung erforderlich",
+      "contactAdmin": "Sie können diese Seite nicht besuchen. Bitte wenden Sie sich an Ihren Administrator."
+    },
+    "errors": {
+      "influxError": "Beim Abrufen der Daten ist ein Fehler aufgetreten.",
+      "invalidDate": "Muss ein gültiges Datum sein, im Format \"yyyy-mm-dd\"",
+      "invalidIri": "Muss eine valide IRI sein. Z.B. https://example.com/",
+      "invalidIriPart": "Muss als Teil einer IRI funktionieren können (kein \"/\", Leer- und Sonderzeichen)",
+      "invalidLong": "Muss eine valide Zahl sein",
+      "notFound": "Nicht gefunden",
+      "unauthorizedError": {
+        "content": "Sie haben keinen Zugang zu dieser Ressource. Bitte loggen Sie sich ein oder fragen sie Ihren Administrator um Zugriff.",
+        "title": "Unautorisierter Zugriff"
+      },
+      "unexpectedError": "Unerwarteter Fehler",
+      "urlNotFound": "Keine Verwaltungsschale unter dieser ID."
+    }
   }
 }

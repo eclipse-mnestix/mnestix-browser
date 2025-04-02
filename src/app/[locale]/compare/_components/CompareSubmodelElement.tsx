@@ -24,7 +24,7 @@ type CompareSubmodelElementProps = {
 
 export function CompareSubmodelElement(props: CompareSubmodelElementProps) {
     const isMarked = props.isMarked;
-    const t = useTranslations('submodels');
+    const t = useTranslations('pages.submodels');
 
     function getRenderElement() {
         if (!props.submodelElement) {

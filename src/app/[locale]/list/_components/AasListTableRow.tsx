@@ -46,7 +46,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
     const [, setAasOriginUrl] = useAasOriginSourceState();
     const notificationSpawner = useNotificationSpawner();
     const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
-    const t = useTranslations('aas-list');
+    const t = useTranslations('pages.aasList');
     const locale = useLocale();
     const { data: nameplateValues, isLoading: isNameplateValueLoading } = useSWR(
         [repositoryUrl, aasListEntry.aasId],

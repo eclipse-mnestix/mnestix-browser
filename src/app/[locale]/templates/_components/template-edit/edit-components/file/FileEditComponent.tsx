@@ -1,11 +1,10 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import { messages } from 'lib/i18n/localization';
 import React, { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { TemplateEditSectionHeading } from '../../TemplateEditSectionHeading';
 import options from './mime-types.json';
 import { File } from '@aas-core-works/aas-core3.0-typescript/types';
+import { useTranslations } from 'next-intl';
 
 interface FileEditComponentProps {
     data: File;
@@ -15,6 +14,7 @@ interface FileEditComponentProps {
 export function FileEditComponent(props: FileEditComponentProps) {
     const [data, setData] = useState(props.data);
     const [defaultValueEnabled, setDefaultValueEnabled] = useState(!!data.value?.length);
+    const t = useTranslations('common');
 
     useEffect(() => {
         setData(props.data);
@@ -60,17 +60,17 @@ export function FileEditComponent(props: FileEditComponentProps) {
                     <TextField
                         sx={{ mt: 1 }}
                         defaultValue={data.value}
-                        label={<FormattedMessage {...messages.mnestix.value} />}
+                        label={t('labels.value')}
                         onChange={(e) => onTextChange(e)}
                         fullWidth
                     />
                     <Button size="large" startIcon={<RemoveCircleOutline />} onClick={() => onRemove()}>
-                        <FormattedMessage {...messages.mnestix.remove} />
+                        {t('actions.remove')}
                     </Button>
                 </>
             ) : (
                 <Button size="large" startIcon={<AddCircleOutline />} onClick={() => setDefaultValueEnabled(true)}>
-                    <FormattedMessage {...messages.mnestix.add} />
+                    {t('actions.add')}
                 </Button>
             )}
         </>

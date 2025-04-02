@@ -62,7 +62,7 @@ export default function MainMenu() {
     const versionString = 'Version ' + packageJson.version;
     const mnestixRole = auth.getAccount()?.user.mnestixRole ?? MnestixRole.MnestixGuest;
     const allowedRoutes = auth.getAccount()?.user.allowedRoutes ?? [];
-    const t = useTranslations('mainMenu');
+    const t = useTranslations('navigation.mainMenu');
 
     const getAuthName = () => {
         const user = auth?.getAccount()?.user;

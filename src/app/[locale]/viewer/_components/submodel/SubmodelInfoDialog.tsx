@@ -11,7 +11,7 @@ type SubmodelInfoDialogProps = {
 };
 
 export function SubmodelInfoDialog(props: SubmodelInfoDialogProps) {
-    const t = useTranslations('submodels');
+    const t = useTranslations('pages.submodels');
 
     return (
         <Dialog open={props.open} onClose={props.onClose}>

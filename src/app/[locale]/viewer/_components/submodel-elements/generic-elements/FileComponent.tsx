@@ -1,14 +1,13 @@
 import { Box, Link, styled, Typography } from '@mui/material';
 import { File } from '@aas-core-works/aas-core3.0-typescript/types';
-import { messages } from 'lib/i18n/localization';
 import { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { getSanitizedHref } from 'lib/util/HrefUtil';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { getAttachmentFromSubmodelElement } from 'lib/services/repository-access/repositorySearchActions';
 import { useAasOriginSourceState } from 'components/contexts/CurrentAasContext';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { useTranslations } from 'next-intl';
 
 const StyledFileImg = styled('img')(() => ({
     objectFit: 'contain',
@@ -27,6 +26,7 @@ export function FileComponent(props: FileComponentProps) {
     const [image, setImage] = useState<string | null>(null);
     const { file } = props;
     const [aasOriginUrl] = useAasOriginSourceState();
+    const t = useTranslations('common');
 
     async function getImage() {
         if (file.contentType?.startsWith('image')) {
@@ -69,7 +69,7 @@ export function FileComponent(props: FileComponentProps) {
             </Link>
         ) : (
             <Typography>
-                <FormattedMessage {...messages.mnestix.notAvailable} />
+                {t('labels.notAvailable')}
             </Typography>
         );
     }

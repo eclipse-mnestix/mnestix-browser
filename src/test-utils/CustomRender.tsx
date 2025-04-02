@@ -14,7 +14,7 @@ const messages: { [key: string]: typeof enMessages } = {
     de: deMessages,
 };
 
-const loadMessages = (locale: 'en' | 'es') => {
+const loadMessages = (locale: 'en' | 'de') => {
     return messages[locale] || messages['en'];
 };
 
@@ -24,7 +24,7 @@ const loadMessages = (locale: 'en' | 'es') => {
  */
 export const CustomRender = (
     ui: ReactNode,
-    { locale = 'en', ...renderOptions }: { locale?: 'en' | 'es' } & RenderOptions = {},
+    { locale = 'en', ...renderOptions }: { locale?: 'en' | 'de' } & RenderOptions = {},
 ) => {
     const messages = loadMessages(locale);
     const Wrapper: React.FC<WrapperProps> = ({ children }) => (

@@ -8,9 +8,7 @@ import { ViewHeading } from 'components/basics/ViewHeading';
 import { ChooseTemplateDialog } from './_components/ChooseTemplateDialog';
 import { CustomTemplateItem, CustomTemplateItemType } from './_components/CustomTemplateItem';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
-import { messages } from 'lib/i18n/localization';
 import { useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { useShowError } from 'lib/hooks/UseShowError';
 import TemplatesInfoGraphic from 'assets/templates_infographic.svg';
 import EmptyDefaultTemplate from 'assets/submodels/defaultEmptySubmodel.json';
@@ -22,6 +20,7 @@ import { useEnv } from 'app/EnvProvider';
 import { useRouter } from 'next/navigation';
 import { createCustomSubmodelTemplate } from 'lib/services/templateApiWithAuthActions';
 import { deleteCustomTemplateById, getCustomTemplates, getDefaultTemplates } from 'lib/services/templatesApiActions';
+import { useTranslations } from 'next-intl';
 
 enum SpecialDefaultTabIds {
     All = 'all',
@@ -29,8 +28,8 @@ enum SpecialDefaultTabIds {
 }
 
 export default function Page() {
+    const t = useTranslations('pages.templates');
     const env = useEnv();
-    const intl = useIntl();
     const navigate = useRouter();
     const notificationSpawner = useNotificationSpawner();
     const [defaults, setDefaults] = useState<Submodel[]>();
@@ -39,7 +38,7 @@ export default function Page() {
     const [filteredCustomItems, setFilteredCustomItems] = useState<Array<CustomTemplateItemType>>();
     const [selectedEntry, setSelectedEntry] = useState<TabSelectorItem>({
         id: SpecialDefaultTabIds.All,
-        label: intl.formatMessage(messages.mnestix.all),
+        label: t('all'),
     });
     const [isLoading, setIsLoading] = useState(false);
     const [isCreatingTemplate, setIsCreatingTemplate] = useState(false);
@@ -55,7 +54,7 @@ export default function Page() {
         _defaults.sort((a: Submodel, b: Submodel) => sortWithNullableValues(a.idShort, b.idShort));
         setDefaults(_defaults);
         const _defaultItems: TabSelectorItem[] = [
-            { id: SpecialDefaultTabIds.All, label: intl.formatMessage(messages.mnestix.all) },
+            { id: SpecialDefaultTabIds.All, label: t('all') },
         ];
         _defaults?.forEach((d) => {
             // In v3 submodel is identified by id, so we assume that it will always have an Id.
@@ -72,7 +71,7 @@ export default function Page() {
         // the 'custom' defaultItem should always the last one in the list
         _defaultItems.push({
             id: SpecialDefaultTabIds.Custom,
-            label: intl.formatMessage(messages.mnestix.custom),
+            label: t('custom'),
             startIcon: <FolderOutlined fontSize="small" />,
         });
         setDefaultItems(_defaultItems);
@@ -92,7 +91,7 @@ export default function Page() {
             // get identifier for link to edit page
             const id = customSubmodel.id;
             // match semanticIds with defaults to get basedOnTemplate label
-            let basedOnTemplate = intl.formatMessage(messages.mnestix.custom);
+            let basedOnTemplate = t('custom');
             let basedOnTemplateId = '';
             let templateMatched = false;
             for (const semId of customSubmodel.semanticId?.keys || []) {
@@ -189,7 +188,7 @@ export default function Page() {
         try {
             await deleteCustomTemplateById(item.id);
             notificationSpawner.spawn({
-                message: intl.formatMessage(messages.mnestix.templateDeletedSuccessfully),
+                message: t('templateDeletedSuccessfully'),
                 severity: 'success',
             });
             await fetchCustoms(defaultItems);
@@ -205,14 +204,14 @@ export default function Page() {
                     sx={{ mb: 3, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
                     data-testid="templates-header"
                 >
-                    <ViewHeading title={<FormattedMessage {...messages.mnestix.templates} />} />
+                    <ViewHeading title={t('title')} />
                     <Button
                         variant="contained"
                         startIcon={<Add />}
                         sx={{ mb: 1 }}
                         onClick={() => setChooseTemplateDialogOpen(true)}
                     >
-                        <FormattedMessage {...messages.mnestix.createNew} />
+                        {t('createNew')}
                     </Button>
                     <ChooseTemplateDialog
                         open={chooseTemplateDialogOpen}
@@ -252,11 +251,11 @@ export default function Page() {
                         {filteredCustomItems?.length === 0 && !isLoading && (
                             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', m: 2 }}>
                                 <Typography align="center" variant="h3" color="text.secondary">
-                                    <FormattedMessage {...messages.mnestix.noTemplatesFound} />
+                                    {t('noTemplatesFound')}
                                 </Typography>
                                 <TemplatesInfoGraphic style={{ display: 'block', maxWidth: '250px' }} />
                                 <Typography sx={{ maxWidth: '350px' }} align="center" color="text.secondary">
-                                    <FormattedMessage {...messages.mnestix.templatesUseExplanation} />
+                                    {t('templatesUseExplanation')}
                                 </Typography>
                             </Box>
                         )}

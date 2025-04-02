@@ -85,7 +85,7 @@ export function SubmodelInfoTooltip({
 export function VerticalTabSelector(props: VerticalTabSelectorProps) {
     const [hoveredItem, setHoveredItem] = useState<TabSelectorItem>();
     const isMobile = useIsMobile();
-    const t = useTranslations('submodels.errors');
+    const t = useTranslations('pages.submodels.errors');
 
     const selectedCSSClass = (id: string) => (id === props.selected?.id ? 'selected' : '');
 

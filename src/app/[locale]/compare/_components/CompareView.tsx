@@ -21,7 +21,7 @@ export function CompareView() {
     });
     const [addModalOpen, setAddModalOpen] = useState(false);
     const { showError } = useShowError();
-    const t = useTranslations('compare');
+    const t = useTranslations('pages.compare');
 
     useEffect(() => {
         async function _fetchAas() {
@@ -56,21 +56,21 @@ export function CompareView() {
 
     const handleAddAas = async (aasId: string) => {
         const { isSuccess, result } = await performFullAasSearch(aasId);
-        if (!isSuccess) throw new LocalizedError('errors.unexpectedError');
+        if (!isSuccess) throw new LocalizedError('validation.errors.unexpectedError');
 
         if (!result.aas) {
-            throw new LocalizedError('compare.errors.moreAasFound');
+            throw new LocalizedError('pages.compare.errors.moreAasFound');
         }
 
         const aasExists = compareAas.find((compareAas) => compareAas.aas.id === result.aas!.id);
         if (aasExists) {
-            throw new LocalizedError('compare.errors.aasAlreadyAdded');
+            throw new LocalizedError('pages.compare.errors.aasAlreadyAdded');
         }
 
         try {
             await addAas(result.aas, result.aasData);
         } catch {
-            throw new LocalizedError('compare.errors.aasAddError');
+            throw new LocalizedError('pages.compare.errors.aasAddError');
         }
 
         setAddModalOpen(false);

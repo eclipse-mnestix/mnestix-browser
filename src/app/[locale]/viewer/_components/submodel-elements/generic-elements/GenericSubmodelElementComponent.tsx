@@ -24,7 +24,7 @@ type GenericSubmodelElementComponentProps = SubmodelElementComponentProps & {
 };
 
 export function GenericSubmodelElementComponent(props: GenericSubmodelElementComponentProps) {
-    const t = useTranslations('submodels');
+    const t = useTranslations('pages.submodels');
 
     function getRenderElement() {
         if (!props.submodelElement) {
