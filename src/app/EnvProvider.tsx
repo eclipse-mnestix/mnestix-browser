@@ -1,8 +1,10 @@
 'use client';
 import React, { createContext, useContext, useState } from 'react';
-import { EnvironmentalVariables, getEnv } from './env';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
+import { getEnv } from 'lib/services/envAction';
+
+type EnvironmentalVariables = Awaited<ReturnType<typeof getEnv>>;
 
 export const initialEnvValues: EnvironmentalVariables = {
     AAS_LIST_FEATURE_FLAG: false,
@@ -10,9 +12,7 @@ export const initialEnvValues: EnvironmentalVariables = {
     TRANSFER_FEATURE_FLAG: false,
     AUTHENTICATION_FEATURE_FLAG: false,
     LOCK_TIMESERIES_PERIOD_FEATURE_FLAG: false,
-    AD_CLIENT_ID: '',
-    AD_TENANT_ID: '',
-    APPLICATION_ID_URI: '',
+    KEYCLOAK_ENABLED: false,
     DISCOVERY_API_URL: '',
     REGISTRY_API_URL: '',
     SUBMODEL_REGISTRY_API_URL: '',
@@ -23,15 +23,15 @@ export const initialEnvValues: EnvironmentalVariables = {
     THEME_SECONDARY_COLOR: undefined,
     THEME_BASE64_LOGO: undefined,
     THEME_LOGO_URL: undefined,
-    KEYCLOAK_ENABLED: false,
     IMPRINT_URL: '',
     DATA_PRIVACY_URL: '',
     USE_BASYX_RBAC: false,
     WHITELIST_FEATURE_FLAG: false,
     SUBMODEL_WHITELIST: '',
+    THEME_LOGO_MIME_TYPE: undefined,
 };
 
-export const EnvContext = createContext(initialEnvValues);
+const EnvContext = createContext(initialEnvValues);
 
 export const EnvProvider = ({
     children,
@@ -53,6 +53,9 @@ export const EnvProvider = ({
     );
 };
 
+/**
+ * Hook for using environmental variables in client components.
+ */
 export const useEnv = () => {
     return useContext(EnvContext);
 };

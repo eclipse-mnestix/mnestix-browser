@@ -4,6 +4,7 @@ import { mnestixFetch } from 'lib/api/infrastructure';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
+import { envs } from 'lib/env/MnestixEnv';
 import { RuleParseError, ruleToIdShort, ruleToSubmodelElement } from './RuleHelpers';
 
 const SEC_SUB_ID = 'SecuritySubmodel';
@@ -19,7 +20,7 @@ export class RbacRulesService {
     private constructor(private readonly securitySubmodelRepositoryClient: ISubmodelRepositoryApi) {}
 
     static createService(): RbacRulesService {
-        const baseUrl = process.env.SEC_SM_API_URL;
+        const baseUrl = envs.SEC_SM_API_URL;
 
         if (!baseUrl) {
             throw 'Security Submodel not configured! Check beforehand!';

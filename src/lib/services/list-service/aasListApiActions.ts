@@ -3,8 +3,9 @@
 import { mnestixFetchLegacy } from 'lib/api/infrastructure';
 import { AasListClient, AasListEntry } from 'lib/api/generated-api/clients.g';
 import { ListService } from 'lib/services/list-service/ListService';
+import { envs } from 'lib/env/MnestixEnv';
 
-const aasListApi = AasListClient.create(process.env.MNESTIX_BACKEND_API_URL, mnestixFetchLegacy());
+const aasListApi = AasListClient.create(envs.MNESTIX_BACKEND_API_URL, mnestixFetchLegacy());
 
 export async function getAasListEntries(): Promise<AasListEntry[]> {
     return aasListApi.getAasListEntries();

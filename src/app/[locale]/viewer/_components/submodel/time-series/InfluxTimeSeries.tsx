@@ -7,7 +7,7 @@ import { TimeFrameSelection as TimeFrameSelection } from './TimeFrameSelection';
 import { useIntl } from 'react-intl';
 import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { isValidUrl } from 'lib/util/UrlUtil';
-import { useEnv } from 'app/env/provider';
+import { useEnv } from 'app/EnvProvider';
 import {
     extractIntlValueBySemanticId,
     extractValueBySemanticId,

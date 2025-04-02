@@ -6,14 +6,15 @@ import { getServerSession } from 'next-auth';
 import { BaSyxRbacRule, RbacRulesService } from './RbacRulesService';
 import { wrapErrorCode } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
+import { envs } from 'lib/env/MnestixEnv';
 
 async function requestInvalid() {
     const session = await getServerSession(authOptions);
     if (!session?.user.roles || !session?.user.roles?.includes(MnestixRole.MnestixAdmin)) {
         return wrapErrorCode(ApiResultStatus.FORBIDDEN, 'Forbidden');
     }
-    // TODO MNES-1607
-    const baseUrl = process.env.SEC_SM_API_URL;
+    // TODO MNES-1633 validate on app startup
+    const baseUrl = envs.SEC_SM_API_URL;
     if (!baseUrl) {
         return wrapErrorCode(ApiResultStatus.BAD_REQUEST, 'Security Submodel not configured!');
     }

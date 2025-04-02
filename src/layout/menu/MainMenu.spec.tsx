@@ -4,11 +4,11 @@ import { fireEvent, screen } from '@testing-library/react';
 import { expect } from '@jest/globals';
 import { useAuth } from 'lib/hooks/UseAuth';
 import AllowedRoutes, { MnestixRole } from 'components/authentication/AllowedRoutes';
-import { useEnv } from 'app/env/provider';
+import { useEnv } from 'app/EnvProvider';
 
 jest.mock('next-auth/react');
 jest.mock('../../lib/hooks/UseAuth');
-jest.mock('../../app/env/provider');
+jest.mock('../../app/EnvProvider');
 
 const mockEnvVariables = jest.fn(() => {
     return {
