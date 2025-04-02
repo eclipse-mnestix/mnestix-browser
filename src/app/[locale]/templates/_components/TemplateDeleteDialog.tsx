@@ -1,6 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogProps } from '@mui/material';
-import { messages } from 'lib/i18n/localization';
-import { FormattedMessage } from 'react-intl';
+import { useTranslations } from 'next-intl';
 
 interface TemplateDeleteDialogProps extends DialogProps {
     itemName: string | null;
@@ -8,19 +7,20 @@ interface TemplateDeleteDialogProps extends DialogProps {
 }
 
 export function TemplateDeleteDialog(props: TemplateDeleteDialogProps) {
+    const t = useTranslations();
     return (
         <Dialog open={props.open} onClose={props.onClose}>
             <DialogContent>
                 <DialogContentText>
-                    <FormattedMessage {...messages.mnestix.deleteTemplateQuestion} values={{ name: props.itemName }} />
+                    {t('pages.templates.deleteTemplateQuestion', { name: props.itemName || '' })}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
                 <Button onClick={(e) => props.onClose && props.onClose(e, 'escapeKeyDown')} autoFocus>
-                    <FormattedMessage {...messages.mnestix.cancel} />
+                    {t('common.actions.cancel')}
                 </Button>
                 <Button onClick={() => props.onDelete()} color="error">
-                    <FormattedMessage {...messages.mnestix.delete} />
+                    {t('common.actions.delete')}
                 </Button>
             </DialogActions>
         </Dialog>

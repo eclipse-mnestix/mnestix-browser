@@ -11,7 +11,7 @@ type AddAasModalProps = {
 };
 
 export function CompareAasAddDialog(props: AddAasModalProps) {
-    const t = useTranslations();
+    const t = useTranslations('pages');
 
     return (
         <Dialog

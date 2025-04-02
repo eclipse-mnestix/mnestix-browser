@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { DifferenceSymbol } from 'components/basics/DifferenceSymbol';
 
 export function DummyComponent() {
-    const t = useTranslations('submodels.timeSeries');
+    const t = useTranslations('pages.submodels.timeSeries');
 
     return (
         <Box data-testid="test-text">

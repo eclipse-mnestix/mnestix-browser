@@ -1,10 +1,8 @@
 import { Link } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
-import { MessageDescriptorWithId } from 'lib/i18n/localization';
 
 export type ExternalLinkProps = {
     href: string | undefined;
-    descriptor: MessageDescriptorWithId;
+    descriptor: string;
 };
 
 export function ExternalLink({ href, descriptor }: ExternalLinkProps) {
@@ -16,7 +14,7 @@ export function ExternalLink({ href, descriptor }: ExternalLinkProps) {
             target="_blank"
             data-testid="external-link"
         >
-            <FormattedMessage {...descriptor} />
+            {descriptor}
         </Link>
     );
 }

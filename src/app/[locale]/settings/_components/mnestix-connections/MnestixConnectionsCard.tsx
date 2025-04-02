@@ -1,5 +1,4 @@
-import { FormattedMessage, useIntl } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
+import { useTranslations } from 'next-intl';
 import { Box } from '@mui/material';
 import { useState } from 'react';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
@@ -34,7 +33,7 @@ export function MnestixConnectionsCard() {
     const notificationSpawner = useNotificationSpawner();
     const [isEditMode, setIsEditMode] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const intl = useIntl();
+    const t = useTranslations();
     const env = useEnv();
 
     const dataSources: DataSource[] = [
@@ -90,7 +89,7 @@ export function MnestixConnectionsCard() {
         try {
             await upsertConnectionDataAction([...data.aasRepository, ...data.submodelRepository]);
             notificationSpawner.spawn({
-                message: intl.formatMessage(messages.mnestix.changesSavedSuccessfully),
+                message: t('common.messages.changesSavedSuccessfully'),
                 severity: 'success',
             });
             setIsEditMode(false);
@@ -110,8 +109,8 @@ export function MnestixConnectionsCard() {
     return (
         <Box sx={{ p: 3, width: '100%' }}>
             <SettingsCardHeader
-                title={<FormattedMessage {...messages.mnestix.connections.title} />}
-                subtitle={<FormattedMessage {...messages.mnestix.connections.subtitle} />}
+                title={t('pages.settings.connections.title')}
+                subtitle={t('pages.settings.connections.subtitle')}
                 onCancel={() => cancelEdit()}
                 onEdit={() => setIsEditMode(true)}
                 onSubmit={handleSubmit((data) => saveConnectionData(data))}

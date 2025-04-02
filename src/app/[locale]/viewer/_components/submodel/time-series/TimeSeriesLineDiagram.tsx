@@ -53,7 +53,7 @@ function getUTCMidnightEquivalentTime(dates: string[]) {
 export function TimeSeriesLineDiagram(props: { data: TimeSeriesDataSet; timeframeSelectable?: boolean }) {
     const uniqueDates = [...new Set(props.data.points.map((point) => getDateStamp(point['timestamp'] as string)))];
     const startDayMarkerStamp = uniqueDates.length > 2 ? getUTCMidnightEquivalentTime(uniqueDates) : [];
-    const t = useTranslations('submodels.timeSeries');
+    const t = useTranslations('pages.submodels.timeSeries');
     const theme = useTheme();
     const color = theme.palette.primary.main;
 

@@ -11,7 +11,7 @@ type AddAasToCompareCardProps = {
 export function AddAasToCompareCard(props: AddAasToCompareCardProps) {
     const isFirst = props.isFirst !== undefined ? props.isFirst : false;
     const theme = useTheme();
-    const t = useTranslations('compare');
+    const t = useTranslations('pages.compare');
 
     return (
         <Box

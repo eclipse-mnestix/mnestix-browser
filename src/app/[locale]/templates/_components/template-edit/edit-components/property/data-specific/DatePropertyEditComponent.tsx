@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { DesktopDatePicker, MobileDatePicker, DateValidationError } from '@mui/x-date-pickers';
-import { messages } from 'lib/i18n/localization';
-import { FormattedMessage } from 'react-intl';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { parse } from 'date-fns';
+import { useTranslations } from 'next-intl';
 
 interface DatePropertyEditComponentProps {
     dataValue: string;
@@ -15,6 +14,7 @@ export function DatePropertyEditComponent(props: DatePropertyEditComponentProps)
     const [isValid, setIsValid] = useState(true);
     const calenderFormat = 'yyyy-MM-dd';
     const isMobile = useIsMobile();
+    const t = useTranslations();
 
     const onValueChange = (newValue: Date | null) => {
         if (newValue) {
@@ -52,28 +52,28 @@ export function DatePropertyEditComponent(props: DatePropertyEditComponentProps)
         <>
             {isMobile ? (
                 <MobileDatePicker
-                    label={<FormattedMessage {...messages.mnestix.value} />}
+                    label={t('common.labels.value')}
                     value={startingData()}
                     onChange={onValueChange}
                     onError={onInvalidInput}
                     slotProps={{
                         textField: {
                             helperText: !isValid && (
-                                <FormattedMessage {...messages.mnestix.errorMessages.invalidDate} />
+                                t('validation.errorMessages.invalidDate')
                             ),
                         },
                     }}
                 />
             ) : (
                 <DesktopDatePicker
-                    label={<FormattedMessage {...messages.mnestix.value} />}
+                    label={t('common.labels.value')}
                     value={startingData()}
                     onChange={onValueChange}
                     onError={onInvalidInput}
                     slotProps={{
                         textField: {
                             helperText: !isValid && (
-                                <FormattedMessage {...messages.mnestix.errorMessages.invalidDate} />
+                                t('validation.errorMessages.invalidDate')
                             ),
                             fullWidth: true,
                         },

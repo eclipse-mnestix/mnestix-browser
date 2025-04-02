@@ -54,7 +54,7 @@ export type RoleFormModel = {
 };
 
 export const RoleDialog = (props: RoleDialogProps) => {
-    const t = useTranslations('settings');
+    const t = useTranslations('pages.settings');
     const [isEditMode, setIsEditMode] = useState(false);
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();

@@ -16,7 +16,7 @@ export function Footer() {
         setAboutDialogOpen(false);
     };
 
-    const t = useTranslations('footer');
+    const t = useTranslations('navigation.footer');
 
     return (
         <>

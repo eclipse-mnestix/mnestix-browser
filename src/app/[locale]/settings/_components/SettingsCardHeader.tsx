@@ -1,6 +1,5 @@
 import { CardHeading } from 'components/basics/CardHeading';
-import { FormattedMessage } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
+import { useTranslations } from 'next-intl';
 import { Box, Button } from '@mui/material';
 
 import EditIcon from '@mui/icons-material/Edit';
@@ -17,7 +16,7 @@ export type SettingsCardHeaderProps = {
 }
 
 export function SettingsCardHeader(props: SettingsCardHeaderProps) {
-
+    const t = useTranslations();
     return (
             <Box display="flex" flexDirection="row" justifyContent="space-between">
                 <CardHeading
@@ -28,19 +27,19 @@ export function SettingsCardHeader(props: SettingsCardHeaderProps) {
                     {props.isEditMode ? (
                         <>
                             <Button variant="outlined" startIcon={<CloseIcon />} onClick={() => props.onCancel()}>
-                                <FormattedMessage {...messages.mnestix.cancel} />
+                                {t('common.actions.cancel')}
                             </Button>
                             <Button
                                 variant="contained"
                                 startIcon={<CheckIcon />}
                                 onClick={props.onSubmit}
                             >
-                                <FormattedMessage {...messages.mnestix.connections.saveButton} />
+                                {t('pages.settings.connections.saveButton')}
                             </Button>
                         </>
                     ) : (
                         <Button variant="contained" startIcon={<EditIcon />} onClick={() => props.onEdit()}>
-                            <FormattedMessage {...messages.mnestix.connections.editButton} />
+                            {t('pages.settings.connections.editButton')}
                         </Button>
                     )}
                 </Box>

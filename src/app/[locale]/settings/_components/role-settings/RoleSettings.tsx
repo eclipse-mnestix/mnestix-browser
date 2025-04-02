@@ -24,7 +24,7 @@ import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner
 import { useShowError } from 'lib/hooks/UseShowError';
 
 export const RoleSettings = () => {
-    const t = useTranslations('settings');
+    const t = useTranslations('pages.settings.roles');
     const [roleDialogOpen, setRoleDialogOpen] = useState(false);
     const [selectedRole, setSelectedRole] = useState<BaSyxRbacRule | undefined>(undefined);
     const [rbacRoles, setRbacRoles] = useState<RbacRolesFetchResult | undefined>();
@@ -53,10 +53,10 @@ export const RoleSettings = () => {
 
     const prepareTableHeaders = () => {
         const tableHeaders = [
-            { label: t('roles.tableHeader.name') },
-            { label: t('roles.tableHeader.action') },
-            { label: t('roles.tableHeader.type') },
-            { label: t('roles.tableHeader.permissions') },
+            { label: t('tableHeader.name') },
+            { label: t('tableHeader.action') },
+            { label: t('tableHeader.type') },
+            { label: t('tableHeader.permissions') },
             { label: '' },
         ];
         if (isMobile) {
@@ -98,7 +98,7 @@ export const RoleSettings = () => {
     return (
         <>
             <Box sx={{ p: 3, width: '100%', minHeight: '600px' }}>
-                <CardHeading title={t('roles.title')} subtitle={t('roles.subtitle')}></CardHeading>
+                <CardHeading title={t('title')} subtitle={t('subtitle')}></CardHeading>
                 <Divider sx={{ my: 2 }} />
                 {isLoading ? (
                     <CenteredLoadingSpinner sx={{ my: 10 }} />

@@ -1,7 +1,5 @@
 'use client';
 
-import { FormattedMessage, useIntl } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { useState } from 'react';
 import DiscoveryList from 'app/[locale]/viewer/discovery/_components/DiscoveryList';
@@ -33,14 +31,12 @@ export const DiscoveryListView = () => {
     const [isLoadingList, setIsLoadingList] = useState(false);
     const [discoveryListEntries, setDiscoveryListEntries] = useState<IDiscoveryListEntry[]>([]);
     const [isError, setIsError] = useState<boolean>(false);
-    const intl = useIntl();
     const searchParams = useSearchParams();
     const encodedAssetId = searchParams.get('assetId');
     const assetId = encodedAssetId ? decodeURI(encodedAssetId) : undefined;
     const encodedAasId = searchParams.get('aasId');
     const aasId = encodedAasId ? decodeURI(encodedAasId) : undefined;
-
-    const t = useTranslations('aas-list');
+    const t = useTranslations('pages.discoveryList');
 
     useAsyncEffect(async () => {
         setIsLoadingList(true);
@@ -86,9 +82,9 @@ export const DiscoveryListView = () => {
     }, []);
 
     const tableHeaders = [
-        { label: intl.formatMessage(messages.mnestix.discoveryList.picture) },
-        { label: intl.formatMessage(messages.mnestix.discoveryList.aasIdHeading) },
-        { label: intl.formatMessage(messages.mnestix.discoveryList.repositoryUrl) },
+        { label: t('picture') },
+        { label: t('aasIdHeading') },
+        { label: t('repositoryUrl') },
     ];
 
     return (
@@ -98,7 +94,7 @@ export const DiscoveryListView = () => {
             {!isLoadingList && !isError && (
                 <>
                     <Typography marginBottom={3}>
-                        <FormattedMessage {...messages.mnestix.discoveryList.subtitle} />
+                        {t('subtitle')}
                     </Typography>
                     <DiscoveryList tableHeaders={tableHeaders} data={discoveryListEntries} />
                 </>

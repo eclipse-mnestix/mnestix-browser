@@ -1,9 +1,8 @@
 import { Dialog, DialogContent, Typography } from '@mui/material';
 import { Entity } from '@aas-core-works/aas-core3.0-typescript/types';
 import { DataRow } from 'components/basics/DataRow';
-import { FormattedMessage } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
+import { useTranslations } from 'next-intl';
 
 type EntityDetailsModalProps = {
     readonly entity: Entity;
@@ -13,6 +12,7 @@ type EntityDetailsModalProps = {
 
 export function EntityDetailsDialog(props: EntityDetailsModalProps) {
     const entity = props.entity;
+    const t = useTranslations('common');
 
     return (
         <Dialog open={props.open} onClose={props.handleClose}>
@@ -25,10 +25,10 @@ export function EntityDetailsDialog(props: EntityDetailsModalProps) {
                     {entity.idShort}
                 </DataRow>
                 <DataRow title="asset">
-                    {entity.globalAssetId || <FormattedMessage {...messages.mnestix.notAvailable} />}
+                    {entity.globalAssetId || t('labels.notAvailable')}
                 </DataRow>
                 <DataRow title="entityType">
-                    {entity.entityType || <FormattedMessage {...messages.mnestix.notAvailable} />}
+                    {entity.entityType || t('labels.notAvailable')}
                 </DataRow>
             </DialogContent>
         </Dialog>

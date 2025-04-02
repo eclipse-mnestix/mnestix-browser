@@ -18,7 +18,7 @@ export function CompareRecordCollectionRow(props: SubmodelCompareDataComponentPr
     const componentList: ReactNode[] = [];
     const { submodelCompareData } = props;
     const { compareAas } = useCompareAasContext();
-    const t = useTranslations('compare');
+    const t = useTranslations('pages.compare');
 
     const columnWidthCount = 12 / compareAas.length;
 
