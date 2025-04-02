@@ -2,6 +2,7 @@ import { alpha, Box, Typography, useTheme } from '@mui/material';
 import { ProductLifecycleStage } from 'lib/enums/ProductLifecycleStage.enum';
 import { Bar, BarChart, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { cutDecimalPlaces } from 'lib/util/NumberUtil';
+import { useTranslations } from 'next-intl';
 
 const unit = 'kg CO2e';
 
@@ -9,7 +10,9 @@ export function CO2EBarchart(props: {
     co2EquivalentsPerLifecycleStage: Partial<Record<ProductLifecycleStage, number>>;
 }) {
     const theme = useTheme();
-    const data = [{ name: 'CO2 Equivalents', ...props.co2EquivalentsPerLifecycleStage }];
+    const t = useTranslations('components.carbon');
+
+    const data = [{ name: t('equivalents'), ...props.co2EquivalentsPerLifecycleStage }];
 
     const bars = (Object.keys(props.co2EquivalentsPerLifecycleStage) as ProductLifecycleStage[])
         .sort((a, b) => data[0][b]! - data[0][a]!)

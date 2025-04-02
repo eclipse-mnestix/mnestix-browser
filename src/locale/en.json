@@ -93,6 +93,7 @@
       "comparisonAssumption": "Assuming one beech tree stores 12.5 kg CO2e per year.",
       "comparisonNeeds": "needs",
       "completedStages": "Emissions calculated based on product life cycle",
+      "equivalents": "CO2 Equivalents",
       "inTotal": "in total",
       "productJourney": "Product Journey",
       "stages": {

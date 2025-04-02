@@ -93,6 +93,7 @@
       "comparisonAssumption": "Unter der Annahme von 12,5 kg CO2e Speicherung pro Jahr.",
       "comparisonNeeds": "braucht",
       "completedStages": "Emissionen berechnet basierend auf folgenden Lebenszyklusphasen",
+      "equivalents": "CO2 Äquivalente",
       "inTotal": "gesamt",
       "productJourney": "Produktreise",
       "stages": {
