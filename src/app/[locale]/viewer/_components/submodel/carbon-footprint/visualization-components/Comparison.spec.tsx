@@ -35,13 +35,13 @@ describe('CarbonFootprint - CO2 Comparison', () => {
     it('should switch to years above 12 months', async () => {
         CustomRenderReactIntl(<Comparison co2Equivalents={12.51} />);
         const component = screen.getByTestId('co2-comparison-value');
-        expect(component).toHaveTextContent('one year');
+        expect(component).toHaveTextContent('1 year');
     });
 
     it('should show singular on exactly one', async () => {
         CustomRenderReactIntl(<Comparison co2Equivalents={1} />);
         const component = screen.getByTestId('co2-comparison-value');
-        expect(component).toHaveTextContent('one month');
+        expect(component).toHaveTextContent('1 month');
     });
 
     it('should show less than a month', async () => {
