@@ -19,7 +19,7 @@ services:
   aas-environment:
     ports:
       - '8081:8081'
-        
+
   aas-discovery:
     ports:
       - '8082:8081'
