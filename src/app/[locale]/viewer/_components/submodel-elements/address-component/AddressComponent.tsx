@@ -19,6 +19,7 @@ import {
 type AddressComponentProps = {
     readonly submodelElement?: SubmodelElementCollection;
     readonly hasDivider?: boolean;
+    readonly submodelId?: string;
 };
 
 export const idShortsOfSubmodelElementsContainingAddressData: string[] = [
