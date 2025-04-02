@@ -92,7 +92,6 @@
       "co2EDistribution": "CO2e Verteilung",
       "comparisonAssumption": "Unter der Annahme von 12,5 kg CO2e Speicherung pro Jahr.",
       "completedStages": "Emissionen berechnet basierend auf folgenden Lebenszyklusphasen",
-      "months": "Monate",
       "productJourney": "Produktreise",
       "stages": {
         "A1": "A1 - Rohstoffversorgung (und vorgelagerte Produktion)",
@@ -118,8 +117,11 @@
         "C4": "C4 - Deponie",
         "D": "D - Wiederverwendung"
       },
-      "totalCO2Equivalents": "(Bisherige) CO2 Emissionen des Produkts",
-      "years": "Jahre"
+      "timeunit": {
+        "month": "{count, plural, =0 {Keinen Monat} =1 {Einen Monat} other {# Monate}}",
+        "year": "{count, plural, =0 {Kein Jahr} =1 {Ein Jahr} other {# Jahre}}"
+      },
+      "totalCO2Equivalents": "(Bisherige) CO2 Emissionen des Produkts"
     },
     "qrScanner": {
       "errors": {

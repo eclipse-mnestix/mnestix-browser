@@ -92,7 +92,6 @@
       "co2EDistribution": "CO2e distribution",
       "comparisonAssumption": "Assuming one beech tree stores 12.5 kg CO2e per year.",
       "completedStages": "Emissions calculated based on product life cycle",
-      "months": "Months",
       "productJourney": "Product Journey",
       "stages": {
         "A1": "A1 - raw material supply (and upstream production)",
@@ -118,8 +117,11 @@
         "C4": "C4 - landfill",
         "D": "D - reuse"
       },
-      "totalCO2Equivalents": "CO2 emissions from product (so far)",
-      "years": "Years"
+      "timeunit": {
+        "month": "{count, plural, =0 {no months} =1 {one month} other {# months}}",
+        "year": "{count, plural, =0 {less than a year} =1 {one year} other {# years}}"
+      },
+      "totalCO2Equivalents": "CO2 emissions from product (so far)"
     },
     "qrScanner": {
       "errors": {
