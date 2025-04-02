@@ -136,6 +136,12 @@
         "hide": "Verbergen"
       },
       "allAvailableData": "Alle verfügbaren Daten"
+    },
+    "qrScanner": {
+      "errors": {
+        "defaultCallbackErrorMsg": "QR Code konnte nicht geöffnet werden!",
+        "errorOnQrScannerOpen": "QR Scanner konnte nicht geöffnet werden!"
+      }
     }
   },
   "navigation": {
@@ -336,12 +342,6 @@
       "invalidIriPart": "Muss als Teil einer IRI funktionieren können (kein \"/\", Leer- und Sonderzeichen)",
       "invalidLong": "Muss eine valide Zahl sein",
       "influxError": "Beim Abrufen der Daten ist ein Fehler aufgetreten."
-    },
-    "qrScanner": {
-      "errors": {
-        "defaultCallbackErrorMsg": "QR Code konnte nicht geöffnet werden!",
-        "errorOnQrScannerOpen": "QR Scanner konnte nicht geöffnet werden!"
-      }
     }
   }
 }

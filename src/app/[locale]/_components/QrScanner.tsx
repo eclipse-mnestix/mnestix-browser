@@ -5,12 +5,11 @@ import ScannerLogo from 'assets/ScannerLogo.svg';
 import { Box, CircularProgress, IconButton, useTheme } from '@mui/material';
 import { QrStream } from 'app/[locale]/_components/QrStream';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { LocalizedError } from 'lib/util/LocalizedError';
 import { keyframes, styled } from '@mui/system';
 import { ThemeProvider } from '@mui/material/styles';
 import CircleIcon from '@mui/icons-material/Circle';
-import { useTranslations } from 'next-intl';
+import { useShowError } from 'lib/hooks/UseShowError';
 
 enum State {
     Stopped,
@@ -22,8 +21,7 @@ enum State {
 export function QrScanner(props: { onScan: (scanResult: string) => Promise<void>; size?: number | undefined }) {
     const [state, setState] = useState<State>(State.Stopped);
 
-    const notificationSpawner = useNotificationSpawner();
-    const t = useTranslations();
+    const { showError } = useShowError();
 
     const theme = useTheme();
     const size = props.size || 250;
@@ -32,10 +30,7 @@ export function QrScanner(props: { onScan: (scanResult: string) => Promise<void>
         if (loadingSuccessful) {
             setState(State.ShowVideo);
         } else {
-            notificationSpawner.spawn({
-                message: t('validation.qrScanner.errors.errorOnQrScannerOpen'),
-                severity: 'error',
-            });
+            showError(new LocalizedError('components.qrScanner.errors.errorOnQrScannerOpen'));
             setState(State.Stopped);
         }
     }, []);
@@ -86,11 +81,11 @@ export function QrScanner(props: { onScan: (scanResult: string) => Promise<void>
                 await props.onScan(result);
                 setState(State.Stopped);
             } catch (e) {
-                const msg = e instanceof LocalizedError ? e.descriptor : 'validation.qrScanner.errors.defaultCallbackErrorMsg';
-                notificationSpawner.spawn({
-                    message: t(msg),
-                    severity: 'error',
-                });
+                showError(
+                    e instanceof LocalizedError
+                        ? e
+                        : new LocalizedError('components.qrScanner.errors.defaultCallbackErrorMsg'),
+                );
                 setState(State.LoadScanner);
             }
         },

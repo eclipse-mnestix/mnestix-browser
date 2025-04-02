@@ -136,6 +136,12 @@
         "hide": "Hide"
       },
       "allAvailableData": "All available data"
+    },
+    "qrScanner": {
+      "errors": {
+        "defaultCallbackErrorMsg": "Could not open the QR code!",
+        "errorOnQrScannerOpen": "Could not open the QR scanner!"
+      }
     }
   },
   "navigation": {
@@ -336,12 +342,6 @@
       "invalidIriPart": "Has to work as part of an IRI (no \"/\", spaces or special characters)",
       "invalidLong": "Has to be a valid long",
       "influxError": "There was a problem retrieving the time series data."
-    },
-    "qrScanner": {
-      "errors": {
-        "defaultCallbackErrorMsg": "Could not open the QR code!",
-        "errorOnQrScannerOpen": "Could not open the QR scanner!"
-      }
     }
   }
 }
