@@ -115,6 +115,7 @@ export class SubmodelSearcher {
                 this.getSubmodelFromEndpoint.name,
                 'Querying Submodel from registry endpoint successful',
                 response,
+                { Endpoint: endpoint },
             );
             return response;
         }
@@ -123,6 +124,7 @@ export class SubmodelSearcher {
             this.getSubmodelFromEndpoint.name,
             'Querying Submodel from registry endpoint unsuccessful',
             response,
+            { Endpoint: endpoint },
         );
         return wrapErrorCode<Submodel>(ApiResultStatus.NOT_FOUND, `Submodel not found at endpoint '${endpoint}'`);
     }
