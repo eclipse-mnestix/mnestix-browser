@@ -31,8 +31,8 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
     const wildcardValueChanged = (value: boolean) => {
         setIsWildcard(value);
         props.setValue(
-            `targetInformation.${props.type}.${props.rule}.id` as 'targetInformation.aas.aasIds.0.id',
-            value ? '*' : '',
+            `targetInformation.${props.type}.${props.rule}` as 'targetInformation.aas.aasIds',
+            value ? [{ id: '*' }] : [{ id: '' }],
         );
     };
 
