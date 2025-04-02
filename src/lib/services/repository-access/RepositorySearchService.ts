@@ -551,6 +551,7 @@ export class RepositorySearchService {
                 Repository_Endpoint: client.getBaseUrl(),
                 AAS_ID: aasId,
             });
+            return response;
         }
         logResponseInfo(
             this.logger ?? Logger,
