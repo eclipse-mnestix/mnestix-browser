@@ -47,12 +47,6 @@ export class SubmodelSearcher {
         if (submodelFromAllRepos.isSuccess) {
             return wrapSuccess(submodelFromAllRepos.result.searchResult);
         }
-        logResponseInfo(
-            this.logger ?? Logger,
-            this.performSubmodelFullSearch.name,
-            'Submodel search',
-            submodelFromAllRepos,
-        );
         return wrapErrorCode<Submodel>(ApiResultStatus.NOT_FOUND, 'Submodel not found');
     }
 
@@ -62,14 +56,19 @@ export class SubmodelSearcher {
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'No default Submodel registry defined');
         const response = await this.getSubmodelRegistryClient(defaultUrl).getSubmodelDescriptorById(submodelId);
         if (response.isSuccess) {
-            logResponseInfo(this.logger ?? Logger, this.getSubmodelDescriptorById.name, 'Submodel search', response);
+            logResponseInfo(
+                this.logger ?? Logger,
+                this.getSubmodelDescriptorById.name,
+                'Querying Submodel Descriptor from registry successful',
+                response,
+            );
             return response;
         } else {
             if (response.errorCode === ApiResultStatus.NOT_FOUND) {
                 logResponseInfo(
                     this.logger ?? Logger,
                     this.getSubmodelDescriptorById.name,
-                    'Submodel search',
+                    'Querying Submodel Descriptor from registry unsuccessful',
                     response,
                 );
             }
@@ -80,11 +79,21 @@ export class SubmodelSearcher {
     async getSubmodelFromAllRepos(submodelId: string): Promise<ApiResponseWrapper<Submodel>> {
         const response = await this.multipleDataSource.getFirstSubmodelFromAllRepos(submodelId);
         if (response.isSuccess) {
-            logResponseInfo(this.logger ?? Logger, this.getSubmodelFromAllRepos.name, 'Submodel search', response);
+            logResponseInfo(
+                this.logger ?? Logger,
+                this.getSubmodelFromAllRepos.name,
+                'Querying Submodel from repositories successful',
+                response,
+            );
             return wrapSuccess(response.result.searchResult);
         }
         if (response.errorCode === ApiResultStatus.NOT_FOUND) {
-            logResponseInfo(this.logger ?? Logger, this.getSubmodelFromAllRepos.name, 'Submodel search', response);
+            logResponseInfo(
+                this.logger ?? Logger,
+                this.getSubmodelFromAllRepos.name,
+                'Querying Submodel from repositories unsuccessful',
+                response,
+            );
         }
         return wrapErrorCode<Submodel>(ApiResultStatus.NOT_FOUND, 'Submodel not found');
     }
@@ -92,13 +101,20 @@ export class SubmodelSearcher {
     async getSubmodelFromEndpoint(endpoint: string): Promise<ApiResponseWrapper<Submodel>> {
         const response = await this.getSubmodelRegistryClient('').getSubmodelFromEndpoint(endpoint);
         if (response.isSuccess) {
-            logResponseInfo(this.logger ?? Logger, this.getSubmodelFromEndpoint.name, 'Submodel search', response);
+            logResponseInfo(
+                this.logger ?? Logger,
+                this.getSubmodelFromEndpoint.name,
+                'Querying Submodel from registry endpoint successful',
+                response,
+            );
             return response;
         }
-        if (response.errorCode === ApiResultStatus.NOT_FOUND) {
-            logResponseInfo(this.logger ?? Logger, this.getSubmodelFromEndpoint.name, 'Submodel search', response);
-        }
-        logResponseInfo(this.logger ?? Logger, this.getSubmodelFromEndpoint.name, 'Submodel search', response);
+        logResponseInfo(
+            this.logger ?? Logger,
+            this.getSubmodelFromEndpoint.name,
+            'Querying Submodel from registry endpoint unsuccessful',
+            response,
+        );
         return wrapErrorCode<Submodel>(ApiResultStatus.NOT_FOUND, `Submodel not found at endpoint '${endpoint}'`);
     }
 }
