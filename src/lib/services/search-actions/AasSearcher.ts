@@ -260,16 +260,17 @@ export class AasSearcher {
                     Requested_ID: aasId,
                 },
             );
+        } else {
+            logResponseInfo(
+                this.logger ?? Logger,
+                this.getAasFromDefaultRepository.name,
+                'Default repository search successful',
+                response,
+                {
+                    Requested_ID: aasId,
+                },
+            );
         }
-        logResponseInfo(
-            this.logger ?? Logger,
-            this.getAasFromDefaultRepository.name,
-            'Default repository search successful',
-            response,
-            {
-                Requested_ID: aasId,
-            },
-        );
         return response;
     }
 
