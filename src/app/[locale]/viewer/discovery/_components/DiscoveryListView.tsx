@@ -102,12 +102,7 @@ export const DiscoveryListView = () => {
             {isError ? (
                 <AssetNotFound id={assetId} />
             ) : (
-                <GenericAasList
-                    data={discoveryListEntries}
-                    buttonTooltip={t('buttonTooltip')}
-                    showAasId
-                    showRepositoryUrl
-                />
+                <GenericAasList data={discoveryListEntries} showAasId showRepositoryUrl />
             )}
         </>
     );

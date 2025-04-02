@@ -5,7 +5,12 @@ import { AssetAdministrationShell, Submodel } from '@aas-core-works/aas-core3.0-
 import { PrismaConnector } from 'lib/services/database/PrismaConnector';
 import { IPrismaConnector } from 'lib/services/database/PrismaConnectorInterface';
 import { Reference } from '@aas-core-works/aas-core3.0-typescript/types';
-import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import {
+    ApiResponseWrapper,
+    ApiResponseWrapperSuccess,
+    wrapErrorCode,
+    wrapSuccess,
+} from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { PaginationData } from 'lib/api/basyx-v3/types';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
@@ -322,10 +327,10 @@ export class RepositorySearchService {
             fulfilledResponses.map(
                 (
                     result: PromiseFulfilledResult<{
-                        searchResult: ApiResponseWrapper<T>;
+                        searchResult: ApiResponseWrapperSuccess<T>;
                         location: string;
                     }>,
-                ) => ({ searchResult: result.value.searchResult.result!, location: result.value.location }),
+                ) => ({ searchResult: result.value.searchResult.result, location: result.value.location }),
             ),
         );
     }

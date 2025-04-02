@@ -25,7 +25,8 @@
       "discoveryUrl": "Discovery Url",
       "registryUrl": "Registry Url",
       "viewAASButton": "View AAS"
-    }
+    },
+    "buttonTooltip": "Go to AAS"
   },
   "discoveryList": {
     "errors": {
@@ -33,8 +34,15 @@
       "noAasFound": "No AAS found for the given ID"
     },
     "title": "Related AAS to Asset ID",
-    "subtitle": "Here you will find all related AAS to the given Asset ID.",
-    "buttonTooltip": "Go to AAS"
+    "subtitle": "Here you will find all related AAS to the given Asset ID."
+  },
+  "registryList": {
+    "errors": {
+      "searchFailed": "Search failed",
+      "noAasFound": "No AAS found for the given ID"
+    },
+    "title": "Related AAS to AAS ID",
+    "subtitle": "Here you will find all related AAS to the given AAS ID."
   },
   "dashboard": {
     "welcome-text": "Welcome to Mnestix",

@@ -6,6 +6,7 @@ import { encodeBase64 } from 'lib/util/Base64Util';
 import { useRouter } from 'next/navigation';
 import { RoundedIconButton } from 'components/basics/Buttons';
 import { ArrowForward } from '@mui/icons-material';
+import { useTranslations } from 'next-intl';
 
 type GenericAasListTableRowProps = {
     aasListEntry: AasListEntry;
@@ -21,6 +22,8 @@ export const GenericAasListTableRow = ({ aasListEntry, ...config }: GenericAasLi
     const [, setAas] = useAasState();
     const [, setAasOriginUrl] = useAasOriginSourceState();
     const navigate = useRouter();
+
+    const t = useTranslations('aas-list');
 
     const navigateToAas = (aasId: string, repoUrl?: string) => {
         setAas(null);
@@ -65,7 +68,7 @@ export const GenericAasListTableRow = ({ aasListEntry, ...config }: GenericAasLi
                 <RoundedIconButton
                     endIcon={<ArrowForward />}
                     onClick={() => navigateToAas(aasListEntry.aasId, aasListEntry.repositoryUrl)}
-                    title={config.buttonTooltip}
+                    title={t('buttonTooltip')}
                 />
             </TableCell>
         </>

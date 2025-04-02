@@ -19,8 +19,6 @@ export default function GenericAasList(props: AasListProps) {
 
     return (
         <>
-            <Typography marginBottom={3}>{t('subtitle')}</Typography>
-
             <TableContainer>
                 <Table>
                     <TableHead>
