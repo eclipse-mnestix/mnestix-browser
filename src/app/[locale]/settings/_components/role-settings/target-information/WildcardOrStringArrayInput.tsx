@@ -15,7 +15,7 @@ type WildcardOrStringArrayInputProps = {
 };
 
 export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProps) => {
-    const t = useTranslations('settings');
+    const t = useTranslations('pages.settings');
     const control = props.control;
     const checkIfWildcard = () => {
         const value = props.getValues(`targetInformation.${props.type}.${props.rule}` as keyof typeof props.getValues);
@@ -84,7 +84,7 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
                             append({ id: '' });
                         }}
                     >
-                        {t('roles.addButton')}
+                        {t('roles.buttons.add')}
                     </Button>
                 </>
             )}

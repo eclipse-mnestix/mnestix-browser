@@ -12,7 +12,7 @@ type TargetInformationProps = {
     readonly getValues: UseFormGetValues<RoleFormModel>;
 };
 export const TargetInformationForm = (props: TargetInformationProps) => {
-    const t = useTranslations('settings');
+    const t = useTranslations('pages.settings');
 
     const ruleTypes = Object.keys(rbacRuleTargets);
     const currentType = props.getValues('type') as keyof typeof rbacRuleTargets;

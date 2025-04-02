@@ -7,7 +7,7 @@ type TargetInformationProps = {
     readonly targetInformation: BaSyxRbacRule['targetInformation'];
 };
 export const TargetInformationView = (props: TargetInformationProps) => {
-    const t = useTranslations('settings');
+    const t = useTranslations('pages.settings');
     const permissions: JSX.Element[] = [];
     const keys = Object.keys(props.targetInformation);
 

@@ -54,7 +54,7 @@ export type RoleFormModel = {
 };
 
 export const RoleDialog = (props: RoleDialogProps) => {
-    const t = useTranslations('pages.settings');
+    const t = useTranslations('pages.settings.roles');
     const [isEditMode, setIsEditMode] = useState(false);
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
@@ -91,7 +91,7 @@ export const RoleDialog = (props: RoleDialogProps) => {
         const response = await deleteAndCreateRbacRule(props.rule.idShort, mappedDto);
         if (response.isSuccess) {
             notificationSpawner.spawn({
-                message: 'Saved successfully',
+                message: t('saveSuccess'),
                 severity: 'success',
             });
             onCloseDialog(true);
@@ -125,14 +125,14 @@ export const RoleDialog = (props: RoleDialogProps) => {
                 <DialogContent style={{ padding: '40px' }}>
                     <Box display="flex" flexDirection="column">
                         <Typography color="text.secondary" variant="body2">
-                            {t('roles.tableHeader.name')}
+                            {t('tableHeader.name')}
                         </Typography>
                         <Typography variant="h2" mb="1em">
                             {props.rule?.role}
                         </Typography>
                         <Box display="flex" flexDirection="column" gap="1em">
                             <Box>
-                                <Typography variant="h5">{t('roles.tableHeader.action')}</Typography>
+                                <Typography variant="h5">{t('tableHeader.action')}</Typography>
                                 {isEditMode ? (
                                     <Controller
                                         name="action"

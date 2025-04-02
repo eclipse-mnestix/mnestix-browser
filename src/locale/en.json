@@ -265,9 +265,17 @@
           "submodelIds": "Submodel IDs",
           "type": "Type"
         },
-        "title": "Role Management"
-      },
-      "subHeader": "Add, remove, or modify settings and configurations to various features within your AAS environment."
+        "saveSuccess": "Role saved successfully.",
+        "buttons": {
+          "save": "Save",
+          "cancel": "Cancel",
+          "back": "Back",
+          "edit": "Edit",
+          "add": "Add"
+        },
+        "title": "Role Management",
+        "subHeader": "Add, remove, or modify settings and configurations to various features within your AAS environment."
+      }
     },
     "submodels": {
       "errors": {
