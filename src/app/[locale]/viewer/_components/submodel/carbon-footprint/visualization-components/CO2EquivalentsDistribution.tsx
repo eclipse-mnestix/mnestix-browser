@@ -20,7 +20,7 @@ export function CO2EquivalentsDistribution(props: {
     totalCO2Equivalents: number;
 }) {
     const [chartVariant, setChartVariant] = useState(chartVariants.barchart);
-    const t = useTranslations('components.carbon');
+    const t = useTranslations('components.carbonFootprint');
 
     const handleVariantChange = (_event: React.MouseEvent<HTMLElement>, variant: number | null) => {
         if (variant !== null) setChartVariant(variant);

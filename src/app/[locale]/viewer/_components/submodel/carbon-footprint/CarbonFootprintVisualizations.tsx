@@ -14,7 +14,7 @@ import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/subm
 import { useTranslations } from 'next-intl';
 
 export function CarbonFootprintVisualizations({ submodel }: SubmodelVisualizationProps) {
-    const t = useTranslations('components.carbon');
+    const t = useTranslations('components.carbonFootprint');
 
     const pcfSubmodelElements = submodel.submodelElements?.filter((el) =>
         hasSemanticId(
@@ -66,7 +66,7 @@ export function CarbonFootprintVisualizations({ submodel }: SubmodelVisualizatio
             </StyledDataRow>
             <StyledDataRow title={t('productJourney')}>
                 <ProductJourney addressesPerLifeCyclePhase={addressesPerLifeCyclePhase} />
-            </StyledDataRow> 
+            </StyledDataRow>
             <StyledDataRow title={t('calculationMethod')}>
                 <CalculationMethod calculationMethod={calculationMethod} />
             </StyledDataRow>
@@ -104,9 +104,9 @@ function ExtractCO2EquivalentsPerLifeCycleStage(
     return pcfSubmodelElements.reduce(
         (o, key) => ({
             ...o,
-            [(key.value?.find((v) => hasSemanticId(v, SubmodelElementSemanticId.PCFLiveCyclePhase)) as Property)?.value
+            [((key.value?.find((v) => hasSemanticId(v, SubmodelElementSemanticId.PCFLiveCyclePhase)) as Property)?.value
                 ?.split(' ')[0]
-                .trim() as ProductLifecycleStage ?? ProductLifecycleStage.A3Production]: Number.parseFloat(
+                .trim() as ProductLifecycleStage) ?? ProductLifecycleStage.A3Production]: Number.parseFloat(
                 (key.value?.find((v) => hasSemanticId(v, SubmodelElementSemanticId.PCFCO2eq)) as Property)?.value ?? '',
             ),
         }),

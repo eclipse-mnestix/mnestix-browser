@@ -18,7 +18,7 @@ function determineTimePeriod(co2Equivalents: number) {
 }
 
 export function Comparison(props: { co2Equivalents: number }) {
-    const t = useTranslations('components.carbon');
+    const t = useTranslations('components.carbonFootprint');
     const { value: timePeriod, unit: unitOfTimePeriod } = determineTimePeriod(props.co2Equivalents);
 
     return (

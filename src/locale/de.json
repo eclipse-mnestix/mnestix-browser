@@ -85,7 +85,7 @@
         "Zipcode": "PLZ"
       }
     },
-    "carbon": {
+    "carbonFootprint": {
       "beech": "Eine Buche",
       "calculationMethod": "Berechnungsmethode",
       "co2EComparison": "Vergleich",

@@ -12,7 +12,7 @@ function findNextStage(stage?: string) {
 }
 
 export function ProductLifecycle(props: { completedStages: ProductLifecycleStage[] }) {
-    const t = useTranslations('components.carbon');
+    const t = useTranslations('components.carbonFootprint');
     const theme = useTheme();
     const nextStage = findNextStage(props.completedStages.at(-1));
 

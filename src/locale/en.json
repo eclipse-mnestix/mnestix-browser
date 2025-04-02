@@ -85,7 +85,7 @@
         "Zipcode": "Zipcode"
       }
     },
-    "carbon": {
+    "carbonFootprint": {
       "beech": "One Beech Tree",
       "calculationMethod": "Calculation Method",
       "co2EComparison": "Comparison",

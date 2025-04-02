@@ -5,7 +5,7 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 
 export function CO2EList(props: { co2EquivalentsPerLifecycleStage: Partial<Record<ProductLifecycleStage, number>> }) {
-    const t = useTranslations('components.carbon');
+    const t = useTranslations('components.carbonFootprint');
     const { co2EquivalentsPerLifecycleStage } = props;
 
     const ItemCO2Amount = styled(Paper)(({ theme }) => ({
@@ -31,9 +31,7 @@ export function CO2EList(props: { co2EquivalentsPerLifecycleStage: Partial<Recor
                     )} kg`}</ItemCO2Amount>
                 </Grid>
                 <Grid item key={`grid-stage-${index}`} xs={9} sm={10}>
-                    <ItemLifecycleStage elevation={1}>
-                        {t(`stages.${val}`)}
-                    </ItemLifecycleStage>
+                    <ItemLifecycleStage elevation={1}>{t(`stages.${val}`)}</ItemLifecycleStage>
                 </Grid>
             </React.Fragment>
         ));

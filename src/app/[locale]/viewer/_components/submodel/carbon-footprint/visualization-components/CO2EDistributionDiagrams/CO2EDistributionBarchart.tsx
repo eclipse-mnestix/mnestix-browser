@@ -10,7 +10,7 @@ export function CO2EBarchart(props: {
     co2EquivalentsPerLifecycleStage: Partial<Record<ProductLifecycleStage, number>>;
 }) {
     const theme = useTheme();
-    const t = useTranslations('components.carbon');
+    const t = useTranslations('components.carbonFootprint');
 
     const data = [{ name: t('equivalents'), ...props.co2EquivalentsPerLifecycleStage }];
 
