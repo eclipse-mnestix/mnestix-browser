@@ -86,11 +86,12 @@
       }
     },
     "carbon": {
-      "beech": "Buche",
+      "beech": "Eine Buche",
       "calculationMethod": "Berechnungsmethode",
       "co2EComparison": "Vergleich",
       "co2EDistribution": "CO2e Verteilung",
       "comparisonAssumption": "Unter der Annahme von 12,5 kg CO2e Speicherung pro Jahr.",
+      "comparisonNeeds": "braucht",
       "completedStages": "Emissionen berechnet basierend auf folgenden Lebenszyklusphasen",
       "productJourney": "Produktreise",
       "stages": {
@@ -118,8 +119,8 @@
         "D": "D - Wiederverwendung"
       },
       "timeunit": {
-        "month": "{count, plural, =0 {Keinen Monat} =1 {Einen Monat} other {# Monate}}",
-        "year": "{count, plural, =0 {Kein Jahr} =1 {Ein Jahr} other {# Jahre}}"
+        "month": "{count, plural, =0 {unter einem Monat} =1 {einen Monat} other {# Monate}}",
+        "year": "{count, plural, =0 {unter einem Jahr} =1 {ein Jahr} other {# Jahre}}"
       },
       "totalCO2Equivalents": "(Bisherige) CO2 Emissionen des Produkts"
     },

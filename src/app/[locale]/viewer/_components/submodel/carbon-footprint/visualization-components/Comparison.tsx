@@ -27,13 +27,16 @@ export function Comparison(props: { co2Equivalents: number }) {
                 <Tree alt="Tree" data-testid="co2-comparison-tree" />
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <Typography sx={{ fontSize: [28, 36], color: 'primary.main', fontWeight: 'bold' }}>
-                        1 {t('beech')}
+                        {t('beech')}
+                    </Typography>
+                    <Typography sx={{ fontSize: [18, 26], color: 'primary.main', fontWeight: 'bold' }}>
+                        {t('comparisonNeeds')}
                     </Typography>
                     <Typography
                         sx={{ fontSize: [28, 36], color: 'primary.main', fontWeight: 'bold' }}
                         data-testid="co2-comparison-value"
                     >
-                        {t(`timeunit.${unitOfTimePeriod}`, { count: timePeriod })}`
+                        {t(`timeunit.${unitOfTimePeriod}`, { count: timePeriod })}
                     </Typography>
                 </Box>
             </Box>
