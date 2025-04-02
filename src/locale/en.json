@@ -262,6 +262,15 @@
       "idStructure": "ID structure",
       "idStructureExplanation": "Define, how your IDs are represented. This is a standard setting that can be adjusted for individual imports.",
       "roles": {
+        "buttons": {
+          "add": "Add",
+          "back": "Back",
+          "cancel": "Cancel",
+          "edit": "Edit",
+          "save": "Save"
+        },
+        "saveSuccess": "Role saved successfully.",
+        "subHeader": "Add, remove, or modify settings and configurations to various features within your AAS environment.",
         "subtitle": "Manage roles and permissions.",
         "tableHeader": {
           "aasIds": "AAS IDs",
@@ -271,17 +280,9 @@
           "submodelIds": "Submodel IDs",
           "type": "Type"
         },
-        "saveSuccess": "Role saved successfully.",
-        "buttons": {
-          "save": "Save",
-          "cancel": "Cancel",
-          "back": "Back",
-          "edit": "Edit",
-          "add": "Add"
-        },
-        "title": "Role Management",
-        "subHeader": "Add, remove, or modify settings and configurations to various features within your AAS environment."
-      }
+        "title": "Role Management"
+      },
+      "subHeader": "Add, remove, or modify settings and configurations to various features within your AAS."
     },
     "submodels": {
       "errors": {

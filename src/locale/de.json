@@ -262,6 +262,15 @@
       "idStructure": "ID Struktur",
       "idStructureExplanation": "Definieren Sie, wie Ihre IDs aussehen sollen. Dies ist eine Basis-Einstellung, die für individuelle Importe angepasst werden kann.",
       "roles": {
+        "buttons": {
+          "add": "Hinzufügen",
+          "back": "Zurück",
+          "cancel": "Abbrechen",
+          "edit": "Bearbeiten",
+          "save": "Speichern"
+        },
+        "saveSuccess": "Rolle erfolgreich gespeichert.",
+        "subHeader": "Hinzufügen, Entfernen oder Ändern von Einstellungen und Konfigurationen für verschiedene Funktionen innerhalb Ihrer AAS-Umgebung.",
         "subtitle": "Verwalten von Rollen und Berechtigungen.",
         "tableHeader": {
           "aasIds": "AAS IDs",
@@ -271,17 +280,9 @@
           "submodelIds": "Submodel IDs",
           "type": "Typ"
         },
-        "saveSuccess": "Rolle erfolgreich gespeichert.",
-        "title": "Rollen Management",
-        "buttons": {
-          "save": "Speichern",
-          "cancel": "Abbrechen",
-          "back": "Zurück",
-          "edit": "Bearbeiten",
-          "add": "Hinzufügen"
-        },
-        "subHeader": "Hinzufügen, Entfernen oder Ändern von Einstellungen und Konfigurationen für verschiedene Funktionen innerhalb Ihrer AAS-Umgebung."
-      }
+        "title": "Rollen Management"
+      },
+      "subHeader": "Hinzufügen, Entfernen oder Ändern von Einstellungen und Konfigurationen für verschiedene Funktionen innerhalb Ihrer AAS-Umgebung."
     },
     "submodels": {
       "errors": {
