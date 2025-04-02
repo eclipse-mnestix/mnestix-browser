@@ -122,8 +122,8 @@
         "D": "D - reuse"
       },
       "timeunit": {
-        "month": "{count, plural, =0 {less than a month} =1 {one month} other {# months}}",
-        "year": "{count, plural, =0 {less than a year} =1 {one year} other {# years}}"
+        "month": "{count, plural, =0 {less than a month} =1 {1 month} other {# months}}",
+        "year": "{count, plural, =0 {less than a year} =1 {1 year} other {# years}}"
       },
       "totalCO2Equivalents": "CO2 emissions from product (so far)"
     },

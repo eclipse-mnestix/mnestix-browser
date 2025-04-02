@@ -4,7 +4,7 @@ import { cutDecimalPlaces } from 'lib/util/NumberUtil';
 import { useTranslations } from 'next-intl';
 
 // Taken from https://www.co2online.de/service/klima-orakel/beitrag/wie-viele-baeume-braucht-es-um-eine-tonne-co2-zu-binden-10658/
-const YearlyCarbonStorageOfBeechTree = 12.5;
+const yearlyCarbonStorageOfBeechTree = 12.5;
 
 enum TimeUnit {
     YEAR = 'year',
@@ -12,7 +12,7 @@ enum TimeUnit {
 }
 
 function determineTimePeriod(co2Equivalents: number) {
-    const numberOfYears = co2Equivalents / YearlyCarbonStorageOfBeechTree;
+    const numberOfYears = co2Equivalents / yearlyCarbonStorageOfBeechTree;
     if (numberOfYears > 1) return { value: cutDecimalPlaces(numberOfYears, 1), unit: TimeUnit.YEAR };
     return { value: cutDecimalPlaces(numberOfYears * 12, 1), unit: TimeUnit.MONTH };
 }
