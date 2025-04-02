@@ -25,14 +25,14 @@ export function DataRow(props: DataRowProps) {
                 <CopyButton
                     value={props.value}
                     isVisible={isHovered}
-                    data-testid={props.testId || 'copy-datarow-value'}
+                    dataTestId={props.testId || 'copy-datarow-value'}
                 />
                 {props.withBase64 && (
                     <CopyButton 
                         value={props.value}
                         isVisible={isHovered}
                         withBase64={true}
-                        data-testid={props.testId + '-b64' || 'copy-datarow-value-secondary'}
+                        dataTestId={props.testId + '-b64' || 'copy-datarow-value-secondary'}
                     />
                 )}
             </Box>

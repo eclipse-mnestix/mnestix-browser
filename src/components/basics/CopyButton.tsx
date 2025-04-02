@@ -9,10 +9,10 @@ type CopyButtonProps = {
     value?: string | null;
     isVisible?: boolean;
     withBase64?: boolean;
-    dataTestid?: string;
+    dataTestId?: string;
 };
 
-export function CopyButton({ value, isVisible = true, withBase64 = false, dataTestid: testId }: CopyButtonProps) {
+export function CopyButton({ value, isVisible = true, withBase64 = false, dataTestId: testId }: CopyButtonProps) {
     const intl = useIntl();
     const notificationSpawner = useNotificationSpawner();
 
