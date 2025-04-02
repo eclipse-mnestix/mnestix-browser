@@ -17,9 +17,12 @@ import fs from 'node:fs';
  * Action to load the public envs from server.
  */
 export const getEnv = async () => {
-    const THEME_BASE64_LOGO = loadImage() || publicEnvs.THEME_BASE64_LOGO;
+    const THEME_BASE64_LOGO = publicEnvs.THEME_BASE64_LOGO || loadImage();
 
-    return { ...publicEnvs, THEME_BASE64_LOGO };
+    return {
+        ...publicEnvs,
+        THEME_BASE64_LOGO,
+    };
 };
 
 function loadImage() {

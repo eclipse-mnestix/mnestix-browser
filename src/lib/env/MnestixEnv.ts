@@ -52,6 +52,7 @@ const otherVariables = mapEnvVariables([
     'MNESTIX_BACKEND_API_URL',
     'IMPRINT_URL',
     'DATA_PRIVACY_URL',
+    // strong typing and parsing was neglected here, as this is a temporary feature
     'SUBMODEL_WHITELIST',
 ] as const);
 

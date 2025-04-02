@@ -6,7 +6,7 @@ import { Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/type
 import { envs } from 'lib/env/MnestixEnv';
 
 const templateApiClient = TemplateShellApi.create(
-    envs.MNESTIX_BACKEND_API_URL || '',
+    envs.MNESTIX_BACKEND_API_URL ?? '',
     envs.AUTHENTICATION_FEATURE_FLAG,
     mnestixFetchLegacy(),
 );
