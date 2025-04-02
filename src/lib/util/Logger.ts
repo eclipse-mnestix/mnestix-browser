@@ -32,6 +32,14 @@ export const getCorrelationId = (headers: Headers) => {
     return correlationId;
 };
 
+/**
+ * Logs an informational message with optional metadata.
+ *
+ * @param logger - The logger instance to use for logging.
+ * @param methodName - The name of the method where the log is being generated.
+ * @param message - The log message.
+ * @param optional - Additional optional metadata to include in the log.
+ */
 export const logInfo = (logger: typeof baseLogger, methodName: string, message: string, optional?: object): void =>
     logger.info(
         {
