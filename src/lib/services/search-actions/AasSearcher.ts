@@ -36,7 +36,7 @@ export type AasSearcherNullParams = {
     discoveryEntries?: { aasId: string; assetId: string }[];
     aasRegistryDescriptors?: AssetAdministrationShellDescriptor[];
     aasRegistryEndpoints?: AasRegistryEndpointEntryInMemory[];
-    logger: typeof Logger;
+    logger?: typeof Logger;
 };
 
 export class AasSearcher {
@@ -55,7 +55,7 @@ export class AasSearcher {
         const discoveryServiceClient = process.env.DISCOVERY_API_URL
             ? DiscoveryServiceApi.create(process.env.DISCOVERY_API_URL, mnestixFetch(), logger)
             : null;
-        const searcherLogger = logger?.child({ service: AasSearcher.name });
+        const searcherLogger = logger?.child({ Service: AasSearcher.name });
         return new AasSearcher(multipleDataSource, discoveryServiceClient, registryServiceClient, searcherLogger);
     }
 
@@ -151,10 +151,10 @@ export class AasSearcher {
             logResponseInfo(
                 this.logger ?? Logger,
                 this.performAasDiscoverySearch.name,
-                'Discovery search successful',
+                'Executing AAS discovery search',
                 response,
                 {
-                    requestedId: searchAssetId,
+                    Requested_Asset_ID: searchAssetId,
                 },
             );
             return wrapSuccess(response.result);
@@ -162,10 +162,10 @@ export class AasSearcher {
         logResponseInfo(
             this.logger ?? Logger,
             this.performAasDiscoverySearch.name,
-            'Discovery search failed',
+            'AAS discovery search unsuccessful',
             response,
             {
-                requestedId: searchAssetId,
+                Requested_Asset_ID: searchAssetId,
             },
         );
         return wrapErrorCode(
@@ -198,10 +198,10 @@ export class AasSearcher {
             logResponseInfo(
                 this.logger ?? Logger,
                 this.performAasRegistrySearch.name,
-                'Registry search failed',
+                'Registry lookup unsuccessful',
                 shellDescription,
                 {
-                    requestedId: searchAasId,
+                    Requested_ID: searchAasId,
                 },
             );
             return wrapErrorCode(
@@ -218,7 +218,7 @@ export class AasSearcher {
             'Registry search successful',
             shellDescription,
             {
-                requestedId: searchAasId,
+                Requested_ID: searchAasId,
             },
         );
         return wrapSuccess<RegistrySearchResult>({
@@ -232,9 +232,15 @@ export class AasSearcher {
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'AAS Registry service is not defined');
         const response = await this.registryService.getAssetAdministrationShellFromEndpoint(endpoint);
         if (!response.isSuccess) {
-            logResponseInfo(this.logger ?? Logger, this.getAasFromEndpoint.name, 'Registry search failed', response, {
-                endpoint: endpoint.toString(),
-            });
+            logResponseInfo(
+                this.logger ?? Logger,
+                this.getAasFromEndpoint.name,
+                'Registry lookup unsuccessful',
+                response,
+                {
+                    endpoint: endpoint.toString(),
+                },
+            );
         }
         logResponseInfo(this.logger ?? Logger, this.getAasFromEndpoint.name, 'Registry search successful', response, {
             endpoint: endpoint.toString(),
@@ -248,10 +254,10 @@ export class AasSearcher {
             logResponseInfo(
                 this.logger ?? Logger,
                 this.getAasFromDefaultRepository.name,
-                'Default repository search failed',
+                'Default repository search unsuccessful',
                 response,
                 {
-                    requestedId: aasId,
+                    Requested_ID: aasId,
                 },
             );
         }
@@ -261,7 +267,7 @@ export class AasSearcher {
             'Default repository search successful',
             response,
             {
-                requestedId: aasId,
+                Requested_ID: aasId,
             },
         );
         return response;
@@ -275,22 +281,23 @@ export class AasSearcher {
             logResponseInfo(
                 this.logger ?? Logger,
                 this.getAasFromAllRepositories.name,
-                'Configured repositories search failed',
+                'Configured repositories search unsuccessful ',
                 response,
                 {
-                    requestedId: aasId,
+                    Requested_ID: aasId,
+                },
+            );
+        } else {
+            logResponseInfo(
+                this.logger ?? Logger,
+                this.getAasFromAllRepositories.name,
+                'Configured repositories search successful',
+                response,
+                {
+                    Requested_ID: aasId,
                 },
             );
         }
-        logResponseInfo(
-            this.logger ?? Logger,
-            this.getAasFromAllRepositories.name,
-            'Configured repositories search successful',
-            response,
-            {
-                requestedId: aasId,
-            },
-        );
         return response;
     }
 }

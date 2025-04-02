@@ -20,7 +20,7 @@ const baseLogger = isProduction
           stream,
       );
 
-export const createLogger = (correlationId: string) => baseLogger.child({ correlationId });
+export const createLogger = (correlationId: string) => baseLogger.child({ Correlation_ID: correlationId });
 
 export default baseLogger;
 
@@ -31,6 +31,15 @@ export const getCorrelationId = (headers: Headers) => {
     }
     return correlationId;
 };
+
+export const logInfo = (logger: typeof baseLogger, methodName: string, message: string, optional?: object): void =>
+    logger.info(
+        {
+            Method: methodName,
+            ...optional,
+        },
+        message,
+    );
 
 /**
  * Logs an informational message with optional metadata and an API response.
@@ -50,9 +59,8 @@ export const logResponseInfo = <T>(
 ): void =>
     logger.info(
         {
-            methodName: methodName,
-            httpStatus: response?.httpStatus,
-            httpText: response?.httpText,
+            Method: methodName,
+            Http_Status: `${response?.httpStatus} (${response?.httpText})`,
             ...optional,
         },
         message,

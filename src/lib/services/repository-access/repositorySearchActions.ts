@@ -13,13 +13,14 @@ import {
 import { AssetAdministrationShellRepositoryApi, SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { headers } from 'next/headers';
-import { createLogger, getCorrelationId } from 'lib/util/Logger';
+import { createLogger, getCorrelationId, logInfo } from 'lib/util/Logger';
 
 export async function performSearchAasFromAllRepositories(
     searchInput: string,
 ): Promise<ApiResponseWrapper<RepoSearchResult<AssetAdministrationShell>[]>> {
     const correlationId = getCorrelationId(await headers());
     const logger = createLogger(correlationId);
+    logInfo(logger, performSearchAasFromAllRepositories.name, 'Requested AAS', { requestedId: searchInput });
     const searcher = RepositorySearchService.create(logger);
     return searcher.getAasFromAllRepos(searchInput);
 }
@@ -27,6 +28,7 @@ export async function performSearchAasFromAllRepositories(
 export async function performSearchSubmodelFromAllRepos(searchInput: string): Promise<ApiResponseWrapper<Submodel>> {
     const correlationId = getCorrelationId(await headers());
     const logger = createLogger(correlationId);
+    logInfo(logger, performSearchSubmodelFromAllRepos.name, 'Requested Submodel', { requestedId: searchInput });
     const searcher = RepositorySearchService.create(logger);
     const response = await searcher.getFirstSubmodelFromAllRepos(searchInput);
     if (!response.isSuccess) return wrapErrorCode(response.errorCode, response.message);
@@ -36,6 +38,7 @@ export async function performSearchSubmodelFromAllRepos(searchInput: string): Pr
 export async function performGetAasThumbnailFromAllRepos(searchInput: string): Promise<ApiResponseWrapper<Blob>> {
     const correlationId = getCorrelationId(await headers());
     const logger = createLogger(correlationId);
+    logInfo(logger, performGetAasThumbnailFromAllRepos.name, 'Requested AAS Thumbnail', { requestedId: searchInput });
     const searcher = RepositorySearchService.create(logger);
     const response = await searcher.getFirstAasThumbnailFromAllRepos(searchInput);
     if (!response.isSuccess) return wrapErrorCode(response.errorCode, response.message);
@@ -57,6 +60,7 @@ export async function getThumbnailFromShellFromAllRepos(aasId: string): Promise<
     const correlationId = getCorrelationId(await headers());
     const logger = createLogger(correlationId);
     const searcher = RepositorySearchService.create(logger);
+    logInfo(logger, getThumbnailFromShellFromAllRepos.name, 'Requested AAS Thumbnail', { requestedId: aasId });
     const defaultResponsePromise = searcher.getAasThumbnailFromDefaultRepo(aasId);
     const allResponsePromise = searcher.getFirstAasThumbnailFromAllRepos(aasId);
 
@@ -72,6 +76,7 @@ export async function getThumbnailFromShellFromAllRepos(aasId: string): Promise<
 export async function getSubmodelReferencesFromShell(searchInput: string): Promise<ApiResponseWrapper<Reference[]>> {
     const correlationId = getCorrelationId(await headers());
     const logger = createLogger(correlationId);
+    logInfo(logger, getSubmodelReferencesFromShell.name, 'Requested Submodel References', { requestedId: searchInput });
     const searcher = RepositorySearchService.create(logger);
     const response = await searcher.getFirstSubmodelReferencesFromShellFromAllRepos(searchInput);
     if (!response.isSuccess) return wrapErrorCode(response.errorCode, response.message);
@@ -81,6 +86,7 @@ export async function getSubmodelReferencesFromShell(searchInput: string): Promi
 export async function getSubmodelById(id: string): Promise<ApiResponseWrapper<Submodel>> {
     const correlationId = getCorrelationId(await headers());
     const logger = createLogger(correlationId);
+    logInfo(logger, getSubmodelById.name, 'Requested Submodel', { requestedId: id });
     const searcher = RepositorySearchService.create(logger);
     const response = await searcher.getFirstSubmodelFromAllRepos(id);
     if (!response.isSuccess) return wrapErrorCode(response.errorCode, response.message);
@@ -94,6 +100,10 @@ export async function getAttachmentFromSubmodelElement(
 ): Promise<ApiResponseWrapper<ApiFileDto>> {
     const correlationId = getCorrelationId(await headers());
     const logger = createLogger(correlationId);
+    logInfo(logger, getAttachmentFromSubmodelElement.name, 'Requested Attachment', {
+        submodelId: submodelId,
+        submodelElementPath: submodelElementPath,
+    });
     const searcher = RepositorySearchService.create(logger);
     if (baseRepositoryUrl) {
         const fileSearcher = SubmodelRepositoryApi.create(baseRepositoryUrl, mnestixFetch());

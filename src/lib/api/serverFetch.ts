@@ -28,10 +28,10 @@ export async function performServerFetch<T>(
         const response = await fetch(input, init);
         logger.debug(
             {
-                httpStatus: response.status,
-                statusText: response.statusText,
+                Request_Url: input,
+                Http_Status: `${response?.status} (${response?.statusText})`,
             },
-            `Request: ${input}`,
+            'Initiating server fetch',
         );
         return await wrapResponse<T>(response);
     } catch (e) {

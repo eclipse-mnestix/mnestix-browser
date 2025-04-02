@@ -27,7 +27,7 @@ export class RegistryServiceApi implements IRegistryServiceApi {
         },
         logger?: typeof Logger,
     ) {
-        const registryLogger = logger?.child({ service: RegistryServiceApi.name });
+        const registryLogger = logger?.child({ Service: RegistryServiceApi.name });
         return new RegistryServiceApi(baseUrl, mnestixFetch, registryLogger);
     }
 
@@ -65,7 +65,7 @@ export class RegistryServiceApi implements IRegistryServiceApi {
             logResponseInfo(
                 this.logger ?? Logger,
                 this.getAssetAdministrationShellDescriptorById.name,
-                'Registry search failed',
+                'Registry search failed, no matching AAS entry found',
                 response,
                 { message: response.message },
             );
@@ -74,7 +74,7 @@ export class RegistryServiceApi implements IRegistryServiceApi {
         logResponseInfo(
             this.logger ?? Logger,
             this.getAssetAdministrationShellDescriptorById.name,
-            'Registry search successful',
+            'Registry search successful, matching AAS entry found',
             response,
         );
         return response;
@@ -125,7 +125,7 @@ export class RegistryServiceApi implements IRegistryServiceApi {
             logResponseInfo(
                 this.logger ?? Logger,
                 this.getAssetAdministrationShellFromEndpoint.name,
-                'Registry search failed',
+                'Registry search failed, no matching AAS entry found',
                 response,
                 { message: response.message },
             );
@@ -134,7 +134,7 @@ export class RegistryServiceApi implements IRegistryServiceApi {
         logResponseInfo(
             this.logger ?? Logger,
             this.getAssetAdministrationShellFromEndpoint.name,
-            'Registry search successful',
+            'Registry search successful, matching AAS entry found',
             response,
         );
         return response;

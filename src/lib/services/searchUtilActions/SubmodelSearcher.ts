@@ -18,7 +18,7 @@ export class SubmodelSearcher {
     static create(logger?: typeof Logger): SubmodelSearcher {
         const getRegistryClient = (baseUrl: string) => SubmodelRegistryServiceApi.create(baseUrl, mnestixFetch());
         const multipleDataSource = RepositorySearchService.create(logger);
-        const submodelLogger = logger?.child({ service: SubmodelSearcher.name });
+        const submodelLogger = logger?.child({ Service: SubmodelSearcher.name });
         return new SubmodelSearcher(getRegistryClient, multipleDataSource, submodelLogger);
     }
 

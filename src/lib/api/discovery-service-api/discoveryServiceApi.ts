@@ -29,7 +29,7 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
         },
         logger?: typeof Logger,
     ): DiscoveryServiceApi {
-        const discoveryLogger = logger?.child({ service: DiscoveryServiceApi.name });
+        const discoveryLogger = logger?.child({ Service: DiscoveryServiceApi.name });
         return new DiscoveryServiceApi(baseUrl, http, discoveryLogger);
     }
 
@@ -97,31 +97,39 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
             logResponseInfo(
                 this.logger ?? Logger,
                 this.getAllAssetAdministrationShellIdsByAssetLink.name,
-                'Discovery search failed',
+                'AAS discovery search unsuccessful',
                 response,
                 { message: response.message },
             );
-            return wrapErrorCode(response.errorCode, response.message);
+            return wrapErrorCode(response.errorCode, response.message, response.httpStatus, response.httpText);
         }
 
         if (response.result.result.length === 0) {
             logResponseInfo(
                 this.logger ?? Logger,
                 this.getAllAssetAdministrationShellIdsByAssetLink.name,
-                'Discovery search failed',
+                'Discovery search returned no results',
                 response,
-                { result: response.result.result },
+                {
+                    Discovered_AAS_IDs: response.result.result,
+                    Message: 'No matching Asset Administration Shells found',
+                },
             );
-            return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'No AAS found for assetIds');
+            return wrapErrorCode(
+                ApiResultStatus.NOT_FOUND,
+                'No AAS found for assetIds',
+                response.httpStatus,
+                response.httpText,
+            );
         }
         logResponseInfo(
             this.logger ?? Logger,
             this.getAllAssetAdministrationShellIdsByAssetLink.name,
-            'Discovery search successful',
+            'Discovery search completed successfully',
             response,
-            { result: response.result.result },
+            { Discovery_Aas_IDs: response.result.result },
         );
-        return wrapSuccess(response.result.result);
+        return wrapSuccess(response.result.result, response.httpStatus, response.httpText);
     }
 
     async getAllAssetLinksById(aasId: string, options?: object): Promise<ApiResponseWrapper<SpecificAssetId[]>> {
