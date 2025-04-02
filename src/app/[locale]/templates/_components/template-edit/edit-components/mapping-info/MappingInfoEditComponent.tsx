@@ -1,12 +1,11 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Box, Button, IconButton, TextField } from '@mui/material';
-import { messages } from 'lib/i18n/localization';
 import React, { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { MappingInfoData } from 'lib/types/MappingInfoData';
 import { TemplateEditSectionHeading } from '../../TemplateEditSectionHeading';
 import mappingInfoDataJson from './mapping-info-data.json';
 import { ISubmodelElement, Qualifier, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { useTranslations } from 'next-intl';
 
 interface MappingInfoEditComponentProps {
     data: Submodel | ISubmodelElement;
@@ -18,6 +17,7 @@ export function MappingInfoEditComponent(props: MappingInfoEditComponentProps) {
     const [data, setData] = useState(props.data);
     const [mappingInfo, setMappingInfo] = useState(getMappingInfo());
     const [valueEnabled, setValueEnabled] = useState(!!mappingInfo?.value?.length);
+    const t = useTranslations('common');
 
     useEffect(() => {
         setData(props.data);
@@ -75,7 +75,7 @@ export function MappingInfoEditComponent(props: MappingInfoEditComponentProps) {
                 <Box display="flex" alignContent="center">
                     <TextField
                         defaultValue={mappingInfo.value}
-                        label={<FormattedMessage {...messages.mnestix.value} />}
+                        label={t('labels.value')}
                         onChange={onValueChange}
                         fullWidth
                     />
@@ -85,7 +85,7 @@ export function MappingInfoEditComponent(props: MappingInfoEditComponentProps) {
                 </Box>
             ) : (
                 <Button size="large" startIcon={<AddCircleOutline />} onClick={() => onAdd()}>
-                    <FormattedMessage {...messages.mnestix.add} />
+                    {t('actions.add')}
                 </Button>
             )}
         </>

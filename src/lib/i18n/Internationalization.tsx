@@ -1,19 +1,36 @@
-import { PropsWithChildren } from 'react';
-import 'moment/locale/de';
+import { PropsWithChildren, useEffect, useState } from 'react';
 import { defaultLanguage, translationLists } from './localization';
-import moment from 'moment';
 import { IntlProvider } from 'react-intl';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { useLocale } from 'next-intl';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
+import { de } from 'date-fns/locale/de';
+import { es } from 'date-fns/locale/es';
+import { Locale } from 'date-fns';
 
-moment.locale(defaultLanguage);
+const bundledLocales: Record<string, Locale | undefined> = {
+    en: undefined,
+    de,
+    es,
+};
 
-// Configures and injects the internationalization context.
+/**
+ * Configures and injects the internationalization context.
+ */
 export function Internationalization(props: PropsWithChildren<unknown>) {
     const locale = useLocale();
+    const [dateAdapterLocale, setDateAdapterLocale] = useState<Locale | undefined>(bundledLocales[locale]);
+
+    useEffect(() => {
+        const adapterLocale = bundledLocales[locale];
+        if (!adapterLocale && locale !== 'en') {
+            console.warn(`No bundled locale for ${locale}`);
+        }
+        setDateAdapterLocale(adapterLocale);
+    }, [locale]);
+
     return (
-        <LocalizationProvider dateAdapter={AdapterMoment} dateLibInstance={moment} adapterLocale={defaultLanguage}>
+        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={dateAdapterLocale}>
             <IntlProvider defaultLocale={defaultLanguage} locale={locale} messages={translationLists[locale]}>
                 {props.children}
             </IntlProvider>

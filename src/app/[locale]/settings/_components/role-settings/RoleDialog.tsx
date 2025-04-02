@@ -10,7 +10,7 @@ type RoleDialogProps = {
     readonly role: BaSyxRbacRule | undefined;
 };
 export const RoleDialog = (props: RoleDialogProps) => {
-    const t = useTranslations('settings');
+    const t = useTranslations('pages.settings');
 
     const permissions = (entry: BaSyxRbacRule) => {
         const permissions: JSX.Element[] = [];

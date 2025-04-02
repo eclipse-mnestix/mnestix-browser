@@ -23,7 +23,7 @@ export default function AasListDataWrapper() {
     const [selectedAasList, setSelectedAasList] = useState<string[]>();
     const [selectedRepository, setSelectedRepository] = useState<string | undefined>();
     const env = useEnv();
-    const t = useTranslations('aas-list');
+    const t = useTranslations('pages.aasList');
     const { showError } = useShowError();
 
     //Pagination
@@ -130,7 +130,7 @@ export default function AasListDataWrapper() {
         if (!selectedRepository) {
             return (
                 <Box>
-                    <Typography data-testid="select-repository-text">{t('select-repository')}</Typography>
+                    <Typography data-testid="select-repository-text">{t('selectRepository')}</Typography>
                 </Box>
             );
         }

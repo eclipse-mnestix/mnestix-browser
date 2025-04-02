@@ -32,7 +32,7 @@ export type TemplateEditFieldsProps = {
 
 export function TemplateEditFields(props: TemplateEditFieldsProps) {
     const [templatePart, setTemplatePart] = useState(props.templatePart);
-    const t = useTranslations('submodels');
+    const t = useTranslations('pages.submodels');
 
     useEffect(() => {
         setTemplatePart(props.templatePart);

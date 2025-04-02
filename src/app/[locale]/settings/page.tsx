@@ -2,10 +2,8 @@
 
 import { PrivateRoute } from 'components/authentication/PrivateRoute';
 import { Box, Card } from '@mui/material';
-import { useIntl } from 'react-intl';
 import { ViewHeading } from 'components/basics/ViewHeading';
 import { TabSelectorItem, VerticalTabSelector } from 'components/basics/VerticalTabSelector';
-import { messages } from 'lib/i18n/localization';
 import { useState } from 'react';
 import { IdSettingsCard } from './_components/id-settings/IdSettingsCard';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
@@ -21,22 +19,21 @@ enum settingsPageTypes {
 }
 
 export default function Page() {
-    const intl = useIntl();
     const isMobile = useIsMobile();
     const env = useEnv();
-    const t = useTranslations('settings');
+    const t = useTranslations('pages.settings');
 
     const settingsTabItems: TabSelectorItem[] = [
         {
             id: settingsPageTypes[settingsPageTypes.MNESTIX_CONNECTIONS],
-            label: intl.formatMessage(messages.mnestix.connections.title),
+            label: t('connections.title'),
         },
     ];
 
     if (env.MNESTIX_BACKEND_API_URL) {
         const settingsTabToAdd = {
             id: settingsPageTypes[settingsPageTypes.ID_STRUCTURE],
-            label: intl.formatMessage(messages.mnestix.idStructure),
+            label: t('idStructure'),
         };
         settingsTabItems.splice(0, 0, settingsTabToAdd);
     }

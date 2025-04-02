@@ -5,22 +5,22 @@ import { DashboardInput } from './_components/DashboardInput';
 import { GoToListButton } from './_components/GoToListButton';
 
 export default async function page() {
-    const t = await getTranslations('dashboard');
+    const t = await getTranslations('pages.dashboard');
 
     return (
         <Box sx={{ p: 2, m: 'auto' }}>
             <Typography data-testid="welcome-text" variant="h1" color="primary" align="center" sx={{ mt: 2 }}>
-                {t('welcome-text')}
+                {t('welcomeText')}
             </Typography>
             <Typography variant="h3" align="center">
-                {t('digitalTwinMadeEasy-text')}
+                {t('digitalTwinMadeEasyText')}
             </Typography>
             <Divider sx={{ my: 2 }} />
 
             <DashboardInput />
             <GoToListButton />
             <Typography align="center" sx={{ mt: 4 }}>
-                {t('findOutMore-text')}:
+                {t('findOutMoreText')}:
             </Typography>
             <Typography align="center">
                 <Link

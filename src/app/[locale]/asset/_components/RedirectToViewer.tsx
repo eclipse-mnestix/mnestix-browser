@@ -50,7 +50,7 @@ export const RedirectToViewer = () => {
     async function navigateToViewerOfAsset(assetId: string | undefined): Promise<void> {
         const { isSuccess, result: aasIds } = await getAasIdsOfAsset(assetId);
 
-        if (!isSuccess) throw new LocalizedError('errors.urlNotFound');
+        if (!isSuccess) throw new LocalizedError('validation.errors.urlNotFound');
 
         assertAtLeastOneAasIdExists(aasIds);
         const targetUrl = determineViewerTargetUrl(aasIds);

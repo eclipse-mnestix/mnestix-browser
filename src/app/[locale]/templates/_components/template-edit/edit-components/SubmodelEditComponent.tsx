@@ -1,9 +1,8 @@
 import { Box, TextField } from '@mui/material';
-import { messages } from 'lib/i18n/localization';
 import { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { TemplateEditSectionHeading } from '../TemplateEditSectionHeading';
 import { Qualifier, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { useTranslations } from 'next-intl';
 
 interface SubmodelEditComponentProps {
     data: Submodel;
@@ -12,6 +11,7 @@ interface SubmodelEditComponentProps {
 
 export function SubmodelEditComponent(props: SubmodelEditComponentProps) {
     const [data, setData] = useState(props.data);
+    const t = useTranslations('common');
 
     useEffect(() => {
         setData(props.data);
@@ -41,7 +41,7 @@ export function SubmodelEditComponent(props: SubmodelEditComponentProps) {
             <Box display="flex" alignContent="center">
                 <TextField
                     defaultValue={getDisplayName()}
-                    label={<FormattedMessage {...messages.mnestix.value} />}
+                    label={t('labels.value')}
                     onChange={onDisplayNameChange}
                     fullWidth
                 />

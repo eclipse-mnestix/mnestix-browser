@@ -12,7 +12,7 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
 }));
 export default function BottomMenu(props: { isLoggedIn: boolean; name: string; mnestixRole: MnestixRole }) {
     const auth = useAuth();
-    const t = useTranslations('mainMenu');
+    const t = useTranslations('navigation.mainMenu');
 
     const guestBottomMenu: MenuListItemProps[] = [
         {

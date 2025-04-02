@@ -9,9 +9,7 @@ import {
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { DataRow } from 'components/basics/DataRow';
 import { PdfDocumentIcon } from 'components/custom-icons/PdfDocumentIcon';
-import { messages } from 'lib/i18n/localization';
 import { useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { getTranslationText, hasSemanticId } from 'lib/util/SubmodelResolverUtil';
 import { DocumentDetailsDialog } from './DocumentDetailsDialog';
 import { isValidUrl } from 'lib/util/UrlUtil';
@@ -19,6 +17,8 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useAasOriginSourceState } from 'components/contexts/CurrentAasContext';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { checkFileExists } from 'lib/services/search-actions/searchActions';
+import { useTranslations } from 'next-intl';
+import { useIntl } from 'react-intl';
 
 enum DocumentSpecificSemanticId {
     DocumentVersion = 'https://admin-shell.io/vdi/2770/1/0/DocumentVersion',
@@ -45,9 +45,9 @@ enum DocumentSpecificSemanticIdIrdiV2 {
 }
 
 type MarkingsComponentProps = {
-    readonly submodelElement?: SubmodelElementCollection;
-    readonly hasDivider?: boolean;
-    readonly submodelId?: string;
+    readonly submodelElement: SubmodelElementCollection;
+    readonly hasDivider: boolean;
+    readonly submodelId: string;
 };
 
 type FileViewObject = {
@@ -79,6 +79,7 @@ const StyledImageWrapper = styled(Box)(({ theme }) => ({
 }));
 
 export function DocumentComponent(props: MarkingsComponentProps) {
+    const t = useTranslations('common');
     const intl = useIntl();
     const [fileViewObject, setFileViewObject] = useState<FileViewObject>();
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
@@ -119,6 +120,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                     width={90}
                     alt="File Preview"
                     onError={handleImageError}
+                    data-testid="document-preview-image"
                 />
             ) : fileViewObject?.mimeType === 'application/pdf' ? (
                 <PdfDocumentIcon color="primary" />
@@ -336,9 +338,9 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                             renderImage()
                         )}
                         <Box>
-                            <Typography>{fileViewObject.title}</Typography>
+                            <Typography data-testid="document-title">{fileViewObject.title}</Typography>
                             {fileViewObject.organizationName && (
-                                <Typography variant="body2" color="text.secondary">
+                                <Typography variant="body2" color="text.secondary" data-testid="document-organization">
                                     {fileViewObject.organizationName}
                                 </Typography>
                             )}
@@ -349,16 +351,17 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                                 href={fileViewObject.digitalFileUrl}
                                 target="_blank"
                                 disabled={!fileExists}
+                                data-testid="document-open-button"
                             >
                                 {!fileExists ? (
-                                    <FormattedMessage {...messages.mnestix.fileNotFound} />
+                                    t('messages.fileNotFound')
                                 ) : (
-                                    <FormattedMessage {...messages.mnestix.open} />
+                                    t('actions.open')
                                 )}
                             </Button>
                         </Box>
                     </Box>
-                    <IconButton onClick={() => handleDetailsClick()} sx={{ ml: 1 }}>
+                    <IconButton onClick={() => handleDetailsClick()} sx={{ ml: 1 }} data-testid="document-info-button">
                         <InfoOutlined />
                     </IconButton>
                 </Box>
@@ -367,6 +370,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                 open={detailsModalOpen}
                 handleClose={() => handleDetailsModalClose()}
                 document={props.submodelElement as SubmodelElementCollection}
+                data-testid="document-details-dialog"
             />
         </DataRow>
     );

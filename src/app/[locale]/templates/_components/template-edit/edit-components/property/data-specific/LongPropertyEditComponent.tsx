@@ -1,8 +1,7 @@
 ﻿import { TextField } from '@mui/material';
-import { messages } from 'lib/i18n/localization';
-import { FormattedMessage } from 'react-intl';
 import { useState } from 'react';
 import { isValidLong } from 'lib/util/LongValidationUtil';
+import { useTranslations } from 'next-intl';
 
 interface LongPropertyEditComponentProps {
     dataValue: string;
@@ -12,6 +11,7 @@ interface LongPropertyEditComponentProps {
 export function LongPropertyEditComponent(props: LongPropertyEditComponentProps) {
     const [data, setData] = useState(props.dataValue);
     const [isValidInput, setIsValidInput] = useState(true);
+    const t = useTranslations();
 
     const onValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (isValidLong(event.target.value) || event.target.value === '') {
@@ -27,12 +27,12 @@ export function LongPropertyEditComponent(props: LongPropertyEditComponentProps)
 
     return (
         <TextField
-            label={<FormattedMessage {...messages.mnestix.value} />}
+            label={t('common.labels.value')}
             value={data}
             onChange={onValueChange}
             fullWidth
             error={!isValidInput}
-            helperText={!isValidInput && <FormattedMessage {...messages.mnestix.errorMessages.invalidLong} />}
+            helperText={!isValidInput && t('validation.errorMessages.invalidLong')}
         />
     );
 }

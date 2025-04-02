@@ -6,7 +6,7 @@ import AasListDataWrapper from './_components/AasListDataWrapper';
 import { useTranslations } from 'next-intl';
 
 export default function Page() {
-    const t = useTranslations('aas-list');
+    const t = useTranslations('pages.aasList');
     return (
         <Box display="flex" flexDirection="column" marginTop="0px" marginBottom="50px" width="100%">
             <Box width="90%" margin="auto">

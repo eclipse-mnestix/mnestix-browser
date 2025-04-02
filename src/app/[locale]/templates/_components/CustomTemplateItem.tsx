@@ -2,11 +2,10 @@ import { Delete, Edit, MoreVert } from '@mui/icons-material';
 import { Box, Divider, IconButton, ListItemIcon, Menu, MenuItem, styled, Typography } from '@mui/material';
 import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
 import { TemplateIcon } from 'components/custom-icons/TemplateIcon';
-import { messages } from 'lib/i18n/localization';
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { TemplateDeleteDialog } from './TemplateDeleteDialog';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 export type CustomTemplateItemType = {
     id?: string;
@@ -45,6 +44,7 @@ export function CustomTemplateItem(props: CustomTemplateItemProps) {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const menuOpen = Boolean(anchorEl);
+    const t = useTranslations('common.actions');
 
     const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
         event.nativeEvent.stopImmediatePropagation();
@@ -109,13 +109,13 @@ export function CustomTemplateItem(props: CustomTemplateItemProps) {
                         <ListItemIcon>
                             <Edit fontSize="small" />
                         </ListItemIcon>
-                        <FormattedMessage {...messages.mnestix.edit} />
+                        {t('edit')}
                     </MenuItem>
                     <MenuItem onClick={handleDeleteClick}>
                         <ListItemIcon>
                             <Delete fontSize="small" />
                         </ListItemIcon>
-                        <FormattedMessage {...messages.mnestix.delete} />
+                        {t('delete')}
                     </MenuItem>
                 </Menu>
             </StyledCustomTemplateItem>
