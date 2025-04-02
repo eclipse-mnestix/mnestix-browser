@@ -95,6 +95,7 @@
       "completedStages": "Emissions calculated based on product life cycle",
       "equivalents": "CO2 Equivalents",
       "inTotal": "in total",
+      "notIncludedHint": "not yet included",
       "productJourney": "Product Journey",
       "stages": {
         "A1": "A1 - raw material supply (and upstream production)",

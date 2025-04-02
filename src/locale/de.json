@@ -95,6 +95,7 @@
       "completedStages": "Emissionen berechnet basierend auf folgenden Lebenszyklusphasen",
       "equivalents": "CO2 Äquivalente",
       "inTotal": "gesamt",
+      "notIncludedHint": "nicht mit einbezogen",
       "productJourney": "Produktreise",
       "stages": {
         "A1": "A1 - Rohstoffversorgung (und vorgelagerte Produktion)",
