@@ -71,7 +71,12 @@ export const RoleDialogForm = (props: RoleDialogProps) => {
                 <Button startIcon={<CloseIcon />} variant="outlined" onClick={props.onCancel}>
                     {t('buttons.cancel')}
                 </Button>
-                <Button variant="contained" startIcon={<CheckIcon />} onClick={handleSubmit(props.onSubmit)}>
+                <Button
+                    variant="contained"
+                    startIcon={<CheckIcon />}
+                    onClick={handleSubmit(props.onSubmit)}
+                    data-testid="role-settings-save-button"
+                >
                     {t('buttons.save')}
                 </Button>
             </DialogActions>

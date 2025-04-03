@@ -78,7 +78,7 @@ export const RoleDialog = (props: RoleDialogProps) => {
                 <RoleDialogForm rule={props.rule} onSubmit={onSubmit} onCancel={() => setIsEditMode(false)} />
             ) : (
                 <>
-                    <DialogContent style={{ padding: '40px' }} data-testId="role-settings-dialog">
+                    <DialogContent style={{ padding: '40px' }} data-testid="role-settings-dialog">
                         <Box display="flex" flexDirection="column">
                             <Typography color="text.secondary" variant="body2">
                                 {t('tableHeader.name')}
@@ -96,10 +96,20 @@ export const RoleDialog = (props: RoleDialogProps) => {
                         </Box>
                     </DialogContent>
                     <DialogActions sx={{ padding: '1em' }}>
-                        <Button startIcon={<ArrowBack />} variant="outlined" onClick={() => onCloseDialog(false)}>
+                        <Button
+                            startIcon={<ArrowBack />}
+                            variant="outlined"
+                            data-testid="role-settings-back-button"
+                            onClick={() => onCloseDialog(false)}
+                        >
                             {t('buttons.back')}
                         </Button>
-                        <Button variant="contained" startIcon={<EditIcon />} onClick={() => setIsEditMode(true)}>
+                        <Button
+                            variant="contained"
+                            startIcon={<EditIcon />}
+                            data-testid="role-settings-edit-button"
+                            onClick={() => setIsEditMode(true)}
+                        >
                             {t('buttons.edit')}
                         </Button>
                     </DialogActions>
