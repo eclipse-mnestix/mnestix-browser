@@ -75,18 +75,6 @@ export const RoleDialog = (props: RoleDialogProps) => {
     return (
         <Dialog open={props.open} onClose={() => onCloseDialog(false)} maxWidth="md" fullWidth={true}>
             <DialogCloseButton handleClose={() => onCloseDialog(false)} />
-            <IconButton
-                aria-label="close"
-                onClick={() => props.onClose(false)}
-                sx={{
-                    position: 'absolute',
-                    right: 8,
-                    top: 8,
-                    color: (theme) => theme.palette.grey[500],
-                }}
-            >
-                <CloseIcon />
-            </IconButton>
             {isEditMode ? (
                 <RoleDialogForm rule={props.rule} onSubmit={onSubmit} onCancel={() => setIsEditMode(false)} />
             ) : (
