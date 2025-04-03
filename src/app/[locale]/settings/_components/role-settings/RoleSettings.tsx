@@ -73,10 +73,7 @@ export const RoleSettings = () => {
                 return;
             }
             //@ts-expect-error keys for union not indexable
-            let element: string | string[] = entry.targetInformation[key];
-            if (Array.isArray(element)) {
-                element = element.join(', ');
-            }
+            const element: string = entry.targetInformation[key] ? entry.targetInformation[key].join(', ') : '';
             permissions.push(
                 <Box component="span" key={key + element}>
                     <Box component="span" fontWeight="bold">
@@ -124,7 +121,10 @@ export const RoleSettings = () => {
                             </TableHead>
                             <TableBody>
                                 {rbacRoles?.roles.map((entry) => (
-                                    <TableRow key={entry.role + entry.action + entry.targetInformation['@type']}>
+                                    <TableRow
+                                        key={entry.role + entry.action + entry.targetInformation['@type']}
+                                        data-testid={`role-settings-row-${entry.idShort}`}
+                                    >
                                         <TableCell>
                                             <Typography fontWeight="bold">{entry.role}</Typography>
                                         </TableCell>
@@ -138,7 +138,11 @@ export const RoleSettings = () => {
                                         <TableCell>{entry.targetInformation['@type']}</TableCell>
                                         {!isMobile && <TableCell>{permissionCell(entry)}</TableCell>}
                                         <TableCell>
-                                            <RoundedIconButton onClick={() => openDetailDialog(entry)} color="primary">
+                                            <RoundedIconButton
+                                                data-testid={`role-settings-button-${entry.idShort}`}
+                                                onClick={() => openDetailDialog(entry)}
+                                                color="primary"
+                                            >
                                                 <ArrowForwardIcon />
                                             </RoundedIconButton>
                                         </TableCell>

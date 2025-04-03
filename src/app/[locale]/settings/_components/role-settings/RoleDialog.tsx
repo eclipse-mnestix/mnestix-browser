@@ -78,7 +78,7 @@ export const RoleDialog = (props: RoleDialogProps) => {
                 <RoleDialogForm rule={props.rule} onSubmit={onSubmit} onCancel={() => setIsEditMode(false)} />
             ) : (
                 <>
-                    <DialogContent style={{ padding: '40px' }}>
+                    <DialogContent style={{ padding: '40px' }} data-testId="role-settings-dialog">
                         <Box display="flex" flexDirection="column">
                             <Typography color="text.secondary" variant="body2">
                                 {t('tableHeader.name')}
