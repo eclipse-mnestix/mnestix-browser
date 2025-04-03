@@ -1,5 +1,5 @@
-import { rbacRuleTargets, TargetInformation } from 'lib/services/rbac-service/RbacRulesService';
-import { ArrayOfIds, TargetInformationFormModel } from 'app/[locale]/settings/_components/role-settings/RoleDialog';
+import { BaSyxRbacRule, rbacRuleTargets, TargetInformation } from 'lib/services/rbac-service/RbacRulesService';
+import { ArrayOfIds, RoleFormModel, TargetInformationFormModel } from './RoleDialogForm';
 
 // Utility function to map an array of strings to an array of objects with an id property
 const mapArrayToIdObjects = (array: string[]): ArrayOfIds => {
@@ -8,9 +8,7 @@ const mapArrayToIdObjects = (array: string[]): ArrayOfIds => {
 
 const wildcard: ArrayOfIds = [{ id: '*' }];
 
-export const mapDtoToTargetInformationFormModel = (
-    targetInformation: TargetInformation,
-): TargetInformationFormModel => {
+const mapDtoToTargetInformationFormModel = (targetInformation: TargetInformation): TargetInformationFormModel => {
     const targetInformationFormModel: TargetInformationFormModel = {
         'aas-environment': { aasIds: wildcard, submodelIds: wildcard },
         aas: { aasIds: wildcard },
@@ -62,7 +60,7 @@ export const mapDtoToTargetInformationFormModel = (
     return targetInformationFormModel;
 };
 
-export const mapTargetInformationFormModelToDto = (
+const mapTargetInformationFormModelToDto = (
     formModel: TargetInformationFormModel,
     type: keyof typeof rbacRuleTargets,
 ): TargetInformation => {
@@ -109,4 +107,22 @@ export const mapTargetInformationFormModelToDto = (
         default:
             throw new Error(`Unknown target type: ${type}`);
     }
+};
+
+export const mapBaSyxRbacRuleToFormModel = (role: BaSyxRbacRule): RoleFormModel => {
+    return {
+        type: role.targetInformation['@type'],
+        action: role.action,
+        targetInformation: mapDtoToTargetInformationFormModel(role.targetInformation),
+    };
+};
+
+export const mapFormModelToBaSyxRbacRule = (formModel: RoleFormModel, role: BaSyxRbacRule): BaSyxRbacRule => {
+    const targetInformation = mapTargetInformationFormModelToDto(formModel.targetInformation, formModel.type);
+    return {
+        idShort: role.idShort,
+        role: role.role,
+        action: formModel.action,
+        targetInformation: targetInformation,
+    };
 };
