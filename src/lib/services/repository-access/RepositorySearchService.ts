@@ -9,6 +9,7 @@ import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from '
 import { PaginationData } from 'lib/api/basyx-v3/types';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import Logger, { logResponseInfo } from 'lib/util/Logger';
+import { envs } from 'lib/env/MnestixEnv';
 
 export type RepoSearchResult<T> = {
     searchResult: T;
@@ -66,7 +67,7 @@ export class RepositorySearchService {
 
     //TODO (MNES-1608): Split this file into multiple files, refactor its methods and add tests
     async getAasRepositories() {
-        const defaultRepositoryClient = process.env.AAS_REPO_API_URL;
+        const defaultRepositoryClient = envs.AAS_REPO_API_URL;
         let repositories: string[] = [];
         try {
             repositories = await this.prismaConnector.getConnectionDataByTypeAction({
@@ -492,13 +493,13 @@ export class RepositorySearchService {
     }
 
     private getDefaultAasRepositoryClient() {
-        const defaultUrl = process.env.AAS_REPO_API_URL;
+        const defaultUrl = envs.AAS_REPO_API_URL;
         if (!defaultUrl) return null;
         return this.getAasRepositoryClient(defaultUrl);
     }
 
     private getDefaultSubmodelRepositoryClient() {
-        const defaultUrl = process.env.SUBMODEL_REPO_API_URL ?? process.env.AAS_REPO_API_URL;
+        const defaultUrl = envs.SUBMODEL_REPO_API_URL ?? envs.AAS_REPO_API_URL;
         if (!defaultUrl) return null;
         return this.getSubmodelRepositoryClient(defaultUrl);
     }

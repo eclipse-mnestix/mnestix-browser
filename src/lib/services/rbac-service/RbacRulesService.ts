@@ -4,6 +4,7 @@ import { mnestixFetch } from 'lib/api/infrastructure';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
+import { envs } from 'lib/env/MnestixEnv';
 import { RuleParseError, ruleToIdShort, ruleToSubmodelElement } from './RuleHelpers';
 
 const SEC_SUB_ID = 'SecuritySubmodel';
@@ -19,7 +20,7 @@ export class RbacRulesService {
     private constructor(private readonly securitySubmodelRepositoryClient: ISubmodelRepositoryApi) {}
 
     static createService(): RbacRulesService {
-        const baseUrl = process.env.SEC_SM_API_URL;
+        const baseUrl = envs.SEC_SM_API_URL;
 
         if (!baseUrl) {
             throw 'Security Submodel not configured! Check beforehand!';
@@ -63,7 +64,7 @@ export class RbacRulesService {
 
         const parsedRoles =
             secSM.submodelElements
-                ?.filter((e) => (e as SubmodelElementCollection).value)
+                ?.filter((e) => (e as SubmodelElementCollection | undefined)?.value)
                 .map((roleElement) => {
                     try {
                         return submodelToRule(roleElement);
@@ -179,6 +180,7 @@ export function submodelToRule(submodelElement: any): BaSyxRbacRule {
         } as BaSyxRbacRule['targetInformation'],
     };
 }
+
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 export const rbacRuleActions = ['READ', 'CREATE', 'UPDATE', 'DELETE', 'EXECUTE'] as const;
@@ -193,7 +195,7 @@ export const rbacRuleTargets = {
     'aas-discovery-service': ['aasIds', 'assetIds'],
 } as const;
 
-type TargetInformation =
+export type TargetInformation =
     | { '@type': 'aas-environment'; aasIds: string[]; submodelIds: string[] }
     | { '@type': 'aas'; aasIds: string[] }
     | { '@type': 'submodel'; submodelIds: string[]; submodelElementIdShortPaths: string[] }

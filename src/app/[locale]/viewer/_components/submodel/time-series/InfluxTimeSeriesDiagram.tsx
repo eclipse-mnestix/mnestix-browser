@@ -6,7 +6,7 @@ import { TimeSeriesDataSet } from 'app/[locale]/viewer/_components/submodel/time
 import { useTranslations } from 'next-intl';
 
 export function InfluxTimeSeriesDiagram(props: { query: string; endpoint: string }) {
-    const t = useTranslations('validations.errors');
+    const t = useTranslations('validation.errors');
     const { query, endpoint } = props;
     const [data, setData] = useState<TimeSeriesDataSet>({ points: [], names: [] });
     const [error, setError] = useState<Error | undefined>(undefined);

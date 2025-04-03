@@ -12,7 +12,7 @@ export function TemplateDeleteDialog(props: TemplateDeleteDialogProps) {
         <Dialog open={props.open} onClose={props.onClose}>
             <DialogContent>
                 <DialogContentText>
-                    {t('pages.templates.deleteTemplateQuestion', { name: props.itemName || '' })}
+                    {t('pages.templates.deleteTemplateQuestion', { name: props.itemName ?? '' })}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

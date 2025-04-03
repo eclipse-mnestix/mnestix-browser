@@ -34,17 +34,21 @@ export const RoleSettings = () => {
 
     const MAX_PERMISSIONS_CHARS = 40;
 
-    useAsyncEffect(async () => {
+    async function loadRbacData() {
         setIsLoading(true);
         const response = await getRbacRules();
         if (response.isSuccess) {
             // sort by role name
-            response.result.roles.sort((a, b) => a.role.localeCompare(b.role));
+            response.result.roles.sort((a: { role: string }, b: { role: string }) => a.role.localeCompare(b.role));
             setRbacRoles(response.result);
         } else {
             showError(response.message);
         }
         setIsLoading(false);
+    }
+
+    useAsyncEffect(async () => {
+        await loadRbacData();
     }, []);
 
     const prepareTableHeaders = () => {
@@ -145,13 +149,18 @@ export const RoleSettings = () => {
                     </TableContainer>
                 )}
             </Box>
-            <RoleDialog
-                onClose={() => {
-                    setRoleDialogOpen(false);
-                }}
-                open={roleDialogOpen}
-                role={selectedRole}
-            ></RoleDialog>
+            {selectedRole && (
+                <RoleDialog
+                    onClose={async (reload) => {
+                        if (reload) {
+                            await loadRbacData();
+                        }
+                        setRoleDialogOpen(false);
+                    }}
+                    open={roleDialogOpen}
+                    rule={selectedRole}
+                ></RoleDialog>
+            )}
         </>
     );
 };

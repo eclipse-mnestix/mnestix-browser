@@ -85,14 +85,17 @@
         "Zipcode": "Zipcode"
       }
     },
-    "carbon": {
-      "beech": "Beech Tree",
+    "carbonFootprint": {
+      "beech": "One Beech Tree",
       "calculationMethod": "Calculation Method",
       "co2EComparison": "Comparison",
       "co2EDistribution": "CO2e distribution",
       "comparisonAssumption": "Assuming one beech tree stores 12.5 kg CO2e per year.",
+      "comparisonNeeds": "needs",
       "completedStages": "Emissions calculated based on product life cycle",
-      "months": "Months",
+      "equivalents": "CO2 Equivalents",
+      "inTotal": "in total",
+      "notIncludedHint": "not yet included",
       "productJourney": "Product Journey",
       "stages": {
         "A1": "A1 - raw material supply (and upstream production)",
@@ -118,8 +121,11 @@
         "C4": "C4 - landfill",
         "D": "D - reuse"
       },
-      "totalCO2Equivalents": "CO2 emissions from product (so far)",
-      "years": "Years"
+      "timeunit": {
+        "month": "{count, plural, =0 {less than a month} =1 {1 month} other {# months}}",
+        "year": "{count, plural, =0 {less than a year} =1 {1 year} other {# years}}"
+      },
+      "totalCO2Equivalents": "CO2 emissions from product (so far)"
     },
     "qrScanner": {
       "errors": {
@@ -256,6 +262,15 @@
       "idStructure": "ID structure",
       "idStructureExplanation": "Define, how your IDs are represented. This is a standard setting that can be adjusted for individual imports.",
       "roles": {
+        "buttons": {
+          "add": "Add",
+          "back": "Back",
+          "cancel": "Cancel",
+          "edit": "Edit",
+          "save": "Save"
+        },
+        "saveSuccess": "Role saved successfully.",
+        "subHeader": "Add, remove, or modify settings and configurations to various features within your AAS environment.",
         "subtitle": "Manage roles and permissions.",
         "tableHeader": {
           "aasIds": "AAS IDs",
@@ -267,7 +282,7 @@
         },
         "title": "Role Management"
       },
-      "subHeader": "Add, remove, or modify settings and configurations to various features within your AAS environment."
+      "subHeader": "Add, remove, or modify settings and configurations to various features within your AAS."
     },
     "submodels": {
       "errors": {

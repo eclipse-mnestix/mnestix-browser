@@ -85,14 +85,17 @@
         "Zipcode": "PLZ"
       }
     },
-    "carbon": {
-      "beech": "Buche",
+    "carbonFootprint": {
+      "beech": "Eine Buche",
       "calculationMethod": "Berechnungsmethode",
       "co2EComparison": "Vergleich",
       "co2EDistribution": "CO2e Verteilung",
       "comparisonAssumption": "Unter der Annahme von 12,5 kg CO2e Speicherung pro Jahr.",
+      "comparisonNeeds": "braucht",
       "completedStages": "Emissionen berechnet basierend auf folgenden Lebenszyklusphasen",
-      "months": "Monate",
+      "equivalents": "CO2 Äquivalente",
+      "inTotal": "gesamt",
+      "notIncludedHint": "nicht mit einbezogen",
       "productJourney": "Produktreise",
       "stages": {
         "A1": "A1 - Rohstoffversorgung (und vorgelagerte Produktion)",
@@ -118,8 +121,11 @@
         "C4": "C4 - Deponie",
         "D": "D - Wiederverwendung"
       },
-      "totalCO2Equivalents": "(Bisherige) CO2 Emissionen des Produkts",
-      "years": "Jahre"
+      "timeunit": {
+        "month": "{count, plural, =0 {unter einem Monat} =1 {1 Monat} other {# Monate}}",
+        "year": "{count, plural, =0 {unter einem Jahr} =1 {1 Jahr} other {# Jahre}}"
+      },
+      "totalCO2Equivalents": "(Bisherige) CO2 Emissionen des Produkts"
     },
     "qrScanner": {
       "errors": {
@@ -256,6 +262,15 @@
       "idStructure": "ID Struktur",
       "idStructureExplanation": "Definieren Sie, wie Ihre IDs aussehen sollen. Dies ist eine Basis-Einstellung, die für individuelle Importe angepasst werden kann.",
       "roles": {
+        "buttons": {
+          "add": "Hinzufügen",
+          "back": "Zurück",
+          "cancel": "Abbrechen",
+          "edit": "Bearbeiten",
+          "save": "Speichern"
+        },
+        "saveSuccess": "Rolle erfolgreich gespeichert.",
+        "subHeader": "Hinzufügen, Entfernen oder Ändern von Einstellungen und Konfigurationen für verschiedene Funktionen innerhalb Ihrer AAS-Umgebung.",
         "subtitle": "Verwalten von Rollen und Berechtigungen.",
         "tableHeader": {
           "aasIds": "AAS IDs",

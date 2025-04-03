@@ -3,10 +3,11 @@
 import { mnestixFetchLegacy } from 'lib/api/infrastructure';
 import { TemplateShellApi } from 'lib/api/template-shell-api/templateShellApi';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import { envs } from 'lib/env/MnestixEnv';
 
 const templateApiClient = TemplateShellApi.create(
-    process.env.MNESTIX_BACKEND_API_URL ? process.env.MNESTIX_BACKEND_API_URL : '',
-    process.env.AUTHENTICATION_FEATURE_FLAG?.toLowerCase().trim() === 'true' || false,
+    envs.MNESTIX_BACKEND_API_URL ?? '',
+    envs.AUTHENTICATION_FEATURE_FLAG,
     mnestixFetchLegacy(),
 );
 

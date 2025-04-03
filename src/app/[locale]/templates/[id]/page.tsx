@@ -32,7 +32,7 @@ import { useAuth } from 'lib/hooks/UseAuth';
 import cloneDeep from 'lodash/cloneDeep';
 import { Qualifier, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { useEnv } from 'app/env/provider';
+import { useEnv } from 'app/EnvProvider';
 import { useParams, useRouter } from 'next/navigation';
 import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import { updateCustomSubmodelTemplate } from 'lib/services/templateApiWithAuthActions';
@@ -353,9 +353,7 @@ export default function Page() {
                                 variant="outlined"
                                 startIcon={<ContentCopy />}
                                 onClick={() => {
-                                    navigator.clipboard.writeText(
-                                        id || '',
-                                    );
+                                    navigator.clipboard.writeText(id || '');
                                     notificationSpawner.spawn({
                                         message: t('pages.templates.templateIdCopied', { id }),
                                         severity: 'success',

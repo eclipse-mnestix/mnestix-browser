@@ -4,7 +4,7 @@ import CircleIcon from '@mui/icons-material/Circle';
 import { useTranslations } from 'next-intl';
 
 function findNextStage(stage?: string) {
-    const lifecycleStages: string[] = Object.values(ProductLifecycleStage);
+    const lifecycleStages = Object.values(ProductLifecycleStage);
 
     const indexOfCurrentStage = lifecycleStages.findIndex((s) => s === stage);
     if (indexOfCurrentStage === undefined || indexOfCurrentStage === lifecycleStages.length - 1) return undefined;
@@ -12,7 +12,7 @@ function findNextStage(stage?: string) {
 }
 
 export function ProductLifecycle(props: { completedStages: ProductLifecycleStage[] }) {
-    const t = useTranslations('components.carbon');
+    const t = useTranslations('components.carbonFootprint');
     const theme = useTheme();
     const nextStage = findNextStage(props.completedStages.at(-1));
 
@@ -21,6 +21,7 @@ export function ProductLifecycle(props: { completedStages: ProductLifecycleStage
     function CustomCircle() {
         return <CircleIcon htmlColor={colorOfNextStep} />;
     }
+
     return (
         <Stepper
             activeStep={props.completedStages.length}
@@ -41,7 +42,7 @@ export function ProductLifecycle(props: { completedStages: ProductLifecycleStage
                 <Step key="20" active={false} data-testid="product-lifecycle-next-step">
                     <StepLabel StepIconComponent={CustomCircle} data-testid="product-lifecycle-step-label">
                         <Typography fontSize={24} color={colorOfNextStep}>
-                            {t(`stages.${nextStage}`)} (not yet included)
+                            {t(`stages.${nextStage}`)} ({t('notIncludedHint')})
                         </Typography>
                     </StepLabel>
                 </Step>

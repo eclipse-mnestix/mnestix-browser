@@ -2,12 +2,9 @@ import { useTranslations } from 'next-intl';
 import { Box } from '@mui/material';
 import { useState } from 'react';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
-import {
-    getConnectionDataAction,
-    upsertConnectionDataAction,
-} from 'lib/services/database/connectionServerActions';
+import { getConnectionDataAction, upsertConnectionDataAction } from 'lib/services/database/connectionServerActions';
 import { useForm } from 'react-hook-form';
-import { useEnv } from 'app/env/provider';
+import { useEnv } from 'app/EnvProvider';
 import { SettingsCardHeader } from 'app/[locale]/settings/_components/SettingsCardHeader';
 import { MnestixConnectionsForm } from 'app/[locale]/settings/_components/mnestix-connections/MnestixConnectionForm';
 

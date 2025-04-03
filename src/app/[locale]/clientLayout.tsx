@@ -8,7 +8,7 @@ import { CustomThemeProvider } from 'layout/theme/CustomThemeProvider';
 import { Internationalization } from 'lib/i18n/Internationalization';
 import { ReactNode } from 'react';
 import { SessionProvider } from 'next-auth/react';
-import { EnvProvider } from 'app/env/provider';
+import { EnvProvider } from 'app/EnvProvider';
 
 export type ClientLayoutProps = {
     children: ReactNode;

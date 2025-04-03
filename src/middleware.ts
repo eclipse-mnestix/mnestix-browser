@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 import { routing } from 'i18n/routing';
 import { v4 as uuidv4 } from 'uuid';
+import { envs } from 'lib/env/MnestixEnv';
 
+// next-intl does also provide methods for navigation (useRouter etc.) but we
+// use the middleware as MUI does not use these methods
 const i18nMiddleware = createMiddleware(routing);
 
 // paths where we do not need localized path
@@ -12,15 +15,13 @@ const unlocalizedPathsRegex = RegExp(
     `^(${unlocalizedPaths.map((str) => `(${str.startsWith('/') ? str : '/' + str})`).join('|')})(/?$|/.*)`,
 );
 
-// next-intl does also provide methods for navigation (useRouter etc.) but we
-// use the middleware as MUI does not use these methods
 export function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
     //paths which should be redirected to 404 page if feature flag is disabled
-    if (process.env.AAS_LIST_FEATURE_FLAG === 'false' && pathname.includes('list')) {
+    if (!envs.AAS_LIST_FEATURE_FLAG && pathname.includes('list')) {
         return NextResponse.rewrite(new URL('/404', req.url));
     }
-    if (process.env.COMPARISON_FEATURE_FLAG === 'false' && pathname.includes('compare')) {
+    if (!envs.COMPARISON_FEATURE_FLAG && pathname.includes('compare')) {
         return NextResponse.rewrite(new URL('/404', req.url));
     }
 

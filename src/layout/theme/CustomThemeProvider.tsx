@@ -5,7 +5,7 @@ import { theme as defaultTheme } from './theme';
 import { deDE } from '@mui/material/locale';
 import { CssBaseline, Theme, ThemeOptions } from '@mui/material';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { useEnv } from 'app/env/provider';
+import { useEnv } from 'app/EnvProvider';
 import { DefaultThemeSettings } from 'layout/theme/DefaultTheme';
 
 export function CustomThemeProvider(props: PropsWithChildren<{ readonly skipStyleReset?: boolean }>) {

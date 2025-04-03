@@ -16,7 +16,7 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useAuth } from 'lib/hooks/UseAuth';
 import { Qualifier, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { sortWithNullableValues } from 'lib/util/SortingUtil';
-import { useEnv } from 'app/env/provider';
+import { useEnv } from 'app/EnvProvider';
 import { useRouter } from 'next/navigation';
 import { createCustomSubmodelTemplate } from 'lib/services/templateApiWithAuthActions';
 import { deleteCustomTemplateById, getCustomTemplates, getDefaultTemplates } from 'lib/services/templatesApiActions';
