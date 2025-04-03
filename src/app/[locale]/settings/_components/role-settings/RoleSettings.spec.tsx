@@ -83,7 +83,7 @@ describe('RoleSettings', () => {
         CustomRender(<RoleSettings />);
 
         await waitFor(() => {
-            expect(screen.getByText('Admin')).toBeInTheDocument();
+            expect(screen.getByText('Admin-Role')).toBeInTheDocument();
         });
         fireEvent.click(screen.getByTestId('role-settings-button-roleId1'));
         await waitFor(() => {
