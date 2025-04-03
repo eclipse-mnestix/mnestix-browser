@@ -38,13 +38,13 @@ type RoleDialogProps = {
 export type ArrayOfIds = [{ id: string }];
 
 export type TargetInformationFormModel = {
-    aasEnvironment: { aasIds: ArrayOfIds; submodelIds: ArrayOfIds } | undefined;
+    'aas-environment': { aasIds: ArrayOfIds; submodelIds: ArrayOfIds } | undefined;
     aas: { aasIds: ArrayOfIds } | undefined;
     submodel: { submodelIds: ArrayOfIds; submodelElementIdShortPaths: ArrayOfIds } | undefined;
-    conceptDescription: { conceptDescriptionIds: ArrayOfIds } | undefined;
-    aasRegistry: { aasIds: ArrayOfIds } | undefined;
-    submodelRegistry: { submodelIds: ArrayOfIds } | undefined;
-    aasDiscoveryService: { aasIds: ArrayOfIds; assetIds: ArrayOfIds } | undefined;
+    'concept-description': { conceptDescriptionIds: ArrayOfIds } | undefined;
+    'aas-registry': { aasIds: ArrayOfIds } | undefined;
+    'submodel-registry': { submodelIds: ArrayOfIds } | undefined;
+    'aas-discovery-service': { aasIds: ArrayOfIds; assetIds: ArrayOfIds } | undefined;
 };
 
 export type RoleFormModel = {

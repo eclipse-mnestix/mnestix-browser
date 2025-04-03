@@ -1,4 +1,4 @@
-import { JSX } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, FormControl, MenuItem, Select, Typography } from '@mui/material';
 import { rbacRuleTargets } from 'lib/services/rbac-service/RbacRulesService';
 import { useTranslations } from 'next-intl';
@@ -13,29 +13,22 @@ type TargetInformationProps = {
 };
 export const TargetInformationForm = (props: TargetInformationProps) => {
     const t = useTranslations('pages.settings');
+    const [keys, setKeys] = useState<string[]>([]);
+    const [currentType, setCurrentType] = useState<keyof typeof rbacRuleTargets>('aas');
 
     const ruleTypes = Object.keys(rbacRuleTargets);
-    const currentType = props.getValues('type') as keyof typeof rbacRuleTargets;
-    const currentTypeInformation = props.getValues(`targetInformation.${currentType}` as keyof typeof props.getValues);
 
-    const permissions: JSX.Element[] = [];
-    const keys = currentTypeInformation ? Object.keys(currentTypeInformation) : [];
+    useEffect(() => {
+        adaptTargetInformationForm(props.getValues('type' as keyof typeof props.getValues));
+    }, []);
 
-    keys.forEach((key) => {
-        if (key !== '@type') {
-            permissions.push(
-                <WildcardOrStringArrayInput
-                    type={currentType}
-                    key={key}
-                    control={props.control}
-                    rule={key}
-                    setValue={props.setValue}
-                    getValues={props.getValues}
-                />,
-            );
-        }
-    });
-    // TODO  MNES-1629 implement ability to change type of role + temporarily saving previous values
+    const adaptTargetInformationForm = (value: keyof typeof rbacRuleTargets) => {
+        const currentTypeInformation = props.getValues(`targetInformation.${value}` as keyof typeof props.getValues);
+
+        setKeys(currentTypeInformation ? Object.keys(currentTypeInformation) : []);
+        setCurrentType(value);
+    };
+
     return (
         <Box>
             <Typography variant="h5">{t('roles.tableHeader.type')}</Typography>
@@ -44,7 +37,15 @@ export const TargetInformationForm = (props: TargetInformationProps) => {
                 control={props.control}
                 render={({ field }) => (
                     <FormControl fullWidth>
-                        <Select labelId="role-type-select-label" variant="outlined" {...field} disabled>
+                        <Select
+                            labelId="role-type-select-label"
+                            variant="outlined"
+                            {...field}
+                            onChange={(e) => {
+                                field.onChange(e);
+                                adaptTargetInformationForm(e.target.value as keyof typeof rbacRuleTargets);
+                            }}
+                        >
                             {ruleTypes.map((type) => (
                                 <MenuItem key={type} value={type}>
                                     {type}
@@ -54,7 +55,21 @@ export const TargetInformationForm = (props: TargetInformationProps) => {
                     </FormControl>
                 )}
             />
-            {permissions}
+            {keys.map((key) => {
+                if (key !== '@type') {
+                    return (
+                        <WildcardOrStringArrayInput
+                            type={currentType}
+                            key={key}
+                            control={props.control}
+                            rule={key}
+                            setValue={props.setValue}
+                            getValues={props.getValues}
+                        />
+                    );
+                }
+                return <></>;
+            })}
         </Box>
     );
 };

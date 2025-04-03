@@ -3,25 +3,27 @@ import { ArrayOfIds, TargetInformationFormModel } from 'app/[locale]/settings/_c
 
 // Utility function to map an array of strings to an array of objects with an id property
 const mapArrayToIdObjects = (array: string[]): ArrayOfIds => {
-    return array.length ? (array.map((item) => ({ id: item })) as ArrayOfIds) : ([{ id: '' }] as ArrayOfIds);
+    return array.length ? (array.map((item) => ({ id: item })) as ArrayOfIds) : wildcard;
 };
+
+const wildcard: ArrayOfIds = [{ id: '*' }];
 
 export const mapDtoToTargetInformationFormModel = (
     targetInformation: TargetInformation,
 ): TargetInformationFormModel => {
     const targetInformationFormModel: TargetInformationFormModel = {
-        aasEnvironment: undefined,
-        aas: undefined,
-        submodel: undefined,
-        conceptDescription: undefined,
-        aasRegistry: undefined,
-        submodelRegistry: undefined,
-        aasDiscoveryService: undefined,
+        'aas-environment': { aasIds: wildcard, submodelIds: wildcard },
+        aas: { aasIds: wildcard },
+        submodel: { submodelIds: wildcard, submodelElementIdShortPaths: wildcard },
+        'concept-description': { conceptDescriptionIds: wildcard },
+        'aas-registry': { aasIds: wildcard },
+        'submodel-registry': { submodelIds: wildcard },
+        'aas-discovery-service': { aasIds: wildcard, assetIds: wildcard },
     };
 
     switch (targetInformation['@type']) {
         case 'aas-environment':
-            targetInformationFormModel.aasEnvironment = {
+            targetInformationFormModel['aas-environment'] = {
                 aasIds: mapArrayToIdObjects(targetInformation.aasIds),
                 submodelIds: mapArrayToIdObjects(targetInformation.submodelIds),
             };
@@ -36,20 +38,20 @@ export const mapDtoToTargetInformationFormModel = (
             };
             break;
         case 'concept-description':
-            targetInformationFormModel.conceptDescription = {
+            targetInformationFormModel['concept-description'] = {
                 conceptDescriptionIds: mapArrayToIdObjects(targetInformation.conceptDescriptionIds),
             };
             break;
         case 'aas-registry':
-            targetInformationFormModel.aasRegistry = { aasIds: mapArrayToIdObjects(targetInformation.aasIds) };
+            targetInformationFormModel['aas-registry'] = { aasIds: mapArrayToIdObjects(targetInformation.aasIds) };
             break;
         case 'submodel-registry':
-            targetInformationFormModel.submodelRegistry = {
+            targetInformationFormModel['submodel-registry'] = {
                 submodelIds: mapArrayToIdObjects(targetInformation.submodelIds),
             };
             break;
         case 'aas-discovery-service':
-            targetInformationFormModel.aasDiscoveryService = {
+            targetInformationFormModel['aas-discovery-service'] = {
                 aasIds: mapArrayToIdObjects(targetInformation.aasIds),
                 assetIds: mapArrayToIdObjects(targetInformation.assetIds),
             };
@@ -68,8 +70,8 @@ export const mapTargetInformationFormModelToDto = (
         case 'aas-environment':
             return {
                 '@type': 'aas-environment',
-                aasIds: formModel.aasEnvironment?.aasIds.map((obj) => obj.id) || [],
-                submodelIds: formModel.aasEnvironment?.submodelIds.map((obj) => obj.id) || [],
+                aasIds: formModel['aas-environment']?.aasIds.map((obj) => obj.id) || [],
+                submodelIds: formModel['aas-environment']?.submodelIds.map((obj) => obj.id) || [],
             };
         case 'aas':
             return {
@@ -85,23 +87,24 @@ export const mapTargetInformationFormModelToDto = (
         case 'concept-description':
             return {
                 '@type': 'concept-description',
-                conceptDescriptionIds: formModel.conceptDescription?.conceptDescriptionIds.map((obj) => obj.id) || [],
+                conceptDescriptionIds:
+                    formModel['concept-description']?.conceptDescriptionIds.map((obj) => obj.id) || [],
             };
         case 'aas-registry':
             return {
                 '@type': 'aas-registry',
-                aasIds: formModel.aasRegistry?.aasIds.map((obj) => obj.id) || [],
+                aasIds: formModel['aas-registry']?.aasIds.map((obj) => obj.id) || [],
             };
         case 'submodel-registry':
             return {
                 '@type': 'submodel-registry',
-                submodelIds: formModel.submodelRegistry?.submodelIds.map((obj) => obj.id) || [],
+                submodelIds: formModel['submodel-registry']?.submodelIds.map((obj) => obj.id) || [],
             };
         case 'aas-discovery-service':
             return {
                 '@type': 'aas-discovery-service',
-                aasIds: formModel.aasDiscoveryService?.aasIds.map((obj) => obj.id) || [],
-                assetIds: formModel.aasDiscoveryService?.assetIds.map((obj) => obj.id) || [],
+                aasIds: formModel['aas-discovery-service']?.aasIds.map((obj) => obj.id) || [],
+                assetIds: formModel['aas-discovery-service']?.assetIds.map((obj) => obj.id) || [],
             };
         default:
             throw new Error(`Unknown target type: ${type}`);
