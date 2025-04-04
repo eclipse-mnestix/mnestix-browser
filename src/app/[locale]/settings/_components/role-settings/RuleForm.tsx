@@ -18,8 +18,8 @@ import { TargetInformationForm } from 'app/[locale]/settings/_components/role-se
 import { Controller, useForm } from 'react-hook-form';
 import { mapBaSyxRbacRuleToFormModel } from 'app/[locale]/settings/_components/role-settings/FormMappingHelper';
 
-type RoleDialogProps = {
-    readonly onSubmit: (data: RoleFormModel) => void;
+type RuleDialogProps = {
+    readonly onSubmit: (data: RuleFormModel) => void;
     readonly onCancel: () => void;
     readonly rule: BaSyxRbacRule;
 };
@@ -36,14 +36,14 @@ export type TargetInformationFormModel = {
     'aas-discovery-service': { aasIds: ArrayOfIds; assetIds: ArrayOfIds } | undefined;
 };
 
-export type RoleFormModel = {
+export type RuleFormModel = {
     role: string;
     type: keyof typeof rbacRuleTargets;
     action: (typeof rbacRuleActions)[number];
     targetInformation: TargetInformationFormModel;
 };
 
-export const RoleForm = (props: RoleDialogProps) => {
+export const RuleForm = (props: RuleDialogProps) => {
     const t = useTranslations('pages.settings.roles');
 
     const { control, handleSubmit, setValue, getValues, reset } = useForm({

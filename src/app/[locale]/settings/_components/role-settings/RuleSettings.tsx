@@ -2,7 +2,6 @@ import {
     Box,
     Button,
     Chip,
-    Divider,
     Table,
     TableBody,
     TableCell,
@@ -13,7 +12,7 @@ import {
 } from '@mui/material';
 import { CardHeading } from 'components/basics/CardHeading';
 import { useTranslations } from 'next-intl';
-import { RoleDialog } from 'app/[locale]/settings/_components/role-settings/RoleDialog';
+import { RuleDialog } from 'app/[locale]/settings/_components/role-settings/RuleDialog';
 import { JSX, useState } from 'react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { RoundedIconButton } from 'components/basics/Buttons';
@@ -24,13 +23,13 @@ import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { useShowError } from 'lib/hooks/UseShowError';
 import AddIcon from '@mui/icons-material/Add';
-import { CreateRoleDialog } from 'app/[locale]/settings/_components/role-settings/CreateRoleDialog';
+import { CreateRuleDialog } from 'app/[locale]/settings/_components/role-settings/CreateRuleDialog';
 
-export const RoleSettings = () => {
+export const RuleSettings = () => {
     const t = useTranslations('pages.settings.roles');
-    const [roleDialogOpen, setRoleDialogOpen] = useState(false);
+    const [ruleDetailDialogOpen, setRuleDetailDialogOpen] = useState(false);
     const [createDialogOpen, setCreateDialogOpen] = useState(false);
-    const [selectedRole, setSelectedRole] = useState<BaSyxRbacRule | undefined>(undefined);
+    const [selectedRule, setSelectedRule] = useState<BaSyxRbacRule | undefined>(undefined);
     const [rbacRoles, setRbacRoles] = useState<RbacRolesFetchResult | undefined>();
     const isMobile = useIsMobile();
     const [isLoading, setIsLoading] = useState(false);
@@ -92,8 +91,8 @@ export const RoleSettings = () => {
     };
 
     const openDetailDialog = (entry: BaSyxRbacRule) => {
-        setSelectedRole(entry);
-        setRoleDialogOpen(true);
+        setSelectedRule(entry);
+        setRuleDetailDialogOpen(true);
     };
 
     return (
@@ -161,19 +160,19 @@ export const RoleSettings = () => {
                     </Box>
                 )}
             </Box>
-            {selectedRole && (
-                <RoleDialog
+            {selectedRule && (
+                <RuleDialog
                     onClose={async (reload) => {
                         if (reload) {
                             await loadRbacData();
                         }
-                        setRoleDialogOpen(false);
+                        setRuleDetailDialogOpen(false);
                     }}
-                    open={roleDialogOpen}
-                    rule={selectedRole}
-                ></RoleDialog>
+                    open={ruleDetailDialogOpen}
+                    rule={selectedRule}
+                ></RuleDialog>
             )}
-            <CreateRoleDialog
+            <CreateRuleDialog
                 open={createDialogOpen}
                 onClose={async (reload) => {
                     if (reload) {

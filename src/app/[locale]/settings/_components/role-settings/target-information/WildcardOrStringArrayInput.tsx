@@ -4,14 +4,14 @@ import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { Control, Controller, useFieldArray, UseFormGetValues, UseFormSetValue } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
-import { RoleFormModel } from 'app/[locale]/settings/_components/role-settings/RoleForm';
+import { RuleFormModel } from 'app/[locale]/settings/_components/role-settings/RuleForm';
 
 type WildcardOrStringArrayInputProps = {
     type: string;
     rule: string;
-    control: Control<RoleFormModel>;
-    setValue: UseFormSetValue<RoleFormModel>;
-    getValues: UseFormGetValues<RoleFormModel>;
+    control: Control<RuleFormModel>;
+    setValue: UseFormSetValue<RuleFormModel>;
+    getValues: UseFormGetValues<RuleFormModel>;
 };
 
 export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProps) => {
@@ -24,7 +24,7 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
         return value[0].id === '*';
     };
     const [isWildcard, setIsWildcard] = useState(checkIfWildcard());
-    const { fields, append, remove } = useFieldArray<RoleFormModel>({
+    const { fields, append, remove } = useFieldArray<RuleFormModel>({
         control,
         name: `targetInformation.${props.type}.${props.rule}` as 'targetInformation.aas.aasIds',
     });

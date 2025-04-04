@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, Typography } from '@mui/material';
+import { Dialog, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { BaSyxRbacRule } from 'lib/services/rbac-service/RbacRulesService';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
@@ -6,14 +6,14 @@ import { createRbacRule } from 'lib/services/rbac-service/RbacActions';
 import { mapFormModelToBaSyxRbacRule } from 'app/[locale]/settings/_components/role-settings/FormMappingHelper';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
-import { RoleForm, RoleFormModel } from 'app/[locale]/settings/_components/role-settings/RoleForm';
+import { RuleForm, RuleFormModel } from 'app/[locale]/settings/_components/role-settings/RuleForm';
 
 type RoleDialogProps = {
     readonly onClose: (reload: boolean) => void;
     readonly open: boolean;
 };
 
-export const CreateRoleDialog = (props: RoleDialogProps) => {
+export const CreateRuleDialog = (props: RoleDialogProps) => {
     const t = useTranslations('pages.settings.roles');
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
@@ -25,7 +25,7 @@ export const CreateRoleDialog = (props: RoleDialogProps) => {
         idShort: '',
     };
 
-    async function onSubmit(data: RoleFormModel) {
+    async function onSubmit(data: RuleFormModel) {
         const mappedDto = mapFormModelToBaSyxRbacRule(data, defaultRbacRule);
         const response = await createRbacRule(mappedDto);
         if (response.isSuccess) {
@@ -49,7 +49,7 @@ export const CreateRoleDialog = (props: RoleDialogProps) => {
                 {t('createTitle')}
             </Typography>
             <DialogCloseButton handleClose={() => onCloseDialog(false)} />
-            <RoleForm rule={defaultRbacRule} onSubmit={onSubmit} onCancel={() => onCloseDialog(false)} />
+            <RuleForm rule={defaultRbacRule} onSubmit={onSubmit} onCancel={() => onCloseDialog(false)} />
         </Dialog>
     );
 };

@@ -4,12 +4,12 @@ import { rbacRuleTargets } from 'lib/services/rbac-service/RbacRulesService';
 import { useTranslations } from 'next-intl';
 import { WildcardOrStringArrayInput } from 'app/[locale]/settings/_components/role-settings/target-information/WildcardOrStringArrayInput';
 import { Control, Controller, UseFormGetValues, UseFormSetValue } from 'react-hook-form';
-import { RoleFormModel } from 'app/[locale]/settings/_components/role-settings/RoleForm';
+import { RuleFormModel } from 'app/[locale]/settings/_components/role-settings/RuleForm';
 
 type TargetInformationProps = {
-    readonly control: Control<RoleFormModel>;
-    readonly setValue: UseFormSetValue<RoleFormModel>;
-    readonly getValues: UseFormGetValues<RoleFormModel>;
+    readonly control: Control<RuleFormModel>;
+    readonly setValue: UseFormSetValue<RuleFormModel>;
+    readonly getValues: UseFormGetValues<RuleFormModel>;
 };
 export const TargetInformationForm = (props: TargetInformationProps) => {
     const t = useTranslations('pages.settings');
