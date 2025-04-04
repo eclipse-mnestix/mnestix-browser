@@ -147,6 +147,8 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Prettier
+        run: yarn prettier
       - name: Typescript check
         run: yarn typecheck
       - name: Typescript e2e check
