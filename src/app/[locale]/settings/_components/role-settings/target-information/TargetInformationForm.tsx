@@ -19,11 +19,11 @@ export const TargetInformationForm = (props: TargetInformationProps) => {
     const ruleTypes = Object.keys(rbacRuleTargets);
 
     useEffect(() => {
-        adaptTargetInformationForm(props.getValues('type' as keyof typeof props.getValues));
+        adaptTargetInformationForm(props.getValues('type') as keyof typeof rbacRuleTargets));
     }, []);
 
     const adaptTargetInformationForm = (value: keyof typeof rbacRuleTargets) => {
-        const currentTypeInformation = props.getValues(`targetInformation.${value}` as keyof typeof props.getValues);
+        const currentTypeInformation = props.getValues(`targetInformation.${value}` as 'targetInformation.aas');
 
         setKeys(currentTypeInformation ? Object.keys(currentTypeInformation) : []);
         setCurrentType(value);

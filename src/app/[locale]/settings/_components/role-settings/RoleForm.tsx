@@ -1,14 +1,4 @@
-import {
-    Box,
-    Button,
-    DialogActions,
-    DialogContent,
-    FormControl,
-    MenuItem,
-    Select,
-    TextField,
-    Typography,
-} from '@mui/material';
+import { Box, Button, DialogActions, DialogContent, FormControl, MenuItem, Select, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslations } from 'next-intl';
 import { BaSyxRbacRule, rbacRuleActions, rbacRuleTargets } from 'lib/services/rbac-service/RbacRulesService';
@@ -57,27 +47,6 @@ export const RoleForm = (props: RoleDialogProps) => {
     return (
         <form onSubmit={handleSubmit(props.onSubmit)}>
             <DialogContent style={{ padding: '40px' }}>
-                <Box display="flex" flexDirection="column" gap="1em">
-                    <Box display="flex" flexDirection="column">
-                        <Typography variant="h5">{t('tableHeader.name')}</Typography>
-                        <Controller
-                            rules={{
-                                required: t('roleRequired'),
-                            }}
-                            name="role"
-                            control={control}
-                            render={({ field, fieldState: { error } }) => (
-                                <FormControl fullWidth>
-                                    <TextField
-                                        variant="outlined"
-                                        {...field}
-                                        error={!!error}
-                                        helperText={error ? error.message : ''}
-                                    />
-                                </FormControl>
-                            )}
-                        />
-                    </Box>
                     <Box display="flex" flexDirection="column">
                         <Typography variant="h5">{t('tableHeader.action')}</Typography>
                         <Controller

@@ -18,8 +18,9 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
     const t = useTranslations('pages.settings.roles');
     const control = props.control;
     const checkIfWildcard = () => {
-        const value = props.getValues(`targetInformation.${props.type}.${props.rule}` as keyof typeof props.getValues);
-        // @ts-expect-error id exists
+        const value = props.getValues(
+            `targetInformation.${props.type}.${props.rule}` as 'targetInformation.aas.aasIds',
+        );
         return value[0].id === '*';
     };
     const [isWildcard, setIsWildcard] = useState(checkIfWildcard());
