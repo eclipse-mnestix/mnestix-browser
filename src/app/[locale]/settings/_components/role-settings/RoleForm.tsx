@@ -32,7 +32,7 @@ export type RoleFormModel = {
     targetInformation: TargetInformationFormModel;
 };
 
-export const RoleDialogForm = (props: RoleDialogProps) => {
+export const RoleForm = (props: RoleDialogProps) => {
     const t = useTranslations('pages.settings.roles');
 
     const { control, handleSubmit, setValue, getValues, reset } = useForm({

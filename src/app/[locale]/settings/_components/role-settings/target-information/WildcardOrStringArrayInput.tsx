@@ -4,7 +4,7 @@ import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { Control, Controller, useFieldArray, UseFormGetValues, UseFormSetValue } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
-import { RoleFormModel } from '../RoleDialogForm';
+import { RoleFormModel } from 'app/[locale]/settings/_components/role-settings/RoleForm';
 
 type WildcardOrStringArrayInputProps = {
     type: string;

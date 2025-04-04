@@ -10,7 +10,7 @@ import { deleteAndCreateRbacRule } from 'lib/services/rbac-service/RbacActions';
 import { mapFormModelToBaSyxRbacRule } from 'app/[locale]/settings/_components/role-settings/FormMappingHelper';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
-import { RoleDialogForm, RoleFormModel } from 'app/[locale]/settings/_components/role-settings/RoleDialogForm';
+import { RoleForm, RoleFormModel } from 'app/[locale]/settings/_components/role-settings/RoleForm';
 
 type RoleDialogProps = {
     readonly onClose: (reload: boolean) => void;
@@ -47,7 +47,7 @@ export const RoleDialog = (props: RoleDialogProps) => {
         <Dialog open={props.open} onClose={() => onCloseDialog(false)} maxWidth="md" fullWidth={true}>
             <DialogCloseButton handleClose={() => onCloseDialog(false)} />
             {isEditMode ? (
-                <RoleDialogForm rule={props.rule} onSubmit={onSubmit} onCancel={() => setIsEditMode(false)} />
+                <RoleForm rule={props.rule} onSubmit={onSubmit} onCancel={() => setIsEditMode(false)} />
             ) : (
                 <>
                     <DialogContent style={{ padding: '40px' }} data-testid="role-settings-dialog">

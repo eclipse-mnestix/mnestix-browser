@@ -1,6 +1,6 @@
 import { mapBaSyxRbacRuleToFormModel, mapFormModelToBaSyxRbacRule } from './FormMappingHelper';
 import { BaSyxRbacRule } from 'lib/services/rbac-service/RbacRulesService';
-import { RoleFormModel } from './RoleDialogForm';
+import { RoleFormModel } from 'app/[locale]/settings/_components/role-settings/RoleForm';
 
 describe('FormMappingHelper', () => {
     describe('mapBaSyxRbacRuleToFormModel', () => {

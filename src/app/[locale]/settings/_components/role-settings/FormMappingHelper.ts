@@ -1,5 +1,9 @@
 import { BaSyxRbacRule, rbacRuleTargets, TargetInformation } from 'lib/services/rbac-service/RbacRulesService';
-import { ArrayOfIds, RoleFormModel, TargetInformationFormModel } from './RoleDialogForm';
+import {
+    ArrayOfIds,
+    RoleFormModel,
+    TargetInformationFormModel,
+} from 'app/[locale]/settings/_components/role-settings/RoleForm';
 
 // Utility function to map an array of strings to an array of objects with an id property
 const mapArrayToIdObjects = (array: string[]): ArrayOfIds => {
