@@ -10,7 +10,10 @@ import { envs } from 'lib/env/MnestixEnv';
 
 async function requestInvalid() {
     const session = await getServerSession(authOptions);
-    if (!session?.user.roles || !session?.user.roles?.includes(MnestixRole.MnestixAdmin)) {
+    if (!session) {
+        return wrapErrorCode(ApiResultStatus.UNAUTHORIZED, 'Unauthorized');
+    }
+    if (!session.user.roles.includes(MnestixRole.MnestixAdmin)) {
         return wrapErrorCode(ApiResultStatus.FORBIDDEN, 'Forbidden');
     }
     // TODO MNES-1633 validate on app startup

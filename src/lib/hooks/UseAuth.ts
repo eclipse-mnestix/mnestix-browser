@@ -1,31 +1,51 @@
-import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { Session } from 'next-auth';
 import { sessionLogOut } from 'lib/api/infrastructure';
 import AllowedRoutes, { MnestixRole } from 'components/authentication/AllowedRoutes';
 import { useEnv } from 'app/EnvProvider';
+import { useNotificationSpawner } from './UseNotificationSpawner';
+import { useTranslations } from 'use-intl';
 
-export function useAuth(): Auth {
+export function useAuth() {
     const [bearerToken, setBearerToken] = useState<string>('');
+    const [prefSession, setPrefSession] = useState<Session | null>(null);
     const { data: session, status } = useSession();
+    const t = useTranslations('validation.authentication');
+
     const env = useEnv();
 
-    useAsyncEffect(async () => {
+    const notificationSpawner = useNotificationSpawner();
+
+    const providerType = env.KEYCLOAK_ENABLED ? 'keycloak' : 'azure-ad';
+
+    useEffect(() => {
+        if (prefSession && !session) {
+            showSessionExpired();
+        }
+        setPrefSession(session);
         if (session) {
             setBearerToken('Bearer ' + session.accessToken);
-        } else {
-            // TODO forward to login
         }
     }, [session]);
 
-    const providerType = env.KEYCLOAK_ENABLED ? 'keycloak' : 'azure-ad';
+    function showSessionExpired() {
+        notificationSpawner.spawn({
+            message: t('sessionExpired'),
+            severity: 'warning',
+        });
+    }
 
     return {
         getBearerToken: (): string => {
             return bearerToken;
         },
-        login: (): void => {
+        invalidSessionSignOut: async (): Promise<void> => {
+            await sessionLogOut(env.KEYCLOAK_ENABLED);
+            await signOut();
+            showSessionExpired();
+        },
+        login: () => {
             signIn(providerType).catch((e) => {
                 console.error(e);
             });
@@ -52,12 +72,4 @@ export function useAuth(): Auth {
         },
         isLoggedIn: status === 'authenticated',
     };
-}
-
-export interface Auth {
-    getBearerToken: () => string;
-    login: () => void;
-    logout: () => void;
-    getAccount: () => Session | null;
-    isLoggedIn: boolean;
 }

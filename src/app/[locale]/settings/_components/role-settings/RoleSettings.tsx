@@ -22,6 +22,7 @@ import { BaSyxRbacRule, RbacRolesFetchResult } from 'lib/services/rbac-service/R
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { useShowError } from 'lib/hooks/UseShowError';
+import { useAuth } from 'lib/hooks/UseAuth';
 
 export const RoleSettings = () => {
     const t = useTranslations('pages.settings.roles');
@@ -30,6 +31,7 @@ export const RoleSettings = () => {
     const [rbacRoles, setRbacRoles] = useState<RbacRolesFetchResult | undefined>();
     const isMobile = useIsMobile();
     const [isLoading, setIsLoading] = useState(false);
+    const { invalidSessionSignOut } = useAuth();
     const { showError } = useShowError();
 
     const MAX_PERMISSIONS_CHARS = 40;
@@ -42,6 +44,9 @@ export const RoleSettings = () => {
             response.result.roles.sort((a: { role: string }, b: { role: string }) => a.role.localeCompare(b.role));
             setRbacRoles(response.result);
         } else {
+            if (response.errorCode === 'UNAUTHORIZED') {
+                return invalidSessionSignOut();
+            }
             showError(response.message);
         }
         setIsLoading(false);

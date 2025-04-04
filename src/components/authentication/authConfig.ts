@@ -96,6 +96,9 @@ export const authOptions: AuthOptions = {
             session.accessToken = token.access_token as string;
             session.idToken = token.id_token as string;
             session.user.roles = token.roles as string[];
+            if (token.error) {
+                throw new Error(token.error as string);
+            }
             // Azure Entra ID:
             if (token.ad_name) {
                 session.user.name = token.ad_name as string;
