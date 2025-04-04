@@ -1,10 +1,9 @@
 ﻿import { MultiplicityEnum } from 'lib/enums/Multiplicity.enum';
 import { IconButton, ListItemIcon, Menu, MenuItem } from '@mui/material';
 import { ContentCopy, Delete, MoreVert, Restore } from '@mui/icons-material';
-import { FormattedMessage } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
 import * as React from 'react';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface TemplateEditTreeItemMenuProps {
     elementMultiplicity: MultiplicityEnum | undefined;
@@ -22,6 +21,7 @@ export const TemplateEditTreeItemMenu = (props: TemplateEditTreeItemMenuProps) =
     const menuElements = generateMenuElementsBasedOnMultiplicity(props.elementMultiplicity, props.numberOfThisElement);
     const [editMenuOpen, setEditMenuOpen] = useState(false);
     const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
+    const t = useTranslations('common.actions');
 
     function generateMenuElementsBasedOnMultiplicity(
         elementMultiplicity: MultiplicityEnum | string | undefined,
@@ -89,7 +89,7 @@ export const TemplateEditTreeItemMenu = (props: TemplateEditTreeItemMenuProps) =
                 <ListItemIcon>
                     <ContentCopy fontSize="small" />
                 </ListItemIcon>
-                <FormattedMessage {...messages.mnestix.duplicate} />
+                {t('duplicate')}
             </MenuItem>
         );
     }
@@ -100,7 +100,7 @@ export const TemplateEditTreeItemMenu = (props: TemplateEditTreeItemMenuProps) =
                 <ListItemIcon>
                     <Delete fontSize="small" />
                 </ListItemIcon>
-                <FormattedMessage {...messages.mnestix.delete} />
+                {t('delete')}
             </MenuItem>
         );
     }
@@ -111,7 +111,7 @@ export const TemplateEditTreeItemMenu = (props: TemplateEditTreeItemMenuProps) =
                 <ListItemIcon>
                     <Restore fontSize="small" />
                 </ListItemIcon>
-                <FormattedMessage {...messages.mnestix.restore} />
+                {t('restore')}
             </MenuItem>
         );
     }

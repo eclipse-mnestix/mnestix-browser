@@ -17,25 +17,37 @@ describe('CarbonFootprint - CO2 Comparison', () => {
     it('should show years to one decimal', async () => {
         CustomRenderReactIntl(<Comparison co2Equivalents={16} />);
         const component = screen.getByTestId('co2-comparison-value');
-        expect(component).toHaveTextContent('1.3 Years');
+        expect(component).toHaveTextContent('1.3 years');
     });
 
     it('should show months to one decimal', async () => {
         CustomRenderReactIntl(<Comparison co2Equivalents={1.75} />);
         const component = screen.getByTestId('co2-comparison-value');
-        expect(component).toHaveTextContent('1.7 Months');
+        expect(component).toHaveTextContent('1.7 months');
     });
 
     it('should show months below 12 months', async () => {
         CustomRenderReactIntl(<Comparison co2Equivalents={12.49} />);
         const component = screen.getByTestId('co2-comparison-value');
-        expect(component).toHaveTextContent('12 Months');
+        expect(component).toHaveTextContent('12 months');
     });
 
     it('should switch to years above 12 months', async () => {
         CustomRenderReactIntl(<Comparison co2Equivalents={12.51} />);
         const component = screen.getByTestId('co2-comparison-value');
-        expect(component).toHaveTextContent('1 Years');
+        expect(component).toHaveTextContent('1 year');
+    });
+
+    it('should show singular on exactly one', async () => {
+        CustomRenderReactIntl(<Comparison co2Equivalents={1} />);
+        const component = screen.getByTestId('co2-comparison-value');
+        expect(component).toHaveTextContent('1 month');
+    });
+
+    it('should show less than a month', async () => {
+        CustomRenderReactIntl(<Comparison co2Equivalents={0.01} />);
+        const component = screen.getByTestId('co2-comparison-value');
+        expect(component).toHaveTextContent('less than a month');
     });
 
     it('should display the tree', async () => {

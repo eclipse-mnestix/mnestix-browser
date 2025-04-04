@@ -1,8 +1,6 @@
 import { InfoOutlined } from '@mui/icons-material';
 import { alpha, Box, Divider, Skeleton, styled, Typography } from '@mui/material';
-import { messages } from 'lib/i18n/localization';
 import { Fragment, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { IdGenerationSettingFrontend } from 'lib/types/IdGenerationSettingFrontend';
 import { IdSettingEntry } from './IdSettingEntry';
 import { AssetIdRedirectDocumentationDialog } from './AssetIdRedirectDocumentationDialog';
@@ -21,6 +19,7 @@ import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { SettingsCardHeader } from 'app/[locale]/settings/_components/SettingsCardHeader';
 import { getIdGenerationSettings, putSingleIdGenerationSetting } from 'lib/services/configurationApiActions';
 import { useShowError } from 'lib/hooks/UseShowError';
+import { useTranslations } from 'next-intl';
 
 const StyledDocumentationButton = styled(Box)(({ theme }) => ({
     display: 'flex',
@@ -49,10 +48,10 @@ export function IdSettingsCard() {
     const auth = useAuth();
     const bearerToken = auth.getBearerToken();
     const notificationSpawner = useNotificationSpawner();
-    const intl = useIntl();
     const [isLoading, setIsLoading] = useState(false);
     const [settings, setSettings] = useState<IdGenerationSettingFrontend[]>([]);
     const { showError } = useShowError();
+    const t = useTranslations();
 
     const {
         register,
@@ -139,7 +138,7 @@ export function IdSettingsCard() {
             }
             await fetchIdSettings();
             notificationSpawner.spawn({
-                message: intl.formatMessage(messages.mnestix.successfullyUpdated),
+                message:  t('common.messages.successfullyUpdated'),
                 severity: 'success',
             });
             setIsEditMode(false);
@@ -158,8 +157,8 @@ export function IdSettingsCard() {
     return (
         <Box sx={{ p: 3, width: '100%' }}>
             <SettingsCardHeader
-                title={<FormattedMessage {...messages.mnestix.idStructure} />}
-                subtitle={<FormattedMessage {...messages.mnestix.idStructureExplanation} />}
+                title={t('pages.settings.idStructure')}
+                subtitle={t('pages.settings.idStructureExplanation')}
                 onCancel={() => cancelEdit()}
                 onEdit={() => setIsEditMode(true)}
                 onSubmit={handleSubmit((data) => saveIdSettings(data))}
@@ -195,7 +194,7 @@ export function IdSettingsCard() {
                 <StyledDocumentationButton onClick={() => setDocumentationModalOpen(true)}>
                     <InfoOutlined sx={{ mr: 1 }} />
                     <Typography>
-                        <FormattedMessage {...messages.mnestix.assetIdDocumentation.title} />
+                        {t('pages.assetIdDocumentation.title')}
                     </Typography>
                 </StyledDocumentationButton>
             </Box>

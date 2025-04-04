@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { TreeItem, TreeItemContentProps, TreeItemProps, useTreeItemState } from '@mui/x-tree-view';
 import clsx from 'clsx';
 import Typography from '@mui/material/Typography';
@@ -6,9 +7,7 @@ import { Box, styled } from '@mui/material';
 import { TextSnippet } from '@mui/icons-material';
 import { MultiplicityEnum } from 'lib/enums/Multiplicity.enum';
 import { TemplateEditTreeItemMenu } from './TemplateEditTreeItemMenu';
-import { useState } from 'react';
-import { messages } from 'lib/i18n/localization';
-import { useIntl } from 'react-intl';
+import { useTranslations } from 'next-intl';
 
 interface CustomTreeItemProps extends TreeItemProps {
     hasValue?: boolean;
@@ -74,6 +73,7 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
     const icon = iconProp || expansionIcon || displayIcon;
 
     const [isAboutToBeDeleted, setIsAboutToBeDeleted] = useState(false);
+    const t = useTranslations('common.messages');
 
     React.useEffect(() => {
         setIsAboutToBeDeleted(false);
@@ -90,7 +90,6 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
         if (selected) {
             customOnSelect();
         }
-         
     }, []);
 
     const handleMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -116,8 +115,6 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
         setIsAboutToBeDeleted(false);
     };
 
-    const intl = useIntl();
-
     return (
         <Box
             className={clsx(className, classes.root, {
@@ -137,7 +134,7 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
                     {isAboutToBeDeleted || props.isParentAboutToBeDeleted ? (
                         <>
                             <Typography component="div" className={classes.label} sx={{ color: 'text.disabled' }}>
-                                {label + ' (' + intl.formatMessage(messages.mnestix.deleted) + ')'}
+                                {`${label} (${t('deleted')})`}
                             </Typography>
                             {hasValue && <TextSnippet fontSize="small" sx={{ color: 'text.disabled', ml: '3px' }} />}
                         </>

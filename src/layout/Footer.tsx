@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import Link from '@mui/material/Link';
-import { useEnv } from 'app/env/provider';
+import { useEnv } from 'app/EnvProvider';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { AboutDialog } from 'components/basics/AboutDialog';
@@ -16,7 +16,7 @@ export function Footer() {
         setAboutDialogOpen(false);
     };
 
-    const t = useTranslations('footer');
+    const t = useTranslations('navigation.footer');
 
     return (
         <>
@@ -68,7 +68,7 @@ export function Footer() {
                                 </Link>
                             </Typography>
                         )}
-                        
+
                         {imprintString && (
                             <Typography mx={2} color="text.secondary" fontSize="small">
                                 |

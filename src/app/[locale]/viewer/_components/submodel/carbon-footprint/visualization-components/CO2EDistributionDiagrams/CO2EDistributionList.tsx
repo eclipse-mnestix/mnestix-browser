@@ -1,12 +1,11 @@
 import { Grid, Paper, styled } from '@mui/material';
 import { ProductLifecycleStage } from 'lib/enums/ProductLifecycleStage.enum';
-import { messages } from 'lib/i18n/localization';
-import { useIntl } from 'react-intl';
 import { cutDecimalPlaces } from 'lib/util/NumberUtil';
 import React from 'react';
+import { useTranslations } from 'next-intl';
 
 export function CO2EList(props: { co2EquivalentsPerLifecycleStage: Partial<Record<ProductLifecycleStage, number>> }) {
-    const intl = useIntl();
+    const t = useTranslations('components.carbonFootprint');
     const { co2EquivalentsPerLifecycleStage } = props;
 
     const ItemCO2Amount = styled(Paper)(({ theme }) => ({
@@ -32,9 +31,7 @@ export function CO2EList(props: { co2EquivalentsPerLifecycleStage: Partial<Recor
                     )} kg`}</ItemCO2Amount>
                 </Grid>
                 <Grid item key={`grid-stage-${index}`} xs={9} sm={10}>
-                    <ItemLifecycleStage elevation={1}>
-                        {intl.formatMessage(messages.mnestix.productCarbonFootprint.lifecycleStages[val])}
-                    </ItemLifecycleStage>
+                    <ItemLifecycleStage elevation={1}>{t(`stages.${val}`)}</ItemLifecycleStage>
                 </Grid>
             </React.Fragment>
         ));

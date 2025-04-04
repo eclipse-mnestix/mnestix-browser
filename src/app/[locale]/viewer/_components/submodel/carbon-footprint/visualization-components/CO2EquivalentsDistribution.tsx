@@ -6,6 +6,7 @@ import { CO2EList } from './CO2EDistributionDiagrams/CO2EDistributionList';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import ListIcon from '@mui/icons-material/List';
 import { cutDecimalPlaces } from 'lib/util/NumberUtil';
+import { useTranslations } from 'next-intl';
 
 enum chartVariants {
     barchart,
@@ -19,6 +20,8 @@ export function CO2EquivalentsDistribution(props: {
     totalCO2Equivalents: number;
 }) {
     const [chartVariant, setChartVariant] = useState(chartVariants.barchart);
+    const t = useTranslations('components.carbonFootprint');
+
     const handleVariantChange = (_event: React.MouseEvent<HTMLElement>, variant: number | null) => {
         if (variant !== null) setChartVariant(variant);
     };
@@ -35,15 +38,17 @@ export function CO2EquivalentsDistribution(props: {
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="co2-equivalents-distribution-box">
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                <Typography
+                <Box
                     sx={{ color: 'primary.main', fontSize: 24 }}
                     data-testid="co2-equivalents-totalEquivalents-typography"
                 >
                     <Typography sx={{ color: 'inherit', fontSize: 'inherit', fontWeight: 600 }} component="span">
                         {`${cutDecimalPlaces(props.totalCO2Equivalents, 3)} ${unit} `}
                     </Typography>
-                    in total
-                </Typography>
+                    <Typography sx={{ color: 'inherit', fontSize: 'inherit' }} component="span">
+                        {t('inTotal')}
+                    </Typography>
+                </Box>
                 <ToggleButtonGroup
                     value={chartVariant}
                     onChange={handleVariantChange}

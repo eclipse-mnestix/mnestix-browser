@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Box, Button, Skeleton, Typography } from '@mui/material';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
+import { useIntl } from 'react-intl';
 import { safeBase64Decode } from 'lib/util/Base64Util';
 import { ArrowForward } from '@mui/icons-material';
 import { LangStringNameType, Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
@@ -12,7 +11,7 @@ import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { SubmodelsOverviewCard } from '../_components/SubmodelsOverviewCard';
 import { AASOverviewCard } from 'app/[locale]/viewer/_components/AASOverviewCard';
-import { useEnv } from 'app/env/provider';
+import { useEnv } from 'app/EnvProvider';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import {
     getAasFromRepository,
@@ -30,11 +29,12 @@ import {
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { TransferButton } from 'app/[locale]/viewer/_components/transfer/TransferButton';
 import { useShowError } from 'lib/hooks/UseShowError';
+import { useTranslations } from 'next-intl';
 
 export default function Page() {
     const navigate = useRouter();
     const searchParams = useParams<{ base64AasId: string }>();
-    const base64AasId = searchParams.base64AasId;
+    const base64AasId = decodeURIComponent(searchParams.base64AasId).replace(/=+$|[%3D]+$/, '');
     const aasIdDecoded = safeBase64Decode(base64AasId);
     const [isLoadingAas, setIsLoadingAas] = useState(false);
     const isMobile = useIsMobile();
@@ -48,12 +48,15 @@ export default function Page() {
     const [isSubmodelsLoading, setIsSubmodelsLoading] = useState(true);
     const [registryAasData, setRegistryAasData] = useRegistryAasState();
     const { showError } = useShowError();
+    const t = useTranslations();
+
+
 
     const submodelWhitelist: string[] = JSON.parse(env.SUBMODEL_WHITELIST || '[]');
 
     function whitelistContains(sm: Submodel) {
-        const semanticIds = sm.semanticId?.keys.map(key => key.value);
-        return semanticIds?.some(id => submodelWhitelist.includes(id));
+        const semanticIds = sm.semanticId?.keys.map((key) => key.value);
+        return semanticIds?.some((id) => submodelWhitelist.includes(id));
     }
 
     useAsyncEffect(async () => {
@@ -87,7 +90,7 @@ export default function Page() {
 
         const { isSuccess, result } = await performFullAasSearch(aasIdDecoded);
         if (!isSuccess) {
-            showError(new LocalizedError('errors.urlNotFound'));
+            showError(new LocalizedError('validation.errors.urlNotFound'));
         } else if (result.aas) {
             setAasOriginUrl(result.aasData?.aasRepositoryOrigin ?? null);
             setRegistryAasData(result.aasData);
@@ -106,7 +109,8 @@ export default function Page() {
                     setSubmodels((submodels) => {
                         const exists = submodels.some((sm) => sm.id === newSm.id);
                         if (exists) return submodels;
-                        if (env.WHITELIST_FEATURE_FLAG && newSm.submodel && !whitelistContains(newSm.submodel)) return submodels;
+                        if (env.WHITELIST_FEATURE_FLAG && newSm.submodel && !whitelistContains(newSm.submodel))
+                            return submodels;
                         return [...submodels, newSm];
                     });
                 }),
@@ -187,7 +191,7 @@ export default function Page() {
                                 onClick={startComparison}
                                 data-testid="detail-compare-button"
                             >
-                                <FormattedMessage {...messages.mnestix.compareButton} />
+                                {t('pages.compare.compareButton')}
                             </Button>
                         )}
                         {env.TRANSFER_FEATURE_FLAG && <TransferButton />}
@@ -217,16 +221,13 @@ export default function Page() {
                             display: 'inline-block',
                         }}
                     >
-                        <FormattedMessage {...messages.mnestix.noDataFound} />
+                        {t('common.messages.noDataFound')}
                     </Typography>
                     <Typography color="text.secondary">
-                        <FormattedMessage
-                            {...messages.mnestix.noDataFoundFor}
-                            values={{ name: safeBase64Decode(base64AasId) }}
-                        />
+                        {t('common.messages.noDataFoundFor', { name: safeBase64Decode(base64AasId) })}
                     </Typography>
                     <Button variant="contained" startIcon={<ArrowForward />} href="/">
-                        <FormattedMessage {...messages.mnestix.toHome} />
+                        {t('common.actions.toHome')}
                     </Button>
                 </>
             )}

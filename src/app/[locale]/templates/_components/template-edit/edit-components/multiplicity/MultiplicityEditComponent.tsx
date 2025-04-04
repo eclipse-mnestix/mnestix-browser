@@ -1,14 +1,13 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select } from '@mui/material';
-import { messages } from 'lib/i18n/localization';
 import { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { TemplateEditSectionHeading } from '../../TemplateEditSectionHeading';
 import multiplicityDataJson from './multiplicity-data.json';
 import { MultiplicityEnum } from 'lib/enums/Multiplicity.enum';
 import { MultiplicityData } from 'lib/types/MultiplicityData';
 import { LockedTextField } from 'components/basics/LockedTextField';
 import { ISubmodelElement, Qualifier, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { useTranslations } from 'next-intl';
 
 interface MultiplicityEditComponentProps {
     data: Submodel | ISubmodelElement;
@@ -21,6 +20,7 @@ export function MultiplicityEditComponent(props: MultiplicityEditComponentProps)
     const [multiplicity, setMultiplicity] = useState(getMultiplicity());
     const [valueEnabled, setValueEnabled] = useState(!!multiplicity);
     const allowMultiplicityToBeSet = props.allowMultiplicityToBeSet;
+    const t = useTranslations('common');
 
     const onAdd = () => {
         setValueEnabled(true);
@@ -116,7 +116,7 @@ export function MultiplicityEditComponent(props: MultiplicityEditComponentProps)
                     onClick={() => onAdd()}
                     disabled={!allowMultiplicityToBeSet}
                 >
-                    <FormattedMessage {...messages.mnestix.add} />
+                    {t('actions.add')}
                 </Button>
             )}
         </>

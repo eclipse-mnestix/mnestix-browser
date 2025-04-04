@@ -1,13 +1,12 @@
 import { FluxResultObserver, InfluxDB } from '@influxdata/influxdb-client-browser';
 import { useEffect, useState } from 'react';
 import { Alert, Box, CircularProgress } from '@mui/material';
-import { useIntl } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
 import { TimeSeriesLineDiagram } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesLineDiagram';
 import { TimeSeriesDataSet } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesUtil';
+import { useTranslations } from 'next-intl';
 
 export function InfluxTimeSeriesDiagram(props: { query: string; endpoint: string }) {
-    const intl = useIntl();
+    const t = useTranslations('validation.errors');
     const { query, endpoint } = props;
     const [data, setData] = useState<TimeSeriesDataSet>({ points: [], names: [] });
     const [error, setError] = useState<Error | undefined>(undefined);
@@ -53,7 +52,7 @@ export function InfluxTimeSeriesDiagram(props: { query: string; endpoint: string
         return (
             <Box sx={{ display: 'flex', justifyContent: 'center', padding: 2 }}>
                 <Alert icon={false} severity="warning">
-                    {intl.formatMessage(messages.mnestix.errorMessages.influxError)}
+                    {t('influxError')}
                 </Alert>
             </Box>
         );

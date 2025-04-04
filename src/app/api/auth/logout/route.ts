@@ -1,11 +1,14 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from 'components/authentication/authConfig';
 import { NextResponse } from 'next/server';
+import { envs } from 'lib/env/MnestixEnv';
 
 export async function GET() {
     const session = await getServerSession(authOptions);
-    const redirectUri = process.env.NEXTAUTH_URL ? process.env.NEXTAUTH_URL : '';
-    const endSessionUrl = `${process.env.KEYCLOAK_ISSUER}/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/logout`;
+    const redirectUri = process.env.NEXTAUTH_URL || '';
+    const endSessionUrl = envs.KEYCLOAK_ENABLED
+        ? `${envs.KEYCLOAK_ISSUER}/realms/${envs.KEYCLOAK_REALM}/protocol/openid-connect/logout`
+        : '';
     try {
         if (session) {
             const idToken = session.idToken;

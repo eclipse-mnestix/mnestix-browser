@@ -1,7 +1,5 @@
 import { Box } from '@mui/material';
 import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
-import { messages } from 'lib/i18n/localization';
-import { useIntl } from 'react-intl';
 import { Address, AddressPerLifeCyclePhase, ProductJourney } from './visualization-components/ProductJourney';
 import { CalculationMethod } from './visualization-components/CalculationMethod';
 import { CO2Equivalents } from './visualization-components/CO2Equivalents';
@@ -13,9 +11,10 @@ import { ProductLifecycleStage } from 'lib/enums/ProductLifecycleStage.enum';
 import { StyledDataRow } from 'components/basics/StyledDataRow';
 import { ISubmodelElement, Property, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
 import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
+import { useTranslations } from 'next-intl';
 
 export function CarbonFootprintVisualizations({ submodel }: SubmodelVisualizationProps) {
-    const intl = useIntl();
+    const t = useTranslations('components.carbonFootprint');
 
     const pcfSubmodelElements = submodel.submodelElements?.filter((el) =>
         hasSemanticId(
@@ -50,25 +49,25 @@ export function CarbonFootprintVisualizations({ submodel }: SubmodelVisualizatio
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="carbonFootprintVisualizations">
-            <StyledDataRow title={intl.formatMessage(messages.mnestix.productCarbonFootprint.totalCO2Equivalents)}>
+            <StyledDataRow title={t('totalCO2Equivalents')}>
                 <CO2Equivalents totalCO2Equivalents={totalCO2Equivalents} />
             </StyledDataRow>
-            <StyledDataRow title={intl.formatMessage(messages.mnestix.productCarbonFootprint.completedStages)}>
+            <StyledDataRow title={t('completedStages')}>
                 <ProductLifecycle completedStages={completedStages} />
             </StyledDataRow>
-            <StyledDataRow title={intl.formatMessage(messages.mnestix.productCarbonFootprint.co2EDistribution)}>
+            <StyledDataRow title={t('co2EDistribution')}>
                 <CO2EquivalentsDistribution
                     co2EquivalentsPerLifecycleStage={co2EquivalentsPerLifecycleStage}
                     totalCO2Equivalents={totalCO2Equivalents}
                 />
             </StyledDataRow>
-            <StyledDataRow title={intl.formatMessage(messages.mnestix.productCarbonFootprint.co2EComparison)}>
+            <StyledDataRow title={t('co2EComparison')}>
                 <Comparison co2Equivalents={totalCO2Equivalents} />
             </StyledDataRow>
-            <StyledDataRow title={intl.formatMessage(messages.mnestix.productCarbonFootprint.productJourney)}>
+            <StyledDataRow title={t('productJourney')}>
                 <ProductJourney addressesPerLifeCyclePhase={addressesPerLifeCyclePhase} />
-            </StyledDataRow> 
-            <StyledDataRow title={intl.formatMessage(messages.mnestix.productCarbonFootprint.calculationMethod)}>
+            </StyledDataRow>
+            <StyledDataRow title={t('calculationMethod')}>
                 <CalculationMethod calculationMethod={calculationMethod} />
             </StyledDataRow>
         </Box>
@@ -105,9 +104,9 @@ function ExtractCO2EquivalentsPerLifeCycleStage(
     return pcfSubmodelElements.reduce(
         (o, key) => ({
             ...o,
-            [(key.value?.find((v) => hasSemanticId(v, SubmodelElementSemanticId.PCFLiveCyclePhase)) as Property)?.value
+            [((key.value?.find((v) => hasSemanticId(v, SubmodelElementSemanticId.PCFLiveCyclePhase)) as Property)?.value
                 ?.split(' ')[0]
-                .trim() as ProductLifecycleStage ?? ProductLifecycleStage.A3Production]: Number.parseFloat(
+                .trim() as ProductLifecycleStage) ?? ProductLifecycleStage.A3Production]: Number.parseFloat(
                 (key.value?.find((v) => hasSemanticId(v, SubmodelElementSemanticId.PCFCO2eq)) as Property)?.value ?? '',
             ),
         }),

@@ -11,8 +11,8 @@ import { mnestixFetch } from 'lib/api/infrastructure';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { AasRegistryEndpointEntryInMemory } from 'lib/api/registry-service-api/registryServiceApiInMemory';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
-import * as process from 'node:process';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
+import { envs } from 'lib/env/MnestixEnv';
 
 export type AasData = {
     submodelDescriptors: SubmodelDescriptor[] | undefined;
@@ -49,11 +49,11 @@ export class AasSearcher {
 
     static create(): AasSearcher {
         const multipleDataSource = RepositorySearchService.create();
-        const registryServiceClient = process.env.REGISTRY_API_URL
-            ? RegistryServiceApi.create(process.env.REGISTRY_API_URL, mnestixFetch())
+        const registryServiceClient = envs.REGISTRY_API_URL
+            ? RegistryServiceApi.create(envs.REGISTRY_API_URL, mnestixFetch())
             : null;
-        const discoveryServiceClient = process.env.DISCOVERY_API_URL
-            ? DiscoveryServiceApi.create(process.env.DISCOVERY_API_URL, mnestixFetch())
+        const discoveryServiceClient = envs.DISCOVERY_API_URL
+            ? DiscoveryServiceApi.create(envs.DISCOVERY_API_URL, mnestixFetch())
             : null;
         const log = Log.create();
         return new AasSearcher(multipleDataSource, discoveryServiceClient, registryServiceClient, log);
@@ -92,12 +92,12 @@ export class AasSearcher {
             return wrapSuccess(aasRegistryResult.result);
         }
 
-        if (process.env.AAS_REPO_API_URL) {
+        if (envs.AAS_REPO_API_URL) {
             const defaultResult = await this.getAasFromDefaultRepository(aasIdEncoded);
             if (defaultResult.isSuccess) {
                 const data = {
                     submodelDescriptors: undefined,
-                    aasRepositoryOrigin: process.env.AAS_REPO_API_URL,
+                    aasRepositoryOrigin: envs.AAS_REPO_API_URL,
                 };
                 return wrapSuccess(this.createAasResult(defaultResult.result, data));
             }

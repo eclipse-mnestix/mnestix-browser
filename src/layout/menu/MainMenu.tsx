@@ -8,7 +8,7 @@ import { MenuHeading } from './MenuHeading';
 import { MenuListItem, MenuListItemProps } from './MenuListItem';
 import ListIcon from '@mui/icons-material/List';
 import packageJson from '../../../package.json';
-import { useEnv } from 'app/env/provider';
+import { useEnv } from 'app/EnvProvider';
 import BottomMenu from 'layout/menu/BottomMenu';
 import { useTranslations } from 'next-intl';
 import { MnestixRole } from 'components/authentication/AllowedRoutes';
@@ -62,7 +62,7 @@ export default function MainMenu() {
     const versionString = 'Version ' + packageJson.version;
     const mnestixRole = auth.getAccount()?.user.mnestixRole ?? MnestixRole.MnestixGuest;
     const allowedRoutes = auth.getAccount()?.user.allowedRoutes ?? [];
-    const t = useTranslations('mainMenu');
+    const t = useTranslations('navigation.mainMenu');
 
     const getAuthName = () => {
         const user = auth?.getAccount()?.user;

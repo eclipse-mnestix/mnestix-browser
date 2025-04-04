@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 
 const SignInButton = () => {
     const auth = useAuth();
-    const t = useTranslations('mainMenu');
+    const t = useTranslations('navigation.mainMenu');
     return (
         <Button
             sx={{ m: 2, mt: 3, minWidth: '200px' }}

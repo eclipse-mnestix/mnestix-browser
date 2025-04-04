@@ -55,7 +55,7 @@ describe('RbacRulesService', () => {
             const service = RbacRulesService.createNull(subApiMock);
 
             service.createRule({
-                action: ['DELETE'],
+                action: 'DELETE',
                 role: 'test',
                 targetInformation: { '@type': 'aas', aasIds: ['*'] },
             });

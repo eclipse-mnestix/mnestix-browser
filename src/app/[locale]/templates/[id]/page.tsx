@@ -18,9 +18,7 @@ import {
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
 import { TemplateEditTree } from '../_components/template-edit/TemplateEditTree';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
-import { messages } from 'lib/i18n/localization';
 import React, { useEffect, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
 
 import {
     updateNodeIds,
@@ -34,7 +32,7 @@ import { useAuth } from 'lib/hooks/UseAuth';
 import cloneDeep from 'lodash/cloneDeep';
 import { Qualifier, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { useEnv } from 'app/env/provider';
+import { useEnv } from 'app/EnvProvider';
 import { useParams, useRouter } from 'next/navigation';
 import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import { updateCustomSubmodelTemplate } from 'lib/services/templateApiWithAuthActions';
@@ -43,13 +41,13 @@ import { TemplateDeleteDialog } from 'app/[locale]/templates/_components/Templat
 import { ISubmodelElement, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import { clone } from 'lodash';
 import { useShowError } from 'lib/hooks/UseShowError';
+import { useTranslations } from 'next-intl';
 
 export default function Page() {
     const { id } = useParams<{ id: string }>();
     const [localFrontendTemplate, setLocalFrontendTemplate] = useState<SubmodelViewObject | undefined>();
     const [templateDisplayName, setTemplateDisplayName] = useState<string | null>();
     const notificationSpawner = useNotificationSpawner();
-    const intl = useIntl();
     const [isLoading, setIsLoading] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [wasRecentlySaved, setWasRecentlySaved] = useState(false);
@@ -65,6 +63,7 @@ export default function Page() {
     const [defaultTemplates, setDefaultTemplates] = useState<Submodel[]>();
     const env = useEnv();
     const { showError } = useShowError();
+    const t = useTranslations();
 
     const fetchCustom = async () => {
         if (!id) return;
@@ -164,7 +163,7 @@ export default function Page() {
         try {
             await deleteCustomTemplateById(id);
             notificationSpawner.spawn({
-                message: intl.formatMessage(messages.mnestix.templateDeletedSuccessfully),
+                message: t('pages.templates.templateDeletedSuccessfully'),
                 severity: 'success',
             });
             navigate.push('/templates');
@@ -294,7 +293,7 @@ export default function Page() {
     const handleSuccessfulSave = () => {
         notificationSpawner.spawn({
             severity: 'success',
-            message: intl.formatMessage(messages.mnestix.changesSavedSuccessfully),
+            message: t('common.messages.changesSavedSuccessfully'),
         });
         setChangesMade(false);
         setWasRecentlySaved(true);
@@ -325,7 +324,7 @@ export default function Page() {
                 <Breadcrumbs
                     links={[
                         {
-                            label: intl.formatMessage(messages.mnestix.templates),
+                            label: t('pages.templates.title'),
                             path: '/templates',
                         },
                     ]}
@@ -354,17 +353,15 @@ export default function Page() {
                                 variant="outlined"
                                 startIcon={<ContentCopy />}
                                 onClick={() => {
-                                    navigator.clipboard.writeText(
-                                        id || '',
-                                    );
+                                    navigator.clipboard.writeText(id || '');
                                     notificationSpawner.spawn({
-                                        message: intl.formatMessage(messages.mnestix.templateIdCopied, { id }),
+                                        message: t('pages.templates.templateIdCopied', { id }),
                                         severity: 'success',
                                     });
                                 }}
                                 style={{ marginRight: '1rem' }}
                             >
-                                {intl.formatMessage(messages.mnestix.copyTemplateId)}
+                                {t('pages.templates.copyTemplateId')}
                             </Button>
                             <Button
                                 variant="contained"
@@ -373,7 +370,7 @@ export default function Page() {
                                 loading={isSaving}
                                 onClick={onSaveChanges}
                             >
-                                <FormattedMessage {...messages.mnestix.saveChanges} />
+                                {t('common.actions.saveChanges')}
                             </Button>
                             <IconButton sx={{ ml: 1 }} onClick={handleMenuClick} className="more-button">
                                 <MoreVert />
@@ -383,13 +380,13 @@ export default function Page() {
                                     <ListItemIcon>
                                         <Restore fontSize="small" />
                                     </ListItemIcon>
-                                    <FormattedMessage {...messages.mnestix.revertChanges} />
+                                    {t('common.actions.revertChanges')}
                                 </MenuItem>
                                 <MenuItem onClick={handleDeleteClick}>
                                     <ListItemIcon>
                                         <Delete fontSize="small" />
                                     </ListItemIcon>
-                                    <FormattedMessage {...messages.mnestix.delete} />
+                                    {t('common.actions.delete')}
                                 </MenuItem>
                             </Menu>
                         </Box>

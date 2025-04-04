@@ -4,7 +4,7 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { getConnectionDataByTypeAction } from 'lib/services/database/connectionServerActions';
 import { ConnectionTypeEnum, getTypeAction } from 'lib/services/database/ConnectionTypeEnum';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
-import { useEnv } from 'app/env/provider';
+import { useEnv } from 'app/EnvProvider';
 import { useTranslations } from 'next-intl';
 
 export function SelectRepository(props: { onSelectedRepositoryChanged: Dispatch<SetStateAction<string | undefined>> }) {
@@ -12,7 +12,7 @@ export function SelectRepository(props: { onSelectedRepositoryChanged: Dispatch<
     const [selectedRepository, setSelectedRepository] = useState<string>('');
     const notificationSpawner = useNotificationSpawner();
     const [isLoading, setIsLoading] = useState(false);
-    const t = useTranslations('aas-list');
+    const t = useTranslations('pages.aasList');
     const env = useEnv();
 
     useAsyncEffect(async () => {
@@ -50,14 +50,14 @@ export function SelectRepository(props: { onSelectedRepositoryChanged: Dispatch<
             ) : (
                 <FormControl variant="standard" sx={{ minWidth: 200, maxWidth: 300 }}>
                     <InputLabel id="aas-repository-select" sx={{ color: 'text.secondary' }}>
-                        {t('repository-dropdown')}
+                        {t('repositoryDropdown')}
                     </InputLabel>
                     <Select
                         data-testid="repository-select"
                         labelId="aas-repository-select"
                         variant="standard"
                         value={selectedRepository}
-                        label={t('repository-dropdown')}
+                        label={t('repositoryDropdown')}
                         onChange={onRepositoryChanged}
                     >
                         {aasRepositories.map((repo, index) => {

@@ -10,7 +10,7 @@ type AboutDialogProps = {
 };
 
 export function AboutDialog(props: AboutDialogProps) {
-    const t = useTranslations('footer');
+    const t = useTranslations('navigation.footer');
     const theme = useTheme();
     const isMobile = useIsMobile();
 

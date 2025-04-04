@@ -1,3 +1,5 @@
+# Mnestix Project Coding Instructions
+
 ## Project Structure
 - Frontend is built with Next.js 14+, using the App Router
 - Translations are in src/locale/[lang].json files 
@@ -9,10 +11,10 @@
 - We use TypeScript for all new code
 - We prefer functional components with hooks over class components
 - We use absolute imports instead of relative imports
-- We prefer normal functions over arrow functionsfor better readability
+- We prefer normal functions over arrow functions for better readability
 - We use Material-UI (MUI) for our UI components
-- we use single quotes
-- see eslint.config.js
+- We use single quotes
+- Follow eslint.config.js guidelines
 
 ## State Management
 - We use React Context for global state where needed
@@ -21,13 +23,13 @@
 ## API Integration
 - RESTful API communication is handled via fetch
 - Backend API integrations should include proper error handling
-- All frontend-backend communication is wrapped in `apiResponseWrapper.ts` to ensure correct typing. It also helps with error handling.
-- The primary call from the frontend to the backend should be a stateless async function in a file ending in `Actions.ts` in the `src/lib/services` directory. The file should be marked with `use server;` at the top of the file.
+- All frontend-backend communication is wrapped in `apiResponseWrapper.ts` to ensure correct typing
+- Primary call from frontend to backend should be a stateless async function in `Actions.ts` files in `src/lib/services` directory, marked with `use server;`
 
 ## Documentation
 - Add JSDoc comments for exported functions and components
 - Include detailed PR descriptions with test coverage information
-- documentation can be added in docs/ and wiki/
+- Documentation can be added in docs/ and wiki/
 
 ## Testing
 We use three different testing principles in our project.
@@ -56,17 +58,17 @@ We use three different testing principles in our project.
 
 
 ## Accessibility
-- All interactive elements must have appropriate ARIA attributes
+- Interactive elements must have appropriate ARIA attributes
 - Components should be keyboard navigable
-- Use semantic HTML elements when possible
-- Color contrast should meet WCAG 2.1 AA standards
-- Images should have alt text and SVGs should have aria-label where appropriate
+- Use semantic HTML elements
+- Meet WCAG 2.1 AA color contrast standards
+- Add alt text for images and aria-labels for SVGs
 - Form elements must have proper labels and error messages
 
 ## Dependencies
-- we use yarn as package manager
-- our project is open source
+- Use yarn as package manager
+- Our project is open source
 
 ## Versioning
-- our branches and commit messages should follow the semantic commit messages pattern
-- our code is located on GitHub
+- Follow semantic commit messages pattern
+- Code is hosted on GitHub

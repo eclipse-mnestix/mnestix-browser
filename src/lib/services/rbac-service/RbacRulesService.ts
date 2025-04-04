@@ -4,6 +4,8 @@ import { mnestixFetch } from 'lib/api/infrastructure';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
+import { envs } from 'lib/env/MnestixEnv';
+import { RuleParseError, ruleToIdShort, ruleToSubmodelElement } from './RuleHelpers';
 
 const SEC_SUB_ID = 'SecuritySubmodel';
 export type RbacRolesFetchResult = {
@@ -18,7 +20,7 @@ export class RbacRulesService {
     private constructor(private readonly securitySubmodelRepositoryClient: ISubmodelRepositoryApi) {}
 
     static createService(): RbacRulesService {
-        const baseUrl = process.env.SEC_SM_API_URL;
+        const baseUrl = envs.SEC_SM_API_URL;
 
         if (!baseUrl) {
             throw 'Security Submodel not configured! Check beforehand!';
@@ -62,12 +64,12 @@ export class RbacRulesService {
 
         const parsedRoles =
             secSM.submodelElements
-                ?.filter((e) => (e as SubmodelElementCollection).value)
+                ?.filter((e) => (e as SubmodelElementCollection | undefined)?.value)
                 .map((roleElement) => {
                     try {
                         return submodelToRule(roleElement);
                     } catch (err) {
-                        if (err instanceof ParseError) {
+                        if (err instanceof RuleParseError) {
                             if (err.message) {
                                 return { error: [err.message] };
                             }
@@ -127,14 +129,20 @@ export class RbacRulesService {
 
 // TODO MNES-1605 add typing for submodelElement
 /* eslint-disable @typescript-eslint/no-explicit-any */
-function submodelToRule(submodelElement: any): BaSyxRbacRule {
+export function submodelToRule(submodelElement: any): BaSyxRbacRule {
     const role = submodelElement.value.find((e: any) => e.idShort === 'role')?.value;
     const actions =
         submodelElement.value.find((e: any) => e.idShort === 'action')?.value.map((e: any) => e.value) || [];
 
-    const invalidActions = actions.filter((e: any) => !rbacRuleActions.includes(e));
-    if (invalidActions.length > 0) {
-        throw new ParseError(`Invalid action(s): ${invalidActions.join(', ')}`);
+    if (actions.length > 1) {
+        throw new RuleParseError(' is allowed');
+    }
+    const action: (typeof rbacRuleActions)[number] = actions[0];
+
+    if (!rbacRuleActions.includes(action)) {
+        throw new RuleParseError(
+            `Invalid action: '${action}' is not allowed for the rule with idShort: '${submodelElement.idShort}'.`,
+        );
     }
 
     const targetInformationElement = submodelElement.value.find((e: any) => e.idShort === 'targetInformation');
@@ -143,12 +151,12 @@ function submodelToRule(submodelElement: any): BaSyxRbacRule {
     )?.value;
 
     if (!Object.keys(rbacRuleTargets).includes(targetType)) {
-        throw new ParseError(`Invalid target type: ${targetType}`);
+        throw new RuleParseError(`Invalid target type: ${targetType}`);
     }
 
-    const targets: [string, StrOrArray][] = targetInformationElement?.value
+    const targets: [string, string[]][] = targetInformationElement?.value
         .filter((e: { idShort: string }) => e.idShort !== '@type')
-        .map((elem: { idShort: string; value: StrOrArray }) => {
+        .map((elem: { idShort: string; value: string[] }) => {
             const values = (typeof elem.value === 'string' ? [elem.value] : elem.value).map((item: any) => item.value);
             return [elem.idShort, values];
         });
@@ -159,98 +167,23 @@ function submodelToRule(submodelElement: any): BaSyxRbacRule {
             !rbacRuleTargets[targetType].includes(id),
     );
     if (invalidTargets.length > 0) {
-        throw new ParseError(`Invalid target(s): ${invalidTargets.map(([id]) => id).join(', ')}`);
+        throw new RuleParseError(`Invalid target(s): ${invalidTargets.map(([id]) => id).join(', ')}`);
     }
 
     return {
         idShort: submodelElement.idShort,
         role,
-        action: actions,
+        action: action,
         targetInformation: {
             '@type': targetType,
             ...Object.fromEntries(targets),
         } as BaSyxRbacRule['targetInformation'],
     };
 }
+
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
-// TODO MNES-1605
-function ruleToSubmodelElement(idShort: string, rule: Omit<BaSyxRbacRule, 'idShort'>) {
-    const targets = Object.entries(rule.targetInformation).filter(([k]) => k !== '@type');
-    return {
-        modelType: 'SubmodelElementCollection',
-        idShort,
-        value: [
-            {
-                modelType: 'Property',
-                value: rule.role,
-                valueType: 'xs:string',
-                idShort: 'role',
-            },
-            {
-                modelType: 'SubmodelElementList',
-                idShort: 'action',
-                orderRelevant: true,
-                typeValueListElement: 'Property',
-                value: rule.action.map((e) => ({
-                    modelType: 'Property',
-                    valueType: 'xs:string',
-                    value: e,
-                })),
-            },
-            {
-                modelType: 'SubmodelElementCollection',
-                idShort: 'targetInformation',
-                value: [
-                    ...targets.map(([key, value]) => ({
-                        modelType: 'SubmodelElementList',
-                        idShort: key,
-                        orderRelevant: true,
-                        typeValueListElement: 'Property',
-                        value:
-                            typeof value === 'string'
-                                ? [{ value, modelType: 'Property', valueType: 'xs:string' }]
-                                : value.map((targetId) => ({
-                                      modelType: 'Property',
-                                      value: targetId,
-                                      valueType: 'xs:string',
-                                  })),
-                    })),
-                    {
-                        modelType: 'Property',
-                        value: 'aas',
-                        valueType: 'xs:string',
-                        idShort: '@type',
-                    },
-                ],
-            },
-        ],
-    };
-}
-
-const BASYX_TARGET_CLASSES: Record<BaSyxRbacRule['targetInformation']['@type'], string> = {
-    aas: 'org.eclipse.digitaltwin.basyx.aasrepository.feature.authorization.AasTargetInformation',
-    submodel: 'org.eclipse.digitaltwin.basyx.submodelrepository.feature.authorization.SubmodelTargetInformation',
-    'aas-environment':
-        'org.eclipse.digitaltwin.basyx.aasenvironment.feature.authorization.AasEnvironmentTargetInformation',
-    'concept-description':
-        'org.eclipse.digitaltwin.basyx.conceptdescriptionrepository.feature.authorization.ConceptDescriptionTargetInformation',
-    'aas-discovery-service':
-        'org.eclipse.digitaltwin.basyx.aasdiscoveryservice.feature.authorization.AasDiscoveryServiceTargetInformation',
-    'aas-registry': 'org.eclipse.digitaltwin.basyx.aasregistry.feature.authorization.AasRegistryTargetInformation',
-    'submodel-registry':
-        'org.eclipse.digitaltwin.basyx.submodelregistry.feature.authorization.SubmodelRegistryTargetInformation',
-};
-
-function ruleToIdShort(rule: Omit<BaSyxRbacRule, 'idShort'>) {
-    const targetClass = BASYX_TARGET_CLASSES[rule.targetInformation['@type']];
-    const str = `${rule.role}${rule.action.toSorted().join('+')}${targetClass}`;
-    return btoa(str);
-}
-
-class ParseError extends Error {}
-
-export const rbacRuleActions = ['READ', 'CREATE', 'UPDATE', 'DELETE', 'EXECUTE'];
+export const rbacRuleActions = ['READ', 'CREATE', 'UPDATE', 'DELETE', 'EXECUTE'] as const;
 
 export const rbacRuleTargets = {
     'aas-environment': ['aasIds', 'submodelIds'],
@@ -262,20 +195,18 @@ export const rbacRuleTargets = {
     'aas-discovery-service': ['aasIds', 'assetIds'],
 } as const;
 
-type StrOrArray = string | string[];
-
-type TargetInformation =
-    | { '@type': 'aas-environment'; aasIds: StrOrArray; submodelIds: StrOrArray }
-    | { '@type': 'aas'; aasIds: StrOrArray }
-    | { '@type': 'submodel'; submodelIds: StrOrArray; submodelElementIdShortPaths: StrOrArray }
-    | { '@type': 'concept-description'; conceptDescriptionIds: StrOrArray }
-    | { '@type': 'aas-registry'; aasIds: StrOrArray }
-    | { '@type': 'submodel-registry'; submodelIds: StrOrArray }
-    | { '@type': 'aas-discovery-service'; aasIds: StrOrArray; assetIds: StrOrArray };
+export type TargetInformation =
+    | { '@type': 'aas-environment'; aasIds: string[]; submodelIds: string[] }
+    | { '@type': 'aas'; aasIds: string[] }
+    | { '@type': 'submodel'; submodelIds: string[]; submodelElementIdShortPaths: string[] }
+    | { '@type': 'concept-description'; conceptDescriptionIds: string[] }
+    | { '@type': 'aas-registry'; aasIds: string[] }
+    | { '@type': 'submodel-registry'; submodelIds: string[] }
+    | { '@type': 'aas-discovery-service'; aasIds: string[]; assetIds: string[] };
 
 export type BaSyxRbacRule = {
     idShort: string;
     targetInformation: TargetInformation;
     role: string;
-    action: typeof rbacRuleActions;
+    action: (typeof rbacRuleActions)[number];
 };

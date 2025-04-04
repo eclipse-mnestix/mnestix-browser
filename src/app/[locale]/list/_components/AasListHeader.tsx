@@ -2,7 +2,7 @@
 import { Typography } from '@mui/material';
 
 export default async function AasListHeader() {
-    const t = await getTranslations('aas-list');
+    const t = await getTranslations('pages.aasList');
 
     return (
         <>

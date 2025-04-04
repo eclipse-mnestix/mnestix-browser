@@ -11,15 +11,15 @@ export function useShowError() {
 
     function showNotFoundError(notificationSpawner: NotificationSpawner) {
         notificationSpawner.spawn({
-            message: t('errors.notFound'),
+            message: t('validation.errors.notFound'),
             severity: 'error',
         });
     }
 
     function showUnauthorizedError(notificationSpawner: NotificationSpawner) {
         notificationSpawner.spawn({
-            title: t('errors.unauthorizedError.title'),
-            message: t('errors.unauthorizedError.content'),
+            title: t('validation.errors.unauthorizedError.title'),
+            message: t('validation.errors.unauthorizedError.content'),
             severity: 'error',
         });
     }
@@ -48,7 +48,7 @@ export function useShowError() {
                         notificationSpawner.spawn({
                             message: (
                                 <>
-                                    {t('errors.unexpectedError')}
+                                    {t('validation.errors.unexpectedError')}
                                     <Typography variant="body2" sx={{ mt: 1, opacity: 0.7 }}>
                                         {e.status}: &quot;{e.statusText}&quot;
                                     </Typography>
@@ -74,7 +74,7 @@ export function useShowError() {
                         notificationSpawner.spawn({
                             message: (
                                 <>
-                                    {t('errors.unexpectedError')}
+                                    {t('validation.errors.unexpectedError')}
                                     <Typography variant="body2" sx={{ mt: 1, opacity: 0.7 }}>
                                         {e.errorCode}: &quot;{e.message}&quot;
                                     </Typography>
@@ -87,7 +87,7 @@ export function useShowError() {
             }
 
             notificationSpawner.spawn({
-                message: t('errors.unexpectedError'),
+                message: t('validation.errors.unexpectedError'),
                 severity: 'error',
             });
         },
