@@ -121,7 +121,7 @@
         "C4": "C4 - landfill",
         "D": "D - reuse"
       },
-      "timeunit": {
+      "timeUnit": {
         "month": "{count, plural, =0 {less than a month} =1 {1 month} other {# months}}",
         "year": "{count, plural, =0 {less than a year} =1 {1 year} other {# years}}"
       },
@@ -245,7 +245,7 @@
         "addButton": "Add more",
         "editButton": "Edit all",
         "resetButton": "Reset to default",
-        "resetSuccessfull": "Connections were reset.",
+        "resetSuccessful": "Connections were reset.",
         "saveButton": "Save all",
         "submodelRepository": {
           "connectionType": "SUBMODEL_REPOSITORY",
@@ -335,7 +335,7 @@
       "submodelRepositoryApiKey": "Submodel Repository ApiKey",
       "submodelRepositoryLabel": "List of Submodel Repositories",
       "subtitle": "To import this AAS to another repository, fill out the following steps.",
-      "successfullToast": "Transfer of AAS successful",
+      "successfulToast": "Transfer of AAS successful",
       "title": "Import",
       "useAasRepository": "Use AAS Repository",
       "warningToast": "AAS was only partially transferred."
@@ -344,7 +344,8 @@
   "validation": {
     "authentication": {
       "authenticationNeeded": "Authentication needed",
-      "contactAdmin": "You cannot visit this page. Please contact your administrator."
+      "contactAdmin": "You cannot visit this page. Please contact your administrator.",
+      "sessionExpired": "Your session has expired. Please log in again."
     },
     "errors": {
       "influxError": "There was a problem retrieving the time series data.",

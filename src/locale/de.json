@@ -121,7 +121,7 @@
         "C4": "C4 - Deponie",
         "D": "D - Wiederverwendung"
       },
-      "timeunit": {
+      "timeUnit": {
         "month": "{count, plural, =0 {unter einem Monat} =1 {1 Monat} other {# Monate}}",
         "year": "{count, plural, =0 {unter einem Jahr} =1 {1 Jahr} other {# Jahre}}"
       },
@@ -245,7 +245,7 @@
         "addButton": "Hinzufügen",
         "editButton": "Alle bearbeiten",
         "resetButton": "Auf Default zurücksetzen",
-        "resetSuccessfull": "Quellen wurden zurückgesetzt.",
+        "resetSuccessful": "Quellen wurden zurückgesetzt.",
         "saveButton": "Alle speichern",
         "submodelRepository": {
           "connectionType": "SUBMODEL_REPOSITORY",
@@ -335,7 +335,7 @@
       "submodelRepositoryApiKey": "Submodel Repository ApiKey",
       "submodelRepositoryLabel": "Liste der Submodel Repositories",
       "subtitle": "Füllen sie die folgenden Schritte aus, um eine Verwaltungsschale in ein anderes Repository zu importieren",
-      "successfullToast": "Transfer der AAS erfolgreich",
+      "successfulToast": "Transfer der AAS erfolgreich",
       "title": "Import",
       "useAasRepository": "AAS Repository verwenden",
       "warningToast": "Transfer der AAS nur teilweise erfolgreich."
@@ -344,7 +344,8 @@
   "validation": {
     "authentication": {
       "authenticationNeeded": "Authentifizierung erforderlich",
-      "contactAdmin": "Sie können diese Seite nicht besuchen. Bitte wenden Sie sich an Ihren Administrator."
+      "contactAdmin": "Sie können diese Seite nicht besuchen. Bitte wenden Sie sich an Ihren Administrator.",
+      "sessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an."
     },
     "errors": {
       "influxError": "Beim Abrufen der Daten ist ein Fehler aufgetreten.",
