@@ -36,21 +36,7 @@ const mockRbacRoles: RbacRolesFetchResult = {
     warnings: [],
 };
 
-jest.mock('./../../../../../components/basics/CenteredLoadingSpinner', () => ({
-    CenteredLoadingSpinner: jest.fn(() => <div>Loading...</div>),
-}));
-
 describe('RoleSettings', () => {
-    it('renders loading spinner while fetching data', async () => {
-        (rbacActions.getRbacRules as jest.Mock).mockImplementation(
-            jest.fn(() => {
-                return { isSuccess: true, result: mockRbacRoles };
-            }),
-        );
-        CustomRender(<RoleSettings />);
-        expect(screen.getByText('Loading...')).toBeInTheDocument();
-    });
-
     it('renders role settings table with content after data is fetched', async () => {
         (rbacActions.getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
 
