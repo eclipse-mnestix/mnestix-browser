@@ -54,6 +54,15 @@ Install all packages for the frontend.
 yarn install
 ```
 
+### Setup local database
+
+To run Mnestix Browser locally, you need to set up a local database.
+You can do this by running the following command:
+
+```sh
+yarn db:migrate
+```
+
 ### Run Mnestix through IDE
 
 If you want to start the browser through your IDE separately start BaSyx and the backend with

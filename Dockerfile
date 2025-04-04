@@ -18,8 +18,8 @@ FROM deps AS builder
 WORKDIR /app
 COPY . .
 
-RUN yarn prisma migrate deploy
-RUN yarn prisma generate
+RUN yarn db:migrate
+RUN yarn db:generate
 
 ENV NO_TYPECHECK=1
 ENV NO_LINT=1
@@ -50,7 +50,7 @@ FROM deps AS dev
 ENV NODE_ENV=development
 COPY . .
 
-RUN yarn prisma migrate deploy
-RUN yarn prisma generate
+RUN yarn db:migrate
+RUN yarn db:generate
 
 CMD [ "yarn", "dev"]
