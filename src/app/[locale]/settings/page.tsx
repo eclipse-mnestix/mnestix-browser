@@ -41,7 +41,7 @@ export default function Page() {
     if (env.AUTHENTICATION_FEATURE_FLAG && env.USE_BASYX_RBAC) {
         const settingsTabToAdd = {
             id: settingsPageTypes[settingsPageTypes.ROLES],
-            label: t('roles.title'),
+            label: t('rules.title'),
         };
         settingsTabItems.push(settingsTabToAdd);
     }

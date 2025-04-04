@@ -14,7 +14,7 @@ type RoleDialogProps = {
 };
 
 export const CreateRuleDialog = (props: RoleDialogProps) => {
-    const t = useTranslations('pages.settings.roles');
+    const t = useTranslations('pages.settings.rules');
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
 

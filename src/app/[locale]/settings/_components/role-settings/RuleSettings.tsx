@@ -26,7 +26,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { CreateRuleDialog } from 'app/[locale]/settings/_components/role-settings/CreateRuleDialog';
 
 export const RuleSettings = () => {
-    const t = useTranslations('pages.settings.roles');
+    const t = useTranslations('pages.settings.rules');
     const [ruleDetailDialogOpen, setRuleDetailDialogOpen] = useState(false);
     const [createDialogOpen, setCreateDialogOpen] = useState(false);
     const [selectedRule, setSelectedRule] = useState<BaSyxRbacRule | undefined>(undefined);

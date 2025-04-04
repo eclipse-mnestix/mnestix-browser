@@ -44,7 +44,7 @@ export type RuleFormModel = {
 };
 
 export const RuleForm = (props: RuleDialogProps) => {
-    const t = useTranslations('pages.settings.roles');
+    const t = useTranslations('pages.settings.rules');
 
     const { control, handleSubmit, setValue, getValues, reset } = useForm({
         defaultValues: mapBaSyxRbacRuleToFormModel(props.rule as BaSyxRbacRule),

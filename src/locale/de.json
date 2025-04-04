@@ -261,7 +261,7 @@
       "header": "Einstellungen",
       "idStructure": "ID Struktur",
       "idStructureExplanation": "Definieren Sie, wie Ihre IDs aussehen sollen. Dies ist eine Basis-Einstellung, die für individuelle Importe angepasst werden kann.",
-      "roles": {
+      "rules": {
         "buttons": {
           "add": "Hinzufügen",
           "back": "Zurück",

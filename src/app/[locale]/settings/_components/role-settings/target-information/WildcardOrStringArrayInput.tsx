@@ -15,7 +15,7 @@ type WildcardOrStringArrayInputProps = {
 };
 
 export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProps) => {
-    const t = useTranslations('pages.settings.roles');
+    const t = useTranslations('pages.settings.rules');
     const control = props.control;
     const checkIfWildcard = () => {
         const value = props.getValues(

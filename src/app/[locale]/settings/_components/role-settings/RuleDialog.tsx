@@ -19,7 +19,7 @@ type RuleDialogProps = {
 };
 
 export const RuleDialog = (props: RuleDialogProps) => {
-    const t = useTranslations('pages.settings.roles');
+    const t = useTranslations('pages.settings.rules');
     const [isEditMode, setIsEditMode] = useState(false);
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
