@@ -40,7 +40,7 @@ describe('RoleSettings', () => {
     it('renders role settings table with content after data is fetched', async () => {
         (rbacActions.getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
 
-        CustomRender(<RoleSettings />);
+        CustomRender(<RoleSettings />, { session: null });
 
         await waitFor(() => {
             expect(within(screen.getByTestId('role-settings-row-roleId1')).getByText('Admin-Role')).toBeInTheDocument();
@@ -66,7 +66,7 @@ describe('RoleSettings', () => {
     it('opens RoleDialog when a role is clicked', async () => {
         (rbacActions.getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
 
-        CustomRender(<RoleSettings />);
+        CustomRender(<RoleSettings />, { session: null });
 
         await waitFor(() => {
             expect(screen.getByText('Admin-Role')).toBeInTheDocument();
