@@ -19,7 +19,7 @@ export const TargetInformationForm = (props: TargetInformationProps) => {
     const ruleTypes = Object.keys(rbacRuleTargets);
 
     useEffect(() => {
-        adaptTargetInformationForm(props.getValues('type') as keyof typeof rbacRuleTargets));
+        adaptTargetInformationForm(props.getValues('type') as keyof typeof rbacRuleTargets);
     }, []);
 
     const adaptTargetInformationForm = (value: keyof typeof rbacRuleTargets) => {

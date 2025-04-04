@@ -126,7 +126,7 @@ export const mapFormModelToBaSyxRbacRule = (formModel: RoleFormModel, role: BaSy
     const targetInformation = mapTargetInformationFormModelToDto(formModel.targetInformation, formModel.type);
     return {
         idShort: role.idShort,
-        role: role.role,
+        role: formModel.role,
         action: formModel.action,
         targetInformation: targetInformation,
     };

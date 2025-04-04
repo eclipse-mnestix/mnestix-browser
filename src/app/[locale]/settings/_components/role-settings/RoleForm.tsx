@@ -1,4 +1,14 @@
-import { Box, Button, DialogActions, DialogContent, FormControl, MenuItem, Select, Typography } from '@mui/material';
+import {
+    Box,
+    Button,
+    DialogActions,
+    DialogContent,
+    FormControl,
+    MenuItem,
+    Select,
+    TextField,
+    Typography,
+} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslations } from 'next-intl';
 import { BaSyxRbacRule, rbacRuleActions, rbacRuleTargets } from 'lib/services/rbac-service/RbacRulesService';
@@ -47,25 +57,44 @@ export const RoleForm = (props: RoleDialogProps) => {
     return (
         <form onSubmit={handleSubmit(props.onSubmit)}>
             <DialogContent style={{ padding: '40px' }}>
-                    <Box display="flex" flexDirection="column">
-                        <Typography variant="h5">{t('tableHeader.action')}</Typography>
-                        <Controller
-                            name="action"
-                            control={control}
-                            render={({ field }) => (
-                                <FormControl fullWidth>
-                                    <Select labelId="role-type-select-label" variant="outlined" {...field}>
-                                        {rbacRuleActions.map((action) => (
-                                            <MenuItem key={action} value={action}>
-                                                {action}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            )}
-                        />
-                        <TargetInformationForm control={control} setValue={setValue} getValues={getValues} />
-                    </Box>
+                <Box display="flex" flexDirection="column">
+                    <Typography variant="h5">{t('tableHeader.name')}</Typography>
+                    <Controller
+                        rules={{
+                            required: t('roleRequired'),
+                        }}
+                        name="role"
+                        control={control}
+                        render={({ field, fieldState: { error } }) => (
+                            <FormControl fullWidth>
+                                <TextField
+                                    variant="outlined"
+                                    {...field}
+                                    error={!!error}
+                                    helperText={error ? error.message : ''}
+                                />
+                            </FormControl>
+                        )}
+                    />
+                </Box>
+                <Box display="flex" flexDirection="column" mt={2}>
+                    <Typography variant="h5">{t('tableHeader.action')}</Typography>
+                    <Controller
+                        name="action"
+                        control={control}
+                        render={({ field }) => (
+                            <FormControl fullWidth>
+                                <Select labelId="role-type-select-label" variant="outlined" {...field}>
+                                    {rbacRuleActions.map((action) => (
+                                        <MenuItem key={action} value={action}>
+                                            {action}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        )}
+                    />
+                    <TargetInformationForm control={control} setValue={setValue} getValues={getValues} />
                 </Box>
             </DialogContent>
             <DialogActions sx={{ padding: '1em' }}>
