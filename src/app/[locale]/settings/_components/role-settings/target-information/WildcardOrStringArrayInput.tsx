@@ -15,7 +15,7 @@ type WildcardOrStringArrayInputProps = {
 };
 
 export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProps) => {
-    const t = useTranslations('pages.settings');
+    const t = useTranslations('pages.settings.roles');
     const control = props.control;
     const checkIfWildcard = () => {
         const value = props.getValues(`targetInformation.${props.type}.${props.rule}` as keyof typeof props.getValues);
@@ -42,7 +42,7 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
 
             <FormControlLabel
                 control={<Checkbox checked={isWildcard} onChange={(e) => wildcardValueChanged(e.target.checked)} />}
-                label="Wildcard"
+                label={t('wildcardLabel')}
             />
             {!isWildcard && (
                 <>
@@ -84,7 +84,7 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
                             append({ id: '' });
                         }}
                     >
-                        {t('roles.buttons.add')}
+                        {t('buttons.add')}
                     </Button>
                 </>
             )}

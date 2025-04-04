@@ -47,7 +47,12 @@ export const RoleDialog = (props: RoleDialogProps) => {
         <Dialog open={props.open} onClose={() => onCloseDialog(false)} maxWidth="md" fullWidth={true}>
             <DialogCloseButton handleClose={() => onCloseDialog(false)} />
             {isEditMode ? (
-                <RoleForm rule={props.rule} onSubmit={onSubmit} onCancel={() => setIsEditMode(false)} />
+                <>
+                    <Typography variant="h2" color="primary" sx={{ mt: 4, ml: '40px' }}>
+                        {t('editTitle')}
+                    </Typography>
+                    <RoleForm rule={props.rule} onSubmit={onSubmit} onCancel={() => setIsEditMode(false)} />
+                </>
             ) : (
                 <>
                     <DialogContent style={{ padding: '40px' }} data-testid="role-settings-dialog">

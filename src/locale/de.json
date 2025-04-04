@@ -267,11 +267,15 @@
           "back": "Zurück",
           "cancel": "Abbrechen",
           "edit": "Bearbeiten",
-          "save": "Speichern"
+          "save": "Speichern",
+          "create": "Regel Erstellen"
         },
-        "saveSuccess": "Rolle erfolgreich gespeichert.",
-        "subHeader": "Hinzufügen, Entfernen oder Ändern von Einstellungen und Konfigurationen für verschiedene Funktionen innerhalb Ihrer AAS-Umgebung.",
+        "roleRequired": "Rolle wird benötigt",
+        "saveSuccess": "Regel erfolgreich gespeichert.",
         "subtitle": "Verwalten von Rollen und Berechtigungen.",
+        "createTitle": "Regel erstellen",
+        "editTitle": "Regel bearbeiten",
+        "wildcardLabel": "Alle erlauben",
         "tableHeader": {
           "aasIds": "AAS IDs",
           "action": "Aktion",
@@ -280,7 +284,7 @@
           "submodelIds": "Submodel IDs",
           "type": "Typ"
         },
-        "title": "Rollen Management"
+        "title": "Regel Management"
       },
       "subHeader": "Hinzufügen, Entfernen oder Ändern von Einstellungen und Konfigurationen für verschiedene Funktionen innerhalb Ihrer AAS-Umgebung."
     },

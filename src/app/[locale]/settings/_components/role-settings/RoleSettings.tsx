@@ -1,5 +1,6 @@
 import {
     Box,
+    Button,
     Chip,
     Divider,
     Table,
@@ -22,10 +23,13 @@ import { BaSyxRbacRule, RbacRolesFetchResult } from 'lib/services/rbac-service/R
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { useShowError } from 'lib/hooks/UseShowError';
+import AddIcon from '@mui/icons-material/Add';
+import { CreateRoleDialog } from 'app/[locale]/settings/_components/role-settings/CreateRoleDialog';
 
 export const RoleSettings = () => {
     const t = useTranslations('pages.settings.roles');
     const [roleDialogOpen, setRoleDialogOpen] = useState(false);
+    const [createDialogOpen, setCreateDialogOpen] = useState(false);
     const [selectedRole, setSelectedRole] = useState<BaSyxRbacRule | undefined>(undefined);
     const [rbacRoles, setRbacRoles] = useState<RbacRolesFetchResult | undefined>();
     const isMobile = useIsMobile();
@@ -96,61 +100,65 @@ export const RoleSettings = () => {
         <>
             <Box sx={{ p: 3, width: '100%', minHeight: '600px' }}>
                 <CardHeading title={t('title')} subtitle={t('subtitle')}></CardHeading>
-                <Divider sx={{ my: 2 }} />
                 {isLoading ? (
                     <CenteredLoadingSpinner sx={{ my: 10 }} />
                 ) : (
-                    <TableContainer>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    {!!prepareTableHeaders() &&
-                                        prepareTableHeaders().map((header: { label: string }, index) => (
-                                            <TableCell key={index}>
-                                                <Typography
-                                                    variant="h5"
-                                                    color="secondary"
-                                                    letterSpacing={0.16}
-                                                    fontWeight={700}
-                                                >
-                                                    {header.label}
-                                                </Typography>
-                                            </TableCell>
-                                        ))}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {rbacRoles?.roles.map((entry) => (
-                                    <TableRow
-                                        key={entry.role + entry.action + entry.targetInformation['@type']}
-                                        data-testid={`role-settings-row-${entry.idShort}`}
-                                    >
-                                        <TableCell>
-                                            <Typography fontWeight="bold">{entry.role}</Typography>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Chip
-                                                key={entry.action}
-                                                sx={{ fontWeight: 'normal', m: 0.5 }}
-                                                label={entry.action}
-                                            />
-                                        </TableCell>
-                                        <TableCell>{entry.targetInformation['@type']}</TableCell>
-                                        {!isMobile && <TableCell>{permissionCell(entry)}</TableCell>}
-                                        <TableCell>
-                                            <RoundedIconButton
-                                                data-testid={`role-settings-button-${entry.idShort}`}
-                                                onClick={() => openDetailDialog(entry)}
-                                                color="primary"
-                                            >
-                                                <ArrowForwardIcon />
-                                            </RoundedIconButton>
-                                        </TableCell>
+                    <Box display="flex" flexDirection="column" alignItems="flex-end">
+                        <Button variant="contained" startIcon={<AddIcon />} onClick={() => setCreateDialogOpen(true)}>
+                            {t('buttons.create')}
+                        </Button>
+                        <TableContainer>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        {!!prepareTableHeaders() &&
+                                            prepareTableHeaders().map((header: { label: string }, index) => (
+                                                <TableCell key={index}>
+                                                    <Typography
+                                                        variant="h5"
+                                                        color="secondary"
+                                                        letterSpacing={0.16}
+                                                        fontWeight={700}
+                                                    >
+                                                        {header.label}
+                                                    </Typography>
+                                                </TableCell>
+                                            ))}
                                     </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                                </TableHead>
+                                <TableBody>
+                                    {rbacRoles?.roles.map((entry) => (
+                                        <TableRow
+                                            key={entry.role + entry.action + entry.targetInformation['@type']}
+                                            data-testid={`role-settings-row-${entry.idShort}`}
+                                        >
+                                            <TableCell>
+                                                <Typography fontWeight="bold">{entry.role}</Typography>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Chip
+                                                    key={entry.action}
+                                                    sx={{ fontWeight: 'normal', m: 0.5 }}
+                                                    label={entry.action}
+                                                />
+                                            </TableCell>
+                                            <TableCell>{entry.targetInformation['@type']}</TableCell>
+                                            {!isMobile && <TableCell>{permissionCell(entry)}</TableCell>}
+                                            <TableCell>
+                                                <RoundedIconButton
+                                                    data-testid={`role-settings-button-${entry.idShort}`}
+                                                    onClick={() => openDetailDialog(entry)}
+                                                    color="primary"
+                                                >
+                                                    <ArrowForwardIcon />
+                                                </RoundedIconButton>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Box>
                 )}
             </Box>
             {selectedRole && (
@@ -165,6 +173,15 @@ export const RoleSettings = () => {
                     rule={selectedRole}
                 ></RoleDialog>
             )}
+            <CreateRoleDialog
+                open={createDialogOpen}
+                onClose={async (reload) => {
+                    if (reload) {
+                        await loadRbacData();
+                    }
+                    setCreateDialogOpen(false);
+                }}
+            />
         </>
     );
 };
