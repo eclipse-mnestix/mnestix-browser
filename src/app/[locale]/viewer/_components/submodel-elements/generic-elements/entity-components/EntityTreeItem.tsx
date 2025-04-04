@@ -51,9 +51,11 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
             const { isSuccess, result: aasIds } = await performDiscoveryAasSearch(assetId);
             if (!isSuccess || (isSuccess && aasIds.length === 0)) {
                 const popup = window.open(''); // Try to open a new tab
-                if (popup) { // if not null -> new tab was opened
-                    popup.location.href = assetId;    
-                } else { // popup was blocked open in same tab
+                if (popup) {
+                    // if not null -> new tab was opened
+                    popup.location.href = assetId;
+                } else {
+                    // popup was blocked open in same tab
                     navigate.push(assetId);
                 }
             } else {

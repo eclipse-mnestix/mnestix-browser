@@ -50,8 +50,6 @@ export default function Page() {
     const { showError } = useShowError();
     const t = useTranslations();
 
-
-
     const submodelWhitelist: string[] = JSON.parse(env.SUBMODEL_WHITELIST || '[]');
 
     function whitelistContains(sm: Submodel) {

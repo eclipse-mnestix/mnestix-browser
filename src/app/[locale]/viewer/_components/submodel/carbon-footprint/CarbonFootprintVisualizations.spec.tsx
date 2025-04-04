@@ -3,9 +3,7 @@ import { expect } from '@jest/globals';
 import testSubmodel from '../../submodel/carbon-footprint/test-submodel/carbonFootprint-test.json';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { CustomRenderReactIntl } from 'test-utils/CustomRenderReactIntl';
-import {
-    CarbonFootprintVisualizations
-} from 'app/[locale]/viewer/_components/submodel/carbon-footprint/CarbonFootprintVisualizations';
+import { CarbonFootprintVisualizations } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/CarbonFootprintVisualizations';
 
 window.ResizeObserver =
     window.ResizeObserver ||
@@ -69,4 +67,3 @@ function assertOnElements() {
     expect(calculationMethod).toBeDefined();
     expect(calculationMethod).toBeInTheDocument();
 }
-

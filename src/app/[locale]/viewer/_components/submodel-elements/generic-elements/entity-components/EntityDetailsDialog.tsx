@@ -24,12 +24,8 @@ export function EntityDetailsDialog(props: EntityDetailsModalProps) {
                 <DataRow title="idShort" hasDivider={false}>
                     {entity.idShort}
                 </DataRow>
-                <DataRow title="asset">
-                    {entity.globalAssetId || t('labels.notAvailable')}
-                </DataRow>
-                <DataRow title="entityType">
-                    {entity.entityType || t('labels.notAvailable')}
-                </DataRow>
+                <DataRow title="asset">{entity.globalAssetId || t('labels.notAvailable')}</DataRow>
+                <DataRow title="entityType">{entity.entityType || t('labels.notAvailable')}</DataRow>
             </DialogContent>
         </Dialog>
     );

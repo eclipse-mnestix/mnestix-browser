@@ -8,7 +8,7 @@ type ArchetypeDetailsModalProps = {
 
 export function ArchetypeDetailsDialog(props: ArchetypeDetailsModalProps) {
     return (
-        <Dialog open={props.open} onClose={props.handleClose} fullWidth maxWidth="md" >
+        <Dialog open={props.open} onClose={props.handleClose} fullWidth maxWidth="md">
             <DialogCloseButton handleClose={props.handleClose} />
             <DialogContent style={{ padding: '40px' }}>
                 <div>

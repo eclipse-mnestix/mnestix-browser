@@ -49,12 +49,13 @@ login credentials for this account are as follows:
 Additionally, two more test users have been configured to demonstrate role-based access control (RBAC):
 
 - **'mnestix-visitor'**: This user has access to only a specific Asset Administration Shell (AAS) with the ID **"https://vws.xitaso.com/aas/mnestix"**.
-  - **Username:** mnestix-visitor
-  - **Password:** mnestix
+
+    - **Username:** mnestix-visitor
+    - **Password:** mnestix
 
 - **'test-aas'**: This user can view AAS data but does not have permission to access submodel data.
-  - **Username:** test-aas
-  - **Password:** aas
+    - **Username:** test-aas
+    - **Password:** aas
 
 **Note:** These accounts are created solely for testing purposes and to showcase the RBAC implementation.
 

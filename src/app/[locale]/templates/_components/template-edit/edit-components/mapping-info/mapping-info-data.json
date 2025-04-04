@@ -1,18 +1,18 @@
 {
-    "qualifierTypes": ["MappingInfo", "SMT/MappingInfo"],
-    "emptyTemplate": {
-        "semanticId": {
-            "type": "ExternalReference",
-            "keys": [
-                {
-                    "type": "GlobalReference",
-                    "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
-                }
-            ]
-        },
-        "kind": "TemplateQualifier",
-        "type": "SMT/MappingInfo",
-        "valueType": "xs:string",
-        "value": ""
-    }
+  "qualifierTypes": ["MappingInfo", "SMT/MappingInfo"],
+  "emptyTemplate": {
+    "semanticId": {
+      "type": "ExternalReference",
+      "keys": [
+        {
+          "type": "GlobalReference",
+          "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+        }
+      ]
+    },
+    "kind": "TemplateQualifier",
+    "type": "SMT/MappingInfo",
+    "valueType": "xs:string",
+    "value": ""
+  }
 }

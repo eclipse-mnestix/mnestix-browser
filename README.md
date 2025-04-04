@@ -42,7 +42,6 @@ docker compose up
 
 ### If you want to further configure your mnestix instance, go to our [wiki](https://github.com/eclipse-mnestix/mnestix-browser/wiki).
 
-
 ## Feature Overview
 
 The Mnestix Browser enables you to browse through the different AAS Dataspaces.

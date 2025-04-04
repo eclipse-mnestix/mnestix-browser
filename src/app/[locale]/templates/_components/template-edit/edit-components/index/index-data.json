@@ -1,18 +1,18 @@
 ﻿{
-    "qualifierType": "Index",
-    "qualifierTypeSubmodel": "Sorted",
-    "emptyTemplateSubmodel": {
-        "semanticId": null,
-        "valueType": "boolean",
-        "modelType": "Qualifier",
-        "type": "Sorted",
-        "value": "true"
-    },
-    "emptyTemplateElement": {
-        "semanticId": null,
-        "valueType": "int",
-        "modelType": "Qualifier",
-        "type": "Index",
-        "value": "0"
-    }
+  "qualifierType": "Index",
+  "qualifierTypeSubmodel": "Sorted",
+  "emptyTemplateSubmodel": {
+    "semanticId": null,
+    "valueType": "boolean",
+    "modelType": "Qualifier",
+    "type": "Sorted",
+    "value": "true"
+  },
+  "emptyTemplateElement": {
+    "semanticId": null,
+    "valueType": "int",
+    "modelType": "Qualifier",
+    "type": "Index",
+    "value": "0"
+  }
 }

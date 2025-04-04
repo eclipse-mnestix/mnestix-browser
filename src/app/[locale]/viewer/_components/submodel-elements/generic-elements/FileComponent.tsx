@@ -68,9 +68,7 @@ export function FileComponent(props: FileComponentProps) {
                 <Typography>{file.value?.toString()}</Typography>
             </Link>
         ) : (
-            <Typography>
-                {t('labels.notAvailable')}
-            </Typography>
+            <Typography>{t('labels.notAvailable')}</Typography>
         );
     }
 }

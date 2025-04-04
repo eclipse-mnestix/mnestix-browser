@@ -29,17 +29,15 @@ The default Mnestix realm is preconfigured with the **'mnestix-admin'** role. To
 2. Navigate to **Users** and select the desired user.
 3. Go to the **Role Mapping** tab and click on **Assign Role**.
 4. Use the **Filter by Clients** option and select **mnestix-browser-client-demo mnestix-admin**.
-5. Assign the **'mnestix-admin'** role to the user.  
-
+5. Assign the **'mnestix-admin'** role to the user.
 
 ### Dynamic Role Based Access Control
 
 To change roles and repository permissions during runtime, we use the Basyx security repository and security submodel.
-If set up correctly with the corresponding docker compose file 
-(see [here](https://github.com/eclipse-mnestix/mnestix-browser/wiki/Docker-Compose-Files)) and `USE_BASYX_RBAC` 
+If set up correctly with the corresponding docker compose file
+(see [here](https://github.com/eclipse-mnestix/mnestix-browser/wiki/Docker-Compose-Files)) and `USE_BASYX_RBAC`
 is set to `true`, the `mnestix-admin` can view all configured roles
 and their permissions to AAS IDs or Submodel IDs on the Settings UI under the role management section.
 In future implementations it will also be possible to change these roles and permissions in the UI.
-More information about the Basyx role based access control management can be found 
+More information about the Basyx role based access control management can be found
 [here](https://github.com/eclipse-basyx/basyx-java-server-sdk/tree/main/examples/BaSyxDynamicRBAC).
-

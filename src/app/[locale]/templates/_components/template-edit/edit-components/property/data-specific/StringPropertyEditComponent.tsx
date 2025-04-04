@@ -13,11 +13,6 @@ export function StringPropertyEditComponent(props: StringPropertyEditComponentPr
     };
 
     return (
-        <TextField
-            defaultValue={props.dataValue}
-            label={t('common.labels.value')}
-            onChange={onValueChange}
-            fullWidth
-        />
+        <TextField defaultValue={props.dataValue} label={t('common.labels.value')} onChange={onValueChange} fullWidth />
     );
 }

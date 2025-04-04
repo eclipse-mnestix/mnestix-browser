@@ -28,7 +28,7 @@ export function DataRow(props: DataRowProps) {
                     dataTestId={props.testId || 'copy-datarow-value'}
                 />
                 {props.withBase64 && (
-                    <CopyButton 
+                    <CopyButton
                         value={props.value}
                         isVisible={isHovered}
                         withBase64={true}
@@ -41,7 +41,7 @@ export function DataRow(props: DataRowProps) {
 
     return (
         <Box
-            data-testid='data-row'
+            data-testid="data-row"
             sx={{ display: 'flex', flexDirection: 'column', gap: '5px', marginBottom: '15px', ...props.sx }}
         >
             {props.hasDivider !== false && <Divider style={{ marginBottom: '10px' }} />}
@@ -51,15 +51,15 @@ export function DataRow(props: DataRowProps) {
                 </Typography>
             )}
             {props.value && (
-                <Box 
-                    display="flex" 
+                <Box
+                    display="flex"
                     alignItems="center"
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                 >
                     <Typography
                         style={{ overflowWrap: 'break-word', wordBreak: 'break-word', display: 'inline-block' }}
-                        data-testid='data-row-value'
+                        data-testid="data-row-value"
                     >
                         {props.isLink ? (
                             <Link component="a" href={props.value} target="_blank" rel="noopener noreferrer">

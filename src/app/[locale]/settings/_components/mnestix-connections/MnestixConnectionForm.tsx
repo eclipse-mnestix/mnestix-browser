@@ -107,7 +107,7 @@ export function MnestixConnectionsForm(props: MnestixConnectionsFormProps) {
             </Typography>
             <Box display="flex" flexDirection="row" mb={4} alignItems="center">
                 <Typography variant="h4" mr={4} width="200px">
-                {t(`${dataConnectionName}.repositoryDefaultLabel`)}
+                    {t(`${dataConnectionName}.repositoryDefaultLabel`)}
                 </Typography>
                 <Typography>{defaultUrl}</Typography>
             </Box>

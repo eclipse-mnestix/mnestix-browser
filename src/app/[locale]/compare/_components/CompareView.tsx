@@ -87,7 +87,10 @@ export function CompareView() {
                         <Box display="flex" flexDirection="row" gap="20px">
                             {compareAas.map((compareAas, index) => (
                                 <Box position="relative" key={index} width={1 / 3} data-testid={`compare-aas-${index}`}>
-                                    <DialogCloseButton handleClose={() => handleDeleteAas(compareAas.aas.id)} dataTestId={`delete-compare-aas-${index}`}/>
+                                    <DialogCloseButton
+                                        handleClose={() => handleDeleteAas(compareAas.aas.id)}
+                                        dataTestId={`delete-compare-aas-${index}`}
+                                    />
                                     <AASOverviewCard
                                         key={index}
                                         aas={compareAas.aas ?? null}

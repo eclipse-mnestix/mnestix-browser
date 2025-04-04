@@ -37,7 +37,7 @@ export function GenericSubmodelDetailComponent({ submodel }: SubmodelVisualizati
                         ) : (
                             <GenericSubmodelElementComponent
                                 key={index}
-                                submodelElement={el}    
+                                submodelElement={el}
                                 submodelId={submodel.id}
                                 hasDivider={hasDivider(index)}
                             />

@@ -1,63 +1,63 @@
 ﻿{
-    "id": "https://mnestix.io/cyDropdownSubmodel",
-    "idShort": "cyDropdown",
-    "administration": {
-        "version": "1",
-        "revision": "0"
-    },
-    "modelType": "Submodel",
-    "submodelElements": [
+  "id": "https://mnestix.io/cyDropdownSubmodel",
+  "idShort": "cyDropdown",
+  "administration": {
+    "version": "1",
+    "revision": "0"
+  },
+  "modelType": "Submodel",
+  "submodelElements": [
+    {
+      "idShort": "Cypress",
+      "modelType": "SubmodelElementCollection",
+      "value": [
         {
-            "idShort": "Cypress",
-            "modelType": "SubmodelElementCollection",
-            "value": [
-                {
-                    "valueType": "xs:string",
-                    "modelType": "Property",
-                    "value": "Dropdown content",
-                    "idShort": "Test"
-                },
-                {
-                    "modelType": "Property",
-                    "value": "Test",
-                    "valueType": "xs:string",
-                    "idShort": "Property_no_link"
-                },
-                {
-                    "modelType": "Property",
-                    "value": "https://mnestix.io",
-                    "valueType": "xs:string",
-                    "idShort": "Property_link"
-                },
-                {
-                    "modelType": "MultiLanguageProperty",
-                    "value": [
-                        {
-                            "language": "en",
-                            "text": "Test"
-                        },
-                        {
-                            "language": "de",
-                            "text": "Test"
-                        }
-                    ],
-                    "idShort": "MultiLanguageProperty_no_link"
-                },
-                {
-                    "modelType": "MultiLanguageProperty",
-                    "value": [
-                        {
-                            "language": "en",
-                            "text": "https://mnestix.io"
-                        },
-                        {
-                            "language": "de",
-                            "text": "https://mnestix.io"
-                        }
-                    ],
-                    "idShort": "MultiLanguageProperty_link"
-                }
-            ]
+          "valueType": "xs:string",
+          "modelType": "Property",
+          "value": "Dropdown content",
+          "idShort": "Test"
+        },
+        {
+          "modelType": "Property",
+          "value": "Test",
+          "valueType": "xs:string",
+          "idShort": "Property_no_link"
+        },
+        {
+          "modelType": "Property",
+          "value": "https://mnestix.io",
+          "valueType": "xs:string",
+          "idShort": "Property_link"
+        },
+        {
+          "modelType": "MultiLanguageProperty",
+          "value": [
+            {
+              "language": "en",
+              "text": "Test"
+            },
+            {
+              "language": "de",
+              "text": "Test"
+            }
+          ],
+          "idShort": "MultiLanguageProperty_no_link"
+        },
+        {
+          "modelType": "MultiLanguageProperty",
+          "value": [
+            {
+              "language": "en",
+              "text": "https://mnestix.io"
+            },
+            {
+              "language": "de",
+              "text": "https://mnestix.io"
+            }
+          ],
+          "idShort": "MultiLanguageProperty_link"
         }
-    ]
+      ]
+    }
+  ]
 }

@@ -50,7 +50,7 @@ export function CopyButton({ value, isVisible = true, withBase64 = false, dataTe
                                 backgroundColor: 'background.paper',
                                 lineHeight: 1,
                                 padding: '1px',
-                                borderRadius: '2px'
+                                borderRadius: '2px',
                             }}
                         >
                             64

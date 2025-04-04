@@ -353,11 +353,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                                 disabled={!fileExists}
                                 data-testid="document-open-button"
                             >
-                                {!fileExists ? (
-                                    t('messages.fileNotFound')
-                                ) : (
-                                    t('actions.open')
-                                )}
+                                {!fileExists ? t('messages.fileNotFound') : t('actions.open')}
                             </Button>
                         </Box>
                     </Box>

@@ -63,9 +63,7 @@ export function MultiLangEditComponent(props: MultiLangEditComponentProps) {
                     <Box display="flex" alignContent="center" sx={{ mb: 1 }} key={i + '-' + langStrings.length}>
                         <Autocomplete
                             value={langString.language}
-                            renderInput={(params) => (
-                                <TextField {...params} label={t('labels.language')} />
-                            )}
+                            renderInput={(params) => <TextField {...params} label={t('labels.language')} />}
                             onInputChange={(_, v) => onLanguageChange(i, v)}
                             options={options as string[]}
                             disableClearable

@@ -5,11 +5,7 @@
     "composite": true,
     "module": "esnext",
     "target": "ES2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "inlineSourceMap": true,
     "allowJs": true,
     "jsx": "preserve",
@@ -36,18 +32,10 @@
     ],
     // needed for jest
     "paths": {
-      "@src": [
-        "./src"
-      ],
-      "@util": [
-        "./src/util"
-      ]
+      "@src": ["./src"],
+      "@util": ["./src/util"]
     },
-    "types": [
-      "./svgr.d.ts",
-      "node",
-      "jest"
-    ],
+    "types": ["./svgr.d.ts", "node", "jest"],
     "incremental": true
   },
   "include": [
@@ -60,7 +48,5 @@
     "src/**/*.tsx",
     "./dist/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

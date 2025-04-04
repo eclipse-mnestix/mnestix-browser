@@ -1,9 +1,9 @@
 {
-    "keys": [
-        {
-            "type": "Submodel",
-            "value": "http://mnestix.io/cyBillOfMaterial"
-        }
-    ],
-    "type": "ModelReference"
+  "keys": [
+    {
+      "type": "Submodel",
+      "value": "http://mnestix.io/cyBillOfMaterial"
+    }
+  ],
+  "type": "ModelReference"
 }

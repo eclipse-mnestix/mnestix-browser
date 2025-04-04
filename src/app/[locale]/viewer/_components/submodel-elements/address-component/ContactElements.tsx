@@ -31,7 +31,7 @@ export function AddressElement({ el, index }: { el: IDataElement; index?: number
     const locale = useLocale();
 
     const actualAddress = getTranslationValue(el, locale);
-    const addressType = el.idShort ? getAddressType(el.idShort, addressTypes) ?? el.idShort : '';
+    const addressType = el.idShort ? (getAddressType(el.idShort, addressTypes) ?? el.idShort) : '';
 
     return (
         <Box key={index} sx={{ display: 'flex' }}>

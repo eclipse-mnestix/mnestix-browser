@@ -1,13 +1,13 @@
 [
-    "text/plain",
-    "text/xml",
-    "text/html",
-    "application/json",
-    "application/rdf+xml",
-    "application/pdf",
-    "image/jpeg",
-    "image/png",
-    "image/gif",
-    "application/iges",
-    "application/step"
+  "text/plain",
+  "text/xml",
+  "text/html",
+  "application/json",
+  "application/rdf+xml",
+  "application/pdf",
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "application/iges",
+  "application/step"
 ]

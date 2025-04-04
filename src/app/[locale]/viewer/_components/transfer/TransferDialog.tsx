@@ -162,9 +162,7 @@ export function TransferDialog(props: DialogProps) {
                 <Typography variant="h2" color="primary">
                     {t('title')}
                 </Typography>
-                <Typography>
-                    {t('subtitle')}
-                </Typography>
+                <Typography>{t('subtitle')}</Typography>
             </Box>
             <IconButton
                 aria-label="close"

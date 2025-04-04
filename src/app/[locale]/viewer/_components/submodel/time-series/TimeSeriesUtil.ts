@@ -77,9 +77,7 @@ export function detectRecordTimeSemanticID(record: SubmodelElementCollection): s
  */
 export function parseRecordsFromInternalSegment(segment: SubmodelElementCollection): TimeSeriesDataSet | null {
     // get records
-    const recordsElement = segment.value?.find((se) =>
-        hasSemanticId(se, SubmodelElementSemanticId.TimeSeriesRecords),
-    );
+    const recordsElement = segment.value?.find((se) => hasSemanticId(se, SubmodelElementSemanticId.TimeSeriesRecords));
     if (!recordsElement) return null;
     const records = (recordsElement as SubmodelElementCollection).value;
     if (!records || !records?.length) return null;
@@ -103,7 +101,7 @@ export function parseRecordsFromInternalSegment(segment: SubmodelElementCollecti
                 point[name] = Number.parseFloat(variable.value ?? '0');
                 namesSet.add(name);
             });
-            point['timestamp'] = timeVar ? convertRecordTimeToDate(timeVar) ?? '' : '';
+            point['timestamp'] = timeVar ? (convertRecordTimeToDate(timeVar) ?? '') : '';
             return point;
         });
 

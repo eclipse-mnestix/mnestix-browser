@@ -138,7 +138,7 @@ export function IdSettingsCard() {
             }
             await fetchIdSettings();
             notificationSpawner.spawn({
-                message:  t('common.messages.successfullyUpdated'),
+                message: t('common.messages.successfullyUpdated'),
                 severity: 'success',
             });
             setIsEditMode(false);
@@ -193,9 +193,7 @@ export function IdSettingsCard() {
             <Box sx={{ display: 'flex' }}>
                 <StyledDocumentationButton onClick={() => setDocumentationModalOpen(true)}>
                     <InfoOutlined sx={{ mr: 1 }} />
-                    <Typography>
-                        {t('pages.assetIdDocumentation.title')}
-                    </Typography>
+                    <Typography>{t('pages.assetIdDocumentation.title')}</Typography>
                 </StyledDocumentationButton>
             </Box>
             <AssetIdRedirectDocumentationDialog

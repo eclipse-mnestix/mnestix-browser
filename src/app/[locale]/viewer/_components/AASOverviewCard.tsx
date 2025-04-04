@@ -128,20 +128,9 @@ export function AASOverviewCard(props: AASOverviewCardProps) {
                     </Typography>
                 </Box>
             )}
-            <DataRow 
-                title="id" 
-                value={props.aas?.id}
-                testId='datarow-aas-id'
-                withBase64={true}
-            />
-            <DataRow 
-                title="idShort" 
-                value={props.aas?.idShort ?? '-'} 
-            />
-            <DataRow 
-                title="repositoryURL" 
-                value={props.repositoryURL ?? '-'} 
-            />
+            <DataRow title="id" value={props.aas?.id} testId="datarow-aas-id" withBase64={true} />
+            <DataRow title="idShort" value={props.aas?.idShort ?? '-'} />
+            <DataRow title="repositoryURL" value={props.repositoryURL ?? '-'} />
             {props.aas?.derivedFrom?.keys?.[0] && (
                 <DataRow
                     title="derivedFrom"
@@ -164,12 +153,11 @@ export function AASOverviewCard(props: AASOverviewCardProps) {
                     </Typography>
                 </Box>
             )}
-            <DataRow 
-                title="globalAssetId" 
+            <DataRow
+                title="globalAssetId"
                 value={props.aas?.assetInformation?.globalAssetId ?? '-'}
-                testId='datarow-asset-id'
+                testId="datarow-asset-id"
                 withBase64={true}
-                
             />
             {props.aas?.assetInformation?.assetType && (
                 <DataRow title="assetType" value={props.aas?.assetInformation?.assetType ?? '-'} />

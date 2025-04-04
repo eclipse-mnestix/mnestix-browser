@@ -1,52 +1,52 @@
 ﻿{
-    "id": "http://mnestix.io/cyBillOfMaterial",
-    "idShort": "BillOfMaterial",
-    "administration": {
-        "version": "1",
-        "revision": "0"
-    },
-    "modelType": "Submodel",
-    "submodelElements": [
+  "id": "http://mnestix.io/cyBillOfMaterial",
+  "idShort": "BillOfMaterial",
+  "administration": {
+    "version": "1",
+    "revision": "0"
+  },
+  "modelType": "Submodel",
+  "submodelElements": [
+    {
+      "idShort": "Cypress Test 01",
+      "entityType": "SelfManagedEntity",
+      "statements": [
         {
-            "idShort": "Cypress Test 01",
-            "entityType": "SelfManagedEntity",
-            "statements": [
+          "idShort": "Cy BoM Component",
+          "entityType": "SelfManagedEntity",
+          "modelType": "Entity",
+          "globalAssetId": "https://mnestix.io/cypressTestBomComponent"
+        },
+        {
+          "idShort": "Cypress Test 02",
+          "entityType": "SelfManagedEntity",
+          "statements": [
+            {
+              "idShort": "MultiLanguageProperty",
+              "modelType": "MultiLanguageProperty",
+              "value": [
                 {
-                    "idShort": "Cy BoM Component",
-                    "entityType": "SelfManagedEntity",
-                    "modelType": "Entity",
-                    "globalAssetId": "https://mnestix.io/cypressTestBomComponent"
+                  "language": "en",
+                  "text": "Bill Of Material Multilanguage"
                 },
                 {
-                    "idShort": "Cypress Test 02",
-                    "entityType": "SelfManagedEntity",
-                    "statements": [
-                        {
-                            "idShort": "MultiLanguageProperty",
-                            "modelType": "MultiLanguageProperty",
-                            "value": [
-                                {
-                                    "language": "en",
-                                    "text": "Bill Of Material Multilanguage"
-                                },
-                                {
-                                    "language": "de",
-                                    "text": "Bill Of Material Mehrsprachig"
-                                }
-                            ]
-                        },
-                        {
-                            "idShort": "Boolean",
-                            "valueType": "xs:boolean",
-                            "value": "true",
-                            "modelType": "Property"
-                        }
-                    ],
-                    "modelType": "Entity"
+                  "language": "de",
+                  "text": "Bill Of Material Mehrsprachig"
                 }
-            ],
-            "modelType": "Entity",
-            "globalAssetId": "https://mnestix.io/cypressTest"
+              ]
+            },
+            {
+              "idShort": "Boolean",
+              "valueType": "xs:boolean",
+              "value": "true",
+              "modelType": "Property"
+            }
+          ],
+          "modelType": "Entity"
         }
-    ]
+      ],
+      "modelType": "Entity",
+      "globalAssetId": "https://mnestix.io/cypressTest"
+    }
+  ]
 }

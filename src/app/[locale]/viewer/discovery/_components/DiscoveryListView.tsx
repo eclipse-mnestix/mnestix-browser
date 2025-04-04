@@ -81,11 +81,7 @@ export const DiscoveryListView = () => {
         setIsLoadingList(false);
     }, []);
 
-    const tableHeaders = [
-        { label: t('picture') },
-        { label: t('aasIdHeading') },
-        { label: t('repositoryUrl') },
-    ];
+    const tableHeaders = [{ label: t('picture') }, { label: t('aasIdHeading') }, { label: t('repositoryUrl') }];
 
     return (
         <>
@@ -93,9 +89,7 @@ export const DiscoveryListView = () => {
             {isLoadingList && <CenteredLoadingSpinner sx={{ mt: 10 }} />}
             {!isLoadingList && !isError && (
                 <>
-                    <Typography marginBottom={3}>
-                        {t('subtitle')}
-                    </Typography>
+                    <Typography marginBottom={3}>{t('subtitle')}</Typography>
                     <DiscoveryList tableHeaders={tableHeaders} data={discoveryListEntries} />
                 </>
             )}

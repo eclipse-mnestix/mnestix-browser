@@ -41,7 +41,8 @@ export function MarkingsComponent(props: MarkingsComponentProps) {
         });
         // Build single marking
         return (
-            !!file && file.contentType && 
+            !!file &&
+            file.contentType &&
             file.contentType.startsWith('image') && (
                 <SingleMarkingsComponent
                     key={index}

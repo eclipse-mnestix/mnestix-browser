@@ -18,7 +18,6 @@ export function BooleanPropertyEditComponent(props: BooleanPropertyEditComponent
             setRealBoolean(true);
             props.onChange('true');
         }
-         
     }, [props.defaultValueEnabled]);
 
     const onValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,13 +29,7 @@ export function BooleanPropertyEditComponent(props: BooleanPropertyEditComponent
         <Box sx={{ width: '100%', my: 1 }}>
             <FormControlLabel
                 control={<Switch checked={realBoolean} onChange={onValueChange} />}
-                label={
-                    realBoolean ? (
-                        t('boolean.true')
-                    ) : (
-                        t('boolean.false')
-                    )
-                }
+                label={realBoolean ? t('boolean.true') : t('boolean.false')}
             />
         </Box>
     );

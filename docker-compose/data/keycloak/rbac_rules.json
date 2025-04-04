@@ -1,12 +1,7 @@
 ﻿[
   {
     "role": "basyx-admin",
-    "action": [
-      "CREATE",
-      "READ",
-      "UPDATE",
-      "DELETE"
-    ],
+    "action": ["CREATE", "READ", "UPDATE", "DELETE"],
     "targetInformation": {
       "@type": "aas",
       "aasIds": "*"
@@ -14,13 +9,7 @@
   },
   {
     "role": "basyx-admin",
-    "action": [
-      "CREATE",
-      "READ",
-      "UPDATE",
-      "DELETE",
-      "EXECUTE"
-    ],
+    "action": ["CREATE", "READ", "UPDATE", "DELETE", "EXECUTE"],
     "targetInformation": {
       "@type": "submodel",
       "submodelIds": "*",
@@ -29,12 +18,7 @@
   },
   {
     "role": "basyx-admin",
-    "action": [
-      "CREATE",
-      "READ",
-      "UPDATE",
-      "DELETE"
-    ],
+    "action": ["CREATE", "READ", "UPDATE", "DELETE"],
     "targetInformation": {
       "@type": "concept-description",
       "conceptDescriptionIds": "*"
@@ -42,9 +26,7 @@
   },
   {
     "role": "basyx-aas-reader",
-    "action": [
-      "READ"
-    ],
+    "action": ["READ"],
     "targetInformation": {
       "@type": "aas",
       "aasIds": "*"
@@ -52,9 +34,7 @@
   },
   {
     "role": "basyx-submodel-reader",
-    "action": [
-      "READ"
-    ],
+    "action": ["READ"],
     "targetInformation": {
       "@type": "submodel",
       "submodelIds": "*",
@@ -63,9 +43,7 @@
   },
   {
     "role": "mnestix-aas-reader",
-    "action": [
-      "READ"
-    ],
+    "action": ["READ"],
     "targetInformation": {
       "@type": "aas",
       "aasIds": "https://vws.xitaso.com/aas/mnestix"
@@ -73,9 +51,7 @@
   },
   {
     "role": "mnestix-submodel-reader",
-    "action": [
-      "READ"
-    ],
+    "action": ["READ"],
     "targetInformation": {
       "@type": "submodel",
       "submodelIds": [

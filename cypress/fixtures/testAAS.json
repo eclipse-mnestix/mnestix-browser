@@ -1,6 +1,6 @@
 {
-    "aasId": "https://mnestix.io/aas/cypressTest",
-    "assetId": "https://mnestix.io/cypressTest",
-    "aasIdBase64Encoded": "aHR0cHM6Ly9tbmVzdGl4LmlvL2Fhcy9jeXByZXNzVGVzdA",
-    "repoUrl": "/shells/aHR0cHM6Ly9tbmVzdGl4LmlvL2Fhcy9jeXByZXNzVGVzdA"
+  "aasId": "https://mnestix.io/aas/cypressTest",
+  "assetId": "https://mnestix.io/cypressTest",
+  "aasIdBase64Encoded": "aHR0cHM6Ly9tbmVzdGl4LmlvL2Fhcy9jeXByZXNzVGVzdA",
+  "repoUrl": "/shells/aHR0cHM6Ly9tbmVzdGl4LmlvL2Fhcy9jeXByZXNzVGVzdA"
 }

@@ -1,92 +1,92 @@
 ﻿[
-    {
-        "modelType": "AssetAdministrationShell",
-        "assetInformation": {
-            "assetKind": "Instance",
-            "defaultThumbnail": {
-                "contentType": "image/png",
-                "path": "https://wgrpproductdata.blob.core.windows.net/product-images/00H14DAP.png"
-            },
-            "globalAssetId": "https://i40.xitaso.com/testElement_1",
-            "specificAssetIds": [
-                {
-                    "name": "assetIdShort",
-                    "value": "testElement_1"
-                }
-            ]
-        },
-        "submodels": [
-            {
-                "keys": [
-                    {
-                        "type": "Submodel",
-                        "value": "https://i40.xitaso.com/sm/6b6c720e074942eab442b9c47a47d01c"
-                    }
-                ],
-                "type": "ModelReference"
-            }
-        ],
-        "id": "https://i40.xitaso.com/aas/testElement_1",
-        "idShort": "aas_testElement_1"
+  {
+    "modelType": "AssetAdministrationShell",
+    "assetInformation": {
+      "assetKind": "Instance",
+      "defaultThumbnail": {
+        "contentType": "image/png",
+        "path": "https://wgrpproductdata.blob.core.windows.net/product-images/00H14DAP.png"
+      },
+      "globalAssetId": "https://i40.xitaso.com/testElement_1",
+      "specificAssetIds": [
+        {
+          "name": "assetIdShort",
+          "value": "testElement_1"
+        }
+      ]
     },
-    {
-        "modelType": "AssetAdministrationShell",
-        "assetInformation": {
-            "assetKind": "Instance",
-            "defaultThumbnail": {
-                "contentType": "image/png",
-                "path": "https://wgrpproductdata.blob.core.windows.net/product-images/00H14DAP.png"
-            },
-            "globalAssetId": "https://i40.xitaso.com/testElement_2",
-            "specificAssetIds": [
-                {
-                    "name": "assetIdShort",
-                    "value": "testElement_2"
-                }
-            ]
-        },
-        "submodels": [
-            {
-                "keys": [
-                    {
-                        "type": "Submodel",
-                        "value": "https://i40.xitaso.com/sm/b52a4a2d99c2487eaba57d18390c4b61"
-                    }
-                ],
-                "type": "ModelReference"
-            }
+    "submodels": [
+      {
+        "keys": [
+          {
+            "type": "Submodel",
+            "value": "https://i40.xitaso.com/sm/6b6c720e074942eab442b9c47a47d01c"
+          }
         ],
-        "id": "https://i40.xitaso.com/aas/testElement_2",
-        "idShort": "aas_testElement_2"
+        "type": "ModelReference"
+      }
+    ],
+    "id": "https://i40.xitaso.com/aas/testElement_1",
+    "idShort": "aas_testElement_1"
+  },
+  {
+    "modelType": "AssetAdministrationShell",
+    "assetInformation": {
+      "assetKind": "Instance",
+      "defaultThumbnail": {
+        "contentType": "image/png",
+        "path": "https://wgrpproductdata.blob.core.windows.net/product-images/00H14DAP.png"
+      },
+      "globalAssetId": "https://i40.xitaso.com/testElement_2",
+      "specificAssetIds": [
+        {
+          "name": "assetIdShort",
+          "value": "testElement_2"
+        }
+      ]
     },
-    {
-        "modelType": "AssetAdministrationShell",
-        "assetInformation": {
-            "assetKind": "Instance",
-            "defaultThumbnail": {
-                "contentType": "image/png",
-                "path": "https://wgrpproductdata.blob.core.windows.net/product-images/00H14DAP.png"
-            },
-            "globalAssetId": "https://i40.xitaso.com/testElement_3",
-            "specificAssetIds": [
-                {
-                    "name": "assetIdShort",
-                    "value": "testElement_3"
-                }
-            ]
-        },
-        "submodels": [
-            {
-                "keys": [
-                    {
-                        "type": "Submodel",
-                        "value": "https://i40.xitaso.com/sm/346c2484dac74e23842d94aef17c3eb4"
-                    }
-                ],
-                "type": "ModelReference"
-            }
+    "submodels": [
+      {
+        "keys": [
+          {
+            "type": "Submodel",
+            "value": "https://i40.xitaso.com/sm/b52a4a2d99c2487eaba57d18390c4b61"
+          }
         ],
-        "id": "https://i40.xitaso.com/aas/testElement_3",
-        "idShort": "aas_testElement_3"
-    }
+        "type": "ModelReference"
+      }
+    ],
+    "id": "https://i40.xitaso.com/aas/testElement_2",
+    "idShort": "aas_testElement_2"
+  },
+  {
+    "modelType": "AssetAdministrationShell",
+    "assetInformation": {
+      "assetKind": "Instance",
+      "defaultThumbnail": {
+        "contentType": "image/png",
+        "path": "https://wgrpproductdata.blob.core.windows.net/product-images/00H14DAP.png"
+      },
+      "globalAssetId": "https://i40.xitaso.com/testElement_3",
+      "specificAssetIds": [
+        {
+          "name": "assetIdShort",
+          "value": "testElement_3"
+        }
+      ]
+    },
+    "submodels": [
+      {
+        "keys": [
+          {
+            "type": "Submodel",
+            "value": "https://i40.xitaso.com/sm/346c2484dac74e23842d94aef17c3eb4"
+          }
+        ],
+        "type": "ModelReference"
+      }
+    ],
+    "id": "https://i40.xitaso.com/aas/testElement_3",
+    "idShort": "aas_testElement_3"
+  }
 ]

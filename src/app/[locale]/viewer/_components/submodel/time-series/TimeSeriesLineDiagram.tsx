@@ -129,7 +129,6 @@ export function TimeSeriesLineDiagram(props: { data: TimeSeriesDataSet; timefram
                             stroke={color}
                         />
                     )}
-
                 </LineChart>
             </ResponsiveContainer>
 

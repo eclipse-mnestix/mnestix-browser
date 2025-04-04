@@ -1,9 +1,9 @@
 {
-    "keys": [
-        {
-            "type": "Submodel",
-            "value": "https://mnestix.io/cyTimeSeriesInternalLinked"
-        }
-    ],
-    "type": "ModelReference"
+  "keys": [
+    {
+      "type": "Submodel",
+      "value": "https://mnestix.io/cyTimeSeriesInternalLinked"
+    }
+  ],
+  "type": "ModelReference"
 }

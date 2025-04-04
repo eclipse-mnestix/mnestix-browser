@@ -1,18 +1,18 @@
 {
-    "qualifierTypes": ["Multiplicity", "Cardinality", "SMT/Cardinality"],
-    "emptyTemplate": {
-        "semanticId": {
-            "type": "ExternalReference",
-            "keys": [
-                {
-                    "type": "GlobalReference",
-                    "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
-                }
-            ]
-        },
-        "kind": "TemplateQualifier",
-        "type": "SMT/Cardinality",
-        "valueType": "xs:string",
-        "value": ""
-    }
+  "qualifierTypes": ["Multiplicity", "Cardinality", "SMT/Cardinality"],
+  "emptyTemplate": {
+    "semanticId": {
+      "type": "ExternalReference",
+      "keys": [
+        {
+          "type": "GlobalReference",
+          "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
+        }
+      ]
+    },
+    "kind": "TemplateQualifier",
+    "type": "SMT/Cardinality",
+    "valueType": "xs:string",
+    "value": ""
+  }
 }

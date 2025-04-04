@@ -47,8 +47,8 @@ export function MultiLanguagePropertyComponent(props: MultiLanguagePropertyCompo
 
     if (isValidUrl(value)) {
         return (
-            <Box 
-                display="flex" 
+            <Box
+                display="flex"
                 alignItems="center"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
@@ -65,8 +65,8 @@ export function MultiLanguagePropertyComponent(props: MultiLanguagePropertyCompo
     }
 
     return (
-        <Box 
-            display="flex" 
+        <Box
+            display="flex"
             alignItems="center"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}

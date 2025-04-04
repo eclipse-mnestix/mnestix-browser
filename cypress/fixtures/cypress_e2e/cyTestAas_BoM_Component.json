@@ -1,11 +1,11 @@
 ﻿{
-    "id": "https://mnestix.io/aas/cypressTestBomComponent",
-    "idShort": "aas_bomComponent",
-    "modelType": "AssetAdministrationShell",
-    "assetInformation": {
-        "assetKind": "Instance",
-        "globalAssetId": "https://mnestix.io/cypressTestBomComponent",
-        "specificAssetId": "BoM Component"
-    },
-    "submodels": []
+  "id": "https://mnestix.io/aas/cypressTestBomComponent",
+  "idShort": "aas_bomComponent",
+  "modelType": "AssetAdministrationShell",
+  "assetInformation": {
+    "assetKind": "Instance",
+    "globalAssetId": "https://mnestix.io/cypressTestBomComponent",
+    "specificAssetId": "BoM Component"
+  },
+  "submodels": []
 }

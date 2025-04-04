@@ -1,26 +1,26 @@
 {
-    "semanticId": {
-        "keys": [
-            {
-                "type": "Submodel",
-                "value": "https://example.com/EmptySubmodel/1/0"
-            }
-        ],
-        "type": "ExternalReference"
-    },
-    "qualifiers": [
-        {
-            "valueType": "xs:string",
-            "type": "displayName",
-            "value": "Empty"
-        }
+  "semanticId": {
+    "keys": [
+      {
+        "type": "Submodel",
+        "value": "https://example.com/EmptySubmodel/1/0"
+      }
     ],
-    "id": "https://example.com/EmptySubmodel",
-    "administration": {
-        "version": "1",
-        "revision": "0"
-    },
-    "idShort": "Empty",
-    "modelType": "Submodel",
-    "kind": "Template"
+    "type": "ExternalReference"
+  },
+  "qualifiers": [
+    {
+      "valueType": "xs:string",
+      "type": "displayName",
+      "value": "Empty"
+    }
+  ],
+  "id": "https://example.com/EmptySubmodel",
+  "administration": {
+    "version": "1",
+    "revision": "0"
+  },
+  "idShort": "Empty",
+  "modelType": "Submodel",
+  "kind": "Template"
 }

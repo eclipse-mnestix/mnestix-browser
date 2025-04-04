@@ -1,398 +1,398 @@
 ﻿{
-    "transferAas": {
-        "modelType": "AssetAdministrationShell",
-        "id": "https://i40.xitaso.com/aas/testTransferAas",
-        "idShort": "testTransferAas",
-        "assetInformation": {
-            "assetKind": "Instance",
-            "defaultThumbnail": {
-                "contentType": "image/png",
-                "path": "https://wgrpproductdata.blob.core.windows.net/product-images/00H14DAP.png"
-            },
-            "globalAssetId": "https://mnestix.io/sm/transferServiceTestAas",
-            "specificAssetIds": [
-                {
-                    "name": "assetIdShort",
-                    "value": "testTransferAas"
-                }
-            ]
-        },
-        "submodels": [
-            {
-                "keys": [
-                    {
-                        "type": "Submodel",
-                        "value": "https://mnestix.io/sm/transferServiceTestNameplateSubmodel"
-                    }
-                ],
-                "type": "ModelReference"
-            },
-            {
-                "keys": [
-                    {
-                        "type": "Submodel",
-                        "value": "https://mnestix.io/sm/transferServiceTestTechnicalDataSubmodel"
-                    }
-                ],
-                "type": "ModelReference"
-            }
-        ]
+  "transferAas": {
+    "modelType": "AssetAdministrationShell",
+    "id": "https://i40.xitaso.com/aas/testTransferAas",
+    "idShort": "testTransferAas",
+    "assetInformation": {
+      "assetKind": "Instance",
+      "defaultThumbnail": {
+        "contentType": "image/png",
+        "path": "https://wgrpproductdata.blob.core.windows.net/product-images/00H14DAP.png"
+      },
+      "globalAssetId": "https://mnestix.io/sm/transferServiceTestAas",
+      "specificAssetIds": [
+        {
+          "name": "assetIdShort",
+          "value": "testTransferAas"
+        }
+      ]
     },
-    "transferSubmodelNameplate": {
-        "modelType": "Submodel",
-        "kind": "Instance",
-        "id": "https://mnestix.io/sm/transferServiceTestNameplateSubmodel",
-        "idShort": "Nameplate",
-        "semanticId": {
-            "keys": [
-                {
-                    "type": "ConceptDescription",
-                    "value": "https://admin-shell.io/zvei/nameplate/2/0/Nameplate"
-                }
-            ],
-            "type": "ExternalReference"
-        },
-        "description": [
-            {
-                "language": "en",
-                "text": "Contains the nameplate information attached to the product"
-            }
+    "submodels": [
+      {
+        "keys": [
+          {
+            "type": "Submodel",
+            "value": "https://mnestix.io/sm/transferServiceTestNameplateSubmodel"
+          }
         ],
-        "administration": {
-            "revision": "0",
-            "version": "2"
-        },
-        "submodelElements": [
-            {
-                "modelType": "Property",
-                "semanticId": {
-                    "keys": [
-                        {
-                            "type": "ConceptDescription",
-                            "value": "0173-1#02-AAY811#001"
-                        }
-                    ],
-                    "type": "ExternalReference"
-                },
-                "value": "https://www.domain-abc.com/Model-Nr-1234/Serial-Nr-5678",
-                "valueType": "xs:string",
-                "qualifiers": [
-                    {
-                        "semanticId": {
-                            "keys": [
-                                {
-                                    "type": "GlobalReference",
-                                    "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
-                                }
-                            ],
-                            "type": "ExternalReference"
-                        },
-                        "kind": "TemplateQualifier",
-                        "type": "SMT/Cardinality",
-                        "value": "One",
-                        "valueType": "xs:string"
-                    }
-                ],
-                "description": [
-                    {
-                        "language": "en",
-                        "text": "Note: see also [IRDI] 0112/2///61987#ABN590#001 URI of product instance "
-                    }
-                ],
-                "idShort": "URIOfTheProduct"
-            },
-            {
-                "modelType": "SubmodelElementCollection",
-                "semanticId": {
-                    "keys": [
-                        {
-                            "type": "ConceptDescription",
-                            "value": "https://admin-shell.io/zvei/nameplate/1/0/ContactInformations/ContactInformation"
-                        }
-                    ],
-                    "type": "ExternalReference"
-                },
-                "qualifiers": [
-                    {
-                        "semanticId": {
-                            "keys": [
-                                {
-                                    "type": "GlobalReference",
-                                    "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
-                                }
-                            ],
-                            "type": "ExternalReference"
-                        },
-                        "kind": "TemplateQualifier",
-                        "type": "SMT/Cardinality",
-                        "value": "One",
-                        "valueType": "xs:string"
-                    }
-                ],
-                "description": [
-                    {
-                        "language": "en",
-                        "text": "The SMC “ContactInformation” contains information on how to contact the manufacturer or an authorised service provider, e.g. when a maintenance service is required. Note: physical address is a mandatory property according to EU Machine Directive 2006/42/EC"
-                    }
-                ],
-                "idShort": "ContactInformation",
-                "value": [
-                    {
-                        "modelType": "MultiLanguageProperty",
-                        "semanticId": {
-                            "keys": [
-                                {
-                                    "type": "ConceptDescription",
-                                    "value": "0173-1#02-AAW001#001"
-                                }
-                            ],
-                            "type": "ExternalReference"
-                        },
-                        "value": [
-                            {
-                                "language": "en",
-                                "text": "ABC Company"
-                            }
-                        ],
-                        "qualifiers": [
-                            {
-                                "semanticId": {
-                                    "keys": [
-                                        {
-                                            "type": "GlobalReference",
-                                            "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
-                                        }
-                                    ],
-                                    "type": "ExternalReference"
-                                },
-                                "kind": "TemplateQualifier",
-                                "type": "SMT/Cardinality",
-                                "value": "ZeroToOne",
-                                "valueType": "xs:string"
-                            }
-                        ],
-                        "idShort": "Company"
-                    },
-                    {
-                        "modelType": "MultiLanguageProperty",
-                        "semanticId": {
-                            "keys": [
-                                {
-                                    "type": "ConceptDescription",
-                                    "value": "0173-1#02-AAO205#002"
-                                }
-                            ],
-                            "type": "ExternalReference"
-                        },
-                        "qualifiers": [
-                            {
-                                "semanticId": {
-                                    "keys": [
-                                        {
-                                            "type": "GlobalReference",
-                                            "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
-                                        }
-                                    ],
-                                    "type": "ExternalReference"
-                                },
-                                "kind": "TemplateQualifier",
-                                "type": "SMT/Cardinality",
-                                "value": "ZeroToOne",
-                                "valueType": "xs:string"
-                            }
-                        ],
-                        "idShort": "NameOfContact"
-                    }
-                ]
-            },
-            {
-                "modelType": "Property",
-                "semanticId": {
-                    "keys": [
-                        {
-                            "type": "ConceptDescription",
-                            "value": "0173-1#02-AAM556#002"
-                        }
-                    ],
-                    "type": "ExternalReference"
-                },
-                "value": "12345678",
-                "valueType": "xs:string",
-                "qualifiers": [
-                    {
-                        "semanticId": {
-                            "keys": [
-                                {
-                                    "type": "GlobalReference",
-                                    "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
-                                }
-                            ],
-                            "type": "ExternalReference"
-                        },
-                        "kind": "TemplateQualifier",
-                        "type": "SMT/Cardinality",
-                        "value": "ZeroToOne",
-                        "valueType": "xs:string"
-                    }
-                ],
-                "description": [
-                    {
-                        "language": "en",
-                        "text": "Note: see also [IRDI] 0112/2///61987#ABA951#007 serial number "
-                    }
-                ],
-                "idShort": "SerialNumber"
-            }
-        ]
+        "type": "ModelReference"
+      },
+      {
+        "keys": [
+          {
+            "type": "Submodel",
+            "value": "https://mnestix.io/sm/transferServiceTestTechnicalDataSubmodel"
+          }
+        ],
+        "type": "ModelReference"
+      }
+    ]
+  },
+  "transferSubmodelNameplate": {
+    "modelType": "Submodel",
+    "kind": "Instance",
+    "id": "https://mnestix.io/sm/transferServiceTestNameplateSubmodel",
+    "idShort": "Nameplate",
+    "semanticId": {
+      "keys": [
+        {
+          "type": "ConceptDescription",
+          "value": "https://admin-shell.io/zvei/nameplate/2/0/Nameplate"
+        }
+      ],
+      "type": "ExternalReference"
     },
-    "transferSubmodelTechnicalData": {
-        "modelType": "Submodel",
-        "kind": "Instance",
-        "id": "https://mnestix.io/sm/transferServiceTestTechnicalDataSubmodel",
-        "idShort": "TechnicalData",
+    "description": [
+      {
+        "language": "en",
+        "text": "Contains the nameplate information attached to the product"
+      }
+    ],
+    "administration": {
+      "revision": "0",
+      "version": "2"
+    },
+    "submodelElements": [
+      {
+        "modelType": "Property",
         "semanticId": {
-            "keys": [
-                {
-                    "type": "GlobalReference",
-                    "value": "http://admin-shell.io/ZVEI/TechnicalData/Submodel/1/1"
-                }
-            ],
-            "type": "ExternalReference"
-        },
-        "dataSpecification": [],
-        "embeddedDataSpecifications": [],
-        "administration": {
-            "version": "1",
-            "revision": "0"
-        },
-        "submodelElements": [
+          "keys": [
             {
-                "ordered": false,
-                "allowDuplicates": false,
-                "semanticId": {
-                    "keys": [
-                        {
-                            "type": "GlobalReference",
-                            "value": "https://admin-shell.io/ZVEI/TechnicalData/ProductClassifications/1/1"
-                        }
-                    ],
-                    "type": "ExternalReference"
-                },
-                "idShort": "ProductClassifications",
-                "value": [
-                    {
-                        "ordered": false,
-                        "allowDuplicates": false,
-                        "semanticId": {
-                            "keys": [
-                                {
-                                    "type": "GlobalReference",
-                                    "value": "https://admin-shell.io/ZVEI/TechnicalData/ProductClassificationItem/1/1"
-                                }
-                            ],
-                            "type": "ExternalReference"
-                        },
-                        "idShort": "ProductClassificationItem1",
-                        "value": [
-                            {
-                                "value": "ECLASS",
-                                "semanticId": {
-                                    "keys": [
-                                        {
-                                            "type": "GlobalReference",
-                                            "value": "https://admin-shell.io/ZVEI/TechnicalData/ProductClassificationSystem/1/1"
-                                        }
-                                    ],
-                                    "type": "ExternalReference"
-                                },
-                                "idShort": "ProductClassificationSystem",
-                                "category": "PARAMETER",
-                                "valueType": "xs:string",
-                                "kind": "Instance",
-                                "modelType": "Property",
-                                "description": [
-                                    {
-                                        "language": "en",
-                                        "text": "Common name of the classification system."
-                                    }
-                                ]
-                            },
-                            {
-                                "value": "12.0 (BASIC)",
-                                "semanticId": {
-                                    "keys": [
-                                        {
-                                            "type": "GlobalReference",
-                                            "value": "https://admin-shell.io/ZVEI/TechnicalData/ClassificationSystemVersion/1/1"
-                                        }
-                                    ],
-                                    "type": "ExternalReference"
-                                },
-                                "idShort": "ClassificationSystemVersion",
-                                "category": "PARAMETER",
-                                "valueType": "xs:string",
-                                "kind": "Instance",
-                                "modelType": "Property",
-                                "description": [
-                                    {
-                                        "language": "en",
-                                        "text": "Common version identifier of the used classification system, in order to distinguish different version of the property dictionary."
-                                    }
-                                ]
-                            },
-                            {
-                                "value": "51-01-05-01",
-                                "semanticId": {
-                                    "keys": [
-                                        {
-                                            "type": "GlobalReference",
-                                            "value": "https://admin-shell.io/ZVEI/TechnicalData/ProductClassId/1/1"
-                                        }
-                                    ],
-                                    "type": "ExternalReference"
-                                },
-                                "idShort": "ProductClassId",
-                                "category": "PARAMETER",
-                                "valueType": "xs:string",
-                                "kind": "Instance",
-                                "modelType": "Property",
-                                "description": [
-                                    {
-                                        "language": "en",
-                                        "text": "Class of the associated product or industrial equipment in the classification system. According to the notation of the system."
-                                    }
-                                ]
-                            }
-                        ],
-                        "kind": "Instance",
-                        "modelType": "SubmodelElementCollection",
-                        "description": [
-                            {
-                                "language": "en",
-                                "text": "Single product classification item by association with product class in a particular classification system or property dictionary."
-                            }
-                        ]
-                    }
-                ],
-                "kind": "Instance",
-                "parent": {
-                    "keys": [
-                        {
-                            "type": "Submodel",
-                            "local": true,
-                            "value": "https://mnestix.io/sm/transferServiceTestTechnicalDataSubmodel",
-                            "idType": "IRI"
-                        }
-                    ]
-                },
-                "modelType": "SubmodelElementCollection",
-                "description": [
-                    {
-                        "language": "en",
-                        "text": "Product classifications by association of product classes with common classification systems."
-                    }
-                ]
+              "type": "ConceptDescription",
+              "value": "0173-1#02-AAY811#001"
             }
+          ],
+          "type": "ExternalReference"
+        },
+        "value": "https://www.domain-abc.com/Model-Nr-1234/Serial-Nr-5678",
+        "valueType": "xs:string",
+        "qualifiers": [
+          {
+            "semanticId": {
+              "keys": [
+                {
+                  "type": "GlobalReference",
+                  "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
+                }
+              ],
+              "type": "ExternalReference"
+            },
+            "kind": "TemplateQualifier",
+            "type": "SMT/Cardinality",
+            "value": "One",
+            "valueType": "xs:string"
+          }
+        ],
+        "description": [
+          {
+            "language": "en",
+            "text": "Note: see also [IRDI] 0112/2///61987#ABN590#001 URI of product instance "
+          }
+        ],
+        "idShort": "URIOfTheProduct"
+      },
+      {
+        "modelType": "SubmodelElementCollection",
+        "semanticId": {
+          "keys": [
+            {
+              "type": "ConceptDescription",
+              "value": "https://admin-shell.io/zvei/nameplate/1/0/ContactInformations/ContactInformation"
+            }
+          ],
+          "type": "ExternalReference"
+        },
+        "qualifiers": [
+          {
+            "semanticId": {
+              "keys": [
+                {
+                  "type": "GlobalReference",
+                  "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
+                }
+              ],
+              "type": "ExternalReference"
+            },
+            "kind": "TemplateQualifier",
+            "type": "SMT/Cardinality",
+            "value": "One",
+            "valueType": "xs:string"
+          }
+        ],
+        "description": [
+          {
+            "language": "en",
+            "text": "The SMC “ContactInformation” contains information on how to contact the manufacturer or an authorised service provider, e.g. when a maintenance service is required. Note: physical address is a mandatory property according to EU Machine Directive 2006/42/EC"
+          }
+        ],
+        "idShort": "ContactInformation",
+        "value": [
+          {
+            "modelType": "MultiLanguageProperty",
+            "semanticId": {
+              "keys": [
+                {
+                  "type": "ConceptDescription",
+                  "value": "0173-1#02-AAW001#001"
+                }
+              ],
+              "type": "ExternalReference"
+            },
+            "value": [
+              {
+                "language": "en",
+                "text": "ABC Company"
+              }
+            ],
+            "qualifiers": [
+              {
+                "semanticId": {
+                  "keys": [
+                    {
+                      "type": "GlobalReference",
+                      "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
+                    }
+                  ],
+                  "type": "ExternalReference"
+                },
+                "kind": "TemplateQualifier",
+                "type": "SMT/Cardinality",
+                "value": "ZeroToOne",
+                "valueType": "xs:string"
+              }
+            ],
+            "idShort": "Company"
+          },
+          {
+            "modelType": "MultiLanguageProperty",
+            "semanticId": {
+              "keys": [
+                {
+                  "type": "ConceptDescription",
+                  "value": "0173-1#02-AAO205#002"
+                }
+              ],
+              "type": "ExternalReference"
+            },
+            "qualifiers": [
+              {
+                "semanticId": {
+                  "keys": [
+                    {
+                      "type": "GlobalReference",
+                      "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
+                    }
+                  ],
+                  "type": "ExternalReference"
+                },
+                "kind": "TemplateQualifier",
+                "type": "SMT/Cardinality",
+                "value": "ZeroToOne",
+                "valueType": "xs:string"
+              }
+            ],
+            "idShort": "NameOfContact"
+          }
         ]
-    }
+      },
+      {
+        "modelType": "Property",
+        "semanticId": {
+          "keys": [
+            {
+              "type": "ConceptDescription",
+              "value": "0173-1#02-AAM556#002"
+            }
+          ],
+          "type": "ExternalReference"
+        },
+        "value": "12345678",
+        "valueType": "xs:string",
+        "qualifiers": [
+          {
+            "semanticId": {
+              "keys": [
+                {
+                  "type": "GlobalReference",
+                  "value": "https://admin-shell.io/SubmodelTemplates/Cardinality/1/0"
+                }
+              ],
+              "type": "ExternalReference"
+            },
+            "kind": "TemplateQualifier",
+            "type": "SMT/Cardinality",
+            "value": "ZeroToOne",
+            "valueType": "xs:string"
+          }
+        ],
+        "description": [
+          {
+            "language": "en",
+            "text": "Note: see also [IRDI] 0112/2///61987#ABA951#007 serial number "
+          }
+        ],
+        "idShort": "SerialNumber"
+      }
+    ]
+  },
+  "transferSubmodelTechnicalData": {
+    "modelType": "Submodel",
+    "kind": "Instance",
+    "id": "https://mnestix.io/sm/transferServiceTestTechnicalDataSubmodel",
+    "idShort": "TechnicalData",
+    "semanticId": {
+      "keys": [
+        {
+          "type": "GlobalReference",
+          "value": "http://admin-shell.io/ZVEI/TechnicalData/Submodel/1/1"
+        }
+      ],
+      "type": "ExternalReference"
+    },
+    "dataSpecification": [],
+    "embeddedDataSpecifications": [],
+    "administration": {
+      "version": "1",
+      "revision": "0"
+    },
+    "submodelElements": [
+      {
+        "ordered": false,
+        "allowDuplicates": false,
+        "semanticId": {
+          "keys": [
+            {
+              "type": "GlobalReference",
+              "value": "https://admin-shell.io/ZVEI/TechnicalData/ProductClassifications/1/1"
+            }
+          ],
+          "type": "ExternalReference"
+        },
+        "idShort": "ProductClassifications",
+        "value": [
+          {
+            "ordered": false,
+            "allowDuplicates": false,
+            "semanticId": {
+              "keys": [
+                {
+                  "type": "GlobalReference",
+                  "value": "https://admin-shell.io/ZVEI/TechnicalData/ProductClassificationItem/1/1"
+                }
+              ],
+              "type": "ExternalReference"
+            },
+            "idShort": "ProductClassificationItem1",
+            "value": [
+              {
+                "value": "ECLASS",
+                "semanticId": {
+                  "keys": [
+                    {
+                      "type": "GlobalReference",
+                      "value": "https://admin-shell.io/ZVEI/TechnicalData/ProductClassificationSystem/1/1"
+                    }
+                  ],
+                  "type": "ExternalReference"
+                },
+                "idShort": "ProductClassificationSystem",
+                "category": "PARAMETER",
+                "valueType": "xs:string",
+                "kind": "Instance",
+                "modelType": "Property",
+                "description": [
+                  {
+                    "language": "en",
+                    "text": "Common name of the classification system."
+                  }
+                ]
+              },
+              {
+                "value": "12.0 (BASIC)",
+                "semanticId": {
+                  "keys": [
+                    {
+                      "type": "GlobalReference",
+                      "value": "https://admin-shell.io/ZVEI/TechnicalData/ClassificationSystemVersion/1/1"
+                    }
+                  ],
+                  "type": "ExternalReference"
+                },
+                "idShort": "ClassificationSystemVersion",
+                "category": "PARAMETER",
+                "valueType": "xs:string",
+                "kind": "Instance",
+                "modelType": "Property",
+                "description": [
+                  {
+                    "language": "en",
+                    "text": "Common version identifier of the used classification system, in order to distinguish different version of the property dictionary."
+                  }
+                ]
+              },
+              {
+                "value": "51-01-05-01",
+                "semanticId": {
+                  "keys": [
+                    {
+                      "type": "GlobalReference",
+                      "value": "https://admin-shell.io/ZVEI/TechnicalData/ProductClassId/1/1"
+                    }
+                  ],
+                  "type": "ExternalReference"
+                },
+                "idShort": "ProductClassId",
+                "category": "PARAMETER",
+                "valueType": "xs:string",
+                "kind": "Instance",
+                "modelType": "Property",
+                "description": [
+                  {
+                    "language": "en",
+                    "text": "Class of the associated product or industrial equipment in the classification system. According to the notation of the system."
+                  }
+                ]
+              }
+            ],
+            "kind": "Instance",
+            "modelType": "SubmodelElementCollection",
+            "description": [
+              {
+                "language": "en",
+                "text": "Single product classification item by association with product class in a particular classification system or property dictionary."
+              }
+            ]
+          }
+        ],
+        "kind": "Instance",
+        "parent": {
+          "keys": [
+            {
+              "type": "Submodel",
+              "local": true,
+              "value": "https://mnestix.io/sm/transferServiceTestTechnicalDataSubmodel",
+              "idType": "IRI"
+            }
+          ]
+        },
+        "modelType": "SubmodelElementCollection",
+        "description": [
+          {
+            "language": "en",
+            "text": "Product classifications by association of product classes with common classification systems."
+          }
+        ]
+      }
+    ]
+  }
 }
