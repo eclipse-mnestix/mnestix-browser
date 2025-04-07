@@ -1,5 +1,5 @@
 ﻿import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import { GenericAasListTableRow } from './GenericAasListTableRow';
+import { GenericAasListEntry } from 'app/[locale]/viewer/discovery/_components/GenericAasListEntry';
 import { AasListConfig, AasListEntry } from 'lib/types/AasListEntry';
 import { useTranslations } from 'next-intl';
 
@@ -14,7 +14,7 @@ const tableHeaderText = {
     fontWeight: 700,
 };
 
-export default function GenericAasList(props: AasListProps) {
+export default function GenericAasList({ data, ...config }: AasListProps) {
     const t = useTranslations('pages.aasList.listHeader');
 
     return (
@@ -23,10 +23,12 @@ export default function GenericAasList(props: AasListProps) {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={tableHeaderText} data-testid="list-header-picture">
-                                {t('picture')}
-                            </TableCell>
-                            {props.showAasId && (
+                            {config.showThumbnail && (
+                                <TableCell sx={tableHeaderText} data-testid="list-header-picture">
+                                    {t('picture')}
+                                </TableCell>
+                            )}
+                            {config.showAasId && (
                                 <TableCell>
                                     <Typography
                                         variant="h5"
@@ -39,7 +41,7 @@ export default function GenericAasList(props: AasListProps) {
                                     </Typography>
                                 </TableCell>
                             )}
-                            {props.showAssetId && (
+                            {config.showAssetId && (
                                 <TableCell>
                                     <Typography
                                         variant="h5"
@@ -52,7 +54,7 @@ export default function GenericAasList(props: AasListProps) {
                                     </Typography>
                                 </TableCell>
                             )}
-                            {props.showAasEndpoint && (
+                            {config.showAasEndpoint && (
                                 <TableCell>
                                     <Typography
                                         variant="h5"
@@ -65,7 +67,7 @@ export default function GenericAasList(props: AasListProps) {
                                     </Typography>
                                 </TableCell>
                             )}
-                            {props.showRepositoryUrl && (
+                            {config.showRepositoryUrl && (
                                 <TableCell>
                                     <Typography
                                         variant="h5"
@@ -78,7 +80,7 @@ export default function GenericAasList(props: AasListProps) {
                                     </Typography>
                                 </TableCell>
                             )}
-                            {props.showDiscoveryUrl && (
+                            {config.showDiscoveryUrl && (
                                 <TableCell>
                                     <Typography
                                         variant="h5"
@@ -91,7 +93,7 @@ export default function GenericAasList(props: AasListProps) {
                                     </Typography>
                                 </TableCell>
                             )}
-                            {props.showRegistryUrl && (
+                            {config.showRegistryUrl && (
                                 <TableCell>
                                     <Typography
                                         variant="h5"
@@ -107,7 +109,7 @@ export default function GenericAasList(props: AasListProps) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {props.data.map((aasListEntry, index) => (
+                        {data.map((aasListEntry, index) => (
                             <TableRow
                                 key={index}
                                 sx={{
@@ -115,7 +117,7 @@ export default function GenericAasList(props: AasListProps) {
                                 }}
                                 data-testid={`list-row-${aasListEntry.aasId}`}
                             >
-                                <GenericAasListTableRow aasListEntry={aasListEntry} {...props} />
+                                <GenericAasListEntry aasListEntry={aasListEntry} {...config} />
                             </TableRow>
                         ))}
                     </TableBody>

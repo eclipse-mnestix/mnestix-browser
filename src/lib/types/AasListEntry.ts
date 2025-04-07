@@ -5,10 +5,10 @@
     repositoryUrl?: string;
     discoveryUrl?: string;
     registryUrl?: string;
+    thumbnailUrl?: string;
 };
 export type AasListConfig = {
-    buttonTooltip?: string;
-    
+    showThumbnail?: boolean;
     showAasId?: boolean;
     showAssetId?: boolean;
     showAasEndpoint?: boolean;

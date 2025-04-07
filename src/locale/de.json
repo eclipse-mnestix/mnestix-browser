@@ -171,8 +171,6 @@
   },
   "pages": {
     "aasList": {
-      "aasIdHeading": "AAS ID",
-      "assetIdHeading": "Asset ID",
       "compare": "Vergleichen",
       "header": "AAS Liste",
       "listHeader": {
@@ -180,16 +178,16 @@
         "aasId": "AAS ID",
         "assetId": "Asset ID",
         "discoveryUrl": "Discovery Url",
+        "manufacturer": "Hersteller Name",
         "picture": "Bild",
+        "productClass": "Produktklasse",
+        "productDesignation": "Hersteller Produktbezeichnung",
         "registryUrl": "Registry Url",
         "repositoryUrl": "Repository Url",
         "viewAASButton": "AAS anzeigen"
       },
-      "manufacturerHeading": "Hersteller Name",
       "maxElementsWarning": "Maximal 3 Elemente selektierbar",
       "page": "Seite",
-      "productClassHeading": "Produktklasse",
-      "productDesignationHeading": "Hersteller Produktbezeichnung",
       "repositoryDropdown": "AAS Repository",
       "selectRepository": "Bitte wählen Sie ein Repository aus",
       "subHeader": "Hier finden Sie alle AAS aus Ihrem Repository. Sie können ein AAS-Repository auswählen, um zwischen den Datenquellen zu wechseln.",
@@ -234,7 +232,6 @@
       "welcomeText": "Willkommen bei Mnestix"
     },
     "discoveryList": {
-      "buttonTooltip": "Zur AAS wechseln",
       "errors": {
         "noAasFound": "Keine AAS für die angegebene ID gefunden",
         "searchFailed": "Suche fehlgeschlagen"

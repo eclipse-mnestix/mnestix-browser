@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { RoundedIconButton } from 'components/basics/Buttons';
 import { ArrowForward } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
+import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
 
 type GenericAasListTableRowProps = {
     aasListEntry: AasListEntry;
@@ -18,7 +19,7 @@ const tableBodyText = {
     color: 'text.primary',
 };
 
-export const GenericAasListTableRow = ({ aasListEntry, ...config }: GenericAasListTableRowProps) => {
+export const GenericAasListEntry = ({ aasListEntry, ...config }: GenericAasListTableRowProps) => {
     const [, setAas] = useAasState();
     const [, setAasOriginUrl] = useAasOriginSourceState();
     const navigate = useRouter();
@@ -33,7 +34,16 @@ export const GenericAasListTableRow = ({ aasListEntry, ...config }: GenericAasLi
 
     return (
         <>
-            <PictureTableCell />
+            {config.showThumbnail && (
+                <PictureTableCell>
+                    <ImageWithFallback
+                        src={aasListEntry.thumbnailUrl ?? ''}
+                        alt={'Thumbnail image for: ' + aasListEntry.assetId}
+                        size={100}
+                        onClickHandler={() => navigateToAas(aasListEntry.aasId, aasListEntry.repositoryUrl)}
+                    />
+                </PictureTableCell>
+            )}
             {config.showAasId && (
                 <TableCell align="left" sx={tableBodyText} data-testid="list-row-aasId">
                     {aasListEntry.aasId}
