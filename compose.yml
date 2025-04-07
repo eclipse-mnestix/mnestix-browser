@@ -33,13 +33,11 @@ services:
       IMPRINT_URL: ''
       DATA_PRIVACY_URL: ''
       USE_BASYX_RBAC: 'false'
-    depends_on:
-      aas-environment:
-        condition: service_healthy # only after the healthcheck in aas is successful, the mnestix container is being created
     networks:
       - mnestix-network
     volumes:
       - mnestix-database:/app/prisma/database
+      - ./data/logo.jpg:/app/public/logo
 
   mnestix-api:
     image: mnestix/mnestix-api:1.3.2

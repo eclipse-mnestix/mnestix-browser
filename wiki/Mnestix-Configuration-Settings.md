@@ -32,11 +32,11 @@ Mnestix provides the following configuration options. You can adapt the values i
 
 ### How to set a custom logo
 
-There are multiple ways to set a logo, you can either use Option 1 or Option 2:
+There are multiple ways to set a logo. You can choose between either of the following options depending on your preference:
 
 #### Option 1: Mount a logo
 
-First you need to mount your logo to the container, e.g. by adding it to the docker compose file
+First you need to mount your logo to the container by adding it to the docker compose file. 
 
 ```yaml
 environment:
@@ -47,11 +47,10 @@ volumes:
 ```
 
 When using the provided [`compose.yaml` File](https://github.com/eclipse-mnestix/mnestix-browser/blob/main/compose.yml)
-you can just replace the [image in the
-`data` folder](https://github.com/eclipse-mnestix/mnestix-browser/tree/main/docker-compose/data/logo.svg) with your
-preferred logo.
+you can just place your logo in the
+[`data` folder](https://github.com/eclipse-mnestix/mnestix-browser/tree/main/docker-compose/data/).
 
-Remember to set the mime type correctly in order for the browser to parse your image correctly. 
+You also have to set the mime type correctly in order for the browser to parse your image correctly.
 E.g. for an SVG image, set the mime type to `image/svg+xml`:
 
 ```yaml

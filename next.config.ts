@@ -22,18 +22,6 @@ const nextConfig: NextConfig = {
     typescript: {
         ignoreBuildErrors: !!process.env.NO_TYPECHECK,
     },
-    images: {
-        remotePatterns: [
-            {
-                protocol: 'https',
-                hostname: '**',
-            },
-            {
-                protocol: 'http',
-                hostname: '**',
-            },
-        ],
-    },
     webpack(config: any) {
         // Grab the existing rule that handles SVG imports
         const fileLoaderRule = config.module.rules.find((rule: any) => rule.test?.test?.('.svg'));
