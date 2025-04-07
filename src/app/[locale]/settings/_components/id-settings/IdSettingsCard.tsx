@@ -72,57 +72,55 @@ export function IdSettingsCard() {
     }, [bearerToken]);
 
     const fetchIdSettings = async () => {
-        try {
-            setIsLoading(true);
-            const response = await getIdGenerationSettings();
-            const _settings: IdGenerationSettingFrontend[] = [];
-            response.submodelElements?.forEach((el) => {
-                const element = el as ISubmodelElement;
-                const collection = el as SubmodelElementCollection;
-                const _settingsList = collection.value;
-                const name = el.idShort;
-
-                // IdType (to apply correct validation)
-                const idTypeQualifier = element.qualifiers?.find((q: Qualifier) => {
-                    return q.type === 'SMT/IdType';
-                });
-                const idType = idTypeQualifier?.value;
-
-                const prefix = _settingsList?.find((e) => e.idShort === 'Prefix') as Property;
-                const dynamicPart = _settingsList?.find((e) => e.idShort === 'DynamicPart') as Property;
-
-                const dynamicPartAllowedQualifier = dynamicPart?.qualifiers?.find((q: Qualifier) => {
-                    return q.type === 'SMT/AllowedValue';
-                });
-                const allowedDynamicPartValues = getArrayFromString(dynamicPartAllowedQualifier?.value || '');
-
-                const prefixExampleValueQualifier = prefix?.qualifiers?.find((q: Qualifier) => {
-                    return q.type === 'ExampleValue';
-                });
-                const prefixExampleValue = prefixExampleValueQualifier?.value;
-
-                _settings.push({
-                    name: name || '',
-                    idType,
-                    prefix: {
-                        value: prefix?.value,
-                        exampleValue: prefixExampleValue,
-                    },
-                    dynamicPart: {
-                        value: dynamicPart?.value,
-                        allowedValues: allowedDynamicPartValues,
-                        // (we do not fill example value from api currently)
-                    },
-                });
-            });
-            setSettings(_settings);
-            // set form state
-            reset({ idSettings: _settings });
-        } catch (e) {
-            showError(e);
-        } finally {
-            setIsLoading(false);
+        setIsLoading(true);
+        const response = await getIdGenerationSettings();
+        if (!response.isSuccess) {
+            throw new Error(response.message);
         }
+        const settings: IdGenerationSettingFrontend[] = [];
+        response.result.submodelElements?.forEach((el) => {
+            const element = el as ISubmodelElement;
+            const collection = el as SubmodelElementCollection;
+            const _settingsList = collection.value;
+            const name = el.idShort;
+
+            // IdType (to apply correct validation)
+            const idTypeQualifier = element.qualifiers?.find((q: Qualifier) => {
+                return q.type === 'SMT/IdType';
+            });
+            const idType = idTypeQualifier?.value;
+
+            const prefix = _settingsList?.find((e) => e.idShort === 'Prefix') as Property;
+            const dynamicPart = _settingsList?.find((e) => e.idShort === 'DynamicPart') as Property;
+
+            const dynamicPartAllowedQualifier = dynamicPart?.qualifiers?.find((q: Qualifier) => {
+                return q.type === 'SMT/AllowedValue';
+            });
+            const allowedDynamicPartValues = getArrayFromString(dynamicPartAllowedQualifier?.value || '');
+
+            const prefixExampleValueQualifier = prefix?.qualifiers?.find((q: Qualifier) => {
+                return q.type === 'ExampleValue';
+            });
+            const prefixExampleValue = prefixExampleValueQualifier?.value;
+
+            settings.push({
+                name: name || '',
+                idType,
+                prefix: {
+                    value: prefix?.value,
+                    exampleValue: prefixExampleValue,
+                },
+                dynamicPart: {
+                    value: dynamicPart?.value,
+                    allowedValues: allowedDynamicPartValues,
+                    // (we do not fill example value from api currently)
+                },
+            });
+        });
+        setSettings(settings);
+        // set form state
+        reset({ idSettings: settings });
+        setIsLoading(false);
     };
 
     async function saveIdSettings(data: IdSettingsFormData) {

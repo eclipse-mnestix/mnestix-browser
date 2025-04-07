@@ -1,9 +1,8 @@
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 
 export interface IConfigurationShellApi {
-    getIdGenerationSettings(): Promise<Submodel>;
-
-    processGetIdGenerationSettings(response: Response): Promise<Submodel>;
+    getIdGenerationSettings(): Promise<ApiResponseWrapper<Submodel>>;
 
     putSingleIdGenerationSetting(
         idShort: string,
@@ -13,7 +12,5 @@ export interface IConfigurationShellApi {
         },
     ): Promise<void>;
 
-    putSingleSettingValue(path: string, value: string, settingsType: string): Promise<Response>;
-
-    processPutSingleSettingValue(response: Response): Promise<Response>;
+    putSingleSettingValue(path: string, value: string, settingsType: string): Promise<ApiResponseWrapper<Response>>;
 }

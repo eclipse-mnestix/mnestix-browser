@@ -1,17 +1,18 @@
 'use server';
 
 import { ConfigurationShellApi } from 'lib/api/configuration-shell-api/configurationShellApi';
-import { mnestixFetchLegacy } from 'lib/api/infrastructure';
+import { mnestixFetch } from 'lib/api/infrastructure';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { envs } from 'lib/env/MnestixEnv';
+import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 
 const configurationShellApi = ConfigurationShellApi.create(
     envs.MNESTIX_BACKEND_API_URL,
     envs.AUTHENTICATION_FEATURE_FLAG,
-    mnestixFetchLegacy(),
+    mnestixFetch(),
 );
 
-export async function getIdGenerationSettings(): Promise<Submodel> {
+export async function getIdGenerationSettings(): Promise<ApiResponseWrapper<Submodel>> {
     return configurationShellApi.getIdGenerationSettings();
 }
 
