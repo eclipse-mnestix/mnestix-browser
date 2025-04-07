@@ -3,8 +3,8 @@ import { Box, Button, Checkbox, FormControlLabel, IconButton, TextField, Typogra
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { Control, Controller, useFieldArray, UseFormGetValues, UseFormSetValue } from 'react-hook-form';
-import { RoleFormModel } from 'app/[locale]/settings/_components/role-settings/RoleDialog';
 import { useTranslations } from 'next-intl';
+import { RoleFormModel } from 'app/[locale]/settings/_components/role-settings/RoleForm';
 
 type WildcardOrStringArrayInputProps = {
     type: string;
@@ -18,8 +18,9 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
     const t = useTranslations('pages.settings');
     const control = props.control;
     const checkIfWildcard = () => {
-        const value = props.getValues(`targetInformation.${props.type}.${props.rule}` as keyof typeof props.getValues);
-        // @ts-expect-error id exists
+        const value = props.getValues(
+            `targetInformation.${props.type}.${props.rule}` as 'targetInformation.aas.aasIds',
+        );
         return value[0].id === '*';
     };
     const [isWildcard, setIsWildcard] = useState(checkIfWildcard());
