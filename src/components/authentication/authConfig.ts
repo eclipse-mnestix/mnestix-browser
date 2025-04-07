@@ -60,17 +60,15 @@ export const authOptions: AuthOptions = {
                 token.refresh_token = account.refresh_token;
 
                 // The roles are stored inside the id_token
-                if (account.id_token) {
-                    const decodedToken = jwt.decode(account.id_token);
+                if (account.access_token) {
+                    const decodedToken = jwt.decode(account.access_token);
                     if (decodedToken) {
-                        if (account.provider === 'azure-ad' && account.access_token) {
-                            // Entra ID stores the username only in the access_token
-                            const decodedAccessToken = jwt.decode(account.access_token);
+                        if (account.provider === 'azure-ad') {
                             // @ts-expect-error name exits
-                            userName = decodedAccessToken.name;
+                            userName = decodedToken.name;
                         }
-                        // @ts-expect-error role exits
-                        roles = decodedToken.roles;
+                        // @ts-expect-error resource_access exits
+                        roles = decodedToken.resource_access[envs.KEYCLOAK_CLIENT_ID ?? '']?.roles;
                     }
                 }
 
