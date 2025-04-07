@@ -40,17 +40,17 @@ export const DiscoveryListView = () => {
     const encodedAssetId = searchParams.get('assetId');
     const assetId = encodedAssetId ? decodeURI(encodedAssetId) : undefined;
 
-    const t = useTranslations('discoveryList');
+    const t = useTranslations('pages.discoveryList');
 
     async function loadContent(assetId: string) {
         const response = await performDiscoveryAasSearch(assetId);
 
         if (!response.isSuccess) {
-            throw new LocalizedError('discoveryList.errors.searchFailed');
+            throw new LocalizedError('pages.discoveryList.errors.searchFailed');
         }
 
         if (response.result.length === 0) {
-            throw new LocalizedError('discoveryList.errors.noAasFound');
+            throw new LocalizedError('pages.discoveryList.errors.noAasFound');
         }
 
         const entryList: AasListEntry[] = [];
@@ -66,7 +66,7 @@ export const DiscoveryListView = () => {
         );
 
         if (entryList.length === 0) {
-            throw new LocalizedError('discoveryList.errors.noAasFound');
+            throw new LocalizedError('pages.discoveryList.errors.noAasFound');
         }
 
         return entryList;

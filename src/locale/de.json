@@ -175,17 +175,25 @@
       "assetIdHeading": "Asset ID",
       "compare": "Vergleichen",
       "header": "AAS Liste",
+      "listHeader": {
+        "aasEndpoint": "AAS URL",
+        "aasId": "AAS ID",
+        "assetId": "Asset ID",
+        "discoveryUrl": "Discovery Url",
+        "picture": "Bild",
+        "registryUrl": "Registry Url",
+        "repositoryUrl": "Repository Url",
+        "viewAASButton": "AAS anzeigen"
+      },
       "manufacturerHeading": "Hersteller Name",
       "maxElementsWarning": "Maximal 3 Elemente selektierbar",
       "page": "Seite",
-      "picture": "Bild",
       "productClassHeading": "Produktklasse",
       "productDesignationHeading": "Hersteller Produktbezeichnung",
       "repositoryDropdown": "AAS Repository",
       "selectRepository": "Bitte wählen Sie ein Repository aus",
       "subHeader": "Hier finden Sie alle AAS aus Ihrem Repository. Sie können ein AAS-Repository auswählen, um zwischen den Datenquellen zu wechseln.",
-      "titleComparisonAddButton": "Füge VWS zum Vergleich hinzu",
-      "titleViewAASButton": "VWS anzeigen"
+      "titleComparisonAddButton": "Füge VWS zum Vergleich hinzu"
     },
     "aasViewer": {
       "asset": "Asset",
@@ -226,12 +234,21 @@
       "welcomeText": "Willkommen bei Mnestix"
     },
     "discoveryList": {
-      "aasIdHeading": "AAS ID",
-      "header": "Verwandte AAS für ID",
-      "picture": "Bild",
-      "repositoryUrl": "Repository Url",
-      "subtitle": "Hier finden Sie alle zugehörigen AAS für die angegebene ID.",
-      "titleViewAASButton": "VWS anzeigen"
+      "buttonTooltip": "Zur AAS wechseln",
+      "errors": {
+        "noAasFound": "Keine AAS für die angegebene ID gefunden",
+        "searchFailed": "Suche fehlgeschlagen"
+      },
+      "subtitle": "Hier finden Sie alle AAS, die mit der angegebenen ID verknüpft sind.",
+      "title": "AAS mit ID"
+    },
+    "registryList": {
+      "errors": {
+        "noAasFound": "Keine AAS für diese ID gefunden",
+        "searchFailed": "Suche fehlgeschlagen"
+      },
+      "subtitle": "Hier finden sich alle AAS mit der folgenden AAS ID",
+      "title": "AAS mit AAS ID"
     },
     "settings": {
       "connections": {

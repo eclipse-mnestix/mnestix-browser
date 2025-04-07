@@ -29,18 +29,18 @@ export const RegistryListView = () => {
     const encodedAasId = searchParams.get('aasId');
     const aasId = encodedAasId ? decodeURI(encodedAasId) : undefined;
 
-    const t = useTranslations('registryList');
+    const t = useTranslations('pages.registryList');
     const { showError } = useShowError();
 
     async function loadContent(aasId: string) {
         const response = await performSearchAasFromAllRepositories(encodeBase64(aasId));
 
         if (!response.isSuccess) {
-            throw new LocalizedError('registryList.errors.searchFailed');
+            throw new LocalizedError('pages.registryList.errors.searchFailed');
         }
 
         if (response.result.length === 0) {
-            throw new LocalizedError('registryList.errors.noAasFound');
+            throw new LocalizedError('pages.registryList.errors.noAasFound');
         }
 
         const entryList: AasListEntry[] = response.result.map((aasSearchResult) => {

@@ -23,7 +23,7 @@ export const GenericAasListTableRow = ({ aasListEntry, ...config }: GenericAasLi
     const [, setAasOriginUrl] = useAasOriginSourceState();
     const navigate = useRouter();
 
-    const t = useTranslations('aas-list');
+    const t = useTranslations('pages.aasList');
 
     const navigateToAas = (aasId: string, repoUrl?: string) => {
         setAas(null);

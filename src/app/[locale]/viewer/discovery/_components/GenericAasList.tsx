@@ -15,7 +15,7 @@ const tableHeaderText = {
 };
 
 export default function GenericAasList(props: AasListProps) {
-    const t = useTranslations('aas-list.listHeader');
+    const t = useTranslations('pages.aasList.listHeader');
 
     return (
         <>
