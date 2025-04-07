@@ -37,7 +37,7 @@ services:
       - mnestix-network
     volumes:
       - mnestix-database:/app/prisma/database
-      - ./data/logo.jpg:/app/public/logo
+      - ./docker-compose/data/logo.svg:/app/public/logo
 
   mnestix-api:
     image: mnestix/mnestix-api:1.3.2
