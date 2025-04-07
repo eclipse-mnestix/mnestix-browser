@@ -1,4 +1,4 @@
-﻿import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+﻿import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { GenericAasListEntry } from 'app/[locale]/viewer/discovery/_components/GenericAasListEntry';
 import { AasListConfig, AasListEntry } from 'lib/types/AasListEntry';
 import { useTranslations } from 'next-intl';
@@ -29,81 +29,33 @@ export default function GenericAasList({ data, ...config }: AasListProps) {
                                 </TableCell>
                             )}
                             {config.showAasId && (
-                                <TableCell>
-                                    <Typography
-                                        variant="h5"
-                                        color="secondary"
-                                        letterSpacing={0.16}
-                                        fontWeight={700}
-                                        data-testid="list-header-aasId"
-                                    >
-                                        {t('aasId')}
-                                    </Typography>
+                                <TableCell sx={tableHeaderText} data-testid="list-header-aasId">
+                                    {t('aasId')}
                                 </TableCell>
                             )}
                             {config.showAssetId && (
-                                <TableCell>
-                                    <Typography
-                                        variant="h5"
-                                        color="secondary"
-                                        letterSpacing={0.16}
-                                        fontWeight={700}
-                                        data-testid="list-header-assetId"
-                                    >
-                                        {t('assetId')}
-                                    </Typography>
+                                <TableCell sx={tableHeaderText} data-testid="list-header-assetId">
+                                    {t('assetId')}
                                 </TableCell>
                             )}
                             {config.showAasEndpoint && (
-                                <TableCell>
-                                    <Typography
-                                        variant="h5"
-                                        color="secondary"
-                                        letterSpacing={0.16}
-                                        fontWeight={700}
-                                        data-testid="list-header-aasEndpoint"
-                                    >
-                                        {t('aasEndpoint')}
-                                    </Typography>
+                                <TableCell sx={tableHeaderText} data-testid="list-header-aasEndpoint">
+                                    {t('aasEndpoint')}
                                 </TableCell>
                             )}
                             {config.showRepositoryUrl && (
-                                <TableCell>
-                                    <Typography
-                                        variant="h5"
-                                        color="secondary"
-                                        letterSpacing={0.16}
-                                        fontWeight={700}
-                                        data-testid="list-header-repositoryUrl"
-                                    >
-                                        {t('repositoryUrl')}
-                                    </Typography>
+                                <TableCell sx={tableHeaderText} data-testid="list-header-repositoryUrl">
+                                    {t('repositoryUrl')}
                                 </TableCell>
                             )}
                             {config.showDiscoveryUrl && (
-                                <TableCell>
-                                    <Typography
-                                        variant="h5"
-                                        color="secondary"
-                                        letterSpacing={0.16}
-                                        fontWeight={700}
-                                        data-testid="list-header-discoveryUrl"
-                                    >
-                                        {t('discoveryUrl')}
-                                    </Typography>
+                                <TableCell sx={tableHeaderText} data-testid="list-header-discoveryUrl">
+                                    {t('discoveryUrl')}
                                 </TableCell>
                             )}
                             {config.showRegistryUrl && (
-                                <TableCell>
-                                    <Typography
-                                        variant="h5"
-                                        color="secondary"
-                                        letterSpacing={0.16}
-                                        fontWeight={700}
-                                        data-testid="list-header-registryUrl"
-                                    >
-                                        {t('registryUrl')}
-                                    </Typography>
+                                <TableCell sx={tableHeaderText} data-testid="list-header-registryUrl">
+                                    {t('registryUrl')}
                                 </TableCell>
                             )}
                         </TableRow>

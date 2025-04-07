@@ -171,6 +171,7 @@
   },
   "pages": {
     "aasList": {
+      "buttonTooltip": "Zur AAS",
       "compare": "Vergleichen",
       "header": "AAS Liste",
       "listHeader": {
