@@ -260,6 +260,7 @@
       },
       "header": "Settings",
       "idStructure": "ID structure",
+      "idStructureError": "Error while saving '{name}' ({reason}).",
       "idStructureExplanation": "Define, how your IDs are represented. This is a standard setting that can be adjusted for individual imports.",
       "roles": {
         "buttons": {

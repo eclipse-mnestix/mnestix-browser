@@ -20,6 +20,7 @@ import { SettingsCardHeader } from 'app/[locale]/settings/_components/SettingsCa
 import { getIdGenerationSettings, putSingleIdGenerationSetting } from 'lib/services/configurationApiActions';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useTranslations } from 'next-intl';
+import { LocalizedError } from 'lib/util/LocalizedError';
 
 const StyledDocumentationButton = styled(Box)(({ theme }) => ({
     display: 'flex',
@@ -128,14 +129,19 @@ export function IdSettingsCard() {
     async function saveIdSettings(data: IdSettingsFormData) {
         try {
             setIsLoading(true);
-            const updatePromises = data.idSettings.map(async(setting) => {
+            const updatePromises = data.idSettings.map(async (setting) => {
                 if (setting.prefix.value && setting.dynamicPart.value) {
                     const response = await putSingleIdGenerationSetting(setting.name, {
                         prefix: setting.prefix.value,
                         dynamicPart: setting.dynamicPart.value,
                     });
                     if (!response.isSuccess) {
-                        return Promise.reject(new Error(`Saving error for ${setting.name}: "${response.message}"`));
+                        return Promise.reject(
+                            new LocalizedError('pages.settings.idStructureError', {
+                                name: setting.name,
+                                error: response.message,
+                            }),
+                        );
                     }
                 }
                 return Promise.resolve();
@@ -200,9 +206,7 @@ export function IdSettingsCard() {
             <Box sx={{ display: 'flex' }}>
                 <StyledDocumentationButton onClick={() => setDocumentationModalOpen(true)}>
                     <InfoOutlined sx={{ mr: 1 }} />
-                    <Typography>
-                        {t('pages.assetIdDocumentation.title')}
-                    </Typography>
+                    <Typography>{t('pages.assetIdDocumentation.title')}</Typography>
                 </StyledDocumentationButton>
             </Box>
             <AssetIdRedirectDocumentationDialog
