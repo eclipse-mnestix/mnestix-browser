@@ -10,21 +10,21 @@ import { deleteAndCreateRbacRule } from 'lib/services/rbac-service/RbacActions';
 import { mapFormModelToBaSyxRbacRule } from 'app/[locale]/settings/_components/role-settings/FormMappingHelper';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
-import { RoleForm, RoleFormModel } from 'app/[locale]/settings/_components/role-settings/RoleForm';
+import { RuleForm, RuleFormModel } from 'app/[locale]/settings/_components/role-settings/RuleForm';
 
-type RoleDialogProps = {
+type RuleDialogProps = {
     readonly onClose: (reload: boolean) => void;
     readonly open: boolean;
     readonly rule: BaSyxRbacRule;
 };
 
-export const RoleDialog = (props: RoleDialogProps) => {
-    const t = useTranslations('pages.settings.roles');
+export const RuleDialog = (props: RuleDialogProps) => {
+    const t = useTranslations('pages.settings.rules');
     const [isEditMode, setIsEditMode] = useState(false);
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
 
-    async function onSubmit(data: RoleFormModel) {
+    async function onSubmit(data: RuleFormModel) {
         const mappedDto = mapFormModelToBaSyxRbacRule(data, props.rule);
         const response = await deleteAndCreateRbacRule(props.rule.idShort, mappedDto);
         if (response.isSuccess) {
@@ -47,7 +47,12 @@ export const RoleDialog = (props: RoleDialogProps) => {
         <Dialog open={props.open} onClose={() => onCloseDialog(false)} maxWidth="md" fullWidth={true}>
             <DialogCloseButton handleClose={() => onCloseDialog(false)} />
             {isEditMode ? (
-                <RoleForm rule={props.rule} onSubmit={onSubmit} onCancel={() => setIsEditMode(false)} />
+                <>
+                    <Typography variant="h2" color="primary" sx={{ mt: 4, ml: '40px' }}>
+                        {t('editTitle')}
+                    </Typography>
+                    <RuleForm rule={props.rule} onSubmit={onSubmit} onCancel={() => setIsEditMode(false)} />
+                </>
             ) : (
                 <>
                     <DialogContent style={{ padding: '40px' }} data-testid="role-settings-dialog">

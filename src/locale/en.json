@@ -262,17 +262,21 @@
       "idStructure": "ID structure",
       "idStructureError": "Error while saving '{name}' ({reason}).",
       "idStructureExplanation": "Define, how your IDs are represented. This is a standard setting that can be adjusted for individual imports.",
-      "roles": {
+      "rules": {
         "buttons": {
           "add": "Add",
           "back": "Back",
           "cancel": "Cancel",
           "edit": "Edit",
-          "save": "Save"
+          "save": "Save",
+          "create": "Create Rule"
         },
-        "saveSuccess": "Role saved successfully.",
-        "subHeader": "Add, remove, or modify settings and configurations to various features within your AAS environment.",
+        "roleRequired": "Role is required",
+        "saveSuccess": "Rule saved successfully.",
         "subtitle": "Manage roles and permissions.",
+        "createTitle": "Create Rule",
+        "editTitle": "Edit Rule",
+        "wildcardLabel": "Allow all",
         "tableHeader": {
           "aasIds": "AAS IDs",
           "action": "Action",
@@ -281,7 +285,7 @@
           "submodelIds": "Submodel IDs",
           "type": "Type"
         },
-        "title": "Role Management"
+        "title": "Rule Management"
       },
       "subHeader": "Add, remove, or modify settings and configurations to various features within your AAS."
     },
