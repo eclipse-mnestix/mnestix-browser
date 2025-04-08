@@ -1,5 +1,5 @@
 ﻿import { Box } from '@mui/material';
-import { RegistryListView } from './_components/RegistryListView';
+import { RegistryListView } from 'app/[locale]/viewer/registry/_components/RegistryListView';
 
 export default async function page() {
     return (

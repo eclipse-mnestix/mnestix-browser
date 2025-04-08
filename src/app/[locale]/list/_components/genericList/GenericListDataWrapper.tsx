@@ -1,6 +1,6 @@
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { ReactNode, useState } from 'react';
-import GenericAasList from 'app/[locale]/viewer/discovery/_components/GenericAasList';
+import GenericAasList from 'app/[locale]/list/_components/genericList/GenericAasList';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { AasListConfig, AasListEntry } from 'lib/types/AasListEntry';
 import { useShowError } from 'lib/hooks/UseShowError';
