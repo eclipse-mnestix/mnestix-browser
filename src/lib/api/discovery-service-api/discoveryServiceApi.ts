@@ -102,7 +102,7 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
                 response,
                 { message: response.message },
             );
-            return wrapErrorCode(response.errorCode, response.message, response.httpStatus, response.httpText);
+            return wrapErrorCode(response.errorCode, response.message, response.httpStatus);
         }
 
         if (response.result.result.length === 0) {
@@ -120,7 +120,6 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
                 ApiResultStatus.NOT_FOUND,
                 'No AAS found for assetIds',
                 response.httpStatus,
-                response.httpText,
             );
         }
         logResponseDebug(
