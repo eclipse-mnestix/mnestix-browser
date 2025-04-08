@@ -1,6 +1,7 @@
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { IConfigurationShellApi } from 'lib/api/configuration-shell-api/configurationShellApiInterface';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 export class ConfigurationShellApi implements IConfigurationShellApi {
     private constructor(
@@ -47,10 +48,14 @@ export class ConfigurationShellApi implements IConfigurationShellApi {
             dynamicPart: string;
         },
     ) : Promise<ApiResponseWrapper<void>> {
+        // DANGER DANGER
+        // THIS IS JUST A TEMPORARY FIX TILL BASYX FIXES THE PATCH CALL TO NOT GIVE 404 WHEN THERE IS NO CHANGE
+        // BUG IS IN BASYX 2.0.0-milestone5
+        // DANGER DANGER
         let response = await this.putSingleSettingValue(`${idShort}.Prefix`, values.prefix, 'idGeneration');
-        if (!response.isSuccess) { return wrapErrorCode(response.errorCode, response.message); }
+        if (!response.isSuccess && response.errorCode != ApiResultStatus.NOT_FOUND) { return wrapErrorCode(response.errorCode, response.message); }
         response = await this.putSingleSettingValue(`${idShort}.DynamicPart`, values.dynamicPart, 'idGeneration');
-        if (!response.isSuccess) { return wrapErrorCode(response.errorCode, response.message); }
+        if (!response.isSuccess && response.errorCode != ApiResultStatus.NOT_FOUND) { return wrapErrorCode(response.errorCode, response.message); }
         
         return wrapSuccess(response.result);
     }
