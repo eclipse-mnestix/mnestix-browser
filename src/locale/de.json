@@ -260,7 +260,7 @@
       },
       "header": "Einstellungen",
       "idStructure": "ID Struktur",
-      "idStructureError": "Fehler beim speichern von '{name}' ({reason}).",
+      "idStructureError": "Fehler beim speichern von \"{name}\" ({reason}).",
       "idStructureExplanation": "Definieren Sie, wie Ihre IDs aussehen sollen. Dies ist eine Basis-Einstellung, die für individuelle Importe angepasst werden kann.",
       "roles": {
         "buttons": {

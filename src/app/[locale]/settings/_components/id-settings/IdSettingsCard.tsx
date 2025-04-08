@@ -139,7 +139,7 @@ export function IdSettingsCard() {
                         return Promise.reject(
                             new LocalizedError('pages.settings.idStructureError', {
                                 name: setting.name,
-                                error: response.message,
+                                reason: response.message,
                             }),
                         );
                     }
