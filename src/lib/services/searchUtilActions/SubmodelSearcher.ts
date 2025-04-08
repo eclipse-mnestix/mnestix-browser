@@ -6,20 +6,20 @@ import { SubmodelRegistryServiceApi } from 'lib/api/submodel-registry-service/su
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { RepositorySearchService } from 'lib/services/repository-access/RepositorySearchService';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
-import Logger, { logResponseInfo } from 'lib/util/Logger';
+import logger, { logResponseDebug } from 'lib/util/Logger';
 import { envs } from 'lib/env/MnestixEnv';
 
 export class SubmodelSearcher {
     private constructor(
         protected readonly getSubmodelRegistryClient: (basePath: string) => ISubmodelRegistryServiceApi,
         protected readonly multipleDataSource: RepositorySearchService,
-        private readonly logger?: typeof Logger,
+        private readonly log: typeof logger = logger,
     ) {}
 
-    static create(logger?: typeof Logger): SubmodelSearcher {
+    static create(log?: typeof logger): SubmodelSearcher {
         const getRegistryClient = (baseUrl: string) => SubmodelRegistryServiceApi.create(baseUrl, mnestixFetch());
-        const multipleDataSource = RepositorySearchService.create(logger);
-        const submodelLogger = logger?.child({ Service: SubmodelSearcher.name });
+        const multipleDataSource = RepositorySearchService.create(log);
+        const submodelLogger = log?.child({ Service: SubmodelSearcher.name });
         return new SubmodelSearcher(getRegistryClient, multipleDataSource, submodelLogger);
     }
 
@@ -58,8 +58,8 @@ export class SubmodelSearcher {
         }
         const response = await this.getSubmodelRegistryClient(defaultUrl).getSubmodelDescriptorById(submodelId);
         if (response.isSuccess) {
-            logResponseInfo(
-                this.logger ?? Logger,
+            logResponseDebug(
+                this.log,
                 this.getSubmodelDescriptorById.name,
                 'Querying Submodel Descriptor from registry successful',
                 response,
@@ -67,16 +67,16 @@ export class SubmodelSearcher {
             return response;
         } else {
             if (response.errorCode === ApiResultStatus.UNKNOWN_ERROR) {
-                logResponseInfo(
-                    this.logger ?? Logger,
+                logResponseDebug(
+                    this.log,
                     this.getSubmodelDescriptorById.name,
                     'Querying Submodel Descriptor from registry unsuccessful',
                     response,
                 );
             }
             if (response.errorCode === ApiResultStatus.NOT_FOUND) {
-                logResponseInfo(
-                    this.logger ?? Logger,
+                logResponseDebug(
+                    this.log,
                     this.getSubmodelDescriptorById.name,
                     'Querying Submodel Descriptor from registry unsuccessful',
                     response,
@@ -89,8 +89,8 @@ export class SubmodelSearcher {
     async getSubmodelFromAllRepos(submodelId: string): Promise<ApiResponseWrapper<Submodel>> {
         const response = await this.multipleDataSource.getFirstSubmodelFromAllRepos(submodelId);
         if (response.isSuccess) {
-            logResponseInfo(
-                this.logger ?? Logger,
+            logResponseDebug(
+                this.log,
                 this.getSubmodelFromAllRepos.name,
                 'Querying Submodel from repositories successful',
                 response,
@@ -98,8 +98,8 @@ export class SubmodelSearcher {
             return wrapSuccess(response.result.searchResult);
         }
         if (response.errorCode === ApiResultStatus.NOT_FOUND) {
-            logResponseInfo(
-                this.logger ?? Logger,
+            logResponseDebug(
+                this.log,
                 this.getSubmodelFromAllRepos.name,
                 'Querying Submodel from repositories unsuccessful',
                 response,
@@ -111,8 +111,8 @@ export class SubmodelSearcher {
     async getSubmodelFromEndpoint(endpoint: string): Promise<ApiResponseWrapper<Submodel>> {
         const response = await this.getSubmodelRegistryClient('').getSubmodelFromEndpoint(endpoint);
         if (response.isSuccess) {
-            logResponseInfo(
-                this.logger ?? Logger,
+            logResponseDebug(
+                this.log,
                 this.getSubmodelFromEndpoint.name,
                 'Querying Submodel from registry endpoint successful',
                 response,
@@ -120,8 +120,8 @@ export class SubmodelSearcher {
             );
             return response;
         }
-        logResponseInfo(
-            this.logger ?? Logger,
+        logResponseDebug(
+            this.log,
             this.getSubmodelFromEndpoint.name,
             'Querying Submodel from registry endpoint unsuccessful',
             response,

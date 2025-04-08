@@ -3,7 +3,7 @@
 import { ApiResponseWrapper, wrapErrorCode, wrapResponse } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { headers } from 'next/headers';
-import { createLogger, getCorrelationId } from 'lib/util/Logger';
+import { createRequestLogger, getCorrelationId } from 'lib/util/Logger';
 
 /**
  * @deprecated use performServerFetch() instead
@@ -22,8 +22,15 @@ export async function performServerFetch<T>(
     input: string | Request | URL,
     init?: RequestInit | undefined,
 ): Promise<ApiResponseWrapper<T>> {
-    const correlationId = getCorrelationId(await headers());
-    const logger = createLogger(correlationId);
+    let correlationId: string | undefined;
+
+    try {
+        correlationId = getCorrelationId(await headers());
+    } catch {
+        correlationId = 'fallback-correlation-id';
+    }
+
+    const logger = createRequestLogger(correlationId);
     try {
         const response = await fetch(input, init);
         logger.debug(

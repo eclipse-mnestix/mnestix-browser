@@ -7,17 +7,17 @@ import { Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/type
 import path from 'node:path';
 import ServiceReachable from 'test-utils/TestUtils';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
-import Logger, { logResponseInfo } from 'lib/util/Logger';
+import logger, { logResponseDebug } from 'lib/util/Logger';
 
 export class SubmodelRegistryServiceApi implements ISubmodelRegistryServiceApi {
     constructor(
         private baseUrl: string,
         private http: FetchAPI,
-        private readonly logger?: typeof Logger,
+        private readonly log: typeof logger = logger,
     ) {}
 
-    static create(baseUrl: string, mnestixFetch: FetchAPI, logger?: typeof Logger) {
-        const registryLogger = logger?.child({ service: SubmodelRegistryServiceApi.name });
+    static create(baseUrl: string, mnestixFetch: FetchAPI, log?: typeof logger) {
+        const registryLogger = log?.child({ service: SubmodelRegistryServiceApi.name });
         return new SubmodelRegistryServiceApi(baseUrl, mnestixFetch, registryLogger);
     }
 
@@ -48,16 +48,16 @@ export class SubmodelRegistryServiceApi implements ISubmodelRegistryServiceApi {
         });
 
         if (!response.isSuccess) {
-            logResponseInfo(
-                this.logger ?? Logger,
+            logResponseDebug(
+                this.log,
                 this.getSubmodelDescriptorById.name,
                 'Failed to get submodel descriptor by id',
                 response,
             );
             return response;
         }
-        logResponseInfo(
-            this.logger ?? Logger,
+        logResponseDebug(
+            this.log,
             this.getSubmodelDescriptorById.name,
             'Successfully got submodel descriptor by id',
             response,
@@ -106,16 +106,16 @@ export class SubmodelRegistryServiceApi implements ISubmodelRegistryServiceApi {
             headers,
         });
         if (!response.isSuccess) {
-            logResponseInfo(
-                this.logger ?? Logger,
+            logResponseDebug(
+                this.log,
                 this.getAllSubmodelDescriptors.name,
                 'Failed to get submodel descriptors by id',
                 response,
             );
             return response;
         }
-        logResponseInfo(
-            this.logger ?? Logger,
+        logResponseDebug(
+            this.log,
             this.getAllSubmodelDescriptors.name,
             'Successfully got submodel descriptors by id',
             response,
@@ -153,16 +153,16 @@ export class SubmodelRegistryServiceApi implements ISubmodelRegistryServiceApi {
             method: 'GET',
         });
         if (!response.isSuccess) {
-            logResponseInfo(
-                this.logger ?? Logger,
+            logResponseDebug(
+                this.log,
                 this.getSubmodelFromEndpoint.name,
                 'Failed to get submodel from endpoint',
                 response,
             );
             return response;
         }
-        logResponseInfo(
-            this.logger ?? Logger,
+        logResponseDebug(
+            this.log,
             this.getSubmodelFromEndpoint.name,
             'Successfully got submodel from endpoint',
             response,

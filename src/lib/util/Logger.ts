@@ -20,7 +20,7 @@ const baseLogger = isProduction
           stream,
       );
 
-export const createLogger = (correlationId: string) => baseLogger.child({ Correlation_ID: correlationId });
+export const createRequestLogger = (correlationId: string) => baseLogger.child({ Correlation_ID: correlationId });
 
 export default baseLogger;
 
@@ -58,14 +58,14 @@ export const logInfo = (logger: typeof baseLogger, methodName: string, message: 
  * @param response - An API response wrapper containing HTTP status and text.
  * @param optional - Additional optional metadata to include in the log.
  */
-export const logResponseInfo = <T>(
+export const logResponseDebug = <T>(
     logger: typeof baseLogger,
     methodName: string,
     message: string,
     response: ApiResponseWrapper<T>,
     optional?: object,
 ): void =>
-    logger.info(
+    logger.debug(
         {
             Method: methodName,
             Http_Status: `${response?.httpStatus} (${response?.httpText})`,

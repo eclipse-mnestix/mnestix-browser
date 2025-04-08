@@ -5,7 +5,7 @@ import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResp
 import { SpecificAssetId } from '@aas-core-works/aas-core3.0-typescript/types';
 import * as path from 'node:path';
 import ServiceReachable from 'test-utils/TestUtils';
-import Logger, { logResponseInfo } from 'lib/util/Logger';
+import logger, { logResponseDebug } from 'lib/util/Logger';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 type DiscoveryEntryResponse = {
@@ -19,7 +19,7 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
         protected http: {
             fetch<T>(url: RequestInfo, init?: RequestInit): Promise<ApiResponseWrapper<T>>;
         },
-        private readonly logger?: typeof Logger,
+        private readonly log: typeof logger = logger,
     ) {}
 
     static create(
@@ -27,10 +27,11 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
         http: {
             fetch<T>(url: RequestInfo, init?: RequestInit): Promise<ApiResponseWrapper<T>>;
         },
-        logger?: typeof Logger,
+        log?: typeof logger,
     ): DiscoveryServiceApi {
-        const discoveryLogger = logger?.child({ Service: DiscoveryServiceApi.name });
-        return new DiscoveryServiceApi(baseUrl, http, discoveryLogger);
+        const discoveryLogger = log?.child({ Service: DiscoveryServiceApi.name });
+
+        return new DiscoveryServiceApi(baseUrl, http, discoveryLogger ?? logger);
     }
 
     static createNull(
@@ -94,8 +95,8 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
         });
 
         if (!response.isSuccess) {
-            logResponseInfo(
-                this.logger ?? Logger,
+            logResponseDebug(
+                this.log,
                 this.getAllAssetAdministrationShellIdsByAssetLink.name,
                 'AAS discovery search unsuccessful',
                 response,
@@ -105,8 +106,8 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
         }
 
         if (response.result.result.length === 0) {
-            logResponseInfo(
-                this.logger ?? Logger,
+            logResponseDebug(
+                this.log,
                 this.getAllAssetAdministrationShellIdsByAssetLink.name,
                 'Discovery search returned no results',
                 response,
@@ -122,8 +123,8 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
                 response.httpText,
             );
         }
-        logResponseInfo(
-            this.logger ?? Logger,
+        logResponseDebug(
+            this.log,
             this.getAllAssetAdministrationShellIdsByAssetLink.name,
             'Discovery search completed successfully',
             response,

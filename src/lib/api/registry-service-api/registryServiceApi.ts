@@ -9,7 +9,7 @@ import { AssetAdministrationShell } from '@aas-core-works/aas-core3.0-typescript
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import path from 'node:path';
 import ServiceReachable from 'test-utils/TestUtils';
-import Logger, { logResponseInfo } from 'lib/util/Logger';
+import logger, { logResponseDebug } from 'lib/util/Logger';
 
 export class RegistryServiceApi implements IRegistryServiceApi {
     constructor(
@@ -17,7 +17,7 @@ export class RegistryServiceApi implements IRegistryServiceApi {
         protected http: {
             fetch<T>(url: RequestInfo | URL, init?: RequestInit): Promise<ApiResponseWrapper<T>>;
         },
-        private readonly logger?: typeof Logger,
+        private readonly log: typeof logger = logger,
     ) {}
 
     static create(
@@ -25,9 +25,9 @@ export class RegistryServiceApi implements IRegistryServiceApi {
         mnestixFetch: {
             fetch<T>(url: RequestInfo, init?: RequestInit): Promise<ApiResponseWrapper<T>>;
         },
-        logger?: typeof Logger,
+        log?: typeof logger,
     ) {
-        const registryLogger = logger?.child({ Service: RegistryServiceApi.name });
+        const registryLogger = log?.child({ Service: RegistryServiceApi.name });
         return new RegistryServiceApi(baseUrl, mnestixFetch, registryLogger);
     }
 
@@ -62,8 +62,8 @@ export class RegistryServiceApi implements IRegistryServiceApi {
         });
 
         if (!response.isSuccess) {
-            logResponseInfo(
-                this.logger ?? Logger,
+            logResponseDebug(
+                this.log,
                 this.getAssetAdministrationShellDescriptorById.name,
                 'Registry search failed, no matching AAS entry found',
                 response,
@@ -71,8 +71,8 @@ export class RegistryServiceApi implements IRegistryServiceApi {
             );
             return response;
         }
-        logResponseInfo(
-            this.logger ?? Logger,
+        logResponseDebug(
+            this.log,
             this.getAssetAdministrationShellDescriptorById.name,
             'Registry search successful, matching AAS entry found',
             response,
@@ -122,8 +122,8 @@ export class RegistryServiceApi implements IRegistryServiceApi {
     ): Promise<ApiResponseWrapper<AssetAdministrationShell>> {
         const response = await this.http.fetch<AssetAdministrationShell>(endpoint.toString(), { method: 'GET' });
         if (!response.isSuccess) {
-            logResponseInfo(
-                this.logger ?? Logger,
+            logResponseDebug(
+                this.log,
                 this.getAssetAdministrationShellFromEndpoint.name,
                 'Registry search failed, no matching AAS entry found',
                 response,
@@ -131,8 +131,8 @@ export class RegistryServiceApi implements IRegistryServiceApi {
             );
             return response;
         }
-        logResponseInfo(
-            this.logger ?? Logger,
+        logResponseDebug(
+            this.log,
             this.getAssetAdministrationShellFromEndpoint.name,
             'Registry search successful, matching AAS entry found',
             response,

@@ -7798,6 +7798,13 @@ pify@^2.2.0:
   resolved "https://registry.yarnpkg.com/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"
   integrity sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==
 
+pin@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/pin/-/pin-0.3.0.tgz#2e5021c2b6875ca968d64302c37f20bbb7f17c4e"
+  integrity sha512-kYAEBCofvDlN3OkzZSCXrKLUW1W8kXBhhY+nsxtxJroenOtAuXAkfg9rjG0q1SdNksvzPV9Yo6bwo9cQSA8KZw==
+  dependencies:
+    request "2.9.202"
+
 pino-abstract-transport@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/pino-abstract-transport/-/pino-abstract-transport-2.0.0.tgz#de241578406ac7b8a33ce0d77ae6e8a0b3b68a60"
@@ -8340,6 +8347,11 @@ request-progress@^3.0.0:
   integrity sha512-MnWzEHHaxHO2iWiQuHrUPBi/1WeBf5PkxQqNyNvLl9VAYSdXkP8tQ3pBSeCPD+yw0v0Aq1zosWLz0BdeXpWwZg==
   dependencies:
     throttleit "^1.0.0"
+
+request@2.9.202:
+  version "2.9.202"
+  resolved "https://registry.yarnpkg.com/request/-/request-2.9.202.tgz#c61399cdfbbefda5dc48653b0e9bea517d9f8497"
+  integrity sha512-3tc+z/Mcu5Ux4WCZ2dh3F/h7EghvlTQNr0OeplFt09gOCbSZ8MZpHwWIjX/s6I8CsineNvUBGG4/QUNLSC9nKg==
 
 require-and-forget@^1.0.1:
   version "1.0.1"
