@@ -10,7 +10,7 @@ export interface IConfigurationShellApi {
             prefix: string;
             dynamicPart: string;
         },
-    ): Promise<void>;
+    ): Promise<ApiResponseWrapper<void>>;
 
-    putSingleSettingValue(path: string, value: string, settingsType: string): Promise<ApiResponseWrapper<Response>>;
+    putSingleSettingValue(path: string, value: string, settingsType: string): Promise<ApiResponseWrapper<void>>;
 }

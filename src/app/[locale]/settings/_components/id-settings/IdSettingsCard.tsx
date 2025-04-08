@@ -75,7 +75,9 @@ export function IdSettingsCard() {
         setIsLoading(true);
         const response = await getIdGenerationSettings();
         if (!response.isSuccess) {
-            throw new Error(response.message);
+            showError(response);
+            setIsLoading(false);
+            return;
         }
         const settings: IdGenerationSettingFrontend[] = [];
         response.result.submodelElements?.forEach((el) => {
@@ -126,17 +128,24 @@ export function IdSettingsCard() {
     async function saveIdSettings(data: IdSettingsFormData) {
         try {
             setIsLoading(true);
-            for (const setting of data.idSettings) {
+            const updatePromises = data.idSettings.map(async(setting) => {
                 if (setting.prefix.value && setting.dynamicPart.value) {
-                    await putSingleIdGenerationSetting(setting.name, {
+                    const response = await putSingleIdGenerationSetting(setting.name, {
                         prefix: setting.prefix.value,
                         dynamicPart: setting.dynamicPart.value,
                     });
+                    if (!response.isSuccess) {
+                        return Promise.reject(new Error(`Saving error for ${setting.name}: "${response.message}"`));
+                    }
                 }
-            }
+                return Promise.resolve();
+            });
+
+            await Promise.all(updatePromises);
+
             await fetchIdSettings();
             notificationSpawner.spawn({
-                message:  t('common.messages.successfullyUpdated'),
+                message: t('common.messages.successfullyUpdated'),
                 severity: 'success',
             });
             setIsEditMode(false);

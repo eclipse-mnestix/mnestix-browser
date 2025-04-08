@@ -46,12 +46,16 @@ export class ConfigurationShellApi implements IConfigurationShellApi {
             prefix: string;
             dynamicPart: string;
         },
-    ) {
-        await this.putSingleSettingValue(`${idShort}.Prefix`, values.prefix, 'idGeneration');
-        await this.putSingleSettingValue(`${idShort}.DynamicPart`, values.dynamicPart, 'idGeneration');
+    ) : Promise<ApiResponseWrapper<void>> {
+        let response = await this.putSingleSettingValue(`${idShort}.Prefix`, values.prefix, 'idGeneration');
+        if (!response.isSuccess) { return wrapErrorCode(response.errorCode, response.message); }
+        response = await this.putSingleSettingValue(`${idShort}.DynamicPart`, values.dynamicPart, 'idGeneration');
+        if (!response.isSuccess) { return wrapErrorCode(response.errorCode, response.message); }
+        
+        return wrapSuccess(response.result);
     }
 
-    async putSingleSettingValue(path: string, value: string, settingsType: string): Promise<ApiResponseWrapper<Response>> {
+    async putSingleSettingValue(path: string, value: string, settingsType: string): Promise<ApiResponseWrapper<void>> {
         let url = `${this.baseUrl}/configuration/${settingsType}/submodel-elements/${path}/$value`;
         url = url.replace(/[?&]$/, '');
 
@@ -65,7 +69,7 @@ export class ConfigurationShellApi implements IConfigurationShellApi {
             },
         };
 
-        const response = await this.http.fetch<Response>(url, options);
+        const response = await this.http.fetch<void>(url, options);
 
         if (!response.isSuccess) { return wrapErrorCode(response.errorCode, response.message); }
 

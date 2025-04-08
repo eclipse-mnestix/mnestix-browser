@@ -22,6 +22,6 @@ export async function putSingleIdGenerationSetting(
         prefix: string;
         dynamicPart: string;
     },
-): Promise<void> {
+): Promise<ApiResponseWrapper<void>> {
     return configurationShellApi.putSingleIdGenerationSetting(idShort, values);
 }

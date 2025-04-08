@@ -65,6 +65,14 @@ export function useShowError() {
                 return;
             }
 
+            if (e instanceof Error){
+                notificationSpawner.spawn({
+                    message: e.message,
+                    severity: 'error',
+                });
+                return;
+            }
+
             if (isApiResponseWrapperError(e)) {
                 switch (e.errorCode) {
                     case 'UNAUTHORIZED':
