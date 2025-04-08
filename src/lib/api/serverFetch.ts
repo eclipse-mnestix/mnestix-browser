@@ -36,7 +36,8 @@ export async function performServerFetch<T>(
         logger.debug(
             {
                 Request_Url: input,
-                Http_Status: `${response?.status} (${response?.statusText})`,
+                Http_Status: response?.status,
+                Http_Message: response?.statusText
             },
             'Initiating server fetch',
         );

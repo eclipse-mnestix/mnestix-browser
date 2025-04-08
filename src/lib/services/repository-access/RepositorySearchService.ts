@@ -109,7 +109,7 @@ export class RepositorySearchService {
             response,
             { Repository_Endpoint: client.getBaseUrl(), AAS_ID_Base64_Encoded: aasId },
         );
-        return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'AAS not found', response.httpStatus, response.httpText);
+        return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'AAS not found', response.httpStatus);
     }
 
     async getAasFromAllRepos(aasId: string): Promise<ApiResponseWrapper<RepoSearchResult<AssetAdministrationShell>[]>> {
@@ -163,7 +163,6 @@ export class RepositorySearchService {
             ApiResultStatus.NOT_FOUND,
             `Submodel with id '${submodelId}' not found`,
             response.httpStatus,
-            response.httpText,
         );
     }
 
@@ -245,7 +244,6 @@ export class RepositorySearchService {
             ApiResultStatus.NOT_FOUND,
             `Attachment for Submodel with id '${submodelId}' at path '${submodelElementPath}' not found in repository '${client.getBaseUrl()}'`,
             response.httpStatus,
-            response.httpText,
         );
     }
 
@@ -338,7 +336,6 @@ export class RepositorySearchService {
             ApiResultStatus.NOT_FOUND,
             `Submodel references for '${aasId}' not found in default repository`,
             response.httpStatus,
-            response.httpText,
         );
     }
 
@@ -418,7 +415,6 @@ export class RepositorySearchService {
             ApiResultStatus.NOT_FOUND,
             `Thumbnail for '${aasId}' not found in default repository`,
             response.httpStatus,
-            response.httpText,
         );
     }
 
@@ -568,7 +564,6 @@ export class RepositorySearchService {
             ApiResultStatus.NOT_FOUND,
             `AAS '${aasId}' not found in repository '${repoUrl}'`,
             response.httpStatus,
-            response.httpText,
         );
     }
 }

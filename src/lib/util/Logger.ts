@@ -1,7 +1,7 @@
 import pino from 'pino';
 import pretty from 'pino-pretty';
 import { v4 as uuidv4 } from 'uuid';
-import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { ApiResponseWrapper, ApiResponseWrapperError } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -68,7 +68,8 @@ export const logResponseDebug = <T>(
     logger.debug(
         {
             Method: methodName,
-            Http_Status: `${response?.httpStatus} (${response?.httpText})`,
+            Http_Status: response?.httpStatus,
+            Http_Message: response?.httpText ?? (response as ApiResponseWrapperError<T>)?.errorCode,
             ...optional,
         },
         message,

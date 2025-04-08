@@ -17,7 +17,7 @@ export type ApiResponseWrapper<T> = ApiResponseWrapperSuccess<T> | ApiResponseWr
 
 export type ApiResponseWrapperBase = {
     httpStatus?: number;
-    httpText?: string;
+    httpText?: ApiResultStatus;
 };
 
 export type ApiResponseWrapperSuccess<T> = ApiResponseWrapperBase & {
@@ -32,7 +32,7 @@ export type ApiResponseWrapperError<T> = ApiResponseWrapperBase & {
     message: string;
 };
 
-export function wrapSuccess<T>(result: T, httpStatus?: number, httpText?: string): ApiResponseWrapperSuccess<T> {
+export function wrapSuccess<T>(result: T, httpStatus?: number, httpText?: ApiResultStatus): ApiResponseWrapperSuccess<T> {
     return {
         isSuccess: true,
         result: result,
@@ -45,7 +45,6 @@ export function wrapErrorCode<T>(
     error: ApiResultStatus,
     message: string,
     httpStatus?: number,
-    httpText?: string,
     result?: T,
 ): ApiResponseWrapperError<T> {
     return {
@@ -53,7 +52,6 @@ export function wrapErrorCode<T>(
         errorCode: error,
         message: message,
         httpStatus: httpStatus,
-        httpText: httpText,
         result: result,
     };
 }
@@ -69,10 +67,10 @@ export async function wrapResponse<T>(response: Response): Promise<ApiResponseWr
     if (!(response.status >= 200 && response.status < 300)) {
         const status = getStatus(response.status);
         if (response.headers.get('content-length') === '0') {
-            return wrapErrorCode(status, response.statusText, response.status, response.statusText);
+            return wrapErrorCode(status, response.statusText, response.status);
         }
         const result = await response.json().catch((e) => console.warn(e.message));
-        return wrapErrorCode(status, response.statusText, response.status, response.statusText, result);
+        return wrapErrorCode(status, response.statusText, response.status, result);
     }
 
     const contentType = response.headers.get('Content-Type') || '';
@@ -83,11 +81,11 @@ export async function wrapResponse<T>(response: Response): Promise<ApiResponseWr
         }
 
         const result = await response.json().catch((e) => console.warn(e.message));
-        return wrapSuccess(result, response.status, response.statusText);
+        return wrapSuccess(result, response.status, getStatus(response.status));
     }
 
     const fileFromResponse = await response.blob();
-    return wrapSuccess(fileFromResponse as T, response.status, response.statusText);
+    return wrapSuccess(fileFromResponse as T, response.status, getStatus(response.status));
 }
 
 export function mapFileDtoToBlob(fileDto: ApiFileDto): Blob {
