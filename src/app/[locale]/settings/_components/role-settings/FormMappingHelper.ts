@@ -1,9 +1,9 @@
 import { BaSyxRbacRule, rbacRuleTargets, TargetInformation } from 'lib/services/rbac-service/RbacRulesService';
 import {
     ArrayOfIds,
-    RoleFormModel,
+    RuleFormModel,
     TargetInformationFormModel,
-} from 'app/[locale]/settings/_components/role-settings/RoleForm';
+} from 'app/[locale]/settings/_components/role-settings/RuleForm';
 
 // Utility function to map an array of strings to an array of objects with an id property
 const mapArrayToIdObjects = (array: string[]): ArrayOfIds => {
@@ -113,19 +113,20 @@ const mapTargetInformationFormModelToDto = (
     }
 };
 
-export const mapBaSyxRbacRuleToFormModel = (role: BaSyxRbacRule): RoleFormModel => {
+export const mapBaSyxRbacRuleToFormModel = (role: BaSyxRbacRule): RuleFormModel => {
     return {
+        role: role.role,
         type: role.targetInformation['@type'],
         action: role.action,
         targetInformation: mapDtoToTargetInformationFormModel(role.targetInformation),
     };
 };
 
-export const mapFormModelToBaSyxRbacRule = (formModel: RoleFormModel, role: BaSyxRbacRule): BaSyxRbacRule => {
+export const mapFormModelToBaSyxRbacRule = (formModel: RuleFormModel, role: BaSyxRbacRule): BaSyxRbacRule => {
     const targetInformation = mapTargetInformationFormModelToDto(formModel.targetInformation, formModel.type);
     return {
         idShort: role.idShort,
-        role: role.role,
+        role: formModel.role,
         action: formModel.action,
         targetInformation: targetInformation,
     };
