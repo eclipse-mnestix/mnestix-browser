@@ -235,6 +235,7 @@
     "discoveryList": {
       "errors": {
         "noAasFound": "Keine AAS für die angegebene ID gefunden",
+        "noAssetId": "Keine Asset ID angegeben.",
         "searchFailed": "Suche fehlgeschlagen"
       },
       "subtitle": "Hier finden Sie alle AAS, die mit der angegebenen ID verknüpft sind.",
@@ -243,6 +244,7 @@
     "registryList": {
       "errors": {
         "noAasFound": "Keine AAS für diese ID gefunden",
+        "noAasId": "Keine AAS ID angegeben.",
         "searchFailed": "Suche fehlgeschlagen"
       },
       "subtitle": "Hier finden sich alle AAS mit der folgenden AAS ID",

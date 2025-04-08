@@ -1,10 +1,6 @@
 'use client';
 
-import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
-import { useState } from 'react';
-import GenericAasList from 'app/[locale]/viewer/discovery/_components/GenericAasList';
 import { useSearchParams } from 'next/navigation';
-import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import AssetNotFound from 'components/basics/AssetNotFound';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import ListHeader from 'components/basics/ListHeader';
@@ -13,6 +9,7 @@ import { performSearchAasFromAllRepositories } from 'lib/services/repository-acc
 import { useTranslations } from 'next-intl';
 import { LocalizedError } from 'lib/util/LocalizedError';
 import { AasListEntry } from 'lib/types/AasListEntry';
+import { GenericListDataWrapper } from 'app/[locale]/viewer/discovery/_components/GenericListDataWrapper';
 
 async function getRepositoryUrl(aasId: string): Promise<string | undefined> {
     const registrySearchResult = await performRegistryAasSearch(aasId);
@@ -31,18 +28,18 @@ async function getRepositoryUrl(aasId: string): Promise<string | undefined> {
  * The user can then choose which AAS to view based on AasId and repositoryUrl.
  * // TODO MNES-906: show discoveryUrl
  */
-export const DiscoveryListView = () => {
-    const [discoveryListEntries, setDiscoveryListEntries] = useState<AasListEntry[]>([]);
-    const [isLoadingList, setIsLoadingList] = useState(false);
-    const [isError, setIsError] = useState<boolean>(false);
-
+export function DiscoveryListView() {
     const searchParams = useSearchParams();
     const encodedAssetId = searchParams.get('assetId');
     const assetId = encodedAssetId ? decodeURI(encodedAssetId) : undefined;
 
     const t = useTranslations('pages.discoveryList');
 
-    async function loadContent(assetId: string) {
+    async function loadContent() {
+        if (!assetId) {
+            throw new LocalizedError('pages.discoveryList.errors.noAssetId');
+        }
+
         const response = await performDiscoveryAasSearch(assetId);
 
         if (!response.isSuccess) {
@@ -72,25 +69,6 @@ export const DiscoveryListView = () => {
         return entryList;
     }
 
-    useAsyncEffect(async () => {
-        setIsLoadingList(true);
-
-        if (assetId) {
-            try {
-                const newListEntries = await loadContent(assetId);
-                setDiscoveryListEntries(newListEntries);
-            } catch (error) {
-                if (error instanceof LocalizedError) {
-                    console.error(error.message);
-                }
-                console.error('Error while loading content:', error);
-                setIsError(true);
-            }
-        }
-
-        setIsLoadingList(false);
-    }, []);
-
     if (!assetId) {
         return <AssetNotFound />;
     }
@@ -98,12 +76,9 @@ export const DiscoveryListView = () => {
     return (
         <>
             <ListHeader header={t('title')} subHeader={t('subtitle')} optionalID={assetId} />
-            {isLoadingList && <CenteredLoadingSpinner sx={{ mt: 10 }} />}
-            {isError ? (
+            <GenericListDataWrapper loadContent={loadContent}>
                 <AssetNotFound id={assetId} />
-            ) : (
-                <GenericAasList data={discoveryListEntries} showAasId showRepositoryUrl />
-            )}
+            </GenericListDataWrapper>
         </>
     );
-};
+}
