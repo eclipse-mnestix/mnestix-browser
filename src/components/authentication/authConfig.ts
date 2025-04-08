@@ -59,16 +59,19 @@ export const authOptions: AuthOptions = {
                 token.expires_at = account.expires_at;
                 token.refresh_token = account.refresh_token;
 
-                // The roles are stored inside the id_token
+                // The roles are stored inside the access_token
                 if (account.access_token) {
                     const decodedToken = jwt.decode(account.access_token);
                     if (decodedToken) {
                         if (account.provider === 'azure-ad') {
                             // @ts-expect-error name exits
                             userName = decodedToken.name;
+                            // @ts-expect-error role exits
+                            roles = decodedToken.roles;
+                        } else {
+                            // @ts-expect-error resource_access exits
+                            roles = decodedToken.resource_access[envs.KEYCLOAK_CLIENT_ID ?? '']?.roles;
                         }
-                        // @ts-expect-error resource_access exits
-                        roles = decodedToken.resource_access[envs.KEYCLOAK_CLIENT_ID ?? '']?.roles;
                     }
                 }
 
