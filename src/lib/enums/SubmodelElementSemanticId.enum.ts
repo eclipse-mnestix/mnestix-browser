@@ -9,7 +9,4 @@ export enum SubmodelElementSemanticId {
     ContactInformation = 'https://admin-shell.io/zvei/nameplate/1/0/ContactInformations/ContactInformation',
     Document = 'https://admin-shell.io/vdi/2770/1/0/Document',
     DocumentIrdi = '0173-1#02-ABI500#001/0173-1#01-AHF579#001',
-    EntryNode = 'https://admin-shell.io/idta/HierarchicalStructures/EntryNode/1/0',
-    BulkCount = 'https://admin-shell.io/idta/HierarchicalStructures/BulkCount/1/0',
-    ArcheType = 'https://admin-shell.io/idta/HierarchicalStructures/ArcheType/1/0'
 }

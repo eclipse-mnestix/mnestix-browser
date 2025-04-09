@@ -11,7 +11,7 @@ import { StyledDataRow } from 'components/basics/StyledDataRow';
 import { ISubmodelElement, Property, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
 import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
 import { useTranslations } from 'next-intl';
-import { PcfSubmodelElement } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/PcfSubmodelElement';
+import { PcfSubmodelElementSemanticId } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/PcfSubmodelElementSemanticId';
 import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
 
 export function CarbonFootprintVisualizations({ submodel }: SubmodelVisualizationProps) {
@@ -20,9 +20,9 @@ export function CarbonFootprintVisualizations({ submodel }: SubmodelVisualizatio
     const pcfSubmodelElements = submodel.submodelElements?.filter((el) =>
         hasSemanticId(
             el,
-            PcfSubmodelElement.ProductCarbonFootprint,
-            PcfSubmodelElement.ProductCarbonFootprintIrdi,
-            PcfSubmodelElement.ProductCarbonFootprintV1,
+            PcfSubmodelElementSemanticId.ProductCarbonFootprint,
+            PcfSubmodelElementSemanticId.ProductCarbonFootprintIrdi,
+            PcfSubmodelElementSemanticId.ProductCarbonFootprintV1,
         ),
     ) as Array<SubmodelElementCollection> | undefined;
 
@@ -31,12 +31,20 @@ export function CarbonFootprintVisualizations({ submodel }: SubmodelVisualizatio
     pcfSubmodelElements.sort((a, b) => {
         const firstPCFLiveCyclePhase = (
             a.value?.find((v) =>
-                hasSemanticId(v, PcfSubmodelElement.PCFLiveCyclePhase, PcfSubmodelElement.LiveCyclePhase),
+                hasSemanticId(
+                    v,
+                    PcfSubmodelElementSemanticId.PCFLiveCyclePhase,
+                    PcfSubmodelElementSemanticId.LiveCyclePhase,
+                ),
             ) as Property
         )?.value;
         const secondPCFLiveCyclePhase = (
             b.value?.find((v) =>
-                hasSemanticId(v, PcfSubmodelElement.PCFLiveCyclePhase, PcfSubmodelElement.LiveCyclePhase),
+                hasSemanticId(
+                    v,
+                    PcfSubmodelElementSemanticId.PCFLiveCyclePhase,
+                    PcfSubmodelElementSemanticId.LiveCyclePhase,
+                ),
             ) as Property
         )?.value;
 
@@ -91,8 +99,8 @@ function extractCalculationMethod(pcfSubmodelElements: SubmodelElementCollection
                         el.value?.find((v) =>
                             hasSemanticId(
                                 v,
-                                PcfSubmodelElement.PCFCalculationMethod,
-                                PcfSubmodelElement.PCFCalculationMethodV1,
+                                PcfSubmodelElementSemanticId.PCFCalculationMethod,
+                                PcfSubmodelElementSemanticId.PCFCalculationMethodV1,
                             ),
                         ) as Property
                     )?.value,
@@ -106,7 +114,11 @@ function extractCompletedStages(pcfSubmodelElements: SubmodelElementCollection[]
         (el) =>
             ((
                 el.value?.find((v) =>
-                    hasSemanticId(v, PcfSubmodelElement.PCFLiveCyclePhase, PcfSubmodelElement.LiveCyclePhase),
+                    hasSemanticId(
+                        v,
+                        PcfSubmodelElementSemanticId.PCFLiveCyclePhase,
+                        PcfSubmodelElementSemanticId.LiveCyclePhase,
+                    ),
                 ) as Property
             )?.value
                 ?.split(' ')[0]
@@ -122,14 +134,22 @@ function ExtractCO2EquivalentsPerLifeCycleStage(
             ...o,
             [((
                 key.value?.find((v) =>
-                    hasSemanticId(v, PcfSubmodelElement.PCFLiveCyclePhase, PcfSubmodelElement.LiveCyclePhase),
+                    hasSemanticId(
+                        v,
+                        PcfSubmodelElementSemanticId.PCFLiveCyclePhase,
+                        PcfSubmodelElementSemanticId.LiveCyclePhase,
+                    ),
                 ) as Property
             )?.value
                 ?.split(' ')[0]
                 .trim() as ProductLifecycleStage) ?? ProductLifecycleStage.A3Production]: Number.parseFloat(
                 (
                     key.value?.find((v) =>
-                        hasSemanticId(v, PcfSubmodelElement.PCFCO2eq, PcfSubmodelElement.PCFCO2eqV1),
+                        hasSemanticId(
+                            v,
+                            PcfSubmodelElementSemanticId.PCFCO2eq,
+                            PcfSubmodelElementSemanticId.PCFCO2eqV1,
+                        ),
                     ) as Property
                 )?.value ?? '',
             ),
@@ -145,7 +165,11 @@ function extractTotalCO2Equivalents(pcfSubmodelElements: SubmodelElementCollecti
             (Number.parseFloat(
                 (
                     curr.value?.find((v) =>
-                        hasSemanticId(v, PcfSubmodelElement.PCFCO2eq, PcfSubmodelElement.PCFCO2eqV1),
+                        hasSemanticId(
+                            v,
+                            PcfSubmodelElementSemanticId.PCFCO2eq,
+                            PcfSubmodelElementSemanticId.PCFCO2eqV1,
+                        ),
                     ) as Property
                 )?.value ?? '',
             ) ?? 0),
@@ -156,7 +180,7 @@ function extractTotalCO2Equivalents(pcfSubmodelElements: SubmodelElementCollecti
 function extractAddressPerLifeCyclePhaseFromPCFSubmodel(el: SubmodelElementCollection): AddressPerLifeCyclePhase {
     const lifeCyclePhase = (
         el.value?.find((v) =>
-            hasSemanticId(v, PcfSubmodelElement.PCFLiveCyclePhase, PcfSubmodelElement.PCFCO2eqV1),
+            hasSemanticId(v, PcfSubmodelElementSemanticId.PCFLiveCyclePhase, PcfSubmodelElementSemanticId.PCFCO2eqV1),
         ) as Property
     )?.value
         ?.split(' ')[0]
@@ -164,49 +188,53 @@ function extractAddressPerLifeCyclePhaseFromPCFSubmodel(el: SubmodelElementColle
 
     const pcfGoodsAddressHandover = (
         el.value?.find((v) =>
-            hasSemanticId(v, PcfSubmodelElement.PCFGoodsAddressHandover, SubmodelElementSemanticId.NameplateAddressV3),
+            hasSemanticId(
+                v,
+                PcfSubmodelElementSemanticId.PCFGoodsAddressHandover,
+                SubmodelElementSemanticId.NameplateAddressV3,
+            ),
         ) as SubmodelElementCollection
     )?.value;
 
     const latitude = (
         pcfGoodsAddressHandover?.find((v: ISubmodelElement) =>
-            hasSemanticId(v, PcfSubmodelElement.PCFAddressLatitude),
+            hasSemanticId(v, PcfSubmodelElementSemanticId.PCFAddressLatitude),
         ) as Property
     )?.value;
 
     const longitude = (
         pcfGoodsAddressHandover?.find((v: ISubmodelElement) =>
-            hasSemanticId(v, PcfSubmodelElement.PCFAddressLongitude),
+            hasSemanticId(v, PcfSubmodelElementSemanticId.PCFAddressLongitude),
         ) as Property
     )?.value;
 
     const street = (
         pcfGoodsAddressHandover?.find((v: ISubmodelElement) =>
-            hasSemanticId(v, PcfSubmodelElement.PCFAddressStreet),
+            hasSemanticId(v, PcfSubmodelElementSemanticId.PCFAddressStreet),
         ) as Property
     )?.value;
 
     const houseNumber = (
         pcfGoodsAddressHandover?.find((v: ISubmodelElement) =>
-            hasSemanticId(v, PcfSubmodelElement.PCFAddressHouseNumber),
+            hasSemanticId(v, PcfSubmodelElementSemanticId.PCFAddressHouseNumber),
         ) as Property
     )?.value;
 
     const zipCode = (
         pcfGoodsAddressHandover?.find((v: ISubmodelElement) =>
-            hasSemanticId(v, PcfSubmodelElement.PCFAddressZipCode),
+            hasSemanticId(v, PcfSubmodelElementSemanticId.PCFAddressZipCode),
         ) as Property
     )?.value;
 
     const cityTown = (
         pcfGoodsAddressHandover?.find((v: ISubmodelElement) =>
-            hasSemanticId(v, PcfSubmodelElement.PCFAddressCityTown),
+            hasSemanticId(v, PcfSubmodelElementSemanticId.PCFAddressCityTown),
         ) as Property
     )?.value;
 
     const country = (
         pcfGoodsAddressHandover?.find((v: ISubmodelElement) =>
-            hasSemanticId(v, PcfSubmodelElement.PCFAddressCountry),
+            hasSemanticId(v, PcfSubmodelElementSemanticId.PCFAddressCountry),
         ) as Property
     )?.value;
 

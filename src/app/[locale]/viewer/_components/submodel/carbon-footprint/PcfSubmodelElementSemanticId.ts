@@ -1,4 +1,4 @@
-export enum PcfSubmodelElement {
+export enum PcfSubmodelElementSemanticId {
     ProductCarbonFootprintIrdi = '0173-1#01-AHE716#001',
     ProductCarbonFootprint = 'https://admin-shell.io/idta/CarbonFootprint/ProductCarbonFootprint/0/9',
     ProductCarbonFootprintV1 = 'https://admin-shell.io/idta/CarbonFootprint/ProductCarbonFootprint/1/0',
