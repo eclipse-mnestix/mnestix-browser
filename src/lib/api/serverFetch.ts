@@ -3,7 +3,8 @@
 import { ApiResponseWrapper, wrapErrorCode, wrapResponse } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { headers } from 'next/headers';
-import { createRequestLogger, getCorrelationId } from 'lib/util/Logger';
+import { createRequestLogger } from 'lib/util/Logger';
+import pino from 'pino';
 
 /**
  * @deprecated use performServerFetch() instead
@@ -22,18 +23,17 @@ export async function performServerFetch<T>(
     input: string | Request | URL,
     init?: RequestInit | undefined,
 ): Promise<ApiResponseWrapper<T>> {
-    let correlationId: string | undefined;
-
+    let log: pino.Logger<never, boolean>;
+    
     try {
-        correlationId = getCorrelationId(await headers());
-    } catch {
-        correlationId = 'fallback-correlation-id';
+        log = createRequestLogger(await headers());
+    } catch (e) {
+        log = createRequestLogger('unknown');
     }
 
-    const logger = createRequestLogger(correlationId);
     try {
         const response = await fetch(input, init);
-        logger.debug(
+        log.debug(
             {
                 Request_Url: input,
                 Http_Status: response?.status,
@@ -44,10 +44,10 @@ export async function performServerFetch<T>(
         return await wrapResponse<T>(response);
     } catch (e) {
         if (e instanceof Error) {
-            logger.warn({ http: e }, `Request: ${input}`);
+            log.warn({ http: e }, `Request: ${input}`);
             return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, e.message);
         } else {
-            logger.error({ http: e }, `Request: ${input}`);
+            log.error({ http: e }, `Request: ${input}`);
             return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Unknown error');
         }
     }

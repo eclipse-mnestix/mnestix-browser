@@ -20,7 +20,18 @@ const baseLogger = isProduction
           stream,
       );
 
-export const createRequestLogger = (correlationId: string) => baseLogger.child({ Correlation_ID: correlationId });
+/**
+ * Creates a logger instance with a correlation ID for tracking requests.
+ *
+ * @param input - Either a Headers object or a string representing the correlation ID.
+ * @returns A logger instance with the correlation ID included.
+ */
+export const createRequestLogger = (input: Headers | string) => {
+    const correlationId = typeof input === 'string' 
+        ? input 
+        : getCorrelationId(input as Headers);
+    return baseLogger.child({ Correlation_ID: correlationId });
+};
 
 export default baseLogger;
 
