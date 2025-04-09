@@ -1,4 +1,4 @@
-export enum TimeSeriesSubmodelElement {
+export enum TimeSeriesSubmodelElementSemanticIdEnum {
     TimeSeriesSegments = 'https://admin-shell.io/idta/TimeSeries/Segments/1/1',
     TimeSeriesLinkedSegment = 'https://admin-shell.io/idta/TimeSeries/Segments/LinkedSegment/1/1',
     TimeSeriesInternalSegment = 'https://admin-shell.io/idta/TimeSeries/Segments/InternalSegment/1/1',

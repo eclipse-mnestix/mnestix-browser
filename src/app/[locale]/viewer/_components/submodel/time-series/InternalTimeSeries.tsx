@@ -8,7 +8,7 @@ import {
 } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesUtil';
 import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import { StyledDataRow } from 'components/basics/StyledDataRow';
-import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
+import { TimeSeriesSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesSubmodelElementSemanticId.enum';
 import { useTranslations } from 'next-intl';
 import { useIntl } from 'react-intl';
 
@@ -34,13 +34,13 @@ export function InternalTimeSeries(props: { submodelElement: SubmodelElementColl
 
     const name = extractIntlValueBySemanticId(
         props.submodelElement,
-        SubmodelElementSemanticId.TimeSeriesSegmentName,
+        TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegmentName,
         intl,
     );
 
     const description = extractIntlValueBySemanticId(
         props.submodelElement,
-        SubmodelElementSemanticId.TimeSeriesSegmentDescription,
+        TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegmentDescription,
         intl,
     );
 
