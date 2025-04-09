@@ -3,6 +3,7 @@ export enum SubmodelSemanticId {
     ReferenceCounterContainer = 'https://xitaso.com/ReferenceCounter',
     CarbonFootprintIrdi = '0173-1#01-AHE712#001',
     CarbonFootprint = 'https://admin-shell.io/idta/CarbonFootprint/CarbonFootprint/0/9',
+    CarbonFootprintV1 = 'https://admin-shell.io/idta/CarbonFootprint/CarbonFootprint/1/0',
     TimeSeries = 'https://admin-shell.io/idta/TimeSeries/1/1',
     HierarchicalStructuresV10 = 'https://admin-shell.io/idta/HierarchicalStructures/1/0/Submodel',
     HierarchicalStructuresV11 = 'https://admin-shell.io/idta/HierarchicalStructures/1/1/Submodel',

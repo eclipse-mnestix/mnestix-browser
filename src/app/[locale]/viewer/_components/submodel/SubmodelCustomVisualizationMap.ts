@@ -6,12 +6,13 @@ import { HierarchicalStructuresDetail } from './hierarchical-structures/Hierarch
 import { TimeSeriesDetail } from './time-series/TimeSeriesDetail';
 
 /**
- * This represents the mapping between the submodel and the submodel visulization. If you want to create a new custom
+ * This represents the mapping between the submodel and the submodel visualization. If you want to create a new custom
  * submodel visualization, add it here. A detailed description on how to create custom submodel visualizations can be
  * found here: https://github.com/eclipse-mnestix/mnestix-browser/wiki/How-to-create-custom-submodel-visualizations
  */
 export const submodelCustomVisualizationMap = {
     [SubmodelSemanticId.CarbonFootprint]: CarbonFootprintDetail,
+    [SubmodelSemanticId.CarbonFootprintV1]: CarbonFootprintDetail,
     [SubmodelSemanticId.CarbonFootprintIrdi]: CarbonFootprintDetail,
     [SubmodelSemanticId.ReferenceCounterContainer]: ReferenceCounterDetail,
     [SubmodelSemanticId.TimeSeries]: TimeSeriesDetail,
