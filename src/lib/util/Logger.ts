@@ -27,7 +27,7 @@ const baseLogger = isProduction
  * @returns A logger instance with the correlation ID included.
  */
 export const createRequestLogger = (headers?: Headers) => {
-    const correlationId = typeof headers === undefined
+    const correlationId = !headers
         ? 'undefined'
         : getCorrelationId(headers as Headers);
     return baseLogger.child({ Correlation_ID: correlationId });

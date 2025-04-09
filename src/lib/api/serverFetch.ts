@@ -27,7 +27,7 @@ export async function performServerFetch<T>(
 
     try {
         log = createRequestLogger(await headers());
-    } catch (e) {
+    } catch {
         log = createRequestLogger();
     }
 

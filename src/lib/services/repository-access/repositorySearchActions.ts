@@ -13,7 +13,7 @@ import {
 import { AssetAdministrationShellRepositoryApi, SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { headers } from 'next/headers';
-import { createRequestLogger, getCorrelationId, logInfo } from 'lib/util/Logger';
+import { createRequestLogger, logInfo } from 'lib/util/Logger';
 
 export async function performSearchAasFromAllRepositories(
     searchInput: string,
