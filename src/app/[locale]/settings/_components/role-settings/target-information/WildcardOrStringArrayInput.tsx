@@ -42,7 +42,13 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
             <Typography variant="h5">{props.rule}</Typography>
 
             <FormControlLabel
-                control={<Checkbox checked={isWildcard} onChange={(e) => wildcardValueChanged(e.target.checked)} />}
+                control={
+                    <Checkbox
+                        data-testid={`checkbox-${props.type}-${props.rule}`}
+                        checked={isWildcard}
+                        onChange={(e) => wildcardValueChanged(e.target.checked)}
+                    />
+                }
                 label={t('wildcardLabel')}
             />
             {!isWildcard && (
@@ -57,6 +63,7 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
                             render={({ field }) => (
                                 <Box display="flex" flexDirection="row" mb="1em">
                                     <TextField
+                                        data-testid={`input-${props.type}-${props.rule}-${idx}`}
                                         onChange={field.onChange}
                                         onBlur={field.onBlur}
                                         inputRef={field.ref}
@@ -69,6 +76,7 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
 
                                     <IconButton>
                                         <RemoveCircleOutlineIcon
+                                            data-testid={`remove-${props.type}-${props.rule}-${idx}`}
                                             onClick={() => {
                                                 remove(idx);
                                             }}
@@ -80,6 +88,7 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
                     ))}
                     <Button
                         variant="text"
+                        data-testid={`add-${props.type}-${props.rule}`}
                         startIcon={<ControlPointIcon />}
                         onClick={() => {
                             append({ id: '' });

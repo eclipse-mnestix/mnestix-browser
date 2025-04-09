@@ -8,6 +8,9 @@ jest.mock('next-intl', () => ({
     useTranslations: () => (key: string) => key,
 }));
 
+/*
+  This file tests the whole RuleForm including the TargetInformationForm + WildcardOrStringArrayInput components
+ */
 describe('RuleForm', () => {
     const mockRule: BaSyxRbacRule = {
         idShort: 'test-id',
@@ -63,5 +66,87 @@ describe('RuleForm', () => {
         fireEvent.click(screen.getByTestId('role-settings-save-button'));
 
         expect(await screen.findByText('roleRequired')).toBeInTheDocument();
+    });
+
+    describe('TargetInformation form part', () => {
+        it('renders TargetInformationForm with initial id values', () => {
+            render(<RuleForm {...defaultProps} />);
+
+            expect(screen.getByTestId('rule-settings-target-select').querySelector('input')).toHaveValue(
+                'aas-environment',
+            );
+            expect(screen.getByTestId('input-aas-environment-aasIds-0').querySelector('input')).toHaveValue('aas1');
+            expect(screen.getByTestId('input-aas-environment-submodelIds-0').querySelector('input')).toHaveValue(
+                'submodel1',
+            );
+        });
+
+        it('updates TargetInformationForm values when inputs are changed', async () => {
+            render(<RuleForm {...defaultProps} />);
+
+            const aasInput = screen.getByTestId('input-aas-environment-aasIds-0').querySelector('input');
+            fireEvent.change(aasInput as Element, { target: { value: 'new-aas-id' } });
+            const submodelInput = screen.getByTestId('input-aas-environment-submodelIds-0').querySelector('input');
+            fireEvent.change(submodelInput as Element, { target: { value: 'new-submodel-id' } });
+
+            expect(aasInput).toHaveValue('new-aas-id');
+            expect(submodelInput).toHaveValue('new-submodel-id');
+        });
+
+        it('handles wildcard checkbox in TargetInformationForm', async () => {
+            render(<RuleForm {...defaultProps} />);
+
+            const wildcardCheckbox = screen.getByTestId('checkbox-aas-environment-aasIds').querySelector('input');
+            await act(async () => {
+                fireEvent.click(wildcardCheckbox as Element);
+            });
+
+            expect(wildcardCheckbox).toBeChecked();
+            expect(screen.queryByTestId('input-aas-environment-aasIds-0')).not.toBeInTheDocument();
+            await act(() => {
+                fireEvent.click(screen.getByTestId('role-settings-save-button'));
+            });
+            expect(defaultProps.onSubmit.mock.calls[0][0]).toEqual(
+                expect.objectContaining({
+                    action: 'READ',
+                    role: 'Admin',
+                    type: 'aas-environment',
+                    targetInformation: expect.objectContaining({
+                        'aas-environment': expect.objectContaining({
+                            aasIds: [{ id: '*' }],
+                            submodelIds: [{ id: 'submodel1' }],
+                        }),
+                    }),
+                }),
+            );
+        });
+
+        it('enables inputs when wildcard is deselected', async () => {
+            render(<RuleForm {...defaultProps} />);
+
+            const wildcardCheckbox = screen.getByTestId('checkbox-aas-environment-aasIds').querySelector('input');
+            await act(async () => {
+                fireEvent.click(wildcardCheckbox as Element); // Select
+                fireEvent.click(wildcardCheckbox as Element); // Deselect
+            });
+
+            expect(wildcardCheckbox).not.toBeChecked();
+            expect(screen.getByTestId('input-aas-environment-aasIds-0')).toBeInTheDocument();
+        });
+
+        it('is possible to add and remove inputs when wildcard is deselected', async () => {
+            render(<RuleForm {...defaultProps} />);
+            const addButton = screen.getByTestId('add-aas-environment-aasIds');
+            await act(async () => {
+                fireEvent.click(addButton);
+            });
+            expect(screen.getByTestId('input-aas-environment-aasIds-1')).toBeInTheDocument();
+
+            const removeButton = screen.getByTestId('remove-aas-environment-aasIds-1');
+            await act(async () => {
+                fireEvent.click(removeButton);
+            });
+            expect(screen.queryByTestId('input-aas-environment-aasIds-1')).not.toBeInTheDocument();
+        });
     });
 });

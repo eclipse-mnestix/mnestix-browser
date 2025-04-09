@@ -38,6 +38,7 @@ export const TargetInformationForm = (props: TargetInformationProps) => {
                 render={({ field }) => (
                     <FormControl fullWidth>
                         <Select
+                            data-testid="rule-settings-target-select"
                             labelId="role-type-select-label"
                             variant="outlined"
                             {...field}
