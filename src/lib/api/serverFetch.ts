@@ -24,11 +24,11 @@ export async function performServerFetch<T>(
     init?: RequestInit | undefined,
 ): Promise<ApiResponseWrapper<T>> {
     let log: pino.Logger<never, boolean>;
-    
+
     try {
         log = createRequestLogger(await headers());
     } catch (e) {
-        log = createRequestLogger('unknown');
+        log = createRequestLogger();
     }
 
     try {

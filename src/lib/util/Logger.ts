@@ -23,13 +23,13 @@ const baseLogger = isProduction
 /**
  * Creates a logger instance with a correlation ID for tracking requests.
  *
- * @param input - Either a Headers object or a string representing the correlation ID.
+ * @param headers - Optional Headers object used to extract or generate a correlation ID.
  * @returns A logger instance with the correlation ID included.
  */
-export const createRequestLogger = (input: Headers | string) => {
-    const correlationId = typeof input === 'string' 
-        ? input 
-        : getCorrelationId(input as Headers);
+export const createRequestLogger = (headers?: Headers) => {
+    const correlationId = typeof headers === undefined
+        ? 'undefined'
+        : getCorrelationId(headers as Headers);
     return baseLogger.child({ Correlation_ID: correlationId });
 };
 
