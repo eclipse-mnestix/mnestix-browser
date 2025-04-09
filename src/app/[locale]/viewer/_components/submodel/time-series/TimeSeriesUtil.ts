@@ -2,7 +2,7 @@ import {
     MultiLanguageProperty,
     SubmodelElementCollection,
 } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
-import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
+import { TimeSeriesSubmodelElement } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesSubmodelElementEnum';
 import { getTranslationText, hasSemanticId } from 'lib/util/SubmodelResolverUtil';
 import { IntlShape } from 'react-intl';
 import { TimeSeriesTimeFormat, TimeSeriesTimeFormatSemanticIds } from 'lib/enums/TimeSeriesTimeFormatSemanticIds.enum';
@@ -16,14 +16,14 @@ export type DataPoint = { [key: string]: number | string };
 
 export function extractValueBySemanticId(
     submodelElementCollection: SubmodelElementCollection,
-    semanticId: SubmodelElementSemanticId,
+    semanticId: TimeSeriesSubmodelElement,
 ) {
     return submodelElementCollection.value?.find((v) => hasSemanticId(v, semanticId));
 }
 
 export function extractIntlValueBySemanticId(
     submodelElementCollection: SubmodelElementCollection,
-    semanticId: SubmodelElementSemanticId,
+    semanticId: TimeSeriesSubmodelElement,
     intl: IntlShape,
 ) {
     const multiLanguageProperty: MultiLanguageProperty | undefined = extractValueBySemanticId(
@@ -77,9 +77,7 @@ export function detectRecordTimeSemanticID(record: SubmodelElementCollection): s
  */
 export function parseRecordsFromInternalSegment(segment: SubmodelElementCollection): TimeSeriesDataSet | null {
     // get records
-    const recordsElement = segment.value?.find((se) =>
-        hasSemanticId(se, SubmodelElementSemanticId.TimeSeriesRecords),
-    );
+    const recordsElement = segment.value?.find((se) => hasSemanticId(se, TimeSeriesSubmodelElement.TimeSeriesRecords));
     if (!recordsElement) return null;
     const records = (recordsElement as SubmodelElementCollection).value;
     if (!records || !records?.length) return null;
@@ -103,7 +101,7 @@ export function parseRecordsFromInternalSegment(segment: SubmodelElementCollecti
                 point[name] = Number.parseFloat(variable.value ?? '0');
                 namesSet.add(name);
             });
-            point['timestamp'] = timeVar ? convertRecordTimeToDate(timeVar) ?? '' : '';
+            point['timestamp'] = timeVar ? (convertRecordTimeToDate(timeVar) ?? '') : '';
             return point;
         });
 
