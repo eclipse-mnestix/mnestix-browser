@@ -36,9 +36,7 @@ export class ConfigurationShellApi implements IConfigurationShellApi {
 
         const response = await this.http.fetch<Submodel>(url, options);
 
-        if (!response.isSuccess) { return wrapErrorCode(response.errorCode, response.message); }
-
-        return wrapSuccess(response.result);
+        return response;
     }
 
     async putSingleIdGenerationSetting(
@@ -76,8 +74,6 @@ export class ConfigurationShellApi implements IConfigurationShellApi {
 
         const response = await this.http.fetch<void>(url, options);
 
-        if (!response.isSuccess) { return wrapErrorCode(response.errorCode, response.message); }
-
-        return wrapSuccess(response.result);
+        return response;
     }
 }
