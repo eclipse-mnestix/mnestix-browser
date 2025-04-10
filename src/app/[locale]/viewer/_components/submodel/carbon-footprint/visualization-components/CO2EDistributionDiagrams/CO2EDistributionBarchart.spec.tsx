@@ -19,6 +19,8 @@ jest.mock('recharts', () => {
         ResponsiveContainer: ({ children }: never) => (
             <OriginalRechartsModule.ResponsiveContainer
                 className="recharts-responsive-container"
+                width={800}
+                height={800}
             >
                 {children}
             </OriginalRechartsModule.ResponsiveContainer>
