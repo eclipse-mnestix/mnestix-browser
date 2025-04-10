@@ -17,8 +17,7 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useAasOriginSourceState } from 'components/contexts/CurrentAasContext';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { checkFileExists } from 'lib/services/search-actions/searchActions';
-import { useTranslations } from 'next-intl';
-import { useIntl } from 'react-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 enum DocumentSpecificSemanticId {
     DocumentVersion = 'https://admin-shell.io/vdi/2770/1/0/DocumentVersion',
@@ -80,7 +79,7 @@ const StyledImageWrapper = styled(Box)(({ theme }) => ({
 
 export function DocumentComponent(props: MarkingsComponentProps) {
     const t = useTranslations('common');
-    const intl = useIntl();
+    const locale = useLocale();
     const [fileViewObject, setFileViewObject] = useState<FileViewObject>();
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
     const [aasOriginUrl] = useAasOriginSourceState();
@@ -280,7 +279,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                         DocumentSpecificSemanticIdIrdiV2.Title,
                     )
                 ) {
-                    fileViewObject.title = getTranslationText(versionSubmodelEl as MultiLanguageProperty, intl);
+                    fileViewObject.title = getTranslationText(versionSubmodelEl as MultiLanguageProperty, locale);
                     continue;
                 }
                 // file

@@ -1,11 +1,11 @@
 import { screen } from '@testing-library/react';
 import { expect } from '@jest/globals';
-import { CustomRenderReactIntl } from 'test-utils/CustomRenderReactIntl';
-import { DummyComponentReactIntl } from 'test-utils/DummyComponentReactIntl';
+import { CustomRenderNextIntl } from 'test-utils/CustomRenderNextIntl';
+import { DummyComponentNextIntl } from 'test-utils/DummyComponentNextIntl';
 
 describe('DummyComponent', () => {
     it('renders the DummyComponent React Intl', async () => {
-        CustomRenderReactIntl(<DummyComponentReactIntl />);
+        CustomRenderNextIntl(<DummyComponentNextIntl />);
         const text = screen.getByTestId('test-text');
         expect(text).toBeDefined();
         expect(text).toBeInTheDocument();

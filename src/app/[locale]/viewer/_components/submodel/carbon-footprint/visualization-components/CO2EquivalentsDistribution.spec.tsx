@@ -1,6 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react';
 import { expect } from '@jest/globals';
-import { CustomRenderReactIntl } from 'test-utils/CustomRenderReactIntl';
+import { CustomRenderNextIntl } from 'test-utils/CustomRenderNextIntl';
 import { CO2EquivalentsDistribution } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/visualization-components/CO2EquivalentsDistribution';
 
 window.ResizeObserver =
@@ -33,7 +33,7 @@ const co2EquivalentsPerLifecycleStage = {
 
 describe('CarbonFootprint - CO2EquivalentsDistribution', () => {
     beforeEach(() => {
-        CustomRenderReactIntl(
+        CustomRenderNextIntl(
             <CO2EquivalentsDistribution
                 co2EquivalentsPerLifecycleStage={co2EquivalentsPerLifecycleStage}
                 totalCO2Equivalents={1.745}

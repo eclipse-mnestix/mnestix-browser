@@ -1,9 +1,8 @@
 import { Box, IconButton, Tooltip, Typography } from '@mui/material';
 import { ContentCopy } from '@mui/icons-material';
-import { useIntl } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { encodeBase64 } from 'lib/util/Base64Util';
+import { useTranslations } from 'next-intl';
 
 type CopyButtonProps = {
     value?: string | null;
@@ -13,7 +12,7 @@ type CopyButtonProps = {
 };
 
 export function CopyButton({ value, isVisible = true, withBase64 = false, dataTestId: testId }: CopyButtonProps) {
-    const intl = useIntl();
+    const t = useTranslations('common.labels');
     const notificationSpawner = useNotificationSpawner();
 
     const handleCopyValue = () => {
@@ -21,7 +20,7 @@ export function CopyButton({ value, isVisible = true, withBase64 = false, dataTe
             const textToCopy = withBase64 ? encodeBase64(value) : value;
             navigator.clipboard.writeText(textToCopy);
             notificationSpawner.spawn({
-                message: intl.formatMessage(messages.mnestix.copied) + ': ' + textToCopy,
+                message: t('copied') + ': ' + textToCopy,
                 severity: 'success',
             });
         }
@@ -30,7 +29,7 @@ export function CopyButton({ value, isVisible = true, withBase64 = false, dataTe
     if (!value) return null;
 
     return (
-        <Tooltip title={intl.formatMessage(messages.mnestix.copy)}>
+        <Tooltip title={t('copy')}>
             <IconButton
                 onClick={handleCopyValue}
                 size="small"

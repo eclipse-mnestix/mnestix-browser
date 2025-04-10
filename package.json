@@ -75,7 +75,6 @@
     "react": "^19",
     "react-dom": "^19",
     "react-hook-form": "^7.54.2",
-    "react-intl": "^7.1.6",
     "recharts": "^2.15.1",
     "sqlite3": "^5.1.7",
     "swr": "^2.3.2",
