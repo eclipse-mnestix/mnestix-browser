@@ -96,6 +96,40 @@ export const logResponseDebug = <T>(
         message,
     );
 
+export const logResponseInfo = <T>(
+    logger: typeof baseLogger,
+    methodName: string,
+    message: string,
+    response: ApiResponseWrapper<T>,
+    optional?: object,
+): void =>
+    logger.info(
+        {
+            Method: methodName,
+            Http_Status: response?.httpStatus,
+            Http_Message: response?.httpText ?? (response as ApiResponseWrapperError<T>)?.errorCode,
+            ...optional,
+        },
+        message,
+    );
+
+export const logResponseWarn = <T>(
+    logger: typeof baseLogger,
+    methodName: string,
+    message: string,
+    response: ApiResponseWrapper<T>,
+    optional?: object,
+): void =>
+    logger.warn(
+        {
+            Method: methodName,
+            Http_Status: response?.httpStatus,
+            Http_Message: response?.httpText ?? (response as ApiResponseWrapperError<T>)?.errorCode,
+            ...optional,
+        },
+        message,
+    );
+
 export const getCorrelationId = (headers: Headers) => {
     let correlationId = headers.get('x-correlation-id');
     if (!correlationId) {

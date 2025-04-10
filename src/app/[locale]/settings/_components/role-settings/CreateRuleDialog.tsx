@@ -1,6 +1,6 @@
 import { Dialog, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import { BaSyxRbacRule } from 'lib/services/rbac-service/RbacRulesService';
+import { BaSyxRbacRule } from 'lib/types/RbacServiceData';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 import { createRbacRule } from 'lib/services/rbac-service/RbacActions';
 import { mapFormModelToBaSyxRbacRule } from 'app/[locale]/settings/_components/role-settings/FormMappingHelper';

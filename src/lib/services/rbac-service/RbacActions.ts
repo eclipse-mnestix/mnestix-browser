@@ -3,14 +3,16 @@
 import { MnestixRole } from 'components/authentication/AllowedRoutes';
 import { authOptions } from 'components/authentication/authConfig';
 import { getServerSession } from 'next-auth';
-import { BaSyxRbacRule, RbacRulesService } from './RbacRulesService';
+import { RbacRulesService } from './RbacRulesService';
+import { BaSyxRbacRule } from 'lib/types/RbacServiceData';
 import { wrapErrorCode } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { envs } from 'lib/env/MnestixEnv';
 import { createRequestLogger, logInfo, logWarn } from 'lib/util/Logger';
 import { headers } from 'next/headers';
+import baseLogger from 'lib/util/Logger';
 
-async function validateRequest(logger?: any) {
+async function validateRequest(logger: typeof baseLogger) {
     const session = await getServerSession(authOptions);
     if (!session?.user.roles || !session?.user.roles?.includes(MnestixRole.MnestixAdmin)) {
         logWarn(logger, 'validateRequest', 'User is not authorized to access this resource',);
@@ -33,8 +35,8 @@ export async function createRbacRule(newRule: Omit<BaSyxRbacRule, 'idShort'>) {
     if (invalid) {
         return invalid;
     }
-    logInfo(logger, 'createRbacRule', 'Creating new RBAC rule', { new_rule: newRule.role });
-    const client = RbacRulesService.createService();
+    logInfo(logger, 'createRbacRule', 'Creating new RBAC rule', { New_rule: newRule.role });
+    const client = RbacRulesService.createService(logger);
     const res = await client.createRule(newRule);
     return res;
 }
@@ -49,7 +51,7 @@ export async function getRbacRules() {
         return invalid;
     }
     logInfo(logger, 'getRbacRules', 'Querying all RBAC rules');
-    const client = RbacRulesService.createService();
+    const client = RbacRulesService.createService(logger);
     const rules = await client.getRules();
     return rules;
 }
@@ -63,8 +65,8 @@ export async function deleteRbacRule(idShort: string) {
     if (invalid) {
         return invalid;
     }
-    logInfo(logger, 'deleteRbacRule', 'Deleting RBAC rule', { rule_idShort: idShort });
-    const client = RbacRulesService.createService();
+    logInfo(logger, 'deleteRbacRule', 'Deleting RBAC rule', { Rule_idShort: idShort });
+    const client = RbacRulesService.createService(logger);
     const res = await client.delete(idShort);
     return res;
 }
@@ -78,8 +80,8 @@ export async function deleteAndCreateRbacRule(idShort: string, rule: BaSyxRbacRu
     if (invalid) {
         return invalid;
     }
-    logInfo(logger, 'deleteAndCreateRbacRule', 'Deleting and creating RBAC rule', { rule_idShort: idShort, new_rule: rule.role });
-    const client = RbacRulesService.createService();
+    logInfo(logger, 'deleteAndCreateRbacRule', 'Deleting and creating RBAC rule', { Rule_idShort: idShort, New_rule: rule.role });
+    const client = RbacRulesService.createService(logger);
     const res = await client.deleteAndCreate(idShort, rule);
     return res;
 }
