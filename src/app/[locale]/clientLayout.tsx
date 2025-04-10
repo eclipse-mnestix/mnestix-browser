@@ -14,10 +14,12 @@ export type ClientLayoutProps = {
     children: ReactNode;
 };
 
+const ONE_HOUR = 1000 * 60 * 60;
+
 export const ClientLayout = ({ children }: Readonly<ClientLayoutProps>) => {
     return (
         <EnvProvider>
-            <SessionProvider>
+            <SessionProvider refetchInterval={ONE_HOUR} refetchOnWindowFocus={true}>
                 <Internationalization>
                     <CustomThemeProvider>
                         <CurrentAasContextProvider>

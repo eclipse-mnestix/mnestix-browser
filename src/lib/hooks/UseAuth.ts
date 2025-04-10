@@ -1,49 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
+import { useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { Session } from 'next-auth';
 import { sessionLogOut } from 'lib/api/infrastructure';
 import AllowedRoutes, { MnestixRole } from 'components/authentication/AllowedRoutes';
 import { useEnv } from 'app/EnvProvider';
-import { useNotificationSpawner } from './UseNotificationSpawner';
-import { useTranslations } from 'use-intl';
 
 export function useAuth() {
     const [bearerToken, setBearerToken] = useState<string>('');
-    const [prefSession, setPrefSession] = useState<Session | null>(null);
     const { data: session, status } = useSession();
-    const t = useTranslations('validation.authentication');
-
     const env = useEnv();
 
-    const notificationSpawner = useNotificationSpawner();
-
-    const providerType = env.KEYCLOAK_ENABLED ? 'keycloak' : 'azure-ad';
-
-    useEffect(() => {
-        if (prefSession && !session) {
-            showSessionExpired();
-        }
-        setPrefSession(session);
+    useAsyncEffect(async () => {
         if (session) {
             setBearerToken('Bearer ' + session.accessToken);
         }
     }, [session]);
 
-    function showSessionExpired() {
-        notificationSpawner.spawn({
-            message: t('sessionExpired'),
-            severity: 'warning',
-        });
-    }
+    const providerType = env.KEYCLOAK_ENABLED ? 'keycloak' : 'azure-ad';
 
     return {
         getBearerToken: (): string => {
             return bearerToken;
-        },
-        invalidSessionSignOut: async (): Promise<void> => {
-            await sessionLogOut(env.KEYCLOAK_ENABLED);
-            await signOut();
-            showSessionExpired();
         },
         login: () => {
             signIn(providerType).catch((e) => {
