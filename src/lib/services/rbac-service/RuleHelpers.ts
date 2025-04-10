@@ -79,6 +79,19 @@ export class RuleParseError extends Error {}
 
 // TODO MNES-1605 add typing for submodelElement
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/**
+ * Converts a submodel element into a BaSyx RBAC (Role-Based Access Control) rule.
+ *
+ * @param submodelElement - The submodel element to be converted. 
+ *
+ * @returns A `BaSyxRbacRule` object representing the RBAC rule derived from the submodel element.
+ *
+ * @throws {RuleParseError} If:
+ * - More than one action is specified in the submodel element.
+ * - The specified action is not included in the allowed `rbacRuleActions`.
+ * - The target type is invalid or not included in the `rbacRuleTargets`.
+ * - Any target within the target information is invalid for the specified target type.
+ */
 export function submodelToRule(submodelElement: any): BaSyxRbacRule {
     const role = submodelElement.value.find((e: any) => e.idShort === 'role')?.value;
     const actions = submodelElement.value.find((e: any) => e.idShort === 'action')?.value.map((e: any) => e.value) || [];
