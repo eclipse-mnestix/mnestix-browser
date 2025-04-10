@@ -25,7 +25,7 @@ export class RbacRulesService {
         if (!baseUrl) {
             throw 'Security Submodel not configured! Check beforehand!';
         }
-        const rbacRulesServiceLogger = log?.child({ Service: 'createService' });
+        const rbacRulesServiceLogger = log?.child({ Service: 'RbacRulesService' });
         return new RbacRulesService(SubmodelRepositoryApi.create(baseUrl, mnestixFetch()), rbacRulesServiceLogger);
     }
 
