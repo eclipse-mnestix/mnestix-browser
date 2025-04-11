@@ -1,10 +1,10 @@
-import { screen } from '@testing-library/react';
 import { expect } from '@jest/globals';
-import { CustomRenderNextIntl } from 'test-utils/CustomRenderNextIntl';
+import { screen } from '@testing-library/react';
 import {
     CalculationMethod,
     LinkGHG,
 } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/visualization-components/CalculationMethod';
+import { CustomRenderNextIntl } from 'test-utils/CustomRenderNextIntl';
 
 describe('Calculation Method', () => {
     it('should use correct style', async () => {

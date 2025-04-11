@@ -8,6 +8,7 @@ import { TextSnippet } from '@mui/icons-material';
 import { MultiplicityEnum } from 'lib/enums/Multiplicity.enum';
 import { TemplateEditTreeItemMenu } from './TemplateEditTreeItemMenu';
 import { useTranslations } from 'next-intl';
+import { pages } from 'next/dist/build/templates/app-page';
 
 interface CustomTreeItemProps extends TreeItemProps {
     hasValue?: boolean;
@@ -73,7 +74,7 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
     const icon = iconProp || expansionIcon || displayIcon;
 
     const [isAboutToBeDeleted, setIsAboutToBeDeleted] = useState(false);
-    const t = useTranslations('common.messages');
+    const t = useTranslations('pages.templates');
 
     React.useEffect(() => {
         setIsAboutToBeDeleted(false);
@@ -134,7 +135,7 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
                     {isAboutToBeDeleted || props.isParentAboutToBeDeleted ? (
                         <>
                             <Typography component="div" className={classes.label} sx={{ color: 'text.disabled' }}>
-                                {`${label} (${t('deleted')})`}
+                                {`${label} (${t('messages.deleted')})`}
                             </Typography>
                             {hasValue && <TextSnippet fontSize="small" sx={{ color: 'text.disabled', ml: '3px' }} />}
                         </>

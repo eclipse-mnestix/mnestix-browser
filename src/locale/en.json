@@ -1,74 +1,9 @@
 {
-  "common": {
-    "actions": {
-      "add": "Add",
-      "cancel": "Cancel",
-      "delete": "Delete",
-      "duplicate": "Duplicate",
-      "edit": "Edit",
-      "open": "Open",
-      "remove": "Remove",
-      "restore": "Restore",
-      "revertChanges": "Revert changes",
-      "saveChanges": "Save changes",
-      "toHome": "To Home",
-      "view": "View"
-    },
-    "boolean": {
-      "false": "false",
-      "true": "true"
-    },
-    "labels": {
-      "aasId": "AAS ID",
-      "assetId": "Asset ID",
-      "copied": "Copied to clipboard",
-      "copy": "Copy",
-      "documentDetails": "Document details",
-      "dynamicPart": "dynamic part",
-      "endResult": "End result",
-      "idShort": "idShort: {idShort}",
-      "language": "Language",
-      "manufacturer": "Manufacturer: {manufacturerName}",
-      "notAvailable": "-",
-      "redirectsTo": "Redirects to",
-      "semanticId": "semanticId",
-      "staticPrefix": "static prefix",
-      "text": "Text",
-      "value": "Value"
-    },
-    "messages": {
-      "cannotLoadAasId": {
-        "header": "AAS could not be loaded.",
-        "text": "Unable to load AAS for the given ID \"{id}\""
-      },
-      "changesSavedSuccessfully": "Changes saved successfully",
-      "deleted": "deleted",
-      "fileNotFound": "File not found",
-      "noDataFound": "No Data found",
-      "noDataFoundFor": "No data found for \"{name}\".",
-      "referenceCounter": {
-        "count": "Count",
-        "elementName": "Element"
-      },
-      "successfullyUpdated": "Updated successfully"
-    }
-  },
   "components": {
-    "ContactInformation": {
-      "contactTypes": {
-        "0173-1#07-AAS754#001": "Office",
-        "0173-1#07-AAS755#001": "Office mobile",
-        "0173-1#07-AAS756#001": "Secretary",
-        "0173-1#07-AAS757#001": "Substitute",
-        "0173-1#07-AAS758#001": "Home",
-        "0173-1#07-AAS759#001": "Private mobile",
-        "home": "Home",
-        "home mobile": "Home mobile",
-        "office": "Office",
-        "office mobile": "Office mobile",
-        "secretary": "Secretary",
-        "substitute": "Substitute"
-      }
+    "assetNotFound": {
+      "header": "AAS could not be loaded.",
+      "text": "Unable to load AAS for the given ID \"{id}\"",
+      "toHome": "To Home"
     },
     "addressComponent": {
       "VAT": "VAT-Number",
@@ -127,10 +62,52 @@
       },
       "totalCO2Equivalents": "CO2 emissions from product (so far)"
     },
+    "contactInformation": {
+      "contactTypes": {
+        "0173-1#07-AAS754#001": "Office",
+        "0173-1#07-AAS755#001": "Office mobile",
+        "0173-1#07-AAS756#001": "Secretary",
+        "0173-1#07-AAS757#001": "Substitute",
+        "0173-1#07-AAS758#001": "Home",
+        "0173-1#07-AAS759#001": "Private mobile",
+        "home": "Home",
+        "home mobile": "Home mobile",
+        "office": "Office",
+        "office mobile": "Office mobile",
+        "secretary": "Secretary",
+        "substitute": "Substitute"
+      }
+    },
+    "copyButton": {
+      "copied": "Copied to clipboard",
+      "copy": "Copy",
+      "copyBase64": "Copy base64 encoded"
+    },
+    "documentComponent": {
+      "documentDetails": "Document details",
+      "fileNotFound": "File not found",
+      "open": "Open"
+    },
+    "dummyComponent": {
+      "dummyText": "This is a dummy component. It is used to test the layout and design of the application."
+    },
     "qrScanner": {
       "errors": {
         "defaultCallbackErrorMsg": "Could not open the QR code!",
         "errorOnQrScannerOpen": "Could not open the QR scanner!"
+      }
+    },
+    "propertyComponent": {
+      "boolean": {
+        "false": "false",
+        "true": "true"
+      },
+      "labels": {
+        "copied": "Copied to clipboard",
+        "copy": "Copy",
+        "copyBase64": "Copy base64 encoded",
+        "notAvailable": "-",
+        "value": "Value"
       }
     },
     "relationShipDetailsDialog": {
@@ -149,6 +126,14 @@
       "showEntriesButton": {
         "hide": "Hide",
         "show": "Show {count} entries"
+      }
+    },
+    "verticalTabSelector": {
+      "errors": {
+        "INTERNAL_SERVER_ERROR": "Internal server error",
+        "NOT_FOUND": "Submodel not found",
+        "UNAUTHORIZED": "Unauthorized",
+        "UNKNOWN": "Unknown Error"
       }
     }
   },
@@ -188,16 +173,44 @@
       "titleViewAASButton": "View AAS"
     },
     "aasViewer": {
+      "actions": {
+        "toHome": "To Home",
+        "compareButton": "Compare"
+      },
       "asset": "Asset",
-      "assetAdministrationShell": "Asset Administration Shell"
-    },
-    "assetIdDocumentation": {
-      "dnsHeading": "Access via DNS",
-      "dnsText": "Especially for the brownfield approach and the distributor of a product, it makes sense to additionally set up DNS access through the asset ID and thus enable data retrieval from conventional browser applications.",
-      "exampleHeading": "Example Case",
-      "industry40Heading": "Industry 4.0 context",
-      "industry40Text": "Products have a globally unique ID which can be assigned to one or more asset administration shells. In the Industry 4.0 context, the connection between asset and AAS is established via the I4.0 infrastructure.",
-      "title": "How to connect your Asset ID with your AAS Repository"
+      "assetAdministrationShell": "Asset Administration Shell",
+      "labels": {
+        "copied": "Copied to clipboard",
+        "copy": "Copy",
+        "copyBase64": "Copy base64 encoded",
+        "language": "Language",
+        "notAvailable": "-",
+        "text": "Text",
+        "value": "Value"
+      },
+      "messages": {
+        "noDataFoundFor": "No data found for \"{name}\".",
+        "noDataFound": "No Data found"
+      },
+      "submodels": {
+        "actions": {
+          "open": "Open",
+          "view": "View"
+        },
+        "idLabel": "ID:",
+        "referenceCounter": {
+          "count": "Count",
+          "elementName": "Element"
+        },
+        "renderError": "Submodel can't be rendered.",
+        "timeSeries": {
+          "internalSegments": "Internal segments",
+          "linkedSegments": "Linked segments",
+          "selectTimeframe": "Select timeframe"
+        },
+        "title": "Submodels",
+        "unknownModelType": "Unknown ModelType: {type}"
+      }
     },
     "compare": {
       "addAnother": "Add another AAS",
@@ -207,11 +220,11 @@
         "hide": "Hide",
         "show": "{idShort}"
       },
-      "compareButton": "Compare",
       "errors": {
         "aasAddError": "AAS could not be added.",
         "aasAlreadyAdded": "AAS cannot be added more than once.",
-        "moreAasFound": "More than one AAS found in the discovery service, please provide the AAS ID instead."
+        "moreAasFound": "More than one AAS found in the discovery service, please provide the AAS ID instead.",
+        "unknownModelType": "Unknown ModelType: {type}"
       },
       "title": "Compare AAS"
     },
@@ -234,6 +247,13 @@
       "titleViewAASButton": "View AAS"
     },
     "settings": {
+      "actions": {
+          "addButton": "Add more",
+          "cancel": "Cancel",
+          "editButton": "Edit all",
+          "resetButton": "Reset to default",
+          "saveButton": "Save all"
+      },
       "connections": {
         "aasRepository": {
           "connectionType": "AAS_REPOSITORY",
@@ -242,11 +262,7 @@
           "repositoryLabel": "AAS Repository",
           "repositoryUrlLabel": "AAS Repository URL"
         },
-        "addButton": "Add more",
-        "editButton": "Edit all",
-        "resetButton": "Reset to default",
         "resetSuccessfull": "Connections were reset.",
-        "saveButton": "Save all",
         "submodelRepository": {
           "connectionType": "SUBMODEL_REPOSITORY",
           "repositories": "Submodel Repositories",
@@ -258,10 +274,37 @@
         "title": "Data sources",
         "urlFieldRequired": "URL field is required"
       },
+      "messages": {
+        "changesSavedSuccessfully": "Changes saved successfully"
+      },
       "header": "Settings",
-      "idStructure": "ID structure",
-      "idStructureError": "Error while saving \"{name}\" ({reason}).",
-      "idStructureExplanation": "Define, how your IDs are represented. This is a standard setting that can be adjusted for individual imports.",
+      "idStructure": {
+        "title": "ID Structure",
+        "labels": {
+          "dynamicPart": "dynamic part",
+          "idStructureExplanation": "Define, how your IDs are represented. This is a standard setting that can be adjusted for individual imports.",
+          "staticPrefix": "static prefix"
+        },
+        "assetIdDocumentation": {
+          "dnsHeading": "Access via DNS",
+          "dnsText": "Especially for the brownfield approach and the distributor of a product, it makes sense to additionally set up DNS access through the asset ID and thus enable data retrieval from conventional browser applications.",
+          "endResult": "End result",
+          "exampleHeading": "Example Case",
+          "industry40Heading": "Industry 4.0 context",
+          "industry40Text": "Products have a globally unique ID which can be assigned to one or more asset administration shells. In the Industry 4.0 context, the connection between asset and AAS is established via the I4.0 infrastructure.",
+          "title": "How to connect your Asset ID with your AAS Repository",
+          "redirectsTo": "Redirects to",
+          "assetId": "Asset ID"
+        },
+        "errors": {
+          "idStructureError": "Error while saving \"{name}\" ({reason}).",
+          "invalidIri": "Has to be a valid IRI, e.g. https://example.com/",
+          "invalidIriPart": "Has to work as part of an IRI (no \"/\", spaces or special characters)"
+        },
+        "messages": {
+          "successfullyUpdated": "Updated successfully"
+        }
+      },
       "rules": {
         "buttons": {
           "add": "Add",
@@ -289,25 +332,12 @@
       },
       "subHeader": "Add, remove, or modify settings and configurations to various features within your AAS."
     },
-    "submodels": {
-      "errors": {
-        "INTERNAL_SERVER_ERROR": "Internal server error",
-        "NOT_FOUND": "Submodel not found",
-        "UNAUTHORIZED": "Unauthorized",
-        "UNKNOWN": "Unknown Error"
-      },
-      "idLabel": "ID:",
-      "renderError": "Submodel can't be rendered.",
-      "timeSeries": {
-        "internalSegments": "Internal segments",
-        "linkedSegments": "Linked segments",
-        "selectTimeframe": "Select timeframe"
-      },
-      "title": "Submodels",
-      "unknownModelType": "Unknown ModelType: {type}"
-    },
     "templates": {
       "all": "All",
+      "boolean": {
+        "false": "false",
+        "true": "true"
+      },
       "chooseAStartingPoint": "Choose a starting point",
       "copyTemplateId": "Copy Template ID",
       "createNew": "Create New",
@@ -317,6 +347,9 @@
       "displayName": "Display name",
       "emptyCustom": "Empty (Custom)",
       "emptyCustomDescription": "Is not based upon a standardized template",
+      "errors": {
+        "unknownModelType": "Unknown ModelType: {type}"
+      },
       "mappingInfo": "Mapping info",
       "mappingInfoDescription": "Arbitrary identifier that you can use for your data imports.",
       "multiplicity": "Multiplicity",
@@ -325,7 +358,35 @@
       "templateDeletedSuccessfully": "Template deleted successfully",
       "templateIdCopied": "Template ID copied to clipboard: {id}",
       "templatesUseExplanation": "Templates allow you to create a reusable submodel structure, adjusted to your requirements.",
-      "title": "Templates"
+      "title": "Templates",
+      "actions": {
+        "add": "Add",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "duplicate": "Duplicate",
+        "edit": "Edit",
+        "remove": "Remove",
+        "restore": "Restore",
+        "revertChanges": "Revert changes",
+        "saveChanges": "Save changes"
+      },
+      "labels": {
+        "language": "Language",
+        "notAvailable": "-",
+        "semanticId": "semanticId",
+        "text": "Text",
+        "value": "Value"
+      },
+      "messages": {
+        "changesSavedSuccessfully": "Changes saved successfully",
+        "deleted": "deleted"
+      },
+      "validation": {
+        "errors": {
+          "invalidDate": "Has to be a valid date in format \"yyyy-mm-dd\"",
+          "invalidLong": "Has to be a valid long"
+        }
+      }
     },
     "transfer": {
       "aasRepository": "AAS Repository",
@@ -353,10 +414,6 @@
     },
     "errors": {
       "influxError": "There was a problem retrieving the time series data.",
-      "invalidDate": "Has to be a valid date in format \"yyyy-mm-dd\"",
-      "invalidIri": "Has to be a valid IRI, e.g. https://example.com/",
-      "invalidIriPart": "Has to work as part of an IRI (no \"/\", spaces or special characters)",
-      "invalidLong": "Has to be a valid long",
       "notFound": "Not found",
       "unauthorizedError": {
         "content": "You don`t have access to this resource. You may login or contact your administrator to get access.",

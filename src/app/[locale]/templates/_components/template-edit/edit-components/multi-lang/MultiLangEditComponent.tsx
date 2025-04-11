@@ -14,7 +14,7 @@ interface MultiLangEditComponentProps {
 export function MultiLangEditComponent(props: MultiLangEditComponentProps) {
     const [data, setData] = useState(props.data);
     const [langStrings, setLangStrings] = useState<LangStringTextType[]>(data.value ?? []);
-    const t = useTranslations('common');
+    const t = useTranslations('pages.templates');
 
     useEffect(() => {
         setData(props.data);

@@ -7,20 +7,20 @@ interface TemplateDeleteDialogProps extends DialogProps {
 }
 
 export function TemplateDeleteDialog(props: TemplateDeleteDialogProps) {
-    const t = useTranslations();
+    const t = useTranslations('pages.templates');
     return (
         <Dialog open={props.open} onClose={props.onClose}>
             <DialogContent>
                 <DialogContentText>
-                    {t('pages.templates.deleteTemplateQuestion', { name: props.itemName ?? '' })}
+                    {t('deleteTemplateQuestion', { name: props.itemName ?? '' })}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
                 <Button onClick={(e) => props.onClose && props.onClose(e, 'escapeKeyDown')} autoFocus>
-                    {t('common.actions.cancel')}
+                    {t('actions.cancel')}
                 </Button>
                 <Button onClick={() => props.onDelete()} color="error">
-                    {t('common.actions.delete')}
+                    {t('actions.delete')}
                 </Button>
             </DialogActions>
         </Dialog>

@@ -47,7 +47,7 @@ export default function Page() {
     const [isSubmodelsLoading, setIsSubmodelsLoading] = useState(true);
     const [registryAasData, setRegistryAasData] = useRegistryAasState();
     const { showError } = useShowError();
-    const t = useTranslations();
+    const t = useTranslations('pages.aasViewer');
 
 
 
@@ -190,7 +190,7 @@ export default function Page() {
                                 onClick={startComparison}
                                 data-testid="detail-compare-button"
                             >
-                                {t('pages.compare.compareButton')}
+                                {t('actions.compareButton')}
                             </Button>
                         )}
                         {env.TRANSFER_FEATURE_FLAG && <TransferButton />}
@@ -220,13 +220,13 @@ export default function Page() {
                             display: 'inline-block',
                         }}
                     >
-                        {t('common.messages.noDataFound')}
+                        {t('messages.noDataFound')}
                     </Typography>
                     <Typography color="text.secondary">
-                        {t('common.messages.noDataFoundFor', { name: safeBase64Decode(base64AasId) })}
+                        {t('messages.noDataFoundFor', { name: safeBase64Decode(base64AasId) })}
                     </Typography>
                     <Button variant="contained" startIcon={<ArrowForward />} href="/">
-                        {t('common.actions.toHome')}
+                        {t('actions.toHome')}
                     </Button>
                 </>
             )}

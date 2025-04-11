@@ -78,7 +78,7 @@ const StyledImageWrapper = styled(Box)(({ theme }) => ({
 }));
 
 export function DocumentComponent(props: MarkingsComponentProps) {
-    const t = useTranslations('common');
+    const t = useTranslations('components.documentComponent');
     const locale = useLocale();
     const [fileViewObject, setFileViewObject] = useState<FileViewObject>();
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
@@ -353,9 +353,9 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                                 data-testid="document-open-button"
                             >
                                 {!fileExists ? (
-                                    t('messages.fileNotFound')
+                                    t('fileNotFound')
                                 ) : (
-                                    t('actions.open')
+                                    t('open')
                                 )}
                             </Button>
                         </Box>

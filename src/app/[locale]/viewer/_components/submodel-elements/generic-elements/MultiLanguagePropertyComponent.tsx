@@ -14,7 +14,7 @@ type MultiLanguagePropertyComponentProps = {
 
 export function MultiLanguagePropertyComponent(props: MultiLanguagePropertyComponentProps) {
     const { mLangProp } = props;
-    const t = useTranslations('common.labels');
+    const t = useTranslations('components.propertyComponent');
     const locale = useLocale();
     const value = getTranslationText(mLangProp, locale);
     const [isHovered, setIsHovered] = useState(false);
@@ -24,7 +24,7 @@ export function MultiLanguagePropertyComponent(props: MultiLanguagePropertyCompo
         if (value) {
             navigator.clipboard.writeText(value);
             notificationSpawner.spawn({
-                message: t('copied'),
+                message: t('labels.copied'),
                 severity: 'success',
             });
         }
@@ -33,7 +33,7 @@ export function MultiLanguagePropertyComponent(props: MultiLanguagePropertyCompo
     const renderCopyButton = () => {
         if (!value) return null;
         return (
-            <Tooltip title={t('copy')}>
+            <Tooltip title={t('labels.copy')}>
                 <IconButton
                     onClick={handleCopyValue}
                     size="small"

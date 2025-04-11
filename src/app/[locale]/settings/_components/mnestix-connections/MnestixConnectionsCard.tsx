@@ -30,7 +30,7 @@ export function MnestixConnectionsCard() {
     const notificationSpawner = useNotificationSpawner();
     const [isEditMode, setIsEditMode] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const t = useTranslations();
+    const t = useTranslations('pages.settings');
     const env = useEnv();
 
     const dataSources: DataSource[] = [
@@ -86,7 +86,7 @@ export function MnestixConnectionsCard() {
         try {
             await upsertConnectionDataAction([...data.aasRepository, ...data.submodelRepository]);
             notificationSpawner.spawn({
-                message: t('common.messages.changesSavedSuccessfully'),
+                message: t('messages.changesSavedSuccessfully'),
                 severity: 'success',
             });
             setIsEditMode(false);
@@ -106,8 +106,8 @@ export function MnestixConnectionsCard() {
     return (
         <Box sx={{ p: 3, width: '100%' }}>
             <SettingsCardHeader
-                title={t('pages.settings.connections.title')}
-                subtitle={t('pages.settings.connections.subtitle')}
+                title={t('connections.title')}
+                subtitle={t('connections.subtitle')}
                 onCancel={() => cancelEdit()}
                 onEdit={() => setIsEditMode(true)}
                 onSubmit={handleSubmit((data) => saveConnectionData(data))}

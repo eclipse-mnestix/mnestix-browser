@@ -16,7 +16,7 @@ function getAddressType(type: string, translation: (type: AddressType) => string
     return null;
 }
 
-type ContactType = keyof typeof enMessages.components.ContactInformation.contactTypes;
+type ContactType = keyof typeof enMessages.components.contactInformation.contactTypes;
 
 function getContactType(type: string, translation: (type: ContactType) => string) {
     if (type in enMessages.components.addressComponent.addressTypes) {
@@ -45,7 +45,7 @@ export function AddressElement({ el, index }: { el: IDataElement; index?: number
 
 // Build Phone number part
 export function PhoneElement({ el, index }: { el: SubmodelElementCollection; index?: number }) {
-    const contactTypes = useTranslations('components.ContactInformation.contactTypes');
+    const contactTypes = useTranslations('components.contactInformation.contactTypes');
     const locale = useLocale();
 
     if (!el.value) {
@@ -74,7 +74,7 @@ export function PhoneElement({ el, index }: { el: SubmodelElementCollection; ind
 
 // Build Fax part
 export function FaxElement({ el, index }: { el: SubmodelElementCollection; index?: number }) {
-    const contactTypes = useTranslations('components.ContactInformation.contactTypes');
+    const contactTypes = useTranslations('components.contactInformation.contactTypes');
     const locale = useLocale();
 
     if (!el.value) {
@@ -99,7 +99,7 @@ export function FaxElement({ el, index }: { el: SubmodelElementCollection; index
 
 // Build Mail part
 export function EmailElement({ el, index }: { el: SubmodelElementCollection; index?: number }) {
-    const contactTypes = useTranslations('components.ContactInformation.contactTypes');
+    const contactTypes = useTranslations('components.contactInformation.contactTypes');
     const locale = useLocale();
 
     if (!el.value) {

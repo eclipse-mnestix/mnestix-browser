@@ -15,7 +15,7 @@ export function PropertyComponent(props: PropertyComponentProps) {
     const [isHovered, setIsHovered] = useState(false);
     const notificationSpawner = useNotificationSpawner();
 
-    const t = useTranslations('common');
+    const t = useTranslations('components.propertyComponent');
 
     const handleCopyValue = () => {
         if (property.value) {
