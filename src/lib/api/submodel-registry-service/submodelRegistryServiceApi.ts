@@ -50,18 +50,13 @@ export class SubmodelRegistryServiceApi implements ISubmodelRegistryServiceApi {
         if (!response.isSuccess) {
             logResponseDebug(
                 this.log,
-                this.getSubmodelDescriptorById.name,
+                'getSubmodelDescriptorById',
                 'Failed to get submodel descriptor by id',
                 response,
             );
             return response;
         }
-        logResponseDebug(
-            this.log,
-            this.getSubmodelDescriptorById.name,
-            'Successfully got submodel descriptor by id',
-            response,
-        );
+        logResponseDebug(this.log, 'getSubmodelDescriptorById', 'Successfully got submodel descriptor by id', response);
         return response;
     }
 
@@ -108,7 +103,7 @@ export class SubmodelRegistryServiceApi implements ISubmodelRegistryServiceApi {
         if (!response.isSuccess) {
             logResponseDebug(
                 this.log,
-                this.getAllSubmodelDescriptors.name,
+                'getAllSubmodelDescriptors',
                 'Failed to get submodel descriptors by id',
                 response,
             );
@@ -116,7 +111,7 @@ export class SubmodelRegistryServiceApi implements ISubmodelRegistryServiceApi {
         }
         logResponseDebug(
             this.log,
-            this.getAllSubmodelDescriptors.name,
+            'getAllSubmodelDescriptors',
             'Successfully got submodel descriptors by id',
             response,
         );
@@ -153,20 +148,10 @@ export class SubmodelRegistryServiceApi implements ISubmodelRegistryServiceApi {
             method: 'GET',
         });
         if (!response.isSuccess) {
-            logResponseDebug(
-                this.log,
-                this.getSubmodelFromEndpoint.name,
-                'Failed to get submodel from endpoint',
-                response,
-            );
+            logResponseDebug(this.log, 'getSubmodelFromEndpoint', 'Failed to get submodel from endpoint', response);
             return response;
         }
-        logResponseDebug(
-            this.log,
-            this.getSubmodelFromEndpoint.name,
-            'Successfully got submodel from endpoint',
-            response,
-        );
+        logResponseDebug(this.log, 'getSubmodelFromEndpoint', 'Successfully got submodel from endpoint', response);
         return response;
     }
 }

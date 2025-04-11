@@ -93,22 +93,16 @@ export class RepositorySearchService {
 
         const response = await client.getAssetAdministrationShellById(aasId);
         if (response.isSuccess) {
-            logResponseDebug(
-                this.log,
-                this.getAasFromDefaultRepo.name,
-                'Querying AAS from default repository',
-                response,
-                { Repository_Endpoint: client.getBaseUrl(), AAS_ID_Base64_Encoded: aasId },
-            );
+            logResponseDebug(this.log, 'getAasFromDefaultRepo', 'Querying AAS from default repository', response, {
+                Repository_Endpoint: client.getBaseUrl(),
+                AAS_ID_Base64_Encoded: aasId,
+            });
             return response;
         }
-        logResponseDebug(
-            this.log,
-            this.getAasFromDefaultRepo.name,
-            'AAS repository search unsuccessful',
-            response,
-            { Repository_Endpoint: client.getBaseUrl(), AAS_ID_Base64_Encoded: aasId },
-        );
+        logResponseDebug(this.log, 'getAasFromDefaultRepo', 'AAS repository search unsuccessful', response, {
+            Repository_Endpoint: client.getBaseUrl(),
+            AAS_ID_Base64_Encoded: aasId,
+        });
         return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'AAS not found', response.httpStatus);
     }
 
@@ -145,20 +139,17 @@ export class RepositorySearchService {
         if (response.isSuccess) {
             logResponseDebug(
                 this.log,
-                this.getSubmodelFromDefaultRepo.name,
+                'getSubmodelFromDefaultRepo',
                 'Querying Submodel from default repository',
                 response,
                 { Repository_Endpoint: client.getBaseUrl(), Submodel_ID: submodelId },
             );
             return response;
         }
-        logResponseDebug(
-            this.log,
-            this.getSubmodelFromDefaultRepo.name,
-            'Submodel repository search unsuccessful',
-            response,
-            { Repository_Endpoint: client.getBaseUrl(), Submodel_ID: submodelId },
-        );
+        logResponseDebug(this.log, 'getSubmodelFromDefaultRepo', 'Submodel repository search unsuccessful', response, {
+            Repository_Endpoint: client.getBaseUrl(),
+            Submodel_ID: submodelId,
+        });
         return wrapErrorCode(
             ApiResultStatus.NOT_FOUND,
             `Submodel with id '${submodelId}' not found`,
@@ -170,22 +161,16 @@ export class RepositorySearchService {
         const client = this.getSubmodelRepositoryClient(repoUrl);
         const response = await client.getSubmodelById(submodelId);
         if (response.isSuccess) {
-            logResponseDebug(
-                this.log,
-                this.getSubmodelFromRepo.name,
-                'Querying Submodel from repository',
-                response,
-                { Repository_Endpoint: client.getBaseUrl(), Submodel_ID: submodelId },
-            );
+            logResponseDebug(this.log, 'getSubmodelFromRepo', 'Querying Submodel from repository', response, {
+                Repository_Endpoint: client.getBaseUrl(),
+                Submodel_ID: submodelId,
+            });
             return response;
         }
-        logResponseDebug(
-            this.log,
-            this.getSubmodelFromRepo.name,
-            'Submodel repository search unsuccessful',
-            response,
-            { Repository_Endpoint: client.getBaseUrl(), Submodel_ID: submodelId },
-        );
+        logResponseDebug(this.log, 'getSubmodelFromRepo', 'Submodel repository search unsuccessful', response, {
+            Repository_Endpoint: client.getBaseUrl(),
+            Submodel_ID: submodelId,
+        });
         return Promise.reject(`Unable to fetch Submodel '${submodelId}' from '${repoUrl}'`);
     }
 
@@ -218,7 +203,7 @@ export class RepositorySearchService {
         if (response.isSuccess) {
             logResponseDebug(
                 this.log,
-                this.getAttachmentFromSubmodelElementFromDefaultRepo.name,
+                'getAttachmentFromSubmodelElementFromDefaultRepo',
                 'Querying Attachment from repository',
                 response,
                 {
@@ -231,7 +216,7 @@ export class RepositorySearchService {
         }
         logResponseDebug(
             this.log,
-            this.getAttachmentFromSubmodelElementFromDefaultRepo.name,
+            'getAttachmentFromSubmodelElementFromDefaultRepo',
             'Querying Attachment from repository unsuccessful',
             response,
             {
@@ -257,7 +242,7 @@ export class RepositorySearchService {
         if (response.isSuccess) {
             logResponseDebug(
                 this.log,
-                this.getAttachmentFromSubmodelElementFromRepo.name,
+                'getAttachmentFromSubmodelElementFromRepo',
                 'Querying Attachment from repository',
                 response,
                 {
@@ -270,7 +255,7 @@ export class RepositorySearchService {
         }
         logResponseDebug(
             this.log,
-            this.getAttachmentFromSubmodelElementFromRepo.name,
+            'getAttachmentFromSubmodelElementFromRepo',
             'Querying Attachment from repository unsuccessful',
             response,
             {
@@ -312,7 +297,7 @@ export class RepositorySearchService {
         if (response.isSuccess) {
             logResponseDebug(
                 this.log,
-                this.getSubmodelReferencesFromShellFromDefaultRepo.name,
+                'getSubmodelReferencesFromShellFromDefaultRepo',
                 'Querying Submodel Reference from repository',
                 response,
                 {
@@ -324,7 +309,7 @@ export class RepositorySearchService {
         }
         logResponseDebug(
             this.log,
-            this.getSubmodelReferencesFromShellFromDefaultRepo.name,
+            'getSubmodelReferencesFromShellFromDefaultRepo',
             'Querying Submodel Reference from repository unsuccessful',
             response,
             {
@@ -345,7 +330,7 @@ export class RepositorySearchService {
         if (response.isSuccess) {
             logResponseDebug(
                 this.log,
-                this.getSubmodelReferencesFromShellFromRepo.name,
+                'getSubmodelReferencesFromShellFromRepo',
                 'Querying Submodel Reference from repository unsuccessful',
                 response,
                 {
@@ -357,7 +342,7 @@ export class RepositorySearchService {
         }
         logResponseDebug(
             this.log,
-            this.getSubmodelReferencesFromShellFromRepo.name,
+            'getSubmodelReferencesFromShellFromRepo',
             'Querying Submodel Reference from repository unsuccessful',
             response,
             {
@@ -391,7 +376,7 @@ export class RepositorySearchService {
         if (response.isSuccess) {
             logResponseDebug(
                 this.log,
-                this.getAasThumbnailFromDefaultRepo.name,
+                'getAasThumbnailFromDefaultRepo',
                 'Querying Thumbnail from repository unsuccessful',
                 response,
                 {
@@ -403,7 +388,7 @@ export class RepositorySearchService {
         }
         logResponseDebug(
             this.log,
-            this.getAasThumbnailFromDefaultRepo.name,
+            'getAasThumbnailFromDefaultRepo',
             'Querying Thumbnail from repository unsuccessful',
             response,
             {
@@ -424,7 +409,7 @@ export class RepositorySearchService {
         if (!response.isSuccess) {
             logResponseDebug(
                 this.log,
-                this.getAasThumbnailFromRepo.name,
+                'getAasThumbnailFromRepo',
                 'Querying Thumbnail from repository unsuccessful',
                 response,
                 {
@@ -437,7 +422,7 @@ export class RepositorySearchService {
         if (response.result instanceof Blob && response.result.size === 0) {
             logResponseDebug(
                 this.log,
-                this.getAasThumbnailFromRepo.name,
+                'getAasThumbnailFromRepo',
                 'Querying Thumbnail from repository unsuccessful',
                 response,
                 {
@@ -449,7 +434,7 @@ export class RepositorySearchService {
         }
         logResponseDebug(
             this.log,
-            this.getAasThumbnailFromRepo.name,
+            'getAasThumbnailFromRepo',
             'Querying Thumbnail from repository successful',
             response,
             {
@@ -544,22 +529,16 @@ export class RepositorySearchService {
         const client = this.getAasRepositoryClient(repoUrl);
         const response = await client.getAssetAdministrationShellById(aasId);
         if (response.isSuccess) {
-            logResponseDebug(this.log, this.getAasFromRepo.name, 'Querying AAS from repository', response, {
+            logResponseDebug(this.log, 'getAasFromRepo', 'Querying AAS from repository', response, {
                 Repository_Endpoint: client.getBaseUrl(),
                 AAS_ID: aasId,
             });
             return response;
         }
-        logResponseDebug(
-            this.log,
-            this.getAasFromRepo.name,
-            'Querying AAS from repository unsuccessful',
-            response,
-            {
-                Repository_Endpoint: client.getBaseUrl(),
-                AAS_ID: aasId,
-            },
-        );
+        logResponseDebug(this.log, 'getAasFromRepo', 'Querying AAS from repository unsuccessful', response, {
+            Repository_Endpoint: client.getBaseUrl(),
+            AAS_ID: aasId,
+        });
         return wrapErrorCode(
             ApiResultStatus.NOT_FOUND,
             `AAS '${aasId}' not found in repository '${repoUrl}'`,
