@@ -1,4 +1,4 @@
-export enum SubmodelElementSemanticId {
+export enum SubmodelElementSemanticIdEnum {
     Address = '0173-1#02-AAQ832#005',
     NameplateAddressV3 = 'https://admin-shell.io/zvei/nameplate/1/0/ContactInformations/AddressInformation',
     MarkingsV1 = 'https://admin-shell.io/zvei/nameplate/1/0/Nameplate/Markings',

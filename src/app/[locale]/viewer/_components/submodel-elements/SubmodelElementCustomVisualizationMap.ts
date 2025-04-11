@@ -1,4 +1,4 @@
-import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
+import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { AddressComponent } from 'app/[locale]/viewer/_components/submodel-elements/address-component/AddressComponent';
 import { ContactInformationComponent } from 'app/[locale]/viewer/_components/submodel-elements/address-component/ContactInformationComponent';
 import { MarkingsComponent } from 'app/[locale]/viewer/_components/submodel-elements/marking-components/MarkingsComponent';
@@ -11,14 +11,14 @@ import { DocumentComponent } from 'app/[locale]/viewer/_components/submodel-elem
  * https://github.com/eclipse-mnestix/mnestix-browser/wiki/How-to-create-custom-submodel-visualizations
  */
 export const submodelElementCustomVisualizationMap = {
-    [SubmodelElementSemanticId.Address]: AddressComponent,
-    [SubmodelElementSemanticId.NameplateAddressV3]: AddressComponent,
-    [SubmodelElementSemanticId.ContactInformation]: ContactInformationComponent,
-    [SubmodelElementSemanticId.MarkingsV1]: MarkingsComponent,
-    [SubmodelElementSemanticId.MarkingsV2]: MarkingsComponent,
-    [SubmodelElementSemanticId.MarkingsV3]: MarkingsComponent,
-    [SubmodelElementSemanticId.MarkingsIrdiV1]: MarkingsComponent,
-    [SubmodelElementSemanticId.MarkingsIrdiV3]: MarkingsComponent,
-    [SubmodelElementSemanticId.Document]: DocumentComponent,
-    [SubmodelElementSemanticId.DocumentIrdi]: DocumentComponent,
+    [SubmodelElementSemanticIdEnum.Address]: AddressComponent,
+    [SubmodelElementSemanticIdEnum.NameplateAddressV3]: AddressComponent,
+    [SubmodelElementSemanticIdEnum.ContactInformation]: ContactInformationComponent,
+    [SubmodelElementSemanticIdEnum.MarkingsV1]: MarkingsComponent,
+    [SubmodelElementSemanticIdEnum.MarkingsV2]: MarkingsComponent,
+    [SubmodelElementSemanticIdEnum.MarkingsV3]: MarkingsComponent,
+    [SubmodelElementSemanticIdEnum.MarkingsIrdiV1]: MarkingsComponent,
+    [SubmodelElementSemanticIdEnum.MarkingsIrdiV3]: MarkingsComponent,
+    [SubmodelElementSemanticIdEnum.Document]: DocumentComponent,
+    [SubmodelElementSemanticIdEnum.DocumentIrdi]: DocumentComponent,
 };
