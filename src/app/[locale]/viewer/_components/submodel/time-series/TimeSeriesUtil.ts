@@ -5,7 +5,10 @@ import {
 import { TimeSeriesSubmodelElement } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesSubmodelElementEnum';
 import { getTranslationText, hasSemanticId } from 'lib/util/SubmodelResolverUtil';
 import { IntlShape } from 'react-intl';
-import { TimeSeriesTimeFormat, TimeSeriesTimeFormatSemanticIds } from 'lib/enums/TimeSeriesTimeFormatSemanticIds.enum';
+import {
+    TimeSeriesTimeFormat,
+    TimeSeriesTimeFormatSemanticIds,
+} from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesTimeFormatSemanticIds.enum';
 import { Property } from '@aas-core-works/aas-core3.0-typescript/types';
 
 export type TimeSeriesDataSet = {

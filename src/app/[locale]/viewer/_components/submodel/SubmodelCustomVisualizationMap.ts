@@ -1,4 +1,4 @@
-import { SubmodelSemanticId } from 'lib/enums/SubmodelSemanticId.enum';
+import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import { CarbonFootprintDetail } from './carbon-footprint/CarbonFootprintDetail';
 import { BillOfApplicationsDetail } from './bill-of-applications/BillOfApplicationsDetail';
 import { ReferenceCounterDetail } from './reference-counter/ReferenceCounterDetail';
@@ -11,12 +11,12 @@ import { TimeSeriesDetail } from './time-series/TimeSeriesDetail';
  * found here: https://github.com/eclipse-mnestix/mnestix-browser/wiki/How-to-create-custom-submodel-visualizations
  */
 export const submodelCustomVisualizationMap = {
-    [SubmodelSemanticId.CarbonFootprint]: CarbonFootprintDetail,
-    [SubmodelSemanticId.CarbonFootprintV1]: CarbonFootprintDetail,
-    [SubmodelSemanticId.CarbonFootprintIrdi]: CarbonFootprintDetail,
-    [SubmodelSemanticId.ReferenceCounterContainer]: ReferenceCounterDetail,
-    [SubmodelSemanticId.TimeSeries]: TimeSeriesDetail,
-    [SubmodelSemanticId.HierarchicalStructuresV10]: HierarchicalStructuresDetail,
-    [SubmodelSemanticId.HierarchicalStructuresV11]: HierarchicalStructuresDetail,
-    [SubmodelSemanticId.BillOfApplications]: BillOfApplicationsDetail,
+    [SubmodelSemanticIdEnum.CarbonFootprint]: CarbonFootprintDetail,
+    [SubmodelSemanticIdEnum.CarbonFootprintV1]: CarbonFootprintDetail,
+    [SubmodelSemanticIdEnum.CarbonFootprintIrdi]: CarbonFootprintDetail,
+    [SubmodelSemanticIdEnum.ReferenceCounterContainer]: ReferenceCounterDetail,
+    [SubmodelSemanticIdEnum.TimeSeries]: TimeSeriesDetail,
+    [SubmodelSemanticIdEnum.HierarchicalStructuresV10]: HierarchicalStructuresDetail,
+    [SubmodelSemanticIdEnum.HierarchicalStructuresV11]: HierarchicalStructuresDetail,
+    [SubmodelSemanticIdEnum.BillOfApplications]: BillOfApplicationsDetail,
 };

@@ -1,5 +1,5 @@
 import { Grid, Paper, styled } from '@mui/material';
-import { ProductLifecycleStage } from 'lib/enums/ProductLifecycleStage.enum';
+import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/ProductLifecycleStage.enum';
 import { cutDecimalPlaces } from 'lib/util/NumberUtil';
 import React from 'react';
 import { useTranslations } from 'next-intl';

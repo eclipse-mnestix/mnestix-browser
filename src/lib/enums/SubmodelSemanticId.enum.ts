@@ -1,4 +1,4 @@
-export enum SubmodelSemanticId {
+export enum SubmodelSemanticIdEnum {
     CoffeeConsumptionContainer = 'https://xitaso.com/CoffeeConsumption',
     ReferenceCounterContainer = 'https://xitaso.com/ReferenceCounter',
     CarbonFootprintIrdi = '0173-1#01-AHE712#001',

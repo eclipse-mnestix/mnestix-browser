@@ -6,7 +6,7 @@ import { CO2EquivalentsDistribution } from './visualization-components/CO2Equiva
 import { Comparison } from './visualization-components/Comparison';
 import { ProductLifecycle } from './visualization-components/ProductLifecycle';
 import { hasSemanticId } from 'lib/util/SubmodelResolverUtil';
-import { ProductLifecycleStage } from 'lib/enums/ProductLifecycleStage.enum';
+import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/ProductLifecycleStage.enum';
 import { StyledDataRow } from 'components/basics/StyledDataRow';
 import { ISubmodelElement, Property, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
 import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
