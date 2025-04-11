@@ -2,7 +2,7 @@ import {
     MultiLanguageProperty,
     SubmodelElementCollection,
 } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
-import { TimeSeriesSubmodelElement } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesSubmodelElementEnum';
+import { TimeSeriesSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesSubmodelElementSemanticId.enum';
 import { getTranslationText, hasSemanticId } from 'lib/util/SubmodelResolverUtil';
 import { IntlShape } from 'react-intl';
 import {
@@ -19,14 +19,14 @@ export type DataPoint = { [key: string]: number | string };
 
 export function extractValueBySemanticId(
     submodelElementCollection: SubmodelElementCollection,
-    semanticId: TimeSeriesSubmodelElement,
+    semanticId: TimeSeriesSubmodelElementSemanticIdEnum,
 ) {
     return submodelElementCollection.value?.find((v) => hasSemanticId(v, semanticId));
 }
 
 export function extractIntlValueBySemanticId(
     submodelElementCollection: SubmodelElementCollection,
-    semanticId: TimeSeriesSubmodelElement,
+    semanticId: TimeSeriesSubmodelElementSemanticIdEnum,
     intl: IntlShape,
 ) {
     const multiLanguageProperty: MultiLanguageProperty | undefined = extractValueBySemanticId(
@@ -80,7 +80,9 @@ export function detectRecordTimeSemanticID(record: SubmodelElementCollection): s
  */
 export function parseRecordsFromInternalSegment(segment: SubmodelElementCollection): TimeSeriesDataSet | null {
     // get records
-    const recordsElement = segment.value?.find((se) => hasSemanticId(se, TimeSeriesSubmodelElement.TimeSeriesRecords));
+    const recordsElement = segment.value?.find((se) =>
+        hasSemanticId(se, TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesRecords),
+    );
     if (!recordsElement) return null;
     const records = (recordsElement as SubmodelElementCollection).value;
     if (!records || !records?.length) return null;
