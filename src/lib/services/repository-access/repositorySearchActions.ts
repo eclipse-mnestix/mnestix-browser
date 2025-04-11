@@ -12,22 +12,31 @@ import {
 } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { AssetAdministrationShellRepositoryApi, SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { mnestixFetch } from 'lib/api/infrastructure';
-
-const searcher = RepositorySearchService.create();
+import { headers } from 'next/headers';
+import { createRequestLogger, logInfo } from 'lib/util/Logger';
 
 export async function performSearchAasFromAllRepositories(
     searchInput: string,
 ): Promise<ApiResponseWrapper<RepoSearchResult<AssetAdministrationShell>[]>> {
+    const logger = createRequestLogger(await headers());
+    logInfo(logger, performSearchAasFromAllRepositories.name, 'Requested AAS', { requestedId: searchInput });
+    const searcher = RepositorySearchService.create(logger);
     return searcher.getAasFromAllRepos(searchInput);
 }
 
 export async function performSearchSubmodelFromAllRepos(searchInput: string): Promise<ApiResponseWrapper<Submodel>> {
+    const logger = createRequestLogger(await headers());
+    logInfo(logger, performSearchSubmodelFromAllRepos.name, 'Requested Submodel', { requestedId: searchInput });
+    const searcher = RepositorySearchService.create(logger);
     const response = await searcher.getFirstSubmodelFromAllRepos(searchInput);
     if (!response.isSuccess) return wrapErrorCode(response.errorCode, response.message);
     return wrapSuccess(response.result.searchResult);
 }
 
 export async function performGetAasThumbnailFromAllRepos(searchInput: string): Promise<ApiResponseWrapper<Blob>> {
+    const logger = createRequestLogger(await headers());
+    logInfo(logger, performGetAasThumbnailFromAllRepos.name, 'Requested AAS Thumbnail', { requestedId: searchInput });
+    const searcher = RepositorySearchService.create(logger);
     const response = await searcher.getFirstAasThumbnailFromAllRepos(searchInput);
     if (!response.isSuccess) return wrapErrorCode(response.errorCode, response.message);
     return wrapSuccess(response.result.searchResult);
@@ -45,6 +54,9 @@ export async function getThumbnailFromShell(
 
 // Thumbnail function if explicit endpoint is not known; maybe use for new List else YAGNI
 export async function getThumbnailFromShellFromAllRepos(aasId: string): Promise<ApiResponseWrapper<ApiFileDto>> {
+    const logger = createRequestLogger(await headers());
+    const searcher = RepositorySearchService.create(logger);
+    logInfo(logger, getThumbnailFromShellFromAllRepos.name, 'Requested AAS Thumbnail', { requestedId: aasId });
     const defaultResponsePromise = searcher.getAasThumbnailFromDefaultRepo(aasId);
     const allResponsePromise = searcher.getFirstAasThumbnailFromAllRepos(aasId);
 
@@ -58,12 +70,18 @@ export async function getThumbnailFromShellFromAllRepos(aasId: string): Promise<
 }
 
 export async function getSubmodelReferencesFromShell(searchInput: string): Promise<ApiResponseWrapper<Reference[]>> {
+    const logger = createRequestLogger(await headers());
+    logInfo(logger, getSubmodelReferencesFromShell.name, 'Requested Submodel References', { requestedId: searchInput });
+    const searcher = RepositorySearchService.create(logger);
     const response = await searcher.getFirstSubmodelReferencesFromShellFromAllRepos(searchInput);
     if (!response.isSuccess) return wrapErrorCode(response.errorCode, response.message);
     return wrapSuccess(response.result.searchResult.result);
 }
 
 export async function getSubmodelById(id: string): Promise<ApiResponseWrapper<Submodel>> {
+    const logger = createRequestLogger(await headers());
+    logInfo(logger, getSubmodelById.name, 'Requested Submodel', { requestedId: id });
+    const searcher = RepositorySearchService.create(logger);
     const response = await searcher.getFirstSubmodelFromAllRepos(id);
     if (!response.isSuccess) return wrapErrorCode(response.errorCode, response.message);
     return wrapSuccess(response.result.searchResult);
@@ -74,6 +92,12 @@ export async function getAttachmentFromSubmodelElement(
     submodelElementPath: string,
     baseRepositoryUrl?: string,
 ): Promise<ApiResponseWrapper<ApiFileDto>> {
+    const logger = createRequestLogger(await headers());
+    logInfo(logger, getAttachmentFromSubmodelElement.name, 'Requested Attachment', {
+        submodelId: submodelId,
+        submodelElementPath: submodelElementPath,
+    });
+    const searcher = RepositorySearchService.create(logger);
     if (baseRepositoryUrl) {
         const fileSearcher = SubmodelRepositoryApi.create(baseRepositoryUrl, mnestixFetch());
         const searchResponse = await fileSearcher.getAttachmentFromSubmodelElement(submodelId, submodelElementPath);

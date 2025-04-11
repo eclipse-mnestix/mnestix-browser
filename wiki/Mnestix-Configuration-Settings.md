@@ -3,7 +3,7 @@
 Mnestix provides the following configuration options. You can adapt the values in your docker compose file.
 
 | Name                                  | Default value               | Description                                                                                                                                                                                                                        | required |
-|---------------------------------------|-----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
+| ------------------------------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
 | `DISCOVERY_API_URL`                   |                             | Address of the Discovery Service to find an AAS for an Asset                                                                                                                                                                       | required |
 | `REGISTRY_API_URL`                    |                             | Address of the AAS Registry Service to retrieve the related descriptor for an AAS                                                                                                                                                  | optional |
 | `SUBMODEL_REGISTRY_API_URL`           |                             | Address of the Submodel Registry Service to retrieve the related descriptor for a Submodel                                                                                                                                         | optional |
@@ -32,30 +32,28 @@ Mnestix provides the following configuration options. You can adapt the values i
 
 ### How to set a custom logo
 
-There are multiple ways to set a logo. You can choose between either of the following options depending on your preference:
+There are multiple ways to set a logo. You can choose between either of the following options depending on your
+preference:
 
 #### Option 1: Mount a logo
 
-First you need to mount your logo to the container by adding it to the docker compose file. 
+First you need to mount your logo to the container by adding it to the docker compose file: 
 
 ```yaml
-environment:
-  - THEME_LOGO_MIME_TYPE: 'image/svg+xml'
----
 volumes:
-  - /path/to/my/logo.svg:/app/public/logo
+    - /path/to/my/logo.svg:/app/public/logo
 ```
 
 When using the provided [`compose.yaml` File](https://github.com/eclipse-mnestix/mnestix-browser/blob/main/compose.yml)
-you can just place your logo in the
-[`data` folder](https://github.com/eclipse-mnestix/mnestix-browser/tree/main/docker-compose/data/).
+you can place your logo in the [
+`data` folder](https://github.com/eclipse-mnestix/mnestix-browser/tree/main/docker-compose/data/).
 
 You also have to set the mime type correctly in order for the browser to parse your image correctly.
 E.g. for an SVG image, set the mime type to `image/svg+xml`:
 
 ```yaml
 environment:
-  THEME_LOGO_MIME_TYPE: 'image/svg+xml'
+    THEME_LOGO_MIME_TYPE: 'image/svg+xml'
 ```
 
 Only image mime types are allowed.
@@ -63,12 +61,12 @@ https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Comm
 
 #### Option 2: Base64 encoded logo
 
-This version overwrites the previous setting. 
+This version overwrites the previous setting.
 To use this, provide a base64 encoded image in the environment variable:
 
 ```yaml
 environment:
-  THEME_BASE64_LOGO: '<<BASE64_ENCODED_IMAGE>>'
+    THEME_BASE64_LOGO: '<<BASE64_ENCODED_IMAGE>>'
 ```
 
 #### Option 3: Link to a hosted logo
@@ -78,7 +76,7 @@ To use this just set an environment variable to a link hosted that is publicly a
 
 ```yaml
 environment:
-  THEME_LOGO_URL: https://xitaso.com/wp-content/uploads/XITASO-Logo-quer.svg
+    THEME_LOGO_URL: https://xitaso.com/wp-content/uploads/XITASO-Logo-quer.svg
 ```
 
 ### Using Azure Entra ID

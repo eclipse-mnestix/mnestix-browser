@@ -1,6 +1,6 @@
 import { mapBaSyxRbacRuleToFormModel, mapFormModelToBaSyxRbacRule } from './FormMappingHelper';
 import { BaSyxRbacRule } from 'lib/services/rbac-service/RbacRulesService';
-import { RoleFormModel } from 'app/[locale]/settings/_components/role-settings/RoleForm';
+import { RuleFormModel } from 'app/[locale]/settings/_components/role-settings/RuleForm';
 
 describe('FormMappingHelper', () => {
     describe('mapBaSyxRbacRuleToFormModel', () => {
@@ -16,7 +16,8 @@ describe('FormMappingHelper', () => {
                 },
             };
 
-            const expectedFormModel: RoleFormModel = {
+            const expectedFormModel: RuleFormModel = {
+                role: 'admin',
                 type: 'aas-environment',
                 action: 'READ',
                 targetInformation: {
@@ -36,7 +37,8 @@ describe('FormMappingHelper', () => {
 
     describe('mapFormModelToBaSyxRbacRule', () => {
         it('should map RoleFormModel to BaSyxRbacRule correctly', () => {
-            const formModel: RoleFormModel = {
+            const formModel: RuleFormModel = {
+                role: 'admin-new',
                 type: 'aas-environment',
                 action: 'READ',
                 targetInformation: {
@@ -63,7 +65,7 @@ describe('FormMappingHelper', () => {
 
             const expectedRole: BaSyxRbacRule = {
                 idShort: 'role1',
-                role: 'admin',
+                role: 'admin-new',
                 action: 'READ',
                 targetInformation: {
                     '@type': 'aas-environment',

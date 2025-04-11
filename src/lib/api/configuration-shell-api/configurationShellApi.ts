@@ -1,61 +1,42 @@
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { IConfigurationShellApi } from 'lib/api/configuration-shell-api/configurationShellApiInterface';
+import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 export class ConfigurationShellApi implements IConfigurationShellApi {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
-    basePath: string;
-    use_authentication: boolean;
-
     private constructor(
-        protected _basePath: string = '',
-        use_authentication: boolean,
-        http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> },
-    ) {
-        this.http = http ? http : window;
-        this.basePath = _basePath;
-        this.use_authentication = use_authentication;
-    }
+        protected baseUrl: string,
+        protected use_authentication: boolean,
+        protected http: { 
+            fetch<T>(url: RequestInfo, init?: RequestInit): Promise<ApiResponseWrapper<T>> 
+        },
+    ) {}
 
     static create(
-        _baseUrl: string = '',
+        baseUrl: string | undefined,
         use_authentication: boolean,
-        http?: {
-            fetch(url: RequestInfo, init?: RequestInit): Promise<Response>;
+        http: {
+            fetch<T>(url: RequestInfo, init?: RequestInit): Promise<ApiResponseWrapper<T>>;
         },
     ): ConfigurationShellApi {
-        return new ConfigurationShellApi(_baseUrl, use_authentication, http ?? window);
+        if (!baseUrl) {
+            throw new Error('Base URL is required');
+        }
+        return new ConfigurationShellApi(baseUrl, use_authentication, http);
     }
 
-    async getIdGenerationSettings(): Promise<Submodel> {
-        let url_ = this.basePath + '/configuration/idGeneration';
-        url_ = url_.replace(/[?&]$/, '');
+    async getIdGenerationSettings(): Promise<ApiResponseWrapper<Submodel>> {
+        let url = this.baseUrl + '/configuration/idGeneration';
+        url = url.replace(/[?&]$/, '');
 
-        const options_: RequestInit = {
+        const options: RequestInit = {
             method: 'GET',
             headers: {},
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGetIdGenerationSettings(_response);
-        });
-    }
+        const response = await this.http.fetch<Submodel>(url, options);
 
-    async processGetIdGenerationSettings(response: Response): Promise<Submodel> {
-        const status = response.status;
-        const _headers: Record<string, string> = {};
-        if (response.headers && response.headers.forEach) {
-            response.headers.forEach((v, k) => (_headers[k] = v));
-        }
-        if (status === 200) {
-            return response.json();
-        } else if (status === 400) {
-            const _responseText1 = await response.text();
-            return _responseText1 === '' ? Promise.resolve<Submodel>(null as never) : JSON.parse(_responseText1);
-        } else if (status !== 200 && status !== 204) {
-            const _responseText2 = await response.text();
-            return _responseText2 === '' ? Promise.resolve<Submodel>(null as never) : JSON.parse(_responseText2);
-        }
-        return Promise.resolve<Submodel>(null as never);
+        return response;
     }
 
     async putSingleIdGenerationSetting(
@@ -64,40 +45,35 @@ export class ConfigurationShellApi implements IConfigurationShellApi {
             prefix: string;
             dynamicPart: string;
         },
-    ) {
-        await this.putSingleSettingValue(`${idShort}.Prefix`, values.prefix, 'idGeneration');
-        await this.putSingleSettingValue(`${idShort}.DynamicPart`, values.dynamicPart, 'idGeneration');
+    ) : Promise<ApiResponseWrapper<void>> {
+        // DANGER DANGER
+        // THIS IS JUST A TEMPORARY FIX TILL BASYX FIXES THE PATCH CALL TO NOT GIVE 404 WHEN THERE IS NO CHANGE
+        // BUG IS IN BASYX 2.0.0-milestone5
+        // DANGER DANGER
+        let response = await this.putSingleSettingValue(`${idShort}.Prefix`, values.prefix, 'idGeneration');
+        if (!response.isSuccess && response.errorCode != ApiResultStatus.NOT_FOUND) { return wrapErrorCode(response.errorCode, response.message); }
+        response = await this.putSingleSettingValue(`${idShort}.DynamicPart`, values.dynamicPart, 'idGeneration');
+        if (!response.isSuccess && response.errorCode != ApiResultStatus.NOT_FOUND) { return wrapErrorCode(response.errorCode, response.message); }
+        
+        return wrapSuccess(response.result);
     }
 
-    async putSingleSettingValue(path: string, value: string, settingsType: string): Promise<Response> {
-        let url_ = `${this.basePath}/configuration/${settingsType}/submodel-elements/${path}/$value`;
-        url_ = url_.replace(/[?&]$/, '');
+    async putSingleSettingValue(path: string, value: string, settingsType: string): Promise<ApiResponseWrapper<void>> {
+        let url = `${this.baseUrl}/configuration/${settingsType}/submodel-elements/${path}/$value`;
+        url = url.replace(/[?&]$/, '');
 
-        const content_ = JSON.stringify(value);
+        const content = JSON.stringify(value);
 
-        const options_: RequestInit = {
-            body: content_,
+        const options: RequestInit = {
+            body: content,
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processPutSingleSettingValue(_response);
-        });
-    }
+        const response = await this.http.fetch<void>(url, options);
 
-    async processPutSingleSettingValue(response: Response): Promise<Response> {
-        const status = response.status;
-        const _headers: Record<string, string> = {};
-        if (response.headers && response.headers.forEach) {
-            response.headers.forEach((v, k) => (_headers[k] = v));
-        }
-        if (status >= 200 && status < 300) {
-            return response;
-        } else {
-            throw response;
-        }
+        return response;
     }
 }

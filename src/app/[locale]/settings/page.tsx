@@ -9,7 +9,7 @@ import { IdSettingsCard } from './_components/id-settings/IdSettingsCard';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { MnestixConnectionsCard } from 'app/[locale]/settings/_components/mnestix-connections/MnestixConnectionsCard';
 import { useEnv } from 'app/EnvProvider';
-import { RoleSettings } from 'app/[locale]/settings/_components/role-settings/RoleSettings';
+import { RuleSettings } from 'app/[locale]/settings/_components/role-settings/RuleSettings';
 import { useTranslations } from 'next-intl';
 
 enum settingsPageTypes {
@@ -41,7 +41,7 @@ export default function Page() {
     if (env.AUTHENTICATION_FEATURE_FLAG && env.USE_BASYX_RBAC) {
         const settingsTabToAdd = {
             id: settingsPageTypes[settingsPageTypes.ROLES],
-            label: t('roles.title'),
+            label: t('rules.title'),
         };
         settingsTabItems.push(settingsTabToAdd);
     }
@@ -55,7 +55,7 @@ export default function Page() {
             case settingsPageTypes[settingsPageTypes.MNESTIX_CONNECTIONS]:
                 return <MnestixConnectionsCard />;
             case settingsPageTypes[settingsPageTypes.ROLES]:
-                return <RoleSettings />;
+                return <RuleSettings />;
             default:
                 return <></>;
         }

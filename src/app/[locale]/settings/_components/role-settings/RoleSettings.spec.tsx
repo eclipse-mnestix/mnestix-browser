@@ -1,5 +1,5 @@
 import { screen, waitFor, fireEvent, within } from '@testing-library/react';
-import { RoleSettings } from './RoleSettings';
+import { RuleSettings } from 'app/[locale]/settings/_components/role-settings/RuleSettings';
 import { expect } from '@jest/globals';
 import * as rbacActions from 'lib/services/rbac-service/RbacActions';
 import { RbacRolesFetchResult } from 'lib/services/rbac-service/RbacRulesService';
@@ -36,11 +36,25 @@ const mockRbacRoles: RbacRolesFetchResult = {
     warnings: [],
 };
 
+jest.mock('./../../../../../components/basics/CenteredLoadingSpinner', () => ({
+    CenteredLoadingSpinner: jest.fn(() => <div>Loading...</div>),
+}));
+
 describe('RoleSettings', () => {
+    it('renders loading spinner while fetching data', async () => {
+        (rbacActions.getRbacRules as jest.Mock).mockImplementation(
+            jest.fn(() => {
+                return { isSuccess: true, result: mockRbacRoles };
+            }),
+        );
+        CustomRender(<RuleSettings />);
+        expect(screen.getByText('Loading...')).toBeInTheDocument();
+    });
+
     it('renders role settings table with content after data is fetched', async () => {
         (rbacActions.getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
 
-        CustomRender(<RoleSettings />, { session: null });
+        CustomRender(<RuleSettings />);
 
         await waitFor(() => {
             expect(within(screen.getByTestId('role-settings-row-roleId1')).getByText('Admin-Role')).toBeInTheDocument();
@@ -66,7 +80,7 @@ describe('RoleSettings', () => {
     it('opens RoleDialog when a role is clicked', async () => {
         (rbacActions.getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
 
-        CustomRender(<RoleSettings />, { session: null });
+        CustomRender(<RuleSettings />);
 
         await waitFor(() => {
             expect(screen.getByText('Admin-Role')).toBeInTheDocument();

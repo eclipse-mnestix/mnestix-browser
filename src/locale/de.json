@@ -175,7 +175,7 @@
       "assetIdHeading": "Asset ID",
       "compare": "Vergleichen",
       "header": "AAS Liste",
-      "manufacturerHeading": "Hersteller Name",
+      "manufacturerHeading": "Herstellername",
       "maxElementsWarning": "Maximal 3 Elemente selektierbar",
       "page": "Seite",
       "picture": "Bild",
@@ -184,8 +184,8 @@
       "repositoryDropdown": "AAS Repository",
       "selectRepository": "Bitte wählen Sie ein Repository aus",
       "subHeader": "Hier finden Sie alle AAS aus Ihrem Repository. Sie können ein AAS-Repository auswählen, um zwischen den Datenquellen zu wechseln.",
-      "titleComparisonAddButton": "Füge VWS zum Vergleich hinzu",
-      "titleViewAASButton": "VWS anzeigen"
+      "titleComparisonAddButton": "Füge AAS zum Vergleich hinzu",
+      "titleViewAASButton": "AAS anzeigen"
     },
     "aasViewer": {
       "asset": "Asset",
@@ -200,20 +200,20 @@
       "title": "Wie Sie Ihre Asset ID mit Ihrem Repository verbinden"
     },
     "compare": {
-      "addAnother": "Eine weitere Verwaltungsschale hinzufügen",
-      "addButton": "Eine weitere Verwaltungsschale hinzufügen",
-      "addFirstAasButton": "Eine Verwaltungsschale hinzufügen",
+      "addAnother": "Eine weitere AAS hinzufügen",
+      "addButton": "Eine weitere AAS hinzufügen",
+      "addFirstAasButton": "AAS hinzufügen",
       "collection": {
         "hide": "Verbergen",
         "show": "{idShort}"
       },
       "compareButton": "Vergleichen",
       "errors": {
-        "aasAddError": "Verwaltungsschale konnte nicht hinzugefügt werden.",
-        "aasAlreadyAdded": "Verwaltungsschale kann nicht mehrmals hinzugefügt werden",
-        "moreAasFound": "Mehr als eine Verwaltungsschale im Discovery Service gefunden, bitte geben Sie die AAS-ID an."
+        "aasAddError": "AAS konnte nicht hinzugefügt werden.",
+        "aasAlreadyAdded": "AAS kann nicht mehrmals hinzugefügt werden",
+        "moreAasFound": "Mehr als eine AAS im Discovery Service gefunden, bitte geben Sie die AAS-ID an."
       },
-      "title": "Verwaltungsschalen vergleichen"
+      "title": "AAS vergleichen"
     },
     "dashboard": {
       "aasOrAssetId": "AAS ID oder Asset ID",
@@ -231,13 +231,13 @@
       "picture": "Bild",
       "repositoryUrl": "Repository Url",
       "subtitle": "Hier finden Sie alle zugehörigen AAS für die angegebene ID.",
-      "titleViewAASButton": "VWS anzeigen"
+      "titleViewAASButton": "AAS anzeigen"
     },
     "settings": {
       "connections": {
         "aasRepository": {
           "connectionType": "AAS_REPOSITORY",
-          "repositories": "AAS Repositorys",
+          "repositories": "AAS Repositories",
           "repositoryDefaultLabel": "Default AAS Repository",
           "repositoryLabel": "AAS Repository",
           "repositoryUrlLabel": "AAS Repository URL"
@@ -249,7 +249,7 @@
         "saveButton": "Alle speichern",
         "submodelRepository": {
           "connectionType": "SUBMODEL_REPOSITORY",
-          "repositories": "Submodel Repositorys",
+          "repositories": "Submodel Repositories",
           "repositoryDefaultLabel": "Default Submodel Repository",
           "repositoryLabel": "Submodel Repository",
           "repositoryUrlLabel": "Submodel Repository URL"
@@ -260,18 +260,23 @@
       },
       "header": "Einstellungen",
       "idStructure": "ID Struktur",
+      "idStructureError": "Fehler beim speichern von \"{name}\" ({reason}).",
       "idStructureExplanation": "Definieren Sie, wie Ihre IDs aussehen sollen. Dies ist eine Basis-Einstellung, die für individuelle Importe angepasst werden kann.",
-      "roles": {
+      "rules": {
         "buttons": {
           "add": "Hinzufügen",
           "back": "Zurück",
           "cancel": "Abbrechen",
           "edit": "Bearbeiten",
-          "save": "Speichern"
+          "save": "Speichern",
+          "create": "Regel erstellen"
         },
-        "saveSuccess": "Rolle erfolgreich gespeichert.",
-        "subHeader": "Hinzufügen, Entfernen oder Ändern von Einstellungen und Konfigurationen für verschiedene Funktionen innerhalb Ihrer AAS-Umgebung.",
+        "roleRequired": "Rolle wird benötigt",
+        "saveSuccess": "Regel erfolgreich gespeichert.",
         "subtitle": "Verwalten von Rollen und Berechtigungen.",
+        "createTitle": "Regel erstellen",
+        "editTitle": "Regel bearbeiten",
+        "wildcardLabel": "Alle erlauben",
         "tableHeader": {
           "aasIds": "AAS IDs",
           "action": "Aktion",
@@ -280,19 +285,19 @@
           "submodelIds": "Submodel IDs",
           "type": "Typ"
         },
-        "title": "Rollen Management"
+        "title": "Regelmanagement"
       },
       "subHeader": "Hinzufügen, Entfernen oder Ändern von Einstellungen und Konfigurationen für verschiedene Funktionen innerhalb Ihrer AAS-Umgebung."
     },
     "submodels": {
       "errors": {
-        "INTERNAL_SERVER_ERROR": "Interner Server Error",
+        "INTERNAL_SERVER_ERROR": "Interner Serverfehler",
         "NOT_FOUND": "Submodel nicht gefunden",
         "UNAUTHORIZED": "Nicht autorisiert",
         "UNKNOWN": "Unbekannter Fehler"
       },
       "idLabel": "ID:",
-      "renderError": "Teilmodell konnte nicht gerendert werden.",
+      "renderError": "Submodel konnte nicht gerendert werden.",
       "timeSeries": {
         "internalSegments": "Interne Segmente",
         "linkedSegments": "Verlinkte Segmente",

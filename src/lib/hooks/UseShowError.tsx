@@ -30,7 +30,7 @@ export function useShowError() {
 
             if (e instanceof LocalizedError) {
                 notificationSpawner.spawn({
-                    message: t(e.descriptor),
+                    message: t(e.descriptor, e.params),
                     severity: 'error',
                 });
                 return;
@@ -62,6 +62,14 @@ export function useShowError() {
 
             if (e instanceof NotFoundError) {
                 showNotFoundError(notificationSpawner);
+                return;
+            }
+
+            if (e instanceof Error) {
+                notificationSpawner.spawn({
+                    message: e.message,
+                    severity: 'error',
+                });
                 return;
             }
 

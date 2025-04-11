@@ -20,6 +20,7 @@ import { SettingsCardHeader } from 'app/[locale]/settings/_components/SettingsCa
 import { getIdGenerationSettings, putSingleIdGenerationSetting } from 'lib/services/configurationApiActions';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useTranslations } from 'next-intl';
+import { LocalizedError } from 'lib/util/LocalizedError';
 
 const StyledDocumentationButton = styled(Box)(({ theme }) => ({
     display: 'flex',
@@ -72,73 +73,85 @@ export function IdSettingsCard() {
     }, [bearerToken]);
 
     const fetchIdSettings = async () => {
-        try {
-            setIsLoading(true);
-            const response = await getIdGenerationSettings();
-            const _settings: IdGenerationSettingFrontend[] = [];
-            response.submodelElements?.forEach((el) => {
-                const element = el as ISubmodelElement;
-                const collection = el as SubmodelElementCollection;
-                const _settingsList = collection.value;
-                const name = el.idShort;
-
-                // IdType (to apply correct validation)
-                const idTypeQualifier = element.qualifiers?.find((q: Qualifier) => {
-                    return q.type === 'SMT/IdType';
-                });
-                const idType = idTypeQualifier?.value;
-
-                const prefix = _settingsList?.find((e) => e.idShort === 'Prefix') as Property;
-                const dynamicPart = _settingsList?.find((e) => e.idShort === 'DynamicPart') as Property;
-
-                const dynamicPartAllowedQualifier = dynamicPart?.qualifiers?.find((q: Qualifier) => {
-                    return q.type === 'SMT/AllowedValue';
-                });
-                const allowedDynamicPartValues = getArrayFromString(dynamicPartAllowedQualifier?.value || '');
-
-                const prefixExampleValueQualifier = prefix?.qualifiers?.find((q: Qualifier) => {
-                    return q.type === 'ExampleValue';
-                });
-                const prefixExampleValue = prefixExampleValueQualifier?.value;
-
-                _settings.push({
-                    name: name || '',
-                    idType,
-                    prefix: {
-                        value: prefix?.value,
-                        exampleValue: prefixExampleValue,
-                    },
-                    dynamicPart: {
-                        value: dynamicPart?.value,
-                        allowedValues: allowedDynamicPartValues,
-                        // (we do not fill example value from api currently)
-                    },
-                });
-            });
-            setSettings(_settings);
-            // set form state
-            reset({ idSettings: _settings });
-        } catch (e) {
-            showError(e);
-        } finally {
+        setIsLoading(true);
+        const response = await getIdGenerationSettings();
+        if (!response.isSuccess) {
+            showError(response);
             setIsLoading(false);
+            return;
         }
+        const settings: IdGenerationSettingFrontend[] = [];
+        response.result.submodelElements?.forEach((el) => {
+            const element = el as ISubmodelElement;
+            const collection = el as SubmodelElementCollection;
+            const _settingsList = collection.value;
+            const name = el.idShort;
+
+            // IdType (to apply correct validation)
+            const idTypeQualifier = element.qualifiers?.find((q: Qualifier) => {
+                return q.type === 'SMT/IdType';
+            });
+            const idType = idTypeQualifier?.value;
+
+            const prefix = _settingsList?.find((e) => e.idShort === 'Prefix') as Property;
+            const dynamicPart = _settingsList?.find((e) => e.idShort === 'DynamicPart') as Property;
+
+            const dynamicPartAllowedQualifier = dynamicPart?.qualifiers?.find((q: Qualifier) => {
+                return q.type === 'SMT/AllowedValue';
+            });
+            const allowedDynamicPartValues = getArrayFromString(dynamicPartAllowedQualifier?.value || '');
+
+            const prefixExampleValueQualifier = prefix?.qualifiers?.find((q: Qualifier) => {
+                return q.type === 'ExampleValue';
+            });
+            const prefixExampleValue = prefixExampleValueQualifier?.value;
+
+            settings.push({
+                name: name || '',
+                idType,
+                prefix: {
+                    value: prefix?.value,
+                    exampleValue: prefixExampleValue,
+                },
+                dynamicPart: {
+                    value: dynamicPart?.value,
+                    allowedValues: allowedDynamicPartValues,
+                    // (we do not fill example value from api currently)
+                },
+            });
+        });
+        setSettings(settings);
+        // set form state
+        reset({ idSettings: settings });
+        setIsLoading(false);
     };
 
     async function saveIdSettings(data: IdSettingsFormData) {
         try {
             setIsLoading(true);
-            for (const setting of data.idSettings) {
+            const updatePromises = data.idSettings.map(async (setting) => {
                 if (setting.prefix.value && setting.dynamicPart.value) {
-                    await putSingleIdGenerationSetting(setting.name, {
+                    const response = await putSingleIdGenerationSetting(setting.name, {
                         prefix: setting.prefix.value,
                         dynamicPart: setting.dynamicPart.value,
                     });
+                    if (!response.isSuccess) {
+                        return Promise.reject(
+                            new LocalizedError('pages.settings.idStructureError', {
+                                name: setting.name,
+                                reason: response.message,
+                            }),
+                        );
+                    }
                 }
-            }
+                return Promise.resolve();
+            });
+
+            await Promise.all(updatePromises);
+
             await fetchIdSettings();
             notificationSpawner.spawn({
-                message:  t('common.messages.successfullyUpdated'),
+                message: t('common.messages.successfullyUpdated'),
                 severity: 'success',
             });
             setIsEditMode(false);
@@ -193,9 +206,7 @@ export function IdSettingsCard() {
             <Box sx={{ display: 'flex' }}>
                 <StyledDocumentationButton onClick={() => setDocumentationModalOpen(true)}>
                     <InfoOutlined sx={{ mr: 1 }} />
-                    <Typography>
-                        {t('pages.assetIdDocumentation.title')}
-                    </Typography>
+                    <Typography>{t('pages.assetIdDocumentation.title')}</Typography>
                 </StyledDocumentationButton>
             </Box>
             <AssetIdRedirectDocumentationDialog
