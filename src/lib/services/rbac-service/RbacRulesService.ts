@@ -43,7 +43,7 @@ export class RbacRulesService {
             ruleSubmodelElement,
         );
         if (!response.isSuccess) {
-            logResponseInfo(
+            logResponseWarn(
                 this.log,
                 'createRule',
                 'Failed to create Rule',
@@ -64,7 +64,7 @@ export class RbacRulesService {
                         'Rule created',
                         response,
                         {
-                            New_rule: newRule.role,
+                            Rule: newRule.role,
                             IdShort: newIdShort,
                         },
                     );
@@ -122,7 +122,6 @@ export class RbacRulesService {
                     deleteRes,
                     {
                         Rule: idShort,
-                        New_rule: newRule.role,
                     },
                 );
                 return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'Rule not found in SecuritySubmodel. Try reloading.');
@@ -134,7 +133,6 @@ export class RbacRulesService {
                 deleteRes,
                 {
                     Rule: idShort,
-                    New_rule: newRule.role,
                 },
             );
             return wrapErrorCode(
@@ -151,7 +149,7 @@ export class RbacRulesService {
             ruleSubmodelElement,
         );
         if (!response.isSuccess) {
-            logResponseInfo(
+            logResponseWarn(
                 this.log,
                 'createRule',
                 'Failed to create Rule',
@@ -169,7 +167,7 @@ export class RbacRulesService {
             'Rule created',
             response,
             {
-                New_rule: newRule.role,
+                Rule: newRule.role,
                 IdShort: newIdShort,
             },
         );
