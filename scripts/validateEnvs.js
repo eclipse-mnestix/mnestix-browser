@@ -25,7 +25,7 @@ export function validateEnvs(envs) {
         const requiredKeys = ['AUTHENTICATION_FEATURE_FLAG', 'KEYCLOAK_ENABLED', 'SEC_SM_API_URL'];
         for (const key of requiredKeys) {
             if (!envs[key]) {
-                throw new Error(`${key} is required when BASYX_RBAC is true`);
+                throw new Error(`${key} is required when USE_BASYX_RBAC is true`);
             }
         }
     }
