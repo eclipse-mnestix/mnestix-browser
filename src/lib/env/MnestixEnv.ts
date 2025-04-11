@@ -3,7 +3,7 @@
  * Keep in sync with the wiki: /wiki/Mnestix-Configuration-Settings.md
  * Set Defaults in .env.local and compose.yml
  *
- * Provide Validation in /scripts/validateEnvs.js
+ * Provide Validation in /scripts/validateEnvs.sh
  */
 
 // In production builds `process` is not defined on client side
