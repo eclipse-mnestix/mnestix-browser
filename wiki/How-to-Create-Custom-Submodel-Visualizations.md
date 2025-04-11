@@ -98,14 +98,14 @@ This is done in the file `src/app/[locale]/viewer/_components/submodel/Submodels
 
 ```ts
 export const submodelsCustomVisualizationMap = {
-    [SubmodelSemanticId.CoffeeConsumptionContainer]: CoffeeConsumptionDetail,
-    [SubmodelSemanticId.CarbonFootprint]: CarbonFootprintDetail,
-    [SubmodelSemanticId.CarbonFootprintIRDI]: CarbonFootprintDetail,
-    [SubmodelSemanticId.ReferenceCounterContainer]: ReferenceCounterDetail,
-    [SubmodelSemanticId.TimeSeries]: TimeSeriesDetail,
-    [SubmodelSemanticId.HierarchicalStructuresV10]: HierarchicalStructuresDetail,
-    [SubmodelSemanticId.HierarchicalStructuresV11]: HierarchicalStructuresDetail,
-    [SubmodelSemanticId.BillOfApplications]: BillOfApplicationsDetail,
+    [SubmodelSemanticIdEnum.CoffeeConsumptionContainer]: CoffeeConsumptionDetail,
+    [SubmodelSemanticIdEnum.CarbonFootprint]: CarbonFootprintDetail,
+    [SubmodelSemanticIdEnum.CarbonFootprintIRDI]: CarbonFootprintDetail,
+    [SubmodelSemanticIdEnum.ReferenceCounterContainer]: ReferenceCounterDetail,
+    [SubmodelSemanticIdEnum.TimeSeries]: TimeSeriesDetail,
+    [SubmodelSemanticIdEnum.HierarchicalStructuresV10]: HierarchicalStructuresDetail,
+    [SubmodelSemanticIdEnum.HierarchicalStructuresV11]: HierarchicalStructuresDetail,
+    [SubmodelSemanticIdEnum.BillOfApplications]: BillOfApplicationsDetail,
     [/*Your semantic id as a string*/]: /*React component name*/, 
 };
 ```
@@ -114,9 +114,9 @@ Just add an entry containing the semantic id as a key and your React component a
 Important: Don’t forget to import your React component at the top of the file!
 
 > [!NOTE]
-> You might also want to add your semantic id to the `SubmodelSemanticId`-enum used in the examples above.
+> You might also want to add your semantic id to the `SubmodelSemanticIdEnum` used in the examples above.
 > This is not required, you can use a simple string as the key.
-> But it may make particular sence for standardized submodels.
+> But it may make particular sense for standardized submodels.
 
 
 > [!TIP]
