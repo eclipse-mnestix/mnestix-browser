@@ -45,14 +45,12 @@ const featureFlags = mapEnvVariables(
     parseFlag,
 );
 
-const requiredVariables = mapEnvVariables(
-    ['AAS_REPO_API_URL', 'SUBMODEL_REPO_API_URL', 'DISCOVERY_API_URL'] as const,
-    (e) => e as string,
-);
-
 const otherVariables = mapEnvVariables([
+    'DISCOVERY_API_URL',
     'REGISTRY_API_URL',
     'SUBMODEL_REGISTRY_API_URL',
+    'AAS_REPO_API_URL',
+    'SUBMODEL_REPO_API_URL',
     'MNESTIX_BACKEND_API_URL',
     'IMPRINT_URL',
     'DATA_PRIVACY_URL',
@@ -72,7 +70,7 @@ const themingVariables = mapEnvVariables([
 /**
  * Public envs that are sent to the client and can be used with the `useEnv` hook.
  */
-export const publicEnvs = { ...requiredVariables, ...featureFlags, ...otherVariables, ...themingVariables };
+export const publicEnvs = { ...featureFlags, ...otherVariables, ...themingVariables };
 
 /**
  * Mnestix envs
