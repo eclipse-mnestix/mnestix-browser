@@ -5,6 +5,10 @@
       "text": "Es konnte keine Verwaltungsschale für die angegebene ID \"{id}\" geladen werden.",
       "toHome": "Zur Startseite"
     },
+    "authentication": {
+      "authenticationNeeded": "Authentifizierung erforderlich",
+      "contactAdmin": "Sie können diese Seite nicht besuchen. Bitte wenden Sie sich an Ihren Administrator."
+    },
     "addressComponent": {
       "VAT": "USt-IdNr.",
       "addressTypes": {
@@ -138,6 +142,15 @@
     }
   },
   "navigation": {
+    "errors": {
+      "notFound": "Nicht gefunden",
+      "unauthorizedError": {
+        "content": "Sie haben keinen Zugang zu dieser Ressource. Bitte loggen Sie sich ein oder fragen sie Ihren Administrator um Zugriff.",
+        "title": "Unautorisierter Zugriff"
+      },
+      "unexpectedError": "Unerwarteter Fehler",
+      "urlNotFound": "Keine Verwaltungsschale unter dieser ID."
+    },
     "footer": {
       "about": "Über Mnestix",
       "dataPrivacy": "Datenschutz",
@@ -179,6 +192,9 @@
       },
       "asset": "Asset",
       "assetAdministrationShell": "Verwaltungsschale",
+      "errors": {
+        "influxError": "Beim Abrufen der Daten ist ein Fehler aufgetreten."
+      },
       "labels": {
         "copied": "In Zwischenablage kopiert",
         "copy": "Kopieren",
@@ -248,7 +264,6 @@
     },
     "settings": {
       "actions": {
-          "addButton": "Hinzufügen",
           "cancel": "Abbrechen",
           "editButton": "Alle bearbeiten",
           "resetButton": "Auf Default zurücksetzen",
@@ -262,6 +277,7 @@
           "repositoryLabel": "AAS Repository",
           "repositoryUrlLabel": "AAS Repository URL"
         },
+        "addButton": "Hinzufügen",
         "resetSuccessfull": "Quellen wurden zurückgesetzt.",
         "submodelRepository": {
           "connectionType": "SUBMODEL_REPOSITORY",
@@ -405,22 +421,6 @@
       "title": "Import",
       "useAasRepository": "AAS Repository verwenden",
       "warningToast": "Transfer der AAS nur teilweise erfolgreich."
-    }
-  },
-  "validation": {
-    "authentication": {
-      "authenticationNeeded": "Authentifizierung erforderlich",
-      "contactAdmin": "Sie können diese Seite nicht besuchen. Bitte wenden Sie sich an Ihren Administrator."
-    },
-    "errors": {
-      "influxError": "Beim Abrufen der Daten ist ein Fehler aufgetreten.",
-      "notFound": "Nicht gefunden",
-      "unauthorizedError": {
-        "content": "Sie haben keinen Zugang zu dieser Ressource. Bitte loggen Sie sich ein oder fragen sie Ihren Administrator um Zugriff.",
-        "title": "Unautorisierter Zugriff"
-      },
-      "unexpectedError": "Unerwarteter Fehler",
-      "urlNotFound": "Keine Verwaltungsschale unter dieser ID."
     }
   }
 }

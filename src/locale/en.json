@@ -5,6 +5,10 @@
       "text": "Unable to load AAS for the given ID \"{id}\"",
       "toHome": "To Home"
     },
+    "authentication": {
+      "authenticationNeeded": "Authentication needed",
+      "contactAdmin": "You cannot visit this page. Please contact your administrator."
+    },
     "addressComponent": {
       "VAT": "VAT-Number",
       "addressTypes": {
@@ -138,6 +142,15 @@
     }
   },
   "navigation": {
+    "errors": {
+      "notFound": "Not found",
+      "unauthorizedError": {
+        "content": "You don`t have access to this resource. You may login or contact your administrator to get access.",
+        "title": "Unauthorized access"
+      },
+      "unexpectedError": "Unexpected error",
+      "urlNotFound": "No AAS with the given ID."
+    },
     "footer": {
       "about": "About Mnestix",
       "dataPrivacy": "Data Privacy",
@@ -179,6 +192,9 @@
       },
       "asset": "Asset",
       "assetAdministrationShell": "Asset Administration Shell",
+      "errors": {
+        "influxError": "There was a problem retrieving the time series data."
+      },
       "labels": {
         "copied": "Copied to clipboard",
         "copy": "Copy",
@@ -248,7 +264,6 @@
     },
     "settings": {
       "actions": {
-          "addButton": "Add more",
           "cancel": "Cancel",
           "editButton": "Edit all",
           "resetButton": "Reset to default",
@@ -262,6 +277,7 @@
           "repositoryLabel": "AAS Repository",
           "repositoryUrlLabel": "AAS Repository URL"
         },
+        "addButton": "Add more",
         "resetSuccessfull": "Connections were reset.",
         "submodelRepository": {
           "connectionType": "SUBMODEL_REPOSITORY",
@@ -405,22 +421,6 @@
       "title": "Import",
       "useAasRepository": "Use AAS Repository",
       "warningToast": "AAS was only partially transferred."
-    }
-  },
-  "validation": {
-    "authentication": {
-      "authenticationNeeded": "Authentication needed",
-      "contactAdmin": "You cannot visit this page. Please contact your administrator."
-    },
-    "errors": {
-      "influxError": "There was a problem retrieving the time series data.",
-      "notFound": "Not found",
-      "unauthorizedError": {
-        "content": "You don`t have access to this resource. You may login or contact your administrator to get access.",
-        "title": "Unauthorized access"
-      },
-      "unexpectedError": "Unexpected error",
-      "urlNotFound": "No AAS with the given ID."
     }
   }
 }

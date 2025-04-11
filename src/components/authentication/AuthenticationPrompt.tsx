@@ -4,7 +4,7 @@ import SignInButton from 'components/authentication/SignInButton';
 import { useTranslations } from 'next-intl';
 
 export function AuthenticationPrompt() {
-    const t = useTranslations('validation.authentication');
+    const t = useTranslations('components.authentication');
     return (
         <Box
             sx={{
