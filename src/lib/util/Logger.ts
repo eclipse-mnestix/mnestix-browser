@@ -2,6 +2,7 @@ import pino from 'pino';
 import pretty from 'pino-pretty';
 import { v4 as uuidv4 } from 'uuid';
 import { ApiResponseWrapper, ApiResponseWrapperError } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { envs } from 'lib/env/MnestixEnv';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -12,10 +13,10 @@ const stream = pretty({
 });
 
 const baseLogger = isProduction
-    ? pino({ level: 'info' })
+    ? pino({ level: envs.LOG_LEVEL })
     : pino(
           {
-              level: 'debug',
+              level: envs.LOG_LEVEL,
           },
           stream,
       );
@@ -27,9 +28,7 @@ const baseLogger = isProduction
  * @returns A logger instance with the correlation ID included.
  */
 export const createRequestLogger = (headers?: Headers) => {
-    const correlationId = !headers
-        ? 'undefined'
-        : getCorrelationId(headers as Headers);
+    const correlationId = !headers ? 'undefined' : getCorrelationId(headers as Headers);
     return baseLogger.child({ Correlation_ID: correlationId });
 };
 
