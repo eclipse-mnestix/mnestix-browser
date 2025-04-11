@@ -1,4 +1,7 @@
 #!/bin/sh
+
+set -e
+
 echo -e '\033[38;5;22m' # Dark Green
 # src: https://patorjk.com/software/taag/#p=display&h=1&v=1&f=Stop&t=Mnestix%20Browser%0A
 cat << EOF
@@ -12,5 +15,8 @@ cat << EOF
 by XITASO
 EOF
 echo -e '\033[0m' # Reset to default color
+
+# Validate envs for production
+node validateEnvs.js
 
 HOSTNAME=0.0.0.0 PORT=3000 node server.js

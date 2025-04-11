@@ -1,15 +1,9 @@
-import { envs as MnestixEnvs } from './MnestixEnv';
-
-export function validateEnvs(envs: typeof MnestixEnvs) {
-    const requiredKeys = ['AAS_REPO_API_URL', 'SUBMODEL_REPO_API_URL', 'DISCOVERY_API_URL'] as const;
-    for (const key of requiredKeys) {
-        if (!envs[key]) {
-            throw new Error(`${key} is required`);
-        }
-    }
-
+/**
+ * @param {Record<string, string | undefined>} envs
+ */
+export function validateEnvs(envs) {
     if (envs.KEYCLOAK_ENABLED) {
-        const requiredKeys = ['KEYCLOAK_ISSUER', 'KEYCLOAK_LOCAL_URL', 'KEYCLOAK_REALM', 'KEYCLOAK_CLIENT_ID'] as const;
+        const requiredKeys = ['KEYCLOAK_ISSUER', 'KEYCLOAK_LOCAL_URL', 'KEYCLOAK_REALM', 'KEYCLOAK_CLIENT_ID'];
         for (const key of requiredKeys) {
             if (!envs[key]) {
                 throw new Error(`${key} is required when KEYCLOAK_ENABLED is true`);
@@ -22,11 +16,16 @@ export function validateEnvs(envs: typeof MnestixEnvs) {
         }
     }
     if (envs.USE_BASYX_RBAC) {
-        const requiredKeys = ['AUTHENTICATION_FEATURE_FLAG', 'KEYCLOAK_ENABLED', 'SEC_SM_API_URL'] as const;
+        const requiredKeys = ['AUTHENTICATION_FEATURE_FLAG', 'KEYCLOAK_ENABLED', 'SEC_SM_API_URL'];
         for (const key of requiredKeys) {
             if (!envs[key]) {
                 throw new Error(`${key} is required when BASYX_RBAC is true`);
             }
         }
     }
+    console.log('Configuration valid.');
+}
+
+if (process.argv[1] === import.meta.filename) {
+    validateEnvs(process.env);
 }
