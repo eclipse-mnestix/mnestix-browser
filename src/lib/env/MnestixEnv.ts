@@ -2,6 +2,8 @@
  * This file is for typing the environment variables of Mnestix.
  * Keep in sync with the wiki: /wiki/Mnestix-Configuration-Settings.md
  * Set Defaults in .env.local and compose.yml
+ *
+ * Provide Validation in /scripts/validateEnvs.js
  */
 
 // In production builds `process` is not defined on client side
@@ -55,6 +57,7 @@ const otherVariables = mapEnvVariables([
     'IMPRINT_URL',
     'DATA_PRIVACY_URL',
     // strong typing and parsing was neglected here, as this is a temporary feature
+    // validation is also not implemented
     'SUBMODEL_WHITELIST',
 ] as const);
 

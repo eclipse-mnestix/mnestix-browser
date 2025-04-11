@@ -1,43 +1,61 @@
 ### Frontend Configuration
 
-Mnestix provides the following configuration options. You can adapt the values in your docker compose file.
+Mnestix provides the following configuration options. You can adapt the values in your docker compose file. By design everything is optional.
 
-| Name                                  | Default value               | Description                                                                                                                                                                                                                        | required |
-| ------------------------------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| `DISCOVERY_API_URL`                   |                             | Address of the Discovery Service to find an AAS for an Asset                                                                                                                                                                       | required |
-| `REGISTRY_API_URL`                    |                             | Address of the AAS Registry Service to retrieve the related descriptor for an AAS                                                                                                                                                  | optional |
-| `SUBMODEL_REGISTRY_API_URL`           |                             | Address of the Submodel Registry Service to retrieve the related descriptor for a Submodel                                                                                                                                         | optional |
-| `AAS_REPO_API_URL`                    |                             | Default AAS Repository to display when AAS Id is not in AAS Registry                                                                                                                                                               | required |
-| `SUBMODEL_REPO_API_URL`               |                             | Default Submodel Repository to display when Submodel Id is not in Submodel Registry                                                                                                                                                | required |
-| `MNESTIX_BACKEND_API_URL`             |                             | Mnestix Backend with a lot of business comfort features like the Repository-Proxy or the Template builder                                                                                                                          | optional |
-| `AAS_LIST_FEATURE_FLAG`               | false                       | Enables or disables the AasList in the frontend. This only works in combination with `Features__AllowRetrievingAllShellsAndSubmodels` being set to `true` (Needs the Mnestix Backend to work)                                      | optional |
-| `TRANSFER_FEATURE_FLAG`               | false                       | Enables or disables the Transfer Feature in the frontend. If enabled, it is possible to import a viewed AAS to a configured repository. This feature is currently being developed.                                                 | optional |
-| `AUTHENTICATION_FEATURE_FLAG`         | false                       | Enable or disable the authentication in the frontend. (Needs the Mnestix Backend to work)                                                                                                                                          | optional |
-| `COMPARISON_FEATURE_FLAG`             | false                       | Enables or disables the comparison feature.                                                                                                                                                                                        | optional |
-| `LOCK_TIMESERIES_PERIOD_FEATURE_FLAG` | false                       | Enables or disables the selection of the timerange in the TimeSeries submodel.                                                                                                                                                     | optional |
-| `THEME_PRIMARY_COLOR`                 | Mnestix Primary Color       | Changes the primary color of Mnestix Browser, e.g. '#00ff00'. The following formats are supported: #nnn, #nnnnnn, rgb(), rgba(), hsl(), hsla(), color()                                                                            | optional |
-| `THEME_SECONDARY_COLOR`               | Mnestix Secondary Color     | Changes the secondary color of Mnestix Browser, e.g. '#0d2'. The following formats are supported: #nnn, #nnnnnn, rgb(), rgba(), hsl(), hsla(), color()                                                                             | optional |
-| `THEME_LOGO_MIME_TYPE`                |                             | Used in parsing the logo mounted `-v /path/to/logo:/app/public/logo` the mime type is needed, e.g. `image/svg+xml`, `image/png`, `image/jpg`                                                                                       | optional |
-| `THEME_LOGO_URL`                      |                             | This variable **overwrites** the Logo in the theme, and thus the environment variable `THEME_LOGO_MIME_TYPE` will not be evaluated and it is not necessary to mount the image as specified below                                   | optional |
-| `KEYCLOAK_ENABLED`                    | false                       | By default, it is set to false, meaning Keycloak authentication will be disabled, and the default authentication method will be Azure Entra ID. If you set this variable to true, Keycloak authentication will be enabled instead. | optional |
-| `KEYCLOAK_CLIENT_ID`                  | mnestix-browser-client-demo | Configuration variable that specifies the client unique identifier used by your application when connecting to the Keycloak server.                                                                                                | optional |
-| `KEYCLOAK_ISSUER`                     |                             | Configuration variable that specifies the URL of the Keycloak servers issuer endpoint. This endpoint provides the base URL for the Keycloak server that issues tokens and handles authentication requests                          | optional |
-| `KEYCLOAK_LOCAL_URL`                  |                             | Optional configuration variable specifically used for development environments within Docker. This allows your application to connect to a Keycloak instance running in a Docker container                                         | optional |
-| `KEYCLOAK_REALM`                      | BaSyx                       | Configuration variable that specifies the name of the Keycloak realm your application will use for authentication and authorization.                                                                                               | optional |
-| `IMPRINT_URL`                         |                             | Address that will be used in the imprint link. Will only show the link, if a value has been set.                                                                                                                                   | optional |
-| `DATA_PRIVACY_URL`                    |                             | Address that will be used in the data privacy link. Will only show the link, if a value has been set.                                                                                                                              | optional |
-| `USE_BASYX_RBAC`                      | false                       | Set to true, if BaSyx is used together with RBAC. This will enable the administration of RBAC configuration inside Mnestix.                                                                                                        | optional |
-| `WHITELIST_FEATURE_FLAG`              | false                       | Enables or disables the feature for showing/hiding specific submodels.                                                                                                                                                             | optional |
-| `SUBMODEL_WHITELIST`                  |                             | This variable can be used to specify a list of submodel semantic ids in order to show them when the `WHITELIST_FEATURE_FLAG` is set to true.                                                                                       | optional |
+#### Basics
 
-### How to set a custom logo
+| Name                        | Default value | Description                                                                                               |
+| --------------------------- | ------------- | --------------------------------------------------------------------------------------------------------- |
+| `AAS_REPO_API_URL`          |               | Default AAS Repository to display when AAS Id is not in AAS Registry                                      |
+| `SUBMODEL_REPO_API_URL`     |               | Default Submodel Repository to display when Submodel Id is not in Submodel Registry                       |
+| `DISCOVERY_API_URL`         |               | Address of the Discovery Service to find an AAS for an Asset                                              |
+| `REGISTRY_API_URL`          |               | Address of the AAS Registry Service to retrieve the related descriptor for an AAS                         |
+| `SUBMODEL_REGISTRY_API_URL` |               | Address of the Submodel Registry Service to retrieve the related descriptor for a Submodel                |
+| `MNESTIX_BACKEND_API_URL`   |               | Mnestix Backend with a lot of business comfort features like the Repository-Proxy or the Template builder |
+
+#### Features
+
+| Name                          | Default value | Description                                                                                                                                                                                   |
+| ----------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `AAS_LIST_FEATURE_FLAG`       | false         | Enables or disables the AasList in the frontend. This only works in combination with `Features__AllowRetrievingAllShellsAndSubmodels` being set to `true` (Needs the Mnestix Backend to work) |
+| `TRANSFER_FEATURE_FLAG`       | false         | Enables or disables the Transfer Feature in the frontend. If enabled, it is possible to import a viewed AAS to a configured repository. This feature is currently being developed.            |
+| `AUTHENTICATION_FEATURE_FLAG` | false         | Enable or disable the authentication in the frontend. (Needs the Mnestix Backend to work)                                                                                                     |
+| `COMPARISON_FEATURE_FLAG`     | false         | Enables or disables the comparison feature.                                                                                                                                                   |
+| `WHITELIST_FEATURE_FLAG`      | false         | Enables or disables the feature for showing/hiding specific submodels.                                                                                                                        |
+| `SUBMODEL_WHITELIST`          |               | This variable can be used to specify a list of submodel semantic ids in order to show them when the `WHITELIST_FEATURE_FLAG` is set to true.                                                  |
+
+#### Keycloak
+
+| Name                 | Default value               | Description                                                                                                                                                                                                                        |
+| -------------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `KEYCLOAK_ENABLED`   | false                       | By default, it is set to false, meaning Keycloak authentication will be disabled, and the default authentication method will be Azure Entra ID. If you set this variable to true, Keycloak authentication will be enabled instead. |
+| `KEYCLOAK_CLIENT_ID` | mnestix-browser-client-demo | Configuration variable that specifies the client unique identifier used by your application when connecting to the Keycloak server.                                                                                                |
+| `KEYCLOAK_ISSUER`    |                             | Configuration variable that specifies the URL of the Keycloak servers issuer endpoint. This endpoint provides the base URL for the Keycloak server that issues tokens and handles authentication requests                          |
+| `KEYCLOAK_LOCAL_URL` |                             | Optional configuration variable specifically used for development environments within Docker. This allows your application to connect to a Keycloak instance running in a Docker container                                         |
+| `KEYCLOAK_REALM`     | BaSyx                       | Configuration variable that specifies the name of the Keycloak realm your application will use for authentication and authorization.                                                                                               |
+| `USE_BASYX_RBAC`     | false                       | Set to true, if BaSyx is used together with RBAC. This will enable the administration of RBAC configuration inside Mnestix.                                                                                                        |
+| `SEC_SM_API_URL`     |                             | Submodel Repository for storing BaSyx RBAC Rules (needed with USE_BASYX_RBAC)                                                                                                                                                      |
+
+### Branding
+
+| Name                                  | Default value           | Description                                                                                                                                                                                      |
+| ------------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `LOCK_TIMESERIES_PERIOD_FEATURE_FLAG` | false                   | Enables or disables the selection of the timerange in the TimeSeries submodel.                                                                                                                   |
+| `THEME_PRIMARY_COLOR`                 | Mnestix Primary Color   | Changes the primary color of Mnestix Browser, e.g. '#00ff00'. The following formats are supported: #nnn, #nnnnnn, rgb(), rgba(), hsl(), hsla(), color()                                          |
+| `THEME_SECONDARY_COLOR`               | Mnestix Secondary Color | Changes the secondary color of Mnestix Browser, e.g. '#0d2'. The following formats are supported: #nnn, #nnnnnn, rgb(), rgba(), hsl(), hsla(), color()                                           |
+| `THEME_LOGO_MIME_TYPE`                |                         | Used in parsing the logo mounted `-v /path/to/logo:/app/public/logo` the mime type is needed, e.g. `image/svg+xml`, `image/png`, `image/jpg`                                                     |
+| `THEME_LOGO_URL`                      |                         | This variable **overwrites** the Logo in the theme, and thus the environment variable `THEME_LOGO_MIME_TYPE` will not be evaluated and it is not necessary to mount the image as specified below |
+| `IMPRINT_URL`                         |                         | Address that will be used in the imprint link. Will only show the link, if a value has been set.                                                                                                 |
+| `DATA_PRIVACY_URL`                    |                         | Address that will be used in the data privacy link. Will only show the link, if a value has been set.                                                                                            |
+
+#### How to set a custom logo
 
 There are multiple ways to set a logo. You can choose between either of the following options depending on your
 preference:
 
-#### Option 1: Mount a logo
+##### Option 1: Mount a logo
 
-First you need to mount your logo to the container by adding it to the docker compose file: 
+First you need to mount your logo to the container by adding it to the docker compose file:
 
 ```yaml
 volumes:
@@ -59,7 +77,7 @@ environment:
 Only image mime types are allowed.
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 
-#### Option 2: Base64 encoded logo
+##### Option 2: Base64 encoded logo
 
 This version overwrites the previous setting.
 To use this, provide a base64 encoded image in the environment variable:
@@ -69,7 +87,7 @@ environment:
     THEME_BASE64_LOGO: '<<BASE64_ENCODED_IMAGE>>'
 ```
 
-#### Option 3: Link to a hosted logo
+##### Option 3: Link to a hosted logo
 
 This version overwrites both of the previous settings.
 To use this just set an environment variable to a link hosted that is publicly accessible:

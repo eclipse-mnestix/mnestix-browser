@@ -3,7 +3,13 @@
  */
 export function validateEnvs(envs) {
     if (envs.KEYCLOAK_ENABLED) {
-        const requiredKeys = ['KEYCLOAK_ISSUER', 'KEYCLOAK_LOCAL_URL', 'KEYCLOAK_REALM', 'KEYCLOAK_CLIENT_ID'];
+        const requiredKeys = [
+            'KEYCLOAK_ISSUER',
+            'KEYCLOAK_LOCAL_URL',
+            'KEYCLOAK_REALM',
+            'KEYCLOAK_CLIENT_ID',
+            'NEXTAUTH_SECRET',
+        ];
         for (const key of requiredKeys) {
             if (!envs[key]) {
                 throw new Error(`${key} is required when KEYCLOAK_ENABLED is true`);
