@@ -82,7 +82,7 @@ export class RbacRulesService {
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Failed to get RBAC');
         }
         if (!secSM || typeof secSM !== 'object') {
-            logResponseInfo(this.log, 'getRules', 'Failed to get RBAC', response);
+            logResponseWarn(this.log, 'getRules', 'Failed to get RBAC', response);
             return wrapErrorCode(ApiResultStatus.BAD_REQUEST, 'Submodel in wrong Format');
         }
 
