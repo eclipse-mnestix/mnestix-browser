@@ -19,6 +19,6 @@ EOF
 echo -e '\033[0m' # Reset to default color
 
 # Validate envs for production
-sh "$SCRIPT_DIR/validateEnvs.sh"
+node "$SCRIPT_DIR/validateEnvs.js"
 
 HOSTNAME=0.0.0.0 PORT=3000 node server.js
