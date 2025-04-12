@@ -3,7 +3,7 @@ import { expect } from '@jest/globals';
 import { SubmodelDetail } from 'app/[locale]/viewer/_components/submodel/SubmodelDetail';
 import testSubmodel from '../submodel/carbon-footprint/test-submodel/carbonFootprint-test.json';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
-import { CustomRender } from 'test-utils/CustomRender';import { CO2Equivalents } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/visualization-components/CO2Equivalents';
+import { CustomRender } from 'test-utils/CustomRender';
 
 window.ResizeObserver =
     window.ResizeObserver ||
