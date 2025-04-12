@@ -3,7 +3,7 @@ import { expect } from '@jest/globals';
 import { SubmodelDetail } from 'app/[locale]/viewer/_components/submodel/SubmodelDetail';
 import testSubmodel from '../submodel/carbon-footprint/test-submodel/carbonFootprint-test.json';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
-import { CustomRenderNextIntl } from 'test-utils/CustomRenderNextIntl';
+import { CustomRender } from 'test-utils/CustomRender';import { CO2Equivalents } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/visualization-components/CO2Equivalents';
 
 window.ResizeObserver =
     window.ResizeObserver ||
@@ -30,7 +30,7 @@ jest.mock('next-auth', jest.fn());
 
 describe('Submodel Detail', () => {
     it('should render CarbonFootprintVisualizations for irdi id', async () => {
-        CustomRenderNextIntl(
+        CustomRender(
             <SubmodelDetail submodel={testSubmodel['carbonFootprint-IrdiId'] as unknown as Submodel} />,
         );
         const map = screen.getByTestId('carbonFootprintVisualizations');
@@ -39,7 +39,7 @@ describe('Submodel Detail', () => {
     });
 
     it('should render CarbonFootprintVisualizations for URL id', async () => {
-        CustomRenderNextIntl(
+        CustomRender(
             <SubmodelDetail submodel={testSubmodel['carbonFootprint-UrlId'] as unknown as Submodel} />,
         );
         const map = screen.getByTestId('carbonFootprintVisualizations');
