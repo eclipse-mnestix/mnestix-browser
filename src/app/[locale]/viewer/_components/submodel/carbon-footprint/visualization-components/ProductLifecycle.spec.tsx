@@ -4,7 +4,7 @@ import { ProductLifecycleStage } from 'lib/enums/ProductLifecycleStage.enum';
 import {
     ProductLifecycle
 } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/visualization-components/ProductLifecycle';
-import { CustomRenderNextIntl } from 'test-utils/CustomRenderNextIntl';
+import { CustomRender } from 'test-utils/CustomRender';
 
 window.ResizeObserver =
     window.ResizeObserver ||
@@ -24,7 +24,7 @@ const completedStages =
 
 describe('ProductLifecycle', () => {
     it('should render the ProductLifecycle with all steps', async () => {
-        CustomRenderNextIntl(<ProductLifecycle completedStages={completedStages} />);
+        CustomRender(<ProductLifecycle completedStages={completedStages} />);
         const stepper = screen.getByTestId('product-lifecycle-stepper');
         expect(stepper).toBeDefined();
         expect(stepper).toBeInTheDocument();
@@ -43,7 +43,7 @@ describe('ProductLifecycle', () => {
     });
 
     it('should render no completed steps if none are completed', async () => {
-        CustomRenderNextIntl(<ProductLifecycle completedStages={[]} />);
+        CustomRender(<ProductLifecycle completedStages={[]} />);
         const stepper = screen.getByTestId('product-lifecycle-stepper');
         expect(stepper).toBeDefined();
         expect(stepper).toBeInTheDocument();

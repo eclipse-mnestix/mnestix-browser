@@ -1,6 +1,5 @@
 import { expect } from '@jest/globals';
-import { screen } from '@testing-library/react';
-import {
+import { CustomRender } from 'test-utils/CustomRender';import {
     CalculationMethod,
     LinkGHG,
 } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/visualization-components/CalculationMethod';
@@ -8,7 +7,7 @@ import { CustomRenderNextIntl } from 'test-utils/CustomRenderNextIntl';
 
 describe('Calculation Method', () => {
     it('should use correct style', async () => {
-        CustomRenderNextIntl(<CalculationMethod calculationMethod="Artificial Goon" />);
+        CustomRender(<CalculationMethod calculationMethod="Artificial Goon" />);
         const component = screen.getByTestId('co2-calculation-method-text');
         expect(component).toBeDefined();
         expect(component).toBeInTheDocument();
@@ -18,13 +17,13 @@ describe('Calculation Method', () => {
     });
 
     it('should display the method', async () => {
-        CustomRenderNextIntl(<CalculationMethod calculationMethod="Artificial Goon" />);
+        CustomRender(<CalculationMethod calculationMethod="Artificial Goon" />);
         const component = screen.getByTestId('co2-calculation-method-text');
         expect(component).toHaveTextContent('Artificial Goon');
     });
 
     it('should link to GHG website', async () => {
-        CustomRenderNextIntl(<CalculationMethod calculationMethod="GHG Protocol" />);
+        CustomRender(<CalculationMethod calculationMethod="GHG Protocol" />);
         const component = screen.getByTestId('co2-calculation-method-link');
         expect(component).toBeDefined();
         expect(component).toBeInTheDocument();
