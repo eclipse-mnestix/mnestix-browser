@@ -8,7 +8,6 @@ import { TextSnippet } from '@mui/icons-material';
 import { MultiplicityEnum } from 'lib/enums/Multiplicity.enum';
 import { TemplateEditTreeItemMenu } from './TemplateEditTreeItemMenu';
 import { useTranslations } from 'next-intl';
-import { pages } from 'next/dist/build/templates/app-page';
 
 interface CustomTreeItemProps extends TreeItemProps {
     hasValue?: boolean;
