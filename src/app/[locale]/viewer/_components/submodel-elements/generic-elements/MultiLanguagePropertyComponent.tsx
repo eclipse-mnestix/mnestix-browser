@@ -1,12 +1,12 @@
 import { Box, IconButton, Link, Tooltip, Typography } from '@mui/material';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
-import { useIntl } from 'react-intl';
 import { MultiLanguageProperty } from '@aas-core-works/aas-core3.0-typescript/types';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { ContentCopy, OpenInNew } from '@mui/icons-material';
 import { useState } from 'react';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
-import { messages } from 'lib/i18n/localization';
+import { useLocale } from 'use-intl';
+import { useTranslations } from 'next-intl';
 
 type MultiLanguagePropertyComponentProps = {
     readonly mLangProp: MultiLanguageProperty;
@@ -14,8 +14,9 @@ type MultiLanguagePropertyComponentProps = {
 
 export function MultiLanguagePropertyComponent(props: MultiLanguagePropertyComponentProps) {
     const { mLangProp } = props;
-    const intl = useIntl();
-    const value = getTranslationText(mLangProp, intl);
+    const t = useTranslations('common.labels');
+    const locale = useLocale();
+    const value = getTranslationText(mLangProp, locale);
     const [isHovered, setIsHovered] = useState(false);
     const notificationSpawner = useNotificationSpawner();
 
@@ -23,7 +24,7 @@ export function MultiLanguagePropertyComponent(props: MultiLanguagePropertyCompo
         if (value) {
             navigator.clipboard.writeText(value);
             notificationSpawner.spawn({
-                message: intl.formatMessage(messages.mnestix.copied),
+                message: t('copied'),
                 severity: 'success',
             });
         }
@@ -32,7 +33,7 @@ export function MultiLanguagePropertyComponent(props: MultiLanguagePropertyCompo
     const renderCopyButton = () => {
         if (!value) return null;
         return (
-            <Tooltip title={intl.formatMessage(messages.mnestix.copy)}>
+            <Tooltip title={t('copy')}>
                 <IconButton
                     onClick={handleCopyValue}
                     size="small"

@@ -3,7 +3,7 @@
 ## Project Structure
 - Frontend is built with Next.js 14+, using the App Router
 - Translations are in src/locale/[lang].json files 
-- We are currently transferring from react-intl to next-intl
+- We are using next-intl for internationalization
 - Components are in src/components
 - Page components are in src/app/[locale]/...
 

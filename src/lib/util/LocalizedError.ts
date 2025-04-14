@@ -10,11 +10,13 @@ type Paths<Schema, Path extends string = ''> = Schema extends string
 
 export class LocalizedError extends Error {
     descriptor: Paths<IntlMessages>;
+    params: Record<string, string | number> | undefined;
 
-    constructor(message: Paths<IntlMessages>) {
+    constructor(message: Paths<IntlMessages>, params?: Record<string, string | number>) {
         const trueProto = new.target.prototype;
         super();
         Object.setPrototypeOf(this, trueProto);
         this.descriptor = message;
+        this.params = params;
     }
 }

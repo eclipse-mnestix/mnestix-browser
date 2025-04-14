@@ -1,4 +1,3 @@
-import { Log } from 'lib/util/Log';
 import { AssetAdministrationShellRepositoryApi, SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { AssetAdministrationShell, Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
@@ -14,6 +13,7 @@ import {
 import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { PaginationData } from 'lib/api/basyx-v3/types';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
+import logger, { logResponseDebug } from 'lib/util/Logger';
 import { envs } from 'lib/env/MnestixEnv';
 
 export type RepoSearchResult<T> = {
@@ -31,24 +31,23 @@ export class RepositorySearchService {
         protected readonly prismaConnector: IPrismaConnector,
         protected readonly getAasRepositoryClient: (basePath: string) => IAssetAdministrationShellRepositoryApi,
         protected readonly getSubmodelRepositoryClient: (basePath: string) => ISubmodelRepositoryApi,
-        protected readonly log: Log,
+        private readonly log: typeof logger = logger,
     ) {}
 
-    static create(): RepositorySearchService {
-        const log = Log.create();
+    static create(log?: typeof logger): RepositorySearchService {
         const prismaConnector = PrismaConnector.create();
+        const searcherLogger = log?.child({ Service: RepositorySearchService.name });
         return new RepositorySearchService(
             prismaConnector,
             (baseUrl) => AssetAdministrationShellRepositoryApi.create(baseUrl, mnestixFetch()),
             (baseUrl) => SubmodelRepositoryApi.create(baseUrl, mnestixFetch()),
-            log,
+            searcherLogger,
         );
     }
 
     static createNull(
         shellsInRepositories: RepoSearchResult<AssetAdministrationShell>[] = [],
         submodelsInRepositories: RepoSearchResult<Submodel>[] = [],
-        log = null,
     ): RepositorySearchService {
         const shellUrls = new Set(shellsInRepositories.map((value) => value.location));
         const submodelUrls = new Set(submodelsInRepositories.map((value) => value.location));
@@ -68,7 +67,6 @@ export class RepositorySearchService {
                         .filter((value) => value.location == baseUrl)
                         .map((value) => value.searchResult),
                 ),
-            log ?? Log.createNull(),
         );
     }
 
@@ -82,7 +80,7 @@ export class RepositorySearchService {
                 typeName: 'AAS_REPOSITORY',
             });
         } catch (error) {
-            this.log.warn('Failed to get AAS repositories', error);
+            this.log?.warn('Failed to get AAS repositories', error);
         }
         return defaultRepositoryClient ? [defaultRepositoryClient, ...repositories] : repositories;
     }
@@ -97,9 +95,26 @@ export class RepositorySearchService {
     async getAasFromDefaultRepo(aasId: string): Promise<ApiResponseWrapper<AssetAdministrationShell>> {
         const client = this.getDefaultAasRepositoryClient();
         if (!client) return noDefaultAasRepository();
+
         const response = await client.getAssetAdministrationShellById(aasId);
-        if (response.isSuccess) return response;
-        return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'AAS not found');
+        if (response.isSuccess) {
+            logResponseDebug(
+                this.log,
+                this.getAasFromDefaultRepo.name,
+                'Querying AAS from default repository',
+                response,
+                { Repository_Endpoint: client.getBaseUrl(), AAS_ID_Base64_Encoded: aasId },
+            );
+            return response;
+        }
+        logResponseDebug(
+            this.log,
+            this.getAasFromDefaultRepo.name,
+            'AAS repository search unsuccessful',
+            response,
+            { Repository_Endpoint: client.getBaseUrl(), AAS_ID_Base64_Encoded: aasId },
+        );
+        return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'AAS not found', response.httpStatus);
     }
 
     async getAasFromAllRepos(aasId: string): Promise<ApiResponseWrapper<RepoSearchResult<AssetAdministrationShell>[]>> {
@@ -128,18 +143,54 @@ export class RepositorySearchService {
         );
     }
 
-    async getSubmodelFromDefaultRepo(id: string): Promise<ApiResponseWrapper<Submodel>> {
+    async getSubmodelFromDefaultRepo(submodelId: string): Promise<ApiResponseWrapper<Submodel>> {
         const client = this.getDefaultSubmodelRepositoryClient();
         if (!client) return noDefaultSubmodelRepository();
-        const result = await client.getSubmodelById(id);
-        if (result.isSuccess) return result;
-        return wrapErrorCode(ApiResultStatus.NOT_FOUND, `Submodel with id '${id}' not found`);
+        const response = await client.getSubmodelById(submodelId);
+        if (response.isSuccess) {
+            logResponseDebug(
+                this.log,
+                this.getSubmodelFromDefaultRepo.name,
+                'Querying Submodel from default repository',
+                response,
+                { Repository_Endpoint: client.getBaseUrl(), Submodel_ID: submodelId },
+            );
+            return response;
+        }
+        logResponseDebug(
+            this.log,
+            this.getSubmodelFromDefaultRepo.name,
+            'Submodel repository search unsuccessful',
+            response,
+            { Repository_Endpoint: client.getBaseUrl(), Submodel_ID: submodelId },
+        );
+        return wrapErrorCode(
+            ApiResultStatus.NOT_FOUND,
+            `Submodel with id '${submodelId}' not found`,
+            response.httpStatus,
+        );
     }
 
     private async getSubmodelFromRepo(submodelId: string, repoUrl: string): Promise<ApiResponseWrapper<Submodel>> {
         const client = this.getSubmodelRepositoryClient(repoUrl);
         const response = await client.getSubmodelById(submodelId);
-        if (response.isSuccess) return response;
+        if (response.isSuccess) {
+            logResponseDebug(
+                this.log,
+                this.getSubmodelFromRepo.name,
+                'Querying Submodel from repository',
+                response,
+                { Repository_Endpoint: client.getBaseUrl(), Submodel_ID: submodelId },
+            );
+            return response;
+        }
+        logResponseDebug(
+            this.log,
+            this.getSubmodelFromRepo.name,
+            'Submodel repository search unsuccessful',
+            response,
+            { Repository_Endpoint: client.getBaseUrl(), Submodel_ID: submodelId },
+        );
         return Promise.reject(`Unable to fetch Submodel '${submodelId}' from '${repoUrl}'`);
     }
 
@@ -169,10 +220,35 @@ export class RepositorySearchService {
         const client = this.getDefaultSubmodelRepositoryClient();
         if (!client) return noDefaultSubmodelRepository();
         const response = await client.getAttachmentFromSubmodelElement(submodelId, submodelElementPath);
-        if (response.isSuccess) return response;
+        if (response.isSuccess) {
+            logResponseDebug(
+                this.log,
+                this.getAttachmentFromSubmodelElementFromDefaultRepo.name,
+                'Querying Attachment from repository',
+                response,
+                {
+                    Repository_Endpoint: client.getBaseUrl(),
+                    Submodel_ID: submodelId,
+                    Submodel_Element_Path: submodelElementPath,
+                },
+            );
+            return response;
+        }
+        logResponseDebug(
+            this.log,
+            this.getAttachmentFromSubmodelElementFromDefaultRepo.name,
+            'Querying Attachment from repository unsuccessful',
+            response,
+            {
+                Repository_Endpoint: client.getBaseUrl(),
+                Submodel_ID: submodelId,
+                Submodel_Element_Path: submodelElementPath,
+            },
+        );
         return wrapErrorCode(
             ApiResultStatus.NOT_FOUND,
             `Attachment for Submodel with id '${submodelId}' at path '${submodelElementPath}' not found in repository '${client.getBaseUrl()}'`,
+            response.httpStatus,
         );
     }
 
@@ -183,7 +259,31 @@ export class RepositorySearchService {
     ) {
         const client = this.getSubmodelRepositoryClient(repoUrl);
         const response = await client.getAttachmentFromSubmodelElement(submodelId, submodelElementPath);
-        if (response.isSuccess) return response;
+        if (response.isSuccess) {
+            logResponseDebug(
+                this.log,
+                this.getAttachmentFromSubmodelElementFromRepo.name,
+                'Querying Attachment from repository',
+                response,
+                {
+                    Repository_Endpoint: client.getBaseUrl(),
+                    Submodel_ID: submodelId,
+                    Submodel_Element_Path: submodelElementPath,
+                },
+            );
+            return response;
+        }
+        logResponseDebug(
+            this.log,
+            this.getAttachmentFromSubmodelElementFromRepo.name,
+            'Querying Attachment from repository unsuccessful',
+            response,
+            {
+                Repository_Endpoint: client.getBaseUrl(),
+                Submodel_ID: submodelId,
+                Submodel_Element_Path: submodelElementPath,
+            },
+        );
         return Promise.reject(
             `Unable to fetch Attachment '${submodelElementPath}' in submodel '${submodelId}' from '${repoUrl}'`,
         );
@@ -214,17 +314,62 @@ export class RepositorySearchService {
         const client = this.getDefaultAasRepositoryClient();
         if (!client) return noDefaultAasRepository();
         const response = await client.getSubmodelReferencesFromShell(aasId);
-        if (response.isSuccess) return response;
+        if (response.isSuccess) {
+            logResponseDebug(
+                this.log,
+                this.getSubmodelReferencesFromShellFromDefaultRepo.name,
+                'Querying Submodel Reference from repository',
+                response,
+                {
+                    Repository_Endpoint: client.getBaseUrl(),
+                    AAS_ID: aasId,
+                },
+            );
+            return response;
+        }
+        logResponseDebug(
+            this.log,
+            this.getSubmodelReferencesFromShellFromDefaultRepo.name,
+            'Querying Submodel Reference from repository unsuccessful',
+            response,
+            {
+                Repository_Endpoint: client.getBaseUrl(),
+                AAS_ID: aasId,
+            },
+        );
         return wrapErrorCode(
             ApiResultStatus.NOT_FOUND,
             `Submodel references for '${aasId}' not found in default repository`,
+            response.httpStatus,
         );
     }
 
     private async getSubmodelReferencesFromShellFromRepo(aasId: string, repoUrl: string) {
         const client = this.getAasRepositoryClient(repoUrl);
         const response = await client.getSubmodelReferencesFromShell(aasId);
-        if (response.isSuccess) return response;
+        if (response.isSuccess) {
+            logResponseDebug(
+                this.log,
+                this.getSubmodelReferencesFromShellFromRepo.name,
+                'Querying Submodel Reference from repository unsuccessful',
+                response,
+                {
+                    Repository_Endpoint: client.getBaseUrl(),
+                    AAS_ID: aasId,
+                },
+            );
+            return response;
+        }
+        logResponseDebug(
+            this.log,
+            this.getSubmodelReferencesFromShellFromRepo.name,
+            'Querying Submodel Reference from repository unsuccessful',
+            response,
+            {
+                Repository_Endpoint: client.getBaseUrl(),
+                AAS_ID: aasId,
+            },
+        );
         return Promise.reject(`Unable to fetch submodel references for AAS '${aasId}' from '${repoUrl}'`);
     }
 
@@ -248,19 +393,75 @@ export class RepositorySearchService {
         const client = this.getDefaultAasRepositoryClient();
         if (!client) return noDefaultAasRepository();
         const response = await client.getThumbnailFromShell(aasId);
-        if (response.isSuccess) return response;
-        return wrapErrorCode(ApiResultStatus.NOT_FOUND, `Thumbnail for '${aasId}' not found in default repository`);
+        if (response.isSuccess) {
+            logResponseDebug(
+                this.log,
+                this.getAasThumbnailFromDefaultRepo.name,
+                'Querying Thumbnail from repository unsuccessful',
+                response,
+                {
+                    Repository_Endpoint: client.getBaseUrl(),
+                    AAS_ID: aasId,
+                },
+            );
+            return response;
+        }
+        logResponseDebug(
+            this.log,
+            this.getAasThumbnailFromDefaultRepo.name,
+            'Querying Thumbnail from repository unsuccessful',
+            response,
+            {
+                Repository_Endpoint: client.getBaseUrl(),
+                AAS_ID: aasId,
+            },
+        );
+        return wrapErrorCode(
+            ApiResultStatus.NOT_FOUND,
+            `Thumbnail for '${aasId}' not found in default repository`,
+            response.httpStatus,
+        );
     }
 
     private async getAasThumbnailFromRepo(aasId: string, repoUrl: string): Promise<ApiResponseWrapper<Blob>> {
         const client = this.getAasRepositoryClient(repoUrl);
         const response = await client.getThumbnailFromShell(aasId);
         if (!response.isSuccess) {
+            logResponseDebug(
+                this.log,
+                this.getAasThumbnailFromRepo.name,
+                'Querying Thumbnail from repository unsuccessful',
+                response,
+                {
+                    Repository_Endpoint: client.getBaseUrl(),
+                    AAS_ID: aasId,
+                },
+            );
             return Promise.reject(`Unable to fetch thumbnail for AAS '${aasId}' from '${repoUrl}'`);
         }
         if (response.result instanceof Blob && response.result.size === 0) {
+            logResponseDebug(
+                this.log,
+                this.getAasThumbnailFromRepo.name,
+                'Querying Thumbnail from repository unsuccessful',
+                response,
+                {
+                    Repository_Endpoint: client.getBaseUrl(),
+                    AAS_ID: aasId,
+                },
+            );
             return Promise.reject(`Empty thumbnail image in AAS '${aasId}' from '${repoUrl}'`);
         }
+        logResponseDebug(
+            this.log,
+            this.getAasThumbnailFromRepo.name,
+            'Querying Thumbnail from repository successful',
+            response,
+            {
+                Repository_Endpoint: client.getBaseUrl(),
+                AAS_ID: aasId,
+            },
+        );
         return response;
     }
 
@@ -331,7 +532,12 @@ export class RepositorySearchService {
                         searchResult: ApiResponseWrapperSuccess<T>;
                         location: string;
                     }>,
-                ) => ({ searchResult: result.value.searchResult.result, location: result.value.location }),
+                ) => ({
+                    searchResult: result.value.searchResult.result,
+                    location: result.value.location,
+                    httpStatus: result.value.searchResult.httpStatus,
+                    httpText: result.value.searchResult.httpText,
+                }),
             ),
         );
     }
@@ -342,7 +548,27 @@ export class RepositorySearchService {
     ): Promise<ApiResponseWrapper<AssetAdministrationShell>> {
         const client = this.getAasRepositoryClient(repoUrl);
         const response = await client.getAssetAdministrationShellById(aasId);
-        if (response.isSuccess) return response;
-        return wrapErrorCode(ApiResultStatus.NOT_FOUND, `AAS '${aasId}' not found in repository '${repoUrl}'`);
+        if (response.isSuccess) {
+            logResponseDebug(this.log, this.getAasFromRepo.name, 'Querying AAS from repository', response, {
+                Repository_Endpoint: client.getBaseUrl(),
+                AAS_ID: aasId,
+            });
+            return response;
+        }
+        logResponseDebug(
+            this.log,
+            this.getAasFromRepo.name,
+            'Querying AAS from repository unsuccessful',
+            response,
+            {
+                Repository_Endpoint: client.getBaseUrl(),
+                AAS_ID: aasId,
+            },
+        );
+        return wrapErrorCode(
+            ApiResultStatus.NOT_FOUND,
+            `AAS '${aasId}' not found in repository '${repoUrl}'`,
+            response.httpStatus,
+        );
     }
 }

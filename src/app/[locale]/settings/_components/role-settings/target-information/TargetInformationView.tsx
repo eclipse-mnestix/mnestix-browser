@@ -28,7 +28,7 @@ export const TargetInformationView = (props: TargetInformationProps) => {
     });
     return (
         <Box>
-            <Typography variant="h5">{t('roles.tableHeader.type')}</Typography>
+            <Typography variant="h5">{t('rules.tableHeader.type')}</Typography>
             <Typography>{props.targetInformation['@type']}</Typography>
             {permissions}
         </Box>

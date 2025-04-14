@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 import { routing } from 'i18n/routing';
+import { v4 as uuidv4 } from 'uuid';
 import { envs } from 'lib/env/MnestixEnv';
 
 // next-intl does also provide methods for navigation (useRouter etc.) but we
@@ -23,6 +24,10 @@ export function middleware(req: NextRequest) {
     if (!envs.COMPARISON_FEATURE_FLAG && pathname.includes('compare')) {
         return NextResponse.rewrite(new URL('/404', req.url));
     }
+
+    // Generate a unique correlation ID for tracking requests
+    const correlationId = uuidv4();
+    req.headers.set('x-correlation-id', correlationId);
 
     if (req.nextUrl.pathname.match(unlocalizedPathsRegex)) {
         return NextResponse.next();

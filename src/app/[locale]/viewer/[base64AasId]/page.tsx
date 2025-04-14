@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { Box, Button, Skeleton, Typography } from '@mui/material';
-import { useIntl } from 'react-intl';
 import { safeBase64Decode } from 'lib/util/Base64Util';
 import { ArrowForward } from '@mui/icons-material';
-import { LangStringNameType, Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
@@ -29,7 +28,7 @@ import {
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { TransferButton } from 'app/[locale]/viewer/_components/transfer/TransferButton';
 import { useShowError } from 'lib/hooks/UseShowError';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 export default function Page() {
     const navigate = useRouter();
@@ -38,7 +37,7 @@ export default function Page() {
     const aasIdDecoded = safeBase64Decode(base64AasId);
     const [isLoadingAas, setIsLoadingAas] = useState(false);
     const isMobile = useIsMobile();
-    const intl = useIntl();
+    const locale = useLocale();
     const env = useEnv();
     const encodedRepoUrl = useSearchParams().get('repoUrl');
     const repoUrl = encodedRepoUrl ? decodeURI(encodedRepoUrl) : undefined;
@@ -179,7 +178,7 @@ export default function Page() {
                             {isLoadingAas ? (
                                 <Skeleton width="40%" sx={{ margin: '0 auto' }} />
                             ) : aasFromContext?.displayName ? (
-                                getTranslationText(aasFromContext?.displayName as LangStringNameType[], intl)
+                                getTranslationText(aasFromContext?.displayName, locale)
                             ) : (
                                 ''
                             )}

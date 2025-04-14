@@ -9,12 +9,11 @@ import {
 import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import { StyledDataRow } from 'components/basics/StyledDataRow';
 import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
-import { useTranslations } from 'next-intl';
-import { useIntl } from 'react-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 export function InternalTimeSeries(props: { submodelElement: SubmodelElementCollection }) {
     const t = useTranslations('validation.errors');
-    const intl = useIntl();
+    const locale = useLocale();
     const [data, setData] = useState<TimeSeriesDataSet>({ names: [], points: [] });
     const [error, setError] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -35,13 +34,13 @@ export function InternalTimeSeries(props: { submodelElement: SubmodelElementColl
     const name = extractIntlValueBySemanticId(
         props.submodelElement,
         SubmodelElementSemanticId.TimeSeriesSegmentName,
-        intl,
+        locale,
     );
 
     const description = extractIntlValueBySemanticId(
         props.submodelElement,
         SubmodelElementSemanticId.TimeSeriesSegmentDescription,
-        intl,
+        locale,
     );
 
     if (isLoading) return <CircularProgress />;

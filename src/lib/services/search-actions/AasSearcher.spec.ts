@@ -18,7 +18,6 @@ describe('Full Aas Search happy paths', () => {
                 { assetId: searchString, aasId: 'first found aasId 0' },
                 { assetId: searchString, aasId: 'second found aasId 1' },
             ],
-            log: log,
         });
 
         const search = await searcher.performFullSearch(searchString);
@@ -130,10 +129,7 @@ describe('Full Aas Search happy paths', () => {
 describe('Full Aas Search edge cases', () => {
     it('logs to the console when finding nothing', async () => {
         const searchString = 'irrelevant assetId';
-        const log = Log.createNull();
-        const searcher = AasSearcher.createNull({
-            log: log,
-        });
+        const searcher = AasSearcher.createNull({});
 
         await assertThatFunctionThrows(searcher, searchString);
     });
@@ -141,7 +137,6 @@ describe('Full Aas Search edge cases', () => {
     it('throws when registry search failed', async () => {
         const searchString = 'irrelevant assetId';
         const aasId = 'irrelevantAasId';
-        const log = Log.createNull();
         const searcher = AasSearcher.createNull({
             discoveryEntries: [{ assetId: searchString, aasId: aasId }],
             aasRegistryDescriptors: [createDummyShellDescriptor(AAS_ENDPOINT, aasId)],
@@ -151,7 +146,6 @@ describe('Full Aas Search edge cases', () => {
                     location: AAS_ENDPOINT + 'wrong path',
                 },
             ],
-            log: log,
         });
 
         await assertThatFunctionThrows(searcher, searchString);
@@ -160,7 +154,6 @@ describe('Full Aas Search edge cases', () => {
     it('throws when discovery search failed', async () => {
         const searchString = 'irrelevant assetId';
         const aasId = 'irrelevantAasId';
-        const log = Log.createNull();
         const searcher = AasSearcher.createNull({
             discoveryEntries: [{ assetId: 'wrong asset Id', aasId: aasId }],
             aasRegistryDescriptors: [createDummyShellDescriptor(AAS_ENDPOINT, aasId)],
@@ -170,7 +163,6 @@ describe('Full Aas Search edge cases', () => {
                     location: AAS_ENDPOINT + 'wrong path',
                 },
             ],
-            log: log,
         });
 
         await assertThatFunctionThrows(searcher, searchString);
