@@ -8,7 +8,7 @@ import { useTranslations } from 'next-intl';
 import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
 
 export function TimeSeriesVisualizations({ submodel }: SubmodelVisualizationProps) {
-    const t = useTranslations('pages.submodels.timeSeries');
+    const t = useTranslations('pages.aasViewer.submodels.timeSeries');
 
     const timeSeriesSegments = submodel.submodelElements?.find(
         (el) => el.semanticId?.keys[0].value === SubmodelElementSemanticId.TimeSeriesSegments,

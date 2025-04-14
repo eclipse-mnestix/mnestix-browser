@@ -12,7 +12,7 @@ type CopyButtonProps = {
 };
 
 export function CopyButton({ value, isVisible = true, withBase64 = false, dataTestId: testId }: CopyButtonProps) {
-    const t = useTranslations('common.labels');
+    const t = useTranslations('components.copyButton');
     const notificationSpawner = useNotificationSpawner();
 
     const handleCopyValue = () => {
@@ -29,7 +29,7 @@ export function CopyButton({ value, isVisible = true, withBase64 = false, dataTe
     if (!value) return null;
 
     return (
-        <Tooltip title={t('copy')}>
+        <Tooltip title={withBase64? t('copyBase64') : t('copy')}>
             <IconButton
                 onClick={handleCopyValue}
                 size="small"

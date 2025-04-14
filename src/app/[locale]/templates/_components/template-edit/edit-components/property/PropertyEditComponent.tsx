@@ -18,7 +18,7 @@ interface PropertyEditComponentProps {
 export function PropertyEditComponent(props: PropertyEditComponentProps) {
     const [data, setData] = useState(props.data);
     const [defaultValueEnabled, setDefaultValueEnabled] = useState(!!data.value?.length);
-    const t = useTranslations();
+    const t = useTranslations('pages.templates');
 
     useEffect(() => {
         setData(props.data);
@@ -65,7 +65,7 @@ export function PropertyEditComponent(props: PropertyEditComponentProps) {
                 </Box>
             ) : (
                 <Button size="large" startIcon={<AddCircleOutline />} onClick={() => setDefaultValueEnabled(true)}>
-                    {t('common.actions.add')}
+                    {t('actions.add')}
                 </Button>
             )}
         </>

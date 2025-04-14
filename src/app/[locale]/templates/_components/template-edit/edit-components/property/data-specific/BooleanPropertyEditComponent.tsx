@@ -10,7 +10,7 @@ interface BooleanPropertyEditComponentProps {
 
 export function BooleanPropertyEditComponent(props: BooleanPropertyEditComponentProps) {
     const [realBoolean, setRealBoolean] = useState(props.dataValue.toLowerCase() === 'true');
-    const t = useTranslations('common');
+    const t = useTranslations('pages.templates');
 
     useEffect(() => {
         // intial value should be true

@@ -12,7 +12,7 @@ import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.e
 import { useLocale, useTranslations } from 'next-intl';
 
 export function InternalTimeSeries(props: { submodelElement: SubmodelElementCollection }) {
-    const t = useTranslations('validation.errors');
+    const t = useTranslations();
     const locale = useLocale();
     const [data, setData] = useState<TimeSeriesDataSet>({ names: [], points: [] });
     const [error, setError] = useState<boolean>(false);
@@ -49,7 +49,7 @@ export function InternalTimeSeries(props: { submodelElement: SubmodelElementColl
         return (
             <Box sx={{ display: 'flex', justifyContent: 'center', padding: 2 }}>
                 <Alert icon={false} severity="warning">
-                    {t('influxError')}
+                    {t('pages.aasViewer.errors.influxError')}
                 </Alert>
             </Box>
         );

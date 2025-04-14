@@ -1,6 +1,7 @@
-import { screen } from '@testing-library/react';
 import { expect } from '@jest/globals';
-import { CustomRender } from 'test-utils/CustomRender';import {
+import { screen } from '@testing-library/react';
+import { CustomRender } from 'test-utils/CustomRender';
+import {
     CalculationMethod,
     LinkGHG,
 } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/visualization-components/CalculationMethod';

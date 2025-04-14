@@ -17,7 +17,7 @@ export function MappingInfoEditComponent(props: MappingInfoEditComponentProps) {
     const [data, setData] = useState(props.data);
     const [mappingInfo, setMappingInfo] = useState(getMappingInfo());
     const [valueEnabled, setValueEnabled] = useState(!!mappingInfo?.value?.length);
-    const t = useTranslations('common');
+    const t = useTranslations('pages.templates');
 
     useEffect(() => {
         setData(props.data);

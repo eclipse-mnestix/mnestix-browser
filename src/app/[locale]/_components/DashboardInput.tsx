@@ -17,7 +17,7 @@ export const DashboardInput = () => {
 
     const browseAasUrl = async (searchString: string) => {
         const { isSuccess, result } = await performFullAasSearch(searchString.trim());
-        if (!isSuccess) throw new LocalizedError('validation.errors.urlNotFound');
+        if (!isSuccess) throw new LocalizedError('navigation.errors.urlNotFound');
 
         if (result.aas) {
             setAas(result.aas);
