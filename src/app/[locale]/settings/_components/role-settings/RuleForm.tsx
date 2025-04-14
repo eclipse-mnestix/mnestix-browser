@@ -68,6 +68,7 @@ export const RuleForm = (props: RuleDialogProps) => {
                         render={({ field, fieldState: { error } }) => (
                             <FormControl fullWidth>
                                 <TextField
+                                    data-testid="rule-settings-name-input"
                                     variant="outlined"
                                     {...field}
                                     error={!!error}
@@ -84,7 +85,12 @@ export const RuleForm = (props: RuleDialogProps) => {
                         control={control}
                         render={({ field }) => (
                             <FormControl fullWidth>
-                                <Select labelId="role-type-select-label" variant="outlined" {...field}>
+                                <Select
+                                    data-testid="rule-settings-action-select"
+                                    labelId="role-type-select-label"
+                                    variant="outlined"
+                                    {...field}
+                                >
                                     {rbacRuleActions.map((action) => (
                                         <MenuItem key={action} value={action}>
                                             {action}
