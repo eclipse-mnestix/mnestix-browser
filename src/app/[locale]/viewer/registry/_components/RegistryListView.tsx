@@ -8,7 +8,7 @@ import { performSearchAasFromAllRepositories } from 'lib/services/repository-acc
 import { useTranslations } from 'next-intl';
 import { LocalizedError } from 'lib/util/LocalizedError';
 import { AasListEntry } from 'lib/types/AasListEntry';
-import { GenericListDataWrapper } from 'app/[locale]/list/_components/genericList/GenericListDataWrapper';
+import { GenericListDataWrapper } from 'components/basics/listBasics/GenericListDataWrapper';
 
 /**
  * This component is responsible for displaying the list of AAS entries based on a given aasId.

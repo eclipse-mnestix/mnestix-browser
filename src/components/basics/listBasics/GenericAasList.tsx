@@ -1,5 +1,5 @@
 ﻿import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { GenericAasListEntry } from 'app/[locale]/list/_components/genericList/GenericAasListEntry';
+import { GenericAasListEntry } from 'components/basics/listBasics/GenericAasListEntry';
 import { AasListConfig, AasListEntry } from 'lib/types/AasListEntry';
 import { useTranslations } from 'next-intl';
 
