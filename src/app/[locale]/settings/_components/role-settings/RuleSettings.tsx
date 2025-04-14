@@ -128,7 +128,7 @@ export const RuleSettings = () => {
                                 <TableBody>
                                     {rbacRoles?.roles.map((entry) => (
                                         <TableRow
-                                            key={entry.role + entry.action + entry.targetInformation['@type']}
+                                            key={entry.idShort}
                                             data-testid={`role-settings-row-${entry.idShort}`}
                                         >
                                             <TableCell>

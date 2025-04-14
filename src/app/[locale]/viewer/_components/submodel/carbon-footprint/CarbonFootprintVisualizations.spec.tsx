@@ -2,8 +2,7 @@ import { screen } from '@testing-library/react';
 import { expect } from '@jest/globals';
 import testSubmodel from '../../submodel/carbon-footprint/test-submodel/carbonFootprint-test.json';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
-import { CustomRenderReactIntl } from 'test-utils/CustomRenderReactIntl';
-import {
+import { CustomRender } from 'test-utils/CustomRender';import {
     CarbonFootprintVisualizations
 } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/CarbonFootprintVisualizations';
 
@@ -30,14 +29,14 @@ jest.mock('recharts', () => {
 
 describe('CarbonFootprintVisualizations Detail', () => {
     it('should render all submodel visualilzations for irdi id', async () => {
-        CustomRenderReactIntl(
+        CustomRender(
             <CarbonFootprintVisualizations submodel={testSubmodel['carbonFootprint-IrdiId'] as unknown as Submodel} />,
         );
         assertOnElements();
     });
 
     it('should render all submodel visualilzations for URL id', async () => {
-        CustomRenderReactIntl(
+        CustomRender(
             <CarbonFootprintVisualizations submodel={testSubmodel['carbonFootprint-UrlId'] as unknown as Submodel} />,
         );
         assertOnElements();

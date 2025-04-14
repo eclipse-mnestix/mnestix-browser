@@ -14,7 +14,7 @@ interface FileEditComponentProps {
 export function FileEditComponent(props: FileEditComponentProps) {
     const [data, setData] = useState(props.data);
     const [defaultValueEnabled, setDefaultValueEnabled] = useState(!!data.value?.length);
-    const t = useTranslations('common');
+    const t = useTranslations('pages.templates');
 
     useEffect(() => {
         setData(props.data);

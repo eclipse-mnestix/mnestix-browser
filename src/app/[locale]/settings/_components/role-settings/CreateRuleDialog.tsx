@@ -48,7 +48,7 @@ export const CreateRuleDialog = (props: RoleDialogProps) => {
             <Typography variant="h2" color="primary" sx={{ mt: 4, ml: '40px' }}>
                 {t('createTitle')}
             </Typography>
-            <DialogCloseButton handleClose={() => onCloseDialog(false)} />
+            <DialogCloseButton handleClose={() => onCloseDialog(false)} dataTestId="rule-create-close-button" />
             <RuleForm rule={defaultRbacRule} onSubmit={onSubmit} onCancel={() => onCloseDialog(false)} />
         </Dialog>
     );

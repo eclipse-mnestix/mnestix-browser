@@ -21,7 +21,7 @@ export const TemplateEditTreeItemMenu = (props: TemplateEditTreeItemMenuProps) =
     const menuElements = generateMenuElementsBasedOnMultiplicity(props.elementMultiplicity, props.numberOfThisElement);
     const [editMenuOpen, setEditMenuOpen] = useState(false);
     const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
-    const t = useTranslations('common.actions');
+    const t = useTranslations('pages.templates');
 
     function generateMenuElementsBasedOnMultiplicity(
         elementMultiplicity: MultiplicityEnum | string | undefined,
@@ -89,7 +89,7 @@ export const TemplateEditTreeItemMenu = (props: TemplateEditTreeItemMenuProps) =
                 <ListItemIcon>
                     <ContentCopy fontSize="small" />
                 </ListItemIcon>
-                {t('duplicate')}
+                {t('actions.duplicate')}
             </MenuItem>
         );
     }
@@ -100,7 +100,7 @@ export const TemplateEditTreeItemMenu = (props: TemplateEditTreeItemMenuProps) =
                 <ListItemIcon>
                     <Delete fontSize="small" />
                 </ListItemIcon>
-                {t('delete')}
+                {t('actions.delete')}
             </MenuItem>
         );
     }
@@ -111,7 +111,7 @@ export const TemplateEditTreeItemMenu = (props: TemplateEditTreeItemMenuProps) =
                 <ListItemIcon>
                     <Restore fontSize="small" />
                 </ListItemIcon>
-                {t('restore')}
+                {t('actions.restore')}
             </MenuItem>
         );
     }

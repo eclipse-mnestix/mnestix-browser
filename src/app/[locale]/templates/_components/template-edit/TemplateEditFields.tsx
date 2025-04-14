@@ -32,7 +32,7 @@ export type TemplateEditFieldsProps = {
 
 export function TemplateEditFields(props: TemplateEditFieldsProps) {
     const [templatePart, setTemplatePart] = useState(props.templatePart);
-    const t = useTranslations('pages.submodels');
+    const t = useTranslations('pages.templates');
 
     useEffect(() => {
         setTemplatePart(props.templatePart);
@@ -100,7 +100,7 @@ export function TemplateEditFields(props: TemplateEditFieldsProps) {
             default:
                 return (
                     <Typography color="error" variant="body2" sx={{ mt: 2 }}>
-                        {t('unknownModelType', { type: `${templatePartType}` })}
+                        {t('errors.unknownModelType', { type: `${templatePartType}` })}
                     </Typography>
                 );
         }

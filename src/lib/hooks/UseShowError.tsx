@@ -11,15 +11,15 @@ export function useShowError() {
 
     function showNotFoundError(notificationSpawner: NotificationSpawner) {
         notificationSpawner.spawn({
-            message: t('validation.errors.notFound'),
+            message: t('navigation.errors.notFound'),
             severity: 'error',
         });
     }
 
     function showUnauthorizedError(notificationSpawner: NotificationSpawner) {
         notificationSpawner.spawn({
-            title: t('validation.errors.unauthorizedError.title'),
-            message: t('validation.errors.unauthorizedError.content'),
+            title: t('navigation.errors.unauthorizedError.title'),
+            message: t('navigation.errors.unauthorizedError.content'),
             severity: 'error',
         });
     }
@@ -48,7 +48,7 @@ export function useShowError() {
                         notificationSpawner.spawn({
                             message: (
                                 <>
-                                    {t('validation.errors.unexpectedError')}
+                                    {t('navigation.errors.unexpectedError')}
                                     <Typography variant="body2" sx={{ mt: 1, opacity: 0.7 }}>
                                         {e.status}: &quot;{e.statusText}&quot;
                                     </Typography>
@@ -82,7 +82,7 @@ export function useShowError() {
                         notificationSpawner.spawn({
                             message: (
                                 <>
-                                    {t('validation.errors.unexpectedError')}
+                                    {t('navigation.errors.unexpectedError')}
                                     <Typography variant="body2" sx={{ mt: 1, opacity: 0.7 }}>
                                         {e.errorCode}: &quot;{e.message}&quot;
                                     </Typography>
@@ -95,7 +95,7 @@ export function useShowError() {
             }
 
             notificationSpawner.spawn({
-                message: t('validation.errors.unexpectedError'),
+                message: t('navigation.errors.unexpectedError'),
                 severity: 'error',
             });
         },
