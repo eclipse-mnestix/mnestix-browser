@@ -5,14 +5,16 @@ import { TransferDto, TransferResult } from 'lib/types/TransferServiceData';
 
 export async function transferAasWithSubmodels(transferDto: TransferDto): Promise<TransferResult[]> {
     const transfer = TransferService.create(
-        transferDto.targetAasRepositoryBaseUrl,
-        transferDto.targetSubmodelRepositoryBaseUrl,
-        transferDto.sourceAasRepositoryBaseUrl,
-        transferDto.sourceSubmodelRepositoryBaseUrl,
-        transferDto.targetDiscoveryBaseUrl,
-        transferDto.targetAasRegistryBaseUrl,
-        transferDto.targetSubmodelRegistryBaseUrl,
-        transferDto.apikey,
+        {
+            targetAasRepoUrl: transferDto.targetAasRepositoryBaseUrl,
+            sourceAasRepoUrl: transferDto.sourceAasRepositoryBaseUrl,
+            targetSubmodelRepoUrl: transferDto.targetSubmodelRepositoryBaseUrl,
+            sourceSubmodelRepoUrl: transferDto.sourceSubmodelRepositoryBaseUrl,
+            targetDiscoveryUrl: transferDto.targetDiscoveryBaseUrl,
+            targetAasRegistryUrl: transferDto.targetAasRegistryBaseUrl,
+            targetSubmodelRegistryUrl: transferDto.targetSubmodelRegistryBaseUrl,
+            apikey: transferDto.apikey,
+        }
     );
     return transfer.transferAasWithSubmodels(transferDto.aas, transferDto.submodels);
 }
