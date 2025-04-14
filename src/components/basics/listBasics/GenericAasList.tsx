@@ -58,6 +58,9 @@ export default function GenericAasList({ data, ...config }: AasListProps) {
                                     {t('registryUrl')}
                                 </TableCell>
                             )}
+                            <TableCell sx={tableHeaderText} data-testid="list-header-viewAASButton">
+                                {t('viewAASButton')}
+                            </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

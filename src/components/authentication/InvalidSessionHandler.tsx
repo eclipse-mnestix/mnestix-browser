@@ -12,7 +12,7 @@ import { useSession } from 'next-auth/react';
 export function InvalidSessionHandler() {
     const [prefSession, setPrefSession] = useState<Session | null>(null);
     const { data: session } = useSession();
-    const t = useTranslations('validation.authentication');
+    const t = useTranslations('components.authentication');
 
     const notificationSpawner = useNotificationSpawner();
 
