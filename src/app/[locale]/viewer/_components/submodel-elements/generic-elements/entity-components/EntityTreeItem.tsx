@@ -20,7 +20,7 @@ import { performDiscoveryAasSearch } from 'lib/services/search-actions/searchAct
 import { useTranslations } from 'next-intl';
 
 const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeItemContentProps, ref) {
-    const t = useTranslations('common');
+    const t = useTranslations('pages.aasViewer.submodels');
     const navigate = useRouter();
     const { classes, className, label, itemId, icon: iconProp, data, ...other } = props;
     const { disabled, expanded, selected, focused, handleExpansion } = useTreeItemState(itemId);

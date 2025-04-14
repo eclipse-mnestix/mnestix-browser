@@ -1,6 +1,6 @@
 import { Dialog, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import { BaSyxRbacRule } from 'lib/services/rbac-service/RbacRulesService';
+import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 import { createRbacRule } from 'lib/services/rbac-service/RbacActions';
 import { mapFormModelToBaSyxRbacRule } from 'app/[locale]/settings/_components/role-settings/FormMappingHelper';
@@ -48,7 +48,7 @@ export const CreateRuleDialog = (props: RoleDialogProps) => {
             <Typography variant="h2" color="primary" sx={{ mt: 4, ml: '40px' }}>
                 {t('createTitle')}
             </Typography>
-            <DialogCloseButton handleClose={() => onCloseDialog(false)} />
+            <DialogCloseButton handleClose={() => onCloseDialog(false)} dataTestId="rule-create-close-button" />
             <RuleForm rule={defaultRbacRule} onSubmit={onSubmit} onCancel={() => onCloseDialog(false)} />
         </Dialog>
     );

@@ -14,7 +14,7 @@ export function DatePropertyEditComponent(props: DatePropertyEditComponentProps)
     const [isValid, setIsValid] = useState(true);
     const calenderFormat = 'yyyy-MM-dd';
     const isMobile = useIsMobile();
-    const t = useTranslations();
+    const t = useTranslations('pages.templates');
 
     const onValueChange = (newValue: Date | null) => {
         if (newValue) {
@@ -52,7 +52,7 @@ export function DatePropertyEditComponent(props: DatePropertyEditComponentProps)
         <>
             {isMobile ? (
                 <MobileDatePicker
-                    label={t('common.labels.value')}
+                    label={t('labels.value')}
                     value={startingData()}
                     onChange={onValueChange}
                     onError={onInvalidInput}
@@ -64,7 +64,7 @@ export function DatePropertyEditComponent(props: DatePropertyEditComponentProps)
                 />
             ) : (
                 <DesktopDatePicker
-                    label={t('common.labels.value')}
+                    label={t('labels.value')}
                     value={startingData()}
                     onChange={onValueChange}
                     onError={onInvalidInput}

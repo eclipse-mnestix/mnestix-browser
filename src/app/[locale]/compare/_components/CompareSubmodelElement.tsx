@@ -24,7 +24,7 @@ type CompareSubmodelElementProps = {
 
 export function CompareSubmodelElement(props: CompareSubmodelElementProps) {
     const isMarked = props.isMarked;
-    const t = useTranslations('pages.submodels');
+    const t = useTranslations('pages.compare');
 
     function getRenderElement() {
         if (!props.submodelElement) {
@@ -77,7 +77,7 @@ export function CompareSubmodelElement(props: CompareSubmodelElementProps) {
             default:
                 return (
                     <Typography color="error" variant="body2">
-                        {t('unknownModelType', { type: `${submodelElementType}` })}
+                        {t('errors.unknownModelType', { type: `${submodelElementType}` })}
                     </Typography>
                 );
         }

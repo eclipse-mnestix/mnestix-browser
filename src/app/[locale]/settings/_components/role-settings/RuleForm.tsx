@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslations } from 'next-intl';
-import { BaSyxRbacRule, rbacRuleActions, rbacRuleTargets } from 'lib/services/rbac-service/RbacRulesService';
+import { BaSyxRbacRule, rbacRuleTargets, rbacRuleActions } from 'lib/services/rbac-service/types/RbacServiceData';
 import { useEffect } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 import { TargetInformationForm } from 'app/[locale]/settings/_components/role-settings/target-information/TargetInformationForm';
@@ -68,6 +68,7 @@ export const RuleForm = (props: RuleDialogProps) => {
                         render={({ field, fieldState: { error } }) => (
                             <FormControl fullWidth>
                                 <TextField
+                                    data-testid="rule-settings-name-input"
                                     variant="outlined"
                                     {...field}
                                     error={!!error}
@@ -84,7 +85,12 @@ export const RuleForm = (props: RuleDialogProps) => {
                         control={control}
                         render={({ field }) => (
                             <FormControl fullWidth>
-                                <Select labelId="role-type-select-label" variant="outlined" {...field}>
+                                <Select
+                                    data-testid="rule-settings-action-select"
+                                    labelId="role-type-select-label"
+                                    variant="outlined"
+                                    {...field}
+                                >
                                     {rbacRuleActions.map((action) => (
                                         <MenuItem key={action} value={action}>
                                             {action}

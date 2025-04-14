@@ -2,7 +2,7 @@ import { screen, waitFor, fireEvent, within } from '@testing-library/react';
 import { RuleSettings } from 'app/[locale]/settings/_components/role-settings/RuleSettings';
 import { expect } from '@jest/globals';
 import * as rbacActions from 'lib/services/rbac-service/RbacActions';
-import { RbacRolesFetchResult } from 'lib/services/rbac-service/RbacRulesService';
+import { RbacRolesFetchResult } from 'lib/services/rbac-service/types/RbacServiceData';
 import { CustomRender } from 'test-utils/CustomRender';
 
 jest.mock('./../../../../../lib/services/rbac-service/RbacActions');

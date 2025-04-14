@@ -19,47 +19,47 @@ interface AssetIdRedirectDocumentationDialogProps extends DialogProps {
 }
 
 export function AssetIdRedirectDocumentationDialog(props: AssetIdRedirectDocumentationDialogProps) {
-    const t = useTranslations();
+    const t = useTranslations('pages.settings.idStructure');
     return (
         <Dialog open={props.open} onClose={props.onClose} maxWidth="lg">
             <DialogCloseButton handleClose={props.onClose}/>
             <DialogContent sx={{ pb: 6 }}>
                 <Typography variant="h2" sx={{ mb: 5 }}>
-                    {t('pages.assetIdDocumentation.title')}
+                    {t('assetIdDocumentation.title')}
                 </Typography>
                 <Typography variant="h3" sx={{ mt: 3, mb: 1 }}>
-                    {t('pages.assetIdDocumentation.industry40Heading')}
+                    {t('assetIdDocumentation.industry40Heading')}
                 </Typography>
                 <Typography>
-                    {t('pages.assetIdDocumentation.industry40Text')}
+                    {t('assetIdDocumentation.industry40Text')}
                 </Typography>
                 <StyledImg src={documentationI40AppPng.src} />
                 <Divider sx={{ my: 4 }} />
                 <Typography variant="h3" sx={{ mt: 3, mb: 1 }}>
-                    {t('pages.assetIdDocumentation.dnsHeading')}
+                    {t('assetIdDocumentation.dnsHeading')}
                 </Typography>
                 <Typography>
-                    {t('pages.assetIdDocumentation.dnsText')}
+                    {t('assetIdDocumentation.dnsText')}
                 </Typography>
                 <StyledImg src={documentationBrowserPng.src} />
                 <Typography variant="h4" sx={{ mb: 1 }}>
-                    {t('pages.assetIdDocumentation.exampleHeading')}
+                    {t('assetIdDocumentation.exampleHeading')}
                 </Typography>
                 <Typography>
                     <strong>
-                        {t('common.labels.assetId')}
+                        {t('assetIdDocumentation.assetId')}
                     </strong>
                     http://aas.example.com/assetid1
                 </Typography>
                 <Typography>
                     <strong>
-                        {t('common.labels.redirectsTo')}
+                        {t('assetIdDocumentation.redirectsTo')}
                     </strong>
                     https://your-mnestix-instance.com/asset/http%3A%2F%2Faas.example.com%2Fassetid1
                 </Typography>
                 <Typography>
                     <strong>
-                        {t('common.labels.endResult')}
+                        {t('assetIdDocumentation.endResult')}
                     </strong>
                     https://your-mnestix-instance.com/viewer/[base64 encoded AAS ID]
                 </Typography>
