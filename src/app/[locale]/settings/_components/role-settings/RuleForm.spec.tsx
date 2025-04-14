@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { RuleForm } from './RuleForm';
 import { expect } from '@jest/globals';
 import { act } from 'react';
-import { BaSyxRbacRule } from 'lib/types/RbacServiceData';
+import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
 
 jest.mock('next-intl', () => ({
     useTranslations: () => (key: string) => key,

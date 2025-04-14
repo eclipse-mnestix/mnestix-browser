@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslations } from 'next-intl';
-import { BaSyxRbacRule, rbacRuleTargets, rbacRuleActions } from 'lib/types/RbacServiceData';
+import { BaSyxRbacRule, rbacRuleTargets, rbacRuleActions } from 'lib/services/rbac-service/types/RbacServiceData';
 import { useEffect } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 import { TargetInformationForm } from 'app/[locale]/settings/_components/role-settings/target-information/TargetInformationForm';

@@ -7,7 +7,7 @@ import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescrip
 import { envs } from 'lib/env/MnestixEnv';
 import { RuleParseError, ruleToIdShort, ruleToSubmodelElement, submodelToRule } from './RuleHelpers';
 import logger, { logResponseDebug, logResponseInfo, logResponseWarn } from 'lib/util/Logger';
-import { BaSyxRbacRule, RbacRolesFetchResult } from 'lib/types/RbacServiceData';
+import { BaSyxRbacRule, RbacRolesFetchResult } from 'lib/services/rbac-service/types/RbacServiceData';
 
 const SEC_SUB_ID = 'SecuritySubmodel';
 /**

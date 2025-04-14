@@ -1,6 +1,6 @@
 import { JSX } from 'react';
 import { Box, Typography } from '@mui/material';
-import { BaSyxRbacRule } from 'lib/types/RbacServiceData';
+import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
 import { useTranslations } from 'next-intl';
 
 type TargetInformationProps = {

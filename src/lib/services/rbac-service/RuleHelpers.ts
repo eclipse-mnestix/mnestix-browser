@@ -1,4 +1,4 @@
-import { rbacRuleActions, rbacRuleTargets, type BaSyxRbacRule } from 'lib/types/RbacServiceData';
+import { rbacRuleActions, rbacRuleTargets, type BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
 
 // TODO MNES-1605
 export function ruleToSubmodelElement(idShort: string, rule: Omit<BaSyxRbacRule, 'idShort'>) {

@@ -4,7 +4,7 @@ import { MnestixRole } from 'components/authentication/AllowedRoutes';
 import { authOptions } from 'components/authentication/authConfig';
 import { getServerSession } from 'next-auth';
 import { RbacRulesService } from './RbacRulesService';
-import { BaSyxRbacRule } from 'lib/types/RbacServiceData';
+import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
 import { wrapErrorCode } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { envs } from 'lib/env/MnestixEnv';
