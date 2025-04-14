@@ -7,7 +7,8 @@
     },
     "authentication": {
       "authenticationNeeded": "Authentication needed",
-      "contactAdmin": "You cannot visit this page. Please contact your administrator."
+      "contactAdmin": "You cannot visit this page. Please contact your administrator.",
+      "sessionExpired": "Your session has expired. Please log in again."
     },
     "addressComponent": {
       "VAT": "VAT-Number",
@@ -60,7 +61,7 @@
         "C4": "C4 - landfill",
         "D": "D - reuse"
       },
-      "timeunit": {
+      "timeUnit": {
         "month": "{count, plural, =0 {less than a month} =1 {1 month} other {# months}}",
         "year": "{count, plural, =0 {less than a year} =1 {1 year} other {# years}}"
       },
@@ -295,7 +296,7 @@
           "repositoryUrlLabel": "AAS Repository URL"
         },
         "addButton": "Add more",
-        "resetSuccessfull": "Connections were reset.",
+        "resetSuccessful": "Connections were reset.",
         "submodelRepository": {
           "connectionType": "SUBMODEL_REPOSITORY",
           "repositories": "Submodel Repositories",
@@ -434,7 +435,7 @@
       "submodelRepositoryApiKey": "Submodel Repository ApiKey",
       "submodelRepositoryLabel": "List of Submodel Repositories",
       "subtitle": "To import this AAS to another repository, fill out the following steps.",
-      "successfullToast": "Transfer of AAS successful",
+      "successfulToast": "Transfer of AAS successful",
       "title": "Import",
       "useAasRepository": "Use AAS Repository",
       "warningToast": "AAS was only partially transferred."

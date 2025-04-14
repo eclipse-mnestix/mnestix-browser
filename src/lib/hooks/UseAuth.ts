@@ -6,7 +6,7 @@ import { sessionLogOut } from 'lib/api/infrastructure';
 import AllowedRoutes, { MnestixRole } from 'components/authentication/AllowedRoutes';
 import { useEnv } from 'app/EnvProvider';
 
-export function useAuth(): Auth {
+export function useAuth() {
     const [bearerToken, setBearerToken] = useState<string>('');
     const { data: session, status } = useSession();
     const env = useEnv();
@@ -14,8 +14,6 @@ export function useAuth(): Auth {
     useAsyncEffect(async () => {
         if (session) {
             setBearerToken('Bearer ' + session.accessToken);
-        } else {
-            // TODO forward to login
         }
     }, [session]);
 
@@ -25,7 +23,7 @@ export function useAuth(): Auth {
         getBearerToken: (): string => {
             return bearerToken;
         },
-        login: (): void => {
+        login: () => {
             signIn(providerType).catch((e) => {
                 console.error(e);
             });
@@ -52,12 +50,4 @@ export function useAuth(): Auth {
         },
         isLoggedIn: status === 'authenticated',
     };
-}
-
-export interface Auth {
-    getBearerToken: () => string;
-    login: () => void;
-    logout: () => void;
-    getAccount: () => Session | null;
-    isLoggedIn: boolean;
 }

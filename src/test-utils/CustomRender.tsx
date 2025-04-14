@@ -4,6 +4,8 @@ import { render, RenderOptions } from '@testing-library/react';
 import enMessages from 'locale/en.json';
 import deMessages from 'locale/de.json';
 import { NotificationContextProvider } from 'components/contexts/NotificationContext';
+import { SessionProvider } from 'next-auth/react';
+import { Session } from 'next-auth';
 
 interface WrapperProps {
     children: ReactNode;
@@ -24,14 +26,25 @@ const loadMessages = (locale: 'en' | 'de') => {
  */
 export const CustomRender = (
     ui: ReactNode,
-    { locale = 'en', ...renderOptions }: { locale?: 'en' | 'de' } & RenderOptions = {},
+    {
+        locale = 'en',
+        session = undefined,
+        ...renderOptions
+    }: { locale?: 'en' | 'de'; session?: Session | null } & RenderOptions = {},
 ) => {
     const messages = loadMessages(locale);
-    const Wrapper: React.FC<WrapperProps> = ({ children }) => (
-        <NextIntlClientProvider locale={locale} messages={messages}>
-            <NotificationContextProvider>{children}</NotificationContextProvider>
-        </NextIntlClientProvider>
-    );
+    const Wrapper: React.FC<WrapperProps> = ({ children }) =>
+        session !== undefined ? (
+            <SessionProvider refetchOnWindowFocus={false} session={session}>
+                <NextIntlClientProvider locale={locale} messages={messages}>
+                    <NotificationContextProvider>{children}</NotificationContextProvider>
+                </NextIntlClientProvider>
+            </SessionProvider>
+        ) : (
+            <NextIntlClientProvider locale={locale} messages={messages}>
+                <NotificationContextProvider>{children}</NotificationContextProvider>
+            </NextIntlClientProvider>
+        );
 
     return render(ui, { wrapper: Wrapper, ...renderOptions });
 };

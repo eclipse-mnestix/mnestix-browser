@@ -17,6 +17,9 @@ export const metadata: Metadata = {
     description: 'AAS made easy',
 };
 
+/**
+ * Server side layout. Entry point for nextjs.
+ */
 export default async function RootLayout({ children, params }: Readonly<LocalizedIndexLayoutProps>) {
     const messages = await getMessages();
     const { locale } = await params;
