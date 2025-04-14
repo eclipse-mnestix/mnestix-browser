@@ -76,7 +76,7 @@ export function DiscoveryListView() {
     return (
         <>
             <ListHeader header={t('title')} subHeader={t('subtitle')} optionalID={assetId} />
-            <GenericListDataWrapper loadContent={loadContent}>
+            <GenericListDataWrapper loadContent={loadContent} showThumbnail showAasId showRepositoryUrl>
                 <AssetNotFound id={assetId} />
             </GenericListDataWrapper>
         </>

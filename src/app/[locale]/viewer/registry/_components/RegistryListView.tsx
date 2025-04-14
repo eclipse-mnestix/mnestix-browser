@@ -56,7 +56,7 @@ export const RegistryListView = () => {
     return (
         <>
             <ListHeader header={t('title')} subHeader={t('subtitle')} optionalID={aasId} />
-            <GenericListDataWrapper loadContent={loadContent}>
+            <GenericListDataWrapper loadContent={loadContent} showThumbnail showAssetId showRepositoryUrl>
                 <AssetNotFound id={aasId} />
             </GenericListDataWrapper>
         </>
