@@ -158,7 +158,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
                 <RoundedIconButton
                     endIcon={<ArrowForward />}
                     onClick={() => navigateToAas(aasListEntry)}
-                    title={t('titleViewAASButton')}
+                    title={t('buttonTooltip')}
                     data-testid="list-to-detailview-button"
                 />
             </TableCell>

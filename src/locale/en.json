@@ -169,21 +169,28 @@
   },
   "pages": {
     "aasList": {
-      "aasIdHeading": "AAS ID",
-      "assetIdHeading": "Asset ID",
+      "buttonTooltip": "Go to AAS",
       "compare": "Compare",
       "header": "AAS List",
-      "manufacturerHeading": "Manufacturer Name",
+      "listHeader": {
+        "aasEndpoint": "AAS URL",
+        "aasId": "AAS ID",
+        "assetId": "Asset ID",
+        "discoveryUrl": "Discovery Url",
+        "manufacturer": "Manufacturer Name",
+        "picture": "Image",
+        "productClass": "Product Class",
+        "productDesignation": "Manufacturer Product Designation",
+        "registryUrl": "Registry Url",
+        "repositoryUrl": "Repository Url",
+        "viewAASButton": "View AAS"
+      },
       "maxElementsWarning": "Cannot compare more than 3 elements",
       "page": "Page",
-      "picture": "Picture",
-      "productClassHeading": "Product Class",
-      "productDesignationHeading": "Manufacturer Product Designation",
       "repositoryDropdown": "AAS Repository",
       "selectRepository": "Please select a repository",
       "subHeader": "You will find all AASs from your repository here. You can select an AAS repository to switch between data sources.",
-      "titleComparisonAddButton": "Add AAS to comparison",
-      "titleViewAASButton": "View AAS"
+      "titleComparisonAddButton": "Add AAS to comparison"
     },
     "aasViewer": {
       "actions": {
@@ -255,12 +262,22 @@
       "welcomeText": "Welcome to Mnestix"
     },
     "discoveryList": {
-      "aasIdHeading": "AAS ID",
-      "header": "Related AAS to ID",
-      "picture": "Picture",
-      "repositoryUrl": "Repository Url",
-      "subtitle": "Here you will find all related AAS to the given ID.",
-      "titleViewAASButton": "View AAS"
+      "errors": {
+        "noAasFound": "No AAS found for the given ID",
+        "noAssetId": "No asset ID given.",
+        "searchFailed": "Search failed"
+      },
+      "subtitle": "Here you will find all related AAS to the given Asset ID.",
+      "title": "Related AAS to Asset ID"
+    },
+    "registryList": {
+      "errors": {
+        "noAasFound": "No AAS found for the given ID",
+        "noAasId": "No AAS ID given.",
+        "searchFailed": "Search failed"
+      },
+      "subtitle": "Here you will find all related AAS to the given AAS ID.",
+      "title": "Related AAS to AAS ID"
     },
     "settings": {
       "actions": {
@@ -326,16 +343,15 @@
           "add": "Add",
           "back": "Back",
           "cancel": "Cancel",
+          "create": "Create Rule",
           "edit": "Edit",
-          "save": "Save",
-          "create": "Create Rule"
+          "save": "Save"
         },
+        "createTitle": "Create Rule",
+        "editTitle": "Edit Rule",
         "roleRequired": "Role is required",
         "saveSuccess": "Rule saved successfully.",
         "subtitle": "Manage roles and permissions.",
-        "createTitle": "Create Rule",
-        "editTitle": "Edit Rule",
-        "wildcardLabel": "Allow all",
         "tableHeader": {
           "aasIds": "AAS IDs",
           "action": "Action",
@@ -344,7 +360,8 @@
           "submodelIds": "Submodel IDs",
           "type": "Type"
         },
-        "title": "Rule Management"
+        "title": "Rule Management",
+        "wildcardLabel": "Allow all"
       },
       "subHeader": "Add, remove, or modify settings and configurations to various features within your AAS."
     },
