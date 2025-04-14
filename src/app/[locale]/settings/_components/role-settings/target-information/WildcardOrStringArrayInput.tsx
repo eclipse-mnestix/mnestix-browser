@@ -78,7 +78,11 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
                                         <RemoveCircleOutlineIcon
                                             data-testid={`remove-${props.type}-${props.rule}-${idx}`}
                                             onClick={() => {
-                                                remove(idx);
+                                                if (idx === 0) {
+                                                    wildcardValueChanged(true);
+                                                } else {
+                                                    remove(idx);
+                                                }
                                             }}
                                         />
                                     </IconButton>

@@ -148,5 +148,16 @@ describe('RuleForm', () => {
             });
             expect(screen.queryByTestId('input-aas-environment-aasIds-1')).not.toBeInTheDocument();
         });
+
+        it('sets wildcard to true when last input element is removed', async () => {
+            render(<RuleForm {...defaultProps} />);
+            const removeButton = screen.getByTestId('remove-aas-environment-aasIds-0');
+            await act(async () => {
+                fireEvent.click(removeButton);
+            });
+
+            const wildcardCheckbox = screen.getByTestId('checkbox-aas-environment-aasIds').querySelector('input');
+            expect(wildcardCheckbox).toBeChecked();
+        });
     });
 });
