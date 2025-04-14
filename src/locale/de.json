@@ -262,6 +262,9 @@
       "subtitle": "Hier finden Sie alle zugehörigen AAS für die angegebene ID.",
       "titleViewAASButton": "AAS anzeigen"
     },
+    "productViewer": {
+      "title": "Produkt"
+    },
     "settings": {
       "actions": {
           "cancel": "Abbrechen",

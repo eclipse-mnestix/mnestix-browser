@@ -262,12 +262,15 @@
       "subtitle": "Here you will find all related AAS to the given ID.",
       "titleViewAASButton": "View AAS"
     },
+    "productViewer": {
+      "title": "Product"
+    },
     "settings": {
       "actions": {
-          "cancel": "Cancel",
-          "editButton": "Edit all",
-          "resetButton": "Reset to default",
-          "saveButton": "Save all"
+        "cancel": "Cancel",
+        "editButton": "Edit all",
+        "resetButton": "Reset to default",
+        "saveButton": "Save all"
       },
       "connections": {
         "aasRepository": {
