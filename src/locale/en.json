@@ -189,6 +189,9 @@
       },
       "maxElementsWarning": "Cannot compare more than 3 elements",
       "page": "Page",
+      "picture": "Image",
+      "productClassHeading": "Product Class",
+      "productDesignationHeading": "Product Designation",
       "repositoryDropdown": "AAS Repository",
       "selectRepository": "Please select a repository",
       "subHeader": "You will find all AASs from your repository here. You can select an AAS repository to switch between data sources.",
@@ -284,16 +287,15 @@
           "add": "Add",
           "back": "Back",
           "cancel": "Cancel",
+          "create": "Create Rule",
           "edit": "Edit",
-          "save": "Save",
-          "create": "Create Rule"
+          "save": "Save"
         },
+        "createTitle": "Create Rule",
+        "editTitle": "Edit Rule",
         "roleRequired": "Role is required",
         "saveSuccess": "Rule saved successfully.",
         "subtitle": "Manage roles and permissions.",
-        "createTitle": "Create Rule",
-        "editTitle": "Edit Rule",
-        "wildcardLabel": "Allow all",
         "tableHeader": {
           "aasIds": "AAS IDs",
           "action": "Action",
@@ -302,7 +304,8 @@
           "submodelIds": "Submodel IDs",
           "type": "Type"
         },
-        "title": "Rule Management"
+        "title": "Rule Management",
+        "wildcardLabel": "Allow all"
       },
       "subHeader": "Add, remove, or modify settings and configurations to various features within your AAS."
     },
