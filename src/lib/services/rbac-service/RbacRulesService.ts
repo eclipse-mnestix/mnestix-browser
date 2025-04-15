@@ -164,11 +164,12 @@ export class RbacRulesService {
         logResponseDebug(
             this.log,
             'createRule',
-            'Rule created',
+            'Rule updated',
             response,
             {
                 Rule: newRule.role,
                 IdShort: newIdShort,
+                OldIdShort: idShort,
             },
         );
         return wrapSuccess(submodelToRule(response.result));
