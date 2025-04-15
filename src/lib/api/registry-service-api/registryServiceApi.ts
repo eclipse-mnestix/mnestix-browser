@@ -27,7 +27,7 @@ export class RegistryServiceApi implements IRegistryServiceApi {
         },
         log?: typeof logger,
     ) {
-        const registryLogger = log?.child({ Service: RegistryServiceApi.name });
+        const registryLogger = log?.child({ Service: 'RegistryServiceApi' });
         return new RegistryServiceApi(baseUrl, mnestixFetch, registryLogger);
     }
 

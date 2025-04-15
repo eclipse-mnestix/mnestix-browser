@@ -36,7 +36,7 @@ export class RepositorySearchService {
 
     static create(log?: typeof logger): RepositorySearchService {
         const prismaConnector = PrismaConnector.create();
-        const searcherLogger = log?.child({ Service: RepositorySearchService.name });
+        const searcherLogger = log?.child({ Service: 'RepositorySearchService' });
         return new RepositorySearchService(
             prismaConnector,
             (baseUrl) => AssetAdministrationShellRepositoryApi.create(baseUrl, mnestixFetch()),

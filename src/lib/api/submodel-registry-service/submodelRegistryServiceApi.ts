@@ -17,7 +17,7 @@ export class SubmodelRegistryServiceApi implements ISubmodelRegistryServiceApi {
     ) {}
 
     static create(baseUrl: string, mnestixFetch: FetchAPI, log?: typeof logger) {
-        const registryLogger = log?.child({ service: SubmodelRegistryServiceApi.name });
+        const registryLogger = log?.child({ service: 'SubmodelRegistryServiceApi' });
         return new SubmodelRegistryServiceApi(baseUrl, mnestixFetch, registryLogger);
     }
 

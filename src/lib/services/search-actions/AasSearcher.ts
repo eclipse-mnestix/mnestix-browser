@@ -55,7 +55,7 @@ export class AasSearcher {
         const discoveryServiceClient = envs.DISCOVERY_API_URL
             ? DiscoveryServiceApi.create(envs.DISCOVERY_API_URL, mnestixFetch(), log)
             : null;
-        const searcherLogger = log?.child({ Service: AasSearcher.name });
+        const searcherLogger = log?.child({ Service: 'AasSearcher' });
         return new AasSearcher(multipleDataSource, discoveryServiceClient, registryServiceClient, searcherLogger);
     }
 
