@@ -2,7 +2,6 @@ export enum PcfSubmodelElementSemanticIdEnum {
     ProductCarbonFootprintIrdi = '0173-1#01-AHE716#001',
     ProductCarbonFootprint = 'https://admin-shell.io/idta/CarbonFootprint/ProductCarbonFootprint/0/9',
     ProductCarbonFootprintV1 = 'https://admin-shell.io/idta/CarbonFootprint/ProductCarbonFootprint/1/0',
-    TransportCarbonFootprint = '0173-1#01-AHE717#001',
     PCFLiveCyclePhase = '0173-1#02-ABG858#001',
     LiveCyclePhase = '0173-1#02-ABG858#003',
     PCFCO2eq = '0173-1#02-ABG855#001',
