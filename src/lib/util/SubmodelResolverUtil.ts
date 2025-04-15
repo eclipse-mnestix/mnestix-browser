@@ -11,6 +11,9 @@ import {
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { idEquals } from './IdValidationUtil';
 import { getKeyType } from 'lib/util/KeyTypeUtil';
+import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
+import { SubmodelSemanticId } from 'lib/enums/SubmodelSemanticId.enum';
+import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
 
 /**
  * Gets the translated text from either a MultiLanguageProperty or LangStringTextType array
@@ -120,4 +123,52 @@ export function buildSubmodelElementPath(
 
     newSubmodelElementPath = newSubmodelElementPath.concat(submodelElementIdShort ?? '');
     return newSubmodelElementPath;
+}
+
+/**
+ * Finds a specific type within a given `Submodel` based on the provided semantic ID or idShort.
+ *
+ * @param element - The `Submodel` object containing the submodel elements to search through.
+ * @param semanticId - (Optional) The semantic ID to match against the `semanticId` of the submodel elements.
+ * @param idShort - (Optional) The idShort to match against the `idShort` of the submodel elements.
+ * @returns The first `SubmodelElementCollection` that matches the given semantic ID or idShort, or `null` if no match is found.
+ */
+export function findSubmodelElement<T>(element: Submodel, semanticId?: SubmodelElementSemanticId, idShort?: string): T {
+    return (element.submodelElements?.find(
+        (element) =>
+            element.semanticId?.keys[0].value === semanticId ||
+            element.idShort === idShort
+    ) as T);
+}
+
+/**
+ * Finds a submodel element of a specific type within a `SubmodelElementCollection` based on the provided semantic ID or idShort.
+ *
+ * @param element - The `SubmodelElementCollection` object containing the submodel elements to search through.
+ * @param semanticId - (Optional) The semantic ID to match against the `semanticId` of the submodel elements.
+ * @param idShort - (Optional) The idShort to match against the `idShort` of the submodel elements.
+ * @returns The first submodel element of the specified type that matches the given semantic ID or idShort, or `null` if no match is found.
+ */
+export function findSubmodelProperty<T>(element: SubmodelElementCollection, semanticId?: SubmodelElementSemanticId, idShort?: string): T {
+    return (element.value?.find(
+        (element) =>
+            element.semanticId?.keys[0].value === semanticId ||
+            element.idShort === idShort
+    ) as T);
+}
+
+/**
+ * Finds a `Submodel` within a list of submodels based on the provided semantic ID or idShort.
+ *
+ * @param submodels - The array of `SubmodelOrIdReference` objects to search through.
+ * @param semanticId - (Optional) The semantic ID to match against the `semanticId` of the submodels.
+ * @param idShort - (Optional) The idShort to match against the `idShort` of the submodels.
+ * @returns The first `Submodel` that matches the given semantic ID or idShort, or `null` if no match is found.
+ */
+export function findSubmodelByIdOrSemanticId(submodels: SubmodelOrIdReference[], semanticId?: SubmodelSemanticId, idShort?: string): Submodel | null {
+    return submodels.find(
+        (sm) =>
+            sm.submodel?.semanticId?.keys[0].value === semanticId ||
+            sm.submodel?.idShort === idShort
+    )?.submodel ?? null;
 }

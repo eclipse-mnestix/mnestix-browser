@@ -11,7 +11,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { DataRow } from 'components/basics/DataRow';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { AssetAdministrationShell, Property, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
+import { AssetAdministrationShell, MultiLanguageProperty, Property, Submodel, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
 import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
 import { ShellIcon } from 'components/custom-icons/ShellIcon';
@@ -23,7 +23,11 @@ import { SubmodelOrIdReference, useAasState } from 'components/contexts/CurrentA
 import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
 import { getThumbnailFromShell } from 'lib/services/repository-access/repositorySearchActions';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
+import { SubmodelSemanticId } from 'lib/enums/SubmodelSemanticId.enum';
+import { LocalizedError } from 'lib/util/LocalizedError';
+import { findSubmodelByIdOrSemanticId, findSubmodelElement, findSubmodelProperty, getTranslationText } from 'lib/util/SubmodelResolverUtil';
 
 type ProductOverviewCardProps = {
     readonly aas: AssetAdministrationShell | null;
@@ -41,8 +45,15 @@ type MobileAccordionProps = {
     readonly icon: React.ReactNode;
 };
 
-type TechnicalData = {
-    readonly manufacturerName: string;
+type OverviewData = {
+    readonly manufacturerName?: string;
+    readonly manufacturerProductDesignation?: string;
+    readonly manufacturerProductRoot?: string;
+    readonly manufacturerProductFamily?: string;
+    readonly manufacturerProductType?: string;
+    readonly ECLASS?: string;
+    readonly IEC?: string;
+    readonly VEC?: string;
     //Hier noch mehr Properties hinzufügen
 }
 
@@ -66,7 +77,8 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
     const [productImageUrl, setProductImageUrl] = useState<string>('');
     const [, setAasState] = useAasState();
     const t = useTranslations('pages.productViewer');
-    const [technicalData, setTechnicalData] = useState<TechnicalData>();
+    const [overviewData, setOverviewData] = useState<OverviewData>();
+    const locale = useLocale();
 
     async function createAndSetUrlForImageFile() {
         if (!props.aas) return;
@@ -95,19 +107,41 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
         }
     }, [props.productImage]);
 
-    //Nur ein API call statt zweimal mit $value
     useEffect(() => {
         if (props.submodels && props.submodels.length > 0) {
-            const sm = props.submodels.find((sm) => sm.submodel?.idShort === 'TechnicalData'); //IDShort or semanticId ??
-            if (sm?.submodel?.submodelElements) {
-                const generalInformation = sm.submodel.submodelElements.find((element) => element.idShort === 'GeneralInformation') as SubmodelElementCollection;
-                const manufacturerName = generalInformation?.value?.find((element) => element.idShort === 'ManufacturerLogo') as Property; //Logo grad nur zum testen hier drin, da Stift keinen Name hat
-                //Hier noch mehr Properties hinzufügen
-                setTechnicalData({ manufacturerName: manufacturerName?.value ?? '-' });
+            const technicalDataSubmodel = findSubmodelByIdOrSemanticId(props.submodels, SubmodelSemanticId.TechnicalData, 'TechnicalData');
+            const nameplateSubmodel = findSubmodelByIdOrSemanticId(props.submodels, SubmodelSemanticId.NameplateV2, 'Nameplate');
+            if (technicalDataSubmodel?.submodelElements) {
+                const generalInformation = findSubmodelElement<SubmodelElementCollection>(technicalDataSubmodel, SubmodelElementSemanticId.GeneralInformation, 'GeneralInformation');
+                //const productClassifications = findSubmodelElement<SubmodelElementCollection>(technicalDataSubmodel, SubmodelElementSemanticId.ProductClassifications, 'ProductClassifications');
+
+                const manufacturerName = findSubmodelProperty<Property>(generalInformation, SubmodelElementSemanticId.ManufacturerName, 'ManufacturerName');
+                const manufacturerProductDesignation = findSubmodelProperty<MultiLanguageProperty>(generalInformation, SubmodelElementSemanticId.ManufacturerProductDesignation, 'ManufacturerProductDesignation');
+
+                //const ECLASS = findSubmodelProperty<SubmodelElementCollection>(productClassifications, undefined,'ECLASS');
+                //const IEC = findSubmodelProperty<SubmodelElementCollection>(productClassifications, undefined, 'IEC');
+                //const VEC = findSubmodelProperty<SubmodelElementCollection>(productClassifications, undefined, 'VEC');
+
+                setOverviewData({
+                    manufacturerName: manufacturerName?.value ?? '-',
+                    manufacturerProductDesignation: manufacturerProductDesignation ? getTranslationText(manufacturerProductDesignation, locale) : '-',
+                    //ECLASS: ECLASS ? getTranslationText(ECLASS, locale) : '-',
+                    //IEC: IEC ? getTranslationText(IEC, locale) : '-',
+                    //VEC: VEC ? getTranslationText(VEC, locale) : '-',
+                });
             }
-            else {
-                //Error message for no Technical Data Submodel found
+            if(nameplateSubmodel?.submodelElements){
+                const manufacturerProductRoot = findSubmodelElement<MultiLanguageProperty>(nameplateSubmodel, SubmodelElementSemanticId.ManufacturerProductRoot, 'ManufacturerProductRoot');
+                const manufacturerProductFamily = findSubmodelElement<MultiLanguageProperty>(nameplateSubmodel, SubmodelElementSemanticId.ManufacturerProductFamily, 'ManufacturerProductFamily');
+                const manufacturerProductType = findSubmodelElement<MultiLanguageProperty>(nameplateSubmodel, SubmodelElementSemanticId.ManufacturerProductType, 'ManufacturerProductType');
+                setOverviewData((prevData) => ({
+                    ...prevData,
+                    manufacturerProductRoot: manufacturerProductRoot ? getTranslationText(manufacturerProductRoot, locale) : '-',
+                    manufacturerProductFamily: manufacturerProductFamily ? getTranslationText(manufacturerProductFamily, locale) : '-',
+                    manufacturerProductType: manufacturerProductType ? getTranslationText(manufacturerProductType, locale) : '-',
+                }));
             }
+            // Error handling
         }
     }, [props.submodels]);
 
@@ -138,7 +172,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
         }
     };
 
-    const aasInfo = (
+    const productInfo = (
         <Box sx={infoBoxStyle} data-testid="aas-data">
             {!isAccordion && (
                 <Box display="flex">
@@ -150,14 +184,71 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                     </Typography>
                 </Box>
             )}
-            <DataRow 
-                title="Manufacturer Name" // Translation ??
-                value={technicalData?.manufacturerName}
-                testId='datarow-aas-id'
-                withBase64={false}
-            />
+                <DataRow 
+                    title="Manufacturer Name" // Translation ??
+                    value={overviewData?.manufacturerName}
+                    testId='datarow-manufacturer-name'
+                    withBase64={false}
+                />
+                <DataRow 
+                    title="Manufacturer Product Designation" // Translation ??
+                    value={overviewData?.manufacturerProductDesignation}
+                    testId='datarow-manufacturer-product-designation'
+                    withBase64={false}
+                />
         </Box>
     );
+
+    const classificationInfo = (
+            <Box sx={infoBoxStyle} data-testid="asset-data">
+                {!isAccordion && (
+                    <Box display="flex">
+                        <IconCircleWrapper sx={{ mr: 1 }}>
+                            <AssetIcon fontSize="small" color="primary" />
+                        </IconCircleWrapper>
+                        <Typography sx={titleStyle} variant="h3">
+                            {t('classification')}
+                        </Typography>
+                    </Box>
+                )}
+                <DataRow
+                title="Manufacturer Product Root"
+                value={overviewData?.manufacturerProductRoot}
+                testId='datarow-manufacturer-product-root'
+                withBase64={false}
+                />
+                <DataRow
+                    title="Manufacturer Product Family"
+                    value={overviewData?.manufacturerProductFamily}
+                    testId='datarow-manufacturer-product-family'
+                    withBase64={false}
+                />
+                <DataRow
+                    title="Manufacturer Product Type"
+                    value={overviewData?.manufacturerProductType}
+                    testId='datarow-manufacturer-product-type'
+                    withBase64={false}
+                /> 
+                <DataRow
+                    title="ECLASS"
+                    value={overviewData?.ECLASS}
+                    testId='datarow-eclass'
+                    withBase64={false}
+                />
+                <DataRow
+                    title="IEC"
+                    value={overviewData?.IEC}
+                    testId='datarow-iec'
+                    withBase64={false}
+                />
+                <DataRow
+                    title="VEC"
+                    value={overviewData?.VEC}
+                    testId='datarow-vec'
+                    withBase64={false}
+                />
+            </Box>
+        );
 
     return (
         <Card>
@@ -203,14 +294,14 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                         {isAccordion ? (
                             <>
                                 <MobileAccordion
-                                    content={aasInfo}
+                                    content={productInfo}
                                     title={t('title')}
                                     icon={<ShellIcon fontSize="small" color="primary" />}
                                 />
                             </>
                         ) : (
                             <>
-                                {aasInfo}
+                                {productInfo} {classificationInfo}
                             </>
                         )}
                     </>

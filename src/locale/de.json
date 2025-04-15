@@ -263,7 +263,11 @@
       "titleViewAASButton": "AAS anzeigen"
     },
     "productViewer": {
-      "title": "Produkt"
+      "title": "Produkt",
+      "classification": "Produktklassifikation",
+      "error":{
+        "technicalDataSubmodelNotFound": "Technical Data Submodel nicht gefunden"
+      }
     },
     "settings": {
       "actions": {
