@@ -11,7 +11,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { DataRow } from 'components/basics/DataRow';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { AssetAdministrationShell, MultiLanguageProperty, Property, Submodel, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
+import { AssetAdministrationShell, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
 import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
 import { ShellIcon } from 'components/custom-icons/ShellIcon';
@@ -26,8 +26,7 @@ import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper
 import { useLocale, useTranslations } from 'next-intl';
 import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { SubmodelSemanticId } from 'lib/enums/SubmodelSemanticId.enum';
-import { LocalizedError } from 'lib/util/LocalizedError';
-import { findSubmodelByIdOrSemanticId, findSubmodelElement, findSubmodelProperty, getTranslationText } from 'lib/util/SubmodelResolverUtil';
+import { findSubmodelElementByIdShort, findValueByIdShort, findSubmodelByIdOrSemanticId } from 'lib/util/SubmodelResolverUtil';
 
 type ProductOverviewCardProps = {
     readonly aas: AssetAdministrationShell | null;
@@ -109,39 +108,35 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
 
     useEffect(() => {
         if (props.submodels && props.submodels.length > 0) {
-            const technicalDataSubmodel = findSubmodelByIdOrSemanticId(props.submodels, SubmodelSemanticId.TechnicalData, 'TechnicalData');
-            const nameplateSubmodel = findSubmodelByIdOrSemanticId(props.submodels, SubmodelSemanticId.NameplateV2, 'Nameplate');
-            if (technicalDataSubmodel?.submodelElements) {
-                const generalInformation = findSubmodelElement<SubmodelElementCollection>(technicalDataSubmodel, SubmodelElementSemanticId.GeneralInformation, 'GeneralInformation');
-                //const productClassifications = findSubmodelElement<SubmodelElementCollection>(technicalDataSubmodel, SubmodelElementSemanticId.ProductClassifications, 'ProductClassifications');
+            const technicalDataSubmodelElements = findSubmodelByIdOrSemanticId(props.submodels, SubmodelSemanticId.TechnicalData, 'TechnicalData')?.submodelElements;
+            const nameplateSubmodelElements = findSubmodelByIdOrSemanticId(props.submodels, SubmodelSemanticId.NameplateV2, 'Nameplate')?.submodelElements;
+            
+            if (technicalDataSubmodelElements) {
+                const manufacturerName = findValueByIdShort(technicalDataSubmodelElements, 'ManufacturerName', SubmodelElementSemanticId.ManufacturerName, locale);
+                const manufacturerProductDesignation = findValueByIdShort(technicalDataSubmodelElements, 'ManufacturerProductDesignation', SubmodelElementSemanticId.ManufacturerProductDesignation, locale);
 
-                const manufacturerName = findSubmodelProperty<Property>(generalInformation, SubmodelElementSemanticId.ManufacturerName, 'ManufacturerName');
-                const manufacturerProductDesignation = findSubmodelProperty<MultiLanguageProperty>(generalInformation, SubmodelElementSemanticId.ManufacturerProductDesignation, 'ManufacturerProductDesignation');
-
-                //const ECLASS = findSubmodelProperty<SubmodelElementCollection>(productClassifications, undefined,'ECLASS');
-                //const IEC = findSubmodelProperty<SubmodelElementCollection>(productClassifications, undefined, 'IEC');
-                //const VEC = findSubmodelProperty<SubmodelElementCollection>(productClassifications, undefined, 'VEC');
-
+                const ECLASS = findSubmodelElementByIdShort(technicalDataSubmodelElements,'ECLASS', null) as SubmodelElementCollection;
+                const IEC = findSubmodelElementByIdShort(technicalDataSubmodelElements, 'IEC', null) as SubmodelElementCollection;
+                const VEC = findSubmodelElementByIdShort(technicalDataSubmodelElements, 'VEC', null) as SubmodelElementCollection;
                 setOverviewData({
-                    manufacturerName: manufacturerName?.value ?? '-',
-                    manufacturerProductDesignation: manufacturerProductDesignation ? getTranslationText(manufacturerProductDesignation, locale) : '-',
-                    //ECLASS: ECLASS ? getTranslationText(ECLASS, locale) : '-',
-                    //IEC: IEC ? getTranslationText(IEC, locale) : '-',
-                    //VEC: VEC ? getTranslationText(VEC, locale) : '-',
+                    manufacturerName: manufacturerName ?? '-',
+                    manufacturerProductDesignation: manufacturerProductDesignation ?? '-',
+                    ECLASS: findValueByIdShort(ECLASS.value, 'ProductClassId', SubmodelElementSemanticId.ProductClassId, locale) ?? '-',
+                    IEC: findValueByIdShort(IEC.value, 'ProductClassId', SubmodelElementSemanticId.ProductClassId, locale) ?? '-',
+                    VEC: findValueByIdShort(VEC.value, 'ProductClassId', SubmodelElementSemanticId.ProductClassId, locale) ?? '-',
                 });
             }
-            if(nameplateSubmodel?.submodelElements){
-                const manufacturerProductRoot = findSubmodelElement<MultiLanguageProperty>(nameplateSubmodel, SubmodelElementSemanticId.ManufacturerProductRoot, 'ManufacturerProductRoot');
-                const manufacturerProductFamily = findSubmodelElement<MultiLanguageProperty>(nameplateSubmodel, SubmodelElementSemanticId.ManufacturerProductFamily, 'ManufacturerProductFamily');
-                const manufacturerProductType = findSubmodelElement<MultiLanguageProperty>(nameplateSubmodel, SubmodelElementSemanticId.ManufacturerProductType, 'ManufacturerProductType');
+            if(nameplateSubmodelElements){
+                const manufacturerProductRoot = findValueByIdShort(nameplateSubmodelElements, 'ManufacturerProductRoot', SubmodelElementSemanticId.ManufacturerProductRoot, locale);
+                const manufacturerProductFamily = findValueByIdShort(nameplateSubmodelElements, 'ManufacturerProductFamily', SubmodelElementSemanticId.ManufacturerProductFamily, locale);
+                const manufacturerProductType = findValueByIdShort(nameplateSubmodelElements, 'ManufacturerProductType', SubmodelElementSemanticId.ManufacturerProductType, locale);
                 setOverviewData((prevData) => ({
                     ...prevData,
-                    manufacturerProductRoot: manufacturerProductRoot ? getTranslationText(manufacturerProductRoot, locale) : '-',
-                    manufacturerProductFamily: manufacturerProductFamily ? getTranslationText(manufacturerProductFamily, locale) : '-',
-                    manufacturerProductType: manufacturerProductType ? getTranslationText(manufacturerProductType, locale) : '-',
+                    manufacturerProductRoot: manufacturerProductRoot ?? '-',
+                    manufacturerProductFamily: manufacturerProductFamily ?? '-',
+                    manufacturerProductType: manufacturerProductType ?? '-',
                 }));
             }
-            // Error handling
         }
     }, [props.submodels]);
 
@@ -296,6 +291,11 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                 <MobileAccordion
                                     content={productInfo}
                                     title={t('title')}
+                                    icon={<ShellIcon fontSize="small" color="primary" />}
+                                />
+                                 <MobileAccordion
+                                    content={classificationInfo}
+                                    title={t('classification')}
                                     icon={<ShellIcon fontSize="small" color="primary" />}
                                 />
                             </>

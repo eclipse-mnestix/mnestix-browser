@@ -48,14 +48,15 @@ export function getTranslationValue(element: IDataElement, locale: string): stri
 export function findSubmodelElementByIdShort(
     elements: ISubmodelElement[] | null,
     idShort: string | null,
+    semanticId: SubmodelSemanticId | SubmodelElementSemanticId | null,
 ): ISubmodelElement | null {
     if (!elements) return null;
     for (const el of elements) {
-        if (el.idShort == idShort) {
+        if (el.idShort == idShort || el.semanticId?.keys[0].value == semanticId) {
             return el;
         } else if (getKeyType(el) == KeyTypes.SubmodelElementCollection) {
             const innerElements = (el as SubmodelElementCollection).value;
-            const foundElement = findSubmodelElementByIdShort(innerElements, idShort);
+            const foundElement = findSubmodelElementByIdShort(innerElements, idShort, semanticId);
             if (foundElement) {
                 return foundElement;
             }
@@ -67,9 +68,10 @@ export function findSubmodelElementByIdShort(
 export function findValueByIdShort(
     elements: ISubmodelElement[] | null,
     idShort: string | null,
+    semanticId: SubmodelSemanticId | SubmodelElementSemanticId | null = null,
     locale: string,
 ): string | null {
-    const element = findSubmodelElementByIdShort(elements, idShort);
+    const element = findSubmodelElementByIdShort(elements, idShort, semanticId);
     if (!element) return null;
     switch (getKeyType(element)) {
         case KeyTypes.MultiLanguageProperty:
@@ -126,49 +128,17 @@ export function buildSubmodelElementPath(
 }
 
 /**
- * Finds a specific type within a given `Submodel` based on the provided semantic ID or idShort.
- *
- * @param element - The `Submodel` object containing the submodel elements to search through.
- * @param semanticId - (Optional) The semantic ID to match against the `semanticId` of the submodel elements.
- * @param idShort - (Optional) The idShort to match against the `idShort` of the submodel elements.
- * @returns The first `SubmodelElementCollection` that matches the given semantic ID or idShort, or `null` if no match is found.
- */
-export function findSubmodelElement<T>(element: Submodel, semanticId?: SubmodelElementSemanticId, idShort?: string): T {
-    return (element.submodelElements?.find(
-        (element) =>
-            element.semanticId?.keys[0].value === semanticId ||
-            element.idShort === idShort
-    ) as T);
-}
-
-/**
- * Finds a submodel element of a specific type within a `SubmodelElementCollection` based on the provided semantic ID or idShort.
- *
- * @param element - The `SubmodelElementCollection` object containing the submodel elements to search through.
- * @param semanticId - (Optional) The semantic ID to match against the `semanticId` of the submodel elements.
- * @param idShort - (Optional) The idShort to match against the `idShort` of the submodel elements.
- * @returns The first submodel element of the specified type that matches the given semantic ID or idShort, or `null` if no match is found.
- */
-export function findSubmodelProperty<T>(element: SubmodelElementCollection, semanticId?: SubmodelElementSemanticId, idShort?: string): T {
-    return (element.value?.find(
-        (element) =>
-            element.semanticId?.keys[0].value === semanticId ||
-            element.idShort === idShort
-    ) as T);
-}
-
-/**
  * Finds a `Submodel` within a list of submodels based on the provided semantic ID or idShort.
  *
  * @param submodels - The array of `SubmodelOrIdReference` objects to search through.
  * @param semanticId - (Optional) The semantic ID to match against the `semanticId` of the submodels.
  * @param idShort - (Optional) The idShort to match against the `idShort` of the submodels.
- * @returns The first `Submodel` that matches the given semantic ID or idShort, or `null` if no match is found.
+ * @returns The first `Submodel` that matches the given semantic ID or idShort
  */
-export function findSubmodelByIdOrSemanticId(submodels: SubmodelOrIdReference[], semanticId?: SubmodelSemanticId, idShort?: string): Submodel | null {
+export function findSubmodelByIdOrSemanticId(submodels: SubmodelOrIdReference[], semanticId?: SubmodelSemanticId, idShort?: string): Submodel | undefined {
     return submodels.find(
         (sm) =>
             sm.submodel?.semanticId?.keys[0].value === semanticId ||
             sm.submodel?.idShort === idShort
-    )?.submodel ?? null;
+    )?.submodel;
 }
