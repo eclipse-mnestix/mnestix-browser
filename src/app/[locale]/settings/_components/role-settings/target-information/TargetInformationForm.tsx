@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Box, FormControl, MenuItem, Select, Typography } from '@mui/material';
-import { rbacRuleTargets } from 'lib/services/rbac-service/RbacRulesService';
+import { rbacRuleTargets } from 'lib/services/rbac-service/types/RbacServiceData';
 import { useTranslations } from 'next-intl';
 import { WildcardOrStringArrayInput } from 'app/[locale]/settings/_components/role-settings/target-information/WildcardOrStringArrayInput';
 import { Control, Controller, UseFormGetValues, UseFormSetValue } from 'react-hook-form';
@@ -38,6 +38,7 @@ export const TargetInformationForm = (props: TargetInformationProps) => {
                 render={({ field }) => (
                     <FormControl fullWidth>
                         <Select
+                            data-testid="rule-settings-target-select"
                             labelId="role-type-select-label"
                             variant="outlined"
                             {...field}

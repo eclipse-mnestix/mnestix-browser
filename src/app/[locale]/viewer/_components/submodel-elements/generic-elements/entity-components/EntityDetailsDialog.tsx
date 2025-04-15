@@ -12,7 +12,7 @@ type EntityDetailsModalProps = {
 
 export function EntityDetailsDialog(props: EntityDetailsModalProps) {
     const entity = props.entity;
-    const t = useTranslations('common');
+    const t = useTranslations('pages.aasViewer');
 
     return (
         <Dialog open={props.open} onClose={props.handleClose}>

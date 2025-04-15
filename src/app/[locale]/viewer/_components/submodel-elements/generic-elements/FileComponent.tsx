@@ -26,7 +26,7 @@ export function FileComponent(props: FileComponentProps) {
     const [image, setImage] = useState<string | null>(null);
     const { file } = props;
     const [aasOriginUrl] = useAasOriginSourceState();
-    const t = useTranslations('common');
+    const t = useTranslations('pages.aasViewer');
 
     async function getImage() {
         if (file.contentType?.startsWith('image')) {

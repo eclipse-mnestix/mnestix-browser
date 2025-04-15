@@ -20,7 +20,7 @@ export type SubmodelsOverviewCardProps = {
 export function SubmodelsOverviewCard({ submodelIds, submodelsLoading }: SubmodelsOverviewCardProps) {
     const [submodelSelectorItems, setSubmodelSelectorItems] = useState<TabSelectorItem[]>([]);
     const [selectedItem, setSelectedItem] = useState<TabSelectorItem>();
-    const t = useTranslations('pages.submodels');
+    const t = useTranslations('pages.aasViewer.submodels');
 
     SortNameplateElements(selectedItem?.submodelData);
 

@@ -122,7 +122,7 @@ describe('Full Aas Search happy paths', () => {
         const search = await searcher.performFullSearch(searchString);
 
         expect(search.isSuccess).toBeTruthy();
-        expect(search.result!.redirectUrl).toBe('/viewer/discovery?assetId=' + searchString);
+        expect(search.result!.redirectUrl).toBe('/viewer/registry?aasId=' + searchString);
     });
 });
 

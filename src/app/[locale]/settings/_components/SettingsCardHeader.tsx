@@ -16,7 +16,7 @@ export type SettingsCardHeaderProps = {
 }
 
 export function SettingsCardHeader(props: SettingsCardHeaderProps) {
-    const t = useTranslations();
+    const t = useTranslations('pages.settings');
     return (
             <Box display="flex" flexDirection="row" justifyContent="space-between">
                 <CardHeading
@@ -27,19 +27,19 @@ export function SettingsCardHeader(props: SettingsCardHeaderProps) {
                     {props.isEditMode ? (
                         <>
                             <Button variant="outlined" startIcon={<CloseIcon />} onClick={() => props.onCancel()}>
-                                {t('common.actions.cancel')}
+                                {t('actions.cancel')}
                             </Button>
                             <Button
                                 variant="contained"
                                 startIcon={<CheckIcon />}
                                 onClick={props.onSubmit}
                             >
-                                {t('pages.settings.connections.saveButton')}
+                                {t('actions.saveButton')}
                             </Button>
                         </>
                     ) : (
                         <Button variant="contained" startIcon={<EditIcon />} onClick={() => props.onEdit()}>
-                            {t('pages.settings.connections.editButton')}
+                            {t('actions.editButton')}
                         </Button>
                     )}
                 </Box>

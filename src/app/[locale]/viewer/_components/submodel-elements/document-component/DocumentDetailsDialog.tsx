@@ -12,7 +12,7 @@ type DocumentDetailsModalProps = {
 
 export function DocumentDetailsDialog(props: DocumentDetailsModalProps) {
     const document = props.document;
-    const t = useTranslations('common');
+    const t = useTranslations('components.documentComponent');
 
     if (!document.value) {
         return <></>;
@@ -23,7 +23,7 @@ export function DocumentDetailsDialog(props: DocumentDetailsModalProps) {
             <DialogCloseButton handleClose={props.handleClose} />
             <DialogContent style={{ padding: '40px' }} data-testid="document-details-dialog">
                 <Typography variant="h3" sx={{ mb: 3 }}>
-                    {t('labels.documentDetails')}
+                    {t('documentDetails')}
                 </Typography>
                 {document.value.map((el, i) => (
                     <GenericSubmodelElementComponent 

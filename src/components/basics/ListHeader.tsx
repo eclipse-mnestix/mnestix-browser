@@ -7,9 +7,7 @@ type ListHeaderProps = {
     optionalID?: string;
 };
 
-export default function ListHeader(props: ListHeaderProps) {
-    const { header, subHeader, optionalID } = props;
-
+export default function ListHeader({ header, optionalID, subHeader }: ListHeaderProps) {
     return (
         <>
             <Typography variant="h2" color="text.primary" textAlign="left" marginBottom={1}>

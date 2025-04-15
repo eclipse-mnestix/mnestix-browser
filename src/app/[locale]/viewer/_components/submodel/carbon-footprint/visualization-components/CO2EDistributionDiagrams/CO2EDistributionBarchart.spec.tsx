@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 import { expect } from '@jest/globals';
-import { CustomRenderReactIntl } from 'test-utils/CustomRenderReactIntl';
+import { CustomRender } from 'test-utils/CustomRender';
 import { CO2EBarchart } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/visualization-components/CO2EDistributionDiagrams/CO2EDistributionBarchart';
 
 window.ResizeObserver =
@@ -37,7 +37,7 @@ const co2EquivalentsPerLifecycleStage = {
 
 describe('CarbonFootprint - CO2EquivalentsDistribution', () => {
     it('should renders correct axis descriptions', async () => {
-        CustomRenderReactIntl(<CO2EBarchart co2EquivalentsPerLifecycleStage={co2EquivalentsPerLifecycleStage} />);
+        CustomRender(<CO2EBarchart co2EquivalentsPerLifecycleStage={co2EquivalentsPerLifecycleStage} />);
         expect(screen.getByText('kg CO2e')).toBeInTheDocument();
         expect(screen.getByText('CO2 Equivalents')).toBeInTheDocument();
         expect(screen.getByText('A3')).toBeInTheDocument();

@@ -20,7 +20,7 @@ export function MultiplicityEditComponent(props: MultiplicityEditComponentProps)
     const [multiplicity, setMultiplicity] = useState(getMultiplicity());
     const [valueEnabled, setValueEnabled] = useState(!!multiplicity);
     const allowMultiplicityToBeSet = props.allowMultiplicityToBeSet;
-    const t = useTranslations('common');
+    const t = useTranslations('pages.templates');
 
     const onAdd = () => {
         setValueEnabled(true);

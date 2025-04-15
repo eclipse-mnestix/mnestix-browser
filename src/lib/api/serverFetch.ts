@@ -44,10 +44,10 @@ export async function performServerFetch<T>(
         return await wrapResponse<T>(response);
     } catch (e) {
         if (e instanceof Error) {
-            log.warn({ http: e }, `Request: ${input}`);
+            log.warn({ Reason: 'An unexpected error occurred during server fetch' }, `Request URL: ${input}`);
             return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, e.message);
         } else {
-            log.error({ http: e }, `Request: ${input}`);
+            log.error({ Reason: 'An unexpected error occurred during server fetch' }, `Request: ${input}`);
             return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Unknown error');
         }
     }

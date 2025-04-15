@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { RuleDialog } from 'app/[locale]/settings/_components/role-settings/RuleDialog';
-import { BaSyxRbacRule } from 'lib/services/rbac-service/RbacRulesService';
+import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
 import { deleteAndCreateRbacRule } from 'lib/services/rbac-service/RbacActions';
 import { expect } from '@jest/globals';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
