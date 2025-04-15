@@ -16,7 +16,7 @@ const SEC_SUB_ID = 'SecuritySubmodel';
 export class RbacRulesService {
     private constructor(
         private readonly securitySubmodelRepositoryClient: ISubmodelRepositoryApi,
-        private readonly log: typeof logger = logger
+        private readonly log: typeof logger = logger,
     ) {}
 
     static createService(log?: typeof logger): RbacRulesService {
@@ -33,7 +33,6 @@ export class RbacRulesService {
         return new RbacRulesService(subRepoApi);
     }
 
-
     async createRule(newRule: Omit<BaSyxRbacRule, 'idShort'>): Promise<ApiResponseWrapper<BaSyxRbacRule>> {
         const newIdShort = ruleToIdShort(newRule);
         const ruleSubmodelElement = ruleToSubmodelElement(newIdShort, newRule);
@@ -43,31 +42,19 @@ export class RbacRulesService {
             ruleSubmodelElement,
         );
         if (!response.isSuccess) {
-            logResponseWarn(
-                this.log,
-                'createRule',
-                'Failed to create Rule',
-                response,
-                {
-                    Rule: newRule.role,
-                    IdShort: newIdShort,
-                },
-            );
+            logResponseWarn(this.log, 'createRule', 'Failed to create Rule', response, {
+                Rule: newRule.role,
+                IdShort: newIdShort,
+            });
             return wrapErrorCode(
                 ApiResultStatus.INTERNAL_SERVER_ERROR,
                 'Failed to create Rule in SecuritySubmodel Repo',
             );
         }
-        logResponseDebug(
-                        this.log,
-                        'createRule',
-                        'Rule created',
-                        response,
-                        {
-                            Rule: newRule.role,
-                            IdShort: newIdShort,
-                        },
-                    );
+        logResponseDebug(this.log, 'createRule', 'Rule created', response, {
+            Rule: newRule.role,
+            IdShort: newIdShort,
+        });
         return wrapSuccess(submodelToRule(response.result));
     }
 
@@ -104,7 +91,10 @@ export class RbacRulesService {
                 }) ?? [];
         const roles = parsedRoles.filter((r): r is BaSyxRbacRule => !('error' in r));
         const warnings = parsedRoles.filter((r): r is { error: string[] } => 'error' in r).map((e) => e.error);
-        logResponseDebug(this.log, 'getRules', 'Fetched RBAC rules', response, { Roles: roles.length, Warnings: warnings });
+        logResponseDebug(this.log, 'getRules', 'Fetched RBAC rules', response, {
+            Roles: roles.length,
+            Warnings: warnings,
+        });
         return wrapSuccess({ roles: roles, warnings: warnings });
     }
 
@@ -115,26 +105,14 @@ export class RbacRulesService {
         const deleteRes = await this.securitySubmodelRepositoryClient.deleteSubmodelElementByPath(SEC_SUB_ID, idShort);
         if (!deleteRes.isSuccess) {
             if (deleteRes.errorCode === ApiResultStatus.NOT_FOUND) {
-                logResponseInfo(
-                    this.log,
-                    'deleteAndCreate',
-                    'Failed to delete Rule',
-                    deleteRes,
-                    {
-                        Rule: idShort,
-                    },
-                );
+                logResponseInfo(this.log, 'deleteAndCreate', 'Failed to delete Rule', deleteRes, {
+                    Rule: idShort,
+                });
                 return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'Rule not found in SecuritySubmodel. Try reloading.');
             }
-            logResponseWarn(
-                this.log,
-                'deleteAndCreate',
-                'Failed to delete Rule',
-                deleteRes,
-                {
-                    Rule: idShort,
-                },
-            );
+            logResponseWarn(this.log, 'deleteAndCreate', 'Failed to delete Rule', deleteRes, {
+                Rule: idShort,
+            });
             return wrapErrorCode(
                 ApiResultStatus.INTERNAL_SERVER_ERROR,
                 'Failed to delete Rule in SecuritySubmodel Repo due to unknown error.',
@@ -149,29 +127,17 @@ export class RbacRulesService {
             ruleSubmodelElement,
         );
         if (!response.isSuccess) {
-            logResponseWarn(
-                this.log,
-                'createRule',
-                'Failed to create Rule',
-                response,
-                {
-                    Rule: newRule.role,
-                    IdShort: newIdShort,
-                },
-            );
-            return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Failed to set Rule in SecuritySubmodel Repo');
-        }
-        logResponseDebug(
-            this.log,
-            'createRule',
-            'Rule updated',
-            response,
-            {
+            logResponseWarn(this.log, 'deleteAndCreate', 'Failed to create Rule', response, {
                 Rule: newRule.role,
                 IdShort: newIdShort,
-                OldIdShort: idShort,
-            },
-        );
+            });
+            return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Failed to set Rule in SecuritySubmodel Repo');
+        }
+        logResponseDebug(this.log, 'deleteAndCreate', 'Rule updated', response, {
+            Rule: newRule.role,
+            IdShort: newIdShort,
+            OldIdShort: idShort,
+        });
         return wrapSuccess(submodelToRule(response.result));
     }
 
@@ -179,10 +145,7 @@ export class RbacRulesService {
      * Deletes a rule
      */
     async delete(idShort: string): Promise<ApiResponseWrapper<undefined>> {
-        const response = await this.securitySubmodelRepositoryClient.deleteSubmodelElementByPath(
-            SEC_SUB_ID,
-            idShort,
-        );
+        const response = await this.securitySubmodelRepositoryClient.deleteSubmodelElementByPath(SEC_SUB_ID, idShort);
         if (response.isSuccess) {
             logResponseDebug(this.log, 'delete', 'Rule deleted', response, { Rule: idShort });
             return wrapSuccess(undefined);
@@ -195,4 +158,3 @@ export class RbacRulesService {
         return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Failed to set Rule in SecuritySubmodel Repo');
     }
 }
-
