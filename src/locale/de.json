@@ -282,10 +282,10 @@
     },
     "settings": {
       "actions": {
-          "cancel": "Abbrechen",
-          "editButton": "Alle bearbeiten",
-          "resetButton": "Auf Default zurücksetzen",
-          "saveButton": "Alle speichern"
+        "cancel": "Abbrechen",
+        "editButton": "Alle bearbeiten",
+        "resetButton": "Auf Default zurücksetzen",
+        "saveButton": "Alle speichern"
       },
       "connections": {
         "aasRepository": {
@@ -347,6 +347,9 @@
           "create": "Regel erstellen",
           "edit": "Bearbeiten",
           "save": "Speichern"
+        },
+        "errors": {
+          "uniqueIdShort": "Die Kombination aus Rollenname, Aktion und Typ existiert bereits in einer anderen Regel.\nBitte bearbeiten Sie die bestehende Regel."
         },
         "createTitle": "Regel erstellen",
         "editTitle": "Regel bearbeiten",

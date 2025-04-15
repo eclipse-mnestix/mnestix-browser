@@ -33,9 +33,15 @@ export const RuleDialog = (props: RuleDialogProps) => {
                 severity: 'success',
             });
             onCloseDialog(true);
-        } else {
-            showError(response.message);
+            return;
         }
+        if (response.errorCode === 'CONFLICT') {
+            return notificationSpawner.spawn({
+                message: t('errors.uniqueIdShort'),
+                severity: 'error',
+            });
+        }
+        showError(response.message);
     }
 
     const onCloseDialog = (reload: boolean) => {
