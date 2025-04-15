@@ -107,7 +107,10 @@ export class RbacRulesService {
     /**
      * Deletes a rule and creates a new rule with new idShort
      */
-    async deleteAndCreate(idShort: string, newRule: BaSyxRbacRule): Promise<ApiResponseWrapper<BaSyxRbacRule>> {
+    async deleteAndCreate(
+        idShort: string,
+        newRule: Omit<BaSyxRbacRule, 'idShort'>,
+    ): Promise<ApiResponseWrapper<BaSyxRbacRule>> {
         const newIdShort = ruleToIdShort(newRule);
 
         if (idShort !== newIdShort && !(await this.isIdShortUnique(newIdShort))) {
