@@ -1,24 +1,36 @@
+const keycloakKeys = [
+    'KEYCLOAK_ISSUER',
+    'KEYCLOAK_LOCAL_URL',
+    'KEYCLOAK_REALM',
+    'KEYCLOAK_CLIENT_ID',
+    'NEXTAUTH_SECRET',
+];
+const azureAdKeys = ['AD_SECRET_VALUE', 'AD_TENANT_ID', 'AD_CLIENT_ID', 'APPLICATION_ID_URI'];
 /**
  * @param {Record<string, string | undefined>} envs
  */
 export function validateEnvs(envs) {
     if (envs.KEYCLOAK_ENABLED === 'true') {
-        const requiredKeys = [
-            'KEYCLOAK_ISSUER',
-            'KEYCLOAK_LOCAL_URL',
-            'KEYCLOAK_REALM',
-            'KEYCLOAK_CLIENT_ID',
-            'NEXTAUTH_SECRET',
-        ];
-        for (const key of requiredKeys) {
+        for (const key of keycloakKeys) {
             if (!envs[key]) {
                 throw new Error(`${key} is required when KEYCLOAK_ENABLED is true`);
             }
         }
     }
+
+    if (azureAdKeys.find((key) => envs[key])) {
+        for (const key of azureAdKeys) {
+            if (!envs[key]) {
+                throw new Error(`${key} is required for Azure AD configuration`);
+            }
+        }
+    }
+
+    const azureAdConfigured = azureAdKeys.find((key) => envs[key]);
+
     if (envs.AUTHENTICATION_FEATURE_FLAG === 'true') {
-        if (envs.KEYCLOAK_ENABLED !== 'true') {
-            throw new Error('Keycloak must be configured when AUTHENTICATION_FEATURE_FLAG is true');
+        if (envs.KEYCLOAK_ENABLED !== 'true' && !azureAdConfigured) {
+            throw new Error('Keycloak/Azure AD must be configured when AUTHENTICATION_FEATURE_FLAG is true');
         }
     }
     if (envs.USE_BASYX_RBAC === 'true') {
