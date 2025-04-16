@@ -15,14 +15,10 @@ import { AssetAdministrationShell, SubmodelElementCollection } from '@aas-core-w
 import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
 import { ShellIcon } from 'components/custom-icons/ShellIcon';
-import { isValidUrl } from 'lib/util/UrlUtil';
 import { encodeBase64 } from 'lib/util/Base64Util';
-import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useRouter } from 'next/navigation';
 import { SubmodelOrIdReference, useAasState } from 'components/contexts/CurrentAasContext';
 import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
-import { getThumbnailFromShell } from 'lib/services/repository-access/repositorySearchActions';
-import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { useLocale, useTranslations } from 'next-intl';
 import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { SubmodelSemanticId } from 'lib/enums/SubmodelSemanticId.enum';
@@ -31,6 +27,7 @@ import {
     findSubmodelElementByIdShort,
     findValueByIdShort,
 } from 'lib/util/SubmodelResolverUtil';
+import { useProductImageUrl } from 'lib/hooks/UseProductImageUrl';
 
 type ProductOverviewCardProps = {
     readonly aas: AssetAdministrationShell | null;
@@ -60,7 +57,6 @@ type OverviewData = {
     readonly manufacturerProductFamily?: string;
     readonly manufacturerProductType?: string;
     readonly productClassifications?: ProductClassification[];
-    //Hier noch mehr Properties hinzufügen
 };
 
 function MobileAccordion(props: MobileAccordionProps) {
@@ -80,38 +76,11 @@ function MobileAccordion(props: MobileAccordionProps) {
 export function ProductOverviewCard(props: ProductOverviewCardProps) {
     const isAccordion = props.isAccordion;
     const navigate = useRouter();
-    const [productImageUrl, setProductImageUrl] = useState<string>('');
     const [, setAasState] = useAasState();
     const t = useTranslations('pages.productViewer');
     const [overviewData, setOverviewData] = useState<OverviewData>();
     const locale = useLocale();
-
-    async function createAndSetUrlForImageFile() {
-        if (!props.aas) return;
-
-        if (!props.repositoryURL) {
-            setProductImageUrl('');
-            return;
-        }
-
-        const response = await getThumbnailFromShell(props.aas.id, props.repositoryURL);
-        if (!response.isSuccess) {
-            console.error('Image not found');
-            return;
-        }
-        const blob = mapFileDtoToBlob(response.result);
-        setProductImageUrl(URL.createObjectURL(blob));
-    }
-
-    useAsyncEffect(async () => {
-        if (!props.productImage) return;
-
-        if (!isValidUrl(props.productImage!)) {
-            await createAndSetUrlForImageFile();
-        } else {
-            setProductImageUrl(props.productImage);
-        }
-    }, [props.productImage]);
+    const productImageUrl = useProductImageUrl(props.aas, props.repositoryURL);
 
     useEffect(() => {
         if (props.submodels && props.submodels.length > 0) {
