@@ -96,6 +96,11 @@
     "dummyComponent": {
       "dummyText": "Das ist eine Dummy-Komponente. Sie wird verwendet, um das Layout und Design der Anwendung zu testen."
     },
+    "noSearchResult": {
+      "header": "Es wurden keine Daten für \"{name}\" gefunden.",
+      "noDataFound": "Es wurden keine Daten für \"{name}\" gefunden.",
+      "toHomeButton": "Zur Startseite"
+    },
     "qrScanner": {
       "errors": {
         "defaultCallbackErrorMsg": "QR Code konnte nicht geöffnet werden!",
@@ -195,7 +200,6 @@
     },
     "aasViewer": {
       "actions": {
-        "toHome": "Zur Startseite",
         "compareButton": "Vergleichen",
         "toProductView": "Produktansicht"
       },
@@ -212,10 +216,6 @@
         "notAvailable": "-",
         "text": "Text",
         "value": "Wert"
-      },
-      "messages": {
-        "noDataFoundFor": "Es wurden keine Daten für \"{name}\" gefunden.",
-        "noDataFound": "Keine Daten gefunden"
       },
       "submodels": {
         "actions": {

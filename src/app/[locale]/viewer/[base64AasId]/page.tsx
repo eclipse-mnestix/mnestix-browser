@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, Skeleton, Typography } from '@mui/material';
 import { safeBase64Decode } from 'lib/util/Base64Util';
-import { ArrowForward } from '@mui/icons-material';
 import { Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
@@ -29,6 +28,7 @@ import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { TransferButton } from 'app/[locale]/viewer/_components/transfer/TransferButton';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useLocale, useTranslations } from 'next-intl';
+import { NoSearchResult } from 'components/basics/detailViewBasics/NoSearchResult';
 
 export default function Page() {
     const navigate = useRouter();
@@ -214,28 +214,7 @@ export default function Page() {
                     )}
                 </Box>
             ) : (
-                <>
-                    <Typography
-                        variant="h2"
-                        style={{
-                            width: '90%',
-                            margin: '0 auto',
-                            marginTop: '10px',
-                            overflowWrap: 'break-word',
-                            wordBreak: 'break-word',
-                            textAlign: 'center',
-                            display: 'inline-block',
-                        }}
-                    >
-                        {t('messages.noDataFound')}
-                    </Typography>
-                    <Typography color="text.secondary">
-                        {t('messages.noDataFoundFor', { name: safeBase64Decode(base64AasId) })}
-                    </Typography>
-                    <Button variant="contained" startIcon={<ArrowForward />} href="/">
-                        {t('actions.toHome')}
-                    </Button>
-                </>
+                <NoSearchResult base64AasId={safeBase64Decode(base64AasId)} />
             )}
         </Box>
     );
