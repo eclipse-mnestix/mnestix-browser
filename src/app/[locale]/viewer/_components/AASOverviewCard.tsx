@@ -1,7 +1,4 @@
 import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
     Box,
     Card,
     CardContent,
@@ -10,7 +7,6 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { DataRow } from 'components/basics/DataRow';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { AssetAdministrationShell, SpecificAssetId } from '@aas-core-works/aas-core3.0-typescript/types';
 import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
@@ -22,6 +18,7 @@ import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useProductImageUrl } from 'lib/hooks/UseProductImageUrl';
+import { MobileAccordion } from 'components/basics/detailViewBasics/MobileAccordion';
 
 type AASOverviewCardProps = {
     readonly aas: AssetAdministrationShell | null;
@@ -31,26 +28,6 @@ type AASOverviewCardProps = {
     readonly imageLinksToDetail?: boolean;
     readonly repositoryURL: string | null;
 };
-
-type MobileAccordionProps = {
-    readonly content: React.ReactNode;
-    readonly title: string;
-    readonly icon: React.ReactNode;
-};
-
-function MobileAccordion(props: MobileAccordionProps) {
-    return (
-        <Accordion disableGutters elevation={0} style={{ width: '100%' }}>
-            <AccordionSummary expandIcon={<ArrowDropDownIcon sx={{ color: 'grey.600' }} />}>
-                <Box display="flex" alignItems="center" data-testid="mobile-accordion-header">
-                    <IconCircleWrapper sx={{ mr: 1 }}>{props.icon}</IconCircleWrapper>
-                    <Typography>{props.title}</Typography>
-                </Box>
-            </AccordionSummary>
-            <AccordionDetails data-testid="mobile-accordion-content">{props.content}</AccordionDetails>
-        </Accordion>
-    );
-}
 
 export function AASOverviewCard(props: AASOverviewCardProps) {
     const isAccordion = props.isAccordion;
