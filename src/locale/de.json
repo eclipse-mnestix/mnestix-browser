@@ -146,7 +146,7 @@
     "errors": {
       "notFound": "Nicht gefunden",
       "unauthorizedError": {
-        "content": "Sie haben keinen Zugang zu dieser Ressource. Bitte loggen Sie sich ein oder fragen sie Ihren Administrator um Zugriff.",
+        "content": "Sie haben keinen Zugang zu dieser Ressource. Bitte loggen Sie sich ein oder bitten Sie Ihren Administrator um Zugriff.",
         "title": "Unautorisierter Zugriff"
       },
       "unexpectedError": "Unerwarteter Fehler",
@@ -165,7 +165,7 @@
       "logout": "Abmelden",
       "repository": "Repository",
       "settings": "Einstellungen",
-      "templates": "Vorlagen"
+      "templates": "Templates"
     }
   },
   "pages": {
@@ -191,7 +191,7 @@
       "repositoryDropdown": "AAS Repository",
       "selectRepository": "Bitte wählen Sie ein Repository aus",
       "subHeader": "Hier finden Sie alle AAS aus Ihrem Repository. Sie können ein AAS-Repository auswählen, um zwischen den Datenquellen zu wechseln.",
-      "titleComparisonAddButton": "Füge AAS zum Vergleich hinzu"
+      "titleComparisonAddButton": "AAS zum Vergleich hinzufügen"
     },
     "aasViewer": {
       "actions": {
@@ -246,7 +246,7 @@
       },
       "errors": {
         "aasAddError": "AAS konnte nicht hinzugefügt werden.",
-        "aasAlreadyAdded": "AAS kann nicht mehrmals hinzugefügt werden",
+        "aasAlreadyAdded": "AAS kann nicht mehrmals hinzugefügt werden.",
         "moreAasFound": "Mehr als eine AAS im Discovery Service gefunden, bitte geben Sie die AAS-ID an.",
         "unknownModelType": "Unbekannter ModelType: {type}"
       },
@@ -277,7 +277,7 @@
         "noAasId": "Keine AAS ID angegeben.",
         "searchFailed": "Suche fehlgeschlagen"
       },
-      "subtitle": "Hier finden sich alle AAS mit der folgenden AAS ID",
+      "subtitle": "Hier befinden sich alle AAS mit der angegebenen AAS ID. ",
       "title": "AAS mit AAS ID"
     },
     "settings": {
@@ -290,7 +290,7 @@
       "connections": {
         "aasRepository": {
           "connectionType": "AAS_REPOSITORY",
-          "repositories": "AAS Repositories",
+          "repositories": "AAS Repositorys",
           "repositoryDefaultLabel": "Default AAS Repository",
           "repositoryLabel": "AAS Repository",
           "repositoryUrlLabel": "AAS Repository URL"
@@ -299,7 +299,7 @@
         "resetSuccessful": "Quellen wurden zurückgesetzt.",
         "submodelRepository": {
           "connectionType": "SUBMODEL_REPOSITORY",
-          "repositories": "Submodel Repositories",
+          "repositories": "Submodel Repositorys",
           "repositoryDefaultLabel": "Default Submodel Repository",
           "repositoryLabel": "Submodel Repository",
           "repositoryUrlLabel": "Submodel Repository URL"
@@ -316,7 +316,7 @@
         "title": "ID Struktur",
         "labels": {
           "dynamicPart": "dynamischer Teil",
-          "idStructureExplanation": "Definieren Sie, wie Ihre IDs aussehen sollen. Dies ist eine Basis-Einstellung, die für individuelle Importe angepasst werden kann.",
+          "idStructureExplanation": "Definieren Sie, wie Ihre IDs dargestellt werden sollen. Dies ist eine Basis-Einstellung, die für individuelle Importe angepasst werden kann.",
           "staticPrefix": "statisches Präfix"
         },
         "assetIdDocumentation": {
@@ -325,7 +325,7 @@
           "endResult": "Endergebnis",
           "exampleHeading": "Beispiel",
           "industry40Heading": "Industrie 4.0 Kontext",
-          "industry40Text": "Produkte haben eine global einzigartige ID, welche einer oder mehreren Verwaltungsschale(n) zugewiesen werden kann. Im Industrie 4.0 Kontext wird die Verbindung zwischen Asset und Verwaltungsschale über die I4.0 Infrastruktur hergestellt.",
+          "industry40Text": "Produkte haben eine global einzigartige ID, welche einer oder mehreren Verwaltungsschalen zugewiesen werden kann. Im Industrie 4.0 Kontext wird die Verbindung zwischen Asset und Verwaltungsschale über die I4.0 Infrastruktur hergestellt.",
           "title": "Wie Sie Ihre Asset ID mit Ihrem Repository verbinden",
           "redirectsTo": "Leitet weiter auf",
           "assetId": "Asset ID"
@@ -375,27 +375,27 @@
         "false": "Falsch",
         "true": "Wahr"
       },
-      "chooseAStartingPoint": "Wählen Sie einen Ausgangspunkt",
-      "copyTemplateId": "Vorlagen-ID kopieren",
+      "chooseAStartingPoint": "Wählen Sie ein Template als Ausgangspunkt",
+      "copyTemplateId": "Template-ID kopieren",
       "createNew": "Neu erstellen",
-      "custom": "Individuell",
-      "defaultValue": "Vorgegebener Wert",
-      "deleteTemplateQuestion": "Vorlage \"{name}\" unwiderruflich löschen?",
+      "custom": "Custom",
+      "defaultValue": "Defaultwert",
+      "deleteTemplateQuestion": "Template \"{name}\" unwiderruflich löschen?",
       "displayName": "Anzeigename",
-      "emptyCustom": "Leer (Individuell)",
-      "emptyCustomDescription": "Basiert auf keiner standardisierten Vorlage",
+      "emptyCustom": "Leer (Custom)",
+      "emptyCustomDescription": "Basiert auf keinem standardisierten Template",
       "errors": {
         "unknownModelType": "Unbekannter ModelType: {type}"
       },
       "mappingInfo": "Mapping-Info",
       "mappingInfoDescription": "Frei wählbarer Identifikator, auf den Sie bei Datenimporten zurückgreifen können.",
-      "multiplicity": "Multiplicity",
+      "multiplicity": "Multiplizität",
       "multiplicityDescription": "Parameter, mit dem Sie festlegen können, welche Elemente verpflichtend sind.",
-      "noTemplatesFound": "Keine Vorlagen gefunden",
-      "templateDeletedSuccessfully": "Vorlage erfolgreich gelöscht.",
-      "templateIdCopied": "Vorlagen-ID in die Zwischenablage kopiert: {id}",
-      "templatesUseExplanation": "Vorlagen erlauben es Ihnen, eine wiederverwendbare Teilmodell-Struktur zu definieren, angepasst auf Ihre Bedürfnisse.",
-      "title": "Vorlagen",
+      "noTemplatesFound": "Keine Templates gefunden",
+      "templateDeletedSuccessfully": "Template erfolgreich gelöscht.",
+      "templateIdCopied": "Template-ID in die Zwischenablage kopiert: {id}",
+      "templatesUseExplanation": "Templates erlauben es Ihnen, eine wiederverwendbare Teilmodell-Struktur, angepasst auf Ihre Bedürfnisse zu definieren.",
+      "title": "Templates",
       "actions": {
         "add": "Hinzufügen",
         "cancel": "Abbrechen",
@@ -432,12 +432,12 @@
       "errorToast": "Transfer der AAS nicht erfolgreich",
       "partiallyFailedToast": "Teil des Transfers fehlgeschlagen",
       "repositoryApiKey": "AAS Repository ApiKey",
-      "repositoryLabel": "Liste der AAS Repositories",
+      "repositoryLabel": "Liste der AAS Repositorys",
       "repositoryRequired": "AAS Repository wird benötigt",
       "submodelRepository": "Submodel Repository",
       "submodelRepositoryApiKey": "Submodel Repository ApiKey",
-      "submodelRepositoryLabel": "Liste der Submodel Repositories",
-      "subtitle": "Füllen sie die folgenden Schritte aus, um eine Verwaltungsschale in ein anderes Repository zu importieren",
+      "submodelRepositoryLabel": "Liste der Submodel Repositorys",
+      "subtitle": "Füllen Sie die folgenden Felder aus, um eine Verwaltungsschale in ein anderes Repository zu importieren",
       "successfulToast": "Transfer der AAS erfolgreich",
       "title": "Import",
       "useAasRepository": "AAS Repository verwenden",
