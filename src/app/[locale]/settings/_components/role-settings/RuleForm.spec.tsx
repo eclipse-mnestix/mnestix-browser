@@ -171,11 +171,13 @@ describe('RuleForm', () => {
 
         const autocompleteInput = screen.getByTestId('rule-settings-name-input').querySelector('input');
 
-        userEvent.type(autocompleteInput as Element, 'Adm');
+        await userEvent.click(autocompleteInput as Element);
+
         const listbox = await screen.findByRole('listbox');
         const option = within(listbox).getByText('Admin-Role');
 
-        fireEvent.click(option);
+        await userEvent.click(option);
+
         expect(autocompleteInput).toHaveValue('Admin-Role');
     });
 });
