@@ -280,6 +280,13 @@
       "subtitle": "Hier finden sich alle AAS mit der folgenden AAS ID",
       "title": "AAS mit AAS ID"
     },
+    "productViewer": {
+      "title": "Produkt",
+      "classification": "Produktklassifikation",
+      "error":{
+        "technicalDataSubmodelNotFound": "Technical Data Submodel nicht gefunden"
+      }
+    },
     "settings": {
       "actions": {
         "cancel": "Abbrechen",

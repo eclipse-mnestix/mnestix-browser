@@ -11,6 +11,9 @@ import {
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { idEquals } from './IdValidationUtil';
 import { getKeyType } from 'lib/util/KeyTypeUtil';
+import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
+import { SubmodelSemanticId } from 'lib/enums/SubmodelSemanticId.enum';
+import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
 
 /**
  * Gets the translated text from either a MultiLanguageProperty or LangStringTextType array
@@ -20,15 +23,15 @@ import { getKeyType } from 'lib/util/KeyTypeUtil';
  */
 export function getTranslationText(
     element: MultiLanguageProperty | IAbstractLangString[] | undefined,
-    locale: string
+    locale: string,
 ): string {
     const langStrings = Array.isArray(element) ? element : element?.value;
-    
+
     if (!langStrings?.length) {
         return '';
     }
 
-    return langStrings.find(el => el.language === locale)?.text || langStrings[0]?.text;
+    return langStrings.find((el) => el.language === locale)?.text || langStrings[0]?.text;
 }
 
 export function getTranslationValue(element: IDataElement, locale: string): string | null {
@@ -45,14 +48,15 @@ export function getTranslationValue(element: IDataElement, locale: string): stri
 export function findSubmodelElementByIdShort(
     elements: ISubmodelElement[] | null,
     idShort: string | null,
+    semanticId: SubmodelSemanticId | SubmodelElementSemanticId | null,
 ): ISubmodelElement | null {
     if (!elements) return null;
     for (const el of elements) {
-        if (el.idShort == idShort) {
+        if (el.idShort == idShort || (el.semanticId?.keys[0] && el.semanticId?.keys[0].value) == semanticId) {
             return el;
         } else if (getKeyType(el) == KeyTypes.SubmodelElementCollection) {
             const innerElements = (el as SubmodelElementCollection).value;
-            const foundElement = findSubmodelElementByIdShort(innerElements, idShort);
+            const foundElement = findSubmodelElementByIdShort(innerElements, idShort, semanticId);
             if (foundElement) {
                 return foundElement;
             }
@@ -64,9 +68,10 @@ export function findSubmodelElementByIdShort(
 export function findValueByIdShort(
     elements: ISubmodelElement[] | null,
     idShort: string | null,
+    semanticId: SubmodelSemanticId | SubmodelElementSemanticId | null = null,
     locale: string,
 ): string | null {
-    const element = findSubmodelElementByIdShort(elements, idShort);
+    const element = findSubmodelElementByIdShort(elements, idShort, semanticId);
     if (!element) return null;
     switch (getKeyType(element)) {
         case KeyTypes.MultiLanguageProperty:
@@ -120,4 +125,24 @@ export function buildSubmodelElementPath(
 
     newSubmodelElementPath = newSubmodelElementPath.concat(submodelElementIdShort ?? '');
     return newSubmodelElementPath;
+}
+
+/**
+ * Finds a `Submodel` within a list of submodels based on the provided semantic ID or idShort.
+ *
+ * @param submodels - The array of `SubmodelOrIdReference` objects to search through.
+ * @param semanticId - (Optional) The semantic ID to match against the `semanticId` of the submodels.
+ * @param idShort - (Optional) The idShort to match against the `idShort` of the submodels.
+ * @returns The first `Submodel` that matches the given semantic ID or idShort
+ */
+export function findSubmodelByIdOrSemanticId(
+    submodels: SubmodelOrIdReference[],
+    semanticId?: SubmodelSemanticId,
+    idShort?: string,
+): Submodel | undefined {
+    return submodels.find(
+        (sm) =>
+            (sm.submodel?.semanticId?.keys?.length && sm.submodel?.semanticId?.keys[0].value === semanticId) ||
+            sm.submodel?.idShort === idShort,
+    )?.submodel;
 }
