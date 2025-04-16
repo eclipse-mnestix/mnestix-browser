@@ -196,7 +196,8 @@
     "aasViewer": {
       "actions": {
         "toHome": "To Home",
-        "compareButton": "Compare"
+        "compareButton": "Compare",
+        "toProductView": "Product View"
       },
       "asset": "Asset",
       "assetAdministrationShell": "Asset Administration Shell",
@@ -285,6 +286,9 @@
       "classification": "Classification",
       "error":{
         "technicalDataSubmodelNotFound": "Technical Data Submodel not found"
+      },
+      "actions": {
+        "toAasView": "AAS View"
       }
     },
     "settings": {

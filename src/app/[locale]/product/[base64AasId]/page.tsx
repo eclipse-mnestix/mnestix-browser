@@ -47,7 +47,9 @@ export default function Page() {
     const [isSubmodelsLoading, setIsSubmodelsLoading] = useState(true);
     const [registryAasData, setRegistryAasData] = useRegistryAasState();
     const { showError } = useShowError();
+    // TODO refactor translation strings here
     const t = useTranslations('pages.aasViewer');
+    const tp = useTranslations('pages.productViewer');
 
 
 
@@ -139,6 +141,10 @@ export default function Page() {
         navigate.push(`/compare?aasId=${encodeURIComponent(aasIdDecoded)}`);
     };
 
+    const goToAASView = () => {
+        navigate.push(`/viewer/${searchParams.base64AasId}`);
+    };
+
     const pageStyles = {
         display: 'flex',
         flexDirection: 'column',
@@ -194,6 +200,11 @@ export default function Page() {
                             </Button>
                         )}
                         {env.TRANSFER_FEATURE_FLAG && <TransferButton />}
+                        {env.PRODUCT_VIEW_FEATURE_FLAG &&
+                            <Button variant="contained" sx={{ whiteSpace: 'nowrap' }} onClick={goToAASView}>
+                                {tp('actions.toAasView')}
+                            </Button>
+                        }
                     </Box>
                     <ProductOverviewCard
                         aas={aasFromContext}

@@ -49,8 +49,6 @@ export default function Page() {
     const { showError } = useShowError();
     const t = useTranslations('pages.aasViewer');
 
-
-
     const submodelWhitelist: string[] = JSON.parse(env.SUBMODEL_WHITELIST || '[]');
 
     function whitelistContains(sm: Submodel) {
@@ -139,6 +137,10 @@ export default function Page() {
         navigate.push(`/compare?aasId=${encodeURIComponent(aasIdDecoded)}`);
     };
 
+    const goToProductView = () => {
+        navigate.push(`/product/${searchParams.base64AasId}`);
+    };
+
     const pageStyles = {
         display: 'flex',
         flexDirection: 'column',
@@ -194,6 +196,11 @@ export default function Page() {
                             </Button>
                         )}
                         {env.TRANSFER_FEATURE_FLAG && <TransferButton />}
+                        {env.PRODUCT_VIEW_FEATURE_FLAG &&
+                            <Button variant="contained" sx={{ whiteSpace: 'nowrap' }} onClick={goToProductView}>
+                                {t('actions.toProductView')}
+                            </Button>
+                        }
                     </Box>
                     <AASOverviewCard
                         aas={aasFromContext ?? null}
