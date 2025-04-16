@@ -171,12 +171,18 @@ describe('RuleForm', () => {
 
         const autocompleteInput = screen.getByTestId('rule-settings-name-input').querySelector('input');
 
-        await userEvent.click(autocompleteInput as Element);
+        // Manually wrapping in act to ensure async state updates
+        await act(async () => {
+            await userEvent.click(autocompleteInput as Element);
+        });
 
         const listbox = await screen.findByRole('listbox');
         const option = within(listbox).getByText('Admin-Role');
 
-        await userEvent.click(option);
+        // Manually wrapping this in act as well
+        await act(async () => {
+            await userEvent.click(option);
+        });
 
         expect(autocompleteInput).toHaveValue('Admin-Role');
     });
