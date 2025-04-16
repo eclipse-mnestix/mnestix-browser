@@ -23,15 +23,15 @@ import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.e
  */
 export function getTranslationText(
     element: MultiLanguageProperty | IAbstractLangString[] | undefined,
-    locale: string
+    locale: string,
 ): string {
     const langStrings = Array.isArray(element) ? element : element?.value;
-    
+
     if (!langStrings?.length) {
         return '';
     }
 
-    return langStrings.find(el => el.language === locale)?.text || langStrings[0]?.text;
+    return langStrings.find((el) => el.language === locale)?.text || langStrings[0]?.text;
 }
 
 export function getTranslationValue(element: IDataElement, locale: string): string | null {
@@ -52,7 +52,7 @@ export function findSubmodelElementByIdShort(
 ): ISubmodelElement | null {
     if (!elements) return null;
     for (const el of elements) {
-        if (el.idShort == idShort || el.semanticId?.keys[0].value == semanticId) {
+        if (el.idShort == idShort || (el.semanticId?.keys[0] && el.semanticId?.keys[0].value) == semanticId) {
             return el;
         } else if (getKeyType(el) == KeyTypes.SubmodelElementCollection) {
             const innerElements = (el as SubmodelElementCollection).value;
@@ -135,10 +135,14 @@ export function buildSubmodelElementPath(
  * @param idShort - (Optional) The idShort to match against the `idShort` of the submodels.
  * @returns The first `Submodel` that matches the given semantic ID or idShort
  */
-export function findSubmodelByIdOrSemanticId(submodels: SubmodelOrIdReference[], semanticId?: SubmodelSemanticId, idShort?: string): Submodel | undefined {
+export function findSubmodelByIdOrSemanticId(
+    submodels: SubmodelOrIdReference[],
+    semanticId?: SubmodelSemanticId,
+    idShort?: string,
+): Submodel | undefined {
     return submodels.find(
         (sm) =>
-            sm.submodel?.semanticId?.keys[0].value === semanticId ||
-            sm.submodel?.idShort === idShort
+            (sm.submodel?.semanticId?.keys?.length && sm.submodel?.semanticId?.keys[0].value === semanticId) ||
+            sm.submodel?.idShort === idShort,
     )?.submodel;
 }

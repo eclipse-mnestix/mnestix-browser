@@ -43,5 +43,5 @@ export enum SubmodelElementSemanticId {
     ManufacturerProductRoot = '0173-1#02-AAU732#001',
     ManufacturerProductFamily = '0173-1#02-AAU731#001',
     ManufacturerProductType = '0173-1#02-AAO057#002',
-    ProductClassId = 'https://adminshell.io/ZVEI/TechnicalData/ProductClassId/1/1'
+    ProductClassId = 'https://adminshell.io/ZVEI/TechnicalData/ProductClassId/1/1',
 }

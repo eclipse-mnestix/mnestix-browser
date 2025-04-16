@@ -26,7 +26,11 @@ import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper
 import { useLocale, useTranslations } from 'next-intl';
 import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { SubmodelSemanticId } from 'lib/enums/SubmodelSemanticId.enum';
-import { findSubmodelElementByIdShort, findValueByIdShort, findSubmodelByIdOrSemanticId } from 'lib/util/SubmodelResolverUtil';
+import {
+    findSubmodelByIdOrSemanticId,
+    findSubmodelElementByIdShort,
+    findValueByIdShort,
+} from 'lib/util/SubmodelResolverUtil';
 
 type ProductOverviewCardProps = {
     readonly aas: AssetAdministrationShell | null;
@@ -44,17 +48,20 @@ type MobileAccordionProps = {
     readonly icon: React.ReactNode;
 };
 
+type ProductClassification = {
+    ProductClassificationSystem?: string;
+    ProductClassId?: string;
+};
+
 type OverviewData = {
     readonly manufacturerName?: string;
     readonly manufacturerProductDesignation?: string;
     readonly manufacturerProductRoot?: string;
     readonly manufacturerProductFamily?: string;
     readonly manufacturerProductType?: string;
-    readonly ECLASS?: string;
-    readonly IEC?: string;
-    readonly VEC?: string;
+    readonly productClassifications?: ProductClassification[];
     //Hier noch mehr Properties hinzufügen
-}
+};
 
 function MobileAccordion(props: MobileAccordionProps) {
     return (
@@ -108,28 +115,84 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
 
     useEffect(() => {
         if (props.submodels && props.submodels.length > 0) {
-            const technicalDataSubmodelElements = findSubmodelByIdOrSemanticId(props.submodels, SubmodelSemanticId.TechnicalData, 'TechnicalData')?.submodelElements;
-            const nameplateSubmodelElements = findSubmodelByIdOrSemanticId(props.submodels, SubmodelSemanticId.NameplateV2, 'Nameplate')?.submodelElements;
-            
-            if (technicalDataSubmodelElements) {
-                const manufacturerName = findValueByIdShort(technicalDataSubmodelElements, 'ManufacturerName', SubmodelElementSemanticId.ManufacturerName, locale);
-                const manufacturerProductDesignation = findValueByIdShort(technicalDataSubmodelElements, 'ManufacturerProductDesignation', SubmodelElementSemanticId.ManufacturerProductDesignation, locale);
+            const technicalDataSubmodelElements = findSubmodelByIdOrSemanticId(
+                props.submodels,
+                SubmodelSemanticId.TechnicalData,
+                'TechnicalData',
+            )?.submodelElements;
+            const nameplateSubmodelElements = findSubmodelByIdOrSemanticId(
+                props.submodels,
+                SubmodelSemanticId.NameplateV2,
+                'Nameplate',
+            )?.submodelElements;
 
-                const ECLASS = findSubmodelElementByIdShort(technicalDataSubmodelElements,'ECLASS', null) as SubmodelElementCollection;
-                const IEC = findSubmodelElementByIdShort(technicalDataSubmodelElements, 'IEC', null) as SubmodelElementCollection;
-                const VEC = findSubmodelElementByIdShort(technicalDataSubmodelElements, 'VEC', null) as SubmodelElementCollection;
+            if (technicalDataSubmodelElements) {
+                const manufacturerName = findValueByIdShort(
+                    technicalDataSubmodelElements,
+                    'ManufacturerName',
+                    SubmodelElementSemanticId.ManufacturerName,
+                    locale,
+                );
+                const manufacturerProductDesignation = findValueByIdShort(
+                    technicalDataSubmodelElements,
+                    'ManufacturerProductDesignation',
+                    SubmodelElementSemanticId.ManufacturerProductDesignation,
+                    locale,
+                );
+
+                const productClassifications = findSubmodelElementByIdShort(
+                    technicalDataSubmodelElements,
+                    'ProductClassifications',
+                    SubmodelElementSemanticId.ProductClassifications,
+                ) as SubmodelElementCollection;
+                const classifications: ProductClassification[] = [];
+                productClassifications?.value?.forEach((productClassification) => {
+                    const submodelClassification = productClassification as SubmodelElementCollection;
+                    if (submodelClassification?.value) {
+                        const classification = {
+                            ProductClassificationSystem:
+                                findValueByIdShort(
+                                    submodelClassification.value,
+                                    'ProductClassificationSystem',
+                                    SubmodelElementSemanticId.ProductClassificationSystem,
+                                    locale,
+                                ) || undefined,
+                            ProductClassId:
+                                findValueByIdShort(
+                                    submodelClassification.value,
+                                    'ProductClassId',
+                                    SubmodelElementSemanticId.ProductClassId,
+                                    locale,
+                                ) || undefined,
+                        };
+                        classifications.push(classification);
+                    }
+                });
                 setOverviewData({
                     manufacturerName: manufacturerName ?? '-',
                     manufacturerProductDesignation: manufacturerProductDesignation ?? '-',
-                    ECLASS: findValueByIdShort(ECLASS.value, 'ProductClassId', SubmodelElementSemanticId.ProductClassId, locale) ?? '-',
-                    IEC: findValueByIdShort(IEC.value, 'ProductClassId', SubmodelElementSemanticId.ProductClassId, locale) ?? '-',
-                    VEC: findValueByIdShort(VEC.value, 'ProductClassId', SubmodelElementSemanticId.ProductClassId, locale) ?? '-',
+                    productClassifications: classifications,
                 });
             }
-            if(nameplateSubmodelElements){
-                const manufacturerProductRoot = findValueByIdShort(nameplateSubmodelElements, 'ManufacturerProductRoot', SubmodelElementSemanticId.ManufacturerProductRoot, locale);
-                const manufacturerProductFamily = findValueByIdShort(nameplateSubmodelElements, 'ManufacturerProductFamily', SubmodelElementSemanticId.ManufacturerProductFamily, locale);
-                const manufacturerProductType = findValueByIdShort(nameplateSubmodelElements, 'ManufacturerProductType', SubmodelElementSemanticId.ManufacturerProductType, locale);
+            if (nameplateSubmodelElements) {
+                const manufacturerProductRoot = findValueByIdShort(
+                    nameplateSubmodelElements,
+                    'ManufacturerProductRoot',
+                    SubmodelElementSemanticId.ManufacturerProductRoot,
+                    locale,
+                );
+                const manufacturerProductFamily = findValueByIdShort(
+                    nameplateSubmodelElements,
+                    'ManufacturerProductFamily',
+                    SubmodelElementSemanticId.ManufacturerProductFamily,
+                    locale,
+                );
+                const manufacturerProductType = findValueByIdShort(
+                    nameplateSubmodelElements,
+                    'ManufacturerProductType',
+                    SubmodelElementSemanticId.ManufacturerProductType,
+                    locale,
+                );
                 setOverviewData((prevData) => ({
                     ...prevData,
                     manufacturerProductRoot: manufacturerProductRoot ?? '-',
@@ -179,71 +242,62 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                     </Typography>
                 </Box>
             )}
-                <DataRow 
-                    title="Manufacturer Name" // Translation ??
-                    value={overviewData?.manufacturerName}
-                    testId='datarow-manufacturer-name'
-                    withBase64={false}
-                />
-                <DataRow 
-                    title="Manufacturer Product Designation" // Translation ??
-                    value={overviewData?.manufacturerProductDesignation}
-                    testId='datarow-manufacturer-product-designation'
-                    withBase64={false}
-                />
+            <DataRow
+                title="Manufacturer Name" // Translation ??
+                value={overviewData?.manufacturerName}
+                testId="datarow-manufacturer-name"
+                withBase64={false}
+            />
+            <DataRow
+                title="Manufacturer Product Designation" // Translation ??
+                value={overviewData?.manufacturerProductDesignation}
+                testId="datarow-manufacturer-product-designation"
+                withBase64={false}
+            />
         </Box>
     );
 
     const classificationInfo = (
-            <Box sx={infoBoxStyle} data-testid="asset-data">
-                {!isAccordion && (
-                    <Box display="flex">
-                        <IconCircleWrapper sx={{ mr: 1 }}>
-                            <AssetIcon fontSize="small" color="primary" />
-                        </IconCircleWrapper>
-                        <Typography sx={titleStyle} variant="h3">
-                            {t('classification')}
-                        </Typography>
-                    </Box>
-                )}
-                <DataRow
+        <Box sx={infoBoxStyle} data-testid="asset-data">
+            {!isAccordion && (
+                <Box display="flex">
+                    <IconCircleWrapper sx={{ mr: 1 }}>
+                        <AssetIcon fontSize="small" color="primary" />
+                    </IconCircleWrapper>
+                    <Typography sx={titleStyle} variant="h3">
+                        {t('classification')}
+                    </Typography>
+                </Box>
+            )}
+            <DataRow
                 title="Manufacturer Product Root"
                 value={overviewData?.manufacturerProductRoot}
-                testId='datarow-manufacturer-product-root'
+                testId="datarow-manufacturer-product-root"
                 withBase64={false}
-                />
+            />
+            <DataRow
+                title="Manufacturer Product Family"
+                value={overviewData?.manufacturerProductFamily}
+                testId="datarow-manufacturer-product-family"
+                withBase64={false}
+            />
+            <DataRow
+                title="Manufacturer Product Type"
+                value={overviewData?.manufacturerProductType}
+                testId="datarow-manufacturer-product-type"
+                withBase64={false}
+            />
+            {overviewData?.productClassifications?.map((classification, _) => (
                 <DataRow
-                    title="Manufacturer Product Family"
-                    value={overviewData?.manufacturerProductFamily}
-                    testId='datarow-manufacturer-product-family'
+                    key={classification.ProductClassId}
+                    title={classification.ProductClassificationSystem}
+                    value={classification.ProductClassId}
+                    testId="datarow-eclass"
                     withBase64={false}
                 />
-                <DataRow
-                    title="Manufacturer Product Type"
-                    value={overviewData?.manufacturerProductType}
-                    testId='datarow-manufacturer-product-type'
-                    withBase64={false}
-                /> 
-                <DataRow
-                    title="ECLASS"
-                    value={overviewData?.ECLASS}
-                    testId='datarow-eclass'
-                    withBase64={false}
-                />
-                <DataRow
-                    title="IEC"
-                    value={overviewData?.IEC}
-                    testId='datarow-iec'
-                    withBase64={false}
-                />
-                <DataRow
-                    title="VEC"
-                    value={overviewData?.VEC}
-                    testId='datarow-vec'
-                    withBase64={false}
-                />
-            </Box>
-        );
+            ))}
+        </Box>
+    );
 
     return (
         <Card>
@@ -293,7 +347,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                     title={t('title')}
                                     icon={<ShellIcon fontSize="small" color="primary" />}
                                 />
-                                 <MobileAccordion
+                                <MobileAccordion
                                     content={classificationInfo}
                                     title={t('classification')}
                                     icon={<ShellIcon fontSize="small" color="primary" />}
