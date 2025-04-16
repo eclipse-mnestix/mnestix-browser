@@ -17,7 +17,7 @@ import {
     Submodel,
     SubmodelElementCollection,
 } from '@aas-core-works/aas-core3.0-typescript/types';
-import { AttachmentDetails, TransferAas, TransferResult, TransferSubmodel } from 'lib/types/TransferServiceData';
+import { AttachmentDetails, TransferAas, TransferResult, TransferServiceConfig, TransferSubmodel } from 'lib/types/TransferServiceData';
 import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { generateRandomId } from 'lib/util/RandomUtils';
 import {
@@ -54,45 +54,38 @@ export class TransferService {
     ) {}
 
     static create(
-        targetAasRepositoryBaseUrl: string,
-        sourceAasRepositoryBaseUrl: string,
-        targetSubmodelRepositoryBaseUrl: string,
-        sourceSubmodelRepositoryBaseUrl: string,
-        targetAasDiscoveryBaseUrl?: string,
-        targetAasRegistryBaseUrl?: string,
-        targetSubmodelRegistryBaseUrl?: string,
-        apikey?: string,
+        config: TransferServiceConfig,
     ): TransferService {
         const targetAasRepositoryClient = AssetAdministrationShellRepositoryApi.create(
-            targetAasRepositoryBaseUrl,
+            config.targetAasRepoUrl,
             mnestixFetch(),
         );
 
         const sourceAasRepositoryClient = AssetAdministrationShellRepositoryApi.create(
-            sourceAasRepositoryBaseUrl,
+            config.sourceAasRepoUrl,
             mnestixFetch(),
         );
 
         const targetSubmodelRepositoryClient = SubmodelRepositoryApi.create(
-            targetSubmodelRepositoryBaseUrl,
+            config.targetSubmodelRepoUrl,
             mnestixFetch(),
         );
 
         const sourceSubmodelRepositoryClient = SubmodelRepositoryApi.create(
-            sourceSubmodelRepositoryBaseUrl,
+            config.sourceSubmodelRepoUrl,
             mnestixFetch(),
         );
 
-        const targetAasDiscoveryClient = targetAasDiscoveryBaseUrl
-            ? DiscoveryServiceApi.create(targetAasDiscoveryBaseUrl, mnestixFetch())
+        const targetAasDiscoveryClient = config.targetDiscoveryUrl
+            ? DiscoveryServiceApi.create(config.targetDiscoveryUrl, mnestixFetch())
             : undefined;
 
-        const targetAasRegistryClient = targetAasRegistryBaseUrl
-            ? RegistryServiceApi.create(targetAasRegistryBaseUrl, mnestixFetch())
+        const targetAasRegistryClient = config.targetAasRegistryUrl
+            ? RegistryServiceApi.create(config.targetAasRegistryUrl, mnestixFetch())
             : undefined;
 
-        const targetSubmodelRegistryClient = targetSubmodelRegistryBaseUrl
-            ? SubmodelRegistryServiceApi.create(targetSubmodelRegistryBaseUrl, mnestixFetch())
+        const targetSubmodelRegistryClient = config.targetSubmodelRegistryUrl
+            ? SubmodelRegistryServiceApi.create(config.targetSubmodelRegistryUrl, mnestixFetch())
             : undefined;
 
         return new TransferService(
@@ -103,7 +96,7 @@ export class TransferService {
             targetAasDiscoveryClient,
             targetAasRegistryClient,
             targetSubmodelRegistryClient,
-            apikey,
+            config.apikey,
         );
     }
 
@@ -244,7 +237,7 @@ export class TransferService {
     private async postAasToRepository(aas: AssetAdministrationShell, apikey?: string): Promise<TransferResult> {
         const response = await this.targetAasRepositoryClient.postAssetAdministrationShell(aas, {
             headers: {
-                Apikey: apikey,
+                ApiKey: apikey,
             },
         });
         if (response.isSuccess) {
@@ -271,7 +264,7 @@ export class TransferService {
     private async postSubmodelToRepository(submodel: Submodel, apikey?: string): Promise<TransferResult> {
         const response = await this.targetSubmodelRepositoryClient.postSubmodel(submodel, {
             headers: {
-                Apikey: apikey,
+                ApiKey: apikey,
             },
         });
         if (response.isSuccess) {
@@ -323,7 +316,7 @@ export class TransferService {
             fileName,
             {
                 headers: {
-                    Apikey: apikey,
+                    ApiKey: apikey,
                 },
             },
         );
@@ -387,7 +380,7 @@ export class TransferService {
             attachment,
             {
                 headers: {
-                    Apikey: apikey,
+                    ApiKey: apikey,
                 },
             },
         );

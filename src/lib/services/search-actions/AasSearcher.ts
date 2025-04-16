@@ -1,4 +1,4 @@
-import { AssetAdministrationShellDescriptor, Endpoint, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
+import { AssetAdministrationShellDescriptor, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { AssetAdministrationShell } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import { IDiscoveryServiceApi } from 'lib/api/discovery-service-api/discoveryServiceApiInterface';
 import { IRegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApiInterface';
@@ -79,7 +79,7 @@ export class AasSearcher {
         const foundOneDiscoveryResult = aasIds.isSuccess && aasIds.result.length === 1;
 
         if (foundMultipleDiscoveryResults) {
-            return wrapSuccess(this.createDiscoveryRedirectResult(searchInput));
+            return wrapSuccess(this.createMultipleAssetIdResult(searchInput));
         }
 
         const aasId = foundOneDiscoveryResult ? aasIds.result[0] : searchInput;
@@ -111,7 +111,7 @@ export class AasSearcher {
                 return wrapSuccess(this.createAasResult(potentiallyMultipleAas.result[0].searchResult, data));
             }
             if (potentiallyMultipleAas.result!.length > 1) {
-                return wrapSuccess(this.createDiscoveryRedirectResult(searchInput));
+                return wrapSuccess(this.createMultipleAasIdResult(searchInput));
             }
         }
         return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'No AAS found for the given ID');
@@ -182,9 +182,17 @@ export class AasSearcher {
         };
     }
 
-    private createDiscoveryRedirectResult(searchInput: string): AasSearchResult {
+    private createMultipleAssetIdResult(searchInput: string): AasSearchResult {
         return {
             redirectUrl: `/viewer/discovery?assetId=${searchInput}`,
+            aas: null,
+            aasData: null,
+        };
+    }
+
+    private createMultipleAasIdResult(searchInput: string): AasSearchResult {
+        return {
+            redirectUrl: `/viewer/registry?aasId=${searchInput}`,
             aas: null,
             aasData: null,
         };
@@ -209,8 +217,8 @@ export class AasSearcher {
                 `Could not find the AAS '${searchAasId}' in the registry service`,
             );
         }
-        const endpoints = shellDescription.result.endpoints as Endpoint[];
-        const submodelDescriptors = shellDescription.result.submodelDescriptors as SubmodelDescriptor[];
+        const endpoints = shellDescription.result.endpoints ?? [];
+        const submodelDescriptors = shellDescription.result.submodelDescriptors ?? [];
         const endpointUrls = endpoints.map((endpoint) => new URL(endpoint.protocolInformation.href));
         logResponseDebug(
             this.log,
