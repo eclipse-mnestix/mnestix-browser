@@ -8,7 +8,7 @@ import {
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { EntityComponent } from '../../submodel-elements/generic-elements/entity-components/EntityComponent';
 import { cloneDeep } from 'lodash';
-import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
+import { HierarchicalStructuresSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/hierarchical-structures/HierarchicalStructuresSubmodelElementSemanticId.enum';
 import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { GetEntityType } from 'lib/util/EntityTypeUtil';
 import { Box, IconButton } from '@mui/material';
@@ -38,7 +38,7 @@ export function HierarchicalStructuresDetail({ submodel }: SubmodelVisualization
     const archeTypePropertylElement = smElements.find((el) => {
         if (
             getKeyType(el) === KeyTypes.Property &&
-            el.semanticId?.keys[0].value === SubmodelElementSemanticId.ArcheType
+            el.semanticId?.keys[0].value === HierarchicalStructuresSubmodelElementSemanticIdEnum.ArcheType
         ) {
             return el as Property;
         }
@@ -247,7 +247,7 @@ function checkSubmodelsElements(smElements: ISubmodelElement[]) {
 
 function separateEntryNode(smElements: Entity[]) {
     const entryNode = smElements.find((el) => {
-        return el.semanticId?.keys[0].value === SubmodelElementSemanticId.EntryNode;
+        return el.semanticId?.keys[0].value === HierarchicalStructuresSubmodelElementSemanticIdEnum.EntryNode;
     });
 
     const indexOfEntryNode = smElements.indexOf(entryNode as Entity);
@@ -265,5 +265,5 @@ function separateEntryNode(smElements: Entity[]) {
 }
 
 function isBulkCountProperty(el: ISubmodelElement) {
-    return el.semanticId?.keys[0]?.value === SubmodelElementSemanticId.BulkCount;
+    return el.semanticId?.keys[0]?.value === HierarchicalStructuresSubmodelElementSemanticIdEnum.BulkCount;
 }
