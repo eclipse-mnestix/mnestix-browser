@@ -1,6 +1,6 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import { BaSyxRbacRule } from 'lib/services/rbac-service/RbacRulesService';
+import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
 import { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import { ArrowBack } from '@mui/icons-material';
@@ -33,9 +33,15 @@ export const RuleDialog = (props: RuleDialogProps) => {
                 severity: 'success',
             });
             onCloseDialog(true);
-        } else {
-            showError(response.message);
+            return;
         }
+        if (response.errorCode === 'CONFLICT') {
+            return notificationSpawner.spawn({
+                message: t('errors.uniqueIdShort'),
+                severity: 'error',
+            });
+        }
+        showError(response.message);
     }
 
     const onCloseDialog = (reload: boolean) => {

@@ -7,7 +7,7 @@ interface StringPropertyEditComponentProps {
 }
 
 export function StringPropertyEditComponent(props: StringPropertyEditComponentProps) {
-    const t = useTranslations();
+    const t = useTranslations('pages.templates');
     const onValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         props.onChange(event.target.value);
     };
@@ -15,7 +15,7 @@ export function StringPropertyEditComponent(props: StringPropertyEditComponentPr
     return (
         <TextField
             defaultValue={props.dataValue}
-            label={t('common.labels.value')}
+            label={t('labels.value')}
             onChange={onValueChange}
             fullWidth
         />

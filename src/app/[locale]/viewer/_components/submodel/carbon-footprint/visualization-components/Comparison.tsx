@@ -36,7 +36,7 @@ export function Comparison(props: { co2Equivalents: number }) {
                         sx={{ fontSize: [28, 36], color: 'primary.main', fontWeight: 'bold' }}
                         data-testid="co2-comparison-value"
                     >
-                        {t(`timeunit.${unitOfTimePeriod}`, { count: timePeriod })}
+                        {t(`timeUnit.${unitOfTimePeriod}`, { count: timePeriod })}
                     </Typography>
                 </Box>
             </Box>

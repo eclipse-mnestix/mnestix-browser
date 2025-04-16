@@ -4,7 +4,6 @@ import {
 } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import { TimeSeriesSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesSubmodelElementSemanticId.enum';
 import { getTranslationText, hasSemanticId } from 'lib/util/SubmodelResolverUtil';
-import { IntlShape } from 'react-intl';
 import {
     TimeSeriesTimeFormat,
     TimeSeriesTimeFormatSemanticIds,
@@ -27,13 +26,13 @@ export function extractValueBySemanticId(
 export function extractIntlValueBySemanticId(
     submodelElementCollection: SubmodelElementCollection,
     semanticId: TimeSeriesSubmodelElementSemanticIdEnum,
-    intl: IntlShape,
+    locale: string,
 ) {
     const multiLanguageProperty: MultiLanguageProperty | undefined = extractValueBySemanticId(
         submodelElementCollection,
         semanticId,
     ) as MultiLanguageProperty;
-    return multiLanguageProperty ? getTranslationText(multiLanguageProperty, intl) : '';
+    return multiLanguageProperty ? getTranslationText(multiLanguageProperty, locale) : '';
 }
 
 /**

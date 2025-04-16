@@ -1,6 +1,4 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
-import { defaultLanguage, translationLists } from './localization';
-import { IntlProvider } from 'react-intl';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { useLocale } from 'next-intl';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
@@ -31,9 +29,7 @@ export function Internationalization(props: PropsWithChildren<unknown>) {
 
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={dateAdapterLocale}>
-            <IntlProvider defaultLocale={defaultLanguage} locale={locale} messages={translationLists[locale]}>
                 {props.children}
-            </IntlProvider>
         </LocalizationProvider>
     );
 }

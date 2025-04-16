@@ -35,14 +35,6 @@ export const createRequestLogger = (headers?: Headers) => {
 
 export default baseLogger;
 
-export const getCorrelationId = (headers: Headers) => {
-    let correlationId = headers.get('x-correlation-id');
-    if (!correlationId) {
-        correlationId = uuidv4();
-    }
-    return correlationId;
-};
-
 /**
  * Logs an informational message with optional metadata.
  *
@@ -53,6 +45,24 @@ export const getCorrelationId = (headers: Headers) => {
  */
 export const logInfo = (logger: typeof baseLogger, methodName: string, message: string, optional?: object): void =>
     logger.info(
+        {
+            Method: methodName,
+            ...optional,
+        },
+        message,
+    );
+
+
+/**
+ * Logs a warning message with optional metadata.
+ *
+ * @param logger - The logger instance to use for logging the warning.
+ * @param methodName - The name of the method where the warning occurred.
+ * @param message - The warning message to log.
+ * @param optional - An optional object containing additional context or metadata to include in the log.
+ */
+export const logWarn = (logger: typeof baseLogger, methodName: string, message: string, optional?: object): void =>
+    logger.warn(
         {
             Method: methodName,
             ...optional,
@@ -85,3 +95,45 @@ export const logResponseDebug = <T>(
         },
         message,
     );
+
+export const logResponseInfo = <T>(
+    logger: typeof baseLogger,
+    methodName: string,
+    message: string,
+    response: ApiResponseWrapper<T>,
+    optional?: object,
+): void =>
+    logger.info(
+        {
+            Method: methodName,
+            Http_Status: response?.httpStatus,
+            Http_Message: response?.httpText ?? (response as ApiResponseWrapperError<T>)?.errorCode,
+            ...optional,
+        },
+        message,
+    );
+
+export const logResponseWarn = <T>(
+    logger: typeof baseLogger,
+    methodName: string,
+    message: string,
+    response: ApiResponseWrapper<T>,
+    optional?: object,
+): void =>
+    logger.warn(
+        {
+            Method: methodName,
+            Http_Status: response?.httpStatus,
+            Http_Message: response?.httpText ?? (response as ApiResponseWrapperError<T>)?.errorCode,
+            ...optional,
+        },
+        message,
+    );
+
+export const getCorrelationId = (headers: Headers) => {
+    let correlationId = headers.get('x-correlation-id');
+    if (!correlationId) {
+        correlationId = uuidv4();
+    }
+    return correlationId;
+};

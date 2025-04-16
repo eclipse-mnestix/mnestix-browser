@@ -9,19 +9,32 @@ import {
     Submodel,
     SubmodelElementCollection,
 } from '@aas-core-works/aas-core3.0-typescript/types';
-import { IntlShape } from 'react-intl';
 import { idEquals } from './IdValidationUtil';
 import { getKeyType } from 'lib/util/KeyTypeUtil';
 
-export function getTranslationTextNext(element: MultiLanguageProperty, locale: string): string | null {
-    const value = element.value?.find((el) => el.language == locale)?.text;
-    return value || element.value?.at(0)?.text || null;
+/**
+ * Gets the translated text from either a MultiLanguageProperty or LangStringTextType array
+ * @param element - The element containing translations (MultiLanguageProperty or LangStringTextType[])
+ * @param locale - The locale to get the translation for
+ * @returns The translated text for the given locale, falling back to the first available translation, or null
+ */
+export function getTranslationText(
+    element: MultiLanguageProperty | IAbstractLangString[] | undefined,
+    locale: string
+): string {
+    const langStrings = Array.isArray(element) ? element : element?.value;
+    
+    if (!langStrings?.length) {
+        return '';
+    }
+
+    return langStrings.find(el => el.language === locale)?.text || langStrings[0]?.text;
 }
 
 export function getTranslationValue(element: IDataElement, locale: string): string | null {
     switch (getKeyType(element)) {
         case KeyTypes.MultiLanguageProperty:
-            return getTranslationTextNext(element as MultiLanguageProperty, locale);
+            return getTranslationText(element as MultiLanguageProperty, locale);
         case KeyTypes.Property:
             return (element as Property).value ?? null;
         default:
@@ -57,46 +70,12 @@ export function findValueByIdShort(
     if (!element) return null;
     switch (getKeyType(element)) {
         case KeyTypes.MultiLanguageProperty:
-            return getTranslationTextNext(element as MultiLanguageProperty, locale);
+            return getTranslationText(element as MultiLanguageProperty, locale);
         case KeyTypes.Property:
             return (element as Property).value ?? null;
         default:
             return null;
     }
-}
-
-/**
- * @deprecated This function is deprecated and will be removed in future versions.
- * Use getTranslationTextNext instead.
- */
-export function getTranslationText(
-    input: MultiLanguageProperty | IAbstractLangString[] | undefined,
-    intl: IntlShape,
-): string {
-    const userLang = intl.locale || intl.defaultLocale;
-    let langStrings: IAbstractLangString[] | undefined;
-
-    if (Array.isArray(input)) {
-        langStrings = input as IAbstractLangString[];
-    } else {
-        langStrings = (input as MultiLanguageProperty | undefined)?.value ?? [];
-    }
-    // reduce array to object (e.g. {en: 'some string'} )
-    const reducedStrings = langStrings?.reduce(
-        (el, obj) => {
-            if (obj.language && obj.text) {
-                el[obj.language] = obj.text;
-            }
-            return el;
-        },
-        {} as Record<string, string>,
-    );
-
-    return (
-        reducedStrings[userLang] ||
-        // Fallback to first translation
-        reducedStrings[Object.keys(reducedStrings)[0]]
-    );
 }
 
 export function getArrayFromString(v: string): Array<string> {

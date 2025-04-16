@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { Box, Button, Skeleton, Typography } from '@mui/material';
-import { useIntl } from 'react-intl';
 import { safeBase64Decode } from 'lib/util/Base64Util';
 import { ArrowForward } from '@mui/icons-material';
-import { LangStringNameType, Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
@@ -29,7 +28,7 @@ import {
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { TransferButton } from 'app/[locale]/viewer/_components/transfer/TransferButton';
 import { useShowError } from 'lib/hooks/UseShowError';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 export default function Page() {
     const navigate = useRouter();
@@ -38,7 +37,7 @@ export default function Page() {
     const aasIdDecoded = safeBase64Decode(base64AasId);
     const [isLoadingAas, setIsLoadingAas] = useState(false);
     const isMobile = useIsMobile();
-    const intl = useIntl();
+    const locale = useLocale();
     const env = useEnv();
     const encodedRepoUrl = useSearchParams().get('repoUrl');
     const repoUrl = encodedRepoUrl ? decodeURI(encodedRepoUrl) : undefined;
@@ -48,7 +47,7 @@ export default function Page() {
     const [isSubmodelsLoading, setIsSubmodelsLoading] = useState(true);
     const [registryAasData, setRegistryAasData] = useRegistryAasState();
     const { showError } = useShowError();
-    const t = useTranslations();
+    const t = useTranslations('pages.aasViewer');
 
 
 
@@ -90,7 +89,7 @@ export default function Page() {
 
         const { isSuccess, result } = await performFullAasSearch(aasIdDecoded);
         if (!isSuccess) {
-            showError(new LocalizedError('validation.errors.urlNotFound'));
+            showError(new LocalizedError('navigation.errors.urlNotFound'));
         } else if (result.aas) {
             setAasOriginUrl(result.aasData?.aasRepositoryOrigin ?? null);
             setRegistryAasData(result.aasData);
@@ -179,7 +178,7 @@ export default function Page() {
                             {isLoadingAas ? (
                                 <Skeleton width="40%" sx={{ margin: '0 auto' }} />
                             ) : aasFromContext?.displayName ? (
-                                getTranslationText(aasFromContext?.displayName as LangStringNameType[], intl)
+                                getTranslationText(aasFromContext?.displayName, locale)
                             ) : (
                                 ''
                             )}
@@ -191,7 +190,7 @@ export default function Page() {
                                 onClick={startComparison}
                                 data-testid="detail-compare-button"
                             >
-                                {t('pages.compare.compareButton')}
+                                {t('actions.compareButton')}
                             </Button>
                         )}
                         {env.TRANSFER_FEATURE_FLAG && <TransferButton />}
@@ -221,13 +220,13 @@ export default function Page() {
                             display: 'inline-block',
                         }}
                     >
-                        {t('common.messages.noDataFound')}
+                        {t('messages.noDataFound')}
                     </Typography>
                     <Typography color="text.secondary">
-                        {t('common.messages.noDataFoundFor', { name: safeBase64Decode(base64AasId) })}
+                        {t('messages.noDataFoundFor', { name: safeBase64Decode(base64AasId) })}
                     </Typography>
                     <Button variant="contained" startIcon={<ArrowForward />} href="/">
-                        {t('common.actions.toHome')}
+                        {t('actions.toHome')}
                     </Button>
                 </>
             )}

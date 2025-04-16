@@ -4,7 +4,7 @@ import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/subm
 import { useTranslations } from 'next-intl';
 
 export function ReferenceCounterVisualizations({ submodel }: SubmodelVisualizationProps) {
-    const t = useTranslations('common.messages');
+    const t = useTranslations('pages.aasViewer.submodels');
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { value } = (submodel.submodelElements?.at(0) as any) ?? [];
 

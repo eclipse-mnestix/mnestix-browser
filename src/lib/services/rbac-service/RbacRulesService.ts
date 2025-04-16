@@ -5,60 +5,77 @@ import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResp
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
 import { envs } from 'lib/env/MnestixEnv';
-import { RuleParseError, ruleToIdShort, ruleToSubmodelElement } from './RuleHelpers';
+import { RuleParseError, ruleToIdShort, ruleToSubmodelElement, submodelToRule } from './RuleHelpers';
+import logger, { logResponseDebug, logResponseInfo, logResponseWarn } from 'lib/util/Logger';
+import { BaSyxRbacRule, RbacRolesFetchResult } from 'lib/services/rbac-service/types/RbacServiceData';
 
 const SEC_SUB_ID = 'SecuritySubmodel';
-export type RbacRolesFetchResult = {
-    roles: BaSyxRbacRule[];
-    warnings: string[][];
-};
-
 /**
  * Service for interacting with BaSyx Dynamic RBAC rules
  */
 export class RbacRulesService {
-    private constructor(private readonly securitySubmodelRepositoryClient: ISubmodelRepositoryApi) {}
+    private constructor(
+        private readonly securitySubmodelRepositoryClient: ISubmodelRepositoryApi,
+        private readonly log: typeof logger = logger,
+    ) {}
 
-    static createService(): RbacRulesService {
+    static createService(log?: typeof logger): RbacRulesService {
         const baseUrl = envs.SEC_SM_API_URL;
 
         if (!baseUrl) {
             throw 'Security Submodel not configured! Check beforehand!';
         }
-
-        return new RbacRulesService(SubmodelRepositoryApi.create(baseUrl, mnestixFetch()));
-    }
-
-    async createRule(newRule: Omit<BaSyxRbacRule, 'idShort'>): Promise<ApiResponseWrapper<BaSyxRbacRule>> {
-        const newIdShort = ruleToIdShort(newRule);
-        const ruleSubmodelElement = ruleToSubmodelElement(newIdShort, newRule);
-
-        const { isSuccess, result } = await this.securitySubmodelRepositoryClient.postSubmodelElement(
-            SEC_SUB_ID,
-            ruleSubmodelElement,
-        );
-        if (!isSuccess) {
-            return wrapErrorCode(
-                ApiResultStatus.INTERNAL_SERVER_ERROR,
-                'Failed to create Rule in SecuritySubmodel Repo',
-            );
-        }
-        return wrapSuccess(submodelToRule(result));
+        const rbacRulesServiceLogger = log?.child({ Service: 'RbacRulesService' });
+        return new RbacRulesService(SubmodelRepositoryApi.create(baseUrl, mnestixFetch()), rbacRulesServiceLogger);
     }
 
     static createNull(subRepoApi: ISubmodelRepositoryApi): RbacRulesService {
         return new RbacRulesService(subRepoApi);
     }
 
+    async createRule(newRule: Omit<BaSyxRbacRule, 'idShort'>): Promise<ApiResponseWrapper<BaSyxRbacRule>> {
+        const newIdShort = ruleToIdShort(newRule);
+        if (!(await this.isIdShortUnique(newIdShort))) {
+            return wrapErrorCode(
+                ApiResultStatus.CONFLICT,
+                'IdShort already exists. Role name, action and target type must be unique.',
+            );
+        }
+        const ruleSubmodelElement = ruleToSubmodelElement(newIdShort, newRule);
+
+        const response = await this.securitySubmodelRepositoryClient.postSubmodelElement(
+            SEC_SUB_ID,
+            ruleSubmodelElement,
+        );
+        if (!response.isSuccess) {
+            logResponseWarn(this.log, 'createRule', 'Failed to create Rule', response, {
+                Rule: newRule.role,
+                IdShort: newIdShort,
+            });
+            return wrapErrorCode(
+                ApiResultStatus.INTERNAL_SERVER_ERROR,
+                'Failed to create Rule in SecuritySubmodel Repo',
+            );
+        }
+        logResponseDebug(this.log, 'createRule', 'Rule created', response, {
+            Rule: newRule.role,
+            IdShort: newIdShort,
+        });
+        return wrapSuccess(submodelToRule(response.result));
+    }
+
     /**
      * Get all rbac rules
      */
     async getRules(): Promise<ApiResponseWrapper<RbacRolesFetchResult>> {
-        const { isSuccess, result: secSM } = await this.securitySubmodelRepositoryClient.getSubmodelById(SEC_SUB_ID);
-        if (!isSuccess) {
+        const response = await this.securitySubmodelRepositoryClient.getSubmodelById(SEC_SUB_ID);
+        const secSM = response.result;
+        if (!response.isSuccess) {
+            logResponseWarn(this.log, 'getRules', 'Failed to get RBAC', response);
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Failed to get RBAC');
         }
         if (!secSM || typeof secSM !== 'object') {
+            logResponseWarn(this.log, 'getRules', 'Failed to get RBAC', response);
             return wrapErrorCode(ApiResultStatus.BAD_REQUEST, 'Submodel in wrong Format');
         }
 
@@ -80,133 +97,89 @@ export class RbacRulesService {
                 }) ?? [];
         const roles = parsedRoles.filter((r): r is BaSyxRbacRule => !('error' in r));
         const warnings = parsedRoles.filter((r): r is { error: string[] } => 'error' in r).map((e) => e.error);
-
+        logResponseDebug(this.log, 'getRules', 'Fetched RBAC rules', response, {
+            Roles: roles.length,
+            Warnings: warnings,
+        });
         return wrapSuccess({ roles: roles, warnings: warnings });
     }
 
     /**
      * Deletes a rule and creates a new rule with new idShort
      */
-    async deleteAndCreate(idShort: string, newRule: BaSyxRbacRule): Promise<ApiResponseWrapper<BaSyxRbacRule>> {
+    async deleteAndCreate(
+        idShort: string,
+        newRule: Omit<BaSyxRbacRule, 'idShort'>,
+    ): Promise<ApiResponseWrapper<BaSyxRbacRule>> {
+        const newIdShort = ruleToIdShort(newRule);
+
+        if (idShort !== newIdShort && !(await this.isIdShortUnique(newIdShort))) {
+            return wrapErrorCode(
+                ApiResultStatus.CONFLICT,
+                'IdShort already exists. Role name, action and target type must be unique.',
+            );
+        }
+
         const deleteRes = await this.securitySubmodelRepositoryClient.deleteSubmodelElementByPath(SEC_SUB_ID, idShort);
         if (!deleteRes.isSuccess) {
             if (deleteRes.errorCode === ApiResultStatus.NOT_FOUND) {
+                logResponseInfo(this.log, 'deleteAndCreate', 'Failed to delete Rule', deleteRes, {
+                    Rule: idShort,
+                });
                 return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'Rule not found in SecuritySubmodel. Try reloading.');
             }
+            logResponseWarn(this.log, 'deleteAndCreate', 'Failed to delete Rule', deleteRes, {
+                Rule: idShort,
+            });
             return wrapErrorCode(
                 ApiResultStatus.INTERNAL_SERVER_ERROR,
                 'Failed to delete Rule in SecuritySubmodel Repo due to unknown error.',
             );
         }
 
-        const newIdShort = ruleToIdShort(newRule);
         const ruleSubmodelElement = ruleToSubmodelElement(newIdShort, newRule);
 
-        const { isSuccess, result } = await this.securitySubmodelRepositoryClient.postSubmodelElement(
+        const response = await this.securitySubmodelRepositoryClient.postSubmodelElement(
             SEC_SUB_ID,
             ruleSubmodelElement,
         );
-        if (!isSuccess) {
+        if (!response.isSuccess) {
+            logResponseWarn(this.log, 'createRule', 'Failed to create Rule', response, {
+                Rule: newRule.role,
+                IdShort: newIdShort,
+            });
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Failed to set Rule in SecuritySubmodel Repo');
         }
-        return wrapSuccess(submodelToRule(result));
+        logResponseDebug(this.log, 'createRule', 'Rule created', response, {
+            Rule: newRule.role,
+            IdShort: newIdShort,
+        });
+        return wrapSuccess(submodelToRule(response.result));
     }
 
     /**
      * Deletes a rule
      */
     async delete(idShort: string): Promise<ApiResponseWrapper<undefined>> {
-        const { isSuccess } = await this.securitySubmodelRepositoryClient.deleteSubmodelElementByPath(
-            SEC_SUB_ID,
-            idShort,
-        );
-        if (isSuccess) {
+        const response = await this.securitySubmodelRepositoryClient.deleteSubmodelElementByPath(SEC_SUB_ID, idShort);
+        if (response.isSuccess) {
+            logResponseDebug(this.log, 'delete', 'Rule deleted', response, { Rule: idShort });
             return wrapSuccess(undefined);
         }
+        if (response.errorCode === ApiResultStatus.NOT_FOUND) {
+            logResponseInfo(this.log, 'delete', 'Rule not found', response, { Rule: idShort });
+            return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'Rule not found in SecuritySubmodel');
+        }
+        logResponseWarn(this.log, 'delete', 'Failed to delete Rule', response, { Rule: idShort });
         return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Failed to set Rule in SecuritySubmodel Repo');
     }
+
+    private async isIdShortUnique(idShort: string) {
+        const rules = await this.getRules();
+        if (!rules.isSuccess) {
+            return false;
+        }
+
+        return !rules.result.roles.find((e) => e.idShort === idShort);
+    }
 }
-
-// TODO MNES-1605 add typing for submodelElement
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export function submodelToRule(submodelElement: any): BaSyxRbacRule {
-    const role = submodelElement.value.find((e: any) => e.idShort === 'role')?.value;
-    const actions =
-        submodelElement.value.find((e: any) => e.idShort === 'action')?.value.map((e: any) => e.value) || [];
-
-    if (actions.length > 1) {
-        throw new RuleParseError(' is allowed');
-    }
-    const action: (typeof rbacRuleActions)[number] = actions[0];
-
-    if (!rbacRuleActions.includes(action)) {
-        throw new RuleParseError(
-            `Invalid action: '${action}' is not allowed for the rule with idShort: '${submodelElement.idShort}'.`,
-        );
-    }
-
-    const targetInformationElement = submodelElement.value.find((e: any) => e.idShort === 'targetInformation');
-    const targetType: keyof typeof rbacRuleTargets = targetInformationElement?.value.find(
-        (e: any) => e.idShort === '@type',
-    )?.value;
-
-    if (!Object.keys(rbacRuleTargets).includes(targetType)) {
-        throw new RuleParseError(`Invalid target type: ${targetType}`);
-    }
-
-    const targets: [string, string[]][] = targetInformationElement?.value
-        .filter((e: { idShort: string }) => e.idShort !== '@type')
-        .map((elem: { idShort: string; value: string[] }) => {
-            const values = (typeof elem.value === 'string' ? [elem.value] : elem.value).map((item: any) => item.value);
-            return [elem.idShort, values];
-        });
-
-    const invalidTargets = targets.filter(
-        ([id]) =>
-            //@ts-expect-error typescript does not support computed keys
-            !rbacRuleTargets[targetType].includes(id),
-    );
-    if (invalidTargets.length > 0) {
-        throw new RuleParseError(`Invalid target(s): ${invalidTargets.map(([id]) => id).join(', ')}`);
-    }
-
-    return {
-        idShort: submodelElement.idShort,
-        role,
-        action: action,
-        targetInformation: {
-            '@type': targetType,
-            ...Object.fromEntries(targets),
-        } as BaSyxRbacRule['targetInformation'],
-    };
-}
-
-/* eslint-enable @typescript-eslint/no-explicit-any */
-
-export const rbacRuleActions = ['READ', 'CREATE', 'UPDATE', 'DELETE', 'EXECUTE'] as const;
-
-export const rbacRuleTargets = {
-    'aas-environment': ['aasIds', 'submodelIds'],
-    aas: ['aasIds'],
-    submodel: ['submodelIds', 'submodelElementIdShortPaths'],
-    'concept-description': ['conceptDescriptionIds'],
-    'aas-registry': ['aasIds'],
-    'submodel-registry': ['submodelIds'],
-    'aas-discovery-service': ['aasIds', 'assetIds'],
-} as const;
-
-export type TargetInformation =
-    | { '@type': 'aas-environment'; aasIds: string[]; submodelIds: string[] }
-    | { '@type': 'aas'; aasIds: string[] }
-    | { '@type': 'submodel'; submodelIds: string[]; submodelElementIdShortPaths: string[] }
-    | { '@type': 'concept-description'; conceptDescriptionIds: string[] }
-    | { '@type': 'aas-registry'; aasIds: string[] }
-    | { '@type': 'submodel-registry'; submodelIds: string[] }
-    | { '@type': 'aas-discovery-service'; aasIds: string[]; assetIds: string[] };
-
-export type BaSyxRbacRule = {
-    idShort: string;
-    targetInformation: TargetInformation;
-    role: string;
-    action: (typeof rbacRuleActions)[number];
-};

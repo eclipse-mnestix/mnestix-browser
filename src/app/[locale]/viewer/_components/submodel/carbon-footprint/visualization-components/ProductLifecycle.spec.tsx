@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import { expect } from '@jest/globals';
 import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/ProductLifecycleStage.enum';
 import { ProductLifecycle } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/visualization-components/ProductLifecycle';
-import { CustomRenderReactIntl } from 'test-utils/CustomRenderReactIntl';
+import { CustomRender } from 'test-utils/CustomRender';
 
 window.ResizeObserver =
     window.ResizeObserver ||
@@ -21,7 +21,7 @@ const completedStages = [
 
 describe('ProductLifecycle', () => {
     it('should render the ProductLifecycle with all steps', async () => {
-        CustomRenderReactIntl(<ProductLifecycle completedStages={completedStages} />);
+        CustomRender(<ProductLifecycle completedStages={completedStages} />);
         const stepper = screen.getByTestId('product-lifecycle-stepper');
         expect(stepper).toBeDefined();
         expect(stepper).toBeInTheDocument();
@@ -40,7 +40,7 @@ describe('ProductLifecycle', () => {
     });
 
     it('should render no completed steps if none are completed', async () => {
-        CustomRenderReactIntl(<ProductLifecycle completedStages={[]} />);
+        CustomRender(<ProductLifecycle completedStages={[]} />);
         const stepper = screen.getByTestId('product-lifecycle-stepper');
         expect(stepper).toBeDefined();
         expect(stepper).toBeInTheDocument();

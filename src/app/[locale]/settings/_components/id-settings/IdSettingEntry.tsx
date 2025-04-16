@@ -60,16 +60,16 @@ const StyledCircularProgressWrapper = styled(Box)(() => ({
 
 export function IdSettingEntry(props: IdSettingEntryProps) {
     const [hasTriggeredChange, setHasTriggeredChange] = useState(true);
-    const t = useTranslations();
+    const t = useTranslations('pages.settings.idStructure');
 
     const validateInput = (value: string | null | undefined) => {
         if (!value) return
         switch (props.field.idType) {
             case 'IRI':
-                return isValidIdPrefix(value) || t('validation.errors.invalidIri');
+                return isValidIdPrefix(value) || t('errors.invalidIri');
             case 'string':
                 // For idShorts we want to ensure that it can be part of an IRI
-                return isValidShortIdPrefix(value) || t('validation.errors.invalidIriPart');
+                return isValidShortIdPrefix(value) || t('errors.invalidIriPart');
         }
         return
     }
@@ -87,12 +87,12 @@ export function IdSettingEntry(props: IdSettingEntryProps) {
         props.field.dynamicPart.allowedValues.length > 1 ? (
             <FormControl fullWidth variant="filled">
                 <InputLabel id="dynamic-part">
-                    {t('common.labels.dynamicPart')}
+                    {t('labels.dynamicPart')}
                 </InputLabel>
                 <Select
                     labelId="dynamic-part"
                     id="dynamic-part-select"
-                    label={t('common.labels.dynamicPart')}
+                    label={t('labels.dynamicPart')}
                     {...field}
                 >
                     {props.field.dynamicPart.allowedValues &&
@@ -107,7 +107,7 @@ export function IdSettingEntry(props: IdSettingEntryProps) {
             </FormControl>
         ) : (
             <LockedTextField
-                label={t('common.labels.dynamicPart')}
+                label={t('labels.dynamicPart')}
                 sx={{ flexGrow: 1, mr: 1 }}
                 fullWidth={true}
                 {...field}
@@ -144,7 +144,7 @@ export function IdSettingEntry(props: IdSettingEntryProps) {
                             name={`idSettings.${props.index}.prefix.value`}
                             render={() =>
                                 <TextField
-                                    label={t('common.labels.staticPrefix')}
+                                    label={t('labels.staticPrefix')}
                                     sx={{ flexGrow: 1, mr: 1 }}
                                     fullWidth={true}
                                     defaultValue={props.field.prefix.value}
