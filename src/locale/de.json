@@ -146,7 +146,7 @@
     "errors": {
       "notFound": "Nicht gefunden",
       "unauthorizedError": {
-        "content": "Sie haben keinen Zugang zu dieser Ressource. Bitte loggen Sie sich ein oder bitten Sie Ihren Administrator um Zugriff.",
+        "content": "Sie haben keinen Zugang zu dieser Ressource. Loggen Sie sich ein oder bitten Sie Ihren Administrator um Zugriff.",
         "title": "Unautorisierter Zugriff"
       },
       "unexpectedError": "Unerwarteter Fehler",
@@ -277,7 +277,7 @@
         "noAasId": "Keine AAS ID angegeben.",
         "searchFailed": "Suche fehlgeschlagen"
       },
-      "subtitle": "Hier befinden sich alle AAS mit der angegebenen AAS ID. ",
+      "subtitle": "Hier befinden sich alle AAS mit der angegebenen AAS ID.",
       "title": "AAS mit AAS ID"
     },
     "settings": {
@@ -394,7 +394,7 @@
       "noTemplatesFound": "Keine Templates gefunden",
       "templateDeletedSuccessfully": "Template erfolgreich gelöscht.",
       "templateIdCopied": "Template-ID in die Zwischenablage kopiert: {id}",
-      "templatesUseExplanation": "Templates erlauben es Ihnen, eine wiederverwendbare Teilmodell-Struktur, angepasst auf Ihre Bedürfnisse zu definieren.",
+      "templatesUseExplanation": "Templates erlauben es Ihnen, eine wiederverwendbare Teilmodell-Struktur, angepasst auf Ihre Bedürfnisse, zu definieren.",
       "title": "Templates",
       "actions": {
         "add": "Hinzufügen",
