@@ -2,39 +2,13 @@ import { screen, waitFor, fireEvent, within } from '@testing-library/react';
 import { RuleSettings } from 'app/[locale]/settings/_components/role-settings/RuleSettings';
 import { expect } from '@jest/globals';
 import * as rbacActions from 'lib/services/rbac-service/RbacActions';
-import { RbacRolesFetchResult } from 'lib/services/rbac-service/types/RbacServiceData';
 import { CustomRender } from 'test-utils/CustomRender';
+import { mockRbacRoles } from './test-data/mockRbacRoles';
 
 jest.mock('./../../../../../lib/services/rbac-service/RbacActions');
 jest.mock('./../../../../../lib/hooks/UseBreakpoints', () => ({
     useIsMobile: jest.fn(() => false),
 }));
-
-const mockRbacRoles: RbacRolesFetchResult = {
-    roles: [
-        {
-            idShort: 'roleId1',
-            role: 'Admin-Role',
-            action: 'READ',
-            targetInformation: {
-                '@type': 'aas-environment',
-                aasIds: ['aasId1', 'aasId2'],
-                submodelIds: ['submodelId1'],
-            },
-        },
-        {
-            idShort: 'roleId2',
-            role: 'User-Role',
-            action: 'CREATE',
-            targetInformation: {
-                '@type': 'submodel',
-                submodelElementIdShortPaths: ['*'],
-                submodelIds: ['*'],
-            },
-        },
-    ],
-    warnings: [],
-};
 
 jest.mock('./../../../../../components/basics/CenteredLoadingSpinner', () => ({
     CenteredLoadingSpinner: jest.fn(() => <div>Loading...</div>),

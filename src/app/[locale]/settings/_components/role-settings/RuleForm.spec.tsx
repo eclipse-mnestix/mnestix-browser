@@ -1,13 +1,17 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { RuleForm } from './RuleForm';
 import { expect } from '@jest/globals';
 import { act } from 'react';
 import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
+import * as rbacActions from 'lib/services/rbac-service/RbacActions';
+import { mockRbacRoles } from './test-data/mockRbacRoles';
 
 jest.mock('next-intl', () => ({
     useTranslations: () => (key: string) => key,
 }));
 
+jest.mock('./../../../../../lib/services/rbac-service/RbacActions');
 /*
   This file tests the whole RuleForm including the TargetInformationForm + WildcardOrStringArrayInput components
  */
@@ -31,6 +35,7 @@ describe('RuleForm', () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
+        (rbacActions.getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
     });
 
     it('renders the form with initial values', () => {
@@ -159,5 +164,18 @@ describe('RuleForm', () => {
             const wildcardCheckbox = screen.getByTestId('checkbox-aas-environment-aasIds').querySelector('input');
             expect(wildcardCheckbox).toBeChecked();
         });
+    });
+
+    it('selects an option from Autocomplete dropdown', async () => {
+        render(<RuleForm {...defaultProps} />);
+
+        const autocompleteInput = screen.getByTestId('rule-settings-name-input').querySelector('input');
+
+        userEvent.type(autocompleteInput as Element, 'Adm');
+        const listbox = await screen.findByRole('listbox');
+        const option = within(listbox).getByText('Admin-Role');
+
+        fireEvent.click(option);
+        expect(autocompleteInput).toHaveValue('Admin-Role');
     });
 });
