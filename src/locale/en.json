@@ -282,10 +282,10 @@
     },
     "settings": {
       "actions": {
-          "cancel": "Cancel",
-          "editButton": "Edit all",
-          "resetButton": "Reset to default",
-          "saveButton": "Save all"
+        "cancel": "Cancel",
+        "editButton": "Edit all",
+        "resetButton": "Reset to default",
+        "saveButton": "Save all"
       },
       "connections": {
         "aasRepository": {
@@ -347,6 +347,9 @@
           "create": "Create Rule",
           "edit": "Edit",
           "save": "Save"
+        },
+        "errors": {
+          "uniqueIdShort": "The combination of role name, action and type already exists in another rule.\nPlease edit the existing rule."
         },
         "createTitle": "Create Rule",
         "editTitle": "Edit Rule",

@@ -35,6 +35,12 @@ export class RbacRulesService {
 
     async createRule(newRule: Omit<BaSyxRbacRule, 'idShort'>): Promise<ApiResponseWrapper<BaSyxRbacRule>> {
         const newIdShort = ruleToIdShort(newRule);
+        if (!(await this.isIdShortUnique(newIdShort))) {
+            return wrapErrorCode(
+                ApiResultStatus.CONFLICT,
+                'IdShort already exists. Role name, action and target type must be unique.',
+            );
+        }
         const ruleSubmodelElement = ruleToSubmodelElement(newIdShort, newRule);
 
         const response = await this.securitySubmodelRepositoryClient.postSubmodelElement(
@@ -101,7 +107,19 @@ export class RbacRulesService {
     /**
      * Deletes a rule and creates a new rule with new idShort
      */
-    async deleteAndCreate(idShort: string, newRule: BaSyxRbacRule): Promise<ApiResponseWrapper<BaSyxRbacRule>> {
+    async deleteAndCreate(
+        idShort: string,
+        newRule: Omit<BaSyxRbacRule, 'idShort'>,
+    ): Promise<ApiResponseWrapper<BaSyxRbacRule>> {
+        const newIdShort = ruleToIdShort(newRule);
+
+        if (idShort !== newIdShort && !(await this.isIdShortUnique(newIdShort))) {
+            return wrapErrorCode(
+                ApiResultStatus.CONFLICT,
+                'IdShort already exists. Role name, action and target type must be unique.',
+            );
+        }
+
         const deleteRes = await this.securitySubmodelRepositoryClient.deleteSubmodelElementByPath(SEC_SUB_ID, idShort);
         if (!deleteRes.isSuccess) {
             if (deleteRes.errorCode === ApiResultStatus.NOT_FOUND) {
@@ -119,7 +137,6 @@ export class RbacRulesService {
             );
         }
 
-        const newIdShort = ruleToIdShort(newRule);
         const ruleSubmodelElement = ruleToSubmodelElement(newIdShort, newRule);
 
         const response = await this.securitySubmodelRepositoryClient.postSubmodelElement(
@@ -127,16 +144,15 @@ export class RbacRulesService {
             ruleSubmodelElement,
         );
         if (!response.isSuccess) {
-            logResponseWarn(this.log, 'deleteAndCreate', 'Failed to create Rule', response, {
+            logResponseWarn(this.log, 'createRule', 'Failed to create Rule', response, {
                 Rule: newRule.role,
                 IdShort: newIdShort,
             });
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Failed to set Rule in SecuritySubmodel Repo');
         }
-        logResponseDebug(this.log, 'deleteAndCreate', 'Rule updated', response, {
+        logResponseDebug(this.log, 'createRule', 'Rule created', response, {
             Rule: newRule.role,
             IdShort: newIdShort,
-            OldIdShort: idShort,
         });
         return wrapSuccess(submodelToRule(response.result));
     }
@@ -156,5 +172,14 @@ export class RbacRulesService {
         }
         logResponseWarn(this.log, 'delete', 'Failed to delete Rule', response, { Rule: idShort });
         return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Failed to set Rule in SecuritySubmodel Repo');
+    }
+
+    private async isIdShortUnique(idShort: string) {
+        const rules = await this.getRules();
+        if (!rules.isSuccess) {
+            return false;
+        }
+
+        return !rules.result.roles.find((e) => e.idShort === idShort);
     }
 }
