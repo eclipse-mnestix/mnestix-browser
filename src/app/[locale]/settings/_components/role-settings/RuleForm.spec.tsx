@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { RuleForm } from './RuleForm';
 import { expect } from '@jest/globals';
@@ -171,13 +171,13 @@ describe('RuleForm', () => {
 
         const autocompleteInput = screen.getByTestId('rule-settings-name-input').querySelector('input');
 
-        await userEvent.click(autocompleteInput as Element);
+        userEvent.click(autocompleteInput as Element);
 
         const listbox = await screen.findByRole('listbox');
         const option = within(listbox).getByText('Admin-Role');
 
-        await userEvent.click(option);
+        userEvent.click(option);
 
-        expect(autocompleteInput).toHaveValue('Admin-Role');
+        await waitFor(() => expect(autocompleteInput).toHaveValue('Admin-Role'));
     });
 });
