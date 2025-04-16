@@ -14,10 +14,15 @@ import baseLogger from 'lib/util/Logger';
 
 async function validateRequest(logger: typeof baseLogger) {
     const session = await getServerSession(authOptions);
-    if (!session?.user.roles || !session?.user.roles?.includes(MnestixRole.MnestixAdmin)) {
-        logWarn(logger, 'validateRequest', 'User is not authorized to access this resource',);
+    if (!session) {
+        return wrapErrorCode(ApiResultStatus.UNAUTHORIZED, 'Unauthorized');
+    }
+
+    if (!session.user.roles.includes(MnestixRole.MnestixAdmin)) {
+        logWarn(logger, 'validateRequest', 'User is not authorized to access this resource');
         return wrapErrorCode(ApiResultStatus.FORBIDDEN, 'Forbidden');
     }
+    
     // TODO MNES-1633 validate on app startup (logged in validation)
     const baseUrl = envs.SEC_SM_API_URL;
     if (!baseUrl) {
@@ -80,7 +85,10 @@ export async function deleteAndCreateRbacRule(idShort: string, rule: BaSyxRbacRu
     if (invalid) {
         return invalid;
     }
-    logInfo(logger, 'deleteAndCreateRbacRule', 'Deleting and creating RBAC rule', { Rule_idShort: idShort, New_rule: rule.role });
+    logInfo(logger, 'deleteAndCreateRbacRule', 'Deleting and creating RBAC rule', {
+        Rule_idShort: idShort,
+        New_rule: rule.role,
+    });
     const client = RbacRulesService.createService(logger);
     const res = await client.deleteAndCreate(idShort, rule);
     return res;

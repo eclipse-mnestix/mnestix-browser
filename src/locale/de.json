@@ -7,7 +7,8 @@
     },
     "authentication": {
       "authenticationNeeded": "Authentifizierung erforderlich",
-      "contactAdmin": "Sie können diese Seite nicht besuchen. Bitte wenden Sie sich an Ihren Administrator."
+      "contactAdmin": "Sie können diese Seite nicht besuchen. Bitte wenden Sie sich an Ihren Administrator.",
+      "sessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an."
     },
     "addressComponent": {
       "VAT": "USt-IdNr.",
@@ -60,7 +61,7 @@
         "C4": "C4 - Deponie",
         "D": "D - Wiederverwendung"
       },
-      "timeunit": {
+      "timeUnit": {
         "month": "{count, plural, =0 {unter einem Monat} =1 {1 Monat} other {# Monate}}",
         "year": "{count, plural, =0 {unter einem Jahr} =1 {1 Jahr} other {# Jahre}}"
       },
@@ -169,21 +170,28 @@
   },
   "pages": {
     "aasList": {
-      "aasIdHeading": "AAS ID",
-      "assetIdHeading": "Asset ID",
+      "buttonTooltip": "Zur AAS",
       "compare": "Vergleichen",
       "header": "AAS Liste",
-      "manufacturerHeading": "Herstellername",
+      "listHeader": {
+        "aasEndpoint": "AAS URL",
+        "aasId": "AAS ID",
+        "assetId": "Asset ID",
+        "discoveryUrl": "Discovery Url",
+        "manufacturer": "Herstellername",
+        "picture": "Bild",
+        "productClass": "Produktklasse",
+        "productDesignation": "Hersteller Produktbezeichnung",
+        "registryUrl": "Registry Url",
+        "repositoryUrl": "Repository Url",
+        "viewAASButton": "AAS anzeigen"
+      },
       "maxElementsWarning": "Maximal 3 Elemente selektierbar",
       "page": "Seite",
-      "picture": "Bild",
-      "productClassHeading": "Produktklasse",
-      "productDesignationHeading": "Hersteller Produktbezeichnung",
       "repositoryDropdown": "AAS Repository",
       "selectRepository": "Bitte wählen Sie ein Repository aus",
       "subHeader": "Hier finden Sie alle AAS aus Ihrem Repository. Sie können ein AAS-Repository auswählen, um zwischen den Datenquellen zu wechseln.",
-      "titleComparisonAddButton": "Füge AAS zum Vergleich hinzu",
-      "titleViewAASButton": "AAS anzeigen"
+      "titleComparisonAddButton": "Füge AAS zum Vergleich hinzu"
     },
     "aasViewer": {
       "actions": {
@@ -255,12 +263,22 @@
       "welcomeText": "Willkommen bei Mnestix"
     },
     "discoveryList": {
-      "aasIdHeading": "AAS ID",
-      "header": "Verwandte AAS für ID",
-      "picture": "Bild",
-      "repositoryUrl": "Repository Url",
-      "subtitle": "Hier finden Sie alle zugehörigen AAS für die angegebene ID.",
-      "titleViewAASButton": "AAS anzeigen"
+      "errors": {
+        "noAasFound": "Keine AAS für die angegebene ID gefunden",
+        "noAssetId": "Keine Asset ID angegeben.",
+        "searchFailed": "Suche fehlgeschlagen"
+      },
+      "subtitle": "Hier finden Sie alle AAS, die mit der angegebenen ID verknüpft sind.",
+      "title": "AAS mit ID"
+    },
+    "registryList": {
+      "errors": {
+        "noAasFound": "Keine AAS für diese ID gefunden",
+        "noAasId": "Keine AAS ID angegeben.",
+        "searchFailed": "Suche fehlgeschlagen"
+      },
+      "subtitle": "Hier finden sich alle AAS mit der folgenden AAS ID",
+      "title": "AAS mit AAS ID"
     },
     "productViewer": {
       "title": "Produkt",
@@ -271,10 +289,10 @@
     },
     "settings": {
       "actions": {
-          "cancel": "Abbrechen",
-          "editButton": "Alle bearbeiten",
-          "resetButton": "Auf Default zurücksetzen",
-          "saveButton": "Alle speichern"
+        "cancel": "Abbrechen",
+        "editButton": "Alle bearbeiten",
+        "resetButton": "Auf Default zurücksetzen",
+        "saveButton": "Alle speichern"
       },
       "connections": {
         "aasRepository": {
@@ -285,7 +303,7 @@
           "repositoryUrlLabel": "AAS Repository URL"
         },
         "addButton": "Hinzufügen",
-        "resetSuccessfull": "Quellen wurden zurückgesetzt.",
+        "resetSuccessful": "Quellen wurden zurückgesetzt.",
         "submodelRepository": {
           "connectionType": "SUBMODEL_REPOSITORY",
           "repositories": "Submodel Repositories",
@@ -333,16 +351,18 @@
           "add": "Hinzufügen",
           "back": "Zurück",
           "cancel": "Abbrechen",
+          "create": "Regel erstellen",
           "edit": "Bearbeiten",
-          "save": "Speichern",
-          "create": "Regel erstellen"
+          "save": "Speichern"
         },
+        "errors": {
+          "uniqueIdShort": "Die Kombination aus Rollenname, Aktion und Typ existiert bereits in einer anderen Regel.\nBitte bearbeiten Sie die bestehende Regel."
+        },
+        "createTitle": "Regel erstellen",
+        "editTitle": "Regel bearbeiten",
         "roleRequired": "Rolle wird benötigt",
         "saveSuccess": "Regel erfolgreich gespeichert.",
         "subtitle": "Verwalten von Rollen und Berechtigungen.",
-        "createTitle": "Regel erstellen",
-        "editTitle": "Regel bearbeiten",
-        "wildcardLabel": "Alle erlauben",
         "tableHeader": {
           "aasIds": "AAS IDs",
           "action": "Aktion",
@@ -351,7 +371,8 @@
           "submodelIds": "Submodel IDs",
           "type": "Typ"
         },
-        "title": "Regelmanagement"
+        "title": "Regelmanagement",
+        "wildcardLabel": "Alle erlauben"
       },
       "subHeader": "Hinzufügen, Entfernen oder Ändern von Einstellungen und Konfigurationen für verschiedene Funktionen innerhalb Ihrer AAS-Umgebung."
     },
@@ -424,7 +445,7 @@
       "submodelRepositoryApiKey": "Submodel Repository ApiKey",
       "submodelRepositoryLabel": "Liste der Submodel Repositories",
       "subtitle": "Füllen sie die folgenden Schritte aus, um eine Verwaltungsschale in ein anderes Repository zu importieren",
-      "successfullToast": "Transfer der AAS erfolgreich",
+      "successfulToast": "Transfer der AAS erfolgreich",
       "title": "Import",
       "useAasRepository": "AAS Repository verwenden",
       "warningToast": "Transfer der AAS nur teilweise erfolgreich."

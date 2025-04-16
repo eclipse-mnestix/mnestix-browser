@@ -10,6 +10,7 @@ export const initialEnvValues: EnvironmentalVariables = {
     AAS_LIST_FEATURE_FLAG: false,
     COMPARISON_FEATURE_FLAG: false,
     TRANSFER_FEATURE_FLAG: false,
+    PRODUCT_VIEW_FEATURE_FLAG: false,
     AUTHENTICATION_FEATURE_FLAG: false,
     LOCK_TIMESERIES_PERIOD_FEATURE_FLAG: false,
     KEYCLOAK_ENABLED: false,

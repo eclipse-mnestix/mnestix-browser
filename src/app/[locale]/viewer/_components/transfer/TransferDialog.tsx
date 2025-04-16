@@ -125,7 +125,7 @@ export function TransferDialog(props: DialogProps) {
     const processResult = (result: TransferResult[]) => {
         if (result.every((result) => result.success)) {
             notificationSpawner.spawn({
-                message: t('successfullToast'),
+                message: t('successfulToast'),
                 severity: 'success',
             });
         } else if (result.every((result) => !result.success)) {
@@ -162,9 +162,7 @@ export function TransferDialog(props: DialogProps) {
                 <Typography variant="h2" color="primary">
                     {t('title')}
                 </Typography>
-                <Typography>
-                    {t('subtitle')}
-                </Typography>
+                <Typography>{t('subtitle')}</Typography>
             </Box>
             <IconButton
                 aria-label="close"

@@ -4,6 +4,7 @@ import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
 import { deleteAndCreateRbacRule } from 'lib/services/rbac-service/RbacActions';
 import { expect } from '@jest/globals';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 jest.mock('./../../../../../lib/services/rbac-service/RbacActions');
 jest.mock('next-intl', () => ({
@@ -62,6 +63,29 @@ describe('RoleDialog', () => {
                 severity: 'success',
             });
             expect(mockOnClose).toHaveBeenCalledWith(true);
+        });
+    });
+
+    it('handles conflict error', async () => {
+        const mockOnClose = jest.fn();
+        (deleteAndCreateRbacRule as jest.Mock).mockResolvedValue({
+            isSuccess: false,
+            errorCode: ApiResultStatus.CONFLICT,
+        });
+        const mockNotificationSpawner = { spawn: jest.fn() };
+        (useNotificationSpawner as jest.Mock).mockReturnValue(mockNotificationSpawner);
+
+        render(<RuleDialog open={true} onClose={mockOnClose} rule={mockRule} />);
+
+        fireEvent.click(screen.getByTestId('role-settings-edit-button'));
+        fireEvent.click(screen.getByTestId('role-settings-save-button'));
+
+        await waitFor(() => {
+            expect(mockNotificationSpawner.spawn).toHaveBeenCalledWith({
+                message: 'errors.uniqueIdShort',
+                severity: 'error',
+            });
+            expect(mockOnClose).not.toHaveBeenCalled();
         });
     });
 });

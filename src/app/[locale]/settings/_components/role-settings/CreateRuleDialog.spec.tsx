@@ -4,6 +4,7 @@ import { createRbacRule } from 'lib/services/rbac-service/RbacActions';
 import { expect } from '@jest/globals';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { act } from 'react';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 jest.mock('./../../../../../lib/services/rbac-service/RbacActions');
 jest.mock('next-intl', () => ({
@@ -55,6 +56,29 @@ describe('CreateRuleDialog', () => {
         expect(defaultProps.onClose).toHaveBeenCalledWith(true);
     });
 
+    it('handles conflict error', async () => {
+        (createRbacRule as jest.Mock).mockResolvedValue({
+            isSuccess: false,
+            errorCode: ApiResultStatus.CONFLICT,
+        });
+        const mockNotificationSpawner = { spawn: jest.fn() };
+        (useNotificationSpawner as jest.Mock).mockReturnValue(mockNotificationSpawner);
+
+        render(<CreateRuleDialog {...defaultProps} />);
+
+        const roleInput = screen.getByTestId('rule-settings-name-input').querySelector('input');
+        await act(async () => {
+            fireEvent.change(roleInput as Element, { target: { value: 'NewRole' } });
+            fireEvent.click(screen.getByTestId('role-settings-save-button'));
+        });
+
+        expect(mockNotificationSpawner.spawn).toHaveBeenCalledWith({
+            message: 'errors.uniqueIdShort',
+            severity: 'error',
+        });
+        expect(defaultProps.onClose).not.toHaveBeenCalled();
+    });
+
     it('handles failed rule creation', async () => {
         const errorMessage = 'Creation failed';
         (createRbacRule as jest.Mock).mockResolvedValue({
@@ -70,6 +94,6 @@ describe('CreateRuleDialog', () => {
             fireEvent.click(screen.getByTestId('role-settings-save-button'));
         });
 
-        expect(defaultProps.onClose).not.toHaveBeenCalledWith(true);
+        expect(defaultProps.onClose).not.toHaveBeenCalled();
     });
 });
