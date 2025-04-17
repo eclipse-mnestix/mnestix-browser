@@ -64,10 +64,12 @@ const themingVariables = mapEnvVariables([
     'THEME_LOGO_MIME_TYPE',
 ] as const);
 
+const LOG_LEVEL = process_env.LOG_LEVEL || (process_env.NODE_ENV === 'production' ? 'info' : 'debug');
+
 /**
  * Public envs that are sent to the client and can be used with the `useEnv` hook.
  */
-export const publicEnvs = { ...featureFlags, ...otherVariables, ...themingVariables };
+export const publicEnvs = { LOG_LEVEL, ...featureFlags, ...otherVariables, ...themingVariables };
 
 /**
  * Mnestix envs

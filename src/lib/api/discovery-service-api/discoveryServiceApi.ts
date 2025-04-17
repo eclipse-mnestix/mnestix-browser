@@ -29,7 +29,7 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
         },
         log?: typeof logger,
     ): DiscoveryServiceApi {
-        const discoveryLogger = log?.child({ Service: DiscoveryServiceApi.name });
+        const discoveryLogger = log?.child({ Service: 'DiscoveryServiceApi' });
 
         return new DiscoveryServiceApi(baseUrl, http, discoveryLogger ?? logger);
     }
@@ -97,7 +97,7 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
         if (!response.isSuccess) {
             logResponseDebug(
                 this.log,
-                this.getAllAssetAdministrationShellIdsByAssetLink.name,
+                'getAllAssetAdministrationShellIdsByAssetLink',
                 'AAS discovery search unsuccessful',
                 response,
                 { message: response.message },
@@ -108,7 +108,7 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
         if (response.result.result.length === 0) {
             logResponseDebug(
                 this.log,
-                this.getAllAssetAdministrationShellIdsByAssetLink.name,
+                'getAllAssetAdministrationShellIdsByAssetLink',
                 'Discovery search returned no results',
                 response,
                 {
@@ -116,15 +116,11 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
                     Message: 'No matching Asset Administration Shells found',
                 },
             );
-            return wrapErrorCode(
-                ApiResultStatus.NOT_FOUND,
-                'No AAS found for assetIds',
-                response.httpStatus,
-            );
+            return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'No AAS found for assetIds', response.httpStatus);
         }
         logResponseDebug(
             this.log,
-            this.getAllAssetAdministrationShellIdsByAssetLink.name,
+            'getAllAssetAdministrationShellIdsByAssetLink',
             'Discovery search completed successfully',
             response,
             { Discovery_Aas_IDs: response.result.result },
