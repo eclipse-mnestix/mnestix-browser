@@ -17,6 +17,7 @@ import { MultiLanguageValueOnly } from 'lib/api/basyx-v3/types';
 import { useLocale, useTranslations } from 'next-intl';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import useSWR from 'swr';
+import { useEnv } from 'app/EnvProvider';
 
 type AasTableRowProps = {
     repositoryUrl: string;
@@ -47,6 +48,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
     const notificationSpawner = useNotificationSpawner();
     const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
     const t = useTranslations('pages.aasList');
+    const env = useEnv();
     const locale = useLocale();
     const { data: nameplateValues, isLoading: isNameplateValueLoading } = useSWR(
         [repositoryUrl, aasListEntry.aasId],
@@ -66,7 +68,9 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         setAas(null);
         setAasOriginUrl(null);
         const baseUrl = window.location.origin;
-        window.open(baseUrl + `/viewer/${encodeBase64(listEntry.aasId)}`, '_blank');
+        const pageToGo = env.PRODUCT_VIEW_FEATURE_FLAG ? '/product' : '/viewer';
+
+        window.open(baseUrl + `${pageToGo}/${encodeBase64(listEntry.aasId)}`, '_blank');
     };
 
     const translateListText = (property: MultiLanguageValueOnly | undefined) => {
