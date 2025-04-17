@@ -53,7 +53,7 @@ export type RuleFormModel = {
 
 export const RuleForm = (props: RuleDialogProps) => {
     const t = useTranslations('pages.settings.rules');
-    const [rbacRoles, setRbacRoles] = useState<RbacRolesFetchResult | undefined>(undefined);
+    const [rbacRules, setRbacRules] = useState<RbacRolesFetchResult | undefined>(undefined);
 
     const { control, handleSubmit, setValue, getValues, reset } = useForm({
         defaultValues: mapBaSyxRbacRuleToFormModel(props.rule as BaSyxRbacRule),
@@ -64,7 +64,7 @@ export const RuleForm = (props: RuleDialogProps) => {
         if (response.isSuccess) {
             // sort by role name
             response.result.roles?.sort((a: { role: string }, b: { role: string }) => a.role.localeCompare(b.role));
-            setRbacRoles(response.result);
+            setRbacRules(response.result);
         }
     }, []);
 
@@ -87,7 +87,7 @@ export const RuleForm = (props: RuleDialogProps) => {
                             <FormControl fullWidth>
                                 <Autocomplete
                                     freeSolo
-                                    options={[...new Set(rbacRoles?.roles?.map((role) => role.role) ?? [])]}
+                                    options={[...new Set(rbacRules?.roles?.map((role) => role.role) ?? [])]}
                                     value={field.value || ''}
                                     onChange={(_, newValue) => field.onChange(newValue)}
                                     onInputChange={(_, newValue, reason) => {
