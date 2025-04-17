@@ -1,5 +1,6 @@
 import { Box, Chip, Typography, styled } from '@mui/material';
 import { theme } from 'layout/theme/theme';
+import { tooltipText } from 'lib/util/ToolTipText';
 
 /**
  * Type definition for product classification
@@ -48,7 +49,7 @@ const ValueContainer = styled(Box)(({ theme }) => ({
  * A component that displays product classification information with a label and values in a horizontal layout.
  * The component renders a box with a main label "Classification Info" followed by classification systems and their values.
  */
-function ProductClassificationInfoBox({
+export function ProductClassificationInfoBox({
     productClassifications,
     showOnlyFirst = false,
 }: ProductClassificationInfoBoxProps) {
@@ -81,7 +82,7 @@ function ProductClassificationInfoBox({
                             >
                             </Chip>
                             <Typography variant="body1" ml={1}>
-                                {classification.ProductClassId || '-'}
+                                {tooltipText(classification.ProductClassId, 50) || '-'}
                             </Typography>
                         </ValueContainer>
                     ))}
@@ -89,6 +90,3 @@ function ProductClassificationInfoBox({
         </Box>
     );
 }
-
-export { ProductClassificationInfoBox };
-export type { ProductClassificationInfoBoxProps };

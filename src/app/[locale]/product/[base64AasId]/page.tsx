@@ -59,7 +59,6 @@ export default function Page() {
                     !(checkIfSubmodelHasIdShortOrSemanticId(submodel, undefined, 'AasDesignerChangelog') ||
                     checkIfSubmodelHasIdShortOrSemanticId(submodel,  SubmodelSemanticIdEnum.NameplateV2, 'Nameplate'))
             );
-            console.log(filtered)
             setFilteredSubmodels(filtered);
         }
 
