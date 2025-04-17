@@ -26,6 +26,7 @@ import { MobileAccordion } from 'components/basics/detailViewBasics/MobileAccord
 import { ProductClassificationInfoBox } from './ProductClassificationInfoBox';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { useProductImageUrl } from 'lib/hooks/UseProductImageUrl';
+import { MarkingsComponent } from 'app/[locale]/viewer/_components/submodel-elements/marking-components/MarkingsComponent';
 
 type ProductOverviewCardProps = {
     readonly aas: AssetAdministrationShell | null;
@@ -50,6 +51,7 @@ type OverviewData = {
     readonly manufacturerProductType?: string;
     readonly manufacturerArticleNumber?: string;
     readonly manufacturerOrderCode?: string;
+    readonly markings?: SubmodelElementCollection;
     readonly productClassifications?: ProductClassification[];
 };
 
@@ -158,11 +160,17 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                     SubmodelElementSemanticIdEnum.ManufacturerProductType,
                     locale,
                 );
+                const markings = findSubmodelElementByIdShort(
+                    nameplateSubmodelElements,
+                    'Markings',
+                    SubmodelElementSemanticIdEnum.MarkingsV3,
+                );
                 setOverviewData((prevData) => ({
                     ...prevData,
                     manufacturerProductRoot: manufacturerProductRoot ?? '-',
                     manufacturerProductFamily: manufacturerProductFamily ?? '-',
                     manufacturerProductType: manufacturerProductType ?? '-',
+                    markings: markings as SubmodelElementCollection,
                 }));
             }
         }
@@ -270,6 +278,23 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
         </Box>
     );
 
+    // TODO translations
+    const markings = (
+        <Box sx={infoBoxStyle} data-testid="markings-data">
+            {!isAccordion && (
+                <Box display="flex">
+                    <IconCircleWrapper sx={{ mr: 1 }}>
+                        <AssetIcon fontSize="small" color="primary" />
+                    </IconCircleWrapper>
+                    <Typography sx={titleStyle} variant="h3">
+                        Produktkennzeichnungen
+                    </Typography>
+                </Box>
+            )}
+            <MarkingsComponent submodelElement={overviewData?.markings}></MarkingsComponent>
+        </Box>
+    );
+
     return (
         <Card>
             <CardContent sx={cardContentStyle}>
@@ -326,7 +351,9 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                             </>
                         ) : (
                             <>
-                                {productInfo} {classificationInfo}
+                                {productInfo} {markings}
+                                {//classificationInfo
+                                }
                             </>
                         )}
                     </>
