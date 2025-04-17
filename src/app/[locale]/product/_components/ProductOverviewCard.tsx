@@ -213,18 +213,20 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                 testId="datarow-manufacturer-product-designation"
                 withBase64={false}
             />
-            <DataRow
-                title="Article number" // Translation ??
-                value={overviewData?.manufacturerArticleNumber}
-                testId="datarow-manufacturer-article-number"
-                withBase64={false}
-            />
-            <DataRow
-                title="Order Code" // Translation ??
-                value={overviewData?.manufacturerOrderCode}
-                testId="datarow-manufacturer-order-code"
-                withBase64={false}
-            />
+            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                <DataRow
+                    title="Article number" // Translation ??
+                    value={overviewData?.manufacturerArticleNumber}
+                    testId="datarow-manufacturer-article-number"
+                    withBase64={false}
+                />
+                <DataRow
+                    title="Order Code" // Translation ??
+                    value={overviewData?.manufacturerOrderCode}
+                    testId="datarow-manufacturer-order-code"
+                    withBase64={false}
+                />
+            </Box>
             <DataRow
                 title="Manufacturer Name" // Translation ??
                 value={overviewData?.manufacturerName}
