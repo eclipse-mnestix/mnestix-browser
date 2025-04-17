@@ -1,5 +1,5 @@
 import { alpha, Step, StepLabel, Stepper, Typography, useTheme } from '@mui/material';
-import { ProductLifecycleStage } from 'lib/enums/ProductLifecycleStage.enum';
+import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/ProductLifecycleStage.enum';
 import CircleIcon from '@mui/icons-material/Circle';
 import { useTranslations } from 'next-intl';
 

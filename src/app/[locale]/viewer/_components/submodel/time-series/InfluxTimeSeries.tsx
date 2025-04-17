@@ -4,7 +4,7 @@ import { StyledDataRow } from 'components/basics/StyledDataRow';
 import { InfluxTimeSeriesDiagram } from './InfluxTimeSeriesDiagram';
 import { useEffect, useState } from 'react';
 import { TimeFrameSelection as TimeFrameSelection } from './TimeFrameSelection';
-import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
+import { TimeSeriesSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesSubmodelElementSemanticId.enum';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { useEnv } from 'app/EnvProvider';
 import {
@@ -19,7 +19,7 @@ export function InfluxTimeSeries(props: { submodelElement: SubmodelElementCollec
     let endpoint = (
         extractValueBySemanticId(
             props.submodelElement,
-            SubmodelElementSemanticId.TimeSeriesLinkedSegmentEndpoint,
+            TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesLinkedSegmentEndpoint,
         ) as Property
     )?.value;
 
@@ -31,18 +31,18 @@ export function InfluxTimeSeries(props: { submodelElement: SubmodelElementCollec
     const queryInAas = (
         extractValueBySemanticId(
             props.submodelElement,
-            SubmodelElementSemanticId.TimeSeriesLinkedSegmentQuery,
+            TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesLinkedSegmentQuery,
         ) as Property
     )?.value;
 
     const name = extractIntlValueBySemanticId(
         props.submodelElement,
-        SubmodelElementSemanticId.TimeSeriesSegmentName,
+        TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegmentName,
         locale,
     );
     const description = extractIntlValueBySemanticId(
         props.submodelElement,
-        SubmodelElementSemanticId.TimeSeriesSegmentDescription,
+        TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegmentDescription,
         locale,
     );
 

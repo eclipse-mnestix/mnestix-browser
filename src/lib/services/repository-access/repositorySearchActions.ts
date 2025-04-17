@@ -19,7 +19,7 @@ export async function performSearchAasFromAllRepositories(
     searchInput: string,
 ): Promise<ApiResponseWrapper<RepoSearchResult<AssetAdministrationShell>[]>> {
     const logger = createRequestLogger(await headers());
-    logInfo(logger, performSearchAasFromAllRepositories.name, 'Requested AAS', { requestedId: searchInput });
+    logInfo(logger, 'performSearchAasFromAllRepositories', 'Requested AAS', { requestedId: searchInput });
     const searcher = RepositorySearchService.create(logger);
     return searcher.getAasFromAllRepos(searchInput);
 }

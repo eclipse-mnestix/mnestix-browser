@@ -10,6 +10,7 @@ Mnestix provides the following configuration options. You can adapt the values i
 | `AAS_REPO_API_URL`                    |                             | Default AAS Repository to display when AAS Id is not in AAS Registry                                                                                                                                                               | required |
 | `SUBMODEL_REPO_API_URL`               |                             | Default Submodel Repository to display when Submodel Id is not in Submodel Registry                                                                                                                                                | required |
 | `MNESTIX_BACKEND_API_URL`             |                             | Mnestix Backend with a lot of business comfort features like the Repository-Proxy or the Template builder                                                                                                                          | optional |
+| `LOG_LEVEL`                           | "info"                      | Server side log level of Mnestix Browser. "fatal" or "error" or "warn" or "info" or "debug" or "trace" or "silent"                                                                                                                 |
 | `AAS_LIST_FEATURE_FLAG`               | false                       | Enables or disables the AasList in the frontend. This only works in combination with `Features__AllowRetrievingAllShellsAndSubmodels` being set to `true` (Needs the Mnestix Backend to work)                                      | optional |
 | `TRANSFER_FEATURE_FLAG`               | false                       | Enables or disables the Transfer Feature in the frontend. If enabled, it is possible to import a viewed AAS to a configured repository. This feature is currently being developed.                                                 | optional |
 | `AUTHENTICATION_FEATURE_FLAG`         | false                       | Enable or disable the authentication in the frontend. (Needs the Mnestix Backend to work)                                                                                                                                          | optional |
@@ -24,7 +25,7 @@ Mnestix provides the following configuration options. You can adapt the values i
 | `KEYCLOAK_CLIENT_ID`                  | mnestix-browser-client-demo | Configuration variable that specifies the client unique identifier used by your application when connecting to the Keycloak server.                                                                                                | optional |
 | `KEYCLOAK_ISSUER`                     |                             | Configuration variable that specifies the URL of the Keycloak servers issuer endpoint. This endpoint provides the base URL for the Keycloak server that issues tokens and handles authentication requests                          | optional |
 | `KEYCLOAK_LOCAL_URL`                  |                             | Optional configuration variable specifically used for development environments within Docker. This allows your application to connect to a Keycloak instance running in a Docker container                                         | optional |
-| `KEYCLOAK_REALM`                      | BaSyx                       | Configuration variable that specifies the name of the Keycloak realm your application will use for authentication and authorization.                                                                                               | optional |
+| `KEYCLOAK_REALM`                      |                             | Configuration variable that specifies the name of the Keycloak realm your application will use for authentication and authorization.                                                                                               | optional |
 | `IMPRINT_URL`                         |                             | Address that will be used in the imprint link. Will only show the link, if a value has been set.                                                                                                                                   | optional |
 | `DATA_PRIVACY_URL`                    |                             | Address that will be used in the data privacy link. Will only show the link, if a value has been set.                                                                                                                              | optional |
 | `USE_BASYX_RBAC`                      | false                       | Set to true, if BaSyx is used together with RBAC. This will enable the administration of RBAC configuration inside Mnestix.                                                                                                        | optional |
@@ -38,7 +39,7 @@ preference:
 
 #### Option 1: Mount a logo
 
-First you need to mount your logo to the container by adding it to the docker compose file: 
+First you need to mount your logo to the container by adding it to the docker compose file:
 
 ```yaml
 volumes:

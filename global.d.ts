@@ -11,4 +11,11 @@ declare global {
             [key: string]: never;
         }
     }
+
+    interface Function {
+        /**
+         * @deprecated Function names are minified in production.
+         */
+        name: never;
+    }
 }

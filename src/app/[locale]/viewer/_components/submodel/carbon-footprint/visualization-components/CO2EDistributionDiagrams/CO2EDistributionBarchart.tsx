@@ -1,5 +1,5 @@
 import { alpha, Box, Typography, useTheme } from '@mui/material';
-import { ProductLifecycleStage } from 'lib/enums/ProductLifecycleStage.enum';
+import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/ProductLifecycleStage.enum';
 import { Bar, BarChart, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { cutDecimalPlaces } from 'lib/util/NumberUtil';
 import { useTranslations } from 'next-intl';

@@ -1,9 +1,7 @@
 import { screen } from '@testing-library/react';
 import { expect } from '@jest/globals';
-import { ProductLifecycleStage } from 'lib/enums/ProductLifecycleStage.enum';
-import {
-    ProductLifecycle
-} from 'app/[locale]/viewer/_components/submodel/carbon-footprint/visualization-components/ProductLifecycle';
+import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/ProductLifecycleStage.enum';
+import { ProductLifecycle } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/visualization-components/ProductLifecycle';
 import { CustomRender } from 'test-utils/CustomRender';
 
 window.ResizeObserver =
@@ -14,13 +12,12 @@ window.ResizeObserver =
         unobserve: jest.fn(),
     }));
 
-
-const completedStages =
-    [ProductLifecycleStage.A1RawMaterialSupply,
+const completedStages = [
+    ProductLifecycleStage.A1RawMaterialSupply,
     ProductLifecycleStage.A2CradleToGate,
     ProductLifecycleStage.A3Production,
-    ProductLifecycleStage.A4TransportToFinalDestination
-    ] ;
+    ProductLifecycleStage.A4TransportToFinalDestination,
+];
 
 describe('ProductLifecycle', () => {
     it('should render the ProductLifecycle with all steps', async () => {
@@ -48,13 +45,11 @@ describe('ProductLifecycle', () => {
         expect(stepper).toBeDefined();
         expect(stepper).toBeInTheDocument();
 
-        const completedSteps= screen.queryByTestId('product-lifecycle-completed-step')
+        const completedSteps = screen.queryByTestId('product-lifecycle-completed-step');
         expect(completedSteps).toBeNull();
 
         const addressList = screen.getAllByTestId('product-lifecycle-next-step');
         expect(addressList).toBeDefined();
         expect(addressList.length).toBe(1);
     });
-
-
 });
