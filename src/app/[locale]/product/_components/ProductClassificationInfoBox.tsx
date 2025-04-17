@@ -71,18 +71,20 @@ function ProductClassificationInfoBox({
                     </Typography>
                 </LabelContainer>
 
-                {classificationsToShow.map((classification, index) => (
-                    <ValueContainer key={`classification-${index}`}>
-                        <Chip variant="outlined"
-                            sx={{ backgroundColor: '#6B7374', color: 'white', borderRadius: 5, padding: 0.5 }} // TODO colors
-                            label={classification.ProductClassificationSystem || 'Classification'}
-                        >
-                        </Chip>
-                        <Typography variant="body1" ml={1}>
-                            {classification.ProductClassId || '-'}
-                        </Typography>
-                    </ValueContainer>
-                ))}
+                {classificationsToShow
+                    .filter((c) => c.ProductClassificationSystem !== 'IEC')
+                    .map((classification, index) => (
+                        <ValueContainer key={`classification-${index}`}>
+                            <Chip variant="outlined"
+                                sx={{ backgroundColor: '#6B7374', color: 'white', borderRadius: 5, padding: 0.5 }} // TODO colors
+                                label={classification.ProductClassificationSystem || 'Classification'}
+                            >
+                            </Chip>
+                            <Typography variant="body1" ml={1}>
+                                {classification.ProductClassId || '-'}
+                            </Typography>
+                        </ValueContainer>
+                    ))}
             </StyledBox>
         </Box>
     );
