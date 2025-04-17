@@ -4,6 +4,7 @@ import { expect } from '@jest/globals';
 import * as rbacActions from 'lib/services/rbac-service/RbacActions';
 import { CustomRender } from 'test-utils/CustomRender';
 import { mockRbacRoles } from './test-data/mockRbacRoles';
+import { act } from 'react';
 
 jest.mock('./../../../../../lib/services/rbac-service/RbacActions');
 jest.mock('./../../../../../lib/hooks/UseBreakpoints', () => ({
@@ -21,14 +22,18 @@ describe('RoleSettings', () => {
                 return { isSuccess: true, result: mockRbacRoles };
             }),
         );
+
         CustomRender(<RuleSettings />);
+
         expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 
     it('renders role settings table with content after data is fetched', async () => {
         (rbacActions.getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
 
-        CustomRender(<RuleSettings />);
+        await act(async () => {
+            CustomRender(<RuleSettings />);
+        });
 
         await waitFor(() => {
             expect(within(screen.getByTestId('role-settings-row-roleId1')).getByText('Admin-Role')).toBeInTheDocument();
@@ -54,7 +59,9 @@ describe('RoleSettings', () => {
     it('opens RoleDialog when a role is clicked', async () => {
         (rbacActions.getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
 
-        CustomRender(<RuleSettings />);
+        await act(async () => {
+            CustomRender(<RuleSettings />);
+        });
 
         await waitFor(() => {
             expect(screen.getByText('Admin-Role')).toBeInTheDocument();
