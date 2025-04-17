@@ -22,9 +22,7 @@ describe('RoleSettings', () => {
                 return { isSuccess: true, result: mockRbacRoles };
             }),
         );
-
         CustomRender(<RuleSettings />);
-
         expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 
