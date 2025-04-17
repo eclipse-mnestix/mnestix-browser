@@ -2,39 +2,14 @@ import { screen, waitFor, fireEvent, within } from '@testing-library/react';
 import { RuleSettings } from 'app/[locale]/settings/_components/role-settings/RuleSettings';
 import { expect } from '@jest/globals';
 import * as rbacActions from 'lib/services/rbac-service/RbacActions';
-import { RbacRolesFetchResult } from 'lib/services/rbac-service/types/RbacServiceData';
 import { CustomRender } from 'test-utils/CustomRender';
+import { mockRbacRoles } from './test-data/mockRbacRoles';
+import { act } from 'react';
 
 jest.mock('./../../../../../lib/services/rbac-service/RbacActions');
 jest.mock('./../../../../../lib/hooks/UseBreakpoints', () => ({
     useIsMobile: jest.fn(() => false),
 }));
-
-const mockRbacRoles: RbacRolesFetchResult = {
-    roles: [
-        {
-            idShort: 'roleId1',
-            role: 'Admin-Role',
-            action: 'READ',
-            targetInformation: {
-                '@type': 'aas-environment',
-                aasIds: ['aasId1', 'aasId2'],
-                submodelIds: ['submodelId1'],
-            },
-        },
-        {
-            idShort: 'roleId2',
-            role: 'User-Role',
-            action: 'CREATE',
-            targetInformation: {
-                '@type': 'submodel',
-                submodelElementIdShortPaths: ['*'],
-                submodelIds: ['*'],
-            },
-        },
-    ],
-    warnings: [],
-};
 
 jest.mock('./../../../../../components/basics/CenteredLoadingSpinner', () => ({
     CenteredLoadingSpinner: jest.fn(() => <div>Loading...</div>),
@@ -54,7 +29,9 @@ describe('RoleSettings', () => {
     it('renders role settings table with content after data is fetched', async () => {
         (rbacActions.getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
 
-        CustomRender(<RuleSettings />);
+        await act(async () => {
+            CustomRender(<RuleSettings />);
+        });
 
         await waitFor(() => {
             expect(within(screen.getByTestId('role-settings-row-roleId1')).getByText('Admin-Role')).toBeInTheDocument();
@@ -80,7 +57,9 @@ describe('RoleSettings', () => {
     it('opens RoleDialog when a role is clicked', async () => {
         (rbacActions.getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
 
-        CustomRender(<RuleSettings />);
+        await act(async () => {
+            CustomRender(<RuleSettings />);
+        });
 
         await waitFor(() => {
             expect(screen.getByText('Admin-Role')).toBeInTheDocument();
