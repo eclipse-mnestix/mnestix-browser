@@ -5,6 +5,8 @@ import { deleteAndCreateRbacRule } from 'lib/services/rbac-service/RbacActions';
 import { expect } from '@jest/globals';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
+import * as rbacActions from 'lib/services/rbac-service/RbacActions';
+import { mockRbacRoles } from './test-data/mockRbacRoles';
 
 jest.mock('./../../../../../lib/services/rbac-service/RbacActions');
 jest.mock('next-intl', () => ({
@@ -37,6 +39,7 @@ describe('RoleDialog', () => {
     });
 
     it('switches to edit mode when edit button is clicked', async () => {
+        (rbacActions.getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
         render(<RuleDialog open={true} onClose={jest.fn()} rule={mockRule} />);
 
         fireEvent.click(screen.getByTestId('role-settings-edit-button'));
@@ -47,6 +50,7 @@ describe('RoleDialog', () => {
     });
 
     it('calls onClose with reload true after successful save', async () => {
+        (rbacActions.getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
         const mockOnClose = jest.fn();
         (deleteAndCreateRbacRule as jest.Mock).mockResolvedValue({ isSuccess: true });
         const mockNotificationSpawner = { spawn: jest.fn() };
@@ -67,6 +71,7 @@ describe('RoleDialog', () => {
     });
 
     it('handles conflict error', async () => {
+        (rbacActions.getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
         const mockOnClose = jest.fn();
         (deleteAndCreateRbacRule as jest.Mock).mockResolvedValue({
             isSuccess: false,
