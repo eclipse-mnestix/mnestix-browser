@@ -3,7 +3,11 @@
 import { Box, Button, Skeleton, Typography } from '@mui/material';
 import { safeBase64Decode } from 'lib/util/Base64Util';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
-import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
+import {
+    checkIfSubmodelHasIdShortOrSemanticId,
+    findSubmodelByIdOrSemanticId,
+    getTranslationText,
+} from 'lib/util/SubmodelResolverUtil';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { SubmodelsOverviewCard } from 'app/[locale]/viewer/_components/SubmodelsOverviewCard';
 import { ProductOverviewCard } from '../_components/ProductOverviewCard';
@@ -13,6 +17,9 @@ import { NoSearchResult } from 'components/basics/detailViewBasics/NoSearchResul
 import { useAasLoader } from 'lib/hooks/UseAasDataLoader';
 import { useLocale } from 'next-intl';
 import { useTranslations } from 'use-intl';
+import { useEffect, useState } from 'react';
+import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
+import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 
 export default function Page() {
     const navigate = useRouter();
@@ -24,6 +31,7 @@ export default function Page() {
     const env = useEnv();
     const encodedRepoUrl = useSearchParams().get('repoUrl');
     const repoUrl = encodedRepoUrl ? decodeURI(encodedRepoUrl) : undefined;
+    const [filteredSubmodels, setFilteredSubmodels] = useState<SubmodelOrIdReference[]>([]);
     // TODO refactor translation strings here
     const t = useTranslations('pages.aasViewer');
     const tp = useTranslations('pages.productViewer');
@@ -43,6 +51,19 @@ export default function Page() {
     const goToAASView = () => {
         navigate.push(`/viewer/${searchParams.base64AasId}`);
     };
+
+    useEffect(() => {
+        if (submodels) {
+            const filtered = submodels.filter(
+                (submodel) =>
+                    !(checkIfSubmodelHasIdShortOrSemanticId(submodel, undefined, 'AasDesignerChangelog') ||
+                    checkIfSubmodelHasIdShortOrSemanticId(submodel,  SubmodelSemanticIdEnum.NameplateV2, 'Nameplate'))
+            );
+            console.log(filtered)
+            setFilteredSubmodels(filtered);
+        }
+
+    }, [submodels]);
 
     const pageStyles = {
         display: 'flex',
@@ -114,7 +135,7 @@ export default function Page() {
                         repositoryURL={aasOriginUrl}
                     />
                     {aasFromContext?.submodels && aasFromContext.submodels.length > 0 && (
-                        <SubmodelsOverviewCard submodelIds={submodels} submodelsLoading={isSubmodelsLoading} /> //???????
+                        <SubmodelsOverviewCard submodelIds={filteredSubmodels} submodelsLoading={isSubmodelsLoading} firstSubmodelIdShort="TechnicalData" />
                     )}
                 </Box>
             ) : (
