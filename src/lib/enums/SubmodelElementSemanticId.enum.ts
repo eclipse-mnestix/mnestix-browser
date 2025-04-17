@@ -39,10 +39,13 @@ export enum SubmodelElementSemanticId {
     GeneralInformation = 'https://admin-shell.io/ZVEI/TechnicalData/GeneralInformation/1/1',
     ProductClassifications = 'https://admin-shell.io/ZVEI/TechnicalData/ProductClassifications/1/1',
     ManufacturerName = '0173-1#02-AAO677#002',
+    ManufacturerLogo = 'https://adminshell.io/ZVEI/TechnicalData/ManufacturerLogo/1/1',
     ManufacturerProductDesignation = '0173-1#02-AAW338#001',
     ManufacturerProductRoot = '0173-1#02-AAU732#001',
     ManufacturerProductFamily = '0173-1#02-AAU731#001',
     ManufacturerProductType = '0173-1#02-AAO057#002',
+    ManufacturerArticleNumber = '0173-1#02-AAO676#003',
+    ManufacturerOrderCode = '0173-1#02-AAO227#002',
     ProductClassId = 'https://adminshell.io/ZVEI/TechnicalData/ProductClassId/1/1',
     ProductClassificationSystem = 'https://admin-shell.io/ZVEI/TechnicalData/ProductClassificationSystem/1/1',
 }

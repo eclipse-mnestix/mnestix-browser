@@ -25,6 +25,7 @@ import {
 } from 'lib/util/SubmodelResolverUtil';
 import { useProductImageUrl } from 'lib/hooks/UseProductImageUrl';
 import { MobileAccordion } from 'components/basics/detailViewBasics/MobileAccordion';
+import { ProductClassificationInfoBox } from './ProductClassificationInfoBox';
 
 type ProductOverviewCardProps = {
     readonly aas: AssetAdministrationShell | null;
@@ -47,6 +48,8 @@ type OverviewData = {
     readonly manufacturerProductRoot?: string;
     readonly manufacturerProductFamily?: string;
     readonly manufacturerProductType?: string;
+    readonly manufacturerArticleNumber?: string;
+    readonly manufacturerOrderCode?: string;
     readonly productClassifications?: ProductClassification[];
 };
 
@@ -86,6 +89,19 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                     SubmodelElementSemanticId.ManufacturerProductDesignation,
                     locale,
                 );
+                const manufacturerArticleNumber = findValueByIdShort(
+                    technicalDataSubmodelElements,
+                    'ManufacturerArticleNumber',
+                    SubmodelElementSemanticId.ManufacturerArticleNumber,
+                    locale,
+                );
+
+                const manufacturerOrderCode = findValueByIdShort(
+                    technicalDataSubmodelElements,
+                    'ManufacturerOrderCode',
+                    SubmodelElementSemanticId.ManufacturerOrderCode,
+                    locale,
+                );
 
                 const productClassifications = findSubmodelElementByIdShort(
                     technicalDataSubmodelElements,
@@ -119,6 +135,8 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                     manufacturerName: manufacturerName ?? '-',
                     manufacturerProductDesignation: manufacturerProductDesignation ?? '-',
                     productClassifications: classifications,
+                    manufacturerArticleNumber: manufacturerArticleNumber ?? '-',
+                    manufacturerOrderCode: manufacturerOrderCode ?? '-',
                 });
             }
             if (nameplateSubmodelElements) {
@@ -190,17 +208,30 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                 </Box>
             )}
             <DataRow
-                title="Manufacturer Name" // Translation ??
-                value={overviewData?.manufacturerName}
-                testId="datarow-manufacturer-name"
-                withBase64={false}
-            />
-            <DataRow
                 title="Manufacturer Product Designation" // Translation ??
                 value={overviewData?.manufacturerProductDesignation}
                 testId="datarow-manufacturer-product-designation"
                 withBase64={false}
             />
+            <DataRow
+                title="Article number" // Translation ??
+                value={overviewData?.manufacturerArticleNumber}
+                testId="datarow-manufacturer-article-number"
+                withBase64={false}
+            />
+            <DataRow
+                title="Order Code" // Translation ??
+                value={overviewData?.manufacturerOrderCode}
+                testId="datarow-manufacturer-order-code"
+                withBase64={false}
+            />
+            <DataRow
+                title="Manufacturer Name" // Translation ??
+                value={overviewData?.manufacturerName}
+                testId="datarow-manufacturer-name"
+                withBase64={false}
+            />
+
         </Box>
     );
 
@@ -234,15 +265,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                 testId="datarow-manufacturer-product-type"
                 withBase64={false}
             />
-            {overviewData?.productClassifications?.map((classification, _) => (
-                <DataRow
-                    key={classification.ProductClassId}
-                    title={classification.ProductClassificationSystem}
-                    value={classification.ProductClassId}
-                    testId="datarow-eclass"
-                    withBase64={false}
-                />
-            ))}
         </Box>
     );
 
@@ -308,6 +330,11 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                     </>
                 )}
             </CardContent>
+            {overviewData?.productClassifications && overviewData.productClassifications.length > 0 && (
+                <ProductClassificationInfoBox
+                    productClassifications={overviewData.productClassifications}
+                />
+            )}
         </Card>
     );
 }
