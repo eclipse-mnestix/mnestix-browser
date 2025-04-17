@@ -5,6 +5,7 @@ import testData from './RbacRulesService.data.json';
 import ServiceReachable from 'test-utils/TestUtils';
 import { SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 const correctRules = testData.correct as JsonValue;
 const warningRules = testData.warning as JsonValue;
@@ -44,17 +45,18 @@ describe('RbacRulesService', () => {
     });
 
     describe('create', () => {
-        it('should convert rule to the correct idShort', () => {
+        it('should convert rule to the correct idShort', async () => {
             const subApiMock = {
                 postSubmodelElement: jest.fn().mockResolvedValue({
                     isSuccess: true,
                     result: testData.correct.submodelElements[0],
                 } satisfies ApiResponseWrapper<unknown>),
+                getSubmodelById: () => Promise.resolve({ isSuccess: true, result: testData.correct }),
             } as unknown as SubmodelRepositoryApi;
 
             const service = RbacRulesService.createNull(subApiMock);
 
-            service.createRule({
+            await service.createRule({
                 action: 'DELETE',
                 role: 'test',
                 targetInformation: { '@type': 'aas', aasIds: ['*'] },
@@ -67,6 +69,45 @@ describe('RbacRulesService', () => {
                         'dGVzdERFTEVURW9yZy5lY2xpcHNlLmRpZ2l0YWx0d2luLmJhc3l4LmFhc3JlcG9zaXRvcnkuZmVhdHVyZS5hdXRob3JpemF0aW9uLkFhc1RhcmdldEluZm9ybWF0aW9u',
                 }),
             );
+        });
+        it('should show error if idShort already exists', async () => {
+            const service = RbacRulesService.createNull(
+                SubmodelRepositoryApi.createNull('', [submodelFromJsonable(correctRules).mustValue()]),
+            );
+
+            const res = await service.createRule({
+                role: 'admin',
+                action: 'READ',
+                targetInformation: { '@type': 'aas', aasIds: ['*'] },
+            });
+
+            if (res.isSuccess) {
+                fail('Expected error, but got success');
+            }
+            expect(res.errorCode).toBe(ApiResultStatus.CONFLICT);
+        });
+    });
+
+    describe('update', () => {
+        it('should show error if idShort already exists', async () => {
+            const service = RbacRulesService.createNull(
+                SubmodelRepositoryApi.createNull('', [submodelFromJsonable(correctRules).mustValue()]),
+            );
+
+            const res = await service.deleteAndCreate(
+                // admin DELETE submodel
+                'YWRtaW5ERUxFVEVvcmcuZWNsaXBzZS5kaWdpdGFsdHdpbi5iYXN5eC5hYXNyZXBvc2l0b3J5LmZlYXR1cmUuYXV0aG9yaXphdGlvbi5BYXNUYXJnZXRJbmZvcm1hdGlvbg==',
+                {
+                    role: 'admin',
+                    action: 'READ',
+                    targetInformation: { '@type': 'aas', aasIds: ['*'] },
+                },
+            );
+
+            if (res.isSuccess) {
+                fail('Expected error, but got success');
+            }
+            expect(res.errorCode).toBe(ApiResultStatus.CONFLICT);
         });
     });
 });

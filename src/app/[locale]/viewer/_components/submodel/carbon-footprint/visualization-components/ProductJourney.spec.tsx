@@ -2,7 +2,7 @@ import { CustomRender } from 'test-utils/CustomRender';
 import { screen } from '@testing-library/react';
 import { expect } from '@jest/globals';
 import { AddressPerLifeCyclePhase, ProductJourney } from './ProductJourney';
-import { ProductLifecycleStage } from 'lib/enums/ProductLifecycleStage.enum';
+import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/ProductLifecycleStage.enum';
 
 window.ResizeObserver =
     window.ResizeObserver ||
@@ -39,7 +39,6 @@ const secondAddress: AddressPerLifeCyclePhase = {
 
 describe('ProductJourney', () => {
     it('renders the ProductJourney', async () => {
-
         CustomRender(<ProductJourney addressesPerLifeCyclePhase={[firstAddress, secondAddress]} />);
         const map = screen.getByTestId('product-journey-box');
         expect(map).toBeDefined();
@@ -53,7 +52,6 @@ describe('ProductJourney', () => {
     });
 
     it('shows positions on the map', async () => {
-
         CustomRender(<ProductJourney addressesPerLifeCyclePhase={[firstAddress, secondAddress]} />);
 
         const map = screen.getByTestId('product-journey-box');

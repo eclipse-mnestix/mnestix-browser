@@ -18,11 +18,11 @@ export default function AasList(props: AasListProps) {
     const MAX_SELECTED_ITEMS = 3;
 
     const tableHeaders = [
-        { label: t('picture') },
-        { label: t('manufacturerHeading') },
-        { label: t('productDesignationHeading') },
-        { label: t('assetIdHeading') },
-        { label: t('aasIdHeading') },
+        { label: t('listHeader.picture') },
+        { label: t('listHeader.manufacturer') },
+        { label: t('listHeader.productDesignation') },
+        { label: t('listHeader.assetId') },
+        { label: t('listHeader.aasId') },
         '',
     ];
 

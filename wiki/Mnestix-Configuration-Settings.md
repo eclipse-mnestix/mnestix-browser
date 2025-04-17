@@ -4,14 +4,15 @@ Mnestix provides the following configuration options. You can adapt the values i
 
 #### Basics
 
-| Name                        | Default value | Description                                                                                               |
-| --------------------------- | ------------- | --------------------------------------------------------------------------------------------------------- |
-| `AAS_REPO_API_URL`          |               | Default AAS Repository to display when AAS Id is not in AAS Registry                                      |
-| `SUBMODEL_REPO_API_URL`     |               | Default Submodel Repository to display when Submodel Id is not in Submodel Registry                       |
-| `DISCOVERY_API_URL`         |               | Address of the Discovery Service to find an AAS for an Asset                                              |
-| `REGISTRY_API_URL`          |               | Address of the AAS Registry Service to retrieve the related descriptor for an AAS                         |
-| `SUBMODEL_REGISTRY_API_URL` |               | Address of the Submodel Registry Service to retrieve the related descriptor for a Submodel                |
-| `MNESTIX_BACKEND_API_URL`   |               | Mnestix Backend with a lot of business comfort features like the Repository-Proxy or the Template builder |
+| Name                        | Default value | Description                                                                                                        |
+| --------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `AAS_REPO_API_URL`          |               | Default AAS Repository to display when AAS Id is not in AAS Registry                                               |
+| `SUBMODEL_REPO_API_URL`     |               | Default Submodel Repository to display when Submodel Id is not in Submodel Registry                                |
+| `DISCOVERY_API_URL`         |               | Address of the Discovery Service to find an AAS for an Asset                                                       |
+| `REGISTRY_API_URL`          |               | Address of the AAS Registry Service to retrieve the related descriptor for an AAS                                  |
+| `SUBMODEL_REGISTRY_API_URL` |               | Address of the Submodel Registry Service to retrieve the related descriptor for a Submodel                         |
+| `MNESTIX_BACKEND_API_URL`   |               | Mnestix Backend with a lot of business comfort features like the Repository-Proxy or the Template builder          |
+| `LOG_LEVEL`                 | "info"        | Server side log level of Mnestix Browser. "fatal" or "error" or "warn" or "info" or "debug" or "trace" or "silent" |
 
 #### Features
 
@@ -21,6 +22,7 @@ Mnestix provides the following configuration options. You can adapt the values i
 | `TRANSFER_FEATURE_FLAG`       | false         | Enables or disables the Transfer Feature in the frontend. If enabled, it is possible to import a viewed AAS to a configured repository. This feature is currently being developed.            |
 | `AUTHENTICATION_FEATURE_FLAG` | false         | Enable or disable the authentication in the frontend. (Needs the Mnestix Backend to work)                                                                                                     |
 | `COMPARISON_FEATURE_FLAG`     | false         | Enables or disables the comparison feature.                                                                                                                                                   |
+| `PRODUCT_VIEW_FEATURE_FLAG`   | false         | Enables or disables the product view feature.                                                                                                                                                 |
 | `WHITELIST_FEATURE_FLAG`      | false         | Enables or disables the feature for showing/hiding specific submodels.                                                                                                                        |
 | `SUBMODEL_WHITELIST`          |               | This variable can be used to specify a list of submodel semantic ids in order to show them when the `WHITELIST_FEATURE_FLAG` is set to true.                                                  |
 
@@ -48,12 +50,12 @@ Mnestix provides the following configuration options. You can adapt the values i
 | `IMPRINT_URL`                         |                         | Address that will be used in the imprint link. Will only show the link, if a value has been set.                                                                                                 |
 | `DATA_PRIVACY_URL`                    |                         | Address that will be used in the data privacy link. Will only show the link, if a value has been set.                                                                                            |
 
-#### How to set a custom logo
+### How to set a custom logo
 
 There are multiple ways to set a logo. You can choose between either of the following options depending on your
 preference:
 
-##### Option 1: Mount a logo
+#### Option 1: Mount a logo
 
 First you need to mount your logo to the container by adding it to the docker compose file:
 
@@ -77,7 +79,7 @@ environment:
 Only image mime types are allowed.
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 
-##### Option 2: Base64 encoded logo
+#### Option 2: Base64 encoded logo
 
 This version overwrites the previous setting.
 To use this, provide a base64 encoded image in the environment variable:
@@ -87,7 +89,7 @@ environment:
     THEME_BASE64_LOGO: '<<BASE64_ENCODED_IMAGE>>'
 ```
 
-##### Option 3: Link to a hosted logo
+#### Option 3: Link to a hosted logo
 
 This version overwrites both of the previous settings.
 To use this just set an environment variable to a link hosted that is publicly accessible:

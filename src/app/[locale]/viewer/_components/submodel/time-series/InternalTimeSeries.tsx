@@ -8,13 +8,12 @@ import {
 } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesUtil';
 import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import { StyledDataRow } from 'components/basics/StyledDataRow';
-import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
-import { useTranslations } from 'next-intl';
-import { useIntl } from 'react-intl';
+import { TimeSeriesSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesSubmodelElementSemanticId.enum';
+import { useLocale, useTranslations } from 'next-intl';
 
 export function InternalTimeSeries(props: { submodelElement: SubmodelElementCollection }) {
-    const t = useTranslations('validation.errors');
-    const intl = useIntl();
+    const t = useTranslations();
+    const locale = useLocale();
     const [data, setData] = useState<TimeSeriesDataSet>({ names: [], points: [] });
     const [error, setError] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -34,14 +33,14 @@ export function InternalTimeSeries(props: { submodelElement: SubmodelElementColl
 
     const name = extractIntlValueBySemanticId(
         props.submodelElement,
-        SubmodelElementSemanticId.TimeSeriesSegmentName,
-        intl,
+        TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegmentName,
+        locale,
     );
 
     const description = extractIntlValueBySemanticId(
         props.submodelElement,
-        SubmodelElementSemanticId.TimeSeriesSegmentDescription,
-        intl,
+        TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegmentDescription,
+        locale,
     );
 
     if (isLoading) return <CircularProgress />;
@@ -50,7 +49,7 @@ export function InternalTimeSeries(props: { submodelElement: SubmodelElementColl
         return (
             <Box sx={{ display: 'flex', justifyContent: 'center', padding: 2 }}>
                 <Alert icon={false} severity="warning">
-                    {t('influxError')}
+                    {t('pages.aasViewer.errors.influxError')}
                 </Alert>
             </Box>
         );

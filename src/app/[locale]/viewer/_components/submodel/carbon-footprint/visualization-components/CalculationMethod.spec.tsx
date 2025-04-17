@@ -1,6 +1,6 @@
-import { screen } from '@testing-library/react';
 import { expect } from '@jest/globals';
-import { CustomRenderReactIntl } from 'test-utils/CustomRenderReactIntl';
+import { screen } from '@testing-library/react';
+import { CustomRender } from 'test-utils/CustomRender';
 import {
     CalculationMethod,
     LinkGHG,
@@ -8,7 +8,7 @@ import {
 
 describe('Calculation Method', () => {
     it('should use correct style', async () => {
-        CustomRenderReactIntl(<CalculationMethod calculationMethod="Artificial Goon" />);
+        CustomRender(<CalculationMethod calculationMethod="Artificial Goon" />);
         const component = screen.getByTestId('co2-calculation-method-text');
         expect(component).toBeDefined();
         expect(component).toBeInTheDocument();
@@ -18,13 +18,13 @@ describe('Calculation Method', () => {
     });
 
     it('should display the method', async () => {
-        CustomRenderReactIntl(<CalculationMethod calculationMethod="Artificial Goon" />);
+        CustomRender(<CalculationMethod calculationMethod="Artificial Goon" />);
         const component = screen.getByTestId('co2-calculation-method-text');
         expect(component).toHaveTextContent('Artificial Goon');
     });
 
     it('should link to GHG website', async () => {
-        CustomRenderReactIntl(<CalculationMethod calculationMethod="GHG Protocol" />);
+        CustomRender(<CalculationMethod calculationMethod="GHG Protocol" />);
         const component = screen.getByTestId('co2-calculation-method-link');
         expect(component).toBeDefined();
         expect(component).toBeInTheDocument();

@@ -9,5 +9,6 @@
         "src/locale",
         "src/lib/i18n",
         "src/user-plugins/locale"
-    ]
+    ],
+    "i18n-ally.keystyle": "nested"
 }

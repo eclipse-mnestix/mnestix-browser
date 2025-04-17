@@ -1,4 +1,4 @@
-import { AssetAdministrationShellDescriptor, Endpoint, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
+import { AssetAdministrationShellDescriptor, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { AssetAdministrationShell } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import { IDiscoveryServiceApi } from 'lib/api/discovery-service-api/discoveryServiceApiInterface';
 import { IRegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApiInterface';
@@ -55,7 +55,7 @@ export class AasSearcher {
         const discoveryServiceClient = envs.DISCOVERY_API_URL
             ? DiscoveryServiceApi.create(envs.DISCOVERY_API_URL, mnestixFetch(), log)
             : null;
-        const searcherLogger = log?.child({ Service: AasSearcher.name });
+        const searcherLogger = log?.child({ Service: 'AasSearcher' });
         return new AasSearcher(multipleDataSource, discoveryServiceClient, registryServiceClient, searcherLogger);
     }
 
@@ -79,7 +79,7 @@ export class AasSearcher {
         const foundOneDiscoveryResult = aasIds.isSuccess && aasIds.result.length === 1;
 
         if (foundMultipleDiscoveryResults) {
-            return wrapSuccess(this.createDiscoveryRedirectResult(searchInput));
+            return wrapSuccess(this.createMultipleAssetIdResult(searchInput));
         }
 
         const aasId = foundOneDiscoveryResult ? aasIds.result[0] : searchInput;
@@ -111,7 +111,7 @@ export class AasSearcher {
                 return wrapSuccess(this.createAasResult(potentiallyMultipleAas.result[0].searchResult, data));
             }
             if (potentiallyMultipleAas.result!.length > 1) {
-                return wrapSuccess(this.createDiscoveryRedirectResult(searchInput));
+                return wrapSuccess(this.createMultipleAasIdResult(searchInput));
             }
         }
         return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'No AAS found for the given ID');
@@ -148,26 +148,14 @@ export class AasSearcher {
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Discovery service is not defined');
         const response = await this.discoveryServiceClient.getAasIdsByAssetId(searchAssetId);
         if (response.isSuccess) {
-            logResponseDebug(
-                this.log,
-                this.performAasDiscoverySearch.name,
-                'Executing AAS discovery search',
-                response,
-                {
-                    Requested_Asset_ID: searchAssetId,
-                },
-            );
+            logResponseDebug(this.log, 'performAasDiscoverySearch', 'Executing AAS discovery search', response, {
+                Requested_Asset_ID: searchAssetId,
+            });
             return wrapSuccess(response.result);
         }
-        logResponseDebug(
-            this.log,
-            this.performAasDiscoverySearch.name,
-            'AAS discovery search unsuccessful',
-            response,
-            {
-                Requested_Asset_ID: searchAssetId,
-            },
-        );
+        logResponseDebug(this.log, 'performAasDiscoverySearch', 'AAS discovery search unsuccessful', response, {
+            Requested_Asset_ID: searchAssetId,
+        });
         return wrapErrorCode(
             ApiResultStatus.NOT_FOUND,
             `Could not find the asset '${searchAssetId}' in the discovery service`,
@@ -182,9 +170,17 @@ export class AasSearcher {
         };
     }
 
-    private createDiscoveryRedirectResult(searchInput: string): AasSearchResult {
+    private createMultipleAssetIdResult(searchInput: string): AasSearchResult {
         return {
             redirectUrl: `/viewer/discovery?assetId=${searchInput}`,
+            aas: null,
+            aasData: null,
+        };
+    }
+
+    private createMultipleAasIdResult(searchInput: string): AasSearchResult {
+        return {
+            redirectUrl: `/viewer/registry?aasId=${searchInput}`,
             aas: null,
             aasData: null,
         };
@@ -195,32 +191,20 @@ export class AasSearcher {
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'AAS Registry service is not defined');
         const shellDescription = await this.registryService.getAssetAdministrationShellDescriptorById(searchAasId);
         if (!shellDescription.isSuccess) {
-            logResponseDebug(
-                this.log,
-                this.performAasRegistrySearch.name,
-                'Registry lookup unsuccessful',
-                shellDescription,
-                {
-                    Requested_ID: searchAasId,
-                },
-            );
+            logResponseDebug(this.log, 'performAasRegistrySearch', 'Registry lookup unsuccessful', shellDescription, {
+                Requested_ID: searchAasId,
+            });
             return wrapErrorCode(
                 ApiResultStatus.NOT_FOUND,
                 `Could not find the AAS '${searchAasId}' in the registry service`,
             );
         }
-        const endpoints = shellDescription.result.endpoints as Endpoint[];
-        const submodelDescriptors = shellDescription.result.submodelDescriptors as SubmodelDescriptor[];
+        const endpoints = shellDescription.result.endpoints ?? [];
+        const submodelDescriptors = shellDescription.result.submodelDescriptors ?? [];
         const endpointUrls = endpoints.map((endpoint) => new URL(endpoint.protocolInformation.href));
-        logResponseDebug(
-            this.log,
-            this.performAasRegistrySearch.name,
-            'Registry search successful',
-            shellDescription,
-            {
-                Requested_ID: searchAasId,
-            },
-        );
+        logResponseDebug(this.log, 'performAasRegistrySearch', 'Registry search successful', shellDescription, {
+            Requested_ID: searchAasId,
+        });
         return wrapSuccess<RegistrySearchResult>({
             endpoints: endpointUrls,
             submodelDescriptors: submodelDescriptors,
@@ -232,17 +216,11 @@ export class AasSearcher {
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'AAS Registry service is not defined');
         const response = await this.registryService.getAssetAdministrationShellFromEndpoint(endpoint);
         if (!response.isSuccess) {
-            logResponseDebug(
-                this.log,
-                this.getAasFromEndpoint.name,
-                'Registry lookup unsuccessful',
-                response,
-                {
-                    endpoint: endpoint.toString(),
-                },
-            );
+            logResponseDebug(this.log, 'getAasFromEndpoint', 'Registry lookup unsuccessful', response, {
+                endpoint: endpoint.toString(),
+            });
         }
-        logResponseDebug(this.log, this.getAasFromEndpoint.name, 'Registry search successful', response, {
+        logResponseDebug(this.log, 'getAasFromEndpoint', 'Registry search successful', response, {
             endpoint: endpoint.toString(),
         });
         return response;
@@ -253,7 +231,7 @@ export class AasSearcher {
         if (!response.isSuccess) {
             logResponseDebug(
                 this.log,
-                this.getAasFromDefaultRepository.name,
+                'getAasFromDefaultRepository',
                 'Default repository search unsuccessful',
                 response,
                 {
@@ -263,7 +241,7 @@ export class AasSearcher {
         } else {
             logResponseDebug(
                 this.log,
-                this.getAasFromDefaultRepository.name,
+                'getAasFromDefaultRepository',
                 'Default repository search successful',
                 response,
                 {
@@ -281,7 +259,7 @@ export class AasSearcher {
         if (!response.isSuccess) {
             logResponseDebug(
                 this.log,
-                this.getAasFromAllRepositories.name,
+                'getAasFromAllRepositories',
                 'Configured repositories search unsuccessful ',
                 response,
                 {
@@ -291,7 +269,7 @@ export class AasSearcher {
         } else {
             logResponseDebug(
                 this.log,
-                this.getAasFromAllRepositories.name,
+                'getAasFromAllRepositories',
                 'Configured repositories search successful',
                 response,
                 {

@@ -33,7 +33,7 @@ export default function Page() {
     if (env.MNESTIX_BACKEND_API_URL) {
         const settingsTabToAdd = {
             id: settingsPageTypes[settingsPageTypes.ID_STRUCTURE],
-            label: t('idStructure'),
+            label: t('idStructure.title'),
         };
         settingsTabItems.splice(0, 0, settingsTabToAdd);
     }

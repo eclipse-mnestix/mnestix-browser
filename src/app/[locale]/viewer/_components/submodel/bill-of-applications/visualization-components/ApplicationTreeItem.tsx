@@ -46,7 +46,7 @@ const CustomContent = React.forwardRef(function CustomContent(props: Application
     const isEntity = data && getKeyType(data) === KeyTypes.Entity;
     const [aas] = useAasState();
     const assetId = aas?.assetInformation.globalAssetId;
-    const t = useTranslations('common');
+    const t = useTranslations('pages.aasViewer');
 
     const dataIcon = hasChildEntities ? (
         <AssetIcon fontSize="small" color="primary" />
@@ -109,7 +109,7 @@ const CustomContent = React.forwardRef(function CustomContent(props: Application
                                 onClick={handleAssetNavigateClick}
                                 data-testid="view-asset-button"
                             >
-                                {t('actions.open')}
+                                {t('submodels.actions.open')}
                             </Button>
                         </>
                     )}

@@ -44,7 +44,7 @@ export function CustomTemplateItem(props: CustomTemplateItemProps) {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const menuOpen = Boolean(anchorEl);
-    const t = useTranslations('common.actions');
+    const t = useTranslations('pages.templates');
 
     const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
         event.nativeEvent.stopImmediatePropagation();
@@ -109,13 +109,13 @@ export function CustomTemplateItem(props: CustomTemplateItemProps) {
                         <ListItemIcon>
                             <Edit fontSize="small" />
                         </ListItemIcon>
-                        {t('edit')}
+                        {t('actions.edit')}
                     </MenuItem>
                     <MenuItem onClick={handleDeleteClick}>
                         <ListItemIcon>
                             <Delete fontSize="small" />
                         </ListItemIcon>
-                        {t('delete')}
+                        {t('actions.delete')}
                     </MenuItem>
                 </Menu>
             </StyledCustomTemplateItem>

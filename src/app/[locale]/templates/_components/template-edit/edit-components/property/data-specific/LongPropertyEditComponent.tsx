@@ -11,7 +11,7 @@ interface LongPropertyEditComponentProps {
 export function LongPropertyEditComponent(props: LongPropertyEditComponentProps) {
     const [data, setData] = useState(props.dataValue);
     const [isValidInput, setIsValidInput] = useState(true);
-    const t = useTranslations();
+    const t = useTranslations('pages.templates');
 
     const onValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (isValidLong(event.target.value) || event.target.value === '') {
@@ -27,7 +27,7 @@ export function LongPropertyEditComponent(props: LongPropertyEditComponentProps)
 
     return (
         <TextField
-            label={t('common.labels.value')}
+            label={t('labels.value')}
             value={data}
             onChange={onValueChange}
             fullWidth

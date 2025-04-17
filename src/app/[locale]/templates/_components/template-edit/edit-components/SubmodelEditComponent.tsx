@@ -11,7 +11,7 @@ interface SubmodelEditComponentProps {
 
 export function SubmodelEditComponent(props: SubmodelEditComponentProps) {
     const [data, setData] = useState(props.data);
-    const t = useTranslations('common');
+    const t = useTranslations('pages.templates');
 
     useEffect(() => {
         setData(props.data);

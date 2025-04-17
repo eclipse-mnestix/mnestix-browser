@@ -63,7 +63,7 @@ export default function Page() {
     const [defaultTemplates, setDefaultTemplates] = useState<Submodel[]>();
     const env = useEnv();
     const { showError } = useShowError();
-    const t = useTranslations();
+    const t = useTranslations('pages.templates');
 
     const fetchCustom = async () => {
         if (!id) return;
@@ -163,7 +163,7 @@ export default function Page() {
         try {
             await deleteCustomTemplateById(id);
             notificationSpawner.spawn({
-                message: t('pages.templates.templateDeletedSuccessfully'),
+                message: t('templateDeletedSuccessfully'),
                 severity: 'success',
             });
             navigate.push('/templates');
@@ -293,7 +293,7 @@ export default function Page() {
     const handleSuccessfulSave = () => {
         notificationSpawner.spawn({
             severity: 'success',
-            message: t('common.messages.changesSavedSuccessfully'),
+            message: t('messages.changesSavedSuccessfully'),
         });
         setChangesMade(false);
         setWasRecentlySaved(true);
@@ -324,7 +324,7 @@ export default function Page() {
                 <Breadcrumbs
                     links={[
                         {
-                            label: t('pages.templates.title'),
+                            label: t('title'),
                             path: '/templates',
                         },
                     ]}
@@ -355,13 +355,13 @@ export default function Page() {
                                 onClick={() => {
                                     navigator.clipboard.writeText(id || '');
                                     notificationSpawner.spawn({
-                                        message: t('pages.templates.templateIdCopied', { id }),
+                                        message: t('templateIdCopied', { id }),
                                         severity: 'success',
                                     });
                                 }}
                                 style={{ marginRight: '1rem' }}
                             >
-                                {t('pages.templates.copyTemplateId')}
+                                {t('copyTemplateId')}
                             </Button>
                             <Button
                                 variant="contained"
@@ -370,7 +370,7 @@ export default function Page() {
                                 loading={isSaving}
                                 onClick={onSaveChanges}
                             >
-                                {t('common.actions.saveChanges')}
+                                {t('actions.saveChanges')}
                             </Button>
                             <IconButton sx={{ ml: 1 }} onClick={handleMenuClick} className="more-button">
                                 <MoreVert />
@@ -380,13 +380,13 @@ export default function Page() {
                                     <ListItemIcon>
                                         <Restore fontSize="small" />
                                     </ListItemIcon>
-                                    {t('common.actions.revertChanges')}
+                                    {t('actions.revertChanges')}
                                 </MenuItem>
                                 <MenuItem onClick={handleDeleteClick}>
                                     <ListItemIcon>
                                         <Delete fontSize="small" />
                                     </ListItemIcon>
-                                    {t('common.actions.delete')}
+                                    {t('actions.delete')}
                                 </MenuItem>
                             </Menu>
                         </Box>

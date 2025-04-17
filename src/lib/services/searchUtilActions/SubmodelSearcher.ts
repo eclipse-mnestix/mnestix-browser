@@ -19,7 +19,7 @@ export class SubmodelSearcher {
     static create(log?: typeof logger): SubmodelSearcher {
         const getRegistryClient = (baseUrl: string) => SubmodelRegistryServiceApi.create(baseUrl, mnestixFetch());
         const multipleDataSource = RepositorySearchService.create(log);
-        const submodelLogger = log?.child({ Service: SubmodelSearcher.name });
+        const submodelLogger = log?.child({ Service: 'SubmodelSearcher' });
         return new SubmodelSearcher(getRegistryClient, multipleDataSource, submodelLogger);
     }
 
@@ -60,7 +60,7 @@ export class SubmodelSearcher {
         if (response.isSuccess) {
             logResponseDebug(
                 this.log,
-                this.getSubmodelDescriptorById.name,
+                'getSubmodelDescriptorById',
                 'Querying Submodel Descriptor from registry successful',
                 response,
             );
@@ -69,7 +69,7 @@ export class SubmodelSearcher {
             if (response.errorCode === ApiResultStatus.UNKNOWN_ERROR) {
                 logResponseDebug(
                     this.log,
-                    this.getSubmodelDescriptorById.name,
+                    'getSubmodelDescriptorById',
                     'Querying Submodel Descriptor from registry unsuccessful',
                     response,
                 );
@@ -77,7 +77,7 @@ export class SubmodelSearcher {
             if (response.errorCode === ApiResultStatus.NOT_FOUND) {
                 logResponseDebug(
                     this.log,
-                    this.getSubmodelDescriptorById.name,
+                    'getSubmodelDescriptorById',
                     'Querying Submodel Descriptor from registry unsuccessful',
                     response,
                 );
@@ -91,7 +91,7 @@ export class SubmodelSearcher {
         if (response.isSuccess) {
             logResponseDebug(
                 this.log,
-                this.getSubmodelFromAllRepos.name,
+                'getSubmodelFromAllRepos',
                 'Querying Submodel from repositories successful',
                 response,
             );
@@ -100,7 +100,7 @@ export class SubmodelSearcher {
         if (response.errorCode === ApiResultStatus.NOT_FOUND) {
             logResponseDebug(
                 this.log,
-                this.getSubmodelFromAllRepos.name,
+                'getSubmodelFromAllRepos',
                 'Querying Submodel from repositories unsuccessful',
                 response,
             );
@@ -113,7 +113,7 @@ export class SubmodelSearcher {
         if (response.isSuccess) {
             logResponseDebug(
                 this.log,
-                this.getSubmodelFromEndpoint.name,
+                'getSubmodelFromEndpoint',
                 'Querying Submodel from registry endpoint successful',
                 response,
                 { Endpoint: endpoint },
@@ -122,7 +122,7 @@ export class SubmodelSearcher {
         }
         logResponseDebug(
             this.log,
-            this.getSubmodelFromEndpoint.name,
+            'getSubmodelFromEndpoint',
             'Querying Submodel from registry endpoint unsuccessful',
             response,
             { Endpoint: endpoint },

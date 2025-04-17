@@ -16,7 +16,7 @@ function getAddressType(type: string, translation: (type: AddressType) => string
     return null;
 }
 
-type ContactType = keyof typeof enMessages.components.ContactInformation.contactTypes;
+type ContactType = keyof typeof enMessages.components.contactInformation.contactTypes;
 
 function getContactType(type: string, translation: (type: ContactType) => string) {
     if (type in enMessages.components.addressComponent.addressTypes) {
@@ -31,7 +31,7 @@ export function AddressElement({ el, index }: { el: IDataElement; index?: number
     const locale = useLocale();
 
     const actualAddress = getTranslationValue(el, locale);
-    const addressType = el.idShort ? getAddressType(el.idShort, addressTypes) ?? el.idShort : '';
+    const addressType = el.idShort ? (getAddressType(el.idShort, addressTypes) ?? el.idShort) : '';
 
     return (
         <Box key={index} sx={{ display: 'flex' }}>
@@ -45,15 +45,15 @@ export function AddressElement({ el, index }: { el: IDataElement; index?: number
 
 // Build Phone number part
 export function PhoneElement({ el, index }: { el: SubmodelElementCollection; index?: number }) {
-    const contactTypes = useTranslations('components.ContactInformation.contactTypes');
+    const contactTypes = useTranslations('components.contactInformation.contactTypes');
     const locale = useLocale();
 
     if (!el.value) {
         return null;
     }
 
-    const actualNumber = findValueByIdShort(el.value, 'TelephoneNumber', locale);
-    const typeOfNumber = findValueByIdShort(el.value, 'TypeOfTelephone', locale);
+    const actualNumber = findValueByIdShort(el.value, 'TelephoneNumber', null, locale);
+    const typeOfNumber = findValueByIdShort(el.value, 'TypeOfTelephone', null, locale);
     const addressType = typeOfNumber ? getContactType(typeOfNumber, contactTypes) : '';
 
     return (
@@ -74,15 +74,15 @@ export function PhoneElement({ el, index }: { el: SubmodelElementCollection; ind
 
 // Build Fax part
 export function FaxElement({ el, index }: { el: SubmodelElementCollection; index?: number }) {
-    const contactTypes = useTranslations('components.ContactInformation.contactTypes');
+    const contactTypes = useTranslations('components.contactInformation.contactTypes');
     const locale = useLocale();
 
     if (!el.value) {
         return null;
     }
 
-    const actualNumber = findValueByIdShort(el.value, 'FaxNumber', locale);
-    const typeOfNumber = findValueByIdShort(el.value, 'TypeOfFaxNumber', locale);
+    const actualNumber = findValueByIdShort(el.value, 'FaxNumber', null, locale);
+    const typeOfNumber = findValueByIdShort(el.value, 'TypeOfFaxNumber', null, locale);
     const addressType = typeOfNumber ? getContactType(typeOfNumber, contactTypes) : '';
 
     return (
@@ -99,15 +99,15 @@ export function FaxElement({ el, index }: { el: SubmodelElementCollection; index
 
 // Build Mail part
 export function EmailElement({ el, index }: { el: SubmodelElementCollection; index?: number }) {
-    const contactTypes = useTranslations('components.ContactInformation.contactTypes');
+    const contactTypes = useTranslations('components.contactInformation.contactTypes');
     const locale = useLocale();
 
     if (!el.value) {
         return null;
     }
 
-    const actualAddress = findValueByIdShort(el.value, 'EmailAddress', locale);
-    const typeOfEmail = findValueByIdShort(el.value, 'TypeOfEmailAddress', locale);
+    const actualAddress = findValueByIdShort(el.value, 'EmailAddress', null, locale);
+    const typeOfEmail = findValueByIdShort(el.value, 'TypeOfEmailAddress', null, locale);
     const addressType = typeOfEmail ? getContactType(typeOfEmail, contactTypes) : '';
 
     return (

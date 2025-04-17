@@ -1,11 +1,10 @@
 import { alpha, Box, Dialog, DialogProps, Paper, styled, Typography } from '@mui/material';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
-import { useIntl } from 'react-intl';
 import { ChooseTemplateItem } from './ChooseTemplateItem';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
-import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
 
 interface ChooseTemplateDialogProps extends DialogProps {
     defaultTemplates?: Submodel[];
@@ -27,7 +26,7 @@ const StyledLoadingOverlay = styled(Box)(({ theme }) => ({
 }));
 
 export function ChooseTemplateDialog(props: ChooseTemplateDialogProps) {
-    const intl = useIntl();
+    const locale = useLocale();
     const t = useTranslations('pages.templates');
     const { defaultTemplates, isLoading, handleTemplateClick, ...other } = props;
     return (
@@ -43,16 +42,16 @@ export function ChooseTemplateDialog(props: ChooseTemplateDialogProps) {
                     {t('chooseAStartingPoint')}
                 </Typography>
                 <Box sx={{ my: 2 }}>
-                    {defaultTemplates?.map((t, i) => {
+                    {defaultTemplates?.map((template, i) => {
                         return (
                             <ChooseTemplateItem
                                 key={i}
-                                label={`${t.idShort} V${t.administration?.version ?? '-'}.${
-                                    t.administration?.revision ?? '-'
+                                label={`${template.idShort} V${template.administration?.version ?? '-'}.${
+                                    template.administration?.revision ?? '-'
                                 }`}
-                                subLabel={t.semanticId?.keys?.[0]?.value}
-                                description={t.description ? getTranslationText(t.description, intl) : undefined}
-                                onClick={() => handleTemplateClick && handleTemplateClick(t)}
+                                subLabel={template.semanticId?.keys?.[0]?.value}
+                                description={template.description ? getTranslationText(template.description, locale) : undefined}
+                                onClick={() => handleTemplateClick && handleTemplateClick(template)}
                             />
                         );
                     })}

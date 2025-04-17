@@ -9,19 +9,35 @@ import {
     Submodel,
     SubmodelElementCollection,
 } from '@aas-core-works/aas-core3.0-typescript/types';
-import { IntlShape } from 'react-intl';
 import { idEquals } from './IdValidationUtil';
 import { getKeyType } from 'lib/util/KeyTypeUtil';
+import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
+import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
+import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 
-export function getTranslationTextNext(element: MultiLanguageProperty, locale: string): string | null {
-    const value = element.value?.find((el) => el.language == locale)?.text;
-    return value || element.value?.at(0)?.text || null;
+/**
+ * Gets the translated text from either a MultiLanguageProperty or LangStringTextType array
+ * @param element - The element containing translations (MultiLanguageProperty or LangStringTextType[])
+ * @param locale - The locale to get the translation for
+ * @returns The translated text for the given locale, falling back to the first available translation, or null
+ */
+export function getTranslationText(
+    element: MultiLanguageProperty | IAbstractLangString[] | undefined,
+    locale: string,
+): string {
+    const langStrings = Array.isArray(element) ? element : element?.value;
+
+    if (!langStrings?.length) {
+        return '';
+    }
+
+    return langStrings.find((el) => el.language === locale)?.text || langStrings[0]?.text;
 }
 
 export function getTranslationValue(element: IDataElement, locale: string): string | null {
     switch (getKeyType(element)) {
         case KeyTypes.MultiLanguageProperty:
-            return getTranslationTextNext(element as MultiLanguageProperty, locale);
+            return getTranslationText(element as MultiLanguageProperty, locale);
         case KeyTypes.Property:
             return (element as Property).value ?? null;
         default:
@@ -32,14 +48,15 @@ export function getTranslationValue(element: IDataElement, locale: string): stri
 export function findSubmodelElementByIdShort(
     elements: ISubmodelElement[] | null,
     idShort: string | null,
+    semanticId: SubmodelSemanticIdEnum | SubmodelElementSemanticIdEnum | null,
 ): ISubmodelElement | null {
     if (!elements) return null;
     for (const el of elements) {
-        if (el.idShort == idShort) {
+        if (el.idShort == idShort || (el.semanticId?.keys[0] && el.semanticId?.keys[0].value) == semanticId) {
             return el;
         } else if (getKeyType(el) == KeyTypes.SubmodelElementCollection) {
             const innerElements = (el as SubmodelElementCollection).value;
-            const foundElement = findSubmodelElementByIdShort(innerElements, idShort);
+            const foundElement = findSubmodelElementByIdShort(innerElements, idShort, semanticId);
             if (foundElement) {
                 return foundElement;
             }
@@ -51,52 +68,19 @@ export function findSubmodelElementByIdShort(
 export function findValueByIdShort(
     elements: ISubmodelElement[] | null,
     idShort: string | null,
+    semanticId: SubmodelSemanticIdEnum | SubmodelElementSemanticIdEnum | null = null,
     locale: string,
 ): string | null {
-    const element = findSubmodelElementByIdShort(elements, idShort);
+    const element = findSubmodelElementByIdShort(elements, idShort, semanticId);
     if (!element) return null;
     switch (getKeyType(element)) {
         case KeyTypes.MultiLanguageProperty:
-            return getTranslationTextNext(element as MultiLanguageProperty, locale);
+            return getTranslationText(element as MultiLanguageProperty, locale);
         case KeyTypes.Property:
             return (element as Property).value ?? null;
         default:
             return null;
     }
-}
-
-/**
- * @deprecated This function is deprecated and will be removed in future versions.
- * Use getTranslationTextNext instead.
- */
-export function getTranslationText(
-    input: MultiLanguageProperty | IAbstractLangString[] | undefined,
-    intl: IntlShape,
-): string {
-    const userLang = intl.locale || intl.defaultLocale;
-    let langStrings: IAbstractLangString[] | undefined;
-
-    if (Array.isArray(input)) {
-        langStrings = input as IAbstractLangString[];
-    } else {
-        langStrings = (input as MultiLanguageProperty | undefined)?.value ?? [];
-    }
-    // reduce array to object (e.g. {en: 'some string'} )
-    const reducedStrings = langStrings?.reduce(
-        (el, obj) => {
-            if (obj.language && obj.text) {
-                el[obj.language] = obj.text;
-            }
-            return el;
-        },
-        {} as Record<string, string>,
-    );
-
-    return (
-        reducedStrings[userLang] ||
-        // Fallback to first translation
-        reducedStrings[Object.keys(reducedStrings)[0]]
-    );
 }
 
 export function getArrayFromString(v: string): Array<string> {
@@ -141,4 +125,24 @@ export function buildSubmodelElementPath(
 
     newSubmodelElementPath = newSubmodelElementPath.concat(submodelElementIdShort ?? '');
     return newSubmodelElementPath;
+}
+
+/**
+ * Finds a `Submodel` within a list of submodels based on the provided semantic ID or idShort.
+ *
+ * @param submodels - The array of `SubmodelOrIdReference` objects to search through.
+ * @param semanticId - (Optional) The semantic ID to match against the `semanticId` of the submodels.
+ * @param idShort - (Optional) The idShort to match against the `idShort` of the submodels.
+ * @returns The first `Submodel` that matches the given semantic ID or idShort
+ */
+export function findSubmodelByIdOrSemanticId(
+    submodels: SubmodelOrIdReference[],
+    semanticId?: SubmodelSemanticIdEnum,
+    idShort?: string,
+): Submodel | undefined {
+    return submodels.find(
+        (sm) =>
+            (sm.submodel?.semanticId?.keys?.length && sm.submodel?.semanticId?.keys[0].value === semanticId) ||
+            sm.submodel?.idShort === idShort,
+    )?.submodel;
 }
