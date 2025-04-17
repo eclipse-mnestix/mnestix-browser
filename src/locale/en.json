@@ -284,11 +284,20 @@
     "productViewer": {
       "title": "Product",
       "classification": "Classification",
+      "markings": "Product Markings",
+      "productInfo": {
+        "productDesignation": "Manufacturer Product Designation",
+        "articleNumber": "Article Number",
+        "orderCode": "Order Code",
+        "manufacturer": "Manufacturer"
+      },
+      "summary": "Summary",
       "error":{
         "technicalDataSubmodelNotFound": "Technical Data Submodel not found"
       },
       "actions": {
-        "toAasView": "AAS View"
+        "toAasView": "AAS View",
+        "compareButton": "Compare"
       }
     },
     "settings": {

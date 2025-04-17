@@ -1,14 +1,9 @@
-import {
-    Box,
-    Card,
-    CardContent,
-    Skeleton,
-    Typography,
-} from '@mui/material';
+import { Box, Card, CardContent, Skeleton, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { DataRow } from 'components/basics/DataRow';
 import {
-    AssetAdministrationShell, ISubmodelElement,
+    AssetAdministrationShell,
+    ISubmodelElement,
     Submodel,
     SubmodelElementCollection,
 } from '@aas-core-works/aas-core3.0-typescript/types';
@@ -86,7 +81,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                 SubmodelSemanticIdEnum.NameplateV2,
                 'Nameplate',
             );
-            if(nameplateData?.submodelElements) {
+            if (nameplateData?.submodelElements) {
                 prepareNameplateData(nameplateData.submodelElements);
             }
         }
@@ -154,7 +149,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             manufacturerArticleNumber: manufacturerArticleNumber ?? '-',
             manufacturerOrderCode: manufacturerOrderCode ?? '-',
         });
-    }
+    };
 
     const prepareNameplateData = (nameplateSubmodelElements: Array<ISubmodelElement>) => {
         const manufacturerProductRoot = findValueByIdShort(
@@ -187,7 +182,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             manufacturerProductType: manufacturerProductType ?? '-',
             markings: markings as SubmodelElementCollection,
         }));
-    }
+    };
 
     const infoBoxStyle = {
         display: 'flex',
@@ -229,32 +224,33 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                 </Box>
             )}
             <DataRow
-                title="Manufacturer Product Designation" // Translation ??
+                title={t('productInfo.productDesignation')}
                 value={overviewData?.manufacturerProductDesignation}
                 testId="datarow-manufacturer-product-designation"
                 withBase64={false}
             />
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                 <DataRow
-                    title="Article number" // Translation ??
+                    title={t('productInfo.articleNumber')}
                     value={overviewData?.manufacturerArticleNumber}
                     testId="datarow-manufacturer-article-number"
                     withBase64={false}
+                    sx={{ width: '100%' }}
                 />
                 <DataRow
-                    title="Order Code" // Translation ??
+                    title={t('productInfo.orderCode')}
                     value={overviewData?.manufacturerOrderCode}
                     testId="datarow-manufacturer-order-code"
                     withBase64={false}
+                    sx={{ width: '100%' }}
                 />
             </Box>
             <DataRow
-                title="Manufacturer Name" // Translation ??
+                title={t('productInfo.manufacturer')}
                 value={overviewData?.manufacturerName}
                 testId="datarow-manufacturer-name"
                 withBase64={false}
             />
-
         </Box>
     );
 
@@ -292,8 +288,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
         </Box>
     );
 
-    // TODO translations
-    const markings = overviewData?.markings && technicalDataSubmodel?.id && (
+    const markings = (
         <Box sx={infoBoxStyle} data-testid="markings-data">
             {!isAccordion && (
                 <Box display="flex">
@@ -301,18 +296,23 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                         <AssetIcon fontSize="small" color="primary" />
                     </IconCircleWrapper>
                     <Typography sx={titleStyle} variant="h3">
-                        Produktkennzeichnungen
+                        {t('markings')}
                     </Typography>
                 </Box>
             )}
-            <MarkingsComponent submodelElement={overviewData?.markings} submodelId={technicalDataSubmodel?.id}></MarkingsComponent>
+            {overviewData?.markings && technicalDataSubmodel?.id && (
+                <MarkingsComponent
+                    submodelElement={overviewData?.markings}
+                    submodelId={technicalDataSubmodel?.id}
+                ></MarkingsComponent>
+            )}
         </Box>
     );
 
     return (
         <Card>
             <CardContent sx={cardContentStyle}>
-                {props.isLoading && !props.aas ? (
+                {props.isLoading ? (
                     <>
                         <Skeleton
                             variant="rectangular"
@@ -326,38 +326,36 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                     <Skeleton width="100%" sx={{ mt: 1 }} />
                                 </Box>
                             ) : (
-                                <>
+                                <><Box>
                                     <Skeleton width="90%" />
                                     <Skeleton width="50%" />
                                     <Skeleton width="75%" sx={{ mt: 2 }} />
                                     <Skeleton width="50%" />
+                                </Box>
+                                <Box>
+                                    <Skeleton width="90%" />
+                                    <Skeleton width="50%" />
+                                    <Skeleton width="75%" sx={{ mt: 2 }} />
+                                    <Skeleton width="50%" />
+                                </Box>
                                 </>
                             )}
                         </Box>
                     </>
                 ) : (
                     <>
-                        {props.isLoading ? (
-                            <Skeleton
-                                variant="rectangular"
-                                sx={{ height: '300px', maxWidth: '300px', width: '100%' }}
-                            ></Skeleton>
-                        ) : (
-                            <ImageWithFallback
-                                src={productImageUrl}
-                                alt={'Thumbnail'}
-                                onClickHandler={props.imageLinksToDetail ? navigateToAas : undefined}
-                                size={300}
-                            />
-                        )}
+                        <ImageWithFallback
+                            src={productImageUrl}
+                            alt={'Thumbnail'}
+                            onClickHandler={props.imageLinksToDetail ? navigateToAas : undefined}
+                            size={300}
+                        />
                         {isAccordion ? (
-                            <>
-                                <MobileAccordion
-                                    content={productInfo}
-                                    title={t('title')}
-                                    icon={<ShellIcon fontSize="small" color="primary" />}
-                                />
-                            </>
+                            <MobileAccordion
+                                content={productInfo}
+                                title={t('title')}
+                                icon={<ShellIcon fontSize="small" color="primary" />}
+                            />
                         ) : (
                             <>
                                 {productInfo} {markings}
@@ -367,9 +365,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                 )}
             </CardContent>
             {overviewData?.productClassifications && overviewData.productClassifications.length > 0 && (
-                <ProductClassificationInfoBox
-                    productClassifications={overviewData.productClassifications}
-                />
+                <ProductClassificationInfoBox productClassifications={overviewData.productClassifications} />
             )}
         </Card>
     );

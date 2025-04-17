@@ -5,7 +5,6 @@ import { safeBase64Decode } from 'lib/util/Base64Util';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import {
     checkIfSubmodelHasIdShortOrSemanticId,
-    findSubmodelByIdOrSemanticId,
     getTranslationText,
 } from 'lib/util/SubmodelResolverUtil';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
@@ -32,9 +31,7 @@ export default function Page() {
     const encodedRepoUrl = useSearchParams().get('repoUrl');
     const repoUrl = encodedRepoUrl ? decodeURI(encodedRepoUrl) : undefined;
     const [filteredSubmodels, setFilteredSubmodels] = useState<SubmodelOrIdReference[]>([]);
-    // TODO refactor translation strings here
-    const t = useTranslations('pages.aasViewer');
-    const tp = useTranslations('pages.productViewer');
+    const t = useTranslations('pages.productViewer');
 
     const {
         aasFromContext,
@@ -121,7 +118,7 @@ export default function Page() {
                         {env.TRANSFER_FEATURE_FLAG && <TransferButton />}
                         {env.PRODUCT_VIEW_FEATURE_FLAG &&
                             <Button variant="contained" sx={{ whiteSpace: 'nowrap' }} onClick={goToAASView}>
-                                {tp('actions.toAasView')}
+                                {t('actions.toAasView')}
                             </Button>
                         }
                     </Box>
@@ -129,7 +126,7 @@ export default function Page() {
                         aas={aasFromContext}
                         submodels={submodels}
                         productImage={aasFromContext?.assetInformation?.defaultThumbnail?.path}
-                        isLoading={isLoadingAas}
+                        isLoading={isLoadingAas || isSubmodelsLoading}
                         isAccordion={isMobile}
                         repositoryURL={aasOriginUrl}
                     />

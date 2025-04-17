@@ -1,6 +1,7 @@
 import { Box, Chip, Typography, styled } from '@mui/material';
 import { theme } from 'layout/theme/theme';
 import { tooltipText } from 'lib/util/ToolTipText';
+import { useTranslations } from 'next-intl';
 
 /**
  * Type definition for product classification
@@ -28,8 +29,6 @@ const StyledBox = styled(Box)(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     padding: theme.spacing(3),
-    border: `1px solid ${theme.palette.divider}`,
-    borderRadius: theme.shape.borderRadius,
     width: '100%',
 }));
 
@@ -53,6 +52,7 @@ export function ProductClassificationInfoBox({
     productClassifications,
     showOnlyFirst = false,
 }: ProductClassificationInfoBoxProps) {
+    const t = useTranslations('pages.productViewer');
     // If there are no classifications to show, don't render the component
     if (!productClassifications || productClassifications.length === 0) {
         return null;
@@ -68,7 +68,7 @@ export function ProductClassificationInfoBox({
             <StyledBox bgcolor={'#F6F7FA'}>
                 <LabelContainer>
                     <Typography variant="subtitle1" fontWeight="bold">
-                        Summary
+                        {t('summary')}
                     </Typography>
                 </LabelContainer>
 
