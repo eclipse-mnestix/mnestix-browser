@@ -96,6 +96,11 @@
     "dummyComponent": {
       "dummyText": "This is a dummy component. It is used to test the layout and design of the application."
     },
+    "noSearchResult": {
+      "header": "No Data found",
+      "noDataFound": "No data found for \"{name}\".",
+      "toHomeButton": "To Home"
+    },
     "qrScanner": {
       "errors": {
         "defaultCallbackErrorMsg": "Could not open the QR code!",
@@ -195,8 +200,8 @@
     },
     "aasViewer": {
       "actions": {
-        "toHome": "To Home",
-        "compareButton": "Compare"
+        "compareButton": "Compare",
+        "toProductView": "Product View"
       },
       "asset": "Asset",
       "assetAdministrationShell": "Asset Administration Shell",
@@ -211,10 +216,6 @@
         "notAvailable": "-",
         "text": "Text",
         "value": "Value"
-      },
-      "messages": {
-        "noDataFoundFor": "No data found for \"{name}\".",
-        "noDataFound": "No Data found"
       },
       "submodels": {
         "actions": {
@@ -285,6 +286,9 @@
       "classification": "Classification",
       "error":{
         "technicalDataSubmodelNotFound": "Technical Data Submodel not found"
+      },
+      "actions": {
+        "toAasView": "AAS View"
       }
     },
     "settings": {
