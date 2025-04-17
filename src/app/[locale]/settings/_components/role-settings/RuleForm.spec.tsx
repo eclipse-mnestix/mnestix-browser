@@ -186,7 +186,7 @@ describe('RuleForm', () => {
         });
     });
 
-    it('selects an option from Autocomplete dropdown', async () => {
+    it('shows Admin-Role as autocomplete option for roles', async () => {
         await act(async () => {
             render(<RuleForm {...defaultProps} />);
         });
