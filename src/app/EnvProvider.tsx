@@ -23,6 +23,7 @@ export const initialEnvValues: EnvironmentalVariables = {
     THEME_PRIMARY_COLOR: undefined,
     THEME_SECONDARY_COLOR: undefined,
     THEME_BASE64_LOGO: undefined,
+    LOG_LEVEL: 'info',
     THEME_LOGO_URL: undefined,
     IMPRINT_URL: '',
     DATA_PRIVACY_URL: '',

@@ -1,5 +1,5 @@
 import { Box, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
-import { ProductLifecycleStage } from 'lib/enums/ProductLifecycleStage.enum';
+import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/ProductLifecycleStage.enum';
 import { useState } from 'react';
 import { CO2EBarchart } from './CO2EDistributionDiagrams/CO2EDistributionBarchart';
 import { CO2EList } from './CO2EDistributionDiagrams/CO2EDistributionList';
