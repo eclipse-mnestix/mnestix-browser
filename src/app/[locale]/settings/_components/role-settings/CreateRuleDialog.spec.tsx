@@ -5,6 +5,8 @@ import { expect } from '@jest/globals';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { act } from 'react';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
+import * as rbacActions from 'lib/services/rbac-service/RbacActions';
+import { mockRbacRoles } from './test-data/mockRbacRoles';
 
 jest.mock('./../../../../../lib/services/rbac-service/RbacActions');
 jest.mock('next-intl', () => ({
@@ -23,6 +25,7 @@ describe('CreateRuleDialog', () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
+        (rbacActions.getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
     });
 
     it('calls onClose when close button is clicked', async () => {

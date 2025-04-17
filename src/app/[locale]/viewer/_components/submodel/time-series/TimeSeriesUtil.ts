@@ -2,9 +2,12 @@ import {
     MultiLanguageProperty,
     SubmodelElementCollection,
 } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
-import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
+import { TimeSeriesSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesSubmodelElementSemanticId.enum';
 import { getTranslationText, hasSemanticId } from 'lib/util/SubmodelResolverUtil';
-import { TimeSeriesTimeFormat, TimeSeriesTimeFormatSemanticIds } from 'lib/enums/TimeSeriesTimeFormatSemanticIds.enum';
+import {
+    TimeSeriesTimeFormat,
+    TimeSeriesTimeFormatSemanticIds,
+} from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesTimeFormatSemanticIds.enum';
 import { Property } from '@aas-core-works/aas-core3.0-typescript/types';
 
 export type TimeSeriesDataSet = {
@@ -15,14 +18,14 @@ export type DataPoint = { [key: string]: number | string };
 
 export function extractValueBySemanticId(
     submodelElementCollection: SubmodelElementCollection,
-    semanticId: SubmodelElementSemanticId,
+    semanticId: TimeSeriesSubmodelElementSemanticIdEnum,
 ) {
     return submodelElementCollection.value?.find((v) => hasSemanticId(v, semanticId));
 }
 
 export function extractIntlValueBySemanticId(
     submodelElementCollection: SubmodelElementCollection,
-    semanticId: SubmodelElementSemanticId,
+    semanticId: TimeSeriesSubmodelElementSemanticIdEnum,
     locale: string,
 ) {
     const multiLanguageProperty: MultiLanguageProperty | undefined = extractValueBySemanticId(
@@ -77,7 +80,7 @@ export function detectRecordTimeSemanticID(record: SubmodelElementCollection): s
 export function parseRecordsFromInternalSegment(segment: SubmodelElementCollection): TimeSeriesDataSet | null {
     // get records
     const recordsElement = segment.value?.find((se) =>
-        hasSemanticId(se, SubmodelElementSemanticId.TimeSeriesRecords),
+        hasSemanticId(se, TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesRecords),
     );
     if (!recordsElement) return null;
     const records = (recordsElement as SubmodelElementCollection).value;
@@ -102,7 +105,7 @@ export function parseRecordsFromInternalSegment(segment: SubmodelElementCollecti
                 point[name] = Number.parseFloat(variable.value ?? '0');
                 namesSet.add(name);
             });
-            point['timestamp'] = timeVar ? convertRecordTimeToDate(timeVar) ?? '' : '';
+            point['timestamp'] = timeVar ? (convertRecordTimeToDate(timeVar) ?? '') : '';
             return point;
         });
 

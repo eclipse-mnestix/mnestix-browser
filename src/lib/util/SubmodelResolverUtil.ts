@@ -12,8 +12,8 @@ import {
 import { idEquals } from './IdValidationUtil';
 import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
-import { SubmodelSemanticId } from 'lib/enums/SubmodelSemanticId.enum';
-import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
+import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
+import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 
 /**
  * Gets the translated text from either a MultiLanguageProperty or LangStringTextType array
@@ -48,7 +48,7 @@ export function getTranslationValue(element: IDataElement, locale: string): stri
 export function findSubmodelElementByIdShort(
     elements: ISubmodelElement[] | null,
     idShort: string | null,
-    semanticId: SubmodelSemanticId | SubmodelElementSemanticId | null,
+    semanticId: SubmodelSemanticIdEnum | SubmodelElementSemanticIdEnum | null,
 ): ISubmodelElement | null {
     if (!elements) return null;
     for (const el of elements) {
@@ -68,7 +68,7 @@ export function findSubmodelElementByIdShort(
 export function findValueByIdShort(
     elements: ISubmodelElement[] | null,
     idShort: string | null,
-    semanticId: SubmodelSemanticId | SubmodelElementSemanticId | null = null,
+    semanticId: SubmodelSemanticIdEnum | SubmodelElementSemanticIdEnum | null = null,
     locale: string,
 ): string | null {
     const element = findSubmodelElementByIdShort(elements, idShort, semanticId);
@@ -137,7 +137,7 @@ export function buildSubmodelElementPath(
  */
 export function findSubmodelByIdOrSemanticId(
     submodels: SubmodelOrIdReference[],
-    semanticId?: SubmodelSemanticId,
+    semanticId?: SubmodelSemanticIdEnum,
     idShort?: string,
 ): Submodel | undefined {
     return submodels.find(

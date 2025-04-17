@@ -8,6 +8,7 @@ import { RoundedIconButton } from 'components/basics/Buttons';
 import { ArrowForward } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
 import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
+import { useEnv } from 'app/EnvProvider';
 
 type GenericAasListTableRowProps = {
     aasListEntry: AasListEntry;
@@ -23,13 +24,15 @@ export const GenericAasListEntry = ({ aasListEntry, ...config }: GenericAasListT
     const [, setAas] = useAasState();
     const [, setAasOriginUrl] = useAasOriginSourceState();
     const navigate = useRouter();
-
+    const env = useEnv();
     const t = useTranslations('pages.aasList');
 
     const navigateToAas = (aasId: string, repoUrl?: string) => {
         setAas(null);
         setAasOriginUrl(null);
-        navigate.push(`/viewer/${encodeBase64(aasId)}${repoUrl ? `?repoUrl=${encodeURI(repoUrl)}` : ''}`);
+        const pageToGo = env.PRODUCT_VIEW_FEATURE_FLAG ? '/product' : '/viewer';
+
+        navigate.push(`${pageToGo}/${encodeBase64(aasId)}${repoUrl ? `?repoUrl=${encodeURI(repoUrl)}` : ''}`);
     };
 
     return (

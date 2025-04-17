@@ -55,7 +55,7 @@ export class AasSearcher {
         const discoveryServiceClient = envs.DISCOVERY_API_URL
             ? DiscoveryServiceApi.create(envs.DISCOVERY_API_URL, mnestixFetch(), log)
             : null;
-        const searcherLogger = log?.child({ Service: AasSearcher.name });
+        const searcherLogger = log?.child({ Service: 'AasSearcher' });
         return new AasSearcher(multipleDataSource, discoveryServiceClient, registryServiceClient, searcherLogger);
     }
 
@@ -148,26 +148,14 @@ export class AasSearcher {
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Discovery service is not defined');
         const response = await this.discoveryServiceClient.getAasIdsByAssetId(searchAssetId);
         if (response.isSuccess) {
-            logResponseDebug(
-                this.log,
-                this.performAasDiscoverySearch.name,
-                'Executing AAS discovery search',
-                response,
-                {
-                    Requested_Asset_ID: searchAssetId,
-                },
-            );
+            logResponseDebug(this.log, 'performAasDiscoverySearch', 'Executing AAS discovery search', response, {
+                Requested_Asset_ID: searchAssetId,
+            });
             return wrapSuccess(response.result);
         }
-        logResponseDebug(
-            this.log,
-            this.performAasDiscoverySearch.name,
-            'AAS discovery search unsuccessful',
-            response,
-            {
-                Requested_Asset_ID: searchAssetId,
-            },
-        );
+        logResponseDebug(this.log, 'performAasDiscoverySearch', 'AAS discovery search unsuccessful', response, {
+            Requested_Asset_ID: searchAssetId,
+        });
         return wrapErrorCode(
             ApiResultStatus.NOT_FOUND,
             `Could not find the asset '${searchAssetId}' in the discovery service`,
@@ -203,15 +191,9 @@ export class AasSearcher {
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'AAS Registry service is not defined');
         const shellDescription = await this.registryService.getAssetAdministrationShellDescriptorById(searchAasId);
         if (!shellDescription.isSuccess) {
-            logResponseDebug(
-                this.log,
-                this.performAasRegistrySearch.name,
-                'Registry lookup unsuccessful',
-                shellDescription,
-                {
-                    Requested_ID: searchAasId,
-                },
-            );
+            logResponseDebug(this.log, 'performAasRegistrySearch', 'Registry lookup unsuccessful', shellDescription, {
+                Requested_ID: searchAasId,
+            });
             return wrapErrorCode(
                 ApiResultStatus.NOT_FOUND,
                 `Could not find the AAS '${searchAasId}' in the registry service`,
@@ -220,15 +202,9 @@ export class AasSearcher {
         const endpoints = shellDescription.result.endpoints ?? [];
         const submodelDescriptors = shellDescription.result.submodelDescriptors ?? [];
         const endpointUrls = endpoints.map((endpoint) => new URL(endpoint.protocolInformation.href));
-        logResponseDebug(
-            this.log,
-            this.performAasRegistrySearch.name,
-            'Registry search successful',
-            shellDescription,
-            {
-                Requested_ID: searchAasId,
-            },
-        );
+        logResponseDebug(this.log, 'performAasRegistrySearch', 'Registry search successful', shellDescription, {
+            Requested_ID: searchAasId,
+        });
         return wrapSuccess<RegistrySearchResult>({
             endpoints: endpointUrls,
             submodelDescriptors: submodelDescriptors,
@@ -240,17 +216,11 @@ export class AasSearcher {
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'AAS Registry service is not defined');
         const response = await this.registryService.getAssetAdministrationShellFromEndpoint(endpoint);
         if (!response.isSuccess) {
-            logResponseDebug(
-                this.log,
-                this.getAasFromEndpoint.name,
-                'Registry lookup unsuccessful',
-                response,
-                {
-                    endpoint: endpoint.toString(),
-                },
-            );
+            logResponseDebug(this.log, 'getAasFromEndpoint', 'Registry lookup unsuccessful', response, {
+                endpoint: endpoint.toString(),
+            });
         }
-        logResponseDebug(this.log, this.getAasFromEndpoint.name, 'Registry search successful', response, {
+        logResponseDebug(this.log, 'getAasFromEndpoint', 'Registry search successful', response, {
             endpoint: endpoint.toString(),
         });
         return response;
@@ -261,7 +231,7 @@ export class AasSearcher {
         if (!response.isSuccess) {
             logResponseDebug(
                 this.log,
-                this.getAasFromDefaultRepository.name,
+                'getAasFromDefaultRepository',
                 'Default repository search unsuccessful',
                 response,
                 {
@@ -271,7 +241,7 @@ export class AasSearcher {
         } else {
             logResponseDebug(
                 this.log,
-                this.getAasFromDefaultRepository.name,
+                'getAasFromDefaultRepository',
                 'Default repository search successful',
                 response,
                 {
@@ -289,7 +259,7 @@ export class AasSearcher {
         if (!response.isSuccess) {
             logResponseDebug(
                 this.log,
-                this.getAasFromAllRepositories.name,
+                'getAasFromAllRepositories',
                 'Configured repositories search unsuccessful ',
                 response,
                 {
@@ -299,7 +269,7 @@ export class AasSearcher {
         } else {
             logResponseDebug(
                 this.log,
-                this.getAasFromAllRepositories.name,
+                'getAasFromAllRepositories',
                 'Configured repositories search successful',
                 response,
                 {

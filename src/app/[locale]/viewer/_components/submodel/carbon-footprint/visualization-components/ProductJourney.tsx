@@ -12,7 +12,7 @@ import Style from 'ol/style/Style';
 import { Coordinate } from 'ol/coordinate';
 import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
-import { ProductLifecycleStage } from 'lib/enums/ProductLifecycleStage.enum';
+import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/ProductLifecycleStage.enum';
 import { ProductJourneyAddressList } from './ProductJourneyAddressList';
 
 export type Address = {
