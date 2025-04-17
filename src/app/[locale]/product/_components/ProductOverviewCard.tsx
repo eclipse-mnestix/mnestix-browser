@@ -57,7 +57,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
     const t = useTranslations('pages.productViewer');
     const [overviewData, setOverviewData] = useState<OverviewData>();
     const locale = useLocale();
-    const productImageUrl = useProductImageUrl(props.aas, props.repositoryURL);
+    const productImageUrl = useProductImageUrl(props.aas, props.repositoryURL, props.productImage);
 
     // TODO: once we know how to display this data, split it into its own components
     useEffect(() => {

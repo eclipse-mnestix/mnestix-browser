@@ -35,7 +35,7 @@ export function AASOverviewCard(props: AASOverviewCardProps) {
     const navigate = useRouter();
     const [, setAasState] = useAasState();
     const t = useTranslations('pages.aasViewer');
-    const productImageUrl = useProductImageUrl(props.aas, props.repositoryURL);
+    const productImageUrl = useProductImageUrl(props.aas, props.repositoryURL, props.productImage);
 
     const infoBoxStyle = {
         display: 'flex',
