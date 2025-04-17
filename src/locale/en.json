@@ -146,7 +146,7 @@
     "errors": {
       "notFound": "Not found",
       "unauthorizedError": {
-        "content": "You don`t have access to this resource. You may login or contact your administrator to get access.",
+        "content": "You don't have access to this resource. Log in or ask your administrator for access.",
         "title": "Unauthorized access"
       },
       "unexpectedError": "Unexpected error",
@@ -190,7 +190,7 @@
       "page": "Page",
       "repositoryDropdown": "AAS Repository",
       "selectRepository": "Please select a repository",
-      "subHeader": "You will find all AASs from your repository here. You can select an AAS repository to switch between data sources.",
+      "subHeader": "You will find all AAS from your repository here. You can select an AAS repository to switch between data sources.",
       "titleComparisonAddButton": "Add AAS to comparison"
     },
     "aasViewer": {
@@ -316,7 +316,7 @@
         "urlFieldRequired": "URL field is required"
       },
       "messages": {
-        "changesSavedSuccessfully": "Changes saved successfully"
+        "changesSavedSuccessfully": "Changes saved successfully."
       },
       "header": "Settings",
       "idStructure": {
@@ -374,7 +374,7 @@
         "title": "Rule Management",
         "wildcardLabel": "Allow all"
       },
-      "subHeader": "Add, remove, or modify settings and configurations to various features within your AAS."
+      "subHeader": "Add, remove, or modify settings and configurations to various features within your AAS environment."
     },
     "templates": {
       "all": "All",
@@ -382,7 +382,7 @@
         "false": "false",
         "true": "true"
       },
-      "chooseAStartingPoint": "Choose a starting point",
+      "chooseAStartingPoint": "Choose a template as starting point",
       "copyTemplateId": "Copy Template ID",
       "createNew": "Create New",
       "custom": "Custom",
@@ -444,7 +444,7 @@
       "submodelRepository": "Submodel Repository",
       "submodelRepositoryApiKey": "Submodel Repository ApiKey",
       "submodelRepositoryLabel": "List of Submodel Repositories",
-      "subtitle": "To import this AAS to another repository, fill out the following steps.",
+      "subtitle": "To import this AAS to another repository, fill out the following fields.",
       "successfulToast": "Transfer of AAS successful",
       "title": "Import",
       "useAasRepository": "Use AAS Repository",
