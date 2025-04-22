@@ -4,6 +4,7 @@ export enum SubmodelElementSemanticIdEnum {
     MarkingsV1 = 'https://admin-shell.io/zvei/nameplate/1/0/Nameplate/Markings',
     MarkingsV2 = 'https://admin-shell.io/zvei/nameplate/2/0/Nameplate/Markings',
     MarkingsV3 = 'https://admin-shell.io/zvei/nameplate/3/0/Nameplate/Markings',
+    CompanyLogo = 'https://admin-shell.io/zvei/nameplate/2/0/Nameplate/CompanyLogo',
     MarkingsIrdiV1 = '0173-1#01-AGZ673#001',
     MarkingsIrdiV3 = '0112/2///61360_7#AAS006#001',
     ContactInformation = 'https://admin-shell.io/zvei/nameplate/1/0/ContactInformations/ContactInformation',

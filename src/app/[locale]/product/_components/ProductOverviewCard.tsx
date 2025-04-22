@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { DataRow } from 'components/basics/DataRow';
 import {
     AssetAdministrationShell,
+    File,
     ISubmodelElement,
     Submodel,
     SubmodelElementCollection,
@@ -17,6 +18,7 @@ import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
 import { useLocale, useTranslations } from 'next-intl';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import {
+    buildSubmodelElementPath,
     findSubmodelByIdOrSemanticId,
     findSubmodelElementByIdShort,
     findValueByIdShort,
@@ -26,6 +28,7 @@ import { ProductClassificationInfoBox } from './ProductClassificationInfoBox';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { useProductImageUrl } from 'lib/hooks/UseProductImageUrl';
 import { MarkingsComponent } from 'app/[locale]/viewer/_components/submodel-elements/marking-components/MarkingsComponent';
+import { FileComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/FileComponent';
 
 type ProductOverviewCardProps = {
     readonly aas: AssetAdministrationShell | null;
@@ -50,6 +53,8 @@ type OverviewData = {
     readonly manufacturerProductType?: string;
     readonly manufacturerArticleNumber?: string;
     readonly manufacturerOrderCode?: string;
+    readonly manufacturerLogo: ISubmodelElement | null;
+    readonly companyLogo: ISubmodelElement | null;
     readonly markings?: SubmodelElementCollection;
     readonly productClassifications?: ProductClassification[];
 };
@@ -63,6 +68,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
     const locale = useLocale();
     const productImageUrl = useProductImageUrl(props.aas, props.repositoryURL, props.productImage);
     const [technicalDataSubmodel, setTechnicalDataSubmodel] = useState<Submodel | undefined>(undefined);
+    const [nameplateSubmodel, setNameplateSubmodel] = useState<Submodel | undefined>(undefined);
 
     useEffect(() => {
         if (props.submodels && props.submodels.length > 0) {
@@ -76,13 +82,14 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                 prepareTechnicalDataSubmodel(technicalData.submodelElements);
             }
 
-            const nameplateData = findSubmodelByIdOrSemanticId(
+            const nameplate = findSubmodelByIdOrSemanticId(
                 props.submodels,
                 SubmodelSemanticIdEnum.NameplateV2,
                 'Nameplate',
             );
-            if (nameplateData?.submodelElements) {
-                prepareNameplateData(nameplateData.submodelElements);
+            setNameplateSubmodel(nameplate);
+            if (nameplate?.submodelElements) {
+                prepareNameplateData(nameplate.submodelElements);
             }
         }
     }, [props.submodels]);
@@ -112,6 +119,11 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             'ManufacturerOrderCode',
             SubmodelElementSemanticIdEnum.ManufacturerOrderCode,
             locale,
+        );
+        const manufacturerLogo = findSubmodelElementByIdShort(
+            technicalDataSubmodelElements,
+            'ManufacturerLogo',
+            SubmodelElementSemanticIdEnum.ManufacturerLogo,
         );
 
         const productClassifications = findSubmodelElementByIdShort(
@@ -148,6 +160,8 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             productClassifications: classifications,
             manufacturerArticleNumber: manufacturerArticleNumber ?? '-',
             manufacturerOrderCode: manufacturerOrderCode ?? '-',
+            companyLogo: null,
+            manufacturerLogo: manufacturerLogo,
         });
     };
 
@@ -175,12 +189,19 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             'Markings',
             SubmodelElementSemanticIdEnum.MarkingsV3,
         );
+        const companyLogo = findSubmodelElementByIdShort(
+            nameplateSubmodelElements,
+            'CompanyLogo',
+            SubmodelElementSemanticIdEnum.CompanyLogo,
+        );
         setOverviewData((prevData) => ({
             ...prevData,
             manufacturerProductRoot: manufacturerProductRoot ?? '-',
             manufacturerProductFamily: manufacturerProductFamily ?? '-',
             manufacturerProductType: manufacturerProductType ?? '-',
             markings: markings as SubmodelElementCollection,
+            manufacturerLogo: prevData?.manufacturerLogo || null,
+            companyLogo: companyLogo || null,
         }));
     };
 
@@ -245,12 +266,35 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                     sx={{ width: '100%' }}
                 />
             </Box>
-            <DataRow
-                title={t('productInfo.manufacturer')}
-                value={overviewData?.manufacturerName}
-                testId="datarow-manufacturer-name"
-                withBase64={false}
-            />
+            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+
+                <DataRow
+                    title={t('productInfo.manufacturer')}
+                    value={overviewData?.manufacturerName}
+                    testId="datarow-manufacturer-name"
+                    withBase64={false}
+                />
+
+                {/* If both manufacturerLogo and CompanyLogo are available, we show the manufacturerLogo*/}
+                {overviewData?.companyLogo && !overviewData?.manufacturerLogo && (
+                    <FileComponent
+                        file={overviewData?.companyLogo as File}
+                        submodelId={nameplateSubmodel?.id}
+                        submodelElementPath='CompanyLogo'
+                    />
+                )}
+                {overviewData?.manufacturerLogo && (
+                    <FileComponent
+                        file={overviewData?.manufacturerLogo as File}
+                        submodelId={technicalDataSubmodel?.id}
+                        submodelElementPath={buildSubmodelElementPath(
+                            'GeneralInformation',
+                            'ManufacturerLogo',
+                        )}
+                    />
+                )}
+
+            </Box>
         </Box>
     );
 
@@ -300,10 +344,10 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                     </Typography>
                 </Box>
             )}
-            {overviewData?.markings && technicalDataSubmodel?.id && (
+            {overviewData?.markings && nameplateSubmodel?.id && (
                 <MarkingsComponent
                     submodelElement={overviewData?.markings}
-                    submodelId={technicalDataSubmodel?.id}
+                    submodelId={nameplateSubmodel?.id}
                 ></MarkingsComponent>
             )}
         </Box>
