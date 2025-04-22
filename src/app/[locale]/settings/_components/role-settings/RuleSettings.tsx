@@ -1,4 +1,7 @@
 import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
     Box,
     Button,
     Chip,
@@ -18,12 +21,13 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { RoundedIconButton } from 'components/basics/Buttons';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { getRbacRules } from 'lib/services/rbac-service/RbacActions';
-import { RbacRolesFetchResult, BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
+import { BaSyxRbacRule, RbacRolesFetchResult } from 'lib/services/rbac-service/types/RbacServiceData';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { useShowError } from 'lib/hooks/UseShowError';
 import AddIcon from '@mui/icons-material/Add';
 import { CreateRuleDialog } from 'app/[locale]/settings/_components/role-settings/CreateRuleDialog';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export const RuleSettings = () => {
     const t = useTranslations('pages.settings.rules');
@@ -34,6 +38,7 @@ export const RuleSettings = () => {
     const isMobile = useIsMobile();
     const [isLoading, setIsLoading] = useState(false);
     const { showError } = useShowError();
+    const [expandedRole, setExpandedRole] = useState<string>('');
 
     const MAX_PERMISSIONS_CHARS = 40;
 
@@ -56,14 +61,13 @@ export const RuleSettings = () => {
 
     const prepareTableHeaders = () => {
         const tableHeaders = [
-            { label: t('tableHeader.name') },
             { label: t('tableHeader.action') },
             { label: t('tableHeader.type') },
             { label: t('tableHeader.permissions') },
             { label: '' },
         ];
         if (isMobile) {
-            tableHeaders.splice(3, 1);
+            tableHeaders.splice(2, 1);
         }
         return tableHeaders;
     };
@@ -95,6 +99,22 @@ export const RuleSettings = () => {
         setRuleDetailDialogOpen(true);
     };
 
+    function groupRulesByRole(): Record<string, BaSyxRbacRule[]> {
+        if (!rbacRoles) return {};
+        return rbacRoles.roles.reduce(
+            (groupedRules, rule) => {
+                if (!groupedRules[rule.role]) {
+                    groupedRules[rule.role] = [];
+                }
+                groupedRules[rule.role].push(rule);
+                return groupedRules;
+            },
+            {} as Record<string, BaSyxRbacRule[]>,
+        );
+    }
+
+    const groupedRules = groupRulesByRole();
+
     return (
         <>
             <Box sx={{ p: 3, width: '100%', minHeight: '600px' }}>
@@ -106,57 +126,83 @@ export const RuleSettings = () => {
                         <Button variant="contained" startIcon={<AddIcon />} onClick={() => setCreateDialogOpen(true)}>
                             {t('buttons.create')}
                         </Button>
-                        <TableContainer>
-                            <Table>
-                                <TableHead>
-                                    <TableRow>
-                                        {!!prepareTableHeaders() &&
-                                            prepareTableHeaders().map((header: { label: string }, index) => (
-                                                <TableCell key={index}>
-                                                    <Typography
-                                                        variant="h5"
-                                                        color="secondary"
-                                                        letterSpacing={0.16}
-                                                        fontWeight={700}
-                                                    >
-                                                        {header.label}
-                                                    </Typography>
-                                                </TableCell>
-                                            ))}
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {rbacRoles?.roles.map((entry) => (
-                                        <TableRow
-                                            key={entry.idShort}
-                                            data-testid={`role-settings-row-${entry.idShort}`}
+                        <Box width="100%" mt={2}>
+                            {Object.entries(groupedRules).map(([roleName, rules]) => (
+                                <Accordion
+                                    key={roleName}
+                                    expanded={roleName === expandedRole}
+                                    onClick={() =>
+                                        roleName !== expandedRole ? setExpandedRole(roleName) : setExpandedRole('')
+                                    }
+                                >
+                                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                        <Typography
+                                            fontWeight="bold"
+                                            sx={{
+                                                overflow: 'hidden',
+                                                textOverflow: 'ellipsis',
+                                                maxWidth: '50vw',
+                                            }}
                                         >
-                                            <TableCell>
-                                                <Typography fontWeight="bold">{entry.role}</Typography>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Chip
-                                                    key={entry.action}
-                                                    sx={{ fontWeight: 'normal', m: 0.5 }}
-                                                    label={entry.action}
-                                                />
-                                            </TableCell>
-                                            <TableCell>{entry.targetInformation['@type']}</TableCell>
-                                            {!isMobile && <TableCell>{permissionCell(entry)}</TableCell>}
-                                            <TableCell>
-                                                <RoundedIconButton
-                                                    data-testid={`role-settings-button-${entry.idShort}`}
-                                                    onClick={() => openDetailDialog(entry)}
-                                                    color="primary"
-                                                >
-                                                    <ArrowForwardIcon />
-                                                </RoundedIconButton>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+                                            {roleName}
+                                        </Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <TableContainer>
+                                            <Table>
+                                                <TableHead>
+                                                    <TableRow>
+                                                        {prepareTableHeaders().map(
+                                                            (header: { label: string }, index) => (
+                                                                <TableCell key={index}>
+                                                                    <Typography
+                                                                        variant="h5"
+                                                                        color="secondary"
+                                                                        letterSpacing={0.16}
+                                                                        fontWeight={700}
+                                                                    >
+                                                                        {header.label}
+                                                                    </Typography>
+                                                                </TableCell>
+                                                            ),
+                                                        )}
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {rules.map((entry) => (
+                                                        <TableRow
+                                                            key={entry.idShort}
+                                                            data-testid={`role-settings-row-${entry.idShort}`}
+                                                        >
+                                                            <TableCell>
+                                                                <Chip
+                                                                    key={entry.action}
+                                                                    sx={{ fontWeight: 'normal', m: 0.5 }}
+                                                                    label={entry.action}
+                                                                />
+                                                            </TableCell>
+                                                            <TableCell>{entry.targetInformation['@type']}</TableCell>
+                                                            {!isMobile && (
+                                                                <TableCell>{permissionCell(entry)}</TableCell>
+                                                            )}
+                                                            <TableCell>
+                                                                <RoundedIconButton
+                                                                    data-testid={`role-settings-button-${entry.idShort}`}
+                                                                    onClick={() => openDetailDialog(entry)}
+                                                                    color="primary"
+                                                                >
+                                                                    <ArrowForwardIcon />
+                                                                </RoundedIconButton>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    ))}
+                                                </TableBody>
+                                            </Table>
+                                        </TableContainer>
+                                    </AccordionDetails>
+                                </Accordion>
+                            ))}
+                        </Box>
                     </Box>
                 )}
             </Box>

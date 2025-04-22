@@ -66,7 +66,15 @@ export const RuleDialog = (props: RuleDialogProps) => {
                             <Typography color="text.secondary" variant="body2">
                                 {t('tableHeader.name')}
                             </Typography>
-                            <Typography variant="h2" mb="1em">
+                            <Typography
+                                variant="h2"
+                                mb="1em"
+                                sx={{
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    maxWidth: '100%',
+                                }}
+                            >
                                 {props.rule?.role}
                             </Typography>
                             <Box display="flex" flexDirection="column" gap="1em">
