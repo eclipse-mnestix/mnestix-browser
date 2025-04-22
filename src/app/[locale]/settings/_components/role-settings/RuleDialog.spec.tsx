@@ -31,7 +31,7 @@ describe('RoleDialog', () => {
     });
 
     it('renders RoleDialog in view mode', () => {
-        render(<RuleDialog open={true} onClose={jest.fn()} rule={mockRule} />);
+        render(<RuleDialog open={true} onClose={jest.fn()} rule={mockRule} rules={[]} />);
 
         expect(screen.getByText('Admin-Role')).toBeInTheDocument();
         expect(screen.getByText('READ')).toBeInTheDocument();
@@ -40,7 +40,7 @@ describe('RoleDialog', () => {
 
     it('switches to edit mode when edit button is clicked', async () => {
         (rbacActions.getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
-        render(<RuleDialog open={true} onClose={jest.fn()} rule={mockRule} />);
+        render(<RuleDialog open={true} onClose={jest.fn()} rule={mockRule} rules={[]} />);
 
         fireEvent.click(screen.getByTestId('role-settings-edit-button'));
 
@@ -56,7 +56,7 @@ describe('RoleDialog', () => {
         const mockNotificationSpawner = { spawn: jest.fn() };
         (useNotificationSpawner as jest.Mock).mockReturnValue(mockNotificationSpawner);
 
-        render(<RuleDialog open={true} onClose={mockOnClose} rule={mockRule} />);
+        render(<RuleDialog open={true} onClose={mockOnClose} rule={mockRule} rules={[]} />);
 
         fireEvent.click(screen.getByTestId('role-settings-edit-button'));
         fireEvent.click(screen.getByTestId('role-settings-save-button'));
@@ -80,7 +80,7 @@ describe('RoleDialog', () => {
         const mockNotificationSpawner = { spawn: jest.fn() };
         (useNotificationSpawner as jest.Mock).mockReturnValue(mockNotificationSpawner);
 
-        render(<RuleDialog open={true} onClose={mockOnClose} rule={mockRule} />);
+        render(<RuleDialog open={true} onClose={mockOnClose} rule={mockRule} rules={[]} />);
 
         fireEvent.click(screen.getByTestId('role-settings-edit-button'));
         fireEvent.click(screen.getByTestId('role-settings-save-button'));

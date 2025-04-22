@@ -1,9 +1,9 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
 import { useMemo, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
-import { ArrowBack, ArrowRightAlt, Delete } from '@mui/icons-material';
+import { ArrowBack, Delete } from '@mui/icons-material';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 import { TargetInformationView } from 'app/[locale]/settings/_components/role-settings/target-information/TargetInformationView';
 import * as rbacActions from 'lib/services/rbac-service/RbacActions';
@@ -11,7 +11,7 @@ import { mapFormModelToBaSyxRbacRule } from 'app/[locale]/settings/_components/r
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { RuleForm, RuleFormModel } from 'app/[locale]/settings/_components/role-settings/RuleForm';
-import { useEnv } from 'app/EnvProvider';
+import { RuleDeleteDialog } from 'app/[locale]/settings/_components/role-settings/RuleDeleteDialog';
 
 type RuleDialogProps = {
     readonly onClose: (reload: boolean) => Promise<void>;
@@ -21,21 +21,14 @@ type RuleDialogProps = {
 };
 
 export const RuleDialog = (props: RuleDialogProps) => {
-    const envs = useEnv();
     const t = useTranslations('pages.settings.rules');
-    const [isEditMode, setIsEditMode] = useState(false);
-    const [isDeleteMode, setIsDeleteMode] = useState(false);
+    const [mode, setMode] = useState<'edit' | 'view' | 'delete'>('view');
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
 
     const isLastRuleForRole = useMemo(() => {
         return props.rules.filter((rule) => rule.role === props.rule.role).length === 1;
     }, [props.rules, props.rule.role]);
-
-    const keycloakRolesUrl = () => {
-        const url = new URL(`/admin/master/console/#/${envs.KEYCLOAK_REALM}/roles`, envs.KEYCLOAK_ISSUER);
-        return url.toString();
-    };
 
     async function onSubmit(data: RuleFormModel) {
         const mappedDto = mapFormModelToBaSyxRbacRule(data, props.rule);
@@ -57,77 +50,37 @@ export const RuleDialog = (props: RuleDialogProps) => {
         showError(response.message);
     }
 
-    async function deleteRule() {
-        const response = await rbacActions.deleteRbacRule(props.rule.idShort);
-        if (response.isSuccess) {
-            onCloseDialog(true);
-            notificationSpawner.spawn({
-                message: t('delete.success'),
-                severity: 'success',
-            });
-            return;
-        }
-        showError(response.message);
-    }
-
-    const onCloseDialog = (reload: boolean) => {
-        props.onClose(reload);
-        setIsEditMode(false);
-        setIsDeleteMode(false);
+    const onCloseDialog = async (reload: boolean) => {
+        await props.onClose(reload);
+        setMode('view');
     };
 
-    switch (true) {
-        case isEditMode:
+    if (!props.open) {
+        return <></>;
+    }
+
+    switch (mode) {
+        case 'edit':
             return (
-                <Dialog open={props.open} onClose={() => onCloseDialog(false)} maxWidth="md" fullWidth={true}>
+                <Dialog open={true} onClose={() => onCloseDialog(false)} maxWidth="md" fullWidth={true}>
                     <DialogCloseButton handleClose={() => onCloseDialog(false)} />
                     <Typography variant="h2" color="primary" sx={{ mt: 4, ml: '40px' }}>
                         {t('editTitle')}
                     </Typography>
-                    <RuleForm rule={props.rule} onSubmit={onSubmit} onCancel={() => setIsEditMode(false)} />
+                    <RuleForm rule={props.rule} onSubmit={onSubmit} onCancel={() => setMode('view')} />
                 </Dialog>
             );
-        case isDeleteMode:
+        case 'delete':
             return (
-                <Dialog open={props.open} onClose={() => onCloseDialog(false)} maxWidth="md" fullWidth={true}>
-                    <DialogCloseButton handleClose={() => onCloseDialog(false)} />
-                    <Typography variant="h2" color="primary" sx={{ mt: 4, ml: '40px' }}>
-                        {t('delete.title')}
-                    </Typography>
-                    <DialogContent>
-                        <DialogContentText>
-                            {t('delete.question')}
-                            {isLastRuleForRole && (
-                                <>
-                                    <br />
-                                    {t('delete.lastForRole')}
-                                    <br />
-                                    <Button
-                                        startIcon={<ArrowRightAlt />}
-                                        href={keycloakRolesUrl()}
-                                        variant="contained"
-                                        target="_blank"
-                                        color="primary"
-                                    >
-                                        Keycloak
-                                    </Button>
-                                </>
-                            )}
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => setIsDeleteMode(false)} autoFocus>
-                            {t('buttons.cancel')}
-                        </Button>
-                        <Button onClick={deleteRule} color="error">
-                            {t('buttons.delete')}
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                <RuleDeleteDialog
+                    isLastRuleForRole={isLastRuleForRole}
+                    rule={props.rule}
+                    onCloseDialog={onCloseDialog}
+                />
             );
         default:
             return (
-                <Dialog open={props.open} onClose={() => onCloseDialog(false)} maxWidth="md" fullWidth={true}>
+                <Dialog open={true} onClose={() => onCloseDialog(false)} maxWidth="md" fullWidth={true}>
                     <DialogCloseButton handleClose={() => onCloseDialog(false)} />
                     <DialogContent style={{ padding: '40px' }} data-testid="role-settings-dialog">
                         <Box display="flex" flexDirection="column">
@@ -160,7 +113,7 @@ export const RuleDialog = (props: RuleDialogProps) => {
                             startIcon={<Delete />}
                             color="error"
                             data-testid="role-settings-delete-button"
-                            onClick={() => setIsDeleteMode(true)}
+                            onClick={() => setMode('delete')}
                         >
                             {t('buttons.delete')}
                         </Button>
@@ -168,7 +121,7 @@ export const RuleDialog = (props: RuleDialogProps) => {
                             variant="contained"
                             startIcon={<EditIcon />}
                             data-testid="role-settings-edit-button"
-                            onClick={() => setIsEditMode(true)}
+                            onClick={() => setMode('edit')}
                         >
                             {t('buttons.edit')}
                         </Button>
