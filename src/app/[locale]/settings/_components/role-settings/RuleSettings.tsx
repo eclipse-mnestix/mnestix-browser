@@ -163,10 +163,10 @@ export const RuleSettings = () => {
             {selectedRule && (
                 <RuleDialog
                     onClose={async (reload) => {
+                        setRuleDetailDialogOpen(false);
                         if (reload) {
                             await loadRbacData();
                         }
-                        setRuleDetailDialogOpen(false);
                     }}
                     open={ruleDetailDialogOpen}
                     rule={selectedRule}

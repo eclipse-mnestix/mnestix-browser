@@ -284,7 +284,7 @@
     "productViewer": {
       "title": "Produkt",
       "classification": "Produktklassifikation",
-      "error":{
+      "error": {
         "technicalDataSubmodelNotFound": "Technical Data Submodel nicht gefunden"
       },
       "actions": {
@@ -356,11 +356,17 @@
           "back": "Zurück",
           "cancel": "Abbrechen",
           "create": "Regel erstellen",
+          "delete": "Löschen",
           "edit": "Bearbeiten",
           "save": "Speichern"
         },
         "errors": {
           "uniqueIdShort": "Die Kombination aus Rollenname, Aktion und Typ existiert bereits in einer anderen Regel.\nBitte bearbeiten Sie die bestehende Regel."
+        },
+        "delete": {
+          "question": "Regel unwiderruflich löschen?",
+          "title": "Regel löschen",
+          "success": "Regel erfolgreich gelöscht."
         },
         "createTitle": "Regel erstellen",
         "editTitle": "Regel bearbeiten",

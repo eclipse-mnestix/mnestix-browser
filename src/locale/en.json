@@ -284,7 +284,7 @@
     "productViewer": {
       "title": "Product",
       "classification": "Classification",
-      "error":{
+      "error": {
         "technicalDataSubmodelNotFound": "Technical Data Submodel not found"
       },
       "actions": {
@@ -356,6 +356,7 @@
           "back": "Back",
           "cancel": "Cancel",
           "create": "Create Rule",
+          "delete": "Delete",
           "edit": "Edit",
           "save": "Save"
         },
@@ -365,6 +366,11 @@
         "createTitle": "Create Rule",
         "editTitle": "Edit Rule",
         "roleRequired": "Role is required",
+        "delete": {
+          "question": "Are you sure you want to delete the rule?",
+          "title": "Delete rule",
+          "success": "Rule deleted successfully."
+        },
         "saveSuccess": "Rule saved successfully.",
         "subtitle": "Manage roles and permissions.",
         "tableHeader": {
