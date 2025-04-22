@@ -4,7 +4,7 @@ import { hasSemanticId } from 'lib/util/SubmodelResolverUtil';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { MultiLanguagePropertyComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/MultiLanguagePropertyComponent';
-import { Box, Divider, Typography } from '@mui/material';
+import { Box, Divider, Typography, useTheme } from '@mui/material';
 import {
     ISubmodelElement,
     KeyTypes,
@@ -19,6 +19,7 @@ import React from 'react';
 
 export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
     const t = useTranslations('pages.aasViewer.submodels');
+    const theme = useTheme();
 
     const findSubmodelElement = (semanticId: SubmodelElementSemanticIdEnum) =>
         submodel.submodelElements?.find((el) => hasSemanticId(el, semanticId)) as SubmodelElementCollection | undefined;
@@ -65,27 +66,23 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
     };
 
     const renderTreeItem = (id: string, label: string, elements?: ISubmodelElement[]) => (
-        <>
-            <TreeItem
-                itemId={id}
-                label={label}
-                sx={{
-                    '& .MuiTreeItem-content': {
-                        py: 1,
-                        borderBottom: '1px solid',
-                        borderColor: 'divider',
-                    },
-                    '& .MuiTreeItem-label': {
-                        fontWeight: 700,
-                        fontSize: '1.1rem', // TODO find out why styling is not applied
-                        typography: 'h5',
-                    },
-                }}
-                key={id}
-            >
-                {elements?.map((el) => el && renderVisualization(el))}
-            </TreeItem>
-        </>
+        <TreeItem
+            itemId={id}
+            label={label}
+            sx={{
+                '& .MuiTreeItem-content': {
+                    py: 1,
+                    borderBottom: '1px solid',
+                    borderColor: 'divider',
+                },
+                '&& .MuiTreeItem-label': {
+                    ...theme.typography.h5
+                },
+            }}
+            key={id}
+        >
+            {elements?.map((el) => el && renderVisualization(el))}
+        </TreeItem>
     );
 
     return (
