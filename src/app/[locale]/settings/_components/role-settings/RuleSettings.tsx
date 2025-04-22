@@ -18,7 +18,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { RoundedIconButton } from 'components/basics/Buttons';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { getRbacRules } from 'lib/services/rbac-service/RbacActions';
-import { RbacRolesFetchResult, BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
+import { BaSyxRbacRule, RbacRolesFetchResult } from 'lib/services/rbac-service/types/RbacServiceData';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { useShowError } from 'lib/hooks/UseShowError';
@@ -54,20 +54,6 @@ export const RuleSettings = () => {
         await loadRbacData();
     }, []);
 
-    const prepareTableHeaders = () => {
-        const tableHeaders = [
-            { label: t('tableHeader.name') },
-            { label: t('tableHeader.action') },
-            { label: t('tableHeader.type') },
-            { label: t('tableHeader.permissions') },
-            { label: '' },
-        ];
-        if (isMobile) {
-            tableHeaders.splice(3, 1);
-        }
-        return tableHeaders;
-    };
-
     const permissionCell = (entry: BaSyxRbacRule) => {
         const permissions: JSX.Element[] = [];
         const keys = Object.keys(entry.targetInformation);
@@ -95,6 +81,35 @@ export const RuleSettings = () => {
         setRuleDetailDialogOpen(true);
     };
 
+    function TableCellHeader() {
+        const tableHeaderText = {
+            variant: 'h5',
+            color: 'secondary',
+            letterSpacing: 0.16,
+            fontWeight: 700,
+        };
+
+        return (
+            <TableRow>
+                <TableCell sx={tableHeaderText} data-testid="rulesettings-header-name">
+                    {t('tableHeader.name')}
+                </TableCell>
+                <TableCell sx={tableHeaderText} data-testid="rulesettings-header-action">
+                    {t('tableHeader.action')}
+                </TableCell>
+                <TableCell sx={tableHeaderText} data-testid="rulesettings-header-type">
+                    {t('tableHeader.type')}
+                </TableCell>
+                {isMobile && (
+                    <TableCell sx={tableHeaderText} data-testid="rulesettings-header-permissions">
+                        {t('tableHeader.permissions')}
+                    </TableCell>
+                )}
+                <TableCell sx={tableHeaderText} data-testid="rulesettings-header-empty"></TableCell>
+            </TableRow>
+        );
+    }
+
     return (
         <>
             <Box sx={{ p: 3, width: '100%', minHeight: '600px' }}>
@@ -109,21 +124,7 @@ export const RuleSettings = () => {
                         <TableContainer>
                             <Table>
                                 <TableHead>
-                                    <TableRow>
-                                        {!!prepareTableHeaders() &&
-                                            prepareTableHeaders().map((header: { label: string }, index) => (
-                                                <TableCell key={index}>
-                                                    <Typography
-                                                        variant="h5"
-                                                        color="secondary"
-                                                        letterSpacing={0.16}
-                                                        fontWeight={700}
-                                                    >
-                                                        {header.label}
-                                                    </Typography>
-                                                </TableCell>
-                                            ))}
-                                    </TableRow>
+                                    <TableCellHeader />
                                 </TableHead>
                                 <TableBody>
                                     {rbacRoles?.roles.map((entry) => (
