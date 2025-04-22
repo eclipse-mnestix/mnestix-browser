@@ -1,4 +1,4 @@
-import { Dialog, DialogActions, DialogContent, DialogContentText, Button, Typography } from '@mui/material';
+import { DialogActions, DialogContent, DialogContentText, Button, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
@@ -38,12 +38,12 @@ export function RuleDeleteDialog({ isLastRuleForRole, onCloseDialog, rule }: Rul
     }
 
     return (
-        <Dialog open={true} onClose={() => onCloseDialog(false)} maxWidth="md" fullWidth={true}>
+        <>
             <DialogCloseButton handleClose={() => onCloseDialog(false)} />
             <Typography variant="h2" color="primary" sx={{ mt: 4, ml: '40px' }}>
                 {t('delete.title')}
             </Typography>
-            <DialogContent>
+            <DialogContent style={{ padding: '40px' }}>
                 <DialogContentText>
                     {t('delete.question')}
                     {isLastRuleForRole && (
@@ -72,6 +72,6 @@ export function RuleDeleteDialog({ isLastRuleForRole, onCloseDialog, rule }: Rul
                     {t('buttons.delete')}
                 </Button>
             </DialogActions>
-        </Dialog>
+        </>
     );
 }
