@@ -4,16 +4,17 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { getEnv } from 'lib/services/envAction';
 
-type EnvironmentalVariables = Awaited<ReturnType<typeof getEnv>>;
+type EnvironmentalVariables = Omit<Awaited<ReturnType<typeof getEnv>>, 'KEYCLOAK_ENABLED'> & {
+    KEYCLOAK_ENABLED: boolean;
+};
 
 export const initialEnvValues: EnvironmentalVariables = {
     AAS_LIST_FEATURE_FLAG: false,
     COMPARISON_FEATURE_FLAG: false,
     TRANSFER_FEATURE_FLAG: false,
     PRODUCT_VIEW_FEATURE_FLAG: false,
-    AUTHENTICATION_FEATURE_FLAG: false,
-    LOCK_TIMESERIES_PERIOD_FEATURE_FLAG: false,
     KEYCLOAK_ENABLED: false,
+    LOCK_TIMESERIES_PERIOD_FEATURE_FLAG: false,
     DISCOVERY_API_URL: '',
     REGISTRY_API_URL: '',
     SUBMODEL_REGISTRY_API_URL: '',
@@ -29,6 +30,7 @@ export const initialEnvValues: EnvironmentalVariables = {
     DATA_PRIVACY_URL: '',
     USE_BASYX_RBAC: false,
     WHITELIST_FEATURE_FLAG: false,
+    AUTHENTICATION_FEATURE_FLAG: false,
     SUBMODEL_WHITELIST: '',
     THEME_LOGO_MIME_TYPE: undefined,
 };

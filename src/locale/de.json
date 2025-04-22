@@ -365,6 +365,7 @@
         },
         "delete": {
           "question": "Regel unwiderruflich löschen?",
+          "lastForRole": "Dies ist die letzte Regel für diese Rolle. Vergessen Sie nicht, die Rolle auch in Keycloak zu löschen.",
           "title": "Regel löschen",
           "success": "Regel erfolgreich gelöscht."
         },

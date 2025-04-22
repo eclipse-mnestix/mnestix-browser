@@ -170,6 +170,7 @@ export const RuleSettings = () => {
                     }}
                     open={ruleDetailDialogOpen}
                     rule={selectedRule}
+                    rules={rbacRoles?.roles ?? []}
                 ></RuleDialog>
             )}
             <CreateRuleDialog

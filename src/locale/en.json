@@ -368,6 +368,7 @@
         "roleRequired": "Role is required",
         "delete": {
           "question": "Are you sure you want to delete the rule?",
+          "lastForRole": "This is the last rule for this role. Don't forget to delete the role in keycloak as well.",
           "title": "Delete rule",
           "success": "Rule deleted successfully."
         },
