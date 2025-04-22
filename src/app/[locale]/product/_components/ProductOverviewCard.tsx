@@ -68,7 +68,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
         if (props.submodels && props.submodels.length > 0) {
             const technicalData = findSubmodelByIdOrSemanticId(
                 props.submodels,
-                SubmodelSemanticIdEnum.TechnicalData,
+                SubmodelSemanticIdEnum.TechnicalDataV11,
                 'TechnicalData',
             );
             setTechnicalDataSubmodel(technicalData);
