@@ -375,7 +375,7 @@
           "submodelIds": "Submodel IDs",
           "type": "Type"
         },
-        "title": "Rule Management",
+        "title": "Role Management",
         "wildcardLabel": "Allow all"
       },
       "subHeader": "Add, remove, or modify settings and configurations to various features within your AAS environment."
