@@ -1,7 +1,7 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import { ArrowBack, Delete } from '@mui/icons-material';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
@@ -17,7 +17,6 @@ type RuleDialogProps = {
     readonly onClose: (reload: boolean) => Promise<void>;
     readonly open: boolean;
     readonly rule: BaSyxRbacRule;
-    readonly rules: BaSyxRbacRule[];
 };
 
 export const RuleDialog = (props: RuleDialogProps) => {
@@ -25,10 +24,6 @@ export const RuleDialog = (props: RuleDialogProps) => {
     const [mode, setMode] = useState<'edit' | 'view' | 'delete'>('view');
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
-
-    const isLastRuleForRole = useMemo(() => {
-        return props.rules.filter((rule) => rule.role === props.rule.role).length === 1;
-    }, [props.rules, props.rule.role]);
 
     async function onSubmit(data: RuleFormModel) {
         const mappedDto = mapFormModelToBaSyxRbacRule(data, props.rule);
@@ -74,13 +69,7 @@ export const RuleDialog = (props: RuleDialogProps) => {
                             </>
                         );
                     case 'delete':
-                        return (
-                            <RuleDeleteDialog
-                                isLastRuleForRole={isLastRuleForRole}
-                                rule={props.rule}
-                                onCloseDialog={onCloseDialog}
-                            />
-                        );
+                        return <RuleDeleteDialog rule={props.rule} onCloseDialog={onCloseDialog} />;
                     default:
                         return (
                             <>
