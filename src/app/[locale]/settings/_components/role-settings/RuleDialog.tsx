@@ -11,6 +11,7 @@ import { useShowError } from 'lib/hooks/UseShowError';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { RuleForm, RuleFormModel } from 'app/[locale]/settings/_components/role-settings/RuleForm';
 import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
+import { CreateHint, DeleteHint } from 'app/[locale]/settings/_components/role-settings/HintDialogContent';
 
 export type DialogRbacRule = BaSyxRbacRule & {
     // If this rule is the only rule for the role
@@ -25,31 +26,115 @@ type RuleDialogProps = {
     readonly availableRoles: string[];
 };
 
-export const RuleDialog = ({ onClose, reloadRules, open, rule }: RuleDialogProps) => {
+enum DialogState {
+    VIEW,
+    EDIT,
+    CREATE_HINT,
+    DELETE_HINT,
+}
+
+export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }: RuleDialogProps) => {
     const t = useTranslations('pages.settings.rules');
-    const [isEditMode, setIsEditMode] = useState(false);
+    const [dialogState, setDialogState] = useState(DialogState.VIEW);
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
 
     async function onSubmit(data: RuleFormModel) {
         const mappedDto = mapFormModelToBaSyxRbacRule(data, rule);
         const response = await deleteAndCreateRbacRule(rule.idShort, mappedDto);
-        if (response.isSuccess) {
-            notificationSpawner.spawn({
-                message: t('editRule.saveSuccess'),
-                severity: 'success',
-            });
-            onClose();
-            await reloadRules();
+        if (!response.isSuccess) {
+            if (response.errorCode === 'CONFLICT') {
+                return notificationSpawner.spawn({
+                    message: t('errors.uniqueIdShort'),
+                    severity: 'error',
+                });
+            }
+            showError(response.message);
             return;
         }
-        if (response.errorCode === 'CONFLICT') {
-            return notificationSpawner.spawn({
-                message: t('errors.uniqueIdShort'),
-                severity: 'error',
-            });
+
+        notificationSpawner.spawn({
+            message: t('editRule.saveSuccess'),
+            severity: 'success',
+        });
+
+        const isNewRole = !availableRoles.includes(data.role);
+        const isDeletedRole = rule.isOnlyRule && rule.role !== data.role;
+        if (isNewRole) {
+            setDialogState(DialogState.CREATE_HINT);
+        } else if (isDeletedRole) {
+            setDialogState(DialogState.DELETE_HINT);
+        } else {
+            onClose();
         }
-        showError(response.message);
+
+        await reloadRules();
+    }
+
+    function ViewContent() {
+        return (
+            <>
+                <DialogContent style={{ padding: '40px' }} data-testid="role-settings-dialog">
+                    <Box display="flex" flexDirection="column">
+                        <Typography color="text.secondary" variant="body2">
+                            {t('tableHeader.name')}
+                        </Typography>
+                        <Typography variant="h2" mb="1em">
+                            {rule?.role}
+                        </Typography>
+                        <Box display="flex" flexDirection="column" gap="1em">
+                            <Box>
+                                <Typography variant="h5">{t('tableHeader.action')}</Typography>
+                                <Typography>{rule?.action}</Typography>
+                            </Box>
+                            <TargetInformationView targetInformation={rule.targetInformation} />
+                        </Box>
+                    </Box>
+                </DialogContent>
+                <DialogActions sx={{ padding: '1em' }}>
+                    <Button
+                        startIcon={<ArrowBack />}
+                        variant="outlined"
+                        data-testid="role-settings-back-button"
+                        onClick={onClose}
+                    >
+                        {t('buttons.back')}
+                    </Button>
+                    <Button
+                        variant="contained"
+                        startIcon={<EditIcon />}
+                        data-testid="role-settings-edit-button"
+                        onClick={() => setDialogState(DialogState.EDIT)}
+                    >
+                        {t('buttons.edit')}
+                    </Button>
+                </DialogActions>
+            </>
+        );
+    }
+
+    function EditContent() {
+        return (
+            <>
+                <Typography variant="h2" color="primary" sx={{ mt: 4, ml: '40px' }}>
+                    {t('editRule.title')}
+                </Typography>
+                <RuleForm rule={rule} onSubmit={onSubmit} onCancel={() => setDialogState(DialogState.VIEW)} />
+            </>
+        );
+    }
+
+    function DialogViewContent() {
+        switch (dialogState) {
+            case DialogState.CREATE_HINT:
+                return <CreateHint onClose={onClose} />;
+            case DialogState.DELETE_HINT:
+                return <DeleteHint onClose={onClose} />;
+            case DialogState.EDIT:
+                return <EditContent />;
+            default:
+                return <ViewContent />;
+        }
     }
 
     return (
@@ -60,56 +145,11 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule }: RuleDialogProps
             fullWidth={true}
             onTransitionExited={() => {
                 // This function is called when the dialog close transition ends
-                setIsEditMode(false);
+                setDialogState(DialogState.VIEW);
             }}
         >
             <DialogCloseButton handleClose={onClose} />
-            {isEditMode ? (
-                <>
-                    <Typography variant="h2" color="primary" sx={{ mt: 4, ml: '40px' }}>
-                        {t('editRule.title')}
-                    </Typography>
-                    <RuleForm rule={rule} onSubmit={onSubmit} onCancel={() => setIsEditMode(false)} />
-                </>
-            ) : (
-                <>
-                    <DialogContent style={{ padding: '40px' }} data-testid="role-settings-dialog">
-                        <Box display="flex" flexDirection="column">
-                            <Typography color="text.secondary" variant="body2">
-                                {t('tableHeader.name')}
-                            </Typography>
-                            <Typography variant="h2" mb="1em">
-                                {rule?.role}
-                            </Typography>
-                            <Box display="flex" flexDirection="column" gap="1em">
-                                <Box>
-                                    <Typography variant="h5">{t('tableHeader.action')}</Typography>
-                                    <Typography>{rule?.action}</Typography>
-                                </Box>
-                                <TargetInformationView targetInformation={rule.targetInformation} />
-                            </Box>
-                        </Box>
-                    </DialogContent>
-                    <DialogActions sx={{ padding: '1em' }}>
-                        <Button
-                            startIcon={<ArrowBack />}
-                            variant="outlined"
-                            data-testid="role-settings-back-button"
-                            onClick={onClose}
-                        >
-                            {t('buttons.back')}
-                        </Button>
-                        <Button
-                            variant="contained"
-                            startIcon={<EditIcon />}
-                            data-testid="role-settings-edit-button"
-                            onClick={() => setIsEditMode(true)}
-                        >
-                            {t('buttons.edit')}
-                        </Button>
-                    </DialogActions>
-                </>
-            )}
+            <DialogViewContent />
         </Dialog>
     );
 };

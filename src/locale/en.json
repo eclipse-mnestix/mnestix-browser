@@ -368,6 +368,13 @@
           "saveSuccess": "New rule saved successfully.",
           "title": "Create Rule"
         },
+        "deleteRule": {
+          "hint": {
+            "acknowledge": "Acknowledged",
+            "text": "Do not forget to delete this rule in keycloak as well!",
+            "title": "Delete rule"
+          }
+        },
         "editRule": {
           "saveSuccess": "Rule edit successful.",
           "title": "Edit Rule"
@@ -392,6 +399,17 @@
       "subHeader": "Add, remove, or modify settings and configurations to various features within your AAS environment."
     },
     "templates": {
+      "actions": {
+        "add": "Add",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "duplicate": "Duplicate",
+        "edit": "Edit",
+        "remove": "Remove",
+        "restore": "Restore",
+        "revertChanges": "Revert changes",
+        "saveChanges": "Save changes"
+      },
       "all": "All",
       "boolean": {
         "false": "false",
@@ -409,26 +427,6 @@
       "errors": {
         "unknownModelType": "Unknown ModelType: {type}"
       },
-      "mappingInfo": "Mapping info",
-      "mappingInfoDescription": "Arbitrary identifier that you can use for your data imports.",
-      "multiplicity": "Multiplicity",
-      "multiplicityDescription": "A qualifier used to identify obligatory elements.",
-      "noTemplatesFound": "No templates found",
-      "templateDeletedSuccessfully": "Template deleted successfully",
-      "templateIdCopied": "Template ID copied to clipboard: {id}",
-      "templatesUseExplanation": "Templates allow you to create a reusable submodel structure, adjusted to your requirements.",
-      "title": "Templates",
-      "actions": {
-        "add": "Add",
-        "cancel": "Cancel",
-        "delete": "Delete",
-        "duplicate": "Duplicate",
-        "edit": "Edit",
-        "remove": "Remove",
-        "restore": "Restore",
-        "revertChanges": "Revert changes",
-        "saveChanges": "Save changes"
-      },
       "labels": {
         "language": "Language",
         "notAvailable": "-",
@@ -436,10 +434,19 @@
         "text": "Text",
         "value": "Value"
       },
+      "mappingInfo": "Mapping info",
+      "mappingInfoDescription": "Arbitrary identifier that you can use for your data imports.",
       "messages": {
         "changesSavedSuccessfully": "Changes saved successfully",
         "deleted": "deleted"
       },
+      "multiplicity": "Multiplicity",
+      "multiplicityDescription": "A qualifier used to identify obligatory elements.",
+      "noTemplatesFound": "No templates found",
+      "templateDeletedSuccessfully": "Template deleted successfully",
+      "templateIdCopied": "Template ID copied to clipboard: {id}",
+      "templatesUseExplanation": "Templates allow you to create a reusable submodel structure, adjusted to your requirements.",
+      "title": "Templates",
       "validation": {
         "errors": {
           "invalidDate": "Has to be a valid date in format \"yyyy-mm-dd\"",

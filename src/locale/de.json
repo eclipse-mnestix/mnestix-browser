@@ -368,6 +368,13 @@
           "saveSuccess": "Neue Regel erfolgreich gespeichert.",
           "title": "Regel erstellen"
         },
+        "deleteRule": {
+          "hint": {
+            "acknowledge": "Verstanden",
+            "text": "Vergessen Sie nicht die Regel in keycloak zu entfernen!",
+            "title": "Regel löschen"
+          }
+        },
         "editRule": {
           "saveSuccess": "Regel erfolgreich bearbeitet.",
           "title": "Regel bearbeiten"
@@ -392,6 +399,17 @@
       "subHeader": "Hinzufügen, Entfernen oder Ändern von Einstellungen und Konfigurationen für verschiedene Funktionen innerhalb Ihrer AAS-Umgebung."
     },
     "templates": {
+      "actions": {
+        "add": "Hinzufügen",
+        "cancel": "Abbrechen",
+        "delete": "Löschen",
+        "duplicate": "Duplizieren",
+        "edit": "Bearbeiten",
+        "remove": "Entfernen",
+        "restore": "Wiederherstellen",
+        "revertChanges": "Änderungen zurücksetzen",
+        "saveChanges": "Änderungen speichern"
+      },
       "all": "Alle",
       "boolean": {
         "false": "Falsch",
@@ -409,26 +427,6 @@
       "errors": {
         "unknownModelType": "Unbekannter ModelType: {type}"
       },
-      "mappingInfo": "Mapping-Info",
-      "mappingInfoDescription": "Frei wählbarer Identifikator, auf den Sie bei Datenimporten zurückgreifen können.",
-      "multiplicity": "Multiplizität",
-      "multiplicityDescription": "Parameter, mit dem Sie festlegen können, welche Elemente verpflichtend sind.",
-      "noTemplatesFound": "Keine Templates gefunden",
-      "templateDeletedSuccessfully": "Template erfolgreich gelöscht.",
-      "templateIdCopied": "Template-ID in die Zwischenablage kopiert: {id}",
-      "templatesUseExplanation": "Templates erlauben es Ihnen, eine wiederverwendbare Teilmodell-Struktur, angepasst auf Ihre Bedürfnisse, zu definieren.",
-      "title": "Templates",
-      "actions": {
-        "add": "Hinzufügen",
-        "cancel": "Abbrechen",
-        "delete": "Löschen",
-        "duplicate": "Duplizieren",
-        "edit": "Bearbeiten",
-        "remove": "Entfernen",
-        "restore": "Wiederherstellen",
-        "revertChanges": "Änderungen zurücksetzen",
-        "saveChanges": "Änderungen speichern"
-      },
       "labels": {
         "language": "Sprache",
         "notAvailable": "-",
@@ -436,10 +434,19 @@
         "text": "Text",
         "value": "Wert"
       },
+      "mappingInfo": "Mapping-Info",
+      "mappingInfoDescription": "Frei wählbarer Identifikator, auf den Sie bei Datenimporten zurückgreifen können.",
       "messages": {
         "changesSavedSuccessfully": "Änderungen erfolgreich gespeichert.",
         "deleted": "gelöscht"
       },
+      "multiplicity": "Multiplizität",
+      "multiplicityDescription": "Parameter, mit dem Sie festlegen können, welche Elemente verpflichtend sind.",
+      "noTemplatesFound": "Keine Templates gefunden",
+      "templateDeletedSuccessfully": "Template erfolgreich gelöscht.",
+      "templateIdCopied": "Template-ID in die Zwischenablage kopiert: {id}",
+      "templatesUseExplanation": "Templates erlauben es Ihnen, eine wiederverwendbare Teilmodell-Struktur, angepasst auf Ihre Bedürfnisse, zu definieren.",
+      "title": "Templates",
       "validation": {
         "errors": {
           "invalidDate": "Muss ein gültiges Datum sein, im Format \"yyyy-mm-dd\"",
