@@ -92,6 +92,7 @@ export const RuleDialog = (props: RuleDialogProps) => {
                                 </DialogContent>
                                 <DialogActions sx={{ padding: '1em' }}>
                                     <Button
+                                        sx={{ mr: 2 }}
                                         startIcon={<ArrowBack />}
                                         variant="outlined"
                                         data-testid="role-settings-back-button"
@@ -100,7 +101,7 @@ export const RuleDialog = (props: RuleDialogProps) => {
                                         {t('buttons.back')}
                                     </Button>
                                     <Button
-                                        variant="contained"
+                                        variant="outlined"
                                         startIcon={<Delete />}
                                         color="error"
                                         data-testid="role-settings-delete-button"
