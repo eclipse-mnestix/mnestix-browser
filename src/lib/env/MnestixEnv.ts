@@ -18,18 +18,13 @@ const privateAzure = mapEnvVariables([
     'APPLICATION_ID_URI',
 ] as const);
 
-const keycloak =
-    process_env.KEYCLOAK_ENABLED === 'true'
-        ? {
-              KEYCLOAK_ENABLED: true as const,
-              KEYCLOAK_ISSUER: process_env.KEYCLOAK_ISSUER!,
-              KEYCLOAK_LOCAL_URL: process_env.KEYCLOAK_LOCAL_URL!,
-              KEYCLOAK_REALM: process_env.KEYCLOAK_REALM!,
-              KEYCLOAK_CLIENT_ID: process_env.KEYCLOAK_CLIENT_ID!,
-          }
-        : {
-              KEYCLOAK_ENABLED: false as const,
-          };
+const keycloak = {
+    KEYCLOAK_ENABLED: process_env.KEYCLOAK_ENABLED === 'true',
+    KEYCLOAK_ISSUER: process_env.KEYCLOAK_ISSUER,
+    KEYCLOAK_LOCAL_URL: process_env.KEYCLOAK_LOCAL_URL,
+    KEYCLOAK_REALM: process_env.KEYCLOAK_REALM,
+    KEYCLOAK_CLIENT_ID: process_env.KEYCLOAK_CLIENT_ID,
+};
 
 const featureFlags = mapEnvVariables(
     [

@@ -4,9 +4,7 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { getEnv } from 'lib/services/envAction';
 
-type EnvironmentalVariables = Omit<Awaited<ReturnType<typeof getEnv>>, 'KEYCLOAK_ENABLED'> & {
-    KEYCLOAK_ENABLED: boolean;
-};
+type EnvironmentalVariables = Awaited<ReturnType<typeof getEnv>>;
 
 export const initialEnvValues: EnvironmentalVariables = {
     AAS_LIST_FEATURE_FLAG: false,
@@ -33,6 +31,10 @@ export const initialEnvValues: EnvironmentalVariables = {
     AUTHENTICATION_FEATURE_FLAG: false,
     SUBMODEL_WHITELIST: '',
     THEME_LOGO_MIME_TYPE: undefined,
+    KEYCLOAK_ISSUER: undefined,
+    KEYCLOAK_LOCAL_URL: undefined,
+    KEYCLOAK_REALM: undefined,
+    KEYCLOAK_CLIENT_ID: undefined,
 };
 
 const EnvContext = createContext(initialEnvValues);
