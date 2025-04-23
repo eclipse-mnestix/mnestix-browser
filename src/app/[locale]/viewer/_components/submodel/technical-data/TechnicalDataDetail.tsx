@@ -27,6 +27,7 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
     const generalInformation = findSubmodelElement(SubmodelElementSemanticIdEnum.GeneralInformation);
     const technicalData = findSubmodelElement(SubmodelElementSemanticIdEnum.TechnicalProperties);
     const productClassifications = findSubmodelElement(SubmodelElementSemanticIdEnum.ProductClassifications);
+    const furtherInformation = findSubmodelElement(SubmodelElementSemanticIdEnum.FurtherInformation);
 
     const renderVisualization = (element: ISubmodelElement) => {
         switch (getKeyType(element)) {
@@ -39,7 +40,15 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
             case KeyTypes.SubmodelElementCollection:
             case KeyTypes.SubmodelElementList:
                 return (
-                    <TreeItem itemId={element.idShort || 'unknown'} label={element.idShort}>
+                    <TreeItem
+                        itemId={element.idShort || 'unknown'}
+                        label={element.idShort}
+                        sx={{
+                            '&& .MuiTreeItem-label': {
+                                ...theme.typography.h6,
+                            },
+                        }}
+                    >
                         {(element as SubmodelElementCollection | SubmodelElementList)?.value?.map(
                             (child) => child && renderVisualization(child),
                         )}
@@ -73,7 +82,7 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
                     borderColor: 'divider',
                 },
                 '&& .MuiTreeItem-label': {
-                    ...theme.typography.h5,
+                    ...theme.typography.h4,
                 },
             }}
             key={id}
@@ -89,6 +98,8 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
             {technicalData?.value && renderTreeItem('technicalProperties', 'Technical Properties', technicalData.value)}
             {productClassifications?.value &&
                 renderTreeItem('productClassifications', 'Product Classifications', productClassifications.value)}
+            {furtherInformation?.value &&
+                renderTreeItem('furtherInformation', 'Further Information', furtherInformation.value)}
         </SimpleTreeView>
     );
 }
