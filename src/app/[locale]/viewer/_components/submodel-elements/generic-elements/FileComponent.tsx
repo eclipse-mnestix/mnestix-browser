@@ -58,9 +58,7 @@ export function FileComponent(props: FileComponentProps) {
 
     if (image) {
         return (
-            <Box>
-                <StyledFileImg src={image} />
-            </Box>
+            <StyledFileImg src={image} />
         );
     } else {
         return file.value ? (
