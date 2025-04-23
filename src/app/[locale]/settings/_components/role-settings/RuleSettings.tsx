@@ -18,7 +18,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { RoundedIconButton } from 'components/basics/Buttons';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { getRbacRules } from 'lib/services/rbac-service/RbacActions';
-import { RbacRolesFetchResult, BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
+import { BaSyxRbacRule, RbacRolesFetchResult } from 'lib/services/rbac-service/types/RbacServiceData';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { useShowError } from 'lib/hooks/UseShowError';
@@ -170,7 +170,6 @@ export const RuleSettings = () => {
                     }}
                     open={ruleDetailDialogOpen}
                     rule={selectedRule}
-                    rules={rbacRoles?.roles ?? []}
                 ></RuleDialog>
             )}
             <CreateRuleDialog
