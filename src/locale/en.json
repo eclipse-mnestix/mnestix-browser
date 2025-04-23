@@ -1,15 +1,5 @@
 {
   "components": {
-    "assetNotFound": {
-      "header": "AAS could not be loaded.",
-      "text": "Unable to load AAS for the given ID \"{id}\"",
-      "toHome": "To Home"
-    },
-    "authentication": {
-      "authenticationNeeded": "Authentication needed",
-      "contactAdmin": "You cannot visit this page. Please contact your administrator.",
-      "sessionExpired": "Your session has expired. Please log in again."
-    },
     "addressComponent": {
       "VAT": "VAT-Number",
       "addressTypes": {
@@ -24,6 +14,16 @@
         "ZipCodeOfPOBox": "Zip Code of PO Box",
         "Zipcode": "Zipcode"
       }
+    },
+    "assetNotFound": {
+      "header": "AAS could not be loaded.",
+      "text": "Unable to load AAS for the given ID \"{id}\"",
+      "toHome": "To Home"
+    },
+    "authentication": {
+      "authenticationNeeded": "Authentication needed",
+      "contactAdmin": "You cannot visit this page. Please contact your administrator.",
+      "sessionExpired": "Your session has expired. Please log in again."
     },
     "carbonFootprint": {
       "beech": "One Beech Tree",
@@ -101,12 +101,6 @@
       "noDataFound": "No data found for \"{name}\".",
       "toHomeButton": "To Home"
     },
-    "qrScanner": {
-      "errors": {
-        "defaultCallbackErrorMsg": "Could not open the QR code!",
-        "errorOnQrScannerOpen": "Could not open the QR scanner!"
-      }
-    },
     "propertyComponent": {
       "boolean": {
         "false": "false",
@@ -118,6 +112,12 @@
         "copyBase64": "Copy base64 encoded",
         "notAvailable": "-",
         "value": "Value"
+      }
+    },
+    "qrScanner": {
+      "errors": {
+        "defaultCallbackErrorMsg": "Could not open the QR code!",
+        "errorOnQrScannerOpen": "Could not open the QR scanner!"
       }
     },
     "relationShipDetailsDialog": {
@@ -272,6 +272,16 @@
       "subtitle": "Here you will find all related AAS to the given Asset ID.",
       "title": "Related AAS to Asset ID"
     },
+    "productViewer": {
+      "actions": {
+        "toAasView": "AAS View"
+      },
+      "classification": "Classification",
+      "error": {
+        "technicalDataSubmodelNotFound": "Technical Data Submodel not found"
+      },
+      "title": "Product"
+    },
     "registryList": {
       "errors": {
         "noAasFound": "No AAS found for the given ID",
@@ -280,16 +290,6 @@
       },
       "subtitle": "Here you will find all related AAS to the given AAS ID.",
       "title": "Related AAS to AAS ID"
-    },
-    "productViewer": {
-      "title": "Product",
-      "classification": "Classification",
-      "error":{
-        "technicalDataSubmodelNotFound": "Technical Data Submodel not found"
-      },
-      "actions": {
-        "toAasView": "AAS View"
-      }
     },
     "settings": {
       "actions": {
@@ -319,36 +319,36 @@
         "title": "Data sources",
         "urlFieldRequired": "URL field is required"
       },
-      "messages": {
-        "changesSavedSuccessfully": "Changes saved successfully."
-      },
       "header": "Settings",
       "idStructure": {
-        "title": "ID Structure",
-        "labels": {
-          "dynamicPart": "dynamic part",
-          "idStructureExplanation": "Define, how your IDs are represented. This is a standard setting that can be adjusted for individual imports.",
-          "staticPrefix": "static prefix"
-        },
         "assetIdDocumentation": {
+          "assetId": "Asset ID",
           "dnsHeading": "Access via DNS",
           "dnsText": "Especially for the brownfield approach and the distributor of a product, it makes sense to additionally set up DNS access through the asset ID and thus enable data retrieval from conventional browser applications.",
           "endResult": "End result",
           "exampleHeading": "Example Case",
           "industry40Heading": "Industry 4.0 context",
           "industry40Text": "Products have a globally unique ID which can be assigned to one or more asset administration shells. In the Industry 4.0 context, the connection between asset and AAS is established via the I4.0 infrastructure.",
-          "title": "How to connect your Asset ID with your AAS Repository",
           "redirectsTo": "Redirects to",
-          "assetId": "Asset ID"
+          "title": "How to connect your Asset ID with your AAS Repository"
         },
         "errors": {
           "idStructureError": "Error while saving \"{name}\" ({reason}).",
           "invalidIri": "Has to be a valid IRI, e.g. https://example.com/",
           "invalidIriPart": "Has to work as part of an IRI (no \"/\", spaces or special characters)"
         },
+        "labels": {
+          "dynamicPart": "dynamic part",
+          "idStructureExplanation": "Define, how your IDs are represented. This is a standard setting that can be adjusted for individual imports.",
+          "staticPrefix": "static prefix"
+        },
         "messages": {
           "successfullyUpdated": "Updated successfully"
-        }
+        },
+        "title": "ID Structure"
+      },
+      "messages": {
+        "changesSavedSuccessfully": "Changes saved successfully."
       },
       "rules": {
         "buttons": {
