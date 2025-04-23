@@ -29,40 +29,37 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
     const productClassifications = findSubmodelElement(SubmodelElementSemanticIdEnum.ProductClassifications);
 
     const renderVisualization = (element: ISubmodelElement) => {
-        const content = () => {
-            switch (getKeyType(element)) {
-                case KeyTypes.Property:
-                    return (
-                        <DataRowWithUnit label={element.idShort || 'id'}>
-                            <PropertyComponent property={element as Property} />
-                        </DataRowWithUnit>
-                    );
-                case KeyTypes.SubmodelElementCollection:
-                case KeyTypes.SubmodelElementList:
-                    return (
-                        <TreeItem itemId={element.idShort || 'unknown'} label={element.idShort}>
-                            {(element as SubmodelElementCollection | SubmodelElementList)?.value?.map(
-                                (child) => child && renderVisualization(child),
-                            )}
-                        </TreeItem>
-                    );
-                case KeyTypes.File:
-                    return;
-                case KeyTypes.MultiLanguageProperty:
-                    return (
-                        <DataRowWithUnit label={element.idShort || 'id'}>
-                            <MultiLanguagePropertyComponent mLangProp={element as MultiLanguageProperty} />
-                        </DataRowWithUnit>
-                    );
-                default:
-                    return (
-                        <Typography color="error" variant="body2">
-                            {t('unknownModelType', { type: `${getKeyType(element)}` })}
-                        </Typography>
-                    );
-            }
-        };
-        return content();
+        switch (getKeyType(element)) {
+            case KeyTypes.Property:
+                return (
+                    <DataRowWithUnit label={element.idShort || 'id'} key={element.idShort}>
+                        <PropertyComponent property={element as Property} />
+                    </DataRowWithUnit>
+                );
+            case KeyTypes.SubmodelElementCollection:
+            case KeyTypes.SubmodelElementList:
+                return (
+                    <TreeItem itemId={element.idShort || 'unknown'} label={element.idShort}>
+                        {(element as SubmodelElementCollection | SubmodelElementList)?.value?.map(
+                            (child) => child && renderVisualization(child),
+                        )}
+                    </TreeItem>
+                );
+            case KeyTypes.File:
+                return;
+            case KeyTypes.MultiLanguageProperty:
+                return (
+                    <DataRowWithUnit label={element.idShort || 'id'} key={element.idShort}>
+                        <MultiLanguagePropertyComponent mLangProp={element as MultiLanguageProperty} />
+                    </DataRowWithUnit>
+                );
+            default:
+                return (
+                    <Typography color="error" variant="body2">
+                        {t('unknownModelType', { type: `${getKeyType(element)}` })}
+                    </Typography>
+                );
+        }
     };
 
     const renderTreeItem = (id: string, label: string, elements?: ISubmodelElement[]) => (
@@ -76,7 +73,7 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
                     borderColor: 'divider',
                 },
                 '&& .MuiTreeItem-label': {
-                    ...theme.typography.h5
+                    ...theme.typography.h5,
                 },
             }}
             key={id}
@@ -97,11 +94,11 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
 }
 
 const DataRowWithUnit = (props: { label: string; children: React.ReactNode }) => (
-    <Box key={props.label}>
+    <>
         <Box display="flex" flexDirection="row" sx={{ '& > *': { flex: '1 1 33.33%' } }} mt={0.5}>
             <span>{props.label}</span>
             {props.children}
         </Box>
         <Divider />
-    </Box>
+    </>
 );
