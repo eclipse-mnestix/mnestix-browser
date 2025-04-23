@@ -3,10 +3,8 @@ import { SimpleTreeView, TreeItem } from '@mui/x-tree-view';
 import { buildSubmodelElementPath, hasSemanticId } from 'lib/util/SubmodelResolverUtil';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { getKeyType } from 'lib/util/KeyTypeUtil';
-import {
-    MultiLanguagePropertyComponent,
-} from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/MultiLanguagePropertyComponent';
-import { Box, Divider, Typography, useTheme } from '@mui/material';
+import { MultiLanguagePropertyComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/MultiLanguagePropertyComponent';
+import { Box, Typography, useTheme } from '@mui/material';
 import {
     ISubmodelElement,
     KeyTypes,
@@ -15,12 +13,11 @@ import {
     SubmodelElementCollection,
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useTranslations } from 'next-intl';
-import {
-    PropertyComponent,
-} from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/PropertyComponent';
+import { PropertyComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/PropertyComponent';
 import { File, Range, SubmodelElementList } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import React from 'react';
 import { FileComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/FileComponent';
+import { DataRowWithUnit } from 'app/[locale]/viewer/_components/submodel/technical-data/DataRowWithUnit';
 
 export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
     const t = useTranslations('pages.aasViewer.submodels');
@@ -36,16 +33,22 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
 
     const renderVisualization = (element: ISubmodelElement) => {
         switch (getKeyType(element)) {
-            case KeyTypes.Property:
+            case KeyTypes.Property: {
                 return (
-                    <DataRowWithUnit label={element.idShort || 'id'} key={element.idShort}>
+                    <DataRowWithUnit
+                        label={element.idShort || 'id'}
+                        key={element.idShort}
+                        cpSemanticId={element.semanticId?.keys[0].value}
+                    >
                         <PropertyComponent property={element as Property} />
                     </DataRowWithUnit>
                 );
+            }
             case KeyTypes.SubmodelElementCollection:
             case KeyTypes.SubmodelElementList:
                 return (
                     <TreeItem
+                        key={element.idShort}
                         itemId={element.idShort || 'unknown'}
                         label={element.idShort}
                         sx={{
@@ -64,7 +67,7 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
                 return (
                     // With the hardcoded SubmodelElementPath, this only works for CompanyLogo and ProductLogo
                     <DataRowWithUnit label={element.idShort || 'id'} key={element.idShort}>
-                        <Box maxHeight='50px' overflow="hidden" sx={{ overflowWrap: 'anywhere' }}>
+                        <Box maxHeight="50px" overflow="hidden" sx={{ overflowWrap: 'anywhere' }}>
                             <FileComponent
                                 file={element as File}
                                 submodelId={submodel.id}
@@ -83,9 +86,11 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
                 // Range still needs styling
                 return (
                     <DataRowWithUnit label={element.idShort || 'id'} key={element.idShort}>
-                        <span>min: {(element as Range).min}, max: {(element as Range).max}</span>
+                        <span>
+                            min: {(element as Range).min}, max: {(element as Range).max}
+                        </span>
                     </DataRowWithUnit>
-                )
+                );
             default:
                 return (
                     <Typography color="error" variant="body2">
@@ -122,10 +127,10 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
     );
 
     return (
-        <SimpleTreeView defaultExpandedItems={['generalInformation']}>
+        <SimpleTreeView defaultExpandedItems={['technicalProperties']}>
+            {technicalData?.value && renderTreeItem('technicalProperties', 'Technical Properties', technicalData.value)}
             {generalInformation?.value &&
                 renderTreeItem('generalInformation', 'General Information', generalInformation.value)}
-            {technicalData?.value && renderTreeItem('technicalProperties', 'Technical Properties', technicalData.value)}
             {productClassifications?.value &&
                 renderTreeItem('productClassifications', 'Product Classifications', productClassifications.value)}
             {furtherInformation?.value &&
@@ -134,12 +139,3 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
     );
 }
 
-const DataRowWithUnit = (props: { label: string; children: React.ReactNode }) => (
-    <>
-        <Box display="flex" flexDirection="row" sx={{ '& > *': { flex: '1 1 33.33%' } }} mt={0.5} minHeight='30px'>
-            <span>{props.label}</span>
-            {props.children}
-        </Box>
-        <Divider />
-    </>
-);
