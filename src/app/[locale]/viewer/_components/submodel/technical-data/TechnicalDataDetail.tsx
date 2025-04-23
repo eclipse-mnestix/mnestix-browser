@@ -1,6 +1,6 @@
 import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
 import { SimpleTreeView, TreeItem } from '@mui/x-tree-view';
-import { hasSemanticId } from 'lib/util/SubmodelResolverUtil';
+import { buildSubmodelElementPath, hasSemanticId } from 'lib/util/SubmodelResolverUtil';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { MultiLanguagePropertyComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/MultiLanguagePropertyComponent';
@@ -14,8 +14,9 @@ import {
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useTranslations } from 'next-intl';
 import { PropertyComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/PropertyComponent';
-import { SubmodelElementList } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import { File, SubmodelElementList } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import React from 'react';
+import { FileComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/FileComponent';
 
 export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
     const t = useTranslations('pages.aasViewer.submodels');
@@ -56,7 +57,15 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
                     </TreeItem>
                 );
             case KeyTypes.File:
-                return;
+                return (
+                    <DataRowWithUnit label={element.idShort || 'id'} key={element.idShort}>
+                        <FileComponent
+                            file={element as File}
+                            submodelId={submodel.id}
+                            submodelElementPath={buildSubmodelElementPath('GeneralInformation', element.idShort)}
+                        />
+                    </DataRowWithUnit>
+                );
             case KeyTypes.MultiLanguageProperty:
                 return (
                     <DataRowWithUnit label={element.idShort || 'id'} key={element.idShort}>
