@@ -5,6 +5,8 @@ import { safeBase64Decode } from 'lib/util/Base64Util';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import {
     checkIfSubmodelHasIdShortOrSemanticId,
+    findSubmodelByIdOrSemanticId,
+    findValueByIdShort,
     getTranslationText,
 } from 'lib/util/SubmodelResolverUtil';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
@@ -19,6 +21,8 @@ import { useTranslations } from 'use-intl';
 import { useEffect, useState } from 'react';
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
+import { Breadcrumbs } from 'components/basics/Breadcrumbs';
+import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 
 export default function Page() {
     const navigate = useRouter();
@@ -30,8 +34,12 @@ export default function Page() {
     const env = useEnv();
     const encodedRepoUrl = useSearchParams().get('repoUrl');
     const repoUrl = encodedRepoUrl ? decodeURI(encodedRepoUrl) : undefined;
-    const [filteredSubmodels, setFilteredSubmodels] = useState<SubmodelOrIdReference[]>([]);
     const t = useTranslations('pages.productViewer');
+    const [filteredSubmodels, setFilteredSubmodels] = useState<SubmodelOrIdReference[]>([]);
+    const [breadcrumbLinks, setbreadcrumbLinks] = useState<[{ label: string, path: string }]>([{
+        label: t('home'),
+        path: '/',
+    }]);
 
     const {
         aasFromContext,
@@ -53,13 +61,40 @@ export default function Page() {
         if (submodels) {
             const filtered = submodels.filter(
                 (submodel) =>
-                    !(checkIfSubmodelHasIdShortOrSemanticId(submodel, undefined, 'AasDesignerChangelog') ||
-                    checkIfSubmodelHasIdShortOrSemanticId(submodel,  SubmodelSemanticIdEnum.NameplateV2, 'Nameplate'))
+                    !(checkIfSubmodelHasIdShortOrSemanticId(submodel, undefined, 'AasDesignerChangelog'))
             );
             setFilteredSubmodels(filtered);
         }
-
     }, [submodels]);
+
+    const nameplate = findSubmodelByIdOrSemanticId(
+        submodels,
+        SubmodelSemanticIdEnum.NameplateV2,
+        'Nameplate',
+    );
+
+    if (nameplate) {
+        const productBreadcrumbProperties = [
+            { idShort: 'ManufacturerProductRoot', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductRoot },
+            { idShort: 'ManufacturerProductFamily', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductFamily },
+            { idShort: 'ManufacturerProductType', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductType }
+        ];
+
+        productBreadcrumbProperties.forEach(prop => {
+            const value = findValueByIdShort(
+                nameplate.submodelElements,
+                prop.idShort,
+                prop.semanticId,
+                locale,
+            );
+            if (value && !breadcrumbLinks.some(link => link.label === value)) {
+                breadcrumbLinks.push({
+                    label: value,
+                    path: '',
+                });
+            }
+        });
+    }
 
     const pageStyles = {
         display: 'flex',
@@ -84,6 +119,9 @@ export default function Page() {
         <Box sx={pageStyles}>
             {aasFromContext || isLoadingAas ? (
                 <Box sx={viewerStyles}>
+                    <Box>
+                        <Breadcrumbs links={breadcrumbLinks} />
+                    </Box>
                     <Box display="flex" flexDirection="row" alignContent="flex-end">
                         <Typography
                             variant="h2"
@@ -93,7 +131,6 @@ export default function Page() {
                                 marginTop: '10px',
                                 overflowWrap: 'break-word',
                                 wordBreak: 'break-word',
-                                textAlign: 'center',
                                 display: 'inline-block',
                             }}
                         >

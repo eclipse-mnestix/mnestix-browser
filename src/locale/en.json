@@ -284,6 +284,7 @@
     "productViewer": {
       "title": "Product",
       "classification": "Classification",
+      "home": "Home",
       "markings": "Product Markings",
       "productInfo": {
         "productDesignation": "Manufacturer Product Designation",

@@ -402,7 +402,8 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                             />
                         ) : (
                             <>
-                                {productInfo} {markings}
+                                {productInfo}
+                                {markings}
                             </>
                         )}
                     </>
