@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { CardHeading } from 'components/basics/CardHeading';
 import { useTranslations } from 'next-intl';
-import { RuleDialog } from 'app/[locale]/settings/_components/role-settings/RuleDialog';
+import { DialogRbacRule, RuleDialog } from 'app/[locale]/settings/_components/role-settings/RuleDialog';
 import { JSX, useState } from 'react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { RoundedIconButton } from 'components/basics/Buttons';
@@ -29,13 +29,16 @@ export const RuleSettings = () => {
     const t = useTranslations('pages.settings.rules');
     const [ruleDetailDialogOpen, setRuleDetailDialogOpen] = useState(false);
     const [createDialogOpen, setCreateDialogOpen] = useState(false);
-    const [selectedRule, setSelectedRule] = useState<BaSyxRbacRule | undefined>(undefined);
-    const [rbacRoles, setRbacRoles] = useState<RbacRolesFetchResult | undefined>();
+    const [selectedRule, setSelectedRule] = useState<DialogRbacRule>();
+    const [rbacRoles, setRbacRoles] = useState<RbacRolesFetchResult>();
     const isMobile = useIsMobile();
     const [isLoading, setIsLoading] = useState(false);
     const { showError } = useShowError();
 
     const MAX_PERMISSIONS_CHARS = 40;
+
+    // all available role names
+    const availableRoles = [...new Set(rbacRoles?.roles.map((role) => role.role))];
 
     async function loadRbacData() {
         setIsLoading(true);
@@ -77,7 +80,11 @@ export const RuleSettings = () => {
     };
 
     const openDetailDialog = (entry: BaSyxRbacRule) => {
-        setSelectedRule(entry);
+        // Check if the entry is the only rule for the role
+        const isOnlyRule = rbacRoles?.roles.filter((rule) => rule.role === entry.role).length === 1;
+        const updatedEntry = { ...entry, isOnlyRule };
+
+        setSelectedRule(updatedEntry);
         setRuleDetailDialogOpen(true);
     };
 
@@ -163,24 +170,18 @@ export const RuleSettings = () => {
             </Box>
             {selectedRule && (
                 <RuleDialog
-                    onClose={async (reload) => {
-                        if (reload) {
-                            await loadRbacData();
-                        }
-                        setRuleDetailDialogOpen(false);
-                    }}
+                    onClose={() => setRuleDetailDialogOpen(false)}
+                    reloadRules={loadRbacData}
                     open={ruleDetailDialogOpen}
                     rule={selectedRule}
+                    availableRoles={availableRoles}
                 ></RuleDialog>
             )}
             <CreateRuleDialog
                 open={createDialogOpen}
-                onClose={async (reload) => {
-                    if (reload) {
-                        await loadRbacData();
-                    }
-                    setCreateDialogOpen(false);
-                }}
+                onClose={() => setCreateDialogOpen(false)}
+                reloadRules={loadRbacData}
+                availableRoles={availableRoles}
             />
         </>
     );

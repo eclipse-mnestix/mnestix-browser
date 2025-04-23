@@ -7,16 +7,22 @@ import { mapFormModelToBaSyxRbacRule } from 'app/[locale]/settings/_components/r
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { RuleForm, RuleFormModel } from 'app/[locale]/settings/_components/role-settings/RuleForm';
+import { useState } from 'react';
+import { CreateHint } from 'app/[locale]/settings/_components/role-settings/HintDialogContent';
 
 type RoleDialogProps = {
-    readonly onClose: (reload: boolean) => void;
+    readonly onClose: () => void;
+    readonly reloadRules: () => Promise<void>;
     readonly open: boolean;
+    readonly availableRoles: string[];
 };
 
-export const CreateRuleDialog = (props: RoleDialogProps) => {
+export function CreateRuleDialog({ onClose, reloadRules, open, availableRoles }: RoleDialogProps) {
     const t = useTranslations('pages.settings.rules');
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
+
+    const [showHint, setShowHint] = useState(false);
 
     const defaultRbacRule: BaSyxRbacRule = {
         action: 'READ',
@@ -28,34 +34,57 @@ export const CreateRuleDialog = (props: RoleDialogProps) => {
     async function onSubmit(data: RuleFormModel) {
         const mappedDto = mapFormModelToBaSyxRbacRule(data, defaultRbacRule);
         const response = await createRbacRule(mappedDto);
-        if (response.isSuccess) {
-            notificationSpawner.spawn({
-                message: t('saveSuccess'),
-                severity: 'success',
-            });
-            onCloseDialog(true);
+        if (!response.isSuccess) {
+            if (response.errorCode === 'CONFLICT') {
+                return notificationSpawner.spawn({
+                    message: t('errors.uniqueIdShort'),
+                    severity: 'error',
+                });
+            }
+            showError(response.message);
+
             return;
         }
-        if (response.errorCode === 'CONFLICT') {
-            return notificationSpawner.spawn({
-                message: t('errors.uniqueIdShort'),
-                severity: 'error',
-            });
+
+        notificationSpawner.spawn({
+            message: t('createRule.saveSuccess'),
+            severity: 'success',
+        });
+
+        const isNewRole = !availableRoles.includes(data.role);
+        if (isNewRole) {
+            setShowHint(true);
+        } else {
+            onClose();
         }
-        showError(response.message);
+
+        await reloadRules();
     }
 
-    const onCloseDialog = (reload: boolean) => {
-        props.onClose(reload);
-    };
+    function CreateContent() {
+        return (
+            <>
+                <Typography variant="h2" color="primary" sx={{ mt: 4, ml: '40px' }}>
+                    {t('createRule.title')}
+                </Typography>
+                <RuleForm rule={defaultRbacRule} onSubmit={onSubmit} onCancel={onClose} />
+            </>
+        );
+    }
 
     return (
-        <Dialog open={props.open} onClose={() => onCloseDialog(false)} maxWidth="md" fullWidth={true}>
-            <Typography variant="h2" color="primary" sx={{ mt: 4, ml: '40px' }}>
-                {t('createTitle')}
-            </Typography>
-            <DialogCloseButton handleClose={() => onCloseDialog(false)} dataTestId="rule-create-close-button" />
-            <RuleForm rule={defaultRbacRule} onSubmit={onSubmit} onCancel={() => onCloseDialog(false)} />
+        <Dialog
+            open={open}
+            onClose={onClose}
+            maxWidth="md"
+            fullWidth={true}
+            onTransitionExited={() => {
+                // This function is called when the dialog close transition ends
+                setShowHint(false);
+            }}
+        >
+            <DialogCloseButton handleClose={onClose} dataTestId="rule-create-close-button" />
+            {showHint ? <CreateHint onClose={onClose} /> : <CreateContent />}
         </Dialog>
     );
-};
+}

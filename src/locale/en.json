@@ -359,13 +359,24 @@
           "edit": "Edit",
           "save": "Save"
         },
+        "createRule": {
+          "hint": {
+            "acknowledge": "Acknowledge",
+            "text": "A new Role has been created. Configure it in keycloak.",
+            "title": "Update Keycloak"
+          },
+          "saveSuccess": "New rule saved successfully.",
+          "title": "Create Rule"
+        },
+        "editRule": {
+          "saveSuccess": "Rule edit successful.",
+          "title": "Edit Rule"
+        },
         "errors": {
           "uniqueIdShort": "The combination of role name, action and type already exists in another rule.\nPlease edit the existing rule."
         },
-        "createTitle": "Create Rule",
-        "editTitle": "Edit Rule",
+        "keycloakHint": "Some Roles have changed. To assign users, configurate them at '{url}'.",
         "roleRequired": "Role is required",
-        "saveSuccess": "Rule saved successfully.",
         "subtitle": "Manage roles and permissions.",
         "tableHeader": {
           "aasIds": "AAS IDs",

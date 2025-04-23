@@ -1,6 +1,5 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
 import { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import { ArrowBack } from '@mui/icons-material';
@@ -11,28 +10,37 @@ import { mapFormModelToBaSyxRbacRule } from 'app/[locale]/settings/_components/r
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { RuleForm, RuleFormModel } from 'app/[locale]/settings/_components/role-settings/RuleForm';
+import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
 
-type RuleDialogProps = {
-    readonly onClose: (reload: boolean) => void;
-    readonly open: boolean;
-    readonly rule: BaSyxRbacRule;
+export type DialogRbacRule = BaSyxRbacRule & {
+    // If this rule is the only rule for the role
+    isOnlyRule: boolean;
 };
 
-export const RuleDialog = (props: RuleDialogProps) => {
+type RuleDialogProps = {
+    readonly onClose: () => void;
+    readonly reloadRules: () => Promise<void>;
+    readonly open: boolean;
+    readonly rule: DialogRbacRule;
+    readonly availableRoles: string[];
+};
+
+export const RuleDialog = ({ onClose, reloadRules, open, rule }: RuleDialogProps) => {
     const t = useTranslations('pages.settings.rules');
     const [isEditMode, setIsEditMode] = useState(false);
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
 
     async function onSubmit(data: RuleFormModel) {
-        const mappedDto = mapFormModelToBaSyxRbacRule(data, props.rule);
-        const response = await deleteAndCreateRbacRule(props.rule.idShort, mappedDto);
+        const mappedDto = mapFormModelToBaSyxRbacRule(data, rule);
+        const response = await deleteAndCreateRbacRule(rule.idShort, mappedDto);
         if (response.isSuccess) {
             notificationSpawner.spawn({
-                message: t('saveSuccess'),
+                message: t('editRule.saveSuccess'),
                 severity: 'success',
             });
-            onCloseDialog(true);
+            onClose();
+            await reloadRules();
             return;
         }
         if (response.errorCode === 'CONFLICT') {
@@ -44,20 +52,24 @@ export const RuleDialog = (props: RuleDialogProps) => {
         showError(response.message);
     }
 
-    const onCloseDialog = (reload: boolean) => {
-        setIsEditMode(false);
-        props.onClose(reload);
-    };
-
     return (
-        <Dialog open={props.open} onClose={() => onCloseDialog(false)} maxWidth="md" fullWidth={true}>
-            <DialogCloseButton handleClose={() => onCloseDialog(false)} />
+        <Dialog
+            open={open}
+            onClose={onClose}
+            maxWidth="md"
+            fullWidth={true}
+            onTransitionExited={() => {
+                // This function is called when the dialog close transition ends
+                setIsEditMode(false);
+            }}
+        >
+            <DialogCloseButton handleClose={onClose} />
             {isEditMode ? (
                 <>
                     <Typography variant="h2" color="primary" sx={{ mt: 4, ml: '40px' }}>
-                        {t('editTitle')}
+                        {t('editRule.title')}
                     </Typography>
-                    <RuleForm rule={props.rule} onSubmit={onSubmit} onCancel={() => setIsEditMode(false)} />
+                    <RuleForm rule={rule} onSubmit={onSubmit} onCancel={() => setIsEditMode(false)} />
                 </>
             ) : (
                 <>
@@ -67,14 +79,14 @@ export const RuleDialog = (props: RuleDialogProps) => {
                                 {t('tableHeader.name')}
                             </Typography>
                             <Typography variant="h2" mb="1em">
-                                {props.rule?.role}
+                                {rule?.role}
                             </Typography>
                             <Box display="flex" flexDirection="column" gap="1em">
                                 <Box>
                                     <Typography variant="h5">{t('tableHeader.action')}</Typography>
-                                    <Typography>{props.rule?.action}</Typography>
+                                    <Typography>{rule?.action}</Typography>
                                 </Box>
-                                <TargetInformationView targetInformation={props.rule.targetInformation} />
+                                <TargetInformationView targetInformation={rule.targetInformation} />
                             </Box>
                         </Box>
                     </DialogContent>
@@ -83,7 +95,7 @@ export const RuleDialog = (props: RuleDialogProps) => {
                             startIcon={<ArrowBack />}
                             variant="outlined"
                             data-testid="role-settings-back-button"
-                            onClick={() => onCloseDialog(false)}
+                            onClick={onClose}
                         >
                             {t('buttons.back')}
                         </Button>

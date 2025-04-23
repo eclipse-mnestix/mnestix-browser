@@ -359,13 +359,24 @@
           "edit": "Bearbeiten",
           "save": "Speichern"
         },
+        "createRule": {
+          "hint": {
+            "acknowledge": "In Ordnung",
+            "text": "Eine neue Rolle wurde erstellt. Vergessen Sie nicht die Rolle in Keycloak zu konfigurieren.",
+            "title": "Keycloak aktualisieren"
+          },
+          "saveSuccess": "Neue Regel erfolgreich gespeichert.",
+          "title": "Regel erstellen"
+        },
+        "editRule": {
+          "saveSuccess": "Regel erfolgreich bearbeitet.",
+          "title": "Regel bearbeiten"
+        },
         "errors": {
           "uniqueIdShort": "Die Kombination aus Rollenname, Aktion und Typ existiert bereits in einer anderen Regel.\nBitte bearbeiten Sie die bestehende Regel."
         },
-        "createTitle": "Regel erstellen",
-        "editTitle": "Regel bearbeiten",
+        "keycloakHint": "Es haben sich Rollen geändert. Um diese Benutzern zuzuweisen, konfigurieren Sie diese unter '{url}'.",
         "roleRequired": "Rolle wird benötigt",
-        "saveSuccess": "Regel erfolgreich gespeichert.",
         "subtitle": "Verwalten von Rollen und Berechtigungen.",
         "tableHeader": {
           "aasIds": "AAS IDs",
