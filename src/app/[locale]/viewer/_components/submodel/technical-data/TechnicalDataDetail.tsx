@@ -45,6 +45,7 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
                         label={element.idShort}
                         sx={{
                             '&& .MuiTreeItem-label': {
+                                m: 0,
                                 ...theme.typography.h6,
                             },
                         }}
@@ -81,7 +82,13 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
                     borderBottom: '1px solid',
                     borderColor: 'divider',
                 },
+                '& .MuiTreeItem-content .MuiTreeItem-iconContainer': {
+                    '& svg': {
+                        fontSize: '30px',
+                    },
+                },
                 '&& .MuiTreeItem-label': {
+                    m: 1,
                     ...theme.typography.h4,
                 },
             }}
