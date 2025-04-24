@@ -2,7 +2,7 @@ import { Box, Button, Dialog, DialogActions, DialogContent, Typography } from '@
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
-import { ArrowBack } from '@mui/icons-material';
+import { ArrowBack, Delete } from '@mui/icons-material';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 import { TargetInformationView } from 'app/[locale]/settings/_components/role-settings/target-information/TargetInformationView';
 import { deleteAndCreateRbacRule } from 'lib/services/rbac-service/RbacActions';
@@ -12,6 +12,7 @@ import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { RuleForm, RuleFormModel } from 'app/[locale]/settings/_components/role-settings/RuleForm';
 import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
 import { CreateHint, DeleteHint } from 'app/[locale]/settings/_components/role-settings/HintDialogContent';
+import { RuleDeleteDialog } from 'app/[locale]/settings/_components/role-settings/RuleDeleteDialog';
 
 export type DialogRbacRule = BaSyxRbacRule & {
     // If this rule is the only rule for the role
@@ -26,16 +27,11 @@ type RuleDialogProps = {
     readonly availableRoles: string[];
 };
 
-enum DialogState {
-    VIEW,
-    EDIT,
-    CREATE_HINT,
-    DELETE_HINT,
-}
+type DialogMode = 'edit' | 'view' | 'delete' | 'create-hint' | 'delete-hint';
 
 export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }: RuleDialogProps) => {
     const t = useTranslations('pages.settings.rules');
-    const [dialogState, setDialogState] = useState(DialogState.VIEW);
+    const [dialogMode, setDialogMode] = useState<DialogMode>('view');
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
 
@@ -61,9 +57,9 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
         const isNewRole = !availableRoles.includes(data.role);
         const isDeletedRole = rule.isOnlyRule && rule.role !== data.role;
         if (isNewRole) {
-            setDialogState(DialogState.CREATE_HINT);
+            setDialogMode('create-hint');
         } else if (isDeletedRole) {
-            setDialogState(DialogState.DELETE_HINT);
+            setDialogMode('delete-hint');
         } else {
             onClose();
         }
@@ -93,6 +89,7 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
                 </DialogContent>
                 <DialogActions sx={{ padding: '1em' }}>
                     <Button
+                        sx={{ mr: 2 }}
                         startIcon={<ArrowBack />}
                         variant="outlined"
                         data-testid="role-settings-back-button"
@@ -101,10 +98,19 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
                         {t('buttons.back')}
                     </Button>
                     <Button
+                        variant="outlined"
+                        startIcon={<Delete />}
+                        color="error"
+                        data-testid="role-settings-delete-button"
+                        onClick={() => setDialogMode('delete')}
+                    >
+                        {t('buttons.delete')}
+                    </Button>
+                    <Button
                         variant="contained"
                         startIcon={<EditIcon />}
                         data-testid="role-settings-edit-button"
-                        onClick={() => setDialogState(DialogState.EDIT)}
+                        onClick={() => setDialogMode('edit')}
                     >
                         {t('buttons.edit')}
                     </Button>
@@ -113,25 +119,22 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
         );
     }
 
-    function EditContent() {
-        return (
-            <>
-                <Typography variant="h2" color="primary" sx={{ mt: 4, ml: '40px' }}>
-                    {t('editRule.title')}
-                </Typography>
-                <RuleForm rule={rule} onSubmit={onSubmit} onCancel={() => setDialogState(DialogState.VIEW)} />
-            </>
-        );
-    }
-
     function DialogViewContent() {
-        switch (dialogState) {
-            case DialogState.CREATE_HINT:
+        switch (dialogMode) {
+            case 'edit':
+                return <RuleForm rule={rule} onSubmit={onSubmit} onCancel={() => setDialogMode('view')} />;
+            case 'delete':
+                return (
+                    <RuleDeleteDialog
+                        rule={rule}
+                        onCloseDialog={onClose}
+                        onCancelDialog={() => setDialogMode('view')}
+                    />
+                );
+            case 'create-hint':
                 return <CreateHint onClose={onClose} />;
-            case DialogState.DELETE_HINT:
+            case 'delete-hint':
                 return <DeleteHint onClose={onClose} />;
-            case DialogState.EDIT:
-                return <EditContent />;
             default:
                 return <ViewContent />;
         }
@@ -145,11 +148,13 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
             fullWidth={true}
             onTransitionExited={() => {
                 // This function is called when the dialog close transition ends
-                setDialogState(DialogState.VIEW);
+                setDialogMode('view');
             }}
         >
-            <DialogCloseButton handleClose={onClose} />
-            <DialogViewContent />
+            <Box sx={{ mx: '2rem', mt: '1.5rem', mb: '1rem' }}>
+                <DialogCloseButton handleClose={onClose} />
+                <DialogViewContent />
+            </Box>
         </Dialog>
     );
 };

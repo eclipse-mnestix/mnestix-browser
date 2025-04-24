@@ -1,11 +1,11 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { RuleDialog } from 'app/[locale]/settings/_components/role-settings/RuleDialog';
 import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
+import * as rbacActions from 'lib/services/rbac-service/RbacActions';
 import { deleteAndCreateRbacRule } from 'lib/services/rbac-service/RbacActions';
 import { expect } from '@jest/globals';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
-import * as rbacActions from 'lib/services/rbac-service/RbacActions';
 import { mockRbacRoles } from './test-data/mockRbacRoles';
 
 jest.mock('./../../../../../lib/services/rbac-service/RbacActions');

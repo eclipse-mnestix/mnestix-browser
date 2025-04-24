@@ -11,9 +11,8 @@ export const initialEnvValues: EnvironmentalVariables = {
     COMPARISON_FEATURE_FLAG: false,
     TRANSFER_FEATURE_FLAG: false,
     PRODUCT_VIEW_FEATURE_FLAG: false,
-    AUTHENTICATION_FEATURE_FLAG: false,
-    LOCK_TIMESERIES_PERIOD_FEATURE_FLAG: false,
     KEYCLOAK_ENABLED: false,
+    LOCK_TIMESERIES_PERIOD_FEATURE_FLAG: false,
     DISCOVERY_API_URL: '',
     REGISTRY_API_URL: '',
     SUBMODEL_REGISTRY_API_URL: '',
@@ -29,8 +28,13 @@ export const initialEnvValues: EnvironmentalVariables = {
     DATA_PRIVACY_URL: '',
     USE_BASYX_RBAC: false,
     WHITELIST_FEATURE_FLAG: false,
+    AUTHENTICATION_FEATURE_FLAG: false,
     SUBMODEL_WHITELIST: '',
     THEME_LOGO_MIME_TYPE: undefined,
+    KEYCLOAK_ISSUER: undefined,
+    KEYCLOAK_LOCAL_URL: undefined,
+    KEYCLOAK_REALM: undefined,
+    KEYCLOAK_CLIENT_ID: undefined,
 };
 
 const EnvContext = createContext(initialEnvValues);

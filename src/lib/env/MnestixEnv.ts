@@ -18,18 +18,13 @@ const privateAzure = mapEnvVariables([
     'APPLICATION_ID_URI',
 ] as const);
 
-const privateKeycloak =
-    process_env.KEYCLOAK_ENABLED === 'true'
-        ? {
-              KEYCLOAK_ENABLED: true as const,
-              KEYCLOAK_ISSUER: process_env.KEYCLOAK_ISSUER!,
-              KEYCLOAK_LOCAL_URL: process_env.KEYCLOAK_LOCAL_URL!,
-              KEYCLOAK_REALM: process_env.KEYCLOAK_REALM!,
-              KEYCLOAK_CLIENT_ID: process_env.KEYCLOAK_CLIENT_ID!,
-          }
-        : {
-              KEYCLOAK_ENABLED: false as const,
-          };
+const keycloak = {
+    KEYCLOAK_ENABLED: process_env.KEYCLOAK_ENABLED === 'true',
+    KEYCLOAK_ISSUER: process_env.KEYCLOAK_ISSUER,
+    KEYCLOAK_LOCAL_URL: process_env.KEYCLOAK_LOCAL_URL,
+    KEYCLOAK_REALM: process_env.KEYCLOAK_REALM,
+    KEYCLOAK_CLIENT_ID: process_env.KEYCLOAK_CLIENT_ID,
+};
 
 const featureFlags = mapEnvVariables(
     [
@@ -73,14 +68,14 @@ const LOG_LEVEL = process_env.LOG_LEVEL || (process_env.NODE_ENV === 'production
 /**
  * Public envs that are sent to the client and can be used with the `useEnv` hook.
  */
-export const publicEnvs = { LOG_LEVEL, ...featureFlags, ...otherVariables, ...themingVariables };
+export const publicEnvs = { LOG_LEVEL, ...featureFlags, ...otherVariables, ...themingVariables, ...keycloak };
 
 /**
  * Mnestix envs
  *
  * Can be used in the backend. When used in frontend all envs are undefined.
  */
-export const envs = { ...publicEnvs, ...privateEnvs, ...privateKeycloak, ...privateAzure };
+export const envs = { ...publicEnvs, ...privateEnvs, ...privateAzure };
 
 function parseFlag(value: string | undefined) {
     if (value === undefined) {
