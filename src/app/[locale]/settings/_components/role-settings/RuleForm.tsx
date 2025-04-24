@@ -75,9 +75,6 @@ export const RuleForm = (props: RuleDialogProps) => {
     return (
         <form onSubmit={handleSubmit(props.onSubmit)}>
             <DialogContent>
-                <Typography variant="h2" color="primary" mb="1em">
-                    {t('editTitle')}
-                </Typography>
                 <Box display="flex" flexDirection="column">
                     <Typography variant="h5">{t('tableHeader.name')}</Typography>
                     <Controller

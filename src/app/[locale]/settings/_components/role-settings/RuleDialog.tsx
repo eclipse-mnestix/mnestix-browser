@@ -50,6 +50,18 @@ export const RuleDialog = (props: RuleDialogProps) => {
         setMode('view');
     };
 
+    function EditContent() {
+        return (
+            <>
+                <Typography variant="h2" color="primary" mb="1em">
+                    {t('editTitle')}
+                </Typography>
+                <RuleForm rule={props.rule} onSubmit={onSubmit} onCancel={() => setMode('view')} />;
+            </>
+        );
+    }
+
+
     return (
         <Dialog open={props.open} onClose={() => onCloseDialog(false)} maxWidth="md" fullWidth={true}>
             <Box sx={{ mx: '2rem', mt: '1.5rem', mb: '1rem' }}>
@@ -57,7 +69,7 @@ export const RuleDialog = (props: RuleDialogProps) => {
                 {(() => {
                     switch (mode) {
                         case 'edit':
-                            return <RuleForm rule={props.rule} onSubmit={onSubmit} onCancel={() => setMode('view')} />;
+                            return <EditContent />;
                         case 'delete':
                             return (
                                 <RuleDeleteDialog
