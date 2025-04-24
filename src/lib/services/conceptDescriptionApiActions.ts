@@ -8,12 +8,12 @@ import { ConceptDescription } from '@aas-core-works/aas-core3.0-typescript/dist/
 import { ConceptDescriptionApi } from 'lib/api/concept-description-api/conceptDescriptionApi';
 
 const conceptDescriptionApi = ConceptDescriptionApi.create(
-    envs.AAS_REPO_API_URL ?? '',
+    envs.CONCEPT_DESCRIPTION_REPO_API_URL ?? '',
     mnestixFetch(),
 );
 
 export async function getConceptDescriptionById(submodelId: string): Promise<ApiResponseWrapper<ConceptDescription>> {
-    if (envs.AAS_REPO_API_URL === undefined) {
+    if (envs.CONCEPT_DESCRIPTION_REPO_API_URL === undefined) {
         return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Concept Description API URL is not defined');
     }
 

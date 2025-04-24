@@ -2,14 +2,20 @@ import React, { useState } from 'react';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { getConceptDescriptionById } from 'lib/services/conceptDescriptionApiActions';
 import { Box, Divider, Skeleton } from '@mui/material';
+import { useEnv } from 'app/EnvProvider';
 
+/**
+ * DataRowWithUnit is a component that displays a label, a value, and a unit.
+ * The unit is loaded from the ConceptDescription API (if available) based on the provided cpSemanticId.
+ */
 export const DataRowWithUnit = (props: { label: string; children: React.ReactNode; cpSemanticId?: string }) => {
     const [unit, setUnit] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const env = useEnv();
 
     // TODO this could be a custom hook which returns the conceptDescription -> could be reused in the other submodel visualizations
     useAsyncEffect(async () => {
-        if (!props.cpSemanticId) {
+        if (!props.cpSemanticId || !env.CONCEPT_DESCRIPTION_REPO_API_URL) {
             setIsLoading(false);
             return;
         }

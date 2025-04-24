@@ -5,11 +5,7 @@ import { ConceptDescription } from '@aas-core-works/aas-core3.0-typescript/dist/
 import path from 'node:path';
 import ServiceReachable from 'test-utils/TestUtils';
 import logger, { logResponseDebug } from 'lib/util/Logger';
-
-interface IConceptDescriptionApi {
-    getBasePath(): string;
-    getConceptDescriptionById(conceptDescriptionId: string): Promise<ApiResponseWrapper<ConceptDescription>>;
-}
+import { IConceptDescriptionApi } from 'lib/api/concept-description-api/conceptDescriptionApiInterface';
 
 export class ConceptDescriptionApi implements IConceptDescriptionApi {
     constructor(
