@@ -34,14 +34,12 @@ export const DataRowWithUnit = React.memo(
             }
 
             if (props.conceptDescription?.embeddedDataSpecifications?.[0].dataSpecificationContent) {
-                const dataSpecContent = props.conceptDescription.embeddedDataSpecifications[0].dataSpecificationContent;
-                if (!isDataSpecificationIec61360(dataSpecContent)) return 'Invalid specification';
-
-                const iec61360Content = dataSpecContent;
+                const iec61360Content = getDataSpecContent();
                 let langString: MultiLanguageProperty | IAbstractLangString[] | undefined = [];
-                if (iec61360Content.preferredName) {
+
+                if (iec61360Content && iec61360Content.preferredName) {
                     langString = iec61360Content.preferredName;
-                } else if (iec61360Content.shortName) {
+                } else if (iec61360Content && iec61360Content.shortName) {
                     langString = iec61360Content.shortName;
                 }
                 const translatedString = getTranslationText(langString, locale);
@@ -56,6 +54,16 @@ export const DataRowWithUnit = React.memo(
             return 'Not available';
         };
 
+        const getDataSpecContent = (): DataSpecificationIec61360 | null => {
+            if (props.conceptDescription?.embeddedDataSpecifications?.[0]?.dataSpecificationContent) {
+                const dataSpecContent = props.conceptDescription.embeddedDataSpecifications[0].dataSpecificationContent;
+                if (isDataSpecificationIec61360(dataSpecContent)) {
+                    return dataSpecContent;
+                }
+            }
+            return null;
+        };
+
         /**
          * Type guard to check if the content is a DataSpecificationIec61360.
          */
@@ -65,6 +73,14 @@ export const DataRowWithUnit = React.memo(
                 content !== null &&
                 ('preferredName' in content || 'shortName' in content || 'unit' in content)
             );
+        };
+
+        const getUnit = () => {
+            const dataSpecContent = getDataSpecContent();
+            if (dataSpecContent) {
+                return dataSpecContent.unit;
+            }
+            return '';
         };
 
         return (
@@ -80,12 +96,7 @@ export const DataRowWithUnit = React.memo(
                         props.conceptDescription &&
                         props.conceptDescription.embeddedDataSpecifications?.[0]?.dataSpecificationContent && (
                             <Box component="span" sx={{ width: '20%' }}>
-                                {
-                                    (
-                                        props.conceptDescription.embeddedDataSpecifications?.[0]
-                                            ?.dataSpecificationContent as DataSpecificationIec61360
-                                    ).unit
-                                }
+                                {getUnit()}
                             </Box>
                         )
                     )}
