@@ -119,10 +119,21 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
         );
     }
 
+    function EditContent() {
+        return (
+            <>
+                <Typography variant="h2" color="primary" mb="1em">
+                    {t('editRule.title')}
+                </Typography>
+                <RuleForm rule={rule} onSubmit={onSubmit} onCancel={() => setDialogMode('view')} />;
+            </>
+        );
+    }
+
     function DialogViewContent() {
         switch (dialogMode) {
             case 'edit':
-                return <RuleForm rule={rule} onSubmit={onSubmit} onCancel={() => setDialogMode('view')} />;
+                return <EditContent />;
             case 'delete':
                 return (
                     <RuleDeleteDialog
