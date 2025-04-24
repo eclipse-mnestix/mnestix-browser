@@ -24,7 +24,7 @@ export function RuleDeleteDialog({ onCloseDialog, onCancelDialog, rule }: RuleDe
         if (response.isSuccess) {
             onCloseDialog(true);
             notificationSpawner.spawn({
-                message: t('delete.success'),
+                message: t('deleteRule.success'),
                 severity: 'success',
             });
             return;
@@ -36,9 +36,14 @@ export function RuleDeleteDialog({ onCloseDialog, onCancelDialog, rule }: RuleDe
         <>
             <DialogContent>
                 <Typography variant="h2" color="primary" sx={{ mb: '1rem' }}>
-                    {t('delete.question')}
+                    {t('deleteRule.question')}
                 </Typography>
-                <Typography mb={'1rem'}>{t('delete.ruleInfo', { role: rule.role, action: rule.action })}</Typography>
+                <Typography mb={'1rem'}>
+                    {t('deleteRule.ruleInfo', {
+                        role: rule.role,
+                        action: rule.action,
+                    })}
+                </Typography>
                 <TargetInformationView targetInformation={rule.targetInformation} />
             </DialogContent>
             <DialogActions>
