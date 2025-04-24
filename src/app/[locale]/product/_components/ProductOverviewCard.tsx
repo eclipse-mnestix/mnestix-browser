@@ -274,26 +274,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                     testId="datarow-manufacturer-name"
                     withBase64={false}
                 />
-
-                {/* If both manufacturerLogo and CompanyLogo are available, we show the manufacturerLogo*/}
-                {overviewData?.companyLogo && !overviewData?.manufacturerLogo && (
-                    <FileComponent
-                        file={overviewData?.companyLogo as File}
-                        submodelId={nameplateSubmodel?.id}
-                        submodelElementPath='CompanyLogo'
-                    />
-                )}
-                {overviewData?.manufacturerLogo && (
-                    <FileComponent
-                        file={overviewData?.manufacturerLogo as File}
-                        submodelId={technicalDataSubmodel?.id}
-                        submodelElementPath={buildSubmodelElementPath(
-                            'GeneralInformation',
-                            'ManufacturerLogo',
-                        )}
-                    />
-                )}
-
             </Box>
         </Box>
     );
@@ -348,6 +328,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                 <MarkingsComponent
                     submodelElement={overviewData?.markings}
                     submodelId={nameplateSubmodel?.id}
+                    columnDisplay
                 ></MarkingsComponent>
             )}
         </Box>
@@ -376,12 +357,12 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                     <Skeleton width="75%" sx={{ mt: 2 }} />
                                     <Skeleton width="50%" />
                                 </Box>
-                                <Box>
-                                    <Skeleton width="90%" />
-                                    <Skeleton width="50%" />
-                                    <Skeleton width="75%" sx={{ mt: 2 }} />
-                                    <Skeleton width="50%" />
-                                </Box>
+                                    <Box>
+                                        <Skeleton width="90%" />
+                                        <Skeleton width="50%" />
+                                        <Skeleton width="75%" sx={{ mt: 2 }} />
+                                        <Skeleton width="50%" />
+                                    </Box>
                                 </>
                             )}
                         </Box>
