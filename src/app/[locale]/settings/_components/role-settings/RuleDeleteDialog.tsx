@@ -6,6 +6,7 @@ import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { useShowError } from 'lib/hooks/UseShowError';
 import CloseIcon from '@mui/icons-material/Close';
 import { Delete } from '@mui/icons-material';
+import { TargetInformationView } from 'app/[locale]/settings/_components/role-settings/target-information/TargetInformationView';
 
 interface RuleDeleteDialogProps {
     onCloseDialog: (reload: boolean) => void;
@@ -35,9 +36,10 @@ export function RuleDeleteDialog({ onCloseDialog, onCancelDialog, rule }: RuleDe
         <>
             <DialogContent>
                 <Typography variant="h2" color="primary" sx={{ mb: '1rem' }}>
-                    {t('delete.title')}
+                    {t('delete.question')}
                 </Typography>
-                <Typography>{t('delete.question')}</Typography>
+                <Typography mb={'1rem'}>{t('delete.ruleInfo', { role: rule.role, action: rule.action })}</Typography>
+                <TargetInformationView targetInformation={rule.targetInformation} />
             </DialogContent>
             <DialogActions>
                 <Button startIcon={<CloseIcon />} variant={'outlined'} onClick={onCancelDialog} autoFocus>
