@@ -21,16 +21,12 @@ const StyledFileImg = styled('img')(({ theme }) => ({
     objectFit: 'scale-down',
     objectPosition: 'center',
     width: '100%',
+    height: '100%',
     aspectRatio: '1',
     padding: theme.spacing(1),
 }));
 
-const StyledMarkingContainer = styled(Box)<{ rowDisplay?: boolean }>(({ rowDisplay }) => ({
-    maxWidth: rowDisplay ? '200px' : 'calc(25% - 15px)',
-    display: 'flex',
-    flexDirection: rowDisplay ? 'row' : 'column',
-    '@media(max-width: 1120px)': !rowDisplay ? { width: 'calc(50% - 10px)' } : undefined,
-}));
+
 
 export function SingleMarkingsComponent(props: SingleMarkingsComponentProps) {
     const { file, name, additionalText, submodelId, idShortPath } = props;
@@ -40,9 +36,17 @@ export function SingleMarkingsComponent(props: SingleMarkingsComponentProps) {
 
     const StyledMarkingImageWrapper = styled(Box)(() => ({
         maxWidth: props.rowDisplay ? '60px' : 'auto',
-        minWidth: props.rowDisplay ? '60px' : 'auto',
+        minWidth: props.rowDisplay ? '60px' : '80px',
+        minHeight: props.rowDisplay ? '60px' : '80px',
         display: 'flex',
         flexDirection: 'column',
+    }));
+
+    const StyledMarkingContainer = styled(Box)(() => ({
+        maxWidth: props.rowDisplay ? '200px' : 'calc(25% - 15px)',
+        display: 'flex',
+        flexDirection: props.rowDisplay ? 'row' : 'column',
+        '@media(max-width: 1120px)': !props.rowDisplay ? { width: 'calc(50% - 10px)' } : undefined,
     }));
 
     useAsyncEffect(async () => {
@@ -64,15 +68,15 @@ export function SingleMarkingsComponent(props: SingleMarkingsComponentProps) {
         }
     }, [props.file]); return (
         !!file && (
-            <StyledMarkingContainer rowDisplay={props.rowDisplay}>
+            <StyledMarkingContainer>
                 <StyledMarkingImageWrapper sx={{ boxShadow: 2 }}>
 
                     <StyledFileImg src={markingImage} />
 
+                    {/* TODO get this value from concept description if there is only an IRDI? */}
                     {(name?.value === '0173-1#07-DAA603#004') && (
                         <Box sx={{ backgroundColor: 'grey.200', p: 0.5, flexGrow: '0' }}>
                             <Typography variant="body2" color="text.secondary">
-                                {/* TODO get this value from concept description?*/}
                                 CE
                             </Typography>
                         </Box>

@@ -1,6 +1,9 @@
 import { Box, Chip, Typography, styled } from '@mui/material';
 import { tooltipText } from 'lib/util/ToolTipText';
 import { useTranslations } from 'next-intl';
+import EClassIcon from 'assets/product/eclass.svg';
+import VecIcon from 'assets/product/vec_classification.svg';
+
 import SubjectOutlinedIcon from '@mui/icons-material/SubjectOutlined';
 import InventoryIcon from '@mui/icons-material/Inventory';
 /**
@@ -63,8 +66,8 @@ export function ProductClassificationInfoBox({
         ? [productClassifications[0]]
         : productClassifications;
 
-    const vecIcon = <SubjectOutlinedIcon color='primary'></SubjectOutlinedIcon>;
-    const eClassIcon = <InventoryIcon color='primary'></InventoryIcon>;
+    const vecIcon = <VecIcon color='primary'></VecIcon>;
+    const eClassIcon = <EClassIcon color='primary'></EClassIcon>;
 
     return (
         <Box>
