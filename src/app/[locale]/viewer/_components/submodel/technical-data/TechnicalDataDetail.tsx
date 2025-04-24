@@ -14,14 +14,23 @@ import {
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useTranslations } from 'next-intl';
 import { PropertyComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/PropertyComponent';
-import { File, Range, SubmodelElementList } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
-import React from 'react';
+import {
+    ConceptDescription,
+    File,
+    Range,
+    SubmodelElementList,
+} from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import React, { useState } from 'react';
 import { FileComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/FileComponent';
 import { DataRowWithUnit } from 'app/[locale]/viewer/_components/submodel/technical-data/DataRowWithUnit';
+import { getConceptDescriptionById } from 'lib/services/conceptDescriptionApiActions';
+import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 
 export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
     const t = useTranslations('pages.aasViewer.submodels');
     const theme = useTheme();
+    const [semanticIdResults, setSemanticIdResults] = useState<Record<string, ConceptDescription>>({});
+    const [loadingConceptDescriptions, setLoadingConceptDescriptions] = useState<boolean>(true);
 
     const findSubmodelElement = (semanticId: SubmodelElementSemanticIdEnum) =>
         submodel.submodelElements?.find((el) => hasSemanticId(el, semanticId)) as SubmodelElementCollection | undefined;
@@ -32,13 +41,15 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
     const furtherInformation = findSubmodelElement(SubmodelElementSemanticIdEnum.FurtherInformation);
 
     const renderVisualization = (element: ISubmodelElement) => {
+        const semanticId = element.semanticId?.keys[0].value || '';
         switch (getKeyType(element)) {
             case KeyTypes.Property: {
                 return (
                     <DataRowWithUnit
                         label={element.idShort || 'id'}
                         key={element.idShort}
-                        cpSemanticId={element.semanticId?.keys[0].value}
+                        unit={semanticIdResults[semanticId]?.embeddedDataSpecifications?.[0]?.dataSpecificationContent.unit}
+                        conceptDescriptionLoading={loadingConceptDescriptions}
                     >
                         <PropertyComponent property={element as Property} />
                     </DataRowWithUnit>
@@ -126,8 +137,56 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
         </TreeItem>
     );
 
+
+    function getFlatMapOfAllSemanticIds(elements: ISubmodelElement[]): string[] {
+        return elements.reduce<string[]>((acc, el) => {
+            if (el.semanticId?.keys[0]?.value) {
+                acc.push(el.semanticId.keys[0].value);
+            }
+            if (getKeyType(el) === KeyTypes.SubmodelElementCollection || getKeyType(el) === KeyTypes.SubmodelElementList) {
+                const collection = el as SubmodelElementCollection | SubmodelElementList;
+                if (collection.value) {
+                    acc.push(...getFlatMapOfAllSemanticIds(collection.value));
+                }
+            }
+            return [...new Set(acc)];
+        }, []);
+    }
+    const loadConceptDescriptions = React.useCallback(async () => {
+        const elements = [
+            ...(technicalData?.value || []),
+            ...(generalInformation?.value || []),
+            ...(productClassifications?.value || []),
+            ...(furtherInformation?.value || [])
+        ];
+
+        if (elements.length > 0) {
+            const semanticIds = getFlatMapOfAllSemanticIds(elements);
+            const results = await Promise.all(
+                semanticIds.map(async (semanticId) => {
+                    if (semanticId) {
+                        const result = await getConceptDescriptionById(semanticId);
+                        if(result.isSuccess)
+                            return { [semanticId]: result.result };
+                    }
+                    return null;
+                })
+            );
+            const filteredResults = results.filter((r): r is Record<string, ConceptDescription> => r !== null)
+                .reduce((acc, curr) => ({ ...acc, ...curr }), {});
+            setSemanticIdResults(prev => ({ ...prev, ...filteredResults }));
+        }
+    }, [technicalData, generalInformation, productClassifications, furtherInformation]);
+
+    useAsyncEffect(async () => {
+        setLoadingConceptDescriptions(true);
+        await loadConceptDescriptions();
+        setLoadingConceptDescriptions(false);
+    }, [ loadConceptDescriptions])
+
     return (
-        <SimpleTreeView defaultExpandedItems={['technicalProperties']}>
+        <SimpleTreeView
+            defaultExpandedItems={['technicalProperties']}>
             {technicalData?.value && renderTreeItem('technicalProperties', 'Technical Properties', technicalData.value)}
             {generalInformation?.value &&
                 renderTreeItem('generalInformation', 'General Information', generalInformation.value)}
