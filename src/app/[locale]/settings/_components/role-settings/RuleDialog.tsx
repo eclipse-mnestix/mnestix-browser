@@ -50,78 +50,79 @@ export const RuleDialog = (props: RuleDialogProps) => {
         setMode('view');
     };
 
-    if (!props.open) {
-        return <></>;
-    }
-
     return (
-        <Dialog open={true} onClose={() => onCloseDialog(false)} maxWidth="md" fullWidth={true}>
-            <DialogCloseButton handleClose={() => onCloseDialog(false)} />
-            {(() => {
-                switch (mode) {
-                    case 'edit':
-                        return (
-                            <>
-                                <Typography variant="h2" color="primary" sx={{ mt: 4, ml: '40px' }}>
-                                    {t('editTitle')}
-                                </Typography>
-                                <RuleForm rule={props.rule} onSubmit={onSubmit} onCancel={() => setMode('view')} />
-                            </>
-                        );
-                    case 'delete':
-                        return <RuleDeleteDialog rule={props.rule} onCloseDialog={onCloseDialog} />;
-                    default:
-                        return (
-                            <>
-                                <DialogContent style={{ padding: '40px' }} data-testid="role-settings-dialog">
-                                    <Box display="flex" flexDirection="column">
-                                        <Typography color="text.secondary" variant="body2">
-                                            {t('tableHeader.name')}
-                                        </Typography>
-                                        <Typography variant="h2" mb="1em">
-                                            {props.rule?.role}
-                                        </Typography>
-                                        <Box display="flex" flexDirection="column" gap="1em">
-                                            <Box>
-                                                <Typography variant="h5">{t('tableHeader.action')}</Typography>
-                                                <Typography>{props.rule?.action}</Typography>
+        <Dialog open={props.open} onClose={() => onCloseDialog(false)} maxWidth="md" fullWidth={true}>
+            <Box sx={{ mx: '2rem', mt: '1.5rem', mb: '1rem' }}>
+                <DialogCloseButton handleClose={() => onCloseDialog(false)} />
+                {(() => {
+                    switch (mode) {
+                        case 'edit':
+                            return <RuleForm rule={props.rule} onSubmit={onSubmit} onCancel={() => setMode('view')} />;
+                        case 'delete':
+                            return (
+                                <RuleDeleteDialog
+                                    rule={props.rule}
+                                    onCloseDialog={onCloseDialog}
+                                    onCancelDialog={() => setMode('view')}
+                                />
+                            );
+                        default:
+                            return (
+                                <>
+                                    <DialogContent>
+                                        <Box display="flex" flexDirection="column" data-testid="role-settings-dialog">
+                                            <Box mb="1em">
+                                                <Typography color="text.secondary" variant="body2">
+                                                    {t('tableHeader.name')}
+                                                </Typography>
+                                                <Typography variant="h2" color="primary">
+                                                    {props.rule?.role}
+                                                </Typography>
                                             </Box>
-                                            <TargetInformationView targetInformation={props.rule.targetInformation} />
+                                            <Box display="flex" flexDirection="column" gap="1em">
+                                                <Box>
+                                                    <Typography variant="h5">{t('tableHeader.action')}</Typography>
+                                                    <Typography>{props.rule?.action}</Typography>
+                                                </Box>
+                                                <TargetInformationView
+                                                    targetInformation={props.rule.targetInformation}
+                                                />
+                                            </Box>
                                         </Box>
-                                    </Box>
-                                </DialogContent>
-                                <DialogActions sx={{ padding: '1em' }}>
-                                    <Button
-                                        sx={{ mr: 2 }}
-                                        startIcon={<ArrowBack />}
-                                        variant="outlined"
-                                        data-testid="role-settings-back-button"
-                                        onClick={() => onCloseDialog(false)}
-                                    >
-                                        {t('buttons.back')}
-                                    </Button>
-                                    <Button
-                                        variant="outlined"
-                                        startIcon={<Delete />}
-                                        color="error"
-                                        data-testid="role-settings-delete-button"
-                                        onClick={() => setMode('delete')}
-                                    >
-                                        {t('buttons.delete')}
-                                    </Button>
-                                    <Button
-                                        variant="contained"
-                                        startIcon={<EditIcon />}
-                                        data-testid="role-settings-edit-button"
-                                        onClick={() => setMode('edit')}
-                                    >
-                                        {t('buttons.edit')}
-                                    </Button>
-                                </DialogActions>
-                            </>
-                        );
-                }
-            })()}
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button
+                                            sx={{ mr: 2 }}
+                                            startIcon={<ArrowBack />}
+                                            variant="outlined"
+                                            data-testid="role-settings-back-button"
+                                            onClick={() => onCloseDialog(false)}
+                                        >
+                                            {t('buttons.back')}
+                                        </Button>
+                                        <Button
+                                            variant="outlined"
+                                            startIcon={<Delete />}
+                                            color="error"
+                                            data-testid="role-settings-delete-button"
+                                            onClick={() => setMode('delete')}
+                                        >
+                                            {t('buttons.delete')}
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            startIcon={<EditIcon />}
+                                            data-testid="role-settings-edit-button"
+                                            onClick={() => setMode('edit')}
+                                        >
+                                            {t('buttons.edit')}
+                                        </Button>
+                                    </DialogActions>
+                                </>
+                            );
+                    }
+                })()}
+            </Box>
         </Dialog>
     );
 };

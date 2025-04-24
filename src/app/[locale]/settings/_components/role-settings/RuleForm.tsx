@@ -14,9 +14,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useTranslations } from 'next-intl';
 import {
     BaSyxRbacRule,
-    rbacRuleTargets,
-    rbacRuleActions,
     RbacRolesFetchResult,
+    rbacRuleActions,
+    rbacRuleTargets,
 } from 'lib/services/rbac-service/types/RbacServiceData';
 import { useEffect, useState } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
@@ -74,7 +74,10 @@ export const RuleForm = (props: RuleDialogProps) => {
 
     return (
         <form onSubmit={handleSubmit(props.onSubmit)}>
-            <DialogContent style={{ padding: '40px' }}>
+            <DialogContent>
+                <Typography variant="h2" color="primary" mb="1em">
+                    {t('editTitle')}
+                </Typography>
                 <Box display="flex" flexDirection="column">
                     <Typography variant="h5">{t('tableHeader.name')}</Typography>
                     <Controller
@@ -134,7 +137,7 @@ export const RuleForm = (props: RuleDialogProps) => {
                     <TargetInformationForm control={control} setValue={setValue} getValues={getValues} />
                 </Box>
             </DialogContent>
-            <DialogActions sx={{ padding: '1em' }}>
+            <DialogActions>
                 <Button startIcon={<CloseIcon />} variant="outlined" onClick={props.onCancel}>
                     {t('buttons.cancel')}
                 </Button>
