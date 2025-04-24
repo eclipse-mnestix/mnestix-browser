@@ -292,7 +292,7 @@
         "orderCode": "Order Code",
         "manufacturer": "Manufacturer"
       },
-      "summary": "Summary",
+      "summary": "Key facts",
       "error":{
         "technicalDataSubmodelNotFound": "Technical Data Submodel not found"
       },

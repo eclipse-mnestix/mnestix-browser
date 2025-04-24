@@ -36,7 +36,7 @@ export default function Page() {
     const repoUrl = encodedRepoUrl ? decodeURI(encodedRepoUrl) : undefined;
     const t = useTranslations('pages.productViewer');
     const [filteredSubmodels, setFilteredSubmodels] = useState<SubmodelOrIdReference[]>([]);
-    const [breadcrumbLinks, setbreadcrumbLinks] = useState<[{ label: string, path: string }]>([{
+    const [breadcrumbLinks] = useState<[{ label: string, path: string }]>([{
         label: t('home'),
         path: '/',
     }]);
@@ -145,7 +145,7 @@ export default function Page() {
                         {env.COMPARISON_FEATURE_FLAG && !isMobile && (
                             <Button
                                 sx={{ mr: 2 }}
-                                variant="contained"
+                                variant="outlined"
                                 onClick={startComparison}
                                 data-testid="detail-compare-button"
                             >
@@ -154,7 +154,7 @@ export default function Page() {
                         )}
                         {env.TRANSFER_FEATURE_FLAG && <TransferButton />}
                         {env.PRODUCT_VIEW_FEATURE_FLAG &&
-                            <Button variant="contained" sx={{ whiteSpace: 'nowrap' }} onClick={goToAASView}>
+                            <Button variant="outlined" sx={{ whiteSpace: 'nowrap' }} onClick={goToAASView}>
                                 {t('actions.toAasView')}
                             </Button>
                         }

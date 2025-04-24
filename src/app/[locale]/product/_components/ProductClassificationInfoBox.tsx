@@ -1,8 +1,8 @@
 import { Box, Chip, Typography, styled } from '@mui/material';
-import { theme } from 'layout/theme/theme';
 import { tooltipText } from 'lib/util/ToolTipText';
 import { useTranslations } from 'next-intl';
-
+import SubjectOutlinedIcon from '@mui/icons-material/SubjectOutlined';
+import InventoryIcon from '@mui/icons-material/Inventory';
 /**
  * Type definition for product classification
  */
@@ -35,13 +35,13 @@ const StyledBox = styled(Box)(({ theme }) => ({
 const LabelContainer = styled(Box)(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
-    marginRight: theme.spacing(3),
+    marginRight: theme.spacing(5),
 }));
 
 const ValueContainer = styled(Box)(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
-    marginRight: theme.spacing(4),
+    marginRight: theme.spacing(3),
 }));
 
 /**
@@ -63,11 +63,14 @@ export function ProductClassificationInfoBox({
         ? [productClassifications[0]]
         : productClassifications;
 
+    const vecIcon = <SubjectOutlinedIcon color='primary'></SubjectOutlinedIcon>;
+    const eClassIcon = <InventoryIcon color='primary'></InventoryIcon>;
+
     return (
         <Box>
             <StyledBox bgcolor={'#F6F7FA'}>
                 <LabelContainer>
-                    <Typography variant="subtitle1" fontWeight="bold">
+                    <Typography sx={{ borderBottom: '2px solid', borderColor: 'primary' }} color="primary" fontWeight="bold">
                         {t('summary')}
                     </Typography>
                 </LabelContainer>
@@ -76,17 +79,18 @@ export function ProductClassificationInfoBox({
                     .filter((c) => c.ProductClassificationSystem !== 'IEC')
                     .map((classification, index) => (
                         <ValueContainer key={`classification-${index}`}>
-                            <Chip variant="outlined"
-                                sx={{ backgroundColor: '#6B7374', color: 'white', borderRadius: 5, padding: 0.5 }} // TODO colors
+                            <Chip
+                                sx={{ color: 'primary.main', backgroundColor: 'grey.200', borderRadius: 5, padding: 0.5 }}
                                 label={classification.ProductClassificationSystem || 'Classification'}
-                            >
+                                icon={classification.ProductClassificationSystem === 'ECLASS' ? vecIcon : eClassIcon}>
                             </Chip>
                             <Typography variant="body1" ml={1}>
-                                {tooltipText(classification.ProductClassId, 50) || '-'}
+                                {tooltipText(classification.ProductClassId, 35) || '-'}
                             </Typography>
                         </ValueContainer>
-                    ))}
-            </StyledBox>
-        </Box>
+                    ))
+                }
+            </StyledBox >
+        </Box >
     );
 }

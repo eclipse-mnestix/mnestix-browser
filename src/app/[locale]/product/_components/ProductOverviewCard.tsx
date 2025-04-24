@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { DataRow } from 'components/basics/DataRow';
 import {
     AssetAdministrationShell,
-    File,
     ISubmodelElement,
     Submodel,
     SubmodelElementCollection,
@@ -18,7 +17,6 @@ import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
 import { useLocale, useTranslations } from 'next-intl';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import {
-    buildSubmodelElementPath,
     findSubmodelByIdOrSemanticId,
     findSubmodelElementByIdShort,
     findValueByIdShort,
@@ -28,7 +26,6 @@ import { ProductClassificationInfoBox } from './ProductClassificationInfoBox';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { useProductImageUrl } from 'lib/hooks/UseProductImageUrl';
 import { MarkingsComponent } from 'app/[locale]/viewer/_components/submodel-elements/marking-components/MarkingsComponent';
-import { FileComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/FileComponent';
 
 type ProductOverviewCardProps = {
     readonly aas: AssetAdministrationShell | null;
@@ -67,7 +64,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
     const [overviewData, setOverviewData] = useState<OverviewData>();
     const locale = useLocale();
     const productImageUrl = useProductImageUrl(props.aas, props.repositoryURL, props.productImage);
-    const [technicalDataSubmodel, setTechnicalDataSubmodel] = useState<Submodel | undefined>(undefined);
     const [nameplateSubmodel, setNameplateSubmodel] = useState<Submodel | undefined>(undefined);
 
     useEffect(() => {
@@ -77,7 +73,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                 SubmodelSemanticIdEnum.TechnicalData,
                 'TechnicalData',
             );
-            setTechnicalDataSubmodel(technicalData);
             if (technicalData?.submodelElements) {
                 prepareTechnicalDataSubmodel(technicalData.submodelElements);
             }
