@@ -370,14 +370,14 @@
           "title": "Create Rule"
         },
         "deleteRule": {
-          "question": "Permanently delete this rule?",
-          "ruleInfo": "Users with the assigned role ''{role}'' will not have permissions to {action} the following data!",
-          "success": "Rule deleted successfully.",
           "hint": {
             "acknowledge": "Acknowledged",
             "text": "Do not forget to delete this rule in keycloak as well!",
             "title": "Delete rule"
-          }
+          },
+          "question": "Permanently delete this rule?",
+          "ruleInfo": "Users with the assigned role ''{role}'' will not have permissions to {action} the following data!",
+          "success": "Rule deleted successfully."
         },
         "editRule": {
           "saveSuccess": "Rule edit successful.",

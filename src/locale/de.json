@@ -370,14 +370,14 @@
           "title": "Regel erstellen"
         },
         "deleteRule": {
-          "question": "Regel unwiderruflich löschen?",
-          "ruleInfo": "Nutzer mit der Rolle ''{role}'' haben danach keine Berrechtigungen mehr die folgenden Daten {action, select, READ {zu LESEN} EDIT {zu EDITIEREN} CREATE {zu ERSTELLEN} UPDATE {zu VERÄNDERN} EXECUTE {AUSZUFÜHREN}  other {#}}!",
-          "success": "Regel erfolgreich gelöscht.",
           "hint": {
             "acknowledge": "Verstanden",
             "text": "Vergessen Sie nicht die Regel in keycloak zu entfernen!",
             "title": "Regel löschen"
-          }
+          },
+          "question": "Regel unwiderruflich löschen?",
+          "ruleInfo": "Nutzer mit der Rolle ''{role}'' haben danach keine Berrechtigungen mehr die folgenden Daten {action, select, READ {zu LESEN} EDIT {zu EDITIEREN} CREATE {zu ERSTELLEN} UPDATE {zu VERÄNDERN} EXECUTE {AUSZUFÜHREN}  other {#}}!",
+          "success": "Regel erfolgreich gelöscht."
         },
         "editRule": {
           "saveSuccess": "Regel erfolgreich bearbeitet.",
