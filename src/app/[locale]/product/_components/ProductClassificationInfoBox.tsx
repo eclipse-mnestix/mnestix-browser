@@ -4,8 +4,6 @@ import { useTranslations } from 'next-intl';
 import EClassIcon from 'assets/product/eclass.svg';
 import VecIcon from 'assets/product/vec_classification.svg';
 
-import SubjectOutlinedIcon from '@mui/icons-material/SubjectOutlined';
-import InventoryIcon from '@mui/icons-material/Inventory';
 /**
  * Type definition for product classification
  */
