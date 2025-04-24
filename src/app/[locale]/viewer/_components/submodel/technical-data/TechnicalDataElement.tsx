@@ -34,80 +34,10 @@ export const TechnicalDataElement = (props: {
     const [conceptDescriptions, setConceptDescriptions] = useState<Record<string, ConceptDescription>>({});
     const [loadingConceptDescriptions, setLoadingConceptDescriptions] = useState<boolean>(true);
 
-    const renderVisualization = (element: ISubmodelElement) => {
-        const semanticId = element.semanticId?.keys[0].value || '';
-        switch (getKeyType(element)) {
-            case KeyTypes.Property: {
-                return (
-                    <DataRowWithUnit
-                        label={element.idShort || 'id'}
-                        key={element.idShort}
-                        unit={
-                            conceptDescriptions[semanticId]?.embeddedDataSpecifications?.[0]?.dataSpecificationContent
-                                .unit
-                        }
-                        conceptDescriptionLoading={loadingConceptDescriptions}
-                    >
-                        <PropertyComponent property={element as Property} />
-                    </DataRowWithUnit>
-                );
-            }
-            case KeyTypes.SubmodelElementCollection:
-            case KeyTypes.SubmodelElementList:
-                return (
-                    <TreeItem
-                        key={element.idShort}
-                        itemId={element.idShort || 'unknown'}
-                        label={element.idShort}
-                        sx={{
-                            '&& .MuiTreeItem-label': {
-                                m: 0,
-                                ...theme.typography.h6,
-                            },
-                        }}
-                    >
-                        {(element as SubmodelElementCollection | SubmodelElementList)?.value?.map(
-                            (child) => child && renderVisualization(child),
-                        )}
-                    </TreeItem>
-                );
-            case KeyTypes.File:
-                return (
-                    // With the hardcoded SubmodelElementPath, this only works for CompanyLogo and ProductLogo
-                    <DataRowWithUnit label={element.idShort || 'id'} key={element.idShort}>
-                        <Box maxHeight="50px" overflow="hidden" sx={{ overflowWrap: 'anywhere' }}>
-                            <FileComponent
-                                file={element as File}
-                                submodelId={props.submodelId}
-                                submodelElementPath={buildSubmodelElementPath('GeneralInformation', element.idShort)}
-                            />
-                        </Box>
-                    </DataRowWithUnit>
-                );
-            case KeyTypes.MultiLanguageProperty:
-                return (
-                    <DataRowWithUnit label={element.idShort || 'id'} key={element.idShort}>
-                        <MultiLanguagePropertyComponent mLangProp={element as MultiLanguageProperty} />
-                    </DataRowWithUnit>
-                );
-            case KeyTypes.Range:
-                // Range still needs styling
-                return (
-                    <DataRowWithUnit label={element.idShort || 'id'} key={element.idShort}>
-                        <span>
-                            min: {(element as Range).min}, max: {(element as Range).max}
-                        </span>
-                    </DataRowWithUnit>
-                );
-            default:
-                return (
-                    <Typography color="error" variant="body2">
-                        {t('unknownModelType', { type: `${getKeyType(element)}` })}
-                    </Typography>
-                );
-        }
-    };
-
+    /**
+     * Get all semantic IDs from the submodel elements and their children,
+     * this is needed to fetch all concept descriptions at once.
+     */
     function getFlatMapOfAllSemanticIds(elements: ISubmodelElement[]): string[] {
         return elements.reduce<string[]>((acc, el) => {
             if (el.semanticId?.keys[0]?.value) {
@@ -144,6 +74,9 @@ export const TechnicalDataElement = (props: {
         }
     }, [props.elements]);
 
+    /**
+     * Load all concept descriptions for the submodel elements when the component is expanded.
+     */
     useAsyncEffect(async () => {
         if (props.isExpanded && Object.keys(conceptDescriptions).length === 0) {
             setLoadingConceptDescriptions(true);
@@ -151,6 +84,84 @@ export const TechnicalDataElement = (props: {
             setLoadingConceptDescriptions(false);
         }
     }, [loadConceptDescriptions, props.isExpanded]);
+
+    const renderSubmodelElement = (element: ISubmodelElement) => {
+        const semanticId = element.semanticId?.keys[0].value || '';
+        switch (getKeyType(element)) {
+            case KeyTypes.Property: {
+                return (
+                    <DataRowWithUnit
+                        submodelElement={element}
+                        key={element.idShort}
+                        conceptDescription={conceptDescriptions[semanticId]}
+                        conceptDescriptionLoading={loadingConceptDescriptions}
+                    >
+                        <PropertyComponent property={element as Property} />
+                    </DataRowWithUnit>
+                );
+            }
+            case KeyTypes.SubmodelElementCollection:
+            case KeyTypes.SubmodelElementList:
+                return (
+                    <TreeItem
+                        itemId={element.idShort || 'unknown'}
+                        label={element.idShort}
+                        sx={{
+                            '&& .MuiTreeItem-label': {
+                                m: 0,
+                                ...theme.typography.h6,
+                            },
+                        }}
+                    >
+                        {(element as SubmodelElementCollection | SubmodelElementList)?.value?.map(
+                            (child) => child && renderSubmodelElement(child),
+                        )}
+                    </TreeItem>
+                );
+            case KeyTypes.File:
+                return (
+                    // With the hardcoded SubmodelElementPath, this only works for CompanyLogo and ProductLogo
+                    <DataRowWithUnit submodelElement={element} key={element.idShort}>
+                        <Box maxHeight="50px" overflow="hidden" sx={{ overflowWrap: 'anywhere' }}>
+                            <FileComponent
+                                file={element as File}
+                                submodelId={props.submodelId}
+                                submodelElementPath={buildSubmodelElementPath('GeneralInformation', element.idShort)}
+                            />
+                        </Box>
+                    </DataRowWithUnit>
+                );
+            case KeyTypes.MultiLanguageProperty:
+                return (
+                    <DataRowWithUnit
+                        submodelElement={element}
+                        key={element.idShort}
+                        conceptDescription={conceptDescriptions[semanticId]}
+                    >
+                        <MultiLanguagePropertyComponent mLangProp={element as MultiLanguageProperty} />
+                    </DataRowWithUnit>
+                );
+            case KeyTypes.Range:
+                // Range still needs styling
+                return (
+                    <DataRowWithUnit
+                        submodelElement={element}
+                        key={element.idShort}
+                        conceptDescription={conceptDescriptions[semanticId]}
+                    >
+                        <span>
+                            min: {(element as Range).min}, max: {(element as Range).max}
+                        </span>
+                    </DataRowWithUnit>
+                );
+            default:
+                return (
+                    <Typography color="error" variant="body2">
+                        {t('unknownModelType', { type: `${getKeyType(element)}` })}
+                    </Typography>
+                );
+        }
+    };
 
     return (
         <TreeItem
@@ -174,7 +185,7 @@ export const TechnicalDataElement = (props: {
             }}
             key={props.label}
         >
-            {props.elements?.map((el) => el && renderVisualization(el))}
+            {props.elements?.map((el) => el && renderSubmodelElement(el))}
         </TreeItem>
     );
 };
