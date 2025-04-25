@@ -1,4 +1,4 @@
-import { Dialog, Typography } from '@mui/material';
+import { Box, Dialog } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
@@ -30,7 +30,7 @@ export function CreateRuleDialog({ onClose, reloadRules, open, availableRoles }:
         role: '',
         idShort: '',
     };
-    
+
     async function afterSubmit(newData: RuleFormModel) {
         const isNewRole = !availableRoles.includes(newData.role);
         if (isNewRole) {
@@ -44,7 +44,7 @@ export function CreateRuleDialog({ onClose, reloadRules, open, availableRoles }:
     async function onSubmit(data: RuleFormModel) {
         const mappedDto = mapFormModelToBaSyxRbacRule(data, defaultRbacRule);
         const response = await createRbacRule(mappedDto);
-        
+
         if (response.isSuccess) {
             notificationSpawner.spawn({
                 message: t('createRule.saveSuccess'),
@@ -53,7 +53,7 @@ export function CreateRuleDialog({ onClose, reloadRules, open, availableRoles }:
             await afterSubmit(data);
             return;
         }
-        
+
         if (response.errorCode === 'CONFLICT') {
             notificationSpawner.spawn({
                 message: t('errors.uniqueIdShort'),
@@ -61,19 +61,8 @@ export function CreateRuleDialog({ onClose, reloadRules, open, availableRoles }:
             });
             return;
         }
-        
-        showError(response.message);
-    }
 
-    function CreateContent() {
-        return (
-            <>
-                <Typography variant="h2" color="primary" sx={{ mt: 4, ml: '40px' }}>
-                    {t('createRule.title')}
-                </Typography>
-                <RuleForm rule={defaultRbacRule} onSubmit={onSubmit} onCancel={onClose} />
-            </>
-        );
+        showError(response.message);
     }
 
     return (
@@ -87,8 +76,14 @@ export function CreateRuleDialog({ onClose, reloadRules, open, availableRoles }:
                 setShowHint(false);
             }}
         >
-            <DialogCloseButton handleClose={onClose} dataTestId="rule-create-close-button" />
-            {showHint ? <CreateHint onClose={onClose} /> : <CreateContent />}
+            <Box sx={{ mx: '2rem', mt: '1.5rem', mb: '1rem' }} data-testid="role-create-dialog">
+                <DialogCloseButton handleClose={onClose} dataTestId="rule-create-close-button" />
+                {showHint ? (
+                    <CreateHint onClose={onClose} />
+                ) : (
+                    <RuleForm title={t('createRule.title')} rule={defaultRbacRule} onSubmit={onSubmit} onCancel={onClose} />
+                )}
+            </Box>
         </Dialog>
     );
 }

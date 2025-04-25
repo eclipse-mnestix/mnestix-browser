@@ -90,7 +90,7 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
                         <Typography color="text.secondary" variant="body2">
                             {t('tableHeader.name')}
                         </Typography>
-                        <Typography variant="h2" mb="1em">
+                        <Typography variant="h2" color="primary" mb="1em">
                             {rule?.role}
                         </Typography>
                         <Box display="flex" flexDirection="column" gap="1em">
@@ -134,21 +134,17 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
         );
     }
 
-    function EditContent() {
-        return (
-            <>
-                <Typography variant="h2" color="primary" mb="1em">
-                    {t('editRule.title')}
-                </Typography>
-                <RuleForm rule={rule} onSubmit={onSubmit} onCancel={() => setDialogMode('view')} />;
-            </>
-        );
-    }
-
     function DialogViewContent() {
         switch (dialogMode) {
             case 'edit':
-                return <EditContent />;
+                return (
+                    <RuleForm
+                        title={t('editRule.title')}
+                        rule={rule}
+                        onSubmit={onSubmit}
+                        onCancel={() => setDialogMode('view')}
+                    />
+                );
             case 'delete':
                 return (
                     <RuleDeleteDialog rule={rule} onCancelDialog={() => setDialogMode('view')} onDelete={onDelete} />
