@@ -14,17 +14,17 @@ import { encodeBase64 } from 'lib/util/Base64Util';
 import { useRouter } from 'next/navigation';
 import { SubmodelOrIdReference, useAasState } from 'components/contexts/CurrentAasContext';
 import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import {
     findSubmodelByIdOrSemanticId,
     findSubmodelElementByIdShort,
-    findValueByIdShort,
 } from 'lib/util/SubmodelResolverUtil';
 import { MobileAccordion } from 'components/basics/detailViewBasics/MobileAccordion';
 import { ProductClassificationInfoBox } from './ProductClassificationInfoBox';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { useProductImageUrl } from 'lib/hooks/UseProductImageUrl';
+import { useFindValueByIdShort } from 'lib/hooks/useFindValueByIdShort';
 import { MarkingsComponent } from 'app/[locale]/viewer/_components/submodel-elements/marking-components/MarkingsComponent';
 
 type ProductOverviewCardProps = {
@@ -50,6 +50,8 @@ type OverviewData = {
     readonly manufacturerProductType?: string;
     readonly manufacturerArticleNumber?: string;
     readonly manufacturerOrderCode?: string;
+    readonly manufacturerLogo: ISubmodelElement | null;
+    readonly companyLogo: ISubmodelElement | null;
     readonly markings?: SubmodelElementCollection;
     readonly productClassifications?: ProductClassification[];
 };
@@ -60,58 +62,57 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
     const [, setAasState] = useAasState();
     const t = useTranslations('pages.productViewer');
     const [overviewData, setOverviewData] = useState<OverviewData>();
-    const locale = useLocale();
+    const findValue = useFindValueByIdShort();
     const productImageUrl = useProductImageUrl(props.aas, props.repositoryURL, props.productImage);
-    const [technicalDataSubmodel, setTechnicalDataSubmodel] = useState<Submodel | undefined>(undefined);
+    const [nameplateSubmodel, setNameplateSubmodel] = useState<Submodel | undefined>(undefined);
 
     useEffect(() => {
         if (props.submodels && props.submodels.length > 0) {
             const technicalData = findSubmodelByIdOrSemanticId(
                 props.submodels,
-                SubmodelSemanticIdEnum.TechnicalDataV11,
+                SubmodelSemanticIdEnum.TechnicalData,
                 'TechnicalData',
             );
-            setTechnicalDataSubmodel(technicalData);
             if (technicalData?.submodelElements) {
                 prepareTechnicalDataSubmodel(technicalData.submodelElements);
             }
 
-            const nameplateData = findSubmodelByIdOrSemanticId(
+            const nameplate = findSubmodelByIdOrSemanticId(
                 props.submodels,
                 SubmodelSemanticIdEnum.NameplateV2,
                 'Nameplate',
             );
-            if (nameplateData?.submodelElements) {
-                prepareNameplateData(nameplateData.submodelElements);
+            setNameplateSubmodel(nameplate);
+            if (nameplate?.submodelElements) {
+                prepareNameplateData(nameplate.submodelElements);
             }
         }
-    }, [props.submodels]);
-
-    const prepareTechnicalDataSubmodel = (technicalDataSubmodelElements: Array<ISubmodelElement>) => {
-        const manufacturerName = findValueByIdShort(
+    }, [props.submodels]); const prepareTechnicalDataSubmodel = (technicalDataSubmodelElements: Array<ISubmodelElement>) => {
+        const manufacturerName = findValue(
             technicalDataSubmodelElements,
             'ManufacturerName',
-            SubmodelElementSemanticIdEnum.ManufacturerName,
-            locale,
+            SubmodelElementSemanticIdEnum.ManufacturerName
         );
-        const manufacturerProductDesignation = findValueByIdShort(
+        const manufacturerProductDesignation = findValue(
             technicalDataSubmodelElements,
             'ManufacturerProductDesignation',
-            SubmodelElementSemanticIdEnum.ManufacturerProductDesignation,
-            locale,
+            SubmodelElementSemanticIdEnum.ManufacturerProductDesignation
         );
-        const manufacturerArticleNumber = findValueByIdShort(
+        const manufacturerArticleNumber = findValue(
             technicalDataSubmodelElements,
             'ManufacturerArticleNumber',
-            SubmodelElementSemanticIdEnum.ManufacturerArticleNumber,
-            locale,
+            SubmodelElementSemanticIdEnum.ManufacturerArticleNumber
         );
 
-        const manufacturerOrderCode = findValueByIdShort(
+        const manufacturerOrderCode = findValue(
             technicalDataSubmodelElements,
             'ManufacturerOrderCode',
-            SubmodelElementSemanticIdEnum.ManufacturerOrderCode,
-            locale,
+            SubmodelElementSemanticIdEnum.ManufacturerOrderCode
+        );
+        const manufacturerLogo = findSubmodelElementByIdShort(
+            technicalDataSubmodelElements,
+            'ManufacturerLogo',
+            SubmodelElementSemanticIdEnum.ManufacturerLogo,
         );
 
         const productClassifications = findSubmodelElementByIdShort(
@@ -119,24 +120,21 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             'ProductClassifications',
             SubmodelElementSemanticIdEnum.ProductClassifications,
         ) as SubmodelElementCollection;
-        const classifications: ProductClassification[] = [];
-        productClassifications?.value?.forEach((productClassification) => {
+        const classifications: ProductClassification[] = []; productClassifications?.value?.forEach((productClassification) => {
             const submodelClassification = productClassification as SubmodelElementCollection;
             if (submodelClassification?.value) {
                 const classification = {
                     ProductClassificationSystem:
-                        findValueByIdShort(
+                        findValue(
                             submodelClassification.value,
                             'ProductClassificationSystem',
-                            SubmodelElementSemanticIdEnum.ProductClassificationSystem,
-                            locale,
+                            SubmodelElementSemanticIdEnum.ProductClassificationSystem
                         ) || undefined,
                     ProductClassId:
-                        findValueByIdShort(
+                        findValue(
                             submodelClassification.value,
                             'ProductClassId',
-                            SubmodelElementSemanticIdEnum.ProductClassId,
-                            locale,
+                            SubmodelElementSemanticIdEnum.ProductClassId
                         ) || undefined,
                 };
                 classifications.push(classification);
@@ -148,32 +146,34 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             productClassifications: classifications,
             manufacturerArticleNumber: manufacturerArticleNumber ?? '-',
             manufacturerOrderCode: manufacturerOrderCode ?? '-',
+            companyLogo: null,
+            manufacturerLogo: manufacturerLogo,
         });
-    };
-
-    const prepareNameplateData = (nameplateSubmodelElements: Array<ISubmodelElement>) => {
-        const manufacturerProductRoot = findValueByIdShort(
+    }; const prepareNameplateData = (nameplateSubmodelElements: Array<ISubmodelElement>) => {
+        const manufacturerProductRoot = findValue(
             nameplateSubmodelElements,
             'ManufacturerProductRoot',
-            SubmodelElementSemanticIdEnum.ManufacturerProductRoot,
-            locale,
+            SubmodelElementSemanticIdEnum.ManufacturerProductRoot
         );
-        const manufacturerProductFamily = findValueByIdShort(
+        const manufacturerProductFamily = findValue(
             nameplateSubmodelElements,
             'ManufacturerProductFamily',
-            SubmodelElementSemanticIdEnum.ManufacturerProductFamily,
-            locale,
+            SubmodelElementSemanticIdEnum.ManufacturerProductFamily
         );
-        const manufacturerProductType = findValueByIdShort(
+        const manufacturerProductType = findValue(
             nameplateSubmodelElements,
             'ManufacturerProductType',
-            SubmodelElementSemanticIdEnum.ManufacturerProductType,
-            locale,
+            SubmodelElementSemanticIdEnum.ManufacturerProductType
         );
         const markings = findSubmodelElementByIdShort(
             nameplateSubmodelElements,
             'Markings',
             SubmodelElementSemanticIdEnum.MarkingsV3,
+        );
+        const companyLogo = findSubmodelElementByIdShort(
+            nameplateSubmodelElements,
+            'CompanyLogo',
+            SubmodelElementSemanticIdEnum.CompanyLogo,
         );
         setOverviewData((prevData) => ({
             ...prevData,
@@ -181,6 +181,8 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             manufacturerProductFamily: manufacturerProductFamily ?? '-',
             manufacturerProductType: manufacturerProductType ?? '-',
             markings: markings as SubmodelElementCollection,
+            manufacturerLogo: prevData?.manufacturerLogo || null,
+            companyLogo: companyLogo || null,
         }));
     };
 
@@ -245,12 +247,15 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                     sx={{ width: '100%' }}
                 />
             </Box>
-            <DataRow
-                title={t('productInfo.manufacturer')}
-                value={overviewData?.manufacturerName}
-                testId="datarow-manufacturer-name"
-                withBase64={false}
-            />
+            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+
+                <DataRow
+                    title={t('productInfo.manufacturer')}
+                    value={overviewData?.manufacturerName}
+                    testId="datarow-manufacturer-name"
+                    withBase64={false}
+                />
+            </Box>
         </Box>
     );
 
@@ -300,10 +305,11 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                     </Typography>
                 </Box>
             )}
-            {overviewData?.markings && technicalDataSubmodel?.id && (
+            {overviewData?.markings && nameplateSubmodel?.id && (
                 <MarkingsComponent
                     submodelElement={overviewData?.markings}
-                    submodelId={technicalDataSubmodel?.id}
+                    submodelId={nameplateSubmodel?.id}
+                    columnDisplay
                 ></MarkingsComponent>
             )}
         </Box>
@@ -332,12 +338,12 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                     <Skeleton width="75%" sx={{ mt: 2 }} />
                                     <Skeleton width="50%" />
                                 </Box>
-                                <Box>
-                                    <Skeleton width="90%" />
-                                    <Skeleton width="50%" />
-                                    <Skeleton width="75%" sx={{ mt: 2 }} />
-                                    <Skeleton width="50%" />
-                                </Box>
+                                    <Box>
+                                        <Skeleton width="90%" />
+                                        <Skeleton width="50%" />
+                                        <Skeleton width="75%" sx={{ mt: 2 }} />
+                                        <Skeleton width="50%" />
+                                    </Box>
                                 </>
                             )}
                         </Box>
@@ -358,7 +364,8 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                             />
                         ) : (
                             <>
-                                {productInfo} {markings}
+                                {productInfo}
+                                {markings}
                             </>
                         )}
                     </>

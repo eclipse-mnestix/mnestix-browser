@@ -1,7 +1,8 @@
 import { Box, Chip, Typography, styled } from '@mui/material';
-import { theme } from 'layout/theme/theme';
 import { tooltipText } from 'lib/util/ToolTipText';
 import { useTranslations } from 'next-intl';
+import EClassIcon from 'assets/product/eclass.svg';
+import VecIcon from 'assets/product/vec_classification.svg';
 
 /**
  * Type definition for product classification
@@ -11,18 +12,9 @@ export interface ProductClassification {
     ProductClassId?: string;
 }
 
-/**
- * Props for the ProductClassificationInfoBox component
- */
 interface ProductClassificationInfoBoxProps {
-    /**
-     * Array of product classifications to display
-     */
     productClassifications: ProductClassification[];
-    /**
-     * Optional flag to show only the first classification
-     */
-    showOnlyFirst?: boolean;
+
 }
 
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -35,13 +27,13 @@ const StyledBox = styled(Box)(({ theme }) => ({
 const LabelContainer = styled(Box)(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
-    marginRight: theme.spacing(3),
+    marginRight: theme.spacing(5),
 }));
 
 const ValueContainer = styled(Box)(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
-    marginRight: theme.spacing(4),
+    marginRight: theme.spacing(3),
 }));
 
 /**
@@ -50,7 +42,6 @@ const ValueContainer = styled(Box)(({ theme }) => ({
  */
 export function ProductClassificationInfoBox({
     productClassifications,
-    showOnlyFirst = false,
 }: ProductClassificationInfoBoxProps) {
     const t = useTranslations('pages.productViewer');
     // If there are no classifications to show, don't render the component
@@ -58,35 +49,34 @@ export function ProductClassificationInfoBox({
         return null;
     }
 
-    // Determine which classifications to display
-    const classificationsToShow = showOnlyFirst
-        ? [productClassifications[0]]
-        : productClassifications;
+    const vecIcon = <VecIcon color='primary'></VecIcon>;
+    const eClassIcon = <EClassIcon color='primary'></EClassIcon>;
 
     return (
         <Box>
-            <StyledBox bgcolor={'#F6F7FA'}>
+            <StyledBox bgcolor={'grey.100'}>
                 <LabelContainer>
-                    <Typography variant="subtitle1" fontWeight="bold">
+                    <Typography sx={{ borderBottom: '2px solid', borderColor: 'primary' }} color="primary" fontWeight="bold">
                         {t('summary')}
                     </Typography>
                 </LabelContainer>
 
-                {classificationsToShow
+                {productClassifications
                     .filter((c) => c.ProductClassificationSystem !== 'IEC')
                     .map((classification, index) => (
                         <ValueContainer key={`classification-${index}`}>
-                            <Chip variant="outlined"
-                                sx={{ backgroundColor: '#6B7374', color: 'white', borderRadius: 5, padding: 0.5 }} // TODO colors
+                            <Chip
+                                sx={{ color: 'primary.main', backgroundColor: 'grey.200', borderRadius: 5, padding: 0.5 }}
                                 label={classification.ProductClassificationSystem || 'Classification'}
-                            >
+                                icon={classification.ProductClassificationSystem === 'ECLASS' ? vecIcon : eClassIcon}>
                             </Chip>
                             <Typography variant="body1" ml={1}>
-                                {tooltipText(classification.ProductClassId, 50) || '-'}
+                                {tooltipText(classification.ProductClassId, 35) || '-'}
                             </Typography>
                         </ValueContainer>
-                    ))}
-            </StyledBox>
-        </Box>
+                    ))
+                }
+            </StyledBox >
+        </Box >
     );
 }
