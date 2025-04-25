@@ -19,12 +19,12 @@ import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import {
     findSubmodelByIdOrSemanticId,
     findSubmodelElementByIdShort,
-    findValueByIdShort,
 } from 'lib/util/SubmodelResolverUtil';
 import { MobileAccordion } from 'components/basics/detailViewBasics/MobileAccordion';
 import { ProductClassificationInfoBox } from './ProductClassificationInfoBox';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { useProductImageUrl } from 'lib/hooks/UseProductImageUrl';
+import { useFindValueByIdShort } from 'lib/hooks/useFindValueByIdShort';
 import { MarkingsComponent } from 'app/[locale]/viewer/_components/submodel-elements/marking-components/MarkingsComponent';
 
 type ProductOverviewCardProps = {
@@ -63,6 +63,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
     const t = useTranslations('pages.productViewer');
     const [overviewData, setOverviewData] = useState<OverviewData>();
     const locale = useLocale();
+    const findValue = useFindValueByIdShort();
     const productImageUrl = useProductImageUrl(props.aas, props.repositoryURL, props.productImage);
     const [nameplateSubmodel, setNameplateSubmodel] = useState<Submodel | undefined>(undefined);
 
@@ -87,33 +88,27 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                 prepareNameplateData(nameplate.submodelElements);
             }
         }
-    }, [props.submodels]);
-
-    const prepareTechnicalDataSubmodel = (technicalDataSubmodelElements: Array<ISubmodelElement>) => {
-        const manufacturerName = findValueByIdShort(
+    }, [props.submodels]); const prepareTechnicalDataSubmodel = (technicalDataSubmodelElements: Array<ISubmodelElement>) => {
+        const manufacturerName = findValue(
             technicalDataSubmodelElements,
             'ManufacturerName',
-            SubmodelElementSemanticIdEnum.ManufacturerName,
-            locale,
+            SubmodelElementSemanticIdEnum.ManufacturerName
         );
-        const manufacturerProductDesignation = findValueByIdShort(
+        const manufacturerProductDesignation = findValue(
             technicalDataSubmodelElements,
             'ManufacturerProductDesignation',
-            SubmodelElementSemanticIdEnum.ManufacturerProductDesignation,
-            locale,
+            SubmodelElementSemanticIdEnum.ManufacturerProductDesignation
         );
-        const manufacturerArticleNumber = findValueByIdShort(
+        const manufacturerArticleNumber = findValue(
             technicalDataSubmodelElements,
             'ManufacturerArticleNumber',
-            SubmodelElementSemanticIdEnum.ManufacturerArticleNumber,
-            locale,
+            SubmodelElementSemanticIdEnum.ManufacturerArticleNumber
         );
 
-        const manufacturerOrderCode = findValueByIdShort(
+        const manufacturerOrderCode = findValue(
             technicalDataSubmodelElements,
             'ManufacturerOrderCode',
-            SubmodelElementSemanticIdEnum.ManufacturerOrderCode,
-            locale,
+            SubmodelElementSemanticIdEnum.ManufacturerOrderCode
         );
         const manufacturerLogo = findSubmodelElementByIdShort(
             technicalDataSubmodelElements,
@@ -126,24 +121,21 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             'ProductClassifications',
             SubmodelElementSemanticIdEnum.ProductClassifications,
         ) as SubmodelElementCollection;
-        const classifications: ProductClassification[] = [];
-        productClassifications?.value?.forEach((productClassification) => {
+        const classifications: ProductClassification[] = []; productClassifications?.value?.forEach((productClassification) => {
             const submodelClassification = productClassification as SubmodelElementCollection;
             if (submodelClassification?.value) {
                 const classification = {
                     ProductClassificationSystem:
-                        findValueByIdShort(
+                        findValue(
                             submodelClassification.value,
                             'ProductClassificationSystem',
-                            SubmodelElementSemanticIdEnum.ProductClassificationSystem,
-                            locale,
+                            SubmodelElementSemanticIdEnum.ProductClassificationSystem
                         ) || undefined,
                     ProductClassId:
-                        findValueByIdShort(
+                        findValue(
                             submodelClassification.value,
                             'ProductClassId',
-                            SubmodelElementSemanticIdEnum.ProductClassId,
-                            locale,
+                            SubmodelElementSemanticIdEnum.ProductClassId
                         ) || undefined,
                 };
                 classifications.push(classification);
@@ -158,26 +150,21 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             companyLogo: null,
             manufacturerLogo: manufacturerLogo,
         });
-    };
-
-    const prepareNameplateData = (nameplateSubmodelElements: Array<ISubmodelElement>) => {
-        const manufacturerProductRoot = findValueByIdShort(
+    }; const prepareNameplateData = (nameplateSubmodelElements: Array<ISubmodelElement>) => {
+        const manufacturerProductRoot = findValue(
             nameplateSubmodelElements,
             'ManufacturerProductRoot',
-            SubmodelElementSemanticIdEnum.ManufacturerProductRoot,
-            locale,
+            SubmodelElementSemanticIdEnum.ManufacturerProductRoot
         );
-        const manufacturerProductFamily = findValueByIdShort(
+        const manufacturerProductFamily = findValue(
             nameplateSubmodelElements,
             'ManufacturerProductFamily',
-            SubmodelElementSemanticIdEnum.ManufacturerProductFamily,
-            locale,
+            SubmodelElementSemanticIdEnum.ManufacturerProductFamily
         );
-        const manufacturerProductType = findValueByIdShort(
+        const manufacturerProductType = findValue(
             nameplateSubmodelElements,
             'ManufacturerProductType',
-            SubmodelElementSemanticIdEnum.ManufacturerProductType,
-            locale,
+            SubmodelElementSemanticIdEnum.ManufacturerProductType
         );
         const markings = findSubmodelElementByIdShort(
             nameplateSubmodelElements,
