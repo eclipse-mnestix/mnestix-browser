@@ -12,18 +12,9 @@ export interface ProductClassification {
     ProductClassId?: string;
 }
 
-/**
- * Props for the ProductClassificationInfoBox component
- */
 interface ProductClassificationInfoBoxProps {
-    /**
-     * Array of product classifications to display
-     */
     productClassifications: ProductClassification[];
-    /**
-     * Optional flag to show only the first classification
-     */
-    showOnlyFirst?: boolean;
+
 }
 
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -51,7 +42,6 @@ const ValueContainer = styled(Box)(({ theme }) => ({
  */
 export function ProductClassificationInfoBox({
     productClassifications,
-    showOnlyFirst = false,
 }: ProductClassificationInfoBoxProps) {
     const t = useTranslations('pages.productViewer');
     // If there are no classifications to show, don't render the component
@@ -59,24 +49,19 @@ export function ProductClassificationInfoBox({
         return null;
     }
 
-    // Determine which classifications to display
-    const classificationsToShow = showOnlyFirst
-        ? [productClassifications[0]]
-        : productClassifications;
-
     const vecIcon = <VecIcon color='primary'></VecIcon>;
     const eClassIcon = <EClassIcon color='primary'></EClassIcon>;
 
     return (
         <Box>
-            <StyledBox bgcolor={'#F6F7FA'}>
+            <StyledBox bgcolor={'grey.100'}>
                 <LabelContainer>
                     <Typography sx={{ borderBottom: '2px solid', borderColor: 'primary' }} color="primary" fontWeight="bold">
                         {t('summary')}
                     </Typography>
                 </LabelContainer>
 
-                {classificationsToShow
+                {productClassifications
                     .filter((c) => c.ProductClassificationSystem !== 'IEC')
                     .map((classification, index) => (
                         <ValueContainer key={`classification-${index}`}>

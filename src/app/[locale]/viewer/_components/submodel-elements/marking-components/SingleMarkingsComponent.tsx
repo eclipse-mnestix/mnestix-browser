@@ -35,9 +35,9 @@ export function SingleMarkingsComponent(props: SingleMarkingsComponentProps) {
 
 
     const StyledMarkingImageWrapper = styled(Box)(() => ({
-        maxWidth: props.rowDisplay ? '60px' : 'auto',
-        minWidth: props.rowDisplay ? '60px' : '80px',
-        minHeight: props.rowDisplay ? '60px' : '80px',
+        maxWidth: props.rowDisplay ? '4rem' : 'auto',
+        minWidth: props.rowDisplay ? '4rem' : '5rem',
+        minHeight: props.rowDisplay ? '4rem' : '5rem',
         display: 'flex',
         flexDirection: 'column',
     }));
@@ -66,7 +66,9 @@ export function SingleMarkingsComponent(props: SingleMarkingsComponentProps) {
         } else {
             if (file?.value) setMarkingImage(file.value);
         }
-    }, [props.file]); return (
+    }, [props.file]);
+
+    return (
         !!file && (
             <StyledMarkingContainer>
                 <StyledMarkingImageWrapper sx={{ boxShadow: 2 }}>
