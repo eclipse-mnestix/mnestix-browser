@@ -113,6 +113,32 @@ export const RuleSettings = () => {
         );
     }
 
+    function groupPermissionsByRole(rules: BaSyxRbacRule[]): Record<string, Set<string>> {
+        return rules.reduce(
+            (groupedPermissions, rule) => {
+                Object.entries(rule.targetInformation)
+                    .filter(([key]) => key !== '@type')
+                    .forEach(([key, value]: [string, string[]]) => {
+                        if (!groupedPermissions[key]) {
+                            groupedPermissions[key] = new Set();
+                        }
+
+                        value.forEach((item) => groupedPermissions[key].add(item));
+                    });
+
+                return groupedPermissions;
+            },
+            {} as Record<string, Set<string>>,
+        );
+    }
+
+    function aggregateRoleData(rules: BaSyxRbacRule[]) {
+        const actions = Array.from(new Set(rules.map((rule) => rule.action)));
+        const types = Array.from(new Set(rules.map((rule) => rule.targetInformation['@type'])));
+        const permissions = groupPermissionsByRole(rules);
+        return { actions, types, permissions };
+    }
+
     const groupedRules = groupRulesByRole();
 
     return (
@@ -127,83 +153,126 @@ export const RuleSettings = () => {
                             {t('buttons.create')}
                         </Button>
                         <Box width="100%" mt={2}>
-                            {Object.entries(groupedRules).map(([roleName, rules]) => (
-                                <Accordion key={roleName} expanded={roleName === expandedRole}>
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMoreIcon />}
-                                        onClick={() =>
-                                            roleName !== expandedRole ? setExpandedRole(roleName) : setExpandedRole('')
-                                        }
-                                        sx={{ height: '4rem' }}
-                                        data-testid={`role-settings-accordion-summary-${roleName}`}
-                                    >
-                                        <Typography
-                                            fontWeight="bold"
-                                            sx={{
-                                                overflow: 'hidden',
-                                                textOverflow: 'ellipsis',
-                                                maxWidth: '50vw',
-                                            }}
+                            {Object.entries(groupedRules).map(([roleName, rules]) => {
+                                const { actions, types, permissions } = aggregateRoleData(rules);
+                                return (
+                                    <Accordion key={roleName} expanded={roleName === expandedRole}>
+                                        <AccordionSummary
+                                            expandIcon={<ExpandMoreIcon />}
+                                            sx={{ height: '4rem' }}
+                                            data-testid={`role-settings-accordion-summary-${roleName}`}
+                                            onClick={() =>
+                                                roleName !== expandedRole
+                                                    ? setExpandedRole(roleName)
+                                                    : setExpandedRole('')
+                                            }
                                         >
-                                            {roleName}
-                                        </Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        <TableContainer>
-                                            <Table>
-                                                <TableHead>
-                                                    <TableRow>
-                                                        {prepareTableHeaders().map(
-                                                            (header: { label: string }, index) => (
-                                                                <TableCell key={index}>
-                                                                    <Typography
-                                                                        variant="h5"
-                                                                        color="secondary"
-                                                                        letterSpacing={0.16}
-                                                                        fontWeight={700}
-                                                                    >
-                                                                        {header.label}
-                                                                    </Typography>
-                                                                </TableCell>
-                                                            ),
-                                                        )}
-                                                    </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-                                                    {rules.map((entry) => (
-                                                        <TableRow
-                                                            key={entry.idShort}
-                                                            data-testid={`role-settings-row-${entry.idShort}`}
-                                                        >
-                                                            <TableCell>
-                                                                <Chip
-                                                                    key={entry.action}
-                                                                    sx={{ fontWeight: 'normal', m: 0.5 }}
-                                                                    label={entry.action}
-                                                                />
-                                                            </TableCell>
-                                                            <TableCell>{entry.targetInformation['@type']}</TableCell>
-                                                            {!isMobile && (
-                                                                <TableCell>{permissionCell(entry)}</TableCell>
-                                                            )}
-                                                            <TableCell>
-                                                                <RoundedIconButton
-                                                                    data-testid={`role-settings-button-${entry.idShort}`}
-                                                                    onClick={() => openDetailDialog(entry)}
-                                                                    color="primary"
-                                                                    size={'small'}
-                                                                >
-                                                                    <ArrowForwardIcon />
-                                                                </RoundedIconButton>
-                                                            </TableCell>
-                                                        </TableRow>
+                                            <TableRow>
+                                                <TableCell>
+                                                    <Typography
+                                                        fontWeight="bold"
+                                                        sx={{
+                                                            overflow: 'hidden',
+                                                            textOverflow: 'ellipsis',
+                                                            width: '8rem',
+                                                        }}
+                                                    >
+                                                        {roleName}
+                                                    </Typography>
+                                                </TableCell>
+                                                <TableCell>
+                                                    {actions.map((action) => (
+                                                        <Chip
+                                                            key={action}
+                                                            sx={{ fontWeight: 'normal', m: 0.5 }}
+                                                            label={action}
+                                                        />
                                                     ))}
-                                                </TableBody>
-                                            </Table>
-                                        </TableContainer>
-                                    </AccordionDetails>
-                                </Accordion>
-                            ))}
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Typography variant="body2" color="textSecondary">
+                                                        {types.join(', ')}
+                                                    </Typography>
+                                                </TableCell>
+                                                <TableCell>
+                                                    {Object.entries(permissions).map(([type, ids]) => {
+                                                        const idString = Array.from(ids).join(', ');
+
+                                                        return (
+                                                            <Box key={type} component="span">
+                                                                <Typography variant="body2" fontWeight="bold">
+                                                                    {`${type}: `}
+                                                                </Typography>
+                                                                <Typography variant="body2">
+                                                                    {idString.length > MAX_PERMISSIONS_CHARS
+                                                                        ? `${idString.slice(0, MAX_PERMISSIONS_CHARS)}...`
+                                                                        : idString}
+                                                                </Typography>
+                                                            </Box>
+                                                        );
+                                                    })}
+                                                </TableCell>
+                                            </TableRow>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <TableContainer sx={{ ml: '8rem' }}>
+                                                <Table>
+                                                    <TableHead>
+                                                        <TableRow>
+                                                            {prepareTableHeaders().map(
+                                                                (header: { label: string }, index) => (
+                                                                    <TableCell key={index}>
+                                                                        <Typography
+                                                                            variant="h5"
+                                                                            color="secondary"
+                                                                            letterSpacing={0.16}
+                                                                            fontWeight={700}
+                                                                        >
+                                                                            {header.label}
+                                                                        </Typography>
+                                                                    </TableCell>
+                                                                ),
+                                                            )}
+                                                        </TableRow>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        {rules.map((entry) => (
+                                                            <TableRow
+                                                                key={entry.idShort}
+                                                                data-testid={`role-settings-row-${entry.idShort}`}
+                                                            >
+                                                                <TableCell>
+                                                                    <Chip
+                                                                        key={entry.action}
+                                                                        sx={{ fontWeight: 'normal', m: 0.5 }}
+                                                                        label={entry.action}
+                                                                    />
+                                                                </TableCell>
+                                                                <TableCell>
+                                                                    {entry.targetInformation['@type']}
+                                                                </TableCell>
+                                                                {!isMobile && (
+                                                                    <TableCell>{permissionCell(entry)}</TableCell>
+                                                                )}
+                                                                <TableCell>
+                                                                    <RoundedIconButton
+                                                                        data-testid={`role-settings-button-${entry.idShort}`}
+                                                                        onClick={() => openDetailDialog(entry)}
+                                                                        color="primary"
+                                                                        size={'small'}
+                                                                    >
+                                                                        <ArrowForwardIcon />
+                                                                    </RoundedIconButton>
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                );
+                            })}
                         </Box>
                     </Box>
                 )}
