@@ -1,4 +1,4 @@
-import { Box, Link, styled, Typography } from '@mui/material';
+import { Link, styled, Typography } from '@mui/material';
 import { File } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useState } from 'react';
 import { getSanitizedHref } from 'lib/util/HrefUtil';
