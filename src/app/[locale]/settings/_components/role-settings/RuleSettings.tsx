@@ -135,7 +135,11 @@ export const RuleSettings = () => {
                                         roleName !== expandedRole ? setExpandedRole(roleName) : setExpandedRole('')
                                     }
                                 >
-                                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMoreIcon />}
+                                        sx={{ height: '3.5rem' }}
+                                        data-testid={`role-settings-accordion-summary-${roleName}`}
+                                    >
                                         <Typography
                                             fontWeight="bold"
                                             sx={{
