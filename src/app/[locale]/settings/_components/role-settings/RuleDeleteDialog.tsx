@@ -9,12 +9,12 @@ import { Delete } from '@mui/icons-material';
 import { TargetInformationView } from 'app/[locale]/settings/_components/role-settings/target-information/TargetInformationView';
 
 interface RuleDeleteDialogProps {
-    onCloseDialog: (reload: boolean) => void;
     onCancelDialog: () => void;
+    onDelete: () => Promise<void>;
     rule: BaSyxRbacRule;
 }
 
-export function RuleDeleteDialog({ onCloseDialog, onCancelDialog, rule }: RuleDeleteDialogProps) {
+export function RuleDeleteDialog({ onCancelDialog, onDelete, rule }: RuleDeleteDialogProps) {
     const t = useTranslations('pages.settings.rules');
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
@@ -22,11 +22,11 @@ export function RuleDeleteDialog({ onCloseDialog, onCancelDialog, rule }: RuleDe
     async function deleteRule() {
         const response = await rbacActions.deleteRbacRule(rule.idShort);
         if (response.isSuccess) {
-            onCloseDialog(true);
             notificationSpawner.spawn({
                 message: t('deleteRule.success'),
                 severity: 'success',
             });
+            await onDelete();
             return;
         }
         showError(response.message);

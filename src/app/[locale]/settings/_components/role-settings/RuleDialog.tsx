@@ -67,6 +67,16 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
         await reloadRules();
     }
 
+    async function onDelete() {
+        // switch view to hint if needed else close
+        if (rule.isOnlyRule) {
+            setDialogMode('delete-hint');
+        } else {
+            onClose();
+        }
+        await reloadRules();
+    }
+
     function ViewContent() {
         return (
             <>
@@ -138,8 +148,8 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
                 return (
                     <RuleDeleteDialog
                         rule={rule}
-                        onCloseDialog={onClose}
                         onCancelDialog={() => setDialogMode('view')}
+                        onDelete={onDelete}
                     />
                 );
             case 'create-hint':
