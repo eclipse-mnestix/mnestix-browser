@@ -48,7 +48,7 @@ export const TargetInformationForm = (props: TargetInformationProps) => {
                             }}
                         >
                             {ruleTypes.map((type) => (
-                                <MenuItem key={type} value={type}>
+                                <MenuItem key={type} value={type} data-testid={`rule-settings-target-select-${type}`}>
                                     {type}
                                 </MenuItem>
                             ))}

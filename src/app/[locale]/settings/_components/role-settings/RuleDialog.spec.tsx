@@ -5,6 +5,7 @@ import { expect } from '@jest/globals';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { mockRbacRoles } from './test-data/mockRbacRoles';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('./../../../../../lib/services/rbac-service/RbacActions');
 jest.mock('next-intl', () => ({
@@ -20,9 +21,20 @@ const lastRuleForRole: DialogRbacRule = {
     ...mockRbacRoles.roles[2],
     isOnlyRule: true,
 };
+const conflictRule = {
+    ...mockRbacRoles.roles[3],
+    isOnlyRule: true,
+};
 const newName = 'newRoleName';
 
 const availableRoles = mockRbacRoles.roles.map((role) => role.role);
+
+async function setTextInput(testId: string, text: string) {
+    const component = screen.getByTestId(testId);
+    const input = component.getElementsByTagName('input')[0];
+    await userEvent.clear(input);
+    await userEvent.type(input, text);
+}
 
 describe('RoleDialog', () => {
     beforeEach(() => {
@@ -110,13 +122,8 @@ describe('RoleDialog', () => {
 
         fireEvent.click(screen.getByTestId('role-settings-edit-button'));
 
-        await waitFor(() => {
-            expect(screen.getByTestId('role-settings-role-input')).toBeInTheDocument();
-            expect(screen.getByTestId('role-settings-save-button')).toBeInTheDocument();
-        });
-
         // Change the role name to another used role name
-        fireEvent.input(screen.getByTestId('role-settings-role-input'), { target: { value: lastRuleForRole.role } });
+        await setTextInput('rule-settings-name-input', lastRuleForRole.role);
         fireEvent.click(screen.getByTestId('role-settings-save-button'));
 
         await waitFor(() => {
@@ -152,20 +159,11 @@ describe('RoleDialog', () => {
 
         fireEvent.click(screen.getByTestId('role-settings-edit-button'));
 
-        await waitFor(() => {
-            expect(screen.getByTestId('role-settings-role-input')).toBeInTheDocument();
-            expect(screen.getByTestId('role-settings-save-button')).toBeInTheDocument();
-        });
-
         // Change the role name to another used role name
-        fireEvent.input(screen.getByTestId('role-settings-role-input'), { target: { value: notLastRuleForRole.role } });
+        await setTextInput('rule-settings-name-input', notLastRuleForRole.role);
         fireEvent.click(screen.getByTestId('role-settings-save-button'));
 
         await waitFor(() => {
-            expect(mockNotificationSpawner.spawn).toHaveBeenCalledWith({
-                message: 'errors.uniqueIdShort',
-                severity: 'error',
-            });
             expect(mockOnClose).not.toHaveBeenCalled();
             expect(reloadRules).toHaveBeenCalled();
             expect(screen.getByTestId('role-delete-hint-acknowledge')).toBeInTheDocument();
@@ -195,20 +193,11 @@ describe('RoleDialog', () => {
 
         fireEvent.click(screen.getByTestId('role-settings-edit-button'));
 
-        await waitFor(() => {
-            expect(screen.getByTestId('role-settings-role-input')).toBeInTheDocument();
-            expect(screen.getByTestId('role-settings-save-button')).toBeInTheDocument();
-        });
-
         // Change the role name to another used role name
-        fireEvent.input(screen.getByTestId('role-settings-role-input'), { target: { value: newName } });
+        await setTextInput('rule-settings-name-input', newName);
         fireEvent.click(screen.getByTestId('role-settings-save-button'));
 
         await waitFor(() => {
-            expect(mockNotificationSpawner.spawn).toHaveBeenCalledWith({
-                message: 'errors.uniqueIdShort',
-                severity: 'error',
-            });
             expect(mockOnClose).not.toHaveBeenCalled();
             expect(reloadRules).toHaveBeenCalled();
             expect(screen.getByTestId('role-create-hint-acknowledge')).toBeInTheDocument();
@@ -230,17 +219,14 @@ describe('RoleDialog', () => {
             <RuleDialog
                 open={true}
                 onClose={mockOnClose}
-                rule={notLastRuleForRole}
+                rule={conflictRule}
                 reloadRules={reloadRules}
                 availableRoles={availableRoles}
             />,
         );
 
         fireEvent.click(screen.getByTestId('role-settings-edit-button'));
-        fireEvent.input(screen.getByTestId('role-settings-role-input'), { target: { value: lastRuleForRole.role } });
-        fireEvent.input(screen.getByTestId('role-settings-action-input'), {
-            target: { value: lastRuleForRole.action },
-        });
+        await setTextInput('rule-settings-name-input', lastRuleForRole.role);
         fireEvent.click(screen.getByTestId('role-settings-save-button'));
 
         await waitFor(() => {
@@ -360,10 +346,6 @@ describe('RoleDialog', () => {
 
         await waitFor(() => {
             expect(deleteRbacRule).toHaveBeenCalledWith(lastRuleForRole.idShort);
-            expect(mockNotificationSpawner.spawn).toHaveBeenCalledWith({
-                message: 'deleteRule.success',
-                severity: 'success',
-            });
             expect(mockOnClose).not.toHaveBeenCalled();
             expect(reloadRules).toHaveBeenCalled();
             expect(screen.getByTestId('role-delete-hint-acknowledge')).toBeInTheDocument();

@@ -32,6 +32,16 @@ export const mockRbacRoles: RbacRolesFetchResult = {
                 submodelIds: ['*'],
             },
         },
+        {
+            idShort: 'roleId4',
+            role: 'Admin-Role2',
+            action: 'READ',
+            targetInformation: {
+                '@type': 'aas-environment',
+                aasIds: ['aasId1', 'aasId2'],
+                submodelIds: ['submodelId1'],
+            },
+        },
     ],
     warnings: [],
 };

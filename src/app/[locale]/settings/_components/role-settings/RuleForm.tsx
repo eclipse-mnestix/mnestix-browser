@@ -123,7 +123,11 @@ export const RuleForm = (props: RuleDialogProps) => {
                                     {...field}
                                 >
                                     {rbacRuleActions.map((action) => (
-                                        <MenuItem key={action} value={action}>
+                                        <MenuItem
+                                            key={action}
+                                            value={action}
+                                            data-testid={`rule-settings-action-${action}`}
+                                        >
                                             {action}
                                         </MenuItem>
                                     ))}
