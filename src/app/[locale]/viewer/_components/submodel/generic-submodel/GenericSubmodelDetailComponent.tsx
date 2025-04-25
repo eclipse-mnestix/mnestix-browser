@@ -4,6 +4,7 @@ import { submodelElementCustomVisualizationMap } from '../../submodel-elements/S
 import { Fragment } from 'react';
 import { GenericSubmodelElementComponent } from '../../submodel-elements/generic-elements/GenericSubmodelElementComponent';
 import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
+import { SubmodelElementChoice } from 'lib/types/AasTypes';
 
 export function GenericSubmodelDetailComponent({ submodel }: SubmodelVisualizationProps) {
     const submodelElements = submodel.submodelElements ?? [];
@@ -37,7 +38,7 @@ export function GenericSubmodelDetailComponent({ submodel }: SubmodelVisualizati
                         ) : (
                             <GenericSubmodelElementComponent
                                 key={index}
-                                submodelElement={el}    
+                                submodelElement={el as unknown as SubmodelElementChoice}
                                 submodelId={submodel.id}
                                 hasDivider={hasDivider(index)}
                             />

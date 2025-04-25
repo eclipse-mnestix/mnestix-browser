@@ -1826,13 +1826,13 @@ export interface Extension {
  * @export
  * @interface FileAllOfContentType
  */
-export interface FileAllOfContentType {}
+type FileAllOfContentType = string;
 /**
  *
  * @export
  * @interface FileAllOfValue
  */
-export interface FileAllOfValue {}
+type FileAllOfValue = string;
 /**
  *
  * @export
@@ -2576,7 +2576,7 @@ export interface ModelFile {
      * @type {string}
      * @memberof ModelFile
      */
-    modelType: 'ModelFile';
+    modelType: 'File';
     /**
      *
      * @type {Reference}
@@ -3719,12 +3719,7 @@ export interface Referable {
     modelType: ModelType;
 }
 
-/**
- *
- * @export
- * @interface ReferableAllOfIdShort
- */
-export interface ReferableAllOfIdShort {}
+type ReferableAllOfIdShort = string | null;
 /**
  *
  * @export

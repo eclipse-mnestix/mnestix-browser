@@ -1,14 +1,5 @@
 ﻿import { Box, Typography } from '@mui/material';
-import {
-    Entity,
-    File,
-    ISubmodelElement,
-    KeyTypes,
-    MultiLanguageProperty,
-    Property,
-    SubmodelElementCollection,
-} from '@aas-core-works/aas-core3.0-typescript/types';
-import { getKeyType } from 'lib/util/KeyTypeUtil';
+import { SubmodelElementChoice, KeyTypes } from 'lib/types/AasTypes';
 import { PropertyComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/PropertyComponent';
 import { EntityComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/EntityComponent';
 import { MultiLanguagePropertyComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/MultiLanguagePropertyComponent';
@@ -16,9 +7,10 @@ import { FileComponent } from 'app/[locale]/viewer/_components/submodel-elements
 import { SubmodelElementCollectionComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/SubmodelElementCollectionComponent';
 import { DifferenceSymbol } from 'components/basics/DifferenceSymbol';
 import { useTranslations } from 'next-intl';
+import { Entity } from '@aas-core-works/aas-core3.0-typescript/types';
 
 type CompareSubmodelElementProps = {
-    readonly submodelElement?: ISubmodelElement;
+    readonly submodelElement?: SubmodelElementChoice;
     readonly isMarked?: boolean;
 };
 
@@ -31,53 +23,41 @@ export function CompareSubmodelElement(props: CompareSubmodelElementProps) {
             return;
         }
 
-        const submodelElementType = getKeyType(props.submodelElement);
-
-        switch (submodelElementType) {
+        switch (props.submodelElement.modelType) {
             case KeyTypes.Property:
                 return (
                     <>
                         <Box display="flex" alignItems="center">
                             {isMarked && <DifferenceSymbol />}
                             <Box display="inline-block">
-                                <PropertyComponent property={props.submodelElement as Property} />
+                                <PropertyComponent property={props.submodelElement} />
                             </Box>
                         </Box>
                     </>
                 );
             case KeyTypes.SubmodelElementCollection:
-                return (
-                    <SubmodelElementCollectionComponent
-                        submodelElementCollection={props.submodelElement as SubmodelElementCollection}
-                    />
-                );
+                return <SubmodelElementCollectionComponent submodelElementCollection={props.submodelElement} />;
             case KeyTypes.SubmodelElementList:
-                return (
-                    <SubmodelElementCollectionComponent
-                        submodelElementCollection={props.submodelElement as SubmodelElementCollection}
-                    />
-                );
+                return <SubmodelElementCollectionComponent submodelElementCollection={props.submodelElement} />;
             case KeyTypes.File:
-                return <FileComponent file={props.submodelElement as File} />;
+                return <FileComponent file={props.submodelElement} />;
             case KeyTypes.MultiLanguageProperty:
                 return (
                     <>
                         <Box display="flex" alignItems={'center'}>
                             {isMarked && <DifferenceSymbol />}
                             <Box display="inline-block">
-                                <MultiLanguagePropertyComponent
-                                    mLangProp={props.submodelElement as MultiLanguageProperty}
-                                />
+                                <MultiLanguagePropertyComponent mLangProp={props.submodelElement} />
                             </Box>
                         </Box>
                     </>
                 );
             case KeyTypes.Entity:
-                return <EntityComponent entity={props.submodelElement as Entity} />;
+                return <EntityComponent entity={props.submodelElement as unknown as Entity} />;
             default:
                 return (
                     <Typography color="error" variant="body2">
-                        {t('errors.unknownModelType', { type: `${submodelElementType}` })}
+                        {t('errors.unknownModelType', { type: `${props.submodelElement.modelType}` })}
                     </Typography>
                 );
         }

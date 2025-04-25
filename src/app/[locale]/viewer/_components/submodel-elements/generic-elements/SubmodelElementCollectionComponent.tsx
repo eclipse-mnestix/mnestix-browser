@@ -1,6 +1,6 @@
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { Box, Button } from '@mui/material';
-import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
+import { SubmodelElementCollection, SubmodelElementList } from 'lib/types/AasTypes';
 import { NestedContentWrapper } from 'components/basics/NestedContentWrapper';
 import { ReactNode, useState } from 'react';
 import { GenericSubmodelElementComponent } from './GenericSubmodelElementComponent';
@@ -14,7 +14,7 @@ enum ExpandButtonText {
 type SubmodelElementComponentProps = {
     readonly submodelId?: string;
     readonly submodelElementPath?: string;
-    readonly submodelElementCollection: SubmodelElementCollection;
+    readonly submodelElementCollection: SubmodelElementCollection | SubmodelElementList;
 };
 
 export function SubmodelElementCollectionComponent({
@@ -26,11 +26,7 @@ export function SubmodelElementCollectionComponent({
     const componentList: ReactNode[] = [];
     const t = useTranslations('components.submodelElementCollection');
 
-    if (
-        !submodelElementCollection.value ||
-        (Array.isArray(submodelElementCollection.value) && !submodelElementCollection.value?.length) ||
-        !Object.keys(submodelElementCollection.value).length
-    ) {
+    if (!submodelElementCollection.value?.length) {
         return <></>;
     }
     submodelElementCollection.value.forEach((val, index) => {

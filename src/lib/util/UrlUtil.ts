@@ -1,4 +1,4 @@
-export function isValidUrl(urlString: string | null): boolean {
+export function isValidUrl(urlString: string | null | undefined): boolean {
     if (!urlString) return false;
 
     let url;

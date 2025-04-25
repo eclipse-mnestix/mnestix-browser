@@ -1,5 +1,4 @@
 import { Box, Link, styled, Typography } from '@mui/material';
-import { File } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useState } from 'react';
 import { getSanitizedHref } from 'lib/util/HrefUtil';
 import { isValidUrl } from 'lib/util/UrlUtil';
@@ -8,6 +7,7 @@ import { getAttachmentFromSubmodelElement } from 'lib/services/repository-access
 import { useAasOriginSourceState } from 'components/contexts/CurrentAasContext';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { useTranslations } from 'next-intl';
+import { ModelFile } from 'lib/types/AasTypes';
 
 const StyledFileImg = styled('img')(() => ({
     objectFit: 'contain',
@@ -17,13 +17,13 @@ const StyledFileImg = styled('img')(() => ({
 }));
 
 type FileComponentProps = {
-    readonly file: File;
+    readonly file: ModelFile;
     readonly submodelId?: string;
     readonly submodelElementPath?: string;
 };
 
 export function FileComponent(props: FileComponentProps) {
-    const [image, setImage] = useState<string | null>(null);
+    const [image, setImage] = useState<string | null | undefined>(null);
     const { file } = props;
     const [aasOriginUrl] = useAasOriginSourceState();
     const t = useTranslations('pages.aasViewer');
@@ -68,9 +68,7 @@ export function FileComponent(props: FileComponentProps) {
                 <Typography>{file.value?.toString()}</Typography>
             </Link>
         ) : (
-            <Typography>
-                {t('labels.notAvailable')}
-            </Typography>
+            <Typography>{t('labels.notAvailable')}</Typography>
         );
     }
 }

@@ -6,6 +6,7 @@ import { IDataElement, SubmodelElementCollection } from '@aas-core-works/aas-cor
 import enMessages from 'locale/en.json';
 import { GenericSubmodelElementComponent } from '../generic-elements/GenericSubmodelElementComponent';
 import { SubModelElementCollectionContactInfo } from 'lib/util/ApiExtensions/ExtendISubmodelElement';
+import { SubmodelElementChoice } from 'lib/types/AasTypes';
 
 type AddressType = keyof typeof enMessages.components.addressComponent.addressTypes;
 
@@ -132,7 +133,10 @@ export function IpElement({ el, index }: { el: SubmodelElementCollection; index?
             <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
                 {el.idShort}
             </Typography>
-            <GenericSubmodelElementComponent submodelElement={el} wrapInDataRow={false} />
+            <GenericSubmodelElementComponent
+                submodelElement={el as unknown as SubmodelElementChoice}
+                wrapInDataRow={false}
+            />
         </Box>
     );
 }
@@ -143,7 +147,10 @@ export function PersonElement({ el, index }: { el: SubModelElementCollectionCont
             <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
                 {el.idShort}
             </Typography>
-            <GenericSubmodelElementComponent submodelElement={el} wrapInDataRow={false} />
+            <GenericSubmodelElementComponent
+                submodelElement={el as unknown as SubmodelElementChoice}
+                wrapInDataRow={false}
+            />
         </Box>
     );
 }

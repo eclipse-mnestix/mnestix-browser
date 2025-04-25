@@ -18,6 +18,7 @@ import {
 } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/TreeItem';
 import { performDiscoveryAasSearch } from 'lib/services/search-actions/searchActions';
 import { useTranslations } from 'next-intl';
+import { SubmodelElementChoice } from 'lib/types/AasTypes';
 
 const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeItemContentProps, ref) {
     const t = useTranslations('pages.aasViewer.submodels');
@@ -51,9 +52,11 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
             const { isSuccess, result: aasIds } = await performDiscoveryAasSearch(assetId);
             if (!isSuccess || (isSuccess && aasIds.length === 0)) {
                 const popup = window.open(''); // Try to open a new tab
-                if (popup) { // if not null -> new tab was opened
-                    popup.location.href = assetId;    
-                } else { // popup was blocked open in same tab
+                if (popup) {
+                    // if not null -> new tab was opened
+                    popup.location.href = assetId;
+                } else {
+                    // popup was blocked open in same tab
                     navigate.push(assetId);
                 }
             } else {
@@ -109,7 +112,10 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
                         </>
                     )}
                     {showDataDirectly && (
-                        <GenericSubmodelElementComponent submodelElement={data} wrapInDataRow={false} />
+                        <GenericSubmodelElementComponent
+                            submodelElement={data as unknown as SubmodelElementChoice}
+                            wrapInDataRow={false}
+                        />
                     )}
                 </Box>
                 {isRelationShip && (

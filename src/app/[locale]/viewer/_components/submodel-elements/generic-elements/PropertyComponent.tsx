@@ -1,5 +1,5 @@
 import { Box, IconButton, Link, Tooltip, Typography } from '@mui/material';
-import { Property } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Property } from 'lib/types/AasTypes';
 import { ContentCopy, OpenInNew } from '@mui/icons-material';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { useState } from 'react';

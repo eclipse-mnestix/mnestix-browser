@@ -4,19 +4,12 @@ import { SubmodelElementCollectionComponent } from './SubmodelElementCollectionC
 import { DataRow } from 'components/basics/DataRow';
 import { FileComponent } from './FileComponent';
 import { MultiLanguagePropertyComponent } from './MultiLanguagePropertyComponent';
-import {
-    Entity,
-    File,
-    KeyTypes,
-    MultiLanguageProperty,
-    Property,
-    SubmodelElementCollection,
-} from '@aas-core-works/aas-core3.0-typescript/types';
+import { KeyTypes } from 'lib/types/AasTypes';
 import { EntityComponent } from './entity-components/EntityComponent';
-import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { buildSubmodelElementPath } from 'lib/util/SubmodelResolverUtil';
 import { SubmodelElementComponentProps } from '../SubmodelElementComponentProps';
 import { useTranslations } from 'next-intl';
+import { Entity } from '@aas-core-works/aas-core3.0-typescript/types';
 
 type GenericSubmodelElementComponentProps = SubmodelElementComponentProps & {
     readonly submodelElementPath?: string | null;
@@ -34,15 +27,13 @@ export function GenericSubmodelElementComponent(props: GenericSubmodelElementCom
          * We trust that modelType gives us enough information
          * to map the submodelElement interface from our api client to specific types
          */
-        const submodelElementType = getKeyType(props.submodelElement);
-
-        switch (submodelElementType) {
+        switch (props.submodelElement.modelType) {
             case KeyTypes.Property:
-                return <PropertyComponent property={props.submodelElement as Property} />;
+                return <PropertyComponent property={props.submodelElement} />;
             case KeyTypes.SubmodelElementCollection:
                 return (
                     <SubmodelElementCollectionComponent
-                        submodelElementCollection={props.submodelElement as SubmodelElementCollection}
+                        submodelElementCollection={props.submodelElement}
                         submodelId={props.submodelId}
                         submodelElementPath={buildSubmodelElementPath(
                             props.submodelElementPath,
@@ -53,7 +44,7 @@ export function GenericSubmodelElementComponent(props: GenericSubmodelElementCom
             case KeyTypes.SubmodelElementList:
                 return (
                     <SubmodelElementCollectionComponent
-                        submodelElementCollection={props.submodelElement as SubmodelElementCollection}
+                        submodelElementCollection={props.submodelElement}
                         submodelId={props.submodelId}
                         submodelElementPath={buildSubmodelElementPath(
                             props.submodelElementPath,
@@ -64,7 +55,7 @@ export function GenericSubmodelElementComponent(props: GenericSubmodelElementCom
             case KeyTypes.File:
                 return (
                     <FileComponent
-                        file={props.submodelElement as File}
+                        file={props.submodelElement}
                         submodelId={props.submodelId}
                         submodelElementPath={buildSubmodelElementPath(
                             props.submodelElementPath,
@@ -73,13 +64,13 @@ export function GenericSubmodelElementComponent(props: GenericSubmodelElementCom
                     />
                 );
             case KeyTypes.MultiLanguageProperty:
-                return <MultiLanguagePropertyComponent mLangProp={props.submodelElement as MultiLanguageProperty} />;
+                return <MultiLanguagePropertyComponent mLangProp={props.submodelElement} />;
             case KeyTypes.Entity:
-                return <EntityComponent entity={props.submodelElement as Entity} />;
+                return <EntityComponent entity={props.submodelElement as unknown as Entity} />;
             default:
                 return (
                     <Typography color="error" variant="body2">
-                        {t('unknownModelType', { type: `${submodelElementType}` })}
+                        {t('unknownModelType', { type: `${props.submodelElement.modelType}` })}
                     </Typography>
                 );
         }

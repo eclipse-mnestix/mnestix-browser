@@ -18,6 +18,7 @@ import React from 'react';
 import { ArchetypeDetailsDialog } from './ArchetypeDetailsDialog';
 import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
 import { RelationShipTypes } from 'lib/enums/RelationShipTypes.enum';
+import { SubmodelElementChoice } from 'lib/types/AasTypes';
 
 export function HierarchicalStructuresDetail({ submodel }: SubmodelVisualizationProps) {
     const submodelElements = submodel.submodelElements as ISubmodelElement[];
@@ -71,7 +72,7 @@ export function HierarchicalStructuresDetail({ submodel }: SubmodelVisualization
                         <GenericSubmodelElementComponent
                             key={archeTypePropertylElement.idShort}
                             submodelId={submodel.id}
-                            submodelElement={archeTypePropertylElement}
+                            submodelElement={archeTypePropertylElement as unknown as SubmodelElementChoice}
                             hasDivider={false}
                         />
 
