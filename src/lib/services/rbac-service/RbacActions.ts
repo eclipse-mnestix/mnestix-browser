@@ -22,9 +22,9 @@ async function validateRequest(logger: typeof baseLogger) {
         logWarn(logger, 'validateRequest', 'User is not authorized to access this resource');
         return wrapErrorCode(ApiResultStatus.FORBIDDEN, 'Forbidden');
     }
-    
+
     // TODO MNES-1633 validate on app startup (logged in validation)
-    const baseUrl = envs.SEC_SM_API_URL;
+    const baseUrl = envs.BASYX_RBAC_SEC_SM_API_URL;
     if (!baseUrl) {
         return wrapErrorCode(ApiResultStatus.BAD_REQUEST, 'Security Submodel not configured!');
     }

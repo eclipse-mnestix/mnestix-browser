@@ -20,7 +20,7 @@ export class RbacRulesService {
     ) {}
 
     static createService(log?: typeof logger): RbacRulesService {
-        const baseUrl = envs.SEC_SM_API_URL;
+        const baseUrl = envs.BASYX_RBAC_SEC_SM_API_URL;
 
         if (!baseUrl) {
             throw 'Security Submodel not configured! Check beforehand!';
