@@ -55,35 +55,41 @@ export const TechnicalDataElement = (props: {
             return [...new Set(acc)];
         }, []);
     }
+
     const loadConceptDescriptions = React.useCallback(async () => {
-        if (props.elements.length > 0) {
-            const semanticIds = getFlatMapOfAllSemanticIds(props.elements);
-            const results = await Promise.all(
-                semanticIds.map(async (semanticId) => {
-                    if (semanticId) {
-                        const result = await getConceptDescriptionById(semanticId);
-                        if (result.isSuccess) return { [semanticId]: result.result };
-                    }
-                    return null;
-                }),
-            );
-            const filteredResults = results
-                .filter((r): r is Record<string, ConceptDescription> => r !== null)
-                .reduce((acc, curr) => ({ ...acc, ...curr }), {});
-            setConceptDescriptions((prev) => ({ ...prev, ...filteredResults }));
+        if (props.elements.length === 0) {
+            return;
         }
+        const semanticIds = getFlatMapOfAllSemanticIds(props.elements);
+        const results = await Promise.all(
+            semanticIds.map(async (semanticId) => {
+                if (semanticId) {
+                    const result = await getConceptDescriptionById(semanticId);
+                    if (result.isSuccess) return { [semanticId]: result.result };
+                }
+                return null;
+            }),
+        );
+        const filteredResults = results
+            .filter((r): r is Record<string, ConceptDescription> => r !== null)
+            .reduce((acc, curr) => ({ ...acc, ...curr }), {});
+        setConceptDescriptions(filteredResults);
     }, [props.elements]);
 
     /**
      * Load all concept descriptions for the submodel elements when the component is expanded.
      */
     useAsyncEffect(async () => {
-        if (props.isExpanded && Object.keys(conceptDescriptions).length === 0) {
-            setLoadingConceptDescriptions(true);
+        if (!props.isExpanded || Object.keys(conceptDescriptions).length > 0) {
+            return;
+        }
+        setLoadingConceptDescriptions(true);
+        try {
             await loadConceptDescriptions();
+        } finally {
             setLoadingConceptDescriptions(false);
         }
-    }, [loadConceptDescriptions, props.isExpanded]);
+    }, [props.isExpanded, loadConceptDescriptions]);
 
     const renderSubmodelElement = (element: ISubmodelElement) => {
         const semanticId = element.semanticId?.keys[0].value || '';
@@ -109,7 +115,7 @@ export const TechnicalDataElement = (props: {
                         sx={{
                             '&& .MuiTreeItem-label': {
                                 m: 0,
-                                ...theme.typography.h6,
+                                ...theme.typography.h5,
                             },
                         }}
                     >
@@ -166,7 +172,7 @@ export const TechnicalDataElement = (props: {
     return (
         <TreeItem
             itemId={props.label}
-            label={props.header}
+            label={props.header.toUpperCase()}
             sx={{
                 '& .MuiTreeItem-content': {
                     py: 1,

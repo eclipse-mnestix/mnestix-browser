@@ -85,8 +85,8 @@ export const DataRowWithUnit = React.memo(
 
         return (
             <>
-                <Box display="flex" flexDirection="row" mt={0.5} minHeight="30px">
-                    <Box component="span" sx={{ width: '50%' }}>
+                <Box display="flex" flexDirection="row" mt={1} minHeight="30px">
+                    <Box component="span" sx={{ width: '50%', wordBreak: 'break-word' }} fontWeight='600'>
                         {props.conceptDescriptionLoading ? props.submodelElement.idShort : getBestLabel()}
                     </Box>
                     <Box width="30%">{props.children}</Box>

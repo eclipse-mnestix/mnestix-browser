@@ -22,19 +22,19 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
     const furtherInformation = findSubmodelElement(SubmodelElementSemanticIdEnum.FurtherInformation);
 
     return (
-        <SimpleTreeView defaultExpandedItems={['technicalProperties']} onExpandedItemsChange={(_event, itemIds) => setExpandedItems(itemIds)}>
+        <SimpleTreeView expandedItems={expandedItems} onExpandedItemsChange={(_event, itemIds) => setExpandedItems(itemIds)}>
             {technicalData?.value && (
                 <TechnicalDataElement
-                    label={'technicalProperties'}
+                    label='technicalProperties'
                     header={t('technicalProperties')}
                     elements={technicalData.value}
                     submodelId={submodel.id}
-                    isExpanded={expandedItems.includes('technicalProperties')}
+                    isExpanded={true}
                 />
             )}
             {generalInformation?.value && (
                 <TechnicalDataElement
-                    label={'generalInformation'}
+                    label='generalInformation'
                     header={t('generalInformation')}
                     elements={generalInformation.value}
                     submodelId={submodel.id}
@@ -43,7 +43,7 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
             )}
             {productClassifications?.value && (
                 <TechnicalDataElement
-                    label={'productClassifications'}
+                    label='productClassifications'
                     header={t('productClassification')}
                     elements={productClassifications.value}
                     submodelId={submodel.id}
@@ -52,7 +52,7 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
             )}
             {furtherInformation?.value && (
                 <TechnicalDataElement
-                    label={'furtherInformation'}
+                    label='furtherInformation'
                     header={t('furtherInformation')}
                     elements={furtherInformation.value}
                     submodelId={submodel.id}
