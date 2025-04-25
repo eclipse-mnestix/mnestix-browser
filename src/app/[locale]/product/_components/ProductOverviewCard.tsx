@@ -62,7 +62,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
     const [, setAasState] = useAasState();
     const t = useTranslations('pages.productViewer');
     const [overviewData, setOverviewData] = useState<OverviewData>();
-    const locale = useLocale();
     const findValue = useFindValueByIdShort();
     const productImageUrl = useProductImageUrl(props.aas, props.repositoryURL, props.productImage);
     const [nameplateSubmodel, setNameplateSubmodel] = useState<Submodel | undefined>(undefined);
