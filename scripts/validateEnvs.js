@@ -1,10 +1,4 @@
-const keycloakKeys = [
-    'KEYCLOAK_ISSUER',
-    'KEYCLOAK_LOCAL_URL',
-    'KEYCLOAK_REALM',
-    'KEYCLOAK_CLIENT_ID',
-    'NEXTAUTH_SECRET',
-];
+const keycloakKeys = ['KEYCLOAK_ISSUER', 'KEYCLOAK_REALM', 'KEYCLOAK_CLIENT_ID', 'NEXTAUTH_SECRET'];
 const azureAdKeys = ['AD_SECRET_VALUE', 'AD_TENANT_ID', 'AD_CLIENT_ID', 'APPLICATION_ID_URI'];
 /**
  * @param {Record<string, string | undefined>} envs

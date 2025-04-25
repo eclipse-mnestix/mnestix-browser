@@ -146,3 +146,15 @@ export function findSubmodelByIdOrSemanticId(
             sm.submodel?.idShort === idShort,
     )?.submodel;
 }
+
+
+export function checkIfSubmodelHasIdShortOrSemanticId(
+    submodel: SubmodelOrIdReference,
+    semanticId?: SubmodelSemanticIdEnum,
+    idShort?: string,
+): boolean {
+    return (
+        (submodel.submodel?.semanticId?.keys?.length && submodel.submodel?.semanticId?.keys[0].value === semanticId) ||
+        submodel.submodel?.idShort === idShort
+    );
+}

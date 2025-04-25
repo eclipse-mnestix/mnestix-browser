@@ -97,7 +97,7 @@
       "dummyText": "Das ist eine Dummy-Komponente. Sie wird verwendet, um das Layout und Design der Anwendung zu testen."
     },
     "noSearchResult": {
-      "header": "Es wurden keine Daten für \"{name}\" gefunden.",
+      "header": "Keine Daten gefunden",
       "noDataFound": "Es wurden keine Daten für \"{name}\" gefunden.",
       "toHomeButton": "Zur Startseite"
     },
@@ -274,12 +274,22 @@
     },
     "productViewer": {
       "actions": {
-        "toAasView": "AAS Ansicht"
+        "toAasView": "AAS Ansicht",
+        "compareButton": "Vergleichen"
       },
       "classification": "Produktklassifikation",
-      "error": {
+      "error":{
         "technicalDataSubmodelNotFound": "Technical Data Submodel nicht gefunden"
       },
+      "home": "Startseite",
+      "markings": "Produktkennzeichnungen",
+      "productInfo": {
+        "productDesignation": "Hersteller Produktbezeichnung",
+        "articleNumber": "Artikelnummer",
+        "orderCode": "Bestellnummer",
+        "manufacturer": "Hersteller"
+      },
+      "summary": "Das Wichtigste in Kürze",
       "title": "Produkt"
     },
     "registryList": {
