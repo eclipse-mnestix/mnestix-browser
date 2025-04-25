@@ -52,7 +52,7 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
     async function onSubmit(data: RuleFormModel) {
         const mappedDto = mapFormModelToBaSyxRbacRule(data, rule);
         const response = await deleteAndCreateRbacRule(rule.idShort, mappedDto);
-        
+
         if (response.isSuccess) {
             notificationSpawner.spawn({
                 message: t('editRule.saveSuccess'),
@@ -61,7 +61,7 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
             await afterSubmit(data);
             return;
         }
-        
+
         if (response.errorCode === 'CONFLICT') {
             notificationSpawner.spawn({
                 message: t('errors.uniqueIdShort'),
@@ -85,7 +85,7 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
     function ViewContent() {
         return (
             <>
-                <DialogContent style={{ padding: '40px' }} data-testid="role-settings-dialog">
+                <DialogContent data-testid="role-settings-dialog">
                     <Box display="flex" flexDirection="column">
                         <Typography color="text.secondary" variant="body2">
                             {t('tableHeader.name')}
@@ -102,7 +102,7 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
                         </Box>
                     </Box>
                 </DialogContent>
-                <DialogActions sx={{ padding: '1em' }}>
+                <DialogActions>
                     <Button
                         sx={{ mr: 2 }}
                         startIcon={<ArrowBack />}
