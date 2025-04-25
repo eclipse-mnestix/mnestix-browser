@@ -14,6 +14,16 @@ export const mockRbacRoles: RbacRolesFetchResult = {
         },
         {
             idShort: 'roleId2',
+            role: 'Admin-Role',
+            action: 'DELETE',
+            targetInformation: {
+                '@type': 'submodel',
+                submodelIds: ['aasId1', 'aasId2'],
+                submodelElementIdShortPaths: ['*'],
+            },
+        },
+        {
+            idShort: 'roleId3',
             role: 'User-Role',
             action: 'CREATE',
             targetInformation: {
