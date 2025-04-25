@@ -30,35 +30,39 @@ export function CreateRuleDialog({ onClose, reloadRules, open, availableRoles }:
         role: '',
         idShort: '',
     };
-
-    async function onSubmit(data: RuleFormModel) {
-        const mappedDto = mapFormModelToBaSyxRbacRule(data, defaultRbacRule);
-        const response = await createRbacRule(mappedDto);
-        if (!response.isSuccess) {
-            if (response.errorCode === 'CONFLICT') {
-                return notificationSpawner.spawn({
-                    message: t('errors.uniqueIdShort'),
-                    severity: 'error',
-                });
-            }
-            showError(response.message);
-
-            return;
-        }
-
-        notificationSpawner.spawn({
-            message: t('createRule.saveSuccess'),
-            severity: 'success',
-        });
-
-        const isNewRole = !availableRoles.includes(data.role);
+    
+    async function afterSubmit(newData: RuleFormModel) {
+        const isNewRole = !availableRoles.includes(newData.role);
         if (isNewRole) {
             setShowHint(true);
         } else {
             onClose();
         }
-
         await reloadRules();
+    }
+
+    async function onSubmit(data: RuleFormModel) {
+        const mappedDto = mapFormModelToBaSyxRbacRule(data, defaultRbacRule);
+        const response = await createRbacRule(mappedDto);
+        
+        if (response.isSuccess) {
+            notificationSpawner.spawn({
+                message: t('createRule.saveSuccess'),
+                severity: 'success',
+            });
+            await afterSubmit(data);
+            return;
+        }
+        
+        if (response.errorCode === 'CONFLICT') {
+            notificationSpawner.spawn({
+                message: t('errors.uniqueIdShort'),
+                severity: 'error',
+            });
+            return;
+        }
+        
+        showError(response.message);
     }
 
     function CreateContent() {
