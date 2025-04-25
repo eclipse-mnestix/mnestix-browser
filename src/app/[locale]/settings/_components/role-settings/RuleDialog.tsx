@@ -64,7 +64,7 @@ export const RuleDialog = (props: RuleDialogProps) => {
 
     return (
         <Dialog open={props.open} onClose={() => onCloseDialog(false)} maxWidth="md" fullWidth={true}>
-            <Box sx={{ mx: '2rem', mt: '1.5rem', mb: '1rem' }}>
+            <Box sx={{ mx: '2rem', mt: '1.5rem', mb: '1rem' }} data-testid="role-dialog">
                 <DialogCloseButton handleClose={() => onCloseDialog(false)} />
                 {(() => {
                     switch (mode) {
