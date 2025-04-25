@@ -27,7 +27,7 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { getRbacRules } from 'lib/services/rbac-service/RbacActions';
 
 type RuleDialogProps = {
-    readonly onSubmit: (data: RuleFormModel) => void;
+    readonly onSubmit: (data: RuleFormModel) => Promise<void>;
     readonly onCancel: () => void;
     readonly rule: BaSyxRbacRule;
 };

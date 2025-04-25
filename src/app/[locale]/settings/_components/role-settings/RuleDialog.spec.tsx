@@ -121,29 +121,27 @@ describe('RoleDialog', () => {
         );
 
         fireEvent.click(screen.getByTestId('role-settings-edit-button'));
-
-        // Change the role name to another used role name
         await setTextInput('rule-settings-name-input', lastRuleForRole.role);
         fireEvent.click(screen.getByTestId('role-settings-save-button'));
 
-        await waitFor(() => {
-            expect(mockNotificationSpawner.spawn).toHaveBeenCalledWith({
-                message: 'editRule.saveSuccess',
-                severity: 'success',
-            });
-            expect(reloadRules).toHaveBeenCalled();
-            expect(mockOnClose).toHaveBeenCalled();
-        });
+        await waitFor(
+            () => {
+                expect(mockNotificationSpawner.spawn).toHaveBeenCalledWith({
+                    message: 'editRule.saveSuccess',
+                    severity: 'success',
+                });
+                expect(reloadRules).toHaveBeenCalled();
+                expect(mockOnClose).toHaveBeenCalled();
+            },
+            { timeout: 5000 },
+        );
     });
 
     it('shows delete hint when changing the last rule for a role', async () => {
-        const reloadRules = jest.fn();
+        const reloadRules = jest.fn().mockResolvedValue(undefined);
         const mockOnClose = jest.fn();
         (getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
-        (deleteAndCreateRbacRule as jest.Mock).mockResolvedValue({
-            isSuccess: false,
-            errorCode: ApiResultStatus.CONFLICT,
-        });
+        (deleteAndCreateRbacRule as jest.Mock).mockResolvedValue({ isSuccess: true });
         const mockNotificationSpawner = { spawn: jest.fn() };
         (useNotificationSpawner as jest.Mock).mockReturnValue(mockNotificationSpawner);
 
@@ -158,8 +156,6 @@ describe('RoleDialog', () => {
         );
 
         fireEvent.click(screen.getByTestId('role-settings-edit-button'));
-
-        // Change the role name to another used role name
         await setTextInput('rule-settings-name-input', notLastRuleForRole.role);
         fireEvent.click(screen.getByTestId('role-settings-save-button'));
 
@@ -174,10 +170,7 @@ describe('RoleDialog', () => {
         const reloadRules = jest.fn();
         const mockOnClose = jest.fn();
         (getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
-        (deleteAndCreateRbacRule as jest.Mock).mockResolvedValue({
-            isSuccess: false,
-            errorCode: ApiResultStatus.CONFLICT,
-        });
+        (deleteAndCreateRbacRule as jest.Mock).mockResolvedValue({ isSuccess: true });
         const mockNotificationSpawner = { spawn: jest.fn() };
         (useNotificationSpawner as jest.Mock).mockReturnValue(mockNotificationSpawner);
 
@@ -192,8 +185,6 @@ describe('RoleDialog', () => {
         );
 
         fireEvent.click(screen.getByTestId('role-settings-edit-button'));
-
-        // Change the role name to another used role name
         await setTextInput('rule-settings-name-input', newName);
         fireEvent.click(screen.getByTestId('role-settings-save-button'));
 

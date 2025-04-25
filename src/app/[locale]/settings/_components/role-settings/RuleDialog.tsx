@@ -35,27 +35,9 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
 
-    async function onSubmit(data: RuleFormModel) {
-        const mappedDto = mapFormModelToBaSyxRbacRule(data, rule);
-        const response = await deleteAndCreateRbacRule(rule.idShort, mappedDto);
-        if (!response.isSuccess) {
-            if (response.errorCode === 'CONFLICT') {
-                return notificationSpawner.spawn({
-                    message: t('errors.uniqueIdShort'),
-                    severity: 'error',
-                });
-            }
-            showError(response.message);
-            return;
-        }
-
-        notificationSpawner.spawn({
-            message: t('editRule.saveSuccess'),
-            severity: 'success',
-        });
-
-        const isNewRole = !availableRoles.includes(data.role);
-        const isDeletedRole = rule.isOnlyRule && rule.role !== data.role;
+    async function afterSubmit(newData: RuleFormModel) {
+        const isNewRole = !availableRoles.includes(newData.role);
+        const isDeletedRole = rule.isOnlyRule && rule.role !== newData.role;
         if (isNewRole) {
             setDialogMode('create-hint');
         } else if (isDeletedRole) {
@@ -65,6 +47,29 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
         }
 
         await reloadRules();
+    }
+
+    async function onSubmit(data: RuleFormModel) {
+        const mappedDto = mapFormModelToBaSyxRbacRule(data, rule);
+        const response = await deleteAndCreateRbacRule(rule.idShort, mappedDto);
+        
+        if (response.isSuccess) {
+            notificationSpawner.spawn({
+                message: t('editRule.saveSuccess'),
+                severity: 'success',
+            });
+            await afterSubmit(data);
+            return;
+        }
+        
+        if (response.errorCode === 'CONFLICT') {
+            notificationSpawner.spawn({
+                message: t('errors.uniqueIdShort'),
+                severity: 'error',
+            });
+            return;
+        }
+        showError(response.message);
     }
 
     async function onDelete() {
@@ -146,11 +151,7 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
                 return <EditContent />;
             case 'delete':
                 return (
-                    <RuleDeleteDialog
-                        rule={rule}
-                        onCancelDialog={() => setDialogMode('view')}
-                        onDelete={onDelete}
-                    />
+                    <RuleDeleteDialog rule={rule} onCancelDialog={() => setDialogMode('view')} onDelete={onDelete} />
                 );
             case 'create-hint':
                 return <CreateHint onClose={onClose} />;
