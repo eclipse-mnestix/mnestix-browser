@@ -274,13 +274,23 @@
     },
     "productViewer": {
       "actions": {
-        "toAasView": "AAS View"
+        "compareButton": "Vergleichen",
+        "toAasView": "AAS Ansicht"
       },
-      "classification": "Classification",
+      "classification": "Produktklassifikation",
       "error": {
-        "technicalDataSubmodelNotFound": "Technical Data Submodel not found"
+        "technicalDataSubmodelNotFound": "Technical Data Submodel nicht gefunden"
       },
-      "title": "Product"
+      "home": "Startseite",
+      "markings": "Produktkennzeichnungen",
+      "productInfo": {
+        "articleNumber": "Artikelnummer",
+        "manufacturer": "Hersteller",
+        "orderCode": "Bestellnummer",
+        "productDesignation": "Hersteller Produktbezeichnung"
+      },
+      "summary": "Das Wichtigste in Kürze",
+      "title": "Produkt"
     },
     "registryList": {
       "errors": {

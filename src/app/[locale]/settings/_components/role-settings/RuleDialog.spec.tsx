@@ -1,8 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { RuleDialog } from 'app/[locale]/settings/_components/role-settings/RuleDialog';
 import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
-import * as rbacActions from 'lib/services/rbac-service/RbacActions';
-import { deleteAndCreateRbacRule } from 'lib/services/rbac-service/RbacActions';
+import { deleteAndCreateRbacRule, deleteRbacRule, getRbacRules } from 'lib/services/rbac-service/RbacActions';
 import { expect } from '@jest/globals';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
@@ -39,7 +38,7 @@ describe('RoleDialog', () => {
     });
 
     it('switches to edit mode when edit button is clicked', async () => {
-        (rbacActions.getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
+        (getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
         render(<RuleDialog open={true} onClose={jest.fn()} rule={mockRule} />);
 
         fireEvent.click(screen.getByTestId('role-settings-edit-button'));
@@ -50,7 +49,7 @@ describe('RoleDialog', () => {
     });
 
     it('calls onClose with reload true after successful save', async () => {
-        (rbacActions.getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
+        (getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
         const mockOnClose = jest.fn();
         (deleteAndCreateRbacRule as jest.Mock).mockResolvedValue({ isSuccess: true });
         const mockNotificationSpawner = { spawn: jest.fn() };
@@ -71,7 +70,7 @@ describe('RoleDialog', () => {
     });
 
     it('handles conflict error', async () => {
-        (rbacActions.getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
+        (getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
         const mockOnClose = jest.fn();
         (deleteAndCreateRbacRule as jest.Mock).mockResolvedValue({
             isSuccess: false,
@@ -90,6 +89,71 @@ describe('RoleDialog', () => {
                 message: 'errors.uniqueIdShort',
                 severity: 'error',
             });
+            expect(mockOnClose).not.toHaveBeenCalled();
+        });
+    });
+
+    it('switches to delete mode', async () => {
+        (getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
+        const mockOnClose = jest.fn();
+        const mockNotificationSpawner = { spawn: jest.fn() };
+        (useNotificationSpawner as jest.Mock).mockReturnValue(mockNotificationSpawner);
+
+        render(<RuleDialog open={true} onClose={mockOnClose} rule={mockRule} />);
+
+        fireEvent.click(screen.getByTestId('role-settings-delete-button'));
+
+        await waitFor(() => {
+            expect(screen.getByTestId('role-delete-question')).toBeInTheDocument();
+            expect(screen.getByTestId('role-delete-info')).toBeInTheDocument();
+            expect(screen.getByTestId('role-delete-info')).toHaveTextContent('delete.ruleInfo');
+            expect(screen.getByTestId('role-target-information-view')).toBeInTheDocument();
+            expect(mockOnClose).not.toHaveBeenCalled();
+        });
+    });
+
+    it('shows the successful message', async () => {
+        (getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
+        const mockOnClose = jest.fn();
+        (deleteRbacRule as jest.Mock).mockResolvedValue({
+            isSuccess: true,
+            value: undefined,
+        });
+        const mockNotificationSpawner = { spawn: jest.fn() };
+        (useNotificationSpawner as jest.Mock).mockReturnValue(mockNotificationSpawner);
+
+        render(<RuleDialog open={true} onClose={mockOnClose} rule={mockRule} />);
+
+        fireEvent.click(screen.getByTestId('role-settings-delete-button'));
+        fireEvent.click(screen.getByTestId('role-delete-confirm-button'));
+
+        await waitFor(() => {
+            expect(mockOnClose).toHaveBeenCalledWith(true);
+            expect(mockNotificationSpawner.spawn).toHaveBeenCalledWith({
+                message: 'delete.success',
+                severity: 'success',
+            });
+        });
+    });
+
+    it('switches back to edit view mode on cancel delete', async () => {
+        (getRbacRules as jest.Mock).mockResolvedValue({ isSuccess: true, result: mockRbacRoles });
+        const mockOnClose = jest.fn();
+        const mockNotificationSpawner = { spawn: jest.fn() };
+        (useNotificationSpawner as jest.Mock).mockReturnValue(mockNotificationSpawner);
+
+        render(<RuleDialog open={true} onClose={mockOnClose} rule={mockRule} />);
+
+        fireEvent.click(screen.getByTestId('role-settings-delete-button'));
+
+        await waitFor(() => {
+            expect(screen.getByTestId('role-delete-question')).toBeInTheDocument();
+        });
+
+        fireEvent.click(screen.getByTestId('role-delete-cancel-button'));
+
+        await waitFor(() => {
+            expect(screen.getByTestId('role-settings-dialog')).toBeInTheDocument();
             expect(mockOnClose).not.toHaveBeenCalled();
         });
     });

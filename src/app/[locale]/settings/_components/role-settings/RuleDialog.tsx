@@ -172,7 +172,7 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
                 setDialogMode('view');
             }}
         >
-            <Box sx={{ mx: '2rem', mt: '1.5rem', mb: '1rem' }}>
+            <Box sx={{ mx: '2rem', mt: '1.5rem', mb: '1rem' }} data-testid="role-dialog">
                 <DialogCloseButton handleClose={onClose} />
                 <DialogViewContent />
             </Box>

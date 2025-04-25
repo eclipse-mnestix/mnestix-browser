@@ -35,10 +35,10 @@ export function RuleDeleteDialog({ onCancelDialog, onDelete, rule }: RuleDeleteD
     return (
         <>
             <DialogContent>
-                <Typography variant="h2" color="primary" sx={{ mb: '1rem' }}>
+                <Typography variant="h2" color="primary" sx={{ mb: '1rem' }} data-testid="role-delete-question">
                     {t('deleteRule.question')}
                 </Typography>
-                <Typography mb={'1rem'}>
+                <Typography mb={'1rem'} data-testid="role-delete-info">
                     {t('deleteRule.ruleInfo', {
                         role: rule.role,
                         action: rule.action,
@@ -47,10 +47,22 @@ export function RuleDeleteDialog({ onCancelDialog, onDelete, rule }: RuleDeleteD
                 <TargetInformationView targetInformation={rule.targetInformation} />
             </DialogContent>
             <DialogActions>
-                <Button startIcon={<CloseIcon />} variant={'outlined'} onClick={onCancelDialog} autoFocus>
+                <Button
+                    startIcon={<CloseIcon />}
+                    variant={'outlined'}
+                    onClick={onCancelDialog}
+                    autoFocus
+                    data-testid="role-delete-cancel-button"
+                >
                     {t('buttons.cancel')}
                 </Button>
-                <Button startIcon={<Delete />} variant={'contained'} onClick={deleteRule} color="error">
+                <Button
+                    startIcon={<Delete />}
+                    variant={'contained'}
+                    onClick={deleteRule}
+                    color="error"
+                    data-testid="role-delete-confirm-button"
+                >
                     {t('buttons.delete')}
                 </Button>
             </DialogActions>

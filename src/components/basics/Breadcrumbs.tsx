@@ -12,18 +12,24 @@ export function Breadcrumbs(props: BreadcrumbsProps) {
                 props.links.map((link, i) => {
                     return (
                         <Fragment key={i}>
-                            <Link
-                                href={link.path}
-                                sx={{
-                                    textDecoration: 'none',
-                                    color: 'text.secondary',
-                                    '&:hover': {
-                                        textDecoration: 'underline',
-                                    },
-                                }}
-                            >
-                                <Typography>{link.label}</Typography>
-                            </Link>
+                            {link.path &&
+                                <Link
+                                    href={link.path}
+                                    sx={{
+                                        textDecoration: 'none',
+                                        color: 'text.secondary',
+                                        '&:hover': {
+                                            textDecoration: 'underline',
+                                        },
+                                    }}
+                                >
+                                    <Typography>{link.label}</Typography>
+                                </Link>
+                            }
+                            {!link.path &&
+                                <Typography sx={{ color: 'text.secondary' }}>{link.label}</Typography>
+                            }
+
                             <ChevronRight sx={{ color: 'text.secondary', mt: '2px' }} fontSize="small" />
                         </Fragment>
                     );
