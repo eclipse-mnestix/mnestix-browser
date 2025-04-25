@@ -128,16 +128,13 @@ export const RuleSettings = () => {
                         </Button>
                         <Box width="100%" mt={2}>
                             {Object.entries(groupedRules).map(([roleName, rules]) => (
-                                <Accordion
-                                    key={roleName}
-                                    expanded={roleName === expandedRole}
-                                    onClick={() =>
-                                        roleName !== expandedRole ? setExpandedRole(roleName) : setExpandedRole('')
-                                    }
-                                >
+                                <Accordion key={roleName} expanded={roleName === expandedRole}>
                                     <AccordionSummary
                                         expandIcon={<ExpandMoreIcon />}
-                                        sx={{ height: '3.5rem' }}
+                                        onClick={() =>
+                                            roleName !== expandedRole ? setExpandedRole(roleName) : setExpandedRole('')
+                                        }
+                                        sx={{ height: '4rem' }}
                                         data-testid={`role-settings-accordion-summary-${roleName}`}
                                     >
                                         <Typography
@@ -194,6 +191,7 @@ export const RuleSettings = () => {
                                                                     data-testid={`role-settings-button-${entry.idShort}`}
                                                                     onClick={() => openDetailDialog(entry)}
                                                                     color="primary"
+                                                                    size={'small'}
                                                                 >
                                                                     <ArrowForwardIcon />
                                                                 </RoundedIconButton>

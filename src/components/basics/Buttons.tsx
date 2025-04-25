@@ -16,6 +16,10 @@ export function SquaredIconButton(props: ButtonProps) {
 }
 
 export function RoundedIconButton(props: ButtonProps) {
+    function getSizeFromButtonProps() {
+        return props.size === 'small' ? '40px' : props.size === 'medium' ? '48px' : '56px';
+    }
+
     const StyledRoundButton = styled(StyledLoadingButton)(({ theme }) => ({
         backgroundColor: theme.palette.background.default,
         color: theme.palette.primary.main,
@@ -23,13 +27,10 @@ export function RoundedIconButton(props: ButtonProps) {
             backgroundColor: theme.palette.primary.main,
             color: theme.palette.background.default,
         },
+        borderRadius: getSizeFromButtonProps(),
+        height: getSizeFromButtonProps(),
+        minWidth: getSizeFromButtonProps(),
+        maxHeight: getSizeFromButtonProps(),
     }));
-    return (
-        <StyledRoundButton
-            variant={props.variant || 'contained'}
-            size={props.size || 'large'}
-            style={{ borderRadius: '56px' }}
-            {...props}
-        />
-    );
+    return <StyledRoundButton variant={props.variant || 'contained'} size={props.size || 'large'} {...props} />;
 }
