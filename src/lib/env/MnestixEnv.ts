@@ -23,7 +23,6 @@ const privateKeycloak =
         ? {
               KEYCLOAK_ENABLED: true as const,
               KEYCLOAK_ISSUER: process_env.KEYCLOAK_ISSUER!,
-              KEYCLOAK_LOCAL_URL: process_env.KEYCLOAK_LOCAL_URL!,
               KEYCLOAK_REALM: process_env.KEYCLOAK_REALM!,
               KEYCLOAK_CLIENT_ID: process_env.KEYCLOAK_CLIENT_ID!,
           }
@@ -53,6 +52,7 @@ const otherVariables = mapEnvVariables([
     'AAS_REPO_API_URL',
     'SUBMODEL_REPO_API_URL',
     'MNESTIX_BACKEND_API_URL',
+    'KEYCLOAK_LOCAL_URL',
     'IMPRINT_URL',
     'DATA_PRIVACY_URL',
     // strong typing and parsing was neglected here, as this is a temporary feature
