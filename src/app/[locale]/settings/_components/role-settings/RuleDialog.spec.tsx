@@ -27,21 +27,23 @@ const conflictRule = {
 };
 const newName = 'newRoleName';
 
-const availableRoles = mockRbacRoles.roles.map((role) => role.role);
+const availableRoles = [...new Set(mockRbacRoles.roles.map((role) => role.role))];
 
-function renderRuleDialog(rule: DialogRbacRule) {
+async function renderRuleDialog(rule: DialogRbacRule) {
     const onClose = jest.fn();
     const reloadRules = jest.fn().mockResolvedValue(undefined);
 
-    render(
-        <RuleDialog
-            open={true}
-            onClose={onClose}
-            rule={rule}
-            reloadRules={reloadRules}
-            availableRoles={availableRoles}
-        />,
-    );
+    await act(async () => {
+        render(
+            <RuleDialog
+                open={true}
+                onClose={onClose}
+                rule={rule}
+                reloadRules={reloadRules}
+                availableRoles={availableRoles}
+            />,
+        );
+    });
 
     return { onClose, reloadRules };
 }
@@ -94,16 +96,18 @@ describe('RoleDialog', () => {
         jest.clearAllMocks();
     });
 
-    it('renders RoleDialog in view mode', () => {
-        renderRuleDialog(notLastRuleForRole);
+    it('renders RoleDialog in view mode', async () => {
+        await renderRuleDialog(notLastRuleForRole);
 
-        expect(screen.getByText('Admin-Role')).toBeInTheDocument();
-        expect(screen.getByText('READ')).toBeInTheDocument();
-        expect(screen.getByText('aas-environment')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText('Admin-Role')).toBeInTheDocument();
+            expect(screen.getByText('READ')).toBeInTheDocument();
+            expect(screen.getByText('aas-environment')).toBeInTheDocument();
+        });
     });
 
     it('closes the dialog on back', async () => {
-        const { onClose, reloadRules } = renderRuleDialog(notLastRuleForRole);
+        const { onClose, reloadRules } = await renderRuleDialog(notLastRuleForRole);
 
         await act(async () => {
             fireEvent.click(screen.getByTestId('role-settings-back-button'));
@@ -116,7 +120,7 @@ describe('RoleDialog', () => {
     });
 
     it('switches to edit mode when edit button is clicked', async () => {
-        const { onClose, reloadRules } = renderRuleDialog(notLastRuleForRole);
+        const { onClose, reloadRules } = await renderRuleDialog(notLastRuleForRole);
 
         await act(async () => {
             fireEvent.click(screen.getByTestId('role-settings-edit-button'));
@@ -131,7 +135,7 @@ describe('RoleDialog', () => {
 
     it('reloads the list after successful save', async () => {
         const { spawn } = doMock();
-        const { onClose, reloadRules } = renderRuleDialog(notLastRuleForRole);
+        const { onClose, reloadRules } = await renderRuleDialog(notLastRuleForRole);
 
         await act(async () => {
             fireEvent.click(screen.getByTestId('role-settings-edit-button'));
@@ -153,7 +157,7 @@ describe('RoleDialog', () => {
     });
 
     it('shows delete hint when changing the last rule for a role', async () => {
-        const { onClose, reloadRules } = renderRuleDialog(lastRuleForRole);
+        const { onClose, reloadRules } = await renderRuleDialog(lastRuleForRole);
 
         await act(async () => {
             fireEvent.click(screen.getByTestId('role-settings-edit-button'));
@@ -172,7 +176,7 @@ describe('RoleDialog', () => {
     });
 
     it('shows create hint when changing the role to a new one', async () => {
-        const { onClose, reloadRules } = renderRuleDialog(notLastRuleForRole);
+        const { onClose, reloadRules } = await renderRuleDialog(notLastRuleForRole);
 
         await act(async () => {
             fireEvent.click(screen.getByTestId('role-settings-edit-button'));
@@ -192,7 +196,7 @@ describe('RoleDialog', () => {
 
     it('handles conflict error', async () => {
         const { spawn } = doMock('CONFLICT');
-        const { onClose, reloadRules } = renderRuleDialog(conflictRule);
+        const { onClose, reloadRules } = await renderRuleDialog(conflictRule);
 
         await act(async () => {
             fireEvent.click(screen.getByTestId('role-settings-edit-button'));
@@ -214,7 +218,7 @@ describe('RoleDialog', () => {
     });
 
     it('switches to delete mode', async () => {
-        const { onClose, reloadRules } = renderRuleDialog(notLastRuleForRole);
+        const { onClose, reloadRules } = await renderRuleDialog(notLastRuleForRole);
 
         await act(async () => {
             fireEvent.click(screen.getByTestId('role-settings-delete-button'));
@@ -230,7 +234,7 @@ describe('RoleDialog', () => {
     });
 
     it('closes the dialog on delete dialog', async () => {
-        const { onClose, reloadRules } = renderRuleDialog(notLastRuleForRole);
+        const { onClose, reloadRules } = await renderRuleDialog(notLastRuleForRole);
 
         await act(async () => {
             fireEvent.click(screen.getByTestId('role-settings-delete-button'));
@@ -248,7 +252,7 @@ describe('RoleDialog', () => {
 
     it('shows the successful message without hint dialog', async () => {
         const { spawn } = doMock();
-        const { onClose, reloadRules } = renderRuleDialog(notLastRuleForRole);
+        const { onClose, reloadRules } = await renderRuleDialog(notLastRuleForRole);
 
         await act(async () => {
             fireEvent.click(screen.getByTestId('role-settings-delete-button'));
@@ -270,7 +274,7 @@ describe('RoleDialog', () => {
     });
 
     it('shows the hint dialog after deleting', async () => {
-        const { onClose, reloadRules } = renderRuleDialog(lastRuleForRole);
+        const { onClose, reloadRules } = await renderRuleDialog(lastRuleForRole);
 
         await act(async () => {
             fireEvent.click(screen.getByTestId('role-settings-delete-button'));
@@ -295,7 +299,7 @@ describe('RoleDialog', () => {
     });
 
     it('switches back to edit view mode on cancel delete', async () => {
-        const { onClose, reloadRules } = renderRuleDialog(notLastRuleForRole);
+        const { onClose, reloadRules } = await renderRuleDialog(notLastRuleForRole);
 
         await act(async () => {
             fireEvent.click(screen.getByTestId('role-settings-delete-button'));
