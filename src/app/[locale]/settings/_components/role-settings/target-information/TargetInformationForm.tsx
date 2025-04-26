@@ -48,7 +48,7 @@ export const TargetInformationForm = (props: TargetInformationProps) => {
                             }}
                         >
                             {ruleTypes.map((type) => (
-                                <MenuItem key={type} value={type} data-testid={`rule-settings-target-select-${type}`}>
+                                <MenuItem value={type} data-testid={`rule-settings-target-select-${type}`}>
                                     {type}
                                 </MenuItem>
                             ))}
@@ -61,7 +61,6 @@ export const TargetInformationForm = (props: TargetInformationProps) => {
                     return (
                         <WildcardOrStringArrayInput
                             type={currentType}
-                            key={key}
                             control={props.control}
                             rule={key}
                             setValue={props.setValue}
