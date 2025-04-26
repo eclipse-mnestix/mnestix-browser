@@ -9,7 +9,7 @@ import userEvent from '@testing-library/user-event';
 
 jest.mock('./../../../../../lib/services/rbac-service/RbacActions');
 jest.mock('next-intl', () => ({
-    useTranslations: jest.fn(() => (key: string) => key),
+    useTranslations: (scope?: string) => (key: string) => (scope ? `${scope}.${key}` : key),
 }));
 jest.mock('./../../../../../lib/hooks/UseNotificationSpawner');
 
