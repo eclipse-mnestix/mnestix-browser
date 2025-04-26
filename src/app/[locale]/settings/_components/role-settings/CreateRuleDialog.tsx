@@ -81,7 +81,13 @@ export function CreateRuleDialog({ onClose, reloadRules, open, availableRoles }:
                 {showHint ? (
                     <CreateHint onClose={onClose} />
                 ) : (
-                    <RuleForm title={t('createRule.title')} rule={defaultRbacRule} onSubmit={onSubmit} onCancel={onClose} />
+                    <RuleForm
+                        title={t('createRule.title')}
+                        rule={defaultRbacRule}
+                        onSubmit={onSubmit}
+                        onCancel={onClose}
+                        availableRoles={availableRoles}
+                    />
                 )}
             </Box>
         </Dialog>

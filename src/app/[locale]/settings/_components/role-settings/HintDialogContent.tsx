@@ -7,10 +7,10 @@ export function CreateHint({ onClose }: { onClose: () => void }) {
 
     return (
         <>
-            <Typography variant="h2" color="primary" sx={{ mt: 4, ml: '40px' }}>
-                {t('title')}
-            </Typography>
             <DialogContent>
+                <Typography variant="h2" color="primary" sx={{ mb: '1rem' }}>
+                    {t('title')}
+                </Typography>
                 <Typography variant="body1" color="text.secondary">
                     {t('text')}
                 </Typography>
@@ -34,10 +34,10 @@ export function DeleteHint({ onClose }: { onClose: () => void }) {
 
     return (
         <>
-            <Typography variant="h2" color="primary" sx={{ mt: 4, ml: '40px' }}>
-                {t('title')}
-            </Typography>
             <DialogContent>
+                <Typography variant="h2" color="primary" sx={{ mb: '1rem' }}>
+                    {t('title')}
+                </Typography>
                 <Typography variant="body1" color="text.secondary">
                     {t('text')}
                 </Typography>

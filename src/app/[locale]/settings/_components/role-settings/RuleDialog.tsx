@@ -143,6 +143,7 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
                         rule={rule}
                         onSubmit={onSubmit}
                         onCancel={() => setDialogMode('view')}
+                        availableRoles={availableRoles}
                     />
                 );
             case 'delete':
