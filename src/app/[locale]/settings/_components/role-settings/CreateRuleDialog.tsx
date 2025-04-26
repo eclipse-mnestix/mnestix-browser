@@ -62,7 +62,7 @@ export function CreateRuleDialog({ onClose, reloadRules, open, availableRoles }:
             return;
         }
 
-        showError(response.message);
+        showError(response);
     }
 
     return (
