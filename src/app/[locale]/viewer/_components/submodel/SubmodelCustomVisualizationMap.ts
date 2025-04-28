@@ -4,6 +4,7 @@ import { BillOfApplicationsDetail } from './bill-of-applications/BillOfApplicati
 import { ReferenceCounterDetail } from './reference-counter/ReferenceCounterDetail';
 import { HierarchicalStructuresDetail } from './hierarchical-structures/HierarchicalStructuresDetail';
 import { TimeSeriesDetail } from './time-series/TimeSeriesDetail';
+import { TechnicalDataDetail } from 'app/[locale]/viewer/_components/submodel/technical-data/TechnicalDataDetail';
 
 /**
  * This represents the mapping between the submodel and the submodel visualization. If you want to create a new custom
@@ -19,4 +20,6 @@ export const submodelCustomVisualizationMap = {
     [SubmodelSemanticIdEnum.HierarchicalStructuresV10]: HierarchicalStructuresDetail,
     [SubmodelSemanticIdEnum.HierarchicalStructuresV11]: HierarchicalStructuresDetail,
     [SubmodelSemanticIdEnum.BillOfApplications]: BillOfApplicationsDetail,
+    [SubmodelSemanticIdEnum.TechnicalDataV11]: TechnicalDataDetail,
+    [SubmodelSemanticIdEnum.TechnicalDataV12]: TechnicalDataDetail
 };

@@ -18,6 +18,7 @@ export const initialEnvValues: EnvironmentalVariables = {
     SUBMODEL_REGISTRY_API_URL: undefined,
     AAS_REPO_API_URL: undefined,
     SUBMODEL_REPO_API_URL: undefined,
+    CONCEPT_DESCRIPTION_REPO_API_URL: undefined,
     MNESTIX_BACKEND_API_URL: undefined,
     THEME_PRIMARY_COLOR: undefined,
     THEME_SECONDARY_COLOR: undefined,
