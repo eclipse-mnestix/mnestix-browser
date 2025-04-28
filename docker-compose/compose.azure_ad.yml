@@ -5,12 +5,11 @@ services:
       AD_TENANT_ID: 6c4ccecf-2dd4-4241-b7fc-6e95b32dcfac
       AD_CLIENT_ID: c8fa36e4-a260-40b2-9298-8279bbd872e8
       APPLICATION_ID_URI: 'api://mnestix-test-web-api/'
-      AUTHENTICATION_FEATURE_FLAG: "true"
-        
-        
+      AUTHENTICATION_FEATURE_FLAG: 'true'
+
   mnestix-api:
     environment:
       AzureAd__Domain: 'mnestixtest.onmicrosoft.com'
       AzureAd__TenantId: 6c4ccecf-2dd4-4241-b7fc-6e95b32dcfac
       AzureAd__ClientId: ffade4c2-76c8-44fd-9258-743d9cfc2289
-      Features__UseAuthentication: "true"
+      Features__UseAuthentication: 'true'

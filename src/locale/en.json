@@ -282,8 +282,15 @@
       "title": "Related AAS to AAS ID"
     },
     "productViewer": {
-      "title": "Product",
+      "actions": {
+        "toAasView": "AAS View",
+        "compareButton": "Compare"
+      },
       "classification": "Classification",
+      "error":{
+        "technicalDataSubmodelNotFound": "Technical Data Submodel not found"
+      },
+      "home": "Home",
       "markings": "Product Markings",
       "productInfo": {
         "productDesignation": "Manufacturer Product Designation",
@@ -291,14 +298,8 @@
         "orderCode": "Order Code",
         "manufacturer": "Manufacturer"
       },
-      "summary": "Summary",
-      "error":{
-        "technicalDataSubmodelNotFound": "Technical Data Submodel not found"
-      },
-      "actions": {
-        "toAasView": "AAS View",
-        "compareButton": "Compare"
-      }
+      "summary": "Key facts",
+      "title": "Product"
     },
     "settings": {
       "actions": {

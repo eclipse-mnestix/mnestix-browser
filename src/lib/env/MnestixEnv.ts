@@ -2,6 +2,8 @@
  * This file is for typing the environment variables of Mnestix.
  * Keep in sync with the wiki: /wiki/Mnestix-Configuration-Settings.md
  * Set Defaults in .env.local and compose.yml
+ *
+ * Provide Validation in /scripts/validateEnvs.sh
  */
 
 // In production builds `process` is not defined on client side
@@ -21,7 +23,6 @@ const privateKeycloak =
         ? {
               KEYCLOAK_ENABLED: true as const,
               KEYCLOAK_ISSUER: process_env.KEYCLOAK_ISSUER!,
-              KEYCLOAK_LOCAL_URL: process_env.KEYCLOAK_LOCAL_URL!,
               KEYCLOAK_REALM: process_env.KEYCLOAK_REALM!,
               KEYCLOAK_CLIENT_ID: process_env.KEYCLOAK_CLIENT_ID!,
           }
@@ -52,9 +53,11 @@ const otherVariables = mapEnvVariables([
     'AAS_REPO_API_URL',
     'SUBMODEL_REPO_API_URL',
     'MNESTIX_BACKEND_API_URL',
+    'KEYCLOAK_LOCAL_URL',
     'IMPRINT_URL',
     'DATA_PRIVACY_URL',
     // strong typing and parsing was neglected here, as this is a temporary feature
+    // validation is also not implemented
     'SUBMODEL_WHITELIST',
 ] as const);
 
