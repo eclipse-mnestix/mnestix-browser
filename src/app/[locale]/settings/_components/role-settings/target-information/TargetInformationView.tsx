@@ -27,7 +27,7 @@ export const TargetInformationView = (props: TargetInformationProps) => {
         );
     });
     return (
-        <Box>
+        <Box data-testid="role-target-information-view">
             <Typography variant="h5">{t('rules.tableHeader.type')}</Typography>
             <Typography>{props.targetInformation['@type']}</Typography>
             {permissions}

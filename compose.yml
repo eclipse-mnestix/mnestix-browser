@@ -22,6 +22,7 @@ services:
       DISCOVERY_API_URL: 'http://mnestix-api:5064/discovery'
       AAS_REPO_API_URL: 'http://mnestix-api:5064/repo'
       SUBMODEL_REPO_API_URL: 'http://mnestix-api:5064/repo'
+      CONCEPT_DESCRIPTION_REPO_API_URL: 'http://mnestix-api:5064/repo'
       MNESTIX_BACKEND_API_URL: 'http://mnestix-api:5064'
       MNESTIX_BACKEND_API_KEY: ${MNESTIX_BACKEND_API_KEY:-verySecureApiKey}
       AAS_LIST_FEATURE_FLAG: 'true'

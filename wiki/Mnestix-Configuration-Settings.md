@@ -12,6 +12,7 @@ Mnestix provides the following configuration options. You can adapt the values i
 | `REGISTRY_API_URL`          |               | Address of the AAS Registry Service to retrieve the related descriptor for an AAS                                  |
 | `SUBMODEL_REGISTRY_API_URL` |               | Address of the Submodel Registry Service to retrieve the related descriptor for a Submodel                         |
 | `MNESTIX_BACKEND_API_URL`   |               | Mnestix Backend with a lot of business comfort features like the Repository-Proxy or the Template builder          |
+| `CONCEPT_DESCRIPTION_REPO_API_URL`    |                             | Default Concept Description Repository                                                                                                                                                                                             |
 | `LOG_LEVEL`                 | "info"        | Server side log level of Mnestix Browser. "fatal" or "error" or "warn" or "info" or "debug" or "trace" or "silent" |
 
 #### Features

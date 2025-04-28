@@ -2,7 +2,8 @@ import { screen } from '@testing-library/react';
 import { expect } from '@jest/globals';
 import testSubmodel from '../../submodel/carbon-footprint/test-submodel/carbonFootprint-test.json';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
-import { CustomRender } from 'test-utils/CustomRender';import {
+import { CustomRender } from 'test-utils/CustomRender';
+import {
     CarbonFootprintVisualizations
 } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/CarbonFootprintVisualizations';
 
