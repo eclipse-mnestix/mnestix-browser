@@ -8,7 +8,6 @@ import {
     Table,
     TableBody,
     TableCell,
-    TableContainer,
     TableHead,
     TableRow,
     Typography,
@@ -60,13 +59,14 @@ export const RuleSettings = () => {
 
     const prepareTableHeaders = () => {
         const tableHeaders = [
+            { label: '' },
             { label: t('tableHeader.action') },
             { label: t('tableHeader.type') },
             { label: t('tableHeader.permissions') },
             { label: '' },
         ];
         if (isMobile) {
-            tableHeaders.splice(2, 1);
+            tableHeaders.splice(3, 1);
         }
         return tableHeaders;
     };
@@ -148,13 +148,20 @@ export const RuleSettings = () => {
         return (
             <Box display="flex" flexDirection="column">
                 {Object.entries(permissions).map(([type, ids], index) => {
-                    if (!maxItems || index >= maxItems) {
-                        return <></>;
+                    if (maxItems && index >= maxItems) {
+                        return index === maxItems + 1 ? (
+                            <Typography variant="body2" fontWeight="bold" mr="0.5rem">
+                                ...
+                            </Typography>
+                        ) : (
+                            <></>
+                        );
                     }
+
                     const idString = Array.from(ids)[0];
 
                     return (
-                        <Box display="flex" flexDirection="row">
+                        <Box display="flex" flexDirection="row" key={type}>
                             <Typography variant="body2" fontWeight="bold" mr="0.5rem">
                                 {`${type}: `}
                             </Typography>
@@ -179,18 +186,21 @@ export const RuleSettings = () => {
                     data-testid={`role-settings-accordion-summary-${roleName}`}
                     onClick={() => setExpanded(!isExpanded)}
                 >
-                    <TableRow>
-                        <TableCell sx={{ width: '12rem' }}>
+                    <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-evenly">
+                        <Box sx={{ width: '12rem' }} p={'16px'}>
                             <Typography fontWeight="bold" overflow="hidden" textOverflow="ellipsis" width="inherit">
                                 {roleName}
                             </Typography>
-                        </TableCell>
-                        <TableCell sx={{ width: '16rem' }}>
+                        </Box>
+                        <Box
+                            sx={{ width: '16rem', display: 'flex', justifyContent: 'flex-start', flexWrap: 'wrap' }}
+                            p={'16px'}
+                        >
                             {actions.map((action) => (
                                 <Chip key={action} sx={{ fontWeight: 'normal', m: 0.5 }} label={action} />
                             ))}
-                        </TableCell>
-                        <TableCell sx={{ width: '16rem' }}>
+                        </Box>
+                        <Box sx={{ width: '16rem' }} p={'16px'}>
                             <Typography
                                 variant="body2"
                                 color="textSecondary"
@@ -200,58 +210,76 @@ export const RuleSettings = () => {
                             >
                                 {types.join(', ')}
                             </Typography>
-                        </TableCell>
-                        <TableCell>
-                            <RulePermissions permissions={permissions} maxItems={3} />
-                        </TableCell>
-                    </TableRow>
+                        </Box>
+                        {!isMobile && (
+                            <Box p={'16px'}>
+                                <RulePermissions permissions={permissions} maxItems={2} />
+                            </Box>
+                        )}
+                    </Box>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <TableContainer sx={{ ml: '8rem' }}>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    {prepareTableHeaders().map((header: { label: string }, index) => (
-                                        <TableCell key={index}>
-                                            <Typography
-                                                variant="h5"
-                                                color="secondary"
-                                                letterSpacing={0.16}
-                                                fontWeight={700}
-                                            >
-                                                {header.label}
-                                            </Typography>
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {rules.map((entry) => (
-                                    <TableRow key={entry.idShort} data-testid={`role-settings-row-${entry.idShort}`}>
-                                        <TableCell>
-                                            <Chip
-                                                key={entry.action}
-                                                sx={{ fontWeight: 'normal', m: 0.5 }}
-                                                label={entry.action}
-                                            />
-                                        </TableCell>
-                                        <TableCell>{entry.targetInformation['@type']}</TableCell>
-                                        {!isMobile && <TableCell>{permissionCell(entry)}</TableCell>}
-                                        <TableCell>
-                                            <RoundedIconButton
-                                                data-testid={`role-settings-button-${entry.idShort}`}
-                                                onClick={() => openDetailDialog(entry)}
-                                                color="primary"
-                                                size={'small'}
-                                            >
-                                                <ArrowForwardIcon />
-                                            </RoundedIconButton>
-                                        </TableCell>
-                                    </TableRow>
+                    <Box sx={{ width: '12rem' }}></Box>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                {prepareTableHeaders().map((header: { label: string }, index) => (
+                                    <TableCell key={index}>
+                                        <Typography
+                                            variant="h5"
+                                            color="secondary"
+                                            letterSpacing={0.16}
+                                            fontWeight={700}
+                                        >
+                                            {header.label}
+                                        </Typography>
+                                    </TableCell>
                                 ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {rules.map((entry) => (
+                                <TableRow key={entry.idShort} data-testid={`role-settings-row-${entry.idShort}`}>
+                                    <TableCell
+                                        sx={{ width: '12rem', borderBottom: '0px', borderTop: '1px solid #eee' }}
+                                        align="center"
+                                    >
+                                        {/* Empty cell for correct alignment */}
+                                    </TableCell>
+                                    <TableCell
+                                        sx={{ width: '16rem', borderBottom: '0px', borderTop: '1px solid #eee' }}
+                                        align="left"
+                                    >
+                                        <Chip
+                                            key={entry.action}
+                                            sx={{ fontWeight: 'normal', m: 0.5 }}
+                                            label={entry.action}
+                                        />
+                                    </TableCell>
+                                    <TableCell
+                                        sx={{ width: '16rem', borderBottom: '0px', borderTop: '1px solid #eee' }}
+                                    >
+                                        {entry.targetInformation['@type']}
+                                    </TableCell>
+                                    {!isMobile && (
+                                        <TableCell sx={{ borderBottom: '0px', borderTop: '1px solid #eee' }}>
+                                            {permissionCell(entry)}
+                                        </TableCell>
+                                    )}
+                                    <TableCell sx={{ borderBottom: '0px', borderTop: '1px solid #eee' }}>
+                                        <RoundedIconButton
+                                            data-testid={`role-settings-button-${entry.idShort}`}
+                                            onClick={() => openDetailDialog(entry)}
+                                            color="primary"
+                                            size={'small'}
+                                        >
+                                            <ArrowForwardIcon />
+                                        </RoundedIconButton>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
                 </AccordionDetails>
             </Accordion>
         );
@@ -266,16 +294,22 @@ export const RuleSettings = () => {
                 {isLoading ? (
                     <CenteredLoadingSpinner sx={{ my: 10 }} />
                 ) : (
-                    <Box display="flex" flexDirection="column" alignItems="flex-end">
-                        <Button variant="contained" startIcon={<AddIcon />} onClick={() => setCreateDialogOpen(true)}>
-                            {t('buttons.create')}
-                        </Button>
+                    <>
+                        <Box display="flex" flexDirection="column" alignItems="flex-end">
+                            <Button
+                                variant="contained"
+                                startIcon={<AddIcon />}
+                                onClick={() => setCreateDialogOpen(true)}
+                            >
+                                {t('buttons.create')}
+                            </Button>
+                        </Box>
                         <Box width="100%" mt={2}>
                             {Object.entries(groupedRules).map(([roleName, rules]) => (
                                 <RoleAccordion key={roleName} roleName={roleName} rules={rules} />
                             ))}
                         </Box>
-                    </Box>
+                    </>
                 )}
             </Box>
             {selectedRule && (
