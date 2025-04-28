@@ -27,17 +27,17 @@ export function validateEnvs(envs) {
             throw new Error('Keycloak/Azure AD must be configured when AUTHENTICATION_FEATURE_FLAG is true');
         }
     }
-    if (envs.USE_BASYX_RBAC === 'true') {
+    if (envs.BASYX_RBAC_ENABLED === 'true') {
         const requiredFlags = ['AUTHENTICATION_FEATURE_FLAG', 'KEYCLOAK_ENABLED'];
         for (const key of requiredFlags) {
             if (envs[key] !== 'true') {
-                throw new Error(`${key} is required when USE_BASYX_RBAC is true`);
+                throw new Error(`${key} is required when BASYX_RBAC_ENABLED is true`);
             }
         }
-        const requiredKeys = ['SEC_SM_API_URL'];
+        const requiredKeys = ['BASYX_RBAC_SEC_SM_API_URL'];
         for (const key of requiredKeys) {
             if (!envs[key]) {
-                throw new Error(`${key} is required when USE_BASYX_RBAC is true`);
+                throw new Error(`${key} is required when BASYX_RBAC_ENABLED is true`);
             }
         }
     }

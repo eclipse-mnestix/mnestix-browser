@@ -27,7 +27,7 @@ export const initialEnvValues: EnvironmentalVariables = {
     THEME_LOGO_URL: undefined,
     IMPRINT_URL: undefined,
     DATA_PRIVACY_URL: undefined,
-    USE_BASYX_RBAC: false,
+    BASYX_RBAC_ENABLED: false,
     WHITELIST_FEATURE_FLAG: false,
     AUTHENTICATION_FEATURE_FLAG: false,
     SUBMODEL_WHITELIST: '',

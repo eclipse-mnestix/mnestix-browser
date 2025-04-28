@@ -34,7 +34,7 @@ services:
       NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-verySecureNextAuthSecret}
       IMPRINT_URL: ''
       DATA_PRIVACY_URL: ''
-      USE_BASYX_RBAC: 'false'
+      BASYX_RBAC_ENABLED: 'false'
     networks:
       - mnestix-network
     volumes:
