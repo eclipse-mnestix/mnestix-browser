@@ -138,6 +138,12 @@
         "show": "{count} Einträge anzeigen"
       }
     },
+    "technicalData": {
+      "technicalProperties": "Technische Eigenschaften",
+      "generalInformation": "Allgemeine Informationen",
+      "productClassification": "Produktklassifikation",
+      "furtherInformation": "Weitere Informationen"
+    },
     "verticalTabSelector": {
       "errors": {
         "INTERNAL_SERVER_ERROR": "Interner Serverfehler",

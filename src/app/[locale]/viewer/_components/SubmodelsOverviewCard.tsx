@@ -1,5 +1,5 @@
 import { Box, Card, CardContent, Divider, Skeleton, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { SubmodelDetail } from './submodel/SubmodelDetail';
 import { ErrorMessage, TabSelectorItem, VerticalTabSelector } from 'components/basics/VerticalTabSelector';
@@ -72,8 +72,8 @@ export function SubmodelsOverviewCard({ submodelIds, submodelsLoading, firstSubm
         }
     }, [isMobile, submodelSelectorItems]);
 
-    function SelectedContent() {
-        if (selectedItem?.submodelData) {
+    const SelectedContent = useMemo(() =>  {
+        if (selectedItem?.submodelData && !submodelsLoading) {
             return (
                 <ErrorBoundary message={t('renderError')}>
                     <SubmodelDetail submodel={selectedItem?.submodelData} />
@@ -94,7 +94,7 @@ export function SubmodelsOverviewCard({ submodelIds, submodelsLoading, firstSubm
             );
         }
         return null;
-    }
+    }, [selectedItem, submodelsLoading, t]);
 
     return (
         <>
@@ -123,10 +123,10 @@ export function SubmodelsOverviewCard({ submodelIds, submodelsLoading, firstSubm
                                     setSelectedItem(undefined);
                                 }}
                                 setInfoItem={setInfoItem}
-                                content={SelectedContent()}
+                                content={SelectedContent}
                             />
                         ) : (
-                            <SelectedContent />
+                            SelectedContent
                         )}
                     </Box>
                 </CardContent>
