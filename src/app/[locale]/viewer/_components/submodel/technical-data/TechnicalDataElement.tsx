@@ -124,19 +124,23 @@ export const TechnicalDataElement = (props: {
                         )}
                     </TreeItem>
                 );
-            case KeyTypes.File:
+            case KeyTypes.File: {
+                const file = element as File;
+                const path = buildSubmodelElementPath('GeneralInformation', element.idShort);
+
                 return (
                     // With the hardcoded SubmodelElementPath, this only works for CompanyLogo and ProductLogo
                     <DataRowWithUnit submodelElement={element} key={element.idShort}>
-                        <Box maxHeight="50px" overflow="hidden" sx={{ overflowWrap: 'anywhere' }}>
+                        <Box height="50px" overflow="hidden" sx={{ display: 'flex', overflowWrap: 'anywhere' }}>
                             <FileComponent
-                                file={element as File}
+                                file={file}
                                 submodelId={props.submodelId}
-                                submodelElementPath={buildSubmodelElementPath('GeneralInformation', element.idShort)}
+                                submodelElementPath={path}
                             />
                         </Box>
                     </DataRowWithUnit>
                 );
+            }
             case KeyTypes.MultiLanguageProperty:
                 return (
                     <DataRowWithUnit
