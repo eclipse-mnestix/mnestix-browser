@@ -7,12 +7,15 @@ type MarkingsComponentProps = {
     readonly submodelElement?: SubmodelElementCollection;
     readonly hasDivider?: boolean;
     readonly submodelId?: string;
+    readonly columnDisplay?: boolean;
 };
 
 export function MarkingsComponent(props: MarkingsComponentProps) {
     const markings: Array<SubmodelElementCollection> = Object.values(
         props.submodelElement?.value || {},
     ) as Array<SubmodelElementCollection>;
+
+
 
     // Iterate through all markings
     const markingImages = markings.map((el, index) => {
@@ -41,7 +44,7 @@ export function MarkingsComponent(props: MarkingsComponentProps) {
         });
         // Build single marking
         return (
-            !!file && file.contentType && 
+            !!file && file.contentType &&
             file.contentType.startsWith('image') && (
                 <SingleMarkingsComponent
                     key={index}
@@ -50,6 +53,8 @@ export function MarkingsComponent(props: MarkingsComponentProps) {
                     additionalText={additionalText}
                     submodelId={props.submodelId}
                     idShortPath={idShortPath}
+                    // since all the markings should be displayed in a column, we want one marking to be in a row
+                    rowDisplay={props.columnDisplay}
                 />
             )
         );
@@ -57,7 +62,7 @@ export function MarkingsComponent(props: MarkingsComponentProps) {
     // render all
     return (
         <DataRow title={props.submodelElement?.idShort} hasDivider={props.hasDivider}>
-            <Box display="flex" gap="20px" flexWrap="wrap" sx={{ my: 1 }}>
+            <Box display="flex" gap="20px" flexWrap="wrap" flexDirection={props.columnDisplay ? 'column' : 'row'} sx={{ my: 1 }}>
                 {markingImages}
             </Box>
         </DataRow>

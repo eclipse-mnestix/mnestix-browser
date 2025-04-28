@@ -288,8 +288,15 @@
       "title": "AAS mit AAS ID"
     },
     "productViewer": {
-      "title": "Produkt",
+      "actions": {
+        "toAasView": "AAS Ansicht",
+        "compareButton": "Vergleichen"
+      },
       "classification": "Produktklassifikation",
+      "error":{
+        "technicalDataSubmodelNotFound": "Technical Data Submodel nicht gefunden"
+      },
+      "home": "Startseite",
       "markings": "Produktkennzeichnungen",
       "productInfo": {
         "productDesignation": "Hersteller Produktbezeichnung",
@@ -298,13 +305,7 @@
         "manufacturer": "Hersteller"
       },
       "summary": "Das Wichtigste in Kürze",
-      "error":{
-        "technicalDataSubmodelNotFound": "Technical Data Submodel nicht gefunden"
-      },
-      "actions": {
-        "toAasView": "AAS Ansicht",
-        "compareButton": "Vergleichen"
-      }
+      "title": "Produkt"
     },
     "settings": {
       "actions": {
