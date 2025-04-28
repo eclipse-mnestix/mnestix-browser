@@ -27,7 +27,7 @@ type FileComponentProps = {
 export function FileComponent({ file, submodelId, submodelElementPath, withPreviewDialog = true }: FileComponentProps) {
     const [image, setImage] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
-    const [loadError, setLoadError] = useState<boolean>(false);
+    const [, setLoadError] = useState<boolean>(false);
     const [aasOriginUrl] = useAasOriginSourceState();
 
     const [previewOpen, setPreviewOpen] = useState(false);
