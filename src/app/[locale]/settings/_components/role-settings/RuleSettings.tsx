@@ -81,8 +81,8 @@ export const RuleSettings = () => {
 
     const openDetailDialog = (entry: BaSyxRbacRule) => {
         // Check if the entry is the only rule for the role
-        const isOnlyRule = rbacRoles?.roles.filter((rule) => rule.role === entry.role).length === 1;
-        const updatedEntry = { ...entry, isOnlyRule };
+        const isOnlyRuleForRole = rbacRoles?.roles.filter((rule) => rule.role === entry.role).length === 1;
+        const updatedEntry = { ...entry, isOnlyRuleForRole };
 
         setSelectedRule(updatedEntry);
         setRuleDetailDialogOpen(true);
