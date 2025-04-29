@@ -13,17 +13,17 @@ type RoleDialogProps = {
     readonly open: boolean;
 };
 
+export const defaultRbacRule: BaSyxRbacRule = {
+    action: 'READ',
+    targetInformation: { '@type': 'aas', aasIds: ['*'] },
+    role: '',
+    idShort: '',
+};
+
 export const CreateRuleDialog = (props: RoleDialogProps) => {
     const t = useTranslations('pages.settings.rules');
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
-
-    const defaultRbacRule: BaSyxRbacRule = {
-        action: 'READ',
-        targetInformation: { '@type': 'aas', aasIds: ['*'] },
-        role: '',
-        idShort: '',
-    };
 
     async function onSubmit(data: RuleFormModel) {
         const mappedDto = mapFormModelToBaSyxRbacRule(data, defaultRbacRule);

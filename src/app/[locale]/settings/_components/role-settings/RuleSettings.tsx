@@ -25,9 +25,8 @@ import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { useShowError } from 'lib/hooks/UseShowError';
 import AddIcon from '@mui/icons-material/Add';
-import { CreateRuleDialog } from 'app/[locale]/settings/_components/role-settings/CreateRuleDialog';
+import { CreateRuleDialog, defaultRbacRule } from 'app/[locale]/settings/_components/role-settings/CreateRuleDialog';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { CopyButton } from 'components/basics/CopyButton';
 
 const SUMMARY_PRIORITY_ORDER = ['aasIds', 'submodelIds', 'submodelElementIdShortPaths', 'conceptDescriptionIds'];
 
@@ -328,18 +327,16 @@ export const RuleSettings = () => {
                     </>
                 )}
             </Box>
-            {selectedRule && (
-                <RuleDialog
-                    onClose={async (reload) => {
-                        if (reload) {
-                            await loadRbacData();
-                        }
-                        setRuleDetailDialogOpen(false);
-                    }}
-                    open={ruleDetailDialogOpen}
-                    rule={selectedRule}
-                ></RuleDialog>
-            )}
+            <RuleDialog
+                onClose={async (reload) => {
+                    if (reload) {
+                        await loadRbacData();
+                    }
+                    setRuleDetailDialogOpen(false);
+                }}
+                open={ruleDetailDialogOpen}
+                rule={selectedRule ?? defaultRbacRule}
+            ></RuleDialog>
             <CreateRuleDialog
                 open={createDialogOpen}
                 onClose={async (reload) => {
