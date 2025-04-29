@@ -15,11 +15,11 @@ jest.mock('./../../../../../lib/hooks/UseNotificationSpawner');
 
 const notLastRuleForRole: DialogRbacRule = {
     ...mockRbacRoles.roles[0],
-    isOnlyRule: false,
+    isOnlyRuleForRole: false,
 };
 const lastRuleForRole: DialogRbacRule = {
     ...mockRbacRoles.roles[2],
-    isOnlyRule: true,
+    isOnlyRuleForRole: true,
 };
 const conflictRule = {
     ...mockRbacRoles.roles[3],

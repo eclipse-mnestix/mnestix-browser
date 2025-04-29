@@ -16,7 +16,7 @@ import { RuleDeleteDialog } from 'app/[locale]/settings/_components/role-setting
 
 export type DialogRbacRule = BaSyxRbacRule & {
     // If this rule is the only rule for the role
-    isOnlyRule: boolean;
+    isOnlyRuleForRole: boolean;
 };
 
 type RuleDialogProps = {
@@ -35,17 +35,20 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
 
-    async function afterSubmit(newData: RuleFormModel) {
-        const isNewRole = !availableRoles.includes(newData.role);
-        const isDeletedRole = rule.isOnlyRule && rule.role !== newData.role;
-        if (isNewRole) {
+    async function updateDialogModeForNewRule(newData: RuleFormModel) {
+        const isRuleForNewRole = !availableRoles.includes(newData.role);
+        const wasLastRuleForOldRole = rule.isOnlyRuleForRole && rule.role !== newData.role;
+
+        if (isRuleForNewRole) {
             setDialogMode('create-hint');
-        } else if (isDeletedRole) {
+        } else if (wasLastRuleForOldRole) {
             setDialogMode('delete-hint');
         } else {
+            // close the dialog, if no hint is needed
             onClose();
         }
 
+        // reload rules to update the list. This will happen in the background, if a hint is shown.
         await reloadRules();
     }
 
@@ -58,7 +61,7 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
                 message: t('editRule.saveSuccess'),
                 severity: 'success',
             });
-            await afterSubmit(data);
+            await updateDialogModeForNewRule(data);
             return;
         }
 
@@ -74,7 +77,7 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
 
     async function onDelete() {
         // switch view to hint if needed else close
-        if (rule.isOnlyRule) {
+        if (rule.isOnlyRuleForRole) {
             setDialogMode('delete-hint');
         } else {
             onClose();
