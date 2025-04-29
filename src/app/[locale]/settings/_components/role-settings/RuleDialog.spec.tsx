@@ -6,6 +6,7 @@ import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { mockRbacRoles } from './test-data/mockRbacRoles';
 import { act } from 'react';
+import { ApiResponseWrapperError, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 
 jest.mock('./../../../../../lib/services/rbac-service/RbacActions');
 jest.mock('next-intl', () => ({
@@ -23,7 +24,7 @@ const lastRuleForRole: DialogRbacRule = {
 };
 const conflictRule = {
     ...mockRbacRoles.roles[3],
-    isOnlyRule: true,
+    isOnlyRuleForRole: true,
 };
 const newName = 'newRoleName';
 
@@ -48,37 +49,17 @@ async function renderRuleDialog(rule: DialogRbacRule) {
     return { onClose, reloadRules };
 }
 
-function doMock(createRbacError?: string, deleteRbacError?: string) {
+function doMock(createRbacError?: ApiResponseWrapperError<void>, deleteRbacError?: ApiResponseWrapperError<void>) {
     const mockNotificationSpawner = { spawn: jest.fn() };
     (useNotificationSpawner as jest.Mock).mockReturnValue(mockNotificationSpawner);
 
-    (createRbacRule as jest.Mock).mockResolvedValue(
-        createRbacError === undefined
-            ? { isSuccess: true }
-            : createRbacError === 'CONFLICT'
-              ? { isSuccess: false, errorCode: ApiResultStatus.CONFLICT }
-              : { isSuccess: false, errorCode: ApiResultStatus.UNKNOWN_ERROR, message: createRbacError },
-    );
+    (createRbacRule as jest.Mock).mockResolvedValue(createRbacError ?? wrapSuccess(undefined));
 
     (deleteAndCreateRbacRule as jest.Mock).mockResolvedValue(
-        createRbacError !== undefined
-            ? createRbacError === 'CONFLICT'
-                ? { isSuccess: false, errorCode: ApiResultStatus.CONFLICT }
-                : {
-                      isSuccess: false,
-                      errorCode: ApiResultStatus.UNKNOWN_ERROR,
-                      message: createRbacError,
-                  }
-            : deleteRbacError !== undefined
-              ? { isSuccess: false, errorCode: ApiResultStatus.UNKNOWN_ERROR, message: deleteRbacError }
-              : { isSuccess: true },
+        createRbacError ?? deleteRbacError ?? wrapSuccess(undefined),
     );
 
-    (deleteRbacRule as jest.Mock).mockResolvedValue(
-        deleteRbacError === undefined
-            ? { isSuccess: true }
-            : { isSuccess: false, errorCode: ApiResultStatus.UNKNOWN_ERROR, message: deleteRbacError },
-    );
+    (deleteRbacRule as jest.Mock).mockResolvedValue(deleteRbacError ?? wrapSuccess(undefined));
 
     return { spawn: mockNotificationSpawner.spawn };
 }
@@ -195,7 +176,7 @@ describe('RoleDialog', () => {
     });
 
     it('handles conflict error', async () => {
-        const { spawn } = doMock('CONFLICT');
+        const { spawn } = doMock(wrapErrorCode(ApiResultStatus.CONFLICT, 'CONFLICT', 409));
         const { onClose, reloadRules } = await renderRuleDialog(conflictRule);
 
         await act(async () => {
@@ -250,7 +231,7 @@ describe('RoleDialog', () => {
         });
     });
 
-    it('shows the successful message without hint dialog', async () => {
+    it('shows the successful delete message without hint dialog', async () => {
         const { spawn } = doMock();
         const { onClose, reloadRules } = await renderRuleDialog(notLastRuleForRole);
 
@@ -273,7 +254,7 @@ describe('RoleDialog', () => {
         });
     });
 
-    it('shows the hint dialog after deleting', async () => {
+    it('shows the delete hint dialog after deleting', async () => {
         const { onClose, reloadRules } = await renderRuleDialog(lastRuleForRole);
 
         await act(async () => {
