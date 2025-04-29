@@ -27,6 +27,9 @@ import { useShowError } from 'lib/hooks/UseShowError';
 import AddIcon from '@mui/icons-material/Add';
 import { CreateRuleDialog } from 'app/[locale]/settings/_components/role-settings/CreateRuleDialog';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { CopyButton } from 'components/basics/CopyButton';
+
+const SUMMARY_PRIORITY_ORDER = ['aasIds', 'submodelIds', 'submodelElementIdShortPaths', 'conceptDescriptionIds'];
 
 export const RuleSettings = () => {
     const t = useTranslations('pages.settings.rules');
@@ -145,39 +148,124 @@ export const RuleSettings = () => {
         permissions: Record<string, Set<string>>;
         maxItems?: number;
     }) {
+        const permissionCategories = Object.keys(permissions);
+        const categoryKeys = [...SUMMARY_PRIORITY_ORDER, ...permissionCategories];
+
+        const accumulatedCategories: string[] = [];
+        for (const category of categoryKeys) {
+            if (maxItems && accumulatedCategories.length >= maxItems) break;
+
+            // Push if a valid new category is located
+            if (!accumulatedCategories.includes(category) && permissionCategories.includes(category)) {
+                accumulatedCategories.push(category);
+            }
+        }
+
         return (
             <Box display="flex" flexDirection="column">
-                {Object.entries(permissions).map(([type, ids], index) => {
-                    if (maxItems && index >= maxItems) {
-                        return index === maxItems + 1 ? (
-                            <Typography variant="body2" fontWeight="bold" mr="0.5rem">
-                                ...
-                            </Typography>
-                        ) : (
-                            <></>
-                        );
-                    }
-
-                    const idString = Array.from(ids)[0];
+                {accumulatedCategories.map((category) => {
+                    const firstId = Array.from(permissions[category])[0];
 
                     return (
-                        <Box display="flex" flexDirection="row" key={type}>
+                        <Box display="flex" flexDirection="row" key={category}>
                             <Typography variant="body2" fontWeight="bold" mr="0.5rem">
-                                {`${type}: `}
+                                {`${category}: `}
                             </Typography>
-                            <Typography width="20rem" overflow="hidden" textOverflow="ellipsis">
-                                {idString}
+                            <Typography variant="body2" width="fill" overflow="hidden" textOverflow="ellipsis">
+                                {firstId}
                             </Typography>
                         </Box>
                     );
                 })}
+                {maxItems && Object.keys(permissions).length > maxItems && (
+                    <Typography variant="body2" fontWeight="bold" mr="0.5rem">
+                        ...
+                    </Typography>
+                )}
             </Box>
+        );
+    }
+
+    function AccordionHeader({ roleName, rules }: { roleName: string; rules: BaSyxRbacRule[] }) {
+        const { actions, types, permissions } = aggregateRoleData(rules);
+        return (
+            <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-evenly">
+                <Box sx={{ width: '12rem' }} p={'1rem'}>
+                    <Typography fontWeight="bold" overflow="hidden" textOverflow="ellipsis" maxWidth="inherit">
+                        {roleName}
+                    </Typography>
+                </Box>
+                <Box
+                    sx={{ width: '16rem', display: 'flex', justifyContent: 'flex-start', flexWrap: 'wrap' }}
+                    p={'16px'}
+                >
+                    {actions.map((action) => (
+                        <Chip key={action} sx={{ fontWeight: 'normal', m: 0.5 }} label={action} />
+                    ))}
+                </Box>
+                <Box sx={{ width: '16rem' }} p={'1rem'}>
+                    <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        overflow="hidden"
+                        textOverflow="ellipsis"
+                        width="inherit"
+                    >
+                        {types.join(', ')}
+                    </Typography>
+                </Box>
+                {!isMobile && (
+                    <Box p={'1rem'}>
+                        <RulePermissions permissions={permissions} maxItems={3} />
+                    </Box>
+                )}
+            </Box>
+        );
+    }
+
+    function RuleList({ rules }: { rules: BaSyxRbacRule[] }) {
+        return (
+            <TableBody>
+                {rules.map((entry) => (
+                    <TableRow key={entry.idShort} data-testid={`role-settings-row-${entry.idShort}`}>
+                        <TableCell
+                            sx={{ width: '12rem', borderBottom: '0px', borderTop: '1px solid #eee' }}
+                            align="center"
+                        >
+                            {/* Empty cell for correct alignment */}
+                        </TableCell>
+                        <TableCell
+                            sx={{ width: '16rem', borderBottom: '0px', borderTop: '1px solid #eee' }}
+                            align="left"
+                        >
+                            <Chip key={entry.action} sx={{ fontWeight: 'normal', m: 0.5 }} label={entry.action} />
+                        </TableCell>
+                        <TableCell sx={{ width: '16rem', borderBottom: '0px', borderTop: '1px solid #eee' }}>
+                            {entry.targetInformation['@type']}
+                        </TableCell>
+                        {!isMobile && (
+                            <TableCell sx={{ borderBottom: '0px', borderTop: '1px solid #eee' }}>
+                                {permissionCell(entry)}
+                            </TableCell>
+                        )}
+                        <TableCell sx={{ borderBottom: '0px', borderTop: '1px solid #eee' }}>
+                            <RoundedIconButton
+                                data-testid={`role-settings-button-${entry.idShort}`}
+                                onClick={() => openDetailDialog(entry)}
+                                color="primary"
+                                size={'small'}
+                            >
+                                <ArrowForwardIcon />
+                            </RoundedIconButton>
+                        </TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
         );
     }
 
     function RoleAccordion({ roleName, rules }: { roleName: string; rules: BaSyxRbacRule[] }) {
         const [isExpanded, setExpanded] = useState(false);
-        const { actions, types, permissions } = aggregateRoleData(rules);
         return (
             <Accordion key={roleName} expanded={isExpanded}>
                 <AccordionSummary
@@ -186,40 +274,9 @@ export const RuleSettings = () => {
                     data-testid={`role-settings-accordion-summary-${roleName}`}
                     onClick={() => setExpanded(!isExpanded)}
                 >
-                    <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-evenly">
-                        <Box sx={{ width: '12rem' }} p={'16px'}>
-                            <Typography fontWeight="bold" overflow="hidden" textOverflow="ellipsis" width="inherit">
-                                {roleName}
-                            </Typography>
-                        </Box>
-                        <Box
-                            sx={{ width: '16rem', display: 'flex', justifyContent: 'flex-start', flexWrap: 'wrap' }}
-                            p={'16px'}
-                        >
-                            {actions.map((action) => (
-                                <Chip key={action} sx={{ fontWeight: 'normal', m: 0.5 }} label={action} />
-                            ))}
-                        </Box>
-                        <Box sx={{ width: '16rem' }} p={'16px'}>
-                            <Typography
-                                variant="body2"
-                                color="textSecondary"
-                                overflow="hidden"
-                                textOverflow="ellipsis"
-                                width="inherit"
-                            >
-                                {types.join(', ')}
-                            </Typography>
-                        </Box>
-                        {!isMobile && (
-                            <Box p={'16px'}>
-                                <RulePermissions permissions={permissions} maxItems={2} />
-                            </Box>
-                        )}
-                    </Box>
+                    <AccordionHeader roleName={roleName} rules={rules} />
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Box sx={{ width: '12rem' }}></Box>
                     <Table>
                         <TableHead>
                             <TableRow>
@@ -237,48 +294,7 @@ export const RuleSettings = () => {
                                 ))}
                             </TableRow>
                         </TableHead>
-                        <TableBody>
-                            {rules.map((entry) => (
-                                <TableRow key={entry.idShort} data-testid={`role-settings-row-${entry.idShort}`}>
-                                    <TableCell
-                                        sx={{ width: '12rem', borderBottom: '0px', borderTop: '1px solid #eee' }}
-                                        align="center"
-                                    >
-                                        {/* Empty cell for correct alignment */}
-                                    </TableCell>
-                                    <TableCell
-                                        sx={{ width: '16rem', borderBottom: '0px', borderTop: '1px solid #eee' }}
-                                        align="left"
-                                    >
-                                        <Chip
-                                            key={entry.action}
-                                            sx={{ fontWeight: 'normal', m: 0.5 }}
-                                            label={entry.action}
-                                        />
-                                    </TableCell>
-                                    <TableCell
-                                        sx={{ width: '16rem', borderBottom: '0px', borderTop: '1px solid #eee' }}
-                                    >
-                                        {entry.targetInformation['@type']}
-                                    </TableCell>
-                                    {!isMobile && (
-                                        <TableCell sx={{ borderBottom: '0px', borderTop: '1px solid #eee' }}>
-                                            {permissionCell(entry)}
-                                        </TableCell>
-                                    )}
-                                    <TableCell sx={{ borderBottom: '0px', borderTop: '1px solid #eee' }}>
-                                        <RoundedIconButton
-                                            data-testid={`role-settings-button-${entry.idShort}`}
-                                            onClick={() => openDetailDialog(entry)}
-                                            color="primary"
-                                            size={'small'}
-                                        >
-                                            <ArrowForwardIcon />
-                                        </RoundedIconButton>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
+                        <RuleList rules={rules} />
                     </Table>
                 </AccordionDetails>
             </Accordion>
