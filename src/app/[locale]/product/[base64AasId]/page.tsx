@@ -3,7 +3,12 @@
 import { Box, Button, Skeleton, Typography } from '@mui/material';
 import { safeBase64Decode } from 'lib/util/Base64Util';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
-import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
+import {
+    checkIfSubmodelHasIdShortOrSemanticId,
+    findSubmodelByIdOrSemanticId,
+    findValueByIdShort,
+    getTranslationText,
+} from 'lib/util/SubmodelResolverUtil';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { SubmodelsOverviewCard } from 'app/[locale]/viewer/_components/SubmodelsOverviewCard';
 import { ProductOverviewCard } from '../_components/ProductOverviewCard';
@@ -13,6 +18,11 @@ import { NoSearchResult } from 'components/basics/detailViewBasics/NoSearchResul
 import { useAasLoader } from 'lib/hooks/UseAasDataLoader';
 import { useLocale } from 'next-intl';
 import { useTranslations } from 'use-intl';
+import { useEffect, useState } from 'react';
+import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
+import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
+import { Breadcrumbs } from 'components/basics/Breadcrumbs';
+import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 
 export default function Page() {
     const navigate = useRouter();
@@ -24,9 +34,12 @@ export default function Page() {
     const env = useEnv();
     const encodedRepoUrl = useSearchParams().get('repoUrl');
     const repoUrl = encodedRepoUrl ? decodeURI(encodedRepoUrl) : undefined;
-    // TODO refactor translation strings here
-    const t = useTranslations('pages.aasViewer');
-    const tp = useTranslations('pages.productViewer');
+    const t = useTranslations('pages.productViewer');
+    const [filteredSubmodels, setFilteredSubmodels] = useState<SubmodelOrIdReference[]>([]);
+    const [breadcrumbLinks] = useState<[{ label: string, path: string }]>([{
+        label: t('home'),
+        path: '/',
+    }]);
 
     const {
         aasFromContext,
@@ -43,6 +56,45 @@ export default function Page() {
     const goToAASView = () => {
         navigate.push(`/viewer/${searchParams.base64AasId}`);
     };
+
+    useEffect(() => {
+        if (submodels) {
+            const filtered = submodels.filter(
+                (submodel) =>
+                    !(checkIfSubmodelHasIdShortOrSemanticId(submodel, undefined, 'AasDesignerChangelog'))
+            );
+            setFilteredSubmodels(filtered);
+        }
+    }, [submodels]);
+
+    const nameplate = findSubmodelByIdOrSemanticId(
+        submodels,
+        SubmodelSemanticIdEnum.NameplateV2,
+        'Nameplate',
+    );
+
+    if (nameplate) {
+        const productBreadcrumbProperties = [
+            { idShort: 'ManufacturerProductRoot', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductRoot },
+            { idShort: 'ManufacturerProductFamily', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductFamily },
+            { idShort: 'ManufacturerProductType', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductType }
+        ];
+
+        productBreadcrumbProperties.forEach(prop => {
+            const value = findValueByIdShort(
+                nameplate.submodelElements,
+                prop.idShort,
+                prop.semanticId,
+                locale,
+            );
+            if (value && !breadcrumbLinks.some(link => link.label === value)) {
+                breadcrumbLinks.push({
+                    label: value,
+                    path: '',
+                });
+            }
+        });
+    }
 
     const pageStyles = {
         display: 'flex',
@@ -67,6 +119,9 @@ export default function Page() {
         <Box sx={pageStyles}>
             {aasFromContext || isLoadingAas ? (
                 <Box sx={viewerStyles}>
+                    <Box>
+                        <Breadcrumbs links={breadcrumbLinks} />
+                    </Box>
                     <Box display="flex" flexDirection="row" alignContent="flex-end">
                         <Typography
                             variant="h2"
@@ -76,7 +131,6 @@ export default function Page() {
                                 marginTop: '10px',
                                 overflowWrap: 'break-word',
                                 wordBreak: 'break-word',
-                                textAlign: 'center',
                                 display: 'inline-block',
                             }}
                         >
@@ -91,7 +145,7 @@ export default function Page() {
                         {env.COMPARISON_FEATURE_FLAG && !isMobile && (
                             <Button
                                 sx={{ mr: 2 }}
-                                variant="contained"
+                                variant="outlined"
                                 onClick={startComparison}
                                 data-testid="detail-compare-button"
                             >
@@ -100,8 +154,8 @@ export default function Page() {
                         )}
                         {env.TRANSFER_FEATURE_FLAG && <TransferButton />}
                         {env.PRODUCT_VIEW_FEATURE_FLAG &&
-                            <Button variant="contained" sx={{ whiteSpace: 'nowrap' }} onClick={goToAASView}>
-                                {tp('actions.toAasView')}
+                            <Button variant="outlined" sx={{ whiteSpace: 'nowrap' }} onClick={goToAASView}>
+                                {t('actions.toAasView')}
                             </Button>
                         }
                     </Box>
@@ -109,12 +163,12 @@ export default function Page() {
                         aas={aasFromContext}
                         submodels={submodels}
                         productImage={aasFromContext?.assetInformation?.defaultThumbnail?.path}
-                        isLoading={isLoadingAas}
+                        isLoading={isLoadingAas || isSubmodelsLoading}
                         isAccordion={isMobile}
                         repositoryURL={aasOriginUrl}
                     />
                     {aasFromContext?.submodels && aasFromContext.submodels.length > 0 && (
-                        <SubmodelsOverviewCard submodelIds={submodels} submodelsLoading={isSubmodelsLoading} /> //???????
+                        <SubmodelsOverviewCard submodelIds={filteredSubmodels} submodelsLoading={isSubmodelsLoading} firstSubmodelIdShort="TechnicalData" />
                     )}
                 </Box>
             ) : (

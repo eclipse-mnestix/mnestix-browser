@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { CardHeading } from 'components/basics/CardHeading';
 import { useTranslations } from 'next-intl';
-import { RuleDialog } from 'app/[locale]/settings/_components/role-settings/RuleDialog';
+import { DialogRbacRule, RuleDialog } from 'app/[locale]/settings/_components/role-settings/RuleDialog';
 import { JSX, useState } from 'react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { RoundedIconButton } from 'components/basics/Buttons';
@@ -29,18 +29,22 @@ import { CreateRuleDialog, defaultRbacRule } from 'app/[locale]/settings/_compon
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const SUMMARY_PRIORITY_ORDER = ['aasIds', 'submodelIds', 'submodelElementIdShortPaths', 'conceptDescriptionIds'];
+const DEFAULT_RBAC_RULE = { ...defaultRbacRule, isOnlyRuleForRole: false };
 
 export const RuleSettings = () => {
     const t = useTranslations('pages.settings.rules');
     const [ruleDetailDialogOpen, setRuleDetailDialogOpen] = useState(false);
     const [createDialogOpen, setCreateDialogOpen] = useState(false);
-    const [selectedRule, setSelectedRule] = useState<BaSyxRbacRule | undefined>(undefined);
-    const [rbacRoles, setRbacRoles] = useState<RbacRolesFetchResult | undefined>();
+    const [selectedRule, setSelectedRule] = useState<DialogRbacRule>();
+    const [rbacRoles, setRbacRoles] = useState<RbacRolesFetchResult>();
     const isMobile = useIsMobile();
     const [isLoading, setIsLoading] = useState(false);
     const { showError } = useShowError();
 
     const MAX_PERMISSIONS_CHARS = 40;
+
+    // all available role names
+    const availableRoles = [...new Set(rbacRoles?.roles.map((role) => role.role))];
 
     async function loadRbacData() {
         setIsLoading(true);
@@ -58,20 +62,6 @@ export const RuleSettings = () => {
     useAsyncEffect(async () => {
         await loadRbacData();
     }, []);
-
-    const prepareTableHeaders = () => {
-        const tableHeaders = [
-            { label: '' },
-            { label: t('tableHeader.action') },
-            { label: t('tableHeader.type') },
-            { label: t('tableHeader.permissions') },
-            { label: '' },
-        ];
-        if (isMobile) {
-            tableHeaders.splice(3, 1);
-        }
-        return tableHeaders;
-    };
 
     const permissionCell = (entry: BaSyxRbacRule) => {
         const permissions: JSX.Element[] = [];
@@ -96,9 +86,43 @@ export const RuleSettings = () => {
     };
 
     const openDetailDialog = (entry: BaSyxRbacRule) => {
-        setSelectedRule(entry);
+        // Check if the entry is the only rule for the role
+        const isOnlyRuleForRole = rbacRoles?.roles.filter((rule) => rule.role === entry.role).length === 1;
+        const updatedEntry = { ...entry, isOnlyRuleForRole };
+
+        setSelectedRule(updatedEntry);
         setRuleDetailDialogOpen(true);
     };
+
+    function TableCellHeader() {
+        const tableHeaderText = {
+            variant: 'h5',
+            color: 'secondary',
+            letterSpacing: 0.16,
+            fontWeight: 700,
+        };
+
+        return (
+            <TableRow>
+                <TableCell sx={tableHeaderText} data-testid="rulesettings-header-name">
+                    {/*maybe copy button*/}
+                    {''}
+                </TableCell>
+                <TableCell sx={tableHeaderText} data-testid="rulesettings-header-action">
+                    {t('tableHeader.action')}
+                </TableCell>
+                <TableCell sx={tableHeaderText} data-testid="rulesettings-header-type">
+                    {t('tableHeader.type')}
+                </TableCell>
+                {isMobile && (
+                    <TableCell sx={tableHeaderText} data-testid="rulesettings-header-permissions">
+                        {t('tableHeader.permissions')}
+                    </TableCell>
+                )}
+                <TableCell sx={tableHeaderText} data-testid="rulesettings-header-empty"></TableCell>
+            </TableRow>
+        );
+    }
 
     function groupRulesByRole(): Record<string, BaSyxRbacRule[]> {
         if (!rbacRoles) return {};
@@ -279,18 +303,7 @@ export const RuleSettings = () => {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                {prepareTableHeaders().map((header: { label: string }, index) => (
-                                    <TableCell key={index}>
-                                        <Typography
-                                            variant="h5"
-                                            color="secondary"
-                                            letterSpacing={0.16}
-                                            fontWeight={700}
-                                        >
-                                            {header.label}
-                                        </Typography>
-                                    </TableCell>
-                                ))}
+                                <TableCellHeader />
                             </TableRow>
                         </TableHead>
                         <RuleList rules={rules} />
@@ -327,24 +340,19 @@ export const RuleSettings = () => {
                     </>
                 )}
             </Box>
+
             <RuleDialog
-                onClose={async (reload) => {
-                    if (reload) {
-                        await loadRbacData();
-                    }
-                    setRuleDetailDialogOpen(false);
-                }}
+                onClose={() => setRuleDetailDialogOpen(false)}
+                reloadRules={loadRbacData}
                 open={ruleDetailDialogOpen}
-                rule={selectedRule ?? defaultRbacRule}
-            ></RuleDialog>
+                rule={selectedRule ?? DEFAULT_RBAC_RULE}
+                availableRoles={availableRoles}
+            />
             <CreateRuleDialog
                 open={createDialogOpen}
-                onClose={async (reload) => {
-                    if (reload) {
-                        await loadRbacData();
-                    }
-                    setCreateDialogOpen(false);
-                }}
+                onClose={() => setCreateDialogOpen(false)}
+                reloadRules={loadRbacData}
+                availableRoles={availableRoles}
             />
         </>
     );

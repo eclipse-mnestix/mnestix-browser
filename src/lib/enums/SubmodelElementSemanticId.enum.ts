@@ -4,6 +4,7 @@ export enum SubmodelElementSemanticIdEnum {
     MarkingsV1 = 'https://admin-shell.io/zvei/nameplate/1/0/Nameplate/Markings',
     MarkingsV2 = 'https://admin-shell.io/zvei/nameplate/2/0/Nameplate/Markings',
     MarkingsV3 = 'https://admin-shell.io/zvei/nameplate/3/0/Nameplate/Markings',
+    CompanyLogo = 'https://admin-shell.io/zvei/nameplate/2/0/Nameplate/CompanyLogo',
     MarkingsIrdiV1 = '0173-1#01-AGZ673#001',
     MarkingsIrdiV3 = '0112/2///61360_7#AAS006#001',
     ContactInformation = 'https://admin-shell.io/zvei/nameplate/1/0/ContactInformations/ContactInformation',
@@ -12,10 +13,15 @@ export enum SubmodelElementSemanticIdEnum {
     GeneralInformation = 'https://admin-shell.io/ZVEI/TechnicalData/GeneralInformation/1/1',
     ProductClassifications = 'https://admin-shell.io/ZVEI/TechnicalData/ProductClassifications/1/1',
     ManufacturerName = '0173-1#02-AAO677#002',
+    ManufacturerLogo = 'https://adminshell.io/ZVEI/TechnicalData/ManufacturerLogo/1/1',
     ManufacturerProductDesignation = '0173-1#02-AAW338#001',
     ManufacturerProductRoot = '0173-1#02-AAU732#001',
     ManufacturerProductFamily = '0173-1#02-AAU731#001',
     ManufacturerProductType = '0173-1#02-AAO057#002',
+    ManufacturerArticleNumber = '0173-1#02-AAO676#003',
+    ManufacturerOrderCode = '0173-1#02-AAO227#002',
     ProductClassId = 'https://adminshell.io/ZVEI/TechnicalData/ProductClassId/1/1',
     ProductClassificationSystem = 'https://admin-shell.io/ZVEI/TechnicalData/ProductClassificationSystem/1/1',
+    TechnicalProperties = 'https://admin-shell.io/ZVEI/TechnicalData/TechnicalProperties/1/1',
+    FurtherInformation = 'https://admin-shell.io/ZVEI/TechnicalData/FurtherInformation/1/1'
 }

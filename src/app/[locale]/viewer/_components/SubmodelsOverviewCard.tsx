@@ -1,5 +1,5 @@
 import { Box, Card, CardContent, Divider, Skeleton, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { SubmodelDetail } from './submodel/SubmodelDetail';
 import { ErrorMessage, TabSelectorItem, VerticalTabSelector } from 'components/basics/VerticalTabSelector';
@@ -15,9 +15,10 @@ import { SubmodelInfoDialog } from 'app/[locale]/viewer/_components/submodel/Sub
 export type SubmodelsOverviewCardProps = {
     readonly submodelIds: SubmodelOrIdReference[] | undefined;
     readonly submodelsLoading?: boolean;
+    readonly firstSubmodelIdShort?: string;
 };
 
-export function SubmodelsOverviewCard({ submodelIds, submodelsLoading }: SubmodelsOverviewCardProps) {
+export function SubmodelsOverviewCard({ submodelIds, submodelsLoading, firstSubmodelIdShort }: SubmodelsOverviewCardProps) {
     const [submodelSelectorItems, setSubmodelSelectorItems] = useState<TabSelectorItem[]>([]);
     const [selectedItem, setSelectedItem] = useState<TabSelectorItem>();
     const t = useTranslations('pages.aasViewer.submodels');
@@ -25,7 +26,7 @@ export function SubmodelsOverviewCard({ submodelIds, submodelsLoading }: Submode
     SortNameplateElements(selectedItem?.submodelData);
 
     const isMobile = useIsMobile();
-    const firstSubmodelIdShort = 'Nameplate';
+    const firstSubmodelToShowIdShort = firstSubmodelIdShort ?? 'Nameplate';
 
     const [infoItem, setInfoItem] = useState<TabSelectorItem>();
 
@@ -36,7 +37,7 @@ export function SubmodelsOverviewCard({ submodelIds, submodelsLoading }: Submode
             .map(getAsTabSelectorItem)
             .filter((item) => !!item)
             .sort(function (x, y) {
-                return x.label == firstSubmodelIdShort ? -1 : y.label == firstSubmodelIdShort ? 1 : 0;
+                return x.label == firstSubmodelToShowIdShort ? -1 : y.label == firstSubmodelToShowIdShort ? 1 : 0;
             });
     }
 
@@ -65,14 +66,14 @@ export function SubmodelsOverviewCard({ submodelIds, submodelsLoading }: Submode
     }, [submodelIds]);
 
     useEffect(() => {
-        const nameplateTab = submodelSelectorItems.find((tab) => tab.submodelData?.idShort === firstSubmodelIdShort);
+        const nameplateTab = submodelSelectorItems.find((tab) => tab.submodelData?.idShort === firstSubmodelToShowIdShort);
         if (!selectedItem && !isMobile && nameplateTab) {
             setSelectedItem(nameplateTab);
         }
     }, [isMobile, submodelSelectorItems]);
 
-    function SelectedContent() {
-        if (selectedItem?.submodelData) {
+    const SelectedContent = useMemo(() =>  {
+        if (selectedItem?.submodelData && !submodelsLoading) {
             return (
                 <ErrorBoundary message={t('renderError')}>
                     <SubmodelDetail submodel={selectedItem?.submodelData} />
@@ -93,7 +94,7 @@ export function SubmodelsOverviewCard({ submodelIds, submodelsLoading }: Submode
             );
         }
         return null;
-    }
+    }, [selectedItem, submodelsLoading, t]);
 
     return (
         <>
@@ -122,10 +123,10 @@ export function SubmodelsOverviewCard({ submodelIds, submodelsLoading }: Submode
                                     setSelectedItem(undefined);
                                 }}
                                 setInfoItem={setInfoItem}
-                                content={SelectedContent()}
+                                content={SelectedContent}
                             />
                         ) : (
-                            <SelectedContent />
+                            SelectedContent
                         )}
                     </Box>
                 </CardContent>

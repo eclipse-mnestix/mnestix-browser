@@ -12,6 +12,7 @@ Mnestix provides the following configuration options. You can adapt the values i
 | `REGISTRY_API_URL`          |               | Address of the AAS Registry Service to retrieve the related descriptor for an AAS                                  |
 | `SUBMODEL_REGISTRY_API_URL` |               | Address of the Submodel Registry Service to retrieve the related descriptor for a Submodel                         |
 | `MNESTIX_BACKEND_API_URL`   |               | Mnestix Backend with a lot of business comfort features like the Repository-Proxy or the Template builder          |
+| `CONCEPT_DESCRIPTION_REPO_API_URL`    |                             | Default Concept Description Repository                                                                                                                                                                                             |
 | `LOG_LEVEL`                 | "info"        | Server side log level of Mnestix Browser. "fatal" or "error" or "warn" or "info" or "debug" or "trace" or "silent" |
 
 #### Features
@@ -28,15 +29,17 @@ Mnestix provides the following configuration options. You can adapt the values i
 
 #### Keycloak
 
-| Name                 | Default value               | Description                                                                                                                                                                                                                        |
-| -------------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `KEYCLOAK_ENABLED`   | false                       | By default, it is set to false, meaning Keycloak authentication will be disabled, and the default authentication method will be Azure Entra ID. If you set this variable to true, Keycloak authentication will be enabled instead. |
-| `KEYCLOAK_CLIENT_ID` | mnestix-browser-client-demo | Configuration variable that specifies the client unique identifier used by your application when connecting to the Keycloak server.                                                                                                |
-| `KEYCLOAK_ISSUER`    |                             | Configuration variable that specifies the URL of the Keycloak servers issuer endpoint. This endpoint provides the base URL for the Keycloak server that issues tokens and handles authentication requests                          |
-| `KEYCLOAK_LOCAL_URL` |                             | Optional configuration variable specifically used for development environments within Docker. This allows your application to connect to a Keycloak instance running in a Docker container                                         |
-| `KEYCLOAK_REALM`     | BaSyx                       | Configuration variable that specifies the name of the Keycloak realm your application will use for authentication and authorization.                                                                                               |
-| `USE_BASYX_RBAC`     | false                       | Set to true, if BaSyx is used together with RBAC. This will enable the administration of RBAC configuration inside Mnestix.                                                                                                        |
-| `SEC_SM_API_URL`     |                             | Submodel Repository for storing BaSyx RBAC Rules (needed with USE_BASYX_RBAC)                                                                                                                                                      |
+See [Keycloak Configuration](Keycloak-Configuration) for more information about the Keycloak setup.
+
+| Name                        | Default value               | Description                                                                                                                                                                                                                        |
+| --------------------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `KEYCLOAK_ENABLED`          | false                       | By default, it is set to false, meaning Keycloak authentication will be disabled, and the default authentication method will be Azure Entra ID. If you set this variable to true, Keycloak authentication will be enabled instead. |
+| `KEYCLOAK_CLIENT_ID`        | mnestix-browser-client-demo | Configuration variable that specifies the client unique identifier used by your application when connecting to the Keycloak server.                                                                                                |
+| `KEYCLOAK_ISSUER`           |                             | Configuration variable that specifies the URL of the Keycloak servers issuer endpoint. This endpoint provides the base URL for the Keycloak server that issues tokens and handles authentication requests                          |
+| `KEYCLOAK_LOCAL_URL`        |                             | Optional configuration variable specifically used for development environments within Docker. This allows your application to connect to a Keycloak instance running in a Docker container                                         |
+| `KEYCLOAK_REALM`            |                             | Configuration variable that specifies the name of the Keycloak realm your application will use for authentication and authorization.                                                                                               |
+| `BASYX_RBAC_ENABLED`        | false                       | Set to true, if BaSyx is used together with RBAC. This will enable the administration of RBAC configuration inside Mnestix.                                                                                                        |
+| `BASYX_RBAC_SEC_SM_API_URL` |                             | Submodel Repository for storing BaSyx RBAC Rules (needed with BASYX_RBAC_ENABLED)                                                                                                                                                  |
 
 ### Branding
 

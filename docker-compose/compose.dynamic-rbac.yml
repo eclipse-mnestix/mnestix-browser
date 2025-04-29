@@ -8,8 +8,8 @@ services:
       KEYCLOAK_ISSUER: 'http://keycloak:8080'
       KEYCLOAK_LOCAL_URL: 'http://localhost:8080'
       KEYCLOAK_REALM: 'Mnestix'
-      USE_BASYX_RBAC: 'true'
-      SEC_SM_API_URL: 'http://security-submodel:8081'
+      BASYX_RBAC_ENABLED: 'true'
+      BASYX_RBAC_SEC_SM_API_URL: 'http://security-submodel:8081'
 
   mnestix-api:
     environment:
