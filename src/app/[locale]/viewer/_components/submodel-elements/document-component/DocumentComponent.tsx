@@ -258,7 +258,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                     DocumentSpecificSemanticIdIrdi.DocumentVersion,
                     DocumentSpecificSemanticIdIrdiV2.DocumentVersion,
                 )
-            )
+           )
                 continue;
 
             const smCollection = submodelElement as SubmodelElementCollection;
@@ -289,7 +289,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                         DocumentSpecificSemanticId.DigitalFile,
                         DocumentSpecificSemanticIdIrdi.DigitalFile,
                         DocumentSpecificSemanticIdIrdiV2.DigitalFile,
-                    )
+                    ) || versionSubmodelEl.idShort == 'DigitalFile'
                 ) {
                     fileViewObject = {
                         ...fileViewObject,
@@ -303,7 +303,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                         DocumentSpecificSemanticId.PreviewFile,
                         DocumentSpecificSemanticIdIrdi.PreviewFile,
                         DocumentSpecificSemanticIdIrdiV2.PreviewFile,
-                    )
+                    ) || versionSubmodelEl.idShort == 'PreviewFile'
                 ) {
                     fileViewObject.previewImgUrl = await getPreviewImageUrl(versionSubmodelEl, submodelElement);
                 }
