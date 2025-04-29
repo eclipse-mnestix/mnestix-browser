@@ -139,10 +139,11 @@
       }
     },
     "technicalData": {
-      "technicalProperties": "Technische Eigenschaften",
+      "cannotRenderContent": "Inhalt des Submodels kann nicht angezeigt werden.",
+      "furtherInformation": "Weitere Informationen",
       "generalInformation": "Allgemeine Informationen",
       "productClassification": "Produktklassifikation",
-      "furtherInformation": "Weitere Informationen"
+      "technicalProperties": "Technische Eigenschaften"
     },
     "verticalTabSelector": {
       "errors": {
@@ -234,6 +235,7 @@
           "elementName": "Element"
         },
         "renderError": "Submodel konnte nicht gerendert werden.",
+        "semanticIdLabel": "Semantic IDs:",
         "timeSeries": {
           "internalSegments": "Interne Segmente",
           "linkedSegments": "Verlinkte Segmente",

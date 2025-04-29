@@ -8,18 +8,23 @@ import {
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { TechnicalDataElement } from 'app/[locale]/viewer/_components/submodel/technical-data/TechnicalDataElement';
+import {
+    GenericSubmodelDetailComponent
+} from 'app/[locale]/viewer/_components/submodel/generic-submodel/GenericSubmodelDetailComponent';
 
 export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
     const t = useTranslations('components.technicalData');
     const [expandedItems, setExpandedItems] = useState<string[]>(['technicalProperties']);
 
-    const findSubmodelElement = (semanticId: SubmodelElementSemanticIdEnum) =>
-        submodel.submodelElements?.find((el) => hasSemanticId(el, semanticId)) as SubmodelElementCollection | undefined;
+    const findSubmodelElementBySemanticIdOrIdShort = (semanticId: SubmodelElementSemanticIdEnum, idShort: string) =>
+        submodel.submodelElements?.find((el) => hasSemanticId(el, semanticId) || el.idShort === idShort) as SubmodelElementCollection | undefined;
 
-    const generalInformation = findSubmodelElement(SubmodelElementSemanticIdEnum.GeneralInformation);
-    const technicalData = findSubmodelElement(SubmodelElementSemanticIdEnum.TechnicalProperties);
-    const productClassifications = findSubmodelElement(SubmodelElementSemanticIdEnum.ProductClassifications);
-    const furtherInformation = findSubmodelElement(SubmodelElementSemanticIdEnum.FurtherInformation);
+    const generalInformation = findSubmodelElementBySemanticIdOrIdShort(SubmodelElementSemanticIdEnum.GeneralInformation, 'GeneralIdnformation');
+    const technicalData = findSubmodelElementBySemanticIdOrIdShort(SubmodelElementSemanticIdEnum.TechnicalProperties, 'TechnicalPropderties');
+    const productClassifications = findSubmodelElementBySemanticIdOrIdShort(SubmodelElementSemanticIdEnum.ProductClassifications, 'ProdductClassifications');
+    const furtherInformation = findSubmodelElementBySemanticIdOrIdShort( SubmodelElementSemanticIdEnum.FurtherInformation, 'FurtherIndformation');
+
+    const cannotRenderTechnicalData = !generalInformation && !technicalData && !productClassifications && !furtherInformation;
 
     return (
         <SimpleTreeView expandedItems={expandedItems} onExpandedItemsChange={(_event, itemIds) => setExpandedItems(itemIds)}>
@@ -59,6 +64,7 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
                     isExpanded={expandedItems.includes('furtherInformation')}
                 />
             )}
+            {cannotRenderTechnicalData && <GenericSubmodelDetailComponent submodel={submodel} />}
         </SimpleTreeView>
     );
 }

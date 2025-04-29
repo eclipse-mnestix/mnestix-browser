@@ -139,6 +139,7 @@ export function SubmodelsOverviewCard({ submodelIds, submodelsLoading, firstSubm
                 }}
                 id={infoItem?.id}
                 idShort={infoItem?.submodelData?.idShort}
+                semanticId={infoItem?.submodelData?.semanticId}
             />
         </>
     );
