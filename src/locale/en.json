@@ -376,20 +376,34 @@
           "edit": "Edit",
           "save": "Save"
         },
-        "createTitle": "Create Rule",
-        "delete": {
-          "lastForRole": "This is the last rule for this role. Don't forget to delete the role in keycloak as well.",
+        "createRule": {
+          "hint": {
+            "acknowledge": "Acknowledge",
+            "text": "A new Role has been created. Configure it in keycloak.",
+            "title": "Update Keycloak"
+          },
+          "saveSuccess": "New rule saved successfully.",
+          "title": "Create Rule"
+        },
+        "deleteRule": {
+          "hint": {
+            "acknowledge": "Acknowledged",
+            "text": "Do not forget to delete this rule in keycloak as well!",
+            "title": "Delete rule"
+          },
           "question": "Permanently delete this rule?",
           "ruleInfo": "Users with the assigned role ''{role}'' will not have permissions to {action} the following data!",
-          "success": "Rule deleted successfully.",
-          "title": "Delete rule"
+          "success": "Rule deleted successfully."
         },
-        "editTitle": "Edit Rule",
+        "editRule": {
+          "saveSuccess": "Rule edit successful.",
+          "title": "Edit Rule"
+        },
         "errors": {
           "uniqueIdShort": "The combination of role name, action and type already exists in another rule.\nPlease edit the existing rule."
         },
+        "keycloakHint": "Some Roles have changed. To assign users, configurate them at '{url}'.",
         "roleRequired": "Role is required",
-        "saveSuccess": "Rule saved successfully.",
         "subtitle": "Manage roles and permissions.",
         "tableHeader": {
           "aasIds": "AAS IDs",

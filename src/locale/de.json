@@ -376,20 +376,34 @@
           "edit": "Bearbeiten",
           "save": "Speichern"
         },
-        "createTitle": "Regel erstellen",
-        "delete": {
-          "lastForRole": "Dies ist die letzte Regel für diese Rolle. Vergessen Sie nicht, die Rolle auch in Keycloak zu löschen.",
+        "createRule": {
+          "hint": {
+            "acknowledge": "In Ordnung",
+            "text": "Eine neue Rolle wurde erstellt. Vergessen Sie nicht die Rolle in Keycloak zu konfigurieren.",
+            "title": "Keycloak aktualisieren"
+          },
+          "saveSuccess": "Neue Regel erfolgreich gespeichert.",
+          "title": "Regel erstellen"
+        },
+        "deleteRule": {
+          "hint": {
+            "acknowledge": "Verstanden",
+            "text": "Vergessen Sie nicht die Regel in keycloak zu entfernen!",
+            "title": "Regel löschen"
+          },
           "question": "Regel unwiderruflich löschen?",
           "ruleInfo": "Nutzer mit der Rolle ''{role}'' haben danach keine Berrechtigungen mehr die folgenden Daten {action, select, READ {zu LESEN} EDIT {zu EDITIEREN} CREATE {zu ERSTELLEN} UPDATE {zu VERÄNDERN} EXECUTE {AUSZUFÜHREN}  other {#}}!",
-          "success": "Regel erfolgreich gelöscht.",
-          "title": "Regel löschen"
+          "success": "Regel erfolgreich gelöscht."
         },
-        "editTitle": "Regel bearbeiten",
+        "editRule": {
+          "saveSuccess": "Regel erfolgreich bearbeitet.",
+          "title": "Regel bearbeiten"
+        },
         "errors": {
           "uniqueIdShort": "Die Kombination aus Rollenname, Aktion und Typ existiert bereits in einer anderen Regel.\nBitte bearbeiten Sie die bestehende Regel."
         },
+        "keycloakHint": "Es haben sich Rollen geändert. Um diese Benutzern zuzuweisen, konfigurieren Sie diese unter '{url}'.",
         "roleRequired": "Rolle wird benötigt",
-        "saveSuccess": "Regel erfolgreich gespeichert.",
         "subtitle": "Verwalten von Rollen und Berechtigungen.",
         "tableHeader": {
           "aasIds": "AAS IDs",

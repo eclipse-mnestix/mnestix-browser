@@ -12,24 +12,19 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslations } from 'next-intl';
-import {
-    BaSyxRbacRule,
-    RbacRolesFetchResult,
-    rbacRuleActions,
-    rbacRuleTargets,
-} from 'lib/services/rbac-service/types/RbacServiceData';
-import { useEffect, useState } from 'react';
+import { BaSyxRbacRule, rbacRuleActions, rbacRuleTargets } from 'lib/services/rbac-service/types/RbacServiceData';
+import { useEffect } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 import { TargetInformationForm } from 'app/[locale]/settings/_components/role-settings/target-information/TargetInformationForm';
 import { Controller, useForm } from 'react-hook-form';
 import { mapBaSyxRbacRuleToFormModel } from 'app/[locale]/settings/_components/role-settings/FormMappingHelper';
-import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { getRbacRules } from 'lib/services/rbac-service/RbacActions';
 
 type RuleDialogProps = {
-    readonly onSubmit: (data: RuleFormModel) => void;
+    readonly onSubmit: (data: RuleFormModel) => Promise<void>;
     readonly onCancel: () => void;
     readonly rule: BaSyxRbacRule;
+    readonly title: string;
+    readonly availableRoles: string[];
 };
 
 export type ArrayOfIds = [{ id: string }];
@@ -51,30 +46,23 @@ export type RuleFormModel = {
     targetInformation: TargetInformationFormModel;
 };
 
-export const RuleForm = (props: RuleDialogProps) => {
+export const RuleForm = ({ onCancel, onSubmit, rule, title, availableRoles }: RuleDialogProps) => {
     const t = useTranslations('pages.settings.rules');
-    const [rbacRules, setRbacRules] = useState<RbacRolesFetchResult | undefined>(undefined);
 
     const { control, handleSubmit, setValue, getValues, reset } = useForm({
-        defaultValues: mapBaSyxRbacRuleToFormModel(props.rule as BaSyxRbacRule),
+        defaultValues: mapBaSyxRbacRuleToFormModel(rule as BaSyxRbacRule),
     });
 
-    useAsyncEffect(async () => {
-        const response = await getRbacRules();
-        if (response.isSuccess) {
-            // sort by role name
-            response.result.roles?.sort((a: { role: string }, b: { role: string }) => a.role.localeCompare(b.role));
-            setRbacRules(response.result);
-        }
-    }, []);
-
     useEffect(() => {
-        reset(mapBaSyxRbacRuleToFormModel(props.rule as BaSyxRbacRule));
-    }, [props.rule]);
+        reset(mapBaSyxRbacRuleToFormModel(rule as BaSyxRbacRule));
+    }, [rule]);
 
     return (
-        <form onSubmit={handleSubmit(props.onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <DialogContent>
+                <Typography variant="h2" color="primary" mb="1em">
+                    {title}
+                </Typography>
                 <Box display="flex" flexDirection="column">
                     <Typography variant="h5">{t('tableHeader.name')}</Typography>
                     <Controller
@@ -87,7 +75,7 @@ export const RuleForm = (props: RuleDialogProps) => {
                             <FormControl fullWidth>
                                 <Autocomplete
                                     freeSolo
-                                    options={[...new Set(rbacRules?.roles?.map((role) => role.role) ?? [])]}
+                                    options={availableRoles}
                                     value={field.value || ''}
                                     onChange={(_, newValue) => field.onChange(newValue)}
                                     onInputChange={(_, newValue, reason) => {
@@ -123,7 +111,10 @@ export const RuleForm = (props: RuleDialogProps) => {
                                     {...field}
                                 >
                                     {rbacRuleActions.map((action) => (
-                                        <MenuItem key={action} value={action}>
+                                        <MenuItem
+                                            value={action}
+                                            data-testid={`rule-settings-action-${action}`}
+                                        >
                                             {action}
                                         </MenuItem>
                                     ))}
@@ -135,13 +126,13 @@ export const RuleForm = (props: RuleDialogProps) => {
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button startIcon={<CloseIcon />} variant="outlined" onClick={props.onCancel}>
+                <Button startIcon={<CloseIcon />} variant="outlined" onClick={onCancel}>
                     {t('buttons.cancel')}
                 </Button>
                 <Button
                     variant="contained"
                     startIcon={<CheckIcon />}
-                    onClick={handleSubmit(props.onSubmit)}
+                    onClick={handleSubmit(onSubmit)}
                     data-testid="role-settings-save-button"
                 >
                     {t('buttons.save')}

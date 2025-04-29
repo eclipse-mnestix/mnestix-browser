@@ -55,7 +55,6 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
                 <>
                     {fields.map((_, idx) => (
                         <Controller
-                            key={`targetInformation.${props.type}.${props.rule}.${idx}`}
                             name={
                                 `targetInformation.${props.type}.${props.rule}.${idx}.id` as 'targetInformation.aas.aasIds.0.id'
                             }
@@ -68,7 +67,6 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
                                         onBlur={field.onBlur}
                                         inputRef={field.ref}
                                         fullWidth
-                                        key={idx}
                                         variant="outlined"
                                         placeholder="Enter specific values"
                                         value={field.value}

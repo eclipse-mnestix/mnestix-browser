@@ -9,12 +9,12 @@ import { Delete } from '@mui/icons-material';
 import { TargetInformationView } from 'app/[locale]/settings/_components/role-settings/target-information/TargetInformationView';
 
 interface RuleDeleteDialogProps {
-    onCloseDialog: (reload: boolean) => void;
     onCancelDialog: () => void;
+    onDelete: () => Promise<void>;
     rule: BaSyxRbacRule;
 }
 
-export function RuleDeleteDialog({ onCloseDialog, onCancelDialog, rule }: RuleDeleteDialogProps) {
+export function RuleDeleteDialog({ onCancelDialog, onDelete, rule }: RuleDeleteDialogProps) {
     const t = useTranslations('pages.settings.rules');
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
@@ -22,11 +22,11 @@ export function RuleDeleteDialog({ onCloseDialog, onCancelDialog, rule }: RuleDe
     async function deleteRule() {
         const response = await rbacActions.deleteRbacRule(rule.idShort);
         if (response.isSuccess) {
-            onCloseDialog(true);
             notificationSpawner.spawn({
-                message: t('delete.success'),
+                message: t('deleteRule.success'),
                 severity: 'success',
             });
+            await onDelete();
             return;
         }
         showError(response.message);
@@ -36,10 +36,13 @@ export function RuleDeleteDialog({ onCloseDialog, onCancelDialog, rule }: RuleDe
         <>
             <DialogContent>
                 <Typography variant="h2" color="primary" sx={{ mb: '1rem' }} data-testid="role-delete-question">
-                    {t('delete.question')}
+                    {t('deleteRule.question')}
                 </Typography>
                 <Typography mb={'1rem'} data-testid="role-delete-info">
-                    {t('delete.ruleInfo', { role: rule.role, action: rule.action })}
+                    {t('deleteRule.ruleInfo', {
+                        role: rule.role,
+                        action: rule.action,
+                    })}
                 </Typography>
                 <TargetInformationView targetInformation={rule.targetInformation} />
             </DialogContent>
