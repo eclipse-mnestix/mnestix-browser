@@ -6,7 +6,9 @@ import { GenericSubmodelElementComponent } from '../../submodel-elements/generic
 import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
 
 export function GenericSubmodelDetailComponent({ submodel }: SubmodelVisualizationProps) {
-    const submodelElements = submodel.submodelElements ?? [];
+    const submodelElements = (submodel.submodelElements ?? []).filter(element =>
+        !(element.idShort === 'numberOfDocuments')
+    );
 
     // Entity element always has a line at the bottom, so we don't need an extra line on the following element
     const isEntityElementAbove = (index: number) => submodelElements[index - 1] instanceof Entity;
