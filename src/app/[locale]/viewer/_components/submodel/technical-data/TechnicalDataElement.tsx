@@ -92,13 +92,12 @@ export const TechnicalDataElement = (props: {
     }, [props.isExpanded, loadConceptDescriptions]);
 
     const renderSubmodelElement = (element: ISubmodelElement) => {
-        const semanticId = element.semanticId?.keys[0].value || '';
+        const semanticId = element.semanticId?.keys?.[0]?.value || '';
         switch (getKeyType(element)) {
             case KeyTypes.Property: {
                 return (
                     <DataRowWithUnit
                         submodelElement={element}
-                        key={element.idShort}
                         conceptDescription={conceptDescriptions[semanticId]}
                         conceptDescriptionLoading={loadingConceptDescriptions}
                     >
@@ -120,7 +119,7 @@ export const TechnicalDataElement = (props: {
                         }}
                     >
                         {(element as SubmodelElementCollection | SubmodelElementList)?.value?.map(
-                            (child) => child && renderSubmodelElement(child),
+                            (child) => child && <React.Fragment key={child.idShort}>{renderSubmodelElement(child)}</React.Fragment>,
                         )}
                     </TreeItem>
                 );
@@ -130,7 +129,7 @@ export const TechnicalDataElement = (props: {
 
                 return (
                     // With the hardcoded SubmodelElementPath, this only works for CompanyLogo and ProductLogo
-                    <DataRowWithUnit submodelElement={element} key={element.idShort}>
+                    <DataRowWithUnit submodelElement={element}>
                         <Box height="50px" overflow="hidden" sx={{ display: 'flex', overflowWrap: 'anywhere' }}>
                             <FileComponent
                                 file={file}
@@ -145,8 +144,8 @@ export const TechnicalDataElement = (props: {
                 return (
                     <DataRowWithUnit
                         submodelElement={element}
-                        key={element.idShort}
                         conceptDescription={conceptDescriptions[semanticId]}
+                        conceptDescriptionLoading={loadingConceptDescriptions}
                     >
                         <MultiLanguagePropertyComponent mLangProp={element as MultiLanguageProperty} />
                     </DataRowWithUnit>
@@ -156,7 +155,6 @@ export const TechnicalDataElement = (props: {
                 return (
                     <DataRowWithUnit
                         submodelElement={element}
-                        key={element.idShort}
                         conceptDescription={conceptDescriptions[semanticId]}
                     >
                         <span>
@@ -195,7 +193,7 @@ export const TechnicalDataElement = (props: {
             }}
             key={props.label}
         >
-            {props.elements?.map((el) => el && renderSubmodelElement(el))}
+            {props.elements?.map((el, index) => el && <React.Fragment key={`${el.idShort}_${index}`}>{renderSubmodelElement(el)}</React.Fragment>)}
         </TreeItem>
     );
 };
