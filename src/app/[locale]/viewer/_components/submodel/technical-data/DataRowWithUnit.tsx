@@ -4,7 +4,7 @@ import { ISubmodelElement } from '@aas-core-works/aas-core3.0-typescript/types';
 import { ConceptDescription } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import {
     useBestLabelForSmElement,
-    getUnitFromConceptDecription,
+    getUnitFromConceptDescription,
 } from 'app/[locale]/viewer/_components/submodel/technical-data/ConceptDescriptionHelper';
 
 /**
@@ -33,7 +33,7 @@ export const DataRowWithUnit = React.memo(
                         props.conceptDescription &&
                         props.conceptDescription.embeddedDataSpecifications?.[0]?.dataSpecificationContent && (
                             <Box component="span" sx={{ width: '20%' }}>
-                                {getUnitFromConceptDecription(props.conceptDescription)}
+                                {getUnitFromConceptDescription(props.conceptDescription)}
                             </Box>
                         )
                     )}
