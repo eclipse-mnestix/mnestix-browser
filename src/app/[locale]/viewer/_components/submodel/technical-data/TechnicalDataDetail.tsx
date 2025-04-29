@@ -19,10 +19,10 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
     const findSubmodelElementBySemanticIdOrIdShort = (semanticId: SubmodelElementSemanticIdEnum, idShort: string) =>
         submodel.submodelElements?.find((el) => hasSemanticId(el, semanticId) || el.idShort === idShort) as SubmodelElementCollection | undefined;
 
-    const generalInformation = findSubmodelElementBySemanticIdOrIdShort(SubmodelElementSemanticIdEnum.GeneralInformation, 'GeneralIdnformation');
-    const technicalData = findSubmodelElementBySemanticIdOrIdShort(SubmodelElementSemanticIdEnum.TechnicalProperties, 'TechnicalPropderties');
-    const productClassifications = findSubmodelElementBySemanticIdOrIdShort(SubmodelElementSemanticIdEnum.ProductClassifications, 'ProdductClassifications');
-    const furtherInformation = findSubmodelElementBySemanticIdOrIdShort( SubmodelElementSemanticIdEnum.FurtherInformation, 'FurtherIndformation');
+    const generalInformation = findSubmodelElementBySemanticIdOrIdShort(SubmodelElementSemanticIdEnum.GeneralInformation, 'GeneralInformation');
+    const technicalData = findSubmodelElementBySemanticIdOrIdShort(SubmodelElementSemanticIdEnum.TechnicalProperties, 'TechnicalProperties');
+    const productClassifications = findSubmodelElementBySemanticIdOrIdShort(SubmodelElementSemanticIdEnum.ProductClassifications, 'ProductClassifications');
+    const furtherInformation = findSubmodelElementBySemanticIdOrIdShort( SubmodelElementSemanticIdEnum.FurtherInformation, 'FurtherInformation');
 
     const cannotRenderTechnicalData = !generalInformation && !technicalData && !productClassifications && !furtherInformation;
 
