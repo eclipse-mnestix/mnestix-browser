@@ -66,10 +66,19 @@ const isDataSpecificationIec61360 = (content: unknown): content is DataSpecifica
     );
 };
 
-export const getUnitFromConceptDecription = (conceptDescription: ConceptDescription) => {
+/**
+ * Determine which unit from the concept description should be displayed.
+ * @param conceptDescription
+ */
+export const getUnitFromConceptDescription = (conceptDescription: ConceptDescription) => {
     const dataSpecContent = getDataSpecContentFromConceptDescription(conceptDescription);
     if (dataSpecContent) {
-        return dataSpecContent.unit;
+        if (dataSpecContent.symbol) {
+            return dataSpecContent.symbol;
+        }
+        if (dataSpecContent.unit) {
+            return dataSpecContent.unit;
+        }
     }
     return '';
 };
