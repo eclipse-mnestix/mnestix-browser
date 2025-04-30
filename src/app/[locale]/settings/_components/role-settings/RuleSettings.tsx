@@ -105,7 +105,6 @@ export const RuleSettings = () => {
         return (
             <TableRow>
                 <TableCell sx={tableHeaderText} data-testid="rulesettings-header-name">
-                    {/*maybe copy button*/}
                     {''}
                 </TableCell>
                 <TableCell sx={tableHeaderText} data-testid="rulesettings-header-action">
@@ -114,7 +113,7 @@ export const RuleSettings = () => {
                 <TableCell sx={tableHeaderText} data-testid="rulesettings-header-type">
                     {t('tableHeader.type')}
                 </TableCell>
-                {isMobile && (
+                {!isMobile && (
                     <TableCell sx={tableHeaderText} data-testid="rulesettings-header-permissions">
                         {t('tableHeader.permissions')}
                     </TableCell>
@@ -302,9 +301,7 @@ export const RuleSettings = () => {
                 <AccordionDetails>
                     <Table>
                         <TableHead>
-                            <TableRow>
-                                <TableCellHeader />
-                            </TableRow>
+                            <TableCellHeader />
                         </TableHead>
                         <RuleList rules={rules} />
                     </Table>
