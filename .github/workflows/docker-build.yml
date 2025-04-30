@@ -60,11 +60,34 @@ jobs:
         with:
           path: mnestix-browser.tar
           key: docker-image-${{github.ref}}-${{ github.run_id }}
+          
+  build-cypress-image:
+    name: Build cypress image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and export
+        uses: docker/build-push-action@v6
+        with:
+          file: cypress.dockerfile
+          tags: cypress-test:runner
+          outputs: type=docker,dest=${{ runner.temp }}/cypress-test.tar
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-test
+          path: ${{ runner.temp }}/cypress-test.tar
 
   e2e-tests:
     name: e2e test matrix
     runs-on: ubuntu-latest
-    needs: ['build-browser-image']
+    needs: ['build-browser-image', 'build-cypress-image']
     permissions:
       contents: read
     strategy:
@@ -77,6 +100,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Download Test-Image
+        uses: actions/download-artifact@v4
+        with:
+          name: cypress-test
+          path: ${{ runner.temp }}
+
+      - name: Load cypress image
+        run: |
+          docker load --input ${{ runner.temp }}/cypress-test.tar
+          docker image ls -a
+
       - name: Restore image
         uses: actions/cache/restore@v4
         with:
@@ -84,20 +118,20 @@ jobs:
           key: docker-image-${{github.ref}}-${{ github.run_id }}
 
       # image too big to be reused
-      - name: Build test image
-        run: docker compose -f compose.yml -f docker-compose/compose.test.yml --profile tests build cypress-test
+      #- name: Build test image
+      #  run: docker compose -f compose.yml -f docker-compose/compose.test.yml --profile tests build cypress-test
 
       - name: Pull images
         run: docker compose -f compose.yml -f docker-compose/compose.test.yml --profile tests pull
 
       # Remove old image to avoid conflicts, before sometimes the old image wasn't loaded
       # If this step fails please check docker-compose/compose.test.yml if tag is still correct
-      - name: Remove Docker image mnestix/mnestix-browser:latest, to avoid conflicts
-        run: docker rmi mnestix/mnestix-browser:latest
+      #- name: Remove Docker image mnestix/mnestix-browser:latest, to avoid conflicts
+      #  run: docker rmi mnestix/mnestix-browser:latest
 
       # overwrite the pulled image with the new image
-      - name: Load mnestix-browser image
-        run: docker load -i mnestix-browser.tar
+      #- name: Load mnestix-browser image
+      #  run: docker load -i mnestix-browser.tar
 
       - name: Run e2e tests
         # 18-minute timeout to speed up failing tests that are retried too long.
