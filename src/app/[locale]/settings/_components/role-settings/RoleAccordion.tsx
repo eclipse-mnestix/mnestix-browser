@@ -19,7 +19,7 @@ import { RoundedIconButton } from 'components/basics/Buttons';
 import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
 import { useTranslations } from 'next-intl';
 
-const SUMMARY_PRIORITY_ORDER = [
+const PERMISSION_CATEGORY_PRIORITY_ORDER = [
     'aasIds',
     'assetIds',
     'submodelIds',
@@ -43,11 +43,11 @@ export function RoleAccordion({
     function aggregateRoleData(rules: BaSyxRbacRule[]) {
         const actions = Array.from(new Set(rules.map((rule) => rule.action)));
         const types = Array.from(new Set(rules.map((rule) => rule.targetInformation['@type'])));
-        const permissions = groupPermissionsByRole(rules);
+        const permissions = groupPermissionsByCategory(rules);
         return { actions, types, permissions };
     }
 
-    function groupPermissionsByRole(rules: BaSyxRbacRule[]): Record<string, Set<string>> {
+    function groupPermissionsByCategory(rules: BaSyxRbacRule[]): Record<string, Set<string>> {
         return rules.reduce(
             // not using Object.groupBy as it is only Baseline 2024
             (groupedPermissions, rule) => {
@@ -223,7 +223,7 @@ export function RoleAccordion({
         const permissionCategories = Object.keys(permissions);
 
         const accumulatedCategories: string[] = [];
-        for (const category of SUMMARY_PRIORITY_ORDER) {
+        for (const category of PERMISSION_CATEGORY_PRIORITY_ORDER) {
             // Push if any rule has this category
             if (permissionCategories.includes(category)) {
                 accumulatedCategories.push(category);
