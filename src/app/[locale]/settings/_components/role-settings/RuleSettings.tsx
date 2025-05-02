@@ -28,7 +28,13 @@ import AddIcon from '@mui/icons-material/Add';
 import { CreateRuleDialog, defaultRbacRule } from 'app/[locale]/settings/_components/role-settings/CreateRuleDialog';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const SUMMARY_PRIORITY_ORDER = ['aasIds', 'submodelIds', 'submodelElementIdShortPaths', 'conceptDescriptionIds'];
+const SUMMARY_PRIORITY_ORDER = [
+    'aasIds',
+    'assetIds',
+    'submodelIds',
+    'submodelElementIdShortPaths',
+    'conceptDescriptionIds',
+];
 const DEFAULT_RBAC_RULE = { ...defaultRbacRule, isOnlyRuleForRole: false };
 
 export const RuleSettings = () => {
@@ -163,47 +169,40 @@ export const RuleSettings = () => {
         return { actions, types, permissions };
     }
 
-    function RulePermissions({
-        permissions,
-        maxItems,
-    }: {
-        permissions: Record<string, Set<string>>;
-        maxItems?: number;
-    }) {
+    function RulePermissions({ permissions }: { permissions: Record<string, Set<string>>; maxItems?: number }) {
         const permissionCategories = Object.keys(permissions);
-        const categoryKeys = [...SUMMARY_PRIORITY_ORDER, ...permissionCategories];
 
         const accumulatedCategories: string[] = [];
-        for (const category of categoryKeys) {
-            if (maxItems && accumulatedCategories.length >= maxItems) break;
-
-            // Push if a valid new category is located
-            if (!accumulatedCategories.includes(category) && permissionCategories.includes(category)) {
+        for (const category of SUMMARY_PRIORITY_ORDER) {
+            // Push if any rule has this category
+            if (permissionCategories.includes(category)) {
                 accumulatedCategories.push(category);
             }
         }
 
         return (
-            <Box display="flex" flexDirection="column">
+            <Box display="flex" flexDirection="column" maxWidth="100%">
                 {accumulatedCategories.map((category) => {
-                    const firstId = Array.from(permissions[category])[0];
+                    const firstId = Array.from(permissions[category]).join(', ');
 
                     return (
-                        <Box display="flex" flexDirection="row" key={category}>
+                        <Box display="flex" flexDirection="row" key={category} maxWidth="100%">
                             <Typography variant="body2" fontWeight="bold" mr="0.5rem">
                                 {`${category}: `}
                             </Typography>
-                            <Typography variant="body2" width="fill" overflow="hidden" textOverflow="ellipsis">
+                            <Typography
+                                variant="body2"
+                                width="fill"
+                                overflow="hidden"
+                                textOverflow="ellipsis"
+                                whiteSpace="nowrap"
+                                maxWidth="100%"
+                            >
                                 {firstId}
                             </Typography>
                         </Box>
                     );
                 })}
-                {maxItems && Object.keys(permissions).length > maxItems && (
-                    <Typography variant="body2" fontWeight="bold" mr="0.5rem">
-                        ...
-                    </Typography>
-                )}
             </Box>
         );
     }
@@ -248,8 +247,8 @@ export const RuleSettings = () => {
                     </Typography>
                 </Box>
                 {!isMobile && (
-                    <Box p={'1rem'}>
-                        <RulePermissions permissions={permissions} maxItems={3} />
+                    <Box p={'1rem'} maxWidth="100%" overflow="hidden" textOverflow="ellipsis">
+                        <RulePermissions permissions={permissions} />
                     </Box>
                 )}
             </Box>
