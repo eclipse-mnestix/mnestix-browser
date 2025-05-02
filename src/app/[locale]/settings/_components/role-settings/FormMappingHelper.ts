@@ -1,4 +1,4 @@
-import { BaSyxRbacRule, TargetInformation, rbacRuleTargets } from 'lib/services/rbac-service/types/RbacServiceData';
+import { BaSyxRbacRule, rbacRuleTargets, TargetInformation } from 'lib/services/rbac-service/types/RbacServiceData';
 import {
     ArrayOfIds,
     RuleFormModel,

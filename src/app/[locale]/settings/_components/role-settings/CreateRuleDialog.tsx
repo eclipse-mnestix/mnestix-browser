@@ -17,19 +17,19 @@ type RoleDialogProps = {
     readonly availableRoles: string[];
 };
 
-export function CreateRuleDialog({ onClose, reloadRules, open, availableRoles }: RoleDialogProps) {
+export const defaultRbacRule: BaSyxRbacRule = {
+    action: 'READ',
+    targetInformation: { '@type': 'aas', aasIds: ['*'] },
+    role: '',
+    idShort: '',
+};
+
+export const CreateRuleDialog = ({ onClose, reloadRules, open, availableRoles }: RoleDialogProps) => {
     const t = useTranslations('pages.settings.rules');
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
 
     const [showHint, setShowHint] = useState(false);
-
-    const defaultRbacRule: BaSyxRbacRule = {
-        action: 'READ',
-        targetInformation: { '@type': 'aas', aasIds: ['*'] },
-        role: '',
-        idShort: '',
-    };
 
     async function afterSubmit(newData: RuleFormModel) {
         const isNewRole = !availableRoles.includes(newData.role);
@@ -92,4 +92,4 @@ export function CreateRuleDialog({ onClose, reloadRules, open, availableRoles }:
             </Box>
         </Dialog>
     );
-}
+};

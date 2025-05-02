@@ -34,7 +34,9 @@ describe('RoleSettings', () => {
         });
 
         await waitFor(() => {
-            expect(within(screen.getByTestId('role-settings-row-roleId1')).getByText('Admin-Role')).toBeInTheDocument();
+            expect(
+                within(screen.getByTestId('role-settings-accordion-summary-Admin-Role')).getByText('Admin-Role'),
+            ).toBeInTheDocument();
             expect(within(screen.getByTestId('role-settings-row-roleId1')).getByText('READ')).toBeInTheDocument();
             expect(
                 within(screen.getByTestId('role-settings-row-roleId1')).getByText('aas-environment'),
@@ -43,7 +45,9 @@ describe('RoleSettings', () => {
                 within(screen.getByTestId('role-settings-row-roleId1')).getByText('aasId1, aasId2'),
             ).toBeInTheDocument();
 
-            expect(within(screen.getByTestId('role-settings-row-roleId3')).getByText('User-Role')).toBeInTheDocument();
+            expect(
+                within(screen.getByTestId('role-settings-accordion-summary-User-Role')).getByText('User-Role'),
+            ).toBeInTheDocument();
             expect(within(screen.getByTestId('role-settings-row-roleId3')).getByText('CREATE')).toBeInTheDocument();
             expect(
                 within(screen.getByTestId('role-settings-row-roleId3')).getByText('submodelIds:'),
@@ -69,7 +73,7 @@ describe('RoleSettings', () => {
         await act(async () => {
             fireEvent.click(screen.getByTestId('role-settings-button-roleId1'));
         });
-        
+
         await waitFor(() => {
             expect(screen.getByTestId('role-dialog')).toBeVisible();
         });

@@ -198,12 +198,12 @@ describe('RuleForm', () => {
 
         const autocompleteInput = screen.getByTestId('rule-settings-name-input').querySelector('input');
 
-        userEvent.click(autocompleteInput as Element);
+        await userEvent.click(autocompleteInput as Element);
 
         const listbox = await screen.findByRole('listbox');
         const option = within(listbox).getByText('Admin-Role');
 
-        userEvent.click(option);
+        await userEvent.click(option);
 
         await waitFor(() => expect(autocompleteInput).toHaveValue('Admin-Role'));
     });
