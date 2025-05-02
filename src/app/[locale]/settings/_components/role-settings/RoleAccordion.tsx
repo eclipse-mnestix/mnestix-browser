@@ -49,6 +49,7 @@ export function RoleAccordion({
 
     function groupPermissionsByRole(rules: BaSyxRbacRule[]): Record<string, Set<string>> {
         return rules.reduce(
+            // not using Object.groupBy as it is only Baseline 2024
             (groupedPermissions, rule) => {
                 Object.entries(rule.targetInformation)
                     .filter(([key]) => key !== '@type')
