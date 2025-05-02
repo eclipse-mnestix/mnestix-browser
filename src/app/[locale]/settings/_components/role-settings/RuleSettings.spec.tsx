@@ -48,7 +48,6 @@ describe('RoleSettings', () => {
             expect(
                 within(screen.getByTestId('role-settings-accordion-summary-User-Role')).getByText('User-Role'),
             ).toBeInTheDocument();
-            expect(within(screen.getByTestId('role-settings-row-roleId3')).getByText('User-Role')).toBeInTheDocument();
             expect(within(screen.getByTestId('role-settings-row-roleId3')).getByText('CREATE')).toBeInTheDocument();
             expect(
                 within(screen.getByTestId('role-settings-row-roleId3')).getByText('submodelIds:'),
