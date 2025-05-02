@@ -15,7 +15,7 @@ import {
 import { CardHeading } from 'components/basics/CardHeading';
 import { useTranslations } from 'next-intl';
 import { DialogRbacRule, RuleDialog } from 'app/[locale]/settings/_components/role-settings/RuleDialog';
-import { JSX, useState } from 'react';
+import { useState } from 'react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { RoundedIconButton } from 'components/basics/Buttons';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
@@ -37,110 +37,24 @@ const SUMMARY_PRIORITY_ORDER = [
 ];
 const DEFAULT_RBAC_RULE = { ...defaultRbacRule, isOnlyRuleForRole: false };
 
-export const RuleSettings = () => {
-    const t = useTranslations('pages.settings.rules');
-    const [ruleDetailDialogOpen, setRuleDetailDialogOpen] = useState(false);
-    const [createDialogOpen, setCreateDialogOpen] = useState(false);
-    const [selectedRule, setSelectedRule] = useState<DialogRbacRule>();
-    const [rbacRoles, setRbacRoles] = useState<RbacRolesFetchResult>();
+function RoleAccordion({
+    roleName,
+    rules,
+    openDetailDialog,
+}: {
+    roleName: string;
+    rules: BaSyxRbacRule[];
+    openDetailDialog: (entry: BaSyxRbacRule) => void;
+}) {
+    const [isExpanded, setExpanded] = useState(false);
     const isMobile = useIsMobile();
-    const [isLoading, setIsLoading] = useState(false);
-    const { showError } = useShowError();
+    const t = useTranslations('pages.settings.rules');
 
-    const MAX_PERMISSIONS_CHARS = 40;
-
-    // all available role names
-    const availableRoles = [...new Set(rbacRoles?.roles.map((role) => role.role))];
-
-    async function loadRbacData() {
-        setIsLoading(true);
-        const response = await getRbacRules();
-        if (response.isSuccess) {
-            // sort by role name
-            response.result.roles.sort((a: { role: string }, b: { role: string }) => a.role.localeCompare(b.role));
-            setRbacRoles(response.result);
-        } else {
-            showError(response.message);
-        }
-        setIsLoading(false);
-    }
-
-    useAsyncEffect(async () => {
-        await loadRbacData();
-    }, []);
-
-    const permissionCell = (entry: BaSyxRbacRule) => {
-        const permissions: JSX.Element[] = [];
-        const keys = Object.keys(entry.targetInformation);
-        keys.forEach((key) => {
-            if (key === '@type') {
-                return;
-            }
-            //@ts-expect-error keys for union not indexable
-            const element: string = entry.targetInformation[key] ? entry.targetInformation[key].join(', ') : '';
-            permissions.push(
-                <Box component="span" key={key + element}>
-                    <Box component="span" fontWeight="bold">
-                        {`${key}: `}
-                    </Box>
-                    {element.length > MAX_PERMISSIONS_CHARS ? `${element.slice(0, MAX_PERMISSIONS_CHARS)}...` : element}
-                    <br />
-                </Box>,
-            );
-        });
-        return permissions;
-    };
-
-    const openDetailDialog = (entry: BaSyxRbacRule) => {
-        // Check if the entry is the only rule for the role
-        const isOnlyRuleForRole = rbacRoles?.roles.filter((rule) => rule.role === entry.role).length === 1;
-        const updatedEntry = { ...entry, isOnlyRuleForRole };
-
-        setSelectedRule(updatedEntry);
-        setRuleDetailDialogOpen(true);
-    };
-
-    function TableCellHeader() {
-        const tableHeaderText = {
-            variant: 'h5',
-            color: 'secondary',
-            letterSpacing: 0.16,
-            fontWeight: 700,
-        };
-
-        return (
-            <TableRow>
-                <TableCell sx={tableHeaderText} data-testid="rulesettings-header-name">
-                    {''}
-                </TableCell>
-                <TableCell sx={tableHeaderText} data-testid="rulesettings-header-action">
-                    {t('tableHeader.action')}
-                </TableCell>
-                <TableCell sx={tableHeaderText} data-testid="rulesettings-header-type">
-                    {t('tableHeader.type')}
-                </TableCell>
-                {!isMobile && (
-                    <TableCell sx={tableHeaderText} data-testid="rulesettings-header-permissions">
-                        {t('tableHeader.permissions')}
-                    </TableCell>
-                )}
-                <TableCell sx={tableHeaderText} data-testid="rulesettings-header-empty"></TableCell>
-            </TableRow>
-        );
-    }
-
-    function groupRulesByRole(): Record<string, BaSyxRbacRule[]> {
-        if (!rbacRoles) return {};
-        return rbacRoles.roles.reduce(
-            (groupedRules, rule) => {
-                if (!groupedRules[rule.role]) {
-                    groupedRules[rule.role] = [];
-                }
-                groupedRules[rule.role].push(rule);
-                return groupedRules;
-            },
-            {} as Record<string, BaSyxRbacRule[]>,
-        );
+    function aggregateRoleData(rules: BaSyxRbacRule[]) {
+        const actions = Array.from(new Set(rules.map((rule) => rule.action)));
+        const types = Array.from(new Set(rules.map((rule) => rule.targetInformation['@type'])));
+        const permissions = groupPermissionsByRole(rules);
+        return { actions, types, permissions };
     }
 
     function groupPermissionsByRole(rules: BaSyxRbacRule[]): Record<string, Set<string>> {
@@ -159,51 +73,6 @@ export const RuleSettings = () => {
                 return groupedPermissions;
             },
             {} as Record<string, Set<string>>,
-        );
-    }
-
-    function aggregateRoleData(rules: BaSyxRbacRule[]) {
-        const actions = Array.from(new Set(rules.map((rule) => rule.action)));
-        const types = Array.from(new Set(rules.map((rule) => rule.targetInformation['@type'])));
-        const permissions = groupPermissionsByRole(rules);
-        return { actions, types, permissions };
-    }
-
-    function RulePermissions({ permissions }: { permissions: Record<string, Set<string>>; maxItems?: number }) {
-        const permissionCategories = Object.keys(permissions);
-
-        const accumulatedCategories: string[] = [];
-        for (const category of SUMMARY_PRIORITY_ORDER) {
-            // Push if any rule has this category
-            if (permissionCategories.includes(category)) {
-                accumulatedCategories.push(category);
-            }
-        }
-
-        return (
-            <Box display="flex" flexDirection="column" maxWidth="100%">
-                {accumulatedCategories.map((category) => {
-                    const firstId = Array.from(permissions[category]).join(', ');
-
-                    return (
-                        <Box display="flex" flexDirection="row" key={category} maxWidth="100%">
-                            <Typography variant="body2" fontWeight="bold" mr="0.5rem">
-                                {`${category}: `}
-                            </Typography>
-                            <Typography
-                                variant="body2"
-                                width="fill"
-                                overflow="hidden"
-                                textOverflow="ellipsis"
-                                whiteSpace="nowrap"
-                                maxWidth="100%"
-                            >
-                                {firstId}
-                            </Typography>
-                        </Box>
-                    );
-                })}
-            </Box>
         );
     }
 
@@ -247,11 +116,40 @@ export const RuleSettings = () => {
                     </Typography>
                 </Box>
                 {!isMobile && (
-                    <Box p={'1rem'} maxWidth="100%" overflow="hidden" textOverflow="ellipsis">
+                    <Box p={'1rem'} maxWidth="32rem" overflow="hidden" textOverflow="ellipsis">
                         <RulePermissions permissions={permissions} />
                     </Box>
                 )}
             </Box>
+        );
+    }
+
+    function TableCellHeader() {
+        const tableHeaderText = {
+            variant: 'h5',
+            color: 'primary.main',
+            letterSpacing: 0.16,
+            fontWeight: 700,
+        };
+
+        return (
+            <TableRow>
+                <TableCell sx={tableHeaderText} data-testid="rulesettings-header-name">
+                    {''}
+                </TableCell>
+                <TableCell sx={tableHeaderText} data-testid="rulesettings-header-action">
+                    {t('tableHeader.action')}
+                </TableCell>
+                <TableCell sx={tableHeaderText} data-testid="rulesettings-header-type">
+                    {t('tableHeader.type')}
+                </TableCell>
+                {!isMobile && (
+                    <TableCell sx={tableHeaderText} data-testid="rulesettings-header-permissions">
+                        {t('tableHeader.permissions')}
+                    </TableCell>
+                )}
+                <TableCell sx={tableHeaderText} data-testid="rulesettings-header-empty"></TableCell>
+            </TableRow>
         );
     }
 
@@ -277,7 +175,7 @@ export const RuleSettings = () => {
                         </TableCell>
                         {!isMobile && (
                             <TableCell sx={{ borderBottom: '0px', borderTop: '1px solid #eee' }}>
-                                {permissionCell(entry)}
+                                <PermissionCell entry={entry} />
                             </TableCell>
                         )}
                         <TableCell sx={{ borderBottom: '0px', borderTop: '1px solid #eee' }}>
@@ -296,27 +194,149 @@ export const RuleSettings = () => {
         );
     }
 
-    function RoleAccordion({ roleName, rules }: { roleName: string; rules: BaSyxRbacRule[] }) {
-        const [isExpanded, setExpanded] = useState(false);
+    function PermissionCell({ entry }: { entry: BaSyxRbacRule }) {
+        const permissions = Object.entries(entry.targetInformation).filter(
+            (e): e is [string, string[]] => e[0] !== '@type',
+        );
         return (
-            <Accordion key={roleName} expanded={isExpanded}>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    sx={{ height: '8rem' }}
-                    data-testid={`role-settings-accordion-summary-${roleName}`}
-                    onClick={() => setExpanded(!isExpanded)}
-                >
-                    <AccordionHeader roleName={roleName} rules={rules} />
-                </AccordionSummary>
-                <AccordionDetails>
-                    <Table>
-                        <TableHead>
-                            <TableCellHeader />
-                        </TableHead>
-                        <RuleList rules={rules} />
-                    </Table>
-                </AccordionDetails>
-            </Accordion>
+            <Box display="flex" flexDirection="column" maxWidth="100%">
+                {permissions.map(([category, perms]) => {
+                    const idString = perms.join(', ');
+                    return (
+                        <Box
+                            display="flex"
+                            flexDirection="row"
+                            maxWidth="32rem"
+                            key={`permission-row-${entry.idShort}-${category}`}
+                        >
+                            <Typography variant="body2" fontWeight="bold" mr="0.5rem">
+                                {`${category}: `}
+                            </Typography>
+                            <Typography
+                                variant="body2"
+                                width="fill"
+                                overflow="hidden"
+                                textOverflow="ellipsis"
+                                maxWidth="100%"
+                            >
+                                {idString}
+                            </Typography>
+                        </Box>
+                    );
+                })}
+            </Box>
+        );
+    }
+
+    function RulePermissions({ permissions }: { permissions: Record<string, Set<string>>; maxItems?: number }) {
+        const permissionCategories = Object.keys(permissions);
+
+        const accumulatedCategories: string[] = [];
+        for (const category of SUMMARY_PRIORITY_ORDER) {
+            // Push if any rule has this category
+            if (permissionCategories.includes(category)) {
+                accumulatedCategories.push(category);
+            }
+        }
+
+        return (
+            <Box display="flex" flexDirection="column" maxWidth="100%">
+                {accumulatedCategories.map((category) => {
+                    const idString = Array.from(permissions[category]).join(', ');
+
+                    return (
+                        <Box display="flex" flexDirection="row" key={category} maxWidth="100%">
+                            <Typography variant="body2" fontWeight="bold" mr="0.5rem">
+                                {`${category}: `}
+                            </Typography>
+                            <Typography
+                                variant="body2"
+                                width="fill"
+                                overflow="hidden"
+                                textOverflow="ellipsis"
+                                whiteSpace="nowrap"
+                                maxWidth="100%"
+                            >
+                                {idString}
+                            </Typography>
+                        </Box>
+                    );
+                })}
+            </Box>
+        );
+    }
+
+    return (
+        <Accordion key={roleName} expanded={isExpanded}>
+            <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                sx={{ height: '8rem' }}
+                data-testid={`role-settings-accordion-summary-${roleName}`}
+                onClick={() => setExpanded(!isExpanded)}
+            >
+                <AccordionHeader roleName={roleName} rules={rules} />
+            </AccordionSummary>
+            <AccordionDetails>
+                <Table>
+                    <TableHead>
+                        <TableCellHeader />
+                    </TableHead>
+                    <RuleList rules={rules} />
+                </Table>
+            </AccordionDetails>
+        </Accordion>
+    );
+}
+
+export const RuleSettings = () => {
+    const t = useTranslations('pages.settings.rules');
+    const [ruleDetailDialogOpen, setRuleDetailDialogOpen] = useState(false);
+    const [createDialogOpen, setCreateDialogOpen] = useState(false);
+    const [selectedRule, setSelectedRule] = useState<DialogRbacRule>();
+    const [rbacRoles, setRbacRoles] = useState<RbacRolesFetchResult>();
+    const [isLoading, setIsLoading] = useState(false);
+    const { showError } = useShowError();
+
+    // all available role names
+    const availableRoles = [...new Set(rbacRoles?.roles.map((role) => role.role))];
+
+    async function loadRbacData() {
+        setIsLoading(true);
+        const response = await getRbacRules();
+        if (response.isSuccess) {
+            // sort by role name
+            response.result.roles.sort((a: { role: string }, b: { role: string }) => a.role.localeCompare(b.role));
+            setRbacRoles(response.result);
+        } else {
+            showError(response.message);
+        }
+        setIsLoading(false);
+    }
+
+    useAsyncEffect(async () => {
+        await loadRbacData();
+    }, []);
+
+    const openDetailDialog = (entry: BaSyxRbacRule) => {
+        // Check if the entry is the only rule for the role
+        const isOnlyRuleForRole = rbacRoles?.roles.filter((rule) => rule.role === entry.role).length === 1;
+        const updatedEntry = { ...entry, isOnlyRuleForRole };
+
+        setSelectedRule(updatedEntry);
+        setRuleDetailDialogOpen(true);
+    };
+
+    function groupRulesByRole(): Record<string, BaSyxRbacRule[]> {
+        if (!rbacRoles) return {};
+        return rbacRoles.roles.reduce(
+            (groupedRules, rule) => {
+                if (!groupedRules[rule.role]) {
+                    groupedRules[rule.role] = [];
+                }
+                groupedRules[rule.role].push(rule);
+                return groupedRules;
+            },
+            {} as Record<string, BaSyxRbacRule[]>,
         );
     }
 
@@ -341,7 +361,12 @@ export const RuleSettings = () => {
                         </Box>
                         <Box width="100%" mt={2}>
                             {Object.entries(groupedRules).map(([roleName, rules]) => (
-                                <RoleAccordion key={roleName} roleName={roleName} rules={rules} />
+                                <RoleAccordion
+                                    key={roleName}
+                                    roleName={roleName}
+                                    rules={rules}
+                                    openDetailDialog={openDetailDialog}
+                                />
                             ))}
                         </Box>
                     </>

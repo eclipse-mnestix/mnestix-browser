@@ -55,6 +55,7 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
                 <>
                     {fields.map((_, idx) => (
                         <Controller
+                            key={idx}
                             name={
                                 `targetInformation.${props.type}.${props.rule}.${idx}.id` as 'targetInformation.aas.aasIds.0.id'
                             }
