@@ -111,10 +111,7 @@ export const RuleForm = ({ onCancel, onSubmit, rule, title, availableRoles }: Ru
                                     {...field}
                                 >
                                     {rbacRuleActions.map((action) => (
-                                        <MenuItem
-                                            value={action}
-                                            data-testid={`rule-settings-action-${action}`}
-                                        >
+                                        <MenuItem value={action} data-testid={`rule-settings-action-${action}`}>
                                             {action}
                                         </MenuItem>
                                     ))}

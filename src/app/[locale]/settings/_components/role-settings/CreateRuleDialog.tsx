@@ -28,7 +28,7 @@ export const CreateRuleDialog = ({ onClose, reloadRules, open, availableRoles }:
     const t = useTranslations('pages.settings.rules');
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
-    
+
     const [showHint, setShowHint] = useState(false);
 
     async function afterSubmit(newData: RuleFormModel) {
@@ -92,4 +92,4 @@ export const CreateRuleDialog = ({ onClose, reloadRules, open, availableRoles }:
             </Box>
         </Dialog>
     );
-}
+};
