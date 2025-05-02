@@ -68,6 +68,14 @@ export const RuleForm = ({ onCancel, onSubmit, rule, title, availableRoles }: Ru
                     <Controller
                         rules={{
                             required: t('roleRequired'),
+                            maxLength: {
+                                value: 1000 /* A theoretical jetty server can handle 2048 url length. */,
+                                message: t('roleNameMaxLength', { maxLength: 1000 }),
+                            },
+                            pattern: {
+                                value: /^.*\S$/,
+                                message: t('roleNameNoTrailSpace'),
+                            },
                         }}
                         name="role"
                         control={control}
@@ -111,10 +119,7 @@ export const RuleForm = ({ onCancel, onSubmit, rule, title, availableRoles }: Ru
                                     {...field}
                                 >
                                     {rbacRuleActions.map((action) => (
-                                        <MenuItem
-                                            value={action}
-                                            data-testid={`rule-settings-action-${action}`}
-                                        >
+                                        <MenuItem value={action} data-testid={`rule-settings-action-${action}`}>
                                             {action}
                                         </MenuItem>
                                     ))}

@@ -34,6 +34,11 @@ export class RbacRulesService {
     }
 
     async createRule(newRule: Omit<BaSyxRbacRule, 'idShort'>): Promise<ApiResponseWrapper<BaSyxRbacRule>> {
+        const error = this.hasRuleError(newRule);
+        if (error) {
+            return wrapErrorCode(ApiResultStatus.BAD_REQUEST, error);
+        }
+
         const newIdShort = ruleToIdShort(newRule);
         if (!(await this.isIdShortUnique(newIdShort))) {
             return wrapErrorCode(
@@ -111,8 +116,12 @@ export class RbacRulesService {
         idShort: string,
         newRule: Omit<BaSyxRbacRule, 'idShort'>,
     ): Promise<ApiResponseWrapper<BaSyxRbacRule>> {
-        const newIdShort = ruleToIdShort(newRule);
+        const error = this.hasRuleError(newRule);
+        if (error) {
+            return wrapErrorCode(ApiResultStatus.BAD_REQUEST, error);
+        }
 
+        const newIdShort = ruleToIdShort(newRule);
         if (idShort !== newIdShort && !(await this.isIdShortUnique(newIdShort))) {
             return wrapErrorCode(
                 ApiResultStatus.CONFLICT,
@@ -181,5 +190,12 @@ export class RbacRulesService {
         }
 
         return !rules.result.roles.find((e) => e.idShort === idShort);
+    }
+
+    private hasRuleError(rule: Omit<BaSyxRbacRule, 'idShort'>) {
+        if (rule.role.length > 1000) {
+            return 'Role name is too long';
+        }
+        return undefined;
     }
 }
