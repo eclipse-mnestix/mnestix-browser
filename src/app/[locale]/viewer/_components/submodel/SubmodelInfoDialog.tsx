@@ -2,11 +2,13 @@
 import { useTranslations } from 'next-intl';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 import { DataRow } from 'components/basics/DataRow';
+import { Reference } from '@aas-core-works/aas-core3.0-typescript/types';
 
 type SubmodelInfoDialogProps = {
     readonly onClose: () => void;
     readonly open: boolean;
     readonly idShort: string | null | undefined;
+    readonly semanticId: Reference | null | undefined;
     readonly id: string | undefined;
 };
 
@@ -22,6 +24,9 @@ export function SubmodelInfoDialog(props: SubmodelInfoDialogProps) {
                 </Typography>
                 <DataRow title={t('idLabel')} hasDivider={false}>
                     {props.id}
+                </DataRow>
+                <DataRow title={t('semanticIdLabel')} hasDivider={false}>
+                    {props.semanticId?.keys?.map(el => el.value).join(', ') || '-'}
                 </DataRow>
             </DialogContent>
         </Dialog>
