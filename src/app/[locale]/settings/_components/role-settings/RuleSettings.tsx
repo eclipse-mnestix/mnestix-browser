@@ -213,7 +213,18 @@ export const RuleSettings = () => {
         return (
             <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-evenly">
                 <Box sx={{ width: '12rem' }} p={'1rem'}>
-                    <Typography fontWeight="bold" overflow="hidden" textOverflow="ellipsis" maxWidth="inherit">
+                    <Typography
+                        fontWeight="bold"
+                        overflow="hidden"
+                        textOverflow="ellipsis"
+                        maxWidth="inherit"
+                        sx={{
+                            display: '-webkit-box',
+                            WebkitBoxOrient: 'vertical',
+                            WebkitLineClamp: 3,
+                            overflowWrap: 'break-word',
+                        }}
+                    >
                         {roleName}
                     </Typography>
                 </Box>
