@@ -138,13 +138,6 @@ export default function Page() {
                                 display: 'inline-block',
                             }}
                         >
-                            {isLoadingAas ? (
-                                <Skeleton width="40%" sx={{ margin: '0 auto' }} />
-                            ) : aasFromContext?.displayName ? (
-                                getTranslationText(aasFromContext?.displayName, locale)
-                            ) : (
-                                ''
-                            )}
                         </Typography>
                         {env.COMPARISON_FEATURE_FLAG && !isMobile && (
                             <Button
@@ -170,6 +163,7 @@ export default function Page() {
                         isLoading={isLoadingAas || isSubmodelsLoading}
                         isAccordion={isMobile}
                         repositoryURL={aasOriginUrl}
+                        displayName={aasFromContext?.displayName ? getTranslationText(aasFromContext.displayName, locale) : null}
                     />
                     {aasFromContext?.submodels && aasFromContext.submodels.length > 0 && (
                         <SubmodelsOverviewCard submodelIds={filteredSubmodels} submodelsLoading={isSubmodelsLoading} firstSubmodelIdShort="TechnicalData" />

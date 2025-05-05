@@ -35,6 +35,7 @@ type ProductOverviewCardProps = {
     readonly isAccordion: boolean;
     readonly imageLinksToDetail?: boolean;
     readonly repositoryURL: string | null;
+    readonly displayName: string | null;
 };
 
 type ProductClassification = {
@@ -215,16 +216,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
 
     const productInfo = (
         <Box sx={infoBoxStyle} data-testid="aas-data">
-            {!isAccordion && (
-                <Box display="flex">
-                    <IconCircleWrapper sx={{ mr: 1 }}>
-                        <ShellIcon fontSize="small" color="primary" />
-                    </IconCircleWrapper>
-                    <Typography sx={titleStyle} variant="h3">
-                        {t('title')}
-                    </Typography>
-                </Box>
-            )}
             <DataRow
                 title={t('productInfo.productDesignation')}
                 value={overviewData?.manufacturerProductDesignation}
@@ -295,16 +286,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
 
     const markings = (
         <Box sx={infoBoxStyle} data-testid="markings-data">
-            {!isAccordion && (
-                <Box display="flex">
-                    <IconCircleWrapper sx={{ mr: 1 }}>
-                        <AssetIcon fontSize="small" color="primary" />
-                    </IconCircleWrapper>
-                    <Typography sx={titleStyle} variant="h3">
-                        {t('markings')}
-                    </Typography>
-                </Box>
-            )}
             {overviewData?.markings && nameplateSubmodel?.id && (
                 <MarkingsComponent
                     submodelElement={overviewData?.markings}
@@ -359,13 +340,37 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                         {isAccordion ? (
                             <MobileAccordion
                                 content={productInfo}
-                                title={t('title')}
-                                icon={<ShellIcon fontSize="small" color="primary" />}
+                                title={props.displayName || t('title')}
                             />
                         ) : (
                             <>
-                                {productInfo}
-                                {markings}
+                                <Box sx={{ 
+                                    width: 'calc(100% - 340px)',
+                                    display: 'flex', 
+                                    flexDirection: 'column',
+                                    overflow: 'hidden'
+                                }}>
+                                    <Typography 
+                                        variant="h3" 
+                                        sx={{ 
+                                            marginBottom: 2,
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            wordBreak: 'break-word',
+                                            wordWrap: 'break-word',
+                                            display: '-webkit-box',
+                                            WebkitLineClamp: 2,
+                                            WebkitBoxOrient: 'vertical',
+                                            maxWidth: '100%'
+                                        }}
+                                    >
+                                        {props.displayName || t('title')}
+                                    </Typography>
+                                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
+                                        {productInfo}
+                                        {markings}
+                                    </Box>
+                                </Box>
                             </>
                         )}
                     </>
