@@ -1,0 +1,194 @@
+{
+  "completeTechnicalData": {
+    "id": "test-submodel-id",
+    "idShort": "TestTechnicalData",
+    "modelType": "Submodel",
+    "submodelElements": [
+      {
+        "idShort": "TechnicalProperties",
+        "semanticId": {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "GlobalReference",
+              "value": "0173-1#01-AKJ975#001"
+            }
+          ]
+        },
+        "modelType": "SubmodelElementCollection",
+        "value": [
+          {
+            "idShort": "TestProperty",
+            "category": "VARIABLE",
+            "valueType": "xs:string",
+            "value": "Test Value",
+            "modelType": "Property"
+          }
+        ]
+      },
+      {
+        "idShort": "GeneralInformation",
+        "semanticId": {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "GlobalReference",
+              "value": "0173-1#01-AGZ673#001"
+            }
+          ]
+        },
+        "modelType": "SubmodelElementCollection",
+        "value": [
+          {
+            "idShort": "TestProperty",
+            "category": "VARIABLE",
+            "valueType": "xs:string",
+            "value": "Test Value",
+            "modelType": "Property"
+          }
+        ]
+      },
+      {
+        "idShort": "ProductClassifications",
+        "semanticId": {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "GlobalReference",
+              "value": "0173-1#01-AAO814#001"
+            }
+          ]
+        },
+        "modelType": "SubmodelElementCollection",
+        "value": [
+          {
+            "idShort": "TestProperty",
+            "category": "VARIABLE",
+            "valueType": "xs:string",
+            "value": "Test Value",
+            "modelType": "Property"
+          }
+        ]
+      },
+      {
+        "idShort": "FurtherInformation",
+        "semanticId": {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "GlobalReference",
+              "value": "0173-1#01-AGZ677#001"
+            }
+          ]
+        },
+        "modelType": "SubmodelElementCollection",
+        "value": [
+          {
+            "idShort": "TestProperty",
+            "category": "VARIABLE",
+            "valueType": "xs:string",
+            "value": "Test Value",
+            "modelType": "Property"
+          }
+        ]
+      }
+    ]
+  },
+  "emptyTechnicalData": {
+    "id": "test-submodel-id",
+    "idShort": "EmptyTechnicalData",
+    "modelType": "Submodel",
+    "submodelElements": []
+  },
+  "partialTechnicalData": {
+    "id": "test-submodel-id",
+    "idShort": "PartialTechnicalData",
+    "modelType": "Submodel",
+    "submodelElements": [
+      {
+        "idShort": "TechnicalProperties",
+        "semanticId": {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "GlobalReference",
+              "value": "0173-1#01-AKJ975#001"
+            }
+          ]
+        },
+        "modelType": "SubmodelElementCollection",
+        "value": [
+          {
+            "idShort": "TestProperty",
+            "category": "VARIABLE",
+            "valueType": "xs:string",
+            "value": "Test Value",
+            "modelType": "Property"
+          }
+        ]
+      },
+      {
+        "idShort": "GeneralInformation",
+        "semanticId": {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "GlobalReference",
+              "value": "0173-1#01-AGZ673#001"
+            }
+          ]
+        },
+        "modelType": "SubmodelElementCollection",
+        "value": [
+          {
+            "idShort": "TestProperty",
+            "category": "VARIABLE",
+            "valueType": "xs:string",
+            "value": "Test Value",
+            "modelType": "Property"
+          }
+        ]
+      }
+    ]
+  },
+  "idShortTechnicalData": {
+    "id": "test-submodel-id",
+    "idShort": "IdShortTechnicalData",
+    "modelType": "Submodel",
+    "submodelElements": [
+      {
+        "idShort": "GeneralInformation",
+        "modelType": "SubmodelElementCollection",
+        "value": [
+          {
+            "idShort": "TestProperty",
+            "category": "VARIABLE",
+            "valueType": "xs:string",
+            "value": "Test Value",
+            "modelType": "Property"
+          }
+        ]
+      }
+    ]
+  },
+  "unrecognizedData": {
+    "id": "test-submodel-id",
+    "idShort": "UnrecognizedData",
+    "modelType": "Submodel",
+    "submodelElements": [
+      {
+        "idShort": "UnknownElement",
+        "modelType": "SubmodelElementCollection",
+        "value": [
+          {
+            "idShort": "TestProperty",
+            "category": "VARIABLE",
+            "valueType": "xs:string",
+            "value": "Test Value",
+            "modelType": "Property"
+          }
+        ]
+      }
+    ]
+  }
+}

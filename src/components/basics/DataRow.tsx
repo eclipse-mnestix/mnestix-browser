@@ -41,7 +41,7 @@ export function DataRow(props: DataRowProps) {
 
     return (
         <Box
-            data-testid='data-row'
+            data-testid={props.testId || 'data-row'}
             sx={{ display: 'flex', flexDirection: 'column', gap: '5px', marginBottom: '15px', ...props.sx }}
         >
             {props.hasDivider !== false && <Divider style={{ marginBottom: '10px' }} />}
