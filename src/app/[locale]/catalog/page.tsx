@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 
 /**
  * Configuration we need to display the catalog.
- * Could be configurable though settings and saved in the database later.
+ * Could be configurable through settings and saved in the database later.
  */
 type CatalogConfiguration = {
     catalogLogo: string;
@@ -18,7 +18,7 @@ type CatalogConfiguration = {
     }[];
 };
 
-const hardcodedCatalogConfiguration: CatalogConfiguration = {
+const hardcodedCatalogConfiguration: CatalogConfiguration[] = [{
     catalogLogo: '/images/aas-core-logo.png',
     manufacturerName: 'Kostal',
     sourceRepository: 'https://vws4ls-api.dev.mnestix.xitaso.net/repo',
@@ -29,7 +29,18 @@ const hardcodedCatalogConfiguration: CatalogConfiguration = {
         },
         { name: 'CONNECT_HOUSINGS', image: '/images/aas-core-logo.png' },
     ],
-};
+}, {
+    catalogLogo: '/images/aas-core-logo.png',
+    manufacturerName: 'Test',
+    sourceRepository: 'https://vws4ls-api.dev.mnestix.xitaso.net/repo',
+    rootCategories: [
+        {
+            name: 'CONNECT_TERMINALS',
+            image: '/images/aas-core-logo.png',
+        },
+        { name: 'CONNECT_HOUSINGS', image: '/images/aas-core-logo.png' },
+    ],
+}];
 
 export default function Page() {
     const [selectedCatalog, setSelectedCatalog] = useState<CatalogConfiguration | undefined>(undefined);
@@ -38,7 +49,7 @@ export default function Page() {
     const t = useTranslations('pages.catalog');
 
     const loadCategories = () => {
-        setSelectedCatalog(hardcodedCatalogConfiguration);
+        setSelectedCatalog(hardcodedCatalogConfiguration[0]);
     };
 
     return (
@@ -60,7 +71,7 @@ export default function Page() {
                             onChange={loadCategories}
                             variant="outlined"
                         >
-                            {[hardcodedCatalogConfiguration].map((repo, index) => {
+                            {hardcodedCatalogConfiguration.map((repo, index) => {
                                 return (
                                     <MenuItem
                                         key={index}
