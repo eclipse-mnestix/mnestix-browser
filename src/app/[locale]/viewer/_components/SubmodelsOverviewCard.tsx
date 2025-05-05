@@ -16,9 +16,10 @@ export type SubmodelsOverviewCardProps = {
     readonly submodelIds: SubmodelOrIdReference[] | undefined;
     readonly submodelsLoading?: boolean;
     readonly firstSubmodelIdShort?: string;
+    readonly disableHeadline?: boolean;
 };
 
-export function SubmodelsOverviewCard({ submodelIds, submodelsLoading, firstSubmodelIdShort }: SubmodelsOverviewCardProps) {
+export function SubmodelsOverviewCard({ submodelIds, submodelsLoading, firstSubmodelIdShort, disableHeadline }: SubmodelsOverviewCardProps) {
     const [submodelSelectorItems, setSubmodelSelectorItems] = useState<TabSelectorItem[]>([]);
     const [selectedItem, setSelectedItem] = useState<TabSelectorItem>();
     const t = useTranslations('pages.aasViewer.submodels');
@@ -100,9 +101,11 @@ export function SubmodelsOverviewCard({ submodelIds, submodelsLoading, firstSubm
         <>
             <Card>
                 <CardContent>
-                    <Typography variant="h3" marginBottom="15px">
-                        {t('title')}
-                    </Typography>
+                    { !disableHeadline && (
+                        <Typography variant="h3" marginBottom="15px">
+                            {t('title')}
+                        </Typography>
+                    )}
                     <Box display="grid" gridTemplateColumns={isMobile ? '1fr' : '1fr 2fr'} gap="2rem">
                         <Box>
                             <VerticalTabSelector

@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Skeleton, Typography } from '@mui/material';
+import { Box, Card, CardContent, Skeleton, Typography, Divider } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { DataRow } from 'components/basics/DataRow';
 import {
@@ -9,7 +9,6 @@ import {
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
-import { ShellIcon } from 'components/custom-icons/ShellIcon';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { useRouter } from 'next/navigation';
 import { SubmodelOrIdReference, useAasState } from 'components/contexts/CurrentAasContext';
@@ -221,6 +220,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                 value={overviewData?.manufacturerProductDesignation}
                 testId="datarow-manufacturer-product-designation"
                 withBase64={false}
+                hasDivider={false}
             />
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                 <DataRow
@@ -291,6 +291,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                     submodelElement={overviewData?.markings}
                     submodelId={nameplateSubmodel?.id}
                     columnDisplay
+                    hasDivider={false}
                 ></MarkingsComponent>
             )}
         </Box>
@@ -366,6 +367,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                     >
                                         {props.displayName || t('title')}
                                     </Typography>
+                                    <Divider sx={{ mb: 2 }} />
                                     <Box sx={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
                                         {productInfo}
                                         {markings}

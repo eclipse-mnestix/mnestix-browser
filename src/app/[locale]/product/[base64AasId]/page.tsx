@@ -166,7 +166,7 @@ export default function Page() {
                         displayName={aasFromContext?.displayName ? getTranslationText(aasFromContext.displayName, locale) : null}
                     />
                     {aasFromContext?.submodels && aasFromContext.submodels.length > 0 && (
-                        <SubmodelsOverviewCard submodelIds={filteredSubmodels} submodelsLoading={isSubmodelsLoading} firstSubmodelIdShort="TechnicalData" />
+                        <SubmodelsOverviewCard submodelIds={filteredSubmodels} submodelsLoading={isSubmodelsLoading} firstSubmodelIdShort="TechnicalData" disableHeadline={true} />
                     )}
                 </Box>
             ) : (
