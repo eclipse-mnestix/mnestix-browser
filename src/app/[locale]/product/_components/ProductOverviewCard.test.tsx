@@ -141,10 +141,6 @@ describe('ProductOverviewCard', () => {
         }
     ];
 
-    // Use the actual example AAS from JSON file
-    //const aas = exampleAas;
-    // const submodels = aas.submodels;
-
     it('renders loading skeleton when isLoading is true', () => {
         CustomRender(
             <ProductOverviewCard
