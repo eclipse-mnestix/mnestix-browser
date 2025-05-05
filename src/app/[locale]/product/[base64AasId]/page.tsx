@@ -36,10 +36,8 @@ export default function Page() {
     const repoUrl = encodedRepoUrl ? decodeURI(encodedRepoUrl) : undefined;
     const t = useTranslations('pages.productViewer');
     const [filteredSubmodels, setFilteredSubmodels] = useState<SubmodelOrIdReference[]>([]);
-    const [breadcrumbLinks] = useState<[{ label: string, path: string }]>([{
-        label: t('home'),
-        path: '/',
-    }]);
+    const [breadcrumbLinks] = useState<Array<{ label: string, path: string }>>([]);
+  
 
     const {
         aasFromContext,
