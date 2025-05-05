@@ -25,6 +25,7 @@ import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemantic
 import { useProductImageUrl } from 'lib/hooks/UseProductImageUrl';
 import { useFindValueByIdShort } from 'lib/hooks/useFindValueByIdShort';
 import { MarkingsComponent } from 'app/[locale]/viewer/_components/submodel-elements/marking-components/MarkingsComponent';
+import { ActionMenu } from './ProductActionMenu';
 
 type ProductOverviewCardProps = {
     readonly aas: AssetAdministrationShell | null;
@@ -349,24 +350,36 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                     width: 'calc(100% - 340px)',
                                     display: 'flex', 
                                     flexDirection: 'column',
-                                    overflow: 'hidden'
+                                    overflow: 'hidden',
+                                    position: 'relative'  // Add this
                                 }}>
-                                    <Typography 
-                                        variant="h3" 
-                                        sx={{ 
-                                            marginBottom: 2,
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                            wordBreak: 'break-word',
-                                            wordWrap: 'break-word',
-                                            display: '-webkit-box',
-                                            WebkitLineClamp: 2,
-                                            WebkitBoxOrient: 'vertical',
-                                            maxWidth: '100%'
-                                        }}
-                                    >
-                                        {props.displayName || t('title')}
-                                    </Typography>
+                                    <Box sx={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'flex-start',
+                                        width: '100%'
+                                    }}>
+                                        <Typography 
+                                            variant="h3" 
+                                            sx={{ 
+                                                marginBottom: 2,
+                                                overflow: 'hidden',
+                                                textOverflow: 'ellipsis',
+                                                wordBreak: 'break-word',
+                                                wordWrap: 'break-word',
+                                                display: '-webkit-box',
+                                                WebkitLineClamp: 2,
+                                                WebkitBoxOrient: 'vertical',
+                                                maxWidth: 'calc(100% - 48px)' // Make room for the action menu
+                                            }}
+                                        >
+                                            {props.displayName || t('title')}
+                                        </Typography>
+                                        <ActionMenu 
+                                            aasId={props.aas?.id}
+                                            className="product-action-menu"
+                                        />
+                                    </Box>
                                     <Divider sx={{ mb: 2 }} />
                                     <Box sx={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
                                         {productInfo}

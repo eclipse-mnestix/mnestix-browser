@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Button, Skeleton, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { safeBase64Decode } from 'lib/util/Base64Util';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import {
@@ -9,15 +9,12 @@ import {
     findValueByIdShort,
     getTranslationText,
 } from 'lib/util/SubmodelResolverUtil';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { SubmodelsOverviewCard } from 'app/[locale]/viewer/_components/SubmodelsOverviewCard';
 import { ProductOverviewCard } from '../_components/ProductOverviewCard';
-import { useEnv } from 'app/EnvProvider';
-import { TransferButton } from 'app/[locale]/viewer/_components/transfer/TransferButton';
 import { NoSearchResult } from 'components/basics/detailViewBasics/NoSearchResult';
 import { useAasLoader } from 'lib/hooks/UseAasDataLoader';
 import { useLocale } from 'next-intl';
-import { useTranslations } from 'use-intl';
 import { useEffect, useState } from 'react';
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
@@ -25,16 +22,12 @@ import { Breadcrumbs } from 'components/basics/Breadcrumbs';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 
 export default function Page() {
-    const navigate = useRouter();
     const searchParams = useParams<{ base64AasId: string }>();
     const base64AasId = decodeURIComponent(searchParams.base64AasId).replace(/=+$|[%3D]+$/, '');
-    const aasIdDecoded = safeBase64Decode(base64AasId);
     const isMobile = useIsMobile();
     const locale = useLocale();
-    const env = useEnv();
     const encodedRepoUrl = useSearchParams().get('repoUrl');
     const repoUrl = encodedRepoUrl ? decodeURI(encodedRepoUrl) : undefined;
-    const t = useTranslations('pages.productViewer');
     const [filteredSubmodels, setFilteredSubmodels] = useState<SubmodelOrIdReference[]>([]);
     const [breadcrumbLinks] = useState<Array<{ label: string, path: string }>>([]);
   
@@ -46,14 +39,6 @@ export default function Page() {
         submodels,
         isSubmodelsLoading,
     } = useAasLoader(base64AasId, repoUrl);
-
-    const startComparison = () => {
-        navigate.push(`/compare?aasId=${encodeURIComponent(aasIdDecoded)}`);
-    };
-
-    const goToAASView = () => {
-        navigate.push(`/viewer/${searchParams.base64AasId}`);
-    };
 
     useEffect(() => {
         if (submodels) {
@@ -114,7 +99,7 @@ export default function Page() {
         margin: '0 auto',
         display: 'flex',
         flexDirection: 'column',
-        gap: '20px',
+        gap: '5px',
     };
 
     return (
@@ -137,22 +122,6 @@ export default function Page() {
                             }}
                         >
                         </Typography>
-                        {env.COMPARISON_FEATURE_FLAG && !isMobile && (
-                            <Button
-                                sx={{ mr: 2 }}
-                                variant="outlined"
-                                onClick={startComparison}
-                                data-testid="detail-compare-button"
-                            >
-                                {t('actions.compareButton')}
-                            </Button>
-                        )}
-                        {env.TRANSFER_FEATURE_FLAG && <TransferButton />}
-                        {env.PRODUCT_VIEW_FEATURE_FLAG &&
-                            <Button variant="outlined" sx={{ whiteSpace: 'nowrap' }} onClick={goToAASView}>
-                                {t('actions.toAasView')}
-                            </Button>
-                        }
                     </Box>
                     <ProductOverviewCard
                         aas={aasFromContext}
