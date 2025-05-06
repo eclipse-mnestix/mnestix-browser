@@ -351,7 +351,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                     display: 'flex', 
                                     flexDirection: 'column',
                                     overflow: 'hidden',
-                                    position: 'relative'  // Add this
+                                    position: 'relative'
                                 }}>
                                     <Box sx={{
                                         display: 'flex',
@@ -370,7 +370,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                                 display: '-webkit-box',
                                                 WebkitLineClamp: 2,
                                                 WebkitBoxOrient: 'vertical',
-                                                maxWidth: 'calc(100% - 48px)' // Make room for the action menu
+                                                maxWidth: 'calc(100% - 48px)'
                                             }}
                                         >
                                             {props.displayName || t('title')}
