@@ -401,6 +401,8 @@
           "title": "Update Keycloak"
         },
         "roleRequired": "Role is required",
+        "roleNameMaxLength": "Role name cannot be longer than {maxLength} characters.",
+        "roleNameNoTrailSpace": "Role name cannot end with a space.",
         "subtitle": "Manage roles and permissions.",
         "tableHeader": {
           "aasIds": "AAS IDs",
