@@ -6,7 +6,7 @@ import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
 type MobileAccordionProps = {
     readonly content: React.ReactNode;
     readonly title: string;
-    readonly icon: React.ReactNode;
+    readonly icon?: React.ReactNode;
 };
 
 export function MobileAccordion(props: MobileAccordionProps) {
@@ -14,7 +14,7 @@ export function MobileAccordion(props: MobileAccordionProps) {
         <Accordion disableGutters elevation={0} style={{ width: '100%' }}>
             <AccordionSummary expandIcon={<ArrowDropDownIcon sx={{ color: 'grey.600' }} />}>
                 <Box display="flex" alignItems="center" data-testid="mobile-accordion-header">
-                    <IconCircleWrapper sx={{ mr: 1 }}>{props.icon}</IconCircleWrapper>
+                    {props.icon && <IconCircleWrapper sx={{ mr: 1 }}>{props.icon}</IconCircleWrapper>}
                     <Typography>{props.title}</Typography>
                 </Box>
             </AccordionSummary>

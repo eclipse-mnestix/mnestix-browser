@@ -11,7 +11,7 @@ import { useShowError } from 'lib/hooks/UseShowError';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { RuleForm, RuleFormModel } from 'app/[locale]/settings/_components/role-settings/RuleForm';
 import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
-import { CreateHint, DeleteHint } from 'app/[locale]/settings/_components/role-settings/HintDialogContent';
+import { KeycloakHint } from 'app/[locale]/settings/_components/role-settings/HintDialogContent';
 import { RuleDeleteDialog } from 'app/[locale]/settings/_components/role-settings/RuleDeleteDialog';
 import { CopyButton } from 'components/basics/CopyButton';
 
@@ -170,9 +170,9 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
                     <RuleDeleteDialog rule={rule} onCancelDialog={() => setDialogMode('view')} onDelete={onDelete} />
                 );
             case 'create-hint':
-                return <CreateHint onClose={onClose} />;
+                return <KeycloakHint hint="create" onClose={onClose} />;
             case 'delete-hint':
-                return <DeleteHint onClose={onClose} />;
+                return <KeycloakHint hint="delete" onClose={onClose} />;
             default:
                 return <ViewContent />;
         }
