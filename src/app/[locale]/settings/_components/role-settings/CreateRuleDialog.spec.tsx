@@ -5,25 +5,38 @@ import { expect } from '@jest/globals';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { act } from 'react';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
+import { EnvProvider } from 'app/EnvProvider';
 
 jest.mock('./../../../../../lib/services/rbac-service/RbacActions');
 jest.mock('next-intl', () => ({
     useTranslations: (scope?: string) => (key: string) => (scope ? `${scope}.${key}` : key),
 }));
 jest.mock('./../../../../../lib/hooks/UseNotificationSpawner');
+jest.mock('./../../../../../lib/services/envAction', () => ({
+    getEnv: jest.fn().mockResolvedValue({
+        KEYCLOAK_ISSUER: 'http://test-keycloak.dev:8080',
+        KEYCLOAK_LOCAL_URL: 'http://localhost:8080',
+        KEYCLOAK_REALM: 'test-realm',
+    }),
+}));
 
-function renderCreateRuleDialog(availableRoles?: string[]) {
+async function renderCreateRuleDialog(availableRoles?: string[]) {
     const onClose = jest.fn();
     const reloadRules = jest.fn().mockResolvedValue(undefined);
 
-    render(
-        <CreateRuleDialog
-            open={true}
-            onClose={onClose}
-            reloadRules={reloadRules}
-            availableRoles={availableRoles ?? ['Role1', 'Role2']}
-        />,
-    );
+    await act(async () => {
+        render(
+            <CreateRuleDialog
+                open={true}
+                onClose={onClose}
+                reloadRules={reloadRules}
+                availableRoles={availableRoles ?? ['Role1', 'Role2']}
+            />,
+            {
+                wrapper: ({ children }) => <EnvProvider>{children}</EnvProvider>,
+            },
+        );
+    });
 
     return { onClose, reloadRules };
 }
@@ -54,7 +67,7 @@ describe('CreateRuleDialog', () => {
     });
 
     it('calls onClose without reloading when close button is clicked', async () => {
-        const { onClose, reloadRules } = renderCreateRuleDialog();
+        const { onClose, reloadRules } = await renderCreateRuleDialog();
 
         await waitFor(() => {
             expect(screen.getByText('pages.settings.rules.createRule.title')).toBeInTheDocument();
@@ -72,10 +85,12 @@ describe('CreateRuleDialog', () => {
 
     it('handles successful rule creation', async () => {
         const { spawn } = doMock();
-        const { onClose, reloadRules } = renderCreateRuleDialog();
+        const { onClose, reloadRules } = await renderCreateRuleDialog();
 
-        setTextInput('rule-settings-name-input', 'Role1');
-        fireEvent.click(screen.getByTestId('role-settings-save-button'));
+        await act(async () => {
+            setTextInput('rule-settings-name-input', 'Role1');
+            fireEvent.click(screen.getByTestId('role-settings-save-button'));
+        });
 
         await waitFor(() => {
             expect(spawn).toHaveBeenCalledWith({
@@ -89,7 +104,7 @@ describe('CreateRuleDialog', () => {
 
     it('handles conflict error', async () => {
         const { spawn } = doMock('CONFLICT');
-        const { onClose, reloadRules } = renderCreateRuleDialog();
+        const { onClose, reloadRules } = await renderCreateRuleDialog();
 
         await act(async () => {
             setTextInput('rule-settings-name-input', 'Role1');
@@ -109,7 +124,7 @@ describe('CreateRuleDialog', () => {
     it('handles failed rule creation', async () => {
         const errorMessage = 'Creation failed';
         const { spawn } = doMock(errorMessage);
-        const { onClose, reloadRules } = renderCreateRuleDialog();
+        const { onClose, reloadRules } = await renderCreateRuleDialog();
 
         await act(async () => {
             setTextInput('rule-settings-name-input', 'Role1');
@@ -130,7 +145,7 @@ describe('CreateRuleDialog', () => {
 
     it('shows hint dialog for new role', async () => {
         doMock();
-        const { onClose, reloadRules } = renderCreateRuleDialog();
+        const { onClose, reloadRules } = await renderCreateRuleDialog();
 
         await act(async () => {
             setTextInput('rule-settings-name-input', 'NewRole');

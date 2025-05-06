@@ -2,7 +2,7 @@ import { Button, DialogActions, DialogContent, Typography } from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check';
 import { useTranslations } from 'next-intl';
 import { useEnv } from 'app/EnvProvider';
-import { ArrowRightAlt } from '@mui/icons-material';
+import { OpenInNew } from '@mui/icons-material';
 
 export function KeycloakHint({ onClose, hint }: { onClose: () => void; hint: 'create' | 'delete' }) {
     const t = useTranslations('pages.settings.rules.keycloakHint');
@@ -20,7 +20,7 @@ export function KeycloakHint({ onClose, hint }: { onClose: () => void; hint: 'cr
                     {t(hint)}
                 </Typography>
                 <Button
-                    startIcon={<ArrowRightAlt />}
+                    startIcon={<OpenInNew />}
                     href={keycloakUrl.toString()}
                     variant="contained"
                     target="_blank"
