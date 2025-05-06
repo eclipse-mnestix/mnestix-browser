@@ -18,7 +18,8 @@ jest.mock('./../../../../components/contexts/CurrentAasContext', () => ({
 
 jest.mock('./../../../../lib/hooks/useFindValueByIdShort', () => ({
     useFindValueByIdShort: jest.fn().mockImplementation(() => {
-        return (elements: any, idShort: any) => {
+        /* eslint-disable @typescript-eslint/no-explicit-any */
+        return (idShort: any) => {
             switch (idShort) {
                 case 'ManufacturerName':
                     return 'Test Manufacturer';
@@ -158,6 +159,7 @@ describe('ProductOverviewCard', () => {
     it('renders product information correctly when data is available', async () => {
 
         CustomRender(
+            /* eslint-disable @typescript-eslint/no-explicit-any */
             <ProductOverviewCard
                 aas={mockAas as any}
                 submodels={mockSubmodels as any}
