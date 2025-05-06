@@ -406,6 +406,8 @@
         },
         "keycloakHint": "Some Roles have changed. To assign users, configurate them at '{url}'.",
         "roleRequired": "Role is required",
+        "roleNameMaxLength": "Role name cannot be longer than {maxLength} characters.",
+        "roleNameNoTrailSpace": "Role name cannot end with a space.",
         "subtitle": "Manage roles and permissions.",
         "tableHeader": {
           "aasIds": "AAS IDs",

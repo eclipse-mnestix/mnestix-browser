@@ -406,6 +406,8 @@
         },
         "keycloakHint": "Es haben sich Rollen geändert. Um diese Benutzern zuzuweisen, konfigurieren Sie diese unter '{url}'.",
         "roleRequired": "Rolle wird benötigt",
+        "roleNameMaxLength": "Rollenname darf maximal {maxLength} Zeichen lang sein",
+        "roleNameNoTrailSpace": "Rollenname darf keine Leerzeichen am Ende haben.",
         "subtitle": "Verwalten von Rollen und Berechtigungen.",
         "tableHeader": {
           "aasIds": "AAS IDs",
