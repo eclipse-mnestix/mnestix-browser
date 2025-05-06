@@ -20,11 +20,11 @@ describe('Test the copy button functionality', function () {
 
                 cy.setResolution(res);
                 // Check that copy buttons are initially hidden
-                cy.getByTestId('datarow-aas-id').should('not.be.visible');
+                cy.getByTestId('datarow-aas-id-copy').should('not.be.visible');
                 
                 // Hover over the AAS ID field and check if copy button appears
                 cy.getByTestId('data-row-value').contains(testAAS.aasId).parent().trigger('mouseover');
-                cy.getByTestId('datarow-aas-id').should('be.visible');
+                cy.getByTestId('datarow-aas-id-copy').should('be.visible');
                 cy.window().then((win) => {
                     if (!win.navigator.clipboard) {
                         win.navigator.clipboard = {
@@ -34,7 +34,7 @@ describe('Test the copy button functionality', function () {
                     cy.stub(win.navigator.clipboard, "writeText").resolves().as('clipboardWrite');
                   });
                 // Click copy button and verify clipboard content
-                cy.getByTestId('datarow-aas-id').first().click();
+                cy.getByTestId('datarow-aas-id-copy').first().click();
                 cy.get('@clipboardWrite').should(
                     'have.been.calledOnceWith',
                     testAAS.aasId,
@@ -53,11 +53,11 @@ describe('Test the copy button functionality', function () {
             it('should show and use base64 copy buttons in DataRow for IDs (Resolution: ' + res + ')', function () {
                 cy.setResolution(res);
                 // Check that copy buttons are initially hidden
-                cy.getByTestId('datarow-aas-id-b64').should('not.be.visible');
+                cy.getByTestId('datarow-aas-id-copy-b64').should('not.be.visible');
                 
                 // Hover over the AAS ID field and check if copy button appears
                 cy.getByTestId('data-row-value').contains(testAAS.aasId).parent().trigger('mouseover');
-                cy.getByTestId('datarow-aas-id-b64').should('be.visible');
+                cy.getByTestId('datarow-aas-id-copy-b64').should('be.visible');
 
                 // Click copy button and verify clipboard content
                 cy.window().then((win) => {
