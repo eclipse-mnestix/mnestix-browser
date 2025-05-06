@@ -152,7 +152,17 @@ describe('RoleDialog', () => {
         await waitFor(() => {
             expect(onClose).not.toHaveBeenCalled();
             expect(reloadRules).toHaveBeenCalled();
-            expect(screen.getByTestId('role-delete-hint-acknowledge')).toBeInTheDocument();
+            expect(screen.getByText('pages.settings.rules.keycloakHint.delete')).toBeInTheDocument();
+            expect(screen.getByTestId('role-hint-acknowledge')).toBeInTheDocument();
+            expect(screen.getByTestId('role-hint-keycloak')).toBeInTheDocument();
+        });
+
+        await act(async () => {
+            fireEvent.click(screen.getByTestId('role-hint-acknowledge'));
+        });
+
+        await waitFor(() => {
+            expect(onClose).toHaveBeenCalled();
         });
     });
 
@@ -171,7 +181,17 @@ describe('RoleDialog', () => {
         await waitFor(() => {
             expect(onClose).not.toHaveBeenCalled();
             expect(reloadRules).toHaveBeenCalled();
-            expect(screen.getByTestId('role-create-hint-acknowledge')).toBeInTheDocument();
+            expect(screen.getByText('pages.settings.rules.keycloakHint.create')).toBeInTheDocument();
+            expect(screen.getByTestId('role-hint-acknowledge')).toBeInTheDocument();
+            expect(screen.getByTestId('role-hint-keycloak')).toBeInTheDocument();
+        });
+
+        await act(async () => {
+            fireEvent.click(screen.getByTestId('role-hint-acknowledge'));
+        });
+
+        await waitFor(() => {
+            expect(onClose).toHaveBeenCalled();
         });
     });
 
@@ -251,6 +271,7 @@ describe('RoleDialog', () => {
             });
             expect(onClose).toHaveBeenCalled();
             expect(reloadRules).toHaveBeenCalled();
+            expect(screen.queryByText('pages.settings.rules.keycloakHint.delete')).not.toBeInTheDocument();
         });
     });
 
@@ -269,10 +290,13 @@ describe('RoleDialog', () => {
             expect(deleteRbacRule).toHaveBeenCalledWith(lastRuleForRole.idShort);
             expect(onClose).not.toHaveBeenCalled();
             expect(reloadRules).toHaveBeenCalled();
-            expect(screen.getByTestId('role-delete-hint-acknowledge')).toBeInTheDocument();
+            expect(screen.getByText('pages.settings.rules.keycloakHint.delete')).toBeInTheDocument();
+            expect(screen.getByTestId('role-hint-acknowledge')).toBeInTheDocument();
+            expect(screen.getByTestId('role-hint-keycloak')).toBeInTheDocument();
         });
-
-        fireEvent.click(screen.getByTestId('role-delete-hint-acknowledge'));
+        await act(async () => {
+            fireEvent.click(screen.getByTestId('role-delete-hint-acknowledge'));
+        });
 
         await waitFor(() => {
             expect(onClose).toHaveBeenCalled();
@@ -298,6 +322,8 @@ describe('RoleDialog', () => {
             expect(screen.getByTestId('role-settings-dialog')).toBeInTheDocument();
             expect(onClose).not.toHaveBeenCalled();
             expect(reloadRules).not.toHaveBeenCalled();
+            expect(screen.queryByText('pages.settings.rules.keycloakHint.create')).not.toBeInTheDocument();
+            expect(screen.queryByText('pages.settings.rules.keycloakHint.delete')).not.toBeInTheDocument();
         });
     });
 });

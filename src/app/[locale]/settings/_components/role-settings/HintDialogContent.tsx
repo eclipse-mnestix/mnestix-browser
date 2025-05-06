@@ -25,6 +25,7 @@ export function KeycloakHint({ onClose, hint }: { onClose: () => void; hint: 'cr
                     variant="contained"
                     target="_blank"
                     color="primary"
+                    data-testid="role-hint-keycloak"
                 >
                     Keycloak
                 </Button>
@@ -34,7 +35,7 @@ export function KeycloakHint({ onClose, hint }: { onClose: () => void; hint: 'cr
                     startIcon={<CheckIcon />}
                     variant="contained"
                     onClick={onClose}
-                    data-testid="role-create-hint-acknowledge"
+                    data-testid="role-hint-acknowledge"
                 >
                     {t('acknowledge')}
                 </Button>

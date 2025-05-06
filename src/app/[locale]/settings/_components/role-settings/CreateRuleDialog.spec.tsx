@@ -140,11 +140,13 @@ describe('CreateRuleDialog', () => {
         await waitFor(() => {
             expect(onClose).not.toHaveBeenCalled();
             expect(reloadRules).toHaveBeenCalled();
-            expect(screen.getByText('pages.settings.rules.createRule.hint.text')).toBeInTheDocument();
+            expect(screen.getByText('pages.settings.rules.keycloakHint.create')).toBeInTheDocument();
+            expect(screen.getByTestId('role-hint-acknowledge')).toBeInTheDocument();
+            expect(screen.getByTestId('role-hint-keycloak')).toBeInTheDocument();
         });
 
         await act(async () => {
-            fireEvent.click(screen.getByTestId('role-create-hint-acknowledge'));
+            fireEvent.click(screen.getByTestId('role-hint-acknowledge'));
         });
 
         await waitFor(() => {
