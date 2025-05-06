@@ -68,7 +68,7 @@ describe('Test the copy button functionality', function () {
                       }
                     cy.stub(win.navigator.clipboard, "writeText").resolves().as('clipboardWrite');
                   });
-                cy.getByTestId('datarow-aas-id-b64').first().click();
+                cy.getByTestId('datarow-aas-id-copy-b64').first().click();
                 cy.get('@clipboardWrite').should(
                     'have.been.calledOnceWith',
                     toBase64(testAAS.aasId),

@@ -150,6 +150,7 @@ describe('ProductOverviewCard', () => {
                 isLoading={true}
                 isAccordion={false}
                 repositoryURL={null}
+                displayName={'Test Product'}
             />
         );
 
@@ -166,6 +167,7 @@ describe('ProductOverviewCard', () => {
                 isLoading={false}
                 isAccordion={false}
                 repositoryURL={null}
+                displayName={'Test Product'}
             />
         );
 
@@ -187,6 +189,7 @@ describe('ProductOverviewCard', () => {
                 isLoading={false}
                 isAccordion={true}
                 repositoryURL={null}
+                displayName={'Test Product'}
             />
         );
 
