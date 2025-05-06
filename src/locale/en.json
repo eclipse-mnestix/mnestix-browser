@@ -379,20 +379,10 @@
           "save": "Save"
         },
         "createRule": {
-          "hint": {
-            "acknowledge": "Acknowledge",
-            "text": "A new Role has been created. Configure it in keycloak.",
-            "title": "Update Keycloak"
-          },
           "saveSuccess": "New rule saved successfully.",
           "title": "Create Rule"
         },
         "deleteRule": {
-          "hint": {
-            "acknowledge": "Acknowledged",
-            "text": "Do not forget to delete this rule in keycloak as well!",
-            "title": "Delete rule"
-          },
           "question": "Permanently delete this rule?",
           "ruleInfo": "Users with the assigned role ''{role}'' will not have permissions to {action} the following data!",
           "success": "Rule deleted successfully."
@@ -404,7 +394,12 @@
         "errors": {
           "uniqueIdShort": "The combination of role name, action and type already exists in another rule.\nPlease edit the existing rule."
         },
-        "keycloakHint": "Some Roles have changed. To assign users, configurate them at '{url}'.",
+        "keycloakHint": {
+          "acknowledge": "Acknowledge",
+          "create": "This role has not been used yet. Don't forget to configure it in Keycloak!",
+          "delete": "Do not forget to delete this role in Keycloak as well!",
+          "title": "Update Keycloak"
+        },
         "roleRequired": "Role is required",
         "roleNameMaxLength": "Role name cannot be longer than {maxLength} characters.",
         "roleNameNoTrailSpace": "Role name cannot end with a space.",

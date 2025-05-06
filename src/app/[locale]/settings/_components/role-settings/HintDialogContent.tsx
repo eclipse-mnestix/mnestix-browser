@@ -1,9 +1,14 @@
 import { Button, DialogActions, DialogContent, Typography } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import { useTranslations } from 'next-intl';
+import { useEnv } from 'app/EnvProvider';
+import { OpenInNew } from '@mui/icons-material';
 
-export function CreateHint({ onClose }: { onClose: () => void }) {
-    const t = useTranslations('pages.settings.rules.createRule.hint');
+export function KeycloakHint({ onClose, hint }: { onClose: () => void; hint: 'create' | 'delete' }) {
+    const t = useTranslations('pages.settings.rules.keycloakHint');
+    const envs = useEnv();
+
+    const keycloakUrl = new URL(`/admin/master/console/#/${envs.KEYCLOAK_REALM}/roles`, envs.KEYCLOAK_ISSUER);
 
     return (
         <>
@@ -11,43 +16,26 @@ export function CreateHint({ onClose }: { onClose: () => void }) {
                 <Typography variant="h2" color="primary" sx={{ mb: '1rem' }}>
                     {t('title')}
                 </Typography>
-                <Typography variant="body1" color="text.secondary">
-                    {t('text')}
+                <Typography variant="body1" color="text.secondary" sx={{ mb: '0.5rem' }}>
+                    {t(hint)}
                 </Typography>
-            </DialogContent>
-            <DialogActions>
                 <Button
-                    startIcon={<CheckIcon />}
+                    startIcon={<OpenInNew />}
+                    href={keycloakUrl.toString()}
                     variant="contained"
-                    onClick={onClose}
-                    data-testid="role-create-hint-acknowledge"
+                    target="_blank"
+                    color="primary"
+                    data-testid="role-hint-keycloak"
                 >
-                    {t('acknowledge')}
+                    Keycloak
                 </Button>
-            </DialogActions>
-        </>
-    );
-}
-
-export function DeleteHint({ onClose }: { onClose: () => void }) {
-    const t = useTranslations('pages.settings.rules.deleteRule.hint');
-
-    return (
-        <>
-            <DialogContent>
-                <Typography variant="h2" color="primary" sx={{ mb: '1rem' }}>
-                    {t('title')}
-                </Typography>
-                <Typography variant="body1" color="text.secondary">
-                    {t('text')}
-                </Typography>
             </DialogContent>
             <DialogActions>
                 <Button
                     startIcon={<CheckIcon />}
                     variant="contained"
                     onClick={onClose}
-                    data-testid="role-delete-hint-acknowledge"
+                    data-testid="role-hint-acknowledge"
                 >
                     {t('acknowledge')}
                 </Button>
