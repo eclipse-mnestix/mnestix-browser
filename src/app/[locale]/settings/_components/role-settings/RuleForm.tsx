@@ -69,8 +69,8 @@ export const RuleForm = ({ onCancel, onSubmit, rule, title, availableRoles }: Ru
                         rules={{
                             required: t('roleRequired'),
                             maxLength: {
-                                value: 1000 /* A theoretical jetty server can handle 2048 url length. */,
-                                message: t('roleNameMaxLength', { maxLength: 1000 }),
+                                value: 255 /* A theoretical jetty server can handle 2048 url length. Keycloak allows max length of 255. */,
+                                message: t('roleNameMaxLength', { maxLength: 255 }),
                             },
                             pattern: {
                                 value: /^.*\S$/,
