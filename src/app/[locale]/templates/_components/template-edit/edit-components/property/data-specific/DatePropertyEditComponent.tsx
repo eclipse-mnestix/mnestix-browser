@@ -1,10 +1,8 @@
 import { useState } from 'react';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider, DesktopDatePicker, MobileDatePicker, DateValidationError } from '@mui/x-date-pickers';
-import { messages } from 'lib/i18n/localization';
-import { FormattedMessage } from 'react-intl';
+import { DateValidationError, DesktopDatePicker, MobileDatePicker } from '@mui/x-date-pickers';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
-import moment from 'moment';
+import { parse } from 'date-fns';
+import { useTranslations } from 'next-intl';
 
 interface DatePropertyEditComponentProps {
     dataValue: string;
@@ -16,10 +14,11 @@ export function DatePropertyEditComponent(props: DatePropertyEditComponentProps)
     const [isValid, setIsValid] = useState(true);
     const calenderFormat = 'yyyy-MM-dd';
     const isMobile = useIsMobile();
+    const t = useTranslations('pages.templates');
 
     const onValueChange = (newValue: Date | null) => {
         if (newValue) {
-            const val = parseDate(newValue);
+            const val = formatDate(newValue);
             props.onChange(val);
             setData(val);
         } else {
@@ -32,17 +31,17 @@ export function DatePropertyEditComponent(props: DatePropertyEditComponentProps)
         setIsValid(!reason);
     };
 
-    function parseDate(date: Date) {
+    function formatDate(date: Date) {
         //according to format yyyy-mm-dd
         return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
     }
 
     const startingData = (): Date => {
         if (data) {
-            return moment(data, calenderFormat).toDate();
+            return parse(data, calenderFormat, new Date());
         } else {
             const today = new Date();
-            const newDate = parseDate(today);
+            const newDate = formatDate(today);
             props.onChange(newDate);
             setData(newDate);
             return today;
@@ -50,39 +49,33 @@ export function DatePropertyEditComponent(props: DatePropertyEditComponentProps)
     };
 
     return (
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <>
             {isMobile ? (
                 <MobileDatePicker
-                    label={<FormattedMessage {...messages.mnestix.value} />}
+                    label={t('labels.value')}
                     value={startingData()}
                     onChange={onValueChange}
-                    format={calenderFormat}
                     onError={onInvalidInput}
                     slotProps={{
                         textField: {
-                            helperText: !isValid && (
-                                <FormattedMessage {...messages.mnestix.errorMessages.invalidDate} />
-                            ),
+                            helperText: !isValid && t('validation.errors.invalidDate'),
                         },
                     }}
                 />
             ) : (
                 <DesktopDatePicker
-                    label={<FormattedMessage {...messages.mnestix.value} />}
+                    label={t('labels.value')}
                     value={startingData()}
                     onChange={onValueChange}
-                    format={calenderFormat}
                     onError={onInvalidInput}
                     slotProps={{
                         textField: {
-                            helperText: !isValid && (
-                                <FormattedMessage {...messages.mnestix.errorMessages.invalidDate} />
-                            ),
+                            helperText: !isValid && t('validation.errors.invalidDate'),
                             fullWidth: true,
                         },
                     }}
                 />
             )}
-        </LocalizationProvider>
+        </>
     );
 }

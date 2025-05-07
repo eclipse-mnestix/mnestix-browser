@@ -2,5 +2,13 @@
     "editor.tabSize": 4,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
-    "eslint.workingDirectories": ["src"]
+    "eslint.workingDirectories": ["src"],
+    "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+    "i18n-ally.localesPaths": [
+        "src/i18n",
+        "src/locale",
+        "src/lib/i18n",
+        "src/user-plugins/locale"
+    ],
+    "i18n-ally.keystyle": "nested"
 }

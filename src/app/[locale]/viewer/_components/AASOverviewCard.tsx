@@ -1,30 +1,24 @@
 import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
     Box,
     Card,
     CardContent,
     Skeleton,
     Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import { DataRow } from 'components/basics/DataRow';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
 import { AssetAdministrationShell, SpecificAssetId } from '@aas-core-works/aas-core3.0-typescript/types';
 import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
 import { ShellIcon } from 'components/custom-icons/ShellIcon';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { encodeBase64 } from 'lib/util/Base64Util';
-import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { useRouter } from 'next/navigation';
 import { useAasState } from 'components/contexts/CurrentAasContext';
 import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
-import { getThumbnailFromShell } from 'lib/services/repository-access/repositorySearchActions';
-import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import { useProductImageUrl } from 'lib/hooks/UseProductImageUrl';
+import { MobileAccordion } from 'components/basics/detailViewBasics/MobileAccordion';
 
 type AASOverviewCardProps = {
     readonly aas: AssetAdministrationShell | null;
@@ -35,60 +29,13 @@ type AASOverviewCardProps = {
     readonly repositoryURL: string | null;
 };
 
-type MobileAccordionProps = {
-    readonly content: React.ReactNode;
-    readonly title: string;
-    readonly icon: React.ReactNode;
-};
-
-function MobileAccordion(props: MobileAccordionProps) {
-    return (
-        <Accordion disableGutters elevation={0} style={{ width: '100%' }}>
-            <AccordionSummary expandIcon={<ArrowDropDownIcon sx={{ color: 'grey.600' }} />}>
-                <Box display="flex" alignItems="center" data-testid="mobile-accordion-header">
-                    <IconCircleWrapper sx={{ mr: 1 }}>{props.icon}</IconCircleWrapper>
-                    <Typography>{props.title}</Typography>
-                </Box>
-            </AccordionSummary>
-            <AccordionDetails data-testid="mobile-accordion-content">{props.content}</AccordionDetails>
-        </Accordion>
-    );
-}
-
 export function AASOverviewCard(props: AASOverviewCardProps) {
-    const intl = useIntl();
     const isAccordion = props.isAccordion;
     const specificAssetIds = props.aas?.assetInformation?.specificAssetIds as SpecificAssetId[];
     const navigate = useRouter();
-    const [productImageUrl, setProductImageUrl] = useState<string>('');
     const [, setAasState] = useAasState();
-
-    async function createAndSetUrlForImageFile() {
-        if (!props.aas) return;
-
-        if (!props.repositoryURL) {
-            setProductImageUrl('');
-            return;
-        }
-
-        const response = await getThumbnailFromShell(props.aas.id, props.repositoryURL);
-        if (!response.isSuccess) {
-            console.error('Image not found');
-            return;
-        }
-        const blob = mapFileDtoToBlob(response.result);
-        setProductImageUrl(URL.createObjectURL(blob));
-    }
-
-    useAsyncEffect(async () => {
-        if (!props.productImage) return;
-
-        if (!isValidUrl(props.productImage!)) {
-            await createAndSetUrlForImageFile();
-        } else {
-            setProductImageUrl(props.productImage);
-        }
-    }, [props.productImage]);
+    const t = useTranslations('pages.aasViewer');
+    const productImageUrl = useProductImageUrl(props.aas, props.repositoryURL, props.productImage);
 
     const infoBoxStyle = {
         display: 'flex',
@@ -125,13 +72,24 @@ export function AASOverviewCard(props: AASOverviewCardProps) {
                         <ShellIcon fontSize="small" color="primary" />
                     </IconCircleWrapper>
                     <Typography sx={titleStyle} variant="h3">
-                        <FormattedMessage {...messages.mnestix.assetAdministrationShell} />
+                        {t('assetAdministrationShell')}
                     </Typography>
                 </Box>
             )}
-            <DataRow title="id" value={props.aas?.id} />
-            <DataRow title="idShort" value={props.aas?.idShort ?? '-'} />
-            <DataRow title="repositoryURL" value={props.repositoryURL ?? '-'} />
+            <DataRow 
+                title="id" 
+                value={props.aas?.id}
+                testId='datarow-aas-id'
+                withBase64={true}
+            />
+            <DataRow 
+                title="idShort" 
+                value={props.aas?.idShort ?? '-'} 
+            />
+            <DataRow 
+                title="repositoryURL" 
+                value={props.repositoryURL ?? '-'} 
+            />
             {props.aas?.derivedFrom?.keys?.[0] && (
                 <DataRow
                     title="derivedFrom"
@@ -150,12 +108,17 @@ export function AASOverviewCard(props: AASOverviewCardProps) {
                         <AssetIcon fontSize="small" color="primary" />
                     </IconCircleWrapper>
                     <Typography sx={titleStyle} variant="h3">
-                        <FormattedMessage {...messages.mnestix.asset} />
+                        {t('asset')}
                     </Typography>
                 </Box>
             )}
-            <DataRow title="globalAssetId" value={props.aas?.assetInformation?.globalAssetId ?? '-'} />
-            <DataRow title="assetKind" value={props.aas?.assetInformation?.assetKind.toString() ?? '-'} />
+            <DataRow 
+                title="globalAssetId" 
+                value={props.aas?.assetInformation?.globalAssetId ?? '-'}
+                testId='datarow-asset-id'
+                withBase64={true}
+                
+            />
             {props.aas?.assetInformation?.assetType && (
                 <DataRow title="assetType" value={props.aas?.assetInformation?.assetType ?? '-'} />
             )}
@@ -214,12 +177,12 @@ export function AASOverviewCard(props: AASOverviewCardProps) {
                             <>
                                 <MobileAccordion
                                     content={aasInfo}
-                                    title={intl.formatMessage(messages.mnestix.assetAdministrationShell)}
+                                    title={t('assetAdministrationShell')}
                                     icon={<ShellIcon fontSize="small" color="primary" />}
                                 />
                                 <MobileAccordion
                                     content={assetInfo}
-                                    title={intl.formatMessage(messages.mnestix.asset)}
+                                    title={t('asset')}
                                     icon={<AssetIcon fontSize="small" color="primary" />}
                                 />
                             </>

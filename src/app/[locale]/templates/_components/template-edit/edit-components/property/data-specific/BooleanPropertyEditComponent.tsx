@@ -1,7 +1,6 @@
 import { Box, FormControlLabel, Switch } from '@mui/material';
-import { messages } from 'lib/i18n/localization';
 import { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useTranslations } from 'next-intl';
 
 interface BooleanPropertyEditComponentProps {
     dataValue: string;
@@ -11,6 +10,7 @@ interface BooleanPropertyEditComponentProps {
 
 export function BooleanPropertyEditComponent(props: BooleanPropertyEditComponentProps) {
     const [realBoolean, setRealBoolean] = useState(props.dataValue.toLowerCase() === 'true');
+    const t = useTranslations('pages.templates');
 
     useEffect(() => {
         // intial value should be true
@@ -18,7 +18,7 @@ export function BooleanPropertyEditComponent(props: BooleanPropertyEditComponent
             setRealBoolean(true);
             props.onChange('true');
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+         
     }, [props.defaultValueEnabled]);
 
     const onValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,9 +32,9 @@ export function BooleanPropertyEditComponent(props: BooleanPropertyEditComponent
                 control={<Switch checked={realBoolean} onChange={onValueChange} />}
                 label={
                     realBoolean ? (
-                        <FormattedMessage {...messages.mnestix.boolean.true} />
+                        t('boolean.true')
                     ) : (
-                        <FormattedMessage {...messages.mnestix.boolean.false} />
+                        t('boolean.false')
                     )
                 }
             />

@@ -1,0 +1,20 @@
+[
+  {
+    "role": "basyx-admin",
+    "action": ["CREATE", "READ", "UPDATE", "DELETE", "EXECUTE"],
+    "targetInformation": {
+      "@type": "submodel",
+      "submodelIds": "*",
+      "submodelElementIdShortPaths": "*"
+    }
+  },
+  {
+    "role": "security-admin",
+    "action": ["CREATE", "READ", "UPDATE", "DELETE", "EXECUTE"],
+    "targetInformation": {
+      "@type": "submodel",
+      "submodelIds": "*",
+      "submodelElementIdShortPaths": "*"
+    }
+  }
+]

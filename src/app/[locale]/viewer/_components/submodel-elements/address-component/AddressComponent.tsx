@@ -1,38 +1,52 @@
-import { Box, Link, Typography } from '@mui/material';
 import { DataRow } from 'components/basics/DataRow';
-import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { DialerSip, Info, Mail, Phone, Place, Print, Public } from '@mui/icons-material';
-import { messages } from 'lib/i18n/localization';
-import { getMailToHref, getSanitizedHref, getTelHref } from 'lib/util/HrefUtil';
 import { AddressGroupWithIcon } from './AddressGroupWithIcon';
 import {
-    MultiLanguageProperty,
-    Property,
+    IDataElement,
     ISubmodelElement,
     SubmodelElementCollection,
 } from '@aas-core-works/aas-core3.0-typescript/types';
-import { GenericSubmodelElementComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/GenericSubmodelElementComponent';
+import {
+    AddressElement,
+    EmailElement,
+    FaxElement,
+    IpElement,
+    LinkElement,
+    PhoneElement,
+    VatElement,
+} from './ContactElements';
 
 type AddressComponentProps = {
     readonly submodelElement?: SubmodelElementCollection;
     readonly hasDivider?: boolean;
+    readonly submodelId?: string;
 };
 
-export function AddressComponent(props: AddressComponentProps) {
-    const intl = useIntl();
+export const idShortsOfSubmodelElementsContainingAddressData: string[] = [
+    'Company',
+    'Department',
+    'Street',
+    'Zipcode',
+    'CityTown',
+    'StateCounty',
+    'NationalCode',
+    'TimeZone',
+    'POBox',
+    'ZipCodeOfPOBox',
+];
 
+export function AddressComponent(props: AddressComponentProps) {
     if (!props.submodelElement?.value) {
         return <></>;
     }
 
     const addressData: Array<ISubmodelElement> = Object.values(props.submodelElement.value) as Array<ISubmodelElement>;
-    let addressOfAdditionalLink: Property | undefined;
-    let VATNumber: MultiLanguageProperty | undefined;
+    const additionalLink: Array<IDataElement> = [];
+    const vatNumber: Array<IDataElement> = [];
     const phone: Array<SubmodelElementCollection> = [];
     const fax: Array<SubmodelElementCollection> = [];
     const email: Array<SubmodelElementCollection> = [];
-    const ipCommunicationData: Array<SubmodelElementCollection> = [];
+    const ipCommunication: Array<SubmodelElementCollection> = [];
 
     // Filter out special address attributes and assign them to variables
     const filteredAddressData = addressData.filter((entry) => {
@@ -50,170 +64,76 @@ export function AddressComponent(props: AddressComponentProps) {
             return false;
         }
         if (id === 'AddressOfAdditionalLink') {
-            addressOfAdditionalLink = entry as Property;
+            additionalLink.push(entry as IDataElement);
             return false;
         }
         if (id === 'VATNumber') {
-            VATNumber = entry as MultiLanguageProperty;
+            vatNumber.push(entry as IDataElement);
             return false;
         }
         if (id?.startsWith('IPCommunication')) {
-            ipCommunicationData.push(entry as SubmodelElementCollection);
+            ipCommunication.push(entry as SubmodelElementCollection);
             return false;
         }
         return true;
     });
-    // Build Address part with filtered attributes
-    const locationAddress = filteredAddressData.map((el, index) => {
-        const data: MultiLanguageProperty | undefined = el as MultiLanguageProperty;
-        return (
-            <Box key={index} sx={{ display: 'flex' }}>
-                <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
-                    {el.idShort}
-                </Typography>
-                <Typography>{getTranslationText(data, intl)}</Typography>
-            </Box>
-        );
-    });
-    // Build Phone numbers part
-    const phoneNumbers = phone.map((el, index) => {
-        const actualNumber: MultiLanguageProperty | undefined | null =
-            el &&
-            el.value &&
-            (Object.values(el.value).find((obj) => obj.idShort === 'TelephoneNumber') as MultiLanguageProperty);
-        const typeOfNumber: Property | undefined | null =
-            el && el.value && (Object.values(el.value).find((obj) => obj.idShort === 'TypeOfTelephone') as Property);
 
-        return (
-            <Box key={index} sx={{ display: 'flex' }}>
-                {typeOfNumber && (
-                    <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
-                        {!!typeOfNumber.value &&
-                            !!messages.mnestix.nameplateAddressTypes[typeOfNumber.value.toString()] && (
-                                <FormattedMessage
-                                    {...messages.mnestix.nameplateAddressTypes[typeOfNumber.value?.toString()]}
-                                />
-                            )}
-                    </Typography>
-                )}
-                {actualNumber && (
-                    <Link href={getTelHref(getTranslationText(actualNumber, intl))} target="_blank" rel="noreferrer">
-                        <Typography>{getTranslationText(actualNumber, intl)}</Typography>
-                    </Link>
-                )}
-            </Box>
-        );
+    const sortedAddress = filteredAddressData.toSorted((a, b) => {
+        const indexA = idShortsOfSubmodelElementsContainingAddressData.indexOf(a.idShort || '');
+        const indexB = idShortsOfSubmodelElementsContainingAddressData.indexOf(b.idShort || '');
+        return (indexA === -1 ? 1000 : indexA) - (indexB === -1 ? 1000 : indexB);
     });
 
-    // Build Fax part
-    const faxNumbers = fax.map((el, index) => {
-        const actualNumber: MultiLanguageProperty | undefined | null =
-            el &&
-            el.value &&
-            (Object.values(el.value).find((obj) => obj.idShort === 'FaxNumber') as MultiLanguageProperty);
-        const typeOfNumber: Property | undefined | null =
-            el && el.value && (Object.values(el.value).find((obj) => obj.idShort === 'TypeOfFaxNumber') as Property);
-
-        return (
-            <Box key={index} sx={{ display: 'flex' }}>
-                {typeOfNumber && (
-                    <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
-                        {!!typeOfNumber.value &&
-                            !!messages.mnestix.nameplateAddressTypes[typeOfNumber.value.toString()] && (
-                                <FormattedMessage
-                                    {...messages.mnestix.nameplateAddressTypes[typeOfNumber.value?.toString()]}
-                                />
-                            )}
-                    </Typography>
-                )}
-                {actualNumber && <Typography>{getTranslationText(actualNumber, intl)}</Typography>}
-            </Box>
-        );
-    });
-
-    // Build Mail part
-    const emailAddresses = email.map((el, index) => {
-        const actualAddress: Property | undefined | null =
-            el && el.value && (Object.values(el.value).find((obj) => obj.idShort === 'EmailAddress') as Property);
-        const typeOfEmail: Property | undefined | null =
-            el && el.value && (Object.values(el.value).find((obj) => obj.idShort === 'TypeOfEmailAddress') as Property);
-
-        return (
-            <Box key={index} sx={{ display: 'flex' }}>
-                {typeOfEmail && (
-                    <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
-                        {!!typeOfEmail.value &&
-                            !!messages.mnestix.nameplateAddressTypes[typeOfEmail.value.toString()] && (
-                                <FormattedMessage
-                                    {...messages.mnestix.nameplateAddressTypes[typeOfEmail.value?.toString()]}
-                                />
-                            )}
-                    </Typography>
-                )}
-                {actualAddress && (
-                    <Link href={getMailToHref(actualAddress.value?.toString())} target="_blank" rel="noreferrer">
-                        <Typography>{actualAddress.value?.toString()}</Typography>
-                    </Link>
-                )}
-            </Box>
-        );
-    });
-
-    const ipCommunication = ipCommunicationData.map((el, index) => {
-        return (
-            <Box key={index} sx={{ display: 'flex' }}>
-                <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
-                    {el.idShort}
-                </Typography>
-                <GenericSubmodelElementComponent submodelElement={el} wrapInDataRow={false} />
-            </Box>
-        );
-    });
     // render all
     return (
         <DataRow title={props.submodelElement.idShort} hasDivider={props.hasDivider}>
-            <AddressGroupWithIcon icon={<Place color="primary" fontSize="small" />} sx={{ mt: 1 }}>
-                {locationAddress}
-            </AddressGroupWithIcon>
-            {!!phone && !!phone.length && (
+            {sortedAddress.length > 0 && (
+                <AddressGroupWithIcon icon={<Place color="primary" fontSize="small" />} sx={{ mt: 1 }}>
+                    {sortedAddress.map((value) => (
+                        <AddressElement key={value.idShort} el={value as IDataElement} />
+                    ))}
+                </AddressGroupWithIcon>
+            )}
+            {phone.length > 0 && (
                 <AddressGroupWithIcon icon={<Phone color="primary" fontSize="small" />}>
-                    {phoneNumbers}
+                    {phone.map((value) => (
+                        <PhoneElement key={value.idShort} el={value} />
+                    ))}
                 </AddressGroupWithIcon>
             )}
-            {!!fax && !!fax.length && (
+            {fax.length > 0 && (
                 <AddressGroupWithIcon icon={<Print color="primary" fontSize="small" />}>
-                    {faxNumbers}
+                    {fax.map((value) => (
+                        <FaxElement key={value.idShort} el={value} />
+                    ))}
                 </AddressGroupWithIcon>
             )}
-            {!!email && !!email.length && (
+            {email.length > 0 && (
                 <AddressGroupWithIcon icon={<Mail color="primary" fontSize="small" />}>
-                    {emailAddresses}
+                    {email.map((value) => (
+                        <EmailElement key={value.idShort} el={value} />
+                    ))}
                 </AddressGroupWithIcon>
             )}
-            {!!ipCommunication && !!ipCommunication.length && (
+            {ipCommunication.length > 0 && (
                 <AddressGroupWithIcon icon={<DialerSip color="primary" fontSize="small" />} sx={{ mt: 1 }}>
-                    {ipCommunication}
+                    {ipCommunication.map((value) => (
+                        <IpElement key={value.idShort} el={value} />
+                    ))}
                 </AddressGroupWithIcon>
             )}
-            {!!addressOfAdditionalLink && (
+            {additionalLink.length > 0 && (
                 <AddressGroupWithIcon icon={<Public color="primary" fontSize="small" />}>
-                    <Link
-                        href={getSanitizedHref(addressOfAdditionalLink.value?.toString())}
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        <Typography>{addressOfAdditionalLink.value?.toString()}</Typography>
-                    </Link>
+                    {additionalLink.map((value) => (
+                        <LinkElement key={value.idShort} el={value} />
+                    ))}
                 </AddressGroupWithIcon>
             )}
-            {!!VATNumber && (
+            {vatNumber.length > 0 && (
                 <AddressGroupWithIcon icon={<Info color="primary" fontSize="small" />}>
-                    <Box sx={{ display: 'flex' }}>
-                        <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
-                            <FormattedMessage {...messages.mnestix.VAT} />
-                        </Typography>
-                        <Typography>{getTranslationText(VATNumber, intl)}</Typography>
-                    </Box>
+                    {vatNumber.map((value) => (
+                        <VatElement key={value.idShort} el={value} />
+                    ))}
                 </AddressGroupWithIcon>
             )}
         </DataRow>

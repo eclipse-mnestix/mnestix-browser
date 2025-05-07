@@ -4,12 +4,8 @@
     "noFallthroughCasesInSwitch": true,
     "composite": true,
     "module": "esnext",
-    "target": "ES2015",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
     "inlineSourceMap": true,
     "allowJs": true,
     "jsx": "preserve",
@@ -21,42 +17,37 @@
     "noImplicitAny": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
-    "ignoreDeprecations": "5.0",
-    "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": false,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": false,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "emitDeclarationOnly": true,
     "strictPropertyInitialization": false,
     "baseUrl": "src",
-    "incremental": true,
     "plugins": [
       {
         "name": "next"
       }
     ],
+    // needed for jest
     "paths": {
-      "@src": [
-        "./src"
-      ],
-      "@util": [
-        "./src/util"
-      ]
-    }
+      "@src": ["./src"],
+      "@util": ["./src/util"]
+    },
+    "types": ["./svgr.d.ts", "node", "jest"],
+    "incremental": true
   },
   "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "svgr.d.ts",
-    "./dist/types/**/*.ts",
-    "./global.d.ts"
+    // Cypress.scannerCallback
+    "./cypress/global.d.ts",
+    "./scripts/validateEnvs.js",
+    "./global.d.ts",
+    "./next-env.d.ts",
+    "./svgr.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "./dist/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

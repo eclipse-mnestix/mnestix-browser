@@ -13,11 +13,11 @@ export const DashboardInput = () => {
     const [, setRegistryAasData] = useRegistryAasState();
     const [, setAasOriginUrl] = useAasOriginSourceState();
     const navigate = useRouter();
-    const t = useTranslations('dashboard');
+    const t = useTranslations('pages.dashboard');
 
     const browseAasUrl = async (searchString: string) => {
         const { isSuccess, result } = await performFullAasSearch(searchString.trim());
-        if (!isSuccess) throw new LocalizedError('errors.urlNotFound');
+        if (!isSuccess) throw new LocalizedError('navigation.errors.urlNotFound');
 
         if (result.aas) {
             setAas(result.aas);

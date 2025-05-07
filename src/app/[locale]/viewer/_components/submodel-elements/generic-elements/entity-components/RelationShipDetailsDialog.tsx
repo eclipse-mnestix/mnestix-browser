@@ -1,17 +1,10 @@
-import { Dialog, DialogContent, Typography } from '@mui/material';
-import { Reference, RelationshipElement, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Box, Dialog, DialogContent, Tooltip, Typography } from '@mui/material';
+import { RelationshipElement } from '@aas-core-works/aas-core3.0-typescript/types';
 import { DataRow } from 'components/basics/DataRow';
-import { FormattedMessage } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
-import { useEffect, useState } from 'react';
-import { useShowError } from 'lib/hooks/UseShowError';
-import { useParams } from 'next/navigation';
-import { useEnv } from 'app/env/provider';
-import {
-    getSubmodelById,
-    getSubmodelReferencesFromShell,
-} from 'lib/services/repository-access/repositorySearchActions';
-import { getSubmodelDescriptorsById } from 'lib/services/submodelRegistryApiActions';
+import { DialogCloseButton } from 'components/basics/DialogCloseButton';
+import { RelationShipTypes } from 'lib/enums/RelationShipTypes.enum';
+import { InfoOutlined } from '@mui/icons-material';
+import { useTranslations } from 'next-intl';
 
 type RelationShipDetailsModalProps = {
     readonly relationship: RelationshipElement;
@@ -20,73 +13,52 @@ type RelationShipDetailsModalProps = {
 };
 
 export function RelationShipDetailsDialog(props: RelationShipDetailsModalProps) {
+    const t = useTranslations('components.relationShipDetailsDialog');
     const relationship = props.relationship;
-    const searchParams = useParams<{ base64AasId: string }>();
-    const base64AasId = searchParams.base64AasId;
+    const semanticId = relationship.semanticId?.keys[0].value;
 
-    const submodelId = relationship.second.keys[0]?.value;
-
-    const [subIdShort, setSubIdShort] = useState<string>();
-    const env = useEnv();
-    const { showError } = useShowError();
-
-    useEffect(() => {
-        async function _fetchSubmodels() {
-            try {
-                const response = await getSubmodelReferencesFromShell(base64AasId as string);
-                let submodelRefs: Reference[];
-                if (response.isSuccess) submodelRefs = response.result;
-                else throw Error(response.message);
-                const submodels = [] as Submodel[];
-                for (const reference of submodelRefs) {
-                    const id = reference.keys[0].value;
-                    try {
-                        if (env.SUBMODEL_REGISTRY_API_URL) {
-                            const response = await getSubmodelDescriptorsById(reference.keys[0].value);
-                            if (response.isSuccess) {
-                                if (response.result.id) {
-                                    const submodelResult = await getSubmodelById(response.result.id);
-                                    if (submodelResult.isSuccess) submodels.push(submodelResult.result);
-                                }
-                            } else throw new Error(response.message);
-                        }
-                    } catch (e) {
-                        // Submodel registry is not available or submodel not found there -> search in repo
-                        if (e instanceof TypeError || (e instanceof Response && e.status === 404)) {
-                            const submodelResult = await getSubmodelById(id);
-                            if (submodelResult.isSuccess) submodels.push(submodelResult.result);
-                        } else {
-                            console.error(e);
-                        }
-                    }
-                }
-
-                const submodel = submodels.find((sm) => {
-                    return sm.id === submodelId;
-                });
-                const submodelIdShort = submodel?.idShort;
-                setSubIdShort(submodelIdShort as string);
-            } catch (e) {
-                showError(e);
-            }
+    const getRelationshipType = (semanticId: string): string => {
+        switch (semanticId) {
+            case RelationShipTypes.SameAs:
+                return t('sameAs');
+            case RelationShipTypes.IsPartOf:
+                return t('isPartOf');
+            case RelationShipTypes.HasPart:
+                return t('hasPart');
+            default:
+                return t('error.unknownRelationship');
         }
-
-        _fetchSubmodels();
-    }, [base64AasId, submodelId]);
+    };
 
     return (
         <Dialog open={props.open} onClose={props.handleClose}>
-            <DialogContent data-testid="bom-info-popup">
-                <Typography variant="h3" sx={{ mb: 2 }}>
+            <DialogCloseButton handleClose={props.handleClose} />
+            <DialogContent data-testid="bom-info-popup" style={{ padding: '40px' }}>
+                <Typography variant="h3" color={'primary'} sx={{ mb: 2, mr: 4 }}>
                     {relationship.idShort}
                 </Typography>
-                <DataRow title="Same entity submodel - idShort" hasDivider={false}>
-                    {subIdShort || <FormattedMessage {...messages.mnestix.notAvailable} />}
+                <DataRow hasDivider={false}>
+                    <Box display="flex" width="100%" gap={1}>
+                        <Box sx={{ color: 'text.secondary' }}>Entity:</Box>
+                        {relationship.first.keys[relationship.first.keys.length - 1]?.value || t('error.entityError')}
+                    </Box>
                 </DataRow>
-                <DataRow title="Same Entity" hasDivider={false}>
-                    {relationship.second.keys[relationship.second.keys.length - 1]?.value || (
-                        <FormattedMessage {...messages.mnestix.notAvailable} />
-                    )}
+                <DataRow hasDivider={false}>
+                    <Box display="flex" justifyContent="space-between" width="100%">
+                        <Typography color={'primary'}>{getRelationshipType(semanticId ?? '')} </Typography>
+                        <Tooltip
+                            data-testid="relShip-dialog-tooltip"
+                            title={`${t('semanticId')}: ${semanticId ?? t('error.semanticError')}`}
+                        >
+                            <InfoOutlined sx={{ color: 'text.secondary' }} />
+                        </Tooltip>
+                    </Box>
+                </DataRow>
+                <DataRow hasDivider={false}>
+                    <Box display="flex" width="100%" gap={1}>
+                        <Box sx={{ color: 'text.secondary' }}>Entity:</Box>
+                        {relationship.second.keys[relationship.second.keys.length - 1]?.value || t('error.entityError')}
+                    </Box>
                 </DataRow>
             </DialogContent>
         </Dialog>

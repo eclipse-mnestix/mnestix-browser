@@ -3,7 +3,7 @@ import { AssetAdministrationShellRepositoryApi, SubmodelRepositoryApi } from 'li
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { AssetAdministrationShell, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import ServiceReachable from 'test-utils/TestUtils';
-import { SubmodelSemanticId } from 'lib/enums/SubmodelSemanticId.enum';
+import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { MultiLanguageValueOnly } from 'lib/api/basyx-v3/types';
 
@@ -115,11 +115,11 @@ export class ListService {
             if (submodelResponse.isSuccess) {
                 const semanticId = submodelResponse.result?.semanticId?.keys[0].value;
                 const nameplateKeys = [
-                    SubmodelSemanticId.NameplateV1,
-                    SubmodelSemanticId.NameplateV2,
-                    SubmodelSemanticId.NameplateV3,
+                    SubmodelSemanticIdEnum.NameplateV1,
+                    SubmodelSemanticIdEnum.NameplateV2,
+                    SubmodelSemanticIdEnum.NameplateV3,
                 ];
-                if (nameplateKeys.includes(<SubmodelSemanticId>semanticId)) {
+                if (nameplateKeys.includes(<SubmodelSemanticIdEnum>semanticId)) {
                     const manufacturerName = await this.submodelRepositoryClient.getSubmodelElement(
                         submodelId,
                         'ManufacturerName',

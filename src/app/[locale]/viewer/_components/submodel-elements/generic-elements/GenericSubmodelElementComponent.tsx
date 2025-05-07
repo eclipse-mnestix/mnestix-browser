@@ -24,7 +24,7 @@ type GenericSubmodelElementComponentProps = SubmodelElementComponentProps & {
 };
 
 export function GenericSubmodelElementComponent(props: GenericSubmodelElementComponentProps) {
-    const t = useTranslations('submodels');
+    const t = useTranslations('pages.aasViewer.submodels');
 
     function getRenderElement() {
         if (!props.submodelElement) {
@@ -40,16 +40,6 @@ export function GenericSubmodelElementComponent(props: GenericSubmodelElementCom
             case KeyTypes.Property:
                 return <PropertyComponent property={props.submodelElement as Property} />;
             case KeyTypes.SubmodelElementCollection:
-                return (
-                    <SubmodelElementCollectionComponent
-                        submodelElementCollection={props.submodelElement as SubmodelElementCollection}
-                        submodelId={props.submodelId}
-                        submodelElementPath={buildSubmodelElementPath(
-                            props.submodelElementPath,
-                            props.submodelElement.idShort,
-                        )}
-                    />
-                );
             case KeyTypes.SubmodelElementList:
                 return (
                     <SubmodelElementCollectionComponent

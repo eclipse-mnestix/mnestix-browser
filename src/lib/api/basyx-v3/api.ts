@@ -1,9 +1,14 @@
 ﻿/* eslint-disable */
+// TODO MNES-1605 remove url lib together with this file
 import url from 'url';
 import { Configuration } from './configuration';
 import { AssetAdministrationShell, Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { encodeBase64 } from 'lib/util/Base64Util';
-import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
+import {
+    IAssetAdministrationShellRepositoryApi,
+    ISubmodelRepositoryApi,
+    SubmodelElementValue,
+} from 'lib/api/basyx-v3/apiInterface';
 import {
     AssetAdministrationShellRepositoryApiInMemory,
     SubmodelRepositoryApiInMemory,
@@ -388,6 +393,51 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
         );
     }
 
+    async getSubmodelByIdValueOnly(
+        submodelId: string,
+        options?: any,
+    ): Promise<ApiResponseWrapper<SubmodelElementValue>> {
+        return SubmodelRepositoryApiFp(this.configuration).getSubmodelByIdValueOnly(submodelId, options)(
+            this.http,
+            this.baseUrl,
+        );
+    }
+
+    async deleteSubmodelElementByPath(
+        submodelId: string,
+        idShortPath: string,
+        options: Omit<RequestInit, 'body' | 'method'> = {},
+    ): Promise<ApiResponseWrapper<Response>> {
+        options.headers = Object.assign({}, {}, options.headers);
+        const url = `${this.baseUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${idShortPath}`;
+        const reqOptions = {
+            ...options,
+            method: 'DELETE',
+        };
+        return this.http.fetch<Response>(url, reqOptions);
+    }
+
+    async postSubmodelElement(
+        submodelId: string,
+        submodelElement: unknown,
+        options: Omit<RequestInit, 'body' | 'method'> = {},
+    ): Promise<ApiResponseWrapper<Response>> {
+        options.headers = Object.assign(
+            {},
+            {
+                'Content-Type': 'application/json',
+            },
+            options.headers,
+        );
+        const url = `${this.baseUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements`;
+        const reqOptions = {
+            ...options,
+            body: JSON.stringify(submodelElement),
+            method: 'POST',
+        };
+        return this.http.fetch<Response>(url, reqOptions);
+    }
+
     async getSubmodelMetaData(submodelId: string, options?: object): Promise<ApiResponseWrapper<Submodel>> {
         return SubmodelRepositoryApiFp(this.configuration).getSubmodelMetadataById(submodelId, options)(
             this.http,
@@ -454,6 +504,19 @@ export const SubmodelRepositoryApiFp = function (configuration?: Configuration) 
             );
             return async (requestHandler: FetchAPI, baseUrl: string) => {
                 return requestHandler.fetch<Submodel>(baseUrl + localVarFetchArgs.url, localVarFetchArgs.options);
+            };
+        },
+
+        getSubmodelByIdValueOnly(submodelId: string, options?: any) {
+            const localVarFetchArgs = SubmodelRepositoryApiFetchParamCreator(configuration).getSubmodelByIdValueOnly(
+                encodeBase64(submodelId),
+                options,
+            );
+            return async (requestHandler: FetchAPI, baseUrl: string) => {
+                return requestHandler.fetch<SubmodelElementValue>(
+                    baseUrl + localVarFetchArgs.url,
+                    localVarFetchArgs.options,
+                );
             };
         },
         /**
@@ -612,6 +675,34 @@ export const SubmodelRepositoryApiFetchParamCreator = function (configuration?: 
                 );
             }
             const localVarPath = `/submodels/{submodelId}`.replace(
+                `{submodelId}`,
+                encodeURIComponent(String(submodelId)),
+            );
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            localVarUrlObj.search = null;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+
+        getSubmodelByIdValueOnly(submodelId: string, options: any = {}): FetchArgs {
+            // verify required parameter 'submodelId' is not null or undefined
+            if (submodelId === null || submodelId === undefined) {
+                throw new RequiredError(
+                    'submodelId',
+                    'Required parameter submodelId was null or undefined when calling getSubmodelById.',
+                );
+            }
+            const localVarPath = `/submodels/{submodelId}/$value`.replace(
                 `{submodelId}`,
                 encodeURIComponent(String(submodelId)),
             );

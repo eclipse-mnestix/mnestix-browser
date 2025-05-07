@@ -12,7 +12,7 @@ import Style from 'ol/style/Style';
 import { Coordinate } from 'ol/coordinate';
 import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
-import { ProductLifecycleStage } from 'lib/enums/ProductLifecycleStage.enum';
+import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/ProductLifecycleStage.enum';
 import { ProductJourneyAddressList } from './ProductJourneyAddressList';
 
 export type Address = {
@@ -32,8 +32,8 @@ export type AddressPerLifeCyclePhase = {
 
 export function ProductJourney(props: { addressesPerLifeCyclePhase: AddressPerLifeCyclePhase[] }) {
     const theme = useTheme();
-    const mapElement = useRef<HTMLElement>();
-    const mapRef = useRef<Map>();
+    const mapElement = useRef<HTMLElement>(null);
+    const mapRef = useRef<Map>(null);
 
     const coordinates: Coordinate[] = props.addressesPerLifeCyclePhase
         .filter((v) => v.address.latitude && v.address.longitude)
@@ -100,9 +100,7 @@ export function ProductJourney(props: { addressesPerLifeCyclePhase: AddressPerLi
                 ref={mapElement}
                 className="map-container"
             />
-            <ProductJourneyAddressList
-                addressesPerLifeCyclePhase={props.addressesPerLifeCyclePhase}
-            />
+            <ProductJourneyAddressList addressesPerLifeCyclePhase={props.addressesPerLifeCyclePhase} />
         </>
     );
 }
@@ -121,7 +119,7 @@ function getMarkerLayers(coordinatesPerLifeCyclePhase: AddressPerLifeCyclePhase[
             });
 
             const markerIconName = `LocationMarker_${phase.lifeCyclePhase}`;
-            
+
             return new VectorLayer({
                 source: markerSource,
                 style: new Style({
@@ -131,7 +129,6 @@ function getMarkerLayers(coordinatesPerLifeCyclePhase: AddressPerLifeCyclePhase[
                     }),
                 }),
             });
-
         });
 }
 

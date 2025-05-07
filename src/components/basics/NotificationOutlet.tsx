@@ -3,7 +3,7 @@ import { useNotificationContext } from 'components/contexts/NotificationContext'
 import { SyntheticEvent, useEffect, useState } from 'react';
 
 export function NotificationOutlet() {
-    const [notification] = useNotificationContext();
+    const { notification } = useNotificationContext();
     const [open, setOpen] = useState(false);
 
     useEffect(() => {

@@ -18,6 +18,9 @@ type Props = {
     children: ReactNode;
 };
 
+/**
+ * Client side root render layout.
+ */
 export function LayoutRoot({ children }: Props) {
     return (
         <Box display="flex" height="100%" flexDirection="column">

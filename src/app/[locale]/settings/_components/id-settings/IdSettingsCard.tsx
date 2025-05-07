@@ -1,8 +1,6 @@
 import { InfoOutlined } from '@mui/icons-material';
 import { alpha, Box, Divider, Skeleton, styled, Typography } from '@mui/material';
-import { messages } from 'lib/i18n/localization';
 import { Fragment, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { IdGenerationSettingFrontend } from 'lib/types/IdGenerationSettingFrontend';
 import { IdSettingEntry } from './IdSettingEntry';
 import { AssetIdRedirectDocumentationDialog } from './AssetIdRedirectDocumentationDialog';
@@ -21,6 +19,8 @@ import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { SettingsCardHeader } from 'app/[locale]/settings/_components/SettingsCardHeader';
 import { getIdGenerationSettings, putSingleIdGenerationSetting } from 'lib/services/configurationApiActions';
 import { useShowError } from 'lib/hooks/UseShowError';
+import { useTranslations } from 'next-intl';
+import { LocalizedError } from 'lib/util/LocalizedError';
 
 const StyledDocumentationButton = styled(Box)(({ theme }) => ({
     display: 'flex',
@@ -49,10 +49,10 @@ export function IdSettingsCard() {
     const auth = useAuth();
     const bearerToken = auth.getBearerToken();
     const notificationSpawner = useNotificationSpawner();
-    const intl = useIntl();
     const [isLoading, setIsLoading] = useState(false);
     const [settings, setSettings] = useState<IdGenerationSettingFrontend[]>([]);
     const { showError } = useShowError();
+    const t = useTranslations('pages.settings.idStructure');
 
     const {
         register,
@@ -73,73 +73,85 @@ export function IdSettingsCard() {
     }, [bearerToken]);
 
     const fetchIdSettings = async () => {
-        try {
-            setIsLoading(true);
-            const response = await getIdGenerationSettings();
-            const _settings: IdGenerationSettingFrontend[] = [];
-            response.submodelElements?.forEach((el) => {
-                const element = el as ISubmodelElement;
-                const collection = el as SubmodelElementCollection;
-                const _settingsList = collection.value;
-                const name = el.idShort;
-
-                // IdType (to apply correct validation)
-                const idTypeQualifier = element.qualifiers?.find((q: Qualifier) => {
-                    return q.type === 'SMT/IdType';
-                });
-                const idType = idTypeQualifier?.value;
-
-                const prefix = _settingsList?.find((e) => e.idShort === 'Prefix') as Property;
-                const dynamicPart = _settingsList?.find((e) => e.idShort === 'DynamicPart') as Property;
-
-                const dynamicPartAllowedQualifier = dynamicPart?.qualifiers?.find((q: Qualifier) => {
-                    return q.type === 'SMT/AllowedValue';
-                });
-                const allowedDynamicPartValues = getArrayFromString(dynamicPartAllowedQualifier?.value || '');
-
-                const prefixExampleValueQualifier = prefix?.qualifiers?.find((q: Qualifier) => {
-                    return q.type === 'ExampleValue';
-                });
-                const prefixExampleValue = prefixExampleValueQualifier?.value;
-
-                _settings.push({
-                    name: name || '',
-                    idType,
-                    prefix: {
-                        value: prefix?.value,
-                        exampleValue: prefixExampleValue,
-                    },
-                    dynamicPart: {
-                        value: dynamicPart?.value,
-                        allowedValues: allowedDynamicPartValues,
-                        // (we do not fill example value from api currently)
-                    },
-                });
-            });
-            setSettings(_settings);
-            // set form state
-            reset({ idSettings: _settings });
-        } catch (e) {
-            showError(e);
-        } finally {
+        setIsLoading(true);
+        const response = await getIdGenerationSettings();
+        if (!response.isSuccess) {
+            showError(response);
             setIsLoading(false);
+            return;
         }
+        const settings: IdGenerationSettingFrontend[] = [];
+        response.result.submodelElements?.forEach((el) => {
+            const element = el as ISubmodelElement;
+            const collection = el as SubmodelElementCollection;
+            const _settingsList = collection.value;
+            const name = el.idShort;
+
+            // IdType (to apply correct validation)
+            const idTypeQualifier = element.qualifiers?.find((q: Qualifier) => {
+                return q.type === 'SMT/IdType';
+            });
+            const idType = idTypeQualifier?.value;
+
+            const prefix = _settingsList?.find((e) => e.idShort === 'Prefix') as Property;
+            const dynamicPart = _settingsList?.find((e) => e.idShort === 'DynamicPart') as Property;
+
+            const dynamicPartAllowedQualifier = dynamicPart?.qualifiers?.find((q: Qualifier) => {
+                return q.type === 'SMT/AllowedValue';
+            });
+            const allowedDynamicPartValues = getArrayFromString(dynamicPartAllowedQualifier?.value || '');
+
+            const prefixExampleValueQualifier = prefix?.qualifiers?.find((q: Qualifier) => {
+                return q.type === 'ExampleValue';
+            });
+            const prefixExampleValue = prefixExampleValueQualifier?.value;
+
+            settings.push({
+                name: name || '',
+                idType,
+                prefix: {
+                    value: prefix?.value,
+                    exampleValue: prefixExampleValue,
+                },
+                dynamicPart: {
+                    value: dynamicPart?.value,
+                    allowedValues: allowedDynamicPartValues,
+                    // (we do not fill example value from api currently)
+                },
+            });
+        });
+        setSettings(settings);
+        // set form state
+        reset({ idSettings: settings });
+        setIsLoading(false);
     };
 
     async function saveIdSettings(data: IdSettingsFormData) {
         try {
             setIsLoading(true);
-            for (const setting of data.idSettings) {
+            const updatePromises = data.idSettings.map(async (setting) => {
                 if (setting.prefix.value && setting.dynamicPart.value) {
-                    await putSingleIdGenerationSetting(setting.name, {
+                    const response = await putSingleIdGenerationSetting(setting.name, {
                         prefix: setting.prefix.value,
                         dynamicPart: setting.dynamicPart.value,
                     });
+                    if (!response.isSuccess) {
+                        return Promise.reject(
+                            new LocalizedError('pages.settings.idStructure.errors.idStructureError', {
+                                name: setting.name,
+                                reason: response.message,
+                            }),
+                        );
+                    }
                 }
-            }
+                return Promise.resolve();
+            });
+
+            await Promise.all(updatePromises);
+
             await fetchIdSettings();
             notificationSpawner.spawn({
-                message: intl.formatMessage(messages.mnestix.successfullyUpdated),
+                message: t('messages.successfullyUpdated'),
                 severity: 'success',
             });
             setIsEditMode(false);
@@ -158,8 +170,8 @@ export function IdSettingsCard() {
     return (
         <Box sx={{ p: 3, width: '100%' }}>
             <SettingsCardHeader
-                title={<FormattedMessage {...messages.mnestix.idStructure} />}
-                subtitle={<FormattedMessage {...messages.mnestix.idStructureExplanation} />}
+                title={t('title')}
+                subtitle={t('labels.idStructureExplanation')}
                 onCancel={() => cancelEdit()}
                 onEdit={() => setIsEditMode(true)}
                 onSubmit={handleSubmit((data) => saveIdSettings(data))}
@@ -194,9 +206,7 @@ export function IdSettingsCard() {
             <Box sx={{ display: 'flex' }}>
                 <StyledDocumentationButton onClick={() => setDocumentationModalOpen(true)}>
                     <InfoOutlined sx={{ mr: 1 }} />
-                    <Typography>
-                        <FormattedMessage {...messages.mnestix.assetIdDocumentation.title} />
-                    </Typography>
+                    <Typography>{t('assetIdDocumentation.title')}</Typography>
                 </StyledDocumentationButton>
             </Box>
             <AssetIdRedirectDocumentationDialog

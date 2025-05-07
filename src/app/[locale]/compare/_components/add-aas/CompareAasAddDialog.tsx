@@ -1,8 +1,8 @@
-﻿import { Box, Dialog, DialogContent, IconButton, Typography } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+﻿import { Box, Dialog, DialogContent, Typography } from '@mui/material';
 import { QrScanner } from 'app/[locale]/_components/QrScanner';
 import { ManualAasInput } from 'app/[locale]/_components/ManualAasInput';
 import { useTranslations } from 'next-intl';
+import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 
 type AddAasModalProps = {
     readonly onSubmit: (result: string) => Promise<void>;
@@ -11,7 +11,7 @@ type AddAasModalProps = {
 };
 
 export function CompareAasAddDialog(props: AddAasModalProps) {
-    const t = useTranslations();
+    const t = useTranslations('pages');
 
     return (
         <Dialog
@@ -21,18 +21,7 @@ export function CompareAasAddDialog(props: AddAasModalProps) {
             fullWidth={true}
             data-testid="compare-aas-aad-dialog"
         >
-            <IconButton
-                aria-label="close"
-                onClick={props.onClose}
-                sx={{
-                    position: 'absolute',
-                    right: 8,
-                    top: 8,
-                    color: (theme) => theme.palette.grey[500],
-                }}
-            >
-                <CloseIcon />
-            </IconButton>
+            <DialogCloseButton handleClose={props.onClose}/>
             <DialogContent style={{ paddingLeft: '60px', paddingRight: '60px' }}>
                 <Box display="flex" flexDirection="column" gap="20px">
                     <Typography variant="h2" textAlign="center" margin="30px 0">

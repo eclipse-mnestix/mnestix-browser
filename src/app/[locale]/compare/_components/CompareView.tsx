@@ -1,5 +1,4 @@
-import { Box, IconButton, Typography } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import { Box, Typography } from '@mui/material';
 import { AASOverviewCard } from 'app/[locale]/viewer/_components/AASOverviewCard';
 import { AddAasToCompareCard } from 'app/[locale]/compare/_components/add-aas/AddAasToCompareCard';
 import { CompareSubmodelsAccordion } from 'app/[locale]/compare/_components/CompareSubmodelsAccordion';
@@ -11,6 +10,7 @@ import { LocalizedError } from 'lib/util/LocalizedError';
 import { performFullAasSearch } from 'lib/services/search-actions/searchActions';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useTranslations } from 'next-intl';
+import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 
 export function CompareView() {
     const { compareAas, addSeveralAas, deleteAas, addAas } = useCompareAasContext();
@@ -21,7 +21,7 @@ export function CompareView() {
     });
     const [addModalOpen, setAddModalOpen] = useState(false);
     const { showError } = useShowError();
-    const t = useTranslations('compare');
+    const t = useTranslations('pages.compare');
 
     useEffect(() => {
         async function _fetchAas() {
@@ -56,21 +56,21 @@ export function CompareView() {
 
     const handleAddAas = async (aasId: string) => {
         const { isSuccess, result } = await performFullAasSearch(aasId);
-        if (!isSuccess) throw new LocalizedError('errors.urlNotFound');
+        if (!isSuccess) throw new LocalizedError('navigation.errors.unexpectedError');
 
         if (!result.aas) {
-            throw new LocalizedError('compare.errors.moreAasFound');
+            throw new LocalizedError('pages.compare.errors.moreAasFound');
         }
 
         const aasExists = compareAas.find((compareAas) => compareAas.aas.id === result.aas!.id);
         if (aasExists) {
-            throw new LocalizedError('compare.errors.aasAlreadyAdded');
+            throw new LocalizedError('pages.compare.errors.aasAlreadyAdded');
         }
 
         try {
             await addAas(result.aas, result.aasData);
-        } catch (e) {
-            throw new LocalizedError('compare.errors.aasAddError');
+        } catch {
+            throw new LocalizedError('pages.compare.errors.aasAddError');
         }
 
         setAddModalOpen(false);
@@ -87,20 +87,7 @@ export function CompareView() {
                         <Box display="flex" flexDirection="row" gap="20px">
                             {compareAas.map((compareAas, index) => (
                                 <Box position="relative" key={index} width={1 / 3} data-testid={`compare-aas-${index}`}>
-                                    <IconButton
-                                        aria-label="close"
-                                        onClick={() => handleDeleteAas(compareAas.aas.id)}
-                                        sx={{
-                                            position: 'absolute',
-                                            right: 8,
-                                            top: 8,
-                                            color: (theme) => theme.palette.grey[500],
-                                            zIndex: 5,
-                                        }}
-                                        data-testid={`delete-compare-aas-${index}`}
-                                    >
-                                        <CloseIcon />
-                                    </IconButton>
+                                    <DialogCloseButton handleClose={() => handleDeleteAas(compareAas.aas.id)} dataTestId={`delete-compare-aas-${index}`}/>
                                     <AASOverviewCard
                                         key={index}
                                         aas={compareAas.aas ?? null}

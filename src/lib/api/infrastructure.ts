@@ -2,19 +2,19 @@
 import { performServerFetch, performServerFetchLegacy } from 'lib/api/serverFetch';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { authOptions } from 'components/authentication/authConfig';
+import { envs } from 'lib/env/MnestixEnv';
 
 const initializeRequestOptions = async (bearerToken: string, init?: RequestInit) => {
     init = init || {};
-    const isAuthenticationFeatureEnabled = process.env.AUTHENTICATION_FEATURE_FLAG === 'true';
-    if (isAuthenticationFeatureEnabled && bearerToken) {
+    if (envs.AUTHENTICATION_FEATURE_FLAG && bearerToken) {
         init.headers = {
             ...init.headers,
             Authorization: `Bearer ${bearerToken}`,
         };
-    } else if (!isAuthenticationFeatureEnabled) {
+    } else if (!envs.AUTHENTICATION_FEATURE_FLAG) {
         init.headers = {
             ...init.headers,
-            ApiKey: process.env.MNESTIX_BACKEND_API_KEY ? process.env.MNESTIX_BACKEND_API_KEY : '',
+            ApiKey: envs.MNESTIX_BACKEND_API_KEY || '',
         };
     }
 

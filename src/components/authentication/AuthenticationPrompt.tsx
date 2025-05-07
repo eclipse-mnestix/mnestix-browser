@@ -4,7 +4,7 @@ import SignInButton from 'components/authentication/SignInButton';
 import { useTranslations } from 'next-intl';
 
 export function AuthenticationPrompt() {
-    const t = useTranslations('authentication');
+    const t = useTranslations('components.authentication');
     return (
         <Box
             sx={{
@@ -17,7 +17,7 @@ export function AuthenticationPrompt() {
             }}
         >
             <Typography variant="h2" sx={{ mb: 2 }} color="primary" align="center">
-                {t('authentication-needed')}
+                {t('authenticationNeeded')}
             </Typography>
             <AuthenticationLock data-testid="authentication-prompt-lock" />
             <SignInButton />

@@ -17,6 +17,7 @@ export const RedirectToViewer = () => {
     const navigate = useRouter();
     const searchParams = useSearchParams();
     const assetIdParam = searchParams.get('assetId')?.toString();
+    const aasIdParam = searchParams.get('aasId')?.toString();
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
     const [, setAas] = useAasState();
@@ -26,7 +27,19 @@ export const RedirectToViewer = () => {
     useAsyncEffect(async () => {
         try {
             setIsLoading(true);
-            await navigateToViewerOfAsset(decodeURIComponent(assetIdParam ?? ''));
+            if (assetIdParam) { // if assetId is present navigate to the viewer of the asset
+                await navigateToViewerOfAsset(decodeURIComponent(assetIdParam ?? ''));
+            } else if (aasIdParam) { // if instead the aasId is present we dont need to search
+                const targetUrl = determineViewerTargetUrl([aasIdParam]);
+                // Clear the context
+                setAas(null);
+                setAasOriginUrl(null);
+                // Navigate directly to the viewer
+                navigate.replace(targetUrl); 
+            } else {
+                // If neither assetId nor aasId is present, we cannot proceed
+                throw new NotFoundError();
+            }
         } catch (e) {
             setIsLoading(false);
             setIsError(true);
@@ -37,7 +50,7 @@ export const RedirectToViewer = () => {
     async function navigateToViewerOfAsset(assetId: string | undefined): Promise<void> {
         const { isSuccess, result: aasIds } = await getAasIdsOfAsset(assetId);
 
-        if (!isSuccess) throw new LocalizedError('errors.urlNotFound');
+        if (!isSuccess) throw new LocalizedError('navigation.errors.urlNotFound');
 
         assertAtLeastOneAasIdExists(aasIds);
         const targetUrl = determineViewerTargetUrl(aasIds);
@@ -69,7 +82,7 @@ export const RedirectToViewer = () => {
     return (
         <Box sx={{ p: 2, m: 'auto' }}>
             {isLoading && <CenteredLoadingSpinner />}
-            {isError && <AssetNotFound id={assetIdParam} />}
+            {isError && <AssetNotFound id={assetIdParam ? assetIdParam: aasIdParam} />}
         </Box>
     );
 };

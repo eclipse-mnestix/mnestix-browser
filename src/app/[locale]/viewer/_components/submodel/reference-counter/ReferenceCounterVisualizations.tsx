@@ -1,11 +1,10 @@
-import { messages } from 'lib/i18n/localization';
-import { useIntl } from 'react-intl';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { ArrowForward } from '@mui/icons-material';
 import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
+import { useTranslations } from 'next-intl';
 
 export function ReferenceCounterVisualizations({ submodel }: SubmodelVisualizationProps) {
-    const intl = useIntl();
+    const t = useTranslations('pages.aasViewer.submodels');
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { value } = (submodel.submodelElements?.at(0) as any) ?? [];
 
@@ -52,8 +51,8 @@ export function ReferenceCounterVisualizations({ submodel }: SubmodelVisualizati
             <table className="ReferenceCounterTable">
                 <thead>
                     <tr>
-                        <th>{intl.formatMessage(messages.mnestix.referenceCounter.elementName)}</th>
-                        <th>{intl.formatMessage(messages.mnestix.referenceCounter.count)}</th>
+                        <th>{t('referenceCounter.elementName')}</th>
+                        <th>{t('referenceCounter.count')}</th>
                         <th className="arrow-column"></th>
                     </tr>
                 </thead>

@@ -1,8 +1,6 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Box, Button, IconButton } from '@mui/material';
-import { messages } from 'lib/i18n/localization';
 import { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { getValueType } from 'lib/util/SubmodelResolverUtil';
 import { TemplateEditSectionHeading } from '../../TemplateEditSectionHeading';
 import { BooleanPropertyEditComponent } from './data-specific/BooleanPropertyEditComponent';
@@ -10,6 +8,7 @@ import { StringPropertyEditComponent } from './data-specific/StringPropertyEditC
 import { DatePropertyEditComponent } from './data-specific/DatePropertyEditComponent';
 import { LongPropertyEditComponent } from './data-specific/LongPropertyEditComponent';
 import { DataTypeDefXsd, Property } from '@aas-core-works/aas-core3.0-typescript/types';
+import { useTranslations } from 'next-intl';
 
 interface PropertyEditComponentProps {
     data: Property;
@@ -19,6 +18,7 @@ interface PropertyEditComponentProps {
 export function PropertyEditComponent(props: PropertyEditComponentProps) {
     const [data, setData] = useState(props.data);
     const [defaultValueEnabled, setDefaultValueEnabled] = useState(!!data.value?.length);
+    const t = useTranslations('pages.templates');
 
     useEffect(() => {
         setData(props.data);
@@ -65,7 +65,7 @@ export function PropertyEditComponent(props: PropertyEditComponentProps) {
                 </Box>
             ) : (
                 <Button size="large" startIcon={<AddCircleOutline />} onClick={() => setDefaultValueEnabled(true)}>
-                    <FormattedMessage {...messages.mnestix.add} />
+                    {t('actions.add')}
                 </Button>
             )}
         </>

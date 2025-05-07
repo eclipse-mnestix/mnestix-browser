@@ -14,7 +14,6 @@ describe('Test the redirection by clicking the header logo', function () {
                         cy.setResolution(res);
                         cy.visit(url);
                         cy.getByTestId('header-logo').click();
-                        cy.wait(100);
                         cy.getByTestId('welcome-text').should('exist');
                     },
                 );
@@ -31,7 +30,6 @@ describe('Test the redirection by clicking the header logo', function () {
                 cy.setResolution(res);
                 cy.visitViewer(testId);
                 cy.getByTestId('header-logo').click();
-                cy.wait(100);
                 cy.getByTestId('welcome-text').should('exist');
             });
         });

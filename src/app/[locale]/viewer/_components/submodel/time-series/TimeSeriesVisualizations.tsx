@@ -1,5 +1,5 @@
 import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
-import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
+import { TimeSeriesSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesSubmodelElementSemanticId.enum';
 import { InfluxTimeSeries } from './InfluxTimeSeries';
 import { InternalTimeSeries } from 'app/[locale]/viewer/_components/submodel/time-series/InternalTimeSeries';
 import { hasSemanticId } from 'lib/util/SubmodelResolverUtil';
@@ -8,18 +8,18 @@ import { useTranslations } from 'next-intl';
 import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
 
 export function TimeSeriesVisualizations({ submodel }: SubmodelVisualizationProps) {
-    const t = useTranslations('submodels.timeSeries');
+    const t = useTranslations('pages.aasViewer.submodels.timeSeries');
 
     const timeSeriesSegments = submodel.submodelElements?.find(
-        (el) => el.semanticId?.keys[0].value === SubmodelElementSemanticId.TimeSeriesSegments,
+        (el) => el.semanticId?.keys[0].value === TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegments,
     ) as SubmodelElementCollection | undefined;
 
     const linkedSegments = timeSeriesSegments?.value?.filter((el) =>
-        hasSemanticId(el, SubmodelElementSemanticId.TimeSeriesLinkedSegment),
+        hasSemanticId(el, TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesLinkedSegment),
     ) as Array<SubmodelElementCollection> | undefined;
 
     const internalSegments = timeSeriesSegments?.value?.filter((el) =>
-        hasSemanticId(el, SubmodelElementSemanticId.TimeSeriesInternalSegment),
+        hasSemanticId(el, TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesInternalSegment),
     ) as Array<SubmodelElementCollection> | undefined;
 
     return (

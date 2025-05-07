@@ -1,11 +1,10 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Autocomplete, Box, Button, IconButton, TextField } from '@mui/material';
-import { messages } from 'lib/i18n/localization';
 import { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { TemplateEditSectionHeading } from '../../TemplateEditSectionHeading';
 import options from './language-suggestions.json';
 import { LangStringTextType, MultiLanguageProperty } from '@aas-core-works/aas-core3.0-typescript/types';
+import { useTranslations } from 'next-intl';
 
 interface MultiLangEditComponentProps {
     data: MultiLanguageProperty;
@@ -15,6 +14,7 @@ interface MultiLangEditComponentProps {
 export function MultiLangEditComponent(props: MultiLangEditComponentProps) {
     const [data, setData] = useState(props.data);
     const [langStrings, setLangStrings] = useState<LangStringTextType[]>(data.value ?? []);
+    const t = useTranslations('pages.templates');
 
     useEffect(() => {
         setData(props.data);
@@ -64,7 +64,7 @@ export function MultiLangEditComponent(props: MultiLangEditComponentProps) {
                         <Autocomplete
                             value={langString.language}
                             renderInput={(params) => (
-                                <TextField {...params} label={<FormattedMessage {...messages.mnestix.language} />} />
+                                <TextField {...params} label={t('labels.language')} />
                             )}
                             onInputChange={(_, v) => onLanguageChange(i, v)}
                             options={options as string[]}
@@ -75,7 +75,7 @@ export function MultiLangEditComponent(props: MultiLangEditComponentProps) {
                         />
                         <TextField
                             defaultValue={langString.text}
-                            label={<FormattedMessage {...messages.mnestix.text} />}
+                            label={t('labels.text')}
                             onChange={(e) => onTextChange(i, e)}
                             fullWidth
                         />
@@ -85,7 +85,7 @@ export function MultiLangEditComponent(props: MultiLangEditComponentProps) {
                     </Box>
                 ))}
             <Button size="large" startIcon={<AddCircleOutline />} onClick={() => onAdd()}>
-                <FormattedMessage {...messages.mnestix.add} />
+                {t('actions.add')}
             </Button>
         </>
     );

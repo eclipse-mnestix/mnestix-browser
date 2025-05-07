@@ -41,3 +41,14 @@ export type AttachmentDetails = {
     fileName: string | null;
     file?: Blob;
 };
+
+export type TransferServiceConfig = {
+    targetAasRepoUrl: string;
+    sourceAasRepoUrl: string;
+    targetSubmodelRepoUrl: string;
+    sourceSubmodelRepoUrl: string;
+    targetDiscoveryUrl?: string;
+    targetAasRegistryUrl?: string;
+    targetSubmodelRegistryUrl?: string;
+    apikey?: string;
+}

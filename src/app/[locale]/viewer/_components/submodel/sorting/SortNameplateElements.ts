@@ -1,4 +1,4 @@
-﻿import { SubmodelSemanticId } from 'lib/enums/SubmodelSemanticId.enum';
+﻿import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import { NameplateSorting } from 'app/[locale]/viewer/_components/submodel/sorting/NameplateSorting';
 import { ISubmodelElement, Submodel, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
 
@@ -22,11 +22,11 @@ export function SortNameplateElements(submodel: Submodel | SubmodelElementCollec
 
     // Sorting
     const nameplateKeys = [
-        SubmodelSemanticId.NameplateV1,
-        SubmodelSemanticId.NameplateV2,
-        SubmodelSemanticId.NameplateV3
+        SubmodelSemanticIdEnum.NameplateV1,
+        SubmodelSemanticIdEnum.NameplateV2,
+        SubmodelSemanticIdEnum.NameplateV3,
     ];
-    if (nameplateKeys.includes(<SubmodelSemanticId>key)) {
+    if (nameplateKeys.includes(<SubmodelSemanticIdEnum>key)) {
         SortSubmodelElements(submodels, NameplateSorting);
     }
 

@@ -6,7 +6,9 @@ import { GenericSubmodelElementComponent } from '../../submodel-elements/generic
 import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
 
 export function GenericSubmodelDetailComponent({ submodel }: SubmodelVisualizationProps) {
-    const submodelElements = submodel.submodelElements ?? [];
+    const submodelElements = (submodel.submodelElements ?? []).filter(element =>
+        !(element.idShort === 'numberOfDocuments')
+    );
 
     // Entity element always has a line at the bottom, so we don't need an extra line on the following element
     const isEntityElementAbove = (index: number) => submodelElements[index - 1] instanceof Entity;
@@ -18,11 +20,12 @@ export function GenericSubmodelDetailComponent({ submodel }: SubmodelVisualizati
                 const semanticId = el.semanticId?.keys?.[0]?.value;
 
                 // We have to use the idEquals function here to correctly handle IRDIs
-                const visualizationMapKey =
-                    (Object.keys(submodelElementCustomVisualizationMap) as Array<string>).find((key) =>
-                        idEquals(semanticId, key),
-                    ) ?? '';
-                const CustomSubmodelElementComponent = submodelElementCustomVisualizationMap[visualizationMapKey];
+                const visualizationMapKey = (Object.keys(submodelElementCustomVisualizationMap) as Array<string>).find(
+                    (key) => idEquals(semanticId, key),
+                ) as keyof typeof submodelElementCustomVisualizationMap | undefined;
+                const CustomSubmodelElementComponent = visualizationMapKey
+                    ? submodelElementCustomVisualizationMap[visualizationMapKey]
+                    : undefined;
 
                 return (
                     <Fragment key={index}>
@@ -36,7 +39,7 @@ export function GenericSubmodelDetailComponent({ submodel }: SubmodelVisualizati
                         ) : (
                             <GenericSubmodelElementComponent
                                 key={index}
-                                submodelElement={el}
+                                submodelElement={el}    
                                 submodelId={submodel.id}
                                 hasDivider={hasDivider(index)}
                             />

@@ -1,8 +1,8 @@
 import { Box, Card, CardContent, Divider, Skeleton, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { SubmodelDetail } from './submodel/SubmodelDetail';
-import { TabSelectorItem, VerticalTabSelector } from 'components/basics/VerticalTabSelector';
+import { ErrorMessage, TabSelectorItem, VerticalTabSelector } from 'components/basics/VerticalTabSelector';
 import { MobileModal } from 'components/basics/MobileModal';
 import InfoIcon from '@mui/icons-material/Info';
 import LinkOffIcon from '@mui/icons-material/LinkOff';
@@ -10,22 +10,26 @@ import { SortNameplateElements } from 'app/[locale]/viewer/_components/submodel/
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import ErrorBoundary from 'components/basics/ErrorBoundary';
 import { useTranslations } from 'next-intl';
+import { SubmodelInfoDialog } from 'app/[locale]/viewer/_components/submodel/SubmodelInfoDialog';
 
 export type SubmodelsOverviewCardProps = {
     readonly submodelIds: SubmodelOrIdReference[] | undefined;
     readonly submodelsLoading?: boolean;
+    readonly firstSubmodelIdShort?: string;
+    readonly disableHeadline?: boolean;
 };
 
-export function SubmodelsOverviewCard({ submodelIds, submodelsLoading }: SubmodelsOverviewCardProps) {
+export function SubmodelsOverviewCard({ submodelIds, submodelsLoading, firstSubmodelIdShort, disableHeadline }: SubmodelsOverviewCardProps) {
     const [submodelSelectorItems, setSubmodelSelectorItems] = useState<TabSelectorItem[]>([]);
     const [selectedItem, setSelectedItem] = useState<TabSelectorItem>();
-    const t = useTranslations('submodels');
+    const t = useTranslations('pages.aasViewer.submodels');
 
     SortNameplateElements(selectedItem?.submodelData);
 
-    const [open, setOpen] = useState<boolean>(false);
     const isMobile = useIsMobile();
-    const firstSubmodelIdShort = 'Nameplate';
+    const firstSubmodelToShowIdShort = firstSubmodelIdShort ?? 'Nameplate';
+
+    const [infoItem, setInfoItem] = useState<TabSelectorItem>();
 
     function getSubmodelTabs(): TabSelectorItem[] {
         if (!submodelIds) return []; // do other state stuff
@@ -34,7 +38,7 @@ export function SubmodelsOverviewCard({ submodelIds, submodelsLoading }: Submode
             .map(getAsTabSelectorItem)
             .filter((item) => !!item)
             .sort(function (x, y) {
-                return x.label == firstSubmodelIdShort ? -1 : y.label == firstSubmodelIdShort ? 1 : 0;
+                return x.label == firstSubmodelToShowIdShort ? -1 : y.label == firstSubmodelToShowIdShort ? 1 : 0;
             });
     }
 
@@ -44,21 +48,18 @@ export function SubmodelsOverviewCard({ submodelIds, submodelsLoading }: Submode
                 id: submodelId.id,
                 label: submodelId.submodel.idShort ?? '',
                 submodelData: submodelId.submodel,
-                startIcon: <InfoIcon/>,
+                startIcon: <InfoIcon color={'primary'} />,
             };
         } else {
+            const error = submodelId.error?.toString() as ErrorMessage;
             return {
                 id: submodelId.id,
                 label: submodelId.id,
                 startIcon: <LinkOffIcon />,
-                submodelError: submodelId.error ?? 'UNKNOWN'
+                submodelError: error ?? 'UNKNOWN',
             };
         }
     }
-
-    useEffect(() => {
-        setOpen(!!selectedItem && isMobile);
-    }, [isMobile, selectedItem]);
 
     useEffect(() => {
         const submodelTabs = getSubmodelTabs();
@@ -66,19 +67,14 @@ export function SubmodelsOverviewCard({ submodelIds, submodelsLoading }: Submode
     }, [submodelIds]);
 
     useEffect(() => {
-        const nameplateTab = submodelSelectorItems.find((tab) => tab.submodelData?.idShort === firstSubmodelIdShort);
+        const nameplateTab = submodelSelectorItems.find((tab) => tab.submodelData?.idShort === firstSubmodelToShowIdShort);
         if (!selectedItem && !isMobile && nameplateTab) {
             setSelectedItem(nameplateTab);
         }
     }, [isMobile, submodelSelectorItems]);
 
-    const handleClose = () => {
-        setOpen(false);
-        setSelectedItem(undefined);
-    };
-
-    function SelectedContent() {
-        if (selectedItem?.submodelData) {
+    const SelectedContent = useMemo(() =>  {
+        if (selectedItem?.submodelData && !submodelsLoading) {
             return (
                 <ErrorBoundary message={t('renderError')}>
                     <SubmodelDetail submodel={selectedItem?.submodelData} />
@@ -99,37 +95,55 @@ export function SubmodelsOverviewCard({ submodelIds, submodelsLoading }: Submode
             );
         }
         return null;
-    }
+    }, [selectedItem, submodelsLoading, t]);
 
     return (
-        <Card>
-            <CardContent>
-                <Typography variant="h3" marginBottom="15px">
-                    {t('title')}
-                </Typography>
-                <Box display="grid" gridTemplateColumns={isMobile ? '1fr' : '1fr 2fr'} gap="40px">
-                    <Box>
-                        <VerticalTabSelector
-                            items={submodelSelectorItems}
-                            selected={selectedItem}
-                            setSelected={setSelectedItem}
-                        />
-                        {submodelsLoading && (
-                            <Skeleton height={70} sx={{ mb: 2 }} data-testid="submodelOverviewLoadingSkeleton" />
+        <>
+            <Card>
+                <CardContent>
+                    { !disableHeadline && (
+                        <Typography variant="h3" marginBottom="15px">
+                            {t('title')}
+                        </Typography>
+                    )}
+                    <Box display="grid" gridTemplateColumns={isMobile ? '1fr' : '1fr 2fr'} gap="2rem">
+                        <Box>
+                            <VerticalTabSelector
+                                items={submodelSelectorItems}
+                                selected={selectedItem}
+                                setSelected={setSelectedItem}
+                                setInfoItem={setInfoItem}
+                            />
+                            {submodelsLoading && (
+                                <Skeleton height={70} sx={{ mb: 2 }} data-testid="submodelOverviewLoadingSkeleton" />
+                            )}
+                        </Box>
+                        {isMobile ? (
+                            <MobileModal
+                                selectedItem={selectedItem}
+                                open={!!selectedItem}
+                                handleClose={() => {
+                                    setSelectedItem(undefined);
+                                }}
+                                setInfoItem={setInfoItem}
+                                content={SelectedContent}
+                            />
+                        ) : (
+                            SelectedContent
                         )}
                     </Box>
-                    {isMobile ? (
-                        <MobileModal
-                            title={selectedItem?.label}
-                            open={open}
-                            handleClose={handleClose}
-                            content={SelectedContent()}
-                        />
-                    ) : (
-                        <SelectedContent />
-                    )}
-                </Box>
-            </CardContent>
-        </Card>
+                </CardContent>
+            </Card>
+
+            <SubmodelInfoDialog
+                open={!!infoItem}
+                onClose={() => {
+                    setInfoItem(undefined);
+                }}
+                id={infoItem?.id}
+                idShort={infoItem?.submodelData?.idShort}
+                semanticId={infoItem?.submodelData?.semanticId}
+            />
+        </>
     );
 }

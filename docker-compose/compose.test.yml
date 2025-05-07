@@ -11,7 +11,6 @@ services:
       CYPRESS_MNESTIX_BACKEND_API_URL: 'http://mnestix-api:5064'
       CYPRESS_AAS_DISCOVERY_API_URL: 'http://mnestix-api:5064/discovery'
       ELECTRON_ENABLE_LOGGING: 1
-
       SPLIT: ${SPLIT:-1}
       SPLIT_INDEX: ${SPLIT_INDEX:-0}
     command: run
@@ -20,7 +19,8 @@ services:
       - ./cypress.config.ts:/cypress_Tests/cypress.config.ts
       - ./cypress-artifacts/screenshots:/cypress_Tests/cypress/screenshots
       - ./cypress-artifacts/videos:/cypress_Tests/cypress/videos
-      - ./cypress:/cypress
+      # esm compatibility
+      - ./tsconfig.json:/cypress_Tests/tsconfig.json
     depends_on:
       mnestix-browser:
         condition: service_started
@@ -34,6 +34,7 @@ services:
       - mnestix-network
 
   mnestix-browser:
+    image: mnestix/mnestix-browser:latest
     environment:
       AAS_REPO_API_URL: 'http://mnestix-api:5064/repo'
       SUBMODEL_REPO_API_URL: 'http://mnestix-api:5064/repo'
@@ -44,14 +45,16 @@ services:
       KEYCLOAK_ENABLED: 'true'
       KEYCLOAK_CLIENT_ID: 'mnestix-browser-client-demo'
       KEYCLOAK_ISSUER: 'http://keycloak:8080'
-      KEYCLOAK_REALM: mnestix-realm
+      KEYCLOAK_LOCAL_URL: 'http://localhost:8080'
+      KEYCLOAK_REALM: 'Mnestix'
+      NEXTAUTH_SECRET: 'test'
 
   keycloak:
     profiles: ['', 'tests']
     image: keycloak/keycloak:24.0.4
     container_name: keycloak
     volumes:
-      - ./docker-compose/data/keycloak/minimal-mnestix-realm.json:/opt/keycloak/data/import/realm-config.json
+      - ./docker-compose/data/keycloak/realm/Mnestix-realm.json:/opt/keycloak/data/import/realm-config.json
     ports:
       - 8080:8080
     environment:

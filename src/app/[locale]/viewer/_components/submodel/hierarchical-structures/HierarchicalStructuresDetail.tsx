@@ -8,7 +8,7 @@ import {
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { EntityComponent } from '../../submodel-elements/generic-elements/entity-components/EntityComponent';
 import { cloneDeep } from 'lodash';
-import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
+import { HierarchicalStructuresSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/hierarchical-structures/HierarchicalStructuresSubmodelElementSemanticId.enum';
 import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { GetEntityType } from 'lib/util/EntityTypeUtil';
 import { Box, IconButton } from '@mui/material';
@@ -17,6 +17,7 @@ import { InfoOutlined } from '@mui/icons-material';
 import React from 'react';
 import { ArchetypeDetailsDialog } from './ArchetypeDetailsDialog';
 import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
+import { RelationShipTypes } from 'lib/enums/RelationShipTypes.enum';
 
 export function HierarchicalStructuresDetail({ submodel }: SubmodelVisualizationProps) {
     const submodelElements = submodel.submodelElements as ISubmodelElement[];
@@ -37,7 +38,7 @@ export function HierarchicalStructuresDetail({ submodel }: SubmodelVisualization
     const archeTypePropertylElement = smElements.find((el) => {
         if (
             getKeyType(el) === KeyTypes.Property &&
-            el.semanticId?.keys[0].value === SubmodelElementSemanticId.ArcheType
+            el.semanticId?.keys[0].value === HierarchicalStructuresSubmodelElementSemanticIdEnum.ArcheType
         ) {
             return el as Property;
         }
@@ -155,12 +156,6 @@ const selectRelationship = (entryNode: Entity, relationShips: RelationshipElemen
     }
 };
 
-enum RelationShipTypes {
-    SameAs = 'https://admin-shell.io/idta/HierarchicalStructures/SameAs/1/0',
-    IsPartOf = 'https://admin-shell.io/idta/HierarchicalStructures/IsPartOf/1/0',
-    HasPart = 'https://admin-shell.io/idta/HierarchicalStructures/HasPart/1/0',
-}
-
 function buildSameAsRelationship(entryNode: Entity, rel: RelationshipElement, entityNodes: Entity[]) {
     const entityName = rel.first.keys[rel.first.keys.length - 1]?.value;
 
@@ -252,7 +247,7 @@ function checkSubmodelsElements(smElements: ISubmodelElement[]) {
 
 function separateEntryNode(smElements: Entity[]) {
     const entryNode = smElements.find((el) => {
-        return el.semanticId?.keys[0].value === SubmodelElementSemanticId.EntryNode;
+        return el.semanticId?.keys[0].value === HierarchicalStructuresSubmodelElementSemanticIdEnum.EntryNode;
     });
 
     const indexOfEntryNode = smElements.indexOf(entryNode as Entity);
@@ -270,5 +265,5 @@ function separateEntryNode(smElements: Entity[]) {
 }
 
 function isBulkCountProperty(el: ISubmodelElement) {
-    return el.semanticId?.keys[0]?.value === SubmodelElementSemanticId.BulkCount;
+    return el.semanticId?.keys[0]?.value === HierarchicalStructuresSubmodelElementSemanticIdEnum.BulkCount;
 }

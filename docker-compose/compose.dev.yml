@@ -11,7 +11,6 @@ services:
     volumes:
       - ./src:/app/src
       - ./public:/app/public
-#      - ./data/logo.svg:/app/public/logo
 
   mongodb:
     ports:
@@ -20,7 +19,7 @@ services:
   aas-environment:
     ports:
       - '8081:8081'
-        
+
   aas-discovery:
     ports:
       - '8082:8081'

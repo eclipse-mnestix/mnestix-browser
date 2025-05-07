@@ -8,7 +8,6 @@
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { SubmodelCompareData, SubmodelCompareDataRecord } from 'lib/types/SubmodelCompareData';
 import { getKeyType } from 'lib/util/KeyTypeUtil';
-import { IntlShape } from 'react-intl';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
 
 export function generateSubmodelCompareData(sm: Submodel | SubmodelElementCollection): SubmodelCompareData {
@@ -38,7 +37,7 @@ export function isCompareDataRecord(
     return compareRecord !== undefined && 'submodelElements' in compareRecord;
 }
 
-export function compareRowValues(smElements: (ISubmodelElement | null)[], intl: IntlShape) {
+export function compareRowValues(smElements: (ISubmodelElement | null)[], locale: string) {
     const marked: number[] = [];
     const values: (string | null)[] = [];
 
@@ -52,14 +51,18 @@ export function compareRowValues(smElements: (ISubmodelElement | null)[], intl: 
                     values.push((el as Property).value ?? null);
                     break;
                 case KeyTypes.MultiLanguageProperty:
-                    values.push(getTranslationText(el as MultiLanguageProperty, intl));
+                    values.push(getTranslationText(el as MultiLanguageProperty, locale));
                     break;
             }
         }
     });
 
     if (valuesLength == 2 && values[0] !== values[1]) {
-        values[1] !== null ? marked.push(1) : marked.push(0);
+        if (values[1] !== null) {
+            marked.push(1);
+        } else {
+            marked.push(0);
+        }
     }
 
     if (valuesLength == 3) {

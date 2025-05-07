@@ -1,8 +1,19 @@
-import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
-import { AssetAdministrationShell, Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import {
+    IAssetAdministrationShellRepositoryApi,
+    ISubmodelRepositoryApi,
+    SubmodelElementValue,
+} from 'lib/api/basyx-v3/apiInterface';
+import type {
+    AssetAdministrationShell,
+    ISubmodelElement,
+    Property,
+    Reference,
+    Submodel,
+    SubmodelElementCollection,
+    SubmodelElementList,
+} from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import {
     ApiResponseWrapper,
-    ApiResultStatus,
     wrapErrorCode,
     wrapResponse,
     wrapSuccess,
@@ -11,7 +22,13 @@ import { AttachmentDetails } from 'lib/types/TransferServiceData';
 import { encodeBase64, safeBase64Decode } from 'lib/util/Base64Util';
 import { ServiceReachable } from 'test-utils/TestUtils';
 import { MultiLanguageValueOnly, PaginationData } from 'lib/api/basyx-v3/types';
-import { LangStringTextType, MultiLanguageProperty } from '@aas-core-works/aas-core3.0-typescript/types';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
+import {
+    LangStringTextType,
+    MultiLanguageProperty,
+    ModelType,
+    DataTypeDefXsd,
+} from '@aas-core-works/aas-core3.0-typescript/types';
 
 const options = {
     headers: { 'Content-type': 'application/json; charset=utf-8' },
@@ -137,6 +154,19 @@ export class SubmodelRepositoryApiInMemory implements ISubmodelRepositoryApi {
             this.submodelsInRepository.set(submodel.id, submodel);
         });
     }
+    postSubmodelElement() // submodelId: string,
+    // idShortPath: string,
+    // submodelElement: unknown,
+    // options?: Omit<RequestInit, 'body' | 'method'>,
+    : Promise<ApiResponseWrapper<Response>> {
+        throw new Error('Method not implemented.');
+    }
+    deleteSubmodelElementByPath() // submodelId: string,
+    // idShortPath: string,
+    // options?: Omit<RequestInit, 'body' | 'method'>,
+    : Promise<ApiResponseWrapper<Response>> {
+        throw new Error('Method not implemented.');
+    }
 
     getBaseUrl(): string {
         return this.baseUrl;
@@ -168,6 +198,23 @@ export class SubmodelRepositoryApiInMemory implements ISubmodelRepositoryApi {
         const foundAas = this.submodelsInRepository.get(submodelId);
         if (foundAas) {
             const response = new Response(JSON.stringify(foundAas), options);
+            return wrapResponse(response);
+        }
+        return wrapErrorCode(
+            ApiResultStatus.NOT_FOUND,
+            `no submodel found in the repository: '${this.baseUrl}' for submodel: '${submodelId}'`,
+        );
+    }
+
+    async getSubmodelByIdValueOnly(
+        submodelId: string,
+        _options?: object,
+    ): Promise<ApiResponseWrapper<SubmodelElementValue>> {
+        if (this.reachable !== ServiceReachable.Yes)
+            return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Service not reachable');
+        const foundAas = this.submodelsInRepository.get(submodelId);
+        if (foundAas) {
+            const response = new Response(JSON.stringify(submodelValueOnly(foundAas)), options);
             return wrapResponse(response);
         }
         return wrapErrorCode(
@@ -235,3 +282,52 @@ export function convertDesignation(mlpValue: LangStringTextType[] | null): Recor
         {} as Record<string, string>,
     );
 }
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+function submodelValueOnly(submodel: Submodel) {
+    type ValueOnlyType = Record<string, unknown> | unknown | Array<Record<string, unknown> | unknown>;
+    function parse(e: ISubmodelElement): ValueOnlyType {
+        switch (e.modelType()) {
+            case ModelType.SubmodelElementCollection:
+                return Object.fromEntries(
+                    Object.entries((e as SubmodelElementCollection).value ?? {}).map(([_k, v]) => [
+                        v.idShort,
+                        parse(v as any),
+                    ]),
+                );
+            case ModelType.SubmodelElementList:
+                return (e as SubmodelElementList).value?.map((e) => parse(e) as string | Record<string, unknown>) ?? [];
+            case ModelType.Property: {
+                const prop = e as Property;
+                if (!prop.value) {
+                    return null;
+                }
+                switch (prop.valueType) {
+                    case DataTypeDefXsd.Date:
+                        return new Date(prop.value);
+                    case DataTypeDefXsd.Integer:
+                    case DataTypeDefXsd.Int:
+                    case DataTypeDefXsd.Float:
+                    case DataTypeDefXsd.Decimal:
+                        return Number(prop.value);
+                    case DataTypeDefXsd.String:
+                        return prop.value;
+                }
+                throw new Error(`Unknown value type: ${prop.valueType}. Please add to apiInMemory.ts`);
+            }
+            default:
+                throw new Error(`Unknown model type: ${e.modelType()}. Please add to apiInMemory.ts`);
+        }
+    }
+
+    const res = Object.fromEntries(
+        submodel.submodelElements
+            ?.filter((e) => (e as any).value !== undefined)
+            .map((e): [string, ValueOnlyType] => {
+                return [e.idShort!, parse(e)];
+            }) ?? [],
+    );
+    return res;
+}
+
+/* eslint-enable @typescript-eslint/no-explicit-any */

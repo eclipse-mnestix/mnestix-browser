@@ -4,8 +4,6 @@ import AppShortcutIcon from '@mui/icons-material/AppShortcut';
 import { TreeItem, useTreeItemState } from '@mui/x-tree-view';
 import { Box, Button, IconButton, styled } from '@mui/material';
 import clsx from 'clsx';
-import { messages } from 'lib/i18n/localization';
-import { FormattedMessage } from 'react-intl';
 import { Entity, KeyTypes } from '@aas-core-works/aas-core3.0-typescript/types';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
 import { useAasState } from 'components/contexts/CurrentAasContext';
@@ -18,6 +16,7 @@ import {
     ExpandableTreeitem,
     getTreeItemStyle,
 } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/TreeItem';
+import { useTranslations } from 'next-intl';
 
 interface ApplicationTreeItemProps extends CustomTreeItemProps {
     hasChildEntities: boolean;
@@ -47,6 +46,7 @@ const CustomContent = React.forwardRef(function CustomContent(props: Application
     const isEntity = data && getKeyType(data) === KeyTypes.Entity;
     const [aas] = useAasState();
     const assetId = aas?.assetInformation.globalAssetId;
+    const t = useTranslations('pages.aasViewer');
 
     const dataIcon = hasChildEntities ? (
         <AssetIcon fontSize="small" color="primary" />
@@ -109,7 +109,7 @@ const CustomContent = React.forwardRef(function CustomContent(props: Application
                                 onClick={handleAssetNavigateClick}
                                 data-testid="view-asset-button"
                             >
-                                <FormattedMessage {...messages.mnestix.open} />
+                                {t('submodels.actions.open')}
                             </Button>
                         </>
                     )}

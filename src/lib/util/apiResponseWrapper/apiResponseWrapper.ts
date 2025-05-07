@@ -1,25 +1,9 @@
 import { base64ToBlob, blobToBase64 } from 'lib/util/Base64Util';
-
-export const ApiResultStatus = {
-    SUCCESS: 'SUCCESS',
-    NOT_FOUND: 'NOT_FOUND',
-    UNAUTHORIZED: 'UNAUTHORIZED',
-    UNKNOWN_ERROR: 'UNKNOWN_ERROR',
-    INTERNAL_SERVER_ERROR: 'INTERNAL_SERVER_ERROR',
-} as const;
-
-export type ApiResultStatus = (typeof ApiResultStatus)[keyof typeof ApiResultStatus];
+import { ApiResultStatus, httpStatusMessage } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 export type ApiFileDto = {
     fileContent: string;
     fileType: string;
-}
-
-const httpStatusMessage: Record<number, ApiResultStatus> = {
-    200: ApiResultStatus.SUCCESS,
-    401: ApiResultStatus.UNAUTHORIZED,
-    404: ApiResultStatus.NOT_FOUND,
-    500: ApiResultStatus.INTERNAL_SERVER_ERROR,
 };
 
 const getStatus = (statusCode: number): ApiResultStatus => {
@@ -29,35 +13,46 @@ const getStatus = (statusCode: number): ApiResultStatus => {
     return ApiResultStatus.SUCCESS;
 };
 
-export type ApiResponseWrapper<T> =
-    | ApiResponseWrapperSuccess<T>
-    | ApiResponseWrapperError<T>;
+export type ApiResponseWrapper<T> = ApiResponseWrapperSuccess<T> | ApiResponseWrapperError<T>;
 
-export type ApiResponseWrapperSuccess<T> = {
+export type ApiResponseWrapperBase = {
+    httpStatus?: number;
+    httpText?: ApiResultStatus;
+};
+
+export type ApiResponseWrapperSuccess<T> = ApiResponseWrapperBase & {
     isSuccess: true;
     result: T;
 };
 
-export type ApiResponseWrapperError<T> = {
+export type ApiResponseWrapperError<T> = ApiResponseWrapperBase & {
     isSuccess: false;
     result?: T;
     errorCode: ApiResultStatus;
     message: string;
 };
 
-export function wrapSuccess<T>(result: T): ApiResponseWrapperSuccess<T> {
+export function wrapSuccess<T>(result: T, httpStatus?: number, httpText?: ApiResultStatus): ApiResponseWrapperSuccess<T> {
     return {
         isSuccess: true,
         result: result,
+        httpStatus: httpStatus,
+        httpText: httpText,
     };
 }
 
-export function wrapErrorCode<T>(error: ApiResultStatus, message: string, result?: T): ApiResponseWrapperError<T> {
+export function wrapErrorCode<T>(
+    error: ApiResultStatus,
+    message: string,
+    httpStatus?: number,
+    result?: T,
+): ApiResponseWrapperError<T> {
     return {
         isSuccess: false,
-        result: result,
         errorCode: error,
         message: message,
+        httpStatus: httpStatus,
+        result: result,
     };
 }
 
@@ -69,21 +64,28 @@ export async function wrapFile(content: Blob): Promise<ApiResponseWrapperSuccess
 }
 
 export async function wrapResponse<T>(response: Response): Promise<ApiResponseWrapper<T>> {
-    const status = getStatus(response.status);
-    
-    if (status !== ApiResultStatus.SUCCESS) {
+    if (!(response.status >= 200 && response.status < 300)) {
+        const status = getStatus(response.status);
+        if (response.headers.get('content-length') === '0') {
+            return wrapErrorCode(status, response.statusText, response.status);
+        }
         const result = await response.json().catch((e) => console.warn(e.message));
-        return wrapErrorCode(status, response.statusText, result);
+        return wrapErrorCode(status, response.statusText, response.status, result);
     }
-    
+
     const contentType = response.headers.get('Content-Type') || '';
     if (!contentType || contentType.includes('application/json')) {
+        if (response.body === null) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            return wrapSuccess(undefined as any);
+        }
+
         const result = await response.json().catch((e) => console.warn(e.message));
-        return wrapSuccess(result);
+        return wrapSuccess(result, response.status, getStatus(response.status));
     }
-    
+
     const fileFromResponse = await response.blob();
-    return wrapSuccess(fileFromResponse as T);
+    return wrapSuccess(fileFromResponse as T, response.status, getStatus(response.status));
 }
 
 export function mapFileDtoToBlob(fileDto: ApiFileDto): Blob {

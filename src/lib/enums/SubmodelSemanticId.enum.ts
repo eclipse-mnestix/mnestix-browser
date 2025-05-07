@@ -1,8 +1,9 @@
-export enum SubmodelSemanticId {
+export enum SubmodelSemanticIdEnum {
     CoffeeConsumptionContainer = 'https://xitaso.com/CoffeeConsumption',
     ReferenceCounterContainer = 'https://xitaso.com/ReferenceCounter',
     CarbonFootprintIrdi = '0173-1#01-AHE712#001',
     CarbonFootprint = 'https://admin-shell.io/idta/CarbonFootprint/CarbonFootprint/0/9',
+    CarbonFootprintV1 = 'https://admin-shell.io/idta/CarbonFootprint/CarbonFootprint/1/0',
     TimeSeries = 'https://admin-shell.io/idta/TimeSeries/1/1',
     HierarchicalStructuresV10 = 'https://admin-shell.io/idta/HierarchicalStructures/1/0/Submodel',
     HierarchicalStructuresV11 = 'https://admin-shell.io/idta/HierarchicalStructures/1/1/Submodel',
@@ -10,4 +11,6 @@ export enum SubmodelSemanticId {
     NameplateV2 = 'https://admin-shell.io/zvei/nameplate/2/0/Nameplate',
     NameplateV3 = 'https://admin-shell.io/zvei/nameplate/3/0/Nameplate',
     BillOfApplications = 'https://xitaso.com/BillOfApplications',
+    TechnicalDataV11 = 'https://admin-shell.io/ZVEI/TechnicalData/Submodel/1/1',
+    TechnicalDataV12 = 'https://admin-shell.io/ZVEI/TechnicalData/Submodel/1/2',
 }

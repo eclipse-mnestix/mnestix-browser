@@ -11,15 +11,15 @@ export function useShowError() {
 
     function showNotFoundError(notificationSpawner: NotificationSpawner) {
         notificationSpawner.spawn({
-            message: t('errors.notFound'),
+            message: t('navigation.errors.notFound'),
             severity: 'error',
         });
     }
 
     function showUnauthorizedError(notificationSpawner: NotificationSpawner) {
         notificationSpawner.spawn({
-            title: t('errors.unauthorizedError.title'),
-            message: t('errors.unauthorizedError.content'),
+            title: t('navigation.errors.unauthorizedError.title'),
+            message: t('navigation.errors.unauthorizedError.content'),
             severity: 'error',
         });
     }
@@ -30,12 +30,42 @@ export function useShowError() {
 
             if (e instanceof LocalizedError) {
                 notificationSpawner.spawn({
-                    message: t(e.descriptor),
+                    message: t(e.descriptor, e.params),
                     severity: 'error',
                 });
                 return;
             }
 
+            if (e instanceof NotFoundError) {
+                showNotFoundError(notificationSpawner);
+                return;
+            }
+
+            if (e instanceof Error && e.message) {
+                notificationSpawner.spawn({
+                    message: e.message,
+                    severity: 'error',
+                });
+                return;
+            }
+
+            if (isApiResponseWrapperError(e)) {
+                switch (e.errorCode) {
+                    case 'UNAUTHORIZED':
+                        showUnauthorizedError(notificationSpawner);
+                        return;
+                    default:
+                        notificationSpawner.spawn({
+                            title: t('navigation.errors.unexpectedError'),
+                            message: `${e.errorCode}: ${e.message}`,
+                            severity: 'error',
+                        });
+                        return;
+                }
+            }
+
+            // TODO remove: there should not be any Response on the client side
+            // use API wrapper instead
             if (e instanceof Response) {
                 switch (e.status) {
                     case 401:
@@ -48,7 +78,7 @@ export function useShowError() {
                         notificationSpawner.spawn({
                             message: (
                                 <>
-                                    {t('errors.unexpectedError')}
+                                    {t('navigation.errors.unexpectedError')}
                                     <Typography variant="body2" sx={{ mt: 1, opacity: 0.7 }}>
                                         {e.status}: &quot;{e.statusText}&quot;
                                     </Typography>
@@ -60,34 +90,8 @@ export function useShowError() {
                 }
             }
 
-            if (e instanceof NotFoundError) {
-                showNotFoundError(notificationSpawner);
-                return;
-            }
-
-            if (isApiResponseWrapperError(e)) {
-                switch (e.errorCode) {
-                    case 'UNAUTHORIZED':
-                        showUnauthorizedError(notificationSpawner);
-                        return;
-                    default:
-                        notificationSpawner.spawn({
-                            message: (
-                                <>
-                                    {t('errors.unexpectedError')}
-                                    <Typography variant="body2" sx={{ mt: 1, opacity: 0.7 }}>
-                                        {e.errorCode}: &quot;{e.message}&quot;
-                                    </Typography>
-                                </>
-                            ),
-                            severity: 'error',
-                        });
-                        return;
-                }
-            }
-
             notificationSpawner.spawn({
-                message: t('errors.unexpectedError'),
+                message: t('navigation.errors.unexpectedError'),
                 severity: 'error',
             });
         },

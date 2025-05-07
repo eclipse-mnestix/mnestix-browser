@@ -1,11 +1,10 @@
 import { alpha, Step, StepLabel, Stepper, Typography, useTheme } from '@mui/material';
-import { ProductLifecycleStage } from 'lib/enums/ProductLifecycleStage.enum';
-import { messages } from 'lib/i18n/localization';
-import { useIntl } from 'react-intl';
+import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/ProductLifecycleStage.enum';
 import CircleIcon from '@mui/icons-material/Circle';
+import { useTranslations } from 'next-intl';
 
 function findNextStage(stage?: string) {
-    const lifecycleStages: string[] = Object.values(ProductLifecycleStage);
+    const lifecycleStages = Object.values(ProductLifecycleStage);
 
     const indexOfCurrentStage = lifecycleStages.findIndex((s) => s === stage);
     if (indexOfCurrentStage === undefined || indexOfCurrentStage === lifecycleStages.length - 1) return undefined;
@@ -13,7 +12,7 @@ function findNextStage(stage?: string) {
 }
 
 export function ProductLifecycle(props: { completedStages: ProductLifecycleStage[] }) {
-    const intl = useIntl();
+    const t = useTranslations('components.carbonFootprint');
     const theme = useTheme();
     const nextStage = findNextStage(props.completedStages.at(-1));
 
@@ -22,6 +21,7 @@ export function ProductLifecycle(props: { completedStages: ProductLifecycleStage
     function CustomCircle() {
         return <CircleIcon htmlColor={colorOfNextStep} />;
     }
+
     return (
         <Stepper
             activeStep={props.completedStages.length}
@@ -33,8 +33,7 @@ export function ProductLifecycle(props: { completedStages: ProductLifecycleStage
                 <Step key={index} data-testid="product-lifecycle-completed-step">
                     <StepLabel>
                         <Typography fontSize={24} data-testid="product-lifecycle-step-text">
-                            {!!step &&
-                                intl.formatMessage(messages.mnestix.productCarbonFootprint.lifecycleStages[step])}
+                            {!!step && t(`stages.${step}`)}
                         </Typography>
                     </StepLabel>
                 </Step>
@@ -43,8 +42,7 @@ export function ProductLifecycle(props: { completedStages: ProductLifecycleStage
                 <Step key="20" active={false} data-testid="product-lifecycle-next-step">
                     <StepLabel StepIconComponent={CustomCircle} data-testid="product-lifecycle-step-label">
                         <Typography fontSize={24} color={colorOfNextStep}>
-                            {intl.formatMessage(messages.mnestix.productCarbonFootprint.lifecycleStages[nextStage])}{' '}
-                            (not yet included)
+                            {t(`stages.${nextStage}`)} ({t('notIncludedHint')})
                         </Typography>
                     </StepLabel>
                 </Step>

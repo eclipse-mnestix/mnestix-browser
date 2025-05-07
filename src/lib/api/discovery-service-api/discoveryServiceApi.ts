@@ -5,6 +5,8 @@ import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResp
 import { SpecificAssetId } from '@aas-core-works/aas-core3.0-typescript/types';
 import * as path from 'node:path';
 import ServiceReachable from 'test-utils/TestUtils';
+import logger, { logResponseDebug } from 'lib/util/Logger';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 type DiscoveryEntryResponse = {
     paging_metadata: object;
@@ -17,6 +19,7 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
         protected http: {
             fetch<T>(url: RequestInfo, init?: RequestInit): Promise<ApiResponseWrapper<T>>;
         },
+        private readonly log: typeof logger = logger,
     ) {}
 
     static create(
@@ -24,8 +27,11 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
         http: {
             fetch<T>(url: RequestInfo, init?: RequestInit): Promise<ApiResponseWrapper<T>>;
         },
+        log?: typeof logger,
     ): DiscoveryServiceApi {
-        return new DiscoveryServiceApi(baseUrl, http);
+        const discoveryLogger = log?.child({ Service: 'DiscoveryServiceApi' });
+
+        return new DiscoveryServiceApi(baseUrl, http, discoveryLogger ?? logger);
     }
 
     static createNull(
@@ -88,9 +94,38 @@ export class DiscoveryServiceApi implements IDiscoveryServiceApi {
             headers,
         });
 
-        if (!response.isSuccess) return wrapErrorCode(response.errorCode, response.message);
+        if (!response.isSuccess) {
+            logResponseDebug(
+                this.log,
+                'getAllAssetAdministrationShellIdsByAssetLink',
+                'AAS discovery search unsuccessful',
+                response,
+                { message: response.message },
+            );
+            return wrapErrorCode(response.errorCode, response.message, response.httpStatus);
+        }
 
-        return wrapSuccess(response.result.result);
+        if (response.result.result.length === 0) {
+            logResponseDebug(
+                this.log,
+                'getAllAssetAdministrationShellIdsByAssetLink',
+                'Discovery search returned no results',
+                response,
+                {
+                    Discovered_AAS_IDs: response.result.result,
+                    Message: 'No matching Asset Administration Shells found',
+                },
+            );
+            return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'No AAS found for assetIds', response.httpStatus);
+        }
+        logResponseDebug(
+            this.log,
+            'getAllAssetAdministrationShellIdsByAssetLink',
+            'Discovery search completed successfully',
+            response,
+            { Discovery_Aas_IDs: response.result.result },
+        );
+        return wrapSuccess(response.result.result, response.httpStatus, response.httpText);
     }
 
     async getAllAssetLinksById(aasId: string, options?: object): Promise<ApiResponseWrapper<SpecificAssetId[]>> {

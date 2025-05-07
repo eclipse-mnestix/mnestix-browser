@@ -1,7 +1,7 @@
 name: Publish wiki
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
       - wiki/**
       - .github/workflows/publish-wiki.yml
@@ -14,5 +14,5 @@ jobs:
   publish-wiki:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: Andrew-Chen-Wang/github-wiki-action@v4
+      - uses: actions/checkout@v4
+      - uses: Andrew-Chen-Wang/github-wiki-action@50650fccf3a10f741995523cf9708c53cec8912a # pinned version CWE-829

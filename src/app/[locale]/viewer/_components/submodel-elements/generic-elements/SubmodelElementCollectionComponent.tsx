@@ -2,10 +2,9 @@ import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { Box, Button } from '@mui/material';
 import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
 import { NestedContentWrapper } from 'components/basics/NestedContentWrapper';
-import { messages } from 'lib/i18n/localization';
 import { ReactNode, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { GenericSubmodelElementComponent } from './GenericSubmodelElementComponent';
+import { useTranslations } from 'next-intl';
 
 enum ExpandButtonText {
     show = 'show',
@@ -25,6 +24,7 @@ export function SubmodelElementCollectionComponent({
 }: SubmodelElementComponentProps) {
     const [isExpanded, setIsExpanded] = useState(false);
     const componentList: ReactNode[] = [];
+    const t = useTranslations('components.submodelElementCollection');
 
     if (
         !submodelElementCollection.value ||
@@ -54,10 +54,9 @@ export function SubmodelElementCollectionComponent({
                 onClick={() => setIsExpanded(!isExpanded)}
                 data-testid="submodel-dropdown-button"
             >
-                <FormattedMessage
-                    {...messages.mnestix.showEntriesButton[isExpanded ? ExpandButtonText.hide : ExpandButtonText.show]}
-                    values={{ count: `${Object.keys(submodelElementCollection.value).length}` }}
-                />
+                {t(`showEntriesButton.${isExpanded ? ExpandButtonText.hide : ExpandButtonText.show}`, {
+                    count: Object.keys(submodelElementCollection.value).length,
+                })}
             </Button>
             {isExpanded && <NestedContentWrapper>{componentList}</NestedContentWrapper>}
         </Box>

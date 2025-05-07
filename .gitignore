@@ -1,12 +1,18 @@
-# ...
-.next
-next-env.d.ts
-dist
-node_modules
-cypress-artifacts
-/.idea/.idea.mnestix-frontend.dir/.idea/
-.env
+/next-env.d.ts
+/dist
+/node_modules
+/tsconfig.tsbuildinfo
+/.next
+
 /cypress/videos/
 /cypress/screenshots/
-/prisma/mnestix-database.db
 /cypress/results/*
+
+/prisma/database/
+
+/.idea/.idea.mnestix-frontend.dir/.idea/
+
+/.env
+!.env.local
+/.env*.local
+/cypress-artifacts

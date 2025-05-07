@@ -10,7 +10,6 @@ import {
     Typography,
 } from '@mui/material';
 import { LockedTextField } from 'components/basics/LockedTextField';
-import { messages } from 'lib/i18n/localization';
 import { useEffect, useState } from 'react';
 import {
     Control,
@@ -19,10 +18,10 @@ import {
     FieldArrayWithId, FieldErrors,
     UseFormRegister
 } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { isValidIdPrefix, isValidShortIdPrefix } from 'lib/util/IdValidationUtil';
 import { DynamicPartText } from './DynamicPartText';
 import { IdSettingsFormData } from 'app/[locale]/settings/_components/id-settings/IdSettingsCard';
+import { useTranslations } from 'next-intl';
 
 type IdSettingEntryProps = {
     readonly index: number;
@@ -61,16 +60,16 @@ const StyledCircularProgressWrapper = styled(Box)(() => ({
 
 export function IdSettingEntry(props: IdSettingEntryProps) {
     const [hasTriggeredChange, setHasTriggeredChange] = useState(true);
-    const intl = useIntl();
+    const t = useTranslations('pages.settings.idStructure');
 
     const validateInput = (value: string | null | undefined) => {
         if (!value) return
         switch (props.field.idType) {
             case 'IRI':
-                return isValidIdPrefix(value) || intl.formatMessage({ ...messages.mnestix.errorMessages.invalidIri });
+                return isValidIdPrefix(value) || t('errors.invalidIri');
             case 'string':
                 // For idShorts we want to ensure that it can be part of an IRI
-                return isValidShortIdPrefix(value) || intl.formatMessage({ ...messages.mnestix.errorMessages.invalidIriPart });
+                return isValidShortIdPrefix(value) || t('errors.invalidIriPart');
         }
         return
     }
@@ -88,12 +87,12 @@ export function IdSettingEntry(props: IdSettingEntryProps) {
         props.field.dynamicPart.allowedValues.length > 1 ? (
             <FormControl fullWidth variant="filled">
                 <InputLabel id="dynamic-part">
-                    <FormattedMessage {...messages.mnestix.dynamicPart} />
+                    {t('labels.dynamicPart')}
                 </InputLabel>
                 <Select
                     labelId="dynamic-part"
                     id="dynamic-part-select"
-                    label={<FormattedMessage {...messages.mnestix.dynamicPart} />}
+                    label={t('labels.dynamicPart')}
                     {...field}
                 >
                     {props.field.dynamicPart.allowedValues &&
@@ -108,7 +107,7 @@ export function IdSettingEntry(props: IdSettingEntryProps) {
             </FormControl>
         ) : (
             <LockedTextField
-                label={<FormattedMessage {...messages.mnestix.dynamicPart} />}
+                label={t('labels.dynamicPart')}
                 sx={{ flexGrow: 1, mr: 1 }}
                 fullWidth={true}
                 {...field}
@@ -145,7 +144,7 @@ export function IdSettingEntry(props: IdSettingEntryProps) {
                             name={`idSettings.${props.index}.prefix.value`}
                             render={() =>
                                 <TextField
-                                    label={<FormattedMessage {...messages.mnestix.staticPrefix} />}
+                                    label={t('labels.staticPrefix')}
                                     sx={{ flexGrow: 1, mr: 1 }}
                                     fullWidth={true}
                                     defaultValue={props.field.prefix.value}

@@ -2,24 +2,23 @@ import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { ISubmodelRegistryServiceApi } from 'lib/api/submodel-registry-service/submodelRegistryServiceApiInterface';
 import { FetchAPI } from 'lib/api/basyx-v3/api';
-import {
-    ApiResponseWrapper,
-    ApiResultStatus,
-    wrapErrorCode,
-    wrapSuccess,
-} from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import path from 'node:path';
 import ServiceReachable from 'test-utils/TestUtils';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
+import logger, { logResponseDebug } from 'lib/util/Logger';
 
 export class SubmodelRegistryServiceApi implements ISubmodelRegistryServiceApi {
     constructor(
         private baseUrl: string,
         private http: FetchAPI,
+        private readonly log: typeof logger = logger,
     ) {}
 
-    static create(baseUrl: string, mnestixFetch: FetchAPI) {
-        return new SubmodelRegistryServiceApi(baseUrl, mnestixFetch);
+    static create(baseUrl: string, mnestixFetch: FetchAPI, log?: typeof logger) {
+        const registryLogger = log?.child({ service: 'SubmodelRegistryServiceApi' });
+        return new SubmodelRegistryServiceApi(baseUrl, mnestixFetch, registryLogger);
     }
 
     static createNull(
@@ -43,10 +42,22 @@ export class SubmodelRegistryServiceApi implements ISubmodelRegistryServiceApi {
 
         const url = new URL(path.posix.join(this.baseUrl, 'submodel-descriptors', b64_submodelId));
 
-        return await this.http.fetch(url.toString(), {
+        const response = await this.http.fetch<SubmodelDescriptor>(url.toString(), {
             method: 'GET',
             headers,
         });
+
+        if (!response.isSuccess) {
+            logResponseDebug(
+                this.log,
+                'getSubmodelDescriptorById',
+                'Failed to get submodel descriptor by id',
+                response,
+            );
+            return response;
+        }
+        logResponseDebug(this.log, 'getSubmodelDescriptorById', 'Successfully got submodel descriptor by id', response);
+        return response;
     }
 
     async putSubmodelDescriptorById(
@@ -85,10 +96,26 @@ export class SubmodelRegistryServiceApi implements ISubmodelRegistryServiceApi {
 
         const url = new URL(path.posix.join(this.baseUrl, 'submodel-descriptors'));
 
-        return await this.http.fetch(url.toString(), {
+        const response = await this.http.fetch<SubmodelDescriptor[]>(url.toString(), {
             method: 'GET',
             headers,
         });
+        if (!response.isSuccess) {
+            logResponseDebug(
+                this.log,
+                'getAllSubmodelDescriptors',
+                'Failed to get submodel descriptors by id',
+                response,
+            );
+            return response;
+        }
+        logResponseDebug(
+            this.log,
+            'getAllSubmodelDescriptors',
+            'Successfully got submodel descriptors by id',
+            response,
+        );
+        return response;
     }
 
     async postSubmodelDescriptor(
@@ -117,9 +144,15 @@ export class SubmodelRegistryServiceApi implements ISubmodelRegistryServiceApi {
     }
 
     async getSubmodelFromEndpoint(endpoint: string): Promise<ApiResponseWrapper<Submodel>> {
-        return this.http.fetch<Submodel>(endpoint.toString(), {
+        const response = await this.http.fetch<Submodel>(endpoint.toString(), {
             method: 'GET',
         });
+        if (!response.isSuccess) {
+            logResponseDebug(this.log, 'getSubmodelFromEndpoint', 'Failed to get submodel from endpoint', response);
+            return response;
+        }
+        logResponseDebug(this.log, 'getSubmodelFromEndpoint', 'Successfully got submodel from endpoint', response);
+        return response;
     }
 }
 

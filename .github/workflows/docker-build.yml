@@ -15,7 +15,7 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: mnestix-browser
   # Update the version manually
-  IMAGE_TAG_VERSION: 1.4.2
+  IMAGE_TAG_VERSION: 1.5.0
 
 jobs:
   build-browser-image:
@@ -37,6 +37,7 @@ jobs:
         with:
           platforms: linux/amd64
           context: '.'
+          cache-from: mnestix/mnestix-browser:dev
           cache-to: type=local,dest=/tmp/buildx-amd64-cache,mode=max
           target: production
           push: false
@@ -89,6 +90,11 @@ jobs:
       - name: Pull images
         run: docker compose -f compose.yml -f docker-compose/compose.test.yml --profile tests pull
 
+      # Remove old image to avoid conflicts, before sometimes the old image wasn't loaded
+      # If this step fails please check docker-compose/compose.test.yml if tag is still correct
+      - name: Remove Docker image mnestix/mnestix-browser:latest, to avoid conflicts
+        run: docker rmi mnestix/mnestix-browser:latest
+
       # overwrite the pulled image with the new image
       - name: Load mnestix-browser image
         run: docker load -i mnestix-browser.tar
@@ -114,8 +120,8 @@ jobs:
           name: cypress-artifacts-${{ matrix.containers }}
           path: cypress-artifacts/
 
-  unit-tests:
-    name: Unit Tests
+  unit-test:
+    name: Unit Test
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -124,15 +130,37 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
+
       - name: Run unit tests
         run: npx jest
+
+  lint:
+    name: Lint and Typecheck
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Typescript check
+        run: yarn typecheck
+      - name: Typescript e2e check
+        run: yarn typecheck:e2e
+      - name: Linting check
+        run: yarn lint
 
   # Target for PR Merge Check
   ci-success:
     name: Successful build and tests
     runs-on: ubuntu-latest
-    needs: ['unit-tests', 'e2e-tests']
+    needs: ['lint', 'unit-test', 'e2e-tests']
+    permissions:
+      contents: read
     steps:
       - name: Success
         run: echo "Success"

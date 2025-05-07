@@ -36,7 +36,7 @@ export function ManualAasInput(props: { onSubmit: (input: string) => Promise<voi
             await props.onSubmit(inputValue);
         } catch (e) {
             setIsLoading(false);
-            const msg = e instanceof LocalizedError ? e.descriptor : 'errors.unexpectedError';
+            const msg = e instanceof LocalizedError ? e.descriptor : 'navigation.errors.unexpectedError';
             setError(t(msg));
             if (!(e instanceof LocalizedError)) showError(e);
         }
@@ -58,7 +58,7 @@ export function ManualAasInput(props: { onSubmit: (input: string) => Promise<voi
         <Box display="flex" justifyContent="center">
             <TextField
                 id="manual-input"
-                label={t('dashboard.aasOrAssetId')}
+                label={t('pages.dashboard.aasOrAssetId')}
                 error={isError}
                 helperText={errorText}
                 onChange={handleChange}

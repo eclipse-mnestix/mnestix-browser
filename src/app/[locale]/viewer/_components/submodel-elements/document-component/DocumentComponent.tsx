@@ -9,9 +9,7 @@ import {
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { DataRow } from 'components/basics/DataRow';
 import { PdfDocumentIcon } from 'components/custom-icons/PdfDocumentIcon';
-import { messages } from 'lib/i18n/localization';
 import { useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { getTranslationText, hasSemanticId } from 'lib/util/SubmodelResolverUtil';
 import { DocumentDetailsDialog } from './DocumentDetailsDialog';
 import { isValidUrl } from 'lib/util/UrlUtil';
@@ -19,6 +17,7 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useAasOriginSourceState } from 'components/contexts/CurrentAasContext';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { checkFileExists } from 'lib/services/search-actions/searchActions';
+import { useLocale, useTranslations } from 'next-intl';
 
 enum DocumentSpecificSemanticId {
     DocumentVersion = 'https://admin-shell.io/vdi/2770/1/0/DocumentVersion',
@@ -45,9 +44,9 @@ enum DocumentSpecificSemanticIdIrdiV2 {
 }
 
 type MarkingsComponentProps = {
-    readonly submodelElement?: SubmodelElementCollection;
-    readonly hasDivider?: boolean;
-    readonly submodelId?: string;
+    readonly submodelElement: SubmodelElementCollection;
+    readonly hasDivider: boolean;
+    readonly submodelId: string;
 };
 
 type FileViewObject = {
@@ -79,7 +78,8 @@ const StyledImageWrapper = styled(Box)(({ theme }) => ({
 }));
 
 export function DocumentComponent(props: MarkingsComponentProps) {
-    const intl = useIntl();
+    const t = useTranslations('components.documentComponent');
+    const locale = useLocale();
     const [fileViewObject, setFileViewObject] = useState<FileViewObject>();
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
     const [aasOriginUrl] = useAasOriginSourceState();
@@ -94,7 +94,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
     }, [fileViewObject?.digitalFileUrl]);
 
     useAsyncEffect(async () => {
-        setFileViewObject(await getFileViewObject());
+        setFileViewObject(getFileViewObject());
     }, [props.submodelElement]);
 
     const handleDetailsClick = () => {
@@ -112,12 +112,14 @@ export function DocumentComponent(props: MarkingsComponentProps) {
     const renderImage = () => (
         <StyledImageWrapper>
             {!imageError && fileViewObject?.previewImgUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element -- logo can be an arbitrary url which conflicts with https://nextjs.org/docs/pages/api-reference/components/image#remotepatterns
                 <img
                     src={fileViewObject.previewImgUrl}
                     height={90}
                     width={90}
                     alt="File Preview"
                     onError={handleImageError}
+                    data-testid="document-preview-image"
                 />
             ) : fileViewObject?.mimeType === 'application/pdf' ? (
                 <PdfDocumentIcon color="primary" />
@@ -180,7 +182,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
         );
     }
 
-    async function getDigitalFile(versionSubmodelEl: ISubmodelElement, submodelElement: ISubmodelElement) {
+    function getDigitalFile(versionSubmodelEl: ISubmodelElement, submodelElement: ISubmodelElement) {
         const digitalFile = {
             digitalFileUrl: '',
             mimeType: '',
@@ -189,7 +191,6 @@ export function DocumentComponent(props: MarkingsComponentProps) {
         if (isValidUrl((versionSubmodelEl as File).value)) {
             digitalFile.digitalFileUrl = (versionSubmodelEl as File).value || '';
             digitalFile.mimeType = (versionSubmodelEl as File).contentType;
-
         } else if (props.submodelId && submodelElement.idShort && props.submodelElement?.idShort) {
             const submodelElementPath =
                 props.submodelElement.idShort +
@@ -212,7 +213,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
         return digitalFile;
     }
 
-    async function getPreviewImageUrl(versionSubmodelEl: ISubmodelElement, submodelElement: ISubmodelElement) {
+    function getPreviewImageUrl(versionSubmodelEl: ISubmodelElement, submodelElement: ISubmodelElement) {
         let previewImgUrl;
 
         if (isValidUrl((versionSubmodelEl as File).value)) {
@@ -237,7 +238,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
         return previewImgUrl ?? '';
     }
 
-    async function getFileViewObject(): Promise<FileViewObject> {
+    function getFileViewObject(): FileViewObject {
         let fileViewObject: FileViewObject = {
             mimeType: '',
             title: props.submodelElement?.idShort ?? '',
@@ -257,7 +258,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                     DocumentSpecificSemanticIdIrdi.DocumentVersion,
                     DocumentSpecificSemanticIdIrdiV2.DocumentVersion,
                 )
-            )
+           )
                 continue;
 
             const smCollection = submodelElement as SubmodelElementCollection;
@@ -278,7 +279,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                         DocumentSpecificSemanticIdIrdiV2.Title,
                     )
                 ) {
-                    fileViewObject.title = getTranslationText(versionSubmodelEl as MultiLanguageProperty, intl);
+                    fileViewObject.title = getTranslationText(versionSubmodelEl as MultiLanguageProperty, locale);
                     continue;
                 }
                 // file
@@ -288,11 +289,11 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                         DocumentSpecificSemanticId.DigitalFile,
                         DocumentSpecificSemanticIdIrdi.DigitalFile,
                         DocumentSpecificSemanticIdIrdiV2.DigitalFile,
-                    )
+                    ) || versionSubmodelEl.idShort == 'DigitalFile'
                 ) {
                     fileViewObject = {
                         ...fileViewObject,
-                        ...(await getDigitalFile(versionSubmodelEl, submodelElement)),
+                        ...(getDigitalFile(versionSubmodelEl, submodelElement)),
                     };
                 }
                 // preview
@@ -302,9 +303,9 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                         DocumentSpecificSemanticId.PreviewFile,
                         DocumentSpecificSemanticIdIrdi.PreviewFile,
                         DocumentSpecificSemanticIdIrdiV2.PreviewFile,
-                    )
+                    ) || versionSubmodelEl.idShort == 'PreviewFile'
                 ) {
-                    fileViewObject.previewImgUrl = await getPreviewImageUrl(versionSubmodelEl, submodelElement);
+                    fileViewObject.previewImgUrl = getPreviewImageUrl(versionSubmodelEl, submodelElement);
                 }
                 // organization name
                 if (
@@ -336,9 +337,9 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                             renderImage()
                         )}
                         <Box>
-                            <Typography>{fileViewObject.title}</Typography>
+                            <Typography data-testid="document-title">{fileViewObject.title}</Typography>
                             {fileViewObject.organizationName && (
-                                <Typography variant="body2" color="text.secondary">
+                                <Typography variant="body2" color="text.secondary" data-testid="document-organization">
                                     {fileViewObject.organizationName}
                                 </Typography>
                             )}
@@ -349,16 +350,17 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                                 href={fileViewObject.digitalFileUrl}
                                 target="_blank"
                                 disabled={!fileExists}
+                                data-testid="document-open-button"
                             >
                                 {!fileExists ? (
-                                    <FormattedMessage {...messages.mnestix.fileNotFound} />
+                                    t('fileNotFound')
                                 ) : (
-                                    <FormattedMessage {...messages.mnestix.open} />
+                                    t('open')
                                 )}
                             </Button>
                         </Box>
                     </Box>
-                    <IconButton onClick={() => handleDetailsClick()} sx={{ ml: 1 }}>
+                    <IconButton onClick={() => handleDetailsClick()} sx={{ ml: 1 }} data-testid="document-info-button">
                         <InfoOutlined />
                     </IconButton>
                 </Box>
@@ -367,6 +369,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                 open={detailsModalOpen}
                 handleClose={() => handleDetailsModalClose()}
                 document={props.submodelElement as SubmodelElementCollection}
+                data-testid="document-details-dialog"
             />
         </DataRow>
     );

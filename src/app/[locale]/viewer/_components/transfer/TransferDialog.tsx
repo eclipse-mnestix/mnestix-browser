@@ -14,15 +14,14 @@ import {
     TargetRepositories,
     TargetRepositoryFormData,
 } from 'app/[locale]/viewer/_components/transfer/TargetRepositories';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { messages } from 'lib/i18n/localization';
 import { useState } from 'react';
 import { useAasOriginSourceState, useAasState, useSubmodelState } from 'components/contexts/CurrentAasContext';
 import { transferAasWithSubmodels } from 'lib/services/transfer-service/transferActions';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { TransferAas, TransferDto, TransferResult, TransferSubmodel } from 'lib/types/TransferServiceData';
-import { useEnv } from 'app/env/provider';
+import { useEnv } from 'app/EnvProvider';
 import { Reference } from '@aas-core-works/aas-core3.0-typescript/types';
+import { useTranslations } from 'next-intl';
 
 export type TransferFormModel = {
     targetAasRepositoryFormModel: TargetRepositoryFormData;
@@ -37,7 +36,7 @@ export function TransferDialog(props: DialogProps) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [aasOriginUrl] = useAasOriginSourceState();
     const theme = useTheme();
-    const intl = useIntl();
+    const t = useTranslations('pages.transfer');
     const env = useEnv();
 
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -104,15 +103,14 @@ export function TransferDialog(props: DialogProps) {
         try {
             setIsSubmitting(true);
             const response = await transferAasWithSubmodels(dtoToSubmit);
-            console.log(response);
             processResult(response);
-        } catch (error) {
+        } catch {
             notificationSpawner.spawn({
-                message: intl.formatMessage(messages.mnestix.transfer.errorToast),
+                message: t('errorToast'),
                 severity: 'error',
             });
         } finally {
-            props.onClose && props.onClose({}, 'escapeKeyDown');
+            props.onClose?.({}, 'escapeKeyDown');
             setIsSubmitting(false);
         }
     };
@@ -127,24 +125,24 @@ export function TransferDialog(props: DialogProps) {
     const processResult = (result: TransferResult[]) => {
         if (result.every((result) => result.success)) {
             notificationSpawner.spawn({
-                message: intl.formatMessage(messages.mnestix.transfer.successfullToast),
+                message: t('successfulToast'),
                 severity: 'success',
             });
         } else if (result.every((result) => !result.success)) {
             notificationSpawner.spawn({
-                message: intl.formatMessage(messages.mnestix.transfer.errorToast),
+                message: t('errorToast'),
                 severity: 'error',
             });
         } else {
             result.map((result) => {
                 if (!result.success) {
                     notificationSpawner.spawn({
-                        message: `${intl.formatMessage(messages.mnestix.transfer.partiallyFailedToast)}: ${result.error}`,
+                        message: `${t('partiallyFailedToast')}: ${result.error}`,
                         severity: 'error',
                     });
                 }
                 notificationSpawner.spawn({
-                    message: intl.formatMessage(messages.mnestix.transfer.warningToast),
+                    message: t('warningToast'),
                     severity: 'warning',
                 });
             });
@@ -162,11 +160,9 @@ export function TransferDialog(props: DialogProps) {
         >
             <Box sx={{ m: 4 }}>
                 <Typography variant="h2" color="primary">
-                    <FormattedMessage {...messages.mnestix.transfer.title} />
+                    {t('title')}
                 </Typography>
-                <Typography>
-                    <FormattedMessage {...messages.mnestix.transfer.subtitle} />
-                </Typography>
+                <Typography>{t('subtitle')}</Typography>
             </Box>
             <IconButton
                 aria-label="close"
@@ -176,6 +172,7 @@ export function TransferDialog(props: DialogProps) {
                     right: 8,
                     top: 8,
                     color: theme.palette.grey[500],
+                    zIndex: 1,
                 })}
             >
                 <CloseIcon />

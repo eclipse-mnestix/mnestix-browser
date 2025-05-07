@@ -5,15 +5,16 @@ import { useShowError } from 'lib/hooks/UseShowError';
 import { useState } from 'react';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import AasList from './AasList';
-import { useEnv } from 'app/env/provider';
+import { useEnv } from 'app/EnvProvider';
 import { AasListComparisonHeader } from './AasListComparisonHeader';
 import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { SelectRepository } from './filter/SelectRepository';
 import { useTranslations } from 'next-intl';
-import { ApiResponseWrapperError, ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { ApiResponseWrapperError } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { AuthenticationPrompt } from 'components/authentication/AuthenticationPrompt';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 export default function AasListDataWrapper() {
     const [isLoadingList, setIsLoadingList] = useState(false);
@@ -22,7 +23,7 @@ export default function AasListDataWrapper() {
     const [selectedAasList, setSelectedAasList] = useState<string[]>();
     const [selectedRepository, setSelectedRepository] = useState<string | undefined>();
     const env = useEnv();
-    const t = useTranslations('aas-list');
+    const t = useTranslations('pages.aasList');
     const { showError } = useShowError();
 
     //Pagination
@@ -129,7 +130,7 @@ export default function AasListDataWrapper() {
         if (!selectedRepository) {
             return (
                 <Box>
-                    <Typography data-testid="select-repository-text">{t('select-repository')}</Typography>
+                    <Typography data-testid="select-repository-text">{t('selectRepository')}</Typography>
                 </Box>
             );
         }

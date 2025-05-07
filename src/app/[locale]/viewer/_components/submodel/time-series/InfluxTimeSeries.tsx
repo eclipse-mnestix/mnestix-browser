@@ -4,22 +4,22 @@ import { StyledDataRow } from 'components/basics/StyledDataRow';
 import { InfluxTimeSeriesDiagram } from './InfluxTimeSeriesDiagram';
 import { useEffect, useState } from 'react';
 import { TimeFrameSelection as TimeFrameSelection } from './TimeFrameSelection';
-import { useIntl } from 'react-intl';
-import { SubmodelElementSemanticId } from 'lib/enums/SubmodelElementSemanticId.enum';
+import { TimeSeriesSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesSubmodelElementSemanticId.enum';
 import { isValidUrl } from 'lib/util/UrlUtil';
-import { useEnv } from 'app/env/provider';
+import { useEnv } from 'app/EnvProvider';
 import {
     extractIntlValueBySemanticId,
     extractValueBySemanticId,
 } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesUtil';
+import { useLocale } from 'next-intl';
 
 export function InfluxTimeSeries(props: { submodelElement: SubmodelElementCollection }) {
-    const intl = useIntl();
+    const locale = useLocale();
     const env = useEnv();
     let endpoint = (
         extractValueBySemanticId(
             props.submodelElement,
-            SubmodelElementSemanticId.TimeSeriesLinkedSegmentEndpoint,
+            TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesLinkedSegmentEndpoint,
         ) as Property
     )?.value;
 
@@ -31,19 +31,19 @@ export function InfluxTimeSeries(props: { submodelElement: SubmodelElementCollec
     const queryInAas = (
         extractValueBySemanticId(
             props.submodelElement,
-            SubmodelElementSemanticId.TimeSeriesLinkedSegmentQuery,
+            TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesLinkedSegmentQuery,
         ) as Property
     )?.value;
 
     const name = extractIntlValueBySemanticId(
         props.submodelElement,
-        SubmodelElementSemanticId.TimeSeriesSegmentName,
-        intl,
+        TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegmentName,
+        locale,
     );
     const description = extractIntlValueBySemanticId(
         props.submodelElement,
-        SubmodelElementSemanticId.TimeSeriesSegmentDescription,
-        intl,
+        TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegmentDescription,
+        locale,
     );
 
     const [selectedTimeFrame, setSelectedTimeFrame] = useState('1d');
