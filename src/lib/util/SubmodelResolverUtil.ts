@@ -65,6 +65,27 @@ export function findSubmodelElementByIdShort(
     return null;
 }
 
+export function findSubmodelElementBySemanticIdsOrIdShort(
+    elements: ISubmodelElement[] | null,
+    idShort: string | null,
+    semanticIds: string[] | null,
+): ISubmodelElement | null {
+    if (!elements) return null;
+    for (const el of elements) {
+        if (el.idShort == idShort ||
+            (semanticIds?.some(semId => idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim())))) {
+            return el;
+        } else if (getKeyType(el) == KeyTypes.SubmodelElementCollection) {
+            const innerElements = (el as SubmodelElementCollection).value;
+            const foundElement = findSubmodelElementBySemanticIdsOrIdShort(innerElements, idShort, semanticIds);
+            if (foundElement) {
+                return foundElement;
+            }
+        }
+    }
+    return null;
+}
+
 export function findValueByIdShort(
     elements: ISubmodelElement[] | null,
     idShort: string | null,
@@ -146,7 +167,6 @@ export function findSubmodelByIdOrSemanticId(
             sm.submodel?.idShort === idShort,
     )?.submodel;
 }
-
 
 export function checkIfSubmodelHasIdShortOrSemanticId(
     submodel: SubmodelOrIdReference,
