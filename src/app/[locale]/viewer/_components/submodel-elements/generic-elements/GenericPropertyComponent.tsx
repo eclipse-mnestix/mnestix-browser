@@ -1,6 +1,6 @@
 import { Box, IconButton, Link, Skeleton, Tooltip, Typography } from '@mui/material';
 import { MultiLanguageProperty, Property, Range } from '@aas-core-works/aas-core3.0-typescript/types';
-import { getTranslationText, getTranslationValue } from 'lib/util/SubmodelResolverUtil';
+import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { ContentCopy, OpenInNew } from '@mui/icons-material';
 import { useState } from 'react';
@@ -43,12 +43,12 @@ export function GenericPropertyComponent(props: GenericPropertyComponentProps) {
         let copiedValue = value;
         if (copiedValue) {
             if (!conceptDescriptionLoading && conceptDescription?.embeddedDataSpecifications?.[0]?.dataSpecificationContent) {
-                copiedValue += " " + getUnitFromConceptDescription(conceptDescription)
+                copiedValue += ' ' + getUnitFromConceptDescription(conceptDescription)
             }
 
             navigator.clipboard.writeText(copiedValue);
             notificationSpawner.spawn({
-                message: t('labels.copied') + ": " + copiedValue,
+                message: t('labels.copied') + ': ' + copiedValue,
                 severity: 'success',
             });
         }
