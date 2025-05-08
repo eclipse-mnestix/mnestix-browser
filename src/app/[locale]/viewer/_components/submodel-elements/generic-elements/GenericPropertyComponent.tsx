@@ -122,14 +122,16 @@ export function GenericPropertyComponent(props: GenericPropertyComponentProps) {
                     conceptDescription &&
                     conceptDescription.embeddedDataSpecifications?.[0]?.dataSpecificationContent &&
                     (
-                        <>{getUnitFromConceptDescription(conceptDescription)}</>
+                        <span data-testid="property-unit" > {getUnitFromConceptDescription(conceptDescription)}</span>
                     )
                 )}
             </Typography>
 
-            {conceptDescriptionLoading && (
-                <Skeleton width="30px" sx={{ ml: 0.5 }} />
-            )}
+            {
+                conceptDescriptionLoading && (
+                    <Skeleton width="30px" sx={{ ml: 0.5 }} />
+                )
+            }
 
             {renderCopyButton()}
         </Box>
