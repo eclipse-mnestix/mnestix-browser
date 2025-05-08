@@ -118,6 +118,7 @@ describe('GenericPropertyComponent', () => {
             value: '42',
         } as Property;
 
+        /* eslint-disable @typescript-eslint/no-explicit-any */
         const conceptDescription = {
             embeddedDataSpecifications: [
                 {
