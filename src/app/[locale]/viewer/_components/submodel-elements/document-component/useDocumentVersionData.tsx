@@ -41,80 +41,33 @@ export function useFileViewObject(
     const [aasOriginUrl] = useAasOriginSourceState();
     const [fileViewObject, setFileViewObject] = useState<FileViewObject>();
 
-    function findIdShortForLatestDigitalFile(submodelElement: SubmodelElementCollection) {
-        return findIdShortForLatestElement(
-            submodelElement,
-            'DigitalFile',
-            DocumentSpecificSemanticId.DigitalFile,
-            DocumentSpecificSemanticIdIrdi.DigitalFile,
-            DocumentSpecificSemanticIdIrdiV2.DigitalFile,
-        );
-    }
+    useEffect(() => {
+        setFileViewObject(getFileViewObject());
+    }, [submodelElement]);
 
-    function getDigitalFile(versionSubmodelEl: ISubmodelElement, submodelElement: ISubmodelElement) {
-        const digitalFile = {
-            digitalFileUrl: '',
+    function getFileViewObject(): FileViewObject {
+        let fileViewObject: FileViewObject = {
             mimeType: '',
+            title:submodelElement?.idShort ?? '',
+            organizationName: '',
+            digitalFileUrl: '',
+            previewImgUrl: '',
         };
+        if (!submodelElement?.value) return fileViewObject;
 
-        if (isValidUrl((versionSubmodelEl as File).value)) {
-            digitalFile.digitalFileUrl = (versionSubmodelEl as File).value || '';
-            digitalFile.mimeType = (versionSubmodelEl as File).contentType;
-        } else if (submodelId && submodelElement.idShort && submodelElement?.idShort) {
-            const submodelElementPath =
-                submodelElement.idShort +
-                '.' +
-                submodelElement.idShort +
-                '.' +
-                findIdShortForLatestDigitalFile(submodelElement as SubmodelElementCollection);
-
-            digitalFile.digitalFileUrl =
-                aasOriginUrl +
-                '/submodels/' +
-                encodeBase64(submodelId) +
-                '/submodel-elements/' +
-                submodelElementPath +
-                '/attachment';
-
-            digitalFile.mimeType = (versionSubmodelEl as File).contentType;
+        const documentVersion = findSubmodelElementBySemanticIdsOrIdShort(
+            submodelElement.value,
+            'DocumentVersion',
+            [
+                DocumentSpecificSemanticId.DocumentVersion,
+                DocumentSpecificSemanticIdIrdi.DocumentVersion,
+                DocumentSpecificSemanticIdIrdiV2.DocumentVersion,
+            ],
+        ) as SubmodelElementCollection;
+        if (documentVersion?.value) {
+            fileViewObject = extractDocumentVersionData(documentVersion, fileViewObject);
         }
-
-        return digitalFile;
-    }
-
-    function findIdShortForLatestPreviewImage(submodelElement: SubmodelElementCollection) {
-        return findIdShortForLatestElement(
-            submodelElement,
-            'PreviewFile',
-            DocumentSpecificSemanticId.PreviewFile,
-            DocumentSpecificSemanticIdIrdi.PreviewFile,
-            DocumentSpecificSemanticIdIrdiV2.PreviewFile,
-        );
-    }
-
-    function getPreviewImageUrl(versionSubmodelEl: ISubmodelElement, submodelElement: ISubmodelElement) {
-        let previewImgUrl;
-
-        if (isValidUrl((versionSubmodelEl as File).value)) {
-            previewImgUrl = (versionSubmodelEl as File).value ?? '';
-        } else if (submodelId && submodelElement.idShort && submodelElement?.idShort) {
-            const submodelElementPath =
-                submodelElement.idShort +
-                '.' +
-                submodelElement.idShort +
-                '.' +
-                findIdShortForLatestPreviewImage(submodelElement as SubmodelElementCollection);
-
-            previewImgUrl =
-                aasOriginUrl +
-                '/submodels/' +
-                encodeBase64(submodelId) +
-                '/submodel-elements/' +
-                submodelElementPath +
-                '/attachment';
-        }
-
-        return previewImgUrl ?? '';
+        return fileViewObject;
     }
 
     function extractDocumentVersionData(documentVersion: SubmodelElementCollection, fileViewObject: FileViewObject) {
@@ -154,33 +107,58 @@ export function useFileViewObject(
         return fileViewObject;
     }
 
-    function getFileViewObject(): FileViewObject {
-        let fileViewObject: FileViewObject = {
-            mimeType: '',
-            title:submodelElement?.idShort ?? '',
-            organizationName: '',
-            digitalFileUrl: '',
-            previewImgUrl: '',
-        };
-        if (!submodelElement?.value) return fileViewObject;
-
-        const documentVersion = findSubmodelElementBySemanticIdsOrIdShort(
-            submodelElement.value,
-            'DocumentVersion',
-            [
-                DocumentSpecificSemanticId.DocumentVersion,
-                DocumentSpecificSemanticIdIrdi.DocumentVersion,
-                DocumentSpecificSemanticIdIrdiV2.DocumentVersion,
-            ],
-        ) as SubmodelElementCollection;
-        if (documentVersion?.value) {
-            fileViewObject = extractDocumentVersionData(documentVersion, fileViewObject);
-        }
-        return fileViewObject;
+    function findIdShortForLatestDigitalFile(submodelElement: SubmodelElementCollection) {
+        const idShort = findIdShortForLatestElement(
+            submodelElement,
+            'DigitalFile',
+            DocumentSpecificSemanticId.DigitalFile,
+            DocumentSpecificSemanticIdIrdi.DigitalFile,
+            DocumentSpecificSemanticIdIrdiV2.DigitalFile,
+        );
+        const submodelElementPath = `${submodelElement.idShort}.${submodelElement.idShort}.${idShort}`;
+        return ` ${aasOriginUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${submodelElementPath}/attachment`;
     }
-    useEffect(() => {
-        setFileViewObject(getFileViewObject());
-    }, [submodelElement]);
+
+    function getDigitalFile(versionSubmodelEl: ISubmodelElement, submodelElement: ISubmodelElement) {
+        const digitalFile = {
+            digitalFileUrl: '',
+            mimeType: '',
+        };
+
+        if (isValidUrl((versionSubmodelEl as File).value)) {
+            digitalFile.digitalFileUrl = (versionSubmodelEl as File).value || '';
+            digitalFile.mimeType = (versionSubmodelEl as File).contentType;
+        } else if (submodelId && submodelElement.idShort && submodelElement?.idShort) {
+            digitalFile.digitalFileUrl = findIdShortForLatestDigitalFile(submodelElement as SubmodelElementCollection);
+            digitalFile.mimeType = (versionSubmodelEl as File).contentType;
+        }
+
+        return digitalFile;
+    }
+
+    function getPathToPreviewFile(submodelElement: SubmodelElementCollection) {
+        const idShort = findIdShortForLatestElement(
+            submodelElement,
+            'PreviewFile',
+            DocumentSpecificSemanticId.PreviewFile,
+            DocumentSpecificSemanticIdIrdi.PreviewFile,
+            DocumentSpecificSemanticIdIrdiV2.PreviewFile,
+        );
+        const submodelElementPath = `${submodelElement.idShort}.${submodelElement?.idShort}.${idShort}`
+        return `${aasOriginUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${submodelElementPath}/attachment`;
+    }
+
+    function getPreviewImageUrl(versionSubmodelEl: ISubmodelElement, submodelElement: ISubmodelElement) {
+        let previewImgUrl;
+
+        if (isValidUrl((versionSubmodelEl as File).value)) {
+            previewImgUrl = (versionSubmodelEl as File).value ?? '';
+        } else if (submodelId && submodelElement.idShort && submodelElement?.idShort) {
+            return getPathToPreviewFile(submodelElement as SubmodelElementCollection);
+        }
+
+        return previewImgUrl ?? '';
+    }
 
     return fileViewObject;
 }
