@@ -24,7 +24,7 @@ export function middleware(req: NextRequest) {
     if (!envs.COMPARISON_FEATURE_FLAG && pathname.includes('compare')) {
         return NextResponse.rewrite(new URL('/404', req.url));
     }
-    if (!envs.PRODUCT_VIEW_FEATURE_FLAG && pathname.includes('product')) {
+    if (!envs.PRODUCT_VIEW_FEATURE_FLAG && (pathname.includes('product') || pathname.includes('catalog'))) {
         return NextResponse.rewrite(new URL('/404', req.url));
     }
 
