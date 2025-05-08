@@ -1,45 +1,60 @@
 import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
-import { findSubmodelElementBySemanticIdsOrIdShort, getTranslationText } from 'lib/util/SubmodelResolverUtil';
+import { findSubmodelElementBySemanticIdsOrIdShort, getTranslationValue } from 'lib/util/SubmodelResolverUtil';
 import {
     DocumentSpecificSemanticId,
     DocumentSpecificSemanticIdIrdi,
 } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentSemanticIds';
 import { MultiLanguageProperty, Property } from '@aas-core-works/aas-core3.0-typescript/types';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { Box, Tooltip, Typography } from '@mui/material';
+import { tooltipText } from 'lib/util/ToolTipText';
 
 export type DocumentClassification = {
     classId: string;
     className: string;
     classificationSystem: string;
 };
-export const DocumentClassification = (props: { classificationData: SubmodelElementCollection }) => {
+export const DocumentClassification = (props: { classificationData: SubmodelElementCollection[] }) => {
     const locale = useLocale();
-    const [classificationData, setClassificationData] = useState<DocumentClassification>();
+    const [classificationData, setClassificationData] = useState<DocumentClassification[]>();
+    const t = useTranslations('components.documentComponent')
 
     function extractDocumentClassificationData() {
-        const classId = findSubmodelElementBySemanticIdsOrIdShort(props.classificationData.value, 'ClassId', [
-            DocumentSpecificSemanticId.ClassId,
-            DocumentSpecificSemanticIdIrdi.ClassId,
-        ]);
-        const className = findSubmodelElementBySemanticIdsOrIdShort(props.classificationData.value, 'ClassName', [
-            DocumentSpecificSemanticId.ClassName,
-            DocumentSpecificSemanticIdIrdi.ClassName,
-        ]);
-        const classificationSystem = findSubmodelElementBySemanticIdsOrIdShort(
-            props.classificationData.value,
-            'ClassificationSystem',
-            [DocumentSpecificSemanticId.ClassificationSystem, DocumentSpecificSemanticIdIrdi.ClassificationSystem],
-        );
+        const classifications: DocumentClassification[] = [];
+        props.classificationData.map((classificationElement) => {
+            const classId = findSubmodelElementBySemanticIdsOrIdShort(classificationElement.value, 'ClassId', [
+                DocumentSpecificSemanticId.ClassId,
+                DocumentSpecificSemanticIdIrdi.ClassId,
+            ]);
+            const className = findSubmodelElementBySemanticIdsOrIdShort(classificationElement.value, 'ClassName', [
+                DocumentSpecificSemanticId.ClassName,
+                DocumentSpecificSemanticIdIrdi.ClassName,
+            ]);
 
-        const classification: DocumentClassification = {
-            classId: (classId as Property).value || '',
-            className: getTranslationText(className as MultiLanguageProperty, locale),
-            classificationSystem: (classificationSystem as Property).value || '',
-        };
+            // The ClassName has to be a MultiLanguageProperty by the AAS standard, but Mnestix should not crash if it has a different type.
+            let translatedClassName = '';
+            try {
+                translatedClassName = getTranslationValue(className as MultiLanguageProperty, locale) ?? '';
+            } catch (e) {
+                console.warn('Invalid property for classname' + e);
+            }
 
-        return classification;
+            const classificationSystem = findSubmodelElementBySemanticIdsOrIdShort(
+                classificationElement.value,
+                'ClassificationSystem',
+                [DocumentSpecificSemanticId.ClassificationSystem, DocumentSpecificSemanticIdIrdi.ClassificationSystem],
+            );
+
+            const classification: DocumentClassification = {
+                classId: (classId as Property).value || '',
+                className: translatedClassName,
+                classificationSystem: (classificationSystem as Property).value || '',
+            };
+            classifications.push(classification);
+        });
+
+        return classifications;
     }
 
     useEffect(() => {
@@ -48,15 +63,17 @@ export const DocumentClassification = (props: { classificationData: SubmodelElem
 
     return (
         <Box>
-            <Typography variant="body2" color="text.secondary" >{props.classificationData.idShort}: </Typography>
-            <Box display="flex" flexDirection="row" gap={1}>
-                {classificationData?.classificationSystem && (
-                    <Typography fontWeight="500">{classificationData?.classificationSystem}: </Typography>
-                )}
-                <Tooltip title={`ClassId: ${classificationData?.classId}`}>
-                    <Typography>{classificationData?.className}</Typography>
-                </Tooltip>
-            </Box>
+            <Typography variant="body2" color="text.secondary">
+                {t('classification')}:
+            </Typography>
+            {classificationData?.map((classificationData) => (
+                <Box display="flex" flexDirection="row" gap={1} key={classificationData?.classId}>
+                    {classificationData?.classificationSystem && (
+                        <Typography fontWeight="500">{classificationData?.classificationSystem}: </Typography>
+                    )}
+                    <Typography>{tooltipText(classificationData?.className, 20)}</Typography>
+                </Box>
+            ))}
         </Box>
     );
 };

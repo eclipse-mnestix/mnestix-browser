@@ -11,6 +11,7 @@ import { DataRow } from 'components/basics/DataRow';
 import { PdfDocumentIcon } from 'components/custom-icons/PdfDocumentIcon';
 import { useState } from 'react';
 import {
+    findAllSubmodelElementsBySemanticIdsOrIdShort,
     findSubmodelElementBySemanticIdsOrIdShort,
     getTranslationText,
 } from 'lib/util/SubmodelResolverUtil';
@@ -27,9 +28,7 @@ import {
     DocumentSpecificSemanticIdIrdi,
     DocumentSpecificSemanticIdIrdiV2,
 } from './DocumentSemanticIds';
-import {
-    DocumentClassification
-} from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentClassification';
+import { DocumentClassification } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentClassification';
 
 type DocumentComponentProps = {
     readonly submodelElement: SubmodelElementCollection;
@@ -208,9 +207,9 @@ export function DocumentComponent(props: DocumentComponentProps) {
         ]);
         fileViewObject = file
             ? {
-                ...fileViewObject,
-                ...getDigitalFile(file, documentVersion),
-            }
+                  ...fileViewObject,
+                  ...getDigitalFile(file, documentVersion),
+              }
             : fileViewObject;
 
         const preview = findSubmodelElementBySemanticIdsOrIdShort(documentVersion.value, 'PreviewFile', [
@@ -240,55 +239,70 @@ export function DocumentComponent(props: DocumentComponentProps) {
         };
         if (!props.submodelElement?.value) return fileViewObject;
 
-        const documentVersion = findSubmodelElementBySemanticIdsOrIdShort(props.submodelElement.value, 'DocumentVersion', [
-            DocumentSpecificSemanticId.DocumentVersion,
-            DocumentSpecificSemanticIdIrdi.DocumentVersion,
-            DocumentSpecificSemanticIdIrdiV2.DocumentVersion,
-        ]) as SubmodelElementCollection;
+        const documentVersion = findSubmodelElementBySemanticIdsOrIdShort(
+            props.submodelElement.value,
+            'DocumentVersion',
+            [
+                DocumentSpecificSemanticId.DocumentVersion,
+                DocumentSpecificSemanticIdIrdi.DocumentVersion,
+                DocumentSpecificSemanticIdIrdiV2.DocumentVersion,
+            ],
+        ) as SubmodelElementCollection;
         if (documentVersion?.value) {
-            fileViewObject =  extractDocumentVersionData(documentVersion, fileViewObject);
+            fileViewObject = extractDocumentVersionData(documentVersion, fileViewObject);
         }
         return fileViewObject;
     }
 
     function getDocumentClassificationCollection() {
-        // TODO there can be more than one
-        return findSubmodelElementBySemanticIdsOrIdShort(props.submodelElement.value, 'DocumentClassification', [
+        return findAllSubmodelElementsBySemanticIdsOrIdShort(props.submodelElement.value, 'DocumentClassification', [
             DocumentSpecificSemanticId.DocumentClassification,
             DocumentSpecificSemanticIdIrdi.DocumentClassification,
-        ]) as SubmodelElementCollection;
+        ]) as SubmodelElementCollection[];
     }
 
     return (
         <DataRow title={props.submodelElement?.idShort} hasDivider={props.hasDivider}>
             {fileViewObject && (
                 <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
-                    <Box display="flex" flexDirection="row" justifyContent="space-between" gap={1}>
-                        {fileExists ? (
-                            <Link href={fileViewObject.digitalFileUrl} target="_blank">
-                                {renderImage()}
-                            </Link>
-                        ) : (
-                            renderImage()
-                        )}
-                        <Box>
-                            <Typography data-testid="document-title">{fileViewObject.title}</Typography>
-                            {fileViewObject.organizationName && (
-                                <Typography variant="body2" color="text.secondary" data-testid="document-organization">
-                                    {fileViewObject.organizationName}
-                                </Typography>
+                    <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        gap={1}
+                        flexDirection={{ xs: 'column', sm: 'row' }}
+                        sx={{ mb: 1 }}
+                    >
+                        <Box display="flex" gap={1} flexDirection="row" sx={{ mb: 1 }}>
+                            {fileExists ? (
+                                <Link href={fileViewObject.digitalFileUrl} target="_blank">
+                                    {renderImage()}
+                                </Link>
+                            ) : (
+                                renderImage()
                             )}
-                            <Button
-                                variant="outlined"
-                                startIcon={fileExists ? <OpenInNew /> : ''}
-                                sx={{ mt: 1 }}
-                                href={fileViewObject.digitalFileUrl}
-                                target="_blank"
-                                disabled={!fileExists}
-                                data-testid="document-open-button"
-                            >
-                                {!fileExists ? t('fileNotFound') : t('open')}
-                            </Button>
+                            <Box>
+                                <Typography data-testid="document-title">{fileViewObject.title}</Typography>
+                                {fileViewObject.organizationName && (
+                                    <Typography
+                                        variant="body2"
+                                        color="text.secondary"
+                                        data-testid="document-organization"
+                                    >
+                                        {fileViewObject.organizationName}
+                                    </Typography>
+                                )}
+                                <Button
+                                    variant="outlined"
+                                    startIcon={fileExists ? <OpenInNew /> : ''}
+                                    sx={{ mt: 1 }}
+                                    href={fileViewObject.digitalFileUrl}
+                                    target="_blank"
+                                    disabled={!fileExists}
+                                    data-testid="document-open-button"
+                                >
+                                    {!fileExists ? t('fileNotFound') : t('open')}
+                                </Button>
+                            </Box>
                         </Box>
                         <DocumentClassification classificationData={getDocumentClassificationCollection()} />
                     </Box>

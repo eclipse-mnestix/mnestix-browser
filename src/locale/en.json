@@ -91,7 +91,8 @@
     "documentComponent": {
       "documentDetails": "Document details",
       "fileNotFound": "File not found",
-      "open": "Open"
+      "open": "Open",
+      "classification": "Document Classification"
     },
     "dummyComponent": {
       "dummyText": "This is a dummy component. It is used to test the layout and design of the application."
