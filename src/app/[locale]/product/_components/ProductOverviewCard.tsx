@@ -240,7 +240,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                 />
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-
                 <DataRow
                     title={t('productInfo.manufacturer')}
                     value={overviewData?.manufacturerName}
@@ -356,13 +355,12 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                     <Box sx={{
                                         display: 'flex',
                                         justifyContent: 'space-between',
-                                        alignItems: 'flex-start',
+                                        alignItems: 'center',
                                         width: '100%'
                                     }}>
                                         <Typography 
                                             variant="h3" 
                                             sx={{ 
-                                                marginBottom: 2,
                                                 overflow: 'hidden',
                                                 textOverflow: 'ellipsis',
                                                 wordBreak: 'break-word',

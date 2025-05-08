@@ -56,10 +56,6 @@ export function ActionMenu({ aasId, className }: ActionMenuProps) {
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
                 onClose={handleMenuClose}
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                }}
             >
                 {env.COMPARISON_FEATURE_FLAG && (
                     <MenuItem 
