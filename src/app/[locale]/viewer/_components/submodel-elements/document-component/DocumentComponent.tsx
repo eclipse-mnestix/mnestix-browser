@@ -94,7 +94,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
     }, [fileViewObject?.digitalFileUrl]);
 
     useAsyncEffect(async () => {
-        setFileViewObject(await getFileViewObject());
+        setFileViewObject(getFileViewObject());
     }, [props.submodelElement]);
 
     const handleDetailsClick = () => {
@@ -182,7 +182,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
         );
     }
 
-    async function getDigitalFile(versionSubmodelEl: ISubmodelElement, submodelElement: ISubmodelElement) {
+    function getDigitalFile(versionSubmodelEl: ISubmodelElement, submodelElement: ISubmodelElement) {
         const digitalFile = {
             digitalFileUrl: '',
             mimeType: '',
@@ -213,7 +213,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
         return digitalFile;
     }
 
-    async function getPreviewImageUrl(versionSubmodelEl: ISubmodelElement, submodelElement: ISubmodelElement) {
+    function getPreviewImageUrl(versionSubmodelEl: ISubmodelElement, submodelElement: ISubmodelElement) {
         let previewImgUrl;
 
         if (isValidUrl((versionSubmodelEl as File).value)) {
@@ -238,7 +238,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
         return previewImgUrl ?? '';
     }
 
-    async function getFileViewObject(): Promise<FileViewObject> {
+    function getFileViewObject(): FileViewObject {
         let fileViewObject: FileViewObject = {
             mimeType: '',
             title: props.submodelElement?.idShort ?? '',
@@ -293,7 +293,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                 ) {
                     fileViewObject = {
                         ...fileViewObject,
-                        ...(await getDigitalFile(versionSubmodelEl, submodelElement)),
+                        ...(getDigitalFile(versionSubmodelEl, submodelElement)),
                     };
                 }
                 // preview
@@ -305,7 +305,7 @@ export function DocumentComponent(props: MarkingsComponentProps) {
                         DocumentSpecificSemanticIdIrdiV2.PreviewFile,
                     ) || versionSubmodelEl.idShort == 'PreviewFile'
                 ) {
-                    fileViewObject.previewImgUrl = await getPreviewImageUrl(versionSubmodelEl, submodelElement);
+                    fileViewObject.previewImgUrl = getPreviewImageUrl(versionSubmodelEl, submodelElement);
                 }
                 // organization name
                 if (

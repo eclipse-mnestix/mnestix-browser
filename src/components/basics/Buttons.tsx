@@ -3,9 +3,9 @@ import { Button, ButtonProps, styled } from '@mui/material';
 const StyledLoadingButton = styled(Button)(({ theme }) => ({
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
-    minWidth: '56px',
-    maxHeight: '56px',
-    height: '56px',
+    minWidth: '3.5rem',
+    maxHeight: '3.5rem',
+    height: '3.5rem',
     '.MuiButton-endIcon': {
         margin: 0,
     },
@@ -16,6 +16,8 @@ export function SquaredIconButton(props: ButtonProps) {
 }
 
 export function RoundedIconButton(props: ButtonProps) {
+    const size = props.size === 'small' ? '2.5rem' : props.size === 'medium' ? '3rem' : '3.5rem';
+
     const StyledRoundButton = styled(StyledLoadingButton)(({ theme }) => ({
         backgroundColor: theme.palette.background.default,
         color: theme.palette.primary.main,
@@ -23,13 +25,10 @@ export function RoundedIconButton(props: ButtonProps) {
             backgroundColor: theme.palette.primary.main,
             color: theme.palette.background.default,
         },
+        borderRadius: size,
+        height: size,
+        minWidth: size,
+        maxHeight: size,
     }));
-    return (
-        <StyledRoundButton
-            variant={props.variant || 'contained'}
-            size={props.size || 'large'}
-            style={{ borderRadius: '56px' }}
-            {...props}
-        />
-    );
+    return <StyledRoundButton variant={props.variant || 'contained'} size={props.size || 'large'} {...props} />;
 }

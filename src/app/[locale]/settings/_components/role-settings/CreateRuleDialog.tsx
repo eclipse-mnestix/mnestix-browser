@@ -8,7 +8,7 @@ import { useShowError } from 'lib/hooks/UseShowError';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { RuleForm, RuleFormModel } from 'app/[locale]/settings/_components/role-settings/RuleForm';
 import { useState } from 'react';
-import { CreateHint } from 'app/[locale]/settings/_components/role-settings/HintDialogContent';
+import { KeycloakHint } from 'app/[locale]/settings/_components/role-settings/HintDialogContent';
 
 type RoleDialogProps = {
     readonly onClose: () => void;
@@ -17,19 +17,19 @@ type RoleDialogProps = {
     readonly availableRoles: string[];
 };
 
-export function CreateRuleDialog({ onClose, reloadRules, open, availableRoles }: RoleDialogProps) {
+export const defaultRbacRule: BaSyxRbacRule = {
+    action: 'READ',
+    targetInformation: { '@type': 'aas', aasIds: ['*'] },
+    role: '',
+    idShort: '',
+};
+
+export const CreateRuleDialog = ({ onClose, reloadRules, open, availableRoles }: RoleDialogProps) => {
     const t = useTranslations('pages.settings.rules');
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
 
     const [showHint, setShowHint] = useState(false);
-
-    const defaultRbacRule: BaSyxRbacRule = {
-        action: 'READ',
-        targetInformation: { '@type': 'aas', aasIds: ['*'] },
-        role: '',
-        idShort: '',
-    };
 
     async function afterSubmit(newData: RuleFormModel) {
         const isNewRole = !availableRoles.includes(newData.role);
@@ -79,7 +79,7 @@ export function CreateRuleDialog({ onClose, reloadRules, open, availableRoles }:
             <Box sx={{ mx: '2rem', mt: '1.5rem', mb: '1rem' }} data-testid="role-create-dialog">
                 <DialogCloseButton handleClose={onClose} dataTestId="rule-create-close-button" />
                 {showHint ? (
-                    <CreateHint onClose={onClose} />
+                    <KeycloakHint hint="create" onClose={onClose} />
                 ) : (
                     <RuleForm
                         title={t('createRule.title')}
@@ -92,4 +92,4 @@ export function CreateRuleDialog({ onClose, reloadRules, open, availableRoles }:
             </Box>
         </Dialog>
     );
-}
+};

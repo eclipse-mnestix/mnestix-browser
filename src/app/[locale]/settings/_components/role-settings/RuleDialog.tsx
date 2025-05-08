@@ -11,8 +11,9 @@ import { useShowError } from 'lib/hooks/UseShowError';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { RuleForm, RuleFormModel } from 'app/[locale]/settings/_components/role-settings/RuleForm';
 import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
-import { CreateHint, DeleteHint } from 'app/[locale]/settings/_components/role-settings/HintDialogContent';
+import { KeycloakHint } from 'app/[locale]/settings/_components/role-settings/HintDialogContent';
 import { RuleDeleteDialog } from 'app/[locale]/settings/_components/role-settings/RuleDeleteDialog';
+import { CopyButton } from 'components/basics/CopyButton';
 
 export type DialogRbacRule = BaSyxRbacRule & {
     // If this rule is the only rule for the role
@@ -93,9 +94,24 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
                         <Typography color="text.secondary" variant="body2">
                             {t('tableHeader.name')}
                         </Typography>
-                        <Typography variant="h2" color="primary" mb="1em">
-                            {rule?.role}
-                        </Typography>
+                        <Box display="flex" flexDirection="row" mb="1em">
+                            <Typography
+                                variant="h2"
+                                color="primary"
+                                overflow="hidden"
+                                textOverflow="ellipsis"
+                                maxWidth="inherit"
+                                sx={{
+                                    display: '-webkit-box',
+                                    WebkitBoxOrient: 'vertical',
+                                    WebkitLineClamp: 2,
+                                    overflowWrap: 'break-word',
+                                }}
+                            >
+                                {rule.role}
+                            </Typography>
+                            <CopyButton value={rule.role} size="medium" />
+                        </Box>
                         <Box display="flex" flexDirection="column" gap="1em">
                             <Box>
                                 <Typography variant="h5">{t('tableHeader.action')}</Typography>
@@ -154,9 +170,9 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
                     <RuleDeleteDialog rule={rule} onCancelDialog={() => setDialogMode('view')} onDelete={onDelete} />
                 );
             case 'create-hint':
-                return <CreateHint onClose={onClose} />;
+                return <KeycloakHint hint="create" onClose={onClose} />;
             case 'delete-hint':
-                return <DeleteHint onClose={onClose} />;
+                return <KeycloakHint hint="delete" onClose={onClose} />;
             default:
                 return <ViewContent />;
         }

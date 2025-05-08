@@ -44,8 +44,14 @@ export function ProductClassificationInfoBox({
     productClassifications,
 }: ProductClassificationInfoBoxProps) {
     const t = useTranslations('pages.productViewer');
-    // If there are no classifications to show, don't render the component
-    if (!productClassifications || productClassifications.length === 0) {
+    
+    // Filter out IEC classifications and check if we have any valid classifications
+    const validClassifications = productClassifications?.filter(
+        (c) => c.ProductClassificationSystem !== 'IEC' && c.ProductClassId
+    ) ?? [];
+
+    // Return null if there are no valid classifications
+    if (validClassifications.length === 0) {
         return null;
     }
 
@@ -60,23 +66,19 @@ export function ProductClassificationInfoBox({
                         {t('summary')}
                     </Typography>
                 </LabelContainer>
-
-                {productClassifications
-                    .filter((c) => c.ProductClassificationSystem !== 'IEC')
-                    .map((classification, index) => (
-                        <ValueContainer key={`classification-${index}`}>
-                            <Chip
-                                sx={{ color: 'primary.main', backgroundColor: 'grey.200', borderRadius: 5, padding: 0.5 }}
-                                label={classification.ProductClassificationSystem || 'Classification'}
-                                icon={classification.ProductClassificationSystem === 'ECLASS' ? vecIcon : eClassIcon}>
-                            </Chip>
-                            <Typography variant="body1" ml={1}>
-                                {tooltipText(classification.ProductClassId, 35) || '-'}
-                            </Typography>
-                        </ValueContainer>
-                    ))
-                }
-            </StyledBox >
-        </Box >
+                {validClassifications.map((classification, index) => (
+                    <ValueContainer key={`classification-${index}`}>
+                        <Chip
+                            sx={{ color: 'primary.main', backgroundColor: 'grey.200', borderRadius: 5, padding: 0.5 }}
+                            label={classification.ProductClassificationSystem || 'Classification'}
+                            icon={classification.ProductClassificationSystem === 'ECLASS' ? eClassIcon : vecIcon}>
+                        </Chip>
+                        <Typography variant="body1" ml={1}>
+                            {tooltipText(classification.ProductClassId, 35) || '-'}
+                        </Typography>
+                    </ValueContainer>
+                ))}
+            </StyledBox>
+        </Box>
     );
 }

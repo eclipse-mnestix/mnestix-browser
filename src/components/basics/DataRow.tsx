@@ -25,14 +25,14 @@ export function DataRow(props: DataRowProps) {
                 <CopyButton
                     value={props.value}
                     isVisible={isHovered}
-                    dataTestId={props.testId || 'copy-datarow-value'}
+                    dataTestId={props.testId ? props.testId + '-copy' : 'copy-datarow-value'}
                 />
                 {props.withBase64 && (
-                    <CopyButton 
+                    <CopyButton
                         value={props.value}
                         isVisible={isHovered}
                         withBase64={true}
-                        dataTestId={props.testId + '-b64' || 'copy-datarow-value-secondary'}
+                        dataTestId={props.testId ? props.testId + '-copy-b64' : 'copy-datarow-value-secondary'}
                     />
                 )}
             </Box>
@@ -41,7 +41,7 @@ export function DataRow(props: DataRowProps) {
 
     return (
         <Box
-            data-testid='data-row'
+            data-testid={props.testId || 'data-row'}
             sx={{ display: 'flex', flexDirection: 'column', gap: '5px', marginBottom: '15px', ...props.sx }}
         >
             {props.hasDivider !== false && <Divider style={{ marginBottom: '10px' }} />}
@@ -51,8 +51,8 @@ export function DataRow(props: DataRowProps) {
                 </Typography>
             )}
             {props.value && (
-                <Box 
-                    display="flex" 
+                <Box
+                    display="flex"
                     alignItems="center"
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}

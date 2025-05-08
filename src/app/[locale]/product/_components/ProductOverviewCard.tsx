@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Skeleton, Typography } from '@mui/material';
+import { Box, Card, CardContent, Skeleton, Typography, Divider } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { DataRow } from 'components/basics/DataRow';
 import {
@@ -9,7 +9,6 @@ import {
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
-import { ShellIcon } from 'components/custom-icons/ShellIcon';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { useRouter } from 'next/navigation';
 import { SubmodelOrIdReference, useAasState } from 'components/contexts/CurrentAasContext';
@@ -26,6 +25,7 @@ import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemantic
 import { useProductImageUrl } from 'lib/hooks/UseProductImageUrl';
 import { useFindValueByIdShort } from 'lib/hooks/useFindValueByIdShort';
 import { MarkingsComponent } from 'app/[locale]/viewer/_components/submodel-elements/marking-components/MarkingsComponent';
+import { ActionMenu } from './ProductActionMenu';
 
 type ProductOverviewCardProps = {
     readonly aas: AssetAdministrationShell | null;
@@ -35,6 +35,7 @@ type ProductOverviewCardProps = {
     readonly isAccordion: boolean;
     readonly imageLinksToDetail?: boolean;
     readonly repositoryURL: string | null;
+    readonly displayName: string | null;
 };
 
 type ProductClassification = {
@@ -215,21 +216,12 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
 
     const productInfo = (
         <Box sx={infoBoxStyle} data-testid="aas-data">
-            {!isAccordion && (
-                <Box display="flex">
-                    <IconCircleWrapper sx={{ mr: 1 }}>
-                        <ShellIcon fontSize="small" color="primary" />
-                    </IconCircleWrapper>
-                    <Typography sx={titleStyle} variant="h3">
-                        {t('title')}
-                    </Typography>
-                </Box>
-            )}
             <DataRow
                 title={t('productInfo.productDesignation')}
                 value={overviewData?.manufacturerProductDesignation}
                 testId="datarow-manufacturer-product-designation"
                 withBase64={false}
+                hasDivider={false}
             />
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                 <DataRow
@@ -248,7 +240,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                 />
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-
                 <DataRow
                     title={t('productInfo.manufacturer')}
                     value={overviewData?.manufacturerName}
@@ -295,21 +286,12 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
 
     const markings = (
         <Box sx={infoBoxStyle} data-testid="markings-data">
-            {!isAccordion && (
-                <Box display="flex">
-                    <IconCircleWrapper sx={{ mr: 1 }}>
-                        <AssetIcon fontSize="small" color="primary" />
-                    </IconCircleWrapper>
-                    <Typography sx={titleStyle} variant="h3">
-                        {t('markings')}
-                    </Typography>
-                </Box>
-            )}
             {overviewData?.markings && nameplateSubmodel?.id && (
                 <MarkingsComponent
                     submodelElement={overviewData?.markings}
                     submodelId={nameplateSubmodel?.id}
                     columnDisplay
+                    hasDivider={false}
                 ></MarkingsComponent>
             )}
         </Box>
@@ -359,13 +341,49 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                         {isAccordion ? (
                             <MobileAccordion
                                 content={productInfo}
-                                title={t('title')}
-                                icon={<ShellIcon fontSize="small" color="primary" />}
+                                title={props.displayName || t('title')}
                             />
                         ) : (
                             <>
-                                {productInfo}
-                                {markings}
+                                <Box sx={{ 
+                                    width: 'calc(100% - 340px)',
+                                    display: 'flex', 
+                                    flexDirection: 'column',
+                                    overflow: 'hidden',
+                                    position: 'relative'
+                                }}>
+                                    <Box sx={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        width: '100%'
+                                    }}>
+                                        <Typography 
+                                            variant="h3" 
+                                            sx={{ 
+                                                overflow: 'hidden',
+                                                textOverflow: 'ellipsis',
+                                                wordBreak: 'break-word',
+                                                wordWrap: 'break-word',
+                                                display: '-webkit-box',
+                                                WebkitLineClamp: 2,
+                                                WebkitBoxOrient: 'vertical',
+                                                maxWidth: 'calc(100% - 48px)'
+                                            }}
+                                        >
+                                            {props.displayName || t('title')}
+                                        </Typography>
+                                        <ActionMenu 
+                                            aasId={props.aas?.id}
+                                            className="product-action-menu"
+                                        />
+                                    </Box>
+                                    <Divider sx={{ mb: 2 }} />
+                                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
+                                        {productInfo}
+                                        {markings}
+                                    </Box>
+                                </Box>
                             </>
                         )}
                     </>

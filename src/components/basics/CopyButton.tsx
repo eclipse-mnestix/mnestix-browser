@@ -9,9 +9,16 @@ type CopyButtonProps = {
     isVisible?: boolean;
     withBase64?: boolean;
     dataTestId?: string;
+    size?: 'small' | 'medium' | 'large';
 };
 
-export function CopyButton({ value, isVisible = true, withBase64 = false, dataTestId: testId }: CopyButtonProps) {
+export function CopyButton({
+    value,
+    isVisible = true,
+    withBase64 = false,
+    dataTestId: testId,
+    size = 'small',
+}: CopyButtonProps) {
     const t = useTranslations('components.copyButton');
     const notificationSpawner = useNotificationSpawner();
 
@@ -29,16 +36,16 @@ export function CopyButton({ value, isVisible = true, withBase64 = false, dataTe
     if (!value) return null;
 
     return (
-        <Tooltip title={withBase64? t('copyBase64') : t('copy')}>
+        <Tooltip title={withBase64 ? t('copyBase64') : t('copy')}>
             <IconButton
                 onClick={handleCopyValue}
-                size="small"
-                sx={{ ml: 1, opacity: isVisible ? 1 : 0 }}
+                size={size}
+                sx={{ ml: 1, opacity: isVisible ? 1 : 0, alignSelf: 'center' }}
                 data-testid={testId || 'copy-button'}
             >
                 {withBase64 ? (
                     <Box sx={{ position: 'relative' }}>
-                        <ContentCopy fontSize="small" />
+                        <ContentCopy fontSize={size} />
                         <Typography
                             sx={{
                                 position: 'absolute',
@@ -49,14 +56,14 @@ export function CopyButton({ value, isVisible = true, withBase64 = false, dataTe
                                 backgroundColor: 'background.paper',
                                 lineHeight: 1,
                                 padding: '1px',
-                                borderRadius: '2px'
+                                borderRadius: '2px',
                             }}
                         >
                             64
                         </Typography>
                     </Box>
                 ) : (
-                    <ContentCopy fontSize="small" />
+                    <ContentCopy fontSize={size} />
                 )}
             </IconButton>
         </Tooltip>
