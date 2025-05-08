@@ -7,7 +7,7 @@ import {
 import { MultiLanguageProperty, Property } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
-import { Box, Tooltip, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { tooltipText } from 'lib/util/ToolTipText';
 
 export type DocumentClassification = {
