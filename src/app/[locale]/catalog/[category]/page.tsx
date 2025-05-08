@@ -9,7 +9,7 @@ export default function Page() {
         <Box display="flex" flexDirection="column" marginTop="0px" marginBottom="50px" width="100%">
             <Box width="90%" margin="auto">
                 <Box marginTop="2rem" marginBottom="2.25rem">
-                    <Typography variant="h1" >Catalog Category: { params.category }</Typography>
+                    <Typography variant="h1">Catalog Category: {decodeURIComponent(params.category)}</Typography>
                 </Box>
                 <Box>
                     <Typography variant="h3">List of all AAS with Category... </Typography>

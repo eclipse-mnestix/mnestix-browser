@@ -3,6 +3,8 @@ import { Box, Card, CardContent, FormControl, InputLabel, MenuItem, Select, Typo
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import { padding } from '@mui/system';
 
 /**
  * Configuration we need to display the catalog.
@@ -19,15 +21,38 @@ type CatalogConfiguration = {
 };
 
 const hardcodedCatalogConfiguration: CatalogConfiguration[] = [{
-    catalogLogo: '/images/aas-core-logo.png',
+    catalogLogo: '/images/catalog/manufacturers/kostal/Kostal_logo.png',
     manufacturerName: 'Kostal',
     sourceRepository: 'https://vws4ls-api.dev.mnestix.xitaso.net/repo',
     rootCategories: [
         {
-            name: 'CONNECT_TERMINALS',
-            image: '/images/aas-core-logo.png',
+            name: 'Alle anzeigen',
+            image: '/images/catalog/manufacturers/kostal/showAll.png',
         },
-        { name: 'CONNECT_HOUSINGS', image: '/images/aas-core-logo.png' },
+        {
+            name: 'Kontakte',
+            image: '/images/catalog/manufacturers/kostal/Dichtungen.png',
+        },
+        { 
+            name: 'Steckverbinder',
+            image: '/images/catalog/manufacturers/kostal/Steckverbinder.png',
+        },
+        {
+            name: 'Steckverbinder für Elektromobilität',
+            image: '/images/catalog/manufacturers/kostal/Steckverbindung.png',
+        },
+        {
+            name: 'Steckerleisten',
+            image: '/images/catalog/manufacturers/kostal/Steckerleisten.png',
+        },
+        {
+            name: 'Oil Performance Connectors',
+            image: '/images/catalog/manufacturers/kostal/OilConnectors.png',
+        },
+        {
+            name: 'Dichtungen',
+            image: '/images/catalog/manufacturers/kostal/Dichtungen.png',
+        },
     ],
 }, {
     catalogLogo: '/images/aas-core-logo.png',
@@ -35,10 +60,13 @@ const hardcodedCatalogConfiguration: CatalogConfiguration[] = [{
     sourceRepository: 'https://vws4ls-api.dev.mnestix.xitaso.net/repo',
     rootCategories: [
         {
-            name: 'CONNECT_TERMINALS',
+            name: 'TEST_CATEGORY_1',
             image: '/images/aas-core-logo.png',
         },
-        { name: 'CONNECT_HOUSINGS', image: '/images/aas-core-logo.png' },
+        { 
+            name: 'TEST_CATEGORY_2',
+            image: '/images/aas-core-logo.png' 
+        },
     ],
 }];
 
@@ -48,8 +76,11 @@ export default function Page() {
     const theme = useTheme();
     const t = useTranslations('pages.catalog');
 
-    const loadCategories = () => {
-        setSelectedCatalog(hardcodedCatalogConfiguration[0]);
+    const loadCategories = (manufacturerName: string) => {
+        const selected = hardcodedCatalogConfiguration.find(
+            (config) => config.manufacturerName === manufacturerName
+        );
+        setSelectedCatalog(selected);
     };
 
     return (
@@ -59,31 +90,45 @@ export default function Page() {
                     <Box marginBottom="2em">
                         <Typography variant="h1">{t('title')}</Typography>
                     </Box>
-                    <FormControl variant="standard" sx={{ minWidth: 300, maxWidth: 300 }}>
-                        <InputLabel id="aas-repository-select" sx={{ color: 'text.secondary' }}>
-                            {t('manufacturerSelect')}
-                        </InputLabel>
-                        <Select
-                            data-testid="repository-select"
-                            labelId="aas-repository-select"
-                            value={selectedCatalog?.manufacturerName || ''}
-                            label={'test'}
-                            onChange={loadCategories}
-                            variant="outlined"
-                        >
-                            {hardcodedCatalogConfiguration.map((repo, index) => {
-                                return (
-                                    <MenuItem
+                    <Box display="flex" alignItems="center" gap={4}>
+                        <FormControl sx={{ minWidth: 300, maxWidth: 300 }}>
+                            <InputLabel id="aas-repository-select">
+                                {t('manufacturerSelect')}
+                            </InputLabel>
+                            <Select
+                                data-testid="repository-select"
+                                labelId="aas-repository-select"
+                                value={selectedCatalog?.manufacturerName ?? ''}
+                                label={t('manufacturerSelect')}
+                                onChange={(event) => loadCategories(event.target.value)}
+                                variant="outlined"
+                            >
+                                {hardcodedCatalogConfiguration.map((config, index) => (
+                                    <MenuItem 
                                         key={index}
-                                        value={repo.manufacturerName}
+                                        value={config.manufacturerName}
                                         data-testid={`repository-select-item-${index}`}
                                     >
-                                        {repo.manufacturerName}
+                                        {config.manufacturerName}
                                     </MenuItem>
-                                );
-                            })}
-                        </Select>
-                    </FormControl>
+                                ))}
+                            </Select>
+                        </FormControl>
+                        {selectedCatalog && (
+                            <Card sx={{ padding: '1em' }}>
+                            <Box position="relative" width="200px" height="60px">
+                                <Image
+                                    src={selectedCatalog.catalogLogo}
+                                    alt={`${selectedCatalog.manufacturerName} logo`}
+                                    fill
+                                    style={{
+                                        objectFit: 'contain',
+                                    }}
+                                />
+                            </Box>
+                            </Card>
+                        )}
+                    </Box>
                 </Box>
                 {selectedCatalog ? <Box>
                     <Typography variant="h3">{t('manufacturerCatalog')}</Typography>
@@ -109,6 +154,22 @@ export default function Page() {
                                         alignItems="center"
                                     >
                                         {category.name}
+                                        {category.image && (
+                                            <Box
+                                                position="relative"
+                                                width="100%"
+                                                height="100%"
+                                            >
+                                                <Image
+                                                    src={category.image}
+                                                    alt={category.name}
+                                                    fill
+                                                    style={{
+                                                        objectFit: 'contain',
+                                                    }}
+                                                />
+                                            </Box>
+                                        )}
                                     </Box>
                                 </CardContent>
                             </Card>
