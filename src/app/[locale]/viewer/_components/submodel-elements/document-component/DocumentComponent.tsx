@@ -56,13 +56,13 @@ export function DocumentComponent(props: DocumentComponentProps) {
     }
 
     return (
-        <DataRow title={props.submodelElement?.idShort} hasDivider={props.hasDivider}>
+        <DataRow hasDivider={props.hasDivider}>
             {fileViewObject && (
-                <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
+                <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ my: 1 }}>
                     <Box
                         display="flex"
                         justifyContent="space-between"
-                        gap={1}
+                        gap={{ xs: 1, sm: 6 }}
                         flexDirection={{ xs: 'column', sm: 'row' }}
                         sx={{ mb: 1 }}
                     >
@@ -85,13 +85,11 @@ export function DocumentComponent(props: DocumentComponentProps) {
                                 />
                             )}
                             <Box>
-                                <Typography data-testid="document-title">{fileViewObject.title}</Typography>
+                                <Typography data-testid="document-title" variant="h5">
+                                    {fileViewObject.title}
+                                </Typography>
                                 {fileViewObject.organizationName && (
-                                    <Typography
-                                        variant="body2"
-                                        color="text.secondary"
-                                        data-testid="document-organization"
-                                    >
+                                    <Typography variant="body2" data-testid="document-organization">
                                         {fileViewObject.organizationName}
                                     </Typography>
                                 )}
@@ -108,7 +106,10 @@ export function DocumentComponent(props: DocumentComponentProps) {
                                 </Button>
                             </Box>
                         </Box>
-                        <DocumentClassification classificationData={getDocumentClassificationCollection()} />
+                        <DocumentClassification
+                            classificationData={getDocumentClassificationCollection()}
+                            openDetailDialog={() => setDetailsModalOpen(true)}
+                        />
                     </Box>
                     <IconButton onClick={() => handleDetailsClick()} sx={{ ml: 1 }} data-testid="document-info-button">
                         <InfoOutlined />

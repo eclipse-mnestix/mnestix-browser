@@ -22,7 +22,7 @@ export enum DocumentSpecificSemanticIdIrdi {
     ClassId = '0173-1#02-ABH996#001',
     ClassName = '0173-1#02-AAO102#003',
     ClassificationSystem = '0173-1#02-ABH997#001',
-    DocumentClassification = '0173-1#02-ABI502#001/0173-1#01-AHF581#001'
+    DocumentClassification = '0173-1#02-ABI502#001/0173-1#01-AHF581#001',
 }
 
 export enum DocumentSpecificSemanticIdIrdiV2 {

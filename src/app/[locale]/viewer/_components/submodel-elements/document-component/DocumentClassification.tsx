@@ -7,7 +7,7 @@ import {
 import { MultiLanguageProperty, Property } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { tooltipText } from 'lib/util/ToolTipText';
 
 export type DocumentClassification = {
@@ -15,10 +15,13 @@ export type DocumentClassification = {
     className: string;
     classificationSystem: string;
 };
-export const DocumentClassification = (props: { classificationData: SubmodelElementCollection[] }) => {
+export const DocumentClassification = (props: {
+    classificationData: SubmodelElementCollection[];
+    openDetailDialog: () => void;
+}) => {
     const locale = useLocale();
     const [classificationData, setClassificationData] = useState<DocumentClassification[]>();
-    const t = useTranslations('components.documentComponent')
+    const t = useTranslations('components.documentComponent');
 
     function extractDocumentClassificationData() {
         const classifications: DocumentClassification[] = [];
@@ -51,7 +54,9 @@ export const DocumentClassification = (props: { classificationData: SubmodelElem
                 className: translatedClassName,
                 classificationSystem: (classificationSystem as Property).value || '',
             };
-            classifications.push(classification);
+            if (classification.classId || classification.className || classification.classificationSystem) {
+                classifications.push(classification);
+            }
         });
 
         return classifications;
@@ -62,18 +67,30 @@ export const DocumentClassification = (props: { classificationData: SubmodelElem
     }, [props.classificationData]);
 
     return (
-        <Box>
-            <Typography variant="body2" color="text.secondary">
-                {t('classification')}:
-            </Typography>
-            {classificationData?.map((classificationData) => (
-                <Box display="flex" flexDirection="row" gap={1} key={classificationData?.classId}>
-                    {classificationData?.classificationSystem && (
-                        <Typography fontWeight="500">{classificationData?.classificationSystem}: </Typography>
+        <>
+            {classificationData && classificationData.length > 0 && (
+                <Box>
+                    <Typography variant="body2" color="text.secondary" mb={1}>
+                        {t('classification')}:
+                    </Typography>
+                    {classificationData?.slice(0, 2).map((classificationData) => (
+                        <Box display="flex" flexDirection="row" gap={1} key={classificationData?.classId}>
+                            <Typography component="span" sx={{ mx: 1 }}>
+                                •
+                            </Typography>
+                            {classificationData?.classificationSystem && (
+                                <Typography fontWeight="500">{classificationData?.classificationSystem}: </Typography>
+                            )}
+                            <Typography>{tooltipText(classificationData?.className, 20)}</Typography>
+                        </Box>
+                    ))}
+                    {classificationData?.length > 2 && (
+                        <Button variant="text" onClick={props.openDetailDialog}>
+                            {t('showMoreButton')}
+                        </Button>
                     )}
-                    <Typography>{tooltipText(classificationData?.className, 20)}</Typography>
                 </Box>
-            ))}
-        </Box>
+            )}
+        </>
     );
 };
