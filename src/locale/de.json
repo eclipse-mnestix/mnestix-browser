@@ -247,6 +247,11 @@
         "unknownModelType": "Unbekannter ModelType: {type}"
       }
     },
+    "catalog": {
+      "title": "Produktkatalog",
+      "manufacturerCatalog": "Hersteller Produktkatalog",
+      "manufacturerSelect": "Hersteller auswählen"
+    },
     "compare": {
       "addAnother": "Eine weitere AAS hinzufügen",
       "addButton": "Eine weitere AAS hinzufügen",

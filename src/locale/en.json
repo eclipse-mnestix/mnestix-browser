@@ -247,6 +247,11 @@
         "unknownModelType": "Unknown ModelType: {type}"
       }
     },
+    "catalog": {
+      "title": "Manufacturer Catalog",
+      "manufacturerCatalog": "Manufacturer Product Catalog",
+      "manufacturerSelect": "Select Manufacturer"
+    },
     "compare": {
       "addAnother": "Add another AAS",
       "addButton": "Add another AAS",

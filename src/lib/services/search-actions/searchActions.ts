@@ -68,10 +68,10 @@ export async function performSubmodelFullSearch(
 }
 
 export async function checkFileExists(url: string): Promise<ApiResponseWrapper<boolean>> {
-    try {
-        const response = await fetch(url, { method: 'HEAD' });
-        return wrapSuccess(response.ok);
-    } catch {
-        return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Exception during network fetch');
-    }
+    const localFetch = mnestixFetch();
+    const response = await localFetch.fetch(url, {
+        method: 'HEAD',
+    });
+    if (response.isSuccess) return wrapSuccess(true);
+    return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Exception during network fetch');
 }
