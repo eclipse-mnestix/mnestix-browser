@@ -85,11 +85,12 @@ export function DocumentComponent(props: DocumentComponentProps) {
                                 />
                             )}
                             <Box>
-                                <Typography data-testid="document-title" variant="h5">
-                                    {fileViewObject.title}
-                                </Typography>
+                                <Typography data-testid="document-title" variant="h5">{fileViewObject.title}</Typography>
                                 {fileViewObject.organizationName && (
-                                    <Typography variant="body2" data-testid="document-organization">
+                                    <Typography
+                                        variant="body2"
+                                        data-testid="document-organization"
+                                    >
                                         {fileViewObject.organizationName}
                                     </Typography>
                                 )}
@@ -106,10 +107,7 @@ export function DocumentComponent(props: DocumentComponentProps) {
                                 </Button>
                             </Box>
                         </Box>
-                        <DocumentClassification
-                            classificationData={getDocumentClassificationCollection()}
-                            openDetailDialog={() => setDetailsModalOpen(true)}
-                        />
+                        <DocumentClassification classificationData={getDocumentClassificationCollection()} openDetailDialog={() => setDetailsModalOpen(true)} />
                     </Box>
                     <IconButton onClick={() => handleDetailsClick()} sx={{ ml: 1 }} data-testid="document-info-button">
                         <InfoOutlined />
