@@ -1,26 +1,20 @@
-import { InfoOutlined, InsertDriveFileOutlined, OpenInNew } from '@mui/icons-material';
-import { Box, Button, IconButton, Link, styled, Typography } from '@mui/material';
-import {
-    SubmodelElementCollection,
-} from '@aas-core-works/aas-core3.0-typescript/types';
+import { InfoOutlined, OpenInNew } from '@mui/icons-material';
+import { Box, Button, IconButton, Link, Typography } from '@mui/material';
+import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
 import { DataRow } from 'components/basics/DataRow';
-import { PdfDocumentIcon } from 'components/custom-icons/PdfDocumentIcon';
 import { useState } from 'react';
-import {
-    findAllSubmodelElementsBySemanticIdsOrIdShort,
-} from 'lib/util/SubmodelResolverUtil';
+import { findAllSubmodelElementsBySemanticIdsOrIdShort } from 'lib/util/SubmodelResolverUtil';
 import { DocumentDetailsDialog } from './DocumentDetailsDialog';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { checkFileExists } from 'lib/services/search-actions/searchActions';
 import { useTranslations } from 'next-intl';
 import { DocumentClassification } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentClassification';
-import {
-    useFileViewObject
-} from 'app/[locale]/viewer/_components/submodel-elements/document-component/useDocumentVersionData';
+import { useFileViewObject } from 'app/[locale]/viewer/_components/submodel-elements/document-component/useDocumentVersionData';
 import {
     DocumentSpecificSemanticId,
     DocumentSpecificSemanticIdIrdi,
 } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentSemanticIds';
+import { PreviewImage } from 'app/[locale]/viewer/_components/submodel-elements/document-component/PreviewImage';
 
 type DocumentComponentProps = {
     readonly submodelElement: SubmodelElementCollection;
@@ -28,33 +22,12 @@ type DocumentComponentProps = {
     readonly submodelId: string;
 };
 
-const StyledImageWrapper = styled(Box)(({ theme }) => ({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 90,
-    width: 90,
-    boxShadow: theme.shadows['3'],
-    borderRadius: theme.shape.borderRadius,
-    marginRight: theme.spacing(2),
-    img: {
-        objectFit: 'contain',
-        width: '100%',
-        height: '100%',
-    },
-    '.MuiSvgIcon-root': {
-        fontSize: '2.5rem',
-        opacity: '.5',
-    },
-}));
-
 export function DocumentComponent(props: DocumentComponentProps) {
     const t = useTranslations('components.documentComponent');
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
     const [imageError, setImageError] = useState(false);
     const [fileExists, setFileExists] = useState(true);
     const fileViewObject = useFileViewObject(props.submodelElement, props.submodelId);
-
 
     useAsyncEffect(async () => {
         if (fileViewObject?.digitalFileUrl) {
@@ -74,26 +47,6 @@ export function DocumentComponent(props: DocumentComponentProps) {
     const handleImageError = () => {
         setImageError(true);
     };
-
-    const renderImage = () => (
-        <StyledImageWrapper>
-            {!imageError && fileViewObject?.previewImgUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element -- logo can be an arbitrary url which conflicts with https://nextjs.org/docs/pages/api-reference/components/image#remotepatterns
-                <img
-                    src={fileViewObject.previewImgUrl}
-                    height={90}
-                    width={90}
-                    alt="File Preview"
-                    onError={handleImageError}
-                    data-testid="document-preview-image"
-                />
-            ) : fileViewObject?.mimeType === 'application/pdf' ? (
-                <PdfDocumentIcon color="primary" />
-            ) : (
-                <InsertDriveFileOutlined color="primary" />
-            )}
-        </StyledImageWrapper>
-    );
 
     function getDocumentClassificationCollection() {
         return findAllSubmodelElementsBySemanticIdsOrIdShort(props.submodelElement.value, 'DocumentClassification', [
@@ -116,10 +69,20 @@ export function DocumentComponent(props: DocumentComponentProps) {
                         <Box display="flex" gap={1} flexDirection="row" sx={{ mb: 1 }}>
                             {fileExists ? (
                                 <Link href={fileViewObject.digitalFileUrl} target="_blank">
-                                    {renderImage()}
+                                    <PreviewImage
+                                        previewImgUrl={fileViewObject.previewImgUrl}
+                                        mimeType={fileViewObject.mimeType}
+                                        imageError={imageError}
+                                        handleImageError={handleImageError}
+                                    />
                                 </Link>
                             ) : (
-                                renderImage()
+                                <PreviewImage
+                                    previewImgUrl={fileViewObject.previewImgUrl}
+                                    mimeType={fileViewObject.mimeType}
+                                    imageError={imageError}
+                                    handleImageError={handleImageError}
+                                />
                             )}
                             <Box>
                                 <Typography data-testid="document-title">{fileViewObject.title}</Typography>
