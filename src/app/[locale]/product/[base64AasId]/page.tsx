@@ -48,6 +48,7 @@ export default function Page() {
                         checkIfSubmodelHasIdShortOrSemanticId(submodel, SubmodelSemanticIdEnum.NameplateV1, 'Nameplate') ||
                         checkIfSubmodelHasIdShortOrSemanticId(submodel, SubmodelSemanticIdEnum.NameplateV2, 'Nameplate') ||
                         checkIfSubmodelHasIdShortOrSemanticId(submodel, SubmodelSemanticIdEnum.NameplateV3, 'Nameplate') ||
+                        checkIfSubmodelHasIdShortOrSemanticId(submodel, SubmodelSemanticIdEnum.NameplateV4, 'Nameplate') ||
                         checkIfSubmodelHasIdShortOrSemanticId(submodel, undefined, 'VEC_SML'))
             );
             setFilteredSubmodels(filtered);
