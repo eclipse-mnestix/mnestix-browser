@@ -22,7 +22,7 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
     const generalInformation = findSubmodelElementBySemanticIdOrIdShort(SubmodelElementSemanticIdEnum.GeneralInformation, 'GeneralInformation');
     const technicalData = findSubmodelElementBySemanticIdOrIdShort(SubmodelElementSemanticIdEnum.TechnicalProperties, 'TechnicalProperties');
     const productClassifications = findSubmodelElementBySemanticIdOrIdShort(SubmodelElementSemanticIdEnum.ProductClassifications, 'ProductClassifications');
-    const furtherInformation = findSubmodelElementBySemanticIdOrIdShort( SubmodelElementSemanticIdEnum.FurtherInformation, 'FurtherInformation');
+    const furtherInformation = findSubmodelElementBySemanticIdOrIdShort(SubmodelElementSemanticIdEnum.FurtherInformation, 'FurtherInformation');
 
     const cannotRenderTechnicalData = !generalInformation && !technicalData && !productClassifications && !furtherInformation;
 
@@ -35,6 +35,7 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
                     elements={technicalData.value}
                     submodelId={submodel.id}
                     isExpanded={true}
+                    showUnits={true}
                 />
             )}
             {generalInformation?.value && (

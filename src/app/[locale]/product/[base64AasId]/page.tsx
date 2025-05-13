@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { safeBase64Decode } from 'lib/util/Base64Util';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import {
@@ -30,7 +30,7 @@ export default function Page() {
     const repoUrl = encodedRepoUrl ? decodeURI(encodedRepoUrl) : undefined;
     const [filteredSubmodels, setFilteredSubmodels] = useState<SubmodelOrIdReference[]>([]);
     const [breadcrumbLinks] = useState<Array<{ label: string, path: string }>>([]);
-  
+
 
     const {
         aasFromContext,
@@ -89,7 +89,6 @@ export default function Page() {
         flexDirection: 'column',
         gap: '30px',
         alignItems: 'center',
-        width: '100vw',
         marginBottom: '50px',
         marginTop: '20px',
     };
@@ -100,7 +99,7 @@ export default function Page() {
         margin: '0 auto',
         display: 'flex',
         flexDirection: 'column',
-        gap: '5px',
+        gap: '20px',
     };
 
     return (
@@ -109,20 +108,6 @@ export default function Page() {
                 <Box sx={viewerStyles}>
                     <Box>
                         <Breadcrumbs links={breadcrumbLinks} />
-                    </Box>
-                    <Box display="flex" flexDirection="row" alignContent="flex-end">
-                        <Typography
-                            variant="h2"
-                            style={{
-                                width: '90%',
-                                margin: '0 auto',
-                                marginTop: '10px',
-                                overflowWrap: 'break-word',
-                                wordBreak: 'break-word',
-                                display: 'inline-block',
-                            }}
-                        >
-                        </Typography>
                     </Box>
                     <ProductOverviewCard
                         aas={aasFromContext}
