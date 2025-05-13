@@ -16,8 +16,7 @@ export function CompareRecordValueRow(props: { data: SubmodelCompareDataRecord; 
             {(dataRecord as SubmodelCompareDataRecord).submodelElements?.map((subElement, valueIndex) => {
                 return (
                     <Grid
-                        item
-                        xs={props.columnWidthCount - 0.5}
+                        size={{ xs: props.columnWidthCount - 0.5 }}
                         key={valueIndex}
                         data-testid={`compare-value-${valueIndex}`}
                     >

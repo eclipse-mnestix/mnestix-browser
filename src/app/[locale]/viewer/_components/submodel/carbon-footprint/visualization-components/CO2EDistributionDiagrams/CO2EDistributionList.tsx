@@ -24,13 +24,13 @@ export function CO2EList(props: { co2EquivalentsPerLifecycleStage: Partial<Recor
         .sort((a, b) => co2EquivalentsPerLifecycleStage[b]! - co2EquivalentsPerLifecycleStage[a]!)
         .map((val, index) => (
             <React.Fragment key={index}>
-                <Grid item key={`grid-item-${index}`} xs={3} sm={2}>
+                <Grid key={`grid-item-${index}`} size={{ xs: 3, sm: 2 }}>
                     <ItemCO2Amount elevation={0}>{`${cutDecimalPlaces(
                         co2EquivalentsPerLifecycleStage[val]!,
                         3,
                     )} kg`}</ItemCO2Amount>
                 </Grid>
-                <Grid item key={`grid-stage-${index}`} xs={9} sm={10}>
+                <Grid key={`grid-stage-${index}`} size={{ xs: 9, sm: 10 }}>
                     <ItemLifecycleStage elevation={1}>{t(`stages.${val}`)}</ItemLifecycleStage>
                 </Grid>
             </React.Fragment>
