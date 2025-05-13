@@ -98,7 +98,7 @@ export function useFileViewObject(submodelElement: SubmodelElementCollection, su
         return fileViewObject;
     }
 
-    function getDigitalFile(versionSubmodelEl: ISubmodelElement, submodelElement: ISubmodelElement) {
+    function getDigitalFile(versionSubmodelEl: ISubmodelElement, fileSubmodelElement: ISubmodelElement) {
         const digitalFile = {
             digitalFileUrl: '',
             mimeType: '',
@@ -107,33 +107,33 @@ export function useFileViewObject(submodelElement: SubmodelElementCollection, su
         if (isValidUrl((versionSubmodelEl as File).value)) {
             digitalFile.digitalFileUrl = (versionSubmodelEl as File).value || '';
             digitalFile.mimeType = (versionSubmodelEl as File).contentType;
-        } else if (submodelId && submodelElement.idShort && submodelElement?.idShort) {
+        } else if (submodelId && fileSubmodelElement.idShort && fileSubmodelElement?.idShort) {
             const idShort = findIdShortForLatestElement(
-                submodelElement as SubmodelElementCollection,
+                fileSubmodelElement as SubmodelElementCollection,
                 'DigitalFile',
                 DocumentSpecificSemanticId.DigitalFile,
                 DocumentSpecificSemanticIdIrdi.DigitalFile,
                 DocumentSpecificSemanticIdIrdiV2.DigitalFile,
             );
-            const submodelElementPath = `${submodelElement.idShort}.${submodelElement.idShort}.${idShort}`;
+            const submodelElementPath = `${submodelElement.idShort}.${fileSubmodelElement.idShort}.${idShort}`;
             digitalFile.digitalFileUrl = `${aasOriginUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${submodelElementPath}/attachment`;
             digitalFile.mimeType = (versionSubmodelEl as File).contentType;
         }
         return digitalFile;
     }
 
-    function getPreviewImageUrl(versionSubmodelEl: ISubmodelElement, submodelElement: ISubmodelElement) {
+    function getPreviewImageUrl(versionSubmodelEl: ISubmodelElement, previewSubmodelElement: ISubmodelElement) {
         if (isValidUrl((versionSubmodelEl as File).value)) {
             return (versionSubmodelEl as File).value ?? '';
-        } else if (submodelId && submodelElement.idShort && submodelElement?.idShort) {
+        } else if (submodelId && previewSubmodelElement.idShort && previewSubmodelElement?.idShort) {
             const idShort = findIdShortForLatestElement(
-                submodelElement as SubmodelElementCollection,
+                previewSubmodelElement as SubmodelElementCollection,
                 'PreviewFile',
                 DocumentSpecificSemanticId.PreviewFile,
                 DocumentSpecificSemanticIdIrdi.PreviewFile,
                 DocumentSpecificSemanticIdIrdiV2.PreviewFile,
             );
-            const submodelElementPath = `${submodelElement.idShort}.${submodelElement?.idShort}.${idShort}`;
+            const submodelElementPath = `${submodelElement.idShort}.${previewSubmodelElement?.idShort}.${idShort}`;
             return `${aasOriginUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${submodelElementPath}/attachment`;
         }
         return '';

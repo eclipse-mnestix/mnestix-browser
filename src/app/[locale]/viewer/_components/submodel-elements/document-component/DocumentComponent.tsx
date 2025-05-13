@@ -45,6 +45,7 @@ export function DocumentComponent(props: DocumentComponentProps) {
     };
 
     const handleImageError = () => {
+        // TODO add information about the error to UI
         setImageError(true);
     };
 
@@ -54,7 +55,6 @@ export function DocumentComponent(props: DocumentComponentProps) {
             DocumentSpecificSemanticIdIrdi.DocumentClassification,
         ]) as SubmodelElementCollection[];
     }
-
     return (
         <DataRow hasDivider={props.hasDivider}>
             {fileViewObject && (
