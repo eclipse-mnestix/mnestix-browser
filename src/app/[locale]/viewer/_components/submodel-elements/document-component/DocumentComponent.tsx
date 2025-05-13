@@ -32,7 +32,12 @@ export function DocumentComponent(props: DocumentComponentProps) {
     useAsyncEffect(async () => {
         if (fileViewObject?.digitalFileUrl) {
             const checkResponse = await checkFileExists(fileViewObject.digitalFileUrl);
-            setFileExists(checkResponse.isSuccess && checkResponse.result);
+            if(checkResponse.isSuccess) {
+                setFileExists(true);
+            } else if(!checkResponse.isSuccess) {
+                console.warn('Error loading document:', checkResponse?.message, fileViewObject?.digitalFileUrl);
+                setFileExists(false)
+            }
         }
     }, [fileViewObject?.digitalFileUrl]);
 
@@ -45,7 +50,6 @@ export function DocumentComponent(props: DocumentComponentProps) {
     };
 
     const handleImageError = () => {
-        // TODO add information about the error to UI
         setImageError(true);
     };
 

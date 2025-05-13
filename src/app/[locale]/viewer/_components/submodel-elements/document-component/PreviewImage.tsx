@@ -32,7 +32,10 @@ export const PreviewImage = (props: {previewImgUrl: string, mimeType: string, im
                     height={90}
                     width={90}
                     alt="File Preview"
-                    onError={props.handleImageError}
+                    onError={(e) => {
+                        console.warn('Error loading preview image:', (e.target as HTMLImageElement).src);
+                        props.handleImageError();}
+                }
                     data-testid="document-preview-image"
                 />
             ) : props?.mimeType === 'application/pdf' ? (

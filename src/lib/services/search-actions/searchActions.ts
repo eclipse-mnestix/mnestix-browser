@@ -8,7 +8,6 @@ import { mnestixFetch } from 'lib/api/infrastructure';
 import { SubmodelSearcher } from 'lib/services/searchUtilActions/SubmodelSearcher';
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { AssetAdministrationShellRepositoryApi } from 'lib/api/basyx-v3/api';
-import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { headers } from 'next/headers';
 import { createRequestLogger, logInfo } from 'lib/util/Logger';
 
@@ -73,5 +72,5 @@ export async function checkFileExists(url: string): Promise<ApiResponseWrapper<b
         method: 'HEAD',
     });
     if (response.isSuccess) return wrapSuccess(true);
-    return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Exception during network fetch');
+    else return wrapErrorCode(response.errorCode, response.message, response.httpStatus);
 }
