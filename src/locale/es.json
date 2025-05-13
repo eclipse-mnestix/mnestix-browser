@@ -335,7 +335,8 @@
         },
         "subtitle": "Define qué conexiones de datos deben ser utilizadas.",
         "title": "Fuentes de datos",
-        "urlFieldRequired": "El campo URL es obligatorio"
+        "urlFieldRequired": "El campo URL es obligatorio",
+        "urlFieldNoTrailingSlash": "La URL no debe terminar con una barra (/)."
       },
       "header": "Ajustes",
       "idStructure": {

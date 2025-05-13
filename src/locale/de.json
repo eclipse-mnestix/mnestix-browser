@@ -340,7 +340,8 @@
         },
         "subtitle": "Definieren Sie, welche Datenquellen verwendet werden sollen.",
         "title": "Datenquellen",
-        "urlFieldRequired": "URL wird benötigt"
+        "urlFieldRequired": "URL wird benötigt",
+        "urlFieldNoTrailingSlash": "Die URL darf nicht mit einem Schrägstrich (/) enden."
       },
       "header": "Einstellungen",
       "idStructure": {
