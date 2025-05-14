@@ -1,6 +1,7 @@
 import { PdfDocumentIcon } from 'components/custom-icons/PdfDocumentIcon';
 import { InsertDriveFileOutlined } from '@mui/icons-material';
-import { Box, styled } from '@mui/material';
+import { Box, styled, Tooltip } from '@mui/material';
+import { useState } from 'react';
 
 const StyledImageWrapper = styled(Box)(({ theme }) => ({
     display: 'flex',
@@ -22,10 +23,15 @@ const StyledImageWrapper = styled(Box)(({ theme }) => ({
     },
 }));
 
-export const PreviewImage = (props: {previewImgUrl: string, mimeType: string, imageError: boolean, handleImageError: () => void}) => {
+export const PreviewImage = (props: {
+    previewImgUrl: string;
+    mimeType: string;
+}) => {
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
     return (
         <StyledImageWrapper>
-            {!props.imageError && props.previewImgUrl ? (
+            {!errorMessage && props.previewImgUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element -- logo can be an arbitrary url which conflicts with https://nextjs.org/docs/pages/api-reference/components/image#remotepatterns
                 <img
                     src={props.previewImgUrl}
@@ -34,14 +40,19 @@ export const PreviewImage = (props: {previewImgUrl: string, mimeType: string, im
                     alt="File Preview"
                     onError={(e) => {
                         console.warn('Error loading preview image:', (e.target as HTMLImageElement).src);
-                        props.handleImageError();}
-                }
+                        setErrorMessage((e.target as HTMLImageElement).src)
+                    }}
                     data-testid="document-preview-image"
                 />
-            ) : props?.mimeType === 'application/pdf' ? (
-                <PdfDocumentIcon color="primary" />
             ) : (
-                <InsertDriveFileOutlined color="primary" />
+                <Box>
+                    <Tooltip title={`Unable to load preview image from: ${errorMessage}`} arrow>
+                    {props?.mimeType === 'application/pdf' ? (
+                        <PdfDocumentIcon color="primary" />
+                    ) : (
+                        <InsertDriveFileOutlined color="primary" />
+                    )}</Tooltip>
+                </Box>
             )}
         </StyledImageWrapper>
     );

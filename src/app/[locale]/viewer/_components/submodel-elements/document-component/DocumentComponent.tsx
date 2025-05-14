@@ -1,5 +1,5 @@
 import { InfoOutlined, OpenInNew } from '@mui/icons-material';
-import { Box, Button, IconButton, Link, Typography } from '@mui/material';
+import { Box, IconButton, Link, Tooltip, Typography } from '@mui/material';
 import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
 import { DataRow } from 'components/basics/DataRow';
 import { useState } from 'react';
@@ -15,6 +15,7 @@ import {
     DocumentSpecificSemanticIdIrdi,
 } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentSemanticIds';
 import { PreviewImage } from 'app/[locale]/viewer/_components/submodel-elements/document-component/PreviewImage';
+import { LoadingButton } from '@mui/lab';
 
 type DocumentComponentProps = {
     readonly submodelElement: SubmodelElementCollection;
@@ -25,20 +26,26 @@ type DocumentComponentProps = {
 export function DocumentComponent(props: DocumentComponentProps) {
     const t = useTranslations('components.documentComponent');
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
-    const [imageError, setImageError] = useState(false);
     const [fileExists, setFileExists] = useState(true);
     const fileViewObject = useFileViewObject(props.submodelElement, props.submodelId);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [fileCheckLoading, setFileCheckLoading] = useState(true);
 
     useAsyncEffect(async () => {
         if (fileViewObject?.digitalFileUrl) {
+            setFileCheckLoading(true);
             const checkResponse = await checkFileExists(fileViewObject.digitalFileUrl);
-            if(checkResponse.isSuccess) {
+            if (checkResponse.isSuccess) {
                 setFileExists(true);
-            } else if(!checkResponse.isSuccess) {
+            } else if (!checkResponse.isSuccess) {
                 console.warn('Error loading document:', checkResponse?.message, fileViewObject?.digitalFileUrl);
-                setFileExists(false)
+                setErrorMessage(
+                    `Error loading document:, ${checkResponse?.message}, ${fileViewObject?.digitalFileUrl}`,
+                );
+                setFileExists(false);
             }
         }
+        setFileCheckLoading(false);
     }, [fileViewObject?.digitalFileUrl]);
 
     const handleDetailsClick = () => {
@@ -47,10 +54,6 @@ export function DocumentComponent(props: DocumentComponentProps) {
 
     const handleDetailsModalClose = () => {
         setDetailsModalOpen(false);
-    };
-
-    const handleImageError = () => {
-        setImageError(true);
     };
 
     function getDocumentClassificationCollection() {
@@ -76,42 +79,45 @@ export function DocumentComponent(props: DocumentComponentProps) {
                                     <PreviewImage
                                         previewImgUrl={fileViewObject.previewImgUrl}
                                         mimeType={fileViewObject.mimeType}
-                                        imageError={imageError}
-                                        handleImageError={handleImageError}
                                     />
                                 </Link>
                             ) : (
                                 <PreviewImage
                                     previewImgUrl={fileViewObject.previewImgUrl}
                                     mimeType={fileViewObject.mimeType}
-                                    imageError={imageError}
-                                    handleImageError={handleImageError}
                                 />
                             )}
                             <Box>
-                                <Typography data-testid="document-title" variant="h5">{fileViewObject.title}</Typography>
+                                <Typography data-testid="document-title" variant="h5">
+                                    {fileViewObject.title}
+                                </Typography>
                                 {fileViewObject.organizationName && (
-                                    <Typography
-                                        variant="body2"
-                                        data-testid="document-organization"
-                                    >
+                                    <Typography variant="body2" data-testid="document-organization">
                                         {fileViewObject.organizationName}
                                     </Typography>
                                 )}
-                                <Button
-                                    variant="outlined"
-                                    startIcon={fileExists ? <OpenInNew /> : ''}
-                                    sx={{ mt: 1 }}
-                                    href={fileViewObject.digitalFileUrl}
-                                    target="_blank"
-                                    disabled={!fileExists}
-                                    data-testid="document-open-button"
-                                >
-                                    {!fileExists ? t('fileNotFound') : t('open')}
-                                </Button>
+                                <Tooltip title={errorMessage || ''} arrow>
+                                    <Box>
+                                        <LoadingButton
+                                            variant="outlined"
+                                            startIcon={fileExists ? <OpenInNew /> : ''}
+                                            sx={{ mt: 1, whiteSpace: 'nowrap' }}
+                                            href={fileViewObject.digitalFileUrl}
+                                            target="_blank"
+                                            disabled={!fileExists}
+                                            data-testid="document-open-button"
+                                            loading={fileCheckLoading}
+                                        >
+                                            {!fileExists ? t('fileNotFound') : t('open')}
+                                        </LoadingButton>
+                                    </Box>
+                                </Tooltip>
                             </Box>
                         </Box>
-                        <DocumentClassification classificationData={getDocumentClassificationCollection()} openDetailDialog={() => setDetailsModalOpen(true)} />
+                        <DocumentClassification
+                            classificationData={getDocumentClassificationCollection()}
+                            openDetailDialog={() => setDetailsModalOpen(true)}
+                        />
                     </Box>
                     <IconButton onClick={() => handleDetailsClick()} sx={{ ml: 1 }} data-testid="document-info-button">
                         <InfoOutlined />

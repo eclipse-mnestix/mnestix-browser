@@ -34,14 +34,19 @@ export function getTranslationText(
 }
 
 export function getTranslationValue(element: IDataElement, locale: string): string | null {
-    switch (getKeyType(element)) {
-        case KeyTypes.MultiLanguageProperty:
-            return getTranslationText(element as MultiLanguageProperty, locale);
-        case KeyTypes.Property:
-            return (element as Property).value ?? null;
-        default:
-            return null;
+    try {
+        switch (getKeyType(element)) {
+            case KeyTypes.MultiLanguageProperty:
+                return getTranslationText(element as MultiLanguageProperty, locale);
+            case KeyTypes.Property:
+                return (element as Property).value ?? null;
+            default:
+                return null;
+        }
+    } catch(e) {
+        console.warn('Invalid property for translation', e);
     }
+    return null;
 }
 
 export function findSubmodelElementByIdShort(
