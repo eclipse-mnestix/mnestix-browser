@@ -13,14 +13,13 @@ import { useTranslations } from 'next-intl';
 import { Box, Typography, useTheme } from '@mui/material';
 import React, { useState } from 'react';
 import { getKeyType } from 'lib/util/KeyTypeUtil';
-import { DataRowWithUnit } from 'app/[locale]/viewer/_components/submodel/technical-data/DataRowWithUnit';
-import { PropertyComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/PropertyComponent';
+import { DataRowWithUnit } from 'app/[locale]/viewer/_components/submodel/technical-data/ConceptDescriptionDataRow';
 import { TreeItem } from '@mui/x-tree-view';
 import { FileComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/FileComponent';
 import { buildSubmodelElementPath } from 'lib/util/SubmodelResolverUtil';
-import { MultiLanguagePropertyComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/MultiLanguagePropertyComponent';
 import { getConceptDescriptionById } from 'lib/services/conceptDescriptionApiActions';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
+import { GenericPropertyComponent } from '../../submodel-elements/generic-elements/GenericPropertyComponent';
 
 export const TechnicalDataElement = (props: {
     elements: ISubmodelElement[];
@@ -28,6 +27,7 @@ export const TechnicalDataElement = (props: {
     label: string;
     header: string;
     isExpanded: boolean;
+    showUnits?: boolean
 }) => {
     const t = useTranslations('pages.aasViewer.submodels');
     const theme = useTheme();
@@ -101,7 +101,11 @@ export const TechnicalDataElement = (props: {
                         conceptDescription={conceptDescriptions[semanticId]}
                         conceptDescriptionLoading={loadingConceptDescriptions}
                     >
-                        <PropertyComponent property={element as Property} />
+                        <GenericPropertyComponent
+                            property={element as Property}
+                            withCopyButton={true}
+                            conceptDescription={props.showUnits ? conceptDescriptions[semanticId] : undefined}
+                            conceptDescriptionLoading={props.showUnits ? loadingConceptDescriptions : undefined} />
                     </DataRowWithUnit>
                 );
             }
@@ -147,7 +151,11 @@ export const TechnicalDataElement = (props: {
                         conceptDescription={conceptDescriptions[semanticId]}
                         conceptDescriptionLoading={loadingConceptDescriptions}
                     >
-                        <MultiLanguagePropertyComponent mLangProp={element as MultiLanguageProperty} />
+                        <GenericPropertyComponent
+                            mLangProp={element as MultiLanguageProperty}
+                            conceptDescription={props.showUnits ? conceptDescriptions[semanticId] : undefined}
+                            conceptDescriptionLoading={props.showUnits ? loadingConceptDescriptions : undefined}
+                        />
                     </DataRowWithUnit>
                 );
             case KeyTypes.Range:
@@ -157,9 +165,11 @@ export const TechnicalDataElement = (props: {
                         submodelElement={element}
                         conceptDescription={conceptDescriptions[semanticId]}
                     >
-                        <span>
-                            min: {(element as Range).min}, max: {(element as Range).max}
-                        </span>
+                        <GenericPropertyComponent
+                            range={element as Range}
+                            conceptDescription={props.showUnits ? conceptDescriptions[semanticId] : undefined}
+                            conceptDescriptionLoading={props.showUnits ? loadingConceptDescriptions : undefined}
+                        />
                     </DataRowWithUnit>
                 );
             default:
