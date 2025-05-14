@@ -342,7 +342,8 @@
         },
         "subtitle": "Define which data connections should be used.",
         "title": "Data sources",
-        "urlFieldRequired": "URL field is required"
+        "urlFieldRequired": "URL field is required",
+        "urlFieldNoTrailingSlash": "The URL must not end with a slash (/)."
       },
       "header": "Settings",
       "idStructure": {
