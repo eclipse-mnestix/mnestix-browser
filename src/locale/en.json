@@ -89,9 +89,11 @@
       "copyBase64": "Copy base64 encoded"
     },
     "documentComponent": {
+      "classification": "Document Classification",
       "documentDetails": "Document details",
       "fileNotFound": "File not found",
-      "open": "Open"
+      "open": "Open",
+      "showMoreButton": "show more"
     },
     "dummyComponent": {
       "dummyText": "This is a dummy component. It is used to test the layout and design of the application."
@@ -405,9 +407,9 @@
           "delete": "Do not forget to delete this role in Keycloak as well!",
           "title": "Update Keycloak"
         },
-        "roleRequired": "Role is required",
         "roleNameMaxLength": "Role name cannot be longer than {maxLength} characters.",
         "roleNameNoTrailSpace": "Role name cannot end with a space.",
+        "roleRequired": "Role is required",
         "subtitle": "Manage roles and permissions.",
         "tableHeader": {
           "aasIds": "AAS IDs",
