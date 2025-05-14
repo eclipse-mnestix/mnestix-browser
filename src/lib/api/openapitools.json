@@ -1,0 +1,18 @@
+{
+  "$schema": "../../../node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "7.13.0",
+    "generators": {
+      "typescript-fetch": {
+        "generatorName": "typescript-fetch",
+        "inputSpec": "https://api.swaggerhub.com/apis/Plattform_i40/Entire-API-Collection/V3.0.4#/",
+        "output": "aas",
+        "additionalProperties": {
+          "supportsES6": true,
+          "withoutRuntimeChecks": true
+        }
+      }
+    }
+  }
+}
