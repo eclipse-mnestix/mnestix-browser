@@ -13,6 +13,7 @@ type SingleMarkingsComponentProps = {
     readonly additionalText?: Property;
     readonly submodelId?: string;
     readonly idShortPath?: string;
+    readonly rowDisplay?: boolean;
 };
 
 const StyledFileImg = styled('img')(({ theme }) => ({
@@ -20,23 +21,33 @@ const StyledFileImg = styled('img')(({ theme }) => ({
     objectFit: 'scale-down',
     objectPosition: 'center',
     width: '100%',
+    height: '100%',
     aspectRatio: '1',
     padding: theme.spacing(1),
 }));
 
-const StyledMarkingWrapper = styled(Box)(() => ({
-    width: 'calc(25% - 15px)',
-    display: 'flex',
-    flexDirection: 'column',
-    '@media(max-width: 1120px)': {
-        width: 'calc(50% - 10px)',
-    },
-}));
+
 
 export function SingleMarkingsComponent(props: SingleMarkingsComponentProps) {
     const { file, name, additionalText, submodelId, idShortPath } = props;
     const [markingImage, setMarkingImage] = useState<string>();
     const [aasOriginUrl] = useAasOriginSourceState();
+
+
+    const StyledMarkingImageWrapper = styled(Box)(() => ({
+        maxWidth: props.rowDisplay ? '4rem' : 'auto',
+        minWidth: props.rowDisplay ? '4rem' : '5rem',
+        minHeight: props.rowDisplay ? '4rem' : '5rem',
+        display: 'flex',
+        flexDirection: 'column',
+    }));
+
+    const StyledMarkingContainer = styled(Box)(() => ({
+        maxWidth: props.rowDisplay ? '200px' : 'calc(25% - 15px)',
+        display: 'flex',
+        flexDirection: props.rowDisplay ? 'row' : 'column',
+        '@media(max-width: 1120px)': !props.rowDisplay ? { width: 'calc(50% - 10px)' } : undefined,
+    }));
 
     useAsyncEffect(async () => {
         if (!isValidUrl(file!.value)) {
@@ -59,19 +70,32 @@ export function SingleMarkingsComponent(props: SingleMarkingsComponentProps) {
 
     return (
         !!file && (
-            <StyledMarkingWrapper sx={{ boxShadow: 2 }}>
-                <StyledFileImg src={markingImage} />
+            <StyledMarkingContainer>
+                <StyledMarkingImageWrapper sx={{ boxShadow: 2 }}>
+
+                    <StyledFileImg src={markingImage} />
+
+                    {/* TODO get this value from concept description if there is only an IRDI? */}
+                    {(name?.value === '0173-1#07-DAA603#004') && (
+                        <Box sx={{ backgroundColor: 'grey.200', p: 0.5, flexGrow: '0' }}>
+                            <Typography variant="body2" color="text.secondary">
+                                CE
+                            </Typography>
+                        </Box>
+                    )}
+
+                </StyledMarkingImageWrapper>
                 {(!!name || !!additionalText) && (
-                    <Box sx={{ backgroundColor: 'grey.200', p: 1, flexGrow: '1' }}>
+                    <Box sx={{ p: 1, flexGrow: '0' }}
+                    >
                         {!!name && <Typography>{name.value}</Typography>}
                         {!!additionalText && (
                             <Typography variant="body2" color="text.secondary">
                                 {additionalText.value}
-                            </Typography>
-                        )}
+                            </Typography>)}
                     </Box>
                 )}
-            </StyledMarkingWrapper>
+            </StyledMarkingContainer>
         )
     );
 }

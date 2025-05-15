@@ -1,0 +1,501 @@
+{
+  "components": {
+    "addressComponent": {
+      "VAT": "NIF/CIF",
+      "addressTypes": {
+        "CityTown": "Municipio",
+        "Company": "Compañía",
+        "Department": "Sede/Departmento",
+        "NationalCode": "Código de País",
+        "POBox": "Apartado Postal",
+        "StateCounty": "CCAA/Provincia",
+        "Street": "Calle",
+        "TimeZone": "Zona Horaria",
+        "ZipCodeOfPOBox": "Código Postal del Apartado Postal",
+        "Zipcode": "Código Postal"
+      }
+    },
+    "assetNotFound": {
+      "header": "No se pudo cargar el AAS.",
+      "text": "No pudo cargarse el AAS para el ID \"{id}\"",
+      "toHome": "Ir a Inicio"
+    },
+    "authentication": {
+      "authenticationNeeded": "Es necesario identificarse",
+      "contactAdmin": "No es posible acceder a esta página. Por favor, contacte al administrador.",
+      "sessionExpired": "La sesión ha caducado. Por favor, inicie sesión de nuevo."
+    },
+    "carbonFootprint": {
+      "beech": "Un árbol de Haya",
+      "calculationMethod": "Método de Cálculo",
+      "co2EComparison": "Comparación",
+      "co2EDistribution": "Emisiones de CO2e",
+      "comparisonAssumption": "Suponiendo que un haya recoge 12.5kg de CO2e al año.",
+      "comparisonNeeds": "necesita",
+      "completedStages": "Emisiones calculadas según el ciclo de vida del producto",
+      "equivalents": "Equivalente en CO2",
+      "inTotal": "en total",
+      "notIncludedHint": "no incluido todavía",
+      "productJourney": "Ruta del Producto",
+      "stages": {
+        "A1": "A1 - provisión de materia prima (y anterior)",
+        "A1-A3": "A1-A3 - provisión de materia prima a fábrica",
+        "A2": "A2 - transporte de origen a fábrica",
+        "A3": "A3 - producción",
+        "A4": "A4 - transporte a destino final",
+        "A4-A5": "A4-A5 - transporte a ensamblaje",
+        "A5": "A5 - montaje",
+        "B1": "B1 - etapa de uso",
+        "B1-B7": "B1-B7 - etapa de uso",
+        "B2": "B2 - mantenimiento",
+        "B3": "B3 - reparación",
+        "B4": "B4 - reemplazo",
+        "B5": "B5 - actualización, mejora o renovación",
+        "B6": "B6 - consumo de energía",
+        "B7": "B7 - consumo de agua",
+        "C1": "C1 - reensamblaje",
+        "C1-C4": "C1-C4 - Fase de desecho",
+        "C2": "C2 - transporte a reciclaje",
+        "C2-C4": "C2-C4 - De reciclaje a área de desecho",
+        "C3": "C3 - reciclaje, tratamiento de residuos",
+        "C4": "C4 - área de desecho",
+        "D": "D - reutilización"
+      },
+      "timeUnit": {
+        "month": "{count, plural, =0 {inferior a 1 mes} =1 {1 mes} other {# meses}}",
+        "year": "{count, plural, =0 {inferior a 1 año} =1 {1 año} other {# años}}"
+      },
+      "totalCO2Equivalents": "Emisiones de CO2 del producto (hasta el momento)"
+    },
+    "contactInformation": {
+      "contactTypes": {
+        "0173-1#07-AAS754#001": "Oficina",
+        "0173-1#07-AAS755#001": "Teléfono de trabajo",
+        "0173-1#07-AAS756#001": "Secretario/a",
+        "0173-1#07-AAS757#001": "Sustituto/a",
+        "0173-1#07-AAS758#001": "Casa",
+        "0173-1#07-AAS759#001": "Móvil Privado",
+        "home": "Casa",
+        "home mobile": "Móvil privado",
+        "office": "Oficina",
+        "office mobile": "Móvil de trabajo",
+        "secretary": "Secretario/a",
+        "substitute": "Sustituto/a"
+      }
+    },
+    "copyButton": {
+      "copied": "Copiado al portapapeles",
+      "copy": "Copiar",
+      "copyBase64": "Copiar encriptado en base64"
+    },
+    "documentComponent": {
+      "documentDetails": "Detalles del documento",
+      "fileNotFound": "Archivo no encontrado",
+      "open": "Abrir"
+    },
+    "dummyComponent": {
+      "dummyText": "Este es un componente de prueba. Su uso es probar la estuctura y diseño de la aplicación."
+    },
+    "noSearchResult": {
+      "header": "No se encontraron datos",
+      "noDataFound": "No se encontraron datos para \"{name}\".",
+      "toHomeButton": "Ir a Inicio"
+    },
+    "propertyComponent": {
+      "boolean": {
+        "false": "falso",
+        "true": "verdadero"
+      },
+      "labels": {
+        "copied": "Copiado al portapapeles",
+        "copy": "Copiar",
+        "copyBase64": "Copiar encriptado en base64",
+        "notAvailable": "-",
+        "value": "Valor"
+      }
+    },
+    "qrScanner": {
+      "errors": {
+        "defaultCallbackErrorMsg": "El código QR no pudo abrirse",
+        "errorOnQrScannerOpen": "El escáner de código QR no pudo abrirse"
+      }
+    },
+    "relationShipDetailsDialog": {
+      "error": {
+        "entityError": "Entidad de Relación no encontrada",
+        "semanticError": "ID semántico no encontrado",
+        "unknownRelationship": "Relación desconocida"
+      },
+      "hasPart": "tiene como parte",
+      "isPartOf": "es parte de",
+      "sameAs": "igual que",
+      "semanticId": "ID Semántico"
+    },
+    "submodelElementCollection": {
+      "allAvailableData": "Todos los datos disponibles",
+      "showEntriesButton": {
+        "hide": "Ocultar",
+        "show": "Mostrar {count} entradas"
+      }
+    },
+    "technicalData": {
+      "cannotRenderContent": "El contenido de este sub-modelo no puede ser mostrado.",
+      "furtherInformation": "Más Información",
+      "generalInformation": "Información General",
+      "productClassification": "Clasificación del Producto",
+      "technicalProperties": "Propiedades Técnicas"
+    },
+    "verticalTabSelector": {
+      "errors": {
+        "INTERNAL_SERVER_ERROR": "Error interno del servidor",
+        "NOT_FOUND": "Sub-modelo no encontrado",
+        "UNAUTHORIZED": "No Autorizado",
+        "UNKNOWN": "Error Desconocido"
+      }
+    }
+  },
+  "navigation": {
+    "errors": {
+      "notFound": "No Encontrado",
+      "unauthorizedError": {
+        "content": "No tiene acceso a este recurso. Identifíquese o solicite acceso al administrador.",
+        "title": "Acceso no autorizado"
+      },
+      "unexpectedError": "Error inesperado",
+      "urlNotFound": "No hay AAS para el ID especificado."
+    },
+    "footer": {
+      "about": "Sobre Mnestix",
+      "dataPrivacy": "Privacidad",
+      "imprint": "Aviso Legal"
+    },
+    "mainMenu": {
+      "aasList": "Lista de AAS",
+      "dashboard": "Panel de control",
+      "findOutMore": "Saber más",
+      "login": "Identificarse",
+      "logout": "Cerrar Sesión",
+      "repository": "Repositorio",
+      "settings": "Ajustes",
+      "templates": "Plantillas"
+    }
+  },
+  "pages": {
+    "aasList": {
+      "buttonTooltip": "Ir a AAS",
+      "compare": "Comparar",
+      "header": "Lista de AAS",
+      "listHeader": {
+        "aasEndpoint": "URL de AAS",
+        "aasId": "ID de AAS",
+        "assetId": "ID del Activo",
+        "discoveryUrl": "Descubrir Url",
+        "manufacturer": "Fabricante",
+        "picture": "Imagen",
+        "productClass": "Clase del Producto",
+        "productDesignation": "Denominación del Producto (según fabricante)",
+        "registryUrl": "Url del Registro",
+        "repositoryUrl": "Url del Repositorio",
+        "viewAASButton": "Ver AAS"
+      },
+      "maxElementsWarning": "No se pueden comparar más de 3 elementos",
+      "page": "Página",
+      "repositoryDropdown": "Repositorio de AAS",
+      "selectRepository": "Por favor, seleccione un repositorio",
+      "subHeader": "Todos los AAS de su repositorio se muestran aquí. Puede seleccionar otro repositorio para cambiar la fuente de los datos.",
+      "titleComparisonAddButton": "Añadir AAS a la comparación"
+    },
+    "aasViewer": {
+      "actions": {
+        "compareButton": "Comparar",
+        "toProductView": "Vista de Producto"
+      },
+      "asset": "Activo",
+      "assetAdministrationShell": "Asset Administration Shell",
+      "errors": {
+        "influxError": "Hubo un problema recuperando la serie temporal de datos."
+      },
+      "labels": {
+        "copied": "Copiado al portapapeles",
+        "copy": "Copiar",
+        "copyBase64": "Copiar encriptado en base64",
+        "language": "Idioma",
+        "notAvailable": "-",
+        "text": "Texto",
+        "value": "Valor"
+      },
+      "submodels": {
+        "actions": {
+          "open": "Abir",
+          "view": "Ver"
+        },
+        "idLabel": "ID:",
+        "referenceCounter": {
+          "count": "Recuento",
+          "elementName": "Elemento"
+        },
+        "renderError": "No se puede renderizar el sub-modelo.",
+        "semanticIdLabel": "IDs Semánticos:",
+        "timeSeries": {
+          "internalSegments": "Segmentos internos",
+          "linkedSegments": "Segmentos vinculados",
+          "selectTimeframe": "Seleccionar periodo de tiempo"
+        },
+        "title": "Sub-modelos",
+        "unknownModelType": "Tipo del modelo desconocido: {type}"
+      }
+    },
+    "compare": {
+      "addAnother": "Añadir otro AAS",
+      "addButton": "Añadir otro AAS",
+      "addFirstAasButton": "Añadir AAS",
+      "collection": {
+        "hide": "Ocultar",
+        "show": "{idShort}"
+      },
+      "errors": {
+        "aasAddError": "No se pudo añadir el AAS.",
+        "aasAlreadyAdded": "No se puede añadir este AAS más de una vez.",
+        "moreAasFound": "Más de un AAS encontrado en el servicio de descubrimiento, introduzca el ID del AAS, por favor.",
+        "unknownModelType": "Tipo del modelo desconocido: {type}"
+      },
+      "title": "Comparar AAS"
+    },
+    "dashboard": {
+      "aasOrAssetId": "ID del AAS o Activo",
+      "digitalTwinMadeEasyText": "Simplificando los Gemelos Digitales.",
+      "enterManuallyLabel": "o introducir manualmente",
+      "findOutMoreText": "Saber más",
+      "listBtnLabel": "o seleccione en la lista",
+      "listBtnText": "Ir a lista de AAS",
+      "scanIdLabel": "Escanear ID del AAS o Activo",
+      "welcomeText": "Bienvenido/a a Mnestix"
+    },
+    "discoveryList": {
+      "errors": {
+        "noAasFound": "No se encontró ningún AAS para el ID proporcionado",
+        "noAssetId": "No se ha proporcionado un ID de AAS.",
+        "searchFailed": "La búsqueda falló"
+      },
+      "subtitle": "Aquí se muestran todos los AAS asociados al ID de Activo proporcionado.",
+      "title": "AAS asociado al ID del Activo"
+    },
+    "productViewer": {
+      "actions": {
+        "compareButton": "Comparar",
+        "toAasView": "Vista del AAS"
+      },
+      "classification": "Clasificación del Producto",
+      "error": {
+        "technicalDataSubmodelNotFound": "Datos técnicos del sub-modelo no encontrados"
+      },
+      "home": "Ir a Inicio",
+      "markings": "Etiquetas del producto",
+      "productInfo": {
+        "articleNumber": "Número de articulo",
+        "manufacturer": "Fabricante",
+        "orderCode": "Número de pedido",
+        "productDesignation": "Denominación del producto (según facbricante)"
+      },
+      "summary": "Resumen",
+      "title": "Producto"
+    },
+    "registryList": {
+      "errors": {
+        "noAasFound": "No se encontró ningún AAS para el ID proporcionado",
+        "noAasId": "No se ha proporcionado un ID de AAS.",
+        "searchFailed": "La búsqueda falló"
+      },
+      "subtitle": "Aquí se muestran todos los AAS asociados al ID de Activo proporcionado.",
+      "title": "AAS asociado al ID del Activo"
+    },
+    "settings": {
+      "actions": {
+        "cancel": "Cancelar",
+        "editButton": "Editar todos",
+        "resetButton": "Restaurar valores predeterminados",
+        "saveButton": "Guardar todos"
+      },
+      "connections": {
+        "aasRepository": {
+          "connectionType": "REPOSITORIO_AAS",
+          "repositories": "Repositorios de AAS",
+          "repositoryDefaultLabel": "Repositorio AAS Predeterminado",
+          "repositoryLabel": "Repositorio de AAS",
+          "repositoryUrlLabel": "URL del Repositorio de AAS"
+        },
+        "addButton": "Añadir más",
+        "resetSuccessful": "Las conexiones se han restaurado.",
+        "submodelRepository": {
+          "connectionType": "REPOSITORIO_DE_SUBMODELOS",
+          "repositories": "Repositorio de Sub-modelos",
+          "repositoryDefaultLabel": "Repositorio de Sub-modelos Predeterminado",
+          "repositoryLabel": "Repositorio de Sub-modelos",
+          "repositoryUrlLabel": "URL del Repositorio de Sub-modelos"
+        },
+        "subtitle": "Define qué conexiones de datos deben ser utilizadas.",
+        "title": "Fuentes de datos",
+        "urlFieldRequired": "El campo URL es obligatorio",
+        "urlFieldNoTrailingSlash": "La URL no debe terminar con una barra (/)."
+      },
+      "header": "Ajustes",
+      "idStructure": {
+        "assetIdDocumentation": {
+          "assetId": "ID del Activo",
+          "dnsHeading": "Acceder mediante DNS",
+          "dnsText": "Especialmente para el enfoque brownfield y el distribuidor de un producto, tendría sentido configurar adicionalmente el acceso DNS a través del ID del activo y, de este modo, permitir la recuperación de datos desde aplicaciones de navegador convencionales.",
+          "endResult": "Resultado Final",
+          "exampleHeading": "Caso de Ejemplo",
+          "industry40Heading": "Contexto sobre Industria 4.0",
+          "industry40Text": "Los productos tienen un identificador único a nivel mundial que se puede asignar a uno o varios entornos de administración de activos. En el contexto de la Industria 4.0, la conexión entre el activo y el AAS se establece a través de la infraestructura I4.0.",
+          "redirectsTo": "Redirige a",
+          "title": "Como conectar su ID de Activo con su Repositorio de AAS"
+        },
+        "errors": {
+          "idStructureError": "Error al guardar \"{name}\" ({reason}).",
+          "invalidIri": "Debe ser un IRI válido, e.g. https://example.com/",
+          "invalidIriPart": "Debe funcionar como parte de un IRI (no \"/\", spaces or special characters)"
+        },
+        "labels": {
+          "dynamicPart": "parte dinámica",
+          "idStructureExplanation": "Define cómo se representan sus ID. Se trata de una configuración estándar que se puede ajustar para importar de forma individual.",
+          "staticPrefix": "prefijo estático"
+        },
+        "messages": {
+          "successfullyUpdated": "Actualizado con éxito"
+        },
+        "title": "Estructura del ID"
+      },
+      "messages": {
+        "changesSavedSuccessfully": "Cambios guardados con éxito."
+      },
+      "rules": {
+        "buttons": {
+          "add": "Añadir",
+          "back": "Atrás",
+          "cancel": "Cancelar",
+          "create": "Crear Regla",
+          "delete": "Eliminar",
+          "edit": "Editar",
+          "save": "Guardar"
+        },
+        "createRule": {
+          "hint": {
+            "acknowledge": "Confirmar",
+            "text": "Se ha creado un Rol nuevo. Debe ser configurado en Keycloak.",
+            "title": "Actualizar Keycloak"
+          },
+          "saveSuccess": "Nueva regla guardada con éxito.",
+          "title": "Crear Regla"
+        },
+        "deleteRule": {
+          "hint": {
+            "acknowledge": "Confirmar",
+            "text": "No olvide eliminar la regla de Keycloak también",
+            "title": "Borrar regla"
+          },
+          "question": "¿Desea borrar esta regla permanentemente?",
+          "ruleInfo": "Los usuarios asignados al rol ''{role}'' no tendrán permiso para {action} los siguientes datos",
+          "success": "Regla eliminada correctamente."
+        },
+        "editRule": {
+          "saveSuccess": "Regla editada correctamente.",
+          "title": "Editar Regla"
+        },
+        "errors": {
+          "uniqueIdShort": "La combinación de nombre, acción y tipo ya existe en otra regla.\nPor favor, edite la regla existente."
+        },
+        "keycloakHint": "Algunos roles han cambiado. Para asignarles usuarios, configúrelos en '{url}'.",
+        "roleNameMaxLength": "El nombre del Rol no puede exceder {maxLength} caracteres.",
+        "roleNameNoTrailSpace": "El nombre del rol no puede terminar con un espacio.",
+        "roleRequired": "Se requiere un Rol",
+        "subtitle": "Gestionar roles y permisos.",
+        "tableHeader": {
+          "aasIds": "IDs de los AAS",
+          "action": "Accion",
+          "name": "Rol",
+          "permissions": "Permisos",
+          "submodelIds": "ID de Sub-modelos",
+          "type": "Tipo"
+        },
+        "title": "Gestion de Roles",
+        "wildcardLabel": "Permitir todos"
+      },
+      "subHeader": "Añadir, eliminar, o modificar ajustes y configuraciones para varias características de su entorno AAS."
+    },
+    "templates": {
+      "actions": {
+        "add": "Añadir",
+        "cancel": "Cancelar",
+        "delete": "Eliminar",
+        "duplicate": "Duplicar",
+        "edit": "Editar",
+        "remove": "Eliminar",
+        "restore": "Restaurar",
+        "revertChanges": "Revertir cambios",
+        "saveChanges": "Guardar cambios"
+      },
+      "all": "Todos",
+      "boolean": {
+        "false": "falso",
+        "true": "verdadero"
+      },
+      "chooseAStartingPoint": "Elige una plantilla como punto de inicio",
+      "copyTemplateId": "Copiar ID de la plantilla",
+      "createNew": "Crear Nuevo",
+      "custom": "A Medida",
+      "defaultValue": "Valor Predeterminado",
+      "deleteTemplateQuestion": "Desea eliminar la plantilla \"{name}\" definitivamente?",
+      "displayName": "Nombre a mostrar",
+      "emptyCustom": "Vacío (A medida)",
+      "emptyCustomDescription": "No basada en una plantilla estandarizada",
+      "errors": {
+        "unknownModelType": "Tipo del modelo desconocido: {type}"
+      },
+      "labels": {
+        "language": "Idioma",
+        "notAvailable": "-",
+        "semanticId": "Id Semántica",
+        "text": "Texto",
+        "value": "Valor"
+      },
+      "mappingInfo": "Información de mapeo",
+      "mappingInfoDescription": "Identificador arbitrario para importar sus datos.",
+      "messages": {
+        "changesSavedSuccessfully": "Cambios guardados correctamente",
+        "deleted": "eliminado"
+      },
+      "multiplicity": "Multiplicidad",
+      "multiplicityDescription": "Clasificador para identificar elementos obligatorios.",
+      "noTemplatesFound": "No se encontraron plantillas",
+      "templateDeletedSuccessfully": "Plantilla eliminada correctamente",
+      "templateIdCopied": "ID de la plantilla copiado al portapapeles: {id}",
+      "templatesUseExplanation": "Las plantillas le permiten crear estructuras de sub-modelo reutilizables y ajustadas a sus requisitos.",
+      "title": "Plantillas",
+      "validation": {
+        "errors": {
+          "invalidDate": "La fecha debe ser válida y seguir formato \"yyyy-mm-dd\"",
+          "invalidLong": "Debe ser un número largo válido"
+        }
+      }
+    },
+    "transfer": {
+      "aasRepository": "Repositorio AAS",
+      "chooseRepository": "Escoja Repositorio AAS",
+      "chooseSubmodelRepository": "Escoja Repositorio de Sub-modelos (opcional)",
+      "errorToast": "Transferencia de AAS errónea",
+      "partiallyFailedToast": "Fallo al transferir el elemento",
+      "repositoryApiKey": "Clave API del Repositorio AAS",
+      "repositoryLabel": "Lista de Repositorios AAS",
+      "repositoryRequired": "Se requiere Repositorio AAS",
+      "submodelRepository": "Repositorio de Sub-modelos",
+      "submodelRepositoryApiKey": "Clave API del Repositorio de Sub-modelos",
+      "submodelRepositoryLabel": "Lista de Repositorios de Sub-modelos",
+      "subtitle": "Para importar este AAS a otro repositorio, complete los siguientes campos.",
+      "successfulToast": "Transferencia de AAS exitosa",
+      "title": "Importar",
+      "useAasRepository": "Usar Repositorio de AAS",
+      "warningToast": "El AAS solo se transfirió parcialmente."
+    }
+  }
+}

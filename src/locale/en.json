@@ -1,15 +1,5 @@
 {
   "components": {
-    "assetNotFound": {
-      "header": "AAS could not be loaded.",
-      "text": "Unable to load AAS for the given ID \"{id}\"",
-      "toHome": "To Home"
-    },
-    "authentication": {
-      "authenticationNeeded": "Authentication needed",
-      "contactAdmin": "You cannot visit this page. Please contact your administrator.",
-      "sessionExpired": "Your session has expired. Please log in again."
-    },
     "addressComponent": {
       "VAT": "VAT-Number",
       "addressTypes": {
@@ -24,6 +14,16 @@
         "ZipCodeOfPOBox": "Zip Code of PO Box",
         "Zipcode": "Zipcode"
       }
+    },
+    "assetNotFound": {
+      "header": "AAS could not be loaded.",
+      "text": "Unable to load AAS for the given ID \"{id}\"",
+      "toHome": "To Home"
+    },
+    "authentication": {
+      "authenticationNeeded": "Authentication needed",
+      "contactAdmin": "You cannot visit this page. Please contact your administrator.",
+      "sessionExpired": "Your session has expired. Please log in again."
     },
     "carbonFootprint": {
       "beech": "One Beech Tree",
@@ -89,9 +89,11 @@
       "copyBase64": "Copy base64 encoded"
     },
     "documentComponent": {
+      "classification": "Document Classification",
       "documentDetails": "Document details",
       "fileNotFound": "File not found",
-      "open": "Open"
+      "open": "Open",
+      "showMoreButton": "show more"
     },
     "dummyComponent": {
       "dummyText": "This is a dummy component. It is used to test the layout and design of the application."
@@ -100,12 +102,6 @@
       "header": "No Data found",
       "noDataFound": "No data found for \"{name}\".",
       "toHomeButton": "To Home"
-    },
-    "qrScanner": {
-      "errors": {
-        "defaultCallbackErrorMsg": "Could not open the QR code!",
-        "errorOnQrScannerOpen": "Could not open the QR scanner!"
-      }
     },
     "propertyComponent": {
       "boolean": {
@@ -118,6 +114,12 @@
         "copyBase64": "Copy base64 encoded",
         "notAvailable": "-",
         "value": "Value"
+      }
+    },
+    "qrScanner": {
+      "errors": {
+        "defaultCallbackErrorMsg": "Could not open the QR code!",
+        "errorOnQrScannerOpen": "Could not open the QR scanner!"
       }
     },
     "relationShipDetailsDialog": {
@@ -137,6 +139,13 @@
         "hide": "Hide",
         "show": "Show {count} entries"
       }
+    },
+    "technicalData": {
+      "cannotRenderContent": "Content of this submodel cannot displayed.",
+      "furtherInformation": "Further Information",
+      "generalInformation": "General Information",
+      "productClassification": "Product Classification",
+      "technicalProperties": "Technical Properties"
     },
     "verticalTabSelector": {
       "errors": {
@@ -228,6 +237,7 @@
           "elementName": "Element"
         },
         "renderError": "Submodel can't be rendered.",
+        "semanticIdLabel": "Semantic IDs:",
         "timeSeries": {
           "internalSegments": "Internal segments",
           "linkedSegments": "Linked segments",
@@ -236,6 +246,11 @@
         "title": "Submodels",
         "unknownModelType": "Unknown ModelType: {type}"
       }
+    },
+    "catalog": {
+      "title": "Manufacturer Catalog",
+      "manufacturerCatalog": "Manufacturer Product Catalog",
+      "manufacturerSelect": "Select Manufacturer"
     },
     "compare": {
       "addAnother": "Add another AAS",
@@ -272,6 +287,26 @@
       "subtitle": "Here you will find all related AAS to the given Asset ID.",
       "title": "Related AAS to Asset ID"
     },
+    "productViewer": {
+      "actions": {
+        "compareButton": "Compare",
+        "toAasView": "AAS View"
+      },
+      "classification": "Classification",
+      "error": {
+        "technicalDataSubmodelNotFound": "Technical Data Submodel not found"
+      },
+      "home": "Home",
+      "markings": "Product Markings",
+      "productInfo": {
+        "articleNumber": "Article Number",
+        "manufacturer": "Manufacturer",
+        "orderCode": "Order Code",
+        "productDesignation": "Manufacturer Product Designation"
+      },
+      "summary": "Key facts",
+      "title": "Product"
+    },
     "registryList": {
       "errors": {
         "noAasFound": "No AAS found for the given ID",
@@ -280,16 +315,6 @@
       },
       "subtitle": "Here you will find all related AAS to the given AAS ID.",
       "title": "Related AAS to AAS ID"
-    },
-    "productViewer": {
-      "title": "Product",
-      "classification": "Classification",
-      "error":{
-        "technicalDataSubmodelNotFound": "Technical Data Submodel not found"
-      },
-      "actions": {
-        "toAasView": "AAS View"
-      }
     },
     "settings": {
       "actions": {
@@ -317,38 +342,39 @@
         },
         "subtitle": "Define which data connections should be used.",
         "title": "Data sources",
-        "urlFieldRequired": "URL field is required"
-      },
-      "messages": {
-        "changesSavedSuccessfully": "Changes saved successfully."
+        "urlFieldRequired": "URL field is required",
+        "urlFieldNoTrailingSlash": "The URL must not end with a slash (/)."
       },
       "header": "Settings",
       "idStructure": {
-        "title": "ID Structure",
-        "labels": {
-          "dynamicPart": "dynamic part",
-          "idStructureExplanation": "Define, how your IDs are represented. This is a standard setting that can be adjusted for individual imports.",
-          "staticPrefix": "static prefix"
-        },
         "assetIdDocumentation": {
+          "assetId": "Asset ID",
           "dnsHeading": "Access via DNS",
           "dnsText": "Especially for the brownfield approach and the distributor of a product, it makes sense to additionally set up DNS access through the asset ID and thus enable data retrieval from conventional browser applications.",
           "endResult": "End result",
           "exampleHeading": "Example Case",
           "industry40Heading": "Industry 4.0 context",
           "industry40Text": "Products have a globally unique ID which can be assigned to one or more asset administration shells. In the Industry 4.0 context, the connection between asset and AAS is established via the I4.0 infrastructure.",
-          "title": "How to connect your Asset ID with your AAS Repository",
           "redirectsTo": "Redirects to",
-          "assetId": "Asset ID"
+          "title": "How to connect your Asset ID with your AAS Repository"
         },
         "errors": {
           "idStructureError": "Error while saving \"{name}\" ({reason}).",
           "invalidIri": "Has to be a valid IRI, e.g. https://example.com/",
           "invalidIriPart": "Has to work as part of an IRI (no \"/\", spaces or special characters)"
         },
+        "labels": {
+          "dynamicPart": "dynamic part",
+          "idStructureExplanation": "Define, how your IDs are represented. This is a standard setting that can be adjusted for individual imports.",
+          "staticPrefix": "static prefix"
+        },
         "messages": {
           "successfullyUpdated": "Updated successfully"
-        }
+        },
+        "title": "ID Structure"
+      },
+      "messages": {
+        "changesSavedSuccessfully": "Changes saved successfully."
       },
       "rules": {
         "buttons": {
@@ -356,16 +382,35 @@
           "back": "Back",
           "cancel": "Cancel",
           "create": "Create Rule",
+          "delete": "Delete",
           "edit": "Edit",
           "save": "Save"
+        },
+        "createRule": {
+          "saveSuccess": "New rule saved successfully.",
+          "title": "Create Rule"
+        },
+        "deleteRule": {
+          "question": "Permanently delete this rule?",
+          "ruleInfo": "Users with the assigned role ''{role}'' will not have permissions to {action} the following data!",
+          "success": "Rule deleted successfully."
+        },
+        "editRule": {
+          "saveSuccess": "Rule edit successful.",
+          "title": "Edit Rule"
         },
         "errors": {
           "uniqueIdShort": "The combination of role name, action and type already exists in another rule.\nPlease edit the existing rule."
         },
-        "createTitle": "Create Rule",
-        "editTitle": "Edit Rule",
+        "keycloakHint": {
+          "acknowledge": "Acknowledge",
+          "create": "This role has not been used yet. Don't forget to configure it in Keycloak!",
+          "delete": "Do not forget to delete this role in Keycloak as well!",
+          "title": "Update Keycloak"
+        },
+        "roleNameMaxLength": "Role name cannot be longer than {maxLength} characters.",
+        "roleNameNoTrailSpace": "Role name cannot end with a space.",
         "roleRequired": "Role is required",
-        "saveSuccess": "Rule saved successfully.",
         "subtitle": "Manage roles and permissions.",
         "tableHeader": {
           "aasIds": "AAS IDs",
@@ -375,12 +420,23 @@
           "submodelIds": "Submodel IDs",
           "type": "Type"
         },
-        "title": "Rule Management",
+        "title": "Role Management",
         "wildcardLabel": "Allow all"
       },
       "subHeader": "Add, remove, or modify settings and configurations to various features within your AAS environment."
     },
     "templates": {
+      "actions": {
+        "add": "Add",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "duplicate": "Duplicate",
+        "edit": "Edit",
+        "remove": "Remove",
+        "restore": "Restore",
+        "revertChanges": "Revert changes",
+        "saveChanges": "Save changes"
+      },
       "all": "All",
       "boolean": {
         "false": "false",
@@ -398,26 +454,6 @@
       "errors": {
         "unknownModelType": "Unknown ModelType: {type}"
       },
-      "mappingInfo": "Mapping info",
-      "mappingInfoDescription": "Arbitrary identifier that you can use for your data imports.",
-      "multiplicity": "Multiplicity",
-      "multiplicityDescription": "A qualifier used to identify obligatory elements.",
-      "noTemplatesFound": "No templates found",
-      "templateDeletedSuccessfully": "Template deleted successfully",
-      "templateIdCopied": "Template ID copied to clipboard: {id}",
-      "templatesUseExplanation": "Templates allow you to create a reusable submodel structure, adjusted to your requirements.",
-      "title": "Templates",
-      "actions": {
-        "add": "Add",
-        "cancel": "Cancel",
-        "delete": "Delete",
-        "duplicate": "Duplicate",
-        "edit": "Edit",
-        "remove": "Remove",
-        "restore": "Restore",
-        "revertChanges": "Revert changes",
-        "saveChanges": "Save changes"
-      },
       "labels": {
         "language": "Language",
         "notAvailable": "-",
@@ -425,10 +461,19 @@
         "text": "Text",
         "value": "Value"
       },
+      "mappingInfo": "Mapping info",
+      "mappingInfoDescription": "Arbitrary identifier that you can use for your data imports.",
       "messages": {
         "changesSavedSuccessfully": "Changes saved successfully",
         "deleted": "deleted"
       },
+      "multiplicity": "Multiplicity",
+      "multiplicityDescription": "A qualifier used to identify obligatory elements.",
+      "noTemplatesFound": "No templates found",
+      "templateDeletedSuccessfully": "Template deleted successfully",
+      "templateIdCopied": "Template ID copied to clipboard: {id}",
+      "templatesUseExplanation": "Templates allow you to create a reusable submodel structure, adjusted to your requirements.",
+      "title": "Templates",
       "validation": {
         "errors": {
           "invalidDate": "Has to be a valid date in format \"yyyy-mm-dd\"",

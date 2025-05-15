@@ -20,7 +20,7 @@ export class RbacRulesService {
     ) {}
 
     static createService(log?: typeof logger): RbacRulesService {
-        const baseUrl = envs.SEC_SM_API_URL;
+        const baseUrl = envs.BASYX_RBAC_SEC_SM_API_URL;
 
         if (!baseUrl) {
             throw 'Security Submodel not configured! Check beforehand!';
@@ -34,6 +34,11 @@ export class RbacRulesService {
     }
 
     async createRule(newRule: Omit<BaSyxRbacRule, 'idShort'>): Promise<ApiResponseWrapper<BaSyxRbacRule>> {
+        const error = getRuleErrorOrUndefined(newRule);
+        if (error) {
+            return wrapErrorCode(ApiResultStatus.BAD_REQUEST, error);
+        }
+
         const newIdShort = ruleToIdShort(newRule);
         if (!(await this.isIdShortUnique(newIdShort))) {
             return wrapErrorCode(
@@ -111,8 +116,12 @@ export class RbacRulesService {
         idShort: string,
         newRule: Omit<BaSyxRbacRule, 'idShort'>,
     ): Promise<ApiResponseWrapper<BaSyxRbacRule>> {
-        const newIdShort = ruleToIdShort(newRule);
+        const errorMsg = getRuleErrorOrUndefined(newRule);
+        if (errorMsg) {
+            return wrapErrorCode(ApiResultStatus.BAD_REQUEST, errorMsg);
+        }
 
+        const newIdShort = ruleToIdShort(newRule);
         if (idShort !== newIdShort && !(await this.isIdShortUnique(newIdShort))) {
             return wrapErrorCode(
                 ApiResultStatus.CONFLICT,
@@ -182,4 +191,11 @@ export class RbacRulesService {
 
         return !rules.result.roles.find((e) => e.idShort === idShort);
     }
+}
+
+function getRuleErrorOrUndefined(rule: Omit<BaSyxRbacRule, 'idShort'>) {
+    if (rule.role.length > 1000) {
+        return 'Role name is too long';
+    }
+    return undefined;
 }

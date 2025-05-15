@@ -12,7 +12,7 @@ import { createRequestLogger, logInfo, logWarn } from 'lib/util/Logger';
 import { headers } from 'next/headers';
 import baseLogger from 'lib/util/Logger';
 
-async function validateRequest(logger: typeof baseLogger) {
+async function getRequestErrorOrUndefined(logger: typeof baseLogger) {
     const session = await getServerSession(authOptions);
     if (!session) {
         return wrapErrorCode(ApiResultStatus.UNAUTHORIZED, 'Unauthorized');
@@ -22,9 +22,9 @@ async function validateRequest(logger: typeof baseLogger) {
         logWarn(logger, 'validateRequest', 'User is not authorized to access this resource');
         return wrapErrorCode(ApiResultStatus.FORBIDDEN, 'Forbidden');
     }
-    
+
     // TODO MNES-1633 validate on app startup (logged in validation)
-    const baseUrl = envs.SEC_SM_API_URL;
+    const baseUrl = envs.BASYX_RBAC_SEC_SM_API_URL;
     if (!baseUrl) {
         return wrapErrorCode(ApiResultStatus.BAD_REQUEST, 'Security Submodel not configured!');
     }
@@ -36,9 +36,9 @@ async function validateRequest(logger: typeof baseLogger) {
  */
 export async function createRbacRule(newRule: Omit<BaSyxRbacRule, 'idShort'>) {
     const logger = createRequestLogger(await headers());
-    const invalid = await validateRequest(logger);
-    if (invalid) {
-        return invalid;
+    const errorWrapper = await getRequestErrorOrUndefined(logger);
+    if (errorWrapper) {
+        return errorWrapper;
     }
     logInfo(logger, 'createRbacRule', 'Creating new RBAC rule', { New_rule: newRule.role });
     const client = RbacRulesService.createService(logger);
@@ -51,9 +51,9 @@ export async function createRbacRule(newRule: Omit<BaSyxRbacRule, 'idShort'>) {
  */
 export async function getRbacRules() {
     const logger = createRequestLogger(await headers());
-    const invalid = await validateRequest(logger);
-    if (invalid) {
-        return invalid;
+    const errorWrapper = await getRequestErrorOrUndefined(logger);
+    if (errorWrapper) {
+        return errorWrapper;
     }
     logInfo(logger, 'getRbacRules', 'Querying all RBAC rules');
     const client = RbacRulesService.createService(logger);
@@ -66,9 +66,9 @@ export async function getRbacRules() {
  */
 export async function deleteRbacRule(idShort: string) {
     const logger = createRequestLogger(await headers());
-    const invalid = await validateRequest(logger);
-    if (invalid) {
-        return invalid;
+    const errorWrapper = await getRequestErrorOrUndefined(logger);
+    if (errorWrapper) {
+        return errorWrapper;
     }
     logInfo(logger, 'deleteRbacRule', 'Deleting RBAC rule', { Rule_idShort: idShort });
     const client = RbacRulesService.createService(logger);
@@ -81,9 +81,9 @@ export async function deleteRbacRule(idShort: string) {
  */
 export async function deleteAndCreateRbacRule(idShort: string, rule: BaSyxRbacRule) {
     const logger = createRequestLogger(await headers());
-    const invalid = await validateRequest(logger);
-    if (invalid) {
-        return invalid;
+    const errorWrapper = await getRequestErrorOrUndefined(logger);
+    if (errorWrapper) {
+        return errorWrapper;
     }
     logInfo(logger, 'deleteAndCreateRbacRule', 'Deleting and creating RBAC rule', {
         Rule_idShort: idShort,

@@ -1,4 +1,4 @@
-import { screen, waitFor, fireEvent, within } from '@testing-library/react';
+import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 import { RuleSettings } from 'app/[locale]/settings/_components/role-settings/RuleSettings';
 import { expect } from '@jest/globals';
 import * as rbacActions from 'lib/services/rbac-service/RbacActions';
@@ -34,7 +34,9 @@ describe('RoleSettings', () => {
         });
 
         await waitFor(() => {
-            expect(within(screen.getByTestId('role-settings-row-roleId1')).getByText('Admin-Role')).toBeInTheDocument();
+            expect(
+                within(screen.getByTestId('role-settings-accordion-summary-Admin-Role')).getByText('Admin-Role'),
+            ).toBeInTheDocument();
             expect(within(screen.getByTestId('role-settings-row-roleId1')).getByText('READ')).toBeInTheDocument();
             expect(
                 within(screen.getByTestId('role-settings-row-roleId1')).getByText('aas-environment'),
@@ -43,13 +45,15 @@ describe('RoleSettings', () => {
                 within(screen.getByTestId('role-settings-row-roleId1')).getByText('aasId1, aasId2'),
             ).toBeInTheDocument();
 
-            expect(within(screen.getByTestId('role-settings-row-roleId2')).getByText('User-Role')).toBeInTheDocument();
-            expect(within(screen.getByTestId('role-settings-row-roleId2')).getByText('CREATE')).toBeInTheDocument();
             expect(
-                within(screen.getByTestId('role-settings-row-roleId2')).getByText('submodelIds:'),
+                within(screen.getByTestId('role-settings-accordion-summary-User-Role')).getByText('User-Role'),
+            ).toBeInTheDocument();
+            expect(within(screen.getByTestId('role-settings-row-roleId3')).getByText('CREATE')).toBeInTheDocument();
+            expect(
+                within(screen.getByTestId('role-settings-row-roleId3')).getByText('submodelIds:'),
             ).toBeInTheDocument();
             expect(
-                within(screen.getByTestId('role-settings-row-roleId2')).getByText('submodelElementIdShortPaths:'),
+                within(screen.getByTestId('role-settings-row-roleId3')).getByText('submodelElementIdShortPaths:'),
             ).toBeInTheDocument();
         });
     });
@@ -62,11 +66,16 @@ describe('RoleSettings', () => {
         });
 
         await waitFor(() => {
-            expect(screen.getByText('Admin-Role')).toBeInTheDocument();
+            expect(screen.getByTestId('role-settings-row-roleId1')).toBeInTheDocument();
+            expect(screen.queryByTestId('role-dialog')).not.toBeInTheDocument();
         });
-        fireEvent.click(screen.getByTestId('role-settings-button-roleId1'));
+
+        await act(async () => {
+            fireEvent.click(screen.getByTestId('role-settings-button-roleId1'));
+        });
+
         await waitFor(() => {
-            expect(screen.getByTestId('role-settings-dialog')).toBeInTheDocument();
+            expect(screen.getByTestId('role-dialog')).toBeVisible();
         });
     });
 });

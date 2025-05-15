@@ -1,5 +1,5 @@
 import { Typography } from '@mui/material';
-import { PropertyComponent } from './PropertyComponent';
+import { GenericPropertyComponent } from './GenericPropertyComponent';
 import { SubmodelElementCollectionComponent } from './SubmodelElementCollectionComponent';
 import { DataRow } from 'components/basics/DataRow';
 import { FileComponent } from './FileComponent';
@@ -38,18 +38,8 @@ export function GenericSubmodelElementComponent(props: GenericSubmodelElementCom
 
         switch (submodelElementType) {
             case KeyTypes.Property:
-                return <PropertyComponent property={props.submodelElement as Property} />;
+                return <GenericPropertyComponent property={props.submodelElement as Property} withCopyButton={true} />;
             case KeyTypes.SubmodelElementCollection:
-                return (
-                    <SubmodelElementCollectionComponent
-                        submodelElementCollection={props.submodelElement as SubmodelElementCollection}
-                        submodelId={props.submodelId}
-                        submodelElementPath={buildSubmodelElementPath(
-                            props.submodelElementPath,
-                            props.submodelElement.idShort,
-                        )}
-                    />
-                );
             case KeyTypes.SubmodelElementList:
                 return (
                     <SubmodelElementCollectionComponent

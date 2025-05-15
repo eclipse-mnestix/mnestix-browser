@@ -1,6 +1,5 @@
 ﻿import { Box, Typography } from '@mui/material';
 import { SubmodelElementChoice, KeyTypes } from 'lib/api/aas/models';
-import { PropertyComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/PropertyComponent';
 import { EntityComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/EntityComponent';
 import { MultiLanguagePropertyComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/MultiLanguagePropertyComponent';
 import { FileComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/FileComponent';
@@ -8,6 +7,7 @@ import { SubmodelElementCollectionComponent } from 'app/[locale]/viewer/_compone
 import { DifferenceSymbol } from 'components/basics/DifferenceSymbol';
 import { useTranslations } from 'next-intl';
 import type * as CoreTypes from '@aas-core-works/aas-core3.0-typescript/types';
+import { GenericPropertyComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/GenericPropertyComponent';
 
 type CompareSubmodelElementProps = {
     readonly submodelElement?: SubmodelElementChoice;
@@ -30,7 +30,10 @@ export function CompareSubmodelElement(props: CompareSubmodelElementProps) {
                         <Box display="flex" alignItems="center">
                             {isMarked && <DifferenceSymbol />}
                             <Box display="inline-block">
-                                <PropertyComponent property={props.submodelElement as unknown as CoreTypes.Property} />
+                                <GenericPropertyComponent
+                                    property={props.submodelElement as unknown as CoreTypes.Property}
+                                    withCopyButton={true}
+                                />
                             </Box>
                         </Box>
                     </>

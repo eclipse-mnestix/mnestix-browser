@@ -1,15 +1,5 @@
 {
   "components": {
-    "assetNotFound": {
-      "header": "Verwaltungsschale konnte nicht geladen werden.",
-      "text": "Es konnte keine Verwaltungsschale für die angegebene ID \"{id}\" geladen werden.",
-      "toHome": "Zur Startseite"
-    },
-    "authentication": {
-      "authenticationNeeded": "Authentifizierung erforderlich",
-      "contactAdmin": "Sie können diese Seite nicht besuchen. Bitte wenden Sie sich an Ihren Administrator.",
-      "sessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an."
-    },
     "addressComponent": {
       "VAT": "USt-IdNr.",
       "addressTypes": {
@@ -24,6 +14,16 @@
         "ZipCodeOfPOBox": "PLZ des Postfachs",
         "Zipcode": "PLZ"
       }
+    },
+    "assetNotFound": {
+      "header": "Verwaltungsschale konnte nicht geladen werden.",
+      "text": "Es konnte keine Verwaltungsschale für die angegebene ID \"{id}\" geladen werden.",
+      "toHome": "Zur Startseite"
+    },
+    "authentication": {
+      "authenticationNeeded": "Authentifizierung erforderlich",
+      "contactAdmin": "Sie können diese Seite nicht besuchen. Bitte wenden Sie sich an Ihren Administrator.",
+      "sessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an."
     },
     "carbonFootprint": {
       "beech": "Eine Buche",
@@ -89,23 +89,19 @@
       "copyBase64": "Base64-kodiert kopieren"
     },
     "documentComponent": {
+      "classification": "Dokument Klassifikation",
       "documentDetails": "Dokumentendetails",
       "fileNotFound": "Datei nicht gefunden",
-      "open": "Öffnen"
+      "open": "Öffnen",
+      "showMoreButton": "zeige mehr"
     },
     "dummyComponent": {
       "dummyText": "Das ist eine Dummy-Komponente. Sie wird verwendet, um das Layout und Design der Anwendung zu testen."
     },
     "noSearchResult": {
-      "header": "Es wurden keine Daten für \"{name}\" gefunden.",
+      "header": "Keine Daten gefunden",
       "noDataFound": "Es wurden keine Daten für \"{name}\" gefunden.",
       "toHomeButton": "Zur Startseite"
-    },
-    "qrScanner": {
-      "errors": {
-        "defaultCallbackErrorMsg": "QR Code konnte nicht geöffnet werden!",
-        "errorOnQrScannerOpen": "QR Scanner konnte nicht geöffnet werden!"
-      }
     },
     "propertyComponent": {
       "boolean": {
@@ -118,6 +114,12 @@
         "copyBase64": "Base64-kodiert kopieren",
         "notAvailable": "-",
         "value": "Wert"
+      }
+    },
+    "qrScanner": {
+      "errors": {
+        "defaultCallbackErrorMsg": "QR Code konnte nicht geöffnet werden!",
+        "errorOnQrScannerOpen": "QR Scanner konnte nicht geöffnet werden!"
       }
     },
     "relationShipDetailsDialog": {
@@ -137,6 +139,13 @@
         "hide": "Verbergen",
         "show": "{count} Einträge anzeigen"
       }
+    },
+    "technicalData": {
+      "cannotRenderContent": "Inhalt des Submodels kann nicht angezeigt werden.",
+      "furtherInformation": "Weitere Informationen",
+      "generalInformation": "Allgemeine Informationen",
+      "productClassification": "Produktklassifikation",
+      "technicalProperties": "Technische Eigenschaften"
     },
     "verticalTabSelector": {
       "errors": {
@@ -228,6 +237,7 @@
           "elementName": "Element"
         },
         "renderError": "Submodel konnte nicht gerendert werden.",
+        "semanticIdLabel": "Semantic IDs:",
         "timeSeries": {
           "internalSegments": "Interne Segmente",
           "linkedSegments": "Verlinkte Segmente",
@@ -236,6 +246,11 @@
         "title": "Teilmodelle",
         "unknownModelType": "Unbekannter ModelType: {type}"
       }
+    },
+    "catalog": {
+      "title": "Produktkatalog",
+      "manufacturerCatalog": "Hersteller Produktkatalog",
+      "manufacturerSelect": "Hersteller auswählen"
     },
     "compare": {
       "addAnother": "Eine weitere AAS hinzufügen",
@@ -272,6 +287,26 @@
       "subtitle": "Hier finden Sie alle AAS, die mit der angegebenen ID verknüpft sind.",
       "title": "AAS mit ID"
     },
+    "productViewer": {
+      "actions": {
+        "compareButton": "Vergleichen",
+        "toAasView": "AAS Ansicht"
+      },
+      "classification": "Produktklassifikation",
+      "error": {
+        "technicalDataSubmodelNotFound": "Technical Data Submodel nicht gefunden"
+      },
+      "home": "Startseite",
+      "markings": "Produktkennzeichnungen",
+      "productInfo": {
+        "articleNumber": "Artikelnummer",
+        "manufacturer": "Hersteller",
+        "orderCode": "Bestellnummer",
+        "productDesignation": "Hersteller Produktbezeichnung"
+      },
+      "summary": "Das Wichtigste in Kürze",
+      "title": "Produkt"
+    },
     "registryList": {
       "errors": {
         "noAasFound": "Keine AAS für diese ID gefunden",
@@ -280,16 +315,6 @@
       },
       "subtitle": "Hier befinden sich alle AAS mit der angegebenen AAS ID.",
       "title": "AAS mit AAS ID"
-    },
-    "productViewer": {
-      "title": "Produkt",
-      "classification": "Produktklassifikation",
-      "error":{
-        "technicalDataSubmodelNotFound": "Technical Data Submodel nicht gefunden"
-      },
-      "actions": {
-        "toAasView": "AAS Ansicht"
-      }
     },
     "settings": {
       "actions": {
@@ -317,38 +342,39 @@
         },
         "subtitle": "Definieren Sie, welche Datenquellen verwendet werden sollen.",
         "title": "Datenquellen",
-        "urlFieldRequired": "URL wird benötigt"
-      },
-      "messages": {
-        "changesSavedSuccessfully": "Änderungen erfolgreich gespeichert."
+        "urlFieldRequired": "URL wird benötigt",
+        "urlFieldNoTrailingSlash": "Die URL darf nicht mit einem Schrägstrich (/) enden."
       },
       "header": "Einstellungen",
       "idStructure": {
-        "title": "ID Struktur",
-        "labels": {
-          "dynamicPart": "dynamischer Teil",
-          "idStructureExplanation": "Definieren Sie, wie Ihre IDs dargestellt werden sollen. Dies ist eine Basis-Einstellung, die für individuelle Importe angepasst werden kann.",
-          "staticPrefix": "statisches Präfix"
-        },
         "assetIdDocumentation": {
+          "assetId": "Asset ID",
           "dnsHeading": "Zugriff via DNS",
           "dnsText": "Besonders beim \"Brownfield\"-Ansatz und als Vertreiber eines Produkts ist es sinnvoll, zusätzlich einen DNS-Zugang über die Asset ID einzurichten, um so einen Datenzugriff über einen herkömmlichen Browser zu ermöglichen.",
           "endResult": "Endergebnis",
           "exampleHeading": "Beispiel",
           "industry40Heading": "Industrie 4.0 Kontext",
           "industry40Text": "Produkte haben eine global einzigartige ID, welche einer oder mehreren Verwaltungsschalen zugewiesen werden kann. Im Industrie 4.0 Kontext wird die Verbindung zwischen Asset und Verwaltungsschale über die I4.0 Infrastruktur hergestellt.",
-          "title": "Wie Sie Ihre Asset ID mit Ihrem Repository verbinden",
           "redirectsTo": "Leitet weiter auf",
-          "assetId": "Asset ID"
+          "title": "Wie Sie Ihre Asset ID mit Ihrem Repository verbinden"
         },
         "errors": {
           "idStructureError": "Fehler beim speichern von \"{name}\" ({reason}).",
           "invalidIri": "Muss eine valide IRI sein. Z.B. https://example.com/",
           "invalidIriPart": "Muss als Teil einer IRI funktionieren können (kein \"/\", Leer- und Sonderzeichen)"
         },
+        "labels": {
+          "dynamicPart": "dynamischer Teil",
+          "idStructureExplanation": "Definieren Sie, wie Ihre IDs dargestellt werden sollen. Dies ist eine Basis-Einstellung, die für individuelle Importe angepasst werden kann.",
+          "staticPrefix": "statisches Präfix"
+        },
         "messages": {
           "successfullyUpdated": "Erfolgreich aktualisiert"
-        }
+        },
+        "title": "ID Struktur"
+      },
+      "messages": {
+        "changesSavedSuccessfully": "Änderungen erfolgreich gespeichert."
       },
       "rules": {
         "buttons": {
@@ -356,16 +382,35 @@
           "back": "Zurück",
           "cancel": "Abbrechen",
           "create": "Regel erstellen",
+          "delete": "Löschen",
           "edit": "Bearbeiten",
           "save": "Speichern"
+        },
+        "createRule": {
+          "saveSuccess": "Neue Regel erfolgreich gespeichert.",
+          "title": "Regel erstellen"
+        },
+        "deleteRule": {
+          "question": "Regel unwiderruflich löschen?",
+          "ruleInfo": "Nutzer mit der Rolle ''{role}'' haben danach keine Berrechtigungen mehr die folgenden Daten {action, select, READ {zu LESEN} EDIT {zu EDITIEREN} CREATE {zu ERSTELLEN} UPDATE {zu VERÄNDERN} EXECUTE {AUSZUFÜHREN}  other {#}}!",
+          "success": "Regel erfolgreich gelöscht."
+        },
+        "editRule": {
+          "saveSuccess": "Regel erfolgreich bearbeitet.",
+          "title": "Regel bearbeiten"
         },
         "errors": {
           "uniqueIdShort": "Die Kombination aus Rollenname, Aktion und Typ existiert bereits in einer anderen Regel.\nBitte bearbeiten Sie die bestehende Regel."
         },
-        "createTitle": "Regel erstellen",
-        "editTitle": "Regel bearbeiten",
+        "keycloakHint": {
+          "acknowledge": "In Ordnung",
+          "create": "Diese Rolle wurde bisher nicht verwendet. Vergessen Sie nicht diese auch in Keycloak zu konfigurieren!",
+          "delete": "Vergessen Sie nicht die Rolle in Keycloak zu entfernen!",
+          "title": "Keycloak aktualisieren"
+        },
+        "roleNameMaxLength": "Rollenname darf maximal {maxLength} Zeichen lang sein",
+        "roleNameNoTrailSpace": "Rollenname darf keine Leerzeichen am Ende haben.",
         "roleRequired": "Rolle wird benötigt",
-        "saveSuccess": "Regel erfolgreich gespeichert.",
         "subtitle": "Verwalten von Rollen und Berechtigungen.",
         "tableHeader": {
           "aasIds": "AAS IDs",
@@ -375,12 +420,23 @@
           "submodelIds": "Submodel IDs",
           "type": "Typ"
         },
-        "title": "Regelmanagement",
+        "title": "Rollenmanagement",
         "wildcardLabel": "Alle erlauben"
       },
       "subHeader": "Hinzufügen, Entfernen oder Ändern von Einstellungen und Konfigurationen für verschiedene Funktionen innerhalb Ihrer AAS-Umgebung."
     },
     "templates": {
+      "actions": {
+        "add": "Hinzufügen",
+        "cancel": "Abbrechen",
+        "delete": "Löschen",
+        "duplicate": "Duplizieren",
+        "edit": "Bearbeiten",
+        "remove": "Entfernen",
+        "restore": "Wiederherstellen",
+        "revertChanges": "Änderungen zurücksetzen",
+        "saveChanges": "Änderungen speichern"
+      },
       "all": "Alle",
       "boolean": {
         "false": "Falsch",
@@ -398,26 +454,6 @@
       "errors": {
         "unknownModelType": "Unbekannter ModelType: {type}"
       },
-      "mappingInfo": "Mapping-Info",
-      "mappingInfoDescription": "Frei wählbarer Identifikator, auf den Sie bei Datenimporten zurückgreifen können.",
-      "multiplicity": "Multiplizität",
-      "multiplicityDescription": "Parameter, mit dem Sie festlegen können, welche Elemente verpflichtend sind.",
-      "noTemplatesFound": "Keine Templates gefunden",
-      "templateDeletedSuccessfully": "Template erfolgreich gelöscht.",
-      "templateIdCopied": "Template-ID in die Zwischenablage kopiert: {id}",
-      "templatesUseExplanation": "Templates erlauben es Ihnen, eine wiederverwendbare Teilmodell-Struktur, angepasst auf Ihre Bedürfnisse, zu definieren.",
-      "title": "Templates",
-      "actions": {
-        "add": "Hinzufügen",
-        "cancel": "Abbrechen",
-        "delete": "Löschen",
-        "duplicate": "Duplizieren",
-        "edit": "Bearbeiten",
-        "remove": "Entfernen",
-        "restore": "Wiederherstellen",
-        "revertChanges": "Änderungen zurücksetzen",
-        "saveChanges": "Änderungen speichern"
-      },
       "labels": {
         "language": "Sprache",
         "notAvailable": "-",
@@ -425,10 +461,19 @@
         "text": "Text",
         "value": "Wert"
       },
+      "mappingInfo": "Mapping-Info",
+      "mappingInfoDescription": "Frei wählbarer Identifikator, auf den Sie bei Datenimporten zurückgreifen können.",
       "messages": {
         "changesSavedSuccessfully": "Änderungen erfolgreich gespeichert.",
         "deleted": "gelöscht"
       },
+      "multiplicity": "Multiplizität",
+      "multiplicityDescription": "Parameter, mit dem Sie festlegen können, welche Elemente verpflichtend sind.",
+      "noTemplatesFound": "Keine Templates gefunden",
+      "templateDeletedSuccessfully": "Template erfolgreich gelöscht.",
+      "templateIdCopied": "Template-ID in die Zwischenablage kopiert: {id}",
+      "templatesUseExplanation": "Templates erlauben es Ihnen, eine wiederverwendbare Teilmodell-Struktur, angepasst auf Ihre Bedürfnisse, zu definieren.",
+      "title": "Templates",
       "validation": {
         "errors": {
           "invalidDate": "Muss ein gültiges Datum sein, im Format \"yyyy-mm-dd\"",
