@@ -1,5 +1,5 @@
 ﻿import { Box, Typography } from '@mui/material';
-import { SubmodelElementChoice, KeyTypes } from 'lib/types/AasTypes';
+import { SubmodelElementChoice, KeyTypes } from 'lib/api/aas/models';
 import { PropertyComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/PropertyComponent';
 import { EntityComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/EntityComponent';
 import { MultiLanguagePropertyComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/MultiLanguagePropertyComponent';

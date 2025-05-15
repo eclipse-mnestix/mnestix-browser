@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { useLocale } from 'use-intl';
 import { useTranslations } from 'next-intl';
-import { MultiLanguageProperty } from 'lib/types/AasTypes';
+import { MultiLanguageProperty } from 'lib/api/aas/models';
 
 type MultiLanguagePropertyComponentProps = {
     readonly mLangProp: MultiLanguageProperty;

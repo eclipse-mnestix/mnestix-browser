@@ -4,7 +4,7 @@ import { Grid } from '@mui/material';
 import { CompareSubmodelElement } from '../CompareSubmodelElement';
 import { DifferenceSymbol } from 'components/basics/DifferenceSymbol';
 import { useLocale } from 'next-intl';
-import { SubmodelElementChoice } from 'lib/types/AasTypes';
+import { SubmodelElementChoice } from 'lib/api/aas/models';
 
 export function CompareRecordValueRow(props: { data: SubmodelCompareDataRecord; columnWidthCount: number }) {
     const dataRecord = props.data;

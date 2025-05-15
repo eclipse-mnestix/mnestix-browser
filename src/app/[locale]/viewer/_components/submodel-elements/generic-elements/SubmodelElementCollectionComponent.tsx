@@ -1,6 +1,6 @@
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { Box, Button } from '@mui/material';
-import { SubmodelElementCollection, SubmodelElementList } from 'lib/types/AasTypes';
+import { SubmodelElementCollection, SubmodelElementList } from 'lib/api/aas/models';
 import { NestedContentWrapper } from 'components/basics/NestedContentWrapper';
 import { ReactNode, useState } from 'react';
 import { GenericSubmodelElementComponent } from './GenericSubmodelElementComponent';

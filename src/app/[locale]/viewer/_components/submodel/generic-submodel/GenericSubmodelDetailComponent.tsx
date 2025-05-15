@@ -4,7 +4,7 @@ import { submodelElementCustomVisualizationMap } from '../../submodel-elements/S
 import { Fragment } from 'react';
 import { GenericSubmodelElementComponent } from '../../submodel-elements/generic-elements/GenericSubmodelElementComponent';
 import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
-import { SubmodelElementChoice } from 'lib/types/AasTypes';
+import { SubmodelElementChoice } from 'lib/api/aas/models';
 
 export function GenericSubmodelDetailComponent({ submodel }: SubmodelVisualizationProps) {
     const submodelElements = submodel.submodelElements ?? [];

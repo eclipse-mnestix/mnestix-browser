@@ -14,7 +14,7 @@ import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
-import { MultiLanguageProperty as MultiLanguagePropertyAAS } from 'lib/types/AasTypes';
+import { MultiLanguageProperty as MultiLanguagePropertyAAS } from 'lib/api/aas/models';
 
 /**
  * Gets the translated text from either a MultiLanguageProperty or LangStringTextType array

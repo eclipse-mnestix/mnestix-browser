@@ -1,5 +1,5 @@
 import { Box, IconButton, Link, Tooltip, Typography } from '@mui/material';
-import { Property } from 'lib/types/AasTypes';
+import { Property } from 'lib/api/aas/models';
 import { ContentCopy, OpenInNew } from '@mui/icons-material';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { useState } from 'react';

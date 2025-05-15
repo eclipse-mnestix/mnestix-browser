@@ -3,7 +3,7 @@ import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescrip
 import { GenericSubmodelElementComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/GenericSubmodelElementComponent';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 import { useTranslations } from 'next-intl';
-import { SubmodelElementChoice } from 'lib/types/AasTypes';
+import { SubmodelElementChoice } from 'lib/api/aas/models';
 
 type DocumentDetailsModalProps = {
     readonly document: SubmodelElementCollection;

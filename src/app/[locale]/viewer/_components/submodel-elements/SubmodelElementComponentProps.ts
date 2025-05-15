@@ -1,4 +1,4 @@
-import { SubmodelElementChoice } from 'lib/types/AasTypes';
+import { SubmodelElementChoice } from 'lib/api/aas/models';
 
 export type SubmodelElementComponentProps = {
     submodelElement?: SubmodelElementChoice;

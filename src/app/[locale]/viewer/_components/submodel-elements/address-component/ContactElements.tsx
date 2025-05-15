@@ -6,7 +6,7 @@ import { IDataElement, SubmodelElementCollection } from '@aas-core-works/aas-cor
 import enMessages from 'locale/en.json';
 import { GenericSubmodelElementComponent } from '../generic-elements/GenericSubmodelElementComponent';
 import { SubModelElementCollectionContactInfo } from 'lib/util/ApiExtensions/ExtendISubmodelElement';
-import { SubmodelElementChoice } from 'lib/types/AasTypes';
+import { SubmodelElementChoice } from 'lib/api/aas/models';
 
 type AddressType = keyof typeof enMessages.components.addressComponent.addressTypes;
 

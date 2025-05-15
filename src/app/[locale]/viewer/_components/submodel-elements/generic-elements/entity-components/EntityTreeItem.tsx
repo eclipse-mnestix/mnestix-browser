@@ -18,7 +18,7 @@ import {
 } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/TreeItem';
 import { performDiscoveryAasSearch } from 'lib/services/search-actions/searchActions';
 import { useTranslations } from 'next-intl';
-import { SubmodelElementChoice } from 'lib/types/AasTypes';
+import { SubmodelElementChoice } from 'lib/api/aas/models';
 
 const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeItemContentProps, ref) {
     const t = useTranslations('pages.aasViewer.submodels');

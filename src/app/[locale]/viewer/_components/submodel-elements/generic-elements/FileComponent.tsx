@@ -7,7 +7,7 @@ import { getAttachmentFromSubmodelElement } from 'lib/services/repository-access
 import { useAasOriginSourceState } from 'components/contexts/CurrentAasContext';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { useTranslations } from 'next-intl';
-import { ModelFile } from 'lib/types/AasTypes';
+import { ModelFile } from 'lib/api/aas/models';
 
 const StyledFileImg = styled('img')(() => ({
     objectFit: 'contain',

@@ -4,7 +4,7 @@ import { SubmodelElementCollectionComponent } from './SubmodelElementCollectionC
 import { DataRow } from 'components/basics/DataRow';
 import { FileComponent } from './FileComponent';
 import { MultiLanguagePropertyComponent } from './MultiLanguagePropertyComponent';
-import { KeyTypes } from 'lib/types/AasTypes';
+import { KeyTypes } from 'lib/api/aas/models';
 import { EntityComponent } from './entity-components/EntityComponent';
 import { buildSubmodelElementPath } from 'lib/util/SubmodelResolverUtil';
 import { SubmodelElementComponentProps } from '../SubmodelElementComponentProps';
