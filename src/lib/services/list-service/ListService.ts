@@ -118,6 +118,7 @@ export class ListService {
                     SubmodelSemanticIdEnum.NameplateV1,
                     SubmodelSemanticIdEnum.NameplateV2,
                     SubmodelSemanticIdEnum.NameplateV3,
+                    SubmodelSemanticIdEnum.NameplateV4,
                 ];
                 if (nameplateKeys.includes(<SubmodelSemanticIdEnum>semanticId)) {
                     const manufacturerName = await this.submodelRepositoryClient.getSubmodelElement(

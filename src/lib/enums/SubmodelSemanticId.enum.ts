@@ -10,6 +10,7 @@ export enum SubmodelSemanticIdEnum {
     NameplateV1 = 'https://admin-shell.io/zvei/nameplate/1/0/Nameplate',
     NameplateV2 = 'https://admin-shell.io/zvei/nameplate/2/0/Nameplate',
     NameplateV3 = 'https://admin-shell.io/zvei/nameplate/3/0/Nameplate',
+    NameplateV4 = 'https://admin-shell.io/idta/nameplate/3/0/Nameplate',
     BillOfApplications = 'https://xitaso.com/BillOfApplications',
     TechnicalDataV11 = 'https://admin-shell.io/ZVEI/TechnicalData/Submodel/1/1',
     TechnicalDataV12 = 'https://admin-shell.io/ZVEI/TechnicalData/Submodel/1/2',
