@@ -1117,7 +1117,7 @@ export interface ConceptDescription {
      * @type {string}
      * @memberof ConceptDescription
      */
-    modelType: string;
+    modelType: 'ConceptDescription';
     /**
      *
      * @type {AdministrativeInformation}
@@ -4497,7 +4497,7 @@ export interface Submodel {
      * @type {string}
      * @memberof Submodel
      */
-    modelType: string;
+    modelType: 'Submodel';
     /**
      *
      * @type {AdministrativeInformation}
