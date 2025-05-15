@@ -1820,7 +1820,7 @@ export interface Extension {
  * @export
  * @interface FileAllOfContentType
  */
-export interface FileAllOfContentType {}
+export type FileAllOfContentType = string;
 /**
  *
  * @export
@@ -3867,7 +3867,7 @@ export interface Referable1AllOfIdShort {}
  * @export
  * @interface ReferableAllOfIdShort
  */
-export interface ReferableAllOfIdShort {}
+export type ReferableAllOfIdShort = string;
 /**
  *
  * @export

@@ -1,13 +1,1 @@
-apis/AASXFileServerAPIApi.ts
-apis/AssetAdministrationShellAPIApi.ts
-apis/AssetAdministrationShellBasicDiscoveryAPIApi.ts
-apis/AssetAdministrationShellRegistryAPIApi.ts
-apis/AssetAdministrationShellRepositoryAPIApi.ts
-apis/ConceptDescriptionRepositoryAPIApi.ts
-apis/DescriptionAPIApi.ts
-apis/SerializationAPIApi.ts
-apis/SubmodelAPIApi.ts
-apis/SubmodelRegistryAPIApi.ts
-apis/SubmodelRepositoryAPIApi.ts
-apis/index.ts
 models/index.ts
