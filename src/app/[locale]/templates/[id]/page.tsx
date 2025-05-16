@@ -30,23 +30,23 @@ import {
 import { TemplateEditFields, TemplateEditFieldsProps } from '../_components/template-edit/TemplateEditFields';
 import { useAuth } from 'lib/hooks/UseAuth';
 import cloneDeep from 'lodash/cloneDeep';
-import { Qualifier, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useEnv } from 'app/EnvProvider';
 import { useParams, useRouter } from 'next/navigation';
-import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import { updateCustomSubmodelTemplate } from 'lib/services/templateApiWithAuthActions';
 import { deleteCustomTemplateById, getCustomTemplateById, getDefaultTemplates } from 'lib/services/templatesApiActions';
 import { TemplateDeleteDialog } from 'app/[locale]/templates/_components/TemplateDeleteDialog';
-import { ISubmodelElement, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import { clone } from 'lodash';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useTranslations } from 'next-intl';
+import { Qualifier, Submodel, SubmodelElementChoice, SubmodelElementCollection } from 'lib/api/aas/models';
+import * as CoreTypes from '@aas-core-works/aas-core3.0-typescript/types';
+import { SubmodelViewObjectSpec } from 'lib/types/SubmodelViewObject';
 
 export default function Page() {
     const { id } = useParams<{ id: string }>();
-    const [localFrontendTemplate, setLocalFrontendTemplate] = useState<SubmodelViewObject | undefined>();
-    const [templateDisplayName, setTemplateDisplayName] = useState<string | null>();
+    const [localFrontendTemplate, setLocalFrontendTemplate] = useState<SubmodelViewObjectSpec | undefined>();
+    const [templateDisplayName, setTemplateDisplayName] = useState<string>();
     const notificationSpawner = useNotificationSpawner();
     const [isLoading, setIsLoading] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
@@ -71,10 +71,10 @@ export default function Page() {
         setLocalFrontendTemplate(generateSubmodelViewObject(custom));
     };
 
-    function generateSubmodelViewObject(sm: Submodel): SubmodelViewObject {
+    function generateSubmodelViewObject(sm: Submodel): SubmodelViewObjectSpec {
         const localSm = cloneDeep(sm);
         // Ids are unique for the tree, start with 0, children have 0-0, 0-1, and so on
-        const frontend: SubmodelViewObject = {
+        const frontend: SubmodelViewObjectSpec = {
             id: '0',
             name: localSm.idShort!,
             children: [],
@@ -84,7 +84,12 @@ export default function Page() {
         if (localSm.submodelElements) {
             const arr = localSm.submodelElements;
             arr.forEach((el, i) =>
-                frontend.children?.push(generateSubmodelViewObjectFromSubmodelElement(el, '0-' + i)),
+                frontend.children?.push(
+                    generateSubmodelViewObjectFromSubmodelElement(
+                        el as unknown as CoreTypes.Submodel,
+                        '0-' + i,
+                    ) as SubmodelViewObjectSpec,
+                ),
             );
             localSm.submodelElements = [];
         }
@@ -172,13 +177,16 @@ export default function Page() {
         }
     };
 
-    const onSelectionChange = (treePart: SubmodelViewObject, onTreePartChange: (tree: SubmodelViewObject) => void) => {
+    const onSelectionChange = (
+        treePart: SubmodelViewObjectSpec,
+        onTreePartChange: (tree: SubmodelViewObjectSpec) => void,
+    ) => {
         if (editFieldsProps?.templatePart?.id !== treePart.id) {
             setEditFieldsProps({ templatePart: treePart, onTemplatePartChange: onTreePartChange, updateTemplatePart });
         }
     };
 
-    const onTemplateChange = (template: SubmodelViewObject, deletedItemIds?: string[]) => {
+    const onTemplateChange = (template: SubmodelViewObjectSpec, deletedItemIds?: string[]) => {
         setChangesMade(true);
         setLocalFrontendTemplate(template);
         if (deletedItemIds) {
@@ -198,7 +206,10 @@ export default function Page() {
         }
     };
 
-    const updateTemplatePart = (templatePart: SubmodelViewObject, onChange: (obj: SubmodelViewObject) => void) => {
+    const updateTemplatePart = (
+        templatePart: SubmodelViewObjectSpec,
+        onChange: (obj: SubmodelViewObjectSpec) => void,
+    ) => {
         setEditFieldsProps({ ...editFieldsProps, templatePart, onTemplatePartChange: onChange, updateTemplatePart });
     };
 
@@ -225,7 +236,7 @@ export default function Page() {
         }
     };
 
-    function generateSubmodel(viewObject: SubmodelViewObject): Submodel {
+    function generateSubmodel(viewObject: SubmodelViewObjectSpec): Submodel {
         const submodel = viewObject.data as Submodel;
         if (viewObject.children.length) {
             submodel.submodelElements = [];
@@ -235,20 +246,20 @@ export default function Page() {
                     collection.value = generateSubmodelElements(child.children);
                     child.data = collection;
                 }
-                submodel.submodelElements?.push(child.data as ISubmodelElement);
+                submodel.submodelElements?.push(child.data as SubmodelElementChoice);
             });
         }
         return submodel;
     }
 
-    function generateSubmodelElements(viewObjects: SubmodelViewObject[]): ISubmodelElement[] {
+    function generateSubmodelElements(viewObjects: SubmodelViewObjectSpec[]): SubmodelElementChoice[] {
         return viewObjects.map((vo) => {
             if (vo.children.length) {
                 const collection = vo.data as SubmodelElementCollection;
                 collection.value = generateSubmodelElements(vo.children);
                 vo.data = collection;
             }
-            return vo.data as ISubmodelElement;
+            return vo.data as SubmodelElementChoice;
         });
     }
 
@@ -264,14 +275,14 @@ export default function Page() {
         return undefined;
     }
 
-    function deleteItem(elementToDeleteId: string, submodel: SubmodelViewObject): SubmodelViewObject {
+    function deleteItem(elementToDeleteId: string, submodel: SubmodelViewObjectSpec): SubmodelViewObjectSpec {
         const idArray = splitIdIntoArray(elementToDeleteId);
         const parentElement = getParentOfElement(elementToDeleteId, submodel);
         if (parentElement) {
             //search for the current index of the element to delete because through deleting, the arrays shift
             let childIndex = -1;
             parentElement.children.filter((el, index) => {
-                if ((el as SubmodelViewObject).id == idArray.join('-')) {
+                if ((el as SubmodelViewObjectSpec).id == idArray.join('-')) {
                     childIndex = index;
                 }
             });
@@ -302,7 +313,7 @@ export default function Page() {
         }, 3000);
     };
 
-    function isCustomTemplate(template: SubmodelViewObject | undefined): boolean | undefined {
+    function isCustomTemplate(template: SubmodelViewObjectSpec | undefined): boolean | undefined {
         let returnValue: boolean | undefined;
         if (template) {
             const id = template.data?.semanticId?.keys?.[0]?.value;
@@ -421,7 +432,7 @@ export default function Page() {
                     open={deleteDialogOpen}
                     onClose={closeDialog}
                     onDelete={() => deleteTemplate()}
-                    itemName={templateDisplayName ?? null}
+                    itemName={templateDisplayName}
                 />
             </Box>
         </PrivateRoute>

@@ -1,4 +1,4 @@
-export const sortWithNullableValues = (a: string | null, b: string | null): number => {
+export const sortWithNullableValues = (a?: string, b?: string): number => {
     // put `null` values at the end
     if (!a) {
         return 1;

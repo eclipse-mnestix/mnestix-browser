@@ -1,22 +1,24 @@
 import { ChevronRight, ExpandMore } from '@mui/icons-material';
 import { SimpleTreeView } from '@mui/x-tree-view';
 import { SyntheticEvent, useState } from 'react';
-import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
+import { SubmodelViewObjectSpec } from 'lib/types/SubmodelViewObject';
 import {
     viewObjectHasDataValue,
-    rewriteNodeIds, splitIdIntoArray, updateNodeIds,
+    rewriteNodeIds,
+    splitIdIntoArray,
+    updateNodeIds,
 } from 'lib/util/SubmodelViewObjectUtil';
 import { TemplateEditTreeItem } from './TemplateEditTreeItem';
 import multiplicityData from './edit-components/multiplicity/multiplicity-data.json';
 import cloneDeep from 'lodash/cloneDeep';
-import { Qualifier } from '@aas-core-works/aas-core3.0-typescript/types';
 import { MultiplicityEnum } from 'lib/enums/Multiplicity.enum';
 import { escapeRegExp, parseInt } from 'lodash';
+import { Qualifier } from 'lib/api/aas/models';
 
 type TemplateEditTreeProps = {
-    rootTree?: SubmodelViewObject;
-    onTreeChange: (tree: SubmodelViewObject, deletedItems?: string[]) => void;
-    onSelectionChange: (treePart: SubmodelViewObject, onChange: (tree: SubmodelViewObject) => void) => void;
+    rootTree?: SubmodelViewObjectSpec;
+    onTreeChange: (tree: SubmodelViewObjectSpec, deletedItems?: string[]) => void;
+    onSelectionChange: (treePart: SubmodelViewObjectSpec, onChange: (tree: SubmodelViewObjectSpec) => void) => void;
 };
 
 export function TemplateEditTree(props: TemplateEditTreeProps) {
@@ -33,9 +35,9 @@ export function TemplateEditTree(props: TemplateEditTreeProps) {
     };
 
     const renderTree = (
-        tree: SubmodelViewObject,
+        tree: SubmodelViewObjectSpec,
         parentAboutToBeDeleted: boolean | undefined,
-        onChange: (tree: SubmodelViewObject) => void,
+        onChange: (tree: SubmodelViewObjectSpec) => void,
     ) => {
         return (
             <TemplateEditTreeItem
@@ -68,7 +70,7 @@ export function TemplateEditTree(props: TemplateEditTreeProps) {
         );
     };
 
-    function getAllWithSemanticId(tree: SubmodelViewObject | undefined, semanticId: string | undefined): number {
+    function getAllWithSemanticId(tree: SubmodelViewObjectSpec | undefined, semanticId: string | undefined): number {
         let number = 0;
         if (tree && semanticId) {
             for (const child of tree.children) {
@@ -84,7 +86,7 @@ export function TemplateEditTree(props: TemplateEditTreeProps) {
         }
     }
 
-    function getMultiplicity(tree: SubmodelViewObject) {
+    function getMultiplicity(tree: SubmodelViewObjectSpec) {
         const qualifier = tree.data?.qualifiers?.find((q: Qualifier) =>
             multiplicityData.qualifierTypes.includes(q.type),
         );
@@ -92,7 +94,7 @@ export function TemplateEditTree(props: TemplateEditTreeProps) {
     }
 
     //Duplicate, Delete, Restore
-    async function duplicateTreeItem(nodeId: string, rootTree: SubmodelViewObject | undefined) {
+    async function duplicateTreeItem(nodeId: string, rootTree: SubmodelViewObjectSpec | undefined) {
         if (rootTree) {
             const newRootTree = duplicateItem(nodeId, cloneDeep(rootTree));
             await rewriteNodeIds(newRootTree, '0');
@@ -102,7 +104,7 @@ export function TemplateEditTree(props: TemplateEditTreeProps) {
         }
     }
 
-    function findElementsToDelete(elementToCheck: SubmodelViewObject): string[] {
+    function findElementsToDelete(elementToCheck: SubmodelViewObjectSpec): string[] {
         let returnArray: string[] = [];
         for (const child of elementToCheck.children) {
             returnArray = returnArray.concat(findElementsToDelete(child));
@@ -113,7 +115,7 @@ export function TemplateEditTree(props: TemplateEditTreeProps) {
         return returnArray;
     }
 
-    function duplicateItem(elementToDuplicateId: string, submodel: SubmodelViewObject) {
+    function duplicateItem(elementToDuplicateId: string, submodel: SubmodelViewObjectSpec) {
         const parentElement = getParentOfElement(elementToDuplicateId, submodel);
         const idArray = splitIdIntoArray(elementToDuplicateId);
         const elementToDuplicate = cloneDeep(parentElement?.children[idArray[idArray.length - 1]]);
@@ -126,9 +128,17 @@ export function TemplateEditTree(props: TemplateEditTreeProps) {
                 elementToDuplicate.data.idShort = elementName;
             }
             //insert the duplicated element after the original element and already existing duplicates
-            parentElement.children.splice(idArray[idArray.length - 1] + matchingNames.length + 1, 0, elementToDuplicate);
+            parentElement.children.splice(
+                idArray[idArray.length - 1] + matchingNames.length + 1,
+                0,
+                elementToDuplicate,
+            );
             //rewrite the id
-            for (let i = idArray[idArray.length - 1] + matchingNames.length + 1; i < parentElement.children.length; i++) {
+            for (
+                let i = idArray[idArray.length - 1] + matchingNames.length + 1;
+                i < parentElement.children.length;
+                i++
+            ) {
                 const newIndexArray = idArray;
                 newIndexArray.pop();
                 newIndexArray.push(i);
@@ -139,7 +149,7 @@ export function TemplateEditTree(props: TemplateEditTreeProps) {
         return submodel;
     }
 
-    function findMatchingNames(tree: SubmodelViewObject, originalName: string): string[] {
+    function findMatchingNames(tree: SubmodelViewObjectSpec, originalName: string): string[] {
         const matchingNames: string[] = [];
         //go through the tree and find all names with pattern "originalName_number"
         tree.children.map((child) => {
@@ -151,7 +161,7 @@ export function TemplateEditTree(props: TemplateEditTreeProps) {
     }
 
     function generateNameOfDuplicatedElement(
-        tree: SubmodelViewObject,
+        tree: SubmodelViewObjectSpec,
         originalName: string,
         matchingNames: string[],
     ): string {
@@ -175,7 +185,7 @@ export function TemplateEditTree(props: TemplateEditTreeProps) {
         return originalName + '_' + currentSmallestIndex;
     }
 
-    function deleteTreeItem(nodeId: string, rootTree: SubmodelViewObject | undefined) {
+    function deleteTreeItem(nodeId: string, rootTree: SubmodelViewObjectSpec | undefined) {
         if (rootTree) {
             const treeCopy = cloneDeep(rootTree);
             const elementToDelete = getElement(nodeId, treeCopy);
@@ -188,7 +198,7 @@ export function TemplateEditTree(props: TemplateEditTreeProps) {
         }
     }
 
-    function deleteTreeItemAndChildren(treeItem: SubmodelViewObject) {
+    function deleteTreeItemAndChildren(treeItem: SubmodelViewObjectSpec) {
         let deletedElementsIds: string[] = [];
         for (const child of treeItem.children) {
             deletedElementsIds = deletedElementsIds.concat(deleteTreeItemAndChildren(child));
@@ -198,7 +208,7 @@ export function TemplateEditTree(props: TemplateEditTreeProps) {
         return deletedElementsIds;
     }
 
-    function restoreTreeItem(nodeId: string, rootTree: SubmodelViewObject | undefined) {
+    function restoreTreeItem(nodeId: string, rootTree: SubmodelViewObjectSpec | undefined) {
         if (rootTree) {
             const treeCopy = cloneDeep(rootTree);
             const elementToRestore = getElement(nodeId, treeCopy);
@@ -213,7 +223,7 @@ export function TemplateEditTree(props: TemplateEditTreeProps) {
         }
     }
 
-    function getParentOfElement(nodeId: string, tree: SubmodelViewObject): SubmodelViewObject | undefined {
+    function getParentOfElement(nodeId: string, tree: SubmodelViewObjectSpec): SubmodelViewObjectSpec | undefined {
         let currentElement = tree;
         let parentElement;
         const idArray = separateNodeId(nodeId);
@@ -230,7 +240,7 @@ export function TemplateEditTree(props: TemplateEditTreeProps) {
         return parentElement;
     }
 
-    function getElement(nodeId: string, tree: SubmodelViewObject): SubmodelViewObject | undefined {
+    function getElement(nodeId: string, tree: SubmodelViewObjectSpec): SubmodelViewObjectSpec | undefined {
         const idArray = separateNodeId(nodeId);
         return getParentOfElement(nodeId, tree)?.children[idArray[idArray.length - 1]];
     }
@@ -256,7 +266,7 @@ export function TemplateEditTree(props: TemplateEditTreeProps) {
                 renderTree(
                     props.rootTree,
                     props.rootTree.isAboutToBeDeleted,
-                    props.onTreeChange as (tree: SubmodelViewObject) => void,
+                    props.onTreeChange as (tree: SubmodelViewObjectSpec) => void,
                 )}
         </SimpleTreeView>
     );

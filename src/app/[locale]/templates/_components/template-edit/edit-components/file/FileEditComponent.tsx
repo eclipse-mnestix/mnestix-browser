@@ -3,12 +3,12 @@ import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@m
 import React, { useEffect, useState } from 'react';
 import { TemplateEditSectionHeading } from '../../TemplateEditSectionHeading';
 import options from './mime-types.json';
-import { File } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useTranslations } from 'next-intl';
+import { ModelFile } from 'lib/api/aas/models';
 
 interface FileEditComponentProps {
-    data: File;
-    onChange: (data: File) => void;
+    data: ModelFile;
+    onChange: (data: ModelFile) => void;
 }
 
 export function FileEditComponent(props: FileEditComponentProps) {
@@ -23,17 +23,17 @@ export function FileEditComponent(props: FileEditComponentProps) {
     const onRemove = () => {
         setDefaultValueEnabled(false);
         //TODO Reset MimeType to initial value from default template on remove
-        props.onChange({ ...data, value: '' } as File);
+        props.onChange({ ...data, value: '' });
     };
 
     const onTextChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setData({ ...data, value: event.target.value } as File);
-        props.onChange({ ...data, value: event.target.value } as File);
+        setData({ ...data, value: event.target.value });
+        props.onChange({ ...data, value: event.target.value });
     };
 
     const onMimeTypeChange = (value: string) => {
-        setData({ ...data, contentType: value } as File);
-        props.onChange({ ...data, contentType: value } as File);
+        setData({ ...data, contentType: value });
+        props.onChange({ ...data, contentType: value });
     };
 
     return (

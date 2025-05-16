@@ -1,10 +1,10 @@
 import { alpha, Box, Dialog, DialogProps, Paper, styled, Typography } from '@mui/material';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { ChooseTemplateItem } from './ChooseTemplateItem';
-import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 import { useLocale, useTranslations } from 'next-intl';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
+import { Submodel } from 'lib/api/aas/models';
 
 interface ChooseTemplateDialogProps extends DialogProps {
     defaultTemplates?: Submodel[];
@@ -50,7 +50,9 @@ export function ChooseTemplateDialog(props: ChooseTemplateDialogProps) {
                                     template.administration?.revision ?? '-'
                                 }`}
                                 subLabel={template.semanticId?.keys?.[0]?.value}
-                                description={template.description ? getTranslationText(template.description, locale) : undefined}
+                                description={
+                                    template.description ? getTranslationText(template.description, locale) : undefined
+                                }
                                 onClick={() => handleTemplateClick && handleTemplateClick(template)}
                             />
                         );

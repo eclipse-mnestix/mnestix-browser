@@ -1,14 +1,13 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Box, Button, IconButton } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { getValueType } from 'lib/util/SubmodelResolverUtil';
 import { TemplateEditSectionHeading } from '../../TemplateEditSectionHeading';
 import { BooleanPropertyEditComponent } from './data-specific/BooleanPropertyEditComponent';
 import { StringPropertyEditComponent } from './data-specific/StringPropertyEditComponent';
 import { DatePropertyEditComponent } from './data-specific/DatePropertyEditComponent';
 import { LongPropertyEditComponent } from './data-specific/LongPropertyEditComponent';
-import { DataTypeDefXsd, Property } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useTranslations } from 'next-intl';
+import { DataTypeDefXsd, Property } from 'lib/api/aas/models';
 
 interface PropertyEditComponentProps {
     data: Property;
@@ -25,18 +24,17 @@ export function PropertyEditComponent(props: PropertyEditComponentProps) {
     }, [props.data]);
 
     const onValueChange = (value: string) => {
-        props.onChange({ ...data, value } as Property);
+        props.onChange({ ...data, value });
     };
 
     const handleValueRemove = () => {
         setDefaultValueEnabled(false);
-        props.onChange({ ...data, value: '' } as Property);
+        props.onChange({ ...data, value: '' });
     };
 
     const getEditElement = () => {
-        const valueType: DataTypeDefXsd = getValueType(props.data);
-        switch (valueType) {
-            case DataTypeDefXsd.Boolean:
+        switch (props.data.valueType) {
+            case DataTypeDefXsd.XsBoolean:
                 return (
                     <BooleanPropertyEditComponent
                         dataValue={data.value || ''}
@@ -44,9 +42,9 @@ export function PropertyEditComponent(props: PropertyEditComponentProps) {
                         defaultValueEnabled
                     />
                 );
-            case DataTypeDefXsd.Date:
+            case DataTypeDefXsd.XsDate:
                 return <DatePropertyEditComponent dataValue={data.value || ''} onChange={onValueChange} />;
-            case DataTypeDefXsd.Long:
+            case DataTypeDefXsd.XsLong:
                 return <LongPropertyEditComponent dataValue={data.value || ''} onChange={onValueChange} />;
             default:
                 return <StringPropertyEditComponent dataValue={data.value || ''} onChange={onValueChange} />;

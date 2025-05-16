@@ -2,14 +2,13 @@ import {
     Entity,
     ISubmodelElement,
     KeyTypes,
-    LangStringTextType,
-    MultiLanguageProperty,
     Property,
     SubmodelElementCollection,
 } from '@aas-core-works/aas-core3.0-typescript/types';
-import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
+import { SubmodelViewObject, SubmodelViewObjectSpec } from 'lib/types/SubmodelViewObject';
 import { cloneDeep, parseInt } from 'lodash';
 import { getKeyType } from './KeyTypeUtil';
+import * as SpecTypes from 'lib/api/aas/models';
 
 export function generateSubmodelViewObjectFromSubmodelElement(el: ISubmodelElement, id: string): SubmodelViewObject {
     const localEl = cloneDeep(el);
@@ -39,22 +38,24 @@ export function generateSubmodelViewObjectFromSubmodelElement(el: ISubmodelEleme
         entity.statements = [];
     }
     frontend.data = localEl;
-    frontend.hasValue = viewObjectHasDataValue(frontend);
+    frontend.hasValue = viewObjectHasDataValue(frontend as SubmodelViewObjectSpec);
     return frontend;
 }
 
-export function viewObjectHasDataValue(el: SubmodelViewObject) {
-    switch (getKeyType(el.data!)) {
-        case KeyTypes.Property:
-        case KeyTypes.File:
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            return !!(el.data as any).value;
-        case KeyTypes.MultiLanguageProperty: {
-            const mLangProp = el.data as MultiLanguageProperty;
-            if (Array.isArray(mLangProp.value)) {
-                return !!mLangProp.value.length;
-            } else if (mLangProp.value! as Array<LangStringTextType>) {
-                return !!mLangProp.value!.length;
+export function viewObjectHasDataValue(el: SubmodelViewObjectSpec) {
+    if (!el.data) {
+        return false;
+    }
+    switch (el.data.modelType) {
+        case SpecTypes.KeyTypes.Property:
+        case SpecTypes.KeyTypes.File:
+            return !!el.data.value;
+        case SpecTypes.KeyTypes.MultiLanguageProperty: {
+            if (!el.data) {
+                return false;
+            }
+            if (Array.isArray(el.data.value)) {
+                return !!el.data.value.length;
             }
             return false;
         }
@@ -69,7 +70,7 @@ export function splitIdIntoArray(id: string): number[] {
     });
 }
 
-export function getParentOfElement(id: string, submodel: SubmodelViewObject) {
+export function getParentOfElement(id: string, submodel: SubmodelViewObjectSpec) {
     const idArray = splitIdIntoArray(id);
     let parentElement = submodel;
     for (let i = 0; i < idArray.length - 1; i++) {
@@ -80,14 +81,14 @@ export function getParentOfElement(id: string, submodel: SubmodelViewObject) {
     return parentElement;
 }
 
-export async function rewriteNodeIds(elementToUpdate: SubmodelViewObject, newId: string) {
+export async function rewriteNodeIds(elementToUpdate: SubmodelViewObjectSpec, newId: string) {
     elementToUpdate.id = newId;
     for (let i = 0; i < elementToUpdate.children.length; i++) {
         await rewriteNodeIds(elementToUpdate.children[i], newId + '-' + i);
     }
 }
 
-export function updateNodeIds(originalParentNodeId: string, newParentNodeId: string, parent: SubmodelViewObject) {
+export function updateNodeIds(originalParentNodeId: string, newParentNodeId: string, parent: SubmodelViewObjectSpec) {
     for (const child of parent.children) {
         updateNodeIds(originalParentNodeId, newParentNodeId, child);
     }
