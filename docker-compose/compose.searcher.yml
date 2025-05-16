@@ -12,5 +12,13 @@ services:
     networks:
       - mnestix-network
 
+  mnestix-searcher:
+    container_name: mnestix-searcher
+    image: mnestix/mnestix-searcher:latest-dev
+    ports:
+      - '5149:5149'
+    networks:
+      - mnestix-network
+
 volumes:
   mongodb_data:
