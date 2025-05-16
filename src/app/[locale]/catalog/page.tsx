@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { padding } from '@mui/system';
+import { Breadcrumbs } from 'components/basics/Breadcrumbs';
 
 /**
  * Configuration we need to display the catalog.
@@ -75,7 +76,7 @@ export default function Page() {
     const navigate = useRouter();
     const theme = useTheme();
     const t = useTranslations('pages.catalog');
-
+    const [breadcrumbLinks] = useState<Array<{ label: string, path: string }>>([]);
     const loadCategories = (manufacturerName: string) => {
         const selected = hardcodedCatalogConfiguration.find(
             (config) => config.manufacturerName === manufacturerName
@@ -87,6 +88,9 @@ export default function Page() {
         <Box display="flex" flexDirection="column" marginTop="0px" marginBottom="50px" width="100%">
             <Box width="90%" margin="auto">
                 <Box marginTop="2rem" marginBottom="2.25rem">
+                    <Box marginBottom="2em">
+                      <Breadcrumbs links={breadcrumbLinks} />
+                    </Box>
                     <Box marginBottom="2em">
                         <Typography variant="h1">{t('title')}</Typography>
                     </Box>

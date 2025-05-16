@@ -1,5 +1,10 @@
 {
   "components": {
+    "constructionDialog": {
+      "title": "In Bearbeitung",
+      "message": "Diese Funktion befindet sich derzeit im Aufbau und wird in Kürze verfügbar sein.",
+      "buttonText": "Schließen"
+    },
     "addressComponent": {
       "VAT": "USt-IdNr.",
       "addressTypes": {
@@ -286,6 +291,11 @@
       },
       "subtitle": "Hier finden Sie alle AAS, die mit der angegebenen ID verknüpft sind.",
       "title": "AAS mit ID"
+    },
+    "marketplace": {
+      "search": "Suchen Sie nach einem Produkt",
+      "subtitle": "Verwaltungsschale für den Leitungssatz",
+      "title": "VWS4LS Marketplace"
     },
     "productViewer": {
       "actions": {

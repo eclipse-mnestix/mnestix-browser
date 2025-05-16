@@ -1,5 +1,10 @@
 {
   "components": {
+    "constructionDialog": {
+      "title": "Under Construction",
+      "message": "This feature is currently under construction and will be available soon.",
+      "buttonText": "Close"
+    },
     "addressComponent": {
       "VAT": "VAT-Number",
       "addressTypes": {
@@ -286,6 +291,11 @@
       },
       "subtitle": "Here you will find all related AAS to the given Asset ID.",
       "title": "Related AAS to Asset ID"
+    },
+    "marketplace": {
+      "search": "Suchen Sie nach einem Produkt",
+      "subtitle": "AAS for Harness",
+      "title": "VWS4LS Marketplace"
     },
     "productViewer": {
       "actions": {
