@@ -1,0 +1,16 @@
+services:
+  searcher-mongodb:
+    container_name: searcher-mongodb
+    image: mongo:latest
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: superSecureSecret
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - mnestix-network
+
+volumes:
+  mongodb_data:
