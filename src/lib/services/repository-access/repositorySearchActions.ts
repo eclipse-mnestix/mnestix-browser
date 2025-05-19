@@ -109,3 +109,19 @@ export async function getAttachmentFromSubmodelElement(
     if (!response.isSuccess) return wrapErrorCode(response.errorCode, response.message);
     return wrapFile(response.result.searchResult);
 }
+
+export async function downloadAasFromRepo(
+    aasId: string | string[],
+    submodelIds: string[],
+    baseRepositoryUrl: string,
+    includeConceptDescriptions = true
+): Promise<ApiResponseWrapper<Blob>> {
+    const logger = createRequestLogger(await headers());
+    logInfo(logger, 'downloadAasFromRepo', 'Requested Download', {
+        aasId: aasId
+    });
+    const fileSearcher = AssetAdministrationShellRepositoryApi.create(baseRepositoryUrl, mnestixFetch());
+    const response = await fileSearcher.downloadAAS(aasId, submodelIds, includeConceptDescriptions);
+    if (!response.isSuccess) return wrapErrorCode(response.errorCode, response.message);
+    return response;
+}
