@@ -1,15 +1,21 @@
 'use client';
-import { Box, Button, Card, CardContent, Checkbox, FormControl, Input, InputLabel, MenuItem, Select, TextField, Typography, useTheme } from '@mui/material';
+import { Box, Button, Card, Typography, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { Grid, padding } from '@mui/system';
+import { Grid } from '@mui/system';
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
 import { ConstructionDialog } from 'components/basics/ConstructionDialog';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import InsightsIcon from '@mui/icons-material/Insights';
 import { ArrowForward } from '@mui/icons-material';
+import { SquaredSmallIconButton } from 'components/basics/Buttons';
+import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
+import { ConnectionTypeEnum, getTypeAction } from 'lib/services/database/ConnectionTypeEnum';
+import { useEnv } from 'app/EnvProvider';
+import { getConnectionDataByTypeAction } from 'lib/services/database/connectionServerActions';
+import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 
 /**
  * Configuration we need to display the catalog.
@@ -59,106 +65,58 @@ const hardcodedCatalogConfiguration: CatalogConfiguration[] = [{
             image: '/images/catalog/manufacturers/kostal/Dichtungen.png',
         },
     ],
-}, {
-    catalogLogo: '/images/aas-core-logo.png',
-    manufacturerName: 'Test',
+},{
+    catalogLogo: '/images/catalog/manufacturers/komax/komax_logo.svg',
+    manufacturerName: 'Komax',
     sourceRepository: 'https://vws4ls-api.dev.mnestix.xitaso.net/repo',
-    rootCategories: [
-        {
-            name: 'TEST_CATEGORY_1',
-            image: '/images/aas-core-logo.png',
-        },
-        { 
-            name: 'TEST_CATEGORY_2',
-            image: '/images/aas-core-logo.png' 
-        },
-    ],
-}, {
-    catalogLogo: '/images/aas-core-logo.png',
-    manufacturerName: 'Test',
+    rootCategories: []
+},{
+    catalogLogo: '/images/catalog/manufacturers/coroflex/coroflex_logo.png',
+    manufacturerName: 'Coroflex',
     sourceRepository: 'https://vws4ls-api.dev.mnestix.xitaso.net/repo',
-    rootCategories: [
-        {
-            name: 'TEST_CATEGORY_1',
-            image: '/images/aas-core-logo.png',
-        },
-        { 
-            name: 'TEST_CATEGORY_2',
-            image: '/images/aas-core-logo.png' 
-        },
-    ],
-}, {
-    catalogLogo: '/images/aas-core-logo.png',
-    manufacturerName: 'Test',
-    sourceRepository: 'https://vws4ls-api.dev.mnestix.xitaso.net/repo',
-    rootCategories: [
-        {
-            name: 'TEST_CATEGORY_1',
-            image: '/images/aas-core-logo.png',
-        },
-        { 
-            name: 'TEST_CATEGORY_2',
-            image: '/images/aas-core-logo.png' 
-        },
-    ],
-}, {
-    catalogLogo: '/images/aas-core-logo.png',
-    manufacturerName: 'Test',
-    sourceRepository: 'https://vws4ls-api.dev.mnestix.xitaso.net/repo',
-    rootCategories: [
-        {
-            name: 'TEST_CATEGORY_1',
-            image: '/images/aas-core-logo.png',
-        },
-        { 
-            name: 'TEST_CATEGORY_2',
-            image: '/images/aas-core-logo.png' 
-        },
-    ],
-}, {
-    catalogLogo: '/images/aas-core-logo.png',
-    manufacturerName: 'Test',
-    sourceRepository: 'https://vws4ls-api.dev.mnestix.xitaso.net/repo',
-    rootCategories: [
-        {
-            name: 'TEST_CATEGORY_1',
-            image: '/images/aas-core-logo.png',
-        },
-        { 
-            name: 'TEST_CATEGORY_2',
-            image: '/images/aas-core-logo.png' 
-        },
-    ],
-}, {
-    catalogLogo: '/images/aas-core-logo.png',
-    manufacturerName: 'Test',
-    sourceRepository: 'https://vws4ls-api.dev.mnestix.xitaso.net/repo',
-    rootCategories: [
-        {
-            name: 'TEST_CATEGORY_1',
-            image: '/images/aas-core-logo.png',
-        },
-        { 
-            name: 'TEST_CATEGORY_2',
-            image: '/images/aas-core-logo.png' 
-        },
-    ],
+    rootCategories: []
 }];
+
 
 export default function Page() {
     const [selectedCatalog, setSelectedCatalog] = useState<CatalogConfiguration | undefined>(undefined);
+    const [aasRepositories, setAasRepositories] = useState<string[]>([]);
+    const [breadcrumbLinks] = useState<Array<{ label: string, path: string }>>([]);
+    const [isConstructionDialogOpen, setIsConstructionDialogOpen] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const env = useEnv(); 
     const navigate = useRouter();
     const theme = useTheme();
     const t = useTranslations('pages.marketplace');
-    const [breadcrumbLinks] = useState<Array<{ label: string, path: string }>>([]);
-    const [isConstructionDialogOpen, setIsConstructionDialogOpen] = useState<boolean>(false);
-    
+    const notificationSpawner = useNotificationSpawner();
+
     const loadCategories = (manufacturerName: string) => {
         const selected = hardcodedCatalogConfiguration.find(
             (config) => config.manufacturerName === manufacturerName
         );
         setSelectedCatalog(selected);
     };
+
+      useAsyncEffect(async () => {
+            try {
+                setIsLoading(true);
+                const aasRepositories = await getConnectionDataByTypeAction(
+                    getTypeAction(ConnectionTypeEnum.AAS_REPOSITORY),
+                );
+                if (env.AAS_REPO_API_URL) {
+                    aasRepositories.push(env.AAS_REPO_API_URL);
+                }
+                setAasRepositories(aasRepositories);
+            } catch (error) {
+                notificationSpawner.spawn({
+                    message: error,
+                    severity: 'error',
+                });
+                return;
+            } finally {
+                setIsLoading(false);
+            }
+        }, []);
 
     return (
         <Box display="flex" flexDirection="column" marginTop="0px" marginBottom="50px" width="100%">
@@ -172,27 +130,75 @@ export default function Page() {
                         <Typography variant="h3">{t('subtitle')}</Typography>
                     </Box>
                     
-                    <Box display="flex" flexDirection={"column"} gap={4}>                        <Box mt={3} display={"flex"} alignItems="center" gap={2} width="100%">
+                    <Box display="flex" flexDirection={"column"} gap={4}>                        
+                        <Box mt={3} display={"flex"} alignItems="center" gap={2} width="100%">
                             <ContentPasteSearchIcon sx={{ fontSize: 40 }}/>
-                            <Typography variant="h3" >Select a manufacturer</Typography>
+                            <Typography variant="h3">{t('manufacturerSelect')}</Typography>
                         </Box>
                         <Box display="flex" gap={2} mt={1} width={"100%"} flexWrap={"wrap"}>
                             {hardcodedCatalogConfiguration.map((config, index) => (
                                 <Grid size={3}>
-                                    <Card sx={{ padding: '2em' }}>
-                                        <Box position="relative" width="230px" height="150px">
-                                            <Image
-                                                src={config.catalogLogo}
-                                                alt={`${config.manufacturerName} logo`}
-                                                fill
-                                                style={{ objectFit: 'contain'}}
-                                            />
+                                    <Card 
+                                        onClick={() => {
+                                            // todo navigate with manufacturer as query param
+                                            // navigate.push(`productList/?manufacturer={${config.manufacturerName}`)};
+                                        }}
+                                        sx={{
+                                            padding: '1em', width:'270px', height:'170px',
+                                            cursor: 'pointer',
+                                            '&:hover': { backgroundColor: theme.palette.action.hover },
+                                        }}>
+                                        <Box display="flex" flexDirection="column" width={'65%'} height={'70%'}>
+                                            <Box position="relative"
+                                                display="flex" 
+                                                flexDirection="column"
+                                                height={'100%'}
+                                                width={'100%'}
+                                                justifyContent={'flex-start'}
+                                                alignItems={'flex-start'}>
+                                                    <Image
+                                                        src={config.catalogLogo}
+                                                        alt={`${config.manufacturerName} logo`}
+                                                        fill
+                                                        style={{ objectFit: 'contain'}}
+                                                    />
+                                                </Box> 
+                                            </Box>
+                                            <Box height="100%" display="flex" flexDirection="column" alignItems="flex-end">
+                                                <SquaredSmallIconButton variant='outlined' onClick={() => {}}>
+                                                    <ArrowForward />
+                                                </SquaredSmallIconButton>
                                         </Box>
-                                          <Button variant='contained'
-                                                            endIcon={<ArrowForward />}
-                                                            onClick={() => {}}
-                                                            data-testid="list-to-detailview-button"
-                                                        />
+                                    </Card>
+                                </Grid>
+                            ))}
+                            {aasRepositories.map((repo, index) => (
+                                <Grid size={3} >
+                                    <Card 
+                                    onClick={() => {
+                                            // todo navigate with repository as query param
+                                            // navigate.push(`productList/?dataSource={${repo}`)};
+                                        }}
+                                        sx={{
+                                            padding: '1em', width:'270px', height:'170px',
+                                            cursor: 'pointer',
+                                            '&:hover': { backgroundColor: theme.palette.action.hover },
+                                        }}>
+                                        <Box display="flex" flexDirection="column" width={'65%'} height={'70%'}>
+                                            <Box position="relative"
+                                                display="flex" 
+                                                flexDirection="column"
+                                                height={'100%'}
+                                                width={'100%'}
+                                                justifyContent={'center'}>
+                                                   {repo}
+                                                </Box> 
+                                            </Box>
+                                            <Box height="100%" display="flex" flexDirection="column" alignItems="flex-end">
+                                                <SquaredSmallIconButton variant='outlined' onClick={() => {}}>
+                                                    <ArrowForward />
+                                                </SquaredSmallIconButton>
+                                        </Box>
                                     </Card>
                                 </Grid>
                             ))}
@@ -214,7 +220,7 @@ export default function Page() {
                             </Card>
                         )}
                     </Box>
-                    <Box width="100%" mt={3} display="flex" justifyContent="flex-end" gap={4}>
+                    <Box width="100%" mt={5} display="flex" justifyContent="flex-end" gap={4}>
                         <Button variant="contained" startIcon={<InsightsIcon />} onClick={() => setIsConstructionDialogOpen(true)}>
                             Chatbot
                         </Button>

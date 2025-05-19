@@ -35,12 +35,12 @@ export function ConstructionDialog(props: ConstructionDialogProps) {
             aria-labelledby="construction-dialog-title"
         >
             <DialogCloseButton handleClose={props.onClose} dataTestId="construction-dialog-close" />
-            <DialogTitle id="construction-dialog-title" style={{ padding: '2em' }}>
+            <Box id="construction-dialog-title" style={{ padding: '2em' }}>
                 <Typography variant="h2" color="primary">
                     {t('title')}
                 </Typography>
-            </DialogTitle>
-            <DialogContent style={{ padding: 0 }}>
+            </Box>
+            <DialogContent style={{ padding: '2em' }}>
                 <Box 
                     display="flex" 
                     flexDirection="column" 

@@ -121,14 +121,16 @@ export default function Page() {
                         {selectedCatalog && (
                             <Card sx={{ padding: '1em' }}>
                             <Box position="relative" width="200px" height="60px">
-                                <Image
-                                    src={selectedCatalog.catalogLogo}
-                                    alt={`${selectedCatalog.manufacturerName} logo`}
-                                    fill
-                                    style={{
-                                        objectFit: 'contain',
-                                    }}
-                                />
+                                {selectedCatalog.catalogLogo && (
+                                    <Image
+                                        src={selectedCatalog.catalogLogo}
+                                        alt={`${selectedCatalog.manufacturerName} logo`}
+                                        fill
+                                        style={{
+                                            objectFit: 'contain',
+                                        }}
+                                    />
+                                )}
                             </Box>
                             </Card>
                         )}

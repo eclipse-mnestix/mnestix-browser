@@ -284,6 +284,12 @@
       },
       "subtitle": "Aquí se muestran todos los AAS asociados al ID de Activo proporcionado.",
       "title": "AAS asociado al ID del Activo"
+    },    
+    "marketplace": {
+      "manufacturerSelect": "Seleccione un fabricante",
+      "search": "Buscar un producto",
+      "subtitle": "AAS para el conjunto de cables",
+      "title": "VWS4LS Marketplace"
     },
     "productViewer": {
       "actions": {

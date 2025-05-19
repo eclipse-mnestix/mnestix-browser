@@ -293,6 +293,7 @@
       "title": "AAS mit ID"
     },
     "marketplace": {
+      "manufacturerSelect": "Wählen Sie einen Hersteller",
       "search": "Suchen Sie nach einem Produkt",
       "subtitle": "Verwaltungsschale für den Leitungssatz",
       "title": "VWS4LS Marketplace"

@@ -255,7 +255,7 @@
     "catalog": {
       "title": "Manufacturer Catalog",
       "manufacturerCatalog": "Manufacturer Product Catalog",
-      "manufacturerSelect": "Select Manufacturer"
+      "manufacturerSelect": "Select manufacturer"
     },
     "compare": {
       "addAnother": "Add another AAS",
@@ -293,6 +293,7 @@
       "title": "Related AAS to Asset ID"
     },
     "marketplace": {
+      "manufacturerSelect": "Select a manufacturer",
       "search": "Suchen Sie nach einem Produkt",
       "subtitle": "AAS for Harness",
       "title": "VWS4LS Marketplace"
