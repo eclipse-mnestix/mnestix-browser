@@ -1,12 +1,11 @@
-import { 
-    Box, 
-    Button, 
-    Dialog, 
-    DialogActions, 
-    DialogContent, 
-    DialogTitle, 
-    Typography, 
-    useTheme 
+import {
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    Typography,
+    useTheme
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { DialogCloseButton } from './DialogCloseButton';
@@ -27,10 +26,10 @@ export function ConstructionDialog(props: ConstructionDialogProps) {
     const theme = useTheme();
 
     return (
-        <Dialog 
-            open={props.open} 
-            onClose={props.onClose} 
-            maxWidth="sm" 
+        <Dialog
+            open={props.open}
+            onClose={props.onClose}
+            maxWidth="sm"
             fullWidth={true}
             aria-labelledby="construction-dialog-title"
         >
@@ -41,17 +40,17 @@ export function ConstructionDialog(props: ConstructionDialogProps) {
                 </Typography>
             </Box>
             <DialogContent style={{ padding: '2em' }}>
-                <Box 
-                    display="flex" 
-                    flexDirection="column" 
-                    alignItems="center" 
-                    gap={3} 
+                <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    gap={3}
                 >
-                    <ConstructionIcon 
-                        sx={{ 
-                            fontSize: 80, 
-                            color: theme.palette.warning.main 
-                        }} 
+                    <ConstructionIcon
+                        sx={{
+                            fontSize: 80,
+                            color: theme.palette.warning.main
+                        }}
                     />
                     <Typography align="center">
                         {props.customMessage || t('message')}
@@ -59,9 +58,9 @@ export function ConstructionDialog(props: ConstructionDialogProps) {
                 </Box>
             </DialogContent>
             <DialogActions style={{ padding: '2em' }}>
-                <Button 
-                    onClick={props.onClose} 
-                    variant="contained" 
+                <Button
+                    onClick={props.onClose}
+                    variant="contained"
                     color="primary"
                     data-testid="construction-dialog-button"
                 >

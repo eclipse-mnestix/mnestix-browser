@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { padding } from '@mui/system';
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
 
 /**
@@ -34,7 +33,7 @@ const hardcodedCatalogConfiguration: CatalogConfiguration[] = [{
             name: 'Kontakte',
             image: '/images/catalog/manufacturers/kostal/Dichtungen.png',
         },
-        { 
+        {
             name: 'Steckverbinder',
             image: '/images/catalog/manufacturers/kostal/Steckverbinder.png',
         },
@@ -64,9 +63,9 @@ const hardcodedCatalogConfiguration: CatalogConfiguration[] = [{
             name: 'TEST_CATEGORY_1',
             image: '/images/aas-core-logo.png',
         },
-        { 
+        {
             name: 'TEST_CATEGORY_2',
-            image: '/images/aas-core-logo.png' 
+            image: '/images/aas-core-logo.png'
         },
     ],
 }];
@@ -89,7 +88,7 @@ export default function Page() {
             <Box width="90%" margin="auto">
                 <Box marginTop="2rem" marginBottom="2.25rem">
                     <Box marginBottom="2em">
-                      <Breadcrumbs links={breadcrumbLinks} />
+                        <Breadcrumbs links={breadcrumbLinks} />
                     </Box>
                     <Box marginBottom="2em">
                         <Typography variant="h1">{t('title')}</Typography>
@@ -108,7 +107,7 @@ export default function Page() {
                                 variant="outlined"
                             >
                                 {hardcodedCatalogConfiguration.map((config, index) => (
-                                    <MenuItem 
+                                    <MenuItem
                                         key={index}
                                         value={config.manufacturerName}
                                         data-testid={`repository-select-item-${index}`}
@@ -120,18 +119,18 @@ export default function Page() {
                         </FormControl>
                         {selectedCatalog && (
                             <Card sx={{ padding: '1em' }}>
-                            <Box position="relative" width="200px" height="60px">
-                                {selectedCatalog.catalogLogo && (
-                                    <Image
-                                        src={selectedCatalog.catalogLogo}
-                                        alt={`${selectedCatalog.manufacturerName} logo`}
-                                        fill
-                                        style={{
-                                            objectFit: 'contain',
-                                        }}
-                                    />
-                                )}
-                            </Box>
+                                <Box position="relative" width="200px" height="60px">
+                                    {selectedCatalog.catalogLogo && (
+                                        <Image
+                                            src={selectedCatalog.catalogLogo}
+                                            alt={`${selectedCatalog.manufacturerName} logo`}
+                                            fill
+                                            style={{
+                                                objectFit: 'contain',
+                                            }}
+                                        />
+                                    )}
+                                </Box>
                             </Card>
                         )}
                     </Box>

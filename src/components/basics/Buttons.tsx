@@ -1,5 +1,4 @@
 import { Button, ButtonProps, styled } from '@mui/material';
-import { fontSize, lineHeight } from '@mui/system';
 
 const StyledLoadingButton = styled(Button)(({ theme }) => ({
     paddingLeft: theme.spacing(1),
@@ -23,10 +22,10 @@ const StyledSmallLoadingButton = styled(Button)(({ theme }) => ({
         lineHeight: '.5rem',
         fontSize: '.5rem',
     },
-     '&:hover': {
-            backgroundColor: theme.palette.primary.main,
-            color: theme.palette.background.default,
-        },
+    '&:hover': {
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.background.default,
+    },
 }));
 
 export function SquaredIconButton(props: ButtonProps) {
