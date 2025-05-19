@@ -4,8 +4,20 @@ on:
   push:
     branches: ['main', 'dev', 'staging']
     tags: ['v*.*.*']
+    paths-ignore:
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/CODEOWNERS'
+      - '.github/copilot-instructions.md'
+      - 'wiki/**'
+      - 'README.md'
   pull_request:
     branches: ['dev']
+    paths-ignore:
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/CODEOWNERS'
+      - '.github/copilot-instructions.md'
+      - 'wiki/**'
+      - 'README.md'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
