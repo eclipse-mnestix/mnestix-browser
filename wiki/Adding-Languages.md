@@ -8,6 +8,52 @@ Currently, Mnestix Browser supports three languages, available from the language
 -   Deutsch (German)
 -   Español (Spanish)
 
+### Language conventions and format
+
+All languages added to the Mnestix browser follow some conventions in order to keep consistency and appearance, as well as
+providing an understandable interface across all languages.
+
+
+For writing style, we follow Carbon Design System's sentence-case taking into consideration the exceptions that each language
+might have.
+
+You can find more information about this on [Carbon Design System writing style](https://carbondesignsystem.com/guidelines/content/writing-style/)
+
+#### Translation agreements
+Additionally, some translation agreements have been made to make explicit the special characteristics that each language follows:
+
+- General translations:
+
+| Guideline                                                                                                                        | Example                                                                                                      |
+|----------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
+| A translation should never change the meaning of a word or sentence.                                                             |                                                                                                              |
+| Translations should be consistent across the whole application (as long is it doesn’t make the translation less understandable). |                                                                                                              |
+| Established technical terms should always be preferred over literal translations.                                                | ‘User Interface’ instead of ‘Benutzeroberfläche’ <br>‘Asset Administration Shells’ should not be translated. |
+| Established AAS terms should stay consistent across languages.                                                                   | ‘AAS ID’ and ‘Asset ID’ should not be translated.                                                            |
+| Naming for core features should be consistent across languages.                                                                  | ‘Template’ or ‘Viewer’ should not be translated. <br> 'Blueprint' and ‘AAS Generator’ as well.               |
+| Punctuation should be consistent between different translations. <br> ¡Provided the language does not have special punctuations! |                                                                                                              |
+
+- German translations:
+
+| Guideline                                                                                        | Example                                                                                               |
+|--------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
+| For ‘Asset Administration Shell’ the established german word ‘Verwaltungsschale’ should be used. |                                                                                                       |
+| ‘AAS’ will stay ‘AAS’ and not be ‘VWS’.                                                          |                                                                                                       |
+| When addressing the user directly, we use the formal pronoun “Sie”                               | ‘You will find all AAS from your repository here.’ → ‘Hier finden Sie alle AAS aus Ihrem Repository.’ |
+| Germanized words are fine to use if they lead to more clarity.                                   | ‘Default value’ → ‘Defaultwert’ <br> 'Custom' → ‘Custom’                                              |
+| The plural of english words ending with ‘y' does not get extended to 'ie’ in german.             | ‘Repositorys’ (right) <br> ‘Repositories’ (wrong)                                                     |
+
+- Spanish translations:
+
+| Guideline                                                                                                 | Example                                                        |
+|-----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|
+| ‘AAS’ will stay ‘AAS’, there’s not an accepted and used translation in Spanish.                           |                                                                |
+| When possible, use the non-personal verbal form.                                                          | ‘Choose repository' → 'Escoger un repositorio’                 |
+| If a subject is needed, use the polite 3rd person (usted[es]). Omit the subject unless explicitly needed. | 'Choose repository' → (usted - omitted)'Escoja un repositorio' |
+| When possible, use inclusive word ending.                                                                 | ‘Welcome' → 'Bienvenido/a’                                     |
+| Spanish words for technical terms are only used if translation is well-known.                             | ‘Semantic ID’ stays the same<br/>‘template' → 'plantilla’      |
+
+
 ### How do I add my own language to Mnestix?
 
 Mnestix browser supports the addition of more languages locally.
