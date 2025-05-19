@@ -16,12 +16,17 @@ import { ApiResponseWrapperError } from 'lib/util/apiResponseWrapper/apiResponse
 import { AuthenticationPrompt } from 'components/authentication/AuthenticationPrompt';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
-export default function AasListDataWrapper() {
+type AasListDataWrapperProps = {
+  repositoryUrl?: string;
+  hideRepoSelection?: boolean;
+};
+
+export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }: AasListDataWrapperProps) {
     const [isLoadingList, setIsLoadingList] = useState(false);
     const [aasList, setAasList] = useState<AasListDto>();
     const [, setAasListFiltered] = useState<ListEntityDto[]>();
     const [selectedAasList, setSelectedAasList] = useState<string[]>();
-    const [selectedRepository, setSelectedRepository] = useState<string | undefined>();
+    const [selectedRepository, setSelectedRepository] = useState<string | undefined>(repositoryUrl);
     const env = useEnv();
     const t = useTranslations('pages.aasList');
     const { showError } = useShowError();
@@ -157,17 +162,19 @@ export default function AasListDataWrapper() {
     return (
         <Card>
             <CardContent sx={{ paddingX: 0, paddingY: '1.625rem', '&:last-child': { paddingBottom: '0' } }}>
-                <Box display="flex" justifyContent="space-between" marginBottom="1.625rem" paddingX="1rem">
-                    <Box display="flex" gap={4}>
-                        <SelectRepository onSelectedRepositoryChanged={setSelectedRepository} />
+                {!hideRepoSelection && (
+                    <Box display="flex" justifyContent="space-between" marginBottom="1.625rem" paddingX="1rem">
+                        <Box display="flex" gap={4}>
+                            <SelectRepository onSelectedRepositoryChanged={setSelectedRepository} />
+                        </Box>
+                        {env.COMPARISON_FEATURE_FLAG && (
+                            <AasListComparisonHeader
+                                selectedAasList={selectedAasList}
+                                updateSelectedAasList={updateSelectedAasList}
+                            />
+                        )}
                     </Box>
-                    {env.COMPARISON_FEATURE_FLAG && (
-                        <AasListComparisonHeader
-                            selectedAasList={selectedAasList}
-                            updateSelectedAasList={updateSelectedAasList}
-                        />
-                    )}
-                </Box>
+                )}
                 {isLoadingList ? (
                     <CenteredLoadingSpinner sx={{ my: 10 }} />
                 ) : (
