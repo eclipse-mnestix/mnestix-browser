@@ -1,8 +1,10 @@
 'use client';
-import { Box, Card, CardContent, FormControl, InputLabel, MenuItem, Select, Typography, useTheme } from '@mui/material';
-import { useState } from 'react';
+import { Box, Card, Typography, useTheme, IconButton, SvgIcon } from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
+import ListHeader from 'components/basics/ListHeader';
 
 /**
  * Configuration we need to display the catalog.
@@ -10,111 +12,87 @@ import { useTranslations } from 'next-intl';
  */
 type CatalogConfiguration = {
     catalogLogo: string;
-    sourceRepository: string;
     manufacturerName: string;
-    rootCategories: {
-        name: string;
-        image: string;
-    }[];
+    articleCount: number;
+    sourceRepository: string;
 };
 
-const hardcodedCatalogConfiguration: CatalogConfiguration[] = [{
-    catalogLogo: '/images/aas-core-logo.png',
-    manufacturerName: 'Kostal',
-    sourceRepository: 'https://vws4ls-api.dev.mnestix.xitaso.net/repo',
-    rootCategories: [
-        {
-            name: 'CONNECT_TERMINALS',
-            image: '/images/aas-core-logo.png',
-        },
-        { name: 'CONNECT_HOUSINGS', image: '/images/aas-core-logo.png' },
-    ],
-}, {
-    catalogLogo: '/images/aas-core-logo.png',
-    manufacturerName: 'Test',
-    sourceRepository: 'https://vws4ls-api.dev.mnestix.xitaso.net/repo',
-    rootCategories: [
-        {
-            name: 'CONNECT_TERMINALS',
-            image: '/images/aas-core-logo.png',
-        },
-        { name: 'CONNECT_HOUSINGS', image: '/images/aas-core-logo.png' },
-    ],
-}];
+const hardcodedCatalogConfiguration: CatalogConfiguration[] = [
+    {
+        catalogLogo: '/images/kostal.png',
+        manufacturerName: 'kostal',
+        articleCount: 2345,
+        sourceRepository: 'http://92.205.177.115:8080',
+    },
+    {
+        catalogLogo: '/images/coroflex.png',
+        manufacturerName: 'coroflex',
+        articleCount: 295,
+        sourceRepository: 'https://api.mnestix.xitaso.net/repo',
+    },
+    {
+        catalogLogo: '/images/komax.png',
+        manufacturerName: 'komax',
+        articleCount: 645,
+        sourceRepository: 'https://c1.api.wago.com/smartdata-aas-env',
+    },
+];
+
 
 export default function Page() {
-    const [selectedCatalog, setSelectedCatalog] = useState<CatalogConfiguration | undefined>(undefined);
     const navigate = useRouter();
     const theme = useTheme();
     const t = useTranslations('pages.catalog');
 
-    const loadCategories = () => {
-        setSelectedCatalog(hardcodedCatalogConfiguration[0]);
-    };
-
     return (
-        <Box display="flex" flexDirection="column" marginTop="0px" marginBottom="50px" width="100%">
-            <Box width="90%" margin="auto">
-                <Box marginTop="2rem" marginBottom="2.25rem">
-                    <Box marginBottom="2em">
-                        <Typography variant="h1">{t('title')}</Typography>
-                    </Box>
-                    <FormControl variant="standard" sx={{ minWidth: 300, maxWidth: 300 }}>
-                        <InputLabel id="aas-repository-select" sx={{ color: 'text.secondary' }}>
-                            {t('manufacturerSelect')}
-                        </InputLabel>
-                        <Select
-                            data-testid="repository-select"
-                            labelId="aas-repository-select"
-                            value={selectedCatalog?.manufacturerName || ''}
-                            label={'test'}
-                            onChange={loadCategories}
-                            variant="outlined"
-                        >
-                            {hardcodedCatalogConfiguration.map((repo, index) => {
-                                return (
-                                    <MenuItem
-                                        key={index}
-                                        value={repo.manufacturerName}
-                                        data-testid={`repository-select-item-${index}`}
-                                    >
-                                        {repo.manufacturerName}
-                                    </MenuItem>
-                                );
-                            })}
-                        </Select>
-                    </FormControl>
+        <Box display="flex" flexDirection="column" minHeight="100vh" bgcolor={theme.palette.background.default}>
+            <Box width="90%" margin="auto" marginTop="2rem">
+                <ListHeader header={t('marketplaceTitle')} subHeader={t('marketplaceSubtitle')} />
+                <Box display="flex" alignItems="center" marginTop="2.5rem" marginBottom="1.5rem">
+                    <ContentPasteSearchIcon fontSize="large" color="primary" sx={{mr: 1}} />
+                    <Typography variant="h4" fontWeight={600} component="h2">
+                        {t('manufacturerSelect', {namespace: 'pages.catalog'})}
+                    </Typography>
                 </Box>
-                {selectedCatalog ? <Box>
-                    <Typography variant="h3">{t('manufacturerCatalog')}</Typography>
-                    <Box display="flex" flexDirection="row" flexWrap="wrap">
-                        {selectedCatalog?.rootCategories.map((category) => (
-                            <Card
-                                key={category.name}
-                                onClick={() => {
-                                    navigate.push(`catalog/${category.name}`);
-                                }}
-                                sx={{
-                                    margin: '1em',
-                                    cursor: 'pointer',
-                                    '&:hover': { backgroundColor: theme.palette.action.hover },
-                                }}
-                            >
-                                <CardContent>
-                                    <Box
-                                        width="200px"
-                                        height="200px"
-                                        display="flex"
-                                        flexDirection="column"
-                                        alignItems="center"
-                                    >
-                                        {category.name}
-                                    </Box>
-                                </CardContent>
-                            </Card>
-                        ))}
-                    </Box>
-                </Box> : <Typography>Please select a manufacturer</Typography>}
+
+                <Box display="flex" flexWrap="wrap" gap={3}>
+                    {hardcodedCatalogConfiguration.map((repo) => (
+                        <Card
+                            key={repo.manufacturerName}
+                            sx={{
+                                width: 320,
+                                minHeight: 160,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                                p: 2,
+                                boxShadow: 2,
+                                borderRadius: 3,
+                                position: 'relative',
+                                background: theme.palette.background.paper,
+                            }}
+                        >
+                            <Box display="flex" alignItems="center" gap={2}>
+                                <img
+                                    src={repo.catalogLogo}
+                                    alt={`${repo.manufacturerName} Logo`}
+                                    style={{ height: 48, width: 'auto', objectFit: 'contain' }}
+                                />
+                            </Box>
+                            <Box display="flex" alignItems="center" justifyContent="space-between" mt={2}>
+                                <Typography color="text.secondary" fontSize="1.1rem">
+                                    {t('articleCount', {count: repo.articleCount})}
+                                </Typography>
+                                <IconButton
+                                    onClick={() => navigate.push(`/catalog/${encodeURIComponent(repo.manufacturerName)}`)}
+                                    sx={{ bgcolor: theme.palette.primary.light, color: theme.palette.primary.contrastText, '&:hover': { bgcolor: theme.palette.primary.main } }}
+                                >
+                                    <ArrowForwardIcon />
+                                </IconButton>
+                            </Box>
+                        </Card>
+                    ))}
+                </Box>          
             </Box>
         </Box>
     );

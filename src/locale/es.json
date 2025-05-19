@@ -245,6 +245,14 @@
         "unknownModelType": "Tipo del modelo desconocido: {type}"
       }
     },
+    "catalog": {
+      "title": "Catálogo de productos",
+      "manufacturerCatalog": "Catálogo de productos del fabricante",
+      "manufacturerSelect": "Seleccionar fabricante",
+      "marketplaceTitle": "VWS4LS - Marketplace",
+      "marketplaceSubtitle": "Shell de administración de activos para mazos de cables",
+      "articleCount": "{count, plural, =1 {# artículo} other {# artículos}}"
+    },
     "compare": {
       "addAnother": "Añadir otro AAS",
       "addButton": "Añadir otro AAS",

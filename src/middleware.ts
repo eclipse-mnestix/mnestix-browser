@@ -9,7 +9,7 @@ import { envs } from 'lib/env/MnestixEnv';
 const i18nMiddleware = createMiddleware(routing);
 
 // paths where we do not need localized path
-const unlocalizedPaths = ['/api', '/_next/static', '/_next/image', '/favicon.ico', '/LocationMarkers'];
+const unlocalizedPaths = ['/api', '/_next/static', '/_next/image', '/favicon.ico', '/LocationMarkers', '/images'];
 
 const unlocalizedPathsRegex = RegExp(
     `^(${unlocalizedPaths.map((str) => `(${str.startsWith('/') ? str : '/' + str})`).join('|')})(/?$|/.*)`,

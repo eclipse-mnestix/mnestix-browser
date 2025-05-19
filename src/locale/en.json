@@ -250,7 +250,10 @@
     "catalog": {
       "title": "Manufacturer Catalog",
       "manufacturerCatalog": "Manufacturer Product Catalog",
-      "manufacturerSelect": "Select Manufacturer"
+      "manufacturerSelect": "Select Manufacturer",
+      "marketplaceTitle": "VWS4LS - Marketplace",
+      "marketplaceSubtitle": "Asset Administration Shell for Wire Harness",
+      "articleCount": "{count, plural, =1 {# article} other {# articles}}"
     },
     "compare": {
       "addAnother": "Add another AAS",
