@@ -64,7 +64,7 @@ export class ListService {
 
     /**
      * Returns all AASs from the chosen repository.
-     * Special Behaviour: If the AssetInformation contains a specificAssetId with the name "aasListFilterId",
+     * Special Behavior: If the AssetInformation contains a specificAssetId with the name "aasListFilterId",
      * the whole AAS is filtered out and not returned from this service.
      * This logic is needed to hide the configuration AASs created by the mnestix-api.
      * @param limit

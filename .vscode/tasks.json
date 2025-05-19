@@ -1,23 +1,23 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "docker-down",
-            "type": "shell",
-            "command": "docker compose -f compose.yml -f docker-compose/compose.dev.yml -p mnestix-browser down",
-            "presentation": {
-                "reveal": "always",
-                "panel": "new"
-            }
-        }, 
-        {
-            "label": "docker-down-rbac",
-            "type": "shell",
-            "command": "docker compose -f compose.yml -f docker-compose/compose.dev.yml -f docker-compose/compose.dynamic-rbac.yml -p mnestix-browser down",
-            "presentation": {
-                "reveal": "always",
-                "panel": "new"
-            }
-        }
-    ]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "docker-down",
+      "type": "shell",
+      "command": "docker compose -f compose.yml -f docker-compose/compose.dev.yml -p mnestix-browser down",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "docker-down-rbac",
+      "type": "shell",
+      "command": "docker compose -f compose.yml -f docker-compose/compose.proxy.yml -f docker-compose/compose.dev.yml -f docker-compose/compose.dynamic-rbac.yml -p mnestix-browser down",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    }
+  ]
 }

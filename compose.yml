@@ -9,7 +9,9 @@ volumes:
 services:
   mnestix-browser:
     container_name: mnestix-browser
-    image: mnestix/mnestix-browser:1.5.0
+    image: mnestix/mnestix-browser:1.5.0 #Works only with the 2.0.0 (new release) version of the backend
+    # image: mnestix/mnestix-browser:2.0.0
+    # image: mnestix/mnestix-browser:2.0.0-rc.1
     profiles: ['', 'frontend', 'tests']
     build:
       dockerfile: Dockerfile
@@ -19,11 +21,11 @@ services:
     environment:
       REGISTRY_API_URL: 'https://aas-registry:8083/' # 'https://registry.dpp40-2-v2.industrialdigitaltwin.org/'
       SUBMODEL_REGISTRY_API_URL: 'http://submodel-registry:8084'
-      DISCOVERY_API_URL: 'http://mnestix-api:5064/discovery'
-      AAS_REPO_API_URL: 'http://mnestix-api:5064/repo'
-      SUBMODEL_REPO_API_URL: 'http://mnestix-api:5064/repo'
-      CONCEPT_DESCRIPTION_REPO_API_URL: 'http://mnestix-api:5064/repo'
-      MNESTIX_BACKEND_API_URL: 'http://mnestix-api:5064'
+      DISCOVERY_API_URL: 'http://mnestix-proxy:5065/discovery'
+      AAS_REPO_API_URL: 'http://mnestix-proxy:5065/repo'
+      SUBMODEL_REPO_API_URL: 'http://mnestix-proxy:5065/repo'
+      CONCEPT_DESCRIPTION_REPO_API_URL: 'http://mnestix-proxy:5065/repo'
+      MNESTIX_BACKEND_API_URL: 'http://mnestix-proxy:5065'
       MNESTIX_BACKEND_API_KEY: ${MNESTIX_BACKEND_API_KEY:-verySecureApiKey}
       AAS_LIST_FEATURE_FLAG: 'true'
       TRANSFER_FEATURE_FLAG: 'false'
@@ -40,29 +42,46 @@ services:
     volumes:
       - mnestix-database:/app/prisma/database
 
-  mnestix-api:
-    image: mnestix/mnestix-api:1.3.2
-    container_name: mnestix-api
-    profiles: ['', 'backend', 'tests']
+  mnestix-proxy:
+    image: mnestix-proxy:0.0.1
+    container_name: mnestix-proxy
     ports:
-      - '5064:5064'
+      - 5065:5065
     environment:
       # API key authorization
       CustomerEndpointsSecurity__ApiKey: ${MNESTIX_BACKEND_API_KEY:-verySecureApiKey}
       # Connection to Repository Service:
+      ReverseProxy__Clusters__mnestixApiCluster__Destinations__destination1__Address: 'http://mnestix-api:5064/'
       ReverseProxy__Clusters__aasRepoCluster__Destinations__destination1__Address: 'http://aas-environment:8081/'
       ReverseProxy__Clusters__submodelRepoCluster__Destinations__destination1__Address: 'http://aas-environment:8081/'
       ReverseProxy__Clusters__discoveryCluster__Destinations__destination1__Address: 'http://aas-discovery:8081/'
-      # Features Configuration
-      Features__AasRegistryMiddleware: 'true'
-      Features__UseMongoDbBasedAasIdStorage: 'true'
-      Features__AllowRetrievingAllShellsAndSubmodels: 'true'
-      Features__UseAuthentication: 'false'
       # InfluxDB Configuration
       # URL to specify the host and port where InfluxDB is running:
       ReverseProxy__Clusters__influxCluster__Destinations__destination1__Address: 'http://example/'
       # Token:
       ReverseProxy__Routes__InfluxRoute__Transforms__1__Set: 'Token '
+      # ASP.NET Core URLs
+      ASPNETCORE_URLS: 'http://+:5065'
+    networks:
+      - mnestix-network
+
+  mnestix-api:
+    image: mnestix-api:2.0.0
+    container_name: mnestix-api
+    profiles: ['', 'backend', 'tests']
+    ports:
+      - '5064:5064'
+    environment:
+      # ServerUrls
+      ServerUrls: 'http://mnestix-proxy:5065/repo/'
+      # API key authorization
+      CustomerEndpointsSecurity__ApiKey: ${MNESTIX_BACKEND_API_KEY:-verySecureApiKey}
+      #Configuration
+      #Configuration__ConfigurationSubmodelId: 'https://repodomainurl.com/sm/B461C6ED32214933B8B6CE569C8F0A03/1/0'
+      #Configuration__DefaultSubmodelsAasId: 'https://mnestix.com/aas/F11BF9F696A3454EBA0AA4503783F142_4"'
+      #Configuration__CustomSubmodelsAasId: 'https://mnestix.com/aas/B9961AFAC3324809AFC5E48D26D55992_3'
+      # Features Configuration
+      Features__UseAuthentication: 'false'
       # MongoDB Configuration
       BasyxDbConnectionConfiguration__MongoConnectionString: 'mongodb://mongoAdmin:mongoPassword@mongodb:27017/?authSource=admin'
       BasyxDbConnectionConfiguration__DatabaseName: basyxdb
@@ -84,6 +103,8 @@ services:
     image: mongo:5
     container_name: mongodb
     profiles: ['', 'basyx', 'tests']
+    ports:
+      - '27017:27017'
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongoAdmin
       MONGO_INITDB_ROOT_PASSWORD: mongoPassword
@@ -107,6 +128,8 @@ services:
     profiles: ['', 'basyx', 'tests']
     depends_on:
       - mongodb
+    ports:
+      - '8081:8081'
     environment:
       # MongoDb configuration for Basyx Repository
       BASYX__BACKEND: MongoDB
