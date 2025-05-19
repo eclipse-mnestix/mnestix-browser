@@ -41,7 +41,7 @@ services:
       - mnestix-database:/app/prisma/database
 
   mnestix-api:
-    image: mnestix/mnestix-api:1.3.2
+    image: mnestix/mnestix-api:1.3.3
     container_name: mnestix-api
     profiles: ['', 'backend', 'tests']
     ports:
@@ -81,7 +81,7 @@ services:
       - mnestix-network
 
   mongodb:
-    image: mongo:5
+    image: mongo:8
     container_name: mongodb
     profiles: ['', 'basyx', 'tests']
     environment:
@@ -102,7 +102,7 @@ services:
       - mnestix-network
 
   aas-environment:
-    image: eclipsebasyx/aas-environment:2.0.0-milestone-05
+    image: eclipsebasyx/aas-environment:2.0.0-milestone-05.1.1
     container_name: aas-environment
     profiles: ['', 'basyx', 'tests']
     depends_on:
@@ -134,7 +134,7 @@ services:
       - mnestix-network
 
   aas-discovery:
-    image: eclipsebasyx/aas-discovery:2.0.0-milestone-05
+    image: eclipsebasyx/aas-discovery:2.0.0-milestone-05.1.1
     container_name: aas-discovery
     profiles: ['', 'basyx', 'tests']
     depends_on:
@@ -162,7 +162,7 @@ services:
       - mnestix-network
 
   aas-registry:
-    image: eclipsebasyx/aas-registry-log-mongodb:2.0.0-milestone-05
+    image: eclipsebasyx/aas-registry-log-mongodb:2.0.0-milestone-05.1.1
     container_name: aas-registry
     profiles: ['', 'basyx']
     ports:
@@ -182,7 +182,7 @@ services:
       - mnestix-network
 
   submodel-registry:
-    image: eclipsebasyx/submodel-registry-log-mongodb:2.0.0-milestone-05
+    image: eclipsebasyx/submodel-registry-log-mongodb:2.0.0-milestone-05.1.1
     container_name: submodel-registry
     profiles: ['', 'basyx']
     ports:
