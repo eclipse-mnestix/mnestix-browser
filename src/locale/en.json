@@ -253,7 +253,8 @@
       "manufacturerSelect": "Select Manufacturer",
       "marketplaceTitle": "VWS4LS - Marketplace",
       "marketplaceSubtitle": "Asset Administration Shell for Wire Harness",
-      "articleCount": "{count, plural, =1 {# article} other {# articles}}"
+      "articleCount": "{count, plural, =1 {# article} other {# articles}}",
+      "filter": "Filter"
     },
     "compare": {
       "addAnother": "Add another AAS",

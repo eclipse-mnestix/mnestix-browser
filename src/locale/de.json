@@ -253,7 +253,8 @@
       "manufacturerSelect": "Hersteller auswählen",
       "marketplaceTitle": "VWS4LS - Marketplace",
       "marketplaceSubtitle": "Verwaltungsschale für den Leitungssatz",
-      "articleCount": "{count, plural, =1 {# Artikel} other {# Artikel}}"
+      "articleCount": "{count, plural, =1 {# Artikel} other {# Artikel}}",
+      "filter": "Filter"
     },
     "compare": {
       "addAnother": "Eine weitere AAS hinzufügen",

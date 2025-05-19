@@ -251,7 +251,8 @@
       "manufacturerSelect": "Seleccionar fabricante",
       "marketplaceTitle": "VWS4LS - Marketplace",
       "marketplaceSubtitle": "Shell de administración de activos para mazos de cables",
-      "articleCount": "{count, plural, =1 {# artículo} other {# artículos}}"
+      "articleCount": "{count, plural, =1 {# artículo} other {# artículos}}",
+      "filter": "Filtro"
     },
     "compare": {
       "addAnother": "Añadir otro AAS",
