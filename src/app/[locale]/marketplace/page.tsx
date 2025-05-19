@@ -125,12 +125,12 @@ export default function Page() {
                         <Typography variant="h3">{t('subtitle')}</Typography>
                     </Box>
 
-                    <Box display="flex" flexDirection={"column"} gap={4}>
-                        <Box mt={3} display={"flex"} alignItems="center" gap={2} width="100%">
+                    <Box display="flex" flexDirection="column" gap={4}>
+                        <Box mt={3} display="flex" alignItems="center" gap={2} width="100%">
                             <ContentPasteSearchIcon sx={{ fontSize: 40 }} />
                             <Typography variant="h3">{t('manufacturerSelect')}</Typography>
                         </Box>
-                        <Box display="flex" gap={2} mt={1} width={"100%"} flexWrap={"wrap"}>
+                        <Box display="flex" gap={2} mt={1} width="100%" flexWrap="wrap">
                             {hardcodedCatalogConfiguration.map((config, index) => (
                                 <Grid size={3} key={index}>
                                     <Card
@@ -197,7 +197,7 @@ export default function Page() {
                                     </Card>
                                 </Grid>
                             ))}
-                            <Grid size={4} display={"flex"} alignItems="center">
+                            <Grid size={4} display="flex" alignItems="center">
                             </Grid>
                         </Box>
                     </Box>
