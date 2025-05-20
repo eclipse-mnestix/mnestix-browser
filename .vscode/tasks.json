@@ -4,7 +4,7 @@
     {
       "label": "docker-down",
       "type": "shell",
-      "command": "docker compose -f compose.yml -f docker-compose/compose.dev.yml -p mnestix-browser down",
+      "command": "docker compose -f compose.yml -f docker-compose/compose.proxy.yml -f docker-compose/compose.dev.yml -p mnestix-browser down",
       "presentation": {
         "reveal": "always",
         "panel": "new"
