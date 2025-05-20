@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { TreeItem, TreeItemProps, useTreeItemState } from '@mui/x-tree-view';
+import { TreeItem, TreeItemContentProps, TreeItemProps, useTreeItemState } from '@mui/x-tree-view';
 import clsx from 'clsx';
 import Typography from '@mui/material/Typography';
 import { Box, styled } from '@mui/material';
@@ -22,40 +22,55 @@ interface CustomTreeItemProps extends TreeItemProps {
     isAboutToBeDeleted: boolean | undefined;
 }
 
+interface CustomTreeItemContentProps extends TreeItemContentProps {
+    hasValue?: boolean;
+    customOnSelect: () => void;
+    multiplicity: MultiplicityEnum | undefined;
+    onDuplicate: (nodeId: string) => void;
+    onDelete: (nodeId: string) => void;
+    onRestore: (nodeId: string) => void;
+    getNumberOfElementsWithSameSemanticId: (semanticId: string | undefined) => number;
+    semanticId: string | undefined;
+    isParentAboutToBeDeleted: boolean | undefined;
+    isAboutToBeDeleted: boolean | undefined;
+}
+
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
     '.MuiTreeItem-content': {
         userSelect: 'none',
         margin: 0,
-        '&.data-focused': {
+        '&.Mui-focused': {
             backgroundColor: 'transparent',
         },
-        '&.data-focused:hover': {
+        '&.Mui-focused:hover': {
             backgroundColor: theme.palette.action.hover,
         },
-        '&.data-focused.data-selected': {
+        '&.Mui-focused.Mui-selected': {
             backgroundColor: theme.palette.action.selected,
         },
     },
 }));
 
-const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeItemProps, ref) {
+const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeItemContentProps, ref) {
     const {
         classes,
         className,
         label,
         itemId,
+        icon: iconProp,
+        expansionIcon,
+        displayIcon,
         hasValue,
         customOnSelect,
         multiplicity,
         getNumberOfElementsWithSameSemanticId,
         semanticId,
-        slots,
     } = props;
 
     const { disabled, expanded, selected, focused, handleExpansion, handleSelection, preventSelection } =
         useTreeItemState(itemId);
 
-    const icon = slots?.icon || slots?.expandIcon || displayIcon;
+    const icon = iconProp || expansionIcon || displayIcon;
 
     const [isAboutToBeDeleted, setIsAboutToBeDeleted] = useState(false);
     const t = useTranslations('pages.templates');
@@ -102,30 +117,30 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
 
     return (
         <Box
-            className={clsx(className, classes?.root, {
-                ['data-expanded']: expanded,
-                ['data-selected']: selected,
-                ['data-focused']: focused,
-                ['data-disabled']: disabled,
+            className={clsx(className, classes.root, {
+                [classes.expanded]: expanded,
+                [classes.selected]: selected,
+                [classes.focused]: focused,
+                [classes.disabled]: disabled,
             })}
             onMouseDown={handleMouseDown}
             ref={ref as React.Ref<HTMLDivElement>}
         >
-            <Box onClick={handleExpansionClick} className={classes?.iconContainer} sx={{ py: 1 }}>
+            <Box onClick={handleExpansionClick} className={classes.iconContainer} sx={{ py: 1 }}>
                 {icon}
             </Box>
             <Box onClick={handleSelectionClick} display="flex" sx={{ width: '100%' }}>
                 <Box sx={{ py: 1, pr: 1, display: 'flex' }} onClick={handleSelectionClick}>
                     {isAboutToBeDeleted || props.isParentAboutToBeDeleted ? (
                         <>
-                            <Typography component="div" className={classes?.label} sx={{ color: 'text.disabled' }}>
+                            <Typography component="div" className={classes.label} sx={{ color: 'text.disabled' }}>
                                 {`${label} (${t('messages.deleted')})`}
                             </Typography>
                             {hasValue && <TextSnippet fontSize="small" sx={{ color: 'text.disabled', ml: '3px' }} />}
                         </>
                     ) : (
                         <>
-                            <Typography component="div" className={classes?.label}>
+                            <Typography component="div" className={classes.label}>
                                 {label}
                             </Typography>
                             {hasValue && <TextSnippet fontSize="small" sx={{ color: 'text.secondary', ml: '3px' }} />}
@@ -164,11 +179,9 @@ export const TemplateEditTreeItem = (props: CustomTreeItemProps) => {
     /* eslint-disable @typescript-eslint/no-explicit-any */
     return (
         <StyledTreeItem
-            slots={{
-                content: CustomContent,
-            }}
-            slotProps={{
-                content: {
+            ContentComponent={CustomContent}
+            ContentProps={
+                {
                     customOnSelect,
                     hasValue,
                     multiplicity,
@@ -179,8 +192,8 @@ export const TemplateEditTreeItem = (props: CustomTreeItemProps) => {
                     semanticId,
                     isParentAboutToBeDeleted,
                     isAboutToBeDeleted,
-                } as any,
-            }}
+                } as any
+            }
             {...other}
         />
     );
