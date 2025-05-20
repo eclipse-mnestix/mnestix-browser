@@ -1,5 +1,10 @@
 {
   "components": {
+    "constructionDialog": {
+      "title": "In Bearbeitung",
+      "message": "Diese Funktion befindet sich derzeit im Aufbau und wird in Kürze verfügbar sein.",
+      "buttonText": "Schließen"
+    },
     "addressComponent": {
       "VAT": "USt-IdNr.",
       "addressTypes": {

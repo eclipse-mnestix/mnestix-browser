@@ -7,6 +7,8 @@ import AasListDataWrapper from '../../list/_components/AasListDataWrapper';
 import { useTranslations } from 'next-intl';
 import { CatalogConfiguration } from '../../catalog/catalogConfiguration';
 import Image from 'next/image';
+import { Breadcrumbs } from 'components/basics/Breadcrumbs';
+import { getCatalogBreadcrumbs } from 'app/catalog/breadcrumbs';
 
 
 export default function Page() {
@@ -14,9 +16,13 @@ export default function Page() {
     const t = useTranslations('pages.catalog');
     const { category: manufacturer } = params;
     const config = CatalogConfiguration[manufacturer];
+    const breadcrumbLinks = getCatalogBreadcrumbs(t, manufacturer);
 
     return (
-            <Box width="90%" margin="auto" marginTop="2rem" >
+            <Box width="90%" margin="auto" marginTop="1rem" >
+                <Box marginBottom="1em">
+                        <Breadcrumbs links={breadcrumbLinks} />
+                </Box>
                 <Box display="flex" justifyContent="space-between">
                     <ListHeader header={t('marketplaceTitle')} subHeader={t('marketplaceSubtitle')} />
                     {config?.manufacturerLogo && (
@@ -27,7 +33,6 @@ export default function Page() {
                                 height={48}
                                 width={120}
                                 style={{ objectFit: 'contain' }}
-                                priority
                             />
                         </Box>
                     )}

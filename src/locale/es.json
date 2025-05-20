@@ -1,5 +1,10 @@
 {
   "components": {
+    "constructionDialog": {
+      "title": "En Construcción",
+      "message": "Esta función está actualmente en construcción y estará disponible próximamente.",
+      "buttonText": "Cerrar"
+    },
     "addressComponent": {
       "VAT": "NIF/CIF",
       "addressTypes": {

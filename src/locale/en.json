@@ -1,5 +1,10 @@
 {
   "components": {
+    "constructionDialog": {
+      "title": "Under Construction",
+      "message": "This feature is currently under construction and will be available soon.",
+      "buttonText": "Close"
+    },
     "addressComponent": {
       "VAT": "VAT-Number",
       "addressTypes": {
