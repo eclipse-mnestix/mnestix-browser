@@ -56,7 +56,7 @@
     "@mui/styled-engine": "^7.1.0",
     "@mui/system": "^7.1.0",
     "@mui/x-date-pickers": "^8.3.0",
-    "@mui/x-tree-view": "^8.3.0",
+    "@mui/x-tree-view": "^7.26.0",
     "@prisma/client": "^6.7.0",
     "@svgr/webpack": "^8.1.0",
     "buffer": "^6.0.3",
@@ -104,7 +104,7 @@
     "docker:prune": "docker compose -f compose.yml  -f docker-compose/compose.test.yml -f docker-compose/compose.keycloak.yml down -v && docker network prune && docker network rm mnestix-network",
     "docker:keycloak": "docker compose -f compose.yml -f docker-compose/compose.keycloak.yml up",
     "docker:azure": "docker compose -f compose.yml -f docker-compose/compose.azure_ad.yml up",
-    "docker:rbac": "docker compose -f compose.yml -f docker-compose/compose.dynamic-rbac.yml up"
+    "docker:rbac": "docker compose -f compose.yml -f docker-compose/compose.dev.yml -f docker-compose/compose.dynamic-rbac.yml --profile basyx --profile backend --profile frontend up"
   },
   "browserslist": {
     "production": [
