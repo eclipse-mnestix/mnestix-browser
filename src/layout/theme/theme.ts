@@ -1,5 +1,4 @@
-import { Components, PaletteOptions, ThemeOptions } from '@mui/material';
-import { TypographyStyleOptions } from '@mui/material/styles/createTypography';
+import { Components, PaletteOptions, ThemeOptions, TypographyVariantsOptions } from '@mui/material';
 import '@fontsource/saira/400.css';
 import '@fontsource/saira/500.css';
 import '@fontsource/saira/600.css';
@@ -7,7 +6,7 @@ import '@fontsource/saira/700.css';
 import '@fontsource/noto-sans/400.css';
 import '@fontsource/noto-sans/700.css';
 
-const typography: TypographyStyleOptions = {
+const typography: TypographyVariantsOptions = {
     fontFamily: 'Noto Sans, sans-serif',
     h1: {
         fontFamily: 'Saira, sans-serif',
