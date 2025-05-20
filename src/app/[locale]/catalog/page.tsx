@@ -1,11 +1,12 @@
 'use client';
-import { Box, Card, Typography, useTheme, IconButton, SvgIcon } from '@mui/material';
+import { Box, Card, Typography, useTheme, IconButton } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import ListHeader from 'components/basics/ListHeader';
 import { CatalogConfiguration } from './catalogConfiguration';
+import Image from 'next/image';
 
 
 export default function Page() {
@@ -19,7 +20,7 @@ export default function Page() {
             <Box width="90%" margin="auto" marginTop="2rem">
                 <ListHeader header={t('marketplaceTitle')} subHeader={t('marketplaceSubtitle')} />
                 <Box display="flex" alignItems="center" marginTop="2.5rem" marginBottom="1.5rem">
-                    <ContentPasteSearchIcon fontSize="large" color="primary" sx={{mr: 1}} />
+                    <ContentPasteSearchIcon fontSize="large" color="primary" sx={{ mr: 1 }} />
                     <Typography variant="h4" fontWeight={600} component="h2">
                         {t('manufacturerSelect')}
                     </Typography>
@@ -43,7 +44,7 @@ export default function Page() {
                             }}
                         >
                             <Box display="flex" alignItems="center" gap={2}>
-                                <img
+                                <Image
                                     src={config.manufacturerLogo}
                                     alt={`${manufacturer} Logo`}
                                     style={{ height: 48, width: 'auto', objectFit: 'contain' }}
@@ -51,7 +52,7 @@ export default function Page() {
                             </Box>
                             <Box display="flex" alignItems="center" justifyContent="space-between" mt={2}>
                                 <Typography color="text.secondary" fontSize="1.1rem">
-                                    {t('articleCount', {count: config.articleCount})}
+                                    {t('articleCount', { count: config.articleCount })}
                                 </Typography>
                                 <IconButton
                                     onClick={() => navigate.push(`/catalog/${encodeURIComponent(manufacturer)}`)}

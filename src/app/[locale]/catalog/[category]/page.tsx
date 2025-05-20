@@ -6,6 +6,7 @@ import ListHeader from 'components/basics/ListHeader';
 import AasListDataWrapper from '../../list/_components/AasListDataWrapper';
 import { useTranslations } from 'next-intl';
 import { CatalogConfiguration } from '../../catalog/catalogConfiguration';
+import Image from 'next/image';
 
 
 export default function Page() {
@@ -20,10 +21,10 @@ export default function Page() {
                     <ListHeader header={t('marketplaceTitle')} subHeader={t('marketplaceSubtitle')} />
                     {config?.manufacturerLogo && (
                         <Box ml={2} display="flex" alignItems="center">
-                            <img
+                            <Image
                                 src={config?.manufacturerLogo}
                                 alt={`${manufacturer} Logo`}
-                                style={{ height: 48, width: 'auto', objectFit: 'contain'}}
+                                style={{ height: 48, width: 'auto', objectFit: 'contain' }}
                             />
                         </Box>
                     )}
@@ -34,7 +35,7 @@ export default function Page() {
                             minHeight: 480,
                             minWidth: 250,
                             maxWidth: 340,
-                            marginBottom: "auto",
+                            marginBottom: 'auto',
                             p: 2,
                             boxShadow: 1,
                             borderRadius: 1,
@@ -45,8 +46,8 @@ export default function Page() {
                         <Typography variant="h6" fontWeight={600}>
                             {t('filter')}
                         </Typography>
-                        <Typography color="text.secondary" marginTop={"1rem"}>
-                            Test tefrnejgnrejgergnerj
+                        <Typography color="text.secondary" marginTop={'1rem'}>
+                            'Test tefrnejgnrejgergnerj'
                         </Typography>
                     </Card>
                     <Box flex={1} minWidth={0}>
