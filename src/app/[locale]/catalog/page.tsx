@@ -47,7 +47,10 @@ export default function Page() {
                                 <Image
                                     src={config.manufacturerLogo}
                                     alt={`${manufacturer} Logo`}
-                                    style={{ height: 48, width: 'auto', objectFit: 'contain' }}
+                                    width={120}
+                                    height={48}
+                                    style={{ objectFit: 'contain' }}
+                                    priority
                                 />
                             </Box>
                             <Box display="flex" alignItems="center" justifyContent="space-between" mt={2}>

@@ -24,7 +24,10 @@ export default function Page() {
                             <Image
                                 src={config?.manufacturerLogo}
                                 alt={`${manufacturer} Logo`}
-                                style={{ height: 48, width: 'auto', objectFit: 'contain' }}
+                                height={48}
+                                width={120}
+                                style={{ objectFit: 'contain' }}
+                                priority
                             />
                         </Box>
                     )}
