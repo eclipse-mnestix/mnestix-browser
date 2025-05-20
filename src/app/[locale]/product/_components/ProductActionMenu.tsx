@@ -74,7 +74,7 @@ export function ActionMenu({ aas, submodels, repositoryURL, className }: ActionM
             } else if (!response.isSuccess) {
                 showError(response.message);
             }
-        } catch (e) {
+        } catch {
             showError(t('productViewer.actions.downloadError'));
         }
         handleMenuClose();
