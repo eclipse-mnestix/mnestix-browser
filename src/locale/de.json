@@ -89,9 +89,11 @@
       "copyBase64": "Base64-kodiert kopieren"
     },
     "documentComponent": {
+      "classification": "Dokument Klassifikation",
       "documentDetails": "Dokumentendetails",
       "fileNotFound": "Datei nicht gefunden",
-      "open": "Öffnen"
+      "open": "Öffnen",
+      "showMoreButton": "zeige mehr"
     },
     "dummyComponent": {
       "dummyText": "Das ist eine Dummy-Komponente. Sie wird verwendet, um das Layout und Design der Anwendung zu testen."
@@ -340,7 +342,8 @@
         },
         "subtitle": "Definieren Sie, welche Datenquellen verwendet werden sollen.",
         "title": "Datenquellen",
-        "urlFieldRequired": "URL wird benötigt"
+        "urlFieldRequired": "URL wird benötigt",
+        "urlFieldNoTrailingSlash": "Die URL darf nicht mit einem Schrägstrich (/) enden."
       },
       "header": "Einstellungen",
       "idStructure": {
@@ -405,9 +408,9 @@
           "delete": "Vergessen Sie nicht die Rolle in Keycloak zu entfernen!",
           "title": "Keycloak aktualisieren"
         },
-        "roleRequired": "Rolle wird benötigt",
         "roleNameMaxLength": "Rollenname darf maximal {maxLength} Zeichen lang sein",
         "roleNameNoTrailSpace": "Rollenname darf keine Leerzeichen am Ende haben.",
+        "roleRequired": "Rolle wird benötigt",
         "subtitle": "Verwalten von Rollen und Berechtigungen.",
         "tableHeader": {
           "aasIds": "AAS IDs",

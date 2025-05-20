@@ -26,9 +26,9 @@ export function DocumentDetailsDialog(props: DocumentDetailsModalProps) {
                     {t('documentDetails')}
                 </Typography>
                 {document.value.map((el, i) => (
-                    <GenericSubmodelElementComponent 
-                        submodelElement={el as ISubmodelElement} 
-                        key={i} 
+                    <GenericSubmodelElementComponent
+                        submodelElement={el as ISubmodelElement}
+                        key={i}
                         hasDivider={i !== 0}
                     />
                 ))}
