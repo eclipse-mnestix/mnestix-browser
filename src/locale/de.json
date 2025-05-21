@@ -290,7 +290,10 @@
     "productViewer": {
       "actions": {
         "compareButton": "Vergleichen",
-        "toAasView": "AAS Ansicht"
+        "toAasView": "AAS Ansicht",
+        "download": "AAS herunterladen",
+        "downloadErrorNoRepo": "Kein Repository für die ausgewählte AAS gefunden.",
+        "downloadError": "Fehler beim Herunterladen der AAS."
       },
       "classification": "Produktklassifikation",
       "error": {
