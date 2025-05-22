@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Card, Typography } from '@mui/material';
+import { Box, Card } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
 import ListHeader from 'components/basics/ListHeader';
 import AasListDataWrapper from 'app/[locale]/list/_components/AasListDataWrapper';
@@ -9,6 +9,7 @@ import { CatalogConfiguration } from 'app/[locale]/marketplace/catalogConfigurat
 import Image from 'next/image';
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
 import { getCatalogBreadcrumbs } from 'app/catalog/breadcrumbs';
+import { FilterContainer } from 'app/[locale]/marketplace/catalog/_components/filterContainer';
 
 export default function Page() {
     const params = useSearchParams();
@@ -55,12 +56,7 @@ export default function Page() {
                     }}
                     aria-label={t('filter')}
                 >
-                    <Typography variant="h6" fontWeight={600}>
-                        {t('filter')}
-                    </Typography>
-                    <Typography color="text.secondary" marginTop={'1rem'}>
-                        'Test tefrnejgnrejgergnerj'
-                    </Typography>
+                    <FilterContainer />
                 </Card>
                 <Box flex={1} minWidth={0}>
                     <AasListDataWrapper repositoryUrl={config?.repositoryUrl} hideRepoSelection={true} />
