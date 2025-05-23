@@ -2,11 +2,11 @@
  * Returns the breadcrumb links for the catalog.
  * The first letter of each breadcrumb label is capitalized.
  * @param t Translation function
- * @param category Optional: current manufacturer/category
+ * @param manufacturer Optional: current manufacturer
  */
 export function getCatalogBreadcrumbs(
     t: (key: string) => string,
-    category?: string
+    manufacturer?: string
 ): Array<{ label: string; path: string }> {
     function capitalizeFirstLetter(text: string): string {
         if (!text) return '';
@@ -16,10 +16,10 @@ export function getCatalogBreadcrumbs(
     const links = [
         { label: capitalizeFirstLetter(t('marketplaceTitle')), path: '/marketplace' }
     ];
-    if (category) {
+    if (manufacturer) {
         links.push({
-            label: capitalizeFirstLetter(category),
-            path: `/catalog/${encodeURIComponent(category)}`
+            label: capitalizeFirstLetter(manufacturer),
+            path: `/marketplace/catalog?manufacturer=${encodeURIComponent(manufacturer)}`
         });
     }
     return links;

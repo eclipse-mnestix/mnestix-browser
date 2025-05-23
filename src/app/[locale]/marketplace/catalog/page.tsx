@@ -8,7 +8,7 @@ import { useTranslations } from 'next-intl';
 import { CatalogConfiguration } from 'app/[locale]/marketplace/catalogConfiguration';
 import Image from 'next/image';
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
-import { getCatalogBreadcrumbs } from 'app/catalog/breadcrumbs';
+import { getCatalogBreadcrumbs } from 'app/[locale]/marketplace/_components/breadcrumbs';
 import { FilterContainer } from 'app/[locale]/marketplace/catalog/_components/filterContainer';
 
 export default function Page() {

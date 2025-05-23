@@ -8,7 +8,7 @@ import ListHeader from 'components/basics/ListHeader';
 import { CatalogConfiguration } from 'app/[locale]/marketplace/catalogConfiguration';
 import Image from 'next/image';
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
-import { getCatalogBreadcrumbs } from 'app/catalog/breadcrumbs';
+import { getCatalogBreadcrumbs } from 'app/[locale]/marketplace/_components/breadcrumbs';
 import React from 'react';
 import InsightsIcon from '@mui/icons-material/Insights';
 import { ConstructionDialog } from 'components/basics/ConstructionDialog';
