@@ -74,10 +74,15 @@ export function FilterContainer() {
             <TreeItem
                 key={group}
                 itemId={group}
-                label={resolveEclassLabel(group)}
+                label={
+                    <Box display="flex" alignItems="center">
+                        <Checkbox onClick={(event) => event.stopPropagation()} />
+                        {resolveEclassLabel(group)}
+                    </Box>
+                }
             >
                 {eClasses.map((eClass) => (
-                    <Box key={eClass} display="flex" alignItems="center">
+                    <Box key={eClass} display="flex" alignItems="center" ml={4}>
                         <Checkbox />
                         <Typography>{eClass}</Typography>
                     </Box>
@@ -95,7 +100,7 @@ export function FilterContainer() {
             default:
                 return 'Kategorie ' + eClass;
         }
-    }
+    };
 
     return (
         <>
@@ -103,12 +108,26 @@ export function FilterContainer() {
                 {t('filter')}
             </Typography>
             <SimpleTreeView>
-                <TreeItem itemId="eclass" label="ECLASS">
+                <TreeItem
+                    itemId="eclass"
+                    label={
+                        <Typography variant="h5" my={1}>
+                            ECLASS
+                        </Typography>
+                    }
+                >
                     {prepareEclassHierarchy(eClassFilters)}
                 </TreeItem>
             </SimpleTreeView>
             <SimpleTreeView>
-                <TreeItem itemId="vec" label="VEC">
+                <TreeItem
+                    itemId="vec"
+                    label={
+                        <Typography variant="h5" my={1}>
+                            VEC
+                        </Typography>
+                    }
+                >
                     {VECFilters.map((vec) => {
                         return (
                             <Box key={vec} display="flex" alignItems="center">
@@ -120,13 +139,20 @@ export function FilterContainer() {
                 </TreeItem>
             </SimpleTreeView>
             <SimpleTreeView>
-                <TreeItem itemId="root" label="Product Root, Family and Designation">
+                <TreeItem
+                    itemId="root"
+                    label={
+                        <Typography variant="h5" my={1}>
+                            Product Root, Family and Designation"
+                        </Typography>
+                    }
+                >
                     {productCategoryFilters.map((productCategory) => {
                         return (
                             <TreeItem
                                 itemId={productCategory.ProductRoot}
                                 label={
-                                    <Box>
+                                    <Box display="flex" alignItems="center">
                                         <Checkbox onClick={(event) => event.stopPropagation()} />
                                         {productCategory.ProductRoot}
                                     </Box>
@@ -137,7 +163,7 @@ export function FilterContainer() {
                                         <TreeItem
                                             itemId={productFamily.ProductFamily}
                                             label={
-                                                <Box>
+                                                <Box display="flex" alignItems="center">
                                                     <Checkbox onClick={(event) => event.stopPropagation()} />
                                                     {productFamily.ProductFamily}
                                                 </Box>
