@@ -44,7 +44,7 @@ export function CompareRecordCollectionRow(props: SubmodelCompareDataComponentPr
                 </DataRow>,
             );
         }
-        return <Grid item xs={columnWidthCount} key={dataIndex}></Grid>;
+        return <Grid size={{ xs: columnWidthCount }} key={dataIndex}></Grid>;
     });
 
     return (

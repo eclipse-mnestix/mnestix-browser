@@ -11,13 +11,13 @@
         "CityTown": "Municipio",
         "Company": "Compañía",
         "Department": "Sede/Departmento",
-        "NationalCode": "Código de País",
-        "POBox": "Apartado Postal",
+        "NationalCode": "Código de país",
+        "POBox": "Apartado postal",
         "StateCounty": "CCAA/Provincia",
         "Street": "Calle",
-        "TimeZone": "Zona Horaria",
-        "ZipCodeOfPOBox": "Código Postal del Apartado Postal",
-        "Zipcode": "Código Postal"
+        "TimeZone": "Zona horaria",
+        "ZipCodeOfPOBox": "Código postal del ppartado postal",
+        "Zipcode": "Código postal"
       }
     },
     "assetNotFound": {
@@ -31,8 +31,8 @@
       "sessionExpired": "La sesión ha caducado. Por favor, inicie sesión de nuevo."
     },
     "carbonFootprint": {
-      "beech": "Un árbol de Haya",
-      "calculationMethod": "Método de Cálculo",
+      "beech": "Un árbol de haya",
+      "calculationMethod": "Método de cálculo",
       "co2EComparison": "Comparación",
       "co2EDistribution": "Emisiones de CO2e",
       "comparisonAssumption": "Suponiendo que un haya recoge 12.5kg de CO2e al año.",
@@ -41,34 +41,34 @@
       "equivalents": "Equivalente en CO2",
       "inTotal": "en total",
       "notIncludedHint": "no incluido todavía",
-      "productJourney": "Ruta del Producto",
+      "productJourney": "Ruta del producto",
       "stages": {
-        "A1": "A1 - provisión de materia prima (y anterior)",
-        "A1-A3": "A1-A3 - provisión de materia prima a fábrica",
-        "A2": "A2 - transporte de origen a fábrica",
-        "A3": "A3 - producción",
-        "A4": "A4 - transporte a destino final",
-        "A4-A5": "A4-A5 - transporte a ensamblaje",
-        "A5": "A5 - montaje",
-        "B1": "B1 - etapa de uso",
-        "B1-B7": "B1-B7 - etapa de uso",
-        "B2": "B2 - mantenimiento",
-        "B3": "B3 - reparación",
-        "B4": "B4 - reemplazo",
-        "B5": "B5 - actualización, mejora o renovación",
-        "B6": "B6 - consumo de energía",
-        "B7": "B7 - consumo de agua",
-        "C1": "C1 - reensamblaje",
+        "A1": "A1 - Provisión de materia prima (y anterior)",
+        "A1-A3": "A1-A3 - Provisión de materia prima a fábrica",
+        "A2": "A2 - Transporte de origen a fábrica",
+        "A3": "A3 - Producción",
+        "A4": "A4 - Transporte a destino final",
+        "A4-A5": "A4-A5 - Transporte a ensamblaje",
+        "A5": "A5 - Montaje",
+        "B1": "B1 - Etapa de uso",
+        "B1-B7": "B1-B7 - Etapa de uso",
+        "B2": "B2 - Mantenimiento",
+        "B3": "B3 - Reparación",
+        "B4": "B4 - Reemplazo",
+        "B5": "B5 - Actualización, mejora o renovación",
+        "B6": "B6 - Consumo de energía",
+        "B7": "B7 - Consumo de agua",
+        "C1": "C1 - Reensamblaje",
         "C1-C4": "C1-C4 - Fase de desecho",
-        "C2": "C2 - transporte a reciclaje",
+        "C2": "C2 - Transporte a reciclaje",
         "C2-C4": "C2-C4 - De reciclaje a área de desecho",
-        "C3": "C3 - reciclaje, tratamiento de residuos",
-        "C4": "C4 - área de desecho",
-        "D": "D - reutilización"
+        "C3": "C3 - Reciclaje, tratamiento de residuos",
+        "C4": "C4 - Área de desecho",
+        "D": "D - Reutilización"
       },
       "timeUnit": {
-        "month": "{count, plural, =0 {inferior a 1 mes} =1 {1 mes} other {# meses}}",
-        "year": "{count, plural, =0 {inferior a 1 año} =1 {1 año} other {# años}}"
+        "month": "{count, plural, =0 {inferior a un mes} =1 {1 mes} other {# meses}}",
+        "year": "{count, plural, =0 {inferior a un año} =1 {1 año} other {# años}}"
       },
       "totalCO2Equivalents": "Emisiones de CO2 del producto (hasta el momento)"
     },
@@ -79,7 +79,7 @@
         "0173-1#07-AAS756#001": "Secretario/a",
         "0173-1#07-AAS757#001": "Sustituto/a",
         "0173-1#07-AAS758#001": "Casa",
-        "0173-1#07-AAS759#001": "Móvil Privado",
+        "0173-1#07-AAS759#001": "Móvil privado",
         "home": "Casa",
         "home mobile": "Móvil privado",
         "office": "Oficina",
@@ -94,9 +94,11 @@
       "copyBase64": "Copiar encriptado en base64"
     },
     "documentComponent": {
+      "classification": "Clasificación del documento",
       "documentDetails": "Detalles del documento",
       "fileNotFound": "Archivo no encontrado",
-      "open": "Abrir"
+      "open": "Abrir",
+      "showMoreButton": "mostrar más"
     },
     "dummyComponent": {
       "dummyText": "Este es un componente de prueba. Su uso es probar la estuctura y diseño de la aplicación."
@@ -127,14 +129,14 @@
     },
     "relationShipDetailsDialog": {
       "error": {
-        "entityError": "Entidad de Relación no encontrada",
-        "semanticError": "ID semántico no encontrado",
+        "entityError": "Relation entity no encontrada",
+        "semanticError": "Semantic ID no encontrado",
         "unknownRelationship": "Relación desconocida"
       },
       "hasPart": "tiene como parte",
       "isPartOf": "es parte de",
       "sameAs": "igual que",
-      "semanticId": "ID Semántico"
+      "semanticId": "Semantic ID"
     },
     "submodelElementCollection": {
       "allAvailableData": "Todos los datos disponibles",
@@ -144,24 +146,24 @@
       }
     },
     "technicalData": {
-      "cannotRenderContent": "El contenido de este sub-modelo no puede ser mostrado.",
-      "furtherInformation": "Más Información",
-      "generalInformation": "Información General",
-      "productClassification": "Clasificación del Producto",
-      "technicalProperties": "Propiedades Técnicas"
+      "cannotRenderContent": "El contenido de este submodel no puede ser mostrado.",
+      "furtherInformation": "Más información",
+      "generalInformation": "Información general",
+      "productClassification": "Clasificación del producto",
+      "technicalProperties": "Propiedades técnicas"
     },
     "verticalTabSelector": {
       "errors": {
         "INTERNAL_SERVER_ERROR": "Error interno del servidor",
-        "NOT_FOUND": "Sub-modelo no encontrado",
-        "UNAUTHORIZED": "No Autorizado",
-        "UNKNOWN": "Error Desconocido"
+        "NOT_FOUND": "Submodel no encontrado",
+        "UNAUTHORIZED": "No autorizado",
+        "UNKNOWN": "Error desconocido"
       }
     }
   },
   "navigation": {
     "errors": {
-      "notFound": "No Encontrado",
+      "notFound": "No encontrado",
       "unauthorizedError": {
         "content": "No tiene acceso a este recurso. Identifíquese o solicite acceso al administrador.",
         "title": "Acceso no autorizado"
@@ -172,14 +174,14 @@
     "footer": {
       "about": "Sobre Mnestix",
       "dataPrivacy": "Privacidad",
-      "imprint": "Aviso Legal"
+      "imprint": "Aviso legal"
     },
     "mainMenu": {
       "aasList": "Lista de AAS",
-      "dashboard": "Panel de control",
+      "dashboard": "Dashboard",
       "findOutMore": "Saber más",
       "login": "Identificarse",
-      "logout": "Cerrar Sesión",
+      "logout": "Cerrar sesión",
       "repository": "Repositorio",
       "settings": "Ajustes",
       "templates": "Plantillas"
@@ -191,21 +193,21 @@
       "compare": "Comparar",
       "header": "Lista de AAS",
       "listHeader": {
-        "aasEndpoint": "URL de AAS",
-        "aasId": "ID de AAS",
-        "assetId": "ID del Activo",
-        "discoveryUrl": "Descubrir Url",
+        "aasEndpoint": "AAS URL",
+        "aasId": "AAS ID",
+        "assetId": "Asset ID",
+        "discoveryUrl": "Discovery URL",
         "manufacturer": "Fabricante",
         "picture": "Imagen",
-        "productClass": "Clase del Producto",
-        "productDesignation": "Denominación del Producto (según fabricante)",
-        "registryUrl": "Url del Registro",
-        "repositoryUrl": "Url del Repositorio",
+        "productClass": "Clase del producto",
+        "productDesignation": "Denominación del producto (según fabricante)",
+        "registryUrl": "Registry URL",
+        "repositoryUrl": "Repository URL",
         "viewAASButton": "Ver AAS"
       },
       "maxElementsWarning": "No se pueden comparar más de 3 elementos",
       "page": "Página",
-      "repositoryDropdown": "Repositorio de AAS",
+      "repositoryDropdown": "AAS repository",
       "selectRepository": "Por favor, seleccione un repositorio",
       "subHeader": "Todos los AAS de su repositorio se muestran aquí. Puede seleccionar otro repositorio para cambiar la fuente de los datos.",
       "titleComparisonAddButton": "Añadir AAS a la comparación"
@@ -213,9 +215,9 @@
     "aasViewer": {
       "actions": {
         "compareButton": "Comparar",
-        "toProductView": "Vista de Producto"
+        "toProductView": "Vista de producto"
       },
-      "asset": "Activo",
+      "asset": "Asset",
       "assetAdministrationShell": "Asset Administration Shell",
       "errors": {
         "influxError": "Hubo un problema recuperando la serie temporal de datos."
@@ -239,16 +241,21 @@
           "count": "Recuento",
           "elementName": "Elemento"
         },
-        "renderError": "No se puede renderizar el sub-modelo.",
-        "semanticIdLabel": "IDs Semánticos:",
+        "renderError": "No se puede renderizar el submodel.",
+        "semanticIdLabel": "Semantic IDs:",
         "timeSeries": {
           "internalSegments": "Segmentos internos",
           "linkedSegments": "Segmentos vinculados",
           "selectTimeframe": "Seleccionar periodo de tiempo"
         },
-        "title": "Sub-modelos",
-        "unknownModelType": "Tipo del modelo desconocido: {type}"
+        "title": "Submodels",
+        "unknownModelType": "ModelType desconocido: {type}"
       }
+    },
+    "catalog": {
+      "manufacturerCatalog": "Catálogo de productos del fabricante",
+      "manufacturerSelect": "Seleccione fabricante",
+      "title": "Catálogo del fabricante"
     },
     "catalog": {
       "title": "Catálogo de productos",
@@ -271,29 +278,29 @@
         "aasAddError": "No se pudo añadir el AAS.",
         "aasAlreadyAdded": "No se puede añadir este AAS más de una vez.",
         "moreAasFound": "Más de un AAS encontrado en el servicio de descubrimiento, introduzca el ID del AAS, por favor.",
-        "unknownModelType": "Tipo del modelo desconocido: {type}"
+        "unknownModelType": "ModelType desconocido: {type}"
       },
       "title": "Comparar AAS"
     },
     "dashboard": {
-      "aasOrAssetId": "ID del AAS o Activo",
-      "digitalTwinMadeEasyText": "Simplificando los Gemelos Digitales.",
+      "aasOrAssetId": "AAS ID o Asset ID",
+      "digitalTwinMadeEasyText": "Simplificando los gemelos digitales.",
       "enterManuallyLabel": "o introducir manualmente",
       "findOutMoreText": "Saber más",
       "listBtnLabel": "o seleccione en la lista",
       "listBtnText": "Ir a lista de AAS",
-      "scanIdLabel": "Escanear ID del AAS o Activo",
+      "scanIdLabel": "Escanear ID del AAS o Asset",
       "welcomeText": "Bienvenido/a a Mnestix"
     },
     "discoveryList": {
       "errors": {
         "noAasFound": "No se encontró ningún AAS para el ID proporcionado",
-        "noAssetId": "No se ha proporcionado un ID de AAS.",
+        "noAssetId": "No se ha proporcionado un Asset ID.",
         "searchFailed": "La búsqueda falló"
       },
-      "subtitle": "Aquí se muestran todos los AAS asociados al ID de Activo proporcionado.",
-      "title": "AAS asociado al ID del Activo"
-    },    
+      "subtitle": "Aquí se muestran todos los AAS asociados al Asset ID proporcionado.",
+      "title": "AAS asociado al Asset ID"
+    },
     "marketplace": {
       "manufacturerSelect": "Seleccione un fabricante",
       "search": "Buscar un producto",
@@ -303,11 +310,14 @@
     "productViewer": {
       "actions": {
         "compareButton": "Comparar",
-        "toAasView": "Vista del AAS"
+        "toAasView": "Vista del AAS",
+        "download": "Descargar AAS",
+        "downloadErrorNoRepo": "No se encontró ningún repositorio para el AAS seleccionado.",
+        "downloadError": "Error al descargar el AAS."
       },
-      "classification": "Clasificación del Producto",
+      "classification": "Clasificación del producto",
       "error": {
-        "technicalDataSubmodelNotFound": "Datos técnicos del sub-modelo no encontrados"
+        "technicalDataSubmodelNotFound": "Datos técnicos del submodel no encontrados"
       },
       "home": "Ir a Inicio",
       "markings": "Etiquetas del producto",
@@ -315,7 +325,7 @@
         "articleNumber": "Número de articulo",
         "manufacturer": "Fabricante",
         "orderCode": "Número de pedido",
-        "productDesignation": "Denominación del producto (según facbricante)"
+        "productDesignation": "Denominación del producto"
       },
       "summary": "Resumen",
       "title": "Producto"
@@ -326,8 +336,8 @@
         "noAasId": "No se ha proporcionado un ID de AAS.",
         "searchFailed": "La búsqueda falló"
       },
-      "subtitle": "Aquí se muestran todos los AAS asociados al ID de Activo proporcionado.",
-      "title": "AAS asociado al ID del Activo"
+      "subtitle": "Aquí se muestran todos los AAS asociados al AAS ID proporcionado.",
+      "title": "AAS asociado al AAS ID"
     },
     "settings": {
       "actions": {
@@ -338,38 +348,38 @@
       },
       "connections": {
         "aasRepository": {
-          "connectionType": "REPOSITORIO_AAS",
+          "connectionType": "AAS_REPOSITORY",
           "repositories": "Repositorios de AAS",
-          "repositoryDefaultLabel": "Repositorio AAS Predeterminado",
+          "repositoryDefaultLabel": "Repositorio AAS predeterminado",
           "repositoryLabel": "Repositorio de AAS",
-          "repositoryUrlLabel": "URL del Repositorio de AAS"
+          "repositoryUrlLabel": "URL del repositorio de AAS"
         },
         "addButton": "Añadir más",
         "resetSuccessful": "Las conexiones se han restaurado.",
         "submodelRepository": {
-          "connectionType": "REPOSITORIO_DE_SUBMODELOS",
-          "repositories": "Repositorio de Sub-modelos",
-          "repositoryDefaultLabel": "Repositorio de Sub-modelos Predeterminado",
-          "repositoryLabel": "Repositorio de Sub-modelos",
-          "repositoryUrlLabel": "URL del Repositorio de Sub-modelos"
+          "connectionType": "SUBMODEL_REPOSITORY",
+          "repositories": "Repositorio de submodels",
+          "repositoryDefaultLabel": "Repositorio de submodels predeterminado",
+          "repositoryLabel": "Repositorio de submodels",
+          "repositoryUrlLabel": "URL del repositorio de submodels"
         },
         "subtitle": "Define qué conexiones de datos deben ser utilizadas.",
         "title": "Fuentes de datos",
-        "urlFieldRequired": "El campo URL es obligatorio",
-        "urlFieldNoTrailingSlash": "La URL no debe terminar con una barra (/)."
+        "urlFieldNoTrailingSlash": "La URL no debe terminar con una barra (/).",
+        "urlFieldRequired": "El campo URL es obligatorio"
       },
       "header": "Ajustes",
       "idStructure": {
         "assetIdDocumentation": {
-          "assetId": "ID del Activo",
+          "assetId": "ID del Asset",
           "dnsHeading": "Acceder mediante DNS",
-          "dnsText": "Especialmente para el enfoque brownfield y el distribuidor de un producto, tendría sentido configurar adicionalmente el acceso DNS a través del ID del activo y, de este modo, permitir la recuperación de datos desde aplicaciones de navegador convencionales.",
-          "endResult": "Resultado Final",
-          "exampleHeading": "Caso de Ejemplo",
+          "dnsText": "Especialmente para el enfoque brownfield y el distribuidor de un producto, tendría sentido configurar adicionalmente el acceso DNS a través del Asset ID y, de este modo, permitir la recuperación de datos desde aplicaciones de navegador convencionales.",
+          "endResult": "Resultado final",
+          "exampleHeading": "Caso de ejemplo",
           "industry40Heading": "Contexto sobre Industria 4.0",
-          "industry40Text": "Los productos tienen un identificador único a nivel mundial que se puede asignar a uno o varios entornos de administración de activos. En el contexto de la Industria 4.0, la conexión entre el activo y el AAS se establece a través de la infraestructura I4.0.",
+          "industry40Text": "Los productos tienen un ID único a nivel mundial que se puede asignar a uno o varios entornos de administración de Assets. En el contexto de la Industria 4.0, la conexión entre el Asset y el AAS se establece a través de la infraestructura I4.0.",
           "redirectsTo": "Redirige a",
-          "title": "Como conectar su ID de Activo con su Repositorio de AAS"
+          "title": "Como conectar su Asset ID con su repositorio de AAS"
         },
         "errors": {
           "idStructureError": "Error al guardar \"{name}\" ({reason}).",
@@ -394,51 +404,46 @@
           "add": "Añadir",
           "back": "Atrás",
           "cancel": "Cancelar",
-          "create": "Crear Regla",
+          "create": "Crear regla",
           "delete": "Eliminar",
           "edit": "Editar",
           "save": "Guardar"
         },
         "createRule": {
-          "hint": {
-            "acknowledge": "Confirmar",
-            "text": "Se ha creado un Rol nuevo. Debe ser configurado en Keycloak.",
-            "title": "Actualizar Keycloak"
-          },
           "saveSuccess": "Nueva regla guardada con éxito.",
-          "title": "Crear Regla"
+          "title": "Crear regla"
         },
         "deleteRule": {
-          "hint": {
-            "acknowledge": "Confirmar",
-            "text": "No olvide eliminar la regla de Keycloak también",
-            "title": "Borrar regla"
-          },
           "question": "¿Desea borrar esta regla permanentemente?",
           "ruleInfo": "Los usuarios asignados al rol ''{role}'' no tendrán permiso para {action} los siguientes datos",
           "success": "Regla eliminada correctamente."
         },
         "editRule": {
           "saveSuccess": "Regla editada correctamente.",
-          "title": "Editar Regla"
+          "title": "Editar regla"
         },
         "errors": {
           "uniqueIdShort": "La combinación de nombre, acción y tipo ya existe en otra regla.\nPor favor, edite la regla existente."
         },
-        "keycloakHint": "Algunos roles han cambiado. Para asignarles usuarios, configúrelos en '{url}'.",
-        "roleNameMaxLength": "El nombre del Rol no puede exceder {maxLength} caracteres.",
+        "keycloakHint": {
+          "acknowledge": "Confirmar",
+          "create": "Este rol no ha sido usado todavía. No olvide configurarlo en Keycloak!",
+          "delete": "No olvide eliminar el rol en Keycloak también!",
+          "title": "Actualizar Keycloak"
+        },
+        "roleNameMaxLength": "El nombre del rol no puede exceder {maxLength} caracteres.",
         "roleNameNoTrailSpace": "El nombre del rol no puede terminar con un espacio.",
-        "roleRequired": "Se requiere un Rol",
+        "roleRequired": "Se requiere un rol",
         "subtitle": "Gestionar roles y permisos.",
         "tableHeader": {
-          "aasIds": "IDs de los AAS",
+          "aasIds": "AAS IDs",
           "action": "Accion",
           "name": "Rol",
           "permissions": "Permisos",
-          "submodelIds": "ID de Sub-modelos",
+          "submodelIds": "Submodel IDs",
           "type": "Tipo"
         },
-        "title": "Gestion de Roles",
+        "title": "Gestion de roles",
         "wildcardLabel": "Permitir todos"
       },
       "subHeader": "Añadir, eliminar, o modificar ajustes y configuraciones para varias características de su entorno AAS."
@@ -462,20 +467,20 @@
       },
       "chooseAStartingPoint": "Elige una plantilla como punto de inicio",
       "copyTemplateId": "Copiar ID de la plantilla",
-      "createNew": "Crear Nuevo",
-      "custom": "A Medida",
-      "defaultValue": "Valor Predeterminado",
+      "createNew": "Crear nuevo",
+      "custom": "A medida",
+      "defaultValue": "Valor predeterminado",
       "deleteTemplateQuestion": "Desea eliminar la plantilla \"{name}\" definitivamente?",
       "displayName": "Nombre a mostrar",
       "emptyCustom": "Vacío (A medida)",
       "emptyCustomDescription": "No basada en una plantilla estandarizada",
       "errors": {
-        "unknownModelType": "Tipo del modelo desconocido: {type}"
+        "unknownModelType": "ModelType desconocido: {type}"
       },
       "labels": {
         "language": "Idioma",
         "notAvailable": "-",
-        "semanticId": "Id Semántica",
+        "semanticId": "semanticId",
         "text": "Texto",
         "value": "Valor"
       },
@@ -490,7 +495,7 @@
       "noTemplatesFound": "No se encontraron plantillas",
       "templateDeletedSuccessfully": "Plantilla eliminada correctamente",
       "templateIdCopied": "ID de la plantilla copiado al portapapeles: {id}",
-      "templatesUseExplanation": "Las plantillas le permiten crear estructuras de sub-modelo reutilizables y ajustadas a sus requisitos.",
+      "templatesUseExplanation": "Las plantillas le permiten crear estructuras de submodel reutilizables y ajustadas a sus requisitos.",
       "title": "Plantillas",
       "validation": {
         "errors": {
@@ -501,20 +506,20 @@
     },
     "transfer": {
       "aasRepository": "Repositorio AAS",
-      "chooseRepository": "Escoja Repositorio AAS",
-      "chooseSubmodelRepository": "Escoja Repositorio de Sub-modelos (opcional)",
+      "chooseRepository": "Escoja repositorio AAS",
+      "chooseSubmodelRepository": "Escoja repositorio de submodels (opcional)",
       "errorToast": "Transferencia de AAS errónea",
       "partiallyFailedToast": "Fallo al transferir el elemento",
-      "repositoryApiKey": "Clave API del Repositorio AAS",
-      "repositoryLabel": "Lista de Repositorios AAS",
-      "repositoryRequired": "Se requiere Repositorio AAS",
-      "submodelRepository": "Repositorio de Sub-modelos",
-      "submodelRepositoryApiKey": "Clave API del Repositorio de Sub-modelos",
-      "submodelRepositoryLabel": "Lista de Repositorios de Sub-modelos",
+      "repositoryApiKey": "Clave API del repositorio AAS",
+      "repositoryLabel": "Lista de repositorios AAS",
+      "repositoryRequired": "Se requiere repositorio AAS",
+      "submodelRepository": "Repositorio de submodels",
+      "submodelRepositoryApiKey": "Clave API del repositorio de submodels",
+      "submodelRepositoryLabel": "Lista de repositorios de submodels",
       "subtitle": "Para importar este AAS a otro repositorio, complete los siguientes campos.",
       "successfulToast": "Transferencia de AAS exitosa",
       "title": "Importar",
-      "useAasRepository": "Usar Repositorio de AAS",
+      "useAasRepository": "Usar repositorio de AAS",
       "warningToast": "El AAS solo se transfirió parcialmente."
     }
   }
