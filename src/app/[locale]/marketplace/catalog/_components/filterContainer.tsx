@@ -1,5 +1,6 @@
 import { Box, Checkbox, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
+import { SimpleTreeView, TreeItem } from '@mui/x-tree-view';
 
 export function FilterContainer() {
     const t = useTranslations('pages.catalog');
@@ -29,6 +30,15 @@ export function FilterContainer() {
                 },
             ],
         },
+        {
+            ProductRoot: 'CONNECT_TERMINALS',
+            ProductFamilies: [
+                {
+                    ProductFamily: 'DLK 1,2',
+                    ProductDesignations: [{ ProductDesignation: 'DLK 1,2' }],
+                },
+            ],
+        },
     ];
 
     const eClassFilters = [
@@ -49,68 +59,64 @@ export function FilterContainer() {
             <Typography variant="h6" fontWeight={600}>
                 {t('filter')}
             </Typography>
-            <Typography color="text.secondary" marginTop={'1rem'}>
-                ECLASS
-                {eClassFilters.map((eClass) => {
-                    return (
-                        <Box key={eClass} ml={1} display="flex" alignItems="center">
-                            <Checkbox />
-                            <Typography color="text.secondary" marginTop={'1rem'}>
-                                {eClass}
-                            </Typography>
-                        </Box>
-                    );
-                })}
-            </Typography>
-            <Typography color="text.secondary" marginTop={'1rem'}>
-                VEC
-                {VECFilters.map((vec) => {
-                    return (
-                        <Box key={vec} ml={1} display="flex" alignItems="center">
-                            <Checkbox />
-                            <Typography color="text.secondary" marginTop={'1rem'}>
-                                {vec}
-                            </Typography>
-                        </Box>
-                    );
-                })}
-            </Typography>
-            <Typography color="text.secondary" marginTop={'1rem'}>
-                Manufacturer Product Family and Designation
-                {productCategoryFilters.map((productCategory) => {
-                    return (
-                        <Box key={productCategory.ProductRoot} ml={1}>
-                            <Typography color="text.secondary" marginTop={'1rem'}>
-                                {productCategory.ProductRoot}
-                            </Typography>
-                            {productCategory.ProductFamilies.map((productFamily) => {
-                                return (
-                                    <Box key={productFamily.ProductFamily} ml={1}>
-                                        <Typography color="text.secondary" marginTop={'1rem'}>
-                                            {productFamily.ProductFamily}
-                                        </Typography>
-                                        {productFamily.ProductDesignations.map((productDesignation) => {
-                                            return (
-                                                <Box
-                                                    key={productDesignation.ProductDesignation}
-                                                    ml={1}
-                                                    display="flex"
-                                                    alignItems="center"
-                                                >
-                                                    <Checkbox />
-                                                    <Typography color="text.secondary" marginTop={'1rem'}>
-                                                        {productDesignation.ProductDesignation}
-                                                    </Typography>
-                                                </Box>
-                                            );
-                                        })}
-                                    </Box>
-                                );
-                            })}
-                        </Box>
-                    );
-                })}
-            </Typography>
+            <SimpleTreeView>
+                <TreeItem itemId="eclass" label="ECLASS">
+                    {eClassFilters.map((eClass) => {
+                        return (
+                            <Box key={eClass} display="flex" alignItems="center">
+                                <Checkbox />
+                                <Typography color="text.secondary">{eClass}</Typography>
+                            </Box>
+                        );
+                    })}
+                </TreeItem>
+            </SimpleTreeView>
+            <SimpleTreeView>
+                <TreeItem itemId="vec" label="VEC">
+                    {VECFilters.map((vec) => {
+                        return (
+                            <Box key={vec} display="flex" alignItems="center">
+                                <Checkbox />
+                                <Typography color="text.secondary">{vec.replace('PrimaryPartType_', '')}</Typography>
+                            </Box>
+                        );
+                    })}
+                </TreeItem>
+            </SimpleTreeView>
+            <SimpleTreeView>
+                <TreeItem itemId="root" label="Product Root, Family and Designation">
+                    {productCategoryFilters.map((productCategory) => {
+                        return (
+                            <TreeItem itemId={productCategory.ProductRoot} label={<Box><Checkbox onClick={(event) => event.stopPropagation()}/>{productCategory.ProductRoot}</Box>}>
+                                {productCategory.ProductFamilies.map((productFamily) => {
+                                    return (
+                                        <TreeItem
+                                            itemId={productFamily.ProductFamily}
+                                            label={<Box><Checkbox onClick={(event) => event.stopPropagation()}/>{productFamily.ProductFamily}</Box>}
+                                        >
+                                            {productFamily.ProductDesignations.map((productDesignation) => {
+                                                return (
+                                                    <Box
+                                                        key={productDesignation.ProductDesignation}
+                                                        display="flex"
+                                                        alignItems="center"
+                                                        ml={4}
+                                                    >
+                                                        <Checkbox />
+                                                        <Typography color="text.secondary">
+                                                            {productDesignation.ProductDesignation}
+                                                        </Typography>
+                                                    </Box>
+                                                );
+                                            })}
+                                        </TreeItem>
+                                    );
+                                })}
+                            </TreeItem>
+                        );
+                    })}
+                </TreeItem>
+            </SimpleTreeView>
         </>
     );
 }
