@@ -5,26 +5,27 @@ import { readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-// Exit on errors (similar to `set -e`)
+// In IDE process is not defined as we are in a browser context
 process.on('uncaughtException', (err) => {
     console.error('Error:', err.message);
     process.exit(1);
 });
 
-// Get current script directory (works in ES modules)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-// Change to script directory
 process.chdir(__dirname);
 
-// Run OpenAPI Generator CLI
-execSync('../../../node_modules/.bin/openapi-generator-cli generate', { stdio: 'inherit' });
+function run(command) {
+    execSync(command, { stdio: 'inherit', shell: true });
+}
 
-// Format generated TypeScript files with Prettier
-execSync('../../../node_modules/.bin/prettier --write aas/**/*.ts', { stdio: 'inherit' });
+// cli cannot be run from yarn as this ignores the config file
+run('npx --yes @openapitools/openapi-generator-cli@2.20.0 generate');
 
-// Apply all patches in order
+// Format generated TypeScript so there are nicer diffs
+run('npx --yes prettier@3.5.3 --write aas/**/*.ts');
+
+// Apply patches
 const patchDir = join(__dirname, 'patches');
 const patches = readdirSync(patchDir)
     .filter((name) => name.endsWith('.patch'))
@@ -33,5 +34,5 @@ const patches = readdirSync(patchDir)
 for (const patch of patches) {
     const patchPath = join(patchDir, patch);
     console.log(`Applying patch ${patchPath}`);
-    execSync(`git apply "${patchPath}"`, { stdio: 'inherit' });
+    run(`git apply "${patchPath}"`);
 }
