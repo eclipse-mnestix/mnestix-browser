@@ -5,6 +5,8 @@
 
 set -e
 
+cd "$(dirname "$0")"
+
 ../../../node_modules/.bin/openapi-generator-cli generate
 
 ../../../node_modules/.bin/prettier --write aas/**/*.ts

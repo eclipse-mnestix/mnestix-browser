@@ -22,7 +22,8 @@
 # Then explicitly reverse the ignore rule for a single file:
 #!docs/README.md
 
-index.ts # no barreling of apis and models
+# no barreling of apis and models
+index.ts
 # ignore runtime and apis as this is only for types for now
 runtime.ts
 apis/

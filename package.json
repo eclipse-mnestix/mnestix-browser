@@ -90,7 +90,7 @@
     "format": "prettier --write ./",
     "lint": "eslint src cypress --no-warn-ignored",
     "typecheck": "tsc --noEmit",
-    "generate": "cd src/lib/api && openapi-generator-cli generate",
+    "generate-apis": "bash src/lib/api/openapi-generate.sh",
     "typecheck:e2e": "tsc --noEmit -p cypress",
     "test": "cypress open",
     "test:headless": "cypress run",
