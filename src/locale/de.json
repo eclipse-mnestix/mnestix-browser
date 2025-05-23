@@ -105,8 +105,8 @@
     },
     "propertyComponent": {
       "boolean": {
-        "false": "Falsch",
-        "true": "Wahr"
+        "false": "falsch",
+        "true": "wahr"
       },
       "labels": {
         "copied": "In Zwischenablage kopiert",
@@ -124,14 +124,14 @@
     },
     "relationShipDetailsDialog": {
       "error": {
-        "entityError": "Relationselement nicht gefunden",
-        "semanticError": "Semantische ID nicht gefunden",
+        "entityError": "Relation entity nicht gefunden",
+        "semanticError": "Semantic ID nicht gefunden",
         "unknownRelationship": "Unbekannte Relation"
       },
       "hasPart": "hat Teil",
       "isPartOf": "ist Teil von",
       "sameAs": "gleich wie",
-      "semanticId": "Semantische ID"
+      "semanticId": "Semantic ID"
     },
     "submodelElementCollection": {
       "allAvailableData": "Alle verfügbaren Daten",
@@ -191,13 +191,13 @@
         "aasEndpoint": "AAS URL",
         "aasId": "AAS ID",
         "assetId": "Asset ID",
-        "discoveryUrl": "Discovery Url",
+        "discoveryUrl": "Discovery URL",
         "manufacturer": "Herstellername",
         "picture": "Bild",
         "productClass": "Produktklasse",
         "productDesignation": "Hersteller Produktbezeichnung",
-        "registryUrl": "Registry Url",
-        "repositoryUrl": "Repository Url",
+        "registryUrl": "Registry URL",
+        "repositoryUrl": "Repository URL",
         "viewAASButton": "AAS anzeigen"
       },
       "maxElementsWarning": "Maximal 3 Elemente selektierbar",
@@ -248,9 +248,9 @@
       }
     },
     "catalog": {
-      "title": "Produktkatalog",
       "manufacturerCatalog": "Hersteller Produktkatalog",
-      "manufacturerSelect": "Hersteller auswählen"
+      "manufacturerSelect": "Hersteller auswählen",
+      "title": "Produktkatalog"
     },
     "compare": {
       "addAnother": "Eine weitere AAS hinzufügen",
@@ -284,8 +284,8 @@
         "noAssetId": "Keine Asset ID angegeben.",
         "searchFailed": "Suche fehlgeschlagen"
       },
-      "subtitle": "Hier finden Sie alle AAS, die mit der angegebenen ID verknüpft sind.",
-      "title": "AAS mit ID"
+      "subtitle": "Hier finden Sie alle AAS, die mit der angegebenen Asset ID verknüpft sind.",
+      "title": "AAS mit Asset ID"
     },
     "productViewer": {
       "actions": {
@@ -345,8 +345,8 @@
         },
         "subtitle": "Definieren Sie, welche Datenquellen verwendet werden sollen.",
         "title": "Datenquellen",
-        "urlFieldRequired": "URL wird benötigt",
-        "urlFieldNoTrailingSlash": "Die URL darf nicht mit einem Schrägstrich (/) enden."
+        "urlFieldNoTrailingSlash": "Die URL darf nicht mit einem Schrägstrich (/) enden.",
+        "urlFieldRequired": "URL wird benötigt"
       },
       "header": "Einstellungen",
       "idStructure": {
@@ -442,8 +442,8 @@
       },
       "all": "Alle",
       "boolean": {
-        "false": "Falsch",
-        "true": "Wahr"
+        "false": "falsch",
+        "true": "wahr"
       },
       "chooseAStartingPoint": "Wählen Sie ein Template als Ausgangspunkt",
       "copyTemplateId": "Template-ID kopieren",
