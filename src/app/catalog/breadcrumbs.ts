@@ -14,7 +14,7 @@ export function getCatalogBreadcrumbs(
     }
 
     const links = [
-        { label: capitalizeFirstLetter(t('marketplaceTitle')), path: '/catalog' }
+        { label: capitalizeFirstLetter(t('marketplaceTitle')), path: '/marketplace' }
     ];
     if (category) {
         links.push({

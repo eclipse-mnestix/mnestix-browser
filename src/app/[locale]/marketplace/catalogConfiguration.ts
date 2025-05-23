@@ -12,7 +12,7 @@ export const CatalogConfiguration: CatalogConfigurationDictionary = {
     kostal: {
         manufacturerLogo: '/images/kostal.png',
         articleCount: 2345,
-        repositoryUrl: 'http://92.205.177.115:8080', // TODO whats the correct link for the kostal repo?
+        repositoryUrl: 'https://vws4ls-api.dev.mnestix.xitaso.net/repo',
     },
     coroflex: {
         manufacturerLogo: '/images/coroflex.png',
