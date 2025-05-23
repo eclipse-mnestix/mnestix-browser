@@ -28,6 +28,11 @@ export function middleware(req: NextRequest) {
         return NextResponse.rewrite(new URL('/404', req.url));
     }
 
+    // If product view is enabled, the marketplace is the home page
+    if (envs.PRODUCT_VIEW_FEATURE_FLAG && req.nextUrl.pathname === '/') {
+        return NextResponse.redirect(new URL('/marketplace', req.url));
+    }
+
     // Generate a unique correlation ID for tracking requests
     const correlationId = uuidv4();
     req.headers.set('x-correlation-id', correlationId);
