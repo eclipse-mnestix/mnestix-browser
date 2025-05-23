@@ -49,26 +49,62 @@ export function FilterContainer() {
         '27-14-01-05',
         '27-14-01-06',
         '44-04-01-91',
+        '44-05-01-91',
     ];
-    // dropdown for first 2 numbers, resolve 27 and 44
     const VECFilters = ['PrimaryPartType_Wire', 'PrimaryPartType_PluggableTerminal'];
-    // remove PrimaryPartType_
+
+    /**
+     * Creates a hierarchy of ECLASS filters for the tree view for the first two numbers.
+     * @param eClassFilters
+     */
+    const prepareEclassHierarchy = (eClassFilters: string[]) => {
+        return Object.entries(
+            eClassFilters.reduce(
+                (acc, eClass) => {
+                    const group = eClass.slice(0, 2);
+                    if (!acc[group]) {
+                        acc[group] = [];
+                    }
+                    acc[group].push(eClass);
+                    return acc;
+                },
+                {} as Record<string, string[]>,
+            ),
+        ).map(([group, eClasses]) => (
+            <TreeItem
+                key={group}
+                itemId={group}
+                label={resolveEclassLabel(group)}
+            >
+                {eClasses.map((eClass) => (
+                    <Box key={eClass} display="flex" alignItems="center">
+                        <Checkbox />
+                        <Typography>{eClass}</Typography>
+                    </Box>
+                ))}
+            </TreeItem>
+        ));
+    };
+
+    const resolveEclassLabel = (eClass: string) => {
+        switch (eClass) {
+            case '27':
+                return 'Elektro-, Automatisierungs- und Prozessleittechnik';
+            case '44':
+                return 'Fahrzeugtechnik, Fahrzeugkomponente';
+            default:
+                return 'Kategorie ' + eClass;
+        }
+    }
 
     return (
         <>
-            <Typography variant="h6" fontWeight={600}>
+            <Typography variant="h4" fontWeight={600} mb={1}>
                 {t('filter')}
             </Typography>
             <SimpleTreeView>
                 <TreeItem itemId="eclass" label="ECLASS">
-                    {eClassFilters.map((eClass) => {
-                        return (
-                            <Box key={eClass} display="flex" alignItems="center">
-                                <Checkbox />
-                                <Typography color="text.secondary">{eClass}</Typography>
-                            </Box>
-                        );
-                    })}
+                    {prepareEclassHierarchy(eClassFilters)}
                 </TreeItem>
             </SimpleTreeView>
             <SimpleTreeView>
@@ -77,7 +113,7 @@ export function FilterContainer() {
                         return (
                             <Box key={vec} display="flex" alignItems="center">
                                 <Checkbox />
-                                <Typography color="text.secondary">{vec.replace('PrimaryPartType_', '')}</Typography>
+                                <Typography>{vec.replace('PrimaryPartType_', '')}</Typography>
                             </Box>
                         );
                     })}
@@ -87,12 +123,25 @@ export function FilterContainer() {
                 <TreeItem itemId="root" label="Product Root, Family and Designation">
                     {productCategoryFilters.map((productCategory) => {
                         return (
-                            <TreeItem itemId={productCategory.ProductRoot} label={<Box><Checkbox onClick={(event) => event.stopPropagation()}/>{productCategory.ProductRoot}</Box>}>
+                            <TreeItem
+                                itemId={productCategory.ProductRoot}
+                                label={
+                                    <Box>
+                                        <Checkbox onClick={(event) => event.stopPropagation()} />
+                                        {productCategory.ProductRoot}
+                                    </Box>
+                                }
+                            >
                                 {productCategory.ProductFamilies.map((productFamily) => {
                                     return (
                                         <TreeItem
                                             itemId={productFamily.ProductFamily}
-                                            label={<Box><Checkbox onClick={(event) => event.stopPropagation()}/>{productFamily.ProductFamily}</Box>}
+                                            label={
+                                                <Box>
+                                                    <Checkbox onClick={(event) => event.stopPropagation()} />
+                                                    {productFamily.ProductFamily}
+                                                </Box>
+                                            }
                                         >
                                             {productFamily.ProductDesignations.map((productDesignation) => {
                                                 return (
@@ -103,9 +152,7 @@ export function FilterContainer() {
                                                         ml={4}
                                                     >
                                                         <Checkbox />
-                                                        <Typography color="text.secondary">
-                                                            {productDesignation.ProductDesignation}
-                                                        </Typography>
+                                                        <Typography>{productDesignation.ProductDesignation}</Typography>
                                                     </Box>
                                                 );
                                             })}
