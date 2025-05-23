@@ -150,6 +150,7 @@ export function FilterContainer() {
                     {productCategoryFilters.map((productCategory) => {
                         return (
                             <TreeItem
+                                key={productCategory.ProductRoot}
                                 itemId={productCategory.ProductRoot}
                                 label={
                                     <Box display="flex" alignItems="center">
@@ -161,6 +162,7 @@ export function FilterContainer() {
                                 {productCategory.ProductFamilies.map((productFamily) => {
                                     return (
                                         <TreeItem
+                                            key={productFamily.ProductFamily}
                                             itemId={productFamily.ProductFamily}
                                             label={
                                                 <Box display="flex" alignItems="center">

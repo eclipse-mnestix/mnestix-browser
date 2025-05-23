@@ -253,11 +253,6 @@
       }
     },
     "catalog": {
-      "manufacturerCatalog": "Catálogo de productos del fabricante",
-      "manufacturerSelect": "Seleccione fabricante",
-      "title": "Catálogo del fabricante"
-    },
-    "catalog": {
       "title": "Catálogo de productos",
       "manufacturerCatalog": "Catálogo de productos del fabricante",
       "manufacturerSelect": "Seleccionar fabricante",
@@ -300,12 +295,6 @@
       },
       "subtitle": "Aquí se muestran todos los AAS asociados al Asset ID proporcionado.",
       "title": "AAS asociado al Asset ID"
-    },
-    "marketplace": {
-      "manufacturerSelect": "Seleccione un fabricante",
-      "search": "Buscar un producto",
-      "subtitle": "AAS para el conjunto de cables",
-      "title": "VWS4LS Marketplace"
     },
     "productViewer": {
       "actions": {

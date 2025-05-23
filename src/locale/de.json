@@ -295,12 +295,6 @@
       "subtitle": "Hier finden Sie alle AAS, die mit der angegebenen Asset ID verknüpft sind.",
       "title": "AAS mit Asset ID"
     },
-    "marketplace": {
-      "manufacturerSelect": "Wählen Sie einen Hersteller",
-      "search": "Suchen Sie nach einem Produkt",
-      "subtitle": "Verwaltungsschale für den Leitungssatz",
-      "title": "VWS4LS Marketplace"
-    },
     "productViewer": {
       "actions": {
         "compareButton": "Vergleichen",
