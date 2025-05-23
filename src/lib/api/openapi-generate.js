@@ -20,10 +20,10 @@ function run(command) {
 }
 
 // cli cannot be run from yarn as this ignores the config file
-run('npx --yes @openapitools/openapi-generator-cli@2.20.0 generate');
+run('npx --yes --package @openapitools/openapi-generator-cli@2.20.0 openapi-generator-cli generate');
 
 // Format generated TypeScript so there are nicer diffs
-run('npx --yes prettier@3.5.3 --write aas/**/*.ts');
+run('npx --yes --package prettier@3.5.3 prettier --write "aas/**/*.ts"');
 
 // Apply patches
 const patchDir = join(__dirname, 'patches');
