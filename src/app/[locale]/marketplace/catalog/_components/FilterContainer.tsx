@@ -1,55 +1,37 @@
 import { Box, Checkbox, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { SimpleTreeView, TreeItem } from '@mui/x-tree-view';
-import { useState } from 'react';
 import { EClassFilter } from 'app/[locale]/marketplace/catalog/_components/EClassFilter';
+import { ProductCategoryFilter } from 'app/[locale]/marketplace/catalog/_components/ProductCategoryFilter';
 
-interface ProductDesignation {
-    name: string;
+export interface FilterQuery {
+    key: string;
     value: boolean;
-}
-
-interface ProductFamily {
-    name: string;
-    value: boolean;
-    ProductDesignations: ProductDesignation[];
-}
-
-interface ProductRoot {
-    name: string;
-    value: boolean;
-    ProductFamilies: ProductFamily[];
-}
-
-interface ProductCategory {
-    ProductRoot: ProductRoot;
 }
 
 export function FilterContainer() {
     const t = useTranslations('pages.catalog');
 
+    // This dummy filters needs to be replaced with actual data fetching logic
     const productCategoryFilters = [
         {
             ProductRoot: {
                 name: 'Coroflex High-Voltage Cable',
-                value: false,
                 ProductFamilies: [
                     {
                         name: 'Shielded Single-Core Cable',
-                        value: false,
                         ProductDesignations: [
-                            { name: 'Coroflex High-Voltage Cable 1x120mm²', value: false },
-                            { name: 'Coroflex High-Voltage Cable 1x240mm²', value: false },
-                            { name: 'Coroflex High-Voltage Cable 1x400mm²', value: false },
-                            { name: 'Coroflex High-Voltage Cable 1x630mm²', value: false },
-                            { name: 'Coroflex High-Voltage Cable 1x800mm²', value: false },
-                            { name: 'Coroflex High-Voltage Cable 1x1000mm²', value: false },
+                            { name: 'Coroflex High-Voltage Cable 1x120mm²' },
+                            { name: 'Coroflex High-Voltage Cable 1x240mm²' },
+                            { name: 'Coroflex High-Voltage Cable 1x400mm²' },
+                            { name: 'Coroflex High-Voltage Cable 1x630mm²' },
+                            { name: 'Coroflex High-Voltage Cable 1x800mm²' },
+                            { name: 'Coroflex High-Voltage Cable 1x1000mm²' },
                         ],
                     },
                     {
                         name: 'Shielded Multi-Core Cable',
-                        value: false,
-                        ProductDesignations: [{ name: 'Coroflex High-Voltage Cable 3x120mm²', value: false }],
+                        ProductDesignations: [{ name: 'Coroflex High-Voltage Cable 3x120mm²' }],
                     },
                 ],
             },
@@ -57,19 +39,15 @@ export function FilterContainer() {
         {
             ProductRoot: {
                 name: 'CONNECT_TERMINALS',
-                value: false,
                 ProductFamilies: [
                     {
                         name: 'DLK 1,2',
-                        value: false,
-                        ProductDesignations: [{ name: 'DLK 1,2', value: false }],
+                        ProductDesignations: [{ name: 'DLK 1,2' }],
                     },
                 ],
             },
         },
     ];
-    const [filters, setFilters] = useState<ProductCategory[]>(productCategoryFilters);
-
     const eClassFilters = [
         '27-14-01-01',
         '27-14-01-02',
@@ -82,63 +60,30 @@ export function FilterContainer() {
     ];
     const VECFilters = ['PrimaryPartType_Wire', 'PrimaryPartType_PluggableTerminal'];
 
-    function updateCheckboxState(node: ProductRoot | ProductFamily | ProductDesignation, isChecked: boolean) {
-        setFilters((prevFilters) => {
-            return prevFilters.map((category) => {
-                const isRootNode = category.ProductRoot.name === node.name;
-                const updatedRoot = { ...category.ProductRoot };
+    // process productCategoryFilters to match the expected structure
+    function addBooleanValues<T extends { name: string }>(item: T): T & { value: boolean } {
+        return {
+            ...item,
+            value: false
+        };
+    }
 
-                const updatedFamilies = updatedRoot.ProductFamilies.map((family) => {
-                    const isFamilyNode = family.name === node.name;
+    function transformProductCategories(categories: typeof productCategoryFilters) {
+        return categories.map(category => ({
+            ProductRoot: {
+                ...addBooleanValues(category.ProductRoot),
+                ProductFamilies: category.ProductRoot.ProductFamilies.map(family => ({
+                    ...addBooleanValues(family),
+                    ProductDesignations: family.ProductDesignations.map(designation =>
+                        addBooleanValues(designation)
+                    )
+                }))
+            }
+        }));
+    }
 
-                    if (isRootNode) {
-                        return {
-                            ...family,
-                            value: isChecked,
-                            ProductDesignations: family.ProductDesignations.map((designation) => ({
-                                ...designation,
-                                value: isChecked,
-                            })),
-                        };
-                    }
-
-                    if (isFamilyNode) {
-                        return {
-                            ...family,
-                            value: isChecked,
-                            ProductDesignations: family.ProductDesignations.map((designation) => ({
-                                ...designation,
-                                value: isChecked,
-                            })),
-                        };
-                    }
-
-                    // Behandlung von ProductDesignation-Änderungen
-                    const updatedDesignations = family.ProductDesignations.map((designation) => ({
-                        ...designation,
-                        value: designation.name === node.name ? isChecked : designation.value,
-                    }));
-
-                    const updatedFamily = {
-                        ...family,
-                        value: updatedDesignations.every((d) => d.value),
-                        ProductDesignations: updatedDesignations,
-                    };
-
-                    return updatedFamily;
-                });
-
-                // Update Root basierend auf Families
-                updatedRoot.value = updatedFamilies.every((family) => family.value);
-
-                return {
-                    ProductRoot: {
-                        ...updatedRoot,
-                        ProductFamilies: updatedFamilies,
-                    },
-                };
-            });
-        });
+    function onFilterChanged(query: FilterQuery) {
+        console.log(`Filter changed: ${query.key} is now ${query.value}`);
     }
 
     return (
@@ -146,7 +91,7 @@ export function FilterContainer() {
             <Typography variant="h4" fontWeight={600} mb={1}>
                 {t('filter')}
             </Typography>
-            <EClassFilter eClassFilters={eClassFilters}/>
+            <EClassFilter eClassFilters={eClassFilters} onFilterChanged={onFilterChanged}/>
             <SimpleTreeView>
                 <TreeItem
                     itemId="vec"
@@ -166,80 +111,7 @@ export function FilterContainer() {
                     })}
                 </TreeItem>
             </SimpleTreeView>
-            <SimpleTreeView>
-                <TreeItem
-                    itemId="root"
-                    label={
-                        <Typography variant="h5" my={1}>
-                            Product Root, Family and Designation
-                        </Typography>
-                    }
-                >
-                    {filters.map((productCategory) => {
-                        return (
-                            <TreeItem
-                                key={productCategory.ProductRoot.name}
-                                itemId={productCategory.ProductRoot.name}
-                                label={
-                                    <Box display="flex" alignItems="center">
-                                        <Checkbox
-                                            onClick={(event) => event.stopPropagation()}
-                                            checked={productCategory.ProductRoot.value}
-                                            onChange={(event) =>
-                                                updateCheckboxState(productCategory.ProductRoot, event.target.checked)
-                                            }
-                                        />
-                                        {productCategory.ProductRoot.name}
-                                    </Box>
-                                }
-                            >
-                                {productCategory.ProductRoot.ProductFamilies.map((productFamily) => {
-                                    return (
-                                        <TreeItem
-                                            key={productFamily.name}
-                                            itemId={productFamily.name}
-                                            label={
-                                                <Box display="flex" alignItems="center">
-                                                    <Checkbox
-                                                        onClick={(event) => event.stopPropagation()}
-                                                        checked={productFamily.value}
-                                                        onChange={(event) =>
-                                                            updateCheckboxState(productFamily, event.target.checked)
-                                                        }
-                                                    />
-                                                    {productFamily.name}
-                                                </Box>
-                                            }
-                                        >
-                                            {productFamily.ProductDesignations.map((productDesignation) => {
-                                                return (
-                                                    <Box
-                                                        key={productDesignation.name}
-                                                        display="flex"
-                                                        alignItems="center"
-                                                        ml={4}
-                                                    >
-                                                        <Checkbox
-                                                            checked={productDesignation.value}
-                                                            onChange={(event) =>
-                                                                updateCheckboxState(
-                                                                    productDesignation,
-                                                                    event.target.checked,
-                                                                )
-                                                            }
-                                                        />
-                                                        <Typography>{productDesignation.name}</Typography>
-                                                    </Box>
-                                                );
-                                            })}
-                                        </TreeItem>
-                                    );
-                                })}
-                            </TreeItem>
-                        );
-                    })}
-                </TreeItem>
-            </SimpleTreeView>
+            <ProductCategoryFilter productCategoryFilters={transformProductCategories(productCategoryFilters)} onFilterChanged={onFilterChanged}/>
         </>
     );
 }

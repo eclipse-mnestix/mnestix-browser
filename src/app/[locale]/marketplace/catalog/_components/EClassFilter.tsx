@@ -1,12 +1,13 @@
 import { SimpleTreeView, TreeItem } from '@mui/x-tree-view';
 import { Box, Checkbox, Typography } from '@mui/material';
 import { useState } from 'react';
+import { FilterQuery } from 'app/[locale]/marketplace/catalog/_components/FilterContainer';
 
 interface CheckboxFilterState {
     [key: string]: boolean;
 }
 
-export function EClassFilter(props: {eClassFilters: string[]}) {
+export function EClassFilter(props: {eClassFilters: string[], onFilterChanged(query: FilterQuery): void}) {
     const [selectedFilters, setSelectedFilters] = useState<CheckboxFilterState>(() => {
         const initialState: CheckboxFilterState = {};
         props.eClassFilters.forEach(filter => {
@@ -20,6 +21,9 @@ export function EClassFilter(props: {eClassFilters: string[]}) {
             ...prevState,
             [eClass]: checked
         }));
+
+        // TODO build query and send event to parent component to trigger new search
+        props.onFilterChanged({ key: eClass, value: checked});
     }
 
     const resolveEclassLabel = (eClass: string) => {
@@ -55,7 +59,6 @@ export function EClassFilter(props: {eClassFilters: string[]}) {
                         <Box display="flex" alignItems="center">
                             <Checkbox
                                 checked={isGroupChecked}
-
                                 onChange={(event) =>
                                     eClasses.forEach((eClass) =>
                                         onFilterChange(eClass, event.target.checked)
