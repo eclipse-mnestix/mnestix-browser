@@ -9,7 +9,7 @@ import { CatalogConfiguration } from 'app/[locale]/marketplace/catalogConfigurat
 import Image from 'next/image';
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
 import { getCatalogBreadcrumbs } from 'app/[locale]/marketplace/_components/breadcrumbs';
-import { FilterContainer } from 'app/[locale]/marketplace/catalog/_components/filterContainer';
+import { FilterContainer } from 'app/[locale]/marketplace/catalog/_components/FilterContainer';
 
 export default function Page() {
     const params = useSearchParams();
