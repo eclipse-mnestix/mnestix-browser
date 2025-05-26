@@ -1,4 +1,4 @@
-FROM cypress/included:14.3.3
+FROM cypress/included:14.4.0
 
 ENV NO_COLOR=1
 
