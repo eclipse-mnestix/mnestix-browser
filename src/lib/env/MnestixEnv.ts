@@ -45,20 +45,38 @@ const featureFlags = mapEnvVariables(
     parseFlag,
 );
 
-const otherVariables = mapEnvVariables([
-    'DISCOVERY_API_URL',
-    'REGISTRY_API_URL',
-    'SUBMODEL_REGISTRY_API_URL',
-    'CONCEPT_DESCRIPTION_REPO_API_URL',
-    'AAS_REPO_API_URL',
-    'SUBMODEL_REPO_API_URL',
-    'MNESTIX_BACKEND_API_URL',
-    'IMPRINT_URL',
-    'DATA_PRIVACY_URL',
-    // strong typing and parsing was neglected here, as this is a temporary feature
-    // validation is also not implemented
-    'SUBMODEL_WHITELIST',
-] as const);
+/**
+ * Removes a trailing slash from a URL string, if present.
+ * @param url The URL string to sanitize
+ * @returns The URL without a trailing slash
+ */
+function removeTrailingSlash(url: string | undefined): string | undefined {
+    if (typeof url === 'string' && url.endsWith('/')) {
+        return url.slice(0, -1);
+    }
+    return url;
+}
+
+/**
+ * All environment variables in this object (außer SUBMODEL_WHITELIST) sind URLs und werden automatisch ohne abschließenden Slash bereitgestellt.
+ * Das sorgt für konsistente URL-Formate für API-Calls und externe Links.
+ */
+const otherVariables = {
+    ...mapEnvVariables([
+        'DISCOVERY_API_URL',
+        'REGISTRY_API_URL',
+        'SUBMODEL_REGISTRY_API_URL',
+        'CONCEPT_DESCRIPTION_REPO_API_URL',
+        'AAS_REPO_API_URL',
+        'SUBMODEL_REPO_API_URL',
+        'MNESTIX_BACKEND_API_URL',
+        'IMPRINT_URL',
+        'DATA_PRIVACY_URL',
+    ] as const, removeTrailingSlash),
+    // strong typing und parsing wurde hier vernachlässigt, da dies ein temporäres Feature ist
+    // validation ist auch nicht implementiert
+    SUBMODEL_WHITELIST: process_env.SUBMODEL_WHITELIST,
+};
 
 const themingVariables = mapEnvVariables([
     'THEME_PRIMARY_COLOR',
