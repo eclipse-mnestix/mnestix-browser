@@ -3,6 +3,9 @@ import { useTranslations } from 'next-intl';
 import { SimpleTreeView, TreeItem } from '@mui/x-tree-view';
 import { EClassFilter } from 'app/[locale]/marketplace/catalog/_components/EClassFilter';
 import { ProductCategoryFilter } from 'app/[locale]/marketplace/catalog/_components/ProductCategoryFilter';
+import { searchProducts } from 'lib/api/graphql/catalogActions';
+import { useState } from 'react';
+import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 
 export interface FilterQuery {
     key: string;
@@ -11,6 +14,8 @@ export interface FilterQuery {
 
 export function FilterContainer() {
     const t = useTranslations('pages.catalog');
+    const [loading, setLoading] = useState(false);
+    const [activeFilters, setActiveFilters] = useState<FilterQuery[]>([]);
 
     // This dummy filters needs to be replaced with actual data fetching logic
     const productCategoryFilters = [
@@ -82,8 +87,28 @@ export function FilterContainer() {
         }));
     }
 
-    function onFilterChanged(query: FilterQuery) {
-        console.log(`Filter changed: ${query.key} is now ${query.value}`);
+    async function onFilterChanged(query: FilterQuery) {
+        try {
+            setLoading(true);
+            const newFilters = activeFilters.filter(f => f.key !== query.key);
+            if (query.value) {
+                newFilters.push(query);
+            }
+            setActiveFilters(newFilters);
+
+            const results = await searchProducts(newFilters);
+            // Handle results...
+            console.log('Search results:', results);
+
+        } catch (error) {
+            console.error('Search failed:', error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    if (loading) {
+        return <CenteredLoadingSpinner />;
     }
 
     return (

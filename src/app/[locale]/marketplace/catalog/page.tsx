@@ -10,16 +10,25 @@ import Image from 'next/image';
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
 import { getCatalogBreadcrumbs } from 'app/[locale]/marketplace/_components/breadcrumbs';
 import { FilterContainer } from 'app/[locale]/marketplace/catalog/_components/FilterContainer';
+import { getProducts } from 'lib/api/graphql/catalogActions';
+import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 
 export default function Page() {
     const params = useSearchParams();
     const t = useTranslations('pages.catalog');
     const manufacturer = params.get('manufacturer');
+    useAsyncEffect(async () => {
+        if (!manufacturer) {
+            return;
+        }
+        const product = await getProducts();
+        console.log(product)
+    }, []);
+
 
     if (!manufacturer) {
         return <>No Manufacturer found</>;
     }
-
     const config = CatalogConfiguration[manufacturer];
     const breadcrumbLinks = getCatalogBreadcrumbs(t, manufacturer);
 
