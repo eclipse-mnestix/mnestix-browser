@@ -9,6 +9,8 @@ function buildFilterInput(filters: FilterQuery[]): string {
     const eclassFilter = filters.find(filter => filter.key === 'ECLASS');
     let filterString = ''
     if (eclassFilter) {
+        // TODO Add support for other filters
+        // For ECLASS only do "StartsWith" when parent node is selected?
         filterString = `{productClassifications: {
             some: {
                 system: {
