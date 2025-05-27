@@ -1,5 +1,10 @@
 {
   "components": {
+    "constructionDialog": {
+      "title": "In Bearbeitung",
+      "message": "Diese Funktion befindet sich derzeit im Aufbau und wird in Kürze verfügbar sein.",
+      "buttonText": "Schließen"
+    },
     "addressComponent": {
       "VAT": "USt-IdNr.",
       "addressTypes": {
@@ -89,9 +94,11 @@
       "copyBase64": "Base64-kodiert kopieren"
     },
     "documentComponent": {
+      "classification": "Dokument Klassifikation",
       "documentDetails": "Dokumentendetails",
       "fileNotFound": "Datei nicht gefunden",
-      "open": "Öffnen"
+      "open": "Öffnen",
+      "showMoreButton": "zeige mehr"
     },
     "dummyComponent": {
       "dummyText": "Das ist eine Dummy-Komponente. Sie wird verwendet, um das Layout und Design der Anwendung zu testen."
@@ -103,8 +110,8 @@
     },
     "propertyComponent": {
       "boolean": {
-        "false": "Falsch",
-        "true": "Wahr"
+        "false": "falsch",
+        "true": "wahr"
       },
       "labels": {
         "copied": "In Zwischenablage kopiert",
@@ -122,14 +129,14 @@
     },
     "relationShipDetailsDialog": {
       "error": {
-        "entityError": "Relationselement nicht gefunden",
-        "semanticError": "Semantische ID nicht gefunden",
+        "entityError": "Relation entity nicht gefunden",
+        "semanticError": "Semantic ID nicht gefunden",
         "unknownRelationship": "Unbekannte Relation"
       },
       "hasPart": "hat Teil",
       "isPartOf": "ist Teil von",
       "sameAs": "gleich wie",
-      "semanticId": "Semantische ID"
+      "semanticId": "Semantic ID"
     },
     "submodelElementCollection": {
       "allAvailableData": "Alle verfügbaren Daten",
@@ -189,13 +196,13 @@
         "aasEndpoint": "AAS URL",
         "aasId": "AAS ID",
         "assetId": "Asset ID",
-        "discoveryUrl": "Discovery Url",
+        "discoveryUrl": "Discovery URL",
         "manufacturer": "Herstellername",
         "picture": "Bild",
         "productClass": "Produktklasse",
         "productDesignation": "Hersteller Produktbezeichnung",
-        "registryUrl": "Registry Url",
-        "repositoryUrl": "Repository Url",
+        "registryUrl": "Registry URL",
+        "repositoryUrl": "Repository URL",
         "viewAASButton": "AAS anzeigen"
       },
       "maxElementsWarning": "Maximal 3 Elemente selektierbar",
@@ -246,9 +253,13 @@
       }
     },
     "catalog": {
-      "title": "Produktkatalog",
       "manufacturerCatalog": "Hersteller Produktkatalog",
-      "manufacturerSelect": "Hersteller auswählen"
+      "manufacturerSelect": "Hersteller auswählen",
+      "title": "Hersteller Produktkatalog",
+      "marketplaceTitle": "VWS4LS - Marketplace",
+      "marketplaceSubtitle": "Verwaltungsschale für den Leitungssatz",
+      "articleCount": "{count, plural, =1 {# Artikel} other {# Artikel}}",
+      "filter": "Filter"
     },
     "compare": {
       "addAnother": "Eine weitere AAS hinzufügen",
@@ -282,13 +293,16 @@
         "noAssetId": "Keine Asset ID angegeben.",
         "searchFailed": "Suche fehlgeschlagen"
       },
-      "subtitle": "Hier finden Sie alle AAS, die mit der angegebenen ID verknüpft sind.",
-      "title": "AAS mit ID"
+      "subtitle": "Hier finden Sie alle AAS, die mit der angegebenen Asset ID verknüpft sind.",
+      "title": "AAS mit Asset ID"
     },
     "productViewer": {
       "actions": {
         "compareButton": "Vergleichen",
-        "toAasView": "AAS Ansicht"
+        "toAasView": "AAS Ansicht",
+        "download": "AAS herunterladen",
+        "downloadErrorNoRepo": "Kein Repository für die ausgewählte AAS gefunden.",
+        "downloadError": "Fehler beim Herunterladen der AAS."
       },
       "classification": "Produktklassifikation",
       "error": {
@@ -340,6 +354,7 @@
         },
         "subtitle": "Definieren Sie, welche Datenquellen verwendet werden sollen.",
         "title": "Datenquellen",
+        "urlFieldNoTrailingSlash": "Die URL darf nicht mit einem Schrägstrich (/) enden.",
         "urlFieldRequired": "URL wird benötigt"
       },
       "header": "Einstellungen",
@@ -405,9 +420,9 @@
           "delete": "Vergessen Sie nicht die Rolle in Keycloak zu entfernen!",
           "title": "Keycloak aktualisieren"
         },
-        "roleRequired": "Rolle wird benötigt",
         "roleNameMaxLength": "Rollenname darf maximal {maxLength} Zeichen lang sein",
         "roleNameNoTrailSpace": "Rollenname darf keine Leerzeichen am Ende haben.",
+        "roleRequired": "Rolle wird benötigt",
         "subtitle": "Verwalten von Rollen und Berechtigungen.",
         "tableHeader": {
           "aasIds": "AAS IDs",
@@ -436,8 +451,8 @@
       },
       "all": "Alle",
       "boolean": {
-        "false": "Falsch",
-        "true": "Wahr"
+        "false": "falsch",
+        "true": "wahr"
       },
       "chooseAStartingPoint": "Wählen Sie ein Template als Ausgangspunkt",
       "copyTemplateId": "Template-ID kopieren",

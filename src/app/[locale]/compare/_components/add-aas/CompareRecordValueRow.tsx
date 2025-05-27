@@ -4,6 +4,7 @@ import { Grid } from '@mui/material';
 import { CompareSubmodelElement } from '../CompareSubmodelElement';
 import { DifferenceSymbol } from 'components/basics/DifferenceSymbol';
 import { useLocale } from 'next-intl';
+import { SubmodelElementChoice } from 'lib/api/aas/models';
 
 export function CompareRecordValueRow(props: { data: SubmodelCompareDataRecord; columnWidthCount: number }) {
     const dataRecord = props.data;
@@ -16,14 +17,13 @@ export function CompareRecordValueRow(props: { data: SubmodelCompareDataRecord; 
             {(dataRecord as SubmodelCompareDataRecord).submodelElements?.map((subElement, valueIndex) => {
                 return (
                     <Grid
-                        item
-                        xs={props.columnWidthCount - 0.5}
+                        size={{ xs: props.columnWidthCount - 0.5 }}
                         key={valueIndex}
                         data-testid={`compare-value-${valueIndex}`}
                     >
                         {subElement ? (
                             <CompareSubmodelElement
-                                submodelElement={subElement}
+                                submodelElement={subElement as unknown as SubmodelElementChoice}
                                 isMarked={markedIndexes.includes(valueIndex)}
                             />
                         ) : (
