@@ -96,8 +96,10 @@ export default function Page() {
                                 boxShadow: 2,
                                 borderRadius: 3,
                                 position: 'relative',
+                                cursor: 'pointer',
                                 background: theme.palette.background.paper,
                             }}
+                            onClick={() => navigate.push(`/marketplace/catalog?manufacturer=${encodeURIComponent(manufacturer)}`)}
                         >
                             <Image
                                 src={config.manufacturerLogo}
@@ -125,15 +127,18 @@ export default function Page() {
                             key={repoUrl}
                             sx={{
                                 width: 300,
-                                minHeight: 100,
+                                minHeight: 160,
                                 display: 'flex',
                                 flexDirection: 'column',
-                                justifyContent: 'center',
+                                justifyContent: 'space-between',
                                 p: 2,
                                 boxShadow: 2,
                                 borderRadius: 3,
+                                position: 'relative',
                                 background: theme.palette.background.paper,
+                                cursor: 'pointer'
                             }}
+                            onClick={() => navigate.push(`/marketplace/catalog?repoUrl=${encodeURIComponent(repoUrl)}`)}
                         >
                             <Typography variant="h6" fontWeight={600}>
                                 {repoUrl}
