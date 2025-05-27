@@ -73,8 +73,8 @@ const otherVariables = {
         'IMPRINT_URL',
         'DATA_PRIVACY_URL',
     ] as const, removeTrailingSlash),
-    // strong typing und parsing wurde hier vernachlässigt, da dies ein temporäres Feature ist
-    // validation ist auch nicht implementiert
+    // Strong typing and parsing have been neglected here as this is a temporary feature.
+    // Validation is also not implemented.
     SUBMODEL_WHITELIST: process_env.SUBMODEL_WHITELIST,
 };
 
