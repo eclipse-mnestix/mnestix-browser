@@ -34,5 +34,5 @@ const patches = readdirSync(patchDir)
 for (const patch of patches) {
     const patchPath = join(patchDir, patch);
     console.log(`Applying patch ${patchPath}`);
-    run(`git apply "${patchPath}"`);
+    run(`git apply --whitespace=fix "${patchPath}"`);
 }
