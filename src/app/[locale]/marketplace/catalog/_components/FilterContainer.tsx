@@ -3,18 +3,16 @@ import { useTranslations } from 'next-intl';
 import { SimpleTreeView, TreeItem } from '@mui/x-tree-view';
 import { EClassFilter } from 'app/[locale]/marketplace/catalog/_components/EClassFilter';
 import { ProductCategoryFilter } from 'app/[locale]/marketplace/catalog/_components/ProductCategoryFilter';
-import { searchProducts } from 'lib/api/graphql/catalogActions';
 import { useState } from 'react';
-import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 
 export interface FilterQuery {
     key: string;
     value: string;
 }
 
-export function FilterContainer() {
+export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): void }) {
     const t = useTranslations('pages.catalog');
-    const [loading, setLoading] = useState(false);
+    const [setLoading] = useState(false);
     const [activeFilters, setActiveFilters] = useState<FilterQuery[]>([]);
 
     // This dummy filters needs to be replaced with actual data fetching logic
@@ -69,46 +67,28 @@ export function FilterContainer() {
     function addBooleanValues<T extends { name: string }>(item: T): T & { value: boolean } {
         return {
             ...item,
-            value: false
+            value: false,
         };
     }
 
     function transformProductCategories(categories: typeof productCategoryFilters) {
-        return categories.map(category => ({
+        return categories.map((category) => ({
             ProductRoot: {
                 ...addBooleanValues(category.ProductRoot),
-                ProductFamilies: category.ProductRoot.ProductFamilies.map(family => ({
+                ProductFamilies: category.ProductRoot.ProductFamilies.map((family) => ({
                     ...addBooleanValues(family),
-                    ProductDesignations: family.ProductDesignations.map(designation =>
-                        addBooleanValues(designation)
-                    )
-                }))
-            }
+                    ProductDesignations: family.ProductDesignations.map((designation) => addBooleanValues(designation)),
+                })),
+            },
         }));
     }
 
     async function onFilterChanged(queries: FilterQuery[]) {
-        try {
-            setLoading(true);
-            const updatedFilters = activeFilters.filter(
-                (filter) => !queries.some((query) => query.key === filter.key)
-            );
-            updatedFilters.push(...queries);
-            setActiveFilters(updatedFilters);
+        const updatedFilters = activeFilters.filter((filter) => !queries.some((query) => query.key === filter.key));
+        updatedFilters.push(...queries);
+        setActiveFilters(updatedFilters);
 
-            const results = await searchProducts(updatedFilters);
-            // Handle results...
-            console.log('Search results:', results);
-
-        } catch (error) {
-            console.error('Search failed:', error);
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    if (loading) {
-        return <CenteredLoadingSpinner />;
+        props.onFilterChanged(updatedFilters);
     }
 
     return (
@@ -116,7 +96,7 @@ export function FilterContainer() {
             <Typography variant="h4" fontWeight={600} mb={1}>
                 {t('filter')}
             </Typography>
-            <EClassFilter eClassFilters={eClassFilters} onFilterChanged={onFilterChanged}/>
+            <EClassFilter eClassFilters={eClassFilters} onFilterChanged={onFilterChanged} />
             <SimpleTreeView>
                 <TreeItem
                     itemId="vec"
@@ -136,7 +116,10 @@ export function FilterContainer() {
                     })}
                 </TreeItem>
             </SimpleTreeView>
-            <ProductCategoryFilter productCategoryFilters={transformProductCategories(productCategoryFilters)} onFilterChanged={onFilterChanged}/>
+            <ProductCategoryFilter
+                productCategoryFilters={transformProductCategories(productCategoryFilters)}
+                onFilterChanged={onFilterChanged}
+            />
         </>
     );
 }

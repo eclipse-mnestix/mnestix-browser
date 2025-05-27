@@ -28,7 +28,7 @@ export function EClassFilter(props: { eClassFilters: string[]; onFilterChanged(q
 
             // Send the updated list of selected filters to the parent component
             props.onFilterChanged(selectedEClasses.map(eclass => {return { key: 'ECLASS', value: eclass }}));
-
+            console.log(selectedEClasses)
             return updatedFilters;
         });
     }

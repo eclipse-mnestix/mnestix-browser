@@ -1,12 +1,12 @@
 ﻿import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import { useTranslations } from 'next-intl';
-import { SearchResponse } from 'lib/api/graphql/catalogQueries';
+import { SearchResponseEntry } from 'lib/api/graphql/catalogQueries';
 import { ProductListTableRow } from 'app/[locale]/marketplace/catalog/_components/List/ProductListTableRow';
 
 type AasListProps = {
     repositoryUrl: string;
-    shells: SearchResponse | undefined;
+    shells: SearchResponseEntry[] | undefined;
     comparisonFeatureFlag?: boolean;
     selectedAasList?: string[] | undefined;
     updateSelectedAasList: (isChecked: boolean, aasId: string | undefined) => void;
@@ -69,7 +69,7 @@ export default function ProductList(props: AasListProps) {
                     </TableHead>
                     <TableBody>
                         {shells &&
-                            shells.entries?.map((aasListEntry) => (
+                            shells.map((aasListEntry) => (
                                 <TableRow key={aasListEntry.id} data-testid={`list-row-${aasListEntry.id}`}>
                                     <ProductListTableRow
                                         repositoryUrl={repositoryUrl}

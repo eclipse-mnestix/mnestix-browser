@@ -1,49 +1,39 @@
-// src/lib/services/catalog/catalogActions.ts
 'use server';
 
+import { gql } from '@apollo/client';
 import { FilterQuery } from 'app/[locale]/marketplace/catalog/_components/FilterContainer';
 import { client } from 'lib/api/graphql/apolloClient';
-import { GET_PRODUCTS, SEARCH_PRODUCTS, SearchResponse } from 'lib/api/graphql/catalogQueries';
+import { GET_PRODUCTS, searchQuery, SearchResponse } from 'lib/api/graphql/catalogQueries';
 
-interface StringOperationFilterInput {
-    eq?: string;
-}
-
-interface ProductClassificationValuesFilterInput {
-    system?: StringOperationFilterInput;
-}
-
-interface ListFilterInputTypeOfProductClassificationValuesFilterInput {
-    some?: ProductClassificationValuesFilterInput;
-}
-
-interface AasSearchEntryFilterInput {
-    productClassifications?: ListFilterInputTypeOfProductClassificationValuesFilterInput;
-}
-
-function buildFilterInput(filters: FilterQuery[]): AasSearchEntryFilterInput {
-    return {
-        productClassifications: {
+function buildFilterInput(filters: FilterQuery[]): string {
+    const eclassFilter = filters.find(filter => filter.key === 'ECLASS');
+    let filterString = ''
+    if (eclassFilter) {
+        filterString = `{productClassifications: {
             some: {
                 system: {
-                    eq: 'ECLASS'
+                    eq: "ECLASS"
                 }
-            }
-        }
-    };
+                productId: {
+                   in: [${eclassFilter.value.split(',').map((val) => `"${val.trim()}"`).join(',')}]
+                }
+            }}
+        }`
+    }
+    return filterString ? `(where: ${filterString})` : '';
 }
 
-export async function searchProducts(filters: FilterQuery[]) {
-    const where = buildFilterInput(filters);
+export async function searchProducts(filters?: FilterQuery[]) {
+    if (!filters || filters.length === 0) {
+        return getProducts();
+    }
+    const queryString = searchQuery(buildFilterInput(filters));
+    console.log(queryString)
 
+    const query = gql(queryString);
     try {
-        console.log(JSON.stringify(where))
         const { data } = await client.query<SearchResponse>({
-            query: SEARCH_PRODUCTS,
-            variables: {
-                where: where
-            },
-             fetchPolicy: 'no-cache'
+            query,
         });
         return data.entries;
     }
@@ -53,9 +43,9 @@ export async function searchProducts(filters: FilterQuery[]) {
     }
 }
 
-export async function getProducts(): Promise<SearchResponse> {
+export async function getProducts() {
     const { data } = await client.query<SearchResponse>({
         query: GET_PRODUCTS,
     });
-    return data;
+    return data.entries;
 }

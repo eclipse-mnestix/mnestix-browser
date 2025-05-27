@@ -9,24 +9,25 @@ import Image from 'next/image';
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
 import { getCatalogBreadcrumbs } from 'app/[locale]/marketplace/_components/breadcrumbs';
 import { FilterContainer } from 'app/[locale]/marketplace/catalog/_components/FilterContainer';
-import { getProducts } from 'lib/api/graphql/catalogActions';
+import { searchProducts } from 'lib/api/graphql/catalogActions';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import ProductList from 'app/[locale]/marketplace/catalog/_components/List/ProductList';
 import { useState } from 'react';
-import { SearchResponse } from 'lib/api/graphql/catalogQueries';
+import { SearchResponseEntry } from 'lib/api/graphql/catalogQueries';
+import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 
 export default function Page() {
     const params = useSearchParams();
     const t = useTranslations('pages.catalog');
     const manufacturer = params.get('manufacturer');
-    const [products, setProducts] = useState<SearchResponse>();
+    const [products, setProducts] = useState<SearchResponseEntry[]>();
+    const [loading, setLoading] = useState<boolean>(true);
 
     useAsyncEffect(async () => {
         if (!manufacturer) {
             return;
         }
-        const products: SearchResponse = await getProducts();
-        setProducts(products);
+        await loadData()
     }, []);
 
 
@@ -35,6 +36,23 @@ export default function Page() {
     }
     const config = CatalogConfiguration[manufacturer];
     const breadcrumbLinks = getCatalogBreadcrumbs(t, manufacturer);
+
+    const loadData = async (filters?: { key: string; value: string }[]) => {
+        setLoading(true);
+        let products: SearchResponseEntry[] = [];
+
+        if(filters) {
+            products = await searchProducts(filters);
+        } else {
+            products = await searchProducts();
+        }
+        setProducts(products);
+        setLoading(false);
+    }
+
+    const onFilterChanged = async (filters: { key: string; value: string }[]) => {
+        await loadData(filters);
+    };
 
     return (
         <Box width="90%" margin="auto" marginTop="1rem">
@@ -69,10 +87,13 @@ export default function Page() {
                     }}
                     aria-label={t('filter')}
                 >
-                    <FilterContainer />
+                    <FilterContainer onFilterChanged={onFilterChanged}/>
                 </Card>
                 <Box flex={1} minWidth={0}>
-                    <ProductList shells={products} repositoryUrl={config.repositoryUrl} updateSelectedAasList={() => {}}/>
+                    {loading ? <CenteredLoadingSpinner /> :
+                        <Card>
+                            <ProductList shells={products} repositoryUrl={config.repositoryUrl} updateSelectedAasList={() => {}}/>
+                        </Card>}
                 </Box>
             </Box>
         </Box>
