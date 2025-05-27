@@ -1,5 +1,10 @@
 {
   "components": {
+    "constructionDialog": {
+      "title": "In Bearbeitung",
+      "message": "Diese Funktion befindet sich derzeit im Aufbau und wird in Kürze verfügbar sein.",
+      "buttonText": "Schließen"
+    },
     "addressComponent": {
       "VAT": "USt-IdNr.",
       "addressTypes": {
@@ -250,7 +255,11 @@
     "catalog": {
       "manufacturerCatalog": "Hersteller Produktkatalog",
       "manufacturerSelect": "Hersteller auswählen",
-      "title": "Produktkatalog"
+      "title": "Hersteller Produktkatalog",
+      "marketplaceTitle": "VWS4LS - Marketplace",
+      "marketplaceSubtitle": "Verwaltungsschale für den Leitungssatz",
+      "articleCount": "{count, plural, =1 {# Artikel} other {# Artikel}}",
+      "filter": "Filter"
     },
     "compare": {
       "addAnother": "Eine weitere AAS hinzufügen",

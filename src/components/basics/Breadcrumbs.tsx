@@ -1,5 +1,6 @@
 import { ChevronRight, Home } from '@mui/icons-material';
-import { Box, Link, Typography } from '@mui/material';
+import { Box, Typography, Link as MuiLink } from '@mui/material';
+import NextLink from 'next/link';
 import { Fragment } from 'react';
 
 type BreadcrumbsProps = {
@@ -9,7 +10,8 @@ type BreadcrumbsProps = {
 export function Breadcrumbs(props: BreadcrumbsProps) {
     return (
         <Box display="flex" alignItems="center">
-            <Link
+            <MuiLink
+                component={NextLink}
                 href="/"
                 sx={{
                     textDecoration: 'none',
@@ -22,15 +24,17 @@ export function Breadcrumbs(props: BreadcrumbsProps) {
                 }}
             >
                 <Home fontSize="small" />
-            </Link>
+            </MuiLink>
             <ChevronRight sx={{ color: 'text.secondary', mt: '2px' }} fontSize="small" />
-            
+
             {props.links &&
                 props.links.map((link, i) => {
+                    const isLast = i === props.links!.length - 1;
                     return (
                         <Fragment key={i}>
-                            {link.path &&
-                                <Link
+                            {link.path ? (
+                                <MuiLink
+                                    component={NextLink}
                                     href={link.path}
                                     sx={{
                                         textDecoration: 'none',
@@ -40,14 +44,14 @@ export function Breadcrumbs(props: BreadcrumbsProps) {
                                         },
                                     }}
                                 >
-                                    <Typography>{link.label}</Typography>
-                                </Link>
-                            }
-                            {!link.path &&
+                                    <Typography component="span">{link.label}</Typography>
+                                </MuiLink>
+                            ) : (
                                 <Typography sx={{ color: 'text.secondary' }}>{link.label}</Typography>
-                            }
-
-                            <ChevronRight sx={{ color: 'text.secondary', mt: '2px' }} fontSize="small" />
+                            )}
+                            {!isLast && (
+                                <ChevronRight sx={{ color: 'text.secondary', mt: '2px' }} fontSize="small" />
+                            )}
                         </Fragment>
                     );
                 })}
