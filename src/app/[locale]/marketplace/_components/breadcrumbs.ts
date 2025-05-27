@@ -6,7 +6,7 @@
  */
 export function getCatalogBreadcrumbs(
     t: (key: string) => string,
-    manufacturer?: string
+    manufacturer?: string | null
 ): Array<{ label: string; path: string }> {
     function capitalizeFirstLetter(text: string): string {
         if (!text) return '';

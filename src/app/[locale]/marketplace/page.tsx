@@ -141,7 +141,7 @@ export default function Page() {
                             <Box display="flex" alignItems="center" justifyContent="flex-end" mt={2}>
                                 <IconButton
                                     sx={{ bgcolor: theme.palette.primary.light, color: theme.palette.primary.contrastText, '&:hover': { bgcolor: theme.palette.primary.main }, cursor: 'pointer' }}
-                                    onClick={() => navigate.push(`/catalog/repository?url=${encodeURIComponent(repoUrl)}`)}
+                                    onClick={() => navigate.push(`/marketplace/catalog?repoUrl=${encodeURIComponent(repoUrl)}`)}
                                 >
                                     <ArrowForwardIcon />
                                 </IconButton>
