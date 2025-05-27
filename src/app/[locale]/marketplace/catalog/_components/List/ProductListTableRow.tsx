@@ -71,18 +71,17 @@ export const ProductListTableRow = (props: AasTableRowProps) => {
         // try the current locale first
         const translatedString = property.find((prop) => prop.language === locale);
         // if there is any locale, better show it instead of nothing
-        console.log(translatedString, property)
         const fallback = property[0] ? Object.values(property[0])[0] : '';
         return translatedString ? translatedString.text : fallback;
     };
 
     useAsyncEffect(async () => {
-        if (!aasListEntry.thumbnail) {
+        if (!aasListEntry.thumbnailUrl) {
             return;
         }
 
-        if (isValidUrl(aasListEntry.thumbnail)) {
-            setThumbnailUrl(aasListEntry.thumbnail);
+        if (isValidUrl(aasListEntry.thumbnailUrl)) {
+            setThumbnailUrl(aasListEntry.thumbnailUrl);
         } else if (aasListEntry.id && repositoryUrl) {
             if (thumbnailResponse?.isSuccess) {
                 const blob = mapFileDtoToBlob(thumbnailResponse?.result);
@@ -90,7 +89,7 @@ export const ProductListTableRow = (props: AasTableRowProps) => {
                 setThumbnailUrl(blobUrl);
             }
         }
-    }, [aasListEntry.thumbnail, thumbnailResponse]);
+    }, [aasListEntry.thumbnailUrl, thumbnailResponse]);
 
     const showMaxElementsNotification = () => {
         notificationSpawner.spawn({
@@ -132,7 +131,7 @@ export const ProductListTableRow = (props: AasTableRowProps) => {
                 />
             </PictureTableCell>
             <TableCell data-testid="list-manufacturer-name" align="left" sx={tableBodyText}>
-                {aasListEntry.id}
+                {aasListEntry.manufacturerName ? translateListText(aasListEntry.manufacturerName.mlValues) : ''}
             </TableCell>
             <TableCell data-testid="list-product-designation" align="left" sx={tableBodyText}>
                 {aasListEntry.productDesignation ? translateListText(aasListEntry.productDesignation.mlValues) : ''}

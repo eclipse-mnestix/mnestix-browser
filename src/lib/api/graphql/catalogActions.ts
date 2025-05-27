@@ -5,43 +5,50 @@ import { FilterQuery } from 'app/[locale]/marketplace/catalog/_components/Filter
 import { client } from 'lib/api/graphql/apolloClient';
 import { GET_PRODUCTS, SEARCH_PRODUCTS, SearchResponse } from 'lib/api/graphql/catalogQueries';
 
-interface FilterInput {
-    productClassifications?: {
-        some: {
-            system: {
-                eq: string;
-            };
-        };
+interface StringOperationFilterInput {
+    eq?: string;
+}
+
+interface ProductClassificationValuesFilterInput {
+    system?: StringOperationFilterInput;
+}
+
+interface ListFilterInputTypeOfProductClassificationValuesFilterInput {
+    some?: ProductClassificationValuesFilterInput;
+}
+
+interface AasSearchEntryFilterInput {
+    productClassifications?: ListFilterInputTypeOfProductClassificationValuesFilterInput;
+}
+
+function buildFilterInput(filters: FilterQuery[]): AasSearchEntryFilterInput {
+    return {
+        productClassifications: {
+            some: {
+                system: {
+                    eq: 'ECLASS'
+                }
+            }
+        }
     };
 }
 
-function buildFilterInput(filters: FilterQuery[]): FilterInput {
-    const filterInput: FilterInput = {};
-
-    const eclassFilters = filters.filter(f => f.key === 'ECLASS');
-    if (eclassFilters.length > 0) {
-        filterInput.productClassifications = {
-            some: {
-                system: { eq: 'ECLASS' }
-            }
-        };
-    }
-
-    return filterInput;
-}
 export async function searchProducts(filters: FilterQuery[]) {
+    const where = buildFilterInput(filters);
+
     try {
-        console.log(JSON.stringify(buildFilterInput(filters)))
+        console.log(JSON.stringify(where))
         const { data } = await client.query<SearchResponse>({
             query: SEARCH_PRODUCTS,
             variables: {
-                where: buildFilterInput(filters)
-            }
+                where: where
+            },
+             fetchPolicy: 'no-cache'
         });
         return data.entries;
     }
     catch (error) {
-        console.error('Error searching products:', error);
+        console.error('Error searching products:', JSON.stringify(error.result));
         throw error;
     }
 }

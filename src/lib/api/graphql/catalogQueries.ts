@@ -2,40 +2,17 @@
 import { gql } from '@apollo/client';
 
 export const SEARCH_PRODUCTS = gql`
-    query SearchProducts($where: AasSearchEntryFilterInput) {
+    query SearchProducts($where: AasSearchEntryFilterInput!) {
         entries(where: $where) {
             id
-            productRoot {
-                value
-                mlValues {
-                    text
-                    language
-                }
-            }
-            productFamily {
-                mlValues {
-                    language
-                    text
-                }
-            }
-            productDesignation {
-                mlValues {
-                    language
-                    text
-                }
-            }
-            productClassifications {
-                system
-                productId
-                version
-            }
+
         }
     }
 `;
 
 export const GET_PRODUCTS = gql`
     query {
-        entries {
+        entries(where: { productClassifications: { some: { system: { eq: "ECLASS" } } } }) {
             id
             productRoot {
                 value
@@ -61,8 +38,16 @@ export const GET_PRODUCTS = gql`
                 productId
                 version
             }
+            manufacturerName {
+              mlValues {
+                language
+                text
+              }
+            }
+            thumbnailUrl
         }
     }
+    
 `;
 
 export interface SearchResponse {
@@ -97,5 +82,12 @@ export interface SearchResponseEntry {
         productId: string;
         version: string;
     }>;
-    thumbnail?: string; // Optional field for thumbnail URL
+    manufacturerName: {
+        value: string | null;
+        mlValues: Array<{
+            text: string;
+            language: string;
+        }>;
+    };
+    thumbnailUrl: string;
 }
