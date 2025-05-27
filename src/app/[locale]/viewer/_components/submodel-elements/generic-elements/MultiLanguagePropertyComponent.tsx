@@ -1,12 +1,12 @@
 import { Box, IconButton, Link, Tooltip, Typography } from '@mui/material';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
-import { MultiLanguageProperty } from '@aas-core-works/aas-core3.0-typescript/types';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { ContentCopy, OpenInNew } from '@mui/icons-material';
 import { useState } from 'react';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { useLocale } from 'use-intl';
 import { useTranslations } from 'next-intl';
+import { MultiLanguageProperty } from '@aas-core-works/aas-core3.0-typescript/types';
 
 type MultiLanguagePropertyComponentProps = {
     readonly mLangProp: MultiLanguageProperty;
@@ -48,8 +48,8 @@ export function MultiLanguagePropertyComponent(props: MultiLanguagePropertyCompo
 
     if (isValidUrl(value)) {
         return (
-            <Box 
-                display="flex" 
+            <Box
+                display="flex"
                 alignItems="center"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
@@ -66,8 +66,8 @@ export function MultiLanguagePropertyComponent(props: MultiLanguagePropertyCompo
     }
 
     return (
-        <Box 
-            display="flex" 
+        <Box
+            display="flex"
             alignItems="center"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
