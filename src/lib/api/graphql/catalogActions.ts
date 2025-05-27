@@ -5,42 +5,50 @@ import { FilterQuery } from 'app/[locale]/marketplace/catalog/_components/Filter
 import { client } from 'lib/api/graphql/apolloClient';
 import { GET_PRODUCTS, SEARCH_PRODUCTS, SearchResponse } from 'lib/api/graphql/catalogQueries';
 
-function buildFilterInput(filters: FilterQuery[]) {
-    const filterInput: any = {
-        or: []
+interface FilterInput {
+    productClassifications?: {
+        some: {
+            system: {
+                eq: string;
+            };
+        };
     };
+}
 
-    filters.forEach(filter => {
-        if (filter.key.startsWith('27-') || filter.key.startsWith('44-')) {
-            filterInput.or.push({
-                productClassifications: {
-                    some: {
-                        key: { eq: 'eclass' },
-                        value: { productId: { eq: filter.key } }
-                    }
-                }
-            });
-        }
-        // Add other filter conditions...
-    });
-    console.log(filters)
+function buildFilterInput(filters: FilterQuery[]): FilterInput {
+    const filterInput: FilterInput = {};
+
+    const eclassFilters = filters.filter(f => f.key === 'ECLASS');
+    if (eclassFilters.length > 0) {
+        filterInput.productClassifications = {
+            some: {
+                system: { eq: 'ECLASS' }
+            }
+        };
+    }
+
     return filterInput;
 }
-
 export async function searchProducts(filters: FilterQuery[]) {
-    console.log(filters)
-    const { data } = await client.query<SearchResponse>({
-        query: SEARCH_PRODUCTS,
-        variables: {
-            where: buildFilterInput(filters)
-        }
-    });
-    return data.entries;
+    try {
+        console.log(JSON.stringify(buildFilterInput(filters)))
+        const { data } = await client.query<SearchResponse>({
+            query: SEARCH_PRODUCTS,
+            variables: {
+                where: buildFilterInput(filters)
+            }
+        });
+        return data.entries;
+    }
+    catch (error) {
+        console.error('Error searching products:', error);
+        throw error;
+    }
 }
 
-export async function getProducts() {
+export async function getProducts(): Promise<SearchResponse> {
     const { data } = await client.query<SearchResponse>({
         query: GET_PRODUCTS,
     });
-    return data.entries;
+    return data;
 }

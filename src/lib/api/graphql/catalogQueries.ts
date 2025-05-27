@@ -13,63 +13,89 @@ export const SEARCH_PRODUCTS = gql`
                 }
             }
             productFamily {
-                value
+                mlValues {
+                    language
+                    text
+                }
             }
             productDesignation {
-                value
+                mlValues {
+                    language
+                    text
+                }
             }
             productClassifications {
-                key
-                value {
-                    productId
-                    version
-                }
+                system
+                productId
+                version
             }
         }
     }
 `;
 
 export const GET_PRODUCTS = gql`
-query {
-  entries {
-    id
-    createdTime
-    productRoot {
-      semanticId
-      idShortPath
-      value
-      mlValues {
-        language
-        text
-      }
+    query {
+        entries {
+            id
+            productRoot {
+                value
+                mlValues {
+                    text
+                    language
+                }
+            }
+            productFamily {
+                mlValues {
+                    language
+                    text
+                }
+            }
+            productDesignation {
+                mlValues {
+                    language
+                    text
+                }
+            }
+            productClassifications {
+                system
+                productId
+                version
+            }
+        }
     }
-    saveData
-  }
-}
 `;
 
 export interface SearchResponse {
-    entries: Array<{
-        id: string;
-        productRoot: {
-            value: string | null;
-            mlValues: Array<{
-                text: string;
-                language: string;
-            }>;
-        };
-        productFamily: {
-            value: string | null;
-        };
-        productDesignation: {
-            value: string | null;
-        };
-        productClassifications: Array<{
-            key: string;
-            value: {
-                productId: string;
-                version: string;
-            };
+    entries: Array<SearchResponseEntry>;
+}
+
+export interface SearchResponseEntry {
+    id: string;
+    productRoot: {
+        value: string | null;
+        mlValues: Array<{
+            text: string;
+            language: string;
         }>;
+    };
+    productFamily: {
+        value: string | null;
+        mlValues: Array<{
+            text: string;
+            language: string;
+        }>;
+    };
+    productDesignation: {
+        value: string | null;
+        mlValues: Array<{
+            text: string;
+            language: string;
+        }>;
+    };
+    productClassifications: Array<{
+        system: string;
+        productId: string;
+        version: string;
     }>;
+    thumbnail?: string; // Optional field for thumbnail URL
 }

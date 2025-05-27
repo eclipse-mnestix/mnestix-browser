@@ -7,23 +7,30 @@ interface CheckboxFilterState {
     [key: string]: boolean;
 }
 
-export function EClassFilter(props: {eClassFilters: string[], onFilterChanged(query: FilterQuery): void}) {
+export function EClassFilter(props: { eClassFilters: string[]; onFilterChanged(query: FilterQuery[]): void }) {
     const [selectedFilters, setSelectedFilters] = useState<CheckboxFilterState>(() => {
         const initialState: CheckboxFilterState = {};
-        props.eClassFilters.forEach(filter => {
+        props.eClassFilters.forEach((filter) => {
             initialState[filter] = false;
         });
         return initialState;
     });
 
     function onFilterChange(eClass: string, checked: boolean) {
-        setSelectedFilters(prevState => ({
-            ...prevState,
-            [eClass]: checked
-        }));
+        setSelectedFilters((prevState) => {
+            const updatedFilters = {
+                ...prevState,
+                [eClass]: checked,
+            };
 
-        // TODO build query and send event to parent component to trigger new search
-        props.onFilterChanged({ key: eClass, value: checked});
+            // Collect all selected filters
+            const selectedEClasses = Object.keys(updatedFilters).filter((key) => updatedFilters[key]);
+
+            // Send the updated list of selected filters to the parent component
+            props.onFilterChanged(selectedEClasses.map(eclass => {return { key: 'ECLASS', value: eclass }}));
+
+            return updatedFilters;
+        });
     }
 
     const resolveEclassLabel = (eClass: string) => {
@@ -37,17 +44,18 @@ export function EClassFilter(props: {eClassFilters: string[], onFilterChanged(qu
         }
     };
 
-    function prepareEclassHierarchy(
-        eClassFilters: string[]
-    ) {
-        const groupedFilters = eClassFilters.reduce((acc, eClass) => {
-            const group = eClass.slice(0, 2);
-            if (!acc[group]) {
-                acc[group] = [];
-            }
-            acc[group].push(eClass);
-            return acc;
-        }, {} as Record<string, string[]>);
+    function prepareEclassHierarchy(eClassFilters: string[]) {
+        const groupedFilters = eClassFilters.reduce(
+            (acc, eClass) => {
+                const group = eClass.slice(0, 2);
+                if (!acc[group]) {
+                    acc[group] = [];
+                }
+                acc[group].push(eClass);
+                return acc;
+            },
+            {} as Record<string, string[]>,
+        );
 
         return Object.entries(groupedFilters).map(([group, eClasses]) => {
             const isGroupChecked = eClasses.every((eClass) => selectedFilters[eClass]);
@@ -60,9 +68,7 @@ export function EClassFilter(props: {eClassFilters: string[], onFilterChanged(qu
                             <Checkbox
                                 checked={isGroupChecked}
                                 onChange={(event) =>
-                                    eClasses.forEach((eClass) =>
-                                        onFilterChange(eClass, event.target.checked)
-                                    )
+                                    eClasses.forEach((eClass) => onFilterChange(eClass, event.target.checked))
                                 }
                                 onClick={(event) => event.stopPropagation()}
                             />
@@ -74,9 +80,7 @@ export function EClassFilter(props: {eClassFilters: string[], onFilterChanged(qu
                         <Box key={eClass} display="flex" alignItems="center" ml={4}>
                             <Checkbox
                                 checked={selectedFilters[eClass] || false}
-                                onChange={(event) =>
-                                    onFilterChange(eClass, event.target.checked)
-                                }
+                                onChange={(event) => onFilterChange(eClass, event.target.checked)}
                             />
                             <Typography>{eClass}</Typography>
                         </Box>
@@ -98,5 +102,5 @@ export function EClassFilter(props: {eClassFilters: string[], onFilterChanged(qu
                 {prepareEclassHierarchy(props.eClassFilters)}
             </TreeItem>
         </SimpleTreeView>
-    )
+    );
 }

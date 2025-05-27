@@ -9,7 +9,7 @@ import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner
 
 export interface FilterQuery {
     key: string;
-    value: boolean;
+    value: string;
 }
 
 export function FilterContainer() {
@@ -61,7 +61,7 @@ export function FilterContainer() {
         '27-14-01-05',
         '27-14-01-06',
         '44-04-01-91',
-        '44-05-01-91',
+        '44-04-01-92',
     ];
     const VECFilters = ['PrimaryPartType_Wire', 'PrimaryPartType_PluggableTerminal'];
 
@@ -87,16 +87,16 @@ export function FilterContainer() {
         }));
     }
 
-    async function onFilterChanged(query: FilterQuery) {
+    async function onFilterChanged(queries: FilterQuery[]) {
         try {
             setLoading(true);
-            const newFilters = activeFilters.filter(f => f.key !== query.key);
-            if (query.value) {
-                newFilters.push(query);
-            }
-            setActiveFilters(newFilters);
+            const updatedFilters = activeFilters.filter(
+                (filter) => !queries.some((query) => query.key === filter.key)
+            );
+            updatedFilters.push(...queries);
+            setActiveFilters(updatedFilters);
 
-            const results = await searchProducts(newFilters);
+            const results = await searchProducts(updatedFilters);
             // Handle results...
             console.log('Search results:', results);
 

@@ -24,7 +24,7 @@ interface ProductCategory {
     ProductRoot: ProductRoot;
 }
 
-export function ProductCategoryFilter(props: {productCategoryFilters: ProductCategory[], onFilterChanged(query: FilterQuery): void}) {
+export function ProductCategoryFilter(props: {productCategoryFilters: ProductCategory[], onFilterChanged(query: FilterQuery[]): void}) {
     const [filters, setFilters] = useState<ProductCategory[]>(props.productCategoryFilters);
 
     function updateCheckboxState(node: ProductRoot | ProductFamily | ProductDesignation, isChecked: boolean) {
@@ -86,7 +86,7 @@ export function ProductCategoryFilter(props: {productCategoryFilters: ProductCat
         });
 
         // TODO build query and send event to parent component to trigger new search
-        props.onFilterChanged({ key: node.name, value: isChecked });
+        props.onFilterChanged([{ key: node.name, value: node.name }]);
     }
 
     return ( <SimpleTreeView>

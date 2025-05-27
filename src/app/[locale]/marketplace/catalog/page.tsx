@@ -3,7 +3,6 @@
 import { Box, Card } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
 import ListHeader from 'components/basics/ListHeader';
-import AasListDataWrapper from 'app/[locale]/list/_components/AasListDataWrapper';
 import { useTranslations } from 'next-intl';
 import { CatalogConfiguration } from 'app/[locale]/marketplace/catalogConfiguration';
 import Image from 'next/image';
@@ -12,17 +11,22 @@ import { getCatalogBreadcrumbs } from 'app/[locale]/marketplace/_components/brea
 import { FilterContainer } from 'app/[locale]/marketplace/catalog/_components/FilterContainer';
 import { getProducts } from 'lib/api/graphql/catalogActions';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
+import ProductList from 'app/[locale]/marketplace/catalog/_components/List/ProductList';
+import { useState } from 'react';
+import { SearchResponse } from 'lib/api/graphql/catalogQueries';
 
 export default function Page() {
     const params = useSearchParams();
     const t = useTranslations('pages.catalog');
     const manufacturer = params.get('manufacturer');
+    const [products, setProducts] = useState<SearchResponse>();
+
     useAsyncEffect(async () => {
         if (!manufacturer) {
             return;
         }
-        const product = await getProducts();
-        console.log(product)
+        const products: SearchResponse = await getProducts();
+        setProducts(products);
     }, []);
 
 
@@ -68,7 +72,7 @@ export default function Page() {
                     <FilterContainer />
                 </Card>
                 <Box flex={1} minWidth={0}>
-                    <AasListDataWrapper repositoryUrl={config?.repositoryUrl} hideRepoSelection={true} />
+                    <ProductList shells={products} repositoryUrl={config.repositoryUrl} updateSelectedAasList={() => {}}/>
                 </Box>
             </Box>
         </Box>
