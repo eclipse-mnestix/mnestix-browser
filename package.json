@@ -85,7 +85,6 @@
     "debug": "yarn prisma migrate deploy && yarn prisma generate && next dev",
     "build": "next build",
     "start": "yarn prisma migrate deploy && yarn prisma generate && next start",
-    "prettier": "prettier --check ./",
     "format": "prettier --write ./",
     "lint": "eslint src cypress --no-warn-ignored",
     "typecheck": "tsc --noEmit",

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-undef */
 
 import { execSync } from 'node:child_process';
 import { readdirSync } from 'node:fs';
@@ -11,9 +12,8 @@ process.on('uncaughtException', (err) => {
     process.exit(1);
 });
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-process.chdir(__dirname);
+const script_dir = dirname(fileURLToPath(import.meta.url));
+process.chdir(script_dir);
 
 function run(command) {
     execSync(command, { stdio: 'inherit', shell: true });
@@ -23,10 +23,10 @@ function run(command) {
 run('npx --yes --package @openapitools/openapi-generator-cli@2.20.0 openapi-generator-cli generate');
 
 // Format generated TypeScript so there are nicer diffs
-run('npx --yes --package prettier@3.5.3 prettier --write "aas/**/*.ts"');
+run(`yarn prettier --write "${script_dir}/aas/**/*.ts"`);
 
 // Apply patches
-const patchDir = join(__dirname, 'patches');
+const patchDir = join(script_dir, 'patches');
 const patches = readdirSync(patchDir)
     .filter((name) => name.endsWith('.patch'))
     .sort();
