@@ -88,7 +88,9 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                 prepareNameplateData(nameplate.submodelElements);
             }
         }
-    }, [props.submodels]); const prepareTechnicalDataSubmodel = (technicalDataSubmodelElements: Array<ISubmodelElement>) => {
+    }, [props.submodels]); 
+    
+    const prepareTechnicalDataSubmodel = (technicalDataSubmodelElements: Array<ISubmodelElement>) => {
         const manufacturerName = findValue(
             technicalDataSubmodelElements,
             'ManufacturerName',
@@ -374,7 +376,9 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                             {props.displayName || t('title')}
                                         </Typography>
                                         <ActionMenu 
-                                            aasId={props.aas?.id}
+                                            aas={props.aas}
+                                            submodels={props.submodels}
+                                            repositoryURL={props.repositoryURL}
                                             className="product-action-menu"
                                         />
                                     </Box>
