@@ -1,8 +1,8 @@
 'use server';
 
+import { Submodel } from 'lib/api/aas/models';
 import { mnestixFetchLegacy } from 'lib/api/infrastructure';
 import { TemplateShellApi } from 'lib/api/template-shell-api/templateShellApi';
-import { Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import { envs } from 'lib/env/MnestixEnv';
 
 const templateApiClient = TemplateShellApi.create(

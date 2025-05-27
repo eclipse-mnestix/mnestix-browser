@@ -3,8 +3,8 @@ import { Autocomplete, Box, Button, IconButton, TextField } from '@mui/material'
 import { useEffect, useState } from 'react';
 import { TemplateEditSectionHeading } from '../../TemplateEditSectionHeading';
 import options from './language-suggestions.json';
-import { LangStringTextType, MultiLanguageProperty } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useTranslations } from 'next-intl';
+import { LangStringTextType, MultiLanguageProperty } from 'lib/api/aas/models';
 
 interface MultiLangEditComponentProps {
     data: MultiLanguageProperty;
@@ -22,15 +22,15 @@ export function MultiLangEditComponent(props: MultiLangEditComponentProps) {
     }, [props.data]);
 
     const onAdd = () => {
-        const newLangStrings = [...langStrings, { language: '', text: '' } as LangStringTextType];
+        const newLangStrings = [...langStrings, { language: '', text: '' }];
         setLangStrings(newLangStrings);
-        props.onChange({ ...data, value: newLangStrings } as MultiLanguageProperty);
+        props.onChange({ ...data, value: newLangStrings });
     };
 
     const onRemove = (i: number) => {
         const newLangStrings = [...langStrings.slice(0, i), ...langStrings.slice(i + 1, langStrings.length)];
         setLangStrings(newLangStrings);
-        props.onChange({ ...data, value: newLangStrings } as MultiLanguageProperty);
+        props.onChange({ ...data, value: newLangStrings });
     };
 
     const onTextChange = (index: number, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -41,7 +41,7 @@ export function MultiLangEditComponent(props: MultiLangEditComponentProps) {
             return el;
         });
         setLangStrings(newLangStrings);
-        props.onChange({ ...data, value: newLangStrings } as MultiLanguageProperty);
+        props.onChange({ ...data, value: newLangStrings });
     };
 
     const onLanguageChange = (index: number, value: string) => {
@@ -52,7 +52,7 @@ export function MultiLangEditComponent(props: MultiLangEditComponentProps) {
             return el;
         });
         setLangStrings(newLangStrings);
-        props.onChange({ ...data, value: newLangStrings } as MultiLanguageProperty);
+        props.onChange({ ...data, value: newLangStrings });
     };
 
     return (
@@ -63,11 +63,9 @@ export function MultiLangEditComponent(props: MultiLangEditComponentProps) {
                     <Box display="flex" alignContent="center" sx={{ mb: 1 }} key={i + '-' + langStrings.length}>
                         <Autocomplete
                             value={langString.language}
-                            renderInput={(params) => (
-                                <TextField {...params} label={t('labels.language')} />
-                            )}
+                            renderInput={(params) => <TextField {...params} label={t('labels.language')} />}
                             onInputChange={(_, v) => onLanguageChange(i, v)}
-                            options={options as string[]}
+                            options={options}
                             disableClearable
                             freeSolo
                             fullWidth

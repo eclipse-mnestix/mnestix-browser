@@ -1,8 +1,8 @@
 import { Box, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { TemplateEditSectionHeading } from '../TemplateEditSectionHeading';
-import { Qualifier, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useTranslations } from 'next-intl';
+import { Qualifier, Submodel } from 'lib/api/aas/models';
 
 interface SubmodelEditComponentProps {
     data: Submodel;
@@ -31,7 +31,7 @@ export function SubmodelEditComponent(props: SubmodelEditComponentProps) {
                     }
                     return q;
                 }),
-            } as Submodel);
+            });
         }
     };
 

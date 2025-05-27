@@ -6,17 +6,17 @@ import multiplicityDataJson from './multiplicity-data.json';
 import { MultiplicityEnum } from 'lib/enums/Multiplicity.enum';
 import { MultiplicityData } from 'lib/types/MultiplicityData';
 import { LockedTextField } from 'components/basics/LockedTextField';
-import { ISubmodelElement, Qualifier, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useTranslations } from 'next-intl';
+import { Qualifier, Submodel, SubmodelElementChoice } from 'lib/api/aas/models';
 
 interface MultiplicityEditComponentProps {
-    data: Submodel | ISubmodelElement;
-    onChange: (data: Submodel | ISubmodelElement) => void;
+    data: Submodel | SubmodelElementChoice;
+    onChange: (data: Submodel | SubmodelElementChoice) => void;
     allowMultiplicityToBeSet: boolean;
 }
 
 export function MultiplicityEditComponent(props: MultiplicityEditComponentProps) {
-    const multiplicityData = multiplicityDataJson as unknown as MultiplicityData;
+    const multiplicityData = multiplicityDataJson as MultiplicityData;
     const [multiplicity, setMultiplicity] = useState(getMultiplicity());
     const [valueEnabled, setValueEnabled] = useState(!!multiplicity);
     const allowMultiplicityToBeSet = props.allowMultiplicityToBeSet;
@@ -46,7 +46,7 @@ export function MultiplicityEditComponent(props: MultiplicityEditComponentProps)
         // update/remove if existing
         if (props.data.qualifiers && qualifiersIndex !== undefined && qualifiersIndex > -1) {
             if (newMultiplicity) {
-                (props.data.qualifiers[qualifiersIndex] as Qualifier).value = newMultiplicity;
+                props.data.qualifiers[qualifiersIndex].value = newMultiplicity;
             } else {
                 props.data.qualifiers.splice(qualifiersIndex, 1);
             }

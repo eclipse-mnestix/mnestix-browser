@@ -13,12 +13,11 @@ export function BooleanPropertyEditComponent(props: BooleanPropertyEditComponent
     const t = useTranslations('pages.templates');
 
     useEffect(() => {
-        // intial value should be true
+        // initial value should be true
         if (props.defaultValueEnabled && props.dataValue !== 'false') {
             setRealBoolean(true);
             props.onChange('true');
         }
-         
     }, [props.defaultValueEnabled]);
 
     const onValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,13 +29,7 @@ export function BooleanPropertyEditComponent(props: BooleanPropertyEditComponent
         <Box sx={{ width: '100%', my: 1 }}>
             <FormControlLabel
                 control={<Switch checked={realBoolean} onChange={onValueChange} />}
-                label={
-                    realBoolean ? (
-                        t('boolean.true')
-                    ) : (
-                        t('boolean.false')
-                    )
-                }
+                label={realBoolean ? t('boolean.true') : t('boolean.false')}
             />
         </Box>
     );
