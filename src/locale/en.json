@@ -1,5 +1,10 @@
 {
   "components": {
+    "constructionDialog": {
+      "title": "Under Construction",
+      "message": "This feature is currently under construction and will be available soon.",
+      "buttonText": "Close"
+    },
     "addressComponent": {
       "VAT": "VAT-Number",
       "addressTypes": {
@@ -250,7 +255,11 @@
     "catalog": {
       "manufacturerCatalog": "Manufacturer product catalog",
       "manufacturerSelect": "Select manufacturer",
-      "title": "Manufacturer catalog"
+      "title": "Manufacturer catalog",
+      "marketplaceTitle": "VWS4LS - Marketplace",
+      "marketplaceSubtitle": "Asset Administration Shell for Wire Harness",
+      "articleCount": "{count, plural, =1 {# article} other {# articles}}",
+      "filter": "Filter"
     },
     "compare": {
       "addAnother": "Add another AAS",
