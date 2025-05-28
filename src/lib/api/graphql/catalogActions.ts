@@ -10,35 +10,51 @@ function buildFilterInput(filters?: FilterQuery[]): string {
     if(!filters || filters.length === 0) {
         return '';
     }
-    const eclassFilter = filters.find(filter => filter.key === 'ECLASS');
-    const vecFilter = filters.find(filter => filter.key === 'VEC');
+    const eclassFilter = filters.filter(filter => filter.key === 'ECLASS');
+    const vecFilter = filters.filter(filter => filter.key === 'VEC');
     const productClassificationFilters: string[] = [];
+    const filterArray = [];
 
-    if (eclassFilter) {
+    // ECLASS Filters
+    if (eclassFilter.length > 0) {
         productClassificationFilters.push(`{
             system: { eq: "ECLASS" }
-            productId: { in: [${eclassFilter.value.split(',').map(val => `"${val.trim()}"`).join(',')}] }
+            productId: { in: [${eclassFilter.map(filter => `"${filter.value.trim()}"`).join(',')}] }
         }`);
     }
-    if (vecFilter) {
+
+    // VEC Filters
+    if (vecFilter.length > 0) {
         productClassificationFilters.push(`{
             system: { eq: "VEC" }
-            productId: { in: [${vecFilter.value.split(',').map(val => `"${val.trim()}"`).join(',')}] }
+            productId: { in: [${vecFilter.map(filter => `"${filter.value.trim()}"`).join(',')}] }
         }`);
     }
 
-    if (productClassificationFilters.length === 0) {
-        return '';
+    if (productClassificationFilters.length !== 0) {
+        const productClassificationFilterString = ` productClassifications: { some: { or: [${productClassificationFilters.join(',')}] } } `;
+        filterArray.push(productClassificationFilterString);
     }
 
-    const filterString = `{ productClassifications: { some: { or: [${productClassificationFilters.join(',')}] } } }`;
-    return `(where: ${filterString})`;
+    // ProductClassification filters:
+    // TODO apply multiple filters by { in: [value1, value2] } instead of { eq: value }
+    // TODO apply filters for PRODUCT_FAMILY and PRODUCT_DESIGNATION
+    const productRootFilter = filters.find(filter => filter.key === 'PRODUCT_ROOT');
+    if (productRootFilter) {
+        filterArray.push(`
+            productRoot: { value: {eq : "${productRootFilter.value}" }}
+        `);
+    }
+
+    console.log(filterArray)
+
+    if(filterArray.length === 0) {
+        return ''
+    }
+    return filterArray.length > 1 ? `(where: {${filterArray.join(' OR: ')}})` : `(where: { ${filterArray} })`;
 }
 
 export async function searchProducts(filters?: FilterQuery[]):Promise<ApiResponseWrapper<SearchResponseEntry[]>> {
-  /*  if (!filters || filters.length === 0) {
-        return wrapSuccess(getProducts());
-    } */
     const queryString = searchQuery(buildFilterInput(filters));
     console.log(queryString)
 

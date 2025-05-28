@@ -27,66 +27,78 @@ interface ProductCategory {
 export function ProductCategoryFilter(props: {productCategoryFilters: ProductCategory[], onFilterChanged(query: FilterQuery[]): void}) {
     const [filters, setFilters] = useState<ProductCategory[]>(props.productCategoryFilters);
 
+    function updateActiveFilters(
+        prevFilters: ProductCategory[],
+        node: ProductRoot | ProductFamily | ProductDesignation,
+        isChecked: boolean,
+    ) {
+        return prevFilters.map((category) => {
+            const isRootNode = category.ProductRoot.name === node.name;
+            const updatedRoot = { ...category.ProductRoot };
+
+            const updatedFamilies = updatedRoot.ProductFamilies.map((family) => {
+                const isFamilyNode = family.name === node.name;
+
+                if (isRootNode) {
+                    return {
+                        ...family,
+                        value: isChecked,
+                        ProductDesignations: family.ProductDesignations.map((designation) => ({
+                            ...designation,
+                            value: isChecked,
+                        })),
+                    };
+                }
+
+                if (isFamilyNode) {
+                    return {
+                        ...family,
+                        value: isChecked,
+                        ProductDesignations: family.ProductDesignations.map((designation) => ({
+                            ...designation,
+                            value: isChecked,
+                        })),
+                    };
+                }
+
+                const updatedDesignations = family.ProductDesignations.map((designation) => ({
+                    ...designation,
+                    value: designation.name === node.name ? isChecked : designation.value,
+                }));
+
+                const updatedFamily = {
+                    ...family,
+                    value: updatedDesignations.every((d) => d.value),
+                    ProductDesignations: updatedDesignations,
+                };
+
+                return updatedFamily;
+            });
+
+            updatedRoot.value = updatedFamilies.every((family) => family.value);
+
+            const categories = {
+                ProductRoot: {
+                    ...updatedRoot,
+                    ProductFamilies: updatedFamilies,
+                },
+            };
+            console.log(categories);
+
+            return categories;
+        });
+    }
+
     function updateCheckboxState(node: ProductRoot | ProductFamily | ProductDesignation, isChecked: boolean) {
         setFilters((prevFilters) => {
-            return prevFilters.map((category) => {
-                const isRootNode = category.ProductRoot.name === node.name;
-                const updatedRoot = { ...category.ProductRoot };
+            const updatedFilters = updateActiveFilters(prevFilters, node, isChecked);
 
-                const updatedFamilies = updatedRoot.ProductFamilies.map((family) => {
-                    const isFamilyNode = family.name === node.name;
-
-                    if (isRootNode) {
-                        return {
-                            ...family,
-                            value: isChecked,
-                            ProductDesignations: family.ProductDesignations.map((designation) => ({
-                                ...designation,
-                                value: isChecked,
-                            })),
-                        };
-                    }
-
-                    if (isFamilyNode) {
-                        return {
-                            ...family,
-                            value: isChecked,
-                            ProductDesignations: family.ProductDesignations.map((designation) => ({
-                                ...designation,
-                                value: isChecked,
-                            })),
-                        };
-                    }
-
-                    // Behandlung von ProductDesignation-Änderungen
-                    const updatedDesignations = family.ProductDesignations.map((designation) => ({
-                        ...designation,
-                        value: designation.name === node.name ? isChecked : designation.value,
-                    }));
-
-                    const updatedFamily = {
-                        ...family,
-                        value: updatedDesignations.every((d) => d.value),
-                        ProductDesignations: updatedDesignations,
-                    };
-
-                    return updatedFamily;
-                });
-
-                // Update Root basierend auf Families
-                updatedRoot.value = updatedFamilies.every((family) => family.value);
-
-                return {
-                    ProductRoot: {
-                        ...updatedRoot,
-                        ProductFamilies: updatedFamilies,
-                    },
-                };
-            });
+            // ProductRoot
+            if ('ProductFamilies' in node && 'value' in node && node.value === true) {
+                props.onFilterChanged([{ key: 'PRODUCT_ROOT', value: node.name }]);
+            }
+            return updatedFilters;
         });
-
-        // TODO build query and send event to parent component to trigger new search
-        props.onFilterChanged([{ key: node.name, value: node.name }]);
     }
 
     return ( <SimpleTreeView>

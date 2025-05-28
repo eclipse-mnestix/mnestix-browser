@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { EClassFilter } from 'app/[locale]/marketplace/catalog/_components/EClassFilter';
 import { ProductCategoryFilter } from 'app/[locale]/marketplace/catalog/_components/ProductCategoryFilter';
@@ -87,12 +87,15 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
             .filter((filter) => queries.some((query) => query.key === filter.key))
             .concat(queries);
         setActiveFilters(updatedFilters);
+    }
 
-        props.onFilterChanged(updatedFilters);
+    function applyFilter() {
+        console.log(activeFilters)
+        props.onFilterChanged(activeFilters);
     }
 
     return (
-        <>
+        <Box>
             <Typography variant="h4" fontWeight={600} mb={1}>
                 {t('filter')}
             </Typography>
@@ -102,6 +105,7 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                 productCategoryFilters={transformProductCategories(productCategoryFilters)}
                 onFilterChanged={onFilterChanged}
             />
-        </>
+            <Button sx={{ mt: 3 }} variant="contained" onClick={applyFilter}>Apply Filter</Button>
+        </Box>
     );
 }
