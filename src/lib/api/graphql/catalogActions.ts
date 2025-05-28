@@ -33,6 +33,7 @@ function buildFilterInput(filters: FilterQuery[]): string {
 
 export async function searchProducts(filters?: FilterQuery[]) {
     if (!filters || filters.length === 0) {
+        console.log('no filters')
         return getProducts();
     }
     const queryString = searchQuery(buildFilterInput(filters));
