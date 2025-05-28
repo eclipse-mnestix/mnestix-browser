@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Card } from '@mui/material';
+import { Box, Card, Typography } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
 import ListHeader from 'components/basics/ListHeader';
 import { useTranslations } from 'next-intl';
@@ -21,6 +21,8 @@ export default function Page() {
     const params = useSearchParams();
     const t = useTranslations('pages.catalog');
     const manufacturer = params.get('manufacturer');
+    const repositoryUrlParam = params.get('repoUrl');
+
     const [products, setProducts] = useState<SearchResponseEntry[]>();
     const [loading, setLoading] = useState<boolean>(true);
     const { showError } = useShowError();
@@ -33,10 +35,19 @@ export default function Page() {
     }, []);
 
 
-    if (!manufacturer) {
-        return <>No Manufacturer found</>;
+    // Determine the repositoryUrl to use
+    let repositoryUrl: string | undefined = undefined;
+    let config = undefined;
+
+    if (repositoryUrlParam) {
+        repositoryUrl = repositoryUrlParam;
+    } else if (manufacturer) {
+        config = CatalogConfiguration[manufacturer];
+        repositoryUrl = config?.repositoryUrl;
     }
-    const config = CatalogConfiguration[manufacturer];
+    if (!repositoryUrl) {
+        return <>No Manufacturer/Repository found</>;
+    }
     const breadcrumbLinks = getCatalogBreadcrumbs(t, manufacturer);
 
     const loadData = async (filters?: { key: string; value: string }[]) => {
@@ -65,17 +76,19 @@ export default function Page() {
             </Box>
             <Box display="flex" justifyContent="space-between">
                 <ListHeader header={t('marketplaceTitle')} subHeader={t('marketplaceSubtitle')} />
-                {config?.manufacturerLogo && (
+
                     <Box ml={2} display="flex" alignItems="center">
-                        <Image
-                            src={config?.manufacturerLogo}
-                            alt={`${manufacturer} Logo`}
-                            height={48}
-                            width={120}
-                            style={{ objectFit: 'contain' }}
-                        />
+                        {config && config.manufacturerLogo ? (
+                            <Image
+                                src={config.manufacturerLogo}
+                                alt={`${manufacturer} Logo`}
+                                height={48}
+                                width={120}
+                                style={{ objectFit: 'contain', marginRight: '1rem' }}
+                            />
+                        ) : (<Typography variant="h6" color="textSecondary">{repositoryUrl}</Typography>)}
                     </Box>
-                )}
+
             </Box>
             <Box display="flex" flexDirection="row"  marginBottom="1.5rem">
                 <Card
@@ -98,6 +111,7 @@ export default function Page() {
                         <Card>
                             <ProductList shells={products} repositoryUrl={config.repositoryUrl} updateSelectedAasList={() => {}}/>
                         </Card>}
+                    <AasListDataWrapper repositoryUrl={repositoryUrl} hideRepoSelection={true} />
                 </Box>
             </Box>
         </Box>

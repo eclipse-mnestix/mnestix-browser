@@ -17,11 +17,11 @@ export const CatalogConfiguration: CatalogConfigurationDictionary = {
     coroflex: {
         manufacturerLogo: '/images/coroflex.png',
         articleCount: 295,
-        repositoryUrl: 'https://api.mnestix.xitaso.net/repo',
+        repositoryUrl: 'https://vws4ls-api.dev.mnestix.xitaso.net/repo',
     },
     komax: {
         manufacturerLogo: '/images/komax.png',
         articleCount: 645,
-        repositoryUrl: 'https://c1.api.wago.com/smartdata-aas-env',
+        repositoryUrl: 'https://api.komax.dev.mnestix.xitaso.net/repo',
     },
 };

@@ -1,0 +1,265 @@
+diff --git a/src/lib/api/aas/models/index.ts b/src/lib/api/aas/models/index.ts
+index a17e953..f9f0fd7 100644
+--- a/src/lib/api/aas/models/index.ts
++++ b/src/lib/api/aas/models/index.ts
+@@ -135,7 +135,7 @@ export interface AnnotatedRelationshipElement {
+      * @type {string}
+      * @memberof AnnotatedRelationshipElement
+      */
+-    modelType: string;
++    modelType: 'AnnotatedRelationshipElement';
+     /**
+      *
+      * @type {Reference}
+@@ -220,7 +220,7 @@ export interface AnnotatedRelationshipElementMetadata {
+      * @type {ModelType}
+      * @memberof AnnotatedRelationshipElementMetadata
+      */
+-    modelType: ModelType;
++    modelType: 'AnnotatedRelationshipElement';
+     /**
+      *
+      * @type {Array<EmbeddedDataSpecification>}
+@@ -319,7 +319,7 @@ export interface AssetAdministrationShell {
+      * @type {string}
+      * @memberof AssetAdministrationShell
+      */
+-    modelType: string;
++    modelType: 'AssetAdministrationShell';
+     /**
+      *
+      * @type {AdministrativeInformation}
+@@ -553,7 +553,7 @@ export interface BasicEventElement {
+      * @type {string}
+      * @memberof BasicEventElement
+      */
+-    modelType: string;
++    modelType: 'BasicEventElement';
+     /**
+      *
+      * @type {Reference}
+@@ -669,7 +669,7 @@ export interface BasicEventElementMetadata {
+      * @type {ModelType}
+      * @memberof BasicEventElementMetadata
+      */
+-    modelType: ModelType;
++    modelType: 'BasicEventElement';
+     /**
+      *
+      * @type {Array<EmbeddedDataSpecification>}
+@@ -798,7 +798,7 @@ export interface Blob {
+      * @type {string}
+      * @memberof Blob
+      */
+-    modelType: string;
++    modelType: 'Blob';
+     /**
+      *
+      * @type {Reference}
+@@ -883,7 +883,7 @@ export interface BlobMetadata {
+      * @type {ModelType}
+      * @memberof BlobMetadata
+      */
+-    modelType: ModelType;
++    modelType: 'Blob';
+     /**
+      *
+      * @type {Array<EmbeddedDataSpecification>}
+@@ -976,7 +976,7 @@ export interface Capability {
+      * @type {string}
+      * @memberof Capability
+      */
+-    modelType: string;
++    modelType: 'Capability';
+     /**
+      *
+      * @type {Reference}
+@@ -1043,7 +1043,7 @@ export interface CapabilityMetadata {
+      * @type {ModelType}
+      * @memberof CapabilityMetadata
+      */
+-    modelType: ModelType;
++    modelType: 'Capability';
+     /**
+      *
+      * @type {Array<EmbeddedDataSpecification>}
+@@ -1497,7 +1497,7 @@ export interface Entity {
+      * @type {string}
+      * @memberof Entity
+      */
+-    modelType: string;
++    modelType: 'Entity';
+     /**
+      *
+      * @type {Reference}
+@@ -1589,7 +1589,7 @@ export interface EntityMetadata {
+      * @type {ModelType}
+      * @memberof EntityMetadata
+      */
+-    modelType: ModelType;
++    modelType: 'Entity';
+     /**
+      *
+      * @type {Array<EmbeddedDataSpecification>}
+@@ -1862,7 +1862,7 @@ export interface FileMetadata {
+      * @type {ModelType}
+      * @memberof FileMetadata
+      */
+-    modelType: ModelType;
++    modelType: 'File';
+     /**
+      *
+      * @type {Array<EmbeddedDataSpecification>}
+@@ -2597,7 +2597,7 @@ export interface ModelFile {
+      * @type {string}
+      * @memberof ModelFile
+      */
+-    modelType: string;
++    modelType: 'File';
+     /**
+      *
+      * @type {Reference}
+@@ -2713,7 +2713,7 @@ export interface MultiLanguageProperty {
+      * @type {string}
+      * @memberof MultiLanguageProperty
+      */
+-    modelType: string;
++    modelType: 'MultiLanguageProperty';
+     /**
+      *
+      * @type {Reference}
+@@ -2792,7 +2792,7 @@ export interface MultiLanguagePropertyMetadata {
+      * @type {ModelType}
+      * @memberof MultiLanguagePropertyMetadata
+      */
+-    modelType: ModelType;
++    modelType: 'MultiLanguageProperty';
+     /**
+      *
+      * @type {Array<EmbeddedDataSpecification>}
+@@ -2866,7 +2866,7 @@ export interface Operation {
+      * @type {string}
+      * @memberof Operation
+      */
+-    modelType: string;
++    modelType: 'Operation';
+     /**
+      *
+      * @type {Reference}
+@@ -2951,7 +2951,7 @@ export interface OperationMetadata {
+      * @type {ModelType}
+      * @memberof OperationMetadata
+      */
+-    modelType: ModelType;
++    modelType: 'Operation';
+     /**
+      *
+      * @type {Array<EmbeddedDataSpecification>}
+@@ -3209,7 +3209,7 @@ export interface Property {
+      * @type {string}
+      * @memberof Property
+      */
+-    modelType: string;
++    modelType: 'Property';
+     /**
+      *
+      * @type {Reference}
+@@ -3301,7 +3301,7 @@ export interface PropertyMetadata {
+      * @type {ModelType}
+      * @memberof PropertyMetadata
+      */
+-    modelType: ModelType;
++    modelType: 'Property';
+     /**
+      *
+      * @type {Array<EmbeddedDataSpecification>}
+@@ -3618,7 +3618,7 @@ export interface Range {
+      * @type {string}
+      * @memberof Range
+      */
+-    modelType: string;
++    modelType: 'Range';
+     /**
+      *
+      * @type {Reference}
+@@ -3935,7 +3935,7 @@ export interface ReferenceElement {
+      * @type {string}
+      * @memberof ReferenceElement
+      */
+-    modelType: string;
++    modelType: 'ReferenceElement';
+     /**
+      *
+      * @type {Reference}
+@@ -4008,7 +4008,7 @@ export interface ReferenceElementMetadata {
+      * @type {ModelType}
+      * @memberof ReferenceElementMetadata
+      */
+-    modelType: ModelType;
++    modelType: 'ReferenceElement';
+     /**
+      *
+      * @type {Array<EmbeddedDataSpecification>}
+@@ -4152,7 +4152,7 @@ export interface RelationshipElement {
+      * @type {string}
+      * @memberof RelationshipElement
+      */
+-    modelType: string;
++    modelType: 'RelationshipElement';
+     /**
+      *
+      * @type {Reference}
+@@ -4231,7 +4231,7 @@ export interface RelationshipElementAbstract {
+      * @type {ModelType}
+      * @memberof RelationshipElementAbstract
+      */
+-    modelType: ModelType;
++    modelType: 'RelationshipElement';
+     /**
+      *
+      * @type {Reference}
+@@ -4311,7 +4311,7 @@ export interface RelationshipElementMetadata {
+      * @type {ModelType}
+      * @memberof RelationshipElementMetadata
+      */
+-    modelType: ModelType;
++    modelType: 'RelationshipElement';
+     /**
+      *
+      * @type {Array<EmbeddedDataSpecification>}
+@@ -4812,7 +4812,7 @@ export interface SubmodelElementCollection {
+      * @type {string}
+      * @memberof SubmodelElementCollection
+      */
+-    modelType: string;
++    modelType: 'SubmodelElementCollection';
+     /**
+      *
+      * @type {Reference}
+@@ -4885,7 +4885,7 @@ export interface SubmodelElementCollectionMetadata {
+      * @type {ModelType}
+      * @memberof SubmodelElementCollectionMetadata
+      */
+-    modelType: ModelType;
++    modelType: 'SubmodelElementCollection';
+     /**
+      *
+      * @type {Array<EmbeddedDataSpecification>}
+@@ -4959,7 +4959,7 @@ export interface SubmodelElementList {
+      * @type {string}
+      * @memberof SubmodelElementList
+      */
+-    modelType: string;
++    modelType: 'SubmodelElementList';
+     /**
+      *
+      * @type {Reference}
+@@ -5081,7 +5081,7 @@ export interface SubmodelElementListMetadata {
+      * @type {ModelType}
+      * @memberof SubmodelElementListMetadata
+      */
+-    modelType: ModelType;
++    modelType: 'SubmodelElementList';
+     /**
+      *
+      * @type {Array<EmbeddedDataSpecification>}
