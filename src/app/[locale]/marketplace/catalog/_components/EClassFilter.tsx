@@ -3,7 +3,7 @@ import { Box, Checkbox, Typography } from '@mui/material';
 import { useState } from 'react';
 import { FilterQuery } from 'app/[locale]/marketplace/catalog/_components/FilterContainer';
 
-interface CheckboxFilterState {
+export interface CheckboxFilterState {
     [key: string]: boolean;
 }
 

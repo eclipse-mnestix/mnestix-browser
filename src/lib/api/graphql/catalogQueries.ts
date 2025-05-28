@@ -1,8 +1,7 @@
-// src/lib/graphql/schema/catalogQueries.ts
 import { gql } from '@apollo/client';
 
 /**
- * A dynamic query doesn't work due to cost of the query, the backend thwows an error.
+ * A dynamic query doesn't work due to cost of the query, the backend throws an error.
  * Thats why we use a static query here by preparing it as string.
  */
 export function searchQuery(whereString: string) {

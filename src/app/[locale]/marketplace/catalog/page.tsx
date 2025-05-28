@@ -37,10 +37,12 @@ export default function Page() {
     const config = CatalogConfiguration[manufacturer];
     const breadcrumbLinks = getCatalogBreadcrumbs(t, manufacturer);
 
+    // TODO add error handling
     const loadData = async (filters?: { key: string; value: string }[]) => {
         setLoading(true);
         let products: SearchResponseEntry[] = [];
 
+        console.log(filters)
         if(filters) {
             products = await searchProducts(filters);
         } else {
