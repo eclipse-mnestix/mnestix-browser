@@ -3,9 +3,13 @@
 import { gql } from '@apollo/client';
 import { FilterQuery } from 'app/[locale]/marketplace/catalog/_components/FilterContainer';
 import { client } from 'lib/api/graphql/apolloClient';
-import { GET_PRODUCTS, searchQuery, SearchResponse } from 'lib/api/graphql/catalogQueries';
+import { GET_PRODUCTS, searchQuery, SearchResponse, SearchResponseEntry } from 'lib/api/graphql/catalogQueries';
+import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 
-function buildFilterInput(filters: FilterQuery[]): string {
+function buildFilterInput(filters?: FilterQuery[]): string {
+    if(!filters || filters.length === 0) {
+        return '';
+    }
     const eclassFilter = filters.find(filter => filter.key === 'ECLASS');
     const vecFilter = filters.find(filter => filter.key === 'VEC');
     const productClassificationFilters: string[] = [];
@@ -31,11 +35,10 @@ function buildFilterInput(filters: FilterQuery[]): string {
     return `(where: ${filterString})`;
 }
 
-export async function searchProducts(filters?: FilterQuery[]) {
-    if (!filters || filters.length === 0) {
-        console.log('no filters')
-        return getProducts();
-    }
+export async function searchProducts(filters?: FilterQuery[]):Promise<ApiResponseWrapper<SearchResponseEntry[]>> {
+  /*  if (!filters || filters.length === 0) {
+        return wrapSuccess(getProducts());
+    } */
     const queryString = searchQuery(buildFilterInput(filters));
     console.log(queryString)
 
@@ -44,11 +47,11 @@ export async function searchProducts(filters?: FilterQuery[]) {
         const { data } = await client.query<SearchResponse>({
             query,
         });
-        return data.entries;
+        return wrapSuccess(data.entries);
     }
     catch (error) {
         console.error('Error searching products:', JSON.stringify(error.result));
-        throw error;
+        return wrapErrorCode('UNKNOWN_ERROR', error);
     }
 }
 

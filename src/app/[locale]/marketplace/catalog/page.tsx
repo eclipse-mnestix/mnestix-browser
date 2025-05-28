@@ -15,6 +15,7 @@ import ProductList from 'app/[locale]/marketplace/catalog/_components/List/Produ
 import { useState } from 'react';
 import { SearchResponseEntry } from 'lib/api/graphql/catalogQueries';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
+import { useShowError } from 'lib/hooks/UseShowError';
 
 export default function Page() {
     const params = useSearchParams();
@@ -22,6 +23,7 @@ export default function Page() {
     const manufacturer = params.get('manufacturer');
     const [products, setProducts] = useState<SearchResponseEntry[]>();
     const [loading, setLoading] = useState<boolean>(true);
+    const { showError } = useShowError();
 
     useAsyncEffect(async () => {
         if (!manufacturer) {
@@ -37,18 +39,18 @@ export default function Page() {
     const config = CatalogConfiguration[manufacturer];
     const breadcrumbLinks = getCatalogBreadcrumbs(t, manufacturer);
 
-    // TODO add error handling
     const loadData = async (filters?: { key: string; value: string }[]) => {
         setLoading(true);
-        let products: SearchResponseEntry[] = [];
+        const results = await searchProducts(filters)
 
-        console.log(filters)
-        if(filters) {
-            products = await searchProducts(filters);
+        if(results.isSuccess) {
+            console.log(filters)
+            const products = results.result;
+            setProducts(products);
         } else {
-            products = await searchProducts();
+            showError(results.message);
         }
-        setProducts(products);
+
         setLoading(false);
     }
 
@@ -75,7 +77,7 @@ export default function Page() {
                     </Box>
                 )}
             </Box>
-            <Box display="flex" flexDirection="row" alignItems="center" marginBottom="1.5rem">
+            <Box display="flex" flexDirection="row"  marginBottom="1.5rem">
                 <Card
                     sx={{
                         minHeight: 480,
