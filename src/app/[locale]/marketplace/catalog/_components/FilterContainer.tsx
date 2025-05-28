@@ -1,9 +1,9 @@
-import { Box, Checkbox, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import { SimpleTreeView, TreeItem } from '@mui/x-tree-view';
 import { EClassFilter } from 'app/[locale]/marketplace/catalog/_components/EClassFilter';
 import { ProductCategoryFilter } from 'app/[locale]/marketplace/catalog/_components/ProductCategoryFilter';
 import { useState } from 'react';
+import { VecFilter } from 'app/[locale]/marketplace/catalog/_components/VecFilter';
 
 export interface FilterQuery {
     key: string;
@@ -12,7 +12,6 @@ export interface FilterQuery {
 
 export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): void }) {
     const t = useTranslations('pages.catalog');
-    const [setLoading] = useState(false);
     const [activeFilters, setActiveFilters] = useState<FilterQuery[]>([]);
 
     // This dummy filters needs to be replaced with actual data fetching logic
@@ -84,8 +83,9 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
     }
 
     async function onFilterChanged(queries: FilterQuery[]) {
-        const updatedFilters = activeFilters.filter((filter) => !queries.some((query) => query.key === filter.key));
-        updatedFilters.push(...queries);
+        const updatedFilters = activeFilters
+            .filter((filter) => queries.some((query) => query.key === filter.key))
+            .concat(queries);
         setActiveFilters(updatedFilters);
 
         props.onFilterChanged(updatedFilters);
@@ -97,25 +97,7 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                 {t('filter')}
             </Typography>
             <EClassFilter eClassFilters={eClassFilters} onFilterChanged={onFilterChanged} />
-            <SimpleTreeView>
-                <TreeItem
-                    itemId="vec"
-                    label={
-                        <Typography variant="h5" my={1}>
-                            VEC
-                        </Typography>
-                    }
-                >
-                    {VECFilters.map((vec) => {
-                        return (
-                            <Box key={vec} display="flex" alignItems="center">
-                                <Checkbox />
-                                <Typography>{vec.replace('PrimaryPartType_', '')}</Typography>
-                            </Box>
-                        );
-                    })}
-                </TreeItem>
-            </SimpleTreeView>
+            <VecFilter vecFilters={VECFilters} onFilterChanged={onFilterChanged}/>
             <ProductCategoryFilter
                 productCategoryFilters={transformProductCategories(productCategoryFilters)}
                 onFilterChanged={onFilterChanged}

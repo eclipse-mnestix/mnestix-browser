@@ -41,6 +41,7 @@ export default function Page() {
         setLoading(true);
         let products: SearchResponseEntry[] = [];
 
+        console.log(filters)
         if(filters) {
             products = await searchProducts(filters);
         } else {

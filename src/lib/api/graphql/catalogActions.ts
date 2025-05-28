@@ -7,26 +7,33 @@ import { GET_PRODUCTS, searchQuery, SearchResponse } from 'lib/api/graphql/catal
 
 function buildFilterInput(filters: FilterQuery[]): string {
     const eclassFilter = filters.find(filter => filter.key === 'ECLASS');
-    let filterString = ''
+    const vecFilter = filters.find(filter => filter.key === 'VEC');
+    const productClassificationFilters: string[] = [];
+
     if (eclassFilter) {
-        // TODO Add support for other filters
-        // For ECLASS only do "StartsWith" when parent node is selected?
-        filterString = `{productClassifications: {
-            some: {
-                system: {
-                    eq: "ECLASS"
-                }
-                productId: {
-                   in: [${eclassFilter.value.split(',').map((val) => `"${val.trim()}"`).join(',')}]
-                }
-            }}
-        }`
+        productClassificationFilters.push(`{
+            system: { eq: "ECLASS" }
+            productId: { in: [${eclassFilter.value.split(',').map(val => `"${val.trim()}"`).join(',')}] }
+        }`);
     }
-    return filterString ? `(where: ${filterString})` : '';
+    if (vecFilter) {
+        productClassificationFilters.push(`{
+            system: { eq: "VEC" }
+            productId: { in: [${vecFilter.value.split(',').map(val => `"${val.trim()}"`).join(',')}] }
+        }`);
+    }
+
+    if (productClassificationFilters.length === 0) {
+        return '';
+    }
+
+    const filterString = `{ productClassifications: { some: { or: [${productClassificationFilters.join(',')}] } } }`;
+    return `(where: ${filterString})`;
 }
 
 export async function searchProducts(filters?: FilterQuery[]) {
     if (!filters || filters.length === 0) {
+        console.log('no filters')
         return getProducts();
     }
     const queryString = searchQuery(buildFilterInput(filters));
