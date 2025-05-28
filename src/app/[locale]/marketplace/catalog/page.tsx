@@ -16,6 +16,7 @@ import { useState } from 'react';
 import { SearchResponseEntry } from 'lib/api/graphql/catalogQueries';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { useShowError } from 'lib/hooks/UseShowError';
+import AasListDataWrapper from 'app/[locale]/list/_components/AasListDataWrapper';
 
 export default function Page() {
     const params = useSearchParams();
@@ -107,11 +108,16 @@ export default function Page() {
                     <FilterContainer onFilterChanged={onFilterChanged}/>
                 </Card>
                 <Box flex={1} minWidth={0}>
-                    {loading ? <CenteredLoadingSpinner /> :
+                    { manufacturer && config ?
+                        (loading ? <CenteredLoadingSpinner /> :
                         <Card>
                             <ProductList shells={products} repositoryUrl={config.repositoryUrl} updateSelectedAasList={() => {}}/>
-                        </Card>}
-                    <AasListDataWrapper repositoryUrl={repositoryUrl} hideRepoSelection={true} />
+                        </Card>) :
+                        <Box>
+                            <Typography variant="h5" mb={2}>{t('noSearcherWarning')}</Typography>
+                            <AasListDataWrapper repositoryUrl={repositoryUrl} hideRepoSelection={true} />
+                        </Box>
+                 }
                 </Box>
             </Box>
         </Box>

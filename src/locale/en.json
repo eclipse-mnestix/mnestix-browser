@@ -259,7 +259,8 @@
       "marketplaceTitle": "VWS4LS - Marketplace",
       "marketplaceSubtitle": "Asset Administration Shell for Wire Harness",
       "articleCount": "{count, plural, =1 {# article} other {# articles}}",
-      "filter": "Filter"
+      "filter": "Filter",
+      "noSearcherWarning": "No AAS Searcher Configured. Showing AAS List as Fallback, filters won't work."
     },
     "compare": {
       "addAnother": "Add another AAS",
