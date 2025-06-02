@@ -81,12 +81,12 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                     familyItem = { name: familyName, ProductDesignations: [] };
                     root.ProductFamilies.push(familyItem);
                 }
-                const desName =
+                const designationName =
                     product.productDesignation?.mlValues.find((des) => des.language === (locale ?? 'en'))?.text ||
                     'Unknown Designation';
-                let desItem = familyItem.ProductDesignations.find((f) => f.name === desName);
+                let desItem = familyItem.ProductDesignations.find((f) => f.name === designationName);
                 if (!desItem) {
-                    desItem = { name: desName };
+                    desItem = { name: designationName };
                     familyItem.ProductDesignations.push(desItem);
                 }
             });
