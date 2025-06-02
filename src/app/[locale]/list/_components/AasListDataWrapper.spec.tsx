@@ -23,6 +23,11 @@ jest.mock('next/navigation', () => ({
     useParams() {
         return {};
     },
+    useSearchParams() {
+        return {
+            get: jest.fn(),
+        };
+    }
 }));
 jest.mock('next-auth', jest.fn());
 

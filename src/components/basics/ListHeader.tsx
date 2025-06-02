@@ -1,5 +1,6 @@
 ﻿'use client';
 import { Typography } from '@mui/material';
+import { Box } from '@mui/system';
 
 type ListHeaderProps = {
     header: string;
@@ -9,7 +10,7 @@ type ListHeaderProps = {
 
 export default function ListHeader({ header, optionalID, subHeader }: ListHeaderProps) {
     return (
-        <>
+        <Box>
             <Typography variant="h2" color="text.primary" textAlign="left" marginBottom={1}>
                 {header}
                 {optionalID && ` "${optionalID}"`}
@@ -19,6 +20,6 @@ export default function ListHeader({ header, optionalID, subHeader }: ListHeader
                     {subHeader}
                 </Typography>
             )}
-        </>
+        </Box>
     );
 }

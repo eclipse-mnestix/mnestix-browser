@@ -1,5 +1,10 @@
 {
   "components": {
+    "constructionDialog": {
+      "title": "En Construcción",
+      "message": "Esta función está actualmente en construcción y estará disponible próximamente.",
+      "buttonText": "Cerrar"
+    },
     "addressComponent": {
       "VAT": "NIF/CIF",
       "addressTypes": {
@@ -248,9 +253,13 @@
       }
     },
     "catalog": {
+      "title": "Catálogo de productos",
       "manufacturerCatalog": "Catálogo de productos del fabricante",
-      "manufacturerSelect": "Seleccione fabricante",
-      "title": "Catálogo del fabricante"
+      "manufacturerSelect": "Seleccionar fabricante",
+      "marketplaceTitle": "VWS4LS - Marketplace",
+      "marketplaceSubtitle": "Shell de administración de activos para mazos de cables",
+      "articleCount": "{count, plural, =1 {# artículo} other {# artículos}}",
+      "filter": "Filtro"
     },
     "compare": {
       "addAnother": "Añadir otro AAS",
