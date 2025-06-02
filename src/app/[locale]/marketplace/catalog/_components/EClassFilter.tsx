@@ -27,14 +27,20 @@ export function EClassFilter(props: { eClassFilters: string[]; onFilterChanged(q
             const selectedEClasses = Object.keys(updatedFilters).filter((key) => updatedFilters[key]);
 
             // Send the updated list of selected filters to the parent component
-            props.onFilterChanged(selectedEClasses.map(eclass => {return { key: 'ECLASS', value: eclass }}));
-            console.log(selectedEClasses)
+            props.onFilterChanged(
+                selectedEClasses.map((eclass) => {
+                    return { key: 'ECLASS', value: eclass };
+                }),
+            );
+            console.log(selectedEClasses);
             return updatedFilters;
         });
     }
 
     const resolveEclassLabel = (eClass: string) => {
         switch (eClass) {
+            case '15':
+                return 'Instandhaltung (Dienstleistung)';
             case '27':
                 return 'Elektro-, Automatisierungs- und Prozessleittechnik';
             case '44':

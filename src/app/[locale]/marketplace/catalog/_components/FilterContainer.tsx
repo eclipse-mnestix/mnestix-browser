@@ -4,63 +4,119 @@ import { EClassFilter } from 'app/[locale]/marketplace/catalog/_components/EClas
 import { ProductCategoryFilter } from 'app/[locale]/marketplace/catalog/_components/ProductCategoryFilter';
 import { useState } from 'react';
 import { VecFilter } from 'app/[locale]/marketplace/catalog/_components/VecFilter';
+import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
+import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
+import { searchProducts } from 'lib/api/graphql/catalogActions';
+import { useShowError } from 'lib/hooks/UseShowError';
+import { useParams } from 'next/navigation';
 
 export interface FilterQuery {
     key: string;
     value: string;
 }
 
+type ProductDesignation = {
+    name: string;
+};
+
+type ProductFamily = {
+    name: string;
+    ProductDesignations: ProductDesignation[];
+};
+
+type ProductRoot = {
+    name: string;
+    ProductFamilies: ProductFamily[];
+};
+
+type FilterOptions = {
+    ECLASS: Set<string>;
+    VEC: Set<string>;
+    PRODUCT_ROOT: ProductRoot[];
+};
+
 export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): void }) {
     const t = useTranslations('pages.catalog');
     const [activeFilters, setActiveFilters] = useState<FilterQuery[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [filterOptions, setFilterOptions] = useState<FilterOptions>();
+    const { showError } = useShowError();
+    const params = useParams();
+    const locale = params?.locale as string;
 
-    // This dummy filters needs to be replaced with actual data fetching logic
-    const productCategoryFilters = [
-        {
+    useAsyncEffect(async () => {
+        setLoading(true);
+        const results = await searchProducts();
+
+        if (results.isSuccess) {
+            const products = results.result;
+            const eclassSet = new Set<string>();
+            const vecSet = new Set<string>();
+            const productRoot: ProductRoot[] = [];
+
+            products.forEach((product) => {
+                product.productClassifications.forEach((classification) => {
+                    if (classification.system === 'ECLASS' && classification.productId) {
+                        eclassSet.add(classification.productId);
+                    }
+                    if (classification.system === 'VEC' && classification.productId) {
+                        vecSet.add(classification.productId);
+                    }
+                });
+            });
+            products.forEach((product) => {
+                const rootName =
+                    product.productRoot?.mlValues.find((value) => value.language === (locale ?? 'en'))?.text ||
+                    'Unknown Root';
+                let root = productRoot.find((r) => r.name === rootName);
+                if (!root) {
+                    root = { name: rootName, ProductFamilies: [] };
+                    productRoot.push(root);
+                }
+                const familyName =
+                    product.productFamily?.mlValues.find((family) => family.language === (locale ?? 'en'))?.text ||
+                    'Unknown Family';
+                let familyItem = root.ProductFamilies.find((f) => f.name === familyName);
+                if (!familyItem) {
+                    familyItem = { name: familyName, ProductDesignations: [] };
+                    root.ProductFamilies.push(familyItem);
+                }
+                const desName =
+                    product.productDesignation?.mlValues.find((des) => des.language === (locale ?? 'en'))?.text ||
+                    'Unknown Designation';
+                let desItem = familyItem.ProductDesignations.find((f) => f.name === desName);
+                if (!desItem) {
+                    desItem = { name: desName };
+                    familyItem.ProductDesignations.push(desItem);
+                }
+            });
+
+            setFilterOptions({
+                ECLASS: eclassSet,
+                VEC: vecSet,
+                PRODUCT_ROOT: productRoot,
+            });
+            // Initialize active filters with ECLASS and VEC options
+        } else {
+            showError(results.message);
+        }
+        setLoading(false);
+    }, []);
+
+    const productCategoryFilters =
+        filterOptions?.PRODUCT_ROOT?.map((root) => ({
             ProductRoot: {
-                name: 'Coroflex High-Voltage Cable',
-                ProductFamilies: [
-                    {
-                        name: 'Shielded Single-Core Cable',
-                        ProductDesignations: [
-                            { name: 'Coroflex High-Voltage Cable 1x120mm²' },
-                            { name: 'Coroflex High-Voltage Cable 1x240mm²' },
-                            { name: 'Coroflex High-Voltage Cable 1x400mm²' },
-                            { name: 'Coroflex High-Voltage Cable 1x630mm²' },
-                            { name: 'Coroflex High-Voltage Cable 1x800mm²' },
-                            { name: 'Coroflex High-Voltage Cable 1x1000mm²' },
-                        ],
-                    },
-                    {
-                        name: 'Shielded Multi-Core Cable',
-                        ProductDesignations: [{ name: 'Coroflex High-Voltage Cable 3x120mm²' }],
-                    },
-                ],
+                name: root.name,
+                ProductFamilies: root.ProductFamilies.map((family) => ({
+                    name: family.name,
+                    ProductDesignations: family.ProductDesignations.map((designation) => ({
+                        name: designation.name,
+                    })).sort((a, b) => a.name.localeCompare(b.name)),
+                })).sort((a, b) => a.name.localeCompare(b.name)),
             },
-        },
-        {
-            ProductRoot: {
-                name: 'CONNECT_TERMINALS',
-                ProductFamilies: [
-                    {
-                        name: 'DLK 1,2',
-                        ProductDesignations: [{ name: 'DLK 1,2' }],
-                    },
-                ],
-            },
-        },
-    ];
-    const eClassFilters = [
-        '27-14-01-01',
-        '27-14-01-02',
-        '27-14-01-03',
-        '27-14-01-04',
-        '27-14-01-05',
-        '27-14-01-06',
-        '44-04-01-91',
-        '44-04-01-92',
-    ];
-    const VECFilters = ['PrimaryPartType_Wire', 'PrimaryPartType_PluggableTerminal'];
+        })).sort((a, b) => a.ProductRoot.name.localeCompare(b.ProductRoot.name)) ?? [];
+    const eClassFilters = filterOptions?.ECLASS ? Array.from(filterOptions.ECLASS) : [];
+    const VECFilters = filterOptions?.VEC ? Array.from(filterOptions.VEC) : [];
 
     // process productCategoryFilters to match the expected structure
     function addBooleanValues<T extends { name: string }>(item: T): T & { value: boolean } {
@@ -90,22 +146,30 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
     }
 
     function applyFilter() {
-        console.log(activeFilters)
+        console.log(activeFilters);
         props.onFilterChanged(activeFilters);
     }
 
     return (
         <Box>
-            <Typography variant="h4" fontWeight={600} mb={1}>
-                {t('filter')}
-            </Typography>
-            <EClassFilter eClassFilters={eClassFilters} onFilterChanged={onFilterChanged} />
-            <VecFilter vecFilters={VECFilters} onFilterChanged={onFilterChanged}/>
-            <ProductCategoryFilter
-                productCategoryFilters={transformProductCategories(productCategoryFilters)}
-                onFilterChanged={onFilterChanged}
-            />
-            <Button sx={{ mt: 3 }} variant="contained" onClick={applyFilter}>Apply Filter</Button>
+            {loading ? (
+                <CenteredLoadingSpinner />
+            ) : (
+                <>
+                    <Typography variant="h4" fontWeight={600} mb={1}>
+                        {t('filter')}
+                    </Typography>
+                    <EClassFilter eClassFilters={eClassFilters} onFilterChanged={onFilterChanged} />
+                    <VecFilter vecFilters={VECFilters} onFilterChanged={onFilterChanged} />
+                    <ProductCategoryFilter
+                        productCategoryFilters={transformProductCategories(productCategoryFilters)}
+                        onFilterChanged={onFilterChanged}
+                    />
+                    <Button sx={{ mt: 3 }} variant="contained" onClick={applyFilter}>
+                        Apply Filter
+                    </Button>
+                </>
+            )}
         </Box>
     );
 }

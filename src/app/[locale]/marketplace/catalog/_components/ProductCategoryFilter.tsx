@@ -24,7 +24,10 @@ interface ProductCategory {
     ProductRoot: ProductRoot;
 }
 
-export function ProductCategoryFilter(props: {productCategoryFilters: ProductCategory[], onFilterChanged(query: FilterQuery[]): void}) {
+export function ProductCategoryFilter(props: {
+    productCategoryFilters: ProductCategory[];
+    onFilterChanged(query: FilterQuery[]): void;
+}) {
     const [filters, setFilters] = useState<ProductCategory[]>(props.productCategoryFilters);
 
     function updateActiveFilters(
@@ -101,79 +104,92 @@ export function ProductCategoryFilter(props: {productCategoryFilters: ProductCat
         });
     }
 
-    return ( <SimpleTreeView>
-        <TreeItem
-            itemId="root"
-            label={
-                <Typography variant="h5" my={1}>
-                    Product Root, Family and Designation
-                </Typography>
-            }
-        >
-            {filters.map((productCategory) => {
-                return (
-                    <TreeItem
-                        key={productCategory.ProductRoot.name}
-                        itemId={productCategory.ProductRoot.name}
-                        label={
-                            <Box display="flex" alignItems="center">
-                                <Checkbox
-                                    onClick={(event) => event.stopPropagation()}
-                                    checked={productCategory.ProductRoot.value}
-                                    onChange={(event) =>
-                                        updateCheckboxState(productCategory.ProductRoot, event.target.checked)
-                                    }
-                                />
-                                {productCategory.ProductRoot.name}
-                            </Box>
-                        }
-                    >
-                        {productCategory.ProductRoot.ProductFamilies.map((productFamily) => {
-                            return (
-                                <TreeItem
-                                    key={productFamily.name}
-                                    itemId={productFamily.name}
-                                    label={
-                                        <Box display="flex" alignItems="center">
-                                            <Checkbox
-                                                onClick={(event) => event.stopPropagation()}
-                                                checked={productFamily.value}
-                                                onChange={(event) =>
-                                                    updateCheckboxState(productFamily, event.target.checked)
-                                                }
-                                            />
-                                            {productFamily.name}
-                                        </Box>
-                                    }
-                                >
-                                    {productFamily.ProductDesignations.map((productDesignation) => {
-                                        return (
-                                            <Box
-                                                key={productDesignation.name}
-                                                display="flex"
-                                                alignItems="center"
-                                                ml={4}
-                                            >
-                                                <Checkbox
-                                                    checked={productDesignation.value}
-                                                    onChange={(event) =>
-                                                        updateCheckboxState(
-                                                            productDesignation,
-                                                            event.target.checked,
-                                                        )
-                                                    }
-                                                />
-                                                <Typography>{productDesignation.name}</Typography>
-                                            </Box>
-                                        );
-                                    })}
-                                </TreeItem>
-                            );
-                        })}
-                    </TreeItem>
-                );
-            })}
-        </TreeItem>
-    </SimpleTreeView>
+    return (
+        <SimpleTreeView>
+            <TreeItem
+                itemId="root"
+                label={
+                    <Typography variant="h5" my={1}>
+                        Product Root, Family and Designation
+                    </Typography>
+                }
+            >
+                {filters.map((productCategory) => {
+                    return (
+                        <TreeItem
+                            key={productCategory.ProductRoot.name}
+                            itemId={productCategory.ProductRoot.name}
+                            label={
+                                productCategory.ProductRoot.name.toLowerCase().startsWith('unknown') ? (
+                                    <Box display="flex" alignItems="center" ml={5}>
+                                        <Typography>{productCategory.ProductRoot.name}</Typography>
+                                    </Box>
+                                ) : (
+                                    <Box display="flex" alignItems="center">
+                                        <Checkbox
+                                            onClick={(event) => event.stopPropagation()}
+                                            checked={productCategory.ProductRoot.value}
+                                            onChange={(event) =>
+                                                updateCheckboxState(productCategory.ProductRoot, event.target.checked)
+                                            }
+                                        />
+                                        {productCategory.ProductRoot.name}
+                                    </Box>
+                                )
+                            }
+                        >
+                            {productCategory.ProductRoot.ProductFamilies.map((productFamily) => {
+                                return (
+                                    <TreeItem
+                                        key={productFamily.name}
+                                        itemId={productFamily.name}
+                                        label={
+                                            productFamily.name.toLowerCase().startsWith('unknown') ? (
+                                                <Box display="flex" alignItems="center" ml={5}>
+                                                    <Typography>{productFamily.name}</Typography>
+                                                </Box>
+                                            ) : (
+                                                <Box display="flex" alignItems="center">
+                                                    <Checkbox
+                                                        onClick={(event) => event.stopPropagation()}
+                                                        checked={productFamily.value}
+                                                        onChange={(event) =>
+                                                            updateCheckboxState(productFamily, event.target.checked)
+                                                        }
+                                                    />
+                                                    {productFamily.name}
+                                                </Box>
+                                            )
+                                        }
+                                    >
+                                        {productFamily.ProductDesignations.map((productDesignation) => {
+                                            return (
+                                                <Box
+                                                    key={productDesignation.name}
+                                                    display="flex"
+                                                    alignItems="center"
+                                                    ml={4}
+                                                >
+                                                    <Checkbox
+                                                        checked={productDesignation.value}
+                                                        onChange={(event) =>
+                                                            updateCheckboxState(
+                                                                productDesignation,
+                                                                event.target.checked,
+                                                            )
+                                                        }
+                                                    />
+                                                    <Typography>{productDesignation.name}</Typography>
+                                                </Box>
+                                            );
+                                        })}
+                                    </TreeItem>
+                                );
+                            })}
+                        </TreeItem>
+                    );
+                })}
+            </TreeItem>
+        </SimpleTreeView>
     );
 }
