@@ -138,11 +138,13 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
         }));
     }
 
-    async function onFilterChanged(queries: FilterQuery[]) {
-        const updatedFilters = activeFilters
-            .filter((filter) => queries.some((query) => query.key === filter.key))
-            .concat(queries);
-        setActiveFilters(updatedFilters);
+    function onFilterChangedByCategory(key: string, values: string[]) {
+        setActiveFilters((prevFilters) => {
+            const filtered = prevFilters.filter((filter) => filter.key !== key);
+
+            const newFilters = values.map((value) => ({ key, value }));
+            return [...filtered, ...newFilters];
+        });
     }
 
     function applyFilter() {
@@ -159,11 +161,32 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                     <Typography variant="h4" fontWeight={600} mb={1}>
                         {t('filter')}
                     </Typography>
-                    <EClassFilter eClassFilters={eClassFilters} onFilterChanged={onFilterChanged} />
-                    <VecFilter vecFilters={VECFilters} onFilterChanged={onFilterChanged} />
+                    <EClassFilter
+                        eClassFilters={eClassFilters}
+                        onFilterChanged={(values) =>
+                            onFilterChangedByCategory(
+                                'ECLASS',
+                                values.map((f) => f.value),
+                            )
+                        }
+                    />
+                    <VecFilter
+                        vecFilters={VECFilters}
+                        onFilterChanged={(values) =>
+                            onFilterChangedByCategory(
+                                'VEC',
+                                values.map((f) => f.value),
+                            )
+                        }
+                    />
                     <ProductCategoryFilter
                         productCategoryFilters={transformProductCategories(productCategoryFilters)}
-                        onFilterChanged={onFilterChanged}
+                        onFilterChanged={(values) =>
+                            onFilterChangedByCategory(
+                                'PRODUCT_ROOT',
+                                values.map((f) => f.value),
+                            )
+                        }
                     />
                     <Button sx={{ mt: 3 }} variant="contained" onClick={applyFilter}>
                         Apply Filter
