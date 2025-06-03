@@ -130,12 +130,17 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
     }
 
     function transformProductCategories(categories: typeof productCategoryFilters) {
-        return categories.map((category) => ({
+        return categories.map((category, rootIndex) => ({
             ProductRoot: {
+                key: `${category.ProductRoot.name}_${rootIndex}`,
                 ...addBooleanValues(category.ProductRoot),
-                ProductFamilies: category.ProductRoot.ProductFamilies.map((family) => ({
+                ProductFamilies: category.ProductRoot.ProductFamilies.map((family, familyIndex) => ({
+                    key: `${family.name}_${rootIndex}_${familyIndex}`,
                     ...addBooleanValues(family),
-                    ProductDesignations: family.ProductDesignations.map((designation) => addBooleanValues(designation)),
+                    ProductDesignations: family.ProductDesignations.map((designation, productDesignationIndex) => ({
+                        key: `${designation.name}_${rootIndex}_${familyIndex}_${productDesignationIndex}`,
+                        ...addBooleanValues(designation)
+                    })),
                 })),
             },
         }));

@@ -4,17 +4,20 @@ import { Box, Checkbox, Typography } from '@mui/material';
 import { FilterQuery } from 'app/[locale]/marketplace/catalog/_components/FilterContainer';
 
 interface ProductDesignation {
+    key: string;
     name: string;
     value: boolean;
 }
 
 interface ProductFamily {
+    key: string
     name: string;
     value: boolean;
     ProductDesignations: ProductDesignation[];
 }
 
 interface ProductRoot {
+    key: string
     name: string;
     value: boolean;
     ProductFamilies: ProductFamily[];
@@ -57,11 +60,11 @@ export function ProductCategoryFilter(props: {
         isChecked: boolean,
     ) {
         return prevFilters.map((category) => {
-            const isRootNode = category.ProductRoot.name === node.name;
+            const isRootNode = category.ProductRoot.key === node.key;
             const updatedRoot = { ...category.ProductRoot };
 
             const updatedFamilies = updatedRoot.ProductFamilies.map((family) => {
-                const isFamilyNode = family.name === node.name;
+                const isFamilyNode = family.key === node.key;
 
                 if (isRootNode) {
                     return {
@@ -87,7 +90,7 @@ export function ProductCategoryFilter(props: {
 
                 const updatedDesignations = family.ProductDesignations.map((designation) => ({
                     ...designation,
-                    value: designation.name === node.name ? isChecked : designation.value,
+                    value: designation.key === node.key ? isChecked : designation.value,
                 }));
 
                 const updatedFamily = {
@@ -107,7 +110,6 @@ export function ProductCategoryFilter(props: {
                     ProductFamilies: updatedFamilies,
                 },
             };
-            console.log(categories);
 
             return categories;
         });
@@ -133,8 +135,8 @@ export function ProductCategoryFilter(props: {
                 {filters.map((productCategory) => {
                     return (
                         <TreeItem
-                            key={productCategory.ProductRoot.name}
-                            itemId={productCategory.ProductRoot.name}
+                            key={productCategory.ProductRoot.key}
+                            itemId={productCategory.ProductRoot.key}
                             label={
                                 productCategory.ProductRoot.name.toLowerCase().startsWith('unknown') ? (
                                     <Box display="flex" alignItems="center" ml={5}>
@@ -157,8 +159,8 @@ export function ProductCategoryFilter(props: {
                             {productCategory.ProductRoot.ProductFamilies.map((productFamily) => {
                                 return (
                                     <TreeItem
-                                        key={productCategory.ProductRoot.name + productFamily.name}
-                                        itemId={productCategory.ProductRoot.name + productFamily.name}
+                                        key={productFamily.key}
+                                        itemId={productFamily.key}
                                         label={
                                             productFamily.name.toLowerCase().startsWith('unknown') ? (
                                                 <Box display="flex" alignItems="center" ml={5}>
@@ -181,7 +183,7 @@ export function ProductCategoryFilter(props: {
                                         {productFamily.ProductDesignations.map((productDesignation) => {
                                             return (
                                                 <Box
-                                                    key={productFamily.name + productDesignation.name}
+                                                    key={productFamily.key}
                                                     display="flex"
                                                     alignItems="center"
                                                     ml={4}
