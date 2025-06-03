@@ -156,8 +156,15 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
     }
 
     function onFilterClassificationChangedCategory(query: FilterQuery[]) {
-        setActiveFilters(query);
-    }
+        setActiveFilters((prevFilters) => {
+            const filtered = prevFilters.filter(
+                (filter) =>
+                    filter.key !== 'PRODUCT_ROOT' &&
+                    filter.key !== 'PRODUCT_FAMILY' &&
+                    filter.key !== 'PRODUCT_DESIGNATION'
+            );
+            return [...filtered, ...query];
+        });    }
 
     function applyFilter() {
         console.log(activeFilters);

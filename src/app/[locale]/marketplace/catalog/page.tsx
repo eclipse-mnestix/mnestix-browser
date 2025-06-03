@@ -55,7 +55,6 @@ export default function Page() {
         const results = await searchProducts(filters);
 
         if (results.isSuccess) {
-            console.log(filters);
             const products = results.result;
             setProducts(products);
         } else {
