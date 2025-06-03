@@ -2,12 +2,14 @@ import { SimpleTreeView, TreeItem } from '@mui/x-tree-view';
 import { Box, Checkbox, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { FilterQuery } from 'app/[locale]/marketplace/catalog/_components/FilterContainer';
+import { useTranslations } from 'next-intl';
 
 export interface CheckboxFilterState {
     [key: string]: boolean;
 }
 
 export function EClassFilter(props: { eClassFilters: string[]; onFilterChanged(query: FilterQuery[]): void }) {
+    const t = useTranslations('pages.catalog');
     const [selectedFilters, setSelectedFilters] = useState<CheckboxFilterState>(() => {
         const initialState: CheckboxFilterState = {};
         props.eClassFilters.forEach((filter) => {
@@ -45,13 +47,13 @@ export function EClassFilter(props: { eClassFilters: string[]; onFilterChanged(q
     const resolveEclassLabel = (eClass: string) => {
         switch (eClass) {
             case '15':
-                return 'Instandhaltung (Dienstleistung)';
+                return t('eclassCategories.15');
             case '27':
-                return 'Elektro-, Automatisierungs- und Prozessleittechnik';
+                return t('eclassCategories.27');
             case '44':
-                return 'Fahrzeugtechnik, Fahrzeugkomponente';
+                return t('eclassCategories.44');
             default:
-                return 'Kategorie ' + eClass;
+                return t('eclassCategories.default') + eClass;
         }
     };
 
