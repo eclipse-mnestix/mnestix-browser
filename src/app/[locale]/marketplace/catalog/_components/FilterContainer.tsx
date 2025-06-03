@@ -147,6 +147,10 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
         });
     }
 
+    function onFilterClassificationChangedCategory(query: FilterQuery[]) {
+        setActiveFilters(query);
+    }
+
     function applyFilter() {
         console.log(activeFilters);
         props.onFilterChanged(activeFilters);
@@ -181,12 +185,7 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                     />
                     <ProductCategoryFilter
                         productCategoryFilters={transformProductCategories(productCategoryFilters)}
-                        onFilterChanged={(values) =>
-                            onFilterChangedByCategory(
-                                'PRODUCT_ROOT',
-                                values.map((f) => f.value),
-                            )
-                        }
+                        onFilterChanged={(values) => onFilterClassificationChangedCategory(values)}
                     />
                     <Button sx={{ mt: 3 }} variant="contained" onClick={applyFilter}>
                         Apply Filter
