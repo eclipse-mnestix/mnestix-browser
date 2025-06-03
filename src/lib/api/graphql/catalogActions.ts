@@ -32,13 +32,11 @@ function buildFilterInput(filters?: FilterQuery[]): string {
     }
 
     if (productClassificationFilters.length !== 0) {
-        const productClassificationFilterString = ` productClassifications: { some: { or: [${productClassificationFilters.join(',')}] } } `;
+        const productClassificationFilterString = ` {productClassifications: { some: { or: [${productClassificationFilters.join(',')}] } } }`;
         filterArray.push(productClassificationFilterString);
     }
 
     // ProductClassification filters:
-    // TODO apply multiple filters by { in: [value1, value2] } instead of { eq: value }
-    // TODO apply filters for PRODUCT_FAMILY and PRODUCT_DESIGNATION
     const productRootFilter = filters.filter((filter) => filter.key === 'PRODUCT_ROOT');
     if (productRootFilter) {
         filterArray.push(`
