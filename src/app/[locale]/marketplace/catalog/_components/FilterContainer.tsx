@@ -44,6 +44,9 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
     const params = useParams();
     const locale = params?.locale as string;
 
+    /**
+     * Load all products and extract filter options
+     */
     useAsyncEffect(async () => {
         setLoading(true);
         const results = await searchProducts();
