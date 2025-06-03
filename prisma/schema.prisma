@@ -22,4 +22,6 @@ model MnestixConnection {
   url String
   type ConnectionType @relation(fields: [typeId], references: [id])
   typeId String
+  aasSearcher String?
+  image String?
 }
