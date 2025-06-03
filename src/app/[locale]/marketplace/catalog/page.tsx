@@ -32,9 +32,8 @@ export default function Page() {
         if (!manufacturer) {
             return;
         }
-        await loadData()
+        await loadData();
     }, []);
-
 
     // Determine the repositoryUrl to use
     let repositoryUrl: string | undefined = undefined;
@@ -53,10 +52,10 @@ export default function Page() {
 
     const loadData = async (filters?: { key: string; value: string }[]) => {
         setLoading(true);
-        const results = await searchProducts(filters)
+        const results = await searchProducts(filters);
 
-        if(results.isSuccess) {
-            console.log(filters)
+        if (results.isSuccess) {
+            console.log(filters);
             const products = results.result;
             setProducts(products);
         } else {
@@ -64,7 +63,7 @@ export default function Page() {
         }
 
         setLoading(false);
-    }
+    };
 
     const onFilterChanged = async (filters: { key: string; value: string }[]) => {
         await loadData(filters);
@@ -78,20 +77,23 @@ export default function Page() {
             <Box display="flex" justifyContent="space-between">
                 <ListHeader header={t('marketplaceTitle')} subHeader={t('marketplaceSubtitle')} />
 
-                    <Box ml={2} display="flex" alignItems="center">
-                        {config && config.manufacturerLogo ? (
-                            <Image
-                                src={config.manufacturerLogo}
-                                alt={`${manufacturer} Logo`}
-                                height={48}
-                                width={120}
-                                style={{ objectFit: 'contain', marginRight: '1rem' }}
-                            />
-                        ) : (<Typography variant="h6" color="textSecondary">{repositoryUrl}</Typography>)}
-                    </Box>
-
+                <Box ml={2} display="flex" alignItems="center">
+                    {config && config.manufacturerLogo ? (
+                        <Image
+                            src={config.manufacturerLogo}
+                            alt={`${manufacturer} Logo`}
+                            height={48}
+                            width={120}
+                            style={{ objectFit: 'contain', marginRight: '1rem' }}
+                        />
+                    ) : (
+                        <Typography variant="h6" color="textSecondary">
+                            {repositoryUrl}
+                        </Typography>
+                    )}
+                </Box>
             </Box>
-            <Box display="flex" flexDirection="row"  marginBottom="1.5rem">
+            <Box display="flex" flexDirection="row" marginBottom="1.5rem">
                 <Card
                     sx={{
                         minHeight: 480,
@@ -105,19 +107,29 @@ export default function Page() {
                     }}
                     aria-label={t('filter')}
                 >
-                    <FilterContainer onFilterChanged={onFilterChanged}/>
+                    <FilterContainer onFilterChanged={onFilterChanged} />
                 </Card>
                 <Box flex={1} minWidth={0}>
-                    { manufacturer && config ?
-                        (loading ? <CenteredLoadingSpinner /> :
-                        <Card>
-                            <ProductList shells={products} repositoryUrl={config.repositoryUrl} updateSelectedAasList={() => {}}/>
-                        </Card>) :
+                    {manufacturer && config ? (
+                        loading ? (
+                            <CenteredLoadingSpinner />
+                        ) : (
+                            <Card>
+                                <ProductList
+                                    shells={products}
+                                    repositoryUrl={config.repositoryUrl}
+                                    updateSelectedAasList={() => {}}
+                                />
+                            </Card>
+                        )
+                    ) : (
                         <Box>
-                            <Typography variant="h5" mb={2}>{t('noSearcherWarning')}</Typography>
+                            <Typography variant="h5" mb={2}>
+                                {t('noSearcherWarning')}
+                            </Typography>
                             <AasListDataWrapper repositoryUrl={repositoryUrl} hideRepoSelection={true} />
                         </Box>
-                 }
+                    )}
                 </Box>
             </Box>
         </Box>

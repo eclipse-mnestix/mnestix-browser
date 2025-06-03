@@ -1,5 +1,5 @@
 import { FilterQuery } from 'app/[locale]/marketplace/catalog/_components/FilterContainer';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CheckboxFilterState } from 'app/[locale]/marketplace/catalog/_components/EClassFilter';
 import { SimpleTreeView, TreeItem } from '@mui/x-tree-view';
 import { Box, Checkbox, Typography } from '@mui/material';
@@ -13,16 +13,16 @@ export function VecFilter(props: { vecFilters: string[]; onFilterChanged(query: 
         return initialState;
     });
 
+    useEffect(() => {
+        const selectedVecs = Object.keys(selectedFilters).filter((key) => selectedFilters[key]);
+        props.onFilterChanged(selectedVecs.map((vec) => ({ key: 'VEC', value: vec })));
+    }, [selectedFilters]);
+
     function onFilterChange(vec: string, checked: boolean) {
-        setSelectedFilters((prevState) => {
-            const updatedFilters = {
-                ...prevState,
-                [vec]: checked,
-            };
-            const selectedVecs = Object.keys(updatedFilters).filter((key) => updatedFilters[key]);
-            props.onFilterChanged(selectedVecs.map(vec => ({ key: 'VEC', value: vec })));
-            return updatedFilters;
-        });
+        setSelectedFilters((prevState) => ({
+            ...prevState,
+            [vec]: checked,
+        }));
     }
 
     return (
@@ -40,7 +40,8 @@ export function VecFilter(props: { vecFilters: string[]; onFilterChanged(query: 
                         <Box key={vec} display="flex" alignItems="center">
                             <Checkbox
                                 checked={selectedFilters[vec] || false}
-                                onChange={(event) => onFilterChange(vec, event.target.checked)}/>
+                                onChange={(event) => onFilterChange(vec, event.target.checked)}
+                            />
                             <Typography>{vec.replace('PrimaryPartType_', '')}</Typography>
                         </Box>
                     );

@@ -7,11 +7,11 @@ import { GET_PRODUCTS, searchQuery, SearchResponse, SearchResponseEntry } from '
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 
 function buildFilterInput(filters?: FilterQuery[]): string {
-    if(!filters || filters.length === 0) {
+    if (!filters || filters.length === 0) {
         return '';
     }
-    const eclassFilter = filters.filter(filter => filter.key === 'ECLASS');
-    const vecFilter = filters.filter(filter => filter.key === 'VEC');
+    const eclassFilter = filters.filter((filter) => filter.key === 'ECLASS');
+    const vecFilter = filters.filter((filter) => filter.key === 'VEC');
     const productClassificationFilters: string[] = [];
     const filterArray = [];
 
@@ -19,7 +19,7 @@ function buildFilterInput(filters?: FilterQuery[]): string {
     if (eclassFilter.length > 0) {
         productClassificationFilters.push(`{
             system: { eq: "ECLASS" }
-            productId: { in: [${eclassFilter.map(filter => `"${filter.value.trim()}"`).join(',')}] }
+            productId: { in: [${eclassFilter.map((filter) => `"${filter.value.trim()}"`).join(',')}] }
         }`);
     }
 
@@ -27,36 +27,48 @@ function buildFilterInput(filters?: FilterQuery[]): string {
     if (vecFilter.length > 0) {
         productClassificationFilters.push(`{
             system: { eq: "VEC" }
-            productId: { in: [${vecFilter.map(filter => `"${filter.value.trim()}"`).join(',')}] }
+            productId: { in: [${vecFilter.map((filter) => `"${filter.value.trim()}"`).join(',')}] }
         }`);
     }
 
     if (productClassificationFilters.length !== 0) {
-        const productClassificationFilterString = ` productClassifications: { some: { or: [${productClassificationFilters.join(',')}] } } `;
+        const productClassificationFilterString = ` {productClassifications: { some: { or: [${productClassificationFilters.join(',')}] } } }`;
         filterArray.push(productClassificationFilterString);
     }
 
     // ProductClassification filters:
-    // TODO apply multiple filters by { in: [value1, value2] } instead of { eq: value }
-    // TODO apply filters for PRODUCT_FAMILY and PRODUCT_DESIGNATION
-    const productRootFilter = filters.find(filter => filter.key === 'PRODUCT_ROOT');
+    const productRootFilter = filters.filter((filter) => filter.key === 'PRODUCT_ROOT');
     if (productRootFilter) {
         filterArray.push(`
-            productRoot: { value: {eq : "${productRootFilter.value}" }}
+            {productRoot: { mlValues: {some: { text: { in: [${productRootFilter.map((filter) => `"${filter.value.trim()}"`).join(',')}] }}}}}
         `);
     }
 
-    console.log(filterArray)
-
-    if(filterArray.length === 0) {
-        return ''
+    const productFamilyFilter = filters.filter((filter) => filter.key === 'PRODUCT_FAMILY');
+    if (productFamilyFilter) {
+        filterArray.push(`
+            {productFamily: { mlValues: {some: { text: { in: [${productFamilyFilter.map((filter) => `"${filter.value.trim()}"`).join(',')}] }}}}}
+        `);
     }
-    return filterArray.length > 1 ? `(where: {${filterArray.join(' OR: ')}})` : `(where: { ${filterArray} })`;
+
+    const productDesignationFilter = filters.filter((filter) => filter.key === 'PRODUCT_DESIGNATION');
+    if (productDesignationFilter) {
+        filterArray.push(`
+            {productDesignation: { mlValues: {some: { text: { in: [${productDesignationFilter.map((filter) => `"${filter.value.trim()}"`).join(',')}] }}}}}
+        `);
+    }
+
+    console.log(filterArray);
+
+    if (filterArray.length === 0) {
+        return '';
+    }
+    return filterArray.length > 1 ? `(where: { or: [${filterArray.join(' , ')}]})` : `(where: { ${filterArray} })`;
 }
 
-export async function searchProducts(filters?: FilterQuery[]):Promise<ApiResponseWrapper<SearchResponseEntry[]>> {
+export async function searchProducts(filters?: FilterQuery[]): Promise<ApiResponseWrapper<SearchResponseEntry[]>> {
     const queryString = searchQuery(buildFilterInput(filters));
-    console.log(queryString)
+    console.log(queryString);
 
     const query = gql(queryString);
     try {
@@ -64,8 +76,7 @@ export async function searchProducts(filters?: FilterQuery[]):Promise<ApiRespons
             query,
         });
         return wrapSuccess(data.entries);
-    }
-    catch (error) {
+    } catch (error) {
         console.error('Error searching products:', JSON.stringify(error.result));
         return wrapErrorCode('UNKNOWN_ERROR', error);
     }

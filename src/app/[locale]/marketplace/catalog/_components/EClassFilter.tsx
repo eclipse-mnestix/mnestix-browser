@@ -1,13 +1,15 @@
 import { SimpleTreeView, TreeItem } from '@mui/x-tree-view';
 import { Box, Checkbox, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FilterQuery } from 'app/[locale]/marketplace/catalog/_components/FilterContainer';
+import { useTranslations } from 'next-intl';
 
 export interface CheckboxFilterState {
     [key: string]: boolean;
 }
 
 export function EClassFilter(props: { eClassFilters: string[]; onFilterChanged(query: FilterQuery[]): void }) {
+    const t = useTranslations('pages.catalog');
     const [selectedFilters, setSelectedFilters] = useState<CheckboxFilterState>(() => {
         const initialState: CheckboxFilterState = {};
         props.eClassFilters.forEach((filter) => {
@@ -16,31 +18,42 @@ export function EClassFilter(props: { eClassFilters: string[]; onFilterChanged(q
         return initialState;
     });
 
+    useEffect(() => {
+        const selectedEClasses = Object.keys(selectedFilters).filter((key) => selectedFilters[key]);
+        props.onFilterChanged(
+            selectedEClasses.map((eclass) => {
+                return { key: 'ECLASS', value: eclass };
+            }),
+        );
+    }, [selectedFilters]);
+
     function onFilterChange(eClass: string, checked: boolean) {
+        setSelectedFilters((prevState) => ({
+            ...prevState,
+            [eClass]: checked,
+        }));
+    }
+
+    function onGroupFilterChange(eClasses: string[], checked: boolean) {
         setSelectedFilters((prevState) => {
-            const updatedFilters = {
-                ...prevState,
-                [eClass]: checked,
-            };
-
-            // Collect all selected filters
-            const selectedEClasses = Object.keys(updatedFilters).filter((key) => updatedFilters[key]);
-
-            // Send the updated list of selected filters to the parent component
-            props.onFilterChanged(selectedEClasses.map(eclass => {return { key: 'ECLASS', value: eclass }}));
-            console.log(selectedEClasses)
+            const updatedFilters = { ...prevState };
+            eClasses.forEach((eClass) => {
+                updatedFilters[eClass] = checked;
+            });
             return updatedFilters;
         });
     }
 
     const resolveEclassLabel = (eClass: string) => {
         switch (eClass) {
+            case '15':
+                return t('eclassCategories.15');
             case '27':
-                return 'Elektro-, Automatisierungs- und Prozessleittechnik';
+                return t('eclassCategories.27');
             case '44':
-                return 'Fahrzeugtechnik, Fahrzeugkomponente';
+                return t('eclassCategories.44');
             default:
-                return 'Kategorie ' + eClass;
+                return t('eclassCategories.default') + eClass;
         }
     };
 
@@ -67,9 +80,8 @@ export function EClassFilter(props: { eClassFilters: string[]; onFilterChanged(q
                         <Box display="flex" alignItems="center">
                             <Checkbox
                                 checked={isGroupChecked}
-                                onChange={(event) =>
-                                    eClasses.forEach((eClass) => onFilterChange(eClass, event.target.checked))
-                                }
+                                indeterminate={eClasses.some((eClass) => selectedFilters[eClass]) && !isGroupChecked}
+                                onChange={(event) => onGroupFilterChange(eClasses, event.target.checked)}
                                 onClick={(event) => event.stopPropagation()}
                             />
                             {resolveEclassLabel(group)}
