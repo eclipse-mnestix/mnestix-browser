@@ -25,7 +25,8 @@ services:
   mnestix-browser:
     container_name: mnestix-browser
     image: mnestix/mnestix-browser:1.5.0 #Works only with the 2.0.0 (new release) version of the backend
-    # image: mnestix/mnestix-browser:2.0.0
+    #Test with mnestix/mnestix-browser:1.5.0 until 2.0 is fully released and available
+    image: mnestix/mnestix-browser:2.0.0
     profiles: ['', 'frontend', 'tests']
     environment:
       DISCOVERY_API_URL: 'http://mnestix-proxy:5065/discovery'
