@@ -31,6 +31,7 @@ export async function POST(req: NextRequest) {
                 typeId: mnestixType.id,
                 aasSearcher: mnestixConnectionRequest.aasSearcher,
                 image: mnestixConnectionRequest.image,
+                manufacturerName: mnestixConnectionRequest.manufacturerName,
             },
         });
         return Response.json({ message: 'MnestixConnection created' });

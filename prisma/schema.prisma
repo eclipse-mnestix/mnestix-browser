@@ -24,4 +24,5 @@ model MnestixConnection {
   typeId String
   aasSearcher String?
   image String?
+  manufacturerName String?
 }
