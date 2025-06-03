@@ -1,8 +1,7 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 
-// TODO replace hardcoded URL
 const httpLink = createHttpLink({
-    uri: 'http://localhost:5149/graphql/',
+    uri: 'https://vws4ls-searcher.dev.mnestix.xitaso.net/graphql/',
     credentials: 'include'
 });
 
