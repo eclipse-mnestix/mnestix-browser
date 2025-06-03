@@ -36,7 +36,7 @@ services:
       MNESTIX_BACKEND_API_URL: 'http://mnestix-proxy:5065'
 
   mnestix-api:
-    image: mnestix-api:2.0.0
+    image: mnestix/mnestix-api:2.0.0
     container_name: mnestix-api
     profiles: ['', 'backend', 'tests']
     environment:
