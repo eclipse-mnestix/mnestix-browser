@@ -266,7 +266,8 @@
         "27": "Electric engineering, automation, process control engineering ",
         "44": "Automotive engineering, vehicle component",
         "default": "Category "
-      }
+      },
+      "searchPlaceholder": "Búsqueda no disponible actualmente..."
     },
     "compare": {
       "addAnother": "Añadir otro AAS",
