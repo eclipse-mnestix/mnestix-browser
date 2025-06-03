@@ -259,7 +259,14 @@
       "marketplaceTitle": "VWS4LS - Marketplace",
       "marketplaceSubtitle": "Shell de administración de activos para mazos de cables",
       "articleCount": "{count, plural, =1 {# artículo} other {# artículos}}",
-      "filter": "Filtro"
+      "filter": "Filtro",
+      "noSearcherWarning": "No se ha configurado el buscador AAS - Se muestra la lista AAS",
+      "eclassCategories": {
+        "15": "Maintenance (Service)",
+        "27": "Electric engineering, automation, process control engineering ",
+        "44": "Automotive engineering, vehicle component",
+        "default": "Category "
+      }
     },
     "compare": {
       "addAnother": "Añadir otro AAS",

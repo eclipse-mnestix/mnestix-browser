@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "@aas-core-works/aas-core3.0-typescript": "^1.0.3",
+    "@apollo/client": "^3.13.8",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
@@ -61,6 +62,7 @@
     "@svgr/webpack": "^8.1.0",
     "buffer": "^6.0.3",
     "date-fns": "^4.1.0",
+    "graphql": "^16.11.0",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "next": "^15.3.2",
