@@ -15,22 +15,42 @@ import { ProductOverviewCard } from '../_components/ProductOverviewCard';
 import { NoSearchResult } from 'components/basics/detailViewBasics/NoSearchResult';
 import { useAasLoader } from 'lib/hooks/UseAasDataLoader';
 import { useLocale } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
+import { CatalogConfiguration } from 'app/[locale]/marketplace/catalogConfiguration';
+import { useTranslations } from 'next-intl';
+
+const pageStyles = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '30px',
+    alignItems: 'center',
+    marginBottom: '50px',
+    marginTop: '20px',
+};
+
+const viewerStyles = {
+    maxWidth: '1125px',
+    width: '90%',
+    margin: '0 auto',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
+};
 
 export default function Page() {
     const searchParams = useParams<{ base64AasId: string }>();
     const base64AasId = decodeURIComponent(searchParams.base64AasId).replace(/=+$|[%3D]+$/, '');
     const isMobile = useIsMobile();
     const locale = useLocale();
+    const t = useTranslations('pages.catalog');
     const encodedRepoUrl = useSearchParams().get('repoUrl');
     const repoUrl = encodedRepoUrl ? decodeURI(encodedRepoUrl) : undefined;
     const [filteredSubmodels, setFilteredSubmodels] = useState<SubmodelOrIdReference[]>([]);
-    const [breadcrumbLinks] = useState<Array<{ label: string, path: string }>>([]);
-
+    const [breadcrumbLinks, setBreadcrumbLinks] = useState<Array<{ label: string, path: string }>>([]);
 
     const {
         aasFromContext,
@@ -55,52 +75,59 @@ export default function Page() {
         }
     }, [submodels]);
 
-    const nameplate = findSubmodelByIdOrSemanticId(
-        submodels,
-        SubmodelSemanticIdEnum.NameplateV2,
-        'Nameplate',
-    );
+    useEffect(() => {
+        const newBreadcrumbLinks: Array<{ label: string, path: string }> = [];
 
-    if (nameplate) {
-        const productBreadcrumbProperties = [
-            { idShort: 'ManufacturerProductRoot', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductRoot },
-            { idShort: 'ManufacturerProductFamily', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductFamily },
-            { idShort: 'ManufacturerProductType', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductType }
-        ];
-
-        productBreadcrumbProperties.forEach(prop => {
-            const value = findValueByIdShort(
-                nameplate.submodelElements,
-                prop.idShort,
-                prop.semanticId,
-                locale,
+        if (aasOriginUrl) {
+            //TODO: Has to be changed to PRISMA query to get the manufacturer name as soon everything is updated
+            const manufacturerEntry = Object.entries(CatalogConfiguration).find(
+                ([, config]) => config.repositoryUrl === aasOriginUrl
             );
-            if (value && !breadcrumbLinks.some(link => link.label === value)) {
-                breadcrumbLinks.push({
-                    label: value,
-                    path: '',
+            if (manufacturerEntry) {
+                const [manufacturerName] = manufacturerEntry;
+                newBreadcrumbLinks.push({
+                    label: manufacturerName.charAt(0).toUpperCase() + manufacturerName.slice(1),
+                    path: `/marketplace/catalog?manufacturer=${encodeURIComponent(manufacturerName)}`,
+                });
+            } else {
+                newBreadcrumbLinks.push({
+                    label: t('manufacturerCatalog'),
+                    path: `/marketplace/catalog?repoUrl=${encodeURIComponent(aasOriginUrl)}`,
                 });
             }
-        });
-    }
+        }   
 
-    const pageStyles = {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '30px',
-        alignItems: 'center',
-        marginBottom: '50px',
-        marginTop: '20px',
-    };
+        const nameplate = findSubmodelByIdOrSemanticId(
+            submodels,
+            SubmodelSemanticIdEnum.NameplateV2,
+            'Nameplate',
+        );
 
-    const viewerStyles = {
-        maxWidth: '1125px',
-        width: '90%',
-        margin: '0 auto',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '20px',
-    };
+        if (nameplate) {
+            const productBreadcrumbProperties = [
+                { idShort: 'ManufacturerProductRoot', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductRoot },
+                { idShort: 'ManufacturerProductFamily', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductFamily },
+                { idShort: 'ManufacturerProductType', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductType }
+            ];
+
+            productBreadcrumbProperties.forEach(prop => {
+                const value = findValueByIdShort(
+                    nameplate.submodelElements,
+                    prop.idShort,
+                    prop.semanticId,
+                    locale,
+                );
+                if (value && !newBreadcrumbLinks.some(link => link.label === value)) {
+                    newBreadcrumbLinks.push({
+                        label: value,
+                        path: '',
+                    });
+                }
+            });
+        }
+
+        setBreadcrumbLinks(newBreadcrumbLinks);
+    }, [aasOriginUrl, submodels, locale]);
 
     return (
         <Box sx={pageStyles}>
