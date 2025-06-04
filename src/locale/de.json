@@ -355,7 +355,8 @@
         "subtitle": "Definieren Sie, welche Datenquellen verwendet werden sollen.",
         "title": "Datenquellen",
         "urlFieldNoTrailingSlash": "Die URL darf nicht mit einem Schrägstrich (/) enden.",
-        "urlFieldRequired": "URL wird benötigt"
+        "urlFieldRequired": "URL wird benötigt",
+        "defaultUrlInfo": "Default URLs können nur über die Environment Variablen gesetzt werden."
       },
       "header": "Einstellungen",
       "idStructure": {

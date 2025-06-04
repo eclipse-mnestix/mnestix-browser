@@ -355,7 +355,8 @@
         "subtitle": "Define which data connections should be used.",
         "title": "Data sources",
         "urlFieldNoTrailingSlash": "The URL must not end with a slash (/).",
-        "urlFieldRequired": "URL field is required"
+        "urlFieldRequired": "URL field is required",
+        "defaultUrlInfo": "Default URLs can only be set via environment variables."
       },
       "header": "Settings",
       "idStructure": {

@@ -1,4 +1,4 @@
-import { Box, Button, Divider, FormControl, IconButton, Skeleton, TextField, Typography } from '@mui/material';
+import { Box, Button, Divider, FormControl, IconButton, Skeleton, TextField, Tooltip, Typography } from '@mui/material';
 import { Dispatch, Fragment, SetStateAction } from 'react';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import { Control, Controller, FieldArrayWithId, useFieldArray, UseFormGetValues } from 'react-hook-form';
@@ -6,7 +6,7 @@ import { ConnectionFormData } from 'app/[locale]/settings/_components/mnestix-co
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { tooltipText } from 'lib/util/ToolTipText';
 import { useTranslations } from 'next-intl';
-
+import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
 
 export type MnestixConnectionsGroupFormProps = {
     readonly defaultUrl: string | undefined;
@@ -85,7 +85,12 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                 <Typography variant="h4" mr={4} width="200px">
                     {t('aasRepository.repositoryDefaultLabel')}
                 </Typography>
-                <Typography>{defaultUrl}</Typography>
+                <Box display="flex" alignItems="center">
+                    <Typography>{defaultUrl}</Typography>
+                    <Tooltip title={t('defaultUrlInfo')}>
+                        <InfoOutlineIcon sx={{ ml: 1 }} />
+                    </Tooltip>
+                </Box>
             </Box>
             {isLoading &&
                 !fields.length &&
