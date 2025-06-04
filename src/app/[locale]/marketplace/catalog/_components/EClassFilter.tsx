@@ -1,53 +1,74 @@
 import { SimpleTreeView, TreeItem } from '@mui/x-tree-view';
 import { Box, Checkbox, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FilterQuery } from 'app/[locale]/marketplace/catalog/_components/FilterContainer';
+import { useTranslations } from 'next-intl';
 
-interface CheckboxFilterState {
+export interface CheckboxFilterState {
     [key: string]: boolean;
 }
 
-export function EClassFilter(props: {eClassFilters: string[], onFilterChanged(query: FilterQuery): void}) {
+export function EClassFilter(props: { eClassFilters: string[]; onFilterChanged(query: FilterQuery[]): void }) {
+    const t = useTranslations('pages.catalog');
     const [selectedFilters, setSelectedFilters] = useState<CheckboxFilterState>(() => {
         const initialState: CheckboxFilterState = {};
-        props.eClassFilters.forEach(filter => {
+        props.eClassFilters.forEach((filter) => {
             initialState[filter] = false;
         });
         return initialState;
     });
 
-    function onFilterChange(eClass: string, checked: boolean) {
-        setSelectedFilters(prevState => ({
-            ...prevState,
-            [eClass]: checked
-        }));
+    useEffect(() => {
+        const selectedEClasses = Object.keys(selectedFilters).filter((key) => selectedFilters[key]);
+        props.onFilterChanged(
+            selectedEClasses.map((eclass) => {
+                return { key: 'ECLASS', value: eclass };
+            }),
+        );
+    }, [selectedFilters]);
 
-        // TODO build query and send event to parent component to trigger new search
-        props.onFilterChanged({ key: eClass, value: checked});
+    function onFilterChange(eClass: string, checked: boolean) {
+        setSelectedFilters((prevState) => ({
+            ...prevState,
+            [eClass]: checked,
+        }));
+    }
+
+    function onGroupFilterChange(eClasses: string[], checked: boolean) {
+        setSelectedFilters((prevState) => {
+            const updatedFilters = { ...prevState };
+            eClasses.forEach((eClass) => {
+                updatedFilters[eClass] = checked;
+            });
+            return updatedFilters;
+        });
     }
 
     const resolveEclassLabel = (eClass: string) => {
         switch (eClass) {
+            case '15':
+                return t('eclassCategories.15');
             case '27':
-                return 'Elektro-, Automatisierungs- und Prozessleittechnik';
+                return t('eclassCategories.27');
             case '44':
-                return 'Fahrzeugtechnik, Fahrzeugkomponente';
+                return t('eclassCategories.44');
             default:
-                return 'Kategorie ' + eClass;
+                return t('eclassCategories.default') + eClass;
         }
     };
 
-    function prepareEclassHierarchy(
-        eClassFilters: string[]
-    ) {
-        const groupedFilters = eClassFilters.reduce((acc, eClass) => {
-            const group = eClass.slice(0, 2);
-            if (!acc[group]) {
-                acc[group] = [];
-            }
-            acc[group].push(eClass);
-            return acc;
-        }, {} as Record<string, string[]>);
+    function prepareEclassHierarchy(eClassFilters: string[]) {
+        const groupedFilters = eClassFilters.reduce(
+            (acc, eClass) => {
+                const group = eClass.slice(0, 2);
+                if (!acc[group]) {
+                    acc[group] = [];
+                }
+                acc[group].push(eClass);
+                return acc;
+            },
+            {} as Record<string, string[]>,
+        );
 
         return Object.entries(groupedFilters).map(([group, eClasses]) => {
             const isGroupChecked = eClasses.every((eClass) => selectedFilters[eClass]);
@@ -59,11 +80,8 @@ export function EClassFilter(props: {eClassFilters: string[], onFilterChanged(qu
                         <Box display="flex" alignItems="center">
                             <Checkbox
                                 checked={isGroupChecked}
-                                onChange={(event) =>
-                                    eClasses.forEach((eClass) =>
-                                        onFilterChange(eClass, event.target.checked)
-                                    )
-                                }
+                                indeterminate={eClasses.some((eClass) => selectedFilters[eClass]) && !isGroupChecked}
+                                onChange={(event) => onGroupFilterChange(eClasses, event.target.checked)}
                                 onClick={(event) => event.stopPropagation()}
                             />
                             {resolveEclassLabel(group)}
@@ -74,9 +92,7 @@ export function EClassFilter(props: {eClassFilters: string[], onFilterChanged(qu
                         <Box key={eClass} display="flex" alignItems="center" ml={4}>
                             <Checkbox
                                 checked={selectedFilters[eClass] || false}
-                                onChange={(event) =>
-                                    onFilterChange(eClass, event.target.checked)
-                                }
+                                onChange={(event) => onFilterChange(eClass, event.target.checked)}
                             />
                             <Typography>{eClass}</Typography>
                         </Box>
@@ -98,5 +114,5 @@ export function EClassFilter(props: {eClassFilters: string[], onFilterChanged(qu
                 {prepareEclassHierarchy(props.eClassFilters)}
             </TreeItem>
         </SimpleTreeView>
-    )
+    );
 }
