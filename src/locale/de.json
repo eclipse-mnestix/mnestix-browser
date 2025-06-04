@@ -341,7 +341,10 @@
           "repositories": "AAS Repositorys",
           "repositoryDefaultLabel": "Default AAS Repository",
           "repositoryLabel": "AAS Repository",
-          "repositoryUrlLabel": "AAS Repository URL"
+          "repositoryUrlLabel": "AAS Repository URL",
+          "nameLabel": "Name",
+          "imageUrlLabel": "Bild URL",
+          "aasSearcherUrlLabel": "AAS Searcher URL"
         },
         "addButton": "Hinzufügen",
         "resetSuccessful": "Quellen wurden zurückgesetzt.",

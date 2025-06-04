@@ -341,7 +341,10 @@
           "repositories": "AAS repositories",
           "repositoryDefaultLabel": "Default AAS repository",
           "repositoryLabel": "AAS repository",
-          "repositoryUrlLabel": "AAS repository URL"
+          "repositoryUrlLabel": "AAS repository URL",
+          "nameLabel": "Name",
+          "imageUrlLabel": "Image URL",
+          "aasSearcherUrlLabel": "AAS Searcher URL"
         },
         "addButton": "Add more",
         "resetSuccessful": "Connections were reset.",

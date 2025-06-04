@@ -1,4 +1,14 @@
-import { Box, Button, Divider, FormControl, IconButton, Skeleton, TextField, Tooltip, Typography } from '@mui/material';
+import {
+    Box,
+    Button,
+    Divider,
+    FormControl,
+    IconButton,
+    Skeleton,
+    TextField,
+    Tooltip,
+    Typography,
+} from '@mui/material';
 import { Dispatch, Fragment, SetStateAction } from 'react';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import { Control, Controller, FieldArrayWithId, useFieldArray, UseFormGetValues } from 'react-hook-form';
@@ -22,53 +32,139 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
     const control = props.control as Control<ConnectionFormData, never>;
     const t = useTranslations('pages.settings.connections');
 
-
     const { fields, append, remove } = useFieldArray<ConnectionFormData>({
         control,
         name: 'aasRepository',
     });
 
-    function getFormControl(
-        field: FieldArrayWithId<ConnectionFormData, keyof ConnectionFormData>,
-        index: number,
-        arrayName: keyof ConnectionFormData,
-    ) {
+    function validateNoTrailingSlash(value: string) {
+        return !value || !value.endsWith('/') || t('urlFieldNoTrailingSlash');
+    }
+
+    function getFormControl(field: FieldArrayWithId<ConnectionFormData, keyof ConnectionFormData>, index: number) {
         return (
             <FormControl fullWidth variant="filled" key={field.id}>
-                <Box display="flex" flex={1} flexDirection="row" mb={2} alignItems="center">
+                <Box display="flex" flex={1} flexDirection="row" mb={4} alignItems="center">
                     <Typography variant="h4" mr={4} width="200px">
                         {t('aasRepository.repositoryLabel')} {index + 1}
                     </Typography>
                     {isEditMode ? (
-                        <Box display="flex" alignItems="center" flex={1}>
-                            <Controller
-                                name={`${arrayName}.${index}.url`}
-                                control={control}
-                                defaultValue={field.url}
-                                rules={{
-                                    required: t('urlFieldRequired'),
-                                    validate: (value: string) =>
-                                        !value.endsWith('/') || t('urlFieldNoTrailingSlash'),
-                                }}
-                                render={({ field, fieldState: { error } }) => (
-                                    <TextField
-                                        {...field}
-                                        label={t('aasRepository.repositoryUrlLabel')}
-                                        sx={{ flexGrow: 1, mr: 1 }}
-                                        fullWidth={true}
-                                        error={!!error}
-                                        helperText={error ? error.message : ''}
-                                    />
-                                )}
-                            />
+                        <Box display="flex" alignItems="center" flex={1} gap={1}>
+                            <Box display="flex" flexDirection="column" flex={1} gap={1}>
+                                <Controller
+                                    name={`aasRepository.${index}.url`}
+                                    control={control}
+                                    defaultValue={field.url}
+                                    rules={{
+                                        required: t('urlFieldRequired'),
+                                        validate: validateNoTrailingSlash,
+                                    }}
+                                    render={({ field, fieldState: { error } }) => (
+                                        <TextField
+                                            {...field}
+                                            label={t('aasRepository.repositoryUrlLabel')}
+                                            sx={{ flexGrow: 1, mr: 1 }}
+                                            fullWidth={true}
+                                            error={!!error}
+                                            helperText={error ? error.message : ''}
+                                        />
+                                    )}
+                                />
+                                <Controller
+                                    name={`aasRepository.${index}.image`}
+                                    control={control}
+                                    defaultValue={field.image}
+                                    rules={{
+                                        validate: validateNoTrailingSlash
+                                    }}
+                                    render={({ field, fieldState: { error } }) => (
+                                        <TextField
+                                            {...field}
+                                            label={t('aasRepository.imageUrlLabel')}
+                                            sx={{ flexGrow: 1, mr: 1 }}
+                                            fullWidth={true}
+                                            error={!!error}
+                                            helperText={error ? error.message : ''}
+                                        />
+                                    )}
+                                />
+                            </Box>
+                            <Box display="flex" flexDirection="column" flex={1} gap={1}>
+                                <Controller
+                                    name={`aasRepository.${index}.name`}
+                                    control={control}
+                                    defaultValue={field.name}
+                                    render={({ field, fieldState: { error } }) => (
+                                        <TextField
+                                            {...field}
+                                            label={t('aasRepository.nameLabel')}
+                                            sx={{ flexGrow: 1, mr: 1 }}
+                                            fullWidth={true}
+                                            error={!!error}
+                                            helperText={error ? error.message : ''}
+                                        />
+                                    )}
+                                />
+                                <Controller
+                                    name={`aasRepository.${index}.aasSearcher`}
+                                    control={control}
+                                    defaultValue={field.aasSearcher}
+                                    rules={{
+                                        validate: validateNoTrailingSlash
+                                    }}
+                                    render={({ field, fieldState: { error } }) => (
+                                        <TextField
+                                            {...field}
+                                            label={t('aasRepository.aasSearcherUrlLabel')}
+                                            sx={{ flexGrow: 1, mr: 1 }}
+                                            fullWidth={true}
+                                            error={!!error}
+                                            helperText={error ? error.message : ''}
+                                        />
+                                    )}
+                                />
+                            </Box>
                             <IconButton>
                                 <RemoveCircleOutlineIcon onClick={() => remove(index)} />
                             </IconButton>
                         </Box>
                     ) : (
-                        <Typography mb={2} mt={2}>
-                            {tooltipText(getValues(`${arrayName}.${index}.url`), 80)}
-                        </Typography>
+                        <Box display="flex" flexDirection="row" flex={1} gap={1}>
+                            <Box display="flex" flexDirection="column" flex={1} gap={2}>
+                                <Box>
+                                    <Typography sx={{ fontSize: '0.8rem', color: 'text.secondary' }}>
+                                        {t('aasRepository.repositoryUrlLabel')}
+                                    </Typography>
+                                    <Typography>{getValues(`aasRepository.${index}.url`) ? tooltipText(getValues(`aasRepository.${index}.url`), 80): '-'}</Typography>
+                                </Box>
+                                <Box>
+                                    <Typography sx={{ fontSize: '0.8rem', color: 'text.secondary' }}>
+                                        {t('aasRepository.imageUrlLabel')}
+                                    </Typography>
+                                    <Typography >
+                                        {getValues(`aasRepository.${index}.url`) ? tooltipText(getValues(`aasRepository.${index}.image`), 80) : '-'}
+                                    </Typography>
+                                </Box>
+                            </Box>
+                            <Box display="flex" flexDirection="column" flex={1} gap={2}>
+                                <Box>
+                                    <Typography sx={{ fontSize: '0.8rem', color: 'text.secondary' }}>
+                                        {t('aasRepository.nameLabel')}
+                                    </Typography>
+                                    <Typography >
+                                        {getValues(`aasRepository.${index}.url`) ? tooltipText(getValues(`aasRepository.${index}.name`), 80): '-'}
+                                    </Typography>
+                                </Box>
+                                <Box>
+                                    <Typography sx={{ fontSize: '0.8rem', color: 'text.secondary' }}>
+                                        {t('aasRepository.aasSearcherUrlLabel')}
+                                    </Typography>
+                                    <Typography>
+                                        {getValues(`aasRepository.${index}.url`) ? tooltipText(getValues(`aasRepository.${index}.aasSearcher`), 80): '-'}
+                                    </Typography>
+                                </Box>
+                            </Box>
+                        </Box>
                     )}
                 </Box>
             </FormControl>
@@ -101,7 +197,7 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                         </Fragment>
                     );
                 })}
-            {!isLoading && fields.map((field, index) => getFormControl(field, index, 'aasRepository'))}
+            {!isLoading && fields.map((field, index) => getFormControl(field, index))}
             <Box>
                 <Button
                     variant="text"
