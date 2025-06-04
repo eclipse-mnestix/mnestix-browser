@@ -266,7 +266,8 @@
         "27": "Elektro-, Automatisierungs- und Prozessleittechnik",
         "44": "Fahrzeugtechnik, Fahrzeugkomponente",
         "default": "Kategorie "
-      }
+      },
+      "searchPlaceholder": "Suche aktuell nicht verfügbar..."
     },
     "compare": {
       "addAnother": "Eine weitere AAS hinzufügen",

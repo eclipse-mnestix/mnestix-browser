@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Card, Typography } from '@mui/material';
+import { Box, Card, TextField, Typography } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
 import ListHeader from 'components/basics/ListHeader';
 import { useTranslations } from 'next-intl';
@@ -17,6 +17,7 @@ import { SearchResponseEntry } from 'lib/api/graphql/catalogQueries';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { useShowError } from 'lib/hooks/UseShowError';
 import AasListDataWrapper from 'app/[locale]/list/_components/AasListDataWrapper';
+import SearchIcon from '@mui/icons-material/Search';
 
 export default function Page() {
     const params = useSearchParams();
@@ -74,11 +75,25 @@ export default function Page() {
             <Box marginBottom="1em">
                 <Breadcrumbs links={breadcrumbLinks} />
             </Box>
-            <Box display="flex" justifyContent="space-between">
+            <Box display="flex" alignItems="flex-start" gap={2}>
                 <ListHeader header={t('marketplaceTitle')} subHeader={t('marketplaceSubtitle')} />
-
-                <Box ml={2} display="flex" alignItems="center">
-                    {config && config.manufacturerLogo ? (
+                <TextField
+                    disabled
+                    variant="outlined"
+                    placeholder={t('searchPlaceholder')}
+                    sx={{ marginLeft: '3rem', width: 320 }}
+                    slotProps={{
+                        input: {
+                            startAdornment: (
+                                <Box component="span" sx={{ display: 'flex', alignItems: 'center', mr: '0.5rem' }}>
+                                    <SearchIcon fontSize="small" />
+                                </Box>
+                            ),
+                        },
+                    }}
+                />
+                <Box flex={1} />
+                {config && config.manufacturerLogo ? (
                         <Image
                             src={config.manufacturerLogo}
                             alt={`${manufacturer} Logo`}
@@ -91,7 +106,6 @@ export default function Page() {
                             {repositoryUrl}
                         </Typography>
                     )}
-                </Box>
             </Box>
             <Box display="flex" flexDirection="row" marginBottom="1.5rem">
                 <Card
