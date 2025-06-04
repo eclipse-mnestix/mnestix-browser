@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import ListHeader from 'components/basics/ListHeader';
-import { CatalogConfiguration } from 'app/[locale]/marketplace/catalogConfiguration';
 import Image from 'next/image';
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
 import { getCatalogBreadcrumbs } from 'app/[locale]/marketplace/_components/breadcrumbs';
@@ -14,16 +13,19 @@ import InsightsIcon from '@mui/icons-material/Insights';
 import { ConstructionDialog } from 'components/basics/ConstructionDialog';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useState } from 'react';
-import { getConnectionDataByTypeAction } from 'lib/services/database/connectionServerActions';
-import { ConnectionTypeEnum, getTypeAction } from 'lib/services/database/ConnectionTypeEnum';
+import {
+    getRepositoryConfigurationGroupsAction,
+} from 'lib/services/database/connectionServerActions';
 import { useEnv } from 'app/EnvProvider';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
+import { MnestixConnection } from '@prisma/client';
+import { ManufacturerCard } from 'app/[locale]/marketplace/_components/manufacturerCard';
 
 
 
 export default function Page() {
-    const [aasRepositories, setAasRepositories] = useState<string[]>([]);
+    const [aasRepositories, setAasRepositories] = useState<MnestixConnection[]>([]);
     const navigate = useRouter();
     const theme = useTheme();
     const t = useTranslations('pages.catalog');
@@ -36,11 +38,16 @@ export default function Page() {
     useAsyncEffect(async () => {
         try {
             setIsLoading(true);
-            const aasRepositories = await getConnectionDataByTypeAction(
-                getTypeAction(ConnectionTypeEnum.AAS_REPOSITORY),
-            );
+            const aasRepositories = await getRepositoryConfigurationGroupsAction();
             if (env.AAS_REPO_API_URL) {
-                aasRepositories.push(env.AAS_REPO_API_URL);
+                aasRepositories.push({
+                    url: env.AAS_REPO_API_URL,
+                    name: null,
+                    id: '',
+                    typeId: '',
+                    aasSearcher: null,
+                    image: null,
+                });
             }
             setAasRepositories(aasRepositories);
         } catch (error) {
@@ -83,75 +90,8 @@ export default function Page() {
                     <CenteredLoadingSpinner sx={{ my: 10 }} />
                 ) : <Box display="flex" flexWrap="wrap" gap={3}>
                     {/* Manufacturer Cards */}
-                    {Object.entries(CatalogConfiguration).map(([manufacturer, config]) => (
-                        <Card
-                            key={manufacturer}
-                            sx={{
-                                width: 300,
-                                minHeight: 160,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'space-between',
-                                p: 2,
-                                boxShadow: 2,
-                                borderRadius: 3,
-                                position: 'relative',
-                                cursor: 'pointer',
-                                background: theme.palette.background.paper,
-                            }}
-                            onClick={() => navigate.push(`/marketplace/catalog?manufacturer=${encodeURIComponent(manufacturer)}`)}
-                        >
-                            <Image
-                                src={config.manufacturerLogo}
-                                alt={`${manufacturer} Logo`}
-                                width={120}
-                                height={48}
-                                style={{ objectFit: 'contain' }}
-                            />
-                            <Box display="flex" alignItems="center" justifyContent="space-between" mt={2}>
-                                <Typography color="text.secondary" fontSize="1.1rem">
-                                    {t('articleCount', { count: config.articleCount })}
-                                </Typography>
-                                <IconButton
-                                    onClick={() => navigate.push(`/marketplace/catalog?manufacturer=${encodeURIComponent(manufacturer)}`)}
-                                    sx={{ bgcolor: theme.palette.primary.light, color: theme.palette.primary.contrastText, '&:hover': { bgcolor: theme.palette.primary.main }, cursor: 'pointer' }}
-                                >
-                                    <ArrowForwardIcon />
-                                </IconButton>
-                            </Box>
-                        </Card>
-                    ))}
-                    {/* AAS Repository Cards */}
-                    {aasRepositories.map((repoUrl) => (
-                        <Card
-                            key={repoUrl}
-                            sx={{
-                                width: 300,
-                                minHeight: 160,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'space-between',
-                                p: 2,
-                                boxShadow: 2,
-                                borderRadius: 3,
-                                position: 'relative',
-                                background: theme.palette.background.paper,
-                                cursor: 'pointer'
-                            }}
-                            onClick={() => navigate.push(`/marketplace/catalog?repoUrl=${encodeURIComponent(repoUrl)}`)}
-                        >
-                            <Typography variant="h6" fontWeight={600}>
-                                {repoUrl}
-                            </Typography>
-                            <Box display="flex" alignItems="center" justifyContent="flex-end" mt={2}>
-                                <IconButton
-                                    sx={{ bgcolor: theme.palette.primary.light, color: theme.palette.primary.contrastText, '&:hover': { bgcolor: theme.palette.primary.main }, cursor: 'pointer' }}
-                                    onClick={() => navigate.push(`/marketplace/catalog?repoUrl=${encodeURIComponent(repoUrl)}`)}
-                                >
-                                    <ArrowForwardIcon />
-                                </IconButton>
-                            </Box>
-                        </Card>
+                    {aasRepositories.map((connection) => (
+                        <ManufacturerCard connection={connection} />
                     ))}
                 </Box>
                 }

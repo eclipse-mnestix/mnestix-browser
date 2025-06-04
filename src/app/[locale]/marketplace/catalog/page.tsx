@@ -24,6 +24,8 @@ export default function Page() {
     if (repositoryUrlParam) {
         repositoryUrl = repositoryUrlParam;
     } else if (manufacturer) {
+        // TODO replace with non-hardcoded connection -> name needs to be unique and required?
+        // or use repo url -> make this unique? -> doesn't work with existing mnestix instances....
         config = CatalogConfiguration[manufacturer];
         repositoryUrl = config?.repositoryUrl;
     }

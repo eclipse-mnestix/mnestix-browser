@@ -74,4 +74,12 @@ export class PrismaConnector implements IPrismaConnector {
     static createNull(aasUrls: string[], submodelUrls: string[]) {
         return new PrismaConnectorInMemory(aasUrls, submodelUrls);
     }
+
+    async getRepositoryConfigurationGroups() {
+        return prisma?.mnestixConnection.findMany({
+            where: {
+                type: { id: '0', typeName: 'AAS_REPOSITORY' },
+            },
+        });
+    }
 }

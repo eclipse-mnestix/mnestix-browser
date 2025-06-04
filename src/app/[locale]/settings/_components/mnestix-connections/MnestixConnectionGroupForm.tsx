@@ -219,7 +219,7 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                     startIcon={<ControlPointIcon />}
                     onClick={() => {
                         setIsEditMode(true);
-                        append({ id: 'temp', type: 'aasRepository', url: '' });
+                        append({ id: 'temp', type: 'AAS_REPOSITORY', url: '' });
                     }}
                 >
                     {t('addButton')}
