@@ -140,7 +140,7 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                         {t('aasRepository.repositoryUrlLabel')}
                                     </Typography>
                                     <Typography>
-                                        {renderUrlValue(`aasRepository.${index}.url`)}
+                                        {renderUrlValue(getValues(`aasRepository.${index}.url`))}
                                     </Typography>
                                 </Box>
                                 <Box>
