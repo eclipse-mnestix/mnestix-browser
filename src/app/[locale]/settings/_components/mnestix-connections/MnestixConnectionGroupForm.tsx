@@ -41,10 +41,14 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
         return !value || !value.endsWith('/') || t('urlFieldNoTrailingSlash');
     }
 
+    function renderUrlValue(url?: string) {
+        return url && url.length !== 0 ? tooltipText(url, 80) : '-';
+    }
+
     function getFormControl(field: FieldArrayWithId<ConnectionFormData, keyof ConnectionFormData>, index: number) {
         return (
             <FormControl fullWidth variant="filled" key={field.id}>
-                <Box display="flex" flex={1} flexDirection="row" mb={4} alignItems="center">
+                <Box display="flex" flex={1} flexDirection="row" mb={6} alignItems="center">
                     <Typography variant="h4" mr={4} width="200px">
                         {t('aasRepository.repositoryLabel')} {index + 1}
                     </Typography>
@@ -75,7 +79,7 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                     control={control}
                                     defaultValue={field.image}
                                     rules={{
-                                        validate: validateNoTrailingSlash
+                                        validate: validateNoTrailingSlash,
                                     }}
                                     render={({ field, fieldState: { error } }) => (
                                         <TextField
@@ -110,7 +114,7 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                     control={control}
                                     defaultValue={field.aasSearcher}
                                     rules={{
-                                        validate: validateNoTrailingSlash
+                                        validate: validateNoTrailingSlash,
                                     }}
                                     render={({ field, fieldState: { error } }) => (
                                         <TextField
@@ -135,14 +139,25 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                     <Typography sx={{ fontSize: '0.8rem', color: 'text.secondary' }}>
                                         {t('aasRepository.repositoryUrlLabel')}
                                     </Typography>
-                                    <Typography>{getValues(`aasRepository.${index}.url`) ? tooltipText(getValues(`aasRepository.${index}.url`), 80): '-'}</Typography>
+                                    <Typography>
+                                        {renderUrlValue(`aasRepository.${index}.url`)}
+                                    </Typography>
                                 </Box>
                                 <Box>
                                     <Typography sx={{ fontSize: '0.8rem', color: 'text.secondary' }}>
                                         {t('aasRepository.imageUrlLabel')}
                                     </Typography>
-                                    <Typography >
-                                        {getValues(`aasRepository.${index}.url`) ? tooltipText(getValues(`aasRepository.${index}.image`), 80) : '-'}
+                                    <Typography>
+                                        {getValues(`aasRepository.${index}.image`) ? (
+                                            // eslint-disable-next-line @next/next/no-img-element
+                                            <img
+                                                src={getValues(`aasRepository.${index}.image`)}
+                                                alt={getValues(`aasRepository.${index}.image`)}
+                                                style={{ width: '80px', height: 'auto' }}
+                                            />
+                                        ) : (
+                                            '-'
+                                        )}
                                     </Typography>
                                 </Box>
                             </Box>
@@ -151,8 +166,8 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                     <Typography sx={{ fontSize: '0.8rem', color: 'text.secondary' }}>
                                         {t('aasRepository.nameLabel')}
                                     </Typography>
-                                    <Typography >
-                                        {getValues(`aasRepository.${index}.url`) ? tooltipText(getValues(`aasRepository.${index}.name`), 80): '-'}
+                                    <Typography>
+                                        {renderUrlValue(getValues(`aasRepository.${index}.name`))}
                                     </Typography>
                                 </Box>
                                 <Box>
@@ -160,7 +175,7 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                         {t('aasRepository.aasSearcherUrlLabel')}
                                     </Typography>
                                     <Typography>
-                                        {getValues(`aasRepository.${index}.url`) ? tooltipText(getValues(`aasRepository.${index}.aasSearcher`), 80): '-'}
+                                        {renderUrlValue(getValues(`aasRepository.${index}.aasSearcher`))}
                                     </Typography>
                                 </Box>
                             </Box>
