@@ -20,8 +20,6 @@ import { useEnv } from 'app/EnvProvider';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 
-
-
 export default function Page() {
     const [aasRepositories, setAasRepositories] = useState<string[]>([]);
     const navigate = useRouter();
@@ -54,25 +52,13 @@ export default function Page() {
         }
     }, []);
 
-
     return (
         <Box display="flex" flexDirection="column" minHeight="100vh" bgcolor={theme.palette.background.default}>
             <Box width="90%" margin="auto" marginTop="1rem">
                 <Box marginBottom="1em">
                     <Breadcrumbs links={breadcrumbLinks} />
                 </Box>
-                <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
-                    <ListHeader header={t('marketplaceTitle')} subHeader={t('marketplaceSubtitle')} />
-                    <Button
-                        variant="contained"
-                        startIcon={<InsightsIcon />}
-                        onClick={() => setIsConstructionDialogOpen(true)}
-                        sx={{ whiteSpace: 'nowrap', ml: 2 }}
-                        aria-label="Chatbot"
-                    >
-                        Chatbot
-                    </Button>
-                </Box>
+                <ListHeader header={t('marketplaceTitle')} subHeader={t('marketplaceSubtitle')} />
                 <Box display="flex" alignItems="center" marginTop="1.5rem" marginBottom="1.5rem">
                     <ContentPasteSearchIcon fontSize="large" color="primary" sx={{ mr: 1 }} />
                     <Typography variant="h4" fontWeight={600} component="h2">
@@ -81,85 +67,114 @@ export default function Page() {
                 </Box>
                 {isLoading ? (
                     <CenteredLoadingSpinner sx={{ my: 10 }} />
-                ) : <Box display="flex" flexWrap="wrap" gap={3}>
-                    {/* Manufacturer Cards */}
-                    {Object.entries(CatalogConfiguration).map(([manufacturer, config]) => (
-                        <Card
-                            key={manufacturer}
-                            sx={{
-                                width: 300,
-                                minHeight: 160,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'space-between',
-                                p: 2,
-                                boxShadow: 2,
-                                borderRadius: 3,
-                                position: 'relative',
-                                cursor: 'pointer',
-                                background: theme.palette.background.paper,
-                            }}
-                            onClick={() => navigate.push(`/marketplace/catalog?manufacturer=${encodeURIComponent(manufacturer)}`)}
-                        >
-                            <Image
-                                src={config.manufacturerLogo}
-                                alt={`${manufacturer} Logo`}
-                                width={120}
-                                height={48}
-                                style={{ objectFit: 'contain' }}
-                            />
-                            <Box display="flex" alignItems="center" justifyContent="space-between" mt={2}>
-                                <Typography color="text.secondary" fontSize="1.1rem">
-                                    {t('articleCount', { count: config.articleCount })}
+                ) : (
+                    <Box display="flex" flexWrap="wrap" gap={3}>
+                        {/* Manufacturer Cards */}
+                        {Object.entries(CatalogConfiguration).map(([manufacturer, config]) => (
+                            <Card
+                                key={manufacturer}
+                                sx={{
+                                    width: 300,
+                                    minHeight: 160,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'space-between',
+                                    p: 2,
+                                    boxShadow: 2,
+                                    borderRadius: 3,
+                                    position: 'relative',
+                                    cursor: 'pointer',
+                                    background: theme.palette.background.paper,
+                                }}
+                                onClick={() =>
+                                    navigate.push(
+                                        `/marketplace/catalog?manufacturer=${encodeURIComponent(manufacturer)}`,
+                                    )
+                                }
+                            >
+                                <Image
+                                    src={config.manufacturerLogo}
+                                    alt={`${manufacturer} Logo`}
+                                    width={120}
+                                    height={48}
+                                    style={{ objectFit: 'contain' }}
+                                />
+                                <Box display="flex" alignItems="center" justifyContent="space-between" mt={2}>
+                                    <Typography color="text.secondary" fontSize="1.1rem">
+                                        {t('articleCount', { count: config.articleCount })}
+                                    </Typography>
+                                    <IconButton
+                                        onClick={() =>
+                                            navigate.push(
+                                                `/marketplace/catalog?manufacturer=${encodeURIComponent(manufacturer)}`,
+                                            )
+                                        }
+                                        sx={{
+                                            bgcolor: theme.palette.primary.light,
+                                            color: theme.palette.primary.contrastText,
+                                            '&:hover': { bgcolor: theme.palette.primary.main },
+                                            cursor: 'pointer',
+                                        }}
+                                    >
+                                        <ArrowForwardIcon />
+                                    </IconButton>
+                                </Box>
+                            </Card>
+                        ))}
+                        {/* AAS Repository Cards */}
+                        {aasRepositories.map((repoUrl) => (
+                            <Card
+                                key={repoUrl}
+                                sx={{
+                                    width: 300,
+                                    minHeight: 160,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'space-between',
+                                    p: 2,
+                                    boxShadow: 2,
+                                    borderRadius: 3,
+                                    position: 'relative',
+                                    background: theme.palette.background.paper,
+                                    cursor: 'pointer',
+                                }}
+                                onClick={() =>
+                                    navigate.push(`/marketplace/catalog?repoUrl=${encodeURIComponent(repoUrl)}`)
+                                }
+                            >
+                                <Typography variant="h6" fontWeight={600}>
+                                    {repoUrl}
                                 </Typography>
-                                <IconButton
-                                    onClick={() => navigate.push(`/marketplace/catalog?manufacturer=${encodeURIComponent(manufacturer)}`)}
-                                    sx={{ bgcolor: theme.palette.primary.light, color: theme.palette.primary.contrastText, '&:hover': { bgcolor: theme.palette.primary.main }, cursor: 'pointer' }}
-                                >
-                                    <ArrowForwardIcon />
-                                </IconButton>
-                            </Box>
-                        </Card>
-                    ))}
-                    {/* AAS Repository Cards */}
-                    {aasRepositories.map((repoUrl) => (
-                        <Card
-                            key={repoUrl}
-                            sx={{
-                                width: 300,
-                                minHeight: 160,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'space-between',
-                                p: 2,
-                                boxShadow: 2,
-                                borderRadius: 3,
-                                position: 'relative',
-                                background: theme.palette.background.paper,
-                                cursor: 'pointer'
-                            }}
-                            onClick={() => navigate.push(`/marketplace/catalog?repoUrl=${encodeURIComponent(repoUrl)}`)}
+                                <Box display="flex" alignItems="center" justifyContent="flex-end" mt={2}>
+                                    <IconButton
+                                        sx={{
+                                            bgcolor: theme.palette.primary.light,
+                                            color: theme.palette.primary.contrastText,
+                                            '&:hover': { bgcolor: theme.palette.primary.main },
+                                            cursor: 'pointer',
+                                        }}
+                                        onClick={() =>
+                                            navigate.push(`/marketplace/catalog?repoUrl=${encodeURIComponent(repoUrl)}`)
+                                        }
+                                    >
+                                        <ArrowForwardIcon />
+                                    </IconButton>
+                                </Box>
+                            </Card>
+                        ))}
+                        <Button
+                        variant="contained"
+                        startIcon={<InsightsIcon />}
+                        onClick={() => setIsConstructionDialogOpen(true)}
+                        sx={{ position: 'fixed', bottom: '10%', right: '5%' }}
+                        aria-label="Chatbot"
                         >
-                            <Typography variant="h6" fontWeight={600}>
-                                {repoUrl}
-                            </Typography>
-                            <Box display="flex" alignItems="center" justifyContent="flex-end" mt={2}>
-                                <IconButton
-                                    sx={{ bgcolor: theme.palette.primary.light, color: theme.palette.primary.contrastText, '&:hover': { bgcolor: theme.palette.primary.main }, cursor: 'pointer' }}
-                                    onClick={() => navigate.push(`/marketplace/catalog?repoUrl=${encodeURIComponent(repoUrl)}`)}
-                                >
-                                    <ArrowForwardIcon />
-                                </IconButton>
-                            </Box>
-                        </Card>
-                    ))}
-                </Box>
-                }
+                        Chatbot
+                        </Button>
+                    </Box>
+                )}
             </Box>
-            <ConstructionDialog
-                open={isConstructionDialogOpen}
-                onClose={() => setIsConstructionDialogOpen(false)}
-            />
+            <ConstructionDialog open={isConstructionDialogOpen} onClose={() => setIsConstructionDialogOpen(false)} />
         </Box>
     );
 }
