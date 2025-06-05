@@ -141,8 +141,8 @@ export default function Page() {
                     }}
                     aria-label={t('filter')}
                 >
-                    {config ? (
-                        <FilterContainer onFilterChanged={onFilterChanged} />
+                    {!fallbackToAasList && connection && connection.aasSearcher ? (
+                        <FilterContainer onFilterChanged={onFilterChanged} aasSearcherUrl={connection.aasSearcher}/>
                     ) : (<Box>
                             <Typography variant="h4" fontWeight={600} mb={1}>
                                 {t('filter')}

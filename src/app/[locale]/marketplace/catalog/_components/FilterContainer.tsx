@@ -35,7 +35,7 @@ type FilterOptions = {
     PRODUCT_ROOT: ProductRoot[];
 };
 
-export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): void }) {
+export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): void, aasSearcherUrl: string }) {
     const t = useTranslations('pages.catalog');
     const [activeFilters, setActiveFilters] = useState<FilterQuery[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -46,7 +46,7 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
 
     useAsyncEffect(async () => {
         setLoading(true);
-        const results = await searchProducts();
+        const results = await searchProducts(undefined, props.aasSearcherUrl);
 
         if (results.isSuccess) {
             const products = results.result;
