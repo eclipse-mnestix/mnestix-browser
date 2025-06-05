@@ -40,15 +40,14 @@ export default function Page() {
      * 3. Load Products from the AAS Searcher
      */
     useAsyncEffect(async () => {
-        if (!manufacturerUrlParam) {
-            return;
-        }
         const connection = await getManufacturerData();
         if(connection && !connection.aasSearcher) {
             setFallbackToAasList(true)
         } else if (connection && connection.aasSearcher) {
+
             await loadData(connection.aasSearcher);
         }
+        setLoading(false)
     }, []);
 
     const getManufacturerData = async () => {
@@ -73,7 +72,6 @@ export default function Page() {
 
     const loadData = async (aasSearcher?: string, filters?: { key: string; value: string }[]) => {
         setLoading(true);
-        console.log(aasSearcher)
         const results = await searchProducts(filters, aasSearcher ?? undefined);
 
         if (results.isSuccess) {
