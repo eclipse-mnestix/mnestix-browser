@@ -56,7 +56,6 @@ export default function Page() {
         const results = await searchProducts(filters);
 
         if (results.isSuccess) {
-            console.log(filters);
             const products = results.result;
             setProducts(products);
         } else {
@@ -121,7 +120,17 @@ export default function Page() {
                     }}
                     aria-label={t('filter')}
                 >
-                    <FilterContainer onFilterChanged={onFilterChanged} />
+                    {config ? (
+                        <FilterContainer onFilterChanged={onFilterChanged} />
+                    ) : (<Box>
+                            <Typography variant="h4" fontWeight={600} mb={1}>
+                                {t('filter')}
+                            </Typography>
+                            <Typography mt={2}>
+                                {t('noSearcherWarning')}
+                            </Typography>
+                    </Box>
+                    )}
                 </Card>
                 <Box flex={1} minWidth={0}>
                     {manufacturer && config ? (
@@ -138,9 +147,6 @@ export default function Page() {
                         )
                     ) : (
                         <Box>
-                            <Typography variant="h5" mb={2}>
-                                {t('noSearcherWarning')}
-                            </Typography>
                             <AasListDataWrapper repositoryUrl={repositoryUrl} hideRepoSelection={true} />
                         </Box>
                     )}
