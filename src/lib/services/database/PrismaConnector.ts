@@ -82,4 +82,12 @@ export class PrismaConnector implements IPrismaConnector {
             },
         });
     }
+
+    async getRepositoryConfigurationGroupByName(name: string) {
+        return prisma?.mnestixConnection.findFirst({
+            where: {
+                name: name,
+            },
+        });
+    }
 }

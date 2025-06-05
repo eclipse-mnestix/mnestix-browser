@@ -1,11 +1,8 @@
 'use client';
-import { Box, Button, Card, Typography, useTheme, IconButton } from '@mui/material';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { useRouter } from 'next/navigation';
+import { Box, Button, Typography, useTheme } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import ListHeader from 'components/basics/ListHeader';
-import Image from 'next/image';
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
 import { getCatalogBreadcrumbs } from 'app/[locale]/marketplace/_components/breadcrumbs';
 import React from 'react';
@@ -13,9 +10,7 @@ import InsightsIcon from '@mui/icons-material/Insights';
 import { ConstructionDialog } from 'components/basics/ConstructionDialog';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useState } from 'react';
-import {
-    getRepositoryConfigurationGroupsAction,
-} from 'lib/services/database/connectionServerActions';
+import { getRepositoryConfigurationGroupsAction } from 'lib/services/database/connectionServerActions';
 import { useEnv } from 'app/EnvProvider';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
@@ -24,7 +19,6 @@ import { ManufacturerCard } from 'app/[locale]/marketplace/_components/manufactu
 
 export default function Page() {
     const [aasRepositories, setAasRepositories] = useState<MnestixConnection[]>([]);
-    const navigate = useRouter();
     const theme = useTheme();
     const t = useTranslations('pages.catalog');
     const breadcrumbLinks = getCatalogBreadcrumbs(t);
@@ -74,22 +68,23 @@ export default function Page() {
                 </Box>
                 {isLoading ? (
                     <CenteredLoadingSpinner sx={{ my: 10 }} />
-                ) : <Box display="flex" flexWrap="wrap" gap={3}>
-                    {/* Manufacturer Cards */}
-                    {aasRepositories.map((connection) => (
-                        <ManufacturerCard connection={connection} />
-                    ))}
-                    <Button
-                    variant="contained"
-                    startIcon={<InsightsIcon />}
-                    onClick={() => setIsConstructionDialogOpen(true)}
-                    sx={{ position: 'fixed', bottom: '10%', right: '5%' }}
-                    aria-label="Chatbot"
-                    >
-                    Chatbot
-                </Button>
-                </Box>
-                }
+                ) : (
+                    <Box display="flex" flexWrap="wrap" gap={3}>
+                        {/* Manufacturer Cards */}
+                        {aasRepositories.map((connection) => (
+                            <ManufacturerCard connection={connection} key={connection.id}/>
+                        ))}
+                        <Button
+                            variant="contained"
+                            startIcon={<InsightsIcon />}
+                            onClick={() => setIsConstructionDialogOpen(true)}
+                            sx={{ position: 'fixed', bottom: '10%', right: '5%' }}
+                            aria-label="Chatbot"
+                        >
+                            Chatbot
+                        </Button>
+                    </Box>
+                )}
             </Box>
             <ConstructionDialog open={isConstructionDialogOpen} onClose={() => setIsConstructionDialogOpen(false)} />
         </Box>

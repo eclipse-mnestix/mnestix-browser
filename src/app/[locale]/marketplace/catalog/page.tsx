@@ -4,7 +4,6 @@ import { Box, Card, TextField, Typography } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
 import ListHeader from 'components/basics/ListHeader';
 import { useTranslations } from 'next-intl';
-import { CatalogConfiguration } from 'app/[locale]/marketplace/catalogConfiguration';
 import Image from 'next/image';
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
 import { getCatalogBreadcrumbs } from 'app/[locale]/marketplace/_components/breadcrumbs';
@@ -18,40 +17,59 @@ import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner
 import { useShowError } from 'lib/hooks/UseShowError';
 import AasListDataWrapper from 'app/[locale]/list/_components/AasListDataWrapper';
 import SearchIcon from '@mui/icons-material/Search';
+import { getRepositoryConfigurationGroupByName } from 'lib/services/database/connectionServerActions';
+import { MnestixConnection } from '@prisma/client';
 
 export default function Page() {
     const params = useSearchParams();
     const t = useTranslations('pages.catalog');
-    const manufacturer = params.get('manufacturer');
+    const manufacturerUrlParam = params.get('manufacturer');
     const repositoryUrlParam = params.get('repoUrl');
 
     const [products, setProducts] = useState<SearchResponseEntry[]>();
     const [loading, setLoading] = useState<boolean>(true);
+    const [repositoryUrl, setRepositoryUrl] = useState<string | undefined>(undefined);
+    const [connection, setConnection] = useState<MnestixConnection | undefined>(undefined);
+    const [fallbackToAasList, setFallbackToAasList] = useState<boolean>(false);
     const { showError } = useShowError();
 
+    /**
+     * When loading this page we need to fetch the following data:
+     * 1. Connection Data from the Database
+     * 2. Load Filter Parameters (done inside the Filter Component)
+     * 3. Load Products from the AAS Searcher
+     */
     useAsyncEffect(async () => {
-        if (!manufacturer) {
+        if (!manufacturerUrlParam) {
             return;
+        }
+        const connection = await getManufacturerData();
+        if(connection && !connection.aasSearcher) {
+            setFallbackToAasList(true)
         }
         await loadData();
     }, []);
 
-    // Determine the repositoryUrl to use
-    let repositoryUrl: string | undefined = undefined;
-    let config = undefined;
+    const getManufacturerData = async () => {
+        if (repositoryUrlParam) {
+            setRepositoryUrl(repositoryUrlParam);
+            const emptyConnection = { url: repositoryUrlParam, name: repositoryUrlParam, id: '', typeId: '', aasSearcher: null, image: null }
+            setConnection(emptyConnection);
+            return emptyConnection;
+        } else if (manufacturerUrlParam) {
+            // TODO replace with non-hardcoded connection -> name needs to be unique (if name is null, use URL)
+            const connection = await getRepositoryConfigurationGroupByName(manufacturerUrlParam);
+            if (connection) {
+                setRepositoryUrl(connection.url);
+                setConnection(connection);
+                return connection;
+            }
+        }
+        showError('No Manufacturer/Repository found')
+        return;
+    }
 
-    if (repositoryUrlParam) {
-        repositoryUrl = repositoryUrlParam;
-    } else if (manufacturer) {
-        // TODO replace with non-hardcoded connection -> name needs to be unique and required?
-        // or use repo url -> make this unique? -> doesn't work with existing mnestix instances....
-        config = CatalogConfiguration[manufacturer];
-        repositoryUrl = config?.repositoryUrl;
-    }
-    if (!repositoryUrl) {
-        return <>No Manufacturer/Repository found</>;
-    }
-    const breadcrumbLinks = getCatalogBreadcrumbs(t, manufacturer);
+    const breadcrumbLinks = getCatalogBreadcrumbs(t, manufacturerUrlParam);
 
     const loadData = async (filters?: { key: string; value: string }[]) => {
         setLoading(true);
@@ -95,10 +113,10 @@ export default function Page() {
                     }}
                 />
                 <Box flex={1} />
-                {config && config.manufacturerLogo ? (
+                {connection && connection.image ? (
                         <Image
-                            src={config.manufacturerLogo}
-                            alt={`${manufacturer} Logo`}
+                            src={connection.image}
+                            alt={`${manufacturerUrlParam} Logo`}
                             height={48}
                             width={120}
                             style={{ objectFit: 'contain', marginRight: '1rem' }}
@@ -126,19 +144,18 @@ export default function Page() {
                     <FilterContainer onFilterChanged={onFilterChanged} />
                 </Card>
                 <Box flex={1} minWidth={0}>
-                    {manufacturer && config ? (
-                        loading ? (
-                            <CenteredLoadingSpinner />
-                        ) : (
+                    { loading ?  (
+                        <CenteredLoadingSpinner />
+                    ) :  !fallbackToAasList && connection ? (
                             <Card>
                                 <ProductList
                                     shells={products}
-                                    repositoryUrl={config.repositoryUrl}
+                                    repositoryUrl={connection.url}
                                     updateSelectedAasList={() => {}}
                                 />
                             </Card>
                         )
-                    ) : (
+                     : (
                         <Box>
                             <Typography variant="h5" mb={2}>
                                 {t('noSearcherWarning')}
