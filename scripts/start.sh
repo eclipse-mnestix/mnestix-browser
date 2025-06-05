@@ -18,6 +18,10 @@ by XITASO
 EOF
 echo -e '\033[0m' # Reset to default color
 
+# Deploy database migrations
+echo "Deploying database migrations..."
+npx prisma migrate deploy --schema=/app/prisma/schema.prisma
+
 # Validate envs for production
 node "$SCRIPT_DIR/validateEnvs.js"
 
