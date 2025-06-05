@@ -46,8 +46,9 @@ export default function Page() {
         const connection = await getManufacturerData();
         if(connection && !connection.aasSearcher) {
             setFallbackToAasList(true)
+        } else if (connection && connection.aasSearcher) {
+            await loadData(connection.aasSearcher);
         }
-        await loadData();
     }, []);
 
     const getManufacturerData = async () => {
@@ -57,7 +58,6 @@ export default function Page() {
             setConnection(emptyConnection);
             return emptyConnection;
         } else if (manufacturerUrlParam) {
-            // TODO replace with non-hardcoded connection -> name needs to be unique (if name is null, use URL)
             const connection = await getRepositoryConfigurationGroupByName(manufacturerUrlParam);
             if (connection) {
                 setRepositoryUrl(connection.url);
@@ -71,9 +71,10 @@ export default function Page() {
 
     const breadcrumbLinks = getCatalogBreadcrumbs(t, manufacturerUrlParam);
 
-    const loadData = async (filters?: { key: string; value: string }[]) => {
+    const loadData = async (aasSearcher?: string, filters?: { key: string; value: string }[]) => {
         setLoading(true);
-        const results = await searchProducts(filters);
+        console.log(aasSearcher)
+        const results = await searchProducts(filters, aasSearcher ?? undefined);
 
         if (results.isSuccess) {
             console.log(filters);
@@ -87,7 +88,7 @@ export default function Page() {
     };
 
     const onFilterChanged = async (filters: { key: string; value: string }[]) => {
-        await loadData(filters);
+        await loadData(connection?.aasSearcher ?? undefined, filters);
     };
 
     return (
