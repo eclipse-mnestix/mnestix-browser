@@ -58,7 +58,7 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                 <Controller
                                     name={`aasRepository.${index}.url`}
                                     control={control}
-                                    defaultValue={field.url}
+                                    defaultValue={field.url ?? ''}
                                     rules={{
                                         required: t('urlFieldRequired'),
                                         validate: validateNoTrailingSlash,
@@ -77,7 +77,7 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                 <Controller
                                     name={`aasRepository.${index}.image`}
                                     control={control}
-                                    defaultValue={field.image}
+                                    defaultValue={field.image ?? ''}
                                     rules={{
                                         validate: validateNoTrailingSlash,
                                     }}
@@ -97,7 +97,7 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                 <Controller
                                     name={`aasRepository.${index}.name`}
                                     control={control}
-                                    defaultValue={field.name}
+                                    defaultValue={field.name ?? ''}
                                     render={({ field, fieldState: { error } }) => (
                                         <TextField
                                             {...field}
@@ -112,7 +112,7 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                 <Controller
                                     name={`aasRepository.${index}.aasSearcher`}
                                     control={control}
-                                    defaultValue={field.aasSearcher}
+                                    defaultValue={field.aasSearcher ?? ''}
                                     rules={{
                                         validate: validateNoTrailingSlash,
                                     }}

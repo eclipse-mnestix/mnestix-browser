@@ -4,7 +4,6 @@ import { Box, Card, TextField, Typography } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
 import ListHeader from 'components/basics/ListHeader';
 import { useTranslations } from 'next-intl';
-import Image from 'next/image';
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
 import { getCatalogBreadcrumbs } from 'app/[locale]/marketplace/_components/breadcrumbs';
 import { FilterContainer } from 'app/[locale]/marketplace/catalog/_components/FilterContainer';
@@ -41,19 +40,25 @@ export default function Page() {
      */
     useAsyncEffect(async () => {
         const connection = await getManufacturerData();
-        if(connection && !connection.aasSearcher) {
-            setFallbackToAasList(true)
+        if (connection && !connection.aasSearcher) {
+            setFallbackToAasList(true);
         } else if (connection && connection.aasSearcher) {
-
             await loadData(connection.aasSearcher);
         }
-        setLoading(false)
+        setLoading(false);
     }, []);
 
     const getManufacturerData = async () => {
         if (repositoryUrlParam) {
             setRepositoryUrl(repositoryUrlParam);
-            const emptyConnection = { url: repositoryUrlParam, name: repositoryUrlParam, id: '', typeId: '', aasSearcher: null, image: null }
+            const emptyConnection = {
+                url: repositoryUrlParam,
+                name: repositoryUrlParam,
+                id: '',
+                typeId: '',
+                aasSearcher: null,
+                image: null,
+            };
             setConnection(emptyConnection);
             return emptyConnection;
         } else if (manufacturerUrlParam) {
@@ -64,9 +69,9 @@ export default function Page() {
                 return connection;
             }
         }
-        showError('No Manufacturer/Repository found')
+        showError('No Manufacturer/Repository found');
         return;
-    }
+    };
 
     const breadcrumbLinks = getCatalogBreadcrumbs(t, manufacturerUrlParam);
 
@@ -112,18 +117,19 @@ export default function Page() {
                 />
                 <Box flex={1} />
                 {connection && connection.image ? (
-                        <Image
-                            src={connection.image}
-                            alt={`${manufacturerUrlParam} Logo`}
-                            height={48}
-                            width={120}
-                            style={{ objectFit: 'contain', marginRight: '1rem' }}
-                        />
-                    ) : (
-                        <Typography variant="h6" color="textSecondary">
-                            {repositoryUrl}
-                        </Typography>
-                    )}
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                        src={connection.image}
+                        alt={`${manufacturerUrlParam} Logo`}
+                        height={48}
+                        width={120}
+                        style={{ objectFit: 'contain', marginRight: '1rem' }}
+                    />
+                ) : (
+                    <Typography variant="h6" color="textSecondary">
+                        {repositoryUrl}
+                    </Typography>
+                )}
             </Box>
             <Box display="flex" flexDirection="row" marginBottom="1.5rem">
                 <Card
@@ -140,30 +146,30 @@ export default function Page() {
                     aria-label={t('filter')}
                 >
                     {!fallbackToAasList && connection && connection.aasSearcher ? (
-                        <FilterContainer onFilterChanged={onFilterChanged} aasSearcherUrl={connection.aasSearcher}/>
-                    ) : (<Box>
+                        <FilterContainer onFilterChanged={onFilterChanged} aasSearcherUrl={connection.aasSearcher} />
+                    ) : loading ? (
+                        <CenteredLoadingSpinner />
+                    ) : (
+                        <Box>
                             <Typography variant="h4" fontWeight={600} mb={1}>
                                 {t('filter')}
                             </Typography>
-                            <Typography mt={2}>
-                                {t('noSearcherWarning')}
-                            </Typography>
-                    </Box>
+                            <Typography mt={2}>{t('noSearcherWarning')}</Typography>
+                        </Box>
                     )}
                 </Card>
                 <Box flex={1} minWidth={0}>
-                    { loading ?  (
+                    {loading ? (
                         <CenteredLoadingSpinner />
-                    ) :  !fallbackToAasList && connection ? (
-                            <Card>
-                                <ProductList
-                                    shells={products}
-                                    repositoryUrl={connection.url}
-                                    updateSelectedAasList={() => {}}
-                                />
-                            </Card>
-                        )
-                     : (
+                    ) : !fallbackToAasList && connection ? (
+                        <Card>
+                            <ProductList
+                                shells={products}
+                                repositoryUrl={connection.url}
+                                updateSelectedAasList={() => {}}
+                            />
+                        </Card>
+                    ) : (
                         <Box>
                             <AasListDataWrapper repositoryUrl={repositoryUrl} hideRepoSelection={true} />
                         </Box>
