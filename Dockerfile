@@ -29,6 +29,7 @@ FROM base AS production
 WORKDIR /app
 
 ENV NODE_ENV=production
+RUN npm install prisma
 
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
@@ -37,7 +38,7 @@ EXPOSE 3000
 ENV PORT=3000
 
 COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/prisma/database/mnestix-database.db ./prisma/database/mnestix-database.db
+COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nextjs:nodejs /app/dist/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/dist/static ./public/_next/static
 
