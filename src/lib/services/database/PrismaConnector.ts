@@ -7,9 +7,6 @@ export type DataSourceFormData = {
     id: string;
     url: string;
     type: string;
-    aasSearcher?: string;
-    image?: string;
-    name?: string;
 };
 
 export class PrismaConnector implements IPrismaConnector {
@@ -25,15 +22,7 @@ export class PrismaConnector implements IPrismaConnector {
             const formData = formDataInput.find((value) => value.id === existing.id);
             // If an entry exists in the db and the updated data, update the existing db entry
             if (formData) {
-                await prisma.mnestixConnection.update({
-                    where: { id: existing.id },
-                    data: {
-                        url: formData.url,
-                        aasSearcher: formData.aasSearcher,
-                        image: formData.image,
-                        name: formData.name,
-                    },
-                });
+                await prisma.mnestixConnection.update({ where: { id: existing.id }, data: { url: formData.url } });
                 // If an entry exists in the db but NOT in the updated data, delete it from the db
             } else {
                 await prisma.mnestixConnection.delete({ where: { id: existing.id } });
@@ -44,15 +33,7 @@ export class PrismaConnector implements IPrismaConnector {
             const formData = existingData.find((value) => value.id === updated.id);
             const type = await prisma.connectionType.findFirst({ where: { typeName: updated.type } });
             if (!formData && type) {
-                await prisma.mnestixConnection.create({
-                    data: {
-                        url: updated.url,
-                        typeId: type.id,
-                        aasSearcher: updated.aasSearcher,
-                        image: updated.image,
-                        name: updated.name,
-                    },
-                });
+                await prisma.mnestixConnection.create({ data: { url: updated.url, typeId: type.id } });
             }
         }
     }
