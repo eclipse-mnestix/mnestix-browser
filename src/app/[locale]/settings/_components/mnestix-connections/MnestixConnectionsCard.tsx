@@ -7,17 +7,26 @@ import { useForm } from 'react-hook-form';
 import { useEnv } from 'app/EnvProvider';
 import { SettingsCardHeader } from 'app/[locale]/settings/_components/SettingsCardHeader';
 import { MnestixConnectionsForm } from 'app/[locale]/settings/_components/mnestix-connections/MnestixConnectionForm';
+import {
+    MnestixConnectionGroupForm
+} from 'app/[locale]/settings/_components/mnestix-connections/MnestixConnectionGroupForm';
 
 export type ConnectionFormData = {
     aasRepository: {
         id: string;
-        url: string;
         type: string;
-    }[];
+        url: string;
+        image?: string;
+        aasSearcher?: string;
+        name?: string;
+    }[],
     submodelRepository: {
         id: string;
         url: string;
         type: string;
+        image?: string;
+        aasSearcher?: string;
+        name?: string;
     }[];
 };
 
@@ -62,6 +71,9 @@ export function MnestixConnectionsCard() {
                     id: data.id,
                     url: data.url,
                     type: data.type.typeName,
+                    image: data.image,
+                    aasSearcher: data.aasSearcher,
+                    name: data.name
                 })),
             submodelRepository: rawConnectionData
                 .filter((data) => data.type.typeName === 'SUBMODEL_REPOSITORY')
@@ -69,12 +81,31 @@ export function MnestixConnectionsCard() {
                     id: data.id,
                     url: data.url,
                     type: data.type.typeName,
+                    image: undefined,
+                    aasSearcher: undefined,
+                    name: undefined
                 })),
         };
     }
 
     const { control, handleSubmit, getValues, reset } = useForm<ConnectionFormData>({
-        defaultValues: async () => await mapFormData(),
+        defaultValues: async () => {
+            const mappedData = await mapFormData();
+            return {
+                aasRepository: mappedData.aasRepository.map(group => ({
+                    ...group,
+                    image: group.image ?? undefined,
+                    aasSearcher: group.aasSearcher ?? undefined,
+                    name: group.name ?? undefined,
+                })),
+                submodelRepository: mappedData.submodelRepository.map(repo => ({
+                    ...repo,
+                    image: repo.image ?? undefined,
+                    aasSearcher: repo.aasSearcher ?? undefined,
+                    name: repo.name ?? undefined,
+                })),
+            };
+        },
     });
 
     async function saveConnectionData(data: ConnectionFormData) {
@@ -108,7 +139,18 @@ export function MnestixConnectionsCard() {
                 onSubmit={handleSubmit((data) => saveConnectionData(data))}
                 isEditMode={isEditMode}
             />
-            {dataSources.map((dataSource) => (
+            {dataSources.filter(dataSources => dataSources.name === 'aasRepository').map((dataSource) => (
+                <MnestixConnectionGroupForm
+                    key={`${dataSource.name}-${dataSource.url}}`}
+                    defaultUrl={dataSource.url}
+                    isLoading={isLoading}
+                    isEditMode={isEditMode}
+                    setIsEditMode={setIsEditMode}
+                    control={control}
+                    getValues={getValues}
+                />
+            ))}
+            {dataSources.filter(dataSources => dataSources.name !== 'aasRepository').map((dataSource) => (
                 <MnestixConnectionsForm
                     key={`${dataSource.name}-${dataSource.url}}`}
                     connectionType={dataSource.name}

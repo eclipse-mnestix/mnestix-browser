@@ -349,7 +349,10 @@
           "repositories": "Repositorios de AAS",
           "repositoryDefaultLabel": "Repositorio AAS predeterminado",
           "repositoryLabel": "Repositorio de AAS",
-          "repositoryUrlLabel": "URL del repositorio de AAS"
+          "repositoryUrlLabel": "URL del repositorio de AAS",
+          "nameLabel": "Nombre",
+          "imageUrlLabel": "URL de la imagen",
+          "aasSearcherUrlLabel": "AAS Searcher URL"
         },
         "addButton": "Añadir más",
         "resetSuccessful": "Las conexiones se han restaurado.",
@@ -363,7 +366,8 @@
         "subtitle": "Define qué conexiones de datos deben ser utilizadas.",
         "title": "Fuentes de datos",
         "urlFieldNoTrailingSlash": "La URL no debe terminar con una barra (/).",
-        "urlFieldRequired": "El campo URL es obligatorio"
+        "urlFieldRequired": "El campo URL es obligatorio",
+        "defaultUrlInfo": "Las URL predeterminadas sólo pueden establecerse mediante variables de entorno."
       },
       "header": "Ajustes",
       "idStructure": {
