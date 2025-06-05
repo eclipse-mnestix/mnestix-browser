@@ -17,3 +17,13 @@ export async function getConnectionDataByTypeAction(type: ConnectionType) {
     const prismaConnector = PrismaConnector.create();
     return prismaConnector.getConnectionDataByTypeAction(type);
 }
+
+export async function getRepositoryConfigurationGroupsAction() {
+    const prismaConnector = PrismaConnector.create();
+    return prismaConnector.getRepositoryConfigurationGroups();
+}
+
+export async function getRepositoryConfigurationGroupByName(name: string) {
+    const prismaConnector = PrismaConnector.create();
+    return prismaConnector.getRepositoryConfigurationGroupByName(name);
+}

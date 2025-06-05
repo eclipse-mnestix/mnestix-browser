@@ -2,8 +2,8 @@
 
 import { gql } from '@apollo/client';
 import { FilterQuery } from 'app/[locale]/marketplace/catalog/_components/FilterContainer';
-import { client } from 'lib/api/graphql/apolloClient';
-import { GET_PRODUCTS, searchQuery, SearchResponse, SearchResponseEntry } from 'lib/api/graphql/catalogQueries';
+import { createApolloClient } from 'lib/api/graphql/apolloClient';
+import { searchQuery, SearchResponse, SearchResponseEntry } from 'lib/api/graphql/catalogQueries';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 
 function buildFilterInput(filters?: FilterQuery[]): string {
@@ -58,20 +58,21 @@ function buildFilterInput(filters?: FilterQuery[]): string {
         `);
     }
 
-    console.log(filterArray);
-
     if (filterArray.length === 0) {
         return '';
     }
     return filterArray.length > 1 ? `(where: { or: [${filterArray.join(' , ')}]})` : `(where: { ${filterArray} })`;
 }
 
-export async function searchProducts(filters?: FilterQuery[]): Promise<ApiResponseWrapper<SearchResponseEntry[]>> {
+export async function searchProducts(filters?: FilterQuery[], aasSearcherUrl?: string, ): Promise<ApiResponseWrapper<SearchResponseEntry[]>> {
+    if (!aasSearcherUrl) {
+        return wrapErrorCode('NOT_FOUND', 'No aasSearcher URL provided');
+    }
     const queryString = searchQuery(buildFilterInput(filters));
     console.log(queryString);
-
     const query = gql(queryString);
     try {
+        const client = createApolloClient(aasSearcherUrl);
         const { data } = await client.query<SearchResponse>({
             query,
         });
@@ -82,9 +83,3 @@ export async function searchProducts(filters?: FilterQuery[]): Promise<ApiRespon
     }
 }
 
-export async function getProducts() {
-    const { data } = await client.query<SearchResponse>({
-        query: GET_PRODUCTS,
-    });
-    return data.entries;
-}
