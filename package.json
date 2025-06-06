@@ -4,6 +4,9 @@
   "type": "module",
   "private": true,
   "license": "MIT",
+  "engines": {
+    "node": "^22.0.0"
+  },
   "devDependencies": {
     "@eslint/js": "^9.26.0",
     "@jest/globals": "^29.7.0",
