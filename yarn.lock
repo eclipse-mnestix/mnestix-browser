@@ -4262,10 +4262,10 @@ cypress-split@^1.24.17:
     globby "^11.1.0"
     humanize-duration "^3.28.0"
 
-cypress@^14:
-  version "14.2.1"
-  resolved "https://registry.yarnpkg.com/cypress/-/cypress-14.2.1.tgz#2628696588d3d3961bf0ea0ad87baeb359790dcd"
-  integrity sha512-5xd0E7fUp0pjjib1D7ljkmCwFDgMkWuW06jWiz8dKrI7MNRrDo0C65i4Sh+oZ9YHjMHZRJBR0XZk1DfekOhOUw==
+cypress@^14.4.0:
+  version "14.4.0"
+  resolved "https://registry.yarnpkg.com/cypress/-/cypress-14.4.0.tgz#db7d108400c9481a161f047f1cc34b43b05c48f3"
+  integrity sha512-/I59Fqxo7fqdiDi3IM2QKA65gZ7+PVejXg404/I8ZSq+NOnrmw+2pnMUJzpoNyg7KABcEBmgpkfAqhV98p7wJA==
   dependencies:
     "@cypress/request" "^3.0.8"
     "@cypress/xvfb" "^1.2.4"
