@@ -27,11 +27,10 @@ export class TemplateShellApi {
     }
 
     public async getDefaults(): Promise<Submodel[]> {
-
         const response = await this.http.fetch(`${this.basePathOwnApi}/allDefaultSubmodels`, {
             method: 'GET',
             headers: {
-                'Accept': 'application/json',
+                Accept: 'application/json',
             },
         });
 
@@ -43,11 +42,10 @@ export class TemplateShellApi {
     }
 
     public async getCustoms(): Promise<Submodel[]> {
-
         const response = await this.http.fetch(`${this.basePathOwnApi}/allCustomSubmodels`, {
             method: 'GET',
             headers: {
-                'Accept': 'application/json',
+                Accept: 'application/json',
             },
         });
 
@@ -59,13 +57,12 @@ export class TemplateShellApi {
     }
 
     public async getCustom(submodelIdShort: string): Promise<Submodel> {
-
         const response = await this.http.fetch(
             `${this.basePathOwnApi}/CustomSubmodel/${encodeBase64(submodelIdShort)}`,
             {
                 method: 'GET',
                 headers: {
-                    'Accept': 'application/json',
+                    Accept: 'application/json',
                 },
             },
         );
@@ -78,13 +75,12 @@ export class TemplateShellApi {
     }
 
     public async deleteCustomById(id: string): Promise<string | number> {
-
         // We use the regular delete endpoint, which expects an idShort, but because of our backend interception, we saved the actual id in the idShort field earlier.
         // That's why this works.
         const response = await this.http.fetch(`${this.basePathCustoms}/${encodeBase64(id)}`, {
             method: 'DELETE',
             headers: {
-                'Accept': 'application/json',
+                Accept: 'application/json',
             },
         });
 
