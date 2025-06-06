@@ -249,7 +249,8 @@
           "selectTimeframe": "Auswahl des Zeitabschnitts"
         },
         "title": "Teilmodelle",
-        "unknownModelType": "Unbekannter ModelType: {type}"
+        "unknownModelType": "Unbekannter ModelType: {type}",
+        "noSubmodelsToLoad": "Für diese AAS existieren keine Teilmodelle."
       }
     },
     "catalog": {

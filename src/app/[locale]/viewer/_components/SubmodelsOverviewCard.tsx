@@ -19,7 +19,12 @@ export type SubmodelsOverviewCardProps = {
     readonly disableHeadline?: boolean;
 };
 
-export function SubmodelsOverviewCard({ submodelIds, submodelsLoading, firstSubmodelIdShort, disableHeadline }: SubmodelsOverviewCardProps) {
+export function SubmodelsOverviewCard({
+    submodelIds,
+    submodelsLoading,
+    firstSubmodelIdShort,
+    disableHeadline,
+}: SubmodelsOverviewCardProps) {
     const [submodelSelectorItems, setSubmodelSelectorItems] = useState<TabSelectorItem[]>([]);
     const [selectedItem, setSelectedItem] = useState<TabSelectorItem>();
     const t = useTranslations('pages.aasViewer.submodels');
@@ -67,13 +72,15 @@ export function SubmodelsOverviewCard({ submodelIds, submodelsLoading, firstSubm
     }, [submodelIds]);
 
     useEffect(() => {
-        const nameplateTab = submodelSelectorItems.find((tab) => tab.submodelData?.idShort === firstSubmodelToShowIdShort);
+        const nameplateTab = submodelSelectorItems.find(
+            (tab) => tab.submodelData?.idShort === firstSubmodelToShowIdShort,
+        );
         if (!selectedItem && !isMobile && nameplateTab) {
             setSelectedItem(nameplateTab);
         }
     }, [isMobile, submodelSelectorItems]);
 
-    const SelectedContent = useMemo(() =>  {
+    const SelectedContent = useMemo(() => {
         if (selectedItem?.submodelData && !submodelsLoading) {
             return (
                 <ErrorBoundary message={t('renderError')}>
@@ -101,37 +108,51 @@ export function SubmodelsOverviewCard({ submodelIds, submodelsLoading, firstSubm
         <>
             <Card>
                 <CardContent>
-                    { !disableHeadline && (
+                    {!disableHeadline && (
                         <Typography variant="h3" marginBottom="15px">
                             {t('title')}
                         </Typography>
                     )}
-                    <Box display="grid" gridTemplateColumns={isMobile ? '1fr' : '1fr 2fr'} gap="2rem">
-                        <Box>
-                            <VerticalTabSelector
-                                items={submodelSelectorItems}
-                                selected={selectedItem}
-                                setSelected={setSelectedItem}
-                                setInfoItem={setInfoItem}
-                            />
-                            {submodelsLoading && (
-                                <Skeleton height={70} sx={{ mb: 2 }} data-testid="submodelOverviewLoadingSkeleton" />
+                    {getSubmodelTabs().length == 0 ? (
+                        // Content if there are no submodels to load
+                        <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+                            <Typography variant={'body1'} color="text.secondary">
+                                {t('noSubmodelsToLoad')}
+                            </Typography>
+                        </Box>
+                    ) : (
+                        // Content if there are submodels
+                        <Box display="grid" gridTemplateColumns={isMobile ? '1fr' : '1fr 2fr'} gap="2rem">
+                            <Box>
+                                <VerticalTabSelector
+                                    items={submodelSelectorItems}
+                                    selected={selectedItem}
+                                    setSelected={setSelectedItem}
+                                    setInfoItem={setInfoItem}
+                                />
+                                {submodelsLoading && (
+                                    <Skeleton
+                                        height={70}
+                                        sx={{ mb: 2 }}
+                                        data-testid="submodelOverviewLoadingSkeleton"
+                                    />
+                                )}
+                            </Box>
+                            {isMobile ? (
+                                <MobileModal
+                                    selectedItem={selectedItem}
+                                    open={!!selectedItem}
+                                    handleClose={() => {
+                                        setSelectedItem(undefined);
+                                    }}
+                                    setInfoItem={setInfoItem}
+                                    content={SelectedContent}
+                                />
+                            ) : (
+                                SelectedContent
                             )}
                         </Box>
-                        {isMobile ? (
-                            <MobileModal
-                                selectedItem={selectedItem}
-                                open={!!selectedItem}
-                                handleClose={() => {
-                                    setSelectedItem(undefined);
-                                }}
-                                setInfoItem={setInfoItem}
-                                content={SelectedContent}
-                            />
-                        ) : (
-                            SelectedContent
-                        )}
-                    </Box>
+                    )}
                 </CardContent>
             </Card>
 

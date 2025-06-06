@@ -249,7 +249,8 @@
           "selectTimeframe": "Seleccionar periodo de tiempo"
         },
         "title": "Submodels",
-        "unknownModelType": "ModelType desconocido: {type}"
+        "unknownModelType": "ModelType desconocido: {type}",
+        "noSubmodelsToLoad": "No existen submodels que cargar para este AAS."
       }
     },
     "catalog": {
