@@ -4179,10 +4179,10 @@ cypress-junit-reporter@^1.3.1:
     strip-ansi "^4.0.0"
     xml "^1.0.0"
 
-cypress-split@^1.24.17:
-  version "1.24.17"
-  resolved "https://registry.yarnpkg.com/cypress-split/-/cypress-split-1.24.17.tgz#722d503e504c52796c991001b3f549a82e832ac8"
-  integrity sha512-Xs73NbHlIBRQ2Xl3PG8Fwp3siR3KUTO94cNpi9Oejf4KqVZiFIpyUX6q0r9OTONlcyNiJIEWnuZN+hBVH5ReOg==
+cypress-split@^1.24.18:
+  version "1.24.18"
+  resolved "https://registry.yarnpkg.com/cypress-split/-/cypress-split-1.24.18.tgz#b6dce19a10f7f59825b1fc487e8e536196850b4f"
+  integrity sha512-PQM/JLgSPK69Ib+y5oygxH3KeU8auvcQKc8lpg+sHafIfacB7vj6Ee0kfdvRinCjkwCoPd4SvdvUZ9q7u2IFkA==
   dependencies:
     "@actions/core" "^1.10.0"
     arg "^5.0.2"
