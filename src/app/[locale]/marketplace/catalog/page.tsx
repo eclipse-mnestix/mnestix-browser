@@ -39,7 +39,7 @@ export default function Page() {
      * 3. Load Products from the AAS Searcher
      */
     useAsyncEffect(async () => {
-        const connection = await getManufacturerData();
+        const connection = await fetchManufacturerData();
         if (connection && !connection.aasSearcher) {
             setFallbackToAasList(true);
         } else if (connection && connection.aasSearcher) {
@@ -48,7 +48,7 @@ export default function Page() {
         setLoading(false);
     }, []);
 
-    const getManufacturerData = async () => {
+    const fetchManufacturerData = async () => {
         if (repositoryUrlParam) {
             setRepositoryUrl(repositoryUrlParam);
             const emptyConnection = {
