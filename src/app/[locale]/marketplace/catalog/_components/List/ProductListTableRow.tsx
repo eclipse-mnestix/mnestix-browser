@@ -59,9 +59,8 @@ export const ProductListTableRow = (props: AasTableRowProps) => {
         setAas(null);
         setAasOriginUrl(null);
         const baseUrl = window.location.origin;
-        const repoUrl = repositoryUrl ? `?repoUrl=${encodeURIComponent(repositoryUrl)}` : '';
 
-        window.open(baseUrl + `/product/${encodeBase64(aasId)}${repoUrl}`, '_blank');
+        window.open(baseUrl + `/product/${encodeBase64(aasId)}`, '_blank');
     };
 
     const translateListText = (property: {language: string, text: string}[] | undefined) => {
