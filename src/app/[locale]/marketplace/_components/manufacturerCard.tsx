@@ -2,7 +2,6 @@
 
 import { Box, Card, IconButton, Typography, useTheme } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { MnestixConnection } from '@prisma/client';
 import { useRouter } from 'next/navigation';
@@ -49,7 +48,7 @@ export function ManufacturerCard({ connection }: ManufacturerCardProps) {
             onClick={onNavigate}
         >
             {connection.image ? (
-                <Image
+                <img
                     src={connection.image}
                     alt={`${manufacturer} Logo`}
                     width={120}
