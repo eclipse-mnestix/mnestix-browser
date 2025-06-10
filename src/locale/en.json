@@ -249,7 +249,8 @@
           "selectTimeframe": "Select timeframe"
         },
         "title": "Submodels",
-        "unknownModelType": "Unknown ModelType: {type}"
+        "unknownModelType": "Unknown ModelType: {type}",
+        "noSubmodelsToLoad": "There do not exist any submodels for this AAS."
       }
     },
     "catalog": {
@@ -266,7 +267,8 @@
         "27": "Electric engineering, automation, process control engineering ",
         "44": "Automotive engineering, vehicle component",
         "default": "Category "
-      }
+      },
+      "searchPlaceholder": "Search currently unavailable..."
     },
     "compare": {
       "addAnother": "Add another AAS",
@@ -348,7 +350,10 @@
           "repositories": "AAS repositories",
           "repositoryDefaultLabel": "Default AAS repository",
           "repositoryLabel": "AAS repository",
-          "repositoryUrlLabel": "AAS repository URL"
+          "repositoryUrlLabel": "AAS repository URL",
+          "nameLabel": "Name",
+          "imageUrlLabel": "Image URL",
+          "aasSearcherUrlLabel": "AAS Searcher URL"
         },
         "addButton": "Add more",
         "resetSuccessful": "Connections were reset.",
@@ -362,7 +367,8 @@
         "subtitle": "Define which data connections should be used.",
         "title": "Data sources",
         "urlFieldNoTrailingSlash": "The URL must not end with a slash (/).",
-        "urlFieldRequired": "URL field is required"
+        "urlFieldRequired": "URL field is required",
+        "defaultUrlInfo": "Default URLs can only be set via environment variables."
       },
       "header": "Settings",
       "idStructure": {

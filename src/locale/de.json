@@ -249,7 +249,8 @@
           "selectTimeframe": "Auswahl des Zeitabschnitts"
         },
         "title": "Teilmodelle",
-        "unknownModelType": "Unbekannter ModelType: {type}"
+        "unknownModelType": "Unbekannter ModelType: {type}",
+        "noSubmodelsToLoad": "Für diese AAS existieren keine Teilmodelle."
       }
     },
     "catalog": {
@@ -266,7 +267,8 @@
         "27": "Elektro-, Automatisierungs- und Prozessleittechnik",
         "44": "Fahrzeugtechnik, Fahrzeugkomponente",
         "default": "Kategorie "
-      }
+      },
+      "searchPlaceholder": "Suche aktuell nicht verfügbar..."
     },
     "compare": {
       "addAnother": "Eine weitere AAS hinzufügen",
@@ -348,7 +350,10 @@
           "repositories": "AAS Repositorys",
           "repositoryDefaultLabel": "Default AAS Repository",
           "repositoryLabel": "AAS Repository",
-          "repositoryUrlLabel": "AAS Repository URL"
+          "repositoryUrlLabel": "AAS Repository URL",
+          "nameLabel": "Name",
+          "imageUrlLabel": "Bild URL",
+          "aasSearcherUrlLabel": "AAS Searcher URL"
         },
         "addButton": "Hinzufügen",
         "resetSuccessful": "Quellen wurden zurückgesetzt.",
@@ -362,7 +367,8 @@
         "subtitle": "Definieren Sie, welche Datenquellen verwendet werden sollen.",
         "title": "Datenquellen",
         "urlFieldNoTrailingSlash": "Die URL darf nicht mit einem Schrägstrich (/) enden.",
-        "urlFieldRequired": "URL wird benötigt"
+        "urlFieldRequired": "URL wird benötigt",
+        "defaultUrlInfo": "Default URLs können nur über die Environment Variablen gesetzt werden."
       },
       "header": "Einstellungen",
       "idStructure": {

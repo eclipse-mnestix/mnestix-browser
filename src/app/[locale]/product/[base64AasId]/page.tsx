@@ -52,24 +52,39 @@ export default function Page() {
     const [filteredSubmodels, setFilteredSubmodels] = useState<SubmodelOrIdReference[]>([]);
     const [breadcrumbLinks, setBreadcrumbLinks] = useState<Array<{ label: string, path: string }>>([]);
 
-    const {
-        aasFromContext,
-        isLoadingAas,
-        aasOriginUrl,
-        submodels,
-        isSubmodelsLoading,
-    } = useAasLoader(base64AasId, repoUrl);
+    const { aasFromContext, isLoadingAas, aasOriginUrl, submodels, isSubmodelsLoading } = useAasLoader(
+        base64AasId,
+        repoUrl,
+    );
 
     useEffect(() => {
         if (submodels) {
             const filtered = submodels.filter(
                 (submodel) =>
-                    !(checkIfSubmodelHasIdShortOrSemanticId(submodel, undefined, 'AasDesignerChangelog') ||
-                        checkIfSubmodelHasIdShortOrSemanticId(submodel, SubmodelSemanticIdEnum.NameplateV1, 'Nameplate') ||
-                        checkIfSubmodelHasIdShortOrSemanticId(submodel, SubmodelSemanticIdEnum.NameplateV2, 'Nameplate') ||
-                        checkIfSubmodelHasIdShortOrSemanticId(submodel, SubmodelSemanticIdEnum.NameplateV3, 'Nameplate') ||
-                        checkIfSubmodelHasIdShortOrSemanticId(submodel, SubmodelSemanticIdEnum.NameplateV4, 'Nameplate') ||
-                        checkIfSubmodelHasIdShortOrSemanticId(submodel, undefined, 'VEC_SML'))
+                    !(
+                        checkIfSubmodelHasIdShortOrSemanticId(submodel, undefined, 'AasDesignerChangelog') ||
+                        checkIfSubmodelHasIdShortOrSemanticId(
+                            submodel,
+                            SubmodelSemanticIdEnum.NameplateV1,
+                            'Nameplate',
+                        ) ||
+                        checkIfSubmodelHasIdShortOrSemanticId(
+                            submodel,
+                            SubmodelSemanticIdEnum.NameplateV2,
+                            'Nameplate',
+                        ) ||
+                        checkIfSubmodelHasIdShortOrSemanticId(
+                            submodel,
+                            SubmodelSemanticIdEnum.NameplateV3,
+                            'Nameplate',
+                        ) ||
+                        checkIfSubmodelHasIdShortOrSemanticId(
+                            submodel,
+                            SubmodelSemanticIdEnum.NameplateV4,
+                            'Nameplate',
+                        ) ||
+                        checkIfSubmodelHasIdShortOrSemanticId(submodel, undefined, 'VEC_SML')
+                    ),
             );
             setFilteredSubmodels(filtered);
         }
@@ -143,11 +158,16 @@ export default function Page() {
                         isLoading={isLoadingAas || isSubmodelsLoading}
                         isAccordion={isMobile}
                         repositoryURL={aasOriginUrl}
-                        displayName={aasFromContext?.displayName ? getTranslationText(aasFromContext.displayName, locale) : null}
+                        displayName={
+                            aasFromContext?.displayName ? getTranslationText(aasFromContext.displayName, locale) : null
+                        }
                     />
-                    {aasFromContext?.submodels && aasFromContext.submodels.length > 0 && (
-                        <SubmodelsOverviewCard submodelIds={filteredSubmodels} submodelsLoading={isSubmodelsLoading} firstSubmodelIdShort="TechnicalData" disableHeadline={true} />
-                    )}
+                    <SubmodelsOverviewCard
+                        submodelIds={filteredSubmodels}
+                        submodelsLoading={isSubmodelsLoading}
+                        firstSubmodelIdShort="TechnicalData"
+                        disableHeadline={true}
+                    />
                 </Box>
             ) : (
                 <NoSearchResult base64AasId={safeBase64Decode(base64AasId)} />
