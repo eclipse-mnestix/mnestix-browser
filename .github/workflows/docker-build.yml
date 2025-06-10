@@ -233,6 +233,9 @@ jobs:
       packages: write
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Setup Build Environment
         id: setup_branch
         uses: ./.github/actions/setup-build
@@ -267,6 +270,9 @@ jobs:
       packages: write
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Setup Build Environment
         uses: ./.github/actions/setup-build
         with:
