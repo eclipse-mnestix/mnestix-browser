@@ -3,6 +3,7 @@
  * The first letter of each breadcrumb label is capitalized.
  * @param t Translation function
  * @param manufacturer Optional: current manufacturer
+ * @param repositoryUrl Optional: current repository URL
  */
 export function getCatalogBreadcrumbs(
     t: (key: string) => string,
@@ -19,8 +20,7 @@ export function getCatalogBreadcrumbs(
             label: capitalizeFirstLetter(manufacturer),
             path: `/marketplace/catalog?manufacturer=${encodeURIComponent(manufacturer)}`
         });
-    }
-    if (repositoryUrl) {
+    } else if (repositoryUrl) {
         links.push({
             label: capitalizeFirstLetter(repositoryUrl),
             path: `/marketplace/catalog?repoUrl=${encodeURIComponent(repositoryUrl)}`
