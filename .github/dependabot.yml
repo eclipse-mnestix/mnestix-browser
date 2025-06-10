@@ -1,44 +1,49 @@
 version: 2
 updates:
+  # biweekly minor+patch and major
   - package-ecosystem: npm
     target-branch: dev
-    directory: '/'
+    directory: "/"
     schedule:
-      interval: weekly
-      day: monday
-      time: '07:00'
-      timezone: 'Europe/Berlin'
+      interval: cron
+      cronjob: "0 8 * * mon%2"
+      timezone: "Europe/Berlin"
     groups:
-      yarn-patch:
-        update-types: ['patch']
-      yarn-minor:
-        update-types: ['minor']
+      yarn-minor-patch:
+        update-types: ["patch", "minor"]
       yarn-major:
-        update-types: ['major']
-  - package-ecosystem: 'docker'
+        update-types: ["major"]
+  # monthly docker docker-compose github-actions
+  - package-ecosystem: "docker"
     target-branch: dev
-    directory: '/'
+    directory: "/"
     groups:
       docker-all:
         patterns:
-          - '*'
+          - "*"
     schedule:
-      interval: weekly
+      interval: cron
+      cronjob: "0 8 * * mon%4"
+      timezone: "Europe/Berlin"
   - package-ecosystem: docker-compose
     target-branch: dev
-    directory: '/'
+    directory: "/"
     groups:
       compose-all:
         patterns:
-          - '*'
+          - "*"
     schedule:
-      interval: weekly
+      interval: cron
+      cronjob: "0 8 * * mon%4"
+      timezone: "Europe/Berlin"
   - package-ecosystem: github-actions
     target-branch: dev
-    directory: '/'
+    directory: "/"
     groups:
       actions-all:
         patterns:
-          - '*'
+          - "*"
     schedule:
-      interval: weekly
+      interval: cron
+      cronjob: "0 8 * * mon%4"
+      timezone: "Europe/Berlin"
