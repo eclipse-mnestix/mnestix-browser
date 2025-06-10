@@ -353,7 +353,8 @@
           "repositoryUrlLabel": "AAS repository URL",
           "nameLabel": "Name",
           "imageUrlLabel": "Image URL",
-          "aasSearcherUrlLabel": "AAS Searcher URL"
+          "aasSearcherUrlLabel": "AAS Searcher URL",
+          "notYetSupported": "This functionality is not yet supported"
         },
         "addButton": "Add more",
         "resetSuccessful": "Connections were reset.",
