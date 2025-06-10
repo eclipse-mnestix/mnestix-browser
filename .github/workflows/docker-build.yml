@@ -256,7 +256,7 @@ jobs:
             ${{ github.ref != 'refs/heads/main' && format('mnestix/{0}:{1}', env.IMAGE_NAME, steps.setup_branch.outputs.branch) || '' }}
 
   push-image-product-catalog:
-    name: Push image to registry
+    name: Push image to registry for product catalog
     needs: ['ci-success', 'build-arm-cache']
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request' &&

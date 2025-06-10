@@ -8,6 +8,9 @@ export class PrismaConnectorInMemory implements IPrismaConnector {
         protected aasData: string[],
         protected submodelData: string[],
     ) {}
+    getRepositoryConfigurationGroupByName(_name: string): Promise<MnestixConnection | null> {
+        throw new Error('Method not implemented.');
+    }
 
     getRepositoryConfigurationGroups(): Promise<MnestixConnection[]> {
         throw new Error('Method not implemented.');
