@@ -354,7 +354,8 @@
           "nameLabel": "Name",
           "imageUrlLabel": "Bild URL",
           "aasSearcherUrlLabel": "AAS Searcher URL",
-          "notYetSupported": "Diese Funktion ist noch nicht verfügbar."
+          "notYetSupported": "Diese Funktion ist noch nicht verfügbar.",
+          "noDuplicatedNames": "Es dürfen keine zwei Repositorys mit dem gleichen Namen existieren."
         },
         "addButton": "Hinzufügen",
         "resetSuccessful": "Quellen wurden zurückgesetzt.",

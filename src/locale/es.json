@@ -354,7 +354,8 @@
           "nameLabel": "Nombre",
           "imageUrlLabel": "URL de la imagen",
           "aasSearcherUrlLabel": "AAS Searcher URL",
-          "notYetSupported": "No soportado todavía"
+          "notYetSupported": "No soportado todavía",
+          "noDuplicatedNames": "No se permiten nombres duplicados"
         },
         "addButton": "Añadir más",
         "resetSuccessful": "Las conexiones se han restaurado.",
