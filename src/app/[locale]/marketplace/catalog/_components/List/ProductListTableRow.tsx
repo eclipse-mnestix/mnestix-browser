@@ -13,7 +13,6 @@ import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper
 import { useLocale, useTranslations } from 'next-intl';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import useSWR from 'swr';
-import { useEnv } from 'app/EnvProvider';
 import { SearchResponseEntry } from 'lib/api/graphql/catalogQueries';
 
 type AasTableRowProps = {
@@ -45,7 +44,6 @@ export const ProductListTableRow = (props: AasTableRowProps) => {
     const notificationSpawner = useNotificationSpawner();
     const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
     const t = useTranslations('pages.aasList');
-    const env = useEnv();
     const locale = useLocale();
     const { data: thumbnailResponse } = useSWR(
         [aasListEntry.id, repositoryUrl],
@@ -61,9 +59,9 @@ export const ProductListTableRow = (props: AasTableRowProps) => {
         setAas(null);
         setAasOriginUrl(null);
         const baseUrl = window.location.origin;
-        const pageToGo = env.PRODUCT_VIEW_FEATURE_FLAG ? '/product' : '/viewer';
+        const repoUrl = repositoryUrl ? `?repoUrl=${encodeURIComponent(repositoryUrl)}` : '';
 
-        window.open(baseUrl + `${pageToGo}/${encodeBase64(aasId)}`, '_blank');
+        window.open(baseUrl + `/product/${encodeBase64(aasId)}${repoUrl}`, '_blank');
     };
 
     const translateListText = (property: {language: string, text: string}[] | undefined) => {
