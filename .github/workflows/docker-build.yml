@@ -2,7 +2,7 @@ name: CI and Docker Deploy
 
 on:
   push:
-    branches: ['main', 'dev', 'staging']
+    branches: ['main', 'dev', 'feat(configurable-catalog)', 'update-ci-cd']
     tags: ['v*.*.*']
     paths-ignore:
       - '.github/ISSUE_TEMPLATE/**'
@@ -11,7 +11,7 @@ on:
       - 'wiki/**'
       - 'README.md'
   pull_request:
-    branches: ['dev']
+    branches: ['dev', 'feat(configurable-catalog)']
     paths-ignore:
       - '.github/ISSUE_TEMPLATE/**'
       - '.github/CODEOWNERS'
@@ -28,6 +28,7 @@ env:
   IMAGE_NAME: mnestix-browser
   # Update the version manually
   IMAGE_TAG_VERSION: 1.5.0
+  IMAGE_TAG_PRODUCT_CATALOG: 0.0.1
 
 jobs:
   build-browser-image:
@@ -232,40 +233,12 @@ jobs:
       packages: write
 
     steps:
-      - name: Restore amd64 cache
-        uses: actions/cache/restore@v4
+      - name: Setup Build Environment
+        id: setup_branch
+        uses: ./.github/actions/setup-build
         with:
-          path: |
-            /tmp/buildx-amd64-cache
-          key: buildx-amd64-${{github.ref}}-${{ github.run_id }}
-          # can be build without cache
-          fail-on-cache-miss: false
-      - name: Restore arm64 cache
-        uses: actions/cache/restore@v4
-        with:
-          path: |
-            /tmp/buildx-arm64-cache
-          key: buildx-arm64-${{github.ref}}-${{ github.run_id }}
-          # building takes ages
-          fail-on-cache-miss: true
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_API_TOKEN }}
-
-      - name: Extract branch name
-        id: extract_branch
-        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+          docker_username: ${{ secrets.DOCKER_USERNAME }}
+          docker_password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push docker images
         uses: docker/build-push-action@v6
@@ -280,4 +253,35 @@ jobs:
           tags: |
             ${{ github.ref == 'refs/heads/main' && format('mnestix/{0}:{1}', env.IMAGE_NAME, env.IMAGE_TAG_VERSION) || '' }}
             ${{ github.ref == 'refs/heads/main' && format('mnestix/{0}:latest', env.IMAGE_NAME) || '' }}
-            ${{ github.ref != 'refs/heads/main' && format('mnestix/{0}:{1}', env.IMAGE_NAME, steps.extract_branch.outputs.branch) || '' }}
+            ${{ github.ref != 'refs/heads/main' && format('mnestix/{0}:{1}', env.IMAGE_NAME, steps.setup_branch.outputs.branch) || '' }}
+
+  push-image-product-catalog:
+    name: Push image to registry
+    needs: ['ci-success', 'build-arm-cache']
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request' &&
+      github.repository_owner == 'eclipse-mnestix' &&
+      (github.ref == 'refs/heads/feat(configurable-catalog) || github.ref == 'refs/heads/update-ci-cd')
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Setup Build Environment
+        uses: ./.github/actions/setup-build
+        with:
+          docker_username: ${{ secrets.DOCKER_USERNAME }}
+          docker_password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push docker images
+        uses: docker/build-push-action@v6
+        with:
+          platforms: linux/amd64,linux/arm64
+          context: '.'
+          cache-from: |
+            type=local,src=/tmp/buildx-arm64-cache
+            type=local,src=/tmp/buildx-amd64-cache
+          target: production
+          push: false
+          tags: |
+            ${{ github.ref == 'refs/heads/feat(configurable-catalog)' && format('mnestix/{0}:{1}', env.IMAGE_NAME, env.IMAGE_TAG_PRODUCT_CATALOG) || '' }}
