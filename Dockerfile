@@ -29,7 +29,7 @@ FROM base AS production
 WORKDIR /app
 
 ENV NODE_ENV=production
-RUN npm install prisma
+RUN yarn add prisma
 
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001

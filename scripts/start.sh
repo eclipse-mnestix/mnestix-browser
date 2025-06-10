@@ -19,8 +19,13 @@ EOF
 echo -e '\033[0m' # Reset to default color
 
 # Deploy database migrations
-echo "Deploying database migrations..."
-npx prisma migrate deploy --schema=/app/prisma/schema.prisma
+status_output=$(yarn prisma migrate status --schema=/app/prisma/schema.prisma 2>&1 || true)
+if echo "$status_output" | grep -q "Database schema is up to date!"; then
+  echo "No pending migrations found."
+else
+  echo "Pending migrations found, applying them..."
+  yarn prisma migrate deploy --schema=/app/prisma/schema.prisma
+fi
 
 # Validate envs for production
 node "$SCRIPT_DIR/validateEnvs.js"
