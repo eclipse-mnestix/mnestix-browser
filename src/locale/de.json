@@ -353,7 +353,8 @@
           "repositoryUrlLabel": "AAS Repository URL",
           "nameLabel": "Name",
           "imageUrlLabel": "Bild URL",
-          "aasSearcherUrlLabel": "AAS Searcher URL"
+          "aasSearcherUrlLabel": "AAS Searcher URL",
+          "notYetSupported": "Diese Funktion ist noch nicht verfügbar."
         },
         "addButton": "Hinzufügen",
         "resetSuccessful": "Quellen wurden zurückgesetzt.",

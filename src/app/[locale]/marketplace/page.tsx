@@ -11,7 +11,6 @@ import { ConstructionDialog } from 'components/basics/ConstructionDialog';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useState } from 'react';
 import { getRepositoryConfigurationGroupsAction } from 'lib/services/database/connectionServerActions';
-import { useEnv } from 'app/EnvProvider';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { MnestixConnection } from '@prisma/client';
@@ -24,23 +23,12 @@ export default function Page() {
     const breadcrumbLinks = getCatalogBreadcrumbs(t);
     const [isConstructionDialogOpen, setIsConstructionDialogOpen] = React.useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(false);
-    const env = useEnv();
     const notificationSpawner = useNotificationSpawner();
 
     useAsyncEffect(async () => {
         try {
             setIsLoading(true);
             const aasRepositories = await getRepositoryConfigurationGroupsAction();
-            if (env.AAS_REPO_API_URL) {
-                aasRepositories.push({
-                    url: env.AAS_REPO_API_URL,
-                    name: null,
-                    id: '',
-                    typeId: '',
-                    aasSearcher: null,
-                    image: null,
-                });
-            }
             setAasRepositories(aasRepositories);
         } catch (error) {
             notificationSpawner.spawn({
