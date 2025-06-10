@@ -25,7 +25,6 @@ type DocumentComponentProps = {
 export function DocumentComponent(props: DocumentComponentProps) {
     const t = useTranslations('components.documentComponent');
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
-    const [imageError, setImageError] = useState(false);
     const [fileExists, setFileExists] = useState(true);
     const fileViewObject = useFileViewObject(props.submodelElement, props.submodelId);
 
@@ -42,11 +41,6 @@ export function DocumentComponent(props: DocumentComponentProps) {
 
     const handleDetailsModalClose = () => {
         setDetailsModalOpen(false);
-    };
-
-    const handleImageError = () => {
-        // TODO add information about the error to UI
-        setImageError(true);
     };
 
     function getDocumentClassificationCollection() {
@@ -72,25 +66,20 @@ export function DocumentComponent(props: DocumentComponentProps) {
                                     <PreviewImage
                                         previewImgUrl={fileViewObject.previewImgUrl}
                                         mimeType={fileViewObject.mimeType}
-                                        imageError={imageError}
-                                        handleImageError={handleImageError}
                                     />
                                 </Link>
                             ) : (
                                 <PreviewImage
                                     previewImgUrl={fileViewObject.previewImgUrl}
                                     mimeType={fileViewObject.mimeType}
-                                    imageError={imageError}
-                                    handleImageError={handleImageError}
                                 />
                             )}
                             <Box>
-                                <Typography data-testid="document-title" variant="h5">{fileViewObject.title}</Typography>
+                                <Typography data-testid="document-title" variant="h5">
+                                    {fileViewObject.title}
+                                </Typography>
                                 {fileViewObject.organizationName && (
-                                    <Typography
-                                        variant="body2"
-                                        data-testid="document-organization"
-                                    >
+                                    <Typography variant="body2" data-testid="document-organization">
                                         {fileViewObject.organizationName}
                                     </Typography>
                                 )}
@@ -107,7 +96,10 @@ export function DocumentComponent(props: DocumentComponentProps) {
                                 </Button>
                             </Box>
                         </Box>
-                        <DocumentClassification classificationData={getDocumentClassificationCollection()} openDetailDialog={() => setDetailsModalOpen(true)} />
+                        <DocumentClassification
+                            classificationData={getDocumentClassificationCollection()}
+                            openDetailDialog={() => setDetailsModalOpen(true)}
+                        />
                     </Box>
                     <IconButton onClick={() => handleDetailsClick()} sx={{ ml: 1 }} data-testid="document-info-button">
                         <InfoOutlined />
