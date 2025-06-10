@@ -1,7 +1,14 @@
 import { Box, Button, Divider, FormControl, IconButton, Skeleton, TextField, Tooltip, Typography } from '@mui/material';
 import { Dispatch, Fragment, SetStateAction } from 'react';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
-import { Control, Controller, FieldArrayWithId, useFieldArray, UseFormGetValues } from 'react-hook-form';
+import {
+    Control,
+    Controller,
+    FieldArrayWithId,
+    useFieldArray,
+    UseFormGetValues,
+    ValidateResult,
+} from 'react-hook-form';
 import { ConnectionFormData } from 'app/[locale]/settings/_components/mnestix-connections/MnestixConnectionsCard';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { tooltipText } from 'lib/util/ToolTipText';
@@ -94,6 +101,14 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                         name={`aasRepository.${index}.name`}
                                         control={control}
                                         defaultValue={field.name ?? ''}
+                                        rules={{
+                                            validate: function uniqueNameValidation(value: string): ValidateResult {
+                                                const values = getValues('aasRepository');
+                                                const isDuplicate =
+                                                    values.filter((item) => item.name === value).length > 1;
+                                                return !isDuplicate || t('aasRepository.noDuplicatedNames');
+                                            },
+                                        }}
                                         render={({ field, fieldState: { error } }) => (
                                             <TextField
                                                 {...field}

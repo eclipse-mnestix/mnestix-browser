@@ -354,7 +354,8 @@
           "nameLabel": "Name",
           "imageUrlLabel": "Image URL",
           "aasSearcherUrlLabel": "AAS Searcher URL",
-          "notYetSupported": "This functionality is not yet supported"
+          "notYetSupported": "This functionality is not yet supported",
+          "noDuplicatedNames": "AAS repository names must be unique."
         },
         "addButton": "Add more",
         "resetSuccessful": "Connections were reset.",
