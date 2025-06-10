@@ -261,7 +261,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request' &&
       github.repository_owner == 'eclipse-mnestix' &&
-      (github.ref == 'refs/heads/feat(configurable-catalog) || github.ref == 'refs/heads/update-ci-cd')
+      (github.ref == 'refs/heads/feat(configurable-catalog)' || github.ref == 'refs/heads/update-ci-cd')
     permissions:
       contents: read
       packages: write
