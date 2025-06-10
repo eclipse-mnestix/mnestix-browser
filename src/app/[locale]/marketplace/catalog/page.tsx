@@ -4,8 +4,6 @@ import { Box, Card, TextField, Typography } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
 import ListHeader from 'components/basics/ListHeader';
 import { useTranslations } from 'next-intl';
-import { CatalogConfiguration } from 'app/[locale]/marketplace/catalogConfiguration';
-import Image from 'next/image';
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
 import { getCatalogBreadcrumbs } from 'app/[locale]/marketplace/_components/breadcrumbs';
 import { FilterContainer } from 'app/[locale]/marketplace/catalog/_components/FilterContainer';
@@ -18,42 +16,68 @@ import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner
 import { useShowError } from 'lib/hooks/UseShowError';
 import AasListDataWrapper from 'app/[locale]/list/_components/AasListDataWrapper';
 import SearchIcon from '@mui/icons-material/Search';
+import { getRepositoryConfigurationGroupByName } from 'lib/services/database/connectionServerActions';
+import { MnestixConnection } from '@prisma/client';
 
 export default function Page() {
     const params = useSearchParams();
     const t = useTranslations('pages.catalog');
-    const manufacturer = params.get('manufacturer');
+    const manufacturerUrlParam = params.get('manufacturer');
     const repositoryUrlParam = params.get('repoUrl');
 
     const [products, setProducts] = useState<SearchResponseEntry[]>();
     const [loading, setLoading] = useState<boolean>(true);
+    const [repositoryUrl, setRepositoryUrl] = useState<string | undefined>(undefined);
+    const [connection, setConnection] = useState<MnestixConnection | undefined>(undefined);
+    const [fallbackToAasList, setFallbackToAasList] = useState<boolean>(false);
     const { showError } = useShowError();
 
+    /**
+     * When loading this page we need to fetch the following data:
+     * 1. Connection Data from the Database
+     * 2. Load Filter Parameters (done inside the Filter Component)
+     * 3. Load Products from the AAS Searcher
+     */
     useAsyncEffect(async () => {
-        if (!manufacturer) {
-            return;
+        const connection = await fetchManufacturerData();
+        if (connection && !connection.aasSearcher) {
+            setFallbackToAasList(true);
+        } else if (connection && connection.aasSearcher) {
+            await loadData(connection.aasSearcher);
         }
-        await loadData();
+        setLoading(false);
     }, []);
 
-    // Determine the repositoryUrl to use
-    let repositoryUrl: string | undefined = undefined;
-    let config = undefined;
+    const fetchManufacturerData = async () => {
+        if (repositoryUrlParam) {
+            setRepositoryUrl(repositoryUrlParam);
+            const emptyConnection = {
+                url: repositoryUrlParam,
+                name: repositoryUrlParam,
+                id: '',
+                typeId: '',
+                aasSearcher: null,
+                image: null,
+            };
+            setConnection(emptyConnection);
+            return emptyConnection;
+        } else if (manufacturerUrlParam) {
+            const connection = await getRepositoryConfigurationGroupByName(manufacturerUrlParam);
+            if (connection) {
+                setRepositoryUrl(connection.url);
+                setConnection(connection);
+                return connection;
+            }
+        }
+        showError('No Manufacturer/Repository found');
+        return;
+    };
 
-    if (repositoryUrlParam) {
-        repositoryUrl = repositoryUrlParam;
-    } else if (manufacturer) {
-        config = CatalogConfiguration[manufacturer];
-        repositoryUrl = config?.repositoryUrl;
-    }
-    if (!repositoryUrl) {
-        return <>No Manufacturer/Repository found</>;
-    }
-    const breadcrumbLinks = getCatalogBreadcrumbs(t, manufacturer);
+    const breadcrumbLinks = getCatalogBreadcrumbs(t, manufacturerUrlParam);
 
-    const loadData = async (filters?: { key: string; value: string }[]) => {
+    const loadData = async (aasSearcher?: string, filters?: { key: string; value: string }[]) => {
         setLoading(true);
-        const results = await searchProducts(filters);
+        const results = await searchProducts(filters, aasSearcher ?? undefined);
 
         if (results.isSuccess) {
             const products = results.result;
@@ -66,7 +90,7 @@ export default function Page() {
     };
 
     const onFilterChanged = async (filters: { key: string; value: string }[]) => {
-        await loadData(filters);
+        await loadData(connection?.aasSearcher ?? undefined, filters);
     };
 
     return (
@@ -92,19 +116,20 @@ export default function Page() {
                     }}
                 />
                 <Box flex={1} />
-                {config && config.manufacturerLogo ? (
-                        <Image
-                            src={config.manufacturerLogo}
-                            alt={`${manufacturer} Logo`}
-                            height={48}
-                            width={120}
-                            style={{ objectFit: 'contain', marginRight: '1rem' }}
-                        />
-                    ) : (
-                        <Typography variant="h6" color="textSecondary">
-                            {repositoryUrl}
-                        </Typography>
-                    )}
+                {connection && connection.image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                        src={connection.image}
+                        alt={`${manufacturerUrlParam} Logo`}
+                        height={48}
+                        width={120}
+                        style={{ objectFit: 'contain', marginRight: '1rem' }}
+                    />
+                ) : (
+                    <Typography variant="h6" color="textSecondary">
+                        {repositoryUrl}
+                    </Typography>
+                )}
             </Box>
             <Box display="flex" flexDirection="row" marginBottom="1.5rem">
                 <Card
@@ -120,31 +145,30 @@ export default function Page() {
                     }}
                     aria-label={t('filter')}
                 >
-                    {config ? (
-                        <FilterContainer onFilterChanged={onFilterChanged} />
-                    ) : (<Box>
+                    {!fallbackToAasList && connection && connection.aasSearcher ? (
+                        <FilterContainer onFilterChanged={onFilterChanged} aasSearcherUrl={connection.aasSearcher} />
+                    ) : loading ? (
+                        <CenteredLoadingSpinner />
+                    ) : (
+                        <Box>
                             <Typography variant="h4" fontWeight={600} mb={1}>
                                 {t('filter')}
                             </Typography>
-                            <Typography mt={2}>
-                                {t('noSearcherWarning')}
-                            </Typography>
-                    </Box>
+                            <Typography mt={2}>{t('noSearcherWarning')}</Typography>
+                        </Box>
                     )}
                 </Card>
                 <Box flex={1} minWidth={0}>
-                    {manufacturer && config ? (
-                        loading ? (
-                            <CenteredLoadingSpinner />
-                        ) : (
-                            <Card>
-                                <ProductList
-                                    shells={products}
-                                    repositoryUrl={config.repositoryUrl}
-                                    updateSelectedAasList={() => {}}
-                                />
-                            </Card>
-                        )
+                    {loading ? (
+                        <CenteredLoadingSpinner />
+                    ) : !fallbackToAasList && connection ? (
+                        <Card>
+                            <ProductList
+                                shells={products}
+                                repositoryUrl={connection.url}
+                                updateSelectedAasList={() => {}}
+                            />
+                        </Card>
                     ) : (
                         <Box>
                             <AasListDataWrapper repositoryUrl={repositoryUrl} hideRepoSelection={true} />

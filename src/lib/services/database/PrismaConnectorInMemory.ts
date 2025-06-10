@@ -1,12 +1,17 @@
 import { IPrismaConnector } from 'lib/services/database/PrismaConnectorInterface';
 import { DataSourceFormData } from 'lib/services/database/PrismaConnector';
 import { isEqual } from 'lodash';
+import { MnestixConnection } from '@prisma/client';
 
 export class PrismaConnectorInMemory implements IPrismaConnector {
     constructor(
         protected aasData: string[],
         protected submodelData: string[],
     ) {}
+
+    getRepositoryConfigurationGroups(): Promise<MnestixConnection[]> {
+        throw new Error('Method not implemented.');
+    }
 
     getConnectionData(): Promise<
         { type: { id: string; typeName: string } } & {
