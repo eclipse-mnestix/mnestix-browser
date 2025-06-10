@@ -1,6 +1,6 @@
 'use client';
 
-import { Box } from '@mui/material';
+import { Box, Skeleton } from '@mui/material';
 import { safeBase64Decode } from 'lib/util/Base64Util';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import {
@@ -41,6 +41,18 @@ const viewerStyles = {
     gap: '20px',
 };
 
+function BreadcrumbsSkeleton() {
+    return (
+        <Box display="flex" alignItems="center">
+            <Skeleton variant="circular" width={20} height={20} />
+            <Skeleton variant="text" width={16} height={20} sx={{ mx: 1 }} />
+            <Skeleton variant="text" width={120} height={20} />
+            <Skeleton variant="text" width={16} height={20} sx={{ mx: 1 }} />
+            <Skeleton variant="text" width={100} height={20} />
+        </Box>
+    );
+}
+
 export default function Page() {
     const searchParams = useParams<{ base64AasId: string }>();
     const base64AasId = decodeURIComponent(searchParams.base64AasId).replace(/=+$|[%3D]+$/, '');
@@ -51,6 +63,7 @@ export default function Page() {
     const repoUrl = encodedRepoUrl ? decodeURI(encodedRepoUrl) : undefined;
     const [filteredSubmodels, setFilteredSubmodels] = useState<SubmodelOrIdReference[]>([]);
     const [breadcrumbLinks, setBreadcrumbLinks] = useState<Array<{ label: string, path: string }>>([]);
+    const [isBreadcrumbsLoading, setIsBreadcrumbsLoading] = useState(true);
 
     const { aasFromContext, isLoadingAas, aasOriginUrl, submodels, isSubmodelsLoading } = useAasLoader(
         base64AasId,
@@ -92,7 +105,9 @@ export default function Page() {
 
     useEffect(() => {
         const fetchManufacturerData = async () => {
-            const newBreadcrumbLinks: Array<{ label: string, path: string }> = [];                if (aasOriginUrl) {
+            setIsBreadcrumbsLoading(true);
+            const newBreadcrumbLinks: Array<{ label: string, path: string }> = [];                
+            if (aasOriginUrl) {
                 try {
                     // Get manufacturer information from Prisma database
                     const manufacturerInfo = await getRepositoryConfigurationByRepositoryUrlAction(aasOriginUrl);
@@ -104,7 +119,6 @@ export default function Page() {
                             path: `/marketplace/catalog?manufacturer=${encodeURIComponent(manufacturerName)}`,
                         });
                     } else {
-                        // Fallback if no manufacturer found in database or no name set
                         newBreadcrumbLinks.push({
                             label: t('manufacturerCatalog'),
                             path: `/marketplace/catalog?repoUrl=${encodeURIComponent(aasOriginUrl)}`,
@@ -147,20 +161,26 @@ export default function Page() {
                         });
                     }
                 });
+                setIsBreadcrumbsLoading(false);
             }
 
             setBreadcrumbLinks(newBreadcrumbLinks);
         };
-
+        
         fetchManufacturerData();
-    }, [aasOriginUrl, submodels, locale, t]);
+
+    }, [submodels, aasOriginUrl]);
 
     return (
         <Box sx={pageStyles}>
             {aasFromContext || isLoadingAas ? (
                 <Box sx={viewerStyles}>
                     <Box>
-                        <Breadcrumbs links={breadcrumbLinks} />
+                        {isBreadcrumbsLoading ? (
+                            <BreadcrumbsSkeleton />
+                        ) : (
+                            <Breadcrumbs links={breadcrumbLinks} />
+                        )}
                     </Box>
                     <ProductOverviewCard
                         aas={aasFromContext}
