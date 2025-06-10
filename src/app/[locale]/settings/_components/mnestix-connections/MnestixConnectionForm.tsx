@@ -1,4 +1,4 @@
-import { Box, Button, Divider, FormControl, IconButton, Skeleton, TextField, Typography } from '@mui/material';
+import { Box, Button, Divider, FormControl, IconButton, Skeleton, TextField, Tooltip, Typography } from '@mui/material';
 import { Dispatch, Fragment, SetStateAction } from 'react';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import { Control, Controller, FieldArrayWithId, useFieldArray, UseFormGetValues } from 'react-hook-form';
@@ -7,6 +7,7 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { tooltipText } from 'lib/util/ToolTipText';
 import { ConnectionTypeEnum } from 'lib/services/database/ConnectionTypeEnum';
 import { useTranslations } from 'next-intl';
+import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
 
 const ConnectionTypeMap: Record<string, ConnectionTypeEnum> = {
     aasRepository: ConnectionTypeEnum.AAS_REPOSITORY,
@@ -111,7 +112,12 @@ export function MnestixConnectionsForm(props: MnestixConnectionsFormProps) {
                 <Typography variant="h4" mr={4} width="200px">
                 {t(`${dataConnectionName}.repositoryDefaultLabel`)}
                 </Typography>
-                <Typography>{defaultUrl}</Typography>
+                <Box display="flex" alignItems="center">
+                    <Typography>{defaultUrl}</Typography>
+                    <Tooltip title={t('defaultUrlInfo')}>
+                        <InfoOutlineIcon sx={{ ml:1 }}/>
+                    </Tooltip>
+                </Box>
             </Box>
             {isLoading &&
                 !fields.length &&
