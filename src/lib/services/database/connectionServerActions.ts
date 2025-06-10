@@ -27,3 +27,8 @@ export async function getRepositoryConfigurationGroupByName(name: string) {
     const prismaConnector = PrismaConnector.create();
     return prismaConnector.getRepositoryConfigurationGroupByName(name);
 }
+
+export async function getRepositoryConfigurationByRepositoryUrlAction(repositoryUrl: string) {
+    const prismaConnector = PrismaConnector.create();
+    return prismaConnector.getRepositoryConfigurationByRepositoryUrl(repositoryUrl);
+}

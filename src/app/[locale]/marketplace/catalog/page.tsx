@@ -24,7 +24,7 @@ export default function Page() {
     const t = useTranslations('pages.catalog');
     const manufacturerUrlParam = params.get('manufacturer');
     const repositoryUrlParam = params.get('repoUrl');
-
+    const breadcrumbLinks = getCatalogBreadcrumbs(t, manufacturerUrlParam, repositoryUrlParam);
     const [products, setProducts] = useState<SearchResponseEntry[]>();
     const [loading, setLoading] = useState<boolean>(true);
     const [repositoryUrl, setRepositoryUrl] = useState<string | undefined>(undefined);
@@ -72,8 +72,6 @@ export default function Page() {
         showError('No Manufacturer/Repository found');
         return;
     };
-
-    const breadcrumbLinks = getCatalogBreadcrumbs(t, manufacturerUrlParam);
 
     const loadData = async (aasSearcher?: string, filters?: { key: string; value: string }[]) => {
         setLoading(true);

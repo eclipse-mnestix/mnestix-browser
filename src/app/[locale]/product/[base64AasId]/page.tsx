@@ -20,7 +20,7 @@ import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
-import { CatalogConfiguration } from 'app/[locale]/marketplace/catalogConfiguration';
+import { getRepositoryConfigurationByRepositoryUrlAction } from 'lib/services/database/connectionServerActions';
 import { useTranslations } from 'next-intl';
 
 const pageStyles = {
@@ -91,58 +91,69 @@ export default function Page() {
     }, [submodels]);
 
     useEffect(() => {
-        const newBreadcrumbLinks: Array<{ label: string, path: string }> = [];
+        const fetchManufacturerData = async () => {
+            const newBreadcrumbLinks: Array<{ label: string, path: string }> = [];                if (aasOriginUrl) {
+                try {
+                    // Get manufacturer information from Prisma database
+                    const manufacturerInfo = await getRepositoryConfigurationByRepositoryUrlAction(aasOriginUrl);
 
-        if (aasOriginUrl) {
-            //TODO: Has to be changed to PRISMA query to get the manufacturer name as soon everything is updated
-            const manufacturerEntry = Object.entries(CatalogConfiguration).find(
-                ([, config]) => config.repositoryUrl === aasOriginUrl
-            );
-            if (manufacturerEntry) {
-                const [manufacturerName] = manufacturerEntry;
-                newBreadcrumbLinks.push({
-                    label: manufacturerName.charAt(0).toUpperCase() + manufacturerName.slice(1),
-                    path: `/marketplace/catalog?manufacturer=${encodeURIComponent(manufacturerName)}`,
-                });
-            } else {
-                newBreadcrumbLinks.push({
-                    label: t('manufacturerCatalog'),
-                    path: `/marketplace/catalog?repoUrl=${encodeURIComponent(aasOriginUrl)}`,
-                });
-            }
-        }   
-
-        const nameplate = findSubmodelByIdOrSemanticId(
-            submodels,
-            SubmodelSemanticIdEnum.NameplateV2,
-            'Nameplate',
-        );
-
-        if (nameplate) {
-            const productBreadcrumbProperties = [
-                { idShort: 'ManufacturerProductRoot', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductRoot },
-                { idShort: 'ManufacturerProductFamily', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductFamily },
-                { idShort: 'ManufacturerProductType', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductType }
-            ];
-
-            productBreadcrumbProperties.forEach(prop => {
-                const value = findValueByIdShort(
-                    nameplate.submodelElements,
-                    prop.idShort,
-                    prop.semanticId,
-                    locale,
-                );
-                if (value && !newBreadcrumbLinks.some(link => link.label === value)) {
+                    if (manufacturerInfo && manufacturerInfo.name) {
+                        const manufacturerName = manufacturerInfo.name;
+                        newBreadcrumbLinks.push({
+                            label: manufacturerName.charAt(0).toUpperCase() + manufacturerName.slice(1),
+                            path: `/marketplace/catalog?manufacturer=${encodeURIComponent(manufacturerName)}`,
+                        });
+                    } else {
+                        // Fallback if no manufacturer found in database or no name set
+                        newBreadcrumbLinks.push({
+                            label: t('manufacturerCatalog'),
+                            path: `/marketplace/catalog?repoUrl=${encodeURIComponent(aasOriginUrl)}`,
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error fetching manufacturer info:', error);
+                    // Fallback on error
                     newBreadcrumbLinks.push({
-                        label: value,
-                        path: '',
+                        label: t('manufacturerCatalog'),
+                        path: `/marketplace/catalog?repoUrl=${encodeURIComponent(aasOriginUrl)}`,
                     });
                 }
-            });
-        }
+            }   
 
-        setBreadcrumbLinks(newBreadcrumbLinks);
-    }, [aasOriginUrl, submodels, locale]);
+            const nameplate = findSubmodelByIdOrSemanticId(
+                submodels,
+                SubmodelSemanticIdEnum.NameplateV2,
+                'Nameplate',
+            );
+
+            if (nameplate) {
+                const productBreadcrumbProperties = [
+                    { idShort: 'ManufacturerProductRoot', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductRoot },
+                    { idShort: 'ManufacturerProductFamily', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductFamily },
+                    { idShort: 'ManufacturerProductType', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductType }
+                ];
+
+                productBreadcrumbProperties.forEach(prop => {
+                    const value = findValueByIdShort(
+                        nameplate.submodelElements,
+                        prop.idShort,
+                        prop.semanticId,
+                        locale,
+                    );
+                    if (value && !newBreadcrumbLinks.some(link => link.label === value)) {
+                        newBreadcrumbLinks.push({
+                            label: value,
+                            path: '',
+                        });
+                    }
+                });
+            }
+
+            setBreadcrumbLinks(newBreadcrumbLinks);
+        };
+
+        fetchManufacturerData();
+    }, [aasOriginUrl, submodels, locale, t]);
 
     return (
         <Box sx={pageStyles}>

@@ -90,4 +90,10 @@ export class PrismaConnector implements IPrismaConnector {
             },
         });
     }
+
+    async getRepositoryConfigurationByRepositoryUrl(repositoryUrl: string) {
+        return prisma?.mnestixConnection.findFirst({
+            where: { url: repositoryUrl },
+        });
+    }
 }
