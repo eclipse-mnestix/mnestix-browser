@@ -4,7 +4,7 @@ import { CheckboxFilterState } from 'app/[locale]/marketplace/catalog/_component
 import { SimpleTreeView, TreeItem } from '@mui/x-tree-view';
 import { Box, Checkbox, Typography } from '@mui/material';
 
-export function VecFilter(props: { vecFilters: string[]; onFilterChanged(query: FilterQuery[]): void }) {
+export function VecFilter(props: { vecFilters: string[]; onFilterChanged(query: FilterQuery[]): void, resetFilters: boolean }) {
     const [selectedFilters, setSelectedFilters] = useState<CheckboxFilterState>(() => {
         const initialState: Record<string, boolean> = {};
         props.vecFilters.forEach((filter) => {
@@ -17,6 +17,14 @@ export function VecFilter(props: { vecFilters: string[]; onFilterChanged(query: 
         const selectedVecs = Object.keys(selectedFilters).filter((key) => selectedFilters[key]);
         props.onFilterChanged(selectedVecs.map((vec) => ({ key: 'VEC', value: vec })));
     }, [selectedFilters]);
+
+    useEffect(() => {
+        const resetState: CheckboxFilterState = {};
+        props.vecFilters.forEach((filter) => {
+            resetState[filter] = false;
+        });
+        setSelectedFilters(resetState);
+    }, [props.resetFilters]);
 
     function onFilterChange(vec: string, checked: boolean) {
         setSelectedFilters((prevState) => ({
@@ -41,6 +49,7 @@ export function VecFilter(props: { vecFilters: string[]; onFilterChanged(query: 
                             <Checkbox
                                 checked={selectedFilters[vec] || false}
                                 onChange={(event) => onFilterChange(vec, event.target.checked)}
+                                sx={{ padding: '6px' }}
                             />
                             <Typography>{vec.replace('PrimaryPartType_', '')}</Typography>
                         </Box>

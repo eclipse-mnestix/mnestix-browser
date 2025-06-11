@@ -53,17 +53,21 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                             <Box display="flex" alignItems="start" flex={1} gap={1}>
                                 <Box display="flex" flexDirection="column" flex={1} gap={1}>
                                     <Controller
-                                        name={`aasRepository.${index}.url`}
+                                        name={`aasRepository.${index}.name`}
                                         control={control}
-                                        defaultValue={field.url ?? ''}
+                                        defaultValue={field.name ?? ''}
                                         rules={{
-                                            required: t('urlFieldRequired'),
-                                            validate: validateNoTrailingSlash,
+                                            validate: function uniqueNameValidation(value: string): ValidateResult {
+                                                const values = getValues('aasRepository');
+                                                const isDuplicate =
+                                                    values.filter((item) => item.name === value).length > 1;
+                                                return !isDuplicate || t('aasRepository.noDuplicatedNames');
+                                            },
                                         }}
                                         render={({ field, fieldState: { error } }) => (
                                             <TextField
                                                 {...field}
-                                                label={t('aasRepository.repositoryUrlLabel')}
+                                                label={t('aasRepository.nameLabel')}
                                                 sx={{ flexGrow: 1, mr: 1 }}
                                                 fullWidth={true}
                                                 error={!!error}
@@ -71,6 +75,7 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                             />
                                         )}
                                     />
+
                                     <Controller
                                         name={`aasRepository.${index}.image`}
                                         control={control}
@@ -98,21 +103,17 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                 </Box>
                                 <Box display="flex" flexDirection="column" flex={1} gap={1}>
                                     <Controller
-                                        name={`aasRepository.${index}.name`}
+                                        name={`aasRepository.${index}.url`}
                                         control={control}
-                                        defaultValue={field.name ?? ''}
+                                        defaultValue={field.url ?? ''}
                                         rules={{
-                                            validate: function uniqueNameValidation(value: string): ValidateResult {
-                                                const values = getValues('aasRepository');
-                                                const isDuplicate =
-                                                    values.filter((item) => item.name === value).length > 1;
-                                                return !isDuplicate || t('aasRepository.noDuplicatedNames');
-                                            },
+                                            required: t('urlFieldRequired'),
+                                            validate: validateNoTrailingSlash,
                                         }}
                                         render={({ field, fieldState: { error } }) => (
                                             <TextField
                                                 {...field}
-                                                label={t('aasRepository.nameLabel')}
+                                                label={t('aasRepository.repositoryUrlLabel')}
                                                 sx={{ flexGrow: 1, mr: 1 }}
                                                 fullWidth={true}
                                                 error={!!error}
@@ -141,6 +142,9 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                     <Tooltip title={t('aasRepository.notYetSupported')}>
                                         <TextField label="Commercial Data URL" disabled />
                                     </Tooltip>
+                                    <Tooltip title={t('aasRepository.submodelRepositoryHint')}>
+                                        <TextField label="Submodel Repository URL" disabled />
+                                    </Tooltip>
                                 </Box>
                             </Box>
                             <IconButton>
@@ -152,10 +156,11 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                             <Box display="flex" flexDirection="column" flex={1} gap={2}>
                                 <Box>
                                     <Typography sx={{ fontSize: '0.8rem', color: 'text.secondary' }}>
-                                        {t('aasRepository.repositoryUrlLabel')}
+                                        {t('aasRepository.nameLabel')}
                                     </Typography>
-                                    <Typography>{renderUrlValue(getValues(`aasRepository.${index}.url`))}</Typography>
+                                    <Typography>{renderUrlValue(getValues(`aasRepository.${index}.name`))}</Typography>
                                 </Box>
+
                                 <Box>
                                     <Typography sx={{ fontSize: '0.8rem', color: 'text.secondary' }}>
                                         {t('aasRepository.imageUrlLabel')}
@@ -177,9 +182,9 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                             <Box display="flex" flexDirection="column" flex={1} gap={2}>
                                 <Box>
                                     <Typography sx={{ fontSize: '0.8rem', color: 'text.secondary' }}>
-                                        {t('aasRepository.nameLabel')}
+                                        {t('aasRepository.repositoryUrlLabel')}
                                     </Typography>
-                                    <Typography>{renderUrlValue(getValues(`aasRepository.${index}.name`))}</Typography>
+                                    <Typography>{renderUrlValue(getValues(`aasRepository.${index}.url`))}</Typography>
                                 </Box>
                                 <Box>
                                     <Typography sx={{ fontSize: '0.8rem', color: 'text.secondary' }}>
