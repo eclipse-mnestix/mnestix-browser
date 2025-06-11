@@ -200,7 +200,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             Object.values(el || {}).forEach((marking) => {
                 Object.values(marking || {}).forEach((markingProperty: ISubmodelElement) => {
                     if (markingProperty?.idShort === 'MarkingName' && (markingProperty as Property).value) {
-                        console.log(markingProperty);
                         result.push((markingProperty as Property).value || '');
                     }
                 });
