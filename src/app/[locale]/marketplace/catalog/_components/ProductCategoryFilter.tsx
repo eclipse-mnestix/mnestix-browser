@@ -27,6 +27,7 @@ interface ProductCategory {
 export function ProductCategoryFilter(props: {
     productCategoryFilters: ProductCategory[];
     onFilterChanged(query: FilterQuery[]): void;
+    resetFilters: boolean;
 }) {
     const [filters, setFilters] = useState<ProductCategory[]>(props.productCategoryFilters);
 
@@ -50,6 +51,24 @@ export function ProductCategoryFilter(props: {
         });
         props.onFilterChanged(selected);
     }, [filters]);
+
+    useEffect(() => {
+        const resetFilters = props.productCategoryFilters.map((category) => ({
+            ProductRoot: {
+                ...category.ProductRoot,
+                value: false,
+                ProductFamilies: category.ProductRoot.ProductFamilies.map((family) => ({
+                    ...family,
+                    value: false,
+                    ProductDesignations: family.ProductDesignations.map((designation) => ({
+                        ...designation,
+                        value: false,
+                    })),
+                })),
+            },
+        }));
+        setFilters(resetFilters);
+    }, [props.resetFilters]);
 
     function updateActiveFilters(
         prevFilters: ProductCategory[],

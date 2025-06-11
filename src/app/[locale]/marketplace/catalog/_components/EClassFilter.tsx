@@ -8,7 +8,7 @@ export interface CheckboxFilterState {
     [key: string]: boolean;
 }
 
-export function EClassFilter(props: { eClassFilters: string[]; onFilterChanged(query: FilterQuery[]): void }) {
+export function EClassFilter(props: { eClassFilters: string[]; onFilterChanged(query: FilterQuery[]): void; resetFilters: boolean }) {
     const t = useTranslations('pages.catalog');
     const [selectedFilters, setSelectedFilters] = useState<CheckboxFilterState>(() => {
         const initialState: CheckboxFilterState = {};
@@ -26,6 +26,14 @@ export function EClassFilter(props: { eClassFilters: string[]; onFilterChanged(q
             }),
         );
     }, [selectedFilters]);
+
+    useEffect(() => {
+        const resetState: CheckboxFilterState = {};
+        props.eClassFilters.forEach((filter) => {
+            resetState[filter] = false;
+        });
+        setSelectedFilters(resetState);
+    }, [props.resetFilters]);
 
     function onFilterChange(eClass: string, checked: boolean) {
         setSelectedFilters((prevState) => ({
