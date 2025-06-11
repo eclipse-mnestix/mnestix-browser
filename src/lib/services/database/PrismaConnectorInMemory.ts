@@ -38,7 +38,7 @@ export class PrismaConnectorInMemory implements IPrismaConnector {
         throw new Error('Method not implemented.');
     }
 
-    getManufacturerByRepositoryUrl(_repositoryUrl: string): Promise<MnestixConnection | null> {
+    getRepositoryConfigurationByRepositoryUrl(_repositoryUrl: string): Promise<MnestixConnection | null> {
         throw new Error('Method not implemented.');
     }
 }

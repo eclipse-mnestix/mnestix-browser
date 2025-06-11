@@ -1,4 +1,4 @@
-import { BreadcrumbLink } from "components/basics/Breadcrumbs";
+import { BreadcrumbLink } from 'components/basics/Breadcrumbs';
 
 /**
  * Returns the breadcrumb links for the catalog.
