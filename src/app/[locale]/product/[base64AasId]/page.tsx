@@ -18,7 +18,7 @@ import { useLocale } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
-import { Breadcrumbs } from 'components/basics/Breadcrumbs';
+import { BreadcrumbLink, Breadcrumbs } from 'components/basics/Breadcrumbs';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { getRepositoryConfigurationByRepositoryUrlAction } from 'lib/services/database/connectionServerActions';
 import { useTranslations } from 'next-intl';
@@ -62,7 +62,7 @@ export default function Page() {
     const encodedRepoUrl = useSearchParams().get('repoUrl');
     const repoUrl = encodedRepoUrl ? decodeURI(encodedRepoUrl) : undefined;
     const [filteredSubmodels, setFilteredSubmodels] = useState<SubmodelOrIdReference[]>([]);
-    const [breadcrumbLinks, setBreadcrumbLinks] = useState<Array<{ label: string, path: string }>>([]);
+    const [breadcrumbLinks, setBreadcrumbLinks] = useState<BreadcrumbLink[]>([]);
     const [isBreadcrumbsLoading, setIsBreadcrumbsLoading] = useState(true);
 
     const { aasFromContext, isLoadingAas, aasOriginUrl, submodels, isSubmodelsLoading } = useAasLoader(

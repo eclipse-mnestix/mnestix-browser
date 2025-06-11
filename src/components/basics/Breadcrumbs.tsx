@@ -3,8 +3,10 @@ import { Box, Typography, Link as MuiLink } from '@mui/material';
 import NextLink from 'next/link';
 import { Fragment } from 'react';
 
+export type BreadcrumbLink = { label: string; path: string };
+
 type BreadcrumbsProps = {
-    links?: Array<{ label: string; path: string }>;
+    links?: BreadcrumbLink[];
 };
 
 export function Breadcrumbs(props: BreadcrumbsProps) {

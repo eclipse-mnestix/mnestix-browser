@@ -1,3 +1,5 @@
+import { BreadcrumbLink } from "components/basics/Breadcrumbs";
+
 /**
  * Returns the breadcrumb links for the catalog.
  * The first letter of each breadcrumb label is capitalized.
@@ -9,12 +11,12 @@ export function getCatalogBreadcrumbs(
     t: (key: string) => string,
     manufacturer?: string | null,
     repositoryUrl?: string | null
-): Array<{ label: string; path: string }> {
+): BreadcrumbLink[] {
     function capitalizeFirstLetter(text: string): string {
         if (!text) return '';
         return text.charAt(0).toUpperCase() + text.slice(1);
     }
-    const links: Array<{ label: string; path: string }> = [];
+    const links: BreadcrumbLink[] = [];
     if (manufacturer) {
         links.push({
             label: capitalizeFirstLetter(manufacturer),
