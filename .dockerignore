@@ -13,3 +13,4 @@ yarn-error.log*
 cypress-artifacts
 Dockerfile
 docker-compose
+prisma/database

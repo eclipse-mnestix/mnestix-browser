@@ -18,6 +18,7 @@ FROM deps AS builder
 WORKDIR /app
 COPY . .
 
+# Run initial database setup: apply migrations and generate Prisma client
 RUN yarn prisma migrate deploy
 RUN yarn prisma generate
 

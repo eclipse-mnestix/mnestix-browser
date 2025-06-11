@@ -18,7 +18,8 @@ by XITASO
 EOF
 echo -e '\033[0m' # Reset to default color
 
-# Deploy database migrations
+# Apply any new database migrations to ensure the schema is up-to-date with the latest application version.
+# This step supports upgrades for existing databases by applying pending migrations before starting the application.
 status_output=$(yarn prisma migrate status --schema=/app/prisma/schema.prisma 2>&1 || true)
 if echo "$status_output" | grep -q "Database schema is up to date!"; then
   echo "No pending migrations found."
