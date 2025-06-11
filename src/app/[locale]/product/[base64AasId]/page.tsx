@@ -1,6 +1,6 @@
 'use client';
 
-import { Box } from '@mui/material';
+import { Box, Skeleton } from '@mui/material';
 import { safeBase64Decode } from 'lib/util/Base64Util';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import {
@@ -18,18 +18,52 @@ import { useLocale } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
-import { Breadcrumbs } from 'components/basics/Breadcrumbs';
+import { BreadcrumbLink, Breadcrumbs } from 'components/basics/Breadcrumbs';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
+import { getRepositoryConfigurationByRepositoryUrlAction } from 'lib/services/database/connectionServerActions';
+import { useTranslations } from 'next-intl';
+
+const pageStyles = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '30px',
+    alignItems: 'center',
+    marginBottom: '50px',
+    marginTop: '20px',
+};
+
+const viewerStyles = {
+    maxWidth: '1125px',
+    width: '90%',
+    margin: '0 auto',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
+};
+
+function BreadcrumbsSkeleton() {
+    return (
+        <Box display="flex" alignItems="center">
+            <Skeleton variant="circular" width={20} height={20} />
+            <Skeleton variant="text" width={16} height={20} sx={{ mx: 1 }} />
+            <Skeleton variant="text" width={120} height={20} />
+            <Skeleton variant="text" width={16} height={20} sx={{ mx: 1 }} />
+            <Skeleton variant="text" width={100} height={20} />
+        </Box>
+    );
+}
 
 export default function Page() {
     const searchParams = useParams<{ base64AasId: string }>();
     const base64AasId = decodeURIComponent(searchParams.base64AasId).replace(/=+$|[%3D]+$/, '');
     const isMobile = useIsMobile();
     const locale = useLocale();
+    const t = useTranslations('pages.catalog');
     const encodedRepoUrl = useSearchParams().get('repoUrl');
     const repoUrl = encodedRepoUrl ? decodeURI(encodedRepoUrl) : undefined;
     const [filteredSubmodels, setFilteredSubmodels] = useState<SubmodelOrIdReference[]>([]);
-    const [breadcrumbLinks] = useState<Array<{ label: string; path: string }>>([]);
+    const [breadcrumbLinks, setBreadcrumbLinks] = useState<BreadcrumbLink[]>([]);
+    const [isBreadcrumbsLoading, setIsBreadcrumbsLoading] = useState(true);
 
     const { aasFromContext, isLoadingAas, aasOriginUrl, submodels, isSubmodelsLoading } = useAasLoader(
         base64AasId,
@@ -69,53 +103,84 @@ export default function Page() {
         }
     }, [submodels]);
 
-    const nameplate = findSubmodelByIdOrSemanticId(submodels, SubmodelSemanticIdEnum.NameplateV2, 'Nameplate');
+    useEffect(() => {
+        const fetchManufacturerData = async () => {
+            setIsBreadcrumbsLoading(true);
+            const newBreadcrumbLinks: Array<{ label: string, path: string }> = [];                
+            if (aasOriginUrl) {
+                try {
+                    // Get manufacturer information from Prisma database
+                    const manufacturerInfo = await getRepositoryConfigurationByRepositoryUrlAction(aasOriginUrl);
 
-    if (nameplate) {
-        const productBreadcrumbProperties = [
-            { idShort: 'ManufacturerProductRoot', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductRoot },
-            {
-                idShort: 'ManufacturerProductFamily',
-                semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductFamily,
-            },
-            { idShort: 'ManufacturerProductType', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductType },
-        ];
+                    if (manufacturerInfo && manufacturerInfo.name) {
+                        const manufacturerName = manufacturerInfo.name;
+                        newBreadcrumbLinks.push({
+                            label: manufacturerName.charAt(0).toUpperCase() + manufacturerName.slice(1),
+                            path: `/marketplace/catalog?manufacturer=${encodeURIComponent(manufacturerName)}`,
+                        });
+                    } else {
+                        newBreadcrumbLinks.push({
+                            label: t('manufacturerCatalog'),
+                            path: `/marketplace/catalog?repoUrl=${encodeURIComponent(aasOriginUrl)}`,
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error fetching manufacturer info:', error);
+                    // Fallback on error
+                    newBreadcrumbLinks.push({
+                        label: t('manufacturerCatalog'),
+                        path: `/marketplace/catalog?repoUrl=${encodeURIComponent(aasOriginUrl)}`,
+                    });
+                }
+            }   
 
-        productBreadcrumbProperties.forEach((prop) => {
-            const value = findValueByIdShort(nameplate.submodelElements, prop.idShort, prop.semanticId, locale);
-            if (value && !breadcrumbLinks.some((link) => link.label === value)) {
-                breadcrumbLinks.push({
-                    label: value,
-                    path: '',
+            const nameplate = findSubmodelByIdOrSemanticId(
+                submodels,
+                SubmodelSemanticIdEnum.NameplateV2,
+                'Nameplate',
+            );
+
+            if (nameplate) {
+                const productBreadcrumbProperties = [
+                    { idShort: 'ManufacturerProductRoot', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductRoot },
+                    { idShort: 'ManufacturerProductFamily', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductFamily },
+                    { idShort: 'ManufacturerProductType', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductType }
+                ];
+
+                productBreadcrumbProperties.forEach(prop => {
+                    const value = findValueByIdShort(
+                        nameplate.submodelElements,
+                        prop.idShort,
+                        prop.semanticId,
+                        locale,
+                    );
+                    if (value && !newBreadcrumbLinks.some(link => link.label === value)) {
+                        newBreadcrumbLinks.push({
+                            label: value,
+                            path: '',
+                        });
+                    }
                 });
+                setIsBreadcrumbsLoading(false);
             }
-        });
-    }
 
-    const pageStyles = {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '30px',
-        alignItems: 'center',
-        marginBottom: '50px',
-        marginTop: '20px',
-    };
+            setBreadcrumbLinks(newBreadcrumbLinks);
+        };
+        
+        fetchManufacturerData();
 
-    const viewerStyles = {
-        maxWidth: '1125px',
-        width: '90%',
-        margin: '0 auto',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '20px',
-    };
+    }, [submodels, aasOriginUrl]);
 
     return (
         <Box sx={pageStyles}>
             {aasFromContext || isLoadingAas ? (
                 <Box sx={viewerStyles}>
                     <Box>
-                        <Breadcrumbs links={breadcrumbLinks} />
+                        {isBreadcrumbsLoading ? (
+                            <BreadcrumbsSkeleton />
+                        ) : (
+                            <Breadcrumbs links={breadcrumbLinks} />
+                        )}
                     </Box>
                     <ProductOverviewCard
                         aas={aasFromContext}

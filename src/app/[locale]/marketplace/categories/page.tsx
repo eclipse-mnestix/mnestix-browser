@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { Breadcrumbs } from 'components/basics/Breadcrumbs';
+import { BreadcrumbLink, Breadcrumbs } from 'components/basics/Breadcrumbs';
 
 /**
  WIP -> needs to be combined with other catalog page configuration
@@ -78,7 +78,7 @@ export default function Page() {
     const navigate = useRouter();
     const theme = useTheme();
     const t = useTranslations('pages.catalog');
-    const [breadcrumbLinks] = useState<Array<{ label: string, path: string }>>([]);
+    const [breadcrumbLinks] = useState<BreadcrumbLink[]>([]);
     const loadCategories = (manufacturerName: string) => {
         const selected = hardcodedCatalogConfiguration.find(
             (config) => config.manufacturerName === manufacturerName

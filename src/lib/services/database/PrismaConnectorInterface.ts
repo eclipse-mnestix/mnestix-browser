@@ -11,4 +11,6 @@ export interface IPrismaConnector {
     getRepositoryConfigurationGroups(): Promise<MnestixConnection[]>;
 
     getRepositoryConfigurationGroupByName(name: string): Promise<MnestixConnection | null>;
+
+    getRepositoryConfigurationByRepositoryUrl(repositoryUrl: string): Promise<MnestixConnection | null>;
 }

@@ -65,7 +65,7 @@ export const TechnicalDataElement = (props: {
             semanticIds.map(async (semanticId) => {
                 if (semanticId) {
                     const result = await getConceptDescriptionById(semanticId);
-                    if (result.isSuccess) return { [semanticId]: result.result };
+                    if (result?.isSuccess) return { [semanticId]: result.result };
                 }
                 return null;
             }),
