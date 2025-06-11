@@ -15,7 +15,7 @@ import { ProductOverviewCard } from '../_components/ProductOverviewCard';
 import { NoSearchResult } from 'components/basics/detailViewBasics/NoSearchResult';
 import { useAasLoader } from 'lib/hooks/UseAasDataLoader';
 import { useLocale } from 'next-intl';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
