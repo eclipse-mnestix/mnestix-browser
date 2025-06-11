@@ -3,8 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { DataRow } from 'components/basics/DataRow';
 import {
     AssetAdministrationShell,
-    ISubmodelElement,
-    Submodel,
+    ISubmodelElement, Property,
     SubmodelElementCollection,
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
@@ -20,11 +19,10 @@ import {
     findSubmodelElementByIdShort,
 } from 'lib/util/SubmodelResolverUtil';
 import { MobileAccordion } from 'components/basics/detailViewBasics/MobileAccordion';
-import { ProductClassificationInfoBox } from './ProductClassificationInfoBox';
+import { KeyFactsBox } from 'app/[locale]/product/_components/KeyFactsBox';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { useProductImageUrl } from 'lib/hooks/UseProductImageUrl';
 import { useFindValueByIdShort } from 'lib/hooks/useFindValueByIdShort';
-import { MarkingsComponent } from 'app/[locale]/viewer/_components/submodel-elements/marking-components/MarkingsComponent';
 import { ActionMenu } from './ProductActionMenu';
 
 type ProductOverviewCardProps = {
@@ -53,7 +51,7 @@ type OverviewData = {
     readonly manufacturerOrderCode?: string;
     readonly manufacturerLogo: ISubmodelElement | null;
     readonly companyLogo: ISubmodelElement | null;
-    readonly markings?: SubmodelElementCollection;
+    readonly markings: string[] | null;
     readonly productClassifications?: ProductClassification[];
 };
 
@@ -65,7 +63,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
     const [overviewData, setOverviewData] = useState<OverviewData>();
     const findValue = useFindValueByIdShort();
     const productImageUrl = useProductImageUrl(props.aas, props.repositoryURL, props.productImage);
-    const [nameplateSubmodel, setNameplateSubmodel] = useState<Submodel | undefined>(undefined);
 
     useEffect(() => {
         if (props.submodels && props.submodels.length > 0) {
@@ -83,7 +80,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                 SubmodelSemanticIdEnum.NameplateV2,
                 'Nameplate',
             );
-            setNameplateSubmodel(nameplate);
             if (nameplate?.submodelElements) {
                 prepareNameplateData(nameplate.submodelElements);
             }
@@ -150,6 +146,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             manufacturerArticleNumber: manufacturerArticleNumber ?? '-',
             manufacturerOrderCode: manufacturerOrderCode ?? '-',
             companyLogo: null,
+            markings: null,
             manufacturerLogo: manufacturerLogo,
         });
     }; const prepareNameplateData = (nameplateSubmodelElements: Array<ISubmodelElement>) => {
@@ -168,11 +165,13 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             'ManufacturerProductType',
             SubmodelElementSemanticIdEnum.ManufacturerProductType
         );
-        const markings = findSubmodelElementByIdShort(
+        const markingsElement = findSubmodelElementByIdShort(
             nameplateSubmodelElements,
             'Markings',
             SubmodelElementSemanticIdEnum.MarkingsV3,
-        );
+        ) as SubmodelElementCollection;
+        const markings = prepareMarkingTexts(markingsElement || null);
+
         const companyLogo = findSubmodelElementByIdShort(
             nameplateSubmodelElements,
             'CompanyLogo',
@@ -183,10 +182,31 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             manufacturerProductRoot: manufacturerProductRoot ?? '-',
             manufacturerProductFamily: manufacturerProductFamily ?? '-',
             manufacturerProductType: manufacturerProductType ?? '-',
-            markings: markings as SubmodelElementCollection,
+            markings: markings,
             manufacturerLogo: prevData?.manufacturerLogo || null,
             companyLogo: companyLogo || null,
         }));
+    };
+
+    /**
+     * Prepare marking texts from the SubmodelElementCollection by extracting the 'MarkingName' properties.
+     * @param markings
+     */
+    const prepareMarkingTexts = (markings: SubmodelElementCollection | null): string[] => {
+        if (!markings?.value) return [];
+
+        const result: string[] = [];
+        markings.value.forEach((el) => {
+            Object.values(el || {}).forEach((marking) => {
+                Object.values(marking || {}).forEach((markingProperty: ISubmodelElement) => {
+                    if (markingProperty?.idShort === 'MarkingName' && (markingProperty as Property).value) {
+                        console.log(markingProperty);
+                        result.push((markingProperty as Property).value || '');
+                    }
+                });
+            });
+        });
+        return result;
     };
 
     const infoBoxStyle = {
@@ -286,19 +306,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
         </Box>
     );
 
-    const markings = (
-        <Box sx={infoBoxStyle} data-testid="markings-data">
-            {overviewData?.markings && nameplateSubmodel?.id && (
-                <MarkingsComponent
-                    submodelElement={overviewData?.markings}
-                    submodelId={nameplateSubmodel?.id}
-                    columnDisplay
-                    hasDivider={false}
-                ></MarkingsComponent>
-            )}
-        </Box>
-    );
-
     return (
         <Card>
             <CardContent sx={cardContentStyle}>
@@ -385,7 +392,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                     <Divider sx={{ mb: 2 }} />
                                     <Box sx={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
                                         {productInfo}
-                                        {markings}
                                     </Box>
                                 </Box>
                             </>
@@ -394,7 +400,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                 )}
             </CardContent>
             {overviewData?.productClassifications && overviewData.productClassifications.length > 0 && (
-                <ProductClassificationInfoBox productClassifications={overviewData.productClassifications} />
+                <KeyFactsBox productClassifications={overviewData.productClassifications} markings={overviewData.markings ?? []}/>
             )}
         </Card>
     );
