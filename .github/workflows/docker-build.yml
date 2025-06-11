@@ -77,6 +77,7 @@ jobs:
   e2e-tests:
     name: e2e test matrix
     runs-on: ubuntu-latest
+    if: false # disable by default, enable with workflow_dispatch
     needs: ['build-browser-image']
     permissions:
       contents: read
@@ -241,7 +242,7 @@ jobs:
         uses: ./.github/actions/setup-build
         with:
           docker_username: ${{ secrets.DOCKER_USERNAME }}
-          docker_password: ${{ secrets.DOCKER_PASSWORD }}
+          docker_password: ${{ secrets.DOCKER_API_TOKEN }}
 
       - name: Build and push docker images
         uses: docker/build-push-action@v6
@@ -277,7 +278,7 @@ jobs:
         uses: ./.github/actions/setup-build
         with:
           docker_username: ${{ secrets.DOCKER_USERNAME }}
-          docker_password: ${{ secrets.DOCKER_PASSWORD }}
+          docker_password: ${{ secrets.DOCKER_API_TOKEN }}
 
       - name: Build and push docker images
         uses: docker/build-push-action@v6
