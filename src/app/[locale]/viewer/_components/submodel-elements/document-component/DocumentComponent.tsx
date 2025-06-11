@@ -5,8 +5,6 @@ import { DataRow } from 'components/basics/DataRow';
 import { useState } from 'react';
 import { findAllSubmodelElementsBySemanticIdsOrIdShort } from 'lib/util/SubmodelResolverUtil';
 import { DocumentDetailsDialog } from './DocumentDetailsDialog';
-import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { checkFileExists } from 'lib/services/search-actions/searchActions';
 import { useTranslations } from 'next-intl';
 import { DocumentClassification } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentClassification';
 import { useFileViewObject } from 'app/[locale]/viewer/_components/submodel-elements/document-component/useDocumentVersionData';
@@ -25,15 +23,7 @@ type DocumentComponentProps = {
 export function DocumentComponent(props: DocumentComponentProps) {
     const t = useTranslations('components.documentComponent');
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
-    const [fileExists, setFileExists] = useState(true);
     const fileViewObject = useFileViewObject(props.submodelElement, props.submodelId);
-
-    useAsyncEffect(async () => {
-        if (fileViewObject?.digitalFileUrl) {
-            const checkResponse = await checkFileExists(fileViewObject.digitalFileUrl);
-            setFileExists(checkResponse.isSuccess && checkResponse.result);
-        }
-    }, [fileViewObject?.digitalFileUrl]);
 
     const handleDetailsClick = () => {
         setDetailsModalOpen(true);
@@ -49,6 +39,7 @@ export function DocumentComponent(props: DocumentComponentProps) {
             DocumentSpecificSemanticIdIrdi.DocumentClassification,
         ]) as SubmodelElementCollection[];
     }
+
     return (
         <DataRow hasDivider={props.hasDivider}>
             {fileViewObject && (
@@ -61,19 +52,12 @@ export function DocumentComponent(props: DocumentComponentProps) {
                         sx={{ mb: 1 }}
                     >
                         <Box display="flex" gap={1} flexDirection="row" sx={{ mb: 1 }}>
-                            {fileExists ? (
-                                <Link href={fileViewObject.digitalFileUrl} target="_blank">
-                                    <PreviewImage
-                                        previewImgUrl={fileViewObject.previewImgUrl}
-                                        mimeType={fileViewObject.mimeType}
-                                    />
-                                </Link>
-                            ) : (
+                            <Link href={fileViewObject.digitalFileUrl} target="_blank">
                                 <PreviewImage
                                     previewImgUrl={fileViewObject.previewImgUrl}
                                     mimeType={fileViewObject.mimeType}
                                 />
-                            )}
+                            </Link>
                             <Box>
                                 <Typography data-testid="document-title" variant="h5">
                                     {fileViewObject.title}
@@ -85,14 +69,14 @@ export function DocumentComponent(props: DocumentComponentProps) {
                                 )}
                                 <Button
                                     variant="outlined"
-                                    startIcon={fileExists ? <OpenInNew /> : ''}
+                                    startIcon={<OpenInNew />}
                                     sx={{ mt: 1 }}
                                     href={fileViewObject.digitalFileUrl}
                                     target="_blank"
-                                    disabled={!fileExists}
+                                    disabled={false}
                                     data-testid="document-open-button"
                                 >
-                                    {!fileExists ? t('fileNotFound') : t('open')}
+                                    {t('open')}
                                 </Button>
                             </Box>
                         </Box>
