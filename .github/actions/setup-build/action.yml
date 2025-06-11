@@ -10,9 +10,10 @@ inputs:
 outputs:
   branch:
     description: 'Extracted branch name'
+    value: ${{ steps.extract_branch.outputs.branch }}
 
 runs:
-  using: "composite"
+  using: 'composite'
 
   steps:
     - name: Restore amd64 cache
@@ -49,8 +50,3 @@ runs:
       id: extract_branch
       run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
       shell: bash
-
-outputs:
-  branch:
-    description: 'Extracted branch name'
-    value: ${{ steps.extract_branch.outputs.branch }}
