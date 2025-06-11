@@ -91,6 +91,7 @@ export function EClassFilter(props: { eClassFilters: string[]; onFilterChanged(q
                                 indeterminate={eClasses.some((eClass) => selectedFilters[eClass]) && !isGroupChecked}
                                 onChange={(event) => onGroupFilterChange(eClasses, event.target.checked)}
                                 onClick={(event) => event.stopPropagation()}
+                                sx={{ padding: '4px' }}
                             />
                             {resolveEclassLabel(group)}
                         </Box>
@@ -101,6 +102,7 @@ export function EClassFilter(props: { eClassFilters: string[]; onFilterChanged(q
                             <Checkbox
                                 checked={selectedFilters[eClass] || false}
                                 onChange={(event) => onFilterChange(eClass, event.target.checked)}
+                                sx={{ padding: '6px' }}
                             />
                             <Typography>{eClass}</Typography>
                         </Box>

@@ -167,6 +167,7 @@ export function ProductCategoryFilter(props: {
                                             onChange={(event) =>
                                                 updateCheckboxState(productCategory.ProductRoot, event.target.checked)
                                             }
+                                            sx={{ padding: '4px' }}
                                         />
                                         {productCategory.ProductRoot.name}
                                     </Box>
@@ -191,6 +192,7 @@ export function ProductCategoryFilter(props: {
                                                         onChange={(event) =>
                                                             updateCheckboxState(productFamily, event.target.checked)
                                                         }
+                                                        sx={{ padding: '4px' }}
                                                     />
                                                     {productFamily.name}
                                                 </Box>
@@ -213,6 +215,7 @@ export function ProductCategoryFilter(props: {
                                                                 event.target.checked,
                                                             )
                                                         }
+                                                        sx={{ padding: '6px' }}
                                                     />
                                                     <Typography>{productDesignation.name}</Typography>
                                                 </Box>

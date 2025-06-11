@@ -49,6 +49,7 @@ export function VecFilter(props: { vecFilters: string[]; onFilterChanged(query: 
                             <Checkbox
                                 checked={selectedFilters[vec] || false}
                                 onChange={(event) => onFilterChange(vec, event.target.checked)}
+                                sx={{ padding: '6px' }}
                             />
                             <Typography>{vec.replace('PrimaryPartType_', '')}</Typography>
                         </Box>
