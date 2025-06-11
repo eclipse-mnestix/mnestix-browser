@@ -73,7 +73,7 @@ export function KeyFactsBox({
                     </ValueContainer>
                 ))}
                 {markings && markings.map((markingText, index) => (
-                    <ValueContainer key={`classification-${index}`}>
+                    <ValueContainer key={`classification-${index}`} data-testid="markings-element">
                             <Chip
                                 sx={{ color: 'primary.main', backgroundColor: 'grey.200', borderRadius: 5, padding: 0.5 }}
                                 label={markingText}
