@@ -5,6 +5,7 @@ networks:
 
 volumes:
   mnestix-database:
+  mnestix-mongodb-data:
 
 services:
   mnestix-browser:
@@ -100,6 +101,8 @@ services:
         max-size: '100m'
     networks:
       - mnestix-network
+    volumes:
+      - mnestix-mongodb-data:/data/db
 
   aas-environment:
     image: eclipsebasyx/aas-environment:2.0.0-milestone-05.1

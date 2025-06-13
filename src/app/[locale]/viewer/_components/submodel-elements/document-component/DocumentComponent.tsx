@@ -5,8 +5,6 @@ import { DataRow } from 'components/basics/DataRow';
 import { useState } from 'react';
 import { findAllSubmodelElementsBySemanticIdsOrIdShort } from 'lib/util/SubmodelResolverUtil';
 import { DocumentDetailsDialog } from './DocumentDetailsDialog';
-import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { checkFileExists } from 'lib/services/search-actions/searchActions';
 import { useTranslations } from 'next-intl';
 import { DocumentClassification } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentClassification';
 import { useFileViewObject } from 'app/[locale]/viewer/_components/submodel-elements/document-component/useDocumentVersionData';
@@ -25,16 +23,7 @@ type DocumentComponentProps = {
 export function DocumentComponent(props: DocumentComponentProps) {
     const t = useTranslations('components.documentComponent');
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
-    const [imageError, setImageError] = useState(false);
-    const [fileExists, setFileExists] = useState(true);
     const fileViewObject = useFileViewObject(props.submodelElement, props.submodelId);
-
-    useAsyncEffect(async () => {
-        if (fileViewObject?.digitalFileUrl) {
-            const checkResponse = await checkFileExists(fileViewObject.digitalFileUrl);
-            setFileExists(checkResponse.isSuccess && checkResponse.result);
-        }
-    }, [fileViewObject?.digitalFileUrl]);
 
     const handleDetailsClick = () => {
         setDetailsModalOpen(true);
@@ -44,17 +33,13 @@ export function DocumentComponent(props: DocumentComponentProps) {
         setDetailsModalOpen(false);
     };
 
-    const handleImageError = () => {
-        // TODO add information about the error to UI
-        setImageError(true);
-    };
-
     function getDocumentClassificationCollection() {
         return findAllSubmodelElementsBySemanticIdsOrIdShort(props.submodelElement.value, 'DocumentClassification', [
             DocumentSpecificSemanticId.DocumentClassification,
             DocumentSpecificSemanticIdIrdi.DocumentClassification,
         ]) as SubmodelElementCollection[];
     }
+
     return (
         <DataRow hasDivider={props.hasDivider}>
             {fileViewObject && (
@@ -67,47 +52,37 @@ export function DocumentComponent(props: DocumentComponentProps) {
                         sx={{ mb: 1 }}
                     >
                         <Box display="flex" gap={1} flexDirection="row" sx={{ mb: 1 }}>
-                            {fileExists ? (
-                                <Link href={fileViewObject.digitalFileUrl} target="_blank">
-                                    <PreviewImage
-                                        previewImgUrl={fileViewObject.previewImgUrl}
-                                        mimeType={fileViewObject.mimeType}
-                                        imageError={imageError}
-                                        handleImageError={handleImageError}
-                                    />
-                                </Link>
-                            ) : (
+                            <Link href={fileViewObject.digitalFileUrl} target="_blank">
                                 <PreviewImage
                                     previewImgUrl={fileViewObject.previewImgUrl}
                                     mimeType={fileViewObject.mimeType}
-                                    imageError={imageError}
-                                    handleImageError={handleImageError}
                                 />
-                            )}
+                            </Link>
                             <Box>
-                                <Typography data-testid="document-title" variant="h5">{fileViewObject.title}</Typography>
+                                <Typography data-testid="document-title" variant="h5">
+                                    {fileViewObject.title}
+                                </Typography>
                                 {fileViewObject.organizationName && (
-                                    <Typography
-                                        variant="body2"
-                                        data-testid="document-organization"
-                                    >
+                                    <Typography variant="body2" data-testid="document-organization">
                                         {fileViewObject.organizationName}
                                     </Typography>
                                 )}
                                 <Button
                                     variant="outlined"
-                                    startIcon={fileExists ? <OpenInNew /> : ''}
+                                    startIcon={<OpenInNew />}
                                     sx={{ mt: 1 }}
                                     href={fileViewObject.digitalFileUrl}
                                     target="_blank"
-                                    disabled={!fileExists}
                                     data-testid="document-open-button"
                                 >
-                                    {!fileExists ? t('fileNotFound') : t('open')}
+                                    {t('open')}
                                 </Button>
                             </Box>
                         </Box>
-                        <DocumentClassification classificationData={getDocumentClassificationCollection()} openDetailDialog={() => setDetailsModalOpen(true)} />
+                        <DocumentClassification
+                            classificationData={getDocumentClassificationCollection()}
+                            openDetailDialog={() => setDetailsModalOpen(true)}
+                        />
                     </Box>
                     <IconButton onClick={() => handleDetailsClick()} sx={{ ml: 1 }} data-testid="document-info-button">
                         <InfoOutlined />

@@ -17,7 +17,7 @@ export function SubmodelDetail(props: SubmodelDetailProps) {
     const CustomSubmodelComponent = key ? submodelCustomVisualizationMap[key] : undefined;
 
     return (
-        <Box width="100%">
+        <Box width="100%" key={props.submodel?.id}>
             {CustomSubmodelComponent ? (
                 <CustomSubmodelComponent submodel={props.submodel} />
             ) : (
