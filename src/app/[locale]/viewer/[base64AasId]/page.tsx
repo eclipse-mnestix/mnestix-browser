@@ -106,7 +106,11 @@ export default function Page() {
                         isAccordion={isMobile}
                         repositoryURL={aasOriginUrl}
                     />
-                    <SubmodelsOverviewCard submodelIds={submodels} submodelsLoading={isSubmodelsLoading} />
+                    <SubmodelsOverviewCard
+                        aas={aasFromContext}
+                        submodelIds={submodels}
+                        submodelsLoading={isSubmodelsLoading}
+                    />
                 </Box>
             ) : (
                 <NoSearchResult base64AasId={safeBase64Decode(base64AasId)} />
