@@ -73,7 +73,6 @@ export function DocumentComponent(props: DocumentComponentProps) {
                                     sx={{ mt: 1 }}
                                     href={fileViewObject.digitalFileUrl}
                                     target="_blank"
-                                    disabled={false}
                                     data-testid="document-open-button"
                                 >
                                     {t('open')}
