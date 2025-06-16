@@ -7,7 +7,7 @@ import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner
 import AasList from './AasList';
 import { useEnv } from 'app/EnvProvider';
 import { AasListComparisonHeader } from './AasListComparisonHeader';
-import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
+import { Box, Card, CardContent, IconButton, MenuItem, Select, Typography } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { SelectRepository } from './filter/SelectRepository';
@@ -38,6 +38,7 @@ export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }:
     const [currentCursor, setCurrentCursor] = useState<string>();
     const [cursorHistory, setCursorHistory] = useState<(string | undefined)[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
+    const [limit, setLimit] = useState(10);
 
     //Authentication
     const [needAuthentication, setNeedAuthentication] = useState<boolean>(false);
@@ -48,17 +49,21 @@ export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }:
         setNeedAuthentication(false);
     };
 
+    /**
+     * If the selected repository changes or the limit is updated,
+     * the list just needs to be reloaded and shows the first page.
+     */
     useAsyncEffect(async () => {
         resetPagination();
         await fetchListData();
-    }, [selectedRepository]);
+    }, [selectedRepository, limit]);
 
     const fetchListData = async (newCursor?: string | undefined, isNext = true) => {
         if (!selectedRepository) return;
 
         setIsLoadingList(true);
         clearResults();
-        const response = await getAasListEntities(selectedRepository!, 10, newCursor);
+        const response = await getAasListEntities(selectedRepository!, limit, newCursor);
 
         if (response.success) {
             setAasList(response);
@@ -121,8 +126,12 @@ export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }:
 
     const pagination = (
         <Box display="flex" justifyContent="flex-end" alignItems="center" marginTop={0}>
-            <Typography paddingRight="1.625rem" fontSize="0.75rem">
-                {t('page') + ' ' + (currentPage + 1)}
+            <Typography fontSize="0.75rem" paddingRight={.5}>Rows per page:</Typography>
+            <Select disableUnderline variant="standard" value={limit} onChange={(e) => setLimit(Number(e.target.value))} sx={{ fontSize: '0.75rem' }}>
+                {[10, 20, 50].map(value => (<MenuItem value={value}>{value}</MenuItem>))}
+            </Select>
+            <Typography paddingX="1.625rem" fontSize="0.75rem">
+                {t('page') + ': ' + (currentPage + 1)}
             </Typography>
             <IconButton onClick={handleGoBack} disabled={currentPage === 0} data-testid="list-back-button">
                 <ArrowBackIosNewIcon fontSize="small" />
