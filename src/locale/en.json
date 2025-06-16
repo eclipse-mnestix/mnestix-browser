@@ -262,12 +262,7 @@
       "articleCount": "{count, plural, =1 {# article} other {# articles}}",
       "filter": "Filter",
       "noSearcherWarning": "No AAS Searcher Configured. Showing AAS List as Fallback, filters won't work.",
-      "eclassCategories": {
-        "15": "Maintenance (Service)",
-        "27": "Electric engineering, automation, process control engineering ",
-        "44": "Automotive engineering, vehicle component",
-        "default": "Category "
-      },
+      "eclassDocumentationLink": "Open in ECLASS documentation",
       "searchPlaceholder": "Search currently unavailable..."
     },
     "compare": {
