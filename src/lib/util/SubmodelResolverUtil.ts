@@ -71,12 +71,19 @@ export function findSubmodelElementBySemanticIdsOrIdShort(
     semanticIds: string[] | null,
 ): ISubmodelElement | null {
     if (!elements) return null;
-    return elements?.find(el =>
-        el.idShort == idShort ||
-        (semanticIds?.some(semId => idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim()))) ||
-        (getKeyType(el) == KeyTypes.SubmodelElementCollection &&
-            findSubmodelElementBySemanticIdsOrIdShort((el as SubmodelElementCollection).value, idShort, semanticIds))
-    ) ?? null;
+    return (
+        elements?.find(
+            (el) =>
+                el.idShort == idShort ||
+                semanticIds?.some((semId) => idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim())) ||
+                (getKeyType(el) == KeyTypes.SubmodelElementCollection &&
+                    findSubmodelElementBySemanticIdsOrIdShort(
+                        (el as SubmodelElementCollection).value,
+                        idShort,
+                        semanticIds,
+                    )),
+        ) ?? null
+    );
 }
 
 export function findAllSubmodelElementsBySemanticIdsOrIdShort(
@@ -85,12 +92,19 @@ export function findAllSubmodelElementsBySemanticIdsOrIdShort(
     semanticIds: string[] | null,
 ): ISubmodelElement[] | null {
     if (!elements) return null;
-    return elements?.filter(el =>
-        el.idShort == idShort ||
-        (semanticIds?.some(semId => idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim()))) ||
-        (getKeyType(el) == KeyTypes.SubmodelElementCollection &&
-            findSubmodelElementBySemanticIdsOrIdShort((el as SubmodelElementCollection).value, idShort, semanticIds))
-    ) ?? null;
+    return (
+        elements?.filter(
+            (el) =>
+                el.idShort == idShort ||
+                semanticIds?.some((semId) => idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim())) ||
+                (getKeyType(el) == KeyTypes.SubmodelElementCollection &&
+                    findSubmodelElementBySemanticIdsOrIdShort(
+                        (el as SubmodelElementCollection).value,
+                        idShort,
+                        semanticIds,
+                    )),
+        ) ?? null
+    );
 }
 
 export function findValueByIdShort(
@@ -185,3 +199,21 @@ export function checkIfSubmodelHasIdShortOrSemanticId(
         submodel.submodel?.idShort === idShort
     );
 }
+
+export const translateListText = (property: { language: string; text: string }[] | undefined, locale: string) => {
+    if (!property) return '';
+    // try the current locale first
+    try {
+        const translatedString = property.find((prop) => prop.language === locale);
+        // if there is any locale, better show it instead of nothing
+        const fallback = property[0] ? property[0].text : '';
+        return translatedString ? translatedString.text : fallback;
+    } catch (e) {
+        // if the property is a string, return it directly
+        // this can happen if the property is not a MultiLanguageValueOnly type
+        // e.g. if the property is a AAS Property type (incorrect by specification but possible) string or an error occurs
+        if (typeof property === 'string') return property;
+        console.error('Error translating property:', e);
+        return '';
+    }
+};
