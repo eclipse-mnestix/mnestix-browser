@@ -130,32 +130,30 @@ export default function Page() {
                 )}
             </Box>
             <Box display="flex" flexDirection="row" marginBottom="1.5rem">
-                <Card
-                    sx={{
-                        minHeight: 480,
-                        minWidth: 250,
-                        maxWidth: 340,
-                        marginBottom: 'auto',
-                        p: 2,
-                        boxShadow: 1,
-                        borderRadius: 1,
-                        mr: 3,
-                    }}
-                    aria-label={t('filter')}
-                >
-                    {!fallbackToAasList && connection && connection.aasSearcher ? (
-                        <FilterContainer onFilterChanged={onFilterChanged} aasSearcherUrl={connection.aasSearcher} />
-                    ) : loading ? (
-                        <CenteredLoadingSpinner />
-                    ) : (
-                        <Box>
-                            <Typography variant="h4" fontWeight={600} mb={1}>
-                                {t('filter')}
-                            </Typography>
-                            <Typography mt={2}>{t('noSearcherWarning')}</Typography>
-                        </Box>
-                    )}
-                </Card>
+                {!fallbackToAasList && connection && connection.aasSearcher && (
+                    <Card
+                        sx={{
+                            minHeight: 480,
+                            minWidth: 250,
+                            maxWidth: 340,
+                            marginBottom: 'auto',
+                            p: 2,
+                            boxShadow: 1,
+                            borderRadius: 1,
+                            mr: 3,
+                        }}
+                        aria-label={t('filter')}
+                    >
+                        {loading ? (
+                            <CenteredLoadingSpinner />
+                        ) : (
+                            <FilterContainer
+                                onFilterChanged={onFilterChanged}
+                                aasSearcherUrl={connection?.aasSearcher}
+                            />
+                        )}
+                    </Card>
+                )}
                 <Box flex={1} minWidth={0}>
                     {loading ? (
                         <CenteredLoadingSpinner />
@@ -169,6 +167,7 @@ export default function Page() {
                         </Card>
                     ) : (
                         <Box>
+                            <Typography variant="body1" color="textSecondary" mb={2}>{t('noSearcherWarning')}</Typography>
                             <AasListDataWrapper repositoryUrl={repositoryUrl} hideRepoSelection={true} />
                         </Box>
                     )}

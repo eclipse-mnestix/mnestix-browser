@@ -8,6 +8,7 @@ import {
     SubmodelElementCollection,
     KeyTypes,
     IDataElement,
+    Reference,
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { idEquals } from './IdValidationUtil';
 import { getKeyType } from 'lib/util/KeyTypeUtil';

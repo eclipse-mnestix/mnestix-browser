@@ -262,12 +262,7 @@
       "articleCount": "{count, plural, =1 {# Artikel} other {# Artikel}}",
       "filter": "Filter",
       "noSearcherWarning": "Kein AAS Searcher konfiguriert. AAS Liste wird angezeigt, Filterung ist nicht möglich.",
-      "eclassCategories": {
-        "15": "Instandhaltung (Dienstleistung)",
-        "27": "Elektro-, Automatisierungs- und Prozessleittechnik",
-        "44": "Fahrzeugtechnik, Fahrzeugkomponente",
-        "default": "Kategorie "
-      },
+      "eclassDocumentationLink": "In ECLASS Dokumentation nachlesen",
       "searchPlaceholder": "Suche aktuell nicht verfügbar..."
     },
     "compare": {

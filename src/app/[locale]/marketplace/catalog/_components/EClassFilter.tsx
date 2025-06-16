@@ -1,14 +1,19 @@
 import { SimpleTreeView, TreeItem } from '@mui/x-tree-view';
-import { Box, Checkbox, Typography } from '@mui/material';
+import { Box, Checkbox, IconButton, Tooltip, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { FilterQuery } from 'app/[locale]/marketplace/catalog/_components/FilterContainer';
+import OpenInNew from '@mui/icons-material/OpenInNew';
 import { useTranslations } from 'next-intl';
 
 export interface CheckboxFilterState {
     [key: string]: boolean;
 }
 
-export function EClassFilter(props: { eClassFilters: string[]; onFilterChanged(query: FilterQuery[]): void; resetFilters: boolean }) {
+export function EClassFilter(props: {
+    eClassFilters: string[];
+    onFilterChanged(query: FilterQuery[]): void;
+    resetFilters: boolean;
+}) {
     const t = useTranslations('pages.catalog');
     const [selectedFilters, setSelectedFilters] = useState<CheckboxFilterState>(() => {
         const initialState: CheckboxFilterState = {};
@@ -42,75 +47,9 @@ export function EClassFilter(props: { eClassFilters: string[]; onFilterChanged(q
         }));
     }
 
-    function onGroupFilterChange(eClasses: string[], checked: boolean) {
-        setSelectedFilters((prevState) => {
-            const updatedFilters = { ...prevState };
-            eClasses.forEach((eClass) => {
-                updatedFilters[eClass] = checked;
-            });
-            return updatedFilters;
-        });
-    }
+    const eClassUrl = (eClass: string) =>
+        `https://eclass.eu/eclass-standard/content-suche/show?tx_eclasssearch_ecsearch%5Bdischarge%5D=0&tx_eclasssearch_ecsearch%5Bid%5D=${eClass.replaceAll('-', '')}&tx_eclasssearch_ecsearch%5Blanguage%5D=0`;
 
-    const resolveEclassLabel = (eClass: string) => {
-        switch (eClass) {
-            case '15':
-                return t('eclassCategories.15');
-            case '27':
-                return t('eclassCategories.27');
-            case '44':
-                return t('eclassCategories.44');
-            default:
-                return t('eclassCategories.default') + eClass;
-        }
-    };
-
-    function prepareEclassHierarchy(eClassFilters: string[]) {
-        const groupedFilters = eClassFilters.reduce(
-            (acc, eClass) => {
-                const group = eClass.slice(0, 2);
-                if (!acc[group]) {
-                    acc[group] = [];
-                }
-                acc[group].push(eClass);
-                return acc;
-            },
-            {} as Record<string, string[]>,
-        );
-
-        return Object.entries(groupedFilters).map(([group, eClasses]) => {
-            const isGroupChecked = eClasses.every((eClass) => selectedFilters[eClass]);
-            return (
-                <TreeItem
-                    key={group}
-                    itemId={group}
-                    label={
-                        <Box display="flex" alignItems="center">
-                            <Checkbox
-                                checked={isGroupChecked}
-                                indeterminate={eClasses.some((eClass) => selectedFilters[eClass]) && !isGroupChecked}
-                                onChange={(event) => onGroupFilterChange(eClasses, event.target.checked)}
-                                onClick={(event) => event.stopPropagation()}
-                                sx={{ padding: '4px' }}
-                            />
-                            {resolveEclassLabel(group)}
-                        </Box>
-                    }
-                >
-                    {eClasses.map((eClass) => (
-                        <Box key={eClass} display="flex" alignItems="center" ml={4}>
-                            <Checkbox
-                                checked={selectedFilters[eClass] || false}
-                                onChange={(event) => onFilterChange(eClass, event.target.checked)}
-                                sx={{ padding: '6px' }}
-                            />
-                            <Typography>{eClass}</Typography>
-                        </Box>
-                    ))}
-                </TreeItem>
-            );
-        });
-    }
     return (
         <SimpleTreeView>
             <TreeItem
@@ -121,7 +60,21 @@ export function EClassFilter(props: { eClassFilters: string[]; onFilterChanged(q
                     </Typography>
                 }
             >
-                {prepareEclassHierarchy(props.eClassFilters)}
+                {props.eClassFilters.map((eClass) => (
+                    <Box key={eClass} display="flex" alignItems="center">
+                        <Checkbox
+                            checked={selectedFilters[eClass] || false}
+                            onChange={(event) => onFilterChange(eClass, event.target.checked)}
+                            sx={{ padding: '6px' }}
+                        />
+                        <Typography>{eClass}</Typography>
+                        <Tooltip title={t('eclassDocumentationLink')}>
+                            <IconButton href={eClassUrl(eClass)} target="_blank">
+                                <OpenInNew />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
+                ))}
             </TreeItem>
         </SimpleTreeView>
     );
