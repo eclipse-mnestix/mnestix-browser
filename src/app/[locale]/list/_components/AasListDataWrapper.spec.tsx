@@ -127,7 +127,7 @@ describe('AASListDataWrapper', () => {
             await waitFor(async () => nextButton.click());
 
             expect(screen.getByText('assetId10', { exact: false })).toBeInTheDocument();
-            expect(screen.getByText('Page 2', { exact: false })).toBeInTheDocument();
+            expect(screen.getByText('Page: 2', { exact: false })).toBeInTheDocument();
             expect(screen.getByTestId('list-next-button')).toBeDisabled();
             expect(mockActionSecondPage).toBeCalledWith(REPOSITORY_URL, 10, FIRST_PAGE_CURSOR);
         });
@@ -144,7 +144,7 @@ describe('AASListDataWrapper', () => {
             await waitFor(async () => backButton.click());
 
             expect(screen.getByText('assetId3', { exact: false })).toBeInTheDocument();
-            expect(screen.getByText('Page 1', { exact: false })).toBeInTheDocument();
+            expect(screen.getByText('Page: 1', { exact: false })).toBeInTheDocument();
         });
     });
 });
