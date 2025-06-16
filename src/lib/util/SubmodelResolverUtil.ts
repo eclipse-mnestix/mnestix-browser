@@ -201,6 +201,24 @@ export function checkIfSubmodelHasIdShortOrSemanticId(
     );
 }
 
+/**
+ * Finds the first semantic ID key in the given submodel semanticId that matches a key in the [visualization] map.
+ *
+ * @param semanticId - The reference object containing semantic ID keys to search.
+ * @param map - The semanticIds map to check against the possible semanticIds
+ *
+ * @returns The string of the matching semanticId key as a key of `submodelCustomVisualizationMap`, or `undefined` if no match is found.
+ */
+export function findSemanticIdInMap<T extends Record<string, string | ((...args: unknown[]) => unknown)>>(
+    semanticId: Reference | null | undefined,
+    map: T,
+): keyof T | undefined {
+    // We have to use the idEquals function here to correctly handle IRDIs
+    return Object.keys(map).find((mapKey) => semanticId?.keys?.some((id) => idEquals(id.value, mapKey))) as
+        | keyof T
+        | undefined;
+}
+
 export const translateListText = (property: { language: string; text: string }[] | undefined, locale: string) => {
     if (!property) return '';
     // try the current locale first
