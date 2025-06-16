@@ -51,8 +51,8 @@ export function ManufacturerCard({ connection }: ManufacturerCardProps) {
                 <img
                     src={connection.image}
                     alt={`${manufacturer} Logo`}
-                    width={120}
-                    height={48}
+                    width={180}
+                    height={70}
                     style={{ objectFit: 'contain' }}
                 />
             ) : (

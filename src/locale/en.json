@@ -326,7 +326,8 @@
         "productDesignation": "Manufacturer product designation"
       },
       "summary": "Key facts",
-      "title": "Product"
+      "title": "Product",
+      "requestPrice": "Request price"
     },
     "registryList": {
       "errors": {
