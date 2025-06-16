@@ -326,7 +326,8 @@
         "productDesignation": "Hersteller Produktbezeichnung"
       },
       "summary": "Das Wichtigste in Kürze",
-      "title": "Produkt"
+      "title": "Produkt",
+      "requestPrice": "Preis anfragen"
     },
     "registryList": {
       "errors": {

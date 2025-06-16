@@ -326,7 +326,8 @@
         "productDesignation": "Denominación del producto"
       },
       "summary": "Resumen",
-      "title": "Producto"
+      "title": "Producto",
+      "requestPrice": "Solicitar precio"
     },
     "registryList": {
       "errors": {
