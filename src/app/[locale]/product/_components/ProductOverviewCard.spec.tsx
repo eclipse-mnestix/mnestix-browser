@@ -65,9 +65,15 @@ jest.mock('./../../../../lib/util/SubmodelResolverUtil', () => ({
                 modelType: { name: 'SubmodelElementCollection' },
                 value: [
                     {
-                        idShort: 'CEMarking',
-                        modelType: { name: 'Property' },
-                        value: 'CE'
+                        idShort: 'CE',
+                        modelType: { name: 'SubmodelElementCollection' },
+                        value: [
+                            {
+                                idShort: 'MarkingName',
+                                modelType: { name: 'Property' },
+                                value: '123456789'
+                            }
+                        ]
                     }
                 ]
             } as unknown as SubmodelElementCollection;
@@ -105,11 +111,6 @@ jest.mock('./../../../../lib/util/SubmodelResolverUtil', () => ({
         }
         return undefined;
     }),
-}));
-
-// Mock the MarkingsComponent
-jest.mock('./../../viewer/_components/submodel-elements/marking-components/MarkingsComponent', () => ({
-    MarkingsComponent: jest.fn().mockImplementation(() => <div data-testid="markings-component">Markings Component</div>)
 }));
 
 describe('ProductOverviewCard', () => {
@@ -178,7 +179,7 @@ describe('ProductOverviewCard', () => {
         expect(screen.getByTestId('datarow-manufacturer-product-designation')).toBeInTheDocument();
 
         // Check for markings component
-        expect(screen.getByTestId('markings-component')).toBeInTheDocument();
+        expect(screen.getByTestId('markings-element')).toBeInTheDocument();
     });
 
     it('renders in accordion mode correctly', () => {

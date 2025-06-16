@@ -40,6 +40,7 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
     const [activeFilters, setActiveFilters] = useState<FilterQuery[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [filterOptions, setFilterOptions] = useState<FilterOptions>();
+    const [resetTrigger, setResetTrigger] = useState(false);
     const { showError } = useShowError();
     const params = useParams();
     const locale = params?.locale as string;
@@ -179,9 +180,14 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
         });
     }
 
-    function applyFilter() {
+    function applyFilter(reset = false) {
         console.log(activeFilters);
-        props.onFilterChanged(activeFilters);
+        if (reset) {
+            setActiveFilters([]);
+            props.onFilterChanged([]);
+        } else {
+            props.onFilterChanged(activeFilters);
+        }
     }
 
     return (
@@ -190,9 +196,25 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                 <CenteredLoadingSpinner />
             ) : (
                 <>
-                    <Typography variant="h4" fontWeight={600} mb={1}>
-                        {t('filter')}
-                    </Typography>
+                    <Box display="flex" gap={1} justifyContent="space-between">
+                        <Typography variant="h4" fontWeight={600} mb={1}>
+                            {t('filter')}
+                        </Typography>
+                        <Box display="flex" gap={1}>
+                            <Button variant="contained" onClick={() => applyFilter()}>
+                                Apply
+                            </Button>
+                            <Button
+                                variant="outlined"
+                                onClick={() => {
+                                    setResetTrigger((prev) => !prev);
+                                    applyFilter(true);
+                                }}
+                            >
+                                Reset
+                            </Button>
+                        </Box>
+                    </Box>
                     {eClassFilters.length > 0 && (
                         <EClassFilter
                             eClassFilters={eClassFilters}
@@ -202,6 +224,7 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                                     values.map((f) => f.value),
                                 )
                             }
+                            resetFilters={resetTrigger}
                         />
                     )}
                     {VECFilters.length > 0 && (
@@ -213,15 +236,14 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                                     values.map((f) => f.value),
                                 )
                             }
+                            resetFilters={resetTrigger}
                         />
                     )}
                     <ProductCategoryFilter
                         productCategoryFilters={transformProductCategories(productCategoryFilters)}
                         onFilterChanged={(values) => onFilterClassificationChangedCategory(values)}
+                        resetFilters={resetTrigger}
                     />
-                    <Button sx={{ mt: 3 }} variant="contained" onClick={applyFilter}>
-                        Apply Filter
-                    </Button>
                 </>
             )}
         </Box>

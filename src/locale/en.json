@@ -326,7 +326,8 @@
         "productDesignation": "Manufacturer product designation"
       },
       "summary": "Key facts",
-      "title": "Product"
+      "title": "Product",
+      "requestPrice": "Request price"
     },
     "registryList": {
       "errors": {
@@ -355,6 +356,7 @@
           "imageUrlLabel": "Image URL",
           "aasSearcherUrlLabel": "AAS Searcher URL",
           "notYetSupported": "This functionality is not yet supported",
+          "submodelRepositoryHint": "Submodel Repository can currently only be set via the separate section below.",
           "noDuplicatedNames": "AAS repository names must be unique."
         },
         "addButton": "Add more",

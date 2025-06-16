@@ -326,7 +326,8 @@
         "productDesignation": "Denominación del producto"
       },
       "summary": "Resumen",
-      "title": "Producto"
+      "title": "Producto",
+      "requestPrice": "Solicitar precio"
     },
     "registryList": {
       "errors": {
@@ -355,6 +356,7 @@
           "imageUrlLabel": "URL de la imagen",
           "aasSearcherUrlLabel": "AAS Searcher URL",
           "notYetSupported": "No soportado todavía",
+          "submodelRepositoryHint": "Actualmente, el repositorio de submodelos sólo puede configurarse a través de la siguiente sección.",
           "noDuplicatedNames": "No se permiten nombres duplicados"
         },
         "addButton": "Añadir más",
