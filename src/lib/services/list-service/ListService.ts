@@ -77,23 +77,27 @@ export class ListService {
             return { success: false, error: response };
         }
 
-        const { result: assetAdministrationShells, paging_metadata } = response.result;
-        const nextCursor = paging_metadata.cursor;
+        try {
+            const { result: assetAdministrationShells, paging_metadata } = response.result;
+            const nextCursor = paging_metadata.cursor;
 
-        const aasListDtos = assetAdministrationShells
-            .filter((aas) => {
-                const aasToRemove = aas.assetInformation.specificAssetIds?.find(
-                    (specificAssetId) => specificAssetId.name === 'aasListFilterId',
-                );
-                return !aasToRemove;
-            })
-            .map((aas) => ({
-                aasId: aas.id,
-                assetId: aas.assetInformation?.globalAssetId ?? '',
-                thumbnail: aas.assetInformation?.defaultThumbnail?.path ?? '',
-            }));
+            const aasListDtos = assetAdministrationShells
+                .filter((aas) => {
+                    const aasToRemove = aas.assetInformation.specificAssetIds?.find(
+                        (specificAssetId) => specificAssetId.name === 'aasListFilterId',
+                    );
+                    return !aasToRemove;
+                })
+                .map((aas) => ({
+                    aasId: aas.id,
+                    assetId: aas.assetInformation?.globalAssetId ?? '',
+                    thumbnail: aas.assetInformation?.defaultThumbnail?.path ?? '',
+                }));
 
-        return { success: true, entities: aasListDtos, cursor: nextCursor };
+            return { success: true, entities: aasListDtos, cursor: nextCursor };
+        } catch (error) {
+            return { success: false, error: { message: 'Error while processing AAS list', details: error } };
+        }
     }
 
     async getNameplateValuesForAAS(aasId: string): Promise<NameplateValuesDto> {

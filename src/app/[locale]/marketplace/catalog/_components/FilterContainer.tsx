@@ -35,7 +35,7 @@ type FilterOptions = {
     PRODUCT_ROOT: ProductRoot[];
 };
 
-export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): void, aasSearcherUrl: string }) {
+export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): void; aasSearcherUrl: string }) {
     const t = useTranslations('pages.catalog');
     const [activeFilters, setActiveFilters] = useState<FilterQuery[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -66,25 +66,45 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                 });
             });
             products.forEach((product) => {
-                const rootName =
-                    product.productRoot?.mlValues.find((value) => value.language === (locale ?? 'en'))?.text ||
-                    'Unknown Root';
+                let rootName = product.productRoot?.mlValues.find((value) => value.language === locale)?.text;
+                if (!rootName) {
+                    if (product.productRoot?.mlValues?.length) {
+                        // Fallback to the first available language if the specified locale is not found
+                        rootName = product.productRoot.mlValues[0].text || 'Unknown Root';
+                    } else {
+                        rootName = 'Unknown Root';
+                    }
+                }
                 let root = productRoot.find((r) => r.name === rootName);
                 if (!root) {
                     root = { name: rootName, ProductFamilies: [] };
                     productRoot.push(root);
                 }
-                const familyName =
-                    product.productFamily?.mlValues.find((family) => family.language === (locale ?? 'en'))?.text ||
-                    'Unknown Family';
+                let familyName = product.productFamily?.mlValues.find((family) => family.language === locale)?.text;
+                if (!familyName) {
+                    if (product.productFamily?.mlValues?.length) {
+                        // Fallback to the first available language if the specified locale is not found
+                        familyName = product.productFamily.mlValues[0].text || 'Unknown Family';
+                    } else {
+                        familyName = 'Unknown Family';
+                    }
+                }
                 let familyItem = root.ProductFamilies.find((f) => f.name === familyName);
                 if (!familyItem) {
                     familyItem = { name: familyName, ProductDesignations: [] };
                     root.ProductFamilies.push(familyItem);
                 }
-                const designationName =
-                    product.productDesignation?.mlValues.find((des) => des.language === (locale ?? 'en'))?.text ||
-                    'Unknown Designation';
+                let designationName = product.productDesignation?.mlValues.find(
+                    (des) => des.language === (locale ?? 'en'),
+                )?.text;
+                if (!designationName) {
+                    if (product.productDesignation?.mlValues?.length) {
+                        // Fallback to the first available language if the specified locale is not found
+                        designationName = product.productDesignation.mlValues[0].text || 'Unknown Designation';
+                    } else {
+                        designationName = 'Unknown Designation';
+                    }
+                }
                 let desItem = familyItem.ProductDesignations.find((f) => f.name === designationName);
                 if (!desItem) {
                     desItem = { name: designationName };
@@ -154,14 +174,15 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                 (filter) =>
                     filter.key !== 'PRODUCT_ROOT' &&
                     filter.key !== 'PRODUCT_FAMILY' &&
-                    filter.key !== 'PRODUCT_DESIGNATION'
+                    filter.key !== 'PRODUCT_DESIGNATION',
             );
             return [...filtered, ...query];
-        });    }
+        });
+    }
 
     function applyFilter(reset = false) {
         console.log(activeFilters);
-        if( reset ) {
+        if (reset) {
             setActiveFilters([]);
             props.onFilterChanged([]);
         } else {
@@ -183,34 +204,41 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                             <Button variant="contained" onClick={() => applyFilter()}>
                                 Apply
                             </Button>
-                            <Button variant="outlined" onClick={() => {
-                                    setResetTrigger(prev => !prev);
+                            <Button
+                                variant="outlined"
+                                onClick={() => {
+                                    setResetTrigger((prev) => !prev);
                                     applyFilter(true);
-                                }}>
+                                }}
+                            >
                                 Reset
                             </Button>
                         </Box>
                     </Box>
-                    <EClassFilter
-                        eClassFilters={eClassFilters}
-                        onFilterChanged={(values) =>
-                            onFilterChangedByCategory(
-                                'ECLASS',
-                                values.map((f) => f.value),
-                            )
-                        }
-                        resetFilters={resetTrigger}
-                    />
-                    <VecFilter
-                        vecFilters={VECFilters}
-                        onFilterChanged={(values) =>
-                            onFilterChangedByCategory(
-                                'VEC',
-                                values.map((f) => f.value),
-                            )
-                        }
-                        resetFilters={resetTrigger}
-                    />
+                    {eClassFilters.length > 0 && (
+                        <EClassFilter
+                            eClassFilters={eClassFilters}
+                            onFilterChanged={(values) =>
+                                onFilterChangedByCategory(
+                                    'ECLASS',
+                                    values.map((f) => f.value),
+                                )
+                            }
+                            resetFilters={resetTrigger}
+                        />
+                    )}
+                    {VECFilters.length > 0 && (
+                        <VecFilter
+                            vecFilters={VECFilters}
+                            onFilterChanged={(values) =>
+                                onFilterChangedByCategory(
+                                    'VEC',
+                                    values.map((f) => f.value),
+                                )
+                            }
+                            resetFilters={resetTrigger}
+                        />
+                    )}
                     <ProductCategoryFilter
                         productCategoryFilters={transformProductCategories(productCategoryFilters)}
                         onFilterChanged={(values) => onFilterClassificationChangedCategory(values)}
