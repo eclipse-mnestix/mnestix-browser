@@ -1,5 +1,4 @@
 import { Box, Checkbox, Skeleton, TableCell, Typography } from '@mui/material';
-import { useAasOriginSourceState, useAasState } from 'components/contexts/CurrentAasContext';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
 import { tooltipText } from 'lib/util/ToolTipText';
@@ -43,8 +42,6 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         selectedAasList,
         updateSelectedAasList,
     } = props;
-    const [, setAas] = useAasState();
-    const [, setAasOriginUrl] = useAasOriginSourceState();
     const notificationSpawner = useNotificationSpawner();
     const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
     const t = useTranslations('pages.aasList');
@@ -65,8 +62,6 @@ export const AasListTableRow = (props: AasTableRowProps) => {
     );
 
     const navigateToAas = (listEntry: ListEntityDto) => {
-        setAas(null);
-        setAasOriginUrl(null);
         const baseUrl = window.location.origin;
         const pageToGo = env.PRODUCT_VIEW_FEATURE_FLAG ? '/product' : '/viewer';
 

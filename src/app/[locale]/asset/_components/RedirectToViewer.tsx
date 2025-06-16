@@ -7,7 +7,6 @@ import { useState } from 'react';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { useRouter, useSearchParams } from 'next/navigation';
 import AssetNotFound from 'components/basics/AssetNotFound';
-import { useAasOriginSourceState, useAasState } from 'components/contexts/CurrentAasContext';
 import { performDiscoveryAasSearch } from 'lib/services/search-actions/searchActions';
 import { wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { LocalizedError } from 'lib/util/LocalizedError';
@@ -20,22 +19,19 @@ export const RedirectToViewer = () => {
     const aasIdParam = searchParams.get('aasId')?.toString();
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
-    const [, setAas] = useAasState();
-    const [, setAasOriginUrl] = useAasOriginSourceState();
     const { showError } = useShowError();
 
     useAsyncEffect(async () => {
         try {
             setIsLoading(true);
-            if (assetIdParam) { // if assetId is present navigate to the viewer of the asset
+            if (assetIdParam) {
+                // if assetId is present navigate to the viewer of the asset
                 await navigateToViewerOfAsset(decodeURIComponent(assetIdParam ?? ''));
-            } else if (aasIdParam) { // if instead the aasId is present we dont need to search
+            } else if (aasIdParam) {
+                // if instead the aasId is present we dont need to search
                 const targetUrl = determineViewerTargetUrl([aasIdParam]);
-                // Clear the context
-                setAas(null);
-                setAasOriginUrl(null);
                 // Navigate directly to the viewer
-                navigate.replace(targetUrl); 
+                navigate.replace(targetUrl);
             } else {
                 // If neither assetId nor aasId is present, we cannot proceed
                 throw new NotFoundError();
@@ -54,8 +50,6 @@ export const RedirectToViewer = () => {
 
         assertAtLeastOneAasIdExists(aasIds);
         const targetUrl = determineViewerTargetUrl(aasIds);
-        setAas(null);
-        setAasOriginUrl(null);
         navigate.replace(targetUrl);
     }
 
@@ -82,7 +76,7 @@ export const RedirectToViewer = () => {
     return (
         <Box sx={{ p: 2, m: 'auto' }}>
             {isLoading && <CenteredLoadingSpinner />}
-            {isError && <AssetNotFound id={assetIdParam ? assetIdParam: aasIdParam} />}
+            {isError && <AssetNotFound id={assetIdParam ? assetIdParam : aasIdParam} />}
         </Box>
     );
 };
