@@ -38,7 +38,7 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
     }
 
     function renderUrlValue(url?: string) {
-        return url && url.length !== 0 ? tooltipText(url, 80) : '-';
+        return url && url.length !== 0 ? tooltipText(url, 40) : '-';
     }
 
     function getFormControl(field: FieldArrayWithId<ConnectionFormData, keyof ConnectionFormData>, index: number) {
@@ -94,9 +94,24 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                             />
                                         )}
                                     />
-                                    <Tooltip title={t('aasRepository.notYetSupported')}>
-                                        <TextField label="Concept Description URL" disabled />
-                                    </Tooltip>
+                                    <Controller
+                                        name={`aasRepository.${index}.commercialData`}
+                                        control={control}
+                                        defaultValue={field.commercialData ?? ''}
+                                        rules={{
+                                            validate: validateNoTrailingSlash,
+                                        }}
+                                        render={({ field, fieldState: { error } }) => (
+                                            <TextField
+                                                {...field}
+                                                label={t('aasRepository.commercialDataUrlLabel')}
+                                                sx={{ flexGrow: 1, mr: 1 }}
+                                                fullWidth={true}
+                                                error={!!error}
+                                                helperText={error ? error.message : ''}
+                                            />
+                                        )}
+                                    />
                                     <Tooltip title={t('aasRepository.notYetSupported')}>
                                         <TextField label="Discovery URL" disabled />
                                     </Tooltip>
@@ -140,7 +155,7 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                         )}
                                     />
                                     <Tooltip title={t('aasRepository.notYetSupported')}>
-                                        <TextField label="Commercial Data URL" disabled />
+                                        <TextField label="Concept Description URL" disabled />
                                     </Tooltip>
                                     <Tooltip title={t('aasRepository.submodelRepositoryHint')}>
                                         <TextField label="Submodel Repository URL" disabled />
@@ -177,6 +192,12 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                             '-'
                                         )}
                                     </Typography>
+                                </Box>
+                                <Box>
+                                    <Typography sx={{ fontSize: '0.8rem', color: 'text.secondary' }}>
+                                        {t('aasRepository.commercialDataUrlLabel')}
+                                    </Typography>
+                                    <Typography>{renderUrlValue(getValues(`aasRepository.${index}.commercialData`))}</Typography>
                                 </Box>
                             </Box>
                             <Box display="flex" flexDirection="column" flex={1} gap={2}>

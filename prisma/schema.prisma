@@ -25,4 +25,5 @@ model MnestixConnection {
   aasSearcher String?
   image String?
   name String? @unique
+  commercialData String?
 }

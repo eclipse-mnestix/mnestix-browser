@@ -350,6 +350,7 @@
           "nameLabel": "Name",
           "imageUrlLabel": "Bild URL",
           "aasSearcherUrlLabel": "AAS Searcher URL",
+          "commercialDataUrlLabel": "Kommerzielle Daten URL",
           "notYetSupported": "Diese Funktion ist noch nicht verfügbar.",
           "submodelRepositoryHint": "Submodel Repository kann aktuell nur über den separaten Abschnitt unten gesetzt werden.",
           "noDuplicatedNames": "Es dürfen keine zwei Repositorys mit dem gleichen Namen existieren."
