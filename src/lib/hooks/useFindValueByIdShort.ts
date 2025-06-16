@@ -18,9 +18,18 @@ export function useFindValueByIdShort() {
         (
             elements: ISubmodelElement[] | null,
             idShort: string | null,
-            semanticId: SubmodelSemanticIdEnum | SubmodelElementSemanticIdEnum | null = null,
+            semanticId: SubmodelSemanticIdEnum | SubmodelElementSemanticIdEnum | SubmodelSemanticIdEnum[] | SubmodelElementSemanticIdEnum[] | null = null,
         ): string | null => {
-            return findValueByIdShort(elements, idShort, semanticId, locale);
+            if (semanticId && !Array.isArray(semanticId)) {
+                return findValueByIdShort(elements, idShort, semanticId, locale);
+            }
+            else if (Array.isArray(semanticId)) {
+                return semanticId.reduce((acc, id) => {
+                    const value = findValueByIdShort(elements, idShort, id, locale);
+                    return acc || value;
+                }, null);
+            }
+            return findValueByIdShort(elements, idShort, null, locale);
         },
         [locale]
     );

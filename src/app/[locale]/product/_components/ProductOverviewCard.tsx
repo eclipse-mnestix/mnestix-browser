@@ -55,7 +55,7 @@ type OverviewData = {
     readonly companyLogo: ISubmodelElement | null;
     readonly markings: string[] | null;
     readonly productClassifications?: ProductClassification[];
-    readonly URIOfTheProduct?: string;
+    readonly URIOfTheProduct?: string | null;
 };
 
 export function ProductOverviewCard(props: ProductOverviewCardProps) {
@@ -184,8 +184,8 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
 
         const URIOfTheProduct = findValue(
             nameplateSubmodelElements,
-            'URIOfTheProduct',
-            SubmodelElementSemanticIdEnum.URIOfTheProduct
+            'URIOfTheProducts',
+            [SubmodelElementSemanticIdEnum.URIOfTheProductV2, SubmodelElementSemanticIdEnum.URIOfTheProductV3]
         );
 
         setOverviewData((prevData) => ({
@@ -196,7 +196,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             markings: markings,
             manufacturerLogo: prevData?.manufacturerLogo || null,
             companyLogo: companyLogo || null,
-            URIOfTheProduct:  URIOfTheProduct || undefined
+            URIOfTheProduct:  URIOfTheProduct || null
         }));
     };
 
