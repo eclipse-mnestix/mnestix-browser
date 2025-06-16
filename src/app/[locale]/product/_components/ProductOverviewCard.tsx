@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Skeleton, Typography, Divider, Button } from '@mui/material';
+import { Box, Card, CardContent, Skeleton, Typography, Divider, Tooltip, Button } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { DataRow } from 'components/basics/DataRow';
 import {
@@ -25,6 +25,7 @@ import { useProductImageUrl } from 'lib/hooks/UseProductImageUrl';
 import { useFindValueByIdShort } from 'lib/hooks/useFindValueByIdShort';
 import { ActionMenu } from './ProductActionMenu';
 import { ConstructionDialog } from 'components/basics/ConstructionDialog';
+import LinkIcon from '@mui/icons-material/Link';
 
 type ProductOverviewCardProps = {
     readonly aas: AssetAdministrationShell | null;
@@ -54,6 +55,7 @@ type OverviewData = {
     readonly companyLogo: ISubmodelElement | null;
     readonly markings: string[] | null;
     readonly productClassifications?: ProductClassification[];
+    readonly URIOfTheProduct?: string;
 };
 
 export function ProductOverviewCard(props: ProductOverviewCardProps) {
@@ -179,6 +181,13 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             'CompanyLogo',
             SubmodelElementSemanticIdEnum.CompanyLogo,
         );
+
+        const URIOfTheProduct = findValue(
+            nameplateSubmodelElements,
+            'URIOfTheProduct',
+            SubmodelElementSemanticIdEnum.URIOfTheProduct
+        );
+
         setOverviewData((prevData) => ({
             ...prevData,
             manufacturerProductRoot: manufacturerProductRoot ?? '-',
@@ -187,6 +196,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             markings: markings,
             manufacturerLogo: prevData?.manufacturerLogo || null,
             companyLogo: companyLogo || null,
+            URIOfTheProduct:  URIOfTheProduct || undefined
         }));
     };
 
@@ -233,6 +243,13 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
         if (props.imageLinksToDetail && props.aas) {
             setAasState(props.aas);
             const url = `/product/${encodeBase64(props.aas.id)}`;
+            navigate.push(url);
+        }
+    };
+
+    const navigateToProduct = () => {
+        if (overviewData?.URIOfTheProduct) {
+            const url = overviewData.URIOfTheProduct;
             navigate.push(url);
         }
     };
@@ -382,6 +399,17 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                             }}
                                         >
                                             {props.displayName || t('title')}
+                                            {overviewData?.URIOfTheProduct && (
+                                                <Tooltip title={overviewData.URIOfTheProduct}>
+                                                    <LinkIcon
+                                                        sx={{ ml: 1, cursor: 'pointer' }}
+                                                        fontSize="small"
+                                                        role="button"
+                                                        onClick={navigateToProduct}
+                                                        data-testid="product-uri-link"
+                                                    />
+                                                </Tooltip>
+                                            )}
                                         </Typography>
                                         <ActionMenu 
                                             aas={props.aas}
