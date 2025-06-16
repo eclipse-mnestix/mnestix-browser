@@ -108,6 +108,7 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
             setAasFromContext(aasFromStore.aas);
             setAasOriginUrl(aasFromStore.aasData?.aasRepositoryOrigin ?? null);
             setRegistryAasData(aasFromStore.aasData);
+            setIsLoadingAas(false); // initialized as true, so we need to set it to false here
             return;
         }
         setIsLoadingAas(true);
