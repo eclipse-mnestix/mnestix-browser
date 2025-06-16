@@ -27,6 +27,7 @@ interface ProductCategory {
 export function ProductCategoryFilter(props: {
     productCategoryFilters: ProductCategory[];
     onFilterChanged(query: FilterQuery[]): void;
+    resetFilters: boolean;
 }) {
     const [filters, setFilters] = useState<ProductCategory[]>(props.productCategoryFilters);
 
@@ -50,6 +51,24 @@ export function ProductCategoryFilter(props: {
         });
         props.onFilterChanged(selected);
     }, [filters]);
+
+    useEffect(() => {
+        const resetFilters = props.productCategoryFilters.map((category) => ({
+            ProductRoot: {
+                ...category.ProductRoot,
+                value: false,
+                ProductFamilies: category.ProductRoot.ProductFamilies.map((family) => ({
+                    ...family,
+                    value: false,
+                    ProductDesignations: family.ProductDesignations.map((designation) => ({
+                        ...designation,
+                        value: false,
+                    })),
+                })),
+            },
+        }));
+        setFilters(resetFilters);
+    }, [props.resetFilters]);
 
     function updateActiveFilters(
         prevFilters: ProductCategory[],
@@ -148,6 +167,7 @@ export function ProductCategoryFilter(props: {
                                             onChange={(event) =>
                                                 updateCheckboxState(productCategory.ProductRoot, event.target.checked)
                                             }
+                                            sx={{ padding: '4px' }}
                                         />
                                         {productCategory.ProductRoot.name}
                                     </Box>
@@ -172,6 +192,7 @@ export function ProductCategoryFilter(props: {
                                                         onChange={(event) =>
                                                             updateCheckboxState(productFamily, event.target.checked)
                                                         }
+                                                        sx={{ padding: '4px' }}
                                                     />
                                                     {productFamily.name}
                                                 </Box>
@@ -194,6 +215,7 @@ export function ProductCategoryFilter(props: {
                                                                 event.target.checked,
                                                             )
                                                         }
+                                                        sx={{ padding: '6px' }}
                                                     />
                                                     <Typography>{productDesignation.name}</Typography>
                                                 </Box>

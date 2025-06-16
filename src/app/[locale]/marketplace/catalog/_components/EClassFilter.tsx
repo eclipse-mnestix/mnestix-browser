@@ -8,7 +8,7 @@ export interface CheckboxFilterState {
     [key: string]: boolean;
 }
 
-export function EClassFilter(props: { eClassFilters: string[]; onFilterChanged(query: FilterQuery[]): void }) {
+export function EClassFilter(props: { eClassFilters: string[]; onFilterChanged(query: FilterQuery[]): void; resetFilters: boolean }) {
     const t = useTranslations('pages.catalog');
     const [selectedFilters, setSelectedFilters] = useState<CheckboxFilterState>(() => {
         const initialState: CheckboxFilterState = {};
@@ -26,6 +26,14 @@ export function EClassFilter(props: { eClassFilters: string[]; onFilterChanged(q
             }),
         );
     }, [selectedFilters]);
+
+    useEffect(() => {
+        const resetState: CheckboxFilterState = {};
+        props.eClassFilters.forEach((filter) => {
+            resetState[filter] = false;
+        });
+        setSelectedFilters(resetState);
+    }, [props.resetFilters]);
 
     function onFilterChange(eClass: string, checked: boolean) {
         setSelectedFilters((prevState) => ({
@@ -83,6 +91,7 @@ export function EClassFilter(props: { eClassFilters: string[]; onFilterChanged(q
                                 indeterminate={eClasses.some((eClass) => selectedFilters[eClass]) && !isGroupChecked}
                                 onChange={(event) => onGroupFilterChange(eClasses, event.target.checked)}
                                 onClick={(event) => event.stopPropagation()}
+                                sx={{ padding: '4px' }}
                             />
                             {resolveEclassLabel(group)}
                         </Box>
@@ -93,6 +102,7 @@ export function EClassFilter(props: { eClassFilters: string[]; onFilterChanged(q
                             <Checkbox
                                 checked={selectedFilters[eClass] || false}
                                 onChange={(event) => onFilterChange(eClass, event.target.checked)}
+                                sx={{ padding: '6px' }}
                             />
                             <Typography>{eClass}</Typography>
                         </Box>
