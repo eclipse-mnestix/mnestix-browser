@@ -58,6 +58,7 @@ export default function Page() {
                 typeId: '',
                 aasSearcher: null,
                 image: null,
+                commercialData: null
             };
             setConnection(emptyConnection);
             return emptyConnection;
