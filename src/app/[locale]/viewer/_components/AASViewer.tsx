@@ -23,9 +23,10 @@ export function AASViewer() {
     const { aas, submodels, isLoadingAas, isLoadingSubmodels, aasOriginUrl } = useCurrentAasContext();
 
     const params = useParams<{ base64AasId: string }>();
+    const base64AasIdManuallyAdapted = decodeURIComponent(params.base64AasId).replace(/=+$|[%3D]+$/, '');
 
     const startComparison = () => {
-        navigate.push(`/compare?aasId=${params.base64AasId}`);
+        navigate.push(`/compare?aasId=${encodeURIComponent(aas?.id ?? '')}`);
     };
 
     const goToProductView = () => {
@@ -103,7 +104,7 @@ export function AASViewer() {
                     <SubmodelsOverviewCard aas={aas} submodelIds={submodels} submodelsLoading={isLoadingSubmodels} />
                 </Box>
             ) : (
-                <NoSearchResult base64AasId={safeBase64Decode(params.base64AasId)} />
+                <NoSearchResult base64AasId={safeBase64Decode(base64AasIdManuallyAdapted)} />
             )}
         </Box>
     );
