@@ -11,7 +11,7 @@ import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { useRouter } from 'next/navigation';
-import { SubmodelOrIdReference, useAasState } from 'components/contexts/CurrentAasContext';
+import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
 import { useTranslations } from 'next-intl';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
@@ -23,6 +23,7 @@ import { useProductImageUrl } from 'lib/hooks/UseProductImageUrl';
 import { useFindValueByIdShort } from 'lib/hooks/useFindValueByIdShort';
 import { MarkingsComponent } from 'app/[locale]/viewer/_components/submodel-elements/marking-components/MarkingsComponent';
 import { ActionMenu } from './ProductActionMenu';
+import { useAasStore } from 'stores/AasStore';
 
 type ProductOverviewCardProps = {
     readonly aas: AssetAdministrationShell | null;
@@ -57,7 +58,7 @@ type OverviewData = {
 export function ProductOverviewCard(props: ProductOverviewCardProps) {
     const isAccordion = props.isAccordion;
     const navigate = useRouter();
-    const [, setAasState] = useAasState();
+    const { addAasData } = useAasStore();
     const t = useTranslations('pages.productViewer');
     const [overviewData, setOverviewData] = useState<OverviewData>();
     const findValue = useFindValueByIdShort();
@@ -209,7 +210,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
 
     const navigateToAas = () => {
         if (props.imageLinksToDetail && props.aas) {
-            setAasState(props.aas);
+            addAasData({ aas: props.aas });
             const url = `/product/${encodeBase64(props.aas.id)}`;
             navigate.push(url);
         }

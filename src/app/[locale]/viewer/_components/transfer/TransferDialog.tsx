@@ -15,7 +15,7 @@ import {
     TargetRepositoryFormData,
 } from 'app/[locale]/viewer/_components/transfer/TargetRepositories';
 import { useState } from 'react';
-import { useAasOriginSourceState, useAasState, useSubmodelState } from 'components/contexts/CurrentAasContext';
+import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 import { transferAasWithSubmodels } from 'lib/services/transfer-service/transferActions';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { TransferAas, TransferDto, TransferResult, TransferSubmodel } from 'lib/types/TransferServiceData';
@@ -30,11 +30,9 @@ export type TransferFormModel = {
 // TODO pull aas and origin URLs into props
 export function TransferDialog(props: DialogProps) {
     const [transferDto, setTransferDto] = useState<TransferFormModel>();
-    const [submodelsFromContext] = useSubmodelState();
-    const [aasFromContext] = useAasState();
+    const { aas, submodels, aasOriginSource } = useCurrentAasContext();
     const notificationSpawner = useNotificationSpawner();
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [aasOriginUrl] = useAasOriginSourceState();
     const theme = useTheme();
     const t = useTranslations('pages.transfer');
     const env = useEnv();
@@ -42,12 +40,12 @@ export function TransferDialog(props: DialogProps) {
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
     function buildTransferDto(values: TargetRepositoryFormData) {
-        if (!values.repository || !aasFromContext || !aasOriginUrl) {
+        if (!values.repository || !aas || !aasOriginSource) {
             return;
         }
 
         // As long as we cannot adjust the IDs in the UI, we append '_copy' to every ID
-        const submodelsToTransfer = structuredClone(submodelsFromContext)
+        const submodelsToTransfer = structuredClone(submodels)
             .filter((sub) => sub.submodel)
             .map((sub) => sub.submodel!)
             .map((sub) => {
@@ -56,15 +54,15 @@ export function TransferDialog(props: DialogProps) {
                 return submodelToTransfer;
             });
         const aasToTransfer: TransferAas = {
-            aas: structuredClone(aasFromContext),
-            originalAasId: aasFromContext.id,
+            aas: structuredClone(aas),
+            originalAasId: aas.id,
         };
 
-        aasToTransfer.aas.id = `${aasFromContext.id}_copy`;
+        aasToTransfer.aas.id = `${aas.id}_copy`;
 
         // Adapt Submodel References of the AAS
         const submodelReferencesToTransfer: Reference[] = [];
-        aasFromContext.submodels?.forEach((sourceSubmodel) => {
+        aas.submodels?.forEach((sourceSubmodel) => {
             const matchingSubmodel = submodelsToTransfer.find(
                 (submodelToTransfer) => submodelToTransfer.originalSubmodelId === sourceSubmodel.keys[0].value,
             );
@@ -81,12 +79,12 @@ export function TransferDialog(props: DialogProps) {
             aas: aasToTransfer,
             submodels: submodelsToTransfer,
             targetAasRepositoryBaseUrl: values.repository,
-            sourceAasRepositoryBaseUrl: aasOriginUrl,
+            sourceAasRepositoryBaseUrl: aasOriginSource,
             targetSubmodelRepositoryBaseUrl:
                 values.submodelRepository && values.submodelRepository !== '0'
                     ? values.submodelRepository
                     : values.repository,
-            sourceSubmodelRepositoryBaseUrl: aasOriginUrl,
+            sourceSubmodelRepositoryBaseUrl: aasOriginSource,
             apikey: values.repositoryApiKey,
             targetDiscoveryBaseUrl: env.DISCOVERY_API_URL,
         };

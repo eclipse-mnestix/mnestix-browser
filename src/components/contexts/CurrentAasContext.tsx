@@ -36,42 +36,6 @@ export function useCurrentAasContext() {
     };
 }
 
-export const useAasState = () => {
-    const context = useContext(CurrentAasContext);
-    if (!context) {
-        throw new Error('useAasState must be used within a CurrentAasContextProvider');
-    }
-    return context.aasState;
-};
-
-// only used together with setAas.
-// to clear the context
-export const useAasOriginSourceState = () => {
-    const context = useContext(CurrentAasContext);
-    if (!context) {
-        throw new Error('useAasRepoSourceState must be used within a CurrentAasContextProvider');
-    }
-    return context.aasOriginSource;
-};
-
-// only used together with setAas and setAasOriginSourceState
-export const useRegistryAasState = () => {
-    const context = useContext(CurrentAasContext);
-    if (!context) {
-        throw new Error('useRegistryAasState must be used within a CurrentAasContextProvider');
-    }
-    return context.registryAasData;
-};
-
-// has to be only the submodels of an AAS
-export const useSubmodelState = () => {
-    const context = useContext(CurrentAasContext);
-    if (!context) {
-        throw new Error('useSubmodelState must be used within a CurrentAasContextProvider');
-    }
-    return context.submodelState;
-};
-
 export const CurrentAasContextProvider = (props: PropsWithChildren<{ aasId: string; repoUrl?: string }>) => {
     const aasState = useState<AssetAdministrationShell | null>(null);
     const registryAasData = useState<RegistryAasData | null>(null);

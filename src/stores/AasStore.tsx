@@ -7,7 +7,7 @@ import { AasData } from 'lib/services/search-actions/AasSearcher';
  */
 type AasWithAasData = {
     aas: AssetAdministrationShell;
-    aasData: AasData;
+    aasData?: AasData;
 };
 
 /**
@@ -15,7 +15,6 @@ type AasWithAasData = {
  * The store has a limited capacity (default: 1, can be increased).
  */
 export type AasStoreContextType = {
-    data: AasWithAasData[];
     addAasData: (aasData: AasWithAasData) => void;
     getAasData: (aasId: string) => AasWithAasData | undefined;
     capacity: number;
@@ -66,9 +65,5 @@ export function AasStoreProvider({ children }: { children: ReactNode }) {
         return data.find((d) => d.aas.id === aasId);
     }
 
-    return (
-        <AasStoreContext.Provider value={{ data, addAasData, getAasData, capacity }}>
-            {children}
-        </AasStoreContext.Provider>
-    );
+    return <AasStoreContext.Provider value={{ addAasData, getAasData, capacity }}>{children}</AasStoreContext.Provider>;
 }

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useLocale } from 'next-intl';
-import { useAasOriginSourceState } from 'components/contexts/CurrentAasContext';
 import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
 import { findSubmodelElementBySemanticIdsOrIdShort, getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import {
@@ -17,6 +16,7 @@ import {
     Property,
 } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import { findIdShortForLatestElement } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentUtils';
+import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 
 export type FileViewObject = {
     mimeType: string;
@@ -33,7 +33,7 @@ export type FileViewObject = {
  */
 export function useFileViewObject(submodelElement: SubmodelElementCollection, submodelId: string) {
     const locale = useLocale();
-    const [aasOriginUrl] = useAasOriginSourceState();
+    const { aasOriginSource } = useCurrentAasContext();
     const [fileViewObject, setFileViewObject] = useState<FileViewObject>();
 
     useEffect(() => {
@@ -116,7 +116,7 @@ export function useFileViewObject(submodelElement: SubmodelElementCollection, su
                 DocumentSpecificSemanticIdIrdiV2.DigitalFile,
             );
             const submodelElementPath = `${submodelElement.idShort}.${fileSubmodelElement.idShort}.${idShort}`;
-            digitalFile.digitalFileUrl = `${aasOriginUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${submodelElementPath}/attachment`;
+            digitalFile.digitalFileUrl = `${aasOriginSource}/submodels/${encodeBase64(submodelId)}/submodel-elements/${submodelElementPath}/attachment`;
             digitalFile.mimeType = (versionSubmodelEl as File).contentType;
         }
         return digitalFile;
@@ -134,7 +134,7 @@ export function useFileViewObject(submodelElement: SubmodelElementCollection, su
                 DocumentSpecificSemanticIdIrdiV2.PreviewFile,
             );
             const submodelElementPath = `${submodelElement.idShort}.${previewSubmodelElement?.idShort}.${idShort}`;
-            return `${aasOriginUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${submodelElementPath}/attachment`;
+            return `${aasOriginSource}/submodels/${encodeBase64(submodelId)}/submodel-elements/${submodelElementPath}/attachment`;
         }
         return '';
     }

@@ -1,10 +1,4 @@
-import {
-    Box,
-    Card,
-    CardContent,
-    Skeleton,
-    Typography,
-} from '@mui/material';
+import { Box, Card, CardContent, Skeleton, Typography } from '@mui/material';
 import React from 'react';
 import { DataRow } from 'components/basics/DataRow';
 import { AssetAdministrationShell, SpecificAssetId } from '@aas-core-works/aas-core3.0-typescript/types';
@@ -13,12 +7,12 @@ import { AssetIcon } from 'components/custom-icons/AssetIcon';
 import { ShellIcon } from 'components/custom-icons/ShellIcon';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { encodeBase64 } from 'lib/util/Base64Util';
-import { useAasState } from 'components/contexts/CurrentAasContext';
 import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useProductImageUrl } from 'lib/hooks/UseProductImageUrl';
 import { MobileAccordion } from 'components/basics/detailViewBasics/MobileAccordion';
+import { useAasStore } from 'stores/AasStore';
 
 type AASOverviewCardProps = {
     readonly aas: AssetAdministrationShell | null;
@@ -33,7 +27,7 @@ export function AASOverviewCard(props: AASOverviewCardProps) {
     const isAccordion = props.isAccordion;
     const specificAssetIds = props.aas?.assetInformation?.specificAssetIds as SpecificAssetId[];
     const navigate = useRouter();
-    const [, setAasState] = useAasState();
+    const { addAasData } = useAasStore();
     const t = useTranslations('pages.aasViewer');
     const productImageUrl = useProductImageUrl(props.aas, props.repositoryURL, props.productImage);
 
@@ -58,7 +52,7 @@ export function AASOverviewCard(props: AASOverviewCardProps) {
 
     const navigateToAas = () => {
         if (props.imageLinksToDetail && props.aas) {
-            setAasState(props.aas);
+            addAasData({ aas: props.aas });
             const url = `/viewer/${encodeBase64(props.aas.id)}`;
             navigate.push(url);
         }
@@ -76,20 +70,9 @@ export function AASOverviewCard(props: AASOverviewCardProps) {
                     </Typography>
                 </Box>
             )}
-            <DataRow 
-                title="id" 
-                value={props.aas?.id}
-                testId='datarow-aas-id'
-                withBase64={true}
-            />
-            <DataRow 
-                title="idShort" 
-                value={props.aas?.idShort ?? '-'} 
-            />
-            <DataRow 
-                title="repositoryURL" 
-                value={props.repositoryURL ?? '-'} 
-            />
+            <DataRow title="id" value={props.aas?.id} testId="datarow-aas-id" withBase64={true} />
+            <DataRow title="idShort" value={props.aas?.idShort ?? '-'} />
+            <DataRow title="repositoryURL" value={props.repositoryURL ?? '-'} />
             {props.aas?.derivedFrom?.keys?.[0] && (
                 <DataRow
                     title="derivedFrom"
@@ -112,12 +95,11 @@ export function AASOverviewCard(props: AASOverviewCardProps) {
                     </Typography>
                 </Box>
             )}
-            <DataRow 
-                title="globalAssetId" 
+            <DataRow
+                title="globalAssetId"
                 value={props.aas?.assetInformation?.globalAssetId ?? '-'}
-                testId='datarow-asset-id'
+                testId="datarow-asset-id"
                 withBase64={true}
-                
             />
             {props.aas?.assetInformation?.assetType && (
                 <DataRow title="assetType" value={props.aas?.assetInformation?.assetType ?? '-'} />

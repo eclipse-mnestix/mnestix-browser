@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { getAttachmentFromSubmodelElement } from 'lib/services/repository-access/repositorySearchActions';
-import { useAasOriginSourceState } from 'components/contexts/CurrentAasContext';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 
 type SingleMarkingsComponentProps = {
     readonly file?: File;
@@ -26,13 +26,10 @@ const StyledFileImg = styled('img')(({ theme }) => ({
     padding: theme.spacing(1),
 }));
 
-
-
 export function SingleMarkingsComponent(props: SingleMarkingsComponentProps) {
     const { file, name, additionalText, submodelId, idShortPath } = props;
     const [markingImage, setMarkingImage] = useState<string>();
-    const [aasOriginUrl] = useAasOriginSourceState();
-
+    const { aasOriginSource } = useCurrentAasContext();
 
     const StyledMarkingImageWrapper = styled(Box)(() => ({
         maxWidth: props.rowDisplay ? '4rem' : 'auto',
@@ -55,7 +52,7 @@ export function SingleMarkingsComponent(props: SingleMarkingsComponentProps) {
             const imageResponse = await getAttachmentFromSubmodelElement(
                 submodelId!,
                 fileIdShort,
-                aasOriginUrl ?? undefined,
+                aasOriginSource ?? undefined,
             );
             if (!imageResponse.isSuccess) {
                 console.error('Image not found for file ID: ' + fileIdShort);
@@ -72,27 +69,25 @@ export function SingleMarkingsComponent(props: SingleMarkingsComponentProps) {
         !!file && (
             <StyledMarkingContainer>
                 <StyledMarkingImageWrapper sx={{ boxShadow: 2 }}>
-
                     <StyledFileImg src={markingImage} />
 
                     {/* TODO get this value from concept description if there is only an IRDI? */}
-                    {(name?.value === '0173-1#07-DAA603#004') && (
+                    {name?.value === '0173-1#07-DAA603#004' && (
                         <Box sx={{ backgroundColor: 'grey.200', p: 0.5, flexGrow: '0' }}>
                             <Typography variant="body2" color="text.secondary">
                                 CE
                             </Typography>
                         </Box>
                     )}
-
                 </StyledMarkingImageWrapper>
                 {(!!name || !!additionalText) && (
-                    <Box sx={{ p: 1, flexGrow: '0' }}
-                    >
+                    <Box sx={{ p: 1, flexGrow: '0' }}>
                         {!!name && <Typography>{name.value}</Typography>}
                         {!!additionalText && (
                             <Typography variant="body2" color="text.secondary">
                                 {additionalText.value}
-                            </Typography>)}
+                            </Typography>
+                        )}
                     </Box>
                 )}
             </StyledMarkingContainer>

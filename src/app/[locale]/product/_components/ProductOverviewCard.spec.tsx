@@ -1,10 +1,10 @@
 import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
 import { expect } from '@jest/globals';
 import { screen } from '@testing-library/react';
-import { useAasState } from 'components/contexts/CurrentAasContext';
 import { useRouter } from 'next/navigation';
 import { CustomRender } from 'test-utils/CustomRender';
 import { ProductOverviewCard } from './ProductOverviewCard';
+import { useAasStore } from 'stores/AasStore';
 
 // Mock the next/navigation router
 jest.mock('next/navigation', () => ({
@@ -12,8 +12,8 @@ jest.mock('next/navigation', () => ({
 }));
 
 // Mock the AAS context
-jest.mock('./../../../../components/contexts/CurrentAasContext', () => ({
-    useAasState: jest.fn(),
+jest.mock('./../../../../stores/AasStore', () => ({
+    useAasStore: jest.fn(),
 }));
 
 jest.mock('./../../../../lib/hooks/useFindValueByIdShort', () => ({
@@ -48,12 +48,12 @@ jest.mock('./../../../../lib/util/SubmodelResolverUtil', () => ({
         if (idShort === 'TechnicalData') {
             return {
                 id: 'technical-data-id',
-                submodelElements: []
+                submodelElements: [],
             };
         } else if (idShort === 'Nameplate') {
             return {
                 id: 'nameplate-id',
-                submodelElements: []
+                submodelElements: [],
             };
         }
         return undefined;
@@ -67,16 +67,16 @@ jest.mock('./../../../../lib/util/SubmodelResolverUtil', () => ({
                     {
                         idShort: 'CEMarking',
                         modelType: { name: 'Property' },
-                        value: 'CE'
-                    }
-                ]
+                        value: 'CE',
+                    },
+                ],
             } as unknown as SubmodelElementCollection;
         }
         if (idShort === 'CompanyLogo' || idShort === 'ManufacturerLogo') {
             return {
                 idShort: idShort,
                 modelType: { name: 'File' },
-                value: '/logo.png'
+                value: '/logo.png',
             };
         }
         if (idShort === 'ProductClassifications') {
@@ -91,16 +91,16 @@ jest.mock('./../../../../lib/util/SubmodelResolverUtil', () => ({
                             {
                                 idShort: 'ProductClassificationSystem',
                                 modelType: { name: 'Property' },
-                                value: 'ECLASS'
+                                value: 'ECLASS',
                             },
                             {
                                 idShort: 'ProductClassId',
                                 modelType: { name: 'Property' },
-                                value: '12345'
-                            }
-                        ]
-                    }
-                ]
+                                value: '12345',
+                            },
+                        ],
+                    },
+                ],
             } as unknown as SubmodelElementCollection;
         }
         return undefined;
@@ -109,17 +109,19 @@ jest.mock('./../../../../lib/util/SubmodelResolverUtil', () => ({
 
 // Mock the MarkingsComponent
 jest.mock('./../../viewer/_components/submodel-elements/marking-components/MarkingsComponent', () => ({
-    MarkingsComponent: jest.fn().mockImplementation(() => <div data-testid="markings-component">Markings Component</div>)
+    MarkingsComponent: jest
+        .fn()
+        .mockImplementation(() => <div data-testid="markings-component">Markings Component</div>),
 }));
 
 describe('ProductOverviewCard', () => {
     const mockPush = jest.fn();
-    const mockSetAasState = jest.fn();
+    const mockAddData = jest.fn();
 
     beforeEach(() => {
         jest.clearAllMocks();
         (useRouter as jest.Mock).mockReturnValue({ push: mockPush });
-        (useAasState as jest.Mock).mockReturnValue([null, mockSetAasState]);
+        (useAasStore as jest.Mock).mockReturnValue({ addAasData: mockAddData });
     });
 
     const mockAas = {
@@ -133,13 +135,13 @@ describe('ProductOverviewCard', () => {
         {
             id: 'technical-data-id',
             idShort: 'TechnicalData',
-            submodelElements: []
+            submodelElements: [],
         },
         {
             id: 'nameplate-id',
             idShort: 'Nameplate',
-            submodelElements: []
-        }
+            submodelElements: [],
+        },
     ];
 
     it('renders loading skeleton when isLoading is true', () => {
@@ -151,14 +153,13 @@ describe('ProductOverviewCard', () => {
                 isAccordion={false}
                 repositoryURL={null}
                 displayName={'Test Product'}
-            />
+            />,
         );
 
         expect(screen.getByTestId('aas-loading-skeleton')).toBeInTheDocument();
     });
 
     it('renders product information correctly when data is available', async () => {
-
         CustomRender(
             /* eslint-disable @typescript-eslint/no-explicit-any */
             <ProductOverviewCard
@@ -168,7 +169,7 @@ describe('ProductOverviewCard', () => {
                 isAccordion={false}
                 repositoryURL={null}
                 displayName={'Test Product'}
-            />
+            />,
         );
 
         // Check for product information
@@ -190,12 +191,11 @@ describe('ProductOverviewCard', () => {
                 isAccordion={true}
                 repositoryURL={null}
                 displayName={'Test Product'}
-            />
+            />,
         );
 
         // Check that product information is still present
         expect(screen.getByTestId('datarow-manufacturer-product-designation')).toBeInTheDocument();
         expect(screen.getByTestId('datarow-manufacturer-article-number')).toBeInTheDocument();
     });
-
 });
