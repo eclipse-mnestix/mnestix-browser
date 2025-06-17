@@ -33,7 +33,7 @@ export type FileViewObject = {
  */
 export function useFileViewObject(submodelElement: SubmodelElementCollection, submodelId: string) {
     const locale = useLocale();
-    const { aasOriginSource } = useCurrentAasContext();
+    const { aasOriginUrl } = useCurrentAasContext();
     const [fileViewObject, setFileViewObject] = useState<FileViewObject>();
 
     useEffect(() => {
@@ -116,7 +116,7 @@ export function useFileViewObject(submodelElement: SubmodelElementCollection, su
                 DocumentSpecificSemanticIdIrdiV2.DigitalFile,
             );
             const submodelElementPath = `${submodelElement.idShort}.${fileSubmodelElement.idShort}.${idShort}`;
-            digitalFile.digitalFileUrl = `${aasOriginSource}/submodels/${encodeBase64(submodelId)}/submodel-elements/${submodelElementPath}/attachment`;
+            digitalFile.digitalFileUrl = `${aasOriginUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${submodelElementPath}/attachment`;
             digitalFile.mimeType = (versionSubmodelEl as File).contentType;
         }
         return digitalFile;
@@ -134,7 +134,7 @@ export function useFileViewObject(submodelElement: SubmodelElementCollection, su
                 DocumentSpecificSemanticIdIrdiV2.PreviewFile,
             );
             const submodelElementPath = `${submodelElement.idShort}.${previewSubmodelElement?.idShort}.${idShort}`;
-            return `${aasOriginSource}/submodels/${encodeBase64(submodelId)}/submodel-elements/${submodelElementPath}/attachment`;
+            return `${aasOriginUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${submodelElementPath}/attachment`;
         }
         return '';
     }

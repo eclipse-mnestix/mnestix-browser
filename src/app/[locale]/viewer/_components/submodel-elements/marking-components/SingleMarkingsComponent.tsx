@@ -29,7 +29,7 @@ const StyledFileImg = styled('img')(({ theme }) => ({
 export function SingleMarkingsComponent(props: SingleMarkingsComponentProps) {
     const { file, name, additionalText, submodelId, idShortPath } = props;
     const [markingImage, setMarkingImage] = useState<string>();
-    const { aasOriginSource } = useCurrentAasContext();
+    const { aasOriginUrl } = useCurrentAasContext();
 
     const StyledMarkingImageWrapper = styled(Box)(() => ({
         maxWidth: props.rowDisplay ? '4rem' : 'auto',
@@ -52,7 +52,7 @@ export function SingleMarkingsComponent(props: SingleMarkingsComponentProps) {
             const imageResponse = await getAttachmentFromSubmodelElement(
                 submodelId!,
                 fileIdShort,
-                aasOriginSource ?? undefined,
+                aasOriginUrl ?? undefined,
             );
             if (!imageResponse.isSuccess) {
                 console.error('Image not found for file ID: ' + fileIdShort);

@@ -30,7 +30,7 @@ export type TransferFormModel = {
 // TODO pull aas and origin URLs into props
 export function TransferDialog(props: DialogProps) {
     const [transferDto, setTransferDto] = useState<TransferFormModel>();
-    const { aas, submodels, aasOriginSource } = useCurrentAasContext();
+    const { aas, submodels, aasOriginUrl } = useCurrentAasContext();
     const notificationSpawner = useNotificationSpawner();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const theme = useTheme();
@@ -40,7 +40,7 @@ export function TransferDialog(props: DialogProps) {
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
     function buildTransferDto(values: TargetRepositoryFormData) {
-        if (!values.repository || !aas || !aasOriginSource) {
+        if (!values.repository || !aas || !aasOriginUrl) {
             return;
         }
 
@@ -79,12 +79,12 @@ export function TransferDialog(props: DialogProps) {
             aas: aasToTransfer,
             submodels: submodelsToTransfer,
             targetAasRepositoryBaseUrl: values.repository,
-            sourceAasRepositoryBaseUrl: aasOriginSource,
+            sourceAasRepositoryBaseUrl: aasOriginUrl,
             targetSubmodelRepositoryBaseUrl:
                 values.submodelRepository && values.submodelRepository !== '0'
                     ? values.submodelRepository
                     : values.repository,
-            sourceSubmodelRepositoryBaseUrl: aasOriginSource,
+            sourceSubmodelRepositoryBaseUrl: aasOriginUrl,
             apikey: values.repositoryApiKey,
             targetDiscoveryBaseUrl: env.DISCOVERY_API_URL,
         };

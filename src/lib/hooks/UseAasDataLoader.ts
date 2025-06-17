@@ -22,7 +22,7 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
     const env = useEnv();
     const setIsLoadingAas = context.isLoadingAas[1];
     const setIsLoadingSubmodels = context.isLoadingSubmodels[1];
-    const setAasOriginUrl = context.aasOriginSource[1];
+    const setAasOriginUrl = context.aasOriginUrl[1];
     const setSubmodels = context.submodelState[1];
     const [aasFromContext, setAasFromContext] = context.aasState;
     const [registryAasData, setRegistryAasData] = context.registryAasData;

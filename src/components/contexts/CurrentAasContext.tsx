@@ -8,7 +8,7 @@ export type CurrentAasContextType = {
     aasState: [AssetAdministrationShell | null, React.Dispatch<React.SetStateAction<AssetAdministrationShell | null>>];
     submodelState: [SubmodelOrIdReference[], React.Dispatch<React.SetStateAction<SubmodelOrIdReference[]>>];
     registryAasData: [RegistryAasData | null, React.Dispatch<React.SetStateAction<RegistryAasData | null>>];
-    aasOriginSource: [string | null, React.Dispatch<React.SetStateAction<string | null>>];
+    aasOriginUrl: [string | null, React.Dispatch<React.SetStateAction<string | null>>];
     isLoadingAas: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
     isLoadingSubmodels: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 };
@@ -30,7 +30,7 @@ export function useCurrentAasContext() {
         aas: context.aasState[0],
         submodels: context.submodelState[0],
         registryAasData: context.registryAasData[0],
-        aasOriginSource: context.aasOriginSource[0],
+        aasOriginUrl: context.aasOriginUrl[0],
         isLoadingAas: context.isLoadingAas[0],
         isLoadingSubmodels: context.isLoadingSubmodels[0],
     };
@@ -40,7 +40,7 @@ export const CurrentAasContextProvider = (props: PropsWithChildren<{ aasId: stri
     const aasState = useState<AssetAdministrationShell | null>(null);
     const registryAasData = useState<RegistryAasData | null>(null);
     const submodelState = useState<SubmodelOrIdReference[]>([]);
-    const aasOriginSource = useState<string | null>(null);
+    const aasOriginUrl = useState<string | null>(null);
     const isLoadingAas = useState<boolean>(true);
     const isLoadingSubmodels = useState<boolean>(true);
 
@@ -48,7 +48,7 @@ export const CurrentAasContextProvider = (props: PropsWithChildren<{ aasId: stri
         aasState,
         registryAasData,
         submodelState,
-        aasOriginSource,
+        aasOriginUrl,
         isLoadingAas,
         isLoadingSubmodels,
     };

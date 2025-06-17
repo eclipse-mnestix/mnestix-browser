@@ -28,7 +28,7 @@ export function ProductViewer() {
     const [filteredSubmodels, setFilteredSubmodels] = useState<SubmodelOrIdReference[]>([]);
     const [breadcrumbLinks] = useState<Array<{ label: string; path: string }>>([]);
 
-    const { aas, aasOriginSource, isLoadingAas, isLoadingSubmodels, submodels } = useCurrentAasContext();
+    const { aas, aasOriginUrl, isLoadingAas, isLoadingSubmodels, submodels } = useCurrentAasContext();
 
     useEffect(() => {
         if (submodels) {
@@ -117,7 +117,7 @@ export function ProductViewer() {
                         productImage={aas?.assetInformation?.defaultThumbnail?.path}
                         isLoading={isLoadingAas || isLoadingSubmodels}
                         isAccordion={isMobile}
-                        repositoryURL={aasOriginSource}
+                        repositoryURL={aasOriginUrl}
                         displayName={aas?.displayName ? getTranslationText(aas.displayName, locale) : null}
                     />
                     <SubmodelsOverviewCard

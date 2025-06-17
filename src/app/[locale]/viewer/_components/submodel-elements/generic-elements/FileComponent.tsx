@@ -28,7 +28,7 @@ export function FileComponent({ file, submodelId, submodelElementPath, withPrevi
     const [image, setImage] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [, setLoadError] = useState<boolean>(false);
-    const { aasOriginSource } = useCurrentAasContext();
+    const { aasOriginUrl } = useCurrentAasContext();
 
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewFile, setPreviewFile] = useState<File | null>(null);
@@ -57,7 +57,7 @@ export function FileComponent({ file, submodelId, submodelElementPath, withPrevi
                     const imageResponse = await getAttachmentFromSubmodelElement(
                         submodelId,
                         submodelElementPath,
-                        aasOriginSource ?? undefined,
+                        aasOriginUrl ?? undefined,
                     );
                     if (!imageResponse.isSuccess) {
                         console.error('Image not found' + imageResponse.message);

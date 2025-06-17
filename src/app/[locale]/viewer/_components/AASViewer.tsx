@@ -20,7 +20,7 @@ export function AASViewer() {
     const env = useEnv();
     const t = useTranslations('pages.aasViewer');
 
-    const { aas, submodels, isLoadingAas, isLoadingSubmodels, aasOriginSource } = useCurrentAasContext();
+    const { aas, submodels, isLoadingAas, isLoadingSubmodels, aasOriginUrl } = useCurrentAasContext();
 
     const params = useParams<{ base64AasId: string }>();
 
@@ -98,7 +98,7 @@ export function AASViewer() {
                         productImage={aas?.assetInformation?.defaultThumbnail?.path}
                         isLoading={isLoadingAas}
                         isAccordion={isMobile}
-                        repositoryURL={aasOriginSource}
+                        repositoryURL={aasOriginUrl}
                     />
                     <SubmodelsOverviewCard aas={aas} submodelIds={submodels} submodelsLoading={isLoadingSubmodels} />
                 </Box>
