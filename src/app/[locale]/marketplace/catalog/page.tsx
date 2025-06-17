@@ -145,14 +145,10 @@ export default function Page() {
                         }}
                         aria-label={t('filter')}
                     >
-                        {loading ? (
-                            <CenteredLoadingSpinner />
-                        ) : (
-                            <FilterContainer
-                                onFilterChanged={onFilterChanged}
-                                aasSearcherUrl={connection?.aasSearcher}
-                            />
-                        )}
+                        <FilterContainer
+                            onFilterChanged={onFilterChanged}
+                            aasSearcherUrl={connection?.aasSearcher}
+                        />
                     </Card>
                 )}
                 <Box flex={1} minWidth={0}>

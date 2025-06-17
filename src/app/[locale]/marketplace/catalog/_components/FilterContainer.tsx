@@ -201,11 +201,15 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                             {t('filter')}
                         </Typography>
                         <Box display="flex" gap={1}>
-                            <Button variant="contained" onClick={() => applyFilter()}>
+                            <Button 
+                                variant="contained"
+                                type="button"
+                                onClick={() => applyFilter()}>
                                 Apply
                             </Button>
                             <Button
                                 variant="outlined"
+                                type="button"
                                 onClick={() => {
                                     setResetTrigger((prev) => !prev);
                                     applyFilter(true);
@@ -218,6 +222,7 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                     {eClassFilters.length > 0 && (
                         <EClassFilter
                             eClassFilters={eClassFilters}
+                            defaultOpen={true}
                             onFilterChanged={(values) =>
                                 onFilterChangedByCategory(
                                     'ECLASS',
@@ -230,6 +235,7 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                     {VECFilters.length > 0 && (
                         <VecFilter
                             vecFilters={VECFilters}
+                            defaultOpen={true}
                             onFilterChanged={(values) =>
                                 onFilterChangedByCategory(
                                     'VEC',
@@ -243,6 +249,7 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                         productCategoryFilters={transformProductCategories(productCategoryFilters)}
                         onFilterChanged={(values) => onFilterClassificationChangedCategory(values)}
                         resetFilters={resetTrigger}
+                        defaultOpen={true}
                     />
                 </>
             )}
