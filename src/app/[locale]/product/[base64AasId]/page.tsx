@@ -161,10 +161,10 @@ export default function Page() {
                         });
                     }
                 });
-                setIsBreadcrumbsLoading(false);
             }
 
             setBreadcrumbLinks(newBreadcrumbLinks);
+            setIsBreadcrumbsLoading(false);
         };
         
         fetchManufacturerData();
