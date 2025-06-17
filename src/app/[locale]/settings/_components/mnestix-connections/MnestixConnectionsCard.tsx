@@ -19,6 +19,7 @@ export type ConnectionFormData = {
         image?: string;
         aasSearcher?: string;
         name?: string;
+        commercialData?: string;
     }[],
     submodelRepository: {
         id: string;
@@ -27,6 +28,7 @@ export type ConnectionFormData = {
         image?: string;
         aasSearcher?: string;
         name?: string;
+        commercialData?: string;
     }[];
 };
 
@@ -73,7 +75,8 @@ export function MnestixConnectionsCard() {
                     type: data.type.typeName,
                     image: data.image,
                     aasSearcher: data.aasSearcher,
-                    name: data.name
+                    name: data.name,
+                    commercialData: data.commercialData,
                 })),
             submodelRepository: rawConnectionData
                 .filter((data) => data.type.typeName === 'SUBMODEL_REPOSITORY')
@@ -83,7 +86,8 @@ export function MnestixConnectionsCard() {
                     type: data.type.typeName,
                     image: undefined,
                     aasSearcher: undefined,
-                    name: undefined
+                    name: undefined,
+                    commercialData: undefined,
                 })),
         };
     }
@@ -97,12 +101,14 @@ export function MnestixConnectionsCard() {
                     image: group.image ?? undefined,
                     aasSearcher: group.aasSearcher ?? undefined,
                     name: group.name ?? undefined,
+                    commercialData: group.commercialData ?? undefined,
                 })),
                 submodelRepository: mappedData.submodelRepository.map(repo => ({
                     ...repo,
                     image: repo.image ?? undefined,
                     aasSearcher: repo.aasSearcher ?? undefined,
                     name: repo.name ?? undefined,
+                    commercialData: repo.commercialData ?? undefined,
                 })),
             };
         },

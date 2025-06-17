@@ -10,6 +10,7 @@ export type DataSourceFormData = {
     aasSearcher?: string;
     image?: string;
     name?: string;
+    commercialData?: string;
 };
 
 export class PrismaConnector implements IPrismaConnector {
@@ -32,6 +33,7 @@ export class PrismaConnector implements IPrismaConnector {
                         aasSearcher: formData.aasSearcher,
                         image: formData.image,
                         name: formData.name,
+                        commercialData: formData.commercialData,
                     },
                 });
                 // If an entry exists in the db but NOT in the updated data, delete it from the db
@@ -51,6 +53,7 @@ export class PrismaConnector implements IPrismaConnector {
                         aasSearcher: updated.aasSearcher,
                         image: updated.image,
                         name: updated.name,
+                        commercialData: updated.commercialData,
                     },
                 });
             }
