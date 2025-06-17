@@ -1,0 +1,36 @@
+networks:
+  mnestix-network:
+    driver: bridge
+    external: true
+
+services:
+  searcher-mongodb:
+    container_name: searcher-mongodb
+    image: mongo:latest
+    ports:
+      - '27018:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: superSecureSecret
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - mnestix-network
+
+  mnestix-searcher:
+    container_name: mnestix-searcher
+    image: mnestix/mnestix-searcher:latest-dev
+    ports:
+      - '5149:5149'
+    environment:
+      AuthenticationSettings__ApiKey: ${MNESTIX_BACKEND_API_KEY:-verySecureApiKey}
+      AasSearcherDatabase__ConnectionString: 'mongodb://admin:superSecureSecret@searcher-mongodb:27017'
+      BaseUrlSettings__AasRepositoryBaseUrl: 'https://vws4ls-api.dev.mnestix.xitaso.net/repo'
+      BaseUrlSettings__SubmodelRepositoryBaseUrl: 'https://vws4ls-api.dev.mnestix.xitaso.net/repo'
+      BaseUrlSettings__ConceptDescriptionRepositoryBaseUrl: 'https://vws4ls-api.dev.mnestix.xitaso.net/repo'
+      ASPNETCORE_URLS: 'http://+:5149'
+    networks:
+      - mnestix-network
+
+volumes:
+  mongodb_data:

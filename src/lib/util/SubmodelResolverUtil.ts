@@ -1,19 +1,21 @@
 import {
     DataTypeDefXsd,
     IAbstractLangString,
-    IDataElement,
     ISubmodelElement,
-    KeyTypes,
+    Submodel,
     MultiLanguageProperty,
     Property,
-    Submodel,
     SubmodelElementCollection,
+    KeyTypes,
+    IDataElement,
+    Reference,
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { idEquals } from './IdValidationUtil';
 import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
+import { MultiLanguageProperty as MultiLanguagePropertyAAS } from 'lib/api/aas/models';
 
 /**
  * Gets the translated text from either a MultiLanguageProperty or LangStringTextType array
@@ -22,7 +24,7 @@ import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemantic
  * @returns The translated text for the given locale, falling back to the first available translation, or null
  */
 export function getTranslationText(
-    element: MultiLanguageProperty | IAbstractLangString[] | undefined,
+    element: MultiLanguageProperty | IAbstractLangString[] | undefined | MultiLanguagePropertyAAS,
     locale: string,
 ): string {
     const langStrings = Array.isArray(element) ? element : element?.value;
@@ -70,12 +72,19 @@ export function findSubmodelElementBySemanticIdsOrIdShort(
     semanticIds: string[] | null,
 ): ISubmodelElement | null {
     if (!elements) return null;
-    return elements?.find(el =>
-        el.idShort == idShort ||
-        (semanticIds?.some(semId => idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim()))) ||
-        (getKeyType(el) == KeyTypes.SubmodelElementCollection &&
-            findSubmodelElementBySemanticIdsOrIdShort((el as SubmodelElementCollection).value, idShort, semanticIds))
-    ) ?? null;
+    return (
+        elements?.find(
+            (el) =>
+                el.idShort == idShort ||
+                semanticIds?.some((semId) => idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim())) ||
+                (getKeyType(el) == KeyTypes.SubmodelElementCollection &&
+                    findSubmodelElementBySemanticIdsOrIdShort(
+                        (el as SubmodelElementCollection).value,
+                        idShort,
+                        semanticIds,
+                    )),
+        ) ?? null
+    );
 }
 
 export function findAllSubmodelElementsBySemanticIdsOrIdShort(
@@ -84,12 +93,19 @@ export function findAllSubmodelElementsBySemanticIdsOrIdShort(
     semanticIds: string[] | null,
 ): ISubmodelElement[] | null {
     if (!elements) return null;
-    return elements?.filter(el =>
-        el.idShort == idShort ||
-        (semanticIds?.some(semId => idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim()))) ||
-        (getKeyType(el) == KeyTypes.SubmodelElementCollection &&
-            findSubmodelElementBySemanticIdsOrIdShort((el as SubmodelElementCollection).value, idShort, semanticIds))
-    ) ?? null;
+    return (
+        elements?.filter(
+            (el) =>
+                el.idShort == idShort ||
+                semanticIds?.some((semId) => idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim())) ||
+                (getKeyType(el) == KeyTypes.SubmodelElementCollection &&
+                    findSubmodelElementBySemanticIdsOrIdShort(
+                        (el as SubmodelElementCollection).value,
+                        idShort,
+                        semanticIds,
+                    )),
+        ) ?? null
+    );
 }
 
 export function findValueByIdShort(
@@ -142,7 +158,7 @@ export function getValueType(submodelElement: ISubmodelElement): DataTypeDefXsd 
 
 export function buildSubmodelElementPath(
     submodelElementPath: string | null | undefined,
-    submodelElementIdShort: string | null,
+    submodelElementIdShort: string | null | undefined,
 ): string {
     let newSubmodelElementPath = '';
 
@@ -183,4 +199,22 @@ export function checkIfSubmodelHasIdShortOrSemanticId(
         (submodel.submodel?.semanticId?.keys?.length && submodel.submodel?.semanticId?.keys[0].value === semanticId) ||
         submodel.submodel?.idShort === idShort
     );
+}
+
+/**
+ * Finds the first semantic ID key in the given submodel semanticId that matches a key in the [visualization] map.
+ *
+ * @param semanticId - The reference object containing semantic ID keys to search.
+ * @param map - The semanticIds map to check against the possible semanticIds
+ *
+ * @returns The string of the matching semanticId key as a key of `submodelCustomVisualizationMap`, or `undefined` if no match is found.
+ */
+export function findSemanticIdInMap<T extends Record<string, string | ((...args: unknown[]) => unknown)>>(
+    semanticId: Reference | null | undefined,
+    map: T,
+): keyof T | undefined {
+    // We have to use the idEquals function here to correctly handle IRDIs
+    return Object.keys(map).find((mapKey) => semanticId?.keys?.some((id) => idEquals(id.value, mapKey))) as
+        | keyof T
+        | undefined;
 }

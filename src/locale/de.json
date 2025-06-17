@@ -1,5 +1,10 @@
 {
   "components": {
+    "constructionDialog": {
+      "title": "In Bearbeitung",
+      "message": "Diese Funktion befindet sich derzeit im Aufbau und wird in Kürze verfügbar sein.",
+      "buttonText": "Schließen"
+    },
     "addressComponent": {
       "VAT": "USt-IdNr.",
       "addressTypes": {
@@ -105,8 +110,8 @@
     },
     "propertyComponent": {
       "boolean": {
-        "false": "Falsch",
-        "true": "Wahr"
+        "false": "falsch",
+        "true": "wahr"
       },
       "labels": {
         "copied": "In Zwischenablage kopiert",
@@ -124,14 +129,14 @@
     },
     "relationShipDetailsDialog": {
       "error": {
-        "entityError": "Relationselement nicht gefunden",
-        "semanticError": "Semantische ID nicht gefunden",
+        "entityError": "Relation entity nicht gefunden",
+        "semanticError": "Semantic ID nicht gefunden",
         "unknownRelationship": "Unbekannte Relation"
       },
       "hasPart": "hat Teil",
       "isPartOf": "ist Teil von",
       "sameAs": "gleich wie",
-      "semanticId": "Semantische ID"
+      "semanticId": "Semantic ID"
     },
     "submodelElementCollection": {
       "allAvailableData": "Alle verfügbaren Daten",
@@ -191,13 +196,13 @@
         "aasEndpoint": "AAS URL",
         "aasId": "AAS ID",
         "assetId": "Asset ID",
-        "discoveryUrl": "Discovery Url",
+        "discoveryUrl": "Discovery URL",
         "manufacturer": "Herstellername",
         "picture": "Bild",
         "productClass": "Produktklasse",
         "productDesignation": "Hersteller Produktbezeichnung",
-        "registryUrl": "Registry Url",
-        "repositoryUrl": "Repository Url",
+        "registryUrl": "Registry URL",
+        "repositoryUrl": "Repository URL",
         "viewAASButton": "AAS anzeigen"
       },
       "maxElementsWarning": "Maximal 3 Elemente selektierbar",
@@ -244,13 +249,26 @@
           "selectTimeframe": "Auswahl des Zeitabschnitts"
         },
         "title": "Teilmodelle",
-        "unknownModelType": "Unbekannter ModelType: {type}"
+        "unknownModelType": "Unbekannter ModelType: {type}",
+        "noSubmodelsToLoad": "Für diese AAS existieren keine Teilmodelle."
       }
     },
     "catalog": {
-      "title": "Produktkatalog",
       "manufacturerCatalog": "Hersteller Produktkatalog",
-      "manufacturerSelect": "Hersteller auswählen"
+      "manufacturerSelect": "Hersteller auswählen",
+      "title": "Hersteller Produktkatalog",
+      "marketplaceTitle": "VWS4LS - Marketplace",
+      "marketplaceSubtitle": "Verwaltungsschale für den Leitungssatz",
+      "articleCount": "{count, plural, =1 {# Artikel} other {# Artikel}}",
+      "filter": "Filter",
+      "noSearcherWarning": "Kein AAS Searcher konfiguriert. AAS Liste wird angezeigt, Filterung ist nicht möglich.",
+      "eclassCategories": {
+        "15": "Instandhaltung (Dienstleistung)",
+        "27": "Elektro-, Automatisierungs- und Prozessleittechnik",
+        "44": "Fahrzeugtechnik, Fahrzeugkomponente",
+        "default": "Kategorie "
+      },
+      "searchPlaceholder": "Suche aktuell nicht verfügbar..."
     },
     "compare": {
       "addAnother": "Eine weitere AAS hinzufügen",
@@ -284,13 +302,16 @@
         "noAssetId": "Keine Asset ID angegeben.",
         "searchFailed": "Suche fehlgeschlagen"
       },
-      "subtitle": "Hier finden Sie alle AAS, die mit der angegebenen ID verknüpft sind.",
-      "title": "AAS mit ID"
+      "subtitle": "Hier finden Sie alle AAS, die mit der angegebenen Asset ID verknüpft sind.",
+      "title": "AAS mit Asset ID"
     },
     "productViewer": {
       "actions": {
         "compareButton": "Vergleichen",
-        "toAasView": "AAS Ansicht"
+        "toAasView": "AAS Ansicht",
+        "download": "AAS herunterladen",
+        "downloadErrorNoRepo": "Kein Repository für die ausgewählte AAS gefunden.",
+        "downloadError": "Fehler beim Herunterladen der AAS."
       },
       "classification": "Produktklassifikation",
       "error": {
@@ -342,8 +363,8 @@
         },
         "subtitle": "Definieren Sie, welche Datenquellen verwendet werden sollen.",
         "title": "Datenquellen",
-        "urlFieldRequired": "URL wird benötigt",
-        "urlFieldNoTrailingSlash": "Die URL darf nicht mit einem Schrägstrich (/) enden."
+        "urlFieldNoTrailingSlash": "Die URL darf nicht mit einem Schrägstrich (/) enden.",
+        "urlFieldRequired": "URL wird benötigt"
       },
       "header": "Einstellungen",
       "idStructure": {
@@ -439,8 +460,8 @@
       },
       "all": "Alle",
       "boolean": {
-        "false": "Falsch",
-        "true": "Wahr"
+        "false": "falsch",
+        "true": "wahr"
       },
       "chooseAStartingPoint": "Wählen Sie ein Template als Ausgangspunkt",
       "copyTemplateId": "Template-ID kopieren",

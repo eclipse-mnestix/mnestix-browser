@@ -29,53 +29,61 @@ export default function Page() {
     const encodedRepoUrl = useSearchParams().get('repoUrl');
     const repoUrl = encodedRepoUrl ? decodeURI(encodedRepoUrl) : undefined;
     const [filteredSubmodels, setFilteredSubmodels] = useState<SubmodelOrIdReference[]>([]);
-    const [breadcrumbLinks] = useState<Array<{ label: string, path: string }>>([]);
+    const [breadcrumbLinks] = useState<Array<{ label: string; path: string }>>([]);
 
-
-    const {
-        aasFromContext,
-        isLoadingAas,
-        aasOriginUrl,
-        submodels,
-        isSubmodelsLoading,
-    } = useAasLoader(base64AasId, repoUrl);
+    const { aasFromContext, isLoadingAas, aasOriginUrl, submodels, isSubmodelsLoading } = useAasLoader(
+        base64AasId,
+        repoUrl,
+    );
 
     useEffect(() => {
         if (submodels) {
             const filtered = submodels.filter(
                 (submodel) =>
-                    !(checkIfSubmodelHasIdShortOrSemanticId(submodel, undefined, 'AasDesignerChangelog') ||
-                        checkIfSubmodelHasIdShortOrSemanticId(submodel, SubmodelSemanticIdEnum.NameplateV1, 'Nameplate') ||
-                        checkIfSubmodelHasIdShortOrSemanticId(submodel, SubmodelSemanticIdEnum.NameplateV2, 'Nameplate') ||
-                        checkIfSubmodelHasIdShortOrSemanticId(submodel, SubmodelSemanticIdEnum.NameplateV3, 'Nameplate') ||
-                        checkIfSubmodelHasIdShortOrSemanticId(submodel, SubmodelSemanticIdEnum.NameplateV4, 'Nameplate') ||
-                        checkIfSubmodelHasIdShortOrSemanticId(submodel, undefined, 'VEC_SML'))
+                    !(
+                        checkIfSubmodelHasIdShortOrSemanticId(submodel, undefined, 'AasDesignerChangelog') ||
+                        checkIfSubmodelHasIdShortOrSemanticId(
+                            submodel,
+                            SubmodelSemanticIdEnum.NameplateV1,
+                            'Nameplate',
+                        ) ||
+                        checkIfSubmodelHasIdShortOrSemanticId(
+                            submodel,
+                            SubmodelSemanticIdEnum.NameplateV2,
+                            'Nameplate',
+                        ) ||
+                        checkIfSubmodelHasIdShortOrSemanticId(
+                            submodel,
+                            SubmodelSemanticIdEnum.NameplateV3,
+                            'Nameplate',
+                        ) ||
+                        checkIfSubmodelHasIdShortOrSemanticId(
+                            submodel,
+                            SubmodelSemanticIdEnum.NameplateV4,
+                            'Nameplate',
+                        ) ||
+                        checkIfSubmodelHasIdShortOrSemanticId(submodel, undefined, 'VEC_SML')
+                    ),
             );
             setFilteredSubmodels(filtered);
         }
     }, [submodels]);
 
-    const nameplate = findSubmodelByIdOrSemanticId(
-        submodels,
-        SubmodelSemanticIdEnum.NameplateV2,
-        'Nameplate',
-    );
+    const nameplate = findSubmodelByIdOrSemanticId(submodels, SubmodelSemanticIdEnum.NameplateV2, 'Nameplate');
 
     if (nameplate) {
         const productBreadcrumbProperties = [
             { idShort: 'ManufacturerProductRoot', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductRoot },
-            { idShort: 'ManufacturerProductFamily', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductFamily },
-            { idShort: 'ManufacturerProductType', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductType }
+            {
+                idShort: 'ManufacturerProductFamily',
+                semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductFamily,
+            },
+            { idShort: 'ManufacturerProductType', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductType },
         ];
 
-        productBreadcrumbProperties.forEach(prop => {
-            const value = findValueByIdShort(
-                nameplate.submodelElements,
-                prop.idShort,
-                prop.semanticId,
-                locale,
-            );
-            if (value && !breadcrumbLinks.some(link => link.label === value)) {
+        productBreadcrumbProperties.forEach((prop) => {
+            const value = findValueByIdShort(nameplate.submodelElements, prop.idShort, prop.semanticId, locale);
+            if (value && !breadcrumbLinks.some((link) => link.label === value)) {
                 breadcrumbLinks.push({
                     label: value,
                     path: '',
@@ -116,11 +124,17 @@ export default function Page() {
                         isLoading={isLoadingAas || isSubmodelsLoading}
                         isAccordion={isMobile}
                         repositoryURL={aasOriginUrl}
-                        displayName={aasFromContext?.displayName ? getTranslationText(aasFromContext.displayName, locale) : null}
+                        displayName={
+                            aasFromContext?.displayName ? getTranslationText(aasFromContext.displayName, locale) : null
+                        }
                     />
-                    {aasFromContext?.submodels && aasFromContext.submodels.length > 0 && (
-                        <SubmodelsOverviewCard submodelIds={filteredSubmodels} submodelsLoading={isSubmodelsLoading} firstSubmodelIdShort="TechnicalData" disableHeadline={true} />
-                    )}
+                    <SubmodelsOverviewCard
+                        aas={aasFromContext}
+                        submodelIds={filteredSubmodels}
+                        submodelsLoading={isSubmodelsLoading}
+                        firstSubmodelIdShort="TechnicalData"
+                        disableHeadline={true}
+                    />
                 </Box>
             ) : (
                 <NoSearchResult base64AasId={safeBase64Decode(base64AasId)} />

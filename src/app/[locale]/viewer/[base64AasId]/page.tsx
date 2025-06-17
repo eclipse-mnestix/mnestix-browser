@@ -25,13 +25,10 @@ export default function Page() {
     const repoUrl = encodedRepoUrl ? decodeURI(encodedRepoUrl) : undefined;
     const t = useTranslations('pages.aasViewer');
 
-    const {
-        aasFromContext,
-        isLoadingAas,
-        aasOriginUrl,
-        submodels,
-        isSubmodelsLoading,
-    } = useAasLoader(base64AasId, repoUrl);
+    const { aasFromContext, isLoadingAas, aasOriginUrl, submodels, isSubmodelsLoading } = useAasLoader(
+        base64AasId,
+        repoUrl,
+    );
 
     const startComparison = () => {
         navigate.push(`/compare?aasId=${encodeURIComponent(aasIdDecoded)}`);
@@ -96,11 +93,11 @@ export default function Page() {
                             </Button>
                         )}
                         {env.TRANSFER_FEATURE_FLAG && <TransferButton />}
-                        {env.PRODUCT_VIEW_FEATURE_FLAG &&
+                        {env.PRODUCT_VIEW_FEATURE_FLAG && (
                             <Button variant="contained" sx={{ whiteSpace: 'nowrap' }} onClick={goToProductView}>
                                 {t('actions.toProductView')}
                             </Button>
-                        }
+                        )}
                     </Box>
                     <AASOverviewCard
                         aas={aasFromContext ?? null}
@@ -109,9 +106,11 @@ export default function Page() {
                         isAccordion={isMobile}
                         repositoryURL={aasOriginUrl}
                     />
-                    {aasFromContext?.submodels && aasFromContext.submodels.length > 0 && (
-                        <SubmodelsOverviewCard submodelIds={submodels} submodelsLoading={isSubmodelsLoading} />
-                    )}
+                    <SubmodelsOverviewCard
+                        aas={aasFromContext}
+                        submodelIds={submodels}
+                        submodelsLoading={isSubmodelsLoading}
+                    />
                 </Box>
             ) : (
                 <NoSearchResult base64AasId={safeBase64Decode(base64AasId)} />

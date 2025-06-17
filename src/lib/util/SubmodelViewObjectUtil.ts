@@ -93,5 +93,3 @@ export function updateNodeIds(originalParentNodeId: string, newParentNodeId: str
     }
     parent.id = parent.id.replace(originalParentNodeId, newParentNodeId);
 }
-
-
