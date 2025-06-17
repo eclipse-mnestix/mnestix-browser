@@ -14,6 +14,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import useSWR from 'swr';
 import { SearchResponseEntry } from 'lib/api/graphql/catalogQueries';
+import { translateListText } from 'lib/util/SubmodelResolverUtil';
 
 type AasTableRowProps = {
     repositoryUrl: string;
@@ -30,6 +31,7 @@ const tableBodyText = {
     color: 'text.primary',
     wordWrap: 'break-word',
 };
+
 export const ProductListTableRow = (props: AasTableRowProps) => {
     const {
         repositoryUrl,
@@ -61,24 +63,6 @@ export const ProductListTableRow = (props: AasTableRowProps) => {
         const baseUrl = window.location.origin;
 
         window.open(baseUrl + `/product/${encodeBase64(aasId)}`, '_blank');
-    };
-
-    const translateListText = (property: { language: string; text: string }[] | undefined) => {
-        if (!property) return '';
-        // try the current locale first
-        try {
-            const translatedString = property.find((prop) => prop.language === locale);
-            // if there is any locale, better show it instead of nothing
-            const fallback = property[0] ? property[0].text : '';
-            return translatedString ? translatedString.text : fallback;
-        } catch (e) {
-            // if the property is a string, return it directly
-            // this can happen if the property is not a MultiLanguageValueOnly type
-            // e.g. if the property is a AAS Property type (incorrect by specification but possible) string or an error occurs
-            if (typeof property === 'string') return property;
-            console.error('Error translating property:', e);
-            return '';
-        }
     };
 
     useAsyncEffect(async () => {
@@ -137,10 +121,12 @@ export const ProductListTableRow = (props: AasTableRowProps) => {
                 />
             </PictureTableCell>
             <TableCell data-testid="list-manufacturer-name" align="left" sx={tableBodyText}>
-                {aasListEntry.manufacturerName ? translateListText(aasListEntry.manufacturerName.mlValues) : ''}
+                {aasListEntry.manufacturerName ? translateListText(aasListEntry.manufacturerName.mlValues, locale) : ''}
             </TableCell>
             <TableCell data-testid="list-product-designation" align="left" sx={tableBodyText}>
-                {aasListEntry.productDesignation ? translateListText(aasListEntry.productDesignation.mlValues) : ''}
+                {aasListEntry.productDesignation
+                    ? translateListText(aasListEntry.productDesignation.mlValues, locale)
+                    : ''}
             </TableCell>
             <TableCell align="center">
                 <RoundedIconButton
