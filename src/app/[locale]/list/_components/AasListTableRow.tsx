@@ -1,4 +1,4 @@
-import { Box, Checkbox, Skeleton, TableCell, Typography } from '@mui/material';
+import { Box, Checkbox, TableCell, Typography } from '@mui/material';
 import { useAasOriginSourceState, useAasState } from 'components/contexts/CurrentAasContext';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
@@ -12,9 +12,7 @@ import { isValidUrl } from 'lib/util/UrlUtil';
 import { useState } from 'react';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ListEntityDto } from 'lib/services/list-service/ListService';
-import { getNameplateValuesForAAS } from 'lib/services/list-service/aasListApiActions';
-import { MultiLanguageValueOnly } from 'lib/api/basyx-v3/types';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import useSWR from 'swr';
 import { useEnv } from 'app/EnvProvider';
@@ -22,6 +20,10 @@ import { useEnv } from 'app/EnvProvider';
 type AasTableRowProps = {
     repositoryUrl: string;
     aasListEntry: ListEntityDto;
+    enrichedData?: {
+        manufacturerName?: string;
+        productDesignation?: string;
+    };
     comparisonFeatureFlag: boolean | undefined;
     checkBoxDisabled: (aasId: string | undefined) => boolean | undefined;
     selectedAasList: string[] | undefined;
@@ -38,6 +40,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
     const {
         repositoryUrl,
         aasListEntry,
+        enrichedData,
         comparisonFeatureFlag,
         checkBoxDisabled,
         selectedAasList,
@@ -49,11 +52,6 @@ export const AasListTableRow = (props: AasTableRowProps) => {
     const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
     const t = useTranslations('pages.aasList');
     const env = useEnv();
-    const locale = useLocale();
-    const { data: nameplateValues, isLoading: isNameplateValueLoading } = useSWR(
-        [repositoryUrl, aasListEntry.aasId],
-        async ([url, aasId]) => await getNameplateValuesForAAS(url, aasId),
-    );
     const { data: thumbnailResponse } = useSWR(
         [aasListEntry.aasId, repositoryUrl],
         async ([aasId, repositoryUrl]) => await getThumbnailFromShell(aasId, repositoryUrl),
@@ -71,24 +69,6 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         const pageToGo = env.PRODUCT_VIEW_FEATURE_FLAG ? '/product' : '/viewer';
 
         window.open(baseUrl + `${pageToGo}/${encodeBase64(listEntry.aasId)}`, '_blank');
-    };
-
-    const translateListText = (property: MultiLanguageValueOnly | undefined) => {
-        if (!property) return '';
-        // try the current locale first
-        try {
-            const translatedString = property.find((prop) => prop[locale]);
-            // if there is any locale, better show it instead of nothing
-            const fallback = property[0] ? Object.values(property[0])[0] : '';
-            return translatedString ? translatedString[locale] : fallback;
-        } catch (e) {
-            // if the property is a string, return it directly
-            // this can happen if the property is not a MultiLanguageValueOnly type
-            // e.g. if the property is a AAS Property type (incorrect by specification but possible) string or an error occurs
-            if (typeof property === 'string') return property;
-            console.error('Error translating property:', e);
-            return '';
-        }
     };
 
     useAsyncEffect(async () => {
@@ -147,19 +127,10 @@ export const AasListTableRow = (props: AasTableRowProps) => {
                 />
             </PictureTableCell>
             <TableCell data-testid="list-manufacturer-name" align="left" sx={tableBodyText}>
-                {!isNameplateValueLoading ? (
-                    nameplateValues?.manufacturerName && translateListText(nameplateValues.manufacturerName)
-                ) : (
-                    <Skeleton variant="text" width="80%" height={26} />
-                )}
+                {enrichedData?.manufacturerName || ''}
             </TableCell>
             <TableCell data-testid="list-product-designation" align="left" sx={tableBodyText}>
-                {!isNameplateValueLoading ? (
-                    nameplateValues &&
-                    tooltipText(translateListText(nameplateValues.manufacturerProductDesignation), 80)
-                ) : (
-                    <Skeleton variant="text" width="80%" height={26} />
-                )}
+                {enrichedData?.productDesignation && tooltipText(enrichedData.productDesignation, 80)}
             </TableCell>
             <TableCell data-testid="list-assetId" align="left" sx={tableBodyText}>
                 <Typography sx={{ all: 'unset' }}>{tooltipText(aasListEntry.assetId, 70)}</Typography>
