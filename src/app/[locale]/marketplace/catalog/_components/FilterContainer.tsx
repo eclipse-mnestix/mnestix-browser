@@ -201,11 +201,15 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                             {t('filter')}
                         </Typography>
                         <Box display="flex" gap={1}>
-                            <Button variant="contained" onClick={() => applyFilter()}>
+                            <Button 
+                                variant="contained"
+                                type="button"
+                                onClick={() => applyFilter()}>
                                 Apply
                             </Button>
                             <Button
                                 variant="outlined"
+                                type="button"
                                 onClick={() => {
                                     setResetTrigger((prev) => !prev);
                                     applyFilter(true);
