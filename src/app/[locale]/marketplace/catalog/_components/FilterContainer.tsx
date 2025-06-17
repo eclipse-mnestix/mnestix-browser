@@ -222,6 +222,7 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                     {eClassFilters.length > 0 && (
                         <EClassFilter
                             eClassFilters={eClassFilters}
+                            defaultOpen={true}
                             onFilterChanged={(values) =>
                                 onFilterChangedByCategory(
                                     'ECLASS',
@@ -234,6 +235,7 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                     {VECFilters.length > 0 && (
                         <VecFilter
                             vecFilters={VECFilters}
+                            defaultOpen={true}
                             onFilterChanged={(values) =>
                                 onFilterChangedByCategory(
                                     'VEC',
@@ -247,6 +249,7 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                         productCategoryFilters={transformProductCategories(productCategoryFilters)}
                         onFilterChanged={(values) => onFilterClassificationChangedCategory(values)}
                         resetFilters={resetTrigger}
+                        defaultOpen={true}
                     />
                 </>
             )}

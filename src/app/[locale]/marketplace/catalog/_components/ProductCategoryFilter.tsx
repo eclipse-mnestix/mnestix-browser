@@ -28,6 +28,7 @@ export function ProductCategoryFilter(props: {
     productCategoryFilters: ProductCategory[];
     onFilterChanged(query: FilterQuery[]): void;
     resetFilters: boolean;
+    defaultOpen: boolean;
 }) {
     const [filters, setFilters] = useState<ProductCategory[]>(props.productCategoryFilters);
 
@@ -140,7 +141,7 @@ export function ProductCategoryFilter(props: {
     }
 
     return (
-        <SimpleTreeView>
+        <SimpleTreeView defaultExpandedItems={props.defaultOpen ? ['root'] : []}>
             <TreeItem
                 itemId="root"
                 label={
