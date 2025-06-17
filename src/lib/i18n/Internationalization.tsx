@@ -1,7 +1,7 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { useLocale } from 'next-intl';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { de } from 'date-fns/locale/de';
 import { es } from 'date-fns/locale/es';
 import { Locale } from 'date-fns';
@@ -29,7 +29,7 @@ export function Internationalization(props: PropsWithChildren<unknown>) {
 
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={dateAdapterLocale}>
-                {props.children}
+            {props.children}
         </LocalizationProvider>
     );
 }
