@@ -1,7 +1,5 @@
 {
   "modelType": "Submodel",
-  "id": "SecuritySubmodel",
-  "idShort": "SecuritySubmodel",
   "kind": "Instance",
   "semanticId": {
     "keys": [
@@ -12,389 +10,28 @@
     ],
     "type": "ExternalReference"
   },
+  "id": "SecuritySubmodel",
+  "idShort": "SecuritySubmodel",
   "submodelElements": [
-    {
-      "modelType": "SubmodelElementCollection",
-      "idShort": "YmFzeXgtYWRtaW5DUkVBVEVvcmcuZWNsaXBzZS5kaWdpdGFsdHdpbi5iYXN5eC5hYXNyZXBvc2l0b3J5LmZlYXR1cmUuYXV0aG9yaXphdGlvbi5BYXNUYXJnZXRJbmZvcm1hdGlvbg==",
-      "value": [
-        { "modelType": "Property", "value": "basyx-admin", "valueType": "xs:string", "idShort": "role" },
-        {
-          "modelType": "SubmodelElementList",
-          "idShort": "action",
-          "orderRelevant": true,
-          "typeValueListElement": "Property",
-          "value": [{ "modelType": "Property", "valueType": "xs:string", "value": "CREATE" }]
-        },
-        {
-          "modelType": "SubmodelElementCollection",
-          "idShort": "targetInformation",
-          "value": [
-            {
-              "modelType": "SubmodelElementList",
-              "idShort": "aasIds",
-              "orderRelevant": true,
-              "typeValueListElement": "Property",
-              "value": [{ "value": "*", "modelType": "Property", "valueType": "xs:string" }]
-            },
-            { "modelType": "Property", "value": "aas", "valueType": "xs:string", "idShort": "@type" }
-          ]
-        }
-      ]
-    },
-    {
-      "modelType": "SubmodelElementCollection",
-      "idShort": "YmFzeXgtYWRtaW5SRUFEb3JnLmVjbGlwc2UuZGlnaXRhbHR3aW4uYmFzeXguYWFzcmVwb3NpdG9yeS5mZWF0dXJlLmF1dGhvcml6YXRpb24uQWFzVGFyZ2V0SW5mb3JtYXRpb24=",
-      "value": [
-        { "modelType": "Property", "value": "basyx-admin", "valueType": "xs:string", "idShort": "role" },
-        {
-          "modelType": "SubmodelElementList",
-          "idShort": "action",
-          "orderRelevant": true,
-          "typeValueListElement": "Property",
-          "value": [{ "modelType": "Property", "valueType": "xs:string", "value": "READ" }]
-        },
-        {
-          "modelType": "SubmodelElementCollection",
-          "idShort": "targetInformation",
-          "value": [
-            {
-              "modelType": "SubmodelElementList",
-              "idShort": "aasIds",
-              "orderRelevant": true,
-              "typeValueListElement": "Property",
-              "value": [{ "value": "*", "modelType": "Property", "valueType": "xs:string" }]
-            },
-            { "modelType": "Property", "value": "aas", "valueType": "xs:string", "idShort": "@type" }
-          ]
-        }
-      ]
-    },
-    {
-      "modelType": "SubmodelElementCollection",
-      "idShort": "YmFzeXgtYWRtaW5VUERBVEVvcmcuZWNsaXBzZS5kaWdpdGFsdHdpbi5iYXN5eC5hYXNyZXBvc2l0b3J5LmZlYXR1cmUuYXV0aG9yaXphdGlvbi5BYXNUYXJnZXRJbmZvcm1hdGlvbg==",
-      "value": [
-        { "modelType": "Property", "value": "basyx-admin", "valueType": "xs:string", "idShort": "role" },
-        {
-          "modelType": "SubmodelElementList",
-          "idShort": "action",
-          "orderRelevant": true,
-          "typeValueListElement": "Property",
-          "value": [{ "modelType": "Property", "valueType": "xs:string", "value": "UPDATE" }]
-        },
-        {
-          "modelType": "SubmodelElementCollection",
-          "idShort": "targetInformation",
-          "value": [
-            {
-              "modelType": "SubmodelElementList",
-              "idShort": "aasIds",
-              "orderRelevant": true,
-              "typeValueListElement": "Property",
-              "value": [{ "value": "*", "modelType": "Property", "valueType": "xs:string" }]
-            },
-            { "modelType": "Property", "value": "aas", "valueType": "xs:string", "idShort": "@type" }
-          ]
-        }
-      ]
-    },
-    {
-      "modelType": "SubmodelElementCollection",
-      "idShort": "YmFzeXgtYWRtaW5ERUxFVEVvcmcuZWNsaXBzZS5kaWdpdGFsdHdpbi5iYXN5eC5hYXNyZXBvc2l0b3J5LmZlYXR1cmUuYXV0aG9yaXphdGlvbi5BYXNUYXJnZXRJbmZvcm1hdGlvbg==",
-      "value": [
-        { "modelType": "Property", "value": "basyx-admin", "valueType": "xs:string", "idShort": "role" },
-        {
-          "modelType": "SubmodelElementList",
-          "idShort": "action",
-          "orderRelevant": true,
-          "typeValueListElement": "Property",
-          "value": [{ "modelType": "Property", "valueType": "xs:string", "value": "DELETE" }]
-        },
-        {
-          "modelType": "SubmodelElementCollection",
-          "idShort": "targetInformation",
-          "value": [
-            {
-              "modelType": "SubmodelElementList",
-              "idShort": "aasIds",
-              "orderRelevant": true,
-              "typeValueListElement": "Property",
-              "value": [{ "value": "*", "modelType": "Property", "valueType": "xs:string" }]
-            },
-            { "modelType": "Property", "value": "aas", "valueType": "xs:string", "idShort": "@type" }
-          ]
-        }
-      ]
-    },
-    {
-      "modelType": "SubmodelElementCollection",
-      "idShort": "YmFzeXgtYWRtaW5DUkVBVEVvcmcuZWNsaXBzZS5kaWdpdGFsdHdpbi5iYXN5eC5zdWJtb2RlbHJlcG9zaXRvcnkuZmVhdHVyZS5hdXRob3JpemF0aW9uLlN1Ym1vZGVsVGFyZ2V0SW5mb3JtYXRpb24=",
-      "value": [
-        { "modelType": "Property", "value": "basyx-admin", "valueType": "xs:string", "idShort": "role" },
-        {
-          "modelType": "SubmodelElementList",
-          "idShort": "action",
-          "orderRelevant": true,
-          "typeValueListElement": "Property",
-          "value": [{ "modelType": "Property", "valueType": "xs:string", "value": "CREATE" }]
-        },
-        {
-          "modelType": "SubmodelElementCollection",
-          "idShort": "targetInformation",
-          "value": [
-            {
-              "modelType": "SubmodelElementList",
-              "idShort": "submodelIds",
-              "orderRelevant": true,
-              "typeValueListElement": "Property",
-              "value": [{ "value": "*", "modelType": "Property", "valueType": "xs:string" }]
-            },
-            {
-              "modelType": "SubmodelElementList",
-              "idShort": "submodelElementIdShortPaths",
-              "orderRelevant": true,
-              "typeValueListElement": "Property",
-              "value": [{ "value": "*", "modelType": "Property", "valueType": "xs:string" }]
-            },
-            { "modelType": "Property", "value": "submodel", "valueType": "xs:string", "idShort": "@type" }
-          ]
-        }
-      ]
-    },
-    {
-      "modelType": "SubmodelElementCollection",
-      "idShort": "YmFzeXgtYWRtaW5SRUFEb3JnLmVjbGlwc2UuZGlnaXRhbHR3aW4uYmFzeXguc3VibW9kZWxyZXBvc2l0b3J5LmZlYXR1cmUuYXV0aG9yaXphdGlvbi5TdWJtb2RlbFRhcmdldEluZm9ybWF0aW9u",
-      "value": [
-        { "modelType": "Property", "value": "basyx-admin", "valueType": "xs:string", "idShort": "role" },
-        {
-          "modelType": "SubmodelElementList",
-          "idShort": "action",
-          "orderRelevant": true,
-          "typeValueListElement": "Property",
-          "value": [{ "modelType": "Property", "valueType": "xs:string", "value": "READ" }]
-        },
-        {
-          "modelType": "SubmodelElementCollection",
-          "idShort": "targetInformation",
-          "value": [
-            {
-              "modelType": "SubmodelElementList",
-              "idShort": "submodelIds",
-              "orderRelevant": true,
-              "typeValueListElement": "Property",
-              "value": [{ "value": "*", "modelType": "Property", "valueType": "xs:string" }]
-            },
-            {
-              "modelType": "SubmodelElementList",
-              "idShort": "submodelElementIdShortPaths",
-              "orderRelevant": true,
-              "typeValueListElement": "Property",
-              "value": [{ "value": "*", "modelType": "Property", "valueType": "xs:string" }]
-            },
-            { "modelType": "Property", "value": "submodel", "valueType": "xs:string", "idShort": "@type" }
-          ]
-        }
-      ]
-    },
-    {
-      "modelType": "SubmodelElementCollection",
-      "idShort": "YmFzeXgtYWRtaW5VUERBVEVvcmcuZWNsaXBzZS5kaWdpdGFsdHdpbi5iYXN5eC5zdWJtb2RlbHJlcG9zaXRvcnkuZmVhdHVyZS5hdXRob3JpemF0aW9uLlN1Ym1vZGVsVGFyZ2V0SW5mb3JtYXRpb24=",
-      "value": [
-        { "modelType": "Property", "value": "basyx-admin", "valueType": "xs:string", "idShort": "role" },
-        {
-          "modelType": "SubmodelElementList",
-          "idShort": "action",
-          "orderRelevant": true,
-          "typeValueListElement": "Property",
-          "value": [{ "modelType": "Property", "valueType": "xs:string", "value": "UPDATE" }]
-        },
-        {
-          "modelType": "SubmodelElementCollection",
-          "idShort": "targetInformation",
-          "value": [
-            {
-              "modelType": "SubmodelElementList",
-              "idShort": "submodelIds",
-              "orderRelevant": true,
-              "typeValueListElement": "Property",
-              "value": [{ "value": "*", "modelType": "Property", "valueType": "xs:string" }]
-            },
-            {
-              "modelType": "SubmodelElementList",
-              "idShort": "submodelElementIdShortPaths",
-              "orderRelevant": true,
-              "typeValueListElement": "Property",
-              "value": [{ "value": "*", "modelType": "Property", "valueType": "xs:string" }]
-            },
-            { "modelType": "Property", "value": "submodel", "valueType": "xs:string", "idShort": "@type" }
-          ]
-        }
-      ]
-    },
-    {
-      "modelType": "SubmodelElementCollection",
-      "idShort": "YmFzeXgtYWRtaW5ERUxFVEVvcmcuZWNsaXBzZS5kaWdpdGFsdHdpbi5iYXN5eC5zdWJtb2RlbHJlcG9zaXRvcnkuZmVhdHVyZS5hdXRob3JpemF0aW9uLlN1Ym1vZGVsVGFyZ2V0SW5mb3JtYXRpb24=",
-      "value": [
-        { "modelType": "Property", "value": "basyx-admin", "valueType": "xs:string", "idShort": "role" },
-        {
-          "modelType": "SubmodelElementList",
-          "idShort": "action",
-          "orderRelevant": true,
-          "typeValueListElement": "Property",
-          "value": [{ "modelType": "Property", "valueType": "xs:string", "value": "DELETE" }]
-        },
-        {
-          "modelType": "SubmodelElementCollection",
-          "idShort": "targetInformation",
-          "value": [
-            {
-              "modelType": "SubmodelElementList",
-              "idShort": "submodelIds",
-              "orderRelevant": true,
-              "typeValueListElement": "Property",
-              "value": [{ "value": "*", "modelType": "Property", "valueType": "xs:string" }]
-            },
-            {
-              "modelType": "SubmodelElementList",
-              "idShort": "submodelElementIdShortPaths",
-              "orderRelevant": true,
-              "typeValueListElement": "Property",
-              "value": [{ "value": "*", "modelType": "Property", "valueType": "xs:string" }]
-            },
-            { "modelType": "Property", "value": "submodel", "valueType": "xs:string", "idShort": "@type" }
-          ]
-        }
-      ]
-    },
-    {
-      "modelType": "SubmodelElementCollection",
-      "idShort": "YmFzeXgtYWRtaW5FWEVDVVRFb3JnLmVjbGlwc2UuZGlnaXRhbHR3aW4uYmFzeXguc3VibW9kZWxyZXBvc2l0b3J5LmZlYXR1cmUuYXV0aG9yaXphdGlvbi5TdWJtb2RlbFRhcmdldEluZm9ybWF0aW9u",
-      "value": [
-        { "modelType": "Property", "value": "basyx-admin", "valueType": "xs:string", "idShort": "role" },
-        {
-          "modelType": "SubmodelElementList",
-          "idShort": "action",
-          "orderRelevant": true,
-          "typeValueListElement": "Property",
-          "value": [{ "modelType": "Property", "valueType": "xs:string", "value": "EXECUTE" }]
-        },
-        {
-          "modelType": "SubmodelElementCollection",
-          "idShort": "targetInformation",
-          "value": [
-            {
-              "modelType": "SubmodelElementList",
-              "idShort": "submodelIds",
-              "orderRelevant": true,
-              "typeValueListElement": "Property",
-              "value": [{ "value": "*", "modelType": "Property", "valueType": "xs:string" }]
-            },
-            {
-              "modelType": "SubmodelElementList",
-              "idShort": "submodelElementIdShortPaths",
-              "orderRelevant": true,
-              "typeValueListElement": "Property",
-              "value": [{ "value": "*", "modelType": "Property", "valueType": "xs:string" }]
-            },
-            { "modelType": "Property", "value": "submodel", "valueType": "xs:string", "idShort": "@type" }
-          ]
-        }
-      ]
-    },
-    {
-      "modelType": "SubmodelElementCollection",
-      "idShort": "YmFzeXgtYWRtaW5DUkVBVEVvcmcuZWNsaXBzZS5kaWdpdGFsdHdpbi5iYXN5eC5jb25jZXB0ZGVzY3JpcHRpb25yZXBvc2l0b3J5LmZlYXR1cmUuYXV0aG9yaXphdGlvbi5Db25jZXB0RGVzY3JpcHRpb25UYXJnZXRJbmZvcm1hdGlvbg==",
-      "value": [
-        { "modelType": "Property", "value": "basyx-admin", "valueType": "xs:string", "idShort": "role" },
-        {
-          "modelType": "SubmodelElementList",
-          "idShort": "action",
-          "orderRelevant": true,
-          "typeValueListElement": "Property",
-          "value": [{ "modelType": "Property", "valueType": "xs:string", "value": "CREATE" }]
-        },
-        {
-          "modelType": "SubmodelElementCollection",
-          "idShort": "targetInformation",
-          "value": [
-            {
-              "modelType": "SubmodelElementList",
-              "idShort": "conceptDescriptionIds",
-              "orderRelevant": true,
-              "typeValueListElement": "Property",
-              "value": [{ "value": "*", "modelType": "Property", "valueType": "xs:string" }]
-            },
-            { "modelType": "Property", "value": "concept-description", "valueType": "xs:string", "idShort": "@type" }
-          ]
-        }
-      ]
-    },
-    {
-      "modelType": "SubmodelElementCollection",
-      "idShort": "YmFzeXgtYWRtaW5SRUFEb3JnLmVjbGlwc2UuZGlnaXRhbHR3aW4uYmFzeXguY29uY2VwdGRlc2NyaXB0aW9ucmVwb3NpdG9yeS5mZWF0dXJlLmF1dGhvcml6YXRpb24uQ29uY2VwdERlc2NyaXB0aW9uVGFyZ2V0SW5mb3JtYXRpb24=",
-      "value": [
-        { "modelType": "Property", "value": "basyx-admin", "valueType": "xs:string", "idShort": "role" },
-        {
-          "modelType": "SubmodelElementList",
-          "idShort": "action",
-          "orderRelevant": true,
-          "typeValueListElement": "Property",
-          "value": [{ "modelType": "Property", "valueType": "xs:string", "value": "READ" }]
-        },
-        {
-          "modelType": "SubmodelElementCollection",
-          "idShort": "targetInformation",
-          "value": [
-            {
-              "modelType": "SubmodelElementList",
-              "idShort": "conceptDescriptionIds",
-              "orderRelevant": true,
-              "typeValueListElement": "Property",
-              "value": [{ "value": "*", "modelType": "Property", "valueType": "xs:string" }]
-            },
-            { "modelType": "Property", "value": "concept-description", "valueType": "xs:string", "idShort": "@type" }
-          ]
-        }
-      ]
-    },
-    {
-      "modelType": "SubmodelElementCollection",
-      "idShort": "YmFzeXgtYWRtaW5VUERBVEVvcmcuZWNsaXBzZS5kaWdpdGFsdHdpbi5iYXN5eC5jb25jZXB0ZGVzY3JpcHRpb25yZXBvc2l0b3J5LmZlYXR1cmUuYXV0aG9yaXphdGlvbi5Db25jZXB0RGVzY3JpcHRpb25UYXJnZXRJbmZvcm1hdGlvbg==",
-      "value": [
-        { "modelType": "Property", "value": "basyx-admin", "valueType": "xs:string", "idShort": "role" },
-        {
-          "modelType": "SubmodelElementList",
-          "idShort": "action",
-          "orderRelevant": true,
-          "typeValueListElement": "Property",
-          "value": [{ "modelType": "Property", "valueType": "xs:string", "value": "UPDATE" }]
-        },
-        {
-          "modelType": "SubmodelElementCollection",
-          "idShort": "targetInformation",
-          "value": [
-            {
-              "modelType": "SubmodelElementList",
-              "idShort": "conceptDescriptionIds",
-              "orderRelevant": true,
-              "typeValueListElement": "Property",
-              "value": [{ "value": "*", "modelType": "Property", "valueType": "xs:string" }]
-            },
-            { "modelType": "Property", "value": "concept-description", "valueType": "xs:string", "idShort": "@type" }
-          ]
-        }
-      ]
-    },
     {
       "modelType": "SubmodelElementCollection",
       "idShort": "YmFzeXgtYWRtaW5ERUxFVEVvcmcuZWNsaXBzZS5kaWdpdGFsdHdpbi5iYXN5eC5jb25jZXB0ZGVzY3JpcHRpb25yZXBvc2l0b3J5LmZlYXR1cmUuYXV0aG9yaXphdGlvbi5Db25jZXB0RGVzY3JpcHRpb25UYXJnZXRJbmZvcm1hdGlvbg==",
       "value": [
-        { "modelType": "Property", "value": "basyx-admin", "valueType": "xs:string", "idShort": "role" },
+        {
+          "modelType": "Property",
+          "value": "basyx-admin",
+          "idShort": "role"
+        },
         {
           "modelType": "SubmodelElementList",
           "idShort": "action",
           "orderRelevant": true,
-          "typeValueListElement": "Property",
-          "value": [{ "modelType": "Property", "valueType": "xs:string", "value": "DELETE" }]
+          "value": [
+            {
+              "modelType": "Property",
+              "value": "DELETE"
+            }
+          ]
         },
         {
           "modelType": "SubmodelElementCollection",
@@ -404,10 +41,18 @@
               "modelType": "SubmodelElementList",
               "idShort": "conceptDescriptionIds",
               "orderRelevant": true,
-              "typeValueListElement": "Property",
-              "value": [{ "value": "*", "modelType": "Property", "valueType": "xs:string" }]
+              "value": [
+                {
+                  "modelType": "Property",
+                  "value": "*"
+                }
+              ]
             },
-            { "modelType": "Property", "value": "concept-description", "valueType": "xs:string", "idShort": "@type" }
+            {
+              "modelType": "Property",
+              "value": "concept-description",
+              "idShort": "@type"
+            }
           ]
         }
       ]
@@ -416,13 +61,21 @@
       "modelType": "SubmodelElementCollection",
       "idShort": "YmFzeXgtYWFzLXJlYWRlclJFQURvcmcuZWNsaXBzZS5kaWdpdGFsdHdpbi5iYXN5eC5hYXNyZXBvc2l0b3J5LmZlYXR1cmUuYXV0aG9yaXphdGlvbi5BYXNUYXJnZXRJbmZvcm1hdGlvbg==",
       "value": [
-        { "modelType": "Property", "value": "basyx-aas-reader", "valueType": "xs:string", "idShort": "role" },
+        {
+          "modelType": "Property",
+          "value": "basyx-aas-reader",
+          "idShort": "role"
+        },
         {
           "modelType": "SubmodelElementList",
           "idShort": "action",
           "orderRelevant": true,
-          "typeValueListElement": "Property",
-          "value": [{ "modelType": "Property", "valueType": "xs:string", "value": "READ" }]
+          "value": [
+            {
+              "modelType": "Property",
+              "value": "READ"
+            }
+          ]
         },
         {
           "modelType": "SubmodelElementCollection",
@@ -432,25 +85,41 @@
               "modelType": "SubmodelElementList",
               "idShort": "aasIds",
               "orderRelevant": true,
-              "typeValueListElement": "Property",
-              "value": [{ "value": "*", "modelType": "Property", "valueType": "xs:string" }]
+              "value": [
+                {
+                  "modelType": "Property",
+                  "value": "*"
+                }
+              ]
             },
-            { "modelType": "Property", "value": "aas", "valueType": "xs:string", "idShort": "@type" }
+            {
+              "modelType": "Property",
+              "value": "aas",
+              "idShort": "@type"
+            }
           ]
         }
       ]
     },
     {
       "modelType": "SubmodelElementCollection",
-      "idShort": "YmFzeXgtc3VibW9kZWwtcmVhZGVyUkVBRG9yZy5lY2xpcHNlLmRpZ2l0YWx0d2luLmJhc3l4LnN1Ym1vZGVscmVwb3NpdG9yeS5mZWF0dXJlLmF1dGhvcml6YXRpb24uU3VibW9kZWxUYXJnZXRJbmZvcm1hdGlvbg==",
+      "idShort": "YmFzeXgtYWRtaW5VUERBVEVvcmcuZWNsaXBzZS5kaWdpdGFsdHdpbi5iYXN5eC5jb25jZXB0ZGVzY3JpcHRpb25yZXBvc2l0b3J5LmZlYXR1cmUuYXV0aG9yaXphdGlvbi5Db25jZXB0RGVzY3JpcHRpb25UYXJnZXRJbmZvcm1hdGlvbg==",
       "value": [
-        { "modelType": "Property", "value": "basyx-submodel-reader", "valueType": "xs:string", "idShort": "role" },
+        {
+          "modelType": "Property",
+          "value": "basyx-admin",
+          "idShort": "role"
+        },
         {
           "modelType": "SubmodelElementList",
           "idShort": "action",
           "orderRelevant": true,
-          "typeValueListElement": "Property",
-          "value": [{ "modelType": "Property", "valueType": "xs:string", "value": "READ" }]
+          "value": [
+            {
+              "modelType": "Property",
+              "value": "UPDATE"
+            }
+          ]
         },
         {
           "modelType": "SubmodelElementCollection",
@@ -458,19 +127,108 @@
           "value": [
             {
               "modelType": "SubmodelElementList",
-              "idShort": "submodelIds",
+              "idShort": "conceptDescriptionIds",
               "orderRelevant": true,
-              "typeValueListElement": "Property",
-              "value": [{ "value": "*", "modelType": "Property", "valueType": "xs:string" }]
+              "value": [
+                {
+                  "modelType": "Property",
+                  "value": "*"
+                }
+              ]
             },
             {
+              "modelType": "Property",
+              "value": "concept-description",
+              "idShort": "@type"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "modelType": "SubmodelElementCollection",
+      "idShort": "YmFzeXgtYWRtaW5DUkVBVEVvcmcuZWNsaXBzZS5kaWdpdGFsdHdpbi5iYXN5eC5jb25jZXB0ZGVzY3JpcHRpb25yZXBvc2l0b3J5LmZlYXR1cmUuYXV0aG9yaXphdGlvbi5Db25jZXB0RGVzY3JpcHRpb25UYXJnZXRJbmZvcm1hdGlvbg==",
+      "value": [
+        {
+          "modelType": "Property",
+          "value": "basyx-admin",
+          "idShort": "role"
+        },
+        {
+          "modelType": "SubmodelElementList",
+          "idShort": "action",
+          "orderRelevant": true,
+          "value": [
+            {
+              "modelType": "Property",
+              "value": "CREATE"
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "targetInformation",
+          "value": [
+            {
               "modelType": "SubmodelElementList",
-              "idShort": "submodelElementIdShortPaths",
+              "idShort": "conceptDescriptionIds",
               "orderRelevant": true,
-              "typeValueListElement": "Property",
-              "value": [{ "value": "*", "modelType": "Property", "valueType": "xs:string" }]
+              "value": [
+                {
+                  "modelType": "Property",
+                  "value": "*"
+                }
+              ]
             },
-            { "modelType": "Property", "value": "submodel", "valueType": "xs:string", "idShort": "@type" }
+            {
+              "modelType": "Property",
+              "value": "concept-description",
+              "idShort": "@type"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "modelType": "SubmodelElementCollection",
+      "idShort": "YmFzeXgtYWRtaW5DUkVBVEVvcmcuZWNsaXBzZS5kaWdpdGFsdHdpbi5iYXN5eC5hYXNyZXBvc2l0b3J5LmZlYXR1cmUuYXV0aG9yaXphdGlvbi5BYXNUYXJnZXRJbmZvcm1hdGlvbg==",
+      "value": [
+        {
+          "modelType": "Property",
+          "value": "basyx-admin",
+          "idShort": "role"
+        },
+        {
+          "modelType": "SubmodelElementList",
+          "idShort": "action",
+          "orderRelevant": true,
+          "value": [
+            {
+              "modelType": "Property",
+              "value": "CREATE"
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "targetInformation",
+          "value": [
+            {
+              "modelType": "SubmodelElementList",
+              "idShort": "aasIds",
+              "orderRelevant": true,
+              "value": [
+                {
+                  "modelType": "Property",
+                  "value": "*"
+                }
+              ]
+            },
+            {
+              "modelType": "Property",
+              "value": "aas",
+              "idShort": "@type"
+            }
           ]
         }
       ]
@@ -479,13 +237,21 @@
       "modelType": "SubmodelElementCollection",
       "idShort": "bW5lc3RpeC1hYXMtcmVhZGVyUkVBRG9yZy5lY2xpcHNlLmRpZ2l0YWx0d2luLmJhc3l4LmFhc3JlcG9zaXRvcnkuZmVhdHVyZS5hdXRob3JpemF0aW9uLkFhc1RhcmdldEluZm9ybWF0aW9u",
       "value": [
-        { "modelType": "Property", "value": "mnestix-aas-reader", "valueType": "xs:string", "idShort": "role" },
+        {
+          "modelType": "Property",
+          "value": "mnestix-aas-reader",
+          "idShort": "role"
+        },
         {
           "modelType": "SubmodelElementList",
           "idShort": "action",
           "orderRelevant": true,
-          "typeValueListElement": "Property",
-          "value": [{ "modelType": "Property", "valueType": "xs:string", "value": "READ" }]
+          "value": [
+            {
+              "modelType": "Property",
+              "value": "READ"
+            }
+          ]
         },
         {
           "modelType": "SubmodelElementCollection",
@@ -495,27 +261,41 @@
               "modelType": "SubmodelElementList",
               "idShort": "aasIds",
               "orderRelevant": true,
-              "typeValueListElement": "Property",
               "value": [
-                { "value": "https://vws.xitaso.com/aas/mnestix", "modelType": "Property", "valueType": "xs:string" }
+                {
+                  "modelType": "Property",
+                  "value": "https://vws.xitaso.com/aas/mnestix"
+                }
               ]
             },
-            { "modelType": "Property", "value": "aas", "valueType": "xs:string", "idShort": "@type" }
+            {
+              "modelType": "Property",
+              "value": "aas",
+              "idShort": "@type"
+            }
           ]
         }
       ]
     },
     {
       "modelType": "SubmodelElementCollection",
-      "idShort": "bW5lc3RpeC1zdWJtb2RlbC1yZWFkZXJSRUFEb3JnLmVjbGlwc2UuZGlnaXRhbHR3aW4uYmFzeXguc3VibW9kZWxyZXBvc2l0b3J5LmZlYXR1cmUuYXV0aG9yaXphdGlvbi5TdWJtb2RlbFRhcmdldEluZm9ybWF0aW9u",
+      "idShort": "YmFzeXgtYWRtaW5FWEVDVVRFb3JnLmVjbGlwc2UuZGlnaXRhbHR3aW4uYmFzeXguc3VibW9kZWxzZXJ2aWNlLmZlYXR1cmUuYXV0aG9yaXphdGlvbi5TdWJtb2RlbFRhcmdldEluZm9ybWF0aW9u",
       "value": [
-        { "modelType": "Property", "value": "mnestix-submodel-reader", "valueType": "xs:string", "idShort": "role" },
+        {
+          "modelType": "Property",
+          "value": "basyx-admin",
+          "idShort": "role"
+        },
         {
           "modelType": "SubmodelElementList",
           "idShort": "action",
           "orderRelevant": true,
-          "typeValueListElement": "Property",
-          "value": [{ "modelType": "Property", "valueType": "xs:string", "value": "READ" }]
+          "value": [
+            {
+              "modelType": "Property",
+              "value": "EXECUTE"
+            }
+          ]
         },
         {
           "modelType": "SubmodelElementCollection",
@@ -525,27 +305,10 @@
               "modelType": "SubmodelElementList",
               "idShort": "submodelIds",
               "orderRelevant": true,
-              "typeValueListElement": "Property",
               "value": [
                 {
                   "modelType": "Property",
-                  "value": "https://vws.xitaso.com/sm/nameplate/5240_8927_2203_5742",
-                  "valueType": "xs:string"
-                },
-                {
-                  "modelType": "Property",
-                  "value": "https://vws.xitaso.com/sm/swnameplate/4386_8596_1428_5257",
-                  "valueType": "xs:string"
-                },
-                {
-                  "modelType": "Property",
-                  "value": "https://vws.xitaso.com/sm/booth_bill_of_material",
-                  "valueType": "xs:string"
-                },
-                {
-                  "modelType": "Property",
-                  "value": "https://example.com/ids/sm/7791_1307_3131_5873",
-                  "valueType": "xs:string"
+                  "value": "*"
                 }
               ]
             },
@@ -553,10 +316,536 @@
               "modelType": "SubmodelElementList",
               "idShort": "submodelElementIdShortPaths",
               "orderRelevant": true,
-              "typeValueListElement": "Property",
-              "value": [{ "value": "*", "modelType": "Property", "valueType": "xs:string" }]
+              "value": [
+                {
+                  "modelType": "Property",
+                  "value": "*"
+                }
+              ]
             },
-            { "modelType": "Property", "value": "submodel", "valueType": "xs:string", "idShort": "@type" }
+            {
+              "modelType": "Property",
+              "value": "submodel",
+              "idShort": "@type"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "modelType": "SubmodelElementCollection",
+      "idShort": "YmFzeXgtYWRtaW5VUERBVEVvcmcuZWNsaXBzZS5kaWdpdGFsdHdpbi5iYXN5eC5zdWJtb2RlbHNlcnZpY2UuZmVhdHVyZS5hdXRob3JpemF0aW9uLlN1Ym1vZGVsVGFyZ2V0SW5mb3JtYXRpb24=",
+      "value": [
+        {
+          "modelType": "Property",
+          "value": "basyx-admin",
+          "idShort": "role"
+        },
+        {
+          "modelType": "SubmodelElementList",
+          "idShort": "action",
+          "orderRelevant": true,
+          "value": [
+            {
+              "modelType": "Property",
+              "value": "UPDATE"
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "targetInformation",
+          "value": [
+            {
+              "modelType": "SubmodelElementList",
+              "idShort": "submodelIds",
+              "orderRelevant": true,
+              "value": [
+                {
+                  "modelType": "Property",
+                  "value": "*"
+                }
+              ]
+            },
+            {
+              "modelType": "SubmodelElementList",
+              "idShort": "submodelElementIdShortPaths",
+              "orderRelevant": true,
+              "value": [
+                {
+                  "modelType": "Property",
+                  "value": "*"
+                }
+              ]
+            },
+            {
+              "modelType": "Property",
+              "value": "submodel",
+              "idShort": "@type"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "modelType": "SubmodelElementCollection",
+      "idShort": "YmFzeXgtYWRtaW5DUkVBVEVvcmcuZWNsaXBzZS5kaWdpdGFsdHdpbi5iYXN5eC5zdWJtb2RlbHNlcnZpY2UuZmVhdHVyZS5hdXRob3JpemF0aW9uLlN1Ym1vZGVsVGFyZ2V0SW5mb3JtYXRpb24=",
+      "value": [
+        {
+          "modelType": "Property",
+          "value": "basyx-admin",
+          "idShort": "role"
+        },
+        {
+          "modelType": "SubmodelElementList",
+          "idShort": "action",
+          "orderRelevant": true,
+          "value": [
+            {
+              "modelType": "Property",
+              "value": "CREATE"
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "targetInformation",
+          "value": [
+            {
+              "modelType": "SubmodelElementList",
+              "idShort": "submodelIds",
+              "orderRelevant": true,
+              "value": [
+                {
+                  "modelType": "Property",
+                  "value": "*"
+                }
+              ]
+            },
+            {
+              "modelType": "SubmodelElementList",
+              "idShort": "submodelElementIdShortPaths",
+              "orderRelevant": true,
+              "value": [
+                {
+                  "modelType": "Property",
+                  "value": "*"
+                }
+              ]
+            },
+            {
+              "modelType": "Property",
+              "value": "submodel",
+              "idShort": "@type"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "modelType": "SubmodelElementCollection",
+      "idShort": "YmFzeXgtYWRtaW5ERUxFVEVvcmcuZWNsaXBzZS5kaWdpdGFsdHdpbi5iYXN5eC5hYXNyZXBvc2l0b3J5LmZlYXR1cmUuYXV0aG9yaXphdGlvbi5BYXNUYXJnZXRJbmZvcm1hdGlvbg==",
+      "value": [
+        {
+          "modelType": "Property",
+          "value": "basyx-admin",
+          "idShort": "role"
+        },
+        {
+          "modelType": "SubmodelElementList",
+          "idShort": "action",
+          "orderRelevant": true,
+          "value": [
+            {
+              "modelType": "Property",
+              "value": "DELETE"
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "targetInformation",
+          "value": [
+            {
+              "modelType": "SubmodelElementList",
+              "idShort": "aasIds",
+              "orderRelevant": true,
+              "value": [
+                {
+                  "modelType": "Property",
+                  "value": "*"
+                }
+              ]
+            },
+            {
+              "modelType": "Property",
+              "value": "aas",
+              "idShort": "@type"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "modelType": "SubmodelElementCollection",
+      "idShort": "YmFzeXgtYWRtaW5SRUFEb3JnLmVjbGlwc2UuZGlnaXRhbHR3aW4uYmFzeXguc3VibW9kZWxzZXJ2aWNlLmZlYXR1cmUuYXV0aG9yaXphdGlvbi5TdWJtb2RlbFRhcmdldEluZm9ybWF0aW9u",
+      "value": [
+        {
+          "modelType": "Property",
+          "value": "basyx-admin",
+          "idShort": "role"
+        },
+        {
+          "modelType": "SubmodelElementList",
+          "idShort": "action",
+          "orderRelevant": true,
+          "value": [
+            {
+              "modelType": "Property",
+              "value": "READ"
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "targetInformation",
+          "value": [
+            {
+              "modelType": "SubmodelElementList",
+              "idShort": "submodelIds",
+              "orderRelevant": true,
+              "value": [
+                {
+                  "modelType": "Property",
+                  "value": "*"
+                }
+              ]
+            },
+            {
+              "modelType": "SubmodelElementList",
+              "idShort": "submodelElementIdShortPaths",
+              "orderRelevant": true,
+              "value": [
+                {
+                  "modelType": "Property",
+                  "value": "*"
+                }
+              ]
+            },
+            {
+              "modelType": "Property",
+              "value": "submodel",
+              "idShort": "@type"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "modelType": "SubmodelElementCollection",
+      "idShort": "YmFzeXgtYWRtaW5VUERBVEVvcmcuZWNsaXBzZS5kaWdpdGFsdHdpbi5iYXN5eC5hYXNyZXBvc2l0b3J5LmZlYXR1cmUuYXV0aG9yaXphdGlvbi5BYXNUYXJnZXRJbmZvcm1hdGlvbg==",
+      "value": [
+        {
+          "modelType": "Property",
+          "value": "basyx-admin",
+          "idShort": "role"
+        },
+        {
+          "modelType": "SubmodelElementList",
+          "idShort": "action",
+          "orderRelevant": true,
+          "value": [
+            {
+              "modelType": "Property",
+              "value": "UPDATE"
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "targetInformation",
+          "value": [
+            {
+              "modelType": "SubmodelElementList",
+              "idShort": "aasIds",
+              "orderRelevant": true,
+              "value": [
+                {
+                  "modelType": "Property",
+                  "value": "*"
+                }
+              ]
+            },
+            {
+              "modelType": "Property",
+              "value": "aas",
+              "idShort": "@type"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "modelType": "SubmodelElementCollection",
+      "idShort": "bW5lc3RpeC1zdWJtb2RlbC1yZWFkZXJSRUFEb3JnLmVjbGlwc2UuZGlnaXRhbHR3aW4uYmFzeXguc3VibW9kZWxzZXJ2aWNlLmZlYXR1cmUuYXV0aG9yaXphdGlvbi5TdWJtb2RlbFRhcmdldEluZm9ybWF0aW9u",
+      "value": [
+        {
+          "modelType": "Property",
+          "value": "mnestix-submodel-reader",
+          "idShort": "role"
+        },
+        {
+          "modelType": "SubmodelElementList",
+          "idShort": "action",
+          "orderRelevant": true,
+          "value": [
+            {
+              "modelType": "Property",
+              "value": "READ"
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "targetInformation",
+          "value": [
+            {
+              "modelType": "SubmodelElementList",
+              "idShort": "submodelIds",
+              "orderRelevant": true,
+              "value": [
+                {
+                  "modelType": "Property",
+                  "value": "https://vws.xitaso.com/sm/nameplate/5240_8927_2203_5742"
+                },
+                {
+                  "modelType": "Property",
+                  "value": "https://vws.xitaso.com/sm/swnameplate/4386_8596_1428_5257"
+                },
+                {
+                  "modelType": "Property",
+                  "value": "https://vws.xitaso.com/sm/booth_bill_of_material"
+                },
+                {
+                  "modelType": "Property",
+                  "value": "https://example.com/ids/sm/7791_1307_3131_5873"
+                }
+              ]
+            },
+            {
+              "modelType": "SubmodelElementList",
+              "idShort": "submodelElementIdShortPaths",
+              "orderRelevant": true,
+              "value": [
+                {
+                  "modelType": "Property",
+                  "value": "*"
+                }
+              ]
+            },
+            {
+              "modelType": "Property",
+              "value": "submodel",
+              "idShort": "@type"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "modelType": "SubmodelElementCollection",
+      "idShort": "YmFzeXgtc3VibW9kZWwtcmVhZGVyUkVBRG9yZy5lY2xpcHNlLmRpZ2l0YWx0d2luLmJhc3l4LnN1Ym1vZGVsc2VydmljZS5mZWF0dXJlLmF1dGhvcml6YXRpb24uU3VibW9kZWxUYXJnZXRJbmZvcm1hdGlvbg==",
+      "value": [
+        {
+          "modelType": "Property",
+          "value": "basyx-submodel-reader",
+          "idShort": "role"
+        },
+        {
+          "modelType": "SubmodelElementList",
+          "idShort": "action",
+          "orderRelevant": true,
+          "value": [
+            {
+              "modelType": "Property",
+              "value": "READ"
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "targetInformation",
+          "value": [
+            {
+              "modelType": "SubmodelElementList",
+              "idShort": "submodelIds",
+              "orderRelevant": true,
+              "value": [
+                {
+                  "modelType": "Property",
+                  "value": "*"
+                }
+              ]
+            },
+            {
+              "modelType": "SubmodelElementList",
+              "idShort": "submodelElementIdShortPaths",
+              "orderRelevant": true,
+              "value": [
+                {
+                  "modelType": "Property",
+                  "value": "*"
+                }
+              ]
+            },
+            {
+              "modelType": "Property",
+              "value": "submodel",
+              "idShort": "@type"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "modelType": "SubmodelElementCollection",
+      "idShort": "YmFzeXgtYWRtaW5ERUxFVEVvcmcuZWNsaXBzZS5kaWdpdGFsdHdpbi5iYXN5eC5zdWJtb2RlbHNlcnZpY2UuZmVhdHVyZS5hdXRob3JpemF0aW9uLlN1Ym1vZGVsVGFyZ2V0SW5mb3JtYXRpb24=",
+      "value": [
+        {
+          "modelType": "Property",
+          "value": "basyx-admin",
+          "idShort": "role"
+        },
+        {
+          "modelType": "SubmodelElementList",
+          "idShort": "action",
+          "orderRelevant": true,
+          "value": [
+            {
+              "modelType": "Property",
+              "value": "DELETE"
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "targetInformation",
+          "value": [
+            {
+              "modelType": "SubmodelElementList",
+              "idShort": "submodelIds",
+              "orderRelevant": true,
+              "value": [
+                {
+                  "modelType": "Property",
+                  "value": "*"
+                }
+              ]
+            },
+            {
+              "modelType": "SubmodelElementList",
+              "idShort": "submodelElementIdShortPaths",
+              "orderRelevant": true,
+              "value": [
+                {
+                  "modelType": "Property",
+                  "value": "*"
+                }
+              ]
+            },
+            {
+              "modelType": "Property",
+              "value": "submodel",
+              "idShort": "@type"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "modelType": "SubmodelElementCollection",
+      "idShort": "YmFzeXgtYWRtaW5SRUFEb3JnLmVjbGlwc2UuZGlnaXRhbHR3aW4uYmFzeXguYWFzcmVwb3NpdG9yeS5mZWF0dXJlLmF1dGhvcml6YXRpb24uQWFzVGFyZ2V0SW5mb3JtYXRpb24=",
+      "value": [
+        {
+          "modelType": "Property",
+          "value": "basyx-admin",
+          "idShort": "role"
+        },
+        {
+          "modelType": "SubmodelElementList",
+          "idShort": "action",
+          "orderRelevant": true,
+          "value": [
+            {
+              "modelType": "Property",
+              "value": "READ"
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "targetInformation",
+          "value": [
+            {
+              "modelType": "SubmodelElementList",
+              "idShort": "aasIds",
+              "orderRelevant": true,
+              "value": [
+                {
+                  "modelType": "Property",
+                  "value": "*"
+                }
+              ]
+            },
+            {
+              "modelType": "Property",
+              "value": "aas",
+              "idShort": "@type"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "modelType": "SubmodelElementCollection",
+      "idShort": "YmFzeXgtYWRtaW5SRUFEb3JnLmVjbGlwc2UuZGlnaXRhbHR3aW4uYmFzeXguY29uY2VwdGRlc2NyaXB0aW9ucmVwb3NpdG9yeS5mZWF0dXJlLmF1dGhvcml6YXRpb24uQ29uY2VwdERlc2NyaXB0aW9uVGFyZ2V0SW5mb3JtYXRpb24=",
+      "value": [
+        {
+          "modelType": "Property",
+          "value": "basyx-admin",
+          "idShort": "role"
+        },
+        {
+          "modelType": "SubmodelElementList",
+          "idShort": "action",
+          "orderRelevant": true,
+          "value": [
+            {
+              "modelType": "Property",
+              "value": "READ"
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "idShort": "targetInformation",
+          "value": [
+            {
+              "modelType": "SubmodelElementList",
+              "idShort": "conceptDescriptionIds",
+              "orderRelevant": true,
+              "value": [
+                {
+                  "modelType": "Property",
+                  "value": "*"
+                }
+              ]
+            },
+            {
+              "modelType": "Property",
+              "value": "concept-description",
+              "idShort": "@type"
+            }
           ]
         }
       ]

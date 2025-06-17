@@ -3,11 +3,11 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { expect } from '@jest/globals';
 import AasListDataWrapper from 'app/[locale]/list/_components/AasListDataWrapper';
 import * as serverActions from 'lib/services/list-service/aasListApiActions';
+import * as nameplateDataActions from 'lib/services/list-service/aasListApiActions';
 import * as connectionServerActions from 'lib/services/database/connectionServerActions';
 import { ListEntityDto } from 'lib/services/list-service/ListService';
 import { CurrentAasContextProvider } from 'components/contexts/CurrentAasContext';
 import { Internationalization } from 'lib/i18n/Internationalization';
-import * as nameplateDataActions from 'lib/services/list-service/aasListApiActions';
 
 jest.mock('./../../../../lib/services/list-service/aasListApiActions');
 jest.mock('./../../../../lib/services/database/connectionServerActions');
@@ -27,7 +27,7 @@ jest.mock('next/navigation', () => ({
         return {
             get: jest.fn(),
         };
-    }
+    },
 }));
 jest.mock('next-auth', jest.fn());
 
@@ -50,7 +50,7 @@ const createTestListEntries = (from = 0, to = 10): ListEntityDto[] => {
     return objects;
 };
 
-const mockActionFirstPage = jest.fn(() => {
+const mockActionFirstPage = jest.fn((_repositoryUrl: string, _count: number, _cursor: string | undefined) => {
     return {
         success: true,
         entities: createTestListEntries(0, 10),
@@ -59,7 +59,7 @@ const mockActionFirstPage = jest.fn(() => {
     };
 });
 
-const mockActionSecondPage = jest.fn(() => {
+const mockActionSecondPage = jest.fn((_repositoryUrl: string, _count: number, _cursor: string | undefined) => {
     return {
         success: true,
         entities: createTestListEntries(10, 12),
@@ -129,7 +129,7 @@ describe('AASListDataWrapper', () => {
             expect(screen.getByText('assetId10', { exact: false })).toBeInTheDocument();
             expect(screen.getByText('Page: 2', { exact: false })).toBeInTheDocument();
             expect(screen.getByTestId('list-next-button')).toBeDisabled();
-            expect(mockActionSecondPage).toBeCalledWith(REPOSITORY_URL, 10, FIRST_PAGE_CURSOR);
+            expect(mockActionSecondPage).toHaveBeenCalledWith(REPOSITORY_URL, 10, FIRST_PAGE_CURSOR);
         });
 
         it('Navigates one page back when clicking on the back button', async () => {
@@ -145,6 +145,7 @@ describe('AASListDataWrapper', () => {
 
             expect(screen.getByText('assetId3', { exact: false })).toBeInTheDocument();
             expect(screen.getByText('Page: 1', { exact: false })).toBeInTheDocument();
+            expect(mockActionFirstPage).toHaveBeenCalledWith(REPOSITORY_URL, 10, undefined);
         });
     });
 });

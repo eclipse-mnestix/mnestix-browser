@@ -30,20 +30,41 @@ jest.mock('next-auth', jest.fn());
 
 describe('Submodel Detail', () => {
     it('should render CarbonFootprintVisualizations for irdi id', async () => {
-        CustomRender(
-            <SubmodelDetail submodel={testSubmodel['carbonFootprint-IrdiId'] as unknown as Submodel} />,
-        );
+        CustomRender(<SubmodelDetail submodel={testSubmodel['carbonFootprint-IrdiId'] as unknown as Submodel} />);
         const map = screen.getByTestId('carbonFootprintVisualizations');
         expect(map).toBeDefined();
         expect(map).toBeInTheDocument();
     });
 
     it('should render CarbonFootprintVisualizations for URL id', async () => {
-        CustomRender(
-            <SubmodelDetail submodel={testSubmodel['carbonFootprint-UrlId'] as unknown as Submodel} />,
-        );
+        CustomRender(<SubmodelDetail submodel={testSubmodel['carbonFootprint-UrlId'] as unknown as Submodel} />);
         const map = screen.getByTestId('carbonFootprintVisualizations');
         expect(map).toBeDefined();
         expect(map).toBeInTheDocument();
+    });
+
+    it('should use third semanticId when first two are invalid', async () => {
+        // Create test submodel with multiple semanticIds (first two invalid)
+        const testSubmodelWithMultipleIds = {
+            ...testSubmodel['carbonFootprint-UrlId'],
+            semanticId: {
+                keys: [
+                    { value: 'invalid-semantic-id-1' },
+                    { value: 'invalid-semantic-id-2' },
+                    { value: 'https://admin-shell.io/idta/CarbonFootprint/CarbonFootprint/0/9' }, // Valid CarbonFootprint ID
+                ],
+            },
+        } as unknown as Submodel;
+
+        CustomRender(<SubmodelDetail submodel={testSubmodelWithMultipleIds} />);
+
+        // Verify visualization component renders using 3rd semanticId
+        const map = screen.getByTestId('carbonFootprintVisualizations');
+        expect(map).toBeDefined();
+        expect(map).toBeInTheDocument();
+
+        // Verify no error state for invalid IDs
+        expect(screen.queryByTestId('invalid-semantic-id-1')).toBeNull();
+        expect(screen.queryByTestId('invalid-semantic-id-2')).toBeNull();
     });
 });
