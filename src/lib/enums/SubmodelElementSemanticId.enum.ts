@@ -23,5 +23,7 @@ export enum SubmodelElementSemanticIdEnum {
     ProductClassId = 'https://adminshell.io/ZVEI/TechnicalData/ProductClassId/1/1',
     ProductClassificationSystem = 'https://admin-shell.io/ZVEI/TechnicalData/ProductClassificationSystem/1/1',
     TechnicalProperties = 'https://admin-shell.io/ZVEI/TechnicalData/TechnicalProperties/1/1',
-    FurtherInformation = 'https://admin-shell.io/ZVEI/TechnicalData/FurtherInformation/1/1'
+    FurtherInformation = 'https://admin-shell.io/ZVEI/TechnicalData/FurtherInformation/1/1',
+    URIOfTheProductV2 = '0173-1#02-AAY811#001',
+    URIOfTheProductV3 = '0112/2///61987#ABN590#002',
 }
