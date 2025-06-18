@@ -322,7 +322,11 @@
       },
       "summary": "Das Wichtigste in Kürze",
       "title": "Produkt",
-      "requestPrice": "Preis anfragen"
+      "commercialData": {
+        "requestPrice": "Preis anfragen",
+        "noProductUriAvailable": "Keine Produkt-URI verfügbar.",
+        "orderButton": "Bestellen"
+      }
     },
     "registryList": {
       "errors": {

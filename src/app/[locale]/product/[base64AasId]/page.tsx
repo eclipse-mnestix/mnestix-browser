@@ -22,6 +22,7 @@ import { BreadcrumbLink, Breadcrumbs } from 'components/basics/Breadcrumbs';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { getRepositoryConfigurationByRepositoryUrlAction } from 'lib/services/database/connectionServerActions';
 import { useTranslations } from 'next-intl';
+import { MnestixConnection } from '@prisma/client';
 
 const pageStyles = {
     display: 'flex',
@@ -64,6 +65,7 @@ export default function Page() {
     const [filteredSubmodels, setFilteredSubmodels] = useState<SubmodelOrIdReference[]>([]);
     const [breadcrumbLinks, setBreadcrumbLinks] = useState<BreadcrumbLink[]>([]);
     const [isBreadcrumbsLoading, setIsBreadcrumbsLoading] = useState(true);
+    const [catalogConfig, setCatalogConfig] = useState<MnestixConnection>();
 
     const { aasFromContext, isLoadingAas, aasOriginUrl, submodels, isSubmodelsLoading } = useAasLoader(
         base64AasId,
@@ -118,6 +120,7 @@ export default function Page() {
                             label: manufacturerName.charAt(0).toUpperCase() + manufacturerName.slice(1),
                             path: `/marketplace/catalog?manufacturer=${encodeURIComponent(manufacturerName)}`,
                         });
+                        setCatalogConfig(manufacturerInfo);
                     } else {
                         newBreadcrumbLinks.push({
                             label: t('manufacturerCatalog'),
@@ -186,12 +189,13 @@ export default function Page() {
                         aas={aasFromContext}
                         submodels={submodels}
                         productImage={aasFromContext?.assetInformation?.defaultThumbnail?.path}
-                        isLoading={isLoadingAas || isSubmodelsLoading}
+                        isLoading={isLoadingAas || isSubmodelsLoading || isBreadcrumbsLoading}
                         isAccordion={isMobile}
                         repositoryURL={aasOriginUrl}
                         displayName={
                             aasFromContext?.displayName ? getTranslationText(aasFromContext.displayName, locale) : null
                         }
+                        catalogConfig={catalogConfig}
                     />
                     <SubmodelsOverviewCard
                         submodelIds={filteredSubmodels}

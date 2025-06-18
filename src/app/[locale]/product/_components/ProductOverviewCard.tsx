@@ -1,9 +1,10 @@
-import { Box, Card, CardContent, Skeleton, Typography, Divider, Tooltip, Button } from '@mui/material';
+import { Box, Card, CardContent, Skeleton, Typography, Divider, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { DataRow } from 'components/basics/DataRow';
 import {
     AssetAdministrationShell,
-    ISubmodelElement, Property,
+    ISubmodelElement,
+    Property,
     SubmodelElementCollection,
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
@@ -14,18 +15,16 @@ import { SubmodelOrIdReference, useAasState } from 'components/contexts/CurrentA
 import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
 import { useTranslations } from 'next-intl';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
-import {
-    findSubmodelByIdOrSemanticId,
-    findSubmodelElementByIdShort,
-} from 'lib/util/SubmodelResolverUtil';
+import { findSubmodelByIdOrSemanticId, findSubmodelElementByIdShort } from 'lib/util/SubmodelResolverUtil';
 import { MobileAccordion } from 'components/basics/detailViewBasics/MobileAccordion';
 import { KeyFactsBox } from 'app/[locale]/product/_components/KeyFactsBox';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { useProductImageUrl } from 'lib/hooks/UseProductImageUrl';
 import { useFindValueByIdShort } from 'lib/hooks/useFindValueByIdShort';
 import { ActionMenu } from './ProductActionMenu';
-import { ConstructionDialog } from 'components/basics/ConstructionDialog';
 import LinkIcon from '@mui/icons-material/Link';
+import { CommercialDataBox } from 'app/[locale]/product/_components/CommercialDataBox';
+import { MnestixConnection } from '@prisma/client';
 
 type ProductOverviewCardProps = {
     readonly aas: AssetAdministrationShell | null;
@@ -36,6 +35,7 @@ type ProductOverviewCardProps = {
     readonly imageLinksToDetail?: boolean;
     readonly repositoryURL: string | null;
     readonly displayName: string | null;
+    readonly catalogConfig?: MnestixConnection;
 };
 
 type ProductClassification = {
@@ -66,7 +66,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
     const [overviewData, setOverviewData] = useState<OverviewData>();
     const findValue = useFindValueByIdShort();
     const productImageUrl = useProductImageUrl(props.aas, props.repositoryURL, props.productImage);
-    const [isConstructionDialogOpen, setIsConstructionDialogOpen] = useState<boolean>(false);
 
     useEffect(() => {
         if (props.submodels && props.submodels.length > 0) {
@@ -88,29 +87,29 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                 prepareNameplateData(nameplate.submodelElements);
             }
         }
-    }, [props.submodels]); 
-    
+    }, [props.submodels]);
+
     const prepareTechnicalDataSubmodel = (technicalDataSubmodelElements: Array<ISubmodelElement>) => {
         const manufacturerName = findValue(
             technicalDataSubmodelElements,
             'ManufacturerName',
-            SubmodelElementSemanticIdEnum.ManufacturerName
+            SubmodelElementSemanticIdEnum.ManufacturerName,
         );
         const manufacturerProductDesignation = findValue(
             technicalDataSubmodelElements,
             'ManufacturerProductDesignation',
-            SubmodelElementSemanticIdEnum.ManufacturerProductDesignation
+            SubmodelElementSemanticIdEnum.ManufacturerProductDesignation,
         );
         const manufacturerArticleNumber = findValue(
             technicalDataSubmodelElements,
             'ManufacturerArticleNumber',
-            SubmodelElementSemanticIdEnum.ManufacturerArticleNumber
+            SubmodelElementSemanticIdEnum.ManufacturerArticleNumber,
         );
 
         const manufacturerOrderCode = findValue(
             technicalDataSubmodelElements,
             'ManufacturerOrderCode',
-            SubmodelElementSemanticIdEnum.ManufacturerOrderCode
+            SubmodelElementSemanticIdEnum.ManufacturerOrderCode,
         );
         const manufacturerLogo = findSubmodelElementByIdShort(
             technicalDataSubmodelElements,
@@ -123,7 +122,8 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             'ProductClassifications',
             SubmodelElementSemanticIdEnum.ProductClassifications,
         ) as SubmodelElementCollection;
-        const classifications: ProductClassification[] = []; productClassifications?.value?.forEach((productClassification) => {
+        const classifications: ProductClassification[] = [];
+        productClassifications?.value?.forEach((productClassification) => {
             const submodelClassification = productClassification as SubmodelElementCollection;
             if (submodelClassification?.value) {
                 const classification = {
@@ -131,13 +131,13 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                         findValue(
                             submodelClassification.value,
                             'ProductClassificationSystem',
-                            SubmodelElementSemanticIdEnum.ProductClassificationSystem
+                            SubmodelElementSemanticIdEnum.ProductClassificationSystem,
                         ) || undefined,
                     ProductClassId:
                         findValue(
                             submodelClassification.value,
                             'ProductClassId',
-                            SubmodelElementSemanticIdEnum.ProductClassId
+                            SubmodelElementSemanticIdEnum.ProductClassId,
                         ) || undefined,
                 };
                 classifications.push(classification);
@@ -153,21 +153,22 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             markings: null,
             manufacturerLogo: manufacturerLogo,
         });
-    }; const prepareNameplateData = (nameplateSubmodelElements: Array<ISubmodelElement>) => {
+    };
+    const prepareNameplateData = (nameplateSubmodelElements: Array<ISubmodelElement>) => {
         const manufacturerProductRoot = findValue(
             nameplateSubmodelElements,
             'ManufacturerProductRoot',
-            SubmodelElementSemanticIdEnum.ManufacturerProductRoot
+            SubmodelElementSemanticIdEnum.ManufacturerProductRoot,
         );
         const manufacturerProductFamily = findValue(
             nameplateSubmodelElements,
             'ManufacturerProductFamily',
-            SubmodelElementSemanticIdEnum.ManufacturerProductFamily
+            SubmodelElementSemanticIdEnum.ManufacturerProductFamily,
         );
         const manufacturerProductType = findValue(
             nameplateSubmodelElements,
             'ManufacturerProductType',
-            SubmodelElementSemanticIdEnum.ManufacturerProductType
+            SubmodelElementSemanticIdEnum.ManufacturerProductType,
         );
         const markingsElement = findSubmodelElementByIdShort(
             nameplateSubmodelElements,
@@ -182,11 +183,10 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             SubmodelElementSemanticIdEnum.CompanyLogo,
         );
 
-        const URIOfTheProduct = findValue(
-            nameplateSubmodelElements,
-            'URIOfTheProducts',
-            [SubmodelElementSemanticIdEnum.URIOfTheProductV2, SubmodelElementSemanticIdEnum.URIOfTheProductV3]
-        );
+        const URIOfTheProduct = findValue(nameplateSubmodelElements, 'URIOfTheProducts', [
+            SubmodelElementSemanticIdEnum.URIOfTheProductV2,
+            SubmodelElementSemanticIdEnum.URIOfTheProductV3,
+        ]);
 
         setOverviewData((prevData) => ({
             ...prevData,
@@ -196,7 +196,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             markings: markings,
             manufacturerLogo: prevData?.manufacturerLogo || null,
             companyLogo: companyLogo || null,
-            URIOfTheProduct:  URIOfTheProduct || null
+            URIOfTheProduct: URIOfTheProduct || null,
         }));
     };
 
@@ -341,12 +341,13 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                     <Skeleton width="100%" sx={{ mt: 1 }} />
                                 </Box>
                             ) : (
-                                <><Box>
-                                    <Skeleton width="90%" />
-                                    <Skeleton width="50%" />
-                                    <Skeleton width="75%" sx={{ mt: 2 }} />
-                                    <Skeleton width="50%" />
-                                </Box>
+                                <>
+                                    <Box>
+                                        <Skeleton width="90%" />
+                                        <Skeleton width="50%" />
+                                        <Skeleton width="75%" sx={{ mt: 2 }} />
+                                        <Skeleton width="50%" />
+                                    </Box>
                                     <Box>
                                         <Skeleton width="90%" />
                                         <Skeleton width="50%" />
@@ -366,28 +367,29 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                             size={300}
                         />
                         {isAccordion ? (
-                            <MobileAccordion
-                                content={productInfo}
-                                title={props.displayName || t('title')}
-                            />
+                            <MobileAccordion content={productInfo} title={props.displayName || t('title')} />
                         ) : (
                             <>
-                                <Box sx={{ 
-                                    width: 'calc(100% - 340px)',
-                                    display: 'flex', 
-                                    flexDirection: 'column',
-                                    overflow: 'hidden',
-                                    position: 'relative'
-                                }}>
-                                    <Box sx={{
+                                <Box
+                                    sx={{
+                                        width: 'calc(100% - 340px)',
                                         display: 'flex',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                        width: '100%'
-                                    }}>
-                                        <Typography 
-                                            variant="h3" 
-                                            sx={{ 
+                                        flexDirection: 'column',
+                                        overflow: 'hidden',
+                                        position: 'relative',
+                                    }}
+                                >
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                            width: '100%',
+                                        }}
+                                    >
+                                        <Typography
+                                            variant="h3"
+                                            sx={{
                                                 overflow: 'hidden',
                                                 textOverflow: 'ellipsis',
                                                 wordBreak: 'break-word',
@@ -395,7 +397,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                                 display: '-webkit-box',
                                                 WebkitLineClamp: 2,
                                                 WebkitBoxOrient: 'vertical',
-                                                maxWidth: 'calc(100% - 48px)'
+                                                maxWidth: 'calc(100% - 48px)',
                                             }}
                                         >
                                             {props.displayName || t('title')}
@@ -411,7 +413,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                                 </Tooltip>
                                             )}
                                         </Typography>
-                                        <ActionMenu 
+                                        <ActionMenu
                                             aas={props.aas}
                                             submodels={props.submodels}
                                             repositoryURL={props.repositoryURL}
@@ -421,9 +423,12 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                     <Divider sx={{ mb: 2 }} />
                                     <Box sx={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
                                         {productInfo}
-                                        <Box margin={3} borderLeft="1px solid #e0e0e0" paddingLeft={3}>
-                                            <Button variant="outlined" onClick={() => setIsConstructionDialogOpen(true)}>{t('requestPrice')}</Button>
-                                        </Box>
+                                        <CommercialDataBox
+                                            productURI={overviewData?.URIOfTheProduct ?? undefined}
+                                            commercialDataUrl={props.catalogConfig?.commercialData ?? undefined}
+                                            assetId={props.aas?.assetInformation.globalAssetId ?? undefined}
+                                            onProductUriRedirect={navigateToProduct}
+                                        />
                                     </Box>
                                 </Box>
                             </>
@@ -432,10 +437,11 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                 )}
             </CardContent>
             {overviewData?.productClassifications && overviewData.productClassifications.length > 0 && (
-                <KeyFactsBox productClassifications={overviewData.productClassifications} markings={overviewData.markings ?? []}/>
+                <KeyFactsBox
+                    productClassifications={overviewData.productClassifications}
+                    markings={overviewData.markings ?? []}
+                />
             )}
-            <ConstructionDialog open={isConstructionDialogOpen} onClose={() => setIsConstructionDialogOpen(false)} />
         </Card>
     );
 }
-
