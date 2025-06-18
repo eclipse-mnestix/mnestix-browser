@@ -15,6 +15,7 @@ export function Footer() {
     const handleAboutDialogClose = () => {
         setAboutDialogOpen(false);
     };
+    const documentationURL = 'https://github.com/eclipse-mnestix/mnestix-browser/wiki';
 
     const t = useTranslations('navigation.footer');
 
@@ -81,6 +82,16 @@ export function Footer() {
                             onClick={() => setAboutDialogOpen(!aboutDialogOpen)}
                         >
                             <Link href="#">{t('about')}</Link>
+                        </Typography>
+
+                        <Typography mx={2} color="text.secondary" fontSize="small">
+                                |
+                        </Typography>
+
+                        <Typography fontSize="small" maxWidth="10rem">
+                                <Link href={documentationURL} target="_blank">
+                                    {t('documentation')}
+                                </Link>
                         </Typography>
                     </Grid>
                 </Grid>

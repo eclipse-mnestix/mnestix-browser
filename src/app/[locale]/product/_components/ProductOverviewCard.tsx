@@ -105,7 +105,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             'ManufacturerArticleNumber',
             SubmodelElementSemanticIdEnum.ManufacturerArticleNumber,
         );
-
         const manufacturerOrderCode = findValue(
             technicalDataSubmodelElements,
             'ManufacturerOrderCode',
@@ -116,7 +115,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             'ManufacturerLogo',
             SubmodelElementSemanticIdEnum.ManufacturerLogo,
         );
-
         const productClassifications = findSubmodelElementByIdShort(
             technicalDataSubmodelElements,
             'ProductClassifications',
@@ -175,6 +173,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             'Markings',
             SubmodelElementSemanticIdEnum.MarkingsV3,
         ) as SubmodelElementCollection;
+
         const markings = prepareMarkingTexts(markingsElement || null);
 
         const companyLogo = findSubmodelElementByIdShort(
@@ -182,14 +181,36 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             'CompanyLogo',
             SubmodelElementSemanticIdEnum.CompanyLogo,
         );
-
         const URIOfTheProduct = findValue(nameplateSubmodelElements, 'URIOfTheProducts', [
             SubmodelElementSemanticIdEnum.URIOfTheProductV2,
             SubmodelElementSemanticIdEnum.URIOfTheProductV3,
         ]);
-
+        const manufacturerName = findValue(
+            nameplateSubmodelElements,
+            'ManufacturerName',
+            SubmodelElementSemanticIdEnum.ManufacturerName
+        );
+        const manufacturerProductDesignation = findValue(
+            nameplateSubmodelElements,
+            'ManufacturerProductDesignation',
+            SubmodelElementSemanticIdEnum.ManufacturerProductDesignation
+        );
+        const manufacturerArticleNumber = findValue(
+            nameplateSubmodelElements,
+            'ProductArticleNumberOfManufacturer',
+            SubmodelElementSemanticIdEnum.ManufacturerArticleNumber
+        );
+        const manufacturerOrderCode = findValue(
+            nameplateSubmodelElements,
+            'OrderCodeOfManufacturer',
+            SubmodelElementSemanticIdEnum.ManufacturerOrderCode
+        );
         setOverviewData((prevData) => ({
             ...prevData,
+            manufacturerName: prevData?.manufacturerName ? prevData.manufacturerName : manufacturerName ?? '-',
+            manufacturerProductDesignation: prevData?.manufacturerProductDesignation ? prevData.manufacturerProductDesignation : manufacturerProductDesignation ?? '-',
+            manufacturerArticleNumber: prevData?.manufacturerArticleNumber ? prevData.manufacturerArticleNumber : manufacturerArticleNumber ?? '-',
+            manufacturerOrderCode: prevData?.manufacturerOrderCode ? prevData.manufacturerOrderCode : manufacturerOrderCode ?? '-',
             manufacturerProductRoot: manufacturerProductRoot ?? '-',
             manufacturerProductFamily: manufacturerProductFamily ?? '-',
             manufacturerProductType: manufacturerProductType ?? '-',
@@ -250,7 +271,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
     const navigateToProduct = () => {
         if (overviewData?.URIOfTheProduct) {
             const url = overviewData.URIOfTheProduct;
-            navigate.push(url);
+            window.open(url, '_blank', 'noopener,noreferrer');
         }
     };
 

@@ -13,6 +13,7 @@ export function EClassFilter(props: {
     eClassFilters: string[];
     onFilterChanged(query: FilterQuery[]): void;
     resetFilters: boolean;
+    defaultOpen: boolean;
 }) {
     const t = useTranslations('pages.catalog');
     const [selectedFilters, setSelectedFilters] = useState<CheckboxFilterState>(() => {
@@ -51,7 +52,7 @@ export function EClassFilter(props: {
         `https://eclass.eu/eclass-standard/content-suche/show?tx_eclasssearch_ecsearch%5Bdischarge%5D=0&tx_eclasssearch_ecsearch%5Bid%5D=${eClass.replaceAll('-', '')}&tx_eclasssearch_ecsearch%5Blanguage%5D=0`;
 
     return (
-        <SimpleTreeView>
+        <SimpleTreeView defaultExpandedItems={props.defaultOpen ? ['eclass'] : []}>
             <TreeItem
                 itemId="eclass"
                 label={

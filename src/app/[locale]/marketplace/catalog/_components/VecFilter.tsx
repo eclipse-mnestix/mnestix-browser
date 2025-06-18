@@ -4,7 +4,12 @@ import { CheckboxFilterState } from 'app/[locale]/marketplace/catalog/_component
 import { SimpleTreeView, TreeItem } from '@mui/x-tree-view';
 import { Box, Checkbox, Typography } from '@mui/material';
 
-export function VecFilter(props: { vecFilters: string[]; onFilterChanged(query: FilterQuery[]): void, resetFilters: boolean }) {
+export function VecFilter(props: { 
+    vecFilters: string[]; 
+    onFilterChanged(query: FilterQuery[]): void; 
+    resetFilters: boolean; 
+    defaultOpen: boolean; 
+}) {
     const [selectedFilters, setSelectedFilters] = useState<CheckboxFilterState>(() => {
         const initialState: Record<string, boolean> = {};
         props.vecFilters.forEach((filter) => {
@@ -34,7 +39,7 @@ export function VecFilter(props: { vecFilters: string[]; onFilterChanged(query: 
     }
 
     return (
-        <SimpleTreeView>
+        <SimpleTreeView defaultExpandedItems={props.defaultOpen ? ['vec'] : []}>
             <TreeItem
                 itemId="vec"
                 label={

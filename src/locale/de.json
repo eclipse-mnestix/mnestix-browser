@@ -174,7 +174,8 @@
     "footer": {
       "about": "Über Mnestix",
       "dataPrivacy": "Datenschutz",
-      "imprint": "Impressum"
+      "imprint": "Impressum",
+      "documentation": "Dokumentation"
     },
     "mainMenu": {
       "aasList": "AAS Liste",
