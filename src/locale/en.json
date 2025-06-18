@@ -174,7 +174,8 @@
     "footer": {
       "about": "About Mnestix",
       "dataPrivacy": "Data Privacy",
-      "imprint": "Imprint"
+      "imprint": "Imprint",
+      "documentation": "Documentation"
     },
     "mainMenu": {
       "aasList": "AAS List",
