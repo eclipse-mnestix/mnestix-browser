@@ -9,7 +9,6 @@ import {
     findValueByIdShort,
 } from 'lib/util/SubmodelResolverUtil';
 import { SubmodelElementList } from 'lib/api/aas/models';
-import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 
 export const CommercialDataBox = (props: {
     commercialDataUrl?: string;
