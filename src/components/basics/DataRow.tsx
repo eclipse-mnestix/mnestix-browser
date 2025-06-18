@@ -19,7 +19,7 @@ export function DataRow(props: DataRowProps) {
     const [isHovered, setIsHovered] = useState(false);
     const isMobile = useIsMobile();
     const renderCopyButtons = () => {
-        if (!props.value || isMobile) return null;
+        if (!props.value || props.value == '-' || isMobile) return null;
         return (
             <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
                 <CopyButton
