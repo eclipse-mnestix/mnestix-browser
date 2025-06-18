@@ -21,7 +21,7 @@ export const CommercialDataBox = (props: {
     onProductUriRedirect: () => void;
 }) => {
     const t = useTranslations('pages.productViewer');
-    const [priceInfo, setPriceInfo] = useState<{ grossPrice?: string; productPrice?: string; priceType?: string }>({});
+    const [priceInfo, setPriceInfo] = useState<{ grossPrice?: string; productPrice?: string; priceType?: string, currency?: string }>({});
     const [error, setError] = useState<string | null>(null);
     const locale = useLocale();
 
@@ -35,6 +35,7 @@ export const CommercialDataBox = (props: {
             const response = await fetch(props.commercialDataUrl);
             if (response.ok) {
                 const data: Submodel = await response.json();
+                console.log(data)
                 prepareCommercialData(data);
             } else {
                 setError(`Failed to fetch commercial data: ${response.statusText}`);
@@ -44,9 +45,12 @@ export const CommercialDataBox = (props: {
     }, []);
 
     const prepareCommercialData = (data: Submodel) => {
+        const currency = findValueByIdShort(data.submodelElements, 'Currency', null, locale) || undefined;
+
         const itemList: SubmodelElementList | null = findSubmodelElementByIdShort(data.submodelElements, 'ItemList', null) as SubmodelElementList | null;
         const item: SubmodelElementCollection | undefined | null = itemList?.value?.find(element => {
-            const itemId: Property | null = findSubmodelElementByIdShort(element.value, 'ItemID', null) as Property | null;
+            // @ts-expect-error value is there
+            const itemId: Property | null =  element?.value ? findSubmodelElementByIdShort(element.value, 'ItemID', null) as Property | null : null;
             return itemId?.valueId?.keys[0].value === props.assetId;
         }) as SubmodelElementCollection | undefined;
 
@@ -58,7 +62,8 @@ export const CommercialDataBox = (props: {
                 findValueByIdShort(productPriceCollection, 'Price', null, locale) || undefined;
             const productPrice =
                 findValueByIdShort(productPriceCollection, 'PriceType', null, locale) || undefined;
-            setPriceInfo({ grossPrice, productPrice, priceType });
+            setPriceInfo({ grossPrice, productPrice, priceType, currency });
+            console.log('Prepared commercial data:', { grossPrice, productPrice, priceType, currency });
         } else {
             setError('No item found in commercial data.')
         }
@@ -67,9 +72,9 @@ export const CommercialDataBox = (props: {
     return (
         <>
             <Box margin={3} borderLeft="1px solid #e0e0e0" paddingLeft={3}>
-                {(priceInfo.grossPrice || priceInfo.productPrice) && priceInfo.priceType !== 'on_request' ? (
+                {(priceInfo.grossPrice || priceInfo.productPrice) && priceInfo.currency && priceInfo.priceType !== 'on_request' ? (
                     <Box>
-                        <Typography variant="h3" mb={3}>{priceInfo.grossPrice || priceInfo.productPrice}</Typography>
+                        <Typography variant="h3" mb={3}>{priceInfo.grossPrice || priceInfo.productPrice} {priceInfo.currency}</Typography>
                         <Button
                             variant="outlined"
                             onClick={() => props.onProductUriRedirect()}
