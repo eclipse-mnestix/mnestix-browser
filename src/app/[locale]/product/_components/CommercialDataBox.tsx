@@ -45,7 +45,9 @@ export const CommercialDataBox = (props: {
     }, []);
 
     const prepareCommercialData = (data: Submodel) => {
-        const currency = findValueByIdShort(data.submodelElements, 'Currency', null, locale) || undefined;
+        // Currency comes as ISO Currency Code, e.g. EUR, USD
+        const currencyCode = findValueByIdShort(data.submodelElements, 'Currency', null, locale) || undefined;
+        const currency = currencyCode ? new Intl.NumberFormat(locale, { style: 'currency', currency: currencyCode }).formatToParts().find(part => part.type === 'currency')?.value : undefined;
 
         const itemList: SubmodelElementList | null = findSubmodelElementByIdShort(data.submodelElements, 'ItemList', null) as SubmodelElementList | null;
         const item: SubmodelElementCollection | undefined | null = itemList?.value?.find(element => {
