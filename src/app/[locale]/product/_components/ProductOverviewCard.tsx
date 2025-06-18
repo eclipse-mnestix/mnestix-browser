@@ -273,7 +273,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
     const navigateToProduct = () => {
         if (overviewData?.URIOfTheProduct) {
             const url = overviewData.URIOfTheProduct;
-            navigate.push(url);
+            window.open(url, '_blank', 'noopener,noreferrer');
         }
     };
 
