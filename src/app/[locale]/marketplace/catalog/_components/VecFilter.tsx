@@ -4,15 +4,16 @@ import { CheckboxFilterState } from 'app/[locale]/marketplace/catalog/_component
 import { SimpleTreeView, TreeItem } from '@mui/x-tree-view';
 import { Box, Checkbox, Typography } from '@mui/material';
 
-export function VecFilter(props: { 
-    vecFilters: string[]; 
-    onFilterChanged(query: FilterQuery[]): void; 
-    resetFilters: boolean; 
-    defaultOpen: boolean; 
+export function GenericClassificationFilter(props: {
+    filterSystem: string;
+    filters: string[];
+    onFilterChanged(query: FilterQuery[]): void;
+    resetFilters: boolean;
+    defaultOpen: boolean;
 }) {
     const [selectedFilters, setSelectedFilters] = useState<CheckboxFilterState>(() => {
         const initialState: Record<string, boolean> = {};
-        props.vecFilters.forEach((filter) => {
+        props.filters.forEach((filter) => {
             initialState[filter] = false;
         });
         return initialState;
@@ -25,7 +26,7 @@ export function VecFilter(props: {
 
     useEffect(() => {
         const resetState: CheckboxFilterState = {};
-        props.vecFilters.forEach((filter) => {
+        props.filters.forEach((filter) => {
             resetState[filter] = false;
         });
         setSelectedFilters(resetState);
@@ -44,11 +45,11 @@ export function VecFilter(props: {
                 itemId="vec"
                 label={
                     <Typography variant="h5" my={1}>
-                        VEC
+                        {props.filterSystem}
                     </Typography>
                 }
             >
-                {props.vecFilters.map((vec) => {
+                {props.filters.map((vec) => {
                     return (
                         <Box key={vec} display="flex" alignItems="center">
                             <Checkbox
