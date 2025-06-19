@@ -20,8 +20,8 @@ export function GenericClassificationFilter(props: {
     });
 
     useEffect(() => {
-        const selectedVecs = Object.keys(selectedFilters).filter((key) => selectedFilters[key]);
-        props.onFilterChanged(selectedVecs.map((vec) => ({ key: 'VEC', value: vec })));
+        const selectedOptions = Object.keys(selectedFilters).filter((opt) => selectedFilters[opt]);
+        props.onFilterChanged(selectedOptions.map((opt) => ({ key: props.filterSystem, value: opt })));
     }, [selectedFilters]);
 
     useEffect(() => {
@@ -32,32 +32,32 @@ export function GenericClassificationFilter(props: {
         setSelectedFilters(resetState);
     }, [props.resetFilters]);
 
-    function onFilterChange(vec: string, checked: boolean) {
+    function onFilterChange(opt: string, checked: boolean) {
         setSelectedFilters((prevState) => ({
             ...prevState,
-            [vec]: checked,
+            [opt]: checked,
         }));
     }
 
     return (
-        <SimpleTreeView defaultExpandedItems={props.defaultOpen ? ['vec'] : []}>
+        <SimpleTreeView defaultExpandedItems={props.defaultOpen ? [props.filterSystem] : []}>
             <TreeItem
-                itemId="vec"
+                itemId={props.filterSystem}
                 label={
                     <Typography variant="h5" my={1}>
                         {props.filterSystem}
                     </Typography>
                 }
             >
-                {props.filters.map((vec) => {
+                {props.filters.map((opt) => {
                     return (
-                        <Box key={vec} display="flex" alignItems="center">
+                        <Box key={opt} display="flex" alignItems="center">
                             <Checkbox
-                                checked={selectedFilters[vec] || false}
-                                onChange={(event) => onFilterChange(vec, event.target.checked)}
+                                checked={selectedFilters[opt] || false}
+                                onChange={(event) => onFilterChange(opt, event.target.checked)}
                                 sx={{ padding: '6px' }}
                             />
-                            <Typography>{vec.replace('PrimaryPartType_', '')}</Typography>
+                            <Typography>{opt.replace('PrimaryPartType_', '')}</Typography>
                         </Box>
                     );
                 })}

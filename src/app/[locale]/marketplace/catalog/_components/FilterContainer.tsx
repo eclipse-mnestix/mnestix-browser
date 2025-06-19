@@ -245,7 +245,7 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                                 filters={values}
                                 onFilterChanged={(values) =>
                                     onFilterChangedByCategory(
-                                        'VEC',
+                                        key,
                                         values.map((f) => f.value),
                                     )
                                 }
