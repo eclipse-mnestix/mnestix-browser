@@ -59,7 +59,7 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                 product.productClassifications.forEach((classification) => {
                     if (classification.system === 'ECLASS' && classification.productId) {
                         eclassSet.add(classification.productId);
-                    } // here make else if not ECLEASS make a generic classification
+                    }
                     if (classification.system !== 'ECLASS' && classification.productId) {
                         if (!genericSet[classification.system]) {
                             genericSet[classification.system] = new Set<string>();
