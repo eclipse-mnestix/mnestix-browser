@@ -58,7 +58,7 @@ export default function Page() {
                 typeId: '',
                 aasSearcher: null,
                 image: null,
-                commercialData: null
+                commercialData: null,
             };
             setConnection(emptyConnection);
             return emptyConnection;
@@ -76,7 +76,7 @@ export default function Page() {
 
     const loadData = async (aasSearcher?: string, filters?: { key: string; value: string }[]) => {
         setLoading(true);
-        const results = await searchProducts(filters, aasSearcher ?? undefined);
+        const results = await searchProducts(aasSearcher ?? undefined, filters);
 
         if (results.isSuccess) {
             const products = results.result;
@@ -145,10 +145,7 @@ export default function Page() {
                         }}
                         aria-label={t('filter')}
                     >
-                        <FilterContainer
-                            onFilterChanged={onFilterChanged}
-                            aasSearcherUrl={connection?.aasSearcher}
-                        />
+                        <FilterContainer onFilterChanged={onFilterChanged} aasSearcherUrl={connection?.aasSearcher} />
                     </Card>
                 )}
                 <Box flex={1} minWidth={0}>
@@ -164,7 +161,9 @@ export default function Page() {
                         </Card>
                     ) : (
                         <Box>
-                            <Typography variant="body1" color="textSecondary" mb={2}>{t('noSearcherWarning')}</Typography>
+                            <Typography variant="body1" color="textSecondary" mb={2}>
+                                {t('noSearcherWarning')}
+                            </Typography>
                             <AasListDataWrapper repositoryUrl={repositoryUrl} hideRepoSelection={true} />
                         </Box>
                     )}
