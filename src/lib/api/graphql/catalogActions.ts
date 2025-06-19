@@ -21,7 +21,7 @@ function buildFilterInput(filters?: FilterQuery[]): string {
     const eclassFilter = filters.filter((filter) => filter.key === FilterKey.ECLASS);
 
     const exludedFromGeneric = Object.keys(FilterKey) as Array<keyof typeof FilterKey>;
-    // Track keys and group values by key
+
     const genericFilterMap = new Map<string, string[]>();
     filters.forEach((filter) => {
         if (!exludedFromGeneric.includes(filter.key as keyof typeof FilterKey)) {
@@ -31,7 +31,7 @@ function buildFilterInput(filters?: FilterQuery[]): string {
             genericFilterMap.get(filter.key)?.push(filter.value.trim());
         }
     });
-    // Convert map to array of { key, value } objects, joining values with commas
+
     const genericFilter = Array.from(genericFilterMap.entries()).map(([key, values]) => ({
         key,
         value: values.join(','),
