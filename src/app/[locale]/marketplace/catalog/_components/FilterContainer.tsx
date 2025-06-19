@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import { EClassFilter } from 'app/[locale]/marketplace/catalog/_components/EClassFilter';
 import { ProductCategoryFilter } from 'app/[locale]/marketplace/catalog/_components/ProductCategoryFilter';
 import { useState } from 'react';
-import { GenericClassificationFilter } from 'app/[locale]/marketplace/catalog/_components/VecFilter';
+import { GenericClassificationFilter } from 'app/[locale]/marketplace/catalog/_components/GenericClassificationFilter';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { searchProducts } from 'lib/api/graphql/catalogActions';
