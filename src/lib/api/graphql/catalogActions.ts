@@ -6,12 +6,37 @@ import { createApolloClient } from 'lib/api/graphql/apolloClient';
 import { searchQuery, SearchResponse, SearchResponseEntry } from 'lib/api/graphql/catalogQueries';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 
+const FilterKey = {
+    ECLASS: 'ECLASS',
+    PRODUCT_ROOT: 'PRODUCT_ROOT',
+    PRODUCT_FAMILY: 'PRODUCT_FAMILY',
+    PRODUCT_DESIGNATION: 'PRODUCT_DESIGNATION',
+} as const;
+
 function buildFilterInput(filters?: FilterQuery[]): string {
     if (!filters || filters.length === 0) {
         return '';
     }
-    const eclassFilter = filters.filter((filter) => filter.key === 'ECLASS');
-    const vecFilter = filters.filter((filter) => filter.key === 'VEC');
+
+    const eclassFilter = filters.filter((filter) => filter.key === FilterKey.ECLASS);
+
+    const exludedFromGeneric = Object.keys(FilterKey) as Array<keyof typeof FilterKey>;
+    // Track keys and group values by key
+    const genericFilterMap = new Map<string, string[]>();
+    filters.forEach((filter) => {
+        if (!exludedFromGeneric.includes(filter.key as keyof typeof FilterKey)) {
+            if (!genericFilterMap.has(filter.key)) {
+                genericFilterMap.set(filter.key, []);
+            }
+            genericFilterMap.get(filter.key)?.push(filter.value.trim());
+        }
+    });
+    // Convert map to array of { key, value } objects, joining values with commas
+    const genericFilter = Array.from(genericFilterMap.entries()).map(([key, values]) => ({
+        key,
+        value: values.join(','),
+    }));
+
     const productClassificationFilters: string[] = [];
     const filterArray = [];
 
@@ -23,12 +48,17 @@ function buildFilterInput(filters?: FilterQuery[]): string {
         }`);
     }
 
-    // VEC Filters
-    if (vecFilter.length > 0) {
-        productClassificationFilters.push(`{
-            system: { eq: "VEC" }
-            productId: { in: [${vecFilter.map((filter) => `"${filter.value.trim()}"`).join(',')}] }
-        }`);
+    // Generic Filters
+    if (genericFilter.length > 0) {
+        genericFilter.forEach((filter) => {
+            productClassificationFilters.push(`{
+                system: { eq: "${filter.key}" }
+                productId: { in: [${filter.value
+                    .split(',')
+                    .map((value) => `"${value.trim()}"`)
+                    .join(',')}] }
+            }`);
+        });
     }
 
     if (productClassificationFilters.length !== 0) {
@@ -37,21 +67,21 @@ function buildFilterInput(filters?: FilterQuery[]): string {
     }
 
     // ProductClassification filters:
-    const productRootFilter = filters.filter((filter) => filter.key === 'PRODUCT_ROOT');
+    const productRootFilter = filters.filter((filter) => filter.key === FilterKey.PRODUCT_ROOT);
     if (productRootFilter) {
         filterArray.push(`
             {productRoot: { mlValues: {some: { text: { in: [${productRootFilter.map((filter) => `"${filter.value.trim()}"`).join(',')}] }}}}}
         `);
     }
 
-    const productFamilyFilter = filters.filter((filter) => filter.key === 'PRODUCT_FAMILY');
+    const productFamilyFilter = filters.filter((filter) => filter.key === FilterKey.PRODUCT_FAMILY);
     if (productFamilyFilter) {
         filterArray.push(`
             {productFamily: { mlValues: {some: { text: { in: [${productFamilyFilter.map((filter) => `"${filter.value.trim()}"`).join(',')}] }}}}}
         `);
     }
 
-    const productDesignationFilter = filters.filter((filter) => filter.key === 'PRODUCT_DESIGNATION');
+    const productDesignationFilter = filters.filter((filter) => filter.key === FilterKey.PRODUCT_DESIGNATION);
     if (productDesignationFilter) {
         filterArray.push(`
             {productDesignation: { mlValues: {some: { text: { in: [${productDesignationFilter.map((filter) => `"${filter.value.trim()}"`).join(',')}] }}}}}
@@ -64,7 +94,10 @@ function buildFilterInput(filters?: FilterQuery[]): string {
     return filterArray.length > 1 ? `(where: { or: [${filterArray.join(' , ')}]})` : `(where: { ${filterArray} })`;
 }
 
-export async function searchProducts(filters?: FilterQuery[], aasSearcherUrl?: string, ): Promise<ApiResponseWrapper<SearchResponseEntry[]>> {
+export async function searchProducts(
+    filters?: FilterQuery[],
+    aasSearcherUrl?: string,
+): Promise<ApiResponseWrapper<SearchResponseEntry[]>> {
     if (!aasSearcherUrl) {
         return wrapErrorCode('NOT_FOUND', 'No aasSearcher URL provided');
     }
@@ -82,4 +115,3 @@ export async function searchProducts(filters?: FilterQuery[], aasSearcherUrl?: s
         return wrapErrorCode('UNKNOWN_ERROR', error);
     }
 }
-
