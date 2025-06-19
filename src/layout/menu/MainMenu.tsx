@@ -12,6 +12,7 @@ import { useEnv } from 'app/EnvProvider';
 import BottomMenu from 'layout/menu/BottomMenu';
 import { useTranslations } from 'next-intl';
 import { MnestixRole } from 'components/authentication/AllowedRoutes';
+import { formatTimestamp } from 'lib/util/RandomUtils';
 
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
     '.MuiDrawer-paper': {
@@ -59,6 +60,20 @@ export default function MainMenu() {
     const auth = useAuth();
     const env = useEnv();
     const useAuthentication = env.AUTHENTICATION_FEATURE_FLAG;
+    const buildDateUTC = env.BUILD_DATETIME;
+
+    // Parse the UTC build date and convert to browser local time string
+    const buildDate = buildDateUTC
+        ? new Date(buildDateUTC).toLocaleString(undefined, {
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+              hour12: false,
+          })
+        : '';
     const versionString = 'Version ' + packageJson.version;
     const mnestixRole = auth.getAccount()?.user.mnestixRole ?? MnestixRole.MnestixGuest;
     const allowedRoutes = auth.getAccount()?.user.allowedRoutes ?? [];
@@ -167,6 +182,7 @@ export default function MainMenu() {
                 </Box>
                 <Box sx={{ mt: 'auto', mb: 0, p: '16px', opacity: 0.6 }}>
                     <Typography>{versionString}</Typography>
+                    <Typography>{formatTimestamp(buildDate)}</Typography>
                 </Box>
                 {useAuthentication && (
                     <BottomMenu mnestixRole={mnestixRole} name={getAuthName() ?? ''} isLoggedIn={auth.isLoggedIn} />
