@@ -240,6 +240,7 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                         Object.keys(GenericFilters).length > 0 &&
                         Object.entries(GenericFilters).map(([key, values]) => (
                             <GenericClassificationFilter
+                                key={key}
                                 filterSystem={key}
                                 filters={values}
                                 onFilterChanged={(values) =>
