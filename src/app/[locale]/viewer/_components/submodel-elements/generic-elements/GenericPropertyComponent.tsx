@@ -9,6 +9,8 @@ import { useLocale } from 'use-intl';
 import { useTranslations } from 'next-intl';
 import { ConceptDescription } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import { getUnitFromConceptDescription } from 'app/[locale]/viewer/_components/submodel/technical-data/ConceptDescriptionHelper';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 
 type GenericPropertyComponentProps = {
     readonly property?: Property;
@@ -79,7 +81,13 @@ export function GenericPropertyComponent(props: GenericPropertyComponentProps) {
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             >
-                <Typography data-testid="property-content">{t(`boolean.${property.value}`)}</Typography>
+                <Typography data-testid="property-content">
+                    {property.value == 'true' ?
+                        (<CheckIcon></CheckIcon>) :
+                        (<CloseIcon></CloseIcon>)
+                    }
+                </Typography>
+
                 {renderCopyButton()}
 
             </Box>
