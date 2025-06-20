@@ -18,7 +18,7 @@ export function ManufacturerCard({ connection }: ManufacturerCardProps) {
     const theme = useTheme();
     const t = useTranslations('pages.catalog');
     const navigate = useRouter();
-    const [resultCount, setResultCount] = useState<number | null>(-1);
+    const [resultCount, setResultCount] = useState<number | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useAsyncEffect(async () => {
@@ -30,7 +30,6 @@ export function ManufacturerCard({ connection }: ManufacturerCardProps) {
             }
         } catch (error) {
             console.error('Error fetching article count:', error);
-            setResultCount(null);
         } finally {
             setIsLoading(false);
         }
@@ -79,7 +78,7 @@ export function ManufacturerCard({ connection }: ManufacturerCardProps) {
             <Box display="flex" alignItems="center" justifyContent="space-between" mt={2}>
                 {isLoading ? (
                     <CenteredLoadingSpinner />
-                ) : resultCount !== null && resultCount >= 0 ? (
+                ) : resultCount !== null ? (
                     <Typography color="text.secondary" fontSize="1.1rem">
                         {t('articleCount', { count: resultCount ?? 0 })}
                     </Typography>
