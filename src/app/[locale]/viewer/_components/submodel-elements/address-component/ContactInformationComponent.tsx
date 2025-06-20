@@ -17,11 +17,7 @@ import {
     PhoneElement,
 } from './ContactElements';
 import { idShortsOfSubmodelElementsContainingAddressData } from './AddressComponent';
-
-type ContactInformationComponentProps = {
-    readonly submodelElement?: SubmodelElementCollection;
-    readonly hasDivider?: boolean;
-};
+import { CustomSubmodelElementComponentProps } from 'app/[locale]/viewer/_components/submodel/generic-submodel/GenericSubmodelDetailComponent';
 
 export const idShortsOfSubmodelElementsContainingPersonData: string[] = [
     'NameOfContact',
@@ -35,7 +31,7 @@ export const idShortsOfSubmodelElementsContainingPersonData: string[] = [
     'FurtherDetailsOfContact',
 ];
 
-export function ContactInformationComponent(props: ContactInformationComponentProps) {
+export function ContactInformationComponent(props: CustomSubmodelElementComponentProps) {
     if (!props.submodelElement?.value) {
         return <></>;
     }

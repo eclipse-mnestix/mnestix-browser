@@ -1,5 +1,5 @@
 import { InfoOutlined, OpenInNew } from '@mui/icons-material';
-import { Box, Button, IconButton, Link, Typography } from '@mui/material';
+import { Box, Button, IconButton, Typography } from '@mui/material';
 import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
 import { DataRow } from 'components/basics/DataRow';
 import { useState } from 'react';
@@ -13,14 +13,10 @@ import {
     DocumentSpecificSemanticIdIrdi,
 } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentSemanticIds';
 import { PreviewImage } from 'app/[locale]/viewer/_components/submodel-elements/document-component/PreviewImage';
+import { useSession } from 'next-auth/react';
+import { CustomSubmodelElementComponentProps } from 'app/[locale]/viewer/_components/submodel/generic-submodel/GenericSubmodelDetailComponent';
 
-type DocumentComponentProps = {
-    readonly submodelElement: SubmodelElementCollection;
-    readonly hasDivider: boolean;
-    readonly submodelId: string;
-};
-
-export function DocumentComponent(props: DocumentComponentProps) {
+export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
     const t = useTranslations('components.documentComponent');
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
     const fileViewObject = useFileViewObject(props.submodelElement, props.submodelId);
