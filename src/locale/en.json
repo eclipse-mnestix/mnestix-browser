@@ -264,7 +264,7 @@
       "filter": "Filter",
       "noSearcherWarning": "No AAS Searcher Configured. Showing AAS List as Fallback, filters won't work.",
       "eclassDocumentationLink": "Open in ECLASS documentation",
-      "searchPlaceholder": "Search currently unavailable..."
+      "searchPlaceholder": "Search products..."
     },
     "compare": {
       "addAnother": "Add another AAS",
