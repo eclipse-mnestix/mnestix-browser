@@ -144,7 +144,7 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
         ? Object.fromEntries(
               Object.entries(filterOptions?.GENERIC).map(([key, valueSet]) => [key, Array.from(valueSet)]),
           )
-        : [];
+        : {};
 
     // process productCategoryFilters to match the expected structure
     function addBooleanValues<T extends { name: string }>(item: T): T & { value: boolean } {

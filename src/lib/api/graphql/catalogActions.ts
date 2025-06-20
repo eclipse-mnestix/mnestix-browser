@@ -20,11 +20,11 @@ function buildFilterInput(filters?: FilterQuery[]): string {
 
     const eclassFilter = filters.filter((filter) => filter.key === FilterKey.ECLASS);
 
-    const exludedFromGeneric = Object.keys(FilterKey) as Array<keyof typeof FilterKey>;
+    const excludedFromGeneric = Object.keys(FilterKey) as Array<keyof typeof FilterKey>;
 
     const genericFilterMap = new Map<string, string[]>();
     filters.forEach((filter) => {
-        if (!exludedFromGeneric.includes(filter.key as keyof typeof FilterKey)) {
+        if (!excludedFromGeneric.includes(filter.key as keyof typeof FilterKey)) {
             if (!genericFilterMap.has(filter.key)) {
                 genericFilterMap.set(filter.key, []);
             }
