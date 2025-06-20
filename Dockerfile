@@ -19,7 +19,7 @@ WORKDIR /app
 COPY . .
 
 # Generate a build timestamp with seconds and set it as an image variable
-RUN tail -c1 .env | read -r _ || echo >> .env && \
+RUN echo '' >> .env && \
     printf 'BUILD_DATETIME="%s"\n' "$(date +'%Y-%m-%dT%H:%M:%SZ')" >> .env
 
 # Run initial database setup: apply migrations and generate Prisma client
