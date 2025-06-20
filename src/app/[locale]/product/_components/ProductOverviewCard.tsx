@@ -321,6 +321,10 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
         </Box>
     );
 
+    const showKeyFactsBox =
+        (overviewData?.productClassifications && overviewData.productClassifications.length > 0) ||
+        (overviewData?.markings && overviewData.markings.length > 0);
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const classificationInfo = (
         <Box sx={infoBoxStyle} data-testid="asset-data">
@@ -469,9 +473,9 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                     </>
                 )}
             </CardContent>
-            {overviewData?.productClassifications && overviewData.productClassifications.length > 0 && (
+            {showKeyFactsBox && (
                 <KeyFactsBox
-                    productClassifications={overviewData.productClassifications}
+                    productClassifications={overviewData.productClassifications ?? []}
                     markings={overviewData.markings ?? []}
                 />
             )}
