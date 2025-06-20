@@ -250,7 +250,8 @@
         },
         "title": "Submodels",
         "unknownModelType": "ModelType desconocido: {type}",
-        "noSubmodelsToLoad": "No existen submodels que cargar para este AAS."
+        "noSubmodelsToLoad": "No existen submodels que cargar para este AAS.",
+        "repositoryUrlLabel": "Repository URL:"
       }
     },
     "catalog": {

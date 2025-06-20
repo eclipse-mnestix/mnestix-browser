@@ -10,6 +10,7 @@ type SubmodelInfoDialogProps = {
     readonly idShort: string | null | undefined;
     readonly semanticId: Reference | null | undefined;
     readonly id: string | undefined;
+    readonly repositoryUrl?: string;
 };
 
 export function SubmodelInfoDialog(props: SubmodelInfoDialogProps) {
@@ -17,7 +18,7 @@ export function SubmodelInfoDialog(props: SubmodelInfoDialogProps) {
 
     return (
         <Dialog open={props.open} onClose={props.onClose}>
-            <DialogCloseButton handleClose={props.onClose}/>
+            <DialogCloseButton handleClose={props.onClose} />
             <DialogContent style={{ padding: '40px' }}>
                 <Typography variant="h2" color={'primary'} marginBottom={'1em'}>
                     {props.idShort}
@@ -26,7 +27,10 @@ export function SubmodelInfoDialog(props: SubmodelInfoDialogProps) {
                     {props.id}
                 </DataRow>
                 <DataRow title={t('semanticIdLabel')} hasDivider={false}>
-                    {props.semanticId?.keys?.map(el => el.value).join(', ') || '-'}
+                    {props.semanticId?.keys?.map((el) => el.value).join(', ') || '-'}
+                </DataRow>
+                <DataRow title={t('repositoryUrlLabel')} hasDivider={false}>
+                    {props.repositoryUrl}
                 </DataRow>
             </DialogContent>
         </Dialog>

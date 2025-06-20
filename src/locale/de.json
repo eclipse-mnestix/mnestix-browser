@@ -250,7 +250,8 @@
         },
         "title": "Teilmodelle",
         "unknownModelType": "Unbekannter ModelType: {type}",
-        "noSubmodelsToLoad": "Für diese AAS existieren keine Teilmodelle."
+        "noSubmodelsToLoad": "Für diese AAS existieren keine Teilmodelle.",
+        "repositoryUrlLabel": "Repository URL:"
       }
     },
     "catalog": {
