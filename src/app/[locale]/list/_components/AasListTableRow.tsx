@@ -1,4 +1,4 @@
-import { Box, Checkbox, TableCell, Typography } from '@mui/material';
+import { Box, Checkbox, Skeleton, TableCell, Typography } from '@mui/material';
 import { useAasOriginSourceState, useAasState } from 'components/contexts/CurrentAasContext';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
@@ -127,10 +127,18 @@ export const AasListTableRow = (props: AasTableRowProps) => {
                 />
             </PictureTableCell>
             <TableCell data-testid="list-manufacturer-name" align="left" sx={tableBodyText}>
-                {enrichedData?.manufacturerName || ''}
+                {enrichedData?.manufacturerName ? (
+                    enrichedData.manufacturerName
+                ) : (
+                    <Skeleton variant="text" width="80%" height={26} />
+                )}
             </TableCell>
             <TableCell data-testid="list-product-designation" align="left" sx={tableBodyText}>
-                {enrichedData?.productDesignation && tooltipText(enrichedData.productDesignation, 80)}
+                {enrichedData?.productDesignation ? (
+                    tooltipText(enrichedData.productDesignation, 80)
+                ) : (
+                    <Skeleton variant="text" width="80%" height={26} />
+                )}
             </TableCell>
             <TableCell data-testid="list-assetId" align="left" sx={tableBodyText}>
                 <Typography sx={{ all: 'unset' }}>{tooltipText(aasListEntry.assetId, 70)}</Typography>
