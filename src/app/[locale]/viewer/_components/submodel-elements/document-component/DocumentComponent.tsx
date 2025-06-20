@@ -20,6 +20,7 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
     const t = useTranslations('components.documentComponent');
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
     const fileViewObject = useFileViewObject(props.submodelElement, props.submodelId);
+    const { data: session } = useSession();
 
     const handleDetailsClick = () => {
         setDetailsModalOpen(true);
@@ -36,6 +37,27 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
         ]) as SubmodelElementCollection[];
     }
 
+    const openFile = async (url: string) => {
+        if (!session?.accessToken || !props.repositoryUrl || !url.startsWith(props.repositoryUrl)) {
+            window.open(url, '_blank');
+            return;
+        }
+
+        try {
+            const response = await fetch(url, {
+                headers: {
+                    Authorization: `Bearer ${session.accessToken}`,
+                },
+            });
+            const blob = await response.blob();
+            const blobUrl = window.URL.createObjectURL(blob);
+            window.open(blobUrl, '_blank');
+        } catch (e) {
+            console.warn(`Failed to open file with auth: ${e}`);
+            window.open(url, '_blank');
+        }
+    };
+
     return (
         <DataRow hasDivider={props.hasDivider}>
             {fileViewObject && (
@@ -47,13 +69,20 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
                         flexDirection={{ xs: 'column', sm: 'row' }}
                         sx={{ mb: 1 }}
                     >
-                        <Box display="flex" gap={1} flexDirection="row" sx={{ mb: 1 }}>
-                            <Link href={fileViewObject.digitalFileUrl} target="_blank">
+                        <Box
+                            display="flex"
+                            gap={1}
+                            flexDirection="row"
+                            sx={{ mb: 1 }}
+                            onClick={() => openFile(fileViewObject.digitalFileUrl)}
+                        >
+                            <Box onClick={() => openFile(fileViewObject.digitalFileUrl)} style={{ cursor: 'pointer' }}>
                                 <PreviewImage
                                     previewImgUrl={fileViewObject.previewImgUrl}
                                     mimeType={fileViewObject.mimeType}
+                                    repositoryUrl={props.repositoryUrl}
                                 />
-                            </Link>
+                            </Box>
                             <Box>
                                 <Typography data-testid="document-title" variant="h5">
                                     {fileViewObject.title}
@@ -67,8 +96,7 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
                                     variant="outlined"
                                     startIcon={<OpenInNew />}
                                     sx={{ mt: 1 }}
-                                    href={fileViewObject.digitalFileUrl}
-                                    target="_blank"
+                                    onClick={() => openFile(fileViewObject.digitalFileUrl)}
                                     data-testid="document-open-button"
                                 >
                                     {t('open')}
