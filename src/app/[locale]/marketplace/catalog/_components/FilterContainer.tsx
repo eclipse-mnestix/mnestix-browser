@@ -181,7 +181,6 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
     }
 
     function applyFilter(reset = false) {
-        console.log(activeFilters);
         if (reset) {
             setActiveFilters([]);
             props.onFilterChanged([]);
@@ -201,10 +200,7 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                             {t('filter')}
                         </Typography>
                         <Box display="flex" gap={1}>
-                            <Button 
-                                variant="contained"
-                                type="button"
-                                onClick={() => applyFilter()}>
+                            <Button variant="contained" type="button" onClick={() => applyFilter()}>
                                 Apply
                             </Button>
                             <Button

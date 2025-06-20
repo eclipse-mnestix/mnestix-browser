@@ -136,7 +136,6 @@ export function ProductCategoryFilter(props: {
                     ProductFamilies: updatedFamilies,
                 },
             };
-            console.log(categories);
 
             return categories;
         });

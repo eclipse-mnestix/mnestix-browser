@@ -64,12 +64,14 @@ function buildFilterInput(filters?: FilterQuery[]): string {
     return filterArray.length > 1 ? `(where: { or: [${filterArray.join(' , ')}]})` : `(where: { ${filterArray} })`;
 }
 
-export async function searchProducts(filters?: FilterQuery[], aasSearcherUrl?: string, ): Promise<ApiResponseWrapper<SearchResponseEntry[]>> {
+export async function searchProducts(
+    filters?: FilterQuery[],
+    aasSearcherUrl?: string,
+): Promise<ApiResponseWrapper<SearchResponseEntry[]>> {
     if (!aasSearcherUrl) {
         return wrapErrorCode('NOT_FOUND', 'No aasSearcher URL provided');
     }
     const queryString = searchQuery(buildFilterInput(filters));
-    console.log(queryString);
     const query = gql(queryString);
     try {
         const client = createApolloClient(aasSearcherUrl);
@@ -82,4 +84,3 @@ export async function searchProducts(filters?: FilterQuery[], aasSearcherUrl?: s
         return wrapErrorCode('UNKNOWN_ERROR', error);
     }
 }
-
