@@ -5,6 +5,10 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useTranslations } from 'next-intl';
 import { MnestixConnection } from '@prisma/client';
 import { useRouter } from 'next/navigation';
+import { searchProducts } from 'lib/api/graphql/catalogActions';
+import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
+import { useState } from 'react';
+import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 
 type ManufacturerCardProps = {
     connection: MnestixConnection;
@@ -14,6 +18,22 @@ export function ManufacturerCard({ connection }: ManufacturerCardProps) {
     const theme = useTheme();
     const t = useTranslations('pages.catalog');
     const navigate = useRouter();
+    const [resultCount, setResultCount] = useState<number | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    useAsyncEffect(async () => {
+        setIsLoading(true);
+        try {
+            if (connection && connection.aasSearcher) {
+                const data = await searchProducts(connection.aasSearcher);
+                setResultCount(Array.isArray(data.result) ? data.result.length : 0);
+            }
+        } catch (error) {
+            console.error('Error fetching article count:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
 
     const manufacturer = connection.name || 'unknown';
 
@@ -24,11 +44,6 @@ export function ManufacturerCard({ connection }: ManufacturerCardProps) {
             navigate.push(`/marketplace/catalog?repoUrl=${encodeURIComponent(connection.url)}`);
         }
     };
-
-    const getArticleCount = () => {
-        // Placeholder for article count logic -> needs to be implemented in the AAS Searcher Backend first
-        return  Math.floor(Math.random() * (150 - 10 + 1)) + 10;
-    }
 
     return (
         <Card
@@ -61,9 +76,17 @@ export function ManufacturerCard({ connection }: ManufacturerCardProps) {
                 </Typography>
             )}
             <Box display="flex" alignItems="center" justifyContent="space-between" mt={2}>
-                <Typography color="text.secondary" fontSize="1.1rem">
-                    {t('articleCount', { count: getArticleCount() })}
-                </Typography>
+                {isLoading ? (
+                    <CenteredLoadingSpinner />
+                ) : resultCount !== null ? (
+                    <Typography color="text.secondary" fontSize="1.1rem">
+                        {t('articleCount', { count: resultCount ?? 0 })}
+                    </Typography>
+                ) : (
+                    <Typography color="text.secondary" fontSize="1.1rem">
+                        {t('articleCountUnavailable')}
+                    </Typography>
+                )}
                 <IconButton
                     onClick={onNavigate}
                     sx={{

@@ -47,7 +47,7 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
 
     useAsyncEffect(async () => {
         setLoading(true);
-        const results = await searchProducts(undefined, props.aasSearcherUrl);
+        const results = await searchProducts(props.aasSearcherUrl);
 
         if (results.isSuccess) {
             const products = results.result;
@@ -201,10 +201,7 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                             {t('filter')}
                         </Typography>
                         <Box display="flex" gap={1}>
-                            <Button 
-                                variant="contained"
-                                type="button"
-                                onClick={() => applyFilter()}>
+                            <Button variant="contained" type="button" onClick={() => applyFilter()}>
                                 Apply
                             </Button>
                             <Button
