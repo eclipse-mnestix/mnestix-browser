@@ -1,9 +1,19 @@
 import { useEffect, useState } from 'react';
 import { Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useEnv } from 'app/EnvProvider';
-import { getAasFromRepository, performFullAasSearch, performSubmodelFullSearch } from 'lib/services/search-actions/searchActions';
+import {
+    getAasFromRepository,
+    performFullAasSearch,
+    performSubmodelFullSearch,
+} from 'lib/services/search-actions/searchActions';
 import { LocalizedError } from 'lib/util/LocalizedError';
-import { SubmodelOrIdReference, useAasOriginSourceState, useAasState, useRegistryAasState, useSubmodelState } from 'components/contexts/CurrentAasContext';
+import {
+    SubmodelOrIdReference,
+    useAasOriginSourceState,
+    useAasState,
+    useRegistryAasState,
+    useSubmodelState,
+} from 'components/contexts/CurrentAasContext';
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { safeBase64Decode } from 'lib/util/Base64Util';
 import { useShowError } from 'lib/hooks/UseShowError';
@@ -32,12 +42,20 @@ export function useAasLoader(base64AasId: string, repoUrl?: string) {
         return semanticIds?.some((id) => submodelWhitelist.includes(id));
     }
 
-    async function fetchSingleSubmodel(reference: Reference, smDescriptor?: SubmodelDescriptor): Promise<SubmodelOrIdReference> {
+    async function fetchSingleSubmodel(
+        reference: Reference,
+        smDescriptor?: SubmodelDescriptor,
+    ): Promise<SubmodelOrIdReference> {
         const submodelResponse = await performSubmodelFullSearch(reference, smDescriptor);
-        if (!submodelResponse.isSuccess)
+        if (!submodelResponse.isSuccess) {
             return { id: reference.keys[0].value, error: submodelResponse.errorCode };
+        }
 
-        return { id: submodelResponse.result.id, submodel: submodelResponse.result };
+        return {
+            id: submodelResponse.result.submodel.id,
+            submodel: submodelResponse.result.submodel,
+            repositoryUrl: submodelResponse.result.submodelData.submodelRepositoryOrigin,
+        };
     }
 
     async function fetchSubmodels() {
@@ -108,6 +126,5 @@ export function useAasLoader(base64AasId: string, repoUrl?: string) {
         aasOriginUrl,
         submodels,
         isSubmodelsLoading,
-        loadAasContent
     };
 }

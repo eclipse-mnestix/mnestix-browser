@@ -176,7 +176,11 @@ export class RepositorySearchService {
             Repository_Endpoint: client.getBaseUrl(),
             Submodel_ID: submodelId,
         });
-        return Promise.reject(`Unable to fetch Submodel '${submodelId}' from '${repoUrl}'`);
+        return wrapErrorCode(
+            ApiResultStatus.NOT_FOUND,
+            `Submodel with id '${submodelId}' not found in repository '${repoUrl}'`,
+            response.httpStatus,
+        );
     }
 
     async getFirstSubmodelFromAllRepos(submodelId: string): Promise<ApiResponseWrapper<RepoSearchResult<Submodel>>> {

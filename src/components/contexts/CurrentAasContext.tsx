@@ -13,6 +13,7 @@ type CurrentAasContextType = {
 export type SubmodelOrIdReference = {
     id: string;
     submodel?: Submodel;
+    repositoryUrl?: string;
     error?: string | Error;
 };
 
