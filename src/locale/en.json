@@ -402,14 +402,17 @@
           "add": "Add",
           "back": "Back",
           "cancel": "Cancel",
-          "create": "Create rule",
+          "create": "Add permission",
           "delete": "Delete",
           "edit": "Edit",
           "save": "Save"
         },
         "createRule": {
           "saveSuccess": "New rule saved successfully.",
-          "title": "Create rule"
+          "title": "Add new permission",
+          "subtitle": "Add a permission to a new or existing role.",
+          "subtitle2": "Add a permission to the role ''{role}''.",
+          "placeholderText": "New or existing role name"
         },
         "deleteRule": {
           "question": "Permanently delete this rule?",

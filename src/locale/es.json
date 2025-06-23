@@ -402,14 +402,17 @@
           "add": "Añadir",
           "back": "Atrás",
           "cancel": "Cancelar",
-          "create": "Crear regla",
+          "create": "Crear regla // Translate this",
           "delete": "Eliminar",
           "edit": "Editar",
           "save": "Guardar"
         },
         "createRule": {
           "saveSuccess": "Nueva regla guardada con éxito.",
-          "title": "Crear regla"
+          "title": "Crear regla // Translate this",
+          "subtitle": "Add a permission to a new or existing role. // Translate this",
+          "subtitle2": "Add a permission to the role ''{role}''. // Translate this",
+          "placeholderText": "Nueva oda existante amo rola // Translate this"
         },
         "deleteRule": {
           "question": "¿Desea borrar esta regla permanentemente?",

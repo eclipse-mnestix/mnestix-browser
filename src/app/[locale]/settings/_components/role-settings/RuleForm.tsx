@@ -13,7 +13,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslations } from 'next-intl';
 import { BaSyxRbacRule, rbacRuleActions, rbacRuleTargets } from 'lib/services/rbac-service/types/RbacServiceData';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 import { TargetInformationForm } from 'app/[locale]/settings/_components/role-settings/target-information/TargetInformationForm';
 import { Controller, useForm } from 'react-hook-form';
@@ -67,8 +67,11 @@ export const RuleForm = ({ onCancel, onSubmit, rule, title, availableRoles, sele
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <DialogContent>
-                <Typography variant="h2" color="primary" mb="1em">
+                <Typography variant="h2" color="primary">
                     {title}
+                </Typography>
+                <Typography color="text.secondary" mb="1em">
+                    {selectedRole ? t('createRule.subtitle2', { role: selectedRole }) : t('createRule.subtitle')}
                 </Typography>
                 <Box display="flex" flexDirection="column">
                     <Typography variant="h5">{t('tableHeader.name')}</Typography>
@@ -104,6 +107,7 @@ export const RuleForm = ({ onCancel, onSubmit, rule, title, availableRoles, sele
                                             {...params}
                                             variant="outlined"
                                             error={!!error}
+                                            placeholder={t('createRule.placeholderText')}
                                             {...field}
                                             helperText={error ? error.message : ''}
                                             disabled={!!selectedRole}

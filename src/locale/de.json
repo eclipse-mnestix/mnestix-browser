@@ -402,14 +402,17 @@
           "add": "Hinzufügen",
           "back": "Zurück",
           "cancel": "Abbrechen",
-          "create": "Regel erstellen",
+          "create": "Berechtigung hinzufügen",
           "delete": "Löschen",
           "edit": "Bearbeiten",
           "save": "Speichern"
         },
         "createRule": {
           "saveSuccess": "Neue Regel erfolgreich gespeichert.",
-          "title": "Regel erstellen"
+          "title": "Neue Berechtigung hinzufügen",
+          "subtitle": "Füge eine Berechtigung zu einer neuen oder bereits bestehenden Rolle hinzu.",
+          "subtitle2": "Füge eine Berechtigung zu der Rolle ''{role}'' hinzu.",
+          "placeholderText": "Neuer oder bestehender Rollenname"
         },
         "deleteRule": {
           "question": "Regel unwiderruflich löschen?",
