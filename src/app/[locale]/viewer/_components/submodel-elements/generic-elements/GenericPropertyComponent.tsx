@@ -83,8 +83,8 @@ export function GenericPropertyComponent(props: GenericPropertyComponentProps) {
             >
                 <Typography data-testid="property-content">
                     {property.value === 'true' ?
-                        (<CheckIcon></CheckIcon>) :
-                        (<CloseIcon></CloseIcon>)
+                        (<CheckIcon aria-label="True" />) :
+                        (<CloseIcon aria-label="False" />)
                     }
                 </Typography>
 

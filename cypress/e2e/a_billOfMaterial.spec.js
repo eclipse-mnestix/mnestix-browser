@@ -75,7 +75,7 @@ describe('Test the Bill-of-Material', function () {
                 cy.get('@cyMultiLangTest').should('contain', testdata.multiLangEn);
             });
 
-            it('Finds an icon under Cypress Test 02"', function () {
+            it('Finds an icon for a boolean value under Cypress Test 02"', function () {
                 cy.getByTestId('bom-entity')
                     .contains(testdata.propertyTestCollection)
                     .parents('[data-testid="bom-entity"]')
@@ -85,7 +85,7 @@ describe('Test the Bill-of-Material', function () {
                     .contains(testdata.booleanTest)
                     .parents('[data-testid="bom-entity"]')
                     .as('cyBooleanTest');
-                cy.get('@cyBooleanTest').findByTestId('boolean-true-icon').should('exist');
+                cy.get('@cyBooleanTest').findByTestId('CheckIcon').should('exist');
             });
         });
     });
