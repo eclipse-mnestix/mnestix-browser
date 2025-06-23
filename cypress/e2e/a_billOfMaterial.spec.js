@@ -85,7 +85,7 @@ describe('Test the Bill-of-Material', function () {
                     .contains(testdata.booleanTest)
                     .parents('[data-testid="bom-entity"]')
                     .as('cyBooleanTest');
-                cy.get('@cyBooleanTest').findByTestId('CheckIcon').should('exist');
+                cy.getByTestId('CheckIcon').should('exist');
             });
         });
     });
