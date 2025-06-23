@@ -64,7 +64,10 @@ function buildFilterInput(filters?: FilterQuery[]): string {
     return filterArray.length > 1 ? `(where: { or: [${filterArray.join(' , ')}]})` : `(where: { ${filterArray} })`;
 }
 
-export async function searchProducts(filters?: FilterQuery[], aasSearcherUrl?: string, ): Promise<ApiResponseWrapper<SearchResponseEntry[]>> {
+export async function searchProducts(
+    aasSearcherUrl?: string,
+    filters?: FilterQuery[],
+): Promise<ApiResponseWrapper<SearchResponseEntry[]>> {
     if (!aasSearcherUrl) {
         return wrapErrorCode('NOT_FOUND', 'No aasSearcher URL provided');
     }
@@ -82,4 +85,3 @@ export async function searchProducts(filters?: FilterQuery[], aasSearcherUrl?: s
         return wrapErrorCode('UNKNOWN_ERROR', error);
     }
 }
-

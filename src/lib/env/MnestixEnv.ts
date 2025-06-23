@@ -15,6 +15,8 @@ const process_env: Record<string, string | undefined> = typeof process !== 'unde
 
 const privateEnvs = mapEnvVariables(['MNESTIX_BACKEND_API_KEY', 'BASYX_RBAC_SEC_SM_API_URL'] as const);
 
+const cfgBuildEnvs = mapEnvVariables(['BUILD_DATETIME'] as const);
+
 const privateAzure = mapEnvVariables([
     'AD_CLIENT_ID',
     'AD_TENANT_ID',
@@ -62,17 +64,20 @@ function removeTrailingSlash(url: string | undefined): string | undefined {
  * This ensures consistent URL formats for API calls and external links.
  */
 const otherVariables = {
-    ...mapEnvVariables([
-        'DISCOVERY_API_URL',
-        'REGISTRY_API_URL',
-        'SUBMODEL_REGISTRY_API_URL',
-        'CONCEPT_DESCRIPTION_REPO_API_URL',
-        'AAS_REPO_API_URL',
-        'SUBMODEL_REPO_API_URL',
-        'MNESTIX_BACKEND_API_URL',
-        'IMPRINT_URL',
-        'DATA_PRIVACY_URL',
-    ] as const, removeTrailingSlash),
+    ...mapEnvVariables(
+        [
+            'DISCOVERY_API_URL',
+            'REGISTRY_API_URL',
+            'SUBMODEL_REGISTRY_API_URL',
+            'CONCEPT_DESCRIPTION_REPO_API_URL',
+            'AAS_REPO_API_URL',
+            'SUBMODEL_REPO_API_URL',
+            'MNESTIX_BACKEND_API_URL',
+            'IMPRINT_URL',
+            'DATA_PRIVACY_URL',
+        ] as const,
+        removeTrailingSlash,
+    ),
     // Strong typing and parsing have been neglected here as this is a temporary feature.
     // Validation is also not implemented.
     SUBMODEL_WHITELIST: process_env.SUBMODEL_WHITELIST,
@@ -91,7 +96,14 @@ const LOG_LEVEL = process_env.LOG_LEVEL || (process_env.NODE_ENV === 'production
 /**
  * Public envs that are sent to the client and can be used with the `useEnv` hook.
  */
-export const publicEnvs = { LOG_LEVEL, ...featureFlags, ...otherVariables, ...themingVariables, ...keycloak };
+export const publicEnvs = {
+    LOG_LEVEL,
+    ...featureFlags,
+    ...otherVariables,
+    ...themingVariables,
+    ...keycloak,
+    ...cfgBuildEnvs,
+};
 
 /**
  * Mnestix envs

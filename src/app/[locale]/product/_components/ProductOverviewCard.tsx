@@ -138,6 +138,10 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                             SubmodelElementSemanticIdEnum.ProductClassId,
                         ) || undefined,
                 };
+                // Filter out classifications without a ProductClassId
+                if (!classification.ProductClassId) {
+                    return;
+                }
                 classifications.push(classification);
             }
         });
@@ -188,29 +192,35 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
         const manufacturerName = findValue(
             nameplateSubmodelElements,
             'ManufacturerName',
-            SubmodelElementSemanticIdEnum.ManufacturerName
+            SubmodelElementSemanticIdEnum.ManufacturerName,
         );
         const manufacturerProductDesignation = findValue(
             nameplateSubmodelElements,
             'ManufacturerProductDesignation',
-            SubmodelElementSemanticIdEnum.ManufacturerProductDesignation
+            SubmodelElementSemanticIdEnum.ManufacturerProductDesignation,
         );
         const manufacturerArticleNumber = findValue(
             nameplateSubmodelElements,
             'ProductArticleNumberOfManufacturer',
-            SubmodelElementSemanticIdEnum.ManufacturerArticleNumber
+            SubmodelElementSemanticIdEnum.ManufacturerArticleNumber,
         );
         const manufacturerOrderCode = findValue(
             nameplateSubmodelElements,
             'OrderCodeOfManufacturer',
-            SubmodelElementSemanticIdEnum.ManufacturerOrderCode
+            SubmodelElementSemanticIdEnum.ManufacturerOrderCode,
         );
         setOverviewData((prevData) => ({
             ...prevData,
-            manufacturerName: prevData?.manufacturerName ? prevData.manufacturerName : manufacturerName ?? '-',
-            manufacturerProductDesignation: prevData?.manufacturerProductDesignation ? prevData.manufacturerProductDesignation : manufacturerProductDesignation ?? '-',
-            manufacturerArticleNumber: prevData?.manufacturerArticleNumber ? prevData.manufacturerArticleNumber : manufacturerArticleNumber ?? '-',
-            manufacturerOrderCode: prevData?.manufacturerOrderCode ? prevData.manufacturerOrderCode : manufacturerOrderCode ?? '-',
+            manufacturerName: prevData?.manufacturerName ? prevData.manufacturerName : (manufacturerName ?? '-'),
+            manufacturerProductDesignation: prevData?.manufacturerProductDesignation
+                ? prevData.manufacturerProductDesignation
+                : (manufacturerProductDesignation ?? '-'),
+            manufacturerArticleNumber: prevData?.manufacturerArticleNumber
+                ? prevData.manufacturerArticleNumber
+                : (manufacturerArticleNumber ?? '-'),
+            manufacturerOrderCode: prevData?.manufacturerOrderCode
+                ? prevData.manufacturerOrderCode
+                : (manufacturerOrderCode ?? '-'),
             manufacturerProductRoot: manufacturerProductRoot ?? '-',
             manufacturerProductFamily: manufacturerProductFamily ?? '-',
             manufacturerProductType: manufacturerProductType ?? '-',
@@ -310,6 +320,10 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             </Box>
         </Box>
     );
+
+    const showKeyFactsBox =
+        (overviewData?.productClassifications && overviewData.productClassifications.length > 0) ||
+        (overviewData?.markings && overviewData.markings.length > 0);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const classificationInfo = (
@@ -457,9 +471,9 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                     </>
                 )}
             </CardContent>
-            {overviewData?.productClassifications && overviewData.productClassifications.length > 0 && (
+            {showKeyFactsBox && (
                 <KeyFactsBox
-                    productClassifications={overviewData.productClassifications}
+                    productClassifications={overviewData.productClassifications ?? []}
                     markings={overviewData.markings ?? []}
                 />
             )}

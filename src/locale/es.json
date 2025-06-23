@@ -261,6 +261,7 @@
       "marketplaceTitle": "VWS4LS - Marketplace",
       "marketplaceSubtitle": "Shell de administración de activos para mazos de cables",
       "articleCount": "{count, plural, =1 {# artículo} other {# artículos}}",
+      "articleCountUnavailable": "Filtrado no configurado",
       "filter": "Filtro",
       "noSearcherWarning": "No se ha configurado el buscador AAS - Se muestra la lista AAS",
       "eclassDocumentationLink": "Abrir en la documentación de ECLASS",

@@ -59,6 +59,10 @@ export default function MainMenu() {
     const auth = useAuth();
     const env = useEnv();
     const useAuthentication = env.AUTHENTICATION_FEATURE_FLAG;
+    const buildDateUTC = env.BUILD_DATETIME;
+
+    // Parse the UTC build date and convert to browser local time string
+    const buildDate = buildDateUTC ? new Date(buildDateUTC).toLocaleString() : '';
     const versionString = 'Version ' + packageJson.version;
     const mnestixRole = auth.getAccount()?.user.mnestixRole ?? MnestixRole.MnestixGuest;
     const allowedRoutes = auth.getAccount()?.user.allowedRoutes ?? [];
@@ -167,6 +171,7 @@ export default function MainMenu() {
                 </Box>
                 <Box sx={{ mt: 'auto', mb: 0, p: '16px', opacity: 0.6 }}>
                     <Typography>{versionString}</Typography>
+                    <Typography>{buildDate}</Typography>
                 </Box>
                 {useAuthentication && (
                     <BottomMenu mnestixRole={mnestixRole} name={getAuthName() ?? ''} isLoggedIn={auth.isLoggedIn} />
