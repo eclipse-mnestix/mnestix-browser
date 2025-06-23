@@ -114,7 +114,7 @@ services:
     volumes:
       - ./docker-compose/data/keycloak/realm:/opt/jboss/keycloak/imports
     ports:
-      - 8080:8080
+      - '8080:8080'
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
