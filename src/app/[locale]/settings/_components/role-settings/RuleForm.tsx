@@ -25,6 +25,7 @@ type RuleDialogProps = {
     readonly rule: BaSyxRbacRule;
     readonly title: string;
     readonly availableRoles: string[];
+    readonly selectedRole?: string | null;
 };
 
 export type ArrayOfIds = [{ id: string }];
@@ -46,16 +47,22 @@ export type RuleFormModel = {
     targetInformation: TargetInformationFormModel;
 };
 
-export const RuleForm = ({ onCancel, onSubmit, rule, title, availableRoles }: RuleDialogProps) => {
+export const RuleForm = ({ onCancel, onSubmit, rule, title, availableRoles, selectedRole }: RuleDialogProps) => {
     const t = useTranslations('pages.settings.rules');
 
     const { control, handleSubmit, setValue, getValues, reset } = useForm({
-        defaultValues: mapBaSyxRbacRuleToFormModel(rule as BaSyxRbacRule),
+        defaultValues: {
+            ...mapBaSyxRbacRuleToFormModel(rule as BaSyxRbacRule),
+            role: selectedRole ?? mapBaSyxRbacRuleToFormModel(rule as BaSyxRbacRule).role,
+        },
     });
 
     useEffect(() => {
-        reset(mapBaSyxRbacRuleToFormModel(rule as BaSyxRbacRule));
-    }, [rule]);
+        reset({
+            ...mapBaSyxRbacRuleToFormModel(rule as BaSyxRbacRule),
+            role: selectedRole ?? mapBaSyxRbacRuleToFormModel(rule as BaSyxRbacRule).role,
+        });
+    }, [rule, selectedRole, reset]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -97,9 +104,12 @@ export const RuleForm = ({ onCancel, onSubmit, rule, title, availableRoles }: Ru
                                             {...params}
                                             variant="outlined"
                                             error={!!error}
+                                            {...field}
                                             helperText={error ? error.message : ''}
+                                            disabled={!!selectedRole}
                                         />
                                     )}
+                                    disabled={!!selectedRole}
                                 />
                             </FormControl>
                         )}

@@ -15,6 +15,7 @@ type RoleDialogProps = {
     readonly reloadRules: () => Promise<void>;
     readonly open: boolean;
     readonly availableRoles: string[];
+    readonly selectedRole?: string | null;
 };
 
 export const defaultRbacRule: BaSyxRbacRule = {
@@ -24,7 +25,7 @@ export const defaultRbacRule: BaSyxRbacRule = {
     idShort: '',
 };
 
-export const CreateRuleDialog = ({ onClose, reloadRules, open, availableRoles }: RoleDialogProps) => {
+export const CreateRuleDialog = ({ onClose, reloadRules, open, availableRoles, selectedRole }: RoleDialogProps) => {
     const t = useTranslations('pages.settings.rules');
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
@@ -87,6 +88,7 @@ export const CreateRuleDialog = ({ onClose, reloadRules, open, availableRoles }:
                         onSubmit={onSubmit}
                         onCancel={onClose}
                         availableRoles={availableRoles}
+                        selectedRole={selectedRole}
                     />
                 )}
             </Box>

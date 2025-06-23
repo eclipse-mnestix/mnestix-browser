@@ -21,6 +21,7 @@ export const RuleSettings = () => {
     const [selectedRule, setSelectedRule] = useState<DialogRbacRule>();
     const [rbacRoles, setRbacRoles] = useState<RbacRolesFetchResult>();
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedRole, setSelectedRole] = useState<string | null>(null);
     const { showError } = useShowError();
 
     // all available role names
@@ -50,6 +51,11 @@ export const RuleSettings = () => {
 
         setSelectedRule(updatedEntry);
         setRuleDetailDialogOpen(true);
+    };
+
+    const openCreateDialog = (roleName: string | null) => {
+        setSelectedRole(roleName);
+        setCreateDialogOpen(true);
     };
 
     function groupRulesByRole(): Record<string, BaSyxRbacRule[]> {
@@ -92,6 +98,7 @@ export const RuleSettings = () => {
                                     roleName={roleName}
                                     rules={rules}
                                     openDetailDialog={openDetailDialog}
+                                    openCreateDialog={openCreateDialog}
                                 />
                             ))}
                         </Box>
@@ -108,9 +115,13 @@ export const RuleSettings = () => {
             />
             <CreateRuleDialog
                 open={createDialogOpen}
-                onClose={() => setCreateDialogOpen(false)}
+                onClose={() => {
+                    setSelectedRole(null);
+                    setCreateDialogOpen(false);
+                }}
                 reloadRules={loadRbacData}
                 availableRoles={availableRoles}
+                selectedRole={selectedRole}
             />
         </>
     );
