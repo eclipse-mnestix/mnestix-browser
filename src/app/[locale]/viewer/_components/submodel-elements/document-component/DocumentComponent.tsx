@@ -69,13 +69,7 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
                         flexDirection={{ xs: 'column', sm: 'row' }}
                         sx={{ mb: 1 }}
                     >
-                        <Box
-                            display="flex"
-                            gap={1}
-                            flexDirection="row"
-                            sx={{ mb: 1 }}
-                            onClick={() => openFile(fileViewObject.digitalFileUrl)}
-                        >
+                        <Box display="flex" gap={1} flexDirection="row" sx={{ mb: 1 }}>
                             <Box onClick={() => openFile(fileViewObject.digitalFileUrl)} style={{ cursor: 'pointer' }}>
                                 <PreviewImage
                                     previewImgUrl={fileViewObject.previewImgUrl}
