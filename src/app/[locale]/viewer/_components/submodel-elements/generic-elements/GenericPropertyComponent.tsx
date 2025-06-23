@@ -82,7 +82,7 @@ export function GenericPropertyComponent(props: GenericPropertyComponentProps) {
                 onMouseLeave={() => setIsHovered(false)}
             >
                 <Typography data-testid="property-content">
-                    {property.value == 'true' ?
+                    {property.value === 'true' ?
                         (<CheckIcon></CheckIcon>) :
                         (<CloseIcon></CloseIcon>)
                     }
