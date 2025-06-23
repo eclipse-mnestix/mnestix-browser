@@ -24,6 +24,7 @@ type AasTableRowProps = {
         manufacturerName?: string;
         productDesignation?: string;
     };
+    enrichedDataLoading?: boolean;
     comparisonFeatureFlag: boolean | undefined;
     checkBoxDisabled: (aasId: string | undefined) => boolean | undefined;
     selectedAasList: string[] | undefined;
@@ -41,6 +42,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         repositoryUrl,
         aasListEntry,
         enrichedData,
+        enrichedDataLoading,
         comparisonFeatureFlag,
         checkBoxDisabled,
         selectedAasList,
@@ -127,17 +129,17 @@ export const AasListTableRow = (props: AasTableRowProps) => {
                 />
             </PictureTableCell>
             <TableCell data-testid="list-manufacturer-name" align="left" sx={tableBodyText}>
-                {enrichedData?.manufacturerName ? (
-                    enrichedData.manufacturerName
-                ) : (
+                {enrichedDataLoading ? (
                     <Skeleton variant="text" width="80%" height={26} />
+                ) : enrichedData?.manufacturerName && (
+                    enrichedData.manufacturerName
                 )}
             </TableCell>
             <TableCell data-testid="list-product-designation" align="left" sx={tableBodyText}>
-                {enrichedData?.productDesignation ? (
-                    tooltipText(enrichedData.productDesignation, 80)
-                ) : (
+                {enrichedDataLoading ? (
                     <Skeleton variant="text" width="80%" height={26} />
+                ) : enrichedData?.productDesignation && (
+                    tooltipText(enrichedData.productDesignation, 80)
                 )}
             </TableCell>
             <TableCell data-testid="list-assetId" align="left" sx={tableBodyText}>

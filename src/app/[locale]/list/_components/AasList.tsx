@@ -48,7 +48,7 @@ export default function AasList(props: AasListProps) {
     const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
 
     // Fetch nameplate data for all shells
-    const { data: nameplateData } = useSWR(
+    const { data: nameplateData, isLoading: isNameplateLoading } = useSWR(
         shells?.entities ? [repositoryUrl, shells.entities.map((e) => e.aasId)] : null,
         async ([url, aasIds]) => {
             const results = await Promise.allSettled(
@@ -235,6 +235,7 @@ export default function AasList(props: AasListProps) {
                                             manufacturerName: enrichedEntity.manufacturerName,
                                             productDesignation: enrichedEntity.productDesignation,
                                         }}
+                                        enrichedDataLoading={isNameplateLoading}
                                         comparisonFeatureFlag={comparisonFeatureFlag}
                                         checkBoxDisabled={checkBoxDisabled}
                                         selectedAasList={selectedAasList}
