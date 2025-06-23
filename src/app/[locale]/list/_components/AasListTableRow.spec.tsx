@@ -42,19 +42,14 @@ describe('AasListTableRow', () => {
     };
 
     it('shows the table row with content in english', async () => {
-        (nameplateDataActions.getNameplateValuesForAAS as jest.Mock).mockImplementation(
-            jest.fn(() => {
-                return {
-                    success: true,
-                    manufacturerName: [{ de: 'ManufacturerDE' }, { en: 'ManufacturerEN' }],
-                    manufacturerProductDesignation: [{ de: 'ProductDesignationDE' }, { en: 'ProductDesignationEN' }],
-                };
-            }),
-        );
         listRowWrapper(
             <AasListTableRow
                 repositoryUrl={'https://test-repository.de'}
                 aasListEntry={listEntry}
+                enrichedData={{
+                    manufacturerName: 'ManufacturerEN',
+                    productDesignation: 'ProductDesignationEN',
+                }}
                 checkBoxDisabled={() => undefined}
                 comparisonFeatureFlag={true}
                 selectedAasList={undefined}

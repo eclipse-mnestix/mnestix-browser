@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Skeleton, Typography, Divider, Tooltip, Button } from '@mui/material';
+import { Box, Card, CardContent, Skeleton, Typography, Divider, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { DataRow } from 'components/basics/DataRow';
 import {
@@ -22,8 +22,9 @@ import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemantic
 import { useProductImageUrl } from 'lib/hooks/UseProductImageUrl';
 import { useFindValueByIdShort } from 'lib/hooks/useFindValueByIdShort';
 import { ActionMenu } from './ProductActionMenu';
-import { ConstructionDialog } from 'components/basics/ConstructionDialog';
 import LinkIcon from '@mui/icons-material/Link';
+import { CommercialDataBox } from 'app/[locale]/product/_components/CommercialDataBox';
+import { MnestixConnection } from '@prisma/client';
 
 type ProductOverviewCardProps = {
     readonly aas: AssetAdministrationShell | null;
@@ -34,6 +35,7 @@ type ProductOverviewCardProps = {
     readonly imageLinksToDetail?: boolean;
     readonly repositoryURL: string | null;
     readonly displayName: string | null;
+    readonly catalogConfig?: MnestixConnection;
 };
 
 type ProductClassification = {
@@ -64,7 +66,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
     const [overviewData, setOverviewData] = useState<OverviewData>();
     const findValue = useFindValueByIdShort();
     const productImageUrl = useProductImageUrl(props.aas, props.repositoryURL, props.productImage);
-    const [isConstructionDialogOpen, setIsConstructionDialogOpen] = useState<boolean>(false);
 
     useEffect(() => {
         if (props.submodels && props.submodels.length > 0) {
@@ -155,7 +156,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             manufacturerLogo: manufacturerLogo,
         });
     };
-
     const prepareNameplateData = (nameplateSubmodelElements: Array<ISubmodelElement>) => {
         const manufacturerProductRoot = findValue(
             nameplateSubmodelElements,
@@ -458,14 +458,12 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                     <Divider sx={{ mb: 2 }} />
                                     <Box sx={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
                                         {productInfo}
-                                        <Box margin={3} borderLeft="1px solid #e0e0e0" paddingLeft={3}>
-                                            <Button
-                                                variant="outlined"
-                                                onClick={() => setIsConstructionDialogOpen(true)}
-                                            >
-                                                {t('requestPrice')}
-                                            </Button>
-                                        </Box>
+                                        <CommercialDataBox
+                                            productURI={overviewData?.URIOfTheProduct ?? undefined}
+                                            commercialDataUrl={props.catalogConfig?.commercialData ?? undefined}
+                                            assetId={props.aas?.assetInformation.globalAssetId ?? undefined}
+                                            onProductUriRedirect={navigateToProduct}
+                                        />
                                     </Box>
                                 </Box>
                             </>
@@ -479,7 +477,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                     markings={overviewData.markings ?? []}
                 />
             )}
-            <ConstructionDialog open={isConstructionDialogOpen} onClose={() => setIsConstructionDialogOpen(false)} />
         </Card>
     );
 }

@@ -10,7 +10,7 @@ import { FilterContainer } from 'app/[locale]/marketplace/catalog/_components/Fi
 import { searchProducts } from 'lib/api/graphql/catalogActions';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import ProductList from 'app/[locale]/marketplace/catalog/_components/List/ProductList';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { SearchResponseEntry } from 'lib/api/graphql/catalogQueries';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { useShowError } from 'lib/hooks/UseShowError';
@@ -30,6 +30,7 @@ export default function Page() {
     const [repositoryUrl, setRepositoryUrl] = useState<string | undefined>(undefined);
     const [connection, setConnection] = useState<MnestixConnection | undefined>(undefined);
     const [fallbackToAasList, setFallbackToAasList] = useState<boolean>(false);
+    const [searchText, setSearchText] = useState<string>('');
     const { showError } = useShowError();
 
     /**
@@ -47,6 +48,23 @@ export default function Page() {
         }
         setLoading(false);
     }, []);
+
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchText(e.target.value);
+    };
+
+    const filteredProducts = useMemo(() => {
+        return products?.filter((product) => {
+            const nameMatches = product.manufacturerName?.mlValues?.some((entry: { text: string }) =>
+                entry.text.toLowerCase().includes(searchText.toLowerCase()),
+            );
+            const designationMatches = product.productDesignation?.mlValues?.some((entry: { text: string }) =>
+                entry.text.toLowerCase().includes(searchText.toLowerCase()),
+            );
+
+            return nameMatches || designationMatches;
+        });
+    }, [searchText, products]);
 
     const fetchManufacturerData = async () => {
         if (repositoryUrlParam) {
@@ -100,7 +118,9 @@ export default function Page() {
             <Box display="flex" alignItems="flex-start" gap={2}>
                 <ListHeader header={t('marketplaceTitle')} subHeader={t('marketplaceSubtitle')} />
                 <TextField
-                    disabled
+                    value={searchText}
+                    onChange={handleSearch}
+                    size="small"
                     variant="outlined"
                     placeholder={t('searchPlaceholder')}
                     sx={{ marginLeft: '3rem', width: 320 }}
@@ -154,7 +174,7 @@ export default function Page() {
                     ) : !fallbackToAasList && connection ? (
                         <Card>
                             <ProductList
-                                shells={products}
+                                shells={filteredProducts}
                                 repositoryUrl={connection.url}
                                 updateSelectedAasList={() => {}}
                             />
