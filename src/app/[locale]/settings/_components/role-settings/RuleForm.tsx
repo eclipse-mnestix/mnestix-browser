@@ -13,7 +13,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslations } from 'next-intl';
 import { BaSyxRbacRule, rbacRuleActions, rbacRuleTargets } from 'lib/services/rbac-service/types/RbacServiceData';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 import { TargetInformationForm } from 'app/[locale]/settings/_components/role-settings/target-information/TargetInformationForm';
 import { Controller, useForm } from 'react-hook-form';
@@ -47,7 +47,7 @@ export type RuleFormModel = {
     targetInformation: TargetInformationFormModel;
 };
 
-export const RuleForm = ({ onCancel, onSubmit, rule, title, availableRoles, selectedRole }: RuleDialogProps) => {
+export function RuleForm({ onCancel, onSubmit, rule, title, availableRoles, selectedRole }: RuleDialogProps) {
     const t = useTranslations('pages.settings.rules');
 
     const { control, handleSubmit, setValue, getValues, reset } = useForm({
@@ -159,4 +159,4 @@ export const RuleForm = ({ onCancel, onSubmit, rule, title, availableRoles, sele
             </DialogActions>
         </form>
     );
-};
+}
