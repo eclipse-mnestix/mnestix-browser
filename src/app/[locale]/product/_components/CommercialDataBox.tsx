@@ -38,7 +38,6 @@ export const CommercialDataBox = (props: {
             const response = await fetch(props.commercialDataUrl);
             if (response.ok) {
                 const data: Submodel = await response.json();
-                console.log(data);
                 prepareCommercialData(data);
             } else {
                 setError(`Failed to fetch commercial data: ${response.statusText}`);
@@ -78,10 +77,8 @@ export const CommercialDataBox = (props: {
                         null,
                     ) as SubmodelElementCollection
                 )?.value || null;
-            console.log(productPriceCollection);
             // @ts-expect-error value is there
             const priceType = findSubmodelElementBySemanticIdsOrIdShort(productPriceCollection, 'PriceType', null)?.value || undefined;
-            console.log(priceType);
             const productPrice = findValueByIdShort(productPriceCollection, 'Price', null, locale) || undefined;
             setPriceInfo({ grossPrice, productPrice, priceType, currency });
             console.log('Prepared commercial data:', { grossPrice, productPrice, priceType, currency });

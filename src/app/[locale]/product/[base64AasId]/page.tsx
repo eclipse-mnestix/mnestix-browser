@@ -65,7 +65,7 @@ export default function Page() {
     const [filteredSubmodels, setFilteredSubmodels] = useState<SubmodelOrIdReference[]>([]);
     const [breadcrumbLinks, setBreadcrumbLinks] = useState<BreadcrumbLink[]>([]);
     const [isBreadcrumbsLoading, setIsBreadcrumbsLoading] = useState(true);
-    const [catalogConfig, setCatalogConfig] = useState<MnestixConnection>();
+    const [manufacturerInfo, setManufacturerInfo] = useState<MnestixConnection>();
 
     const { aasFromContext, isLoadingAas, aasOriginUrl, submodels, isSubmodelsLoading } = useAasLoader(
         base64AasId,
@@ -120,7 +120,7 @@ export default function Page() {
                             label: manufacturerName.charAt(0).toUpperCase() + manufacturerName.slice(1),
                             path: `/marketplace/catalog?manufacturer=${encodeURIComponent(manufacturerName)}`,
                         });
-                        setCatalogConfig(manufacturerInfo);
+                        setManufacturerInfo(manufacturerInfo);
                     } else {
                         newBreadcrumbLinks.push({
                             label: t('manufacturerCatalog'),
@@ -195,7 +195,7 @@ export default function Page() {
                         displayName={
                             aasFromContext?.displayName ? getTranslationText(aasFromContext.displayName, locale) : null
                         }
-                        catalogConfig={catalogConfig}
+                        catalogConfig={manufacturerInfo}
                     />
                     <SubmodelsOverviewCard
                         submodelIds={filteredSubmodels}
