@@ -324,7 +324,11 @@
       },
       "summary": "Resumen",
       "title": "Producto",
-      "requestPrice": "Solicitar precio"
+      "commercialData": {
+        "requestPrice": "Solicitar precio",
+        "noProductUriAvailable": "No hay URI de producto disponible",
+        "orderButton": "Ordenar"
+      }
     },
     "registryList": {
       "errors": {
@@ -352,7 +356,7 @@
           "nameLabel": "Nombre",
           "imageUrlLabel": "URL de la imagen",
           "aasSearcherUrlLabel": "AAS Searcher URL",
-          "commercialDataUrlLabel": "Datos comerciales URL",
+          "commercialDataUrlLabel": "Datos comerciales Submodel URL",
           "notYetSupported": "No soportado todavía",
           "submodelRepositoryHint": "Actualmente, el repositorio de submodelos sólo puede configurarse a través de la siguiente sección.",
           "noDuplicatedNames": "No se permiten nombres duplicados"
