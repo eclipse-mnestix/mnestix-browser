@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { DataRow } from 'components/basics/DataRow';
 import {
     AssetAdministrationShell,
-    ISubmodelElement, Property,
+    ISubmodelElement,
+    Property,
     SubmodelElementCollection,
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
@@ -14,10 +15,7 @@ import { SubmodelOrIdReference, useAasState } from 'components/contexts/CurrentA
 import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
 import { useTranslations } from 'next-intl';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
-import {
-    findSubmodelByIdOrSemanticId,
-    findSubmodelElementByIdShort,
-} from 'lib/util/SubmodelResolverUtil';
+import { findSubmodelByIdOrSemanticId, findSubmodelElementByIdShort } from 'lib/util/SubmodelResolverUtil';
 import { MobileAccordion } from 'components/basics/detailViewBasics/MobileAccordion';
 import { KeyFactsBox } from 'app/[locale]/product/_components/KeyFactsBox';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
@@ -88,28 +86,28 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                 prepareNameplateData(nameplate.submodelElements);
             }
         }
-    }, [props.submodels]); 
-    
+    }, [props.submodels]);
+
     const prepareTechnicalDataSubmodel = (technicalDataSubmodelElements: Array<ISubmodelElement>) => {
         const manufacturerName = findValue(
             technicalDataSubmodelElements,
             'ManufacturerName',
-            SubmodelElementSemanticIdEnum.ManufacturerName
+            SubmodelElementSemanticIdEnum.ManufacturerName,
         );
         const manufacturerProductDesignation = findValue(
             technicalDataSubmodelElements,
             'ManufacturerProductDesignation',
-            SubmodelElementSemanticIdEnum.ManufacturerProductDesignation
+            SubmodelElementSemanticIdEnum.ManufacturerProductDesignation,
         );
         const manufacturerArticleNumber = findValue(
             technicalDataSubmodelElements,
             'ManufacturerArticleNumber',
-            SubmodelElementSemanticIdEnum.ManufacturerArticleNumber
+            SubmodelElementSemanticIdEnum.ManufacturerArticleNumber,
         );
         const manufacturerOrderCode = findValue(
             technicalDataSubmodelElements,
             'ManufacturerOrderCode',
-            SubmodelElementSemanticIdEnum.ManufacturerOrderCode
+            SubmodelElementSemanticIdEnum.ManufacturerOrderCode,
         );
         const manufacturerLogo = findSubmodelElementByIdShort(
             technicalDataSubmodelElements,
@@ -121,7 +119,8 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             'ProductClassifications',
             SubmodelElementSemanticIdEnum.ProductClassifications,
         ) as SubmodelElementCollection;
-        const classifications: ProductClassification[] = []; productClassifications?.value?.forEach((productClassification) => {
+        const classifications: ProductClassification[] = [];
+        productClassifications?.value?.forEach((productClassification) => {
             const submodelClassification = productClassification as SubmodelElementCollection;
             if (submodelClassification?.value) {
                 const classification = {
@@ -129,15 +128,19 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                         findValue(
                             submodelClassification.value,
                             'ProductClassificationSystem',
-                            SubmodelElementSemanticIdEnum.ProductClassificationSystem
+                            SubmodelElementSemanticIdEnum.ProductClassificationSystem,
                         ) || undefined,
                     ProductClassId:
                         findValue(
                             submodelClassification.value,
                             'ProductClassId',
-                            SubmodelElementSemanticIdEnum.ProductClassId
+                            SubmodelElementSemanticIdEnum.ProductClassId,
                         ) || undefined,
                 };
+                // Filter out classifications without a ProductClassId
+                if (!classification.ProductClassId) {
+                    return;
+                }
                 classifications.push(classification);
             }
         });
@@ -151,23 +154,23 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             markings: null,
             manufacturerLogo: manufacturerLogo,
         });
-    }; 
-    
+    };
+
     const prepareNameplateData = (nameplateSubmodelElements: Array<ISubmodelElement>) => {
         const manufacturerProductRoot = findValue(
             nameplateSubmodelElements,
             'ManufacturerProductRoot',
-            SubmodelElementSemanticIdEnum.ManufacturerProductRoot
+            SubmodelElementSemanticIdEnum.ManufacturerProductRoot,
         );
         const manufacturerProductFamily = findValue(
             nameplateSubmodelElements,
             'ManufacturerProductFamily',
-            SubmodelElementSemanticIdEnum.ManufacturerProductFamily
+            SubmodelElementSemanticIdEnum.ManufacturerProductFamily,
         );
         const manufacturerProductType = findValue(
             nameplateSubmodelElements,
             'ManufacturerProductType',
-            SubmodelElementSemanticIdEnum.ManufacturerProductType
+            SubmodelElementSemanticIdEnum.ManufacturerProductType,
         );
         const markingsElement = findSubmodelElementByIdShort(
             nameplateSubmodelElements,
@@ -182,44 +185,49 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             'CompanyLogo',
             SubmodelElementSemanticIdEnum.CompanyLogo,
         );
-        const URIOfTheProduct = findValue(
-            nameplateSubmodelElements,
-            'URIOfTheProducts',
-            [SubmodelElementSemanticIdEnum.URIOfTheProductV2, SubmodelElementSemanticIdEnum.URIOfTheProductV3]
-        );
+        const URIOfTheProduct = findValue(nameplateSubmodelElements, 'URIOfTheProducts', [
+            SubmodelElementSemanticIdEnum.URIOfTheProductV2,
+            SubmodelElementSemanticIdEnum.URIOfTheProductV3,
+        ]);
         const manufacturerName = findValue(
             nameplateSubmodelElements,
             'ManufacturerName',
-            SubmodelElementSemanticIdEnum.ManufacturerName
+            SubmodelElementSemanticIdEnum.ManufacturerName,
         );
         const manufacturerProductDesignation = findValue(
             nameplateSubmodelElements,
             'ManufacturerProductDesignation',
-            SubmodelElementSemanticIdEnum.ManufacturerProductDesignation
+            SubmodelElementSemanticIdEnum.ManufacturerProductDesignation,
         );
         const manufacturerArticleNumber = findValue(
             nameplateSubmodelElements,
             'ProductArticleNumberOfManufacturer',
-            SubmodelElementSemanticIdEnum.ManufacturerArticleNumber
+            SubmodelElementSemanticIdEnum.ManufacturerArticleNumber,
         );
         const manufacturerOrderCode = findValue(
             nameplateSubmodelElements,
             'OrderCodeOfManufacturer',
-            SubmodelElementSemanticIdEnum.ManufacturerOrderCode
+            SubmodelElementSemanticIdEnum.ManufacturerOrderCode,
         );
         setOverviewData((prevData) => ({
             ...prevData,
-            manufacturerName: prevData?.manufacturerName ? prevData.manufacturerName : manufacturerName ?? '-',
-            manufacturerProductDesignation: prevData?.manufacturerProductDesignation ? prevData.manufacturerProductDesignation : manufacturerProductDesignation ?? '-',
-            manufacturerArticleNumber: prevData?.manufacturerArticleNumber ? prevData.manufacturerArticleNumber : manufacturerArticleNumber ?? '-',
-            manufacturerOrderCode: prevData?.manufacturerOrderCode ? prevData.manufacturerOrderCode : manufacturerOrderCode ?? '-',
+            manufacturerName: prevData?.manufacturerName ? prevData.manufacturerName : (manufacturerName ?? '-'),
+            manufacturerProductDesignation: prevData?.manufacturerProductDesignation
+                ? prevData.manufacturerProductDesignation
+                : (manufacturerProductDesignation ?? '-'),
+            manufacturerArticleNumber: prevData?.manufacturerArticleNumber
+                ? prevData.manufacturerArticleNumber
+                : (manufacturerArticleNumber ?? '-'),
+            manufacturerOrderCode: prevData?.manufacturerOrderCode
+                ? prevData.manufacturerOrderCode
+                : (manufacturerOrderCode ?? '-'),
             manufacturerProductRoot: manufacturerProductRoot ?? '-',
             manufacturerProductFamily: manufacturerProductFamily ?? '-',
             manufacturerProductType: manufacturerProductType ?? '-',
             markings: markings,
             manufacturerLogo: prevData?.manufacturerLogo || null,
             companyLogo: companyLogo || null,
-            URIOfTheProduct:  URIOfTheProduct || null
+            URIOfTheProduct: URIOfTheProduct || null,
         }));
     };
 
@@ -313,6 +321,10 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
         </Box>
     );
 
+    const showKeyFactsBox =
+        (overviewData?.productClassifications && overviewData.productClassifications.length > 0) ||
+        (overviewData?.markings && overviewData.markings.length > 0);
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const classificationInfo = (
         <Box sx={infoBoxStyle} data-testid="asset-data">
@@ -364,12 +376,13 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                     <Skeleton width="100%" sx={{ mt: 1 }} />
                                 </Box>
                             ) : (
-                                <><Box>
-                                    <Skeleton width="90%" />
-                                    <Skeleton width="50%" />
-                                    <Skeleton width="75%" sx={{ mt: 2 }} />
-                                    <Skeleton width="50%" />
-                                </Box>
+                                <>
+                                    <Box>
+                                        <Skeleton width="90%" />
+                                        <Skeleton width="50%" />
+                                        <Skeleton width="75%" sx={{ mt: 2 }} />
+                                        <Skeleton width="50%" />
+                                    </Box>
                                     <Box>
                                         <Skeleton width="90%" />
                                         <Skeleton width="50%" />
@@ -389,28 +402,29 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                             size={300}
                         />
                         {isAccordion ? (
-                            <MobileAccordion
-                                content={productInfo}
-                                title={props.displayName || t('title')}
-                            />
+                            <MobileAccordion content={productInfo} title={props.displayName || t('title')} />
                         ) : (
                             <>
-                                <Box sx={{ 
-                                    width: 'calc(100% - 340px)',
-                                    display: 'flex', 
-                                    flexDirection: 'column',
-                                    overflow: 'hidden',
-                                    position: 'relative'
-                                }}>
-                                    <Box sx={{
+                                <Box
+                                    sx={{
+                                        width: 'calc(100% - 340px)',
                                         display: 'flex',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                        width: '100%'
-                                    }}>
-                                        <Typography 
-                                            variant="h3" 
-                                            sx={{ 
+                                        flexDirection: 'column',
+                                        overflow: 'hidden',
+                                        position: 'relative',
+                                    }}
+                                >
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                            width: '100%',
+                                        }}
+                                    >
+                                        <Typography
+                                            variant="h3"
+                                            sx={{
                                                 overflow: 'hidden',
                                                 textOverflow: 'ellipsis',
                                                 wordBreak: 'break-word',
@@ -418,7 +432,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                                 display: '-webkit-box',
                                                 WebkitLineClamp: 2,
                                                 WebkitBoxOrient: 'vertical',
-                                                maxWidth: 'calc(100% - 48px)'
+                                                maxWidth: 'calc(100% - 48px)',
                                             }}
                                         >
                                             {props.displayName || t('title')}
@@ -434,7 +448,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                                 </Tooltip>
                                             )}
                                         </Typography>
-                                        <ActionMenu 
+                                        <ActionMenu
                                             aas={props.aas}
                                             submodels={props.submodels}
                                             repositoryURL={props.repositoryURL}
@@ -445,7 +459,12 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                     <Box sx={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
                                         {productInfo}
                                         <Box margin={3} borderLeft="1px solid #e0e0e0" paddingLeft={3}>
-                                            <Button variant="outlined" onClick={() => setIsConstructionDialogOpen(true)}>{t('requestPrice')}</Button>
+                                            <Button
+                                                variant="outlined"
+                                                onClick={() => setIsConstructionDialogOpen(true)}
+                                            >
+                                                {t('requestPrice')}
+                                            </Button>
                                         </Box>
                                     </Box>
                                 </Box>
@@ -454,11 +473,13 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                     </>
                 )}
             </CardContent>
-            {overviewData?.productClassifications && overviewData.productClassifications.length > 0 && (
-                <KeyFactsBox productClassifications={overviewData.productClassifications} markings={overviewData.markings ?? []}/>
+            {showKeyFactsBox && (
+                <KeyFactsBox
+                    productClassifications={overviewData.productClassifications ?? []}
+                    markings={overviewData.markings ?? []}
+                />
             )}
             <ConstructionDialog open={isConstructionDialogOpen} onClose={() => setIsConstructionDialogOpen(false)} />
         </Card>
     );
 }
-

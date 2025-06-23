@@ -95,8 +95,8 @@ function buildFilterInput(filters?: FilterQuery[]): string {
 }
 
 export async function searchProducts(
-    filters?: FilterQuery[],
     aasSearcherUrl?: string,
+    filters?: FilterQuery[],
 ): Promise<ApiResponseWrapper<SearchResponseEntry[]>> {
     if (!aasSearcherUrl) {
         return wrapErrorCode('NOT_FOUND', 'No aasSearcher URL provided');

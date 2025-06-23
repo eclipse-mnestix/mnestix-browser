@@ -47,7 +47,7 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
 
     useAsyncEffect(async () => {
         setLoading(true);
-        const results = await searchProducts(undefined, props.aasSearcherUrl);
+        const results = await searchProducts(props.aasSearcherUrl);
 
         if (results.isSuccess) {
             const products = results.result;

@@ -94,7 +94,7 @@ export default function Page() {
 
     const loadData = async (aasSearcher?: string, filters?: { key: string; value: string }[]) => {
         setLoading(true);
-        const results = await searchProducts(filters, aasSearcher ?? undefined);
+        const results = await searchProducts(aasSearcher ?? undefined, filters);
 
         if (results.isSuccess) {
             const products = results.result;
