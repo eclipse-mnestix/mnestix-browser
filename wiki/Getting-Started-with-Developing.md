@@ -90,3 +90,5 @@ To check what other options exist to run the Mnestix Browser, see the yarn scrip
 - `yarn docker:prune` will stop all docker containers, remove them from the list and prune all volumes. Start with a
   blank slate :)
 - `yarn docker:keycloak` will setup a local keycloak instance and start Mnestix with keycloak support enabled
+- `yarn docker:rbac` will start Mnestix with dynamic RBAC support.
+- `yarn docker:proxy` will start Mnestix with a proxy configuration.
