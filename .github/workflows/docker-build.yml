@@ -2,7 +2,7 @@ name: CI and Docker Deploy
 
 on:
   push:
-    branches: ['main', 'dev', 'feat(configurable-catalog)']
+    branches: ['main', 'dev', '1.5.0-product-catalog']
     tags: ['v*.*.*']
     paths-ignore:
       - '.github/ISSUE_TEMPLATE/**'
@@ -290,4 +290,4 @@ jobs:
           target: production
           push: true
           tags: |
-            ${{ github.ref == 'refs/heads/feat(configurable-catalog)' && format('mnestix/{0}:{1}', env.IMAGE_NAME, env.IMAGE_TAG_PRODUCT_CATALOG) || '' }}
+            ${{ github.ref == 'refs/heads/1.5.0-product-catalog' && format('mnestix/{0}:{1}', env.IMAGE_NAME, env.IMAGE_TAG_PRODUCT_CATALOG) || '' }}
