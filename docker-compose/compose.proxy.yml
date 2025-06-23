@@ -1,0 +1,43 @@
+services:
+  mnestix-proxy:
+    image: mnestix-proxy:0.0.1
+    container_name: mnestix-proxy
+    ports:
+      - 5065:5065
+    environment:
+      # API key authorization
+      CustomerEndpointsSecurity__ApiKey: ${MNESTIX_BACKEND_API_KEY:-verySecureApiKey}
+      # Connection to Repository Service:
+      ReverseProxy__Clusters__mnestixApiCluster__Destinations__destination1__Address: 'http://mnestix-api:5064/'
+      ReverseProxy__Clusters__aasRepoCluster__Destinations__destination1__Address: 'http://aas-environment:8081/'
+      ReverseProxy__Clusters__submodelRepoCluster__Destinations__destination1__Address: 'http://aas-environment:8081/'
+      ReverseProxy__Clusters__discoveryCluster__Destinations__destination1__Address: 'http://aas-discovery:8081/'
+      # InfluxDB Configuration
+      # URL to specify the host and port where InfluxDB is running:
+      ReverseProxy__Clusters__influxCluster__Destinations__destination1__Address: 'http://example/'
+      # Token:
+      ReverseProxy__Routes__InfluxRoute__Transforms__1__Set: 'Token '
+      # ASP.NET Core URLs
+      ASPNETCORE_URLS: 'http://+:5065'
+    networks:
+      - mnestix-network
+
+  mnestix-browser:
+    container_name: mnestix-browser
+    image: mnestix/mnestix-browser:1.5.0 #Works only with the 2.0.0 (new release) version of the backend
+    #Test with mnestix/mnestix-browser:1.5.0 until 2.0 is fully released and available
+    profiles: ['', 'frontend', 'tests']
+    environment:
+      DISCOVERY_API_URL: 'http://mnestix-proxy:5065/discovery'
+      AAS_REPO_API_URL: 'http://mnestix-proxy:5065/repo'
+      SUBMODEL_REPO_API_URL: 'http://mnestix-proxy:5065/repo'
+      CONCEPT_DESCRIPTION_REPO_API_URL: 'http://mnestix-proxy:5065/repo'
+      MNESTIX_BACKEND_API_URL: 'http://mnestix-proxy:5065'
+
+  mnestix-api:
+    image: mnestix/mnestix-api:dev
+    container_name: mnestix-api
+    profiles: ['', 'backend', 'tests']
+    environment:
+      # ServerUrls
+      ServerUrls: 'http://mnestix-proxy:5065/repo/'

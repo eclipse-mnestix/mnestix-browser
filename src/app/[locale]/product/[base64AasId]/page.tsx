@@ -129,6 +129,7 @@ export default function Page() {
                         }
                     />
                     <SubmodelsOverviewCard
+                        aas={aasFromContext}
                         submodelIds={filteredSubmodels}
                         submodelsLoading={isSubmodelsLoading}
                         firstSubmodelIdShort="TechnicalData"

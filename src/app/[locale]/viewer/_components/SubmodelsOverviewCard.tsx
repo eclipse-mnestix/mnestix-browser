@@ -11,8 +11,10 @@ import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import ErrorBoundary from 'components/basics/ErrorBoundary';
 import { useTranslations } from 'next-intl';
 import { SubmodelInfoDialog } from 'app/[locale]/viewer/_components/submodel/SubmodelInfoDialog';
+import { AssetAdministrationShell } from '@aas-core-works/aas-core3.0-typescript/types';
 
 export type SubmodelsOverviewCardProps = {
+    readonly aas: AssetAdministrationShell | null;
     readonly submodelIds: SubmodelOrIdReference[] | undefined;
     readonly submodelsLoading?: boolean;
     readonly firstSubmodelIdShort?: string;
@@ -20,6 +22,7 @@ export type SubmodelsOverviewCardProps = {
 };
 
 export function SubmodelsOverviewCard({
+    aas,
     submodelIds,
     submodelsLoading,
     firstSubmodelIdShort,
@@ -81,6 +84,19 @@ export function SubmodelsOverviewCard({
         }
     }, [isMobile, submodelSelectorItems]);
 
+    const SubmodelDetailsSkeleton = (
+        <Box sx={{ mb: 2 }}>
+            <Skeleton variant="text" width="50%" />
+            <Skeleton variant="text" width="30%" />
+            <Divider sx={{ mt: 2 }} />
+            <Skeleton variant="text" width="50%" />
+            <Skeleton variant="text" width="30%" />
+            <Divider sx={{ mt: 2 }} />
+            <Skeleton variant="text" width="50%" />
+            <Skeleton variant="text" width="30%" />
+        </Box>
+    );
+
     const SelectedContent = useMemo(() => {
         if (selectedItem?.submodelData && !submodelsLoading) {
             return (
@@ -89,18 +105,7 @@ export function SubmodelsOverviewCard({
                 </ErrorBoundary>
             );
         } else if (submodelsLoading) {
-            return (
-                <Box sx={{ mb: 2 }}>
-                    <Skeleton variant="text" width="50%" />
-                    <Skeleton variant="text" width="30%" />
-                    <Divider sx={{ mt: 2 }} />
-                    <Skeleton variant="text" width="50%" />
-                    <Skeleton variant="text" width="30%" />
-                    <Divider sx={{ mt: 2 }} />
-                    <Skeleton variant="text" width="50%" />
-                    <Skeleton variant="text" width="30%" />
-                </Box>
-            );
+            return SubmodelDetailsSkeleton;
         }
         return null;
     }, [selectedItem, submodelsLoading, t]);
@@ -114,7 +119,15 @@ export function SubmodelsOverviewCard({
                             {t('title')}
                         </Typography>
                     )}
-                    {getSubmodelTabs().length == 0 ? (
+                    {!aas && ( // workaround for faster loading skeletons when the aas is not yet loaded
+                        <Box display="grid" gridTemplateColumns={isMobile ? '1fr' : '1fr 2fr'} gap="2rem">
+                            <Box>
+                                <Skeleton height={70} sx={{ mb: 2 }} data-testid="submodelOverviewLoadingSkeleton" />
+                            </Box>
+                            {!isMobile && SubmodelDetailsSkeleton}
+                        </Box>
+                    )}
+                    {aas && !aas?.submodels?.length ? (
                         // Content if there are no submodels to load
                         <Box display="flex" justifyContent="center" alignItems="center" height="100%">
                             <Typography variant={'body1'} color="text.secondary">

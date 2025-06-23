@@ -7,8 +7,8 @@ export class ConfigurationShellApi implements IConfigurationShellApi {
     private constructor(
         protected baseUrl: string,
         protected use_authentication: boolean,
-        protected http: { 
-            fetch<T>(url: RequestInfo, init?: RequestInit): Promise<ApiResponseWrapper<T>> 
+        protected http: {
+            fetch<T>(url: RequestInfo, init?: RequestInit): Promise<ApiResponseWrapper<T>>;
         },
     ) {}
 
@@ -26,7 +26,7 @@ export class ConfigurationShellApi implements IConfigurationShellApi {
     }
 
     async getIdGenerationSettings(): Promise<ApiResponseWrapper<Submodel>> {
-        let url = this.baseUrl + '/configuration/idGeneration';
+        let url = this.baseUrl + '/api/configuration';
         url = url.replace(/[?&]$/, '');
 
         const options: RequestInit = {
@@ -45,27 +45,28 @@ export class ConfigurationShellApi implements IConfigurationShellApi {
             prefix: string;
             dynamicPart: string;
         },
-    ) : Promise<ApiResponseWrapper<void>> {
+    ): Promise<ApiResponseWrapper<void>> {
         // DANGER DANGER
         // THIS IS JUST A TEMPORARY FIX TILL BASYX FIXES THE PATCH CALL TO NOT GIVE 404 WHEN THERE IS NO CHANGE
         // BUG IS IN BASYX 2.0.0-milestone5
         // DANGER DANGER
-        let response = await this.putSingleSettingValue(`${idShort}.Prefix`, values.prefix, 'idGeneration');
-        if (!response.isSuccess && response.errorCode != ApiResultStatus.NOT_FOUND) { return wrapErrorCode(response.errorCode, response.message); }
-        response = await this.putSingleSettingValue(`${idShort}.DynamicPart`, values.dynamicPart, 'idGeneration');
-        if (!response.isSuccess && response.errorCode != ApiResultStatus.NOT_FOUND) { return wrapErrorCode(response.errorCode, response.message); }
-        
+        let response = await this.putSingleSettingValue(`${idShort}.Prefix`, values.prefix);
+        if (!response.isSuccess && response.errorCode != ApiResultStatus.NOT_FOUND) {
+            return wrapErrorCode(response.errorCode, response.message);
+        }
+        response = await this.putSingleSettingValue(`${idShort}.DynamicPart`, values.dynamicPart);
+        if (!response.isSuccess && response.errorCode != ApiResultStatus.NOT_FOUND) {
+            return wrapErrorCode(response.errorCode, response.message);
+        }
+
         return wrapSuccess(response.result);
     }
 
-    async putSingleSettingValue(path: string, value: string, settingsType: string): Promise<ApiResponseWrapper<void>> {
-        let url = `${this.baseUrl}/configuration/${settingsType}/submodel-elements/${path}/$value`;
+    async putSingleSettingValue(path: string, value: string): Promise<ApiResponseWrapper<void>> {
+        let url = `${this.baseUrl}/api/configuration?idShortPath=${path}&value=${value}`;
         url = url.replace(/[?&]$/, '');
 
-        const content = JSON.stringify(value);
-
         const options: RequestInit = {
-            body: content,
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
