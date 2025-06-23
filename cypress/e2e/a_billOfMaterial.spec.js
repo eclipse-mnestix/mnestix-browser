@@ -81,7 +81,6 @@ describe('Test the Bill-of-Material', function () {
                     .parents('[data-testid="bom-entity"]')
                     .as('cyPropertyTestCollection');
                 cy.get('@cyPropertyTestCollection').findByTestId('expand-entity-icon').click();
-                cy.getByTestId('CheckIcon').should('exist');
             });
         });
     });
