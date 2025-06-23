@@ -168,11 +168,11 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             });
         }
         setOverviewData({
-            manufacturerName: manufacturerName ?? '-',
-            manufacturerProductDesignation: manufacturerProductDesignation ?? '-',
+            manufacturerName: manufacturerName ?? undefined,
+            manufacturerProductDesignation: manufacturerProductDesignation ?? undefined,
             productClassifications: classifications,
-            manufacturerArticleNumber: manufacturerArticleNumber ?? '-',
-            manufacturerOrderCode: manufacturerOrderCode ?? '-',
+            manufacturerArticleNumber: manufacturerArticleNumber ?? undefined,
+            manufacturerOrderCode: manufacturerOrderCode ?? undefined,
             companyLogo: null,
             markings: null,
             manufacturerLogo: manufacturerLogo,
