@@ -265,7 +265,7 @@
       "filter": "Filtro",
       "noSearcherWarning": "No se ha configurado el buscador AAS - Se muestra la lista AAS",
       "eclassDocumentationLink": "Abrir en la documentación de ECLASS",
-      "searchPlaceholder": "Búsqueda no disponible actualmente..."
+      "searchPlaceholder": "Buscar productos..."
     },
     "compare": {
       "addAnother": "Añadir otro AAS",
