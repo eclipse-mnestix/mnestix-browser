@@ -6,12 +6,15 @@ import { FilterQuery } from 'app/[locale]/marketplace/catalog/_components/Filter
 interface ProductDesignation {
     name: string;
     value: boolean;
+    rootName?: string;
+    familyName?: string;
 }
 
 interface ProductFamily {
     name: string;
     value: boolean;
     ProductDesignations: ProductDesignation[];
+    rootName?: string;
 }
 
 interface ProductRoot {
@@ -41,11 +44,21 @@ export function ProductCategoryFilter(props: {
             }
             category.ProductRoot.ProductFamilies.forEach((family) => {
                 if (family.value) {
-                    selected.push({ key: 'PRODUCT_FAMILY', value: family.name });
+                    selected.push({
+                        key: 'PRODUCT_FAMILY',
+                        value: { root: category.ProductRoot.name, family: family.name },
+                    });
                 }
                 family.ProductDesignations.forEach((designation) => {
                     if (designation.value) {
-                        selected.push({ key: 'PRODUCT_DESIGNATION', value: designation.name });
+                        selected.push({
+                            key: 'PRODUCT_DESIGNATION',
+                            value: {
+                                root: category.ProductRoot.name,
+                                family: family.name,
+                                designation: designation.name,
+                            },
+                        });
                     }
                 });
             });

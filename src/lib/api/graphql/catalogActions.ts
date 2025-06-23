@@ -28,7 +28,9 @@ function buildFilterInput(filters?: FilterQuery[]): string {
             if (!genericFilterMap.has(filter.key)) {
                 genericFilterMap.set(filter.key, []);
             }
-            genericFilterMap.get(filter.key)?.push(filter.value.trim());
+            if (typeof filter.value === 'string') {
+                genericFilterMap.get(filter.key)?.push(filter.value.trim());
+            }
         }
     });
 
@@ -44,7 +46,10 @@ function buildFilterInput(filters?: FilterQuery[]): string {
     if (eclassFilter.length > 0) {
         productClassificationFilters.push(`{
             system: { eq: "ECLASS" }
-            productId: { in: [${eclassFilter.map((filter) => `"${filter.value.trim()}"`).join(',')}] }
+            productId: { in: [${eclassFilter
+                .map((filter) => (typeof filter.value === 'string' ? `"${filter.value.trim()}"` : ''))
+                .filter((val) => val !== '')
+                .join(',')}] }
         }`);
     }
 
@@ -70,10 +75,13 @@ function buildFilterInput(filters?: FilterQuery[]): string {
     const productRootFilter = filters.filter((filter) => filter.key === FilterKey.PRODUCT_ROOT);
     if (productRootFilter) {
         filterArray.push(`
-            {productRoot: { mlValues: {some: { text: { in: [${productRootFilter.map((filter) => `"${filter.value.trim()}"`).join(',')}] }}}}}
+            {productRoot: { mlValues: {some: { text: { in: [${productRootFilter
+                .map((filter) => (typeof filter.value === 'string' ? `"${filter.value.trim()}"` : ''))
+                .filter((val) => val !== '')
+                .join(',')}] }}}}}
         `);
     }
-
+    /*
     const productFamilyFilter = filters.filter((filter) => filter.key === FilterKey.PRODUCT_FAMILY);
     if (productFamilyFilter) {
         filterArray.push(`
@@ -87,7 +95,7 @@ function buildFilterInput(filters?: FilterQuery[]): string {
             {productDesignation: { mlValues: {some: { text: { in: [${productDesignationFilter.map((filter) => `"${filter.value.trim()}"`).join(',')}] }}}}}
         `);
     }
-
+    */
     if (filterArray.length === 0) {
         return '';
     }
@@ -102,6 +110,7 @@ export async function searchProducts(
         return wrapErrorCode('NOT_FOUND', 'No aasSearcher URL provided');
     }
     const queryString = searchQuery(buildFilterInput(filters));
+    console.log('GraphQL Query:', queryString);
     const query = gql(queryString);
     try {
         const client = createApolloClient(aasSearcherUrl);
