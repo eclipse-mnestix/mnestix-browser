@@ -188,7 +188,6 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
     }
 
     function applyFilter(reset = false) {
-        console.log(activeFilters);
         if (reset) {
             setActiveFilters([]);
             props.onFilterChanged([]);

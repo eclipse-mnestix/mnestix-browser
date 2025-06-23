@@ -75,8 +75,17 @@ export function ProductCategoryFilter(props: {
         prevFilters: ProductCategory[],
         node: ProductRoot | ProductFamily | ProductDesignation,
         isChecked: boolean,
+        rootName?: string,
     ) {
         return prevFilters.map((category) => {
+            // By default, all categories retain their previous state.
+            // If a family or designation name matches in the root name,
+            // it is marked as checked accordingly.
+            // Therefore, we verify if the selected family or designation name matches the root name being checked.
+            if (rootName !== undefined && category.ProductRoot.name !== rootName) {
+                return category;
+            }
+
             const isRootNode = category.ProductRoot.name === node.name;
             const updatedRoot = { ...category.ProductRoot };
 
@@ -127,15 +136,18 @@ export function ProductCategoryFilter(props: {
                     ProductFamilies: updatedFamilies,
                 },
             };
-            console.log(categories);
 
             return categories;
         });
     }
 
-    function updateCheckboxState(node: ProductRoot | ProductFamily | ProductDesignation, isChecked: boolean) {
+    function updateCheckboxState(
+        node: ProductRoot | ProductFamily | ProductDesignation,
+        isChecked: boolean,
+        rootName?: string,
+    ) {
         setFilters((prevFilters) => {
-            const updatedFilters = updateActiveFilters(prevFilters, node, isChecked);
+            const updatedFilters = updateActiveFilters(prevFilters, node, isChecked, rootName);
             return updatedFilters;
         });
     }
@@ -191,7 +203,11 @@ export function ProductCategoryFilter(props: {
                                                         onClick={(event) => event.stopPropagation()}
                                                         checked={productFamily.value}
                                                         onChange={(event) =>
-                                                            updateCheckboxState(productFamily, event.target.checked)
+                                                            updateCheckboxState(
+                                                                productFamily,
+                                                                event.target.checked,
+                                                                productCategory.ProductRoot.name,
+                                                            )
                                                         }
                                                         sx={{ padding: '4px' }}
                                                     />
@@ -214,6 +230,7 @@ export function ProductCategoryFilter(props: {
                                                             updateCheckboxState(
                                                                 productDesignation,
                                                                 event.target.checked,
+                                                                productCategory.ProductRoot.name,
                                                             )
                                                         }
                                                         sx={{ padding: '6px' }}

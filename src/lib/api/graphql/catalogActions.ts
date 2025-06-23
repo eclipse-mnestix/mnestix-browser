@@ -102,7 +102,6 @@ export async function searchProducts(
         return wrapErrorCode('NOT_FOUND', 'No aasSearcher URL provided');
     }
     const queryString = searchQuery(buildFilterInput(filters));
-    console.log(queryString);
     const query = gql(queryString);
     try {
         const client = createApolloClient(aasSearcherUrl);
