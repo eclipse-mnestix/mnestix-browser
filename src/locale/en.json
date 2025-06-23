@@ -261,10 +261,11 @@
       "marketplaceTitle": "VWS4LS - Marketplace",
       "marketplaceSubtitle": "Asset Administration Shell for Wire Harness",
       "articleCount": "{count, plural, =1 {# article} other {# articles}}",
+      "articleCountUnavailable": "Filtering not configured",
       "filter": "Filter",
       "noSearcherWarning": "No AAS Searcher Configured. Showing AAS List as Fallback, filters won't work.",
       "eclassDocumentationLink": "Open in ECLASS documentation",
-      "searchPlaceholder": "Search currently unavailable..."
+      "searchPlaceholder": "Search products..."
     },
     "compare": {
       "addAnother": "Add another AAS",
@@ -323,7 +324,11 @@
       },
       "summary": "Key facts",
       "title": "Product",
-      "requestPrice": "Request price"
+      "commercialData": {
+        "requestPrice": "Request price",
+        "noProductUriAvailable": "No product URI available",
+        "orderButton": "Order"
+      }
     },
     "registryList": {
       "errors": {
@@ -351,7 +356,7 @@
           "nameLabel": "Name",
           "imageUrlLabel": "Image URL",
           "aasSearcherUrlLabel": "AAS Searcher URL",
-          "commercialDataUrlLabel": "Commercial Data URL",
+          "commercialDataUrlLabel": "Commercial Data Submodel URL",
           "notYetSupported": "This functionality is not yet supported",
           "submodelRepositoryHint": "Submodel Repository can currently only be set via the separate section below.",
           "noDuplicatedNames": "AAS repository names must be unique."

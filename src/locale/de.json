@@ -261,10 +261,11 @@
       "marketplaceTitle": "VWS4LS - Marketplace",
       "marketplaceSubtitle": "Verwaltungsschale für den Leitungssatz",
       "articleCount": "{count, plural, =1 {# Artikel} other {# Artikel}}",
+      "articleCountUnavailable": "Filterung nicht konfiguriert",
       "filter": "Filter",
       "noSearcherWarning": "Kein AAS Searcher konfiguriert. AAS Liste wird angezeigt, Filterung ist nicht möglich.",
       "eclassDocumentationLink": "In ECLASS Dokumentation nachlesen",
-      "searchPlaceholder": "Suche aktuell nicht verfügbar..."
+      "searchPlaceholder": "Produkte suchen..."
     },
     "compare": {
       "addAnother": "Eine weitere AAS hinzufügen",
@@ -323,7 +324,11 @@
       },
       "summary": "Das Wichtigste in Kürze",
       "title": "Produkt",
-      "requestPrice": "Preis anfragen"
+      "commercialData": {
+        "requestPrice": "Preis anfragen",
+        "noProductUriAvailable": "Keine Produkt-URI verfügbar.",
+        "orderButton": "Bestellen"
+      }
     },
     "registryList": {
       "errors": {
@@ -351,7 +356,7 @@
           "nameLabel": "Name",
           "imageUrlLabel": "Bild URL",
           "aasSearcherUrlLabel": "AAS Searcher URL",
-          "commercialDataUrlLabel": "Kommerzielle Daten URL",
+          "commercialDataUrlLabel": "Kommerzielle Daten Submodel URL",
           "notYetSupported": "Diese Funktion ist noch nicht verfügbar.",
           "submodelRepositoryHint": "Submodel Repository kann aktuell nur über den separaten Abschnitt unten gesetzt werden.",
           "noDuplicatedNames": "Es dürfen keine zwei Repositorys mit dem gleichen Namen existieren."

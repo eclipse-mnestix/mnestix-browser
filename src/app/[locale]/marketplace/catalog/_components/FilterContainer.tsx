@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import { EClassFilter } from 'app/[locale]/marketplace/catalog/_components/EClassFilter';
 import { ProductCategoryFilter } from 'app/[locale]/marketplace/catalog/_components/ProductCategoryFilter';
 import { useState } from 'react';
-import { VecFilter } from 'app/[locale]/marketplace/catalog/_components/VecFilter';
+import { GenericClassificationFilter } from 'app/[locale]/marketplace/catalog/_components/GenericClassificationFilter';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { searchProducts } from 'lib/api/graphql/catalogActions';
@@ -31,7 +31,7 @@ type ProductRoot = {
 
 type FilterOptions = {
     ECLASS: Set<string>;
-    VEC: Set<string>;
+    GENERIC: Record<string, Set<string>>;
     PRODUCT_ROOT: ProductRoot[];
 };
 
@@ -47,12 +47,12 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
 
     useAsyncEffect(async () => {
         setLoading(true);
-        const results = await searchProducts(undefined, props.aasSearcherUrl);
+        const results = await searchProducts(props.aasSearcherUrl);
 
         if (results.isSuccess) {
             const products = results.result;
             const eclassSet = new Set<string>();
-            const vecSet = new Set<string>();
+            const genericSet: Record<string, Set<string>> = {};
             const productRoot: ProductRoot[] = [];
 
             products.forEach((product) => {
@@ -60,8 +60,11 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                     if (classification.system === 'ECLASS' && classification.productId) {
                         eclassSet.add(classification.productId);
                     }
-                    if (classification.system === 'VEC' && classification.productId) {
-                        vecSet.add(classification.productId);
+                    if (classification.system !== 'ECLASS' && classification.productId) {
+                        if (!genericSet[classification.system]) {
+                            genericSet[classification.system] = new Set<string>();
+                        }
+                        genericSet[classification.system].add(classification.productId);
                     }
                 });
             });
@@ -114,7 +117,7 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
 
             setFilterOptions({
                 ECLASS: eclassSet,
-                VEC: vecSet,
+                GENERIC: genericSet,
                 PRODUCT_ROOT: productRoot,
             });
             // Initialize active filters with ECLASS and VEC options
@@ -137,7 +140,11 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
             },
         })).sort((a, b) => a.ProductRoot.name.localeCompare(b.ProductRoot.name)) ?? [];
     const eClassFilters = filterOptions?.ECLASS ? Array.from(filterOptions.ECLASS) : [];
-    const VECFilters = filterOptions?.VEC ? Array.from(filterOptions.VEC) : [];
+    const GenericFilters = filterOptions?.GENERIC
+        ? Object.fromEntries(
+              Object.entries(filterOptions?.GENERIC).map(([key, valueSet]) => [key, Array.from(valueSet)]),
+          )
+        : {};
 
     // process productCategoryFilters to match the expected structure
     function addBooleanValues<T extends { name: string }>(item: T): T & { value: boolean } {
@@ -228,19 +235,23 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                             resetFilters={resetTrigger}
                         />
                     )}
-                    {VECFilters.length > 0 && (
-                        <VecFilter
-                            vecFilters={VECFilters}
-                            defaultOpen={true}
-                            onFilterChanged={(values) =>
-                                onFilterChangedByCategory(
-                                    'VEC',
-                                    values.map((f) => f.value),
-                                )
-                            }
-                            resetFilters={resetTrigger}
-                        />
-                    )}
+                    {GenericFilters &&
+                        Object.keys(GenericFilters).length > 0 &&
+                        Object.entries(GenericFilters).map(([key, values]) => (
+                            <GenericClassificationFilter
+                                key={key}
+                                filterSystem={key}
+                                filters={values}
+                                onFilterChanged={(values) =>
+                                    onFilterChangedByCategory(
+                                        key,
+                                        values.map((f) => f.value),
+                                    )
+                                }
+                                resetFilters={resetTrigger}
+                                defaultOpen={true}
+                            />
+                        ))}
                     <ProductCategoryFilter
                         productCategoryFilters={transformProductCategories(productCategoryFilters)}
                         onFilterChanged={(values) => onFilterClassificationChangedCategory(values)}

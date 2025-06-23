@@ -18,6 +18,10 @@ FROM deps AS builder
 WORKDIR /app
 COPY . .
 
+# Generate a build timestamp with seconds and set it as an image variable
+RUN echo '' >> .env && \
+    printf 'BUILD_DATETIME="%s"\n' "$(date +'%Y-%m-%dT%H:%M:%SZ')" >> .env
+
 # Run initial database setup: apply migrations and generate Prisma client
 RUN yarn prisma migrate deploy
 RUN yarn prisma generate
