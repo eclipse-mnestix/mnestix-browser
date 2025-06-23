@@ -145,7 +145,11 @@ export function RoleAccordion({
                 )}
                 <TableCell sx={{ width: '2rem', textAlign: 'center' }} data-testid="rulesettings-header-empty">
                     <Box>
-                        <Button variant="contained" onClick={() => openCreateDialog(roleName)}>
+                        <Button
+                            variant="contained"
+                            onClick={() => openCreateDialog(roleName)}
+                            aria-label={t('buttons.create')}
+                        >
                             <AddIcon />
                         </Button>
                     </Box>
