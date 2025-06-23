@@ -81,6 +81,17 @@ describe('Test the Bill-of-Material', function () {
                     .parents('[data-testid="bom-entity"]')
                     .as('cyPropertyTestCollection');
                 cy.get('@cyPropertyTestCollection').findByTestId('expand-entity-icon').click();
+
+                cy.getByTestId('bom-entity')
+                    .contains(testdata.booleanTest)
+                    .parents('[data-testid="bom-entity"]')
+                    .as('cyBooleanTest');
+
+                cy.get('@cyBooleanTest').should('exist');
+                cy.get('@cyBooleanTest')
+                    .findByTestId('property-content')
+                    .find('svg')
+                    .should('have.attr', 'aria-label', 'True');
             });
         });
     });
