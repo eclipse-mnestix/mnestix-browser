@@ -121,30 +121,52 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             SubmodelElementSemanticIdEnum.ProductClassifications,
         ) as SubmodelElementCollection;
         const classifications: ProductClassification[] = [];
-        productClassifications?.value?.forEach((productClassification) => {
-            const submodelClassification = productClassification as SubmodelElementCollection;
-            if (submodelClassification?.value) {
-                const classification = {
-                    ProductClassificationSystem:
-                        findValue(
-                            submodelClassification.value,
-                            'ProductClassificationSystem',
-                            SubmodelElementSemanticIdEnum.ProductClassificationSystem,
-                        ) || undefined,
-                    ProductClassId:
-                        findValue(
-                            submodelClassification.value,
-                            'ProductClassId',
-                            SubmodelElementSemanticIdEnum.ProductClassId,
-                        ) || undefined,
-                };
-                // Filter out classifications without a ProductClassId
-                if (!classification.ProductClassId) {
-                    return;
+
+        // If ProductClassifications is a flat list, we can directly use it
+        // This is not standard conform but we support it for now.
+        if (productClassifications?.value && productClassifications.value.find(element => element.idShort === 'ProductClassificationSystem')) {
+            const classification = {
+                ProductClassificationSystem:
+                    findValue(
+                        productClassifications.value,
+                        'ProductClassificationSystem',
+                        SubmodelElementSemanticIdEnum.ProductClassificationSystem,
+                    ) || undefined,
+                ProductClassId:
+                    findValue(
+                        productClassifications.value,
+                        'ProductClassId',
+                        SubmodelElementSemanticIdEnum.ProductClassId,
+                    ) || undefined,
+            };
+            classifications.push(classification);
+        } else {
+            productClassifications?.value?.forEach((productClassification) => {
+                const submodelClassification = productClassification as SubmodelElementCollection;
+                console.log(submodelClassification);
+                if (submodelClassification?.value) {
+                    const classification = {
+                        ProductClassificationSystem:
+                            findValue(
+                                submodelClassification.value,
+                                'ProductClassificationSystem',
+                                SubmodelElementSemanticIdEnum.ProductClassificationSystem,
+                            ) || undefined,
+                        ProductClassId:
+                            findValue(
+                                submodelClassification.value,
+                                'ProductClassId',
+                                SubmodelElementSemanticIdEnum.ProductClassId,
+                            ) || undefined,
+                    };
+                    // Filter out classifications without a ProductClassId
+                    if (!classification.ProductClassId) {
+                        return;
+                    }
+                    classifications.push(classification);
                 }
-                classifications.push(classification);
-            }
-        });
+            });
+        }
         setOverviewData({
             manufacturerName: manufacturerName ?? '-',
             manufacturerProductDesignation: manufacturerProductDesignation ?? '-',
