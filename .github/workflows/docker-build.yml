@@ -90,6 +90,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Wait for cache availability
+        run: sleep 5
+
       - name: Restore image
         uses: actions/cache/restore@v4
         with:
