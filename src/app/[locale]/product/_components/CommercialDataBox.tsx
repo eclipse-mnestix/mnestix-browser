@@ -99,11 +99,14 @@ export const CommercialDataBox = (props: {
             ) : (
                 <Box margin={3} borderLeft="1px solid #e0e0e0" paddingLeft={3} minWidth="120px">
                     {(priceInfo.grossPrice || priceInfo.productPrice) &&
-                    priceInfo.currency &&
-                    priceInfo.priceType !== 'on_request' ? (
+                        priceInfo.currency &&
+                        priceInfo.priceType !== 'on_request' ? (
                         <Box>
-                            <Typography variant="h3" mb={3}>
+                            <Typography variant="h3">
                                 {priceInfo.grossPrice || priceInfo.productPrice} {priceInfo.currency}
+                            </Typography>
+                            <Typography variant="h4" color="text.secondary" mb={3}>
+                                {t('commercialData.perItem')}
                             </Typography>
                             <Button
                                 variant="outlined"

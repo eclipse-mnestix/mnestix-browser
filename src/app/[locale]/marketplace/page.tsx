@@ -42,7 +42,7 @@ export default function Page() {
     }, []);
 
     return (
-        <Box display="flex" flexDirection="column" minHeight="100vh" bgcolor={theme.palette.background.default}>
+        <Box display="flex" flexDirection="column" minHeight="85vh" bgcolor={theme.palette.background.default}>
             <Box width="90%" margin="auto" marginTop="1rem">
                 <Box marginBottom="1em">
                     <Breadcrumbs links={breadcrumbLinks} />
