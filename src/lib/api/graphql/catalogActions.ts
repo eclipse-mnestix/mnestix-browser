@@ -28,7 +28,9 @@ function buildFilterInput(filters?: FilterQuery[]): string {
             if (!genericFilterMap.has(filter.key)) {
                 genericFilterMap.set(filter.key, []);
             }
-            genericFilterMap.get(filter.key)?.push(filter.value.trim());
+            if (typeof filter.value === 'string') {
+                genericFilterMap.get(filter.key)?.push(filter.value.trim());
+            }
         }
     });
 
@@ -44,7 +46,10 @@ function buildFilterInput(filters?: FilterQuery[]): string {
     if (eclassFilter.length > 0) {
         productClassificationFilters.push(`{
             system: { eq: "ECLASS" }
-            productId: { in: [${eclassFilter.map((filter) => `"${filter.value.trim()}"`).join(',')}] }
+            productId: { in: [${eclassFilter
+                .map((filter) => (typeof filter.value === 'string' ? `"${filter.value.trim()}"` : ''))
+                .filter((val) => val !== '')
+                .join(',')}] }
         }`);
     }
 
@@ -68,30 +73,65 @@ function buildFilterInput(filters?: FilterQuery[]): string {
 
     // ProductClassification filters:
     const productRootFilter = filters.filter((filter) => filter.key === FilterKey.PRODUCT_ROOT);
-    if (productRootFilter) {
+    if (productRootFilter.length > 0) {
         filterArray.push(`
-            {productRoot: { mlValues: {some: { text: { in: [${productRootFilter.map((filter) => `"${filter.value.trim()}"`).join(',')}] }}}}}
-        `);
+        {productRoot: { mlValues: {some: { text: { in: [${productRootFilter
+            .map((filter) => (typeof filter.value === 'string' ? `"${filter.value.trim()}"` : ''))
+            .filter((val) => val !== '')
+            .join(',')}] }}}}}
+    `);
     }
 
-    const productFamilyFilter = filters.filter((filter) => filter.key === FilterKey.PRODUCT_FAMILY);
-    if (productFamilyFilter) {
-        filterArray.push(`
-            {productFamily: { mlValues: {some: { text: { in: [${productFamilyFilter.map((filter) => `"${filter.value.trim()}"`).join(',')}] }}}}}
-        `);
+    // ProductFamily together with its ProductRoot, combined by AND
+    const productFamilyFilters = filters.filter((filter) => filter.key === FilterKey.PRODUCT_FAMILY);
+    if (productFamilyFilters.length > 0) {
+        const andBlocks = productFamilyFilters.map((filter) => {
+            if (typeof filter.value === 'object' && filter.value.family && filter.value.root) {
+                return `
+                    {
+                        and: [
+                            { productRoot: { mlValues: { some: { text: { in: ["${filter.value.root.trim()}"] }}}}},
+                            { productFamily: { mlValues: { some: { text: { in: ["${filter.value.family.trim()}"] }}}}}
+                        ]
+                    }
+                `;
+            }
+            return '';
+        }).filter(Boolean);
+
+        if (andBlocks.length > 0) {
+            filterArray.push(`{ or: [${andBlocks.join(',')}] }`);
+        }
     }
 
+    // ProductDesignation together with its ProductFamily and ProductRoot, combined by AND
     const productDesignationFilter = filters.filter((filter) => filter.key === FilterKey.PRODUCT_DESIGNATION);
-    if (productDesignationFilter) {
-        filterArray.push(`
-            {productDesignation: { mlValues: {some: { text: { in: [${productDesignationFilter.map((filter) => `"${filter.value.trim()}"`).join(',')}] }}}}}
-        `);
+    if (productDesignationFilter.length > 0) {
+        const andBlocks = productDesignationFilter.map((filter) => {
+            if (typeof filter.value === 'object' && filter.value.designation && filter.value.family && filter.value.root) {
+                return `
+                {
+                    and: [
+                        { productRoot: { mlValues: { some: { text: { in: ["${filter.value.root.trim()}"] }}}}},
+                        { productFamily: { mlValues: { some: { text: { in: ["${filter.value.family.trim()}"] }}}}},
+                        { productDesignation: { mlValues: { some: { text: { in: ["${filter.value.designation.trim()}"] }}}}}
+                    ]
+                }
+            `;
+            }
+            return '';
+        }).filter(Boolean);
+
+        if (andBlocks.length > 0) {
+            filterArray.push(`{ or: [${andBlocks.join(',')}] }`);
+        }
     }
+
 
     if (filterArray.length === 0) {
         return '';
     }
-    return filterArray.length > 1 ? `(where: { or: [${filterArray.join(' , ')}]})` : `(where: { ${filterArray} })`;
+    return filterArray.length > 1 ? `(where: { or: [${filterArray.join(' , ')}]})` : `(where: ${filterArray} )`;
 }
 
 export async function searchProducts(
@@ -102,6 +142,7 @@ export async function searchProducts(
         return wrapErrorCode('NOT_FOUND', 'No aasSearcher URL provided');
     }
     const queryString = searchQuery(buildFilterInput(filters));
+    console.log('GraphQL Query:', queryString);
     const query = gql(queryString);
     try {
         const client = createApolloClient(aasSearcherUrl);

@@ -12,7 +12,13 @@ import { useParams } from 'next/navigation';
 
 export interface FilterQuery {
     key: string;
-    value: string;
+    value:
+        | string
+        | {
+              root: string;
+              family: string;
+              designation?: string;
+          };
 }
 
 type ProductDesignation = {
@@ -229,7 +235,9 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                             onFilterChanged={(values) =>
                                 onFilterChangedByCategory(
                                     'ECLASS',
-                                    values.map((f) => f.value),
+                                    values
+                                        .map((f) => (typeof f.value === 'string' ? f.value : undefined))
+                                        .filter((v): v is string => v !== undefined),
                                 )
                             }
                             resetFilters={resetTrigger}
@@ -245,7 +253,9 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
                                 onFilterChanged={(values) =>
                                     onFilterChangedByCategory(
                                         key,
-                                        values.map((f) => f.value),
+                                        values
+                                            .map((f) => (typeof f.value === 'string' ? f.value : undefined))
+                                            .filter((v): v is string => v !== undefined),
                                     )
                                 }
                                 resetFilters={resetTrigger}
