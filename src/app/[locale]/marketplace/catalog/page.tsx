@@ -124,6 +124,7 @@ export default function Page() {
                     variant="outlined"
                     placeholder={t('searchPlaceholder')}
                     sx={{ marginLeft: '3rem', width: 320 }}
+                    disabled={fallbackToAasList}
                     slotProps={{
                         input: {
                             startAdornment: (
