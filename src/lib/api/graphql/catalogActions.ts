@@ -83,18 +83,21 @@ function buildFilterInput(filters?: FilterQuery[]): string {
     }
 
     // ProductFamily together with its ProductRoot, combined by AND
+    // If root is unknown, it is not included in the filter
     const productFamilyFilters = filters.filter((filter) => filter.key === FilterKey.PRODUCT_FAMILY);
     if (productFamilyFilters.length > 0) {
         const andBlocks = productFamilyFilters.map((filter) => {
-            if (typeof filter.value === 'object' && filter.value.family && filter.value.root) {
+            if (typeof filter.value === 'object' && filter.value.family) {
+                const conditions: string[] = [];
+                if (filter.value.root && filter.value.root.trim() !== 'Unknown Root') {
+                    conditions.push(`{ productRoot: { mlValues: { some: { text: { in: ["${filter.value.root.trim()}"] }}}}}`);
+                }
+                conditions.push(`{ productFamily: { mlValues: { some: { text: { in: ["${filter.value.family.trim()}"] }}}}}`);
                 return `
-                    {
-                        and: [
-                            { productRoot: { mlValues: { some: { text: { in: ["${filter.value.root.trim()}"] }}}}},
-                            { productFamily: { mlValues: { some: { text: { in: ["${filter.value.family.trim()}"] }}}}}
-                        ]
-                    }
-                `;
+        {
+            and: [${conditions.join(', ')}]
+        }
+        `;
             }
             return '';
         }).filter(Boolean);
@@ -105,19 +108,28 @@ function buildFilterInput(filters?: FilterQuery[]): string {
     }
 
     // ProductDesignation together with its ProductFamily and ProductRoot, combined by AND
+    // If root or family is unknown, it is not included in the filter
     const productDesignationFilter = filters.filter((filter) => filter.key === FilterKey.PRODUCT_DESIGNATION);
     if (productDesignationFilter.length > 0) {
         const andBlocks = productDesignationFilter.map((filter) => {
-            if (typeof filter.value === 'object' && filter.value.designation && filter.value.family && filter.value.root) {
-                return `
-                {
-                    and: [
-                        { productRoot: { mlValues: { some: { text: { in: ["${filter.value.root.trim()}"] }}}}},
-                        { productFamily: { mlValues: { some: { text: { in: ["${filter.value.family.trim()}"] }}}}},
-                        { productDesignation: { mlValues: { some: { text: { in: ["${filter.value.designation.trim()}"] }}}}}
-                    ]
+            if (typeof filter.value === 'object' && filter.value.designation) {
+                const conditions: string[] = [];
+
+                if (filter.value.root && filter.value.root.trim() !== 'Unknown Root') {
+                    conditions.push(`{ productRoot: { mlValues: { some: { text: { in: ["${filter.value.root.trim()}"] }}}}}`);
                 }
-            `;
+
+                if (filter.value.family && filter.value.family.trim() !== 'Unknown Family') {
+                    conditions.push(`{ productFamily: { mlValues: { some: { text: { in: ["${filter.value.family.trim()}"] }}}}}`);
+                }
+
+                conditions.push(`{ productDesignation: { mlValues: { some: { text: { in: ["${filter.value.designation.trim()}"] }}}}}`);
+
+                return `
+        {
+            and: [${conditions.join(', ')}]
+        }
+        `;
             }
             return '';
         }).filter(Boolean);
@@ -126,7 +138,6 @@ function buildFilterInput(filters?: FilterQuery[]): string {
             filterArray.push(`{ or: [${andBlocks.join(',')}] }`);
         }
     }
-
 
     if (filterArray.length === 0) {
         return '';
