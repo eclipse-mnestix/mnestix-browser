@@ -132,25 +132,22 @@ export function ProductCategoryFilter(props: {
                     value: designation.name === node.name ? isChecked : designation.value,
                 }));
 
-                const updatedFamily = {
+                const familyValue = updatedDesignations.every((d) => d.value);
+                return {
                     ...family,
-                    value: updatedDesignations.every((d) => d.value),
+                    value: familyValue,
                     ProductDesignations: updatedDesignations,
                 };
-
-                return updatedFamily;
             });
 
-            updatedRoot.value = updatedFamilies.every((family) => family.value);
-
-            const categories = {
+            const rootValue = updatedFamilies.every((family) => family.value);
+            return {
                 ProductRoot: {
                     ...updatedRoot,
+                    value: rootValue,
                     ProductFamilies: updatedFamilies,
                 },
             };
-
-            return categories;
         });
     }
 

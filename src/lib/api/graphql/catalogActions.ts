@@ -73,33 +73,55 @@ function buildFilterInput(filters?: FilterQuery[]): string {
 
     // ProductClassification filters:
     const productRootFilter = filters.filter((filter) => filter.key === FilterKey.PRODUCT_ROOT);
-    if (productRootFilter) {
+    if (productRootFilter.length > 0) {
         filterArray.push(`
-            {productRoot: { mlValues: {some: { text: { in: [${productRootFilter
-                .map((filter) => (typeof filter.value === 'string' ? `"${filter.value.trim()}"` : ''))
-                .filter((val) => val !== '')
-                .join(',')}] }}}}}
-        `);
+        {productRoot: { mlValues: {some: { text: { in: [${productRootFilter
+            .map((filter) => (typeof filter.value === 'string' ? `"${filter.value.trim()}"` : ''))
+            .filter((val) => val !== '')
+            .join(',')}] }}}}}
+    `);
     }
-    /*
-    const productFamilyFilter = filters.filter((filter) => filter.key === FilterKey.PRODUCT_FAMILY);
-    if (productFamilyFilter) {
-        filterArray.push(`
-            {productFamily: { mlValues: {some: { text: { in: [${productFamilyFilter.map((filter) => `"${filter.value.trim()}"`).join(',')}] }}}}}
-        `);
+
+    // --- ProductFamily mit zugehörigem ProductRoot als AND ---
+    const productFamilyFilters = filters.filter((filter) => filter.key === FilterKey.PRODUCT_FAMILY);
+    if (productFamilyFilters.length > 0) {
+        const andBlocks = productFamilyFilters.map((filter) => {
+            if (typeof filter.value === 'object' && filter.value.family && filter.value.root) {
+                return `
+                    {
+                        and: [
+                            { productRoot: { mlValues: { some: { text: { in: ["${filter.value.root.trim()}"] }}}}},
+                            { productFamily: { mlValues: { some: { text: { in: ["${filter.value.family.trim()}"] }}}}}
+                        ]
+                    }
+                `;
+            }
+            return '';
+        }).filter(Boolean);
+
+        if (andBlocks.length > 0) {
+            filterArray.push(`{ or: [${andBlocks.join(',')}] }`);
+        }
     }
 
     const productDesignationFilter = filters.filter((filter) => filter.key === FilterKey.PRODUCT_DESIGNATION);
-    if (productDesignationFilter) {
+    if (productDesignationFilter.length > 0) {
         filterArray.push(`
-            {productDesignation: { mlValues: {some: { text: { in: [${productDesignationFilter.map((filter) => `"${filter.value.trim()}"`).join(',')}] }}}}}
-        `);
+        { productDesignation: { mlValues: {some: { text: { in: [${productDesignationFilter
+            .map((filter) => {
+                if (typeof filter.value === 'object' && filter.value.designation) {
+                    return `"${filter.value.designation.trim()}"`;
+                }
+                return '';
+            })
+            .filter((val) => val !== '')
+            .join(',')}] }}}}}
+    `);
     }
-    */
     if (filterArray.length === 0) {
         return '';
     }
-    return filterArray.length > 1 ? `(where: { or: [${filterArray.join(' , ')}]})` : `(where: { ${filterArray} })`;
+    return filterArray.length > 1 ? `(where: { or: [${filterArray.join(' , ')}]})` : `(where: ${filterArray} )`;
 }
 
 export async function searchProducts(
