@@ -82,7 +82,7 @@ function buildFilterInput(filters?: FilterQuery[]): string {
     `);
     }
 
-    // --- ProductFamily mit zugehörigem ProductRoot als AND ---
+    // ProductFamily together with its ProductRoot, combined by AND
     const productFamilyFilters = filters.filter((filter) => filter.key === FilterKey.PRODUCT_FAMILY);
     if (productFamilyFilters.length > 0) {
         const andBlocks = productFamilyFilters.map((filter) => {
