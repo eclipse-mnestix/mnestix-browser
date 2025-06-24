@@ -327,7 +327,8 @@
       "commercialData": {
         "requestPrice": "Request price",
         "noProductUriAvailable": "No product URI available",
-        "orderButton": "Order"
+        "orderButton": "Order",
+        "perItem": "per item"
       }
     },
     "registryList": {
