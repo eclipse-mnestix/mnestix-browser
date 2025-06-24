@@ -25,7 +25,7 @@ export const defaultRbacRule: BaSyxRbacRule = {
     idShort: '',
 };
 
-export const CreateRuleDialog = ({ onClose, reloadRules, open, availableRoles, selectedRole }: RoleDialogProps) => {
+export function CreateRuleDialog({ onClose, reloadRules, open, availableRoles, selectedRole }: RoleDialogProps) {
     const t = useTranslations('pages.settings.rules');
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
@@ -94,4 +94,4 @@ export const CreateRuleDialog = ({ onClose, reloadRules, open, availableRoles, s
             </Box>
         </Dialog>
     );
-};
+}
