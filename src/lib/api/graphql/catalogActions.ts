@@ -104,20 +104,30 @@ function buildFilterInput(filters?: FilterQuery[]): string {
         }
     }
 
+    // ProductDesignation together with its ProductFamily and ProductRoot, combined by AND
     const productDesignationFilter = filters.filter((filter) => filter.key === FilterKey.PRODUCT_DESIGNATION);
     if (productDesignationFilter.length > 0) {
-        filterArray.push(`
-        { productDesignation: { mlValues: {some: { text: { in: [${productDesignationFilter
-            .map((filter) => {
-                if (typeof filter.value === 'object' && filter.value.designation) {
-                    return `"${filter.value.designation.trim()}"`;
+        const andBlocks = productDesignationFilter.map((filter) => {
+            if (typeof filter.value === 'object' && filter.value.designation && filter.value.family && filter.value.root) {
+                return `
+                {
+                    and: [
+                        { productRoot: { mlValues: { some: { text: { in: ["${filter.value.root.trim()}"] }}}}},
+                        { productFamily: { mlValues: { some: { text: { in: ["${filter.value.family.trim()}"] }}}}},
+                        { productDesignation: { mlValues: { some: { text: { in: ["${filter.value.designation.trim()}"] }}}}}
+                    ]
                 }
-                return '';
-            })
-            .filter((val) => val !== '')
-            .join(',')}] }}}}}
-    `);
+            `;
+            }
+            return '';
+        }).filter(Boolean);
+
+        if (andBlocks.length > 0) {
+            filterArray.push(`{ or: [${andBlocks.join(',')}] }`);
+        }
     }
+
+
     if (filterArray.length === 0) {
         return '';
     }
