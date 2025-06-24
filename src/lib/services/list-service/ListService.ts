@@ -115,7 +115,7 @@ export class ListService {
         }
         for (const reference of submodelReferences.result) {
             const submodelId = reference.keys[0].value;
-            const submodelResponse = await this.submodelRepositoryClient.getSubmodelMetaData(submodelId);
+            const submodelResponse = await this.submodelRepositoryClient.getSubmodelById(submodelId);
             if (submodelResponse.isSuccess) {
                 const semanticId = submodelResponse.result?.semanticId?.keys[0].value;
                 const nameplateKeys = [
@@ -136,8 +136,8 @@ export class ListService {
 
                     return {
                         success: true,
-                        manufacturerName: manufacturerName.result,
-                        manufacturerProductDesignation: manufacturerProduct.result,
+                        manufacturerName: typeof manufacturerName.result === 'string' ? [{ 'en': manufacturerName.result }]  : manufacturerName.result,
+                        manufacturerProductDesignation: typeof manufacturerProduct.result === 'string' ? [{ 'en': manufacturerProduct.result }] : manufacturerProduct.result,
                     };
                 }
             }
