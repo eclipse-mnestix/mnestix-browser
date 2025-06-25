@@ -114,5 +114,5 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
         setIsLoadingAas(true);
         await loadAasContent();
         setIsLoadingAas(false);
-    }, [aasIdToLoad, env]);
+    }, [aasIdToLoad, env, repoUrl]);
 }
