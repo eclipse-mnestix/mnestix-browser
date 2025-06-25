@@ -82,8 +82,8 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
         }
 
         if (result.aas) {
-            setAasOriginUrl(result.aasData?.aasRepositoryOrigin ?? null);
-            setRegistryAasData(result.aasData);
+            setAasOriginUrl(result.aasData?.aasRepositoryOrigin);
+            setRegistryAasData(result.aasData ?? undefined);
             setAasFromContext(result.aas);
             return { success: true };
         }
@@ -106,8 +106,8 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
         const aasFromStore = aasStore.getAasData(aasIdToLoad);
         if (aasFromStore) {
             setAasFromContext(aasFromStore.aas);
-            setAasOriginUrl(aasFromStore.aasData?.aasRepositoryOrigin ?? null);
-            setRegistryAasData(aasFromStore.aasData ?? null);
+            setAasOriginUrl(aasFromStore.aasData?.aasRepositoryOrigin);
+            setRegistryAasData(aasFromStore.aasData);
             setIsLoadingAas(false); // initialized as true, so we need to set it to false here
             return;
         }

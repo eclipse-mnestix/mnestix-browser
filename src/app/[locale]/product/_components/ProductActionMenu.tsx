@@ -13,7 +13,7 @@ import { AssetAdministrationShell } from '@aas-core-works/aas-core3.0-typescript
 type ActionMenuProps = {
     readonly aas: AssetAdministrationShell | null;
     readonly submodels: SubmodelOrIdReference[] | null;
-    readonly repositoryURL: string | null;
+    readonly repositoryURL?: string;
     readonly className?: string;
 };
 

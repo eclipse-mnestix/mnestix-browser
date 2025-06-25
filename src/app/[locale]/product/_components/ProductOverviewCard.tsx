@@ -32,7 +32,7 @@ type ProductOverviewCardProps = {
     readonly isLoading?: boolean;
     readonly isAccordion: boolean;
     readonly imageLinksToDetail?: boolean;
-    readonly repositoryURL: string | null;
+    readonly repositoryURL?: string;
     readonly displayName: string | null;
 };
 

@@ -5,10 +5,10 @@ import { RegistryAasData } from 'lib/types/registryServiceTypes';
 import { useAasLoader } from 'lib/hooks/UseAasDataLoader';
 
 export type CurrentAasContextType = {
-    aasState: [AssetAdministrationShell | null, React.Dispatch<React.SetStateAction<AssetAdministrationShell | null>>];
+    aasState: [AssetAdministrationShell | undefined, React.Dispatch<React.SetStateAction<AssetAdministrationShell | undefined>>];
     submodelState: [SubmodelOrIdReference[], React.Dispatch<React.SetStateAction<SubmodelOrIdReference[]>>];
-    registryAasData: [RegistryAasData | null, React.Dispatch<React.SetStateAction<RegistryAasData | null>>];
-    aasOriginUrl: [string | null, React.Dispatch<React.SetStateAction<string | null>>];
+    registryAasData: [RegistryAasData | undefined, React.Dispatch<React.SetStateAction<RegistryAasData | undefined>>];
+    aasOriginUrl: [string | undefined, React.Dispatch<React.SetStateAction<string | undefined>>];
     isLoadingAas: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
     isLoadingSubmodels: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 };
@@ -37,10 +37,10 @@ export function useCurrentAasContext() {
 }
 
 export const CurrentAasContextProvider = (props: PropsWithChildren<{ aasId: string; repoUrl?: string }>) => {
-    const aasState = useState<AssetAdministrationShell | null>(null);
-    const registryAasData = useState<RegistryAasData | null>(null);
+    const aasState = useState<AssetAdministrationShell>();
+    const registryAasData = useState<RegistryAasData>();
     const submodelState = useState<SubmodelOrIdReference[]>([]);
-    const aasOriginUrl = useState<string | null>(null);
+    const aasOriginUrl = useState<string>();
     const isLoadingAas = useState<boolean>(true);
     const isLoadingSubmodels = useState<boolean>(true);
 
