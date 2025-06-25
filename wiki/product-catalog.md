@@ -231,8 +231,19 @@ The following adjustments to Eclipse Mnestix Browser version 1.5.0 were made:
 ### Many small improvements
 - sorting in an AAS list, breadcrumbs, new Visualisation for Technical Data submodel, ...
 
-Appending on this a new component was introduced in order to allow the filtering a product catalog by their Product Classifications and Manufacturer Product Hierarchy.
+
+## Mnestix Searcher
+For the catalog, a new component was introduced in order to allow the filtering a product catalog by their Product Classifications and Manufacturer Product Hierarchy.
 This component is called "Mnestix Searcher" for now.
+
+The Mnestix Searcher component improves the AAS List by enabling advanced search and filtering capabilities. To activate these features for any repository, the Searcher must be configured accordingly, as illustrated in the example above.  
+The Searcher provides a single endpoint at /api/Seed, secured by an API key defined in the component's configuration. This endpoint retrieves data from the repositories and transforms it into a custom structure optimized for display in the Product Catalog List. This transformation ensures that filtering and searching are both efficient and performant.
+To function properly, the Searcher must be configured with all relevant repository URLs—AAS, Submodels, and Concept Descriptions, so it knows where to pull the data from.  
+Once transformed, the data is stored in a dedicated MongoDB instance, which is the second essential component in the Mnestix Searcher setup. This MongoDB instance holds the processed data and exposes it through GraphQL queries. The MongoDB configuration completes the required setup for AAS Searcher.
+For each repository where the Mnestix Searcher is deployed, both components must be configured. This setup ensures data separation between producers, strengthens security, and allows for independent management.  
+After deploying and configuring the components, it is crucial to manually invoke the Seed endpoint to initialize the first data load. Please note that data is not updated automatically, scheduling updates would require a separate cron job, which is outside the scope of this release.
+
+
 Its functionality could be integrated into the Mnestix Proxy in the future.
 The sourcecode can be found [here](https://github.com/mnestix/mnestix-searcher), although it is still in a PoC stage.
 It allows to interact with a repository via a GraphQL API:
