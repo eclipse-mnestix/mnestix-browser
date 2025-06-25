@@ -82,7 +82,7 @@ export class ListService {
 
         const aasListDtos = assetAdministrationShells
             .filter((aas) => {
-                const aasToRemove = aas.assetInformation.specificAssetIds?.find(
+                const aasToRemove = aas.assetInformation?.specificAssetIds?.find(
                     (specificAssetId) => specificAssetId.name === 'aasListFilterId',
                 );
                 return !aasToRemove;

@@ -6,7 +6,6 @@ import { Box, Button, IconButton, styled } from '@mui/material';
 import clsx from 'clsx';
 import { Entity, KeyTypes } from '@aas-core-works/aas-core3.0-typescript/types';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
-import { useAasState } from 'components/contexts/CurrentAasContext';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { EntityDetailsDialog } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/EntityDetailsDialog';
@@ -17,6 +16,7 @@ import {
     getTreeItemStyle,
 } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/TreeItem';
 import { useTranslations } from 'next-intl';
+import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 
 interface ApplicationTreeItemProps extends CustomTreeItemProps {
     hasChildEntities: boolean;
@@ -44,7 +44,7 @@ const CustomContent = React.forwardRef(function CustomContent(props: Application
     } = props;
     const { disabled, expanded, selected, focused, handleExpansion } = useTreeItemState(itemId);
     const isEntity = data && getKeyType(data) === KeyTypes.Entity;
-    const [aas] = useAasState();
+    const { aas } = useCurrentAasContext();
     const assetId = aas?.assetInformation.globalAssetId;
     const t = useTranslations('pages.aasViewer');
 

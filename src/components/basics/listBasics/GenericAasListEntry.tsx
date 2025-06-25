@@ -1,7 +1,6 @@
 ﻿import { TableCell } from '@mui/material';
 import { AasListConfig, AasListEntry } from 'lib/types/AasListEntry';
 import PictureTableCell from 'components/basics/listBasics/PictureTableCell';
-import { useAasOriginSourceState, useAasState } from 'components/contexts/CurrentAasContext';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { useRouter } from 'next/navigation';
 import { RoundedIconButton } from 'components/basics/Buttons';
@@ -21,15 +20,11 @@ const tableBodyText = {
 };
 
 export const GenericAasListEntry = ({ aasListEntry, ...config }: GenericAasListTableRowProps) => {
-    const [, setAas] = useAasState();
-    const [, setAasOriginUrl] = useAasOriginSourceState();
     const navigate = useRouter();
     const env = useEnv();
     const t = useTranslations('pages.aasList');
 
     const navigateToAas = (aasId: string, repoUrl?: string) => {
-        setAas(null);
-        setAasOriginUrl(null);
         const pageToGo = env.PRODUCT_VIEW_FEATURE_FLAG ? '/product' : '/viewer';
 
         navigate.push(`${pageToGo}/${encodeBase64(aasId)}${repoUrl ? `?repoUrl=${encodeURI(repoUrl)}` : ''}`);
