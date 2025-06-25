@@ -112,7 +112,7 @@ export function ProductViewer() {
                         <Breadcrumbs links={breadcrumbLinks} />
                     </Box>
                     <ProductOverviewCard
-                        aas={aas}
+                        aas={aas ?? null}
                         submodels={submodels}
                         productImage={aas?.assetInformation?.defaultThumbnail?.path}
                         isLoading={isLoadingAas || isLoadingSubmodels}

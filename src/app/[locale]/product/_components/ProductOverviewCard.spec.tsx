@@ -151,7 +151,6 @@ describe('ProductOverviewCard', () => {
                 submodels={null}
                 isLoading={true}
                 isAccordion={false}
-                repositoryURL={null}
                 displayName={'Test Product'}
             />,
         );
@@ -167,7 +166,6 @@ describe('ProductOverviewCard', () => {
                 submodels={mockSubmodels as any}
                 isLoading={false}
                 isAccordion={false}
-                repositoryURL={null}
                 displayName={'Test Product'}
             />,
         );
@@ -189,7 +187,6 @@ describe('ProductOverviewCard', () => {
                 submodels={mockSubmodels as any}
                 isLoading={false}
                 isAccordion={true}
-                repositoryURL={null}
                 displayName={'Test Product'}
             />,
         );
