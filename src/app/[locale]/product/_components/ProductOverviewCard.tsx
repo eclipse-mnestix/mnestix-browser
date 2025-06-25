@@ -168,11 +168,11 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             });
         }
         setOverviewData({
-            manufacturerName: manufacturerName ?? undefined,
-            manufacturerProductDesignation: manufacturerProductDesignation ?? undefined,
+            manufacturerName: !manufacturerName || manufacturerName.trim() === '' ? undefined : manufacturerName,
+            manufacturerProductDesignation: !manufacturerProductDesignation || manufacturerProductDesignation.trim() === '' ? undefined : manufacturerProductDesignation,
             productClassifications: classifications,
-            manufacturerArticleNumber: manufacturerArticleNumber ?? undefined,
-            manufacturerOrderCode: manufacturerOrderCode ?? undefined,
+            manufacturerArticleNumber: !manufacturerArticleNumber || manufacturerArticleNumber.trim() === '' ? undefined : manufacturerArticleNumber,
+            manufacturerOrderCode: !manufacturerOrderCode || manufacturerOrderCode.trim() === '' ? undefined : manufacturerOrderCode,
             companyLogo: null,
             markings: null,
             manufacturerLogo: manufacturerLogo,
