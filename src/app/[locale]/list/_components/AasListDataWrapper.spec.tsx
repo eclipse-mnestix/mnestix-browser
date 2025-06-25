@@ -6,8 +6,8 @@ import * as serverActions from 'lib/services/list-service/aasListApiActions';
 import * as nameplateDataActions from 'lib/services/list-service/aasListApiActions';
 import * as connectionServerActions from 'lib/services/database/connectionServerActions';
 import { ListEntityDto } from 'lib/services/list-service/ListService';
-import { CurrentAasContextProvider } from 'components/contexts/CurrentAasContext';
 import { Internationalization } from 'lib/i18n/Internationalization';
+import { AasStoreProvider } from 'stores/AasStore';
 
 jest.mock('./../../../../lib/services/list-service/aasListApiActions');
 jest.mock('./../../../../lib/services/database/connectionServerActions');
@@ -88,9 +88,9 @@ describe('AASListDataWrapper', () => {
 
         CustomRender(
             <Internationalization>
-                <CurrentAasContextProvider>
+                <AasStoreProvider>
                     <AasListDataWrapper />
-                </CurrentAasContextProvider>
+                </AasStoreProvider>
             </Internationalization>,
         );
 

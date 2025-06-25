@@ -5,7 +5,7 @@ import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper
 import { useState } from 'react';
 import { isValidUrl } from 'lib/util/UrlUtil';
 
-export const useProductImageUrl = (aas: AssetAdministrationShell | null, repositoryURL: string | null, productImage: string | undefined) => {
+export const useProductImageUrl = (aas: AssetAdministrationShell | null, repositoryURL?: string, productImage?: string) => {
     const [productImageUrl, setProductImageUrl] = useState<string>('');
 
     useAsyncEffect(async () => {
