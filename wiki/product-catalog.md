@@ -229,7 +229,7 @@ The following adjustments to Eclipse Mnestix Browser version 1.5.0 were made:
 ![image](https://github.com/user-attachments/assets/5162848d-41d9-4534-91b3-f8f2c9c024d4)
 
 ### Many small improvements
-- sorting in an AAS list, breadcrumbs, new Visualisation for Technical Data submodel, ...
+- Sorting in an AAS list, breadcrumbs, new visualisation for technical data submodel, ...
 
 
 ## Mnestix Searcher
