@@ -195,6 +195,10 @@ services:
 ```
 </details>
 
+In the following video the features of a product catalog are show:
+
+https://github.com/user-attachments/assets/fb572ec0-8885-4c11-91a2-06a0569f318f
+
 
 The following adjustments to Eclipse Mnestix Browser version 1.5.0 were made:
 
