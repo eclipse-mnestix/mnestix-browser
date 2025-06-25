@@ -198,18 +198,52 @@ services:
 
 The following adjustments to Eclipse Mnestix Browser version 1.5.0 were made:
 
-- Adding a Startpage to overview all product catalogs ![image](https://github.com/user-attachments/assets/4eaa80db-c236-4925-8972-d2e4617c5717)
+### Adding a Startpage to overview all product catalogs 
 
-- Adding a product catalog page for a single product catalog ![image](https://github.com/user-attachments/assets/5f2c436d-8013-4485-8e82-480a2ac1c839)
+- This page lists all product catalogs that are configured in the settings
 
-- Extending the AAS view with a product view that highlights product information ![image](https://github.com/user-attachments/assets/aa381cdd-4fa1-4ae7-b42e-419ce2d158d6)
+![image](https://github.com/user-attachments/assets/4eaa80db-c236-4925-8972-d2e4617c5717)
 
-- Extending the Settings to be able to configure a product catalog ![image](https://github.com/user-attachments/assets/5162848d-41d9-4534-91b3-f8f2c9c024d4)
+### Adding a product catalog page for a single product catalog 
 
-- Many small improvements, like sorting in an AAS list, breadcrumbs, new Visualisation for Technical Data submodel, ...
+- Filter by Product Classifications and Manufacturer Product Hierarchy
+- Search for Product Designation and Manufacturer Name
 
-Appending on this a new component was introduced in order to allow the filtering a product catalog by their Product Classifications and Manufacturer Product Hierarchy.
+![image](https://github.com/user-attachments/assets/5f2c436d-8013-4485-8e82-480a2ac1c839)
+
+
+### Extending the AAS view with a product view that highlights product information 
+
+- Shows product specific information e.g. commercial data if available
+- Download AASX file is possible
+
+![image](https://github.com/user-attachments/assets/aa381cdd-4fa1-4ae7-b42e-419ce2d158d6)
+
+### Extending the Settings to be able to configure a product catalog 
+
+- Allows to add a product catalog with a name and the URL of the AAS Repository
+- Optionally, a thumbnail can be added to the product catalog
+- Commerical Data Submodel URL can be configured to show commercial data in the product view. This has to be the exact link to the submodel with its ID (not only the repository)
+- AAS Searcher URL can be configured to allow searching for products in the product catalog through the Mnestix Searcher component
+
+![image](https://github.com/user-attachments/assets/5162848d-41d9-4534-91b3-f8f2c9c024d4)
+
+### Many small improvements
+- Sorting in an AAS list, breadcrumbs, new visualisation for technical data submodel, ...
+
+
+## Mnestix Searcher
+For the catalog, a new component was introduced in order to allow the filtering a product catalog by their Product Classifications and Manufacturer Product Hierarchy.
 This component is called "Mnestix Searcher" for now.
+
+The Mnestix Searcher component improves the AAS List by enabling advanced search and filtering capabilities. To activate these features for any repository, the Searcher must be configured accordingly, as illustrated in the example above.  
+The Searcher provides a single endpoint at /api/Seed, secured by an API key defined in the component's configuration. This endpoint retrieves data from the repositories and transforms it into a custom structure optimized for display in the Product Catalog List. This transformation ensures that filtering and searching are both efficient and performant.
+To function properly, the Searcher must be configured with all relevant repository URLs—AAS, Submodels, and Concept Descriptions, so it knows where to pull the data from.  
+Once transformed, the data is stored in a dedicated MongoDB instance, which is the second essential component in the Mnestix Searcher setup. This MongoDB instance holds the processed data and exposes it through GraphQL queries. The MongoDB configuration completes the required setup for AAS Searcher.
+For each repository where the Mnestix Searcher is deployed, both components must be configured. This setup ensures data separation between producers, strengthens security, and allows for independent management.  
+After deploying and configuring the components, it is crucial to manually invoke the Seed endpoint to initialize the first data load. Please note that data is not updated automatically, scheduling updates would require a separate cron job, which is outside the scope of this release.
+
+
 Its functionality could be integrated into the Mnestix Proxy in the future.
 The sourcecode can be found [here](https://github.com/mnestix/mnestix-searcher), although it is still in a PoC stage.
 It allows to interact with a repository via a GraphQL API:
