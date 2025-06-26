@@ -1,10 +1,5 @@
 {
   "components": {
-    "constructionDialog": {
-      "title": "Under Construction",
-      "message": "This feature is currently under construction and will be available soon.",
-      "buttonText": "Close"
-    },
     "addressComponent": {
       "VAT": "VAT-Number",
       "addressTypes": {
@@ -71,6 +66,11 @@
         "year": "{count, plural, =0 {less than a year} =1 {1 year} other {# years}}"
       },
       "totalCO2Equivalents": "CO2 emissions from product (so far)"
+    },
+    "constructionDialog": {
+      "buttonText": "Close",
+      "message": "This feature is currently under construction and will be available soon.",
+      "title": "Under Construction"
     },
     "contactInformation": {
       "contactTypes": {
@@ -237,6 +237,7 @@
           "view": "View"
         },
         "idLabel": "ID:",
+        "noSubmodelsToLoad": "There do not exist any submodels for this AAS.",
         "referenceCounter": {
           "count": "Count",
           "elementName": "Element"
@@ -249,26 +250,25 @@
           "selectTimeframe": "Select timeframe"
         },
         "title": "Submodels",
-        "unknownModelType": "Unknown ModelType: {type}",
-        "noSubmodelsToLoad": "There do not exist any submodels for this AAS."
+        "unknownModelType": "Unknown ModelType: {type}"
       }
     },
     "catalog": {
-      "manufacturerCatalog": "Manufacturer product catalog",
-      "manufacturerSelect": "Select manufacturer",
-      "title": "Manufacturer catalog",
-      "marketplaceTitle": "VWS4LS - Marketplace",
-      "marketplaceSubtitle": "Asset Administration Shell for Wire Harness",
       "articleCount": "{count, plural, =1 {# article} other {# articles}}",
-      "filter": "Filter",
-      "noSearcherWarning": "No AAS Searcher Configured. Showing AAS List as Fallback, filters won't work.",
       "eclassCategories": {
         "15": "Maintenance (Service)",
         "27": "Electric engineering, automation, process control engineering ",
         "44": "Automotive engineering, vehicle component",
         "default": "Category "
       },
-      "searchPlaceholder": "Search currently unavailable..."
+      "filter": "Filter",
+      "manufacturerCatalog": "Manufacturer product catalog",
+      "manufacturerSelect": "Select manufacturer",
+      "marketplaceSubtitle": "Asset Administration Shell for Wire Harness",
+      "marketplaceTitle": "VWS4LS - Marketplace",
+      "noSearcherWarning": "No AAS Searcher Configured. Showing AAS List as Fallback, filters won't work.",
+      "searchPlaceholder": "Search currently unavailable...",
+      "title": "Manufacturer catalog"
     },
     "compare": {
       "addAnother": "Add another AAS",
@@ -308,10 +308,10 @@
     "productViewer": {
       "actions": {
         "compareButton": "Compare",
-        "toAasView": "AAS View",
         "download": "Download AAS",
+        "downloadError": "Error while downloading AAS.",
         "downloadErrorNoRepo": "No repository found for the selected AAS.",
-        "downloadError": "Error while downloading AAS."
+        "toAasView": "AAS View"
       },
       "classification": "Classification",
       "error": {
@@ -407,15 +407,19 @@
           "edit": "Edit",
           "save": "Save"
         },
-        "deleteRole": {
-          "delete": "Delete role"
-        },
         "createRule": {
+          "placeholderText": "New or existing role name",
           "saveSuccess": "New rule saved successfully.",
-          "title": "Add new permission",
           "subtitle": "Add a permission to a new or existing role.",
           "subtitle2": "Add a permission to the role ''{role}''.",
-          "placeholderText": "New or existing role name"
+          "title": "Add new permission"
+        },
+        "deleteRole": {
+          "delete": "Delete role",
+          "description": "You are about to delete the '{roleName}' role with {count} permissions. Are you sure you want to delete entire role?",
+          "header": "Delete entire role",
+          "partiallySuccess": "{count} / {total} permissions have been deleted. The role still exists with the remaining permissions!",
+          "success": "Role '{roleName}' has been deleted successfully."
         },
         "deleteRule": {
           "question": "Permanently delete this rule?",

@@ -10,7 +10,7 @@ export function RoleActionMenu({
     openDeleteRoleDialog,
 }: {
     roleName: string;
-    openCreateDialog: (roleName: string | null) => void;
+    openCreateDialog: (roleName: string) => void;
     openDeleteRoleDialog: (roleName: string) => void;
 }) {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

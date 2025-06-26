@@ -38,7 +38,7 @@ export function RoleAccordion({
     roleName: string;
     rules: BaSyxRbacRule[];
     openDetailDialog: (entry: BaSyxRbacRule) => void;
-    openCreateDialog: (roleName: string | null) => void;
+    openCreateDialog: (roleName: string) => void;
     openDeleteRoleDialog: (roleName: string) => void;
 }) {
     const [isExpanded, setExpanded] = useState(false);

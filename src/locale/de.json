@@ -1,10 +1,5 @@
 {
   "components": {
-    "constructionDialog": {
-      "title": "In Bearbeitung",
-      "message": "Diese Funktion befindet sich derzeit im Aufbau und wird in Kürze verfügbar sein.",
-      "buttonText": "Schließen"
-    },
     "addressComponent": {
       "VAT": "USt-IdNr.",
       "addressTypes": {
@@ -71,6 +66,11 @@
         "year": "{count, plural, =0 {unter einem Jahr} =1 {1 Jahr} other {# Jahre}}"
       },
       "totalCO2Equivalents": "(Bisherige) CO2 Emissionen des Produkts"
+    },
+    "constructionDialog": {
+      "buttonText": "Schließen",
+      "message": "Diese Funktion befindet sich derzeit im Aufbau und wird in Kürze verfügbar sein.",
+      "title": "In Bearbeitung"
     },
     "contactInformation": {
       "contactTypes": {
@@ -237,6 +237,7 @@
           "view": "Ansehen"
         },
         "idLabel": "ID:",
+        "noSubmodelsToLoad": "Für diese AAS existieren keine Teilmodelle.",
         "referenceCounter": {
           "count": "Anzahl",
           "elementName": "Element"
@@ -249,26 +250,25 @@
           "selectTimeframe": "Auswahl des Zeitabschnitts"
         },
         "title": "Teilmodelle",
-        "unknownModelType": "Unbekannter ModelType: {type}",
-        "noSubmodelsToLoad": "Für diese AAS existieren keine Teilmodelle."
+        "unknownModelType": "Unbekannter ModelType: {type}"
       }
     },
     "catalog": {
-      "manufacturerCatalog": "Hersteller Produktkatalog",
-      "manufacturerSelect": "Hersteller auswählen",
-      "title": "Hersteller Produktkatalog",
-      "marketplaceTitle": "VWS4LS - Marketplace",
-      "marketplaceSubtitle": "Verwaltungsschale für den Leitungssatz",
       "articleCount": "{count, plural, =1 {# Artikel} other {# Artikel}}",
-      "filter": "Filter",
-      "noSearcherWarning": "Kein AAS Searcher konfiguriert. AAS Liste wird angezeigt, Filterung ist nicht möglich.",
       "eclassCategories": {
         "15": "Instandhaltung (Dienstleistung)",
         "27": "Elektro-, Automatisierungs- und Prozessleittechnik",
         "44": "Fahrzeugtechnik, Fahrzeugkomponente",
         "default": "Kategorie "
       },
-      "searchPlaceholder": "Suche aktuell nicht verfügbar..."
+      "filter": "Filter",
+      "manufacturerCatalog": "Hersteller Produktkatalog",
+      "manufacturerSelect": "Hersteller auswählen",
+      "marketplaceSubtitle": "Verwaltungsschale für den Leitungssatz",
+      "marketplaceTitle": "VWS4LS - Marketplace",
+      "noSearcherWarning": "Kein AAS Searcher konfiguriert. AAS Liste wird angezeigt, Filterung ist nicht möglich.",
+      "searchPlaceholder": "Suche aktuell nicht verfügbar...",
+      "title": "Hersteller Produktkatalog"
     },
     "compare": {
       "addAnother": "Eine weitere AAS hinzufügen",
@@ -308,10 +308,10 @@
     "productViewer": {
       "actions": {
         "compareButton": "Vergleichen",
-        "toAasView": "AAS Ansicht",
         "download": "AAS herunterladen",
+        "downloadError": "Fehler beim Herunterladen der AAS.",
         "downloadErrorNoRepo": "Kein Repository für die ausgewählte AAS gefunden.",
-        "downloadError": "Fehler beim Herunterladen der AAS."
+        "toAasView": "AAS Ansicht"
       },
       "classification": "Produktklassifikation",
       "error": {
@@ -407,15 +407,19 @@
           "edit": "Bearbeiten",
           "save": "Speichern"
         },
-        "deleteRole": {
-          "delete": "Rolle löschen"
-        },
         "createRule": {
+          "placeholderText": "Neuer oder bestehender Rollenname",
           "saveSuccess": "Neue Regel erfolgreich gespeichert.",
-          "title": "Neue Berechtigung hinzufügen",
           "subtitle": "Füge eine Berechtigung zu einer neuen oder bereits bestehenden Rolle hinzu.",
           "subtitle2": "Füge eine Berechtigung zu der Rolle ''{role}'' hinzu.",
-          "placeholderText": "Neuer oder bestehender Rollenname"
+          "title": "Neue Berechtigung hinzufügen"
+        },
+        "deleteRole": {
+          "delete": "",
+          "description": "",
+          "header": "",
+          "partiallySuccess": "",
+          "success": ""
         },
         "deleteRule": {
           "question": "Regel unwiderruflich löschen?",

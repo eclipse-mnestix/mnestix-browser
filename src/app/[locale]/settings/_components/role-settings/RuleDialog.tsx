@@ -12,7 +12,7 @@ import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { RuleForm, RuleFormModel } from 'app/[locale]/settings/_components/role-settings/RuleForm';
 import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
 import { KeycloakHint } from 'app/[locale]/settings/_components/role-settings/HintDialogContent';
-import { RuleDeleteDialog } from 'app/[locale]/settings/_components/role-settings/RuleDeleteDialog';
+import { DeleteRuleDialogContent } from 'app/[locale]/settings/_components/role-settings/DeleteRuleDialogContent';
 import { CopyButton } from 'components/basics/CopyButton';
 import { RoleOptions } from './RuleSettings';
 
@@ -168,7 +168,7 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
                 );
             case 'delete':
                 return (
-                    <RuleDeleteDialog rule={rule} onCancelDialog={() => setDialogMode('view')} onDelete={onDelete} />
+                    <DeleteRuleDialogContent rule={rule} onCancelDialog={() => setDialogMode('view')} onDelete={onDelete} />
                 );
             case 'create-hint':
                 return <KeycloakHint hint="create" onClose={onClose} />;

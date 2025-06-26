@@ -1,10 +1,5 @@
 {
   "components": {
-    "constructionDialog": {
-      "title": "En Construcción",
-      "message": "Esta función está actualmente en construcción y estará disponible próximamente.",
-      "buttonText": "Cerrar"
-    },
     "addressComponent": {
       "VAT": "NIF/CIF",
       "addressTypes": {
@@ -71,6 +66,11 @@
         "year": "{count, plural, =0 {inferior a un año} =1 {1 año} other {# años}}"
       },
       "totalCO2Equivalents": "Emisiones de CO2 del producto (hasta el momento)"
+    },
+    "constructionDialog": {
+      "buttonText": "Cerrar",
+      "message": "Esta función está actualmente en construcción y estará disponible próximamente.",
+      "title": "En Construcción"
     },
     "contactInformation": {
       "contactTypes": {
@@ -237,6 +237,7 @@
           "view": "Ver"
         },
         "idLabel": "ID:",
+        "noSubmodelsToLoad": "No existen submodels que cargar para este AAS.",
         "referenceCounter": {
           "count": "Recuento",
           "elementName": "Elemento"
@@ -249,26 +250,25 @@
           "selectTimeframe": "Seleccionar periodo de tiempo"
         },
         "title": "Submodels",
-        "unknownModelType": "ModelType desconocido: {type}",
-        "noSubmodelsToLoad": "No existen submodels que cargar para este AAS."
+        "unknownModelType": "ModelType desconocido: {type}"
       }
     },
     "catalog": {
-      "title": "Catálogo de productos",
-      "manufacturerCatalog": "Catálogo de productos del fabricante",
-      "manufacturerSelect": "Seleccionar fabricante",
-      "marketplaceTitle": "VWS4LS - Marketplace",
-      "marketplaceSubtitle": "Shell de administración de activos para mazos de cables",
       "articleCount": "{count, plural, =1 {# artículo} other {# artículos}}",
-      "filter": "Filtro",
-      "noSearcherWarning": "No se ha configurado el buscador AAS - Se muestra la lista AAS",
       "eclassCategories": {
         "15": "Maintenance (Service)",
         "27": "Electric engineering, automation, process control engineering ",
         "44": "Automotive engineering, vehicle component",
         "default": "Category "
       },
-      "searchPlaceholder": "Búsqueda no disponible actualmente..."
+      "filter": "Filtro",
+      "manufacturerCatalog": "Catálogo de productos del fabricante",
+      "manufacturerSelect": "Seleccionar fabricante",
+      "marketplaceSubtitle": "Shell de administración de activos para mazos de cables",
+      "marketplaceTitle": "VWS4LS - Marketplace",
+      "noSearcherWarning": "No se ha configurado el buscador AAS - Se muestra la lista AAS",
+      "searchPlaceholder": "Búsqueda no disponible actualmente...",
+      "title": "Catálogo de productos"
     },
     "compare": {
       "addAnother": "Añadir otro AAS",
@@ -308,10 +308,10 @@
     "productViewer": {
       "actions": {
         "compareButton": "Comparar",
-        "toAasView": "Vista del AAS",
         "download": "Descargar AAS",
+        "downloadError": "Error al descargar el AAS.",
         "downloadErrorNoRepo": "No se encontró ningún repositorio para el AAS seleccionado.",
-        "downloadError": "Error al descargar el AAS."
+        "toAasView": "Vista del AAS"
       },
       "classification": "Clasificación del producto",
       "error": {
@@ -407,15 +407,19 @@
           "edit": "Editar",
           "save": "Guardar"
         },
-        "deleteRole": {
-          "delete": "Borrar rol"
-        },
         "createRule": {
+          "placeholderText": "Nombre del rol nuevo o existente",
           "saveSuccess": "Nueva regla guardada con éxito.",
-          "title": "Añadir nuevo permiso",
           "subtitle": "Añade un permiso a un rol nuevo o existente.",
           "subtitle2": "Añade un permiso al rol ''{role}''.",
-          "placeholderText": "Nombre del rol nuevo o existente"
+          "title": "Añadir nuevo permiso"
+        },
+        "deleteRole": {
+          "delete": "",
+          "description": "",
+          "header": "",
+          "partiallySuccess": "",
+          "success": ""
         },
         "deleteRule": {
           "question": "¿Desea borrar esta regla permanentemente?",

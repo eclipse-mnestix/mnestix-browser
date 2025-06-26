@@ -5,12 +5,13 @@ import { DialogRbacRule, RuleDialog } from 'app/[locale]/settings/_components/ro
 import { useState } from 'react';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { getRbacRules } from 'lib/services/rbac-service/RbacActions';
-import { BaSyxRbacRule, RbacRolesFetchResult } from 'lib/services/rbac-service/types/RbacServiceData';
+import { BaSyxRbacRule, RbacRulesFetchResult } from 'lib/services/rbac-service/types/RbacServiceData';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { useShowError } from 'lib/hooks/UseShowError';
 import AddIcon from '@mui/icons-material/Add';
 import { CreateRuleDialog, defaultRbacRule } from 'app/[locale]/settings/_components/role-settings/CreateRuleDialog';
 import { RoleAccordion } from './RoleAccordion';
+import { DeleteRoleDialog } from 'app/[locale]/settings/_components/role-settings/DeleteRoleDialog';
 
 const DEFAULT_RBAC_RULE = { ...defaultRbacRule, isOnlyRuleForRole: false };
 export type RoleOptions = {
@@ -22,10 +23,11 @@ export const RuleSettings = () => {
     const t = useTranslations('pages.settings.rules');
     const [ruleDetailDialogOpen, setRuleDetailDialogOpen] = useState(false);
     const [createDialogOpen, setCreateDialogOpen] = useState(false);
+    const [deleteRoleDialogOpen, setDeleteRoleDialogOpen] = useState(false);
     const [selectedRule, setSelectedRule] = useState<DialogRbacRule>();
-    const [rbacRoles, setRbacRoles] = useState<RbacRolesFetchResult>();
+    const [rbacRules, setRbacRules] = useState<RbacRulesFetchResult>();
     const [isLoading, setIsLoading] = useState(false);
-    const [selectedRole, setSelectedRole] = useState<string | null>(null);
+    const [selectedRole, setSelectedRole] = useState<string>('');
     const { showError } = useShowError();
 
     // all available role names
@@ -34,7 +36,7 @@ export const RuleSettings = () => {
      * @type {RoleOptions}[]}
      */
     const availableRoles: RoleOptions[] = [
-        ...new Map((rbacRoles?.roles ?? []).map((role) => [role.role, { name: role.role }])).values(),
+        ...new Map((rbacRules?.rules ?? []).map((role) => [role.role, { name: role.role }])).values(),
     ];
 
     async function loadRbacData() {
@@ -42,8 +44,8 @@ export const RuleSettings = () => {
         const response = await getRbacRules();
         if (response.isSuccess) {
             // sort by role name
-            response.result.roles.sort((a: { role: string }, b: { role: string }) => a.role.localeCompare(b.role));
-            setRbacRoles(response.result);
+            response.result.rules.sort((a: { role: string }, b: { role: string }) => a.role.localeCompare(b.role));
+            setRbacRules(response.result);
         } else {
             showError(response.message);
         }
@@ -56,25 +58,26 @@ export const RuleSettings = () => {
 
     const openDetailDialog = (entry: BaSyxRbacRule) => {
         // Check if the entry is the only rule for the role
-        const isOnlyRuleForRole = rbacRoles?.roles.filter((rule) => rule.role === entry.role).length === 1;
+        const isOnlyRuleForRole = rbacRules?.rules.filter((rule) => rule.role === entry.role).length === 1;
         const updatedEntry = { ...entry, isOnlyRuleForRole };
 
         setSelectedRule(updatedEntry);
         setRuleDetailDialogOpen(true);
     };
 
-    const openCreateDialog = (roleName: string | null) => {
+    const openCreateDialog = (roleName: string) => {
         setSelectedRole(roleName);
         setCreateDialogOpen(true);
     };
 
-    const openDeleteRoleDialog = (_roleName: string) => {
-        throw new Error('Delete role dialog is not implemented yet');
+    const openDeleteRoleDialog = (roleName: string) => {
+        setSelectedRole(roleName);
+        setDeleteRoleDialogOpen(true);
     };
 
     function groupRulesByRole(): Record<string, BaSyxRbacRule[]> {
-        if (!rbacRoles) return {};
-        return rbacRoles.roles.reduce(
+        if (!rbacRules) return {};
+        return rbacRules.rules.reduce(
             (groupedRules, rule) => {
                 if (!groupedRules[rule.role]) {
                     groupedRules[rule.role] = [];
@@ -131,12 +134,22 @@ export const RuleSettings = () => {
             <CreateRuleDialog
                 open={createDialogOpen}
                 onClose={() => {
-                    setSelectedRole(null);
+                    setSelectedRole('');
                     setCreateDialogOpen(false);
                 }}
                 reloadRules={loadRbacData}
                 availableRoles={availableRoles}
                 selectedRole={selectedRole}
+            />
+            <DeleteRoleDialog
+                open={deleteRoleDialogOpen}
+                onClose={() => {
+                    setSelectedRole('');
+                    setDeleteRoleDialogOpen(false);
+                }}
+                reloadRules={loadRbacData}
+                roleName={selectedRole}
+                rules={groupedRules[selectedRole] ?? []}
             />
         </>
     );

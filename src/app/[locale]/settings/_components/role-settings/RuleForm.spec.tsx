@@ -18,7 +18,7 @@ jest.mock('./../../../../../lib/services/rbac-service/RbacActions');
  */
 
 const availableRoles: RoleOptions[] = [
-    ...new Map((mockRbacRoles?.roles ?? []).map((role) => [role.role, { name: role.role }])).values(),
+    ...new Map((mockRbacRoles?.rules ?? []).map((role) => [role.role, { name: role.role }])).values(),
 ];
 
 describe('RuleForm', () => {

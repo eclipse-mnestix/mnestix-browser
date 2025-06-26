@@ -14,7 +14,7 @@ interface RuleDeleteDialogProps {
     rule: BaSyxRbacRule;
 }
 
-export function RuleDeleteDialog({ onCancelDialog, onDelete, rule }: RuleDeleteDialogProps) {
+export function DeleteRuleDialogContent({ onCancelDialog, onDelete, rule }: RuleDeleteDialogProps) {
     const t = useTranslations('pages.settings.rules');
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
