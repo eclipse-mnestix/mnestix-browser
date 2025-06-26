@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useLocale } from 'next-intl';
-import { useAasOriginSourceState } from 'components/contexts/CurrentAasContext';
 import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
 import { findSubmodelElementBySemanticIdsOrIdShort, getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import {
@@ -17,6 +16,7 @@ import {
     Property,
 } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import { findIdShortForLatestElement } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentUtils';
+import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 
 export type FileViewObject = {
     mimeType: string;
@@ -33,7 +33,7 @@ export type FileViewObject = {
  */
 export function useFileViewObject(submodelElement: SubmodelElementCollection, submodelId: string) {
     const locale = useLocale();
-    const [aasOriginUrl] = useAasOriginSourceState();
+    const { aasOriginUrl } = useCurrentAasContext();
     const [fileViewObject, setFileViewObject] = useState<FileViewObject>();
 
     useEffect(() => {

@@ -1,5 +1,4 @@
 import { Box, Checkbox, TableCell, Typography } from '@mui/material';
-import { useAasOriginSourceState, useAasState } from 'components/contexts/CurrentAasContext';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
 import PictureTableCell from 'components/basics/listBasics/PictureTableCell';
@@ -40,8 +39,6 @@ export const ProductListTableRow = (props: AasTableRowProps) => {
         selectedAasList,
         updateSelectedAasList,
     } = props;
-    const [, setAas] = useAasState();
-    const [, setAasOriginUrl] = useAasOriginSourceState();
     const notificationSpawner = useNotificationSpawner();
     const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
     const t = useTranslations('pages.aasList');
@@ -58,15 +55,13 @@ export const ProductListTableRow = (props: AasTableRowProps) => {
     );
 
     const navigateToAas = (aasId: string) => {
-        setAas(null);
-        setAasOriginUrl(null);
         const baseUrl = window.location.origin;
         const pageToGo = env.PRODUCT_VIEW_FEATURE_FLAG ? '/product' : '/viewer';
 
         window.open(baseUrl + `${pageToGo}/${encodeBase64(aasId)}`, '_blank');
     };
 
-    const translateListText = (property: {language: string, text: string}[] | undefined) => {
+    const translateListText = (property: { language: string; text: string }[] | undefined) => {
         if (!property) return '';
         // try the current locale first
         const translatedString = property.find((prop) => prop.language === locale);
