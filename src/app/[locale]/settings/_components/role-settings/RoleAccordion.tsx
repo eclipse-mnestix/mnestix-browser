@@ -3,7 +3,6 @@ import {
     AccordionDetails,
     AccordionSummary,
     Box,
-    Button,
     Chip,
     Table,
     TableBody,
@@ -19,7 +18,7 @@ import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { RoundedIconButton } from 'components/basics/Buttons';
 import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
 import { useTranslations } from 'next-intl';
-import AddIcon from '@mui/icons-material/Add';
+import { RoleActionMenu } from './RoleActionMenu';
 
 const PERMISSION_CATEGORY_PRIORITY_ORDER = [
     'aasIds',
@@ -34,11 +33,13 @@ export function RoleAccordion({
     rules,
     openDetailDialog,
     openCreateDialog,
+    openDeleteRoleDialog,
 }: {
     roleName: string;
     rules: BaSyxRbacRule[];
     openDetailDialog: (entry: BaSyxRbacRule) => void;
     openCreateDialog: (roleName: string | null) => void;
+    openDeleteRoleDialog: (roleName: string) => void;
 }) {
     const [isExpanded, setExpanded] = useState(false);
     const isMobile = useIsMobile();
@@ -145,13 +146,11 @@ export function RoleAccordion({
                 )}
                 <TableCell sx={{ width: '2rem', textAlign: 'center' }} data-testid="rulesettings-header-empty">
                     <Box>
-                        <Button
-                            variant="contained"
-                            onClick={() => openCreateDialog(roleName)}
-                            aria-label={t('buttons.create')}
-                        >
-                            <AddIcon />
-                        </Button>
+                        <RoleActionMenu
+                            roleName={roleName}
+                            openCreateDialog={openCreateDialog}
+                            openDeleteRoleDialog={openDeleteRoleDialog}
+                        />
                     </Box>
                 </TableCell>
             </TableRow>

@@ -407,6 +407,9 @@
           "edit": "Bearbeiten",
           "save": "Speichern"
         },
+        "deleteRole": {
+          "delete": "Rolle löschen"
+        },
         "createRule": {
           "saveSuccess": "Neue Regel erfolgreich gespeichert.",
           "title": "Neue Berechtigung hinzufügen",

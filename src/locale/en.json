@@ -407,6 +407,9 @@
           "edit": "Edit",
           "save": "Save"
         },
+        "deleteRole": {
+          "delete": "Delete role"
+        },
         "createRule": {
           "saveSuccess": "New rule saved successfully.",
           "title": "Add new permission",
