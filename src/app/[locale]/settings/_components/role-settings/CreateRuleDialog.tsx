@@ -9,12 +9,13 @@ import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { RuleForm, RuleFormModel } from 'app/[locale]/settings/_components/role-settings/RuleForm';
 import { useState } from 'react';
 import { KeycloakHint } from 'app/[locale]/settings/_components/role-settings/HintDialogContent';
+import { RoleOptions } from './RuleSettings';
 
 type RoleDialogProps = {
     readonly onClose: () => void;
     readonly reloadRules: () => Promise<void>;
     readonly open: boolean;
-    readonly availableRoles: string[];
+    readonly availableRoles: RoleOptions[];
     readonly selectedRole?: string | null;
 };
 
@@ -33,7 +34,7 @@ export function CreateRuleDialog({ onClose, reloadRules, open, availableRoles, s
     const [showHint, setShowHint] = useState(false);
 
     async function afterSubmit(newData: RuleFormModel) {
-        const isNewRole = !availableRoles.includes(newData.role);
+        const isNewRole = !availableRoles.some((role) => role.name === newData.role.name);
         if (isNewRole) {
             setShowHint(true);
         } else {

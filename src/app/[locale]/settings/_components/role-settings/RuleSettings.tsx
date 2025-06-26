@@ -13,6 +13,10 @@ import { CreateRuleDialog, defaultRbacRule } from 'app/[locale]/settings/_compon
 import { RoleAccordion } from './RoleAccordion';
 
 const DEFAULT_RBAC_RULE = { ...defaultRbacRule, isOnlyRuleForRole: false };
+export type RoleOptions = {
+    readonly name: string;
+    readonly title?: string;
+};
 
 export const RuleSettings = () => {
     const t = useTranslations('pages.settings.rules');
@@ -25,7 +29,13 @@ export const RuleSettings = () => {
     const { showError } = useShowError();
 
     // all available role names
-    const availableRoles = [...new Set(rbacRoles?.roles.map((role) => role.role))];
+    /**
+     * Extracts available roles as an array of objects with 'role' and 'title' properties.
+     * @type {RoleOptions}[]}
+     */
+    const availableRoles: RoleOptions[] = [
+        ...new Map((rbacRoles?.roles ?? []).map((role) => [role.role, { name: role.role }])).values(),
+    ];
 
     async function loadRbacData() {
         setIsLoading(true);

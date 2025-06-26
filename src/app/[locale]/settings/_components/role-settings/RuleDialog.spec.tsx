@@ -7,6 +7,7 @@ import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { mockRbacRoles } from './test-data/mockRbacRoles';
 import { ApiResponseWrapperError, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { EnvProvider } from 'app/EnvProvider';
+import { RoleOptions } from './RuleSettings';
 
 jest.mock('./../../../../../lib/services/rbac-service/RbacActions');
 jest.mock('next-intl', () => ({
@@ -35,7 +36,9 @@ const conflictRule = {
 };
 const newName = 'newRoleName';
 
-const availableRoles = [...new Set(mockRbacRoles.roles.map((role) => role.role))];
+const availableRoles: RoleOptions[] = [
+    ...new Map((mockRbacRoles?.roles ?? []).map((role) => [role.role, { name: role.role }])).values(),
+];
 
 async function renderRuleDialog(rule: DialogRbacRule) {
     const onClose = jest.fn();
