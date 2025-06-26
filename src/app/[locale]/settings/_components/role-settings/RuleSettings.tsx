@@ -68,6 +68,10 @@ export const RuleSettings = () => {
         setCreateDialogOpen(true);
     };
 
+    const openDeleteRoleDialog = (_roleName: string) => {
+        throw new Error('Delete role dialog is not implemented yet');
+    };
+
     function groupRulesByRole(): Record<string, BaSyxRbacRule[]> {
         if (!rbacRoles) return {};
         return rbacRoles.roles.reduce(
@@ -109,6 +113,7 @@ export const RuleSettings = () => {
                                     rules={rules}
                                     openDetailDialog={openDetailDialog}
                                     openCreateDialog={openCreateDialog}
+                                    openDeleteRoleDialog={openDeleteRoleDialog}
                                 />
                             ))}
                         </Box>
