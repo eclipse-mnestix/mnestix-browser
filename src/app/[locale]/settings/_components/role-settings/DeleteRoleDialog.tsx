@@ -55,11 +55,13 @@ export const DeleteRoleDialog = ({ onClose, reloadRules, open, roleName, rules }
     async function onDelete() {
         const deleteSuccess = await deleteAllRules();
         if (deleteSuccess) {
+            onClose();
+            await new Promise( resolve => setTimeout(resolve, 1000) ); // Wait for the notification to be shown
             setDialogMode('delete-hint');
         } else {
             onClose();
-            await reloadRules();
         }
+        await reloadRules();
     }
 
     function RoleDeleteContent() {
@@ -67,10 +69,10 @@ export const DeleteRoleDialog = ({ onClose, reloadRules, open, roleName, rules }
             <>
                 <DialogContent data-testid="role-settings-delete-role-dialog">
                     <Box display="flex" flexDirection="column">
-                        <Typography color="text.secondary" variant="body2">
+                        <Typography variant="h2" color="primary" sx={{ mb: '1rem' }}>
                             {t('deleteRole.header')}
                         </Typography>
-                        <Typography color="primary" variant="body2">
+                        <Typography variant="body1" color="text.secondary" sx={{ mb: '0.5rem' }}>
                             {t('deleteRole.description', { roleName: roleName, count: rules.length })}
                         </Typography>
                     </Box>
@@ -123,7 +125,7 @@ export const DeleteRoleDialog = ({ onClose, reloadRules, open, roleName, rules }
             fullWidth={true}
             onTransitionExited={() => {
                 // This function is called when the dialog close transition ends
-                setDialogMode('delete-role');
+                if (!open) setDialogMode('delete-role');
             }}
         >
             <Box sx={{ mx: '2rem', mt: '1.5rem', mb: '1rem' }} data-testid="role-dialog">

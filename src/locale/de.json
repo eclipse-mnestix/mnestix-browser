@@ -17,7 +17,7 @@
     },
     "assetNotFound": {
       "header": "Verwaltungsschale konnte nicht geladen werden.",
-      "text": "Es konnte keine Verwaltungsschale für die angegebene ID \"{id}\" geladen werden.",
+      "text": "Es konnte keine Verwaltungsschale für die angegebene ID ''{id}'' geladen werden.",
       "toHome": "Zur Startseite"
     },
     "authentication": {
@@ -105,7 +105,7 @@
     },
     "noSearchResult": {
       "header": "Keine Daten gefunden",
-      "noDataFound": "Es wurden keine Daten für \"{name}\" gefunden.",
+      "noDataFound": "Es wurden keine Daten für ''{name}'' gefunden.",
       "toHomeButton": "Zur Startseite"
     },
     "propertyComponent": {
@@ -380,9 +380,9 @@
           "title": "Wie Sie Ihre Asset ID mit Ihrem Repository verbinden"
         },
         "errors": {
-          "idStructureError": "Fehler beim speichern von \"{name}\" ({reason}).",
+          "idStructureError": "Fehler beim speichern von ''{name}'' ({reason}).",
           "invalidIri": "Muss eine valide IRI sein. Z.B. https://example.com/",
-          "invalidIriPart": "Muss als Teil einer IRI funktionieren können (kein \"/\", Leer- und Sonderzeichen)"
+          "invalidIriPart": "Muss als Teil einer IRI funktionieren können (keine Schrägstriche, Leer- und Sonderzeichen erlaubt)"
         },
         "labels": {
           "dynamicPart": "dynamischer Teil",
@@ -415,7 +415,7 @@
           "title": "Neue Berechtigung hinzufügen"
         },
         "deleteRole": {
-          "delete": "",
+          "delete": "Rolle löschen",
           "description": "",
           "header": "",
           "partiallySuccess": "",
@@ -478,7 +478,7 @@
       "createNew": "Neu erstellen",
       "custom": "Custom",
       "defaultValue": "Defaultwert",
-      "deleteTemplateQuestion": "Template \"{name}\" unwiderruflich löschen?",
+      "deleteTemplateQuestion": "Template ''{name}'' unwiderruflich löschen?",
       "displayName": "Anzeigename",
       "emptyCustom": "Leer (Custom)",
       "emptyCustomDescription": "Basiert auf keinem standardisierten Template",
@@ -507,7 +507,7 @@
       "title": "Templates",
       "validation": {
         "errors": {
-          "invalidDate": "Muss ein gültiges Datum sein, im Format \"yyyy-mm-dd\"",
+          "invalidDate": "Muss ein gültiges Datum sein, im Format ''yyyy-mm-dd''",
           "invalidLong": "Muss eine valide Zahl sein"
         }
       }

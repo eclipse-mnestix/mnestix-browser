@@ -17,7 +17,7 @@
     },
     "assetNotFound": {
       "header": "No se pudo cargar el AAS.",
-      "text": "No pudo cargarse el AAS para el ID \"{id}\"",
+      "text": "No pudo cargarse el AAS para el ID ''{id}''",
       "toHome": "Ir a Inicio"
     },
     "authentication": {
@@ -105,7 +105,7 @@
     },
     "noSearchResult": {
       "header": "No se encontraron datos",
-      "noDataFound": "No se encontraron datos para \"{name}\".",
+      "noDataFound": "No se encontraron datos para ''{name}''.",
       "toHomeButton": "Ir a Inicio"
     },
     "propertyComponent": {
@@ -380,9 +380,9 @@
           "title": "Como conectar su Asset ID con su repositorio de AAS"
         },
         "errors": {
-          "idStructureError": "Error al guardar \"{name}\" ({reason}).",
+          "idStructureError": "Error al guardar ''{name}'' ({reason}).",
           "invalidIri": "Debe ser un IRI válido, e.g. https://example.com/",
-          "invalidIriPart": "Debe funcionar como parte de un IRI (no \"/\", spaces or special characters)"
+          "invalidIriPart": "Debe funcionar como parte de un IRI (las barras, espacios o caracteres especiales no son válidos)"
         },
         "labels": {
           "dynamicPart": "parte dinámica",
@@ -415,7 +415,7 @@
           "title": "Añadir nuevo permiso"
         },
         "deleteRole": {
-          "delete": "",
+          "delete": "Eliminar rol",
           "description": "",
           "header": "",
           "partiallySuccess": "",
@@ -478,7 +478,7 @@
       "createNew": "Crear nuevo",
       "custom": "A medida",
       "defaultValue": "Valor predeterminado",
-      "deleteTemplateQuestion": "Desea eliminar la plantilla \"{name}\" definitivamente?",
+      "deleteTemplateQuestion": "Desea eliminar la plantilla ''{name}'' definitivamente?",
       "displayName": "Nombre a mostrar",
       "emptyCustom": "Vacío (A medida)",
       "emptyCustomDescription": "No basada en una plantilla estandarizada",
@@ -507,7 +507,7 @@
       "title": "Plantillas",
       "validation": {
         "errors": {
-          "invalidDate": "La fecha debe ser válida y seguir formato \"yyyy-mm-dd\"",
+          "invalidDate": "La fecha debe ser válida y seguir formato ''yyyy-mm-dd''",
           "invalidLong": "Debe ser un número largo válido"
         }
       }

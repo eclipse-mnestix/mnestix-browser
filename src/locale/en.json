@@ -17,7 +17,7 @@
     },
     "assetNotFound": {
       "header": "AAS could not be loaded.",
-      "text": "Unable to load AAS for the given ID \"{id}\"",
+      "text": "Unable to load AAS for the given ID ''{id}''",
       "toHome": "To Home"
     },
     "authentication": {
@@ -105,7 +105,7 @@
     },
     "noSearchResult": {
       "header": "No data found",
-      "noDataFound": "No data found for \"{name}\".",
+      "noDataFound": "No data found for ''{name}''.",
       "toHomeButton": "To Home"
     },
     "propertyComponent": {
@@ -165,7 +165,7 @@
     "errors": {
       "notFound": "Not found",
       "unauthorizedError": {
-        "content": "You don't have access to this resource. Log in or ask your administrator for access.",
+        "content": "You don''t have access to this resource. Log in or ask your administrator for access.",
         "title": "Unauthorized access"
       },
       "unexpectedError": "Unexpected error",
@@ -242,7 +242,7 @@
           "count": "Count",
           "elementName": "Element"
         },
-        "renderError": "Submodel can't be rendered.",
+        "renderError": "Submodel can''t be rendered.",
         "semanticIdLabel": "Semantic IDs:",
         "timeSeries": {
           "internalSegments": "Internal segments",
@@ -266,7 +266,7 @@
       "manufacturerSelect": "Select manufacturer",
       "marketplaceSubtitle": "Asset Administration Shell for Wire Harness",
       "marketplaceTitle": "VWS4LS - Marketplace",
-      "noSearcherWarning": "No AAS Searcher Configured. Showing AAS List as Fallback, filters won't work.",
+      "noSearcherWarning": "No AAS Searcher Configured. Showing AAS List as Fallback, filters won''t work.",
       "searchPlaceholder": "Search currently unavailable...",
       "title": "Manufacturer catalog"
     },
@@ -380,9 +380,9 @@
           "title": "How to connect your Asset ID with your AAS repository"
         },
         "errors": {
-          "idStructureError": "Error while saving \"{name}\" ({reason}).",
+          "idStructureError": "Error while saving ''{name}'' ({reason}).",
           "invalidIri": "Has to be a valid IRI, e.g. https://example.com/",
-          "invalidIriPart": "Has to work as part of an IRI (no \"/\", spaces or special characters)"
+          "invalidIriPart": "Has to work as part of an IRI (no slashes, spaces or special characters)"
         },
         "labels": {
           "dynamicPart": "dynamic part",
@@ -416,10 +416,10 @@
         },
         "deleteRole": {
           "delete": "Delete role",
-          "description": "You are about to delete the '{roleName}' role with {count} permissions. Are you sure you want to delete entire role?",
+          "description": "You are about to delete the ''{roleName}'' role with {count} permissions. Are you sure you want to delete entire role?",
           "header": "Delete entire role",
           "partiallySuccess": "{count} / {total} permissions have been deleted. The role still exists with the remaining permissions!",
-          "success": "Role '{roleName}' has been deleted successfully."
+          "success": "Role ''{roleName}'' has been deleted successfully."
         },
         "deleteRule": {
           "question": "Permanently delete this rule?",
@@ -435,7 +435,7 @@
         },
         "keycloakHint": {
           "acknowledge": "Acknowledge",
-          "create": "This role has not been used yet. Don't forget to configure it in Keycloak!",
+          "create": "This role has not been used yet. Don''t forget to configure it in Keycloak!",
           "delete": "Do not forget to delete this role in Keycloak as well!",
           "title": "Update Keycloak"
         },
@@ -478,7 +478,7 @@
       "createNew": "Create new",
       "custom": "Custom",
       "defaultValue": "Default value",
-      "deleteTemplateQuestion": "Delete template \"{name}\" irretrievably?",
+      "deleteTemplateQuestion": "Delete template ''{name}'' irretrievably?",
       "displayName": "Display name",
       "emptyCustom": "Empty (Custom)",
       "emptyCustomDescription": "Is not based upon a standardized template",
@@ -507,7 +507,7 @@
       "title": "Templates",
       "validation": {
         "errors": {
-          "invalidDate": "Has to be a valid date in format \"yyyy-mm-dd\"",
+          "invalidDate": "Has to be a valid date in format ''yyyy-mm-dd''",
           "invalidLong": "Has to be a valid long"
         }
       }
