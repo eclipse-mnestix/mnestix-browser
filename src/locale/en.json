@@ -173,6 +173,7 @@
     },
     "footer": {
       "about": "About Mnestix",
+      "aboutHeader": "This application is powered by Mnestix",
       "dataPrivacy": "Data Privacy",
       "imprint": "Imprint",
       "documentation": "Documentation"

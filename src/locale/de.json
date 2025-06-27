@@ -173,6 +173,7 @@
     },
     "footer": {
       "about": "Über Mnestix",
+      "aboutHeader": "Diese Anwendung wird von Mnestix unterstützt",
       "dataPrivacy": "Datenschutz",
       "imprint": "Impressum",
       "documentation": "Dokumentation"

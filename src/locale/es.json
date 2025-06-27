@@ -173,6 +173,7 @@
     },
     "footer": {
       "about": "Sobre Mnestix",
+      "aboutHeader": "Esta aplicación funciona con Mnestix",
       "dataPrivacy": "Privacidad",
       "imprint": "Aviso legal",
       "documentation": "Documentación"

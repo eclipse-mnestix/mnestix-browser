@@ -10,7 +10,7 @@ export function Footer() {
     const env = useEnv();
     const imprintString = env.IMPRINT_URL;
     const dataPrivacyString = env.DATA_PRIVACY_URL;
-    const copyrightString = `Copyright © ${new Date().getFullYear()} XITASO GmbH`;
+    const copyrightString = `Copyright © ${new Date().getFullYear()} ARENA2036 e.V. (Kontakt: markus.rentschler@arena2036.de)`;
     const [aboutDialogOpen, setAboutDialogOpen] = useState(false);
     const handleAboutDialogClose = () => {
         setAboutDialogOpen(false);
@@ -85,13 +85,13 @@ export function Footer() {
                         </Typography>
 
                         <Typography mx={2} color="text.secondary" fontSize="small">
-                                |
+                            |
                         </Typography>
 
                         <Typography fontSize="small" maxWidth="10rem">
-                                <Link href={documentationURL} target="_blank">
-                                    {t('documentation')}
-                                </Link>
+                            <Link href={documentationURL} target="_blank">
+                                {t('documentation')}
+                            </Link>
                         </Typography>
                     </Grid>
                 </Grid>
