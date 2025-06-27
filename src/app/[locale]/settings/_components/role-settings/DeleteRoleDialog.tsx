@@ -40,7 +40,7 @@ export const DeleteRoleDialog = ({ onClose, reloadRules, open, roleName, rules }
                 return false;
             }
             notificationSpawner.spawn({
-                message: t('deleteRole.success'),
+                message: t('deleteRole.success', { roleName: roleName }),
                 severity: 'success',
             });
         } catch (error) {

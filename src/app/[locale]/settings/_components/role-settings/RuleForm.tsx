@@ -65,7 +65,11 @@ export function RuleForm({ onCancel, onSubmit, rule, title, availableRoles, sele
             role: selectedRole ? { name: selectedRole } : mapBaSyxRbacRuleToFormModel(rule as BaSyxRbacRule).role,
         });
     }, [rule, selectedRole, reset]);
-
+    
+    function getInputValueTitle(inputValue: string): string {
+        return `${t('buttons.add')} "${inputValue}"`;
+    }
+    
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <DialogContent>
@@ -97,16 +101,9 @@ export function RuleForm({ onCancel, onSubmit, rule, title, availableRoles, sele
                                     freeSolo
                                     options={availableRoles}
                                     value={field.value || null}
-                                    onChange={(_, newValue) => {
-                                        if (typeof newValue === 'string') {
-                                            field.onChange({ name: newValue });
-                                        } else {
-                                            field.onChange(newValue);
-                                        }
-                                    }}
                                     onInputChange={(_, newValue, reason) => {
                                         if (reason === 'input' || reason === 'clear') {
-                                            field.onChange({ name: newValue });
+                                            field.onChange(newValue);
                                         }
                                     }}
                                     filterOptions={(options, params) => {
@@ -117,7 +114,7 @@ export function RuleForm({ onCancel, onSubmit, rule, title, availableRoles, sele
                                         if (inputValue !== '' && !isExisting) {
                                             filtered.push({
                                                 name: inputValue,
-                                                title: `${t('buttons.add')} "${inputValue}"`,
+                                                title: getInputValueTitle(inputValue),
                                             });
                                         }
                                         return filtered;
@@ -125,9 +122,6 @@ export function RuleForm({ onCancel, onSubmit, rule, title, availableRoles, sele
                                     getOptionLabel={(option) => {
                                         if (typeof option === 'string') {
                                             return option;
-                                        }
-                                        if (option.title) {
-                                            return option.title;
                                         }
                                         return option.name;
                                     }}
@@ -142,6 +136,14 @@ export function RuleForm({ onCancel, onSubmit, rule, title, availableRoles, sele
                                             disabled={!!selectedRole}
                                         />
                                     )}
+                                    renderOption={(props, option) => {
+                                        const { key, ...optionProps } = props;
+                                        return (
+                                            <li key={key} {...optionProps}>
+                                                {option.title ?? option.name}
+                                            </li>
+                                        );
+                                    }}
                                     disabled={!!selectedRole}
                                 />
                             </FormControl>
