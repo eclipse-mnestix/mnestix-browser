@@ -15,12 +15,23 @@ import {
 import { PreviewImage } from 'app/[locale]/viewer/_components/submodel-elements/document-component/PreviewImage';
 import { useSession } from 'next-auth/react';
 import { CustomSubmodelElementComponentProps } from 'app/[locale]/viewer/_components/submodel/generic-submodel/GenericSubmodelDetailComponent';
+import Link from 'next/link';
+import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 
 export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
     const t = useTranslations('components.documentComponent');
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
     const fileViewObject = useFileViewObject(props.submodelElement, props.submodelId);
+    const [documentUrl, setDocumentUrl] = useState<string>('');
     const { data: session } = useSession();
+
+    useAsyncEffect(async () => {
+        if (!fileViewObject?.digitalFileUrl) {
+            return;
+        }
+        const url = await getDocumentUrl(fileViewObject?.digitalFileUrl);
+        setDocumentUrl(url);
+    }, [fileViewObject?.digitalFileUrl]);
 
     const handleDetailsClick = () => {
         setDetailsModalOpen(true);
@@ -37,10 +48,9 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
         ]) as SubmodelElementCollection[];
     }
 
-    const openFile = async (url: string) => {
+    const getDocumentUrl = async (url: string) => {
         if (!session?.accessToken || !props.repositoryUrl || !url.startsWith(props.repositoryUrl)) {
-            window.open(url, '_blank');
-            return;
+            return url;
         }
 
         try {
@@ -50,11 +60,10 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
                 },
             });
             const blob = await response.blob();
-            const blobUrl = window.URL.createObjectURL(blob);
-            window.open(blobUrl, '_blank');
+            return window.URL.createObjectURL(blob);
         } catch (e) {
             console.warn(`Failed to open file with auth: ${e}`);
-            window.open(url, '_blank');
+            return url;
         }
     };
 
@@ -70,13 +79,13 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
                         sx={{ mb: 1 }}
                     >
                         <Box display="flex" gap={1} flexDirection="row" sx={{ mb: 1 }}>
-                            <Box onClick={() => openFile(fileViewObject.digitalFileUrl)} style={{ cursor: 'pointer' }}>
+                            <Link href={documentUrl} target="_blank">
                                 <PreviewImage
                                     previewImgUrl={fileViewObject.previewImgUrl}
                                     mimeType={fileViewObject.mimeType}
                                     repositoryUrl={props.repositoryUrl}
                                 />
-                            </Box>
+                            </Link>
                             <Box>
                                 <Typography data-testid="document-title" variant="h5">
                                     {fileViewObject.title}
@@ -90,7 +99,8 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
                                     variant="outlined"
                                     startIcon={<OpenInNew />}
                                     sx={{ mt: 1 }}
-                                    onClick={() => openFile(fileViewObject.digitalFileUrl)}
+                                    href={documentUrl}
+                                    target="_blank"
                                     data-testid="document-open-button"
                                 >
                                     {t('open')}
