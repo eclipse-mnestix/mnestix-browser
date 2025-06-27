@@ -16,7 +16,7 @@ import { envs } from 'lib/env/MnestixEnv';
 
 export type AasData = {
     submodelDescriptors: SubmodelDescriptor[] | undefined;
-    aasRepositoryOrigin: string;
+    aasRepositoryOrigin: string | undefined;
 };
 
 export type AasSearchResult = {

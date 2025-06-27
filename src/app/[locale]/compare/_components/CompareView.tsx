@@ -95,7 +95,7 @@ export function CompareView() {
                                         isLoading={isLoadingAas}
                                         isAccordion={true}
                                         imageLinksToDetail={true}
-                                        repositoryURL={compareAas.aasOrigin}
+                                        repositoryURL={compareAas.aasOrigin ?? undefined}
                                     />
                                 </Box>
                             ))}

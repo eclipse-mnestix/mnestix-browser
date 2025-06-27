@@ -14,7 +14,7 @@ import { SubmodelInfoDialog } from 'app/[locale]/viewer/_components/submodel/Sub
 import { AssetAdministrationShell } from '@aas-core-works/aas-core3.0-typescript/types';
 
 export type SubmodelsOverviewCardProps = {
-    readonly aas: AssetAdministrationShell | null;
+    readonly aas: AssetAdministrationShell | undefined;
     readonly submodelIds: SubmodelOrIdReference[] | undefined;
     readonly submodelsLoading?: boolean;
     readonly firstSubmodelIdShort?: string;

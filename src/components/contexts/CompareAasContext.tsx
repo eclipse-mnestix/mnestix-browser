@@ -59,7 +59,7 @@ export const CompareAasContextProvider = (props: PropsWithChildren) => {
         if (compareAas.length < 3) {
             const newAas = {
                 aas: inputAas,
-                aasOrigin: data.aasRepositoryOrigin,
+                aasOrigin: data.aasRepositoryOrigin ?? null,
             };
             setCompareAas((prevList) => [...prevList, newAas]);
             if (inputAas.submodels) {

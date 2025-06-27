@@ -3,15 +3,13 @@ import { Typography } from '@mui/material';
 import { ManualAasInput } from 'app/[locale]/_components/ManualAasInput';
 import { QrScanner } from 'app/[locale]/_components/QrScanner';
 import { useRouter } from 'next/navigation';
-import { useAasOriginSourceState, useAasState, useRegistryAasState } from 'components/contexts/CurrentAasContext';
 import { LocalizedError } from 'lib/util/LocalizedError';
 import { performFullAasSearch } from 'lib/services/search-actions/searchActions';
 import { useTranslations } from 'next-intl';
+import { useAasStore } from 'stores/AasStore';
 
 export const DashboardInput = () => {
-    const [, setAas] = useAasState();
-    const [, setRegistryAasData] = useRegistryAasState();
-    const [, setAasOriginUrl] = useAasOriginSourceState();
+    const { addAasData } = useAasStore();
     const navigate = useRouter();
     const t = useTranslations('pages.dashboard');
 
@@ -20,9 +18,13 @@ export const DashboardInput = () => {
         if (!isSuccess) throw new LocalizedError('navigation.errors.urlNotFound');
 
         if (result.aas) {
-            setAas(result.aas);
-            setRegistryAasData(result.aasData);
-            setAasOriginUrl(result.aasData?.aasRepositoryOrigin ?? null);
+            addAasData({
+                aas: result.aas,
+                aasData: {
+                    aasRepositoryOrigin: result.aasData?.aasRepositoryOrigin,
+                    submodelDescriptors: result.aasData?.submodelDescriptors ?? [],
+                },
+            });
         }
         navigate.push(result.redirectUrl);
     };

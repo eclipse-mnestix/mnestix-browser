@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useEnv } from 'app/EnvProvider';
 import {
@@ -7,33 +7,27 @@ import {
     performSubmodelFullSearch,
 } from 'lib/services/search-actions/searchActions';
 import { LocalizedError } from 'lib/util/LocalizedError';
-import {
-    SubmodelOrIdReference,
-    useAasOriginSourceState,
-    useAasState,
-    useRegistryAasState,
-    useSubmodelState,
-} from 'components/contexts/CurrentAasContext';
+import { CurrentAasContextType, SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
-import { safeBase64Decode } from 'lib/util/Base64Util';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
+import { useAasStore } from 'stores/AasStore';
 
 /**
  * Hook to load AAS content and its submodels asynchronously.
  * @param base64AasId
  * @param repoUrl
  */
-export function useAasLoader(base64AasId: string, repoUrl?: string) {
-    const [isLoadingAas, setIsLoadingAas] = useState(false);
+export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string, repoUrl: string | undefined) {
     const env = useEnv();
-    const [aasOriginUrl, setAasOriginUrl] = useAasOriginSourceState();
-    const [aasFromContext, setAasFromContext] = useAasState();
-    const [submodels, setSubmodels] = useSubmodelState();
-    const [isSubmodelsLoading, setIsSubmodelsLoading] = useState(true);
-    const [registryAasData, setRegistryAasData] = useRegistryAasState();
+    const setIsLoadingAas = context.isLoadingAas[1];
+    const setIsLoadingSubmodels = context.isLoadingSubmodels[1];
+    const setAasOriginUrl = context.aasOriginUrl[1];
+    const setSubmodels = context.submodelState[1];
+    const [aasFromContext, setAasFromContext] = context.aasState;
+    const [registryAasData, setRegistryAasData] = context.registryAasData;
     const { showError } = useShowError();
-    const aasIdDecoded = safeBase64Decode(base64AasId);
+    const aasStore = useAasStore();
 
     const submodelWhitelist: string[] = JSON.parse(env.SUBMODEL_WHITELIST || '[]');
 
@@ -59,7 +53,7 @@ export function useAasLoader(base64AasId: string, repoUrl?: string) {
     }
 
     async function fetchSubmodels() {
-        setIsSubmodelsLoading(true);
+        setIsLoadingSubmodels(true);
         if (aasFromContext?.submodels) {
             await Promise.all(
                 aasFromContext.submodels.map(async (smRef, i) => {
@@ -74,12 +68,12 @@ export function useAasLoader(base64AasId: string, repoUrl?: string) {
                 }),
             );
         }
-        setIsSubmodelsLoading(false);
+        setIsLoadingSubmodels(false);
     }
 
     async function loadAasContent() {
         if (repoUrl) {
-            const response = await getAasFromRepository(aasIdDecoded, repoUrl);
+            const response = await getAasFromRepository(aasIdToLoad, repoUrl);
             if (response.isSuccess) {
                 setAasOriginUrl(repoUrl);
                 setAasFromContext(response.result);
@@ -87,15 +81,15 @@ export function useAasLoader(base64AasId: string, repoUrl?: string) {
             }
         }
 
-        const { isSuccess, result } = await performFullAasSearch(aasIdDecoded);
+        const { isSuccess, result } = await performFullAasSearch(aasIdToLoad);
         if (!isSuccess) {
             showError(new LocalizedError('navigation.errors.urlNotFound'));
             return { success: false };
         }
 
         if (result.aas) {
-            setAasOriginUrl(result.aasData?.aasRepositoryOrigin ?? null);
-            setRegistryAasData(result.aasData);
+            setAasOriginUrl(result.aasData?.aasRepositoryOrigin);
+            setRegistryAasData(result.aasData ?? undefined);
             setAasFromContext(result.aas);
             return { success: true };
         }
@@ -114,17 +108,17 @@ export function useAasLoader(base64AasId: string, repoUrl?: string) {
     }, [aasFromContext]);
 
     useAsyncEffect(async () => {
-        if (aasFromContext) return;
+        if (aasFromContext?.id === aasIdToLoad) return;
+        const aasFromStore = aasStore.getAasData(aasIdToLoad);
+        if (aasFromStore) {
+            setAasFromContext(aasFromStore.aas);
+            setAasOriginUrl(aasFromStore.aasData?.aasRepositoryOrigin);
+            setRegistryAasData(aasFromStore.aasData);
+            setIsLoadingAas(false); // initialized as true, so we need to set it to false here
+            return;
+        }
         setIsLoadingAas(true);
         await loadAasContent();
         setIsLoadingAas(false);
-    }, [base64AasId, env]);
-
-    return {
-        aasFromContext,
-        isLoadingAas,
-        aasOriginUrl,
-        submodels,
-        isSubmodelsLoading,
-    };
+    }, [aasIdToLoad, env, repoUrl]);
 }
