@@ -4,6 +4,7 @@ import { Box, styled } from '@mui/material';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
+import { getFileUrl } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentUtils';
 
 const StyledImageWrapper = styled(Box)(({ theme }) => ({
     display: 'flex',
@@ -33,31 +34,12 @@ export const PreviewImage = (props: { previewImgUrl: string; mimeType: string; r
     const { data: session } = useSession();
 
     useAsyncEffect(async () => {
-        const url = await getImageUrl();
+        const url = await getFileUrl(props.previewImgUrl, session?.accessToken, props.repositoryUrl);
         setImageUrl(url);
-    }, [props.previewImgUrl, session]);
+    }, [props.previewImgUrl, session?.accessToken, props.repositoryUrl]);
 
     const handleImageError = () => {
         setImageError(true);
-    };
-
-    const getImageUrl = async () => {
-        if (!session?.accessToken || !props.repositoryUrl || !props.previewImgUrl.startsWith(props.repositoryUrl)) {
-            return props.previewImgUrl;
-        }
-
-        try {
-            const response = await fetch(props.previewImgUrl, {
-                headers: {
-                    Authorization: `Bearer ${session.accessToken}`,
-                },
-            });
-            const blob = await response.blob();
-            return window.URL.createObjectURL(blob);
-        } catch (e) {
-            console.warn(`Failed to open file with auth: ${e}`);
-            return props.previewImgUrl;
-        }
     };
 
     return (

@@ -39,3 +39,29 @@ export function findIdShortForLatestElement(
 
     return lastIdShort;
 }
+
+/**
+ * Fetches a file URL from a repository. When the file URL matches the repository URL of the submodel,
+ * the bearer token is sent in the request.
+ * @param fileUrl
+ * @param accessToken
+ * @param repositoryUrl
+ */
+export async function getFileUrl(fileUrl: string, accessToken?: string, repositoryUrl?: string) {
+    if (!accessToken || !repositoryUrl || !fileUrl.startsWith(repositoryUrl)) {
+        return fileUrl;
+    }
+
+    try {
+        const response = await fetch(fileUrl, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+        const blob = await response.blob();
+        return window.URL.createObjectURL(blob);
+    } catch (e) {
+        console.warn(`Failed to open file with auth: ${e}`);
+        return fileUrl;
+    }
+}

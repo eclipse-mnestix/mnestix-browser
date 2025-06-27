@@ -17,6 +17,7 @@ import { useSession } from 'next-auth/react';
 import { CustomSubmodelElementComponentProps } from 'app/[locale]/viewer/_components/submodel/generic-submodel/GenericSubmodelDetailComponent';
 import Link from 'next/link';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
+import { getFileUrl } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentUtils';
 
 export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
     const t = useTranslations('components.documentComponent');
@@ -29,9 +30,9 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
         if (!fileViewObject?.digitalFileUrl) {
             return;
         }
-        const url = await getDocumentUrl(fileViewObject?.digitalFileUrl);
+        const url = await getFileUrl(fileViewObject?.digitalFileUrl, session?.accessToken, props.repositoryUrl);
         setDocumentUrl(url);
-    }, [fileViewObject?.digitalFileUrl]);
+    }, [fileViewObject?.digitalFileUrl, session?.accessToken, props.repositoryUrl]);
 
     const handleDetailsClick = () => {
         setDetailsModalOpen(true);
@@ -47,25 +48,6 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
             DocumentSpecificSemanticIdIrdi.DocumentClassification,
         ]) as SubmodelElementCollection[];
     }
-
-    const getDocumentUrl = async (url: string) => {
-        if (!session?.accessToken || !props.repositoryUrl || !url.startsWith(props.repositoryUrl)) {
-            return url;
-        }
-
-        try {
-            const response = await fetch(url, {
-                headers: {
-                    Authorization: `Bearer ${session.accessToken}`,
-                },
-            });
-            const blob = await response.blob();
-            return window.URL.createObjectURL(blob);
-        } catch (e) {
-            console.warn(`Failed to open file with auth: ${e}`);
-            return url;
-        }
-    };
 
     return (
         <DataRow hasDivider={props.hasDivider}>
