@@ -416,10 +416,10 @@
         },
         "deleteRole": {
           "delete": "Rolle löschen",
-          "description": "",
-          "header": "",
-          "partiallySuccess": "",
-          "success": ""
+          "description": "Die Rolle ''{roleName}'' enthält {count} Rechte. Wollen Sie die gesamte Rolle mit allen Rechten löschen?",
+          "header": "Gesamte Rolle löschen",
+          "partiallySuccess": "{count} von {total} Rechte wurden gelöscht. Die Rolle existiert weiterhin mit den restlichen Rechten!",
+          "success": "Rolle ''{roleName}'' wurde erfogreich gelöscht."
         },
         "deleteRule": {
           "question": "Regel unwiderruflich löschen?",

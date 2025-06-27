@@ -418,7 +418,7 @@
           "delete": "Delete role",
           "description": "You are about to delete the ''{roleName}'' role with {count} permissions. Are you sure you want to delete entire role?",
           "header": "Delete entire role",
-          "partiallySuccess": "{count} / {total} permissions have been deleted. The role still exists with the remaining permissions!",
+          "partiallySuccess": "{count} out of {total} permissions have been deleted. The role still exists with the remaining permissions!",
           "success": "Role ''{roleName}'' has been deleted successfully."
         },
         "deleteRule": {

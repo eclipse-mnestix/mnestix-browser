@@ -416,10 +416,10 @@
         },
         "deleteRole": {
           "delete": "Eliminar rol",
-          "description": "",
-          "header": "",
-          "partiallySuccess": "",
-          "success": ""
+          "description": "Está a punto de eliminar el rol ''{roleName}'' con {count} permisos. Está seguro de que desea eliminar todo el rol?",
+          "header": "Borrar todo el rol",
+          "partiallySuccess": "Se han eliminado {count} de {total} permisos. El rol aún existe con los permisos restantes.",
+          "success": "El rol ''{roleName}'' ha sido eliminado con éxito."
         },
         "deleteRule": {
           "question": "¿Desea borrar esta regla permanentemente?",
