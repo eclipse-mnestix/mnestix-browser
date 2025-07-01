@@ -1,5 +1,5 @@
 import { CustomRender } from 'test-utils/CustomRender';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { expect } from '@jest/globals';
 import { AddressPerLifeCyclePhase, ProductJourney } from './ProductJourney';
 import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/ProductLifecycleStage.enum';
@@ -40,7 +40,7 @@ const secondAddress: AddressPerLifeCyclePhase = {
 describe('ProductJourney', () => {
     it('renders the ProductJourney', async () => {
         CustomRender(<ProductJourney addressesPerLifeCyclePhase={[firstAddress, secondAddress]} />);
-        const map = screen.getByTestId('product-journey-box');
+        const map = await waitFor(() => screen.getByTestId('product-journey-box'), { timeout: 3000 });
         expect(map).toBeDefined();
         expect(map).toBeInTheDocument();
 
@@ -54,7 +54,7 @@ describe('ProductJourney', () => {
     it('shows positions on the map', async () => {
         CustomRender(<ProductJourney addressesPerLifeCyclePhase={[firstAddress, secondAddress]} />);
 
-        const map = screen.getByTestId('product-journey-box');
+        const map = await waitFor(() => screen.getByTestId('product-journey-box'), { timeout: 3000 });
         expect(map).toBeDefined();
         expect(map).toBeInTheDocument();
 
