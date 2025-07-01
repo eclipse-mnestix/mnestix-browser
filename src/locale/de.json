@@ -1,10 +1,5 @@
 {
   "components": {
-    "constructionDialog": {
-      "title": "In Bearbeitung",
-      "message": "Diese Funktion befindet sich derzeit im Aufbau und wird in Kürze verfügbar sein.",
-      "buttonText": "Schließen"
-    },
     "addressComponent": {
       "VAT": "USt-IdNr.",
       "addressTypes": {
@@ -22,7 +17,7 @@
     },
     "assetNotFound": {
       "header": "Verwaltungsschale konnte nicht geladen werden.",
-      "text": "Es konnte keine Verwaltungsschale für die angegebene ID \"{id}\" geladen werden.",
+      "text": "Es konnte keine Verwaltungsschale für die angegebene ID ''{id}'' geladen werden.",
       "toHome": "Zur Startseite"
     },
     "authentication": {
@@ -72,6 +67,11 @@
       },
       "totalCO2Equivalents": "(Bisherige) CO2 Emissionen des Produkts"
     },
+    "constructionDialog": {
+      "buttonText": "Schließen",
+      "message": "Diese Funktion befindet sich derzeit im Aufbau und wird in Kürze verfügbar sein.",
+      "title": "In Bearbeitung"
+    },
     "contactInformation": {
       "contactTypes": {
         "0173-1#07-AAS754#001": "Geschäftlich",
@@ -105,7 +105,7 @@
     },
     "noSearchResult": {
       "header": "Keine Daten gefunden",
-      "noDataFound": "Es wurden keine Daten für \"{name}\" gefunden.",
+      "noDataFound": "Es wurden keine Daten für ''{name}'' gefunden.",
       "toHomeButton": "Zur Startseite"
     },
     "propertyComponent": {
@@ -237,6 +237,7 @@
           "view": "Ansehen"
         },
         "idLabel": "ID:",
+        "noSubmodelsToLoad": "Für diese AAS existieren keine Teilmodelle.",
         "referenceCounter": {
           "count": "Anzahl",
           "elementName": "Element"
@@ -249,26 +250,25 @@
           "selectTimeframe": "Auswahl des Zeitabschnitts"
         },
         "title": "Teilmodelle",
-        "unknownModelType": "Unbekannter ModelType: {type}",
-        "noSubmodelsToLoad": "Für diese AAS existieren keine Teilmodelle."
+        "unknownModelType": "Unbekannter ModelType: {type}"
       }
     },
     "catalog": {
-      "manufacturerCatalog": "Hersteller Produktkatalog",
-      "manufacturerSelect": "Hersteller auswählen",
-      "title": "Hersteller Produktkatalog",
-      "marketplaceTitle": "VWS4LS - Marketplace",
-      "marketplaceSubtitle": "Verwaltungsschale für den Leitungssatz",
       "articleCount": "{count, plural, =1 {# Artikel} other {# Artikel}}",
-      "filter": "Filter",
-      "noSearcherWarning": "Kein AAS Searcher konfiguriert. AAS Liste wird angezeigt, Filterung ist nicht möglich.",
       "eclassCategories": {
         "15": "Instandhaltung (Dienstleistung)",
         "27": "Elektro-, Automatisierungs- und Prozessleittechnik",
         "44": "Fahrzeugtechnik, Fahrzeugkomponente",
         "default": "Kategorie "
       },
-      "searchPlaceholder": "Suche aktuell nicht verfügbar..."
+      "filter": "Filter",
+      "manufacturerCatalog": "Hersteller Produktkatalog",
+      "manufacturerSelect": "Hersteller auswählen",
+      "marketplaceSubtitle": "Verwaltungsschale für den Leitungssatz",
+      "marketplaceTitle": "VWS4LS - Marketplace",
+      "noSearcherWarning": "Kein AAS Searcher konfiguriert. AAS Liste wird angezeigt, Filterung ist nicht möglich.",
+      "searchPlaceholder": "Suche aktuell nicht verfügbar...",
+      "title": "Hersteller Produktkatalog"
     },
     "compare": {
       "addAnother": "Eine weitere AAS hinzufügen",
@@ -308,10 +308,10 @@
     "productViewer": {
       "actions": {
         "compareButton": "Vergleichen",
-        "toAasView": "AAS Ansicht",
         "download": "AAS herunterladen",
+        "downloadError": "Fehler beim Herunterladen der AAS.",
         "downloadErrorNoRepo": "Kein Repository für die ausgewählte AAS gefunden.",
-        "downloadError": "Fehler beim Herunterladen der AAS."
+        "toAasView": "AAS Ansicht"
       },
       "classification": "Produktklassifikation",
       "error": {
@@ -380,9 +380,9 @@
           "title": "Wie Sie Ihre Asset ID mit Ihrem Repository verbinden"
         },
         "errors": {
-          "idStructureError": "Fehler beim speichern von \"{name}\" ({reason}).",
+          "idStructureError": "Fehler beim speichern von ''{name}'' ({reason}).",
           "invalidIri": "Muss eine valide IRI sein. Z.B. https://example.com/",
-          "invalidIriPart": "Muss als Teil einer IRI funktionieren können (kein \"/\", Leer- und Sonderzeichen)"
+          "invalidIriPart": "Muss als Teil einer IRI funktionieren können (keine Schrägstriche, Leer- und Sonderzeichen erlaubt)"
         },
         "labels": {
           "dynamicPart": "dynamischer Teil",
@@ -402,14 +402,24 @@
           "add": "Hinzufügen",
           "back": "Zurück",
           "cancel": "Abbrechen",
-          "create": "Regel erstellen",
+          "create": "Berechtigung hinzufügen",
           "delete": "Löschen",
           "edit": "Bearbeiten",
           "save": "Speichern"
         },
         "createRule": {
+          "placeholderText": "Neuer oder bestehender Rollenname",
           "saveSuccess": "Neue Regel erfolgreich gespeichert.",
-          "title": "Regel erstellen"
+          "subtitle": "Füge eine Berechtigung zu einer neuen oder bereits bestehenden Rolle hinzu.",
+          "subtitle2": "Füge eine Berechtigung zu der Rolle ''{role}'' hinzu.",
+          "title": "Neue Berechtigung hinzufügen"
+        },
+        "deleteRole": {
+          "delete": "Rolle löschen",
+          "description": "Die Rolle ''{roleName}'' enthält {count} Rechte. Wollen Sie die gesamte Rolle mit allen Rechten löschen?",
+          "header": "Gesamte Rolle löschen",
+          "partiallySuccess": "{count} von {total} Rechte wurden gelöscht. Die Rolle existiert weiterhin mit den restlichen Rechten!",
+          "success": "Rolle ''{roleName}'' wurde erfogreich gelöscht."
         },
         "deleteRule": {
           "question": "Regel unwiderruflich löschen?",
@@ -468,7 +478,7 @@
       "createNew": "Neu erstellen",
       "custom": "Custom",
       "defaultValue": "Defaultwert",
-      "deleteTemplateQuestion": "Template \"{name}\" unwiderruflich löschen?",
+      "deleteTemplateQuestion": "Template ''{name}'' unwiderruflich löschen?",
       "displayName": "Anzeigename",
       "emptyCustom": "Leer (Custom)",
       "emptyCustomDescription": "Basiert auf keinem standardisierten Template",
@@ -497,7 +507,7 @@
       "title": "Templates",
       "validation": {
         "errors": {
-          "invalidDate": "Muss ein gültiges Datum sein, im Format \"yyyy-mm-dd\"",
+          "invalidDate": "Muss ein gültiges Datum sein, im Format ''yyyy-mm-dd''",
           "invalidLong": "Muss eine valide Zahl sein"
         }
       }

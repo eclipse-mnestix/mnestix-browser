@@ -20,7 +20,7 @@ describe('RbacRulesService', () => {
             const res = await service.getRules();
             expect(res.isSuccess).toBeTruthy();
             expect(res.result?.warnings).toHaveLength(0);
-            expect(res.result?.roles).toHaveLength(2);
+            expect(res.result?.rules).toHaveLength(2);
         });
 
         it('should add warnings if unknown data is in SecuritySubmodel', async () => {

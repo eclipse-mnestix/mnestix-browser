@@ -1,7 +1,7 @@
-import { RbacRolesFetchResult } from 'lib/services/rbac-service/types/RbacServiceData';
+import { RbacRulesFetchResult } from 'lib/services/rbac-service/types/RbacServiceData';
 
-export const mockRbacRoles: RbacRolesFetchResult = {
-    roles: [
+export const mockRbacRoles: RbacRulesFetchResult = {
+    rules: [
         {
             idShort: 'roleId1',
             role: 'Admin-Role',

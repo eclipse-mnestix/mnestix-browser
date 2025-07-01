@@ -6,6 +6,7 @@ import { act } from 'react';
 import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
 import * as rbacActions from 'lib/services/rbac-service/RbacActions';
 import { mockRbacRoles } from './test-data/mockRbacRoles';
+import { RoleOptions } from './RuleSettings';
 
 jest.mock('next-intl', () => ({
     useTranslations: () => (key: string) => key,
@@ -16,7 +17,9 @@ jest.mock('./../../../../../lib/services/rbac-service/RbacActions');
   This file tests the whole RuleForm including the TargetInformationForm + WildcardOrStringArrayInput components
  */
 
-const availableRoles = [...new Set(mockRbacRoles.roles.map((role) => role.role))];
+const availableRoles: RoleOptions[] = [
+    ...new Map((mockRbacRoles?.rules ?? []).map((role) => [role.role, { name: role.role }])).values(),
+];
 
 describe('RuleForm', () => {
     const mockRule: BaSyxRbacRule = {
@@ -133,7 +136,7 @@ describe('RuleForm', () => {
             expect(defaultProps.onSubmit.mock.calls[0][0]).toEqual(
                 expect.objectContaining({
                     action: 'READ',
-                    role: 'Admin',
+                    role: { name: 'Admin' },
                     type: 'aas-environment',
                     targetInformation: expect.objectContaining({
                         'aas-environment': expect.objectContaining({

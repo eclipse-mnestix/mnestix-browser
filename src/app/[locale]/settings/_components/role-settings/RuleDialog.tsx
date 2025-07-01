@@ -12,8 +12,9 @@ import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { RuleForm, RuleFormModel } from 'app/[locale]/settings/_components/role-settings/RuleForm';
 import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
 import { KeycloakHint } from 'app/[locale]/settings/_components/role-settings/HintDialogContent';
-import { RuleDeleteDialog } from 'app/[locale]/settings/_components/role-settings/RuleDeleteDialog';
+import { DeleteRuleDialogContent } from 'app/[locale]/settings/_components/role-settings/DeleteRuleDialogContent';
 import { CopyButton } from 'components/basics/CopyButton';
+import { RoleOptions } from './RuleSettings';
 
 export type DialogRbacRule = BaSyxRbacRule & {
     // If this rule is the only rule for the role
@@ -25,7 +26,7 @@ type RuleDialogProps = {
     readonly reloadRules: () => Promise<void>;
     readonly open: boolean;
     readonly rule: DialogRbacRule;
-    readonly availableRoles: string[];
+    readonly availableRoles: RoleOptions[];
 };
 
 type DialogMode = 'edit' | 'view' | 'delete' | 'create-hint' | 'delete-hint';
@@ -37,8 +38,8 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
     const notificationSpawner = useNotificationSpawner();
 
     async function updateDialogModeForNewRule(newData: RuleFormModel) {
-        const isRuleForNewRole = !availableRoles.includes(newData.role);
-        const wasLastRuleForOldRole = rule.isOnlyRuleForRole && rule.role !== newData.role;
+        const isRuleForNewRole = !availableRoles.some((option) => option.name === newData.role.name);
+        const wasLastRuleForOldRole = rule.isOnlyRuleForRole && rule.role !== newData.role.name;
 
         if (isRuleForNewRole) {
             setDialogMode('create-hint');
@@ -167,7 +168,7 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
                 );
             case 'delete':
                 return (
-                    <RuleDeleteDialog rule={rule} onCancelDialog={() => setDialogMode('view')} onDelete={onDelete} />
+                    <DeleteRuleDialogContent rule={rule} onCancelDialog={() => setDialogMode('view')} onDelete={onDelete} />
                 );
             case 'create-hint':
                 return <KeycloakHint hint="create" onClose={onClose} />;

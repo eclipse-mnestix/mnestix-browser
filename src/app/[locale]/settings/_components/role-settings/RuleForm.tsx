@@ -2,6 +2,7 @@ import {
     Autocomplete,
     Box,
     Button,
+    createFilterOptions,
     DialogActions,
     DialogContent,
     FormControl,
@@ -18,13 +19,15 @@ import CheckIcon from '@mui/icons-material/Check';
 import { TargetInformationForm } from 'app/[locale]/settings/_components/role-settings/target-information/TargetInformationForm';
 import { Controller, useForm } from 'react-hook-form';
 import { mapBaSyxRbacRuleToFormModel } from 'app/[locale]/settings/_components/role-settings/FormMappingHelper';
+import { RoleOptions } from './RuleSettings';
 
 type RuleDialogProps = {
     readonly onSubmit: (data: RuleFormModel) => Promise<void>;
     readonly onCancel: () => void;
     readonly rule: BaSyxRbacRule;
     readonly title: string;
-    readonly availableRoles: string[];
+    readonly availableRoles: RoleOptions[];
+    readonly selectedRole?: string | null;
 };
 
 export type ArrayOfIds = [{ id: string }];
@@ -40,28 +43,41 @@ export type TargetInformationFormModel = {
 };
 
 export type RuleFormModel = {
-    role: string;
+    role: RoleOptions;
     type: keyof typeof rbacRuleTargets;
     action: (typeof rbacRuleActions)[number];
     targetInformation: TargetInformationFormModel;
 };
 
-export const RuleForm = ({ onCancel, onSubmit, rule, title, availableRoles }: RuleDialogProps) => {
+export function RuleForm({ onCancel, onSubmit, rule, title, availableRoles, selectedRole }: RuleDialogProps) {
     const t = useTranslations('pages.settings.rules');
-
+    const filter = createFilterOptions<RoleOptions>();
     const { control, handleSubmit, setValue, getValues, reset } = useForm({
-        defaultValues: mapBaSyxRbacRuleToFormModel(rule as BaSyxRbacRule),
+        defaultValues: {
+            ...mapBaSyxRbacRuleToFormModel(rule as BaSyxRbacRule),
+            role: selectedRole ? { name: selectedRole } : mapBaSyxRbacRuleToFormModel(rule as BaSyxRbacRule).role,
+        },
     });
 
     useEffect(() => {
-        reset(mapBaSyxRbacRuleToFormModel(rule as BaSyxRbacRule));
-    }, [rule]);
+        reset({
+            ...mapBaSyxRbacRuleToFormModel(rule as BaSyxRbacRule),
+            role: selectedRole ? { name: selectedRole } : mapBaSyxRbacRuleToFormModel(rule as BaSyxRbacRule).role,
+        });
+    }, [rule, selectedRole, reset]);
+
+    function getInputValueTitle(inputValue: string): string {
+        return `${t('buttons.add')} "${inputValue}"`;
+    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <DialogContent>
-                <Typography variant="h2" color="primary" mb="1em">
+                <Typography variant="h2" color="primary">
                     {title}
+                </Typography>
+                <Typography color="text.secondary" mb="1em">
+                    {selectedRole ? t('createRule.subtitle2', { role: selectedRole }) : t('createRule.subtitle')}
                 </Typography>
                 <Box display="flex" flexDirection="column">
                     <Typography variant="h5">{t('tableHeader.name')}</Typography>
@@ -84,12 +100,37 @@ export const RuleForm = ({ onCancel, onSubmit, rule, title, availableRoles }: Ru
                                 <Autocomplete
                                     freeSolo
                                     options={availableRoles}
-                                    value={field.value || ''}
-                                    onChange={(_, newValue) => field.onChange(newValue)}
-                                    onInputChange={(_, newValue, reason) => {
-                                        if (reason === 'input' || reason === 'clear') {
+                                    value={field.value || null}
+                                    onChange={(_, newValue) => {
+                                        if (typeof newValue === 'string') {
+                                            field.onChange({ name: newValue });
+                                        } else {
                                             field.onChange(newValue);
                                         }
+                                    }}
+                                    onInputChange={(_, newValue, reason) => {
+                                        if (reason === 'input' || reason === 'clear') {
+                                            field.onChange({ name: newValue });
+                                        }
+                                    }}
+                                    filterOptions={(options, params) => {
+                                        const filtered = filter(options, params);
+
+                                        const { inputValue } = params;
+                                        const isExisting = options.some((option) => inputValue === option.name);
+                                        if (inputValue !== '' && !isExisting) {
+                                            filtered.push({
+                                                name: inputValue,
+                                                title: getInputValueTitle(inputValue),
+                                            });
+                                        }
+                                        return filtered;
+                                    }}
+                                    getOptionLabel={(option) => {
+                                        if (typeof option === 'string') {
+                                            return option;
+                                        }
+                                        return option.name;
                                     }}
                                     renderInput={(params) => (
                                         <TextField
@@ -97,9 +138,20 @@ export const RuleForm = ({ onCancel, onSubmit, rule, title, availableRoles }: Ru
                                             {...params}
                                             variant="outlined"
                                             error={!!error}
+                                            placeholder={t('createRule.placeholderText')}
                                             helperText={error ? error.message : ''}
+                                            disabled={!!selectedRole}
                                         />
                                     )}
+                                    renderOption={(props, option) => {
+                                        const { key, ...optionProps } = props;
+                                        return (
+                                            <li key={key} {...optionProps}>
+                                                {option.title ?? option.name}
+                                            </li>
+                                        );
+                                    }}
+                                    disabled={!!selectedRole}
                                 />
                             </FormControl>
                         )}
@@ -145,4 +197,4 @@ export const RuleForm = ({ onCancel, onSubmit, rule, title, availableRoles }: Ru
             </DialogActions>
         </form>
     );
-};
+}
