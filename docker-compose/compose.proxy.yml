@@ -1,5 +1,5 @@
 services:
-  mnestix-proxy:mnestix-proxy:
+  mnestix-proxy:
     image: mnestix-proxy:0.0.1
     container_name: mnestix-proxy
     ports:
