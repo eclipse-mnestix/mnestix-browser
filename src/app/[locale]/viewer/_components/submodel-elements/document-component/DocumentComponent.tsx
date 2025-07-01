@@ -31,7 +31,9 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
             return;
         }
         const url = await getFileUrl(fileViewObject?.digitalFileUrl, session?.accessToken, props.repositoryUrl);
-        setDocumentUrl(url);
+        if (url) {
+            setDocumentUrl(url);
+        }
     }, [fileViewObject?.digitalFileUrl, session?.accessToken, props.repositoryUrl]);
 
     const handleDetailsClick = () => {
