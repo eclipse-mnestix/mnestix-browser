@@ -250,7 +250,8 @@
           "selectTimeframe": "Auswahl des Zeitabschnitts"
         },
         "title": "Teilmodelle",
-        "unknownModelType": "Unbekannter ModelType: {type}"
+        "unknownModelType": "Unbekannter ModelType: {type}",
+        "repositoryUrlLabel": "Repository URL:"
       }
     },
     "catalog": {

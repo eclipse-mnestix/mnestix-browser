@@ -5,9 +5,16 @@ import { Fragment } from 'react';
 import { GenericSubmodelElementComponent } from '../../submodel-elements/generic-elements/GenericSubmodelElementComponent';
 import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
 
-export function GenericSubmodelDetailComponent({ submodel }: SubmodelVisualizationProps) {
-    const submodelElements = (submodel.submodelElements ?? []).filter(element =>
-        !(element.idShort === 'numberOfDocuments')
+export interface CustomSubmodelElementComponentProps {
+    readonly submodelElement: SubmodelElementCollection;
+    readonly hasDivider: boolean;
+    readonly submodelId: string;
+    readonly repositoryUrl?: string;
+}
+
+export function GenericSubmodelDetailComponent({ submodel, repositoryUrl }: SubmodelVisualizationProps) {
+    const submodelElements = (submodel.submodelElements ?? []).filter(
+        (element) => !(element.idShort === 'numberOfDocuments'),
     );
 
     // Entity element always has a line at the bottom, so we don't need an extra line on the following element
@@ -35,11 +42,12 @@ export function GenericSubmodelDetailComponent({ submodel }: SubmodelVisualizati
                                 submodelElement={el as SubmodelElementCollection}
                                 submodelId={submodel.id}
                                 hasDivider={hasDivider(index)}
+                                repositoryUrl={repositoryUrl}
                             />
                         ) : (
                             <GenericSubmodelElementComponent
                                 key={index}
-                                submodelElement={el}    
+                                submodelElement={el}
                                 submodelId={submodel.id}
                                 hasDivider={hasDivider(index)}
                             />

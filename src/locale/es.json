@@ -250,7 +250,8 @@
           "selectTimeframe": "Seleccionar periodo de tiempo"
         },
         "title": "Submodels",
-        "unknownModelType": "ModelType desconocido: {type}"
+        "unknownModelType": "ModelType desconocido: {type}",
+        "repositoryUrlLabel": "Repository URL:"
       }
     },
     "catalog": {

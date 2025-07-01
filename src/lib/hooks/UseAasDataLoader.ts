@@ -41,9 +41,15 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
         smDescriptor?: SubmodelDescriptor,
     ): Promise<SubmodelOrIdReference> {
         const submodelResponse = await performSubmodelFullSearch(reference, smDescriptor);
-        if (!submodelResponse.isSuccess) return { id: reference.keys[0].value, error: submodelResponse.errorCode };
+        if (!submodelResponse.isSuccess) {
+            return { id: reference.keys[0].value, error: submodelResponse.errorCode };
+        }
 
-        return { id: submodelResponse.result.id, submodel: submodelResponse.result };
+        return {
+            id: submodelResponse.result.submodel.id,
+            submodel: submodelResponse.result.submodel,
+            repositoryUrl: submodelResponse.result.submodelData.submodelRepositoryOrigin,
+        };
     }
 
     async function fetchSubmodels() {
