@@ -9,7 +9,7 @@ import { useTranslations } from 'next-intl';
 
 export type CustomTemplateItemType = {
     id?: string;
-    displayName: string | null;
+    displayName?: string;
     basedOnTemplate?: string;
     basedOnTemplateId?: string;
 };

@@ -1,4 +1,4 @@
-import { Qualifier } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Qualifier } from 'lib/api/aas/models';
 
 export interface MultiplicityData {
     qualifierTypes: string[];
