@@ -35,7 +35,7 @@ export function CarbonFootprintVisualizations({ submodel }: SubmodelVisualizatio
     const addressesPerLifeCyclePhase = pcfSubmodelElements.map((el) => 
         extractAddressPerLifeCyclePhase(el, locale)
     );
-    const calculationMethod = extractCalculationMethod(pcfSubmodelElements, locale);
+    const calculationMethod = extractCalculationMethod(pcfSubmodelElements);
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="carbonFootprintVisualizations">
@@ -65,7 +65,6 @@ export function CarbonFootprintVisualizations({ submodel }: SubmodelVisualizatio
 }
 
 function getPcfSubmodelElements(submodel: Submodel): SubmodelElementCollection[] {
-    // First try to find direct PCF elements
     const directPcfElements = findAllSubmodelElementsBySemanticIdsOrIdShort(
         submodel.submodelElements,
         null,
@@ -111,9 +110,8 @@ function extractLifeCyclePhaseValue(element: SubmodelElementCollection): string 
     return (lifeCycleElement as Property)?.value || null;
 }
 
-function extractCalculationMethod(pcfSubmodelElements: SubmodelElementCollection[], locale: string): string {
+function extractCalculationMethod(pcfSubmodelElements: SubmodelElementCollection[]): string {
     for (const element of pcfSubmodelElements) {
-        // Try to find the calculation method element
         const methodElement = findSubmodelElementBySemanticIdsOrIdShort(
             element.value,
             null,
