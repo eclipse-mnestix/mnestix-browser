@@ -147,7 +147,9 @@ function extractCompletedStages(pcfSubmodelElements: SubmodelElementCollection[]
 function extractCO2EquivalentsPerLifeCycleStage(
     pcfSubmodelElements: SubmodelElementCollection[],
 ): Partial<Record<ProductLifecycleStage, number>> {
-    return pcfSubmodelElements.reduce((acc, element) => {
+    const result: Partial<Record<ProductLifecycleStage, number>> = {};
+    
+    pcfSubmodelElements.forEach((element) => {
         const lifeCyclePhaseValue = extractLifeCyclePhaseValue(element);
         const stage = (lifeCyclePhaseValue?.split(' ')[0].trim() as ProductLifecycleStage) ?? ProductLifecycleStage.A3Production;
         
@@ -159,9 +161,10 @@ function extractCO2EquivalentsPerLifeCycleStage(
         
         const co2Equivalent = Number.parseFloat(co2Value?.value ?? '0');
         
-        acc[stage] = (acc[stage] || 0) + co2Equivalent;
-        return acc;
-    }, {});
+        result[stage] = (result[stage] || 0) + co2Equivalent;
+    });
+    
+    return result;
 }
 
 function extractTotalCO2Equivalents(pcfSubmodelElements: SubmodelElementCollection[]): number {
