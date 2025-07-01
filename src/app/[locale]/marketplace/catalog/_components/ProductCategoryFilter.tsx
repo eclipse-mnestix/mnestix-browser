@@ -90,33 +90,27 @@ export function ProductCategoryFilter(props: {
                     value: designation.name === node.name ? isChecked : designation.value,
                 }));
 
-                const updatedFamily = {
+                return {
                     ...family,
                     value: updatedDesignations.every((d) => d.value),
                     ProductDesignations: updatedDesignations,
                 };
-
-                return updatedFamily;
             });
 
             updatedRoot.value = updatedFamilies.every((family) => family.value);
 
-            const categories = {
+            return {
                 ProductRoot: {
                     ...updatedRoot,
                     ProductFamilies: updatedFamilies,
                 },
             };
-            console.log(categories);
-
-            return categories;
         });
     }
 
     function updateCheckboxState(node: ProductRoot | ProductFamily | ProductDesignation, isChecked: boolean) {
         setFilters((prevFilters) => {
-            const updatedFilters = updateActiveFilters(prevFilters, node, isChecked);
-            return updatedFilters;
+            return updateActiveFilters(prevFilters, node, isChecked);
         });
     }
 

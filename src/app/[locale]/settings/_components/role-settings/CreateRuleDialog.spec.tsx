@@ -6,6 +6,7 @@ import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { act } from 'react';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { EnvProvider } from 'app/EnvProvider';
+import { RoleOptions } from './RuleSettings';
 
 jest.mock('./../../../../../lib/services/rbac-service/RbacActions');
 jest.mock('next-intl', () => ({
@@ -20,8 +21,9 @@ jest.mock('./../../../../../lib/services/envAction', () => ({
     }),
 }));
 
-async function renderCreateRuleDialog(availableRoles?: string[]) {
+async function renderCreateRuleDialog(availableRoles?: RoleOptions[]) {
     const onClose = jest.fn();
+    const afterClose = jest.fn();
     const reloadRules = jest.fn().mockResolvedValue(undefined);
 
     await act(async () => {
@@ -29,8 +31,9 @@ async function renderCreateRuleDialog(availableRoles?: string[]) {
             <CreateRuleDialog
                 open={true}
                 onClose={onClose}
+                afterClose={afterClose}
                 reloadRules={reloadRules}
-                availableRoles={availableRoles ?? ['Role1', 'Role2']}
+                availableRoles={availableRoles ?? [{ name: 'Role1' }, { name: 'Role2' }]}
             />,
             {
                 wrapper: ({ children }) => <EnvProvider>{children}</EnvProvider>,
@@ -38,7 +41,7 @@ async function renderCreateRuleDialog(availableRoles?: string[]) {
         );
     });
 
-    return { onClose, reloadRules };
+    return { onClose, afterClose, reloadRules };
 }
 
 function doMock(createRbacError?: string) {

@@ -9,12 +9,15 @@ import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { RuleForm, RuleFormModel } from 'app/[locale]/settings/_components/role-settings/RuleForm';
 import { useState } from 'react';
 import { KeycloakHint } from 'app/[locale]/settings/_components/role-settings/HintDialogContent';
+import { RoleOptions } from './RuleSettings';
 
 type RoleDialogProps = {
     readonly onClose: () => void;
+    readonly afterClose: () => void;
     readonly reloadRules: () => Promise<void>;
     readonly open: boolean;
-    readonly availableRoles: string[];
+    readonly availableRoles: RoleOptions[];
+    readonly selectedRole?: string | null;
 };
 
 export const defaultRbacRule: BaSyxRbacRule = {
@@ -24,7 +27,7 @@ export const defaultRbacRule: BaSyxRbacRule = {
     idShort: '',
 };
 
-export const CreateRuleDialog = ({ onClose, reloadRules, open, availableRoles }: RoleDialogProps) => {
+export function CreateRuleDialog({ onClose, afterClose, reloadRules, open, availableRoles, selectedRole }: RoleDialogProps) {
     const t = useTranslations('pages.settings.rules');
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
@@ -32,7 +35,7 @@ export const CreateRuleDialog = ({ onClose, reloadRules, open, availableRoles }:
     const [showHint, setShowHint] = useState(false);
 
     async function afterSubmit(newData: RuleFormModel) {
-        const isNewRole = !availableRoles.includes(newData.role);
+        const isNewRole = !availableRoles.some((role) => role.name === newData.role.name);
         if (isNewRole) {
             setShowHint(true);
         } else {
@@ -64,6 +67,11 @@ export const CreateRuleDialog = ({ onClose, reloadRules, open, availableRoles }:
 
         showError(response);
     }
+    
+    function resetState() {
+        setShowHint(false);
+        afterClose();
+    }
 
     return (
         <Dialog
@@ -71,10 +79,7 @@ export const CreateRuleDialog = ({ onClose, reloadRules, open, availableRoles }:
             onClose={onClose}
             maxWidth="md"
             fullWidth={true}
-            onTransitionExited={() => {
-                // This function is called when the dialog close transition ends
-                setShowHint(false);
-            }}
+            onTransitionExited={resetState}
         >
             <Box sx={{ mx: '2rem', mt: '1.5rem', mb: '1rem' }} data-testid="role-create-dialog">
                 <DialogCloseButton handleClose={onClose} dataTestId="rule-create-close-button" />
@@ -87,9 +92,10 @@ export const CreateRuleDialog = ({ onClose, reloadRules, open, availableRoles }:
                         onSubmit={onSubmit}
                         onCancel={onClose}
                         availableRoles={availableRoles}
+                        selectedRole={selectedRole}
                     />
                 )}
             </Box>
         </Dialog>
     );
-};
+}

@@ -159,7 +159,6 @@ export function FilterContainer(props: { onFilterChanged(query: FilterQuery[]): 
         });    }
 
     function applyFilter() {
-        console.log(activeFilters);
         props.onFilterChanged(activeFilters);
     }
 
