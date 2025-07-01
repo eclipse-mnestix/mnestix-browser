@@ -159,10 +159,8 @@ function extractCO2EquivalentsPerLifeCycleStage(
         
         const co2Equivalent = Number.parseFloat(co2Value?.value ?? '0');
         
-        return {
-            ...acc,
-            [stage]: co2Equivalent,
-        };
+        acc[stage] = (acc[stage] || 0) + co2Equivalent;
+        return acc;
     }, {});
 }
 
