@@ -1,10 +1,5 @@
 {
   "components": {
-    "constructionDialog": {
-      "title": "Under Construction",
-      "message": "This feature is currently under construction and will be available soon.",
-      "buttonText": "Close"
-    },
     "addressComponent": {
       "VAT": "VAT-Number",
       "addressTypes": {
@@ -22,7 +17,7 @@
     },
     "assetNotFound": {
       "header": "AAS could not be loaded.",
-      "text": "Unable to load AAS for the given ID \"{id}\"",
+      "text": "Unable to load AAS for the given ID ''{id}''",
       "toHome": "To Home"
     },
     "authentication": {
@@ -72,6 +67,11 @@
       },
       "totalCO2Equivalents": "CO2 emissions from product (so far)"
     },
+    "constructionDialog": {
+      "buttonText": "Close",
+      "message": "This feature is currently under construction and will be available soon.",
+      "title": "Under Construction"
+    },
     "contactInformation": {
       "contactTypes": {
         "0173-1#07-AAS754#001": "Office",
@@ -105,7 +105,7 @@
     },
     "noSearchResult": {
       "header": "No data found",
-      "noDataFound": "No data found for \"{name}\".",
+      "noDataFound": "No data found for ''{name}''.",
       "toHomeButton": "To Home"
     },
     "propertyComponent": {
@@ -165,7 +165,7 @@
     "errors": {
       "notFound": "Not found",
       "unauthorizedError": {
-        "content": "You don't have access to this resource. Log in or ask your administrator for access.",
+        "content": "You don''t have access to this resource. Log in or ask your administrator for access.",
         "title": "Unauthorized access"
       },
       "unexpectedError": "Unexpected error",
@@ -237,11 +237,12 @@
           "view": "View"
         },
         "idLabel": "ID:",
+        "noSubmodelsToLoad": "There do not exist any submodels for this AAS.",
         "referenceCounter": {
           "count": "Count",
           "elementName": "Element"
         },
-        "renderError": "Submodel can't be rendered.",
+        "renderError": "Submodel can''t be rendered.",
         "semanticIdLabel": "Semantic IDs:",
         "timeSeries": {
           "internalSegments": "Internal segments",
@@ -250,26 +251,25 @@
         },
         "title": "Submodels",
         "unknownModelType": "Unknown ModelType: {type}",
-        "noSubmodelsToLoad": "There do not exist any submodels for this AAS.",
         "repositoryUrlLabel": "Repository URL:"
       }
     },
     "catalog": {
-      "manufacturerCatalog": "Manufacturer product catalog",
-      "manufacturerSelect": "Select manufacturer",
-      "title": "Manufacturer catalog",
-      "marketplaceTitle": "VWS4LS - Marketplace",
-      "marketplaceSubtitle": "Asset Administration Shell for Wire Harness",
       "articleCount": "{count, plural, =1 {# article} other {# articles}}",
-      "filter": "Filter",
-      "noSearcherWarning": "No AAS Searcher Configured. Showing AAS List as Fallback, filters won't work.",
       "eclassCategories": {
         "15": "Maintenance (Service)",
         "27": "Electric engineering, automation, process control engineering ",
         "44": "Automotive engineering, vehicle component",
         "default": "Category "
       },
-      "searchPlaceholder": "Search currently unavailable..."
+      "filter": "Filter",
+      "manufacturerCatalog": "Manufacturer product catalog",
+      "manufacturerSelect": "Select manufacturer",
+      "marketplaceSubtitle": "Asset Administration Shell for Wire Harness",
+      "marketplaceTitle": "VWS4LS - Marketplace",
+      "noSearcherWarning": "No AAS Searcher Configured. Showing AAS List as Fallback, filters won''t work.",
+      "searchPlaceholder": "Search currently unavailable...",
+      "title": "Manufacturer catalog"
     },
     "compare": {
       "addAnother": "Add another AAS",
@@ -309,10 +309,10 @@
     "productViewer": {
       "actions": {
         "compareButton": "Compare",
-        "toAasView": "AAS View",
         "download": "Download AAS",
+        "downloadError": "Error while downloading AAS.",
         "downloadErrorNoRepo": "No repository found for the selected AAS.",
-        "downloadError": "Error while downloading AAS."
+        "toAasView": "AAS View"
       },
       "classification": "Classification",
       "error": {
@@ -381,9 +381,9 @@
           "title": "How to connect your Asset ID with your AAS repository"
         },
         "errors": {
-          "idStructureError": "Error while saving \"{name}\" ({reason}).",
+          "idStructureError": "Error while saving ''{name}'' ({reason}).",
           "invalidIri": "Has to be a valid IRI, e.g. https://example.com/",
-          "invalidIriPart": "Has to work as part of an IRI (no \"/\", spaces or special characters)"
+          "invalidIriPart": "Has to work as part of an IRI (no slashes, spaces or special characters)"
         },
         "labels": {
           "dynamicPart": "dynamic part",
@@ -403,14 +403,24 @@
           "add": "Add",
           "back": "Back",
           "cancel": "Cancel",
-          "create": "Create rule",
+          "create": "Add permission",
           "delete": "Delete",
           "edit": "Edit",
           "save": "Save"
         },
         "createRule": {
+          "placeholderText": "New or existing role name",
           "saveSuccess": "New rule saved successfully.",
-          "title": "Create rule"
+          "subtitle": "Add a permission to a new or existing role.",
+          "subtitle2": "Add a permission to the role ''{role}''.",
+          "title": "Add new permission"
+        },
+        "deleteRole": {
+          "delete": "Delete role",
+          "description": "You are about to delete the ''{roleName}'' role with {count} permissions. Are you sure you want to delete entire role?",
+          "header": "Delete entire role",
+          "partiallySuccess": "{count} out of {total} permissions have been deleted. The role still exists with the remaining permissions!",
+          "success": "Role ''{roleName}'' has been deleted successfully."
         },
         "deleteRule": {
           "question": "Permanently delete this rule?",
@@ -426,7 +436,7 @@
         },
         "keycloakHint": {
           "acknowledge": "Acknowledge",
-          "create": "This role has not been used yet. Don't forget to configure it in Keycloak!",
+          "create": "This role has not been used yet. Don''t forget to configure it in Keycloak!",
           "delete": "Do not forget to delete this role in Keycloak as well!",
           "title": "Update Keycloak"
         },
@@ -469,7 +479,7 @@
       "createNew": "Create new",
       "custom": "Custom",
       "defaultValue": "Default value",
-      "deleteTemplateQuestion": "Delete template \"{name}\" irretrievably?",
+      "deleteTemplateQuestion": "Delete template ''{name}'' irretrievably?",
       "displayName": "Display name",
       "emptyCustom": "Empty (Custom)",
       "emptyCustomDescription": "Is not based upon a standardized template",
@@ -498,7 +508,7 @@
       "title": "Templates",
       "validation": {
         "errors": {
-          "invalidDate": "Has to be a valid date in format \"yyyy-mm-dd\"",
+          "invalidDate": "Has to be a valid date in format ''yyyy-mm-dd''",
           "invalidLong": "Has to be a valid long"
         }
       }

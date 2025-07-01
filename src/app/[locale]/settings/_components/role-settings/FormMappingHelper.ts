@@ -115,7 +115,7 @@ const mapTargetInformationFormModelToDto = (
 
 export const mapBaSyxRbacRuleToFormModel = (role: BaSyxRbacRule): RuleFormModel => {
     return {
-        role: role.role,
+        role: { name: role.role },
         type: role.targetInformation['@type'],
         action: role.action,
         targetInformation: mapDtoToTargetInformationFormModel(role.targetInformation),
@@ -126,7 +126,7 @@ export const mapFormModelToBaSyxRbacRule = (formModel: RuleFormModel, role: BaSy
     const targetInformation = mapTargetInformationFormModelToDto(formModel.targetInformation, formModel.type);
     return {
         idShort: role.idShort,
-        role: formModel.role,
+        role: typeof formModel.role === 'string' ? formModel.role : formModel.role.name,
         action: formModel.action,
         targetInformation: targetInformation,
     };

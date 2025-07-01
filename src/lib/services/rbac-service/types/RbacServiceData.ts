@@ -24,8 +24,8 @@ export type BaSyxRbacRule = {
     role: string;
     action: (typeof rbacRuleActions)[number];
 };
-export type RbacRolesFetchResult = {
-    roles: BaSyxRbacRule[];
+export type RbacRulesFetchResult = {
+    rules: BaSyxRbacRule[];
     warnings: string[][];
 };
 

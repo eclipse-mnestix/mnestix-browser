@@ -1,10 +1,5 @@
 {
   "components": {
-    "constructionDialog": {
-      "title": "En Construcción",
-      "message": "Esta función está actualmente en construcción y estará disponible próximamente.",
-      "buttonText": "Cerrar"
-    },
     "addressComponent": {
       "VAT": "NIF/CIF",
       "addressTypes": {
@@ -22,7 +17,7 @@
     },
     "assetNotFound": {
       "header": "No se pudo cargar el AAS.",
-      "text": "No pudo cargarse el AAS para el ID \"{id}\"",
+      "text": "No pudo cargarse el AAS para el ID ''{id}''",
       "toHome": "Ir a Inicio"
     },
     "authentication": {
@@ -72,6 +67,11 @@
       },
       "totalCO2Equivalents": "Emisiones de CO2 del producto (hasta el momento)"
     },
+    "constructionDialog": {
+      "buttonText": "Cerrar",
+      "message": "Esta función está actualmente en construcción y estará disponible próximamente.",
+      "title": "En Construcción"
+    },
     "contactInformation": {
       "contactTypes": {
         "0173-1#07-AAS754#001": "Oficina",
@@ -105,7 +105,7 @@
     },
     "noSearchResult": {
       "header": "No se encontraron datos",
-      "noDataFound": "No se encontraron datos para \"{name}\".",
+      "noDataFound": "No se encontraron datos para ''{name}''.",
       "toHomeButton": "Ir a Inicio"
     },
     "propertyComponent": {
@@ -237,6 +237,7 @@
           "view": "Ver"
         },
         "idLabel": "ID:",
+        "noSubmodelsToLoad": "No existen submodels que cargar para este AAS.",
         "referenceCounter": {
           "count": "Recuento",
           "elementName": "Elemento"
@@ -250,26 +251,25 @@
         },
         "title": "Submodels",
         "unknownModelType": "ModelType desconocido: {type}",
-        "noSubmodelsToLoad": "No existen submodels que cargar para este AAS.",
         "repositoryUrlLabel": "Repository URL:"
       }
     },
     "catalog": {
-      "title": "Catálogo de productos",
-      "manufacturerCatalog": "Catálogo de productos del fabricante",
-      "manufacturerSelect": "Seleccionar fabricante",
-      "marketplaceTitle": "VWS4LS - Marketplace",
-      "marketplaceSubtitle": "Shell de administración de activos para mazos de cables",
       "articleCount": "{count, plural, =1 {# artículo} other {# artículos}}",
-      "filter": "Filtro",
-      "noSearcherWarning": "No se ha configurado el buscador AAS - Se muestra la lista AAS",
       "eclassCategories": {
         "15": "Maintenance (Service)",
         "27": "Electric engineering, automation, process control engineering ",
         "44": "Automotive engineering, vehicle component",
         "default": "Category "
       },
-      "searchPlaceholder": "Búsqueda no disponible actualmente..."
+      "filter": "Filtro",
+      "manufacturerCatalog": "Catálogo de productos del fabricante",
+      "manufacturerSelect": "Seleccionar fabricante",
+      "marketplaceSubtitle": "Shell de administración de activos para mazos de cables",
+      "marketplaceTitle": "VWS4LS - Marketplace",
+      "noSearcherWarning": "No se ha configurado el buscador AAS - Se muestra la lista AAS",
+      "searchPlaceholder": "Búsqueda no disponible actualmente...",
+      "title": "Catálogo de productos"
     },
     "compare": {
       "addAnother": "Añadir otro AAS",
@@ -309,10 +309,10 @@
     "productViewer": {
       "actions": {
         "compareButton": "Comparar",
-        "toAasView": "Vista del AAS",
         "download": "Descargar AAS",
+        "downloadError": "Error al descargar el AAS.",
         "downloadErrorNoRepo": "No se encontró ningún repositorio para el AAS seleccionado.",
-        "downloadError": "Error al descargar el AAS."
+        "toAasView": "Vista del AAS"
       },
       "classification": "Clasificación del producto",
       "error": {
@@ -381,9 +381,9 @@
           "title": "Como conectar su Asset ID con su repositorio de AAS"
         },
         "errors": {
-          "idStructureError": "Error al guardar \"{name}\" ({reason}).",
+          "idStructureError": "Error al guardar ''{name}'' ({reason}).",
           "invalidIri": "Debe ser un IRI válido, e.g. https://example.com/",
-          "invalidIriPart": "Debe funcionar como parte de un IRI (no \"/\", spaces or special characters)"
+          "invalidIriPart": "Debe funcionar como parte de un IRI (las barras, espacios o caracteres especiales no son válidos)"
         },
         "labels": {
           "dynamicPart": "parte dinámica",
@@ -403,14 +403,24 @@
           "add": "Añadir",
           "back": "Atrás",
           "cancel": "Cancelar",
-          "create": "Crear regla",
+          "create": "Añadir permiso",
           "delete": "Eliminar",
           "edit": "Editar",
           "save": "Guardar"
         },
         "createRule": {
+          "placeholderText": "Nombre del rol nuevo o existente",
           "saveSuccess": "Nueva regla guardada con éxito.",
-          "title": "Crear regla"
+          "subtitle": "Añade un permiso a un rol nuevo o existente.",
+          "subtitle2": "Añade un permiso al rol ''{role}''.",
+          "title": "Añadir nuevo permiso"
+        },
+        "deleteRole": {
+          "delete": "Eliminar rol",
+          "description": "Está a punto de eliminar el rol ''{roleName}'' con {count} permisos. Está seguro de que desea eliminar todo el rol?",
+          "header": "Borrar todo el rol",
+          "partiallySuccess": "Se han eliminado {count} de {total} permisos. El rol aún existe con los permisos restantes.",
+          "success": "El rol ''{roleName}'' ha sido eliminado con éxito."
         },
         "deleteRule": {
           "question": "¿Desea borrar esta regla permanentemente?",
@@ -469,7 +479,7 @@
       "createNew": "Crear nuevo",
       "custom": "A medida",
       "defaultValue": "Valor predeterminado",
-      "deleteTemplateQuestion": "Desea eliminar la plantilla \"{name}\" definitivamente?",
+      "deleteTemplateQuestion": "Desea eliminar la plantilla ''{name}'' definitivamente?",
       "displayName": "Nombre a mostrar",
       "emptyCustom": "Vacío (A medida)",
       "emptyCustomDescription": "No basada en una plantilla estandarizada",
@@ -498,7 +508,7 @@
       "title": "Plantillas",
       "validation": {
         "errors": {
-          "invalidDate": "La fecha debe ser válida y seguir formato \"yyyy-mm-dd\"",
+          "invalidDate": "La fecha debe ser válida y seguir formato ''yyyy-mm-dd''",
           "invalidLong": "Debe ser un número largo válido"
         }
       }
