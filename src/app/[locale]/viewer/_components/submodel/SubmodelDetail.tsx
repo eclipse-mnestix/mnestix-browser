@@ -6,6 +6,7 @@ import { findSemanticIdInMap } from 'lib/util/SubmodelResolverUtil';
 
 type SubmodelDetailProps = {
     submodel?: Submodel;
+    repositoryUrl?: string;
 };
 
 export function SubmodelDetail(props: SubmodelDetailProps) {
@@ -19,9 +20,9 @@ export function SubmodelDetail(props: SubmodelDetailProps) {
     return (
         <Box width="100%" key={props.submodel?.id}>
             {CustomSubmodelComponent ? (
-                <CustomSubmodelComponent submodel={props.submodel} />
+                <CustomSubmodelComponent submodel={props.submodel} repositoryUrl={props.repositoryUrl} />
             ) : (
-                <GenericSubmodelDetailComponent submodel={props.submodel} />
+                <GenericSubmodelDetailComponent submodel={props.submodel} repositoryUrl={props.repositoryUrl} />
             )}
         </Box>
     );

@@ -57,6 +57,7 @@ export function SubmodelsOverviewCard({
                 label: submodelId.submodel.idShort ?? '',
                 submodelData: submodelId.submodel,
                 startIcon: <InfoIcon color={'primary'} />,
+                repositoryUrl: submodelId.repositoryUrl,
             };
         } else {
             const error = submodelId.error?.toString() as ErrorMessage;
@@ -100,7 +101,7 @@ export function SubmodelsOverviewCard({
         if (selectedItem?.submodelData && !submodelsLoading) {
             return (
                 <ErrorBoundary message={t('renderError')}>
-                    <SubmodelDetail submodel={selectedItem?.submodelData} />
+                    <SubmodelDetail submodel={selectedItem?.submodelData} repositoryUrl={selectedItem?.repositoryUrl} />
                 </ErrorBoundary>
             );
         } else if (submodelsLoading) {
@@ -177,6 +178,7 @@ export function SubmodelsOverviewCard({
                 id={infoItem?.id}
                 idShort={infoItem?.submodelData?.idShort}
                 semanticId={infoItem?.submodelData?.semanticId}
+                repositoryUrl={infoItem?.repositoryUrl}
             />
         </>
     );

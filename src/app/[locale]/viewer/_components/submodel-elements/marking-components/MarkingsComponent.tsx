@@ -2,20 +2,16 @@ import { Box } from '@mui/material';
 import { File, Property, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
 import { DataRow } from 'components/basics/DataRow';
 import { SingleMarkingsComponent } from 'app/[locale]/viewer/_components/submodel-elements/marking-components/SingleMarkingsComponent';
+import { CustomSubmodelElementComponentProps } from 'app/[locale]/viewer/_components/submodel/generic-submodel/GenericSubmodelDetailComponent';
 
-type MarkingsComponentProps = {
-    readonly submodelElement?: SubmodelElementCollection;
-    readonly hasDivider?: boolean;
-    readonly submodelId?: string;
+interface MarkingsComponentProps extends CustomSubmodelElementComponentProps {
     readonly columnDisplay?: boolean;
-};
+}
 
 export function MarkingsComponent(props: MarkingsComponentProps) {
     const markings: Array<SubmodelElementCollection> = Object.values(
         props.submodelElement?.value || {},
     ) as Array<SubmodelElementCollection>;
-
-
 
     // Iterate through all markings
     const markingImages = markings.map((el, index) => {
@@ -44,7 +40,8 @@ export function MarkingsComponent(props: MarkingsComponentProps) {
         });
         // Build single marking
         return (
-            !!file && file.contentType &&
+            !!file &&
+            file.contentType &&
             file.contentType.startsWith('image') && (
                 <SingleMarkingsComponent
                     key={index}
@@ -62,7 +59,13 @@ export function MarkingsComponent(props: MarkingsComponentProps) {
     // render all
     return (
         <DataRow title={props.submodelElement?.idShort} hasDivider={props.hasDivider}>
-            <Box display="flex" gap="20px" flexWrap="wrap" flexDirection={props.columnDisplay ? 'column' : 'row'} sx={{ my: 1 }}>
+            <Box
+                display="flex"
+                gap="20px"
+                flexWrap="wrap"
+                flexDirection={props.columnDisplay ? 'column' : 'row'}
+                sx={{ my: 1 }}
+            >
                 {markingImages}
             </Box>
         </DataRow>

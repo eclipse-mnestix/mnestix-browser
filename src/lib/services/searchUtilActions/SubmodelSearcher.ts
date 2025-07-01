@@ -4,10 +4,19 @@ import { mnestixFetch } from 'lib/api/infrastructure';
 import { ISubmodelRegistryServiceApi } from 'lib/api/submodel-registry-service/submodelRegistryServiceApiInterface';
 import { SubmodelRegistryServiceApi } from 'lib/api/submodel-registry-service/submodelRegistryServiceApi';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { RepositorySearchService } from 'lib/services/repository-access/RepositorySearchService';
+import { RepoSearchResult, RepositorySearchService } from 'lib/services/repository-access/RepositorySearchService';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import logger, { logResponseDebug } from 'lib/util/Logger';
 import { envs } from 'lib/env/MnestixEnv';
+
+export type SubmodelData = {
+    submodelRepositoryOrigin: string;
+};
+
+export type SubmodelSearchResult = {
+    submodel: Submodel;
+    submodelData: SubmodelData;
+};
 
 export class SubmodelSearcher {
     private constructor(
@@ -26,7 +35,7 @@ export class SubmodelSearcher {
     async performSubmodelFullSearch(
         submodelReference: Reference,
         submodelDescriptor?: SubmodelDescriptor,
-    ): Promise<ApiResponseWrapper<Submodel>> {
+    ): Promise<ApiResponseWrapper<SubmodelSearchResult>> {
         const submodelId = submodelReference.keys[0].value;
 
         const descriptorById = await this.getSubmodelDescriptorById(submodelId);
@@ -36,19 +45,28 @@ export class SubmodelSearcher {
         const endpoint = descriptor?.endpoints[0].protocolInformation.href;
 
         if (endpoint) {
-            return await this.getSubmodelFromEndpoint(endpoint);
+            const submodelSearchResult = await this.getSubmodelFromEndpoint(endpoint);
+            if (!submodelSearchResult.isSuccess) {
+                return wrapErrorCode(submodelSearchResult.errorCode, submodelSearchResult.message);
+            }
         }
 
         const submodelFromDefaultRepo = await this.multipleDataSource.getSubmodelFromDefaultRepo(submodelId);
         if (submodelFromDefaultRepo.isSuccess) {
-            return submodelFromDefaultRepo;
+            const submodelData: SubmodelData = {
+                submodelRepositoryOrigin: envs.SUBMODEL_REPO_API_URL || envs.AAS_REPO_API_URL || '',
+            };
+            return wrapSuccess({ submodel: submodelFromDefaultRepo.result, submodelData });
         }
 
         const submodelFromAllRepos = await this.multipleDataSource.getFirstSubmodelFromAllRepos(submodelId);
         if (submodelFromAllRepos.isSuccess) {
-            return wrapSuccess(submodelFromAllRepos.result.searchResult);
+            const submodelData: SubmodelData = {
+                submodelRepositoryOrigin: envs.SUBMODEL_REPO_API_URL || envs.AAS_REPO_API_URL || '',
+            };
+            return wrapSuccess({ submodel: submodelFromAllRepos.result.searchResult, submodelData });
         }
-        return wrapErrorCode<Submodel>(ApiResultStatus.NOT_FOUND, 'Submodel not found');
+        return wrapErrorCode<SubmodelSearchResult>(ApiResultStatus.NOT_FOUND, 'Submodel not found');
     }
 
     async getSubmodelDescriptorById(submodelId: string): Promise<ApiResponseWrapper<SubmodelDescriptor>> {
@@ -86,26 +104,17 @@ export class SubmodelSearcher {
         }
     }
 
-    async getSubmodelFromAllRepos(submodelId: string): Promise<ApiResponseWrapper<Submodel>> {
+    async getSubmodelFromAllRepos(submodelId: string): Promise<ApiResponseWrapper<RepoSearchResult<Submodel>>> {
         const response = await this.multipleDataSource.getFirstSubmodelFromAllRepos(submodelId);
-        if (response.isSuccess) {
-            logResponseDebug(
-                this.log,
-                'getSubmodelFromAllRepos',
-                'Querying Submodel from repositories successful',
-                response,
-            );
-            return wrapSuccess(response.result.searchResult);
-        }
-        if (response.errorCode === ApiResultStatus.NOT_FOUND) {
-            logResponseDebug(
-                this.log,
-                'getSubmodelFromAllRepos',
-                'Querying Submodel from repositories unsuccessful',
-                response,
-            );
-        }
-        return wrapErrorCode<Submodel>(ApiResultStatus.NOT_FOUND, 'Submodel not found');
+        logResponseDebug(
+            this.log,
+            'getSubmodelFromAllRepos',
+            response.isSuccess
+                ? 'Querying Submodel from repositories successful'
+                : 'Querying Submodel from repositories unsuccessful',
+            response,
+        );
+        return response;
     }
 
     async getSubmodelFromEndpoint(endpoint: string): Promise<ApiResponseWrapper<Submodel>> {

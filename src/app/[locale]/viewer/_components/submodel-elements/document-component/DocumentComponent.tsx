@@ -1,5 +1,5 @@
 import { InfoOutlined, OpenInNew } from '@mui/icons-material';
-import { Box, Button, IconButton, Link, Typography } from '@mui/material';
+import { Box, Button, IconButton, Typography } from '@mui/material';
 import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
 import { DataRow } from 'components/basics/DataRow';
 import { useState } from 'react';
@@ -13,17 +13,28 @@ import {
     DocumentSpecificSemanticIdIrdi,
 } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentSemanticIds';
 import { PreviewImage } from 'app/[locale]/viewer/_components/submodel-elements/document-component/PreviewImage';
+import { useSession } from 'next-auth/react';
+import { CustomSubmodelElementComponentProps } from 'app/[locale]/viewer/_components/submodel/generic-submodel/GenericSubmodelDetailComponent';
+import Link from 'next/link';
+import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
+import { getFileUrl } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentUtils';
 
-type DocumentComponentProps = {
-    readonly submodelElement: SubmodelElementCollection;
-    readonly hasDivider: boolean;
-    readonly submodelId: string;
-};
-
-export function DocumentComponent(props: DocumentComponentProps) {
+export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
     const t = useTranslations('components.documentComponent');
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
     const fileViewObject = useFileViewObject(props.submodelElement, props.submodelId);
+    const [documentUrl, setDocumentUrl] = useState<string>('');
+    const { data: session } = useSession();
+
+    useAsyncEffect(async () => {
+        if (!fileViewObject?.digitalFileUrl) {
+            return;
+        }
+        const url = await getFileUrl(fileViewObject?.digitalFileUrl, session?.accessToken, props.repositoryUrl);
+        if (url) {
+            setDocumentUrl(url);
+        }
+    }, [fileViewObject?.digitalFileUrl, session?.accessToken, props.repositoryUrl]);
 
     const handleDetailsClick = () => {
         setDetailsModalOpen(true);
@@ -52,10 +63,11 @@ export function DocumentComponent(props: DocumentComponentProps) {
                         sx={{ mb: 1 }}
                     >
                         <Box display="flex" gap={1} flexDirection="row" sx={{ mb: 1 }}>
-                            <Link href={fileViewObject.digitalFileUrl} target="_blank">
+                            <Link href={documentUrl} target="_blank">
                                 <PreviewImage
                                     previewImgUrl={fileViewObject.previewImgUrl}
                                     mimeType={fileViewObject.mimeType}
+                                    repositoryUrl={props.repositoryUrl}
                                 />
                             </Link>
                             <Box>
@@ -71,7 +83,7 @@ export function DocumentComponent(props: DocumentComponentProps) {
                                     variant="outlined"
                                     startIcon={<OpenInNew />}
                                     sx={{ mt: 1 }}
-                                    href={fileViewObject.digitalFileUrl}
+                                    href={documentUrl}
                                     target="_blank"
                                     data-testid="document-open-button"
                                 >

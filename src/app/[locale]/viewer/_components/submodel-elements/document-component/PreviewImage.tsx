@@ -2,6 +2,9 @@ import { PdfDocumentIcon } from 'components/custom-icons/PdfDocumentIcon';
 import { InsertDriveFileOutlined } from '@mui/icons-material';
 import { Box, styled } from '@mui/material';
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
+import { getFileUrl } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentUtils';
 
 const StyledImageWrapper = styled(Box)(({ theme }) => ({
     display: 'flex',
@@ -25,8 +28,15 @@ const StyledImageWrapper = styled(Box)(({ theme }) => ({
     },
 }));
 
-export const PreviewImage = (props: { previewImgUrl: string; mimeType: string }) => {
+export const PreviewImage = (props: { previewImgUrl: string; mimeType: string; repositoryUrl?: string }) => {
     const [imageError, setImageError] = useState<boolean>(false);
+    const [imageUrl, setImageUrl] = useState<string>();
+    const { data: session } = useSession();
+
+    useAsyncEffect(async () => {
+        const url = await getFileUrl(props.previewImgUrl, session?.accessToken, props.repositoryUrl);
+        setImageUrl(url);
+    }, [props.previewImgUrl, session?.accessToken, props.repositoryUrl]);
 
     const handleImageError = () => {
         setImageError(true);
@@ -34,10 +44,10 @@ export const PreviewImage = (props: { previewImgUrl: string; mimeType: string })
 
     return (
         <StyledImageWrapper>
-            {!imageError && props.previewImgUrl ? (
+            {!imageError && imageUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element -- logo can be an arbitrary url which conflicts with https://nextjs.org/docs/pages/api-reference/components/image#remotepatterns
                 <img
-                    src={props.previewImgUrl}
+                    src={imageUrl}
                     alt="File Preview"
                     onError={handleImageError}
                     data-testid="document-preview-image"
