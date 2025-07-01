@@ -58,8 +58,6 @@ function buildFilterInput(filters?: FilterQuery[]): string {
         `);
     }
 
-    console.log(filterArray);
-
     if (filterArray.length === 0) {
         return '';
     }
@@ -68,8 +66,6 @@ function buildFilterInput(filters?: FilterQuery[]): string {
 
 export async function searchProducts(filters?: FilterQuery[]): Promise<ApiResponseWrapper<SearchResponseEntry[]>> {
     const queryString = searchQuery(buildFilterInput(filters));
-    console.log(queryString);
-
     const query = gql(queryString);
     try {
         const { data } = await client.query<SearchResponse>({
