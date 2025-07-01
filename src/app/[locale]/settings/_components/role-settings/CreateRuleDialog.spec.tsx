@@ -23,6 +23,7 @@ jest.mock('./../../../../../lib/services/envAction', () => ({
 
 async function renderCreateRuleDialog(availableRoles?: RoleOptions[]) {
     const onClose = jest.fn();
+    const afterClose = jest.fn();
     const reloadRules = jest.fn().mockResolvedValue(undefined);
 
     await act(async () => {
@@ -30,6 +31,7 @@ async function renderCreateRuleDialog(availableRoles?: RoleOptions[]) {
             <CreateRuleDialog
                 open={true}
                 onClose={onClose}
+                afterClose={afterClose}
                 reloadRules={reloadRules}
                 availableRoles={availableRoles ?? [{ name: 'Role1' }, { name: 'Role2' }]}
             />,
@@ -39,7 +41,7 @@ async function renderCreateRuleDialog(availableRoles?: RoleOptions[]) {
         );
     });
 
-    return { onClose, reloadRules };
+    return { onClose, afterClose, reloadRules };
 }
 
 function doMock(createRbacError?: string) {
