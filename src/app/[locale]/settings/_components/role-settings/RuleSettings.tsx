@@ -133,20 +133,16 @@ export const RuleSettings = () => {
             />
             <CreateRuleDialog
                 open={createDialogOpen}
-                onClose={() => {
-                    setCreateDialogOpen(false);
-                    setSelectedRole('');
-                }}
+                onClose={() => setCreateDialogOpen(false)}
+                afterClose={() => setSelectedRole('')}
                 reloadRules={loadRbacData}
                 availableRoles={availableRoles}
                 selectedRole={selectedRole}
             />
             <DeleteRoleDialog
                 open={deleteRoleDialogOpen}
-                onClose={() => {
-                    setDeleteRoleDialogOpen(false);
-                    setSelectedRole('');
-                }}
+                onClose={() => setDeleteRoleDialogOpen(false)}
+                afterClose={() => setSelectedRole('')}
                 reloadRules={loadRbacData}
                 roleName={selectedRole}
                 rules={groupedRules[selectedRole] ?? []}

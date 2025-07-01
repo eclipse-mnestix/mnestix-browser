@@ -12,6 +12,7 @@ import { deleteRbacRule } from 'lib/services/rbac-service/RbacActions';
 
 type RuleDialogProps = {
     readonly onClose: () => void;
+    readonly afterClose: () => void;
     readonly reloadRules: () => Promise<void>;
     readonly open: boolean;
     readonly roleName: string;
@@ -20,7 +21,7 @@ type RuleDialogProps = {
 
 type DialogMode = 'delete-role' | 'delete-hint';
 
-export const DeleteRoleDialog = ({ onClose, reloadRules, open, roleName, rules }: RuleDialogProps) => {
+export const DeleteRoleDialog = ({ onClose, afterClose, reloadRules, open, roleName, rules }: RuleDialogProps) => {
     const t = useTranslations('pages.settings.rules');
     const [dialogMode, setDialogMode] = useState<DialogMode>('delete-role');
     const [isDeleting, setIsDeleting] = useState(false);
@@ -56,7 +57,7 @@ export const DeleteRoleDialog = ({ onClose, reloadRules, open, roleName, rules }
         const deleteSuccess = await deleteAllRules();
         if (deleteSuccess) {
             onClose();
-            await new Promise( resolve => setTimeout(resolve, 1000) ); // Wait for the notification to be shown
+            await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for the notification to be shown
             setDialogMode('delete-hint');
         } else {
             onClose();
@@ -117,17 +118,13 @@ export const DeleteRoleDialog = ({ onClose, reloadRules, open, roleName, rules }
         if (open) setDialogMode('delete-role');
     }, [open]);
 
+    function resetState() {
+        setDialogMode('delete-role');
+        afterClose();
+    }
+
     return (
-        <Dialog
-            open={open}
-            onClose={onClose}
-            maxWidth="md"
-            fullWidth={true}
-            onTransitionExited={() => {
-                // This function is called when the dialog close transition ends
-                if (!open) setDialogMode('delete-role');
-            }}
-        >
+        <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth={true} onTransitionExited={() => resetState()}>
             <Box sx={{ mx: '2rem', mt: '1.5rem', mb: '1rem' }} data-testid="role-dialog">
                 <DialogCloseButton handleClose={onClose} dataTestId="dialog-close-button" />
                 <DialogViewContent />

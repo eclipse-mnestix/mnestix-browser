@@ -13,6 +13,7 @@ import { RoleOptions } from './RuleSettings';
 
 type RoleDialogProps = {
     readonly onClose: () => void;
+    readonly afterClose: () => void;
     readonly reloadRules: () => Promise<void>;
     readonly open: boolean;
     readonly availableRoles: RoleOptions[];
@@ -26,7 +27,7 @@ export const defaultRbacRule: BaSyxRbacRule = {
     idShort: '',
 };
 
-export function CreateRuleDialog({ onClose, reloadRules, open, availableRoles, selectedRole }: RoleDialogProps) {
+export function CreateRuleDialog({ onClose, afterClose, reloadRules, open, availableRoles, selectedRole }: RoleDialogProps) {
     const t = useTranslations('pages.settings.rules');
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
@@ -66,6 +67,11 @@ export function CreateRuleDialog({ onClose, reloadRules, open, availableRoles, s
 
         showError(response);
     }
+    
+    function resetState() {
+        setShowHint(false);
+        afterClose();
+    }
 
     return (
         <Dialog
@@ -73,10 +79,7 @@ export function CreateRuleDialog({ onClose, reloadRules, open, availableRoles, s
             onClose={onClose}
             maxWidth="md"
             fullWidth={true}
-            onTransitionExited={() => {
-                // This function is called when the dialog close transition ends
-                setShowHint(false);
-            }}
+            onTransitionExited={resetState}
         >
             <Box sx={{ mx: '2rem', mt: '1.5rem', mb: '1rem' }} data-testid="role-create-dialog">
                 <DialogCloseButton handleClose={onClose} dataTestId="rule-create-close-button" />
