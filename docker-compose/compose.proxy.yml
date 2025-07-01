@@ -1,9 +1,9 @@
 services:
-  mnestix-proxy:
-    image: mnestix/mnestix-proxy:dev
+  mnestix-proxy:mnestix-proxy:
+    image: mnestix-proxy:0.0.1
     container_name: mnestix-proxy
     ports:
-      - '5065:5065'
+      - 5065:5065
     environment:
       # API key authorization
       CustomerEndpointsSecurity__ApiKey: ${MNESTIX_BACKEND_API_KEY:-verySecureApiKey}
