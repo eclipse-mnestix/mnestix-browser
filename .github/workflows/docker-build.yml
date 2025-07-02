@@ -2,8 +2,8 @@ name: CI and Docker Deploy
 
 on:
   push:
-    branches:
-      - maintenance/1.x
+    branches: ['main', 'dev', 'staging']
+    tags: ['v*.*.*']
     paths-ignore:
       - '.github/ISSUE_TEMPLATE/**'
       - '.github/CODEOWNERS'
@@ -11,8 +11,7 @@ on:
       - 'wiki/**'
       - 'README.md'
   pull_request:
-    branches:
-      - maintenance/1.x
+    branches: ['dev']
     paths-ignore:
       - '.github/ISSUE_TEMPLATE/**'
       - '.github/CODEOWNERS'
@@ -27,8 +26,8 @@ concurrency:
 env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: mnestix-browser
-  # Push 1.x image to docker hub. Manually retag to overwrite the prod image.
-  IMAGE_TAG_VERSION: 1.x-maintenance
+  # Update the version manually
+  IMAGE_TAG_VERSION: 1.5.0
 
 jobs:
   build-browser-image:
@@ -227,7 +226,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request' &&
       github.repository_owner == 'eclipse-mnestix' &&
-      (github.ref == 'refs/heads/maintenance/1.x')
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/dev')
     permissions:
       contents: read
       packages: write
@@ -280,3 +279,5 @@ jobs:
           push: true
           tags: |
             ${{ github.ref == 'refs/heads/main' && format('mnestix/{0}:{1}', env.IMAGE_NAME, env.IMAGE_TAG_VERSION) || '' }}
+            ${{ github.ref == 'refs/heads/main' && format('mnestix/{0}:latest', env.IMAGE_NAME) || '' }}
+            ${{ github.ref != 'refs/heads/main' && format('mnestix/{0}:{1}', env.IMAGE_NAME, steps.extract_branch.outputs.branch) || '' }}
