@@ -24,7 +24,7 @@ Mnestix Browser is the perfect tool to demonstrate the power and potential of AA
 the
 implementation of standardized digital twins. It opens the way for use cases such as the Digital Product Passport (DPP).
 
-You can find a demo [here](https://mnestix-prod.azurewebsites.net/).
+You can find a demo [here](https://mnestix.xitaso.net/).
 Some screenshots can be found in the [screenshots folder](screenshots).
 
 ### **If you need support feel free to contact us through our website [here](https://xitaso.com/kompetenzen/mnestix/#support).**
