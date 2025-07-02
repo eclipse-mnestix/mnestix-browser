@@ -5,17 +5,24 @@ import { useState } from 'react';
 import { useTranslations } from 'use-intl';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { useEnv } from 'app/EnvProvider';
+import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
+import { downloadAasFromRepo } from 'lib/services/repository-access/repositorySearchActions';
+import { useShowError } from 'lib/hooks/UseShowError';
+import { AssetAdministrationShell } from '@aas-core-works/aas-core3.0-typescript/types';
 
 type ActionMenuProps = {
-    readonly aasId?: string;
+    readonly aas: AssetAdministrationShell | null;
+    readonly submodels: SubmodelOrIdReference[] | null;
+    readonly repositoryURL?: string;
     readonly className?: string;
 };
 
-export function ActionMenu({ aasId, className }: ActionMenuProps) {
+export function ActionMenu({ aas, submodels, repositoryURL, className }: ActionMenuProps) {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const navigate = useRouter();
     const t = useTranslations('pages');
     const env = useEnv();
+    const { showError } = useShowError();
 
     const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -26,18 +33,52 @@ export function ActionMenu({ aasId, className }: ActionMenuProps) {
     };
 
     const startComparison = () => {
-        if (aasId) {
-            navigate.push(`/compare?aasId=${encodeURIComponent(aasId)}`);
+        if (aas?.id) {
+            navigate.push(`/compare?aasId=${encodeURIComponent(aas?.id)}`);
         }
         handleMenuClose();
     };
 
     const goToAASView = () => {
-        if (aasId) {
-            navigate.push(`/viewer/${encodeBase64(aasId)}`);
+        if (aas?.id) {
+            navigate.push(`/viewer/${encodeBase64(aas?.id)}`);
         }
         handleMenuClose();
     };
+
+    async function downloadAAS() {
+        if (!aas?.id) {
+            handleMenuClose();
+            return;
+        }
+        if (!repositoryURL) {
+            showError(t('productViewer.actions.downloadErrorNoRepo'));
+            handleMenuClose();
+            return;
+        }
+        const submodelIds =
+            Array.isArray(submodels)
+                ? submodels.map(s => s.id)
+                : [];
+        try {
+            const response = await downloadAasFromRepo(aas?.id, submodelIds, repositoryURL);
+            if (response.isSuccess && response.result) {
+                const url = window.URL.createObjectURL(response.result);
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', `${aas?.idShort}.aasx`);
+                document.body.appendChild(link);
+                link.click();
+                link.parentNode?.removeChild(link);
+                window.URL.revokeObjectURL(url);
+            } else if (!response.isSuccess) {
+                showError(response.message);
+            }
+        } catch {
+            showError(t('productViewer.actions.downloadError'));
+        }
+        handleMenuClose();
+    }
 
     return (
         <>
@@ -56,10 +97,6 @@ export function ActionMenu({ aasId, className }: ActionMenuProps) {
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
                 onClose={handleMenuClose}
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                }}
             >
                 {env.COMPARISON_FEATURE_FLAG && (
                     <MenuItem 
@@ -77,6 +114,12 @@ export function ActionMenu({ aasId, className }: ActionMenuProps) {
                         {t('productViewer.actions.toAasView')}
                     </MenuItem>
                 )}
+                <MenuItem 
+                        onClick={downloadAAS} 
+                        data-testid="detail-download-button"
+                    >
+                        {t('productViewer.actions.download')}
+                    </MenuItem>
             </Menu>
         </>
     );

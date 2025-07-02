@@ -9,7 +9,7 @@ import { envs } from 'lib/env/MnestixEnv';
 const i18nMiddleware = createMiddleware(routing);
 
 // paths where we do not need localized path
-const unlocalizedPaths = ['/api', '/_next/static', '/_next/image', '/favicon.ico', '/LocationMarkers'];
+const unlocalizedPaths = ['/api', '/_next/static', '/_next/image', '/favicon.ico', '/LocationMarkers', '/images'];
 
 const unlocalizedPathsRegex = RegExp(
     `^(${unlocalizedPaths.map((str) => `(${str.startsWith('/') ? str : '/' + str})`).join('|')})(/?$|/.*)`,
@@ -24,8 +24,13 @@ export function middleware(req: NextRequest) {
     if (!envs.COMPARISON_FEATURE_FLAG && pathname.includes('compare')) {
         return NextResponse.rewrite(new URL('/404', req.url));
     }
-    if (!envs.PRODUCT_VIEW_FEATURE_FLAG && pathname.includes('product')) {
+    if (!envs.PRODUCT_VIEW_FEATURE_FLAG && (pathname.includes('product') || pathname.includes('catalog'))) {
         return NextResponse.rewrite(new URL('/404', req.url));
+    }
+
+    // If product view is enabled, the marketplace is the home page
+    if (envs.PRODUCT_VIEW_FEATURE_FLAG && req.nextUrl.pathname === '/') {
+        return NextResponse.redirect(new URL('/marketplace', req.url));
     }
 
     // Generate a unique correlation ID for tracking requests

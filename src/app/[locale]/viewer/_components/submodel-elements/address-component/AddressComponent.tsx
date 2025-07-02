@@ -15,12 +15,7 @@ import {
     PhoneElement,
     VatElement,
 } from './ContactElements';
-
-type AddressComponentProps = {
-    readonly submodelElement?: SubmodelElementCollection;
-    readonly hasDivider?: boolean;
-    readonly submodelId?: string;
-};
+import { CustomSubmodelElementComponentProps } from 'app/[locale]/viewer/_components/submodel/generic-submodel/GenericSubmodelDetailComponent';
 
 export const idShortsOfSubmodelElementsContainingAddressData: string[] = [
     'Company',
@@ -35,7 +30,7 @@ export const idShortsOfSubmodelElementsContainingAddressData: string[] = [
     'ZipCodeOfPOBox',
 ];
 
-export function AddressComponent(props: AddressComponentProps) {
+export function AddressComponent(props: CustomSubmodelElementComponentProps) {
     if (!props.submodelElement?.value) {
         return <></>;
     }

@@ -124,6 +124,20 @@ export class AssetAdministrationShellRepositoryApi implements IAssetAdministrati
             this.basePath,
         );
     }
+
+    async downloadAAS(
+        aasId: string | string[],
+        submodelIds: string[],
+        includeConceptDescriptions = true,
+        options?: object,
+    ): Promise<ApiResponseWrapper<Blob>> {
+        return AssetAdministrationShellRepositoryApiFp(this.configuration).downloadAAS(
+            aasId,
+            submodelIds,
+            includeConceptDescriptions,
+            options,
+        )(this.http, this.basePath);
+    }
 }
 
 /**
@@ -253,6 +267,32 @@ export const AssetAdministrationShellRepositoryApiFp = function (configuration?:
                 );
             };
         },
+        /**
+         * @summary Downloads the Asset Administration Shell (AAS) and its submodels.
+         * @param {string | string[]} aasId - The ID(s) of the Asset Administration Shell(s) to be downloaded.
+         * @param {string[]} submodelIds - An array of IDs of the submodels to be included in the download.
+         * @param {boolean} [includeConceptDescriptions=true] - Optional. Whether to include concept descriptions in the download.
+         * @param {object} [options] - Optional. Additional options to override the default HTTP request settings.
+         * @throws {RequiredError}
+         */
+        downloadAAS(aasId: string | string[], submodelIds: string[], includeConceptDescriptions: boolean = true, options?: any) {
+            return async (requestHandler: FetchAPI, basePath: string) => {
+                const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+                const localVarHeaderParameter = {
+                    Accept: 'application/asset-administration-shell-package+xml',
+                } as any;
+
+                localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options?.headers);
+
+                const aasIdsEncoded = Array.isArray(aasId) ? aasId.map(id => encodeBase64(id)) : [encodeBase64(aasId)];
+                const aasIdsQuery = aasIdsEncoded.map(id => `aasIds=${id}`).join('&');
+                const submodelIdsEncoded = submodelIds.map(id => encodeBase64(id));
+                const submodelIdsQuery = submodelIdsEncoded.map(id => `submodelIds=${id}`).join('&');
+                const url = `${basePath}/serialization?${aasIdsQuery}&${submodelIdsQuery}&includeConceptDescriptions=${includeConceptDescriptions}`;
+
+            return await requestHandler.fetch<Blob>(url, localVarRequestOptions);
+            };
+        }
     };
 };
 

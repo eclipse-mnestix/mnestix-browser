@@ -2,13 +2,12 @@
 
 import { AasSearcher, AasSearchResult } from 'lib/services/search-actions/AasSearcher';
 import { AssetAdministrationShell } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
-import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { mnestixFetch } from 'lib/api/infrastructure';
-import { SubmodelSearcher } from 'lib/services/searchUtilActions/SubmodelSearcher';
+import { SubmodelSearcher, SubmodelSearchResult } from 'lib/services/searchUtilActions/SubmodelSearcher';
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { AssetAdministrationShellRepositoryApi } from 'lib/api/basyx-v3/api';
-import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { headers } from 'next/headers';
 import { createRequestLogger, logInfo } from 'lib/util/Logger';
 
@@ -58,20 +57,11 @@ export async function getSubmodelFromSubmodelDescriptor(url: string): Promise<Ap
 export async function performSubmodelFullSearch(
     submodelReference: Reference,
     submodelDescriptor?: SubmodelDescriptor,
-): Promise<ApiResponseWrapper<Submodel>> {
+): Promise<ApiResponseWrapper<SubmodelSearchResult>> {
     const logger = createRequestLogger(await headers());
     logInfo(logger, 'performSubmodelFullSearch', 'Requested SubmodelReference', {
         referenceId: submodelReference.keys,
     });
     const searcher = SubmodelSearcher.create(logger);
     return searcher.performSubmodelFullSearch(submodelReference, submodelDescriptor);
-}
-
-export async function checkFileExists(url: string): Promise<ApiResponseWrapper<boolean>> {
-    const localFetch = mnestixFetch();
-    const response = await localFetch.fetch(url, {
-        method: 'HEAD',
-    });
-    if (response.isSuccess) return wrapSuccess(true);
-    return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Exception during network fetch');
 }

@@ -59,7 +59,7 @@ export const CompareAasContextProvider = (props: PropsWithChildren) => {
         if (compareAas.length < 3) {
             const newAas = {
                 aas: inputAas,
-                aasOrigin: data.aasRepositoryOrigin,
+                aasOrigin: data.aasRepositoryOrigin ?? null,
             };
             setCompareAas((prevList) => [...prevList, newAas]);
             if (inputAas.submodels) {
@@ -161,9 +161,9 @@ export const CompareAasContextProvider = (props: PropsWithChildren) => {
         } else {
             await Promise.all(
                 input.map(async (reference) => {
-                    const { result: submodel, isSuccess: success } = await performSubmodelFullSearch(reference);
-                    if (success) {
-                        const dataRecord = generateSubmodelCompareData(submodel);
+                    const { result: searchResult, isSuccess: success } = await performSubmodelFullSearch(reference);
+                    if (success && searchResult) {
+                        const dataRecord = generateSubmodelCompareData(searchResult.submodel);
                         newCompareData.push(dataRecord);
                     }
                 }),

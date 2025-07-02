@@ -6,18 +6,18 @@
         "CityTown": "City/Town",
         "Company": "Company",
         "Department": "Department",
-        "NationalCode": "National Code",
-        "POBox": "PO Box",
+        "NationalCode": "National code",
+        "POBox": "PO box",
         "StateCounty": "State/County",
         "Street": "Street",
-        "TimeZone": "Time Zone",
-        "ZipCodeOfPOBox": "Zip Code of PO Box",
+        "TimeZone": "Time zone",
+        "ZipCodeOfPOBox": "Zip code of PO box",
         "Zipcode": "Zipcode"
       }
     },
     "assetNotFound": {
       "header": "AAS could not be loaded.",
-      "text": "Unable to load AAS for the given ID \"{id}\"",
+      "text": "Unable to load AAS for the given ID ''{id}''",
       "toHome": "To Home"
     },
     "authentication": {
@@ -26,46 +26,51 @@
       "sessionExpired": "Your session has expired. Please log in again."
     },
     "carbonFootprint": {
-      "beech": "One Beech Tree",
-      "calculationMethod": "Calculation Method",
+      "beech": "One beech tree",
+      "calculationMethod": "Calculation method",
       "co2EComparison": "Comparison",
       "co2EDistribution": "CO2e distribution",
       "comparisonAssumption": "Assuming one beech tree stores 12.5 kg CO2e per year.",
       "comparisonNeeds": "needs",
       "completedStages": "Emissions calculated based on product life cycle",
-      "equivalents": "CO2 Equivalents",
+      "equivalents": "CO2 equivalents",
       "inTotal": "in total",
       "notIncludedHint": "not yet included",
-      "productJourney": "Product Journey",
+      "productJourney": "Product journey",
       "stages": {
-        "A1": "A1 - raw material supply (and upstream production)",
+        "A1": "A1 - Raw material supply (and upstream production)",
         "A1-A3": "A1-A3 - Raw material supply to production",
-        "A2": "A2 - cradle-to-gate transport to factory",
-        "A3": "A3 - production",
-        "A4": "A4 - transport to final destination",
+        "A2": "A2 - Cradle-to-gate transport to factory",
+        "A3": "A3 - Production",
+        "A4": "A4 - Transport to final destination",
         "A4-A5": "A4-A5 - Transport to assembly",
-        "A5": "A5 - installation",
-        "B1": "B1 - usage phase",
+        "A5": "A5 - Installation",
+        "B1": "B1 - Usage phase",
         "B1-B7": "B1-B7 - Usage phase",
-        "B2": "B2 - maintenance",
-        "B3": "B3 - repair",
-        "B4": "B4 - replacement",
-        "B5": "B5 - update/upgrade, refurbishing",
-        "B6": "B6 - usage energy consumption",
-        "B7": "B7 - usage water consumption",
-        "C1": "C1 - reassembly",
+        "B2": "B2 - Maintenance",
+        "B3": "B3 - Repair",
+        "B4": "B4 - Replacement",
+        "B5": "B5 - Update/upgrade, refurbishing",
+        "B6": "B6 - Usage energy consumption",
+        "B7": "B7 - Usage water consumption",
+        "C1": "C1 - Reassembly",
         "C1-C4": "C1-C4 - Disposal phase",
-        "C2": "C2 - transport to recycler",
+        "C2": "C2 - Transport to recycler",
         "C2-C4": "C2-C4 - Recycling to landfill",
-        "C3": "C3 - recycling, waste treatment",
-        "C4": "C4 - landfill",
-        "D": "D - reuse"
+        "C3": "C3 - Recycling, waste treatment",
+        "C4": "C4 - Landfill",
+        "D": "D - Reuse"
       },
       "timeUnit": {
         "month": "{count, plural, =0 {less than a month} =1 {1 month} other {# months}}",
         "year": "{count, plural, =0 {less than a year} =1 {1 year} other {# years}}"
       },
       "totalCO2Equivalents": "CO2 emissions from product (so far)"
+    },
+    "constructionDialog": {
+      "buttonText": "Close",
+      "message": "This feature is currently under construction and will be available soon.",
+      "title": "Under Construction"
     },
     "contactInformation": {
       "contactTypes": {
@@ -89,16 +94,18 @@
       "copyBase64": "Copy base64 encoded"
     },
     "documentComponent": {
+      "classification": "Document classification",
       "documentDetails": "Document details",
       "fileNotFound": "File not found",
-      "open": "Open"
+      "open": "Open",
+      "showMoreButton": "show more"
     },
     "dummyComponent": {
       "dummyText": "This is a dummy component. It is used to test the layout and design of the application."
     },
     "noSearchResult": {
-      "header": "No Data found",
-      "noDataFound": "No data found for \"{name}\".",
+      "header": "No data found",
+      "noDataFound": "No data found for ''{name}''.",
       "toHomeButton": "To Home"
     },
     "propertyComponent": {
@@ -140,17 +147,17 @@
     },
     "technicalData": {
       "cannotRenderContent": "Content of this submodel cannot displayed.",
-      "furtherInformation": "Further Information",
-      "generalInformation": "General Information",
-      "productClassification": "Product Classification",
-      "technicalProperties": "Technical Properties"
+      "furtherInformation": "Further information",
+      "generalInformation": "General information",
+      "productClassification": "Product classification",
+      "technicalProperties": "Technical properties"
     },
     "verticalTabSelector": {
       "errors": {
         "INTERNAL_SERVER_ERROR": "Internal server error",
         "NOT_FOUND": "Submodel not found",
         "UNAUTHORIZED": "Unauthorized",
-        "UNKNOWN": "Unknown Error"
+        "UNKNOWN": "Unknown error"
       }
     }
   },
@@ -158,7 +165,7 @@
     "errors": {
       "notFound": "Not found",
       "unauthorizedError": {
-        "content": "You don't have access to this resource. Log in or ask your administrator for access.",
+        "content": "You don''t have access to this resource. Log in or ask your administrator for access.",
         "title": "Unauthorized access"
       },
       "unexpectedError": "Unexpected error",
@@ -189,13 +196,13 @@
         "aasEndpoint": "AAS URL",
         "aasId": "AAS ID",
         "assetId": "Asset ID",
-        "discoveryUrl": "Discovery Url",
-        "manufacturer": "Manufacturer Name",
+        "discoveryUrl": "Discovery URL",
+        "manufacturer": "Manufacturer name",
         "picture": "Image",
-        "productClass": "Product Class",
-        "productDesignation": "Manufacturer Product Designation",
-        "registryUrl": "Registry Url",
-        "repositoryUrl": "Repository Url",
+        "productClass": "Product class",
+        "productDesignation": "Manufacturer product designation",
+        "registryUrl": "Registry URL",
+        "repositoryUrl": "Repository URL",
         "viewAASButton": "View AAS"
       },
       "maxElementsWarning": "Cannot compare more than 3 elements",
@@ -208,7 +215,7 @@
     "aasViewer": {
       "actions": {
         "compareButton": "Compare",
-        "toProductView": "Product View"
+        "toProductView": "Product view"
       },
       "asset": "Asset",
       "assetAdministrationShell": "Asset Administration Shell",
@@ -230,11 +237,12 @@
           "view": "View"
         },
         "idLabel": "ID:",
+        "noSubmodelsToLoad": "There do not exist any submodels for this AAS.",
         "referenceCounter": {
           "count": "Count",
           "elementName": "Element"
         },
-        "renderError": "Submodel can't be rendered.",
+        "renderError": "Submodel can''t be rendered.",
         "semanticIdLabel": "Semantic IDs:",
         "timeSeries": {
           "internalSegments": "Internal segments",
@@ -242,8 +250,26 @@
           "selectTimeframe": "Select timeframe"
         },
         "title": "Submodels",
-        "unknownModelType": "Unknown ModelType: {type}"
+        "unknownModelType": "Unknown ModelType: {type}",
+        "repositoryUrlLabel": "Repository URL:"
       }
+    },
+    "catalog": {
+      "articleCount": "{count, plural, =1 {# article} other {# articles}}",
+      "eclassCategories": {
+        "15": "Maintenance (Service)",
+        "27": "Electric engineering, automation, process control engineering ",
+        "44": "Automotive engineering, vehicle component",
+        "default": "Category "
+      },
+      "filter": "Filter",
+      "manufacturerCatalog": "Manufacturer product catalog",
+      "manufacturerSelect": "Select manufacturer",
+      "marketplaceSubtitle": "Asset Administration Shell for Wire Harness",
+      "marketplaceTitle": "VWS4LS - Marketplace",
+      "noSearcherWarning": "No AAS Searcher Configured. Showing AAS List as Fallback, filters won''t work.",
+      "searchPlaceholder": "Search currently unavailable...",
+      "title": "Manufacturer catalog"
     },
     "compare": {
       "addAnother": "Add another AAS",
@@ -274,7 +300,7 @@
     "discoveryList": {
       "errors": {
         "noAasFound": "No AAS found for the given ID",
-        "noAssetId": "No asset ID given.",
+        "noAssetId": "No Asset ID given.",
         "searchFailed": "Search failed"
       },
       "subtitle": "Here you will find all related AAS to the given Asset ID.",
@@ -283,6 +309,9 @@
     "productViewer": {
       "actions": {
         "compareButton": "Compare",
+        "download": "Download AAS",
+        "downloadError": "Error while downloading AAS.",
+        "downloadErrorNoRepo": "No repository found for the selected AAS.",
         "toAasView": "AAS View"
       },
       "classification": "Classification",
@@ -290,12 +319,12 @@
         "technicalDataSubmodelNotFound": "Technical Data Submodel not found"
       },
       "home": "Home",
-      "markings": "Product Markings",
+      "markings": "Product markings",
       "productInfo": {
-        "articleNumber": "Article Number",
+        "articleNumber": "Article number",
         "manufacturer": "Manufacturer",
-        "orderCode": "Order Code",
-        "productDesignation": "Manufacturer Product Designation"
+        "orderCode": "Order code",
+        "productDesignation": "Manufacturer product designation"
       },
       "summary": "Key facts",
       "title": "Product"
@@ -319,22 +348,23 @@
       "connections": {
         "aasRepository": {
           "connectionType": "AAS_REPOSITORY",
-          "repositories": "AAS Repositories",
-          "repositoryDefaultLabel": "Default AAS Repository",
-          "repositoryLabel": "AAS Repository",
-          "repositoryUrlLabel": "AAS Repository URL"
+          "repositories": "AAS repositories",
+          "repositoryDefaultLabel": "Default AAS repository",
+          "repositoryLabel": "AAS repository",
+          "repositoryUrlLabel": "AAS repository URL"
         },
         "addButton": "Add more",
         "resetSuccessful": "Connections were reset.",
         "submodelRepository": {
           "connectionType": "SUBMODEL_REPOSITORY",
-          "repositories": "Submodel Repositories",
-          "repositoryDefaultLabel": "Default Submodel Repository",
-          "repositoryLabel": "Submodel Repository",
-          "repositoryUrlLabel": "Submodel Repository URL"
+          "repositories": "Submodel repositories",
+          "repositoryDefaultLabel": "Default submodel repository",
+          "repositoryLabel": "Submodel repository",
+          "repositoryUrlLabel": "Submodel repository URL"
         },
         "subtitle": "Define which data connections should be used.",
         "title": "Data sources",
+        "urlFieldNoTrailingSlash": "The URL must not end with a slash (/).",
         "urlFieldRequired": "URL field is required"
       },
       "header": "Settings",
@@ -344,16 +374,16 @@
           "dnsHeading": "Access via DNS",
           "dnsText": "Especially for the brownfield approach and the distributor of a product, it makes sense to additionally set up DNS access through the asset ID and thus enable data retrieval from conventional browser applications.",
           "endResult": "End result",
-          "exampleHeading": "Example Case",
+          "exampleHeading": "Example case",
           "industry40Heading": "Industry 4.0 context",
           "industry40Text": "Products have a globally unique ID which can be assigned to one or more asset administration shells. In the Industry 4.0 context, the connection between asset and AAS is established via the I4.0 infrastructure.",
           "redirectsTo": "Redirects to",
-          "title": "How to connect your Asset ID with your AAS Repository"
+          "title": "How to connect your Asset ID with your AAS repository"
         },
         "errors": {
-          "idStructureError": "Error while saving \"{name}\" ({reason}).",
+          "idStructureError": "Error while saving ''{name}'' ({reason}).",
           "invalidIri": "Has to be a valid IRI, e.g. https://example.com/",
-          "invalidIriPart": "Has to work as part of an IRI (no \"/\", spaces or special characters)"
+          "invalidIriPart": "Has to work as part of an IRI (no slashes, spaces or special characters)"
         },
         "labels": {
           "dynamicPart": "dynamic part",
@@ -363,7 +393,7 @@
         "messages": {
           "successfullyUpdated": "Updated successfully"
         },
-        "title": "ID Structure"
+        "title": "ID structure"
       },
       "messages": {
         "changesSavedSuccessfully": "Changes saved successfully."
@@ -373,14 +403,24 @@
           "add": "Add",
           "back": "Back",
           "cancel": "Cancel",
-          "create": "Create Rule",
+          "create": "Add permission",
           "delete": "Delete",
           "edit": "Edit",
           "save": "Save"
         },
         "createRule": {
+          "placeholderText": "New or existing role name",
           "saveSuccess": "New rule saved successfully.",
-          "title": "Create Rule"
+          "subtitle": "Add a permission to a new or existing role.",
+          "subtitle2": "Add a permission to the role ''{role}''.",
+          "title": "Add new permission"
+        },
+        "deleteRole": {
+          "delete": "Delete role",
+          "description": "You are about to delete the ''{roleName}'' role with {count} permissions. Are you sure you want to delete entire role?",
+          "header": "Delete entire role",
+          "partiallySuccess": "{count} out of {total} permissions have been deleted. The role still exists with the remaining permissions!",
+          "success": "Role ''{roleName}'' has been deleted successfully."
         },
         "deleteRule": {
           "question": "Permanently delete this rule?",
@@ -389,20 +429,20 @@
         },
         "editRule": {
           "saveSuccess": "Rule edit successful.",
-          "title": "Edit Rule"
+          "title": "Edit rule"
         },
         "errors": {
           "uniqueIdShort": "The combination of role name, action and type already exists in another rule.\nPlease edit the existing rule."
         },
         "keycloakHint": {
           "acknowledge": "Acknowledge",
-          "create": "This role has not been used yet. Don't forget to configure it in Keycloak!",
+          "create": "This role has not been used yet. Don''t forget to configure it in Keycloak!",
           "delete": "Do not forget to delete this role in Keycloak as well!",
           "title": "Update Keycloak"
         },
-        "roleRequired": "Role is required",
         "roleNameMaxLength": "Role name cannot be longer than {maxLength} characters.",
         "roleNameNoTrailSpace": "Role name cannot end with a space.",
+        "roleRequired": "Role is required",
         "subtitle": "Manage roles and permissions.",
         "tableHeader": {
           "aasIds": "AAS IDs",
@@ -412,7 +452,7 @@
           "submodelIds": "Submodel IDs",
           "type": "Type"
         },
-        "title": "Role Management",
+        "title": "Role management",
         "wildcardLabel": "Allow all"
       },
       "subHeader": "Add, remove, or modify settings and configurations to various features within your AAS environment."
@@ -435,11 +475,11 @@
         "true": "true"
       },
       "chooseAStartingPoint": "Choose a template as starting point",
-      "copyTemplateId": "Copy Template ID",
-      "createNew": "Create New",
+      "copyTemplateId": "Copy template ID",
+      "createNew": "Create new",
       "custom": "Custom",
       "defaultValue": "Default value",
-      "deleteTemplateQuestion": "Delete template \"{name}\" irretrievably?",
+      "deleteTemplateQuestion": "Delete template ''{name}'' irretrievably?",
       "displayName": "Display name",
       "emptyCustom": "Empty (Custom)",
       "emptyCustomDescription": "Is not based upon a standardized template",
@@ -468,27 +508,27 @@
       "title": "Templates",
       "validation": {
         "errors": {
-          "invalidDate": "Has to be a valid date in format \"yyyy-mm-dd\"",
+          "invalidDate": "Has to be a valid date in format ''yyyy-mm-dd''",
           "invalidLong": "Has to be a valid long"
         }
       }
     },
     "transfer": {
-      "aasRepository": "AAS Repository",
-      "chooseRepository": "Choose AAS Repository",
-      "chooseSubmodelRepository": "Choose Submodel Repository (optional)",
+      "aasRepository": "AAS repository",
+      "chooseRepository": "Choose AAS repository",
+      "chooseSubmodelRepository": "Choose submodel repository (optional)",
       "errorToast": "Transfer of AAS not successful",
       "partiallyFailedToast": "Failed to transfer element",
-      "repositoryApiKey": "AAS Repository ApiKey",
-      "repositoryLabel": "List of AAS Repositories",
-      "repositoryRequired": "AAS Repository is required",
-      "submodelRepository": "Submodel Repository",
-      "submodelRepositoryApiKey": "Submodel Repository ApiKey",
-      "submodelRepositoryLabel": "List of Submodel Repositories",
+      "repositoryApiKey": "AAS repository APIKey",
+      "repositoryLabel": "List of AAS repositories",
+      "repositoryRequired": "AAS repository is required",
+      "submodelRepository": "Submodel repository",
+      "submodelRepositoryApiKey": "Submodel repository APIKey",
+      "submodelRepositoryLabel": "List of submodel repositories",
       "subtitle": "To import this AAS to another repository, fill out the following fields.",
       "successfulToast": "Transfer of AAS successful",
       "title": "Import",
-      "useAasRepository": "Use AAS Repository",
+      "useAasRepository": "Use AAS repository",
       "warningToast": "AAS was only partially transferred."
     }
   }

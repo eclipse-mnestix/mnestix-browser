@@ -17,7 +17,7 @@
     },
     "assetNotFound": {
       "header": "Verwaltungsschale konnte nicht geladen werden.",
-      "text": "Es konnte keine Verwaltungsschale für die angegebene ID \"{id}\" geladen werden.",
+      "text": "Es konnte keine Verwaltungsschale für die angegebene ID ''{id}'' geladen werden.",
       "toHome": "Zur Startseite"
     },
     "authentication": {
@@ -67,6 +67,11 @@
       },
       "totalCO2Equivalents": "(Bisherige) CO2 Emissionen des Produkts"
     },
+    "constructionDialog": {
+      "buttonText": "Schließen",
+      "message": "Diese Funktion befindet sich derzeit im Aufbau und wird in Kürze verfügbar sein.",
+      "title": "In Bearbeitung"
+    },
     "contactInformation": {
       "contactTypes": {
         "0173-1#07-AAS754#001": "Geschäftlich",
@@ -89,22 +94,24 @@
       "copyBase64": "Base64-kodiert kopieren"
     },
     "documentComponent": {
+      "classification": "Dokument Klassifikation",
       "documentDetails": "Dokumentendetails",
       "fileNotFound": "Datei nicht gefunden",
-      "open": "Öffnen"
+      "open": "Öffnen",
+      "showMoreButton": "zeige mehr"
     },
     "dummyComponent": {
       "dummyText": "Das ist eine Dummy-Komponente. Sie wird verwendet, um das Layout und Design der Anwendung zu testen."
     },
     "noSearchResult": {
       "header": "Keine Daten gefunden",
-      "noDataFound": "Es wurden keine Daten für \"{name}\" gefunden.",
+      "noDataFound": "Es wurden keine Daten für ''{name}'' gefunden.",
       "toHomeButton": "Zur Startseite"
     },
     "propertyComponent": {
       "boolean": {
-        "false": "Falsch",
-        "true": "Wahr"
+        "false": "falsch",
+        "true": "wahr"
       },
       "labels": {
         "copied": "In Zwischenablage kopiert",
@@ -122,14 +129,14 @@
     },
     "relationShipDetailsDialog": {
       "error": {
-        "entityError": "Relationselement nicht gefunden",
-        "semanticError": "Semantische ID nicht gefunden",
+        "entityError": "Relation entity nicht gefunden",
+        "semanticError": "Semantic ID nicht gefunden",
         "unknownRelationship": "Unbekannte Relation"
       },
       "hasPart": "hat Teil",
       "isPartOf": "ist Teil von",
       "sameAs": "gleich wie",
-      "semanticId": "Semantische ID"
+      "semanticId": "Semantic ID"
     },
     "submodelElementCollection": {
       "allAvailableData": "Alle verfügbaren Daten",
@@ -189,13 +196,13 @@
         "aasEndpoint": "AAS URL",
         "aasId": "AAS ID",
         "assetId": "Asset ID",
-        "discoveryUrl": "Discovery Url",
+        "discoveryUrl": "Discovery URL",
         "manufacturer": "Herstellername",
         "picture": "Bild",
         "productClass": "Produktklasse",
         "productDesignation": "Hersteller Produktbezeichnung",
-        "registryUrl": "Registry Url",
-        "repositoryUrl": "Repository Url",
+        "registryUrl": "Registry URL",
+        "repositoryUrl": "Repository URL",
         "viewAASButton": "AAS anzeigen"
       },
       "maxElementsWarning": "Maximal 3 Elemente selektierbar",
@@ -230,6 +237,7 @@
           "view": "Ansehen"
         },
         "idLabel": "ID:",
+        "noSubmodelsToLoad": "Für diese AAS existieren keine Teilmodelle.",
         "referenceCounter": {
           "count": "Anzahl",
           "elementName": "Element"
@@ -242,8 +250,26 @@
           "selectTimeframe": "Auswahl des Zeitabschnitts"
         },
         "title": "Teilmodelle",
-        "unknownModelType": "Unbekannter ModelType: {type}"
+        "unknownModelType": "Unbekannter ModelType: {type}",
+        "repositoryUrlLabel": "Repository URL:"
       }
+    },
+    "catalog": {
+      "articleCount": "{count, plural, =1 {# Artikel} other {# Artikel}}",
+      "eclassCategories": {
+        "15": "Instandhaltung (Dienstleistung)",
+        "27": "Elektro-, Automatisierungs- und Prozessleittechnik",
+        "44": "Fahrzeugtechnik, Fahrzeugkomponente",
+        "default": "Kategorie "
+      },
+      "filter": "Filter",
+      "manufacturerCatalog": "Hersteller Produktkatalog",
+      "manufacturerSelect": "Hersteller auswählen",
+      "marketplaceSubtitle": "Verwaltungsschale für den Leitungssatz",
+      "marketplaceTitle": "VWS4LS - Marketplace",
+      "noSearcherWarning": "Kein AAS Searcher konfiguriert. AAS Liste wird angezeigt, Filterung ist nicht möglich.",
+      "searchPlaceholder": "Suche aktuell nicht verfügbar...",
+      "title": "Hersteller Produktkatalog"
     },
     "compare": {
       "addAnother": "Eine weitere AAS hinzufügen",
@@ -277,12 +303,15 @@
         "noAssetId": "Keine Asset ID angegeben.",
         "searchFailed": "Suche fehlgeschlagen"
       },
-      "subtitle": "Hier finden Sie alle AAS, die mit der angegebenen ID verknüpft sind.",
-      "title": "AAS mit ID"
+      "subtitle": "Hier finden Sie alle AAS, die mit der angegebenen Asset ID verknüpft sind.",
+      "title": "AAS mit Asset ID"
     },
     "productViewer": {
       "actions": {
         "compareButton": "Vergleichen",
+        "download": "AAS herunterladen",
+        "downloadError": "Fehler beim Herunterladen der AAS.",
+        "downloadErrorNoRepo": "Kein Repository für die ausgewählte AAS gefunden.",
         "toAasView": "AAS Ansicht"
       },
       "classification": "Produktklassifikation",
@@ -335,6 +364,7 @@
         },
         "subtitle": "Definieren Sie, welche Datenquellen verwendet werden sollen.",
         "title": "Datenquellen",
+        "urlFieldNoTrailingSlash": "Die URL darf nicht mit einem Schrägstrich (/) enden.",
         "urlFieldRequired": "URL wird benötigt"
       },
       "header": "Einstellungen",
@@ -351,9 +381,9 @@
           "title": "Wie Sie Ihre Asset ID mit Ihrem Repository verbinden"
         },
         "errors": {
-          "idStructureError": "Fehler beim speichern von \"{name}\" ({reason}).",
+          "idStructureError": "Fehler beim speichern von ''{name}'' ({reason}).",
           "invalidIri": "Muss eine valide IRI sein. Z.B. https://example.com/",
-          "invalidIriPart": "Muss als Teil einer IRI funktionieren können (kein \"/\", Leer- und Sonderzeichen)"
+          "invalidIriPart": "Muss als Teil einer IRI funktionieren können (keine Schrägstriche, Leer- und Sonderzeichen erlaubt)"
         },
         "labels": {
           "dynamicPart": "dynamischer Teil",
@@ -373,14 +403,24 @@
           "add": "Hinzufügen",
           "back": "Zurück",
           "cancel": "Abbrechen",
-          "create": "Regel erstellen",
+          "create": "Berechtigung hinzufügen",
           "delete": "Löschen",
           "edit": "Bearbeiten",
           "save": "Speichern"
         },
         "createRule": {
+          "placeholderText": "Neuer oder bestehender Rollenname",
           "saveSuccess": "Neue Regel erfolgreich gespeichert.",
-          "title": "Regel erstellen"
+          "subtitle": "Füge eine Berechtigung zu einer neuen oder bereits bestehenden Rolle hinzu.",
+          "subtitle2": "Füge eine Berechtigung zu der Rolle ''{role}'' hinzu.",
+          "title": "Neue Berechtigung hinzufügen"
+        },
+        "deleteRole": {
+          "delete": "Rolle löschen",
+          "description": "Die Rolle ''{roleName}'' enthält {count} Rechte. Wollen Sie die gesamte Rolle mit allen Rechten löschen?",
+          "header": "Gesamte Rolle löschen",
+          "partiallySuccess": "{count} von {total} Rechte wurden gelöscht. Die Rolle existiert weiterhin mit den restlichen Rechten!",
+          "success": "Rolle ''{roleName}'' wurde erfogreich gelöscht."
         },
         "deleteRule": {
           "question": "Regel unwiderruflich löschen?",
@@ -400,9 +440,9 @@
           "delete": "Vergessen Sie nicht die Rolle in Keycloak zu entfernen!",
           "title": "Keycloak aktualisieren"
         },
-        "roleRequired": "Rolle wird benötigt",
         "roleNameMaxLength": "Rollenname darf maximal {maxLength} Zeichen lang sein",
         "roleNameNoTrailSpace": "Rollenname darf keine Leerzeichen am Ende haben.",
+        "roleRequired": "Rolle wird benötigt",
         "subtitle": "Verwalten von Rollen und Berechtigungen.",
         "tableHeader": {
           "aasIds": "AAS IDs",
@@ -431,15 +471,15 @@
       },
       "all": "Alle",
       "boolean": {
-        "false": "Falsch",
-        "true": "Wahr"
+        "false": "falsch",
+        "true": "wahr"
       },
       "chooseAStartingPoint": "Wählen Sie ein Template als Ausgangspunkt",
       "copyTemplateId": "Template-ID kopieren",
       "createNew": "Neu erstellen",
       "custom": "Custom",
       "defaultValue": "Defaultwert",
-      "deleteTemplateQuestion": "Template \"{name}\" unwiderruflich löschen?",
+      "deleteTemplateQuestion": "Template ''{name}'' unwiderruflich löschen?",
       "displayName": "Anzeigename",
       "emptyCustom": "Leer (Custom)",
       "emptyCustomDescription": "Basiert auf keinem standardisierten Template",
@@ -468,7 +508,7 @@
       "title": "Templates",
       "validation": {
         "errors": {
-          "invalidDate": "Muss ein gültiges Datum sein, im Format \"yyyy-mm-dd\"",
+          "invalidDate": "Muss ein gültiges Datum sein, im Format ''yyyy-mm-dd''",
           "invalidLong": "Muss eine valide Zahl sein"
         }
       }

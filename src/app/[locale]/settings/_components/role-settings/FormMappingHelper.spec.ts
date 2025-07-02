@@ -17,7 +17,7 @@ describe('FormMappingHelper', () => {
             };
 
             const expectedFormModel: RuleFormModel = {
-                role: 'admin',
+                role: { name: 'admin' },
                 type: 'aas-environment',
                 action: 'READ',
                 targetInformation: {
@@ -38,7 +38,7 @@ describe('FormMappingHelper', () => {
     describe('mapFormModelToBaSyxRbacRule', () => {
         it('should map RoleFormModel to BaSyxRbacRule correctly', () => {
             const formModel: RuleFormModel = {
-                role: 'admin-new',
+                role: { name: 'admin-new' },
                 type: 'aas-environment',
                 action: 'READ',
                 targetInformation: {

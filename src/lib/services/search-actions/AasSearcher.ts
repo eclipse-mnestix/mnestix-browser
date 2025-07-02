@@ -16,7 +16,7 @@ import { envs } from 'lib/env/MnestixEnv';
 
 export type AasData = {
     submodelDescriptors: SubmodelDescriptor[] | undefined;
-    aasRepositoryOrigin: string;
+    aasRepositoryOrigin: string | undefined;
 };
 
 export type AasSearchResult = {
@@ -93,7 +93,7 @@ export class AasSearcher {
         if (envs.AAS_REPO_API_URL) {
             const defaultResult = await this.getAasFromDefaultRepository(aasIdEncoded);
             if (defaultResult.isSuccess) {
-                const data = {
+                const data: AasData = {
                     submodelDescriptors: undefined,
                     aasRepositoryOrigin: envs.AAS_REPO_API_URL,
                 };
@@ -104,7 +104,7 @@ export class AasSearcher {
         const potentiallyMultipleAas = await this.getAasFromAllRepositories(aasIdEncoded);
         if (potentiallyMultipleAas.isSuccess) {
             if (potentiallyMultipleAas.result!.length === 1) {
-                const data = {
+                const data: AasData = {
                     submodelDescriptors: undefined,
                     aasRepositoryOrigin: potentiallyMultipleAas.result[0].location,
                 };
@@ -256,27 +256,17 @@ export class AasSearcher {
         aasId: string,
     ): Promise<ApiResponseWrapper<RepoSearchResult<AssetAdministrationShell>[]>> {
         const response = await this.multipleDataSource.getAasFromAllRepos(aasId);
-        if (!response.isSuccess) {
-            logResponseDebug(
-                this.log,
-                'getAasFromAllRepositories',
-                'Configured repositories search unsuccessful ',
-                response,
-                {
-                    Requested_ID: aasId,
-                },
-            );
-        } else {
-            logResponseDebug(
-                this.log,
-                'getAasFromAllRepositories',
-                'Configured repositories search successful',
-                response,
-                {
-                    Requested_ID: aasId,
-                },
-            );
-        }
+        logResponseDebug(
+            this.log,
+            'getAasFromAllRepositories',
+            response.isSuccess
+                ? 'Configured repositories search successful'
+                : 'Configured repositories search unsuccessful ',
+            response,
+            {
+                Requested_ID: aasId,
+            },
+        );
         return response;
     }
 }

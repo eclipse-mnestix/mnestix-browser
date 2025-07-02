@@ -13,8 +13,11 @@ const initializeRequestOptions = async (bearerToken: string, init?: RequestInit)
         };
     } else if (!envs.AUTHENTICATION_FEATURE_FLAG) {
         init.headers = {
-            ...init.headers,
             ApiKey: envs.MNESTIX_BACKEND_API_KEY || '',
+            // Overriding the ApiKey from the Mnestix configuration with the one
+            // set in the function call as the transfer feature allows users
+            // to set a separate ApiKey for the target repository.
+            ...init.headers,
         };
     }
 
@@ -67,3 +70,11 @@ export const sessionLogOut = async (keycloakEnabled: boolean) => {
         console.error(err);
     }
 };
+
+export async function fetchFileServerSide(fileUrl: string, accessToken?: string) {
+    const { fetch } = mnestixFetch();
+    return await fetch<Blob>(fileUrl, {
+        headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
+        cache: 'no-store',
+    });
+}

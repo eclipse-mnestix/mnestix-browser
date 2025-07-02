@@ -18,6 +18,7 @@ import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { RoundedIconButton } from 'components/basics/Buttons';
 import { BaSyxRbacRule } from 'lib/services/rbac-service/types/RbacServiceData';
 import { useTranslations } from 'next-intl';
+import { RoleActionMenu } from './RoleActionMenu';
 
 const PERMISSION_CATEGORY_PRIORITY_ORDER = [
     'aasIds',
@@ -31,10 +32,14 @@ export function RoleAccordion({
     roleName,
     rules,
     openDetailDialog,
+    openCreateDialog,
+    openDeleteRoleDialog,
 }: {
     roleName: string;
     rules: BaSyxRbacRule[];
     openDetailDialog: (entry: BaSyxRbacRule) => void;
+    openCreateDialog: (roleName: string) => void;
+    openDeleteRoleDialog: (roleName: string) => void;
 }) {
     const [isExpanded, setExpanded] = useState(false);
     const isMobile = useIsMobile();
@@ -139,7 +144,15 @@ export function RoleAccordion({
                         {t('tableHeader.permissions')}
                     </TableCell>
                 )}
-                <TableCell sx={tableHeaderText} data-testid="rulesettings-header-empty"></TableCell>
+                <TableCell sx={{ width: '2rem', textAlign: 'center' }} data-testid="rulesettings-header-empty">
+                    <Box>
+                        <RoleActionMenu
+                            roleName={roleName}
+                            openCreateDialog={openCreateDialog}
+                            openDeleteRoleDialog={openDeleteRoleDialog}
+                        />
+                    </Box>
+                </TableCell>
             </TableRow>
         );
     }
@@ -169,7 +182,7 @@ export function RoleAccordion({
                                 <PermissionCell entry={entry} />
                             </TableCell>
                         )}
-                        <TableCell sx={{ borderBottom: '0px', borderTop: '1px solid #eee' }}>
+                        <TableCell sx={{ borderBottom: '0px', borderTop: '1px solid #eee', textAlign: 'center' }}>
                             <RoundedIconButton
                                 data-testid={`role-settings-button-${entry.idShort}`}
                                 onClick={() => openDetailDialog(entry)}

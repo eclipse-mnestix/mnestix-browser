@@ -2,10 +2,22 @@ name: CI and Docker Deploy
 
 on:
   push:
-    branches: ['main', 'dev', 'staging']
+    branches: ['main', 'dev', 'maintenance/1.x']
     tags: ['v*.*.*']
+    paths-ignore:
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/CODEOWNERS'
+      - '.github/copilot-instructions.md'
+      - 'wiki/**'
+      - 'README.md'
   pull_request:
     branches: ['dev']
+    paths-ignore:
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/CODEOWNERS'
+      - '.github/copilot-instructions.md'
+      - 'wiki/**'
+      - 'README.md'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -15,7 +27,7 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: mnestix-browser
   # Update the version manually
-  IMAGE_TAG_VERSION: 1.5.0
+  IMAGE_TAG_VERSION: 1.5.1
 
 jobs:
   build-browser-image:
@@ -129,6 +141,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'yarn'
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
@@ -144,6 +161,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'yarn'
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
@@ -204,7 +226,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request' &&
       github.repository_owner == 'eclipse-mnestix' &&
-      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/dev')
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
     permissions:
       contents: read
       packages: write

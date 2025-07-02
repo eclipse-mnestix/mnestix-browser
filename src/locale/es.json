@@ -1,0 +1,535 @@
+{
+  "components": {
+    "addressComponent": {
+      "VAT": "NIF/CIF",
+      "addressTypes": {
+        "CityTown": "Municipio",
+        "Company": "Compañía",
+        "Department": "Sede/Departmento",
+        "NationalCode": "Código de país",
+        "POBox": "Apartado postal",
+        "StateCounty": "CCAA/Provincia",
+        "Street": "Calle",
+        "TimeZone": "Zona horaria",
+        "ZipCodeOfPOBox": "Código postal del ppartado postal",
+        "Zipcode": "Código postal"
+      }
+    },
+    "assetNotFound": {
+      "header": "No se pudo cargar el AAS.",
+      "text": "No pudo cargarse el AAS para el ID ''{id}''",
+      "toHome": "Ir a Inicio"
+    },
+    "authentication": {
+      "authenticationNeeded": "Es necesario identificarse",
+      "contactAdmin": "No es posible acceder a esta página. Por favor, contacte al administrador.",
+      "sessionExpired": "La sesión ha caducado. Por favor, inicie sesión de nuevo."
+    },
+    "carbonFootprint": {
+      "beech": "Un árbol de haya",
+      "calculationMethod": "Método de cálculo",
+      "co2EComparison": "Comparación",
+      "co2EDistribution": "Emisiones de CO2e",
+      "comparisonAssumption": "Suponiendo que un haya recoge 12.5kg de CO2e al año.",
+      "comparisonNeeds": "necesita",
+      "completedStages": "Emisiones calculadas según el ciclo de vida del producto",
+      "equivalents": "Equivalente en CO2",
+      "inTotal": "en total",
+      "notIncludedHint": "no incluido todavía",
+      "productJourney": "Ruta del producto",
+      "stages": {
+        "A1": "A1 - Provisión de materia prima (y anterior)",
+        "A1-A3": "A1-A3 - Provisión de materia prima a fábrica",
+        "A2": "A2 - Transporte de origen a fábrica",
+        "A3": "A3 - Producción",
+        "A4": "A4 - Transporte a destino final",
+        "A4-A5": "A4-A5 - Transporte a ensamblaje",
+        "A5": "A5 - Montaje",
+        "B1": "B1 - Etapa de uso",
+        "B1-B7": "B1-B7 - Etapa de uso",
+        "B2": "B2 - Mantenimiento",
+        "B3": "B3 - Reparación",
+        "B4": "B4 - Reemplazo",
+        "B5": "B5 - Actualización, mejora o renovación",
+        "B6": "B6 - Consumo de energía",
+        "B7": "B7 - Consumo de agua",
+        "C1": "C1 - Reensamblaje",
+        "C1-C4": "C1-C4 - Fase de desecho",
+        "C2": "C2 - Transporte a reciclaje",
+        "C2-C4": "C2-C4 - De reciclaje a área de desecho",
+        "C3": "C3 - Reciclaje, tratamiento de residuos",
+        "C4": "C4 - Área de desecho",
+        "D": "D - Reutilización"
+      },
+      "timeUnit": {
+        "month": "{count, plural, =0 {inferior a un mes} =1 {1 mes} other {# meses}}",
+        "year": "{count, plural, =0 {inferior a un año} =1 {1 año} other {# años}}"
+      },
+      "totalCO2Equivalents": "Emisiones de CO2 del producto (hasta el momento)"
+    },
+    "constructionDialog": {
+      "buttonText": "Cerrar",
+      "message": "Esta función está actualmente en construcción y estará disponible próximamente.",
+      "title": "En Construcción"
+    },
+    "contactInformation": {
+      "contactTypes": {
+        "0173-1#07-AAS754#001": "Oficina",
+        "0173-1#07-AAS755#001": "Teléfono de trabajo",
+        "0173-1#07-AAS756#001": "Secretario/a",
+        "0173-1#07-AAS757#001": "Sustituto/a",
+        "0173-1#07-AAS758#001": "Casa",
+        "0173-1#07-AAS759#001": "Móvil privado",
+        "home": "Casa",
+        "home mobile": "Móvil privado",
+        "office": "Oficina",
+        "office mobile": "Móvil de trabajo",
+        "secretary": "Secretario/a",
+        "substitute": "Sustituto/a"
+      }
+    },
+    "copyButton": {
+      "copied": "Copiado al portapapeles",
+      "copy": "Copiar",
+      "copyBase64": "Copiar encriptado en base64"
+    },
+    "documentComponent": {
+      "classification": "Clasificación del documento",
+      "documentDetails": "Detalles del documento",
+      "fileNotFound": "Archivo no encontrado",
+      "open": "Abrir",
+      "showMoreButton": "mostrar más"
+    },
+    "dummyComponent": {
+      "dummyText": "Este es un componente de prueba. Su uso es probar la estuctura y diseño de la aplicación."
+    },
+    "noSearchResult": {
+      "header": "No se encontraron datos",
+      "noDataFound": "No se encontraron datos para ''{name}''.",
+      "toHomeButton": "Ir a Inicio"
+    },
+    "propertyComponent": {
+      "boolean": {
+        "false": "falso",
+        "true": "verdadero"
+      },
+      "labels": {
+        "copied": "Copiado al portapapeles",
+        "copy": "Copiar",
+        "copyBase64": "Copiar encriptado en base64",
+        "notAvailable": "-",
+        "value": "Valor"
+      }
+    },
+    "qrScanner": {
+      "errors": {
+        "defaultCallbackErrorMsg": "El código QR no pudo abrirse",
+        "errorOnQrScannerOpen": "El escáner de código QR no pudo abrirse"
+      }
+    },
+    "relationShipDetailsDialog": {
+      "error": {
+        "entityError": "Relation entity no encontrada",
+        "semanticError": "Semantic ID no encontrado",
+        "unknownRelationship": "Relación desconocida"
+      },
+      "hasPart": "tiene como parte",
+      "isPartOf": "es parte de",
+      "sameAs": "igual que",
+      "semanticId": "Semantic ID"
+    },
+    "submodelElementCollection": {
+      "allAvailableData": "Todos los datos disponibles",
+      "showEntriesButton": {
+        "hide": "Ocultar",
+        "show": "Mostrar {count} entradas"
+      }
+    },
+    "technicalData": {
+      "cannotRenderContent": "El contenido de este submodel no puede ser mostrado.",
+      "furtherInformation": "Más información",
+      "generalInformation": "Información general",
+      "productClassification": "Clasificación del producto",
+      "technicalProperties": "Propiedades técnicas"
+    },
+    "verticalTabSelector": {
+      "errors": {
+        "INTERNAL_SERVER_ERROR": "Error interno del servidor",
+        "NOT_FOUND": "Submodel no encontrado",
+        "UNAUTHORIZED": "No autorizado",
+        "UNKNOWN": "Error desconocido"
+      }
+    }
+  },
+  "navigation": {
+    "errors": {
+      "notFound": "No encontrado",
+      "unauthorizedError": {
+        "content": "No tiene acceso a este recurso. Identifíquese o solicite acceso al administrador.",
+        "title": "Acceso no autorizado"
+      },
+      "unexpectedError": "Error inesperado",
+      "urlNotFound": "No hay AAS para el ID especificado."
+    },
+    "footer": {
+      "about": "Sobre Mnestix",
+      "dataPrivacy": "Privacidad",
+      "imprint": "Aviso legal"
+    },
+    "mainMenu": {
+      "aasList": "Lista de AAS",
+      "dashboard": "Dashboard",
+      "findOutMore": "Saber más",
+      "login": "Identificarse",
+      "logout": "Cerrar sesión",
+      "repository": "Repositorio",
+      "settings": "Ajustes",
+      "templates": "Plantillas"
+    }
+  },
+  "pages": {
+    "aasList": {
+      "buttonTooltip": "Ir a AAS",
+      "compare": "Comparar",
+      "header": "Lista de AAS",
+      "listHeader": {
+        "aasEndpoint": "AAS URL",
+        "aasId": "AAS ID",
+        "assetId": "Asset ID",
+        "discoveryUrl": "Discovery URL",
+        "manufacturer": "Fabricante",
+        "picture": "Imagen",
+        "productClass": "Clase del producto",
+        "productDesignation": "Denominación del producto (según fabricante)",
+        "registryUrl": "Registry URL",
+        "repositoryUrl": "Repository URL",
+        "viewAASButton": "Ver AAS"
+      },
+      "maxElementsWarning": "No se pueden comparar más de 3 elementos",
+      "page": "Página",
+      "repositoryDropdown": "AAS repository",
+      "selectRepository": "Por favor, seleccione un repositorio",
+      "subHeader": "Todos los AAS de su repositorio se muestran aquí. Puede seleccionar otro repositorio para cambiar la fuente de los datos.",
+      "titleComparisonAddButton": "Añadir AAS a la comparación"
+    },
+    "aasViewer": {
+      "actions": {
+        "compareButton": "Comparar",
+        "toProductView": "Vista de producto"
+      },
+      "asset": "Asset",
+      "assetAdministrationShell": "Asset Administration Shell",
+      "errors": {
+        "influxError": "Hubo un problema recuperando la serie temporal de datos."
+      },
+      "labels": {
+        "copied": "Copiado al portapapeles",
+        "copy": "Copiar",
+        "copyBase64": "Copiar encriptado en base64",
+        "language": "Idioma",
+        "notAvailable": "-",
+        "text": "Texto",
+        "value": "Valor"
+      },
+      "submodels": {
+        "actions": {
+          "open": "Abir",
+          "view": "Ver"
+        },
+        "idLabel": "ID:",
+        "noSubmodelsToLoad": "No existen submodels que cargar para este AAS.",
+        "referenceCounter": {
+          "count": "Recuento",
+          "elementName": "Elemento"
+        },
+        "renderError": "No se puede renderizar el submodel.",
+        "semanticIdLabel": "Semantic IDs:",
+        "timeSeries": {
+          "internalSegments": "Segmentos internos",
+          "linkedSegments": "Segmentos vinculados",
+          "selectTimeframe": "Seleccionar periodo de tiempo"
+        },
+        "title": "Submodels",
+        "unknownModelType": "ModelType desconocido: {type}",
+        "repositoryUrlLabel": "Repository URL:"
+      }
+    },
+    "catalog": {
+      "articleCount": "{count, plural, =1 {# artículo} other {# artículos}}",
+      "eclassCategories": {
+        "15": "Maintenance (Service)",
+        "27": "Electric engineering, automation, process control engineering ",
+        "44": "Automotive engineering, vehicle component",
+        "default": "Category "
+      },
+      "filter": "Filtro",
+      "manufacturerCatalog": "Catálogo de productos del fabricante",
+      "manufacturerSelect": "Seleccionar fabricante",
+      "marketplaceSubtitle": "Shell de administración de activos para mazos de cables",
+      "marketplaceTitle": "VWS4LS - Marketplace",
+      "noSearcherWarning": "No se ha configurado el buscador AAS - Se muestra la lista AAS",
+      "searchPlaceholder": "Búsqueda no disponible actualmente...",
+      "title": "Catálogo de productos"
+    },
+    "compare": {
+      "addAnother": "Añadir otro AAS",
+      "addButton": "Añadir otro AAS",
+      "addFirstAasButton": "Añadir AAS",
+      "collection": {
+        "hide": "Ocultar",
+        "show": "{idShort}"
+      },
+      "errors": {
+        "aasAddError": "No se pudo añadir el AAS.",
+        "aasAlreadyAdded": "No se puede añadir este AAS más de una vez.",
+        "moreAasFound": "Más de un AAS encontrado en el servicio de descubrimiento, introduzca el ID del AAS, por favor.",
+        "unknownModelType": "ModelType desconocido: {type}"
+      },
+      "title": "Comparar AAS"
+    },
+    "dashboard": {
+      "aasOrAssetId": "AAS ID o Asset ID",
+      "digitalTwinMadeEasyText": "Simplificando los gemelos digitales.",
+      "enterManuallyLabel": "o introducir manualmente",
+      "findOutMoreText": "Saber más",
+      "listBtnLabel": "o seleccione en la lista",
+      "listBtnText": "Ir a lista de AAS",
+      "scanIdLabel": "Escanear ID del AAS o Asset",
+      "welcomeText": "Bienvenido/a a Mnestix"
+    },
+    "discoveryList": {
+      "errors": {
+        "noAasFound": "No se encontró ningún AAS para el ID proporcionado",
+        "noAssetId": "No se ha proporcionado un Asset ID.",
+        "searchFailed": "La búsqueda falló"
+      },
+      "subtitle": "Aquí se muestran todos los AAS asociados al Asset ID proporcionado.",
+      "title": "AAS asociado al Asset ID"
+    },
+    "productViewer": {
+      "actions": {
+        "compareButton": "Comparar",
+        "download": "Descargar AAS",
+        "downloadError": "Error al descargar el AAS.",
+        "downloadErrorNoRepo": "No se encontró ningún repositorio para el AAS seleccionado.",
+        "toAasView": "Vista del AAS"
+      },
+      "classification": "Clasificación del producto",
+      "error": {
+        "technicalDataSubmodelNotFound": "Datos técnicos del submodel no encontrados"
+      },
+      "home": "Ir a Inicio",
+      "markings": "Etiquetas del producto",
+      "productInfo": {
+        "articleNumber": "Número de articulo",
+        "manufacturer": "Fabricante",
+        "orderCode": "Número de pedido",
+        "productDesignation": "Denominación del producto"
+      },
+      "summary": "Resumen",
+      "title": "Producto"
+    },
+    "registryList": {
+      "errors": {
+        "noAasFound": "No se encontró ningún AAS para el ID proporcionado",
+        "noAasId": "No se ha proporcionado un ID de AAS.",
+        "searchFailed": "La búsqueda falló"
+      },
+      "subtitle": "Aquí se muestran todos los AAS asociados al AAS ID proporcionado.",
+      "title": "AAS asociado al AAS ID"
+    },
+    "settings": {
+      "actions": {
+        "cancel": "Cancelar",
+        "editButton": "Editar todos",
+        "resetButton": "Restaurar valores predeterminados",
+        "saveButton": "Guardar todos"
+      },
+      "connections": {
+        "aasRepository": {
+          "connectionType": "AAS_REPOSITORY",
+          "repositories": "Repositorios de AAS",
+          "repositoryDefaultLabel": "Repositorio AAS predeterminado",
+          "repositoryLabel": "Repositorio de AAS",
+          "repositoryUrlLabel": "URL del repositorio de AAS"
+        },
+        "addButton": "Añadir más",
+        "resetSuccessful": "Las conexiones se han restaurado.",
+        "submodelRepository": {
+          "connectionType": "SUBMODEL_REPOSITORY",
+          "repositories": "Repositorio de submodels",
+          "repositoryDefaultLabel": "Repositorio de submodels predeterminado",
+          "repositoryLabel": "Repositorio de submodels",
+          "repositoryUrlLabel": "URL del repositorio de submodels"
+        },
+        "subtitle": "Define qué conexiones de datos deben ser utilizadas.",
+        "title": "Fuentes de datos",
+        "urlFieldNoTrailingSlash": "La URL no debe terminar con una barra (/).",
+        "urlFieldRequired": "El campo URL es obligatorio"
+      },
+      "header": "Ajustes",
+      "idStructure": {
+        "assetIdDocumentation": {
+          "assetId": "ID del Asset",
+          "dnsHeading": "Acceder mediante DNS",
+          "dnsText": "Especialmente para el enfoque brownfield y el distribuidor de un producto, tendría sentido configurar adicionalmente el acceso DNS a través del Asset ID y, de este modo, permitir la recuperación de datos desde aplicaciones de navegador convencionales.",
+          "endResult": "Resultado final",
+          "exampleHeading": "Caso de ejemplo",
+          "industry40Heading": "Contexto sobre Industria 4.0",
+          "industry40Text": "Los productos tienen un ID único a nivel mundial que se puede asignar a uno o varios entornos de administración de Assets. En el contexto de la Industria 4.0, la conexión entre el Asset y el AAS se establece a través de la infraestructura I4.0.",
+          "redirectsTo": "Redirige a",
+          "title": "Como conectar su Asset ID con su repositorio de AAS"
+        },
+        "errors": {
+          "idStructureError": "Error al guardar ''{name}'' ({reason}).",
+          "invalidIri": "Debe ser un IRI válido, e.g. https://example.com/",
+          "invalidIriPart": "Debe funcionar como parte de un IRI (las barras, espacios o caracteres especiales no son válidos)"
+        },
+        "labels": {
+          "dynamicPart": "parte dinámica",
+          "idStructureExplanation": "Define cómo se representan sus ID. Se trata de una configuración estándar que se puede ajustar para importar de forma individual.",
+          "staticPrefix": "prefijo estático"
+        },
+        "messages": {
+          "successfullyUpdated": "Actualizado con éxito"
+        },
+        "title": "Estructura del ID"
+      },
+      "messages": {
+        "changesSavedSuccessfully": "Cambios guardados con éxito."
+      },
+      "rules": {
+        "buttons": {
+          "add": "Añadir",
+          "back": "Atrás",
+          "cancel": "Cancelar",
+          "create": "Añadir permiso",
+          "delete": "Eliminar",
+          "edit": "Editar",
+          "save": "Guardar"
+        },
+        "createRule": {
+          "placeholderText": "Nombre del rol nuevo o existente",
+          "saveSuccess": "Nueva regla guardada con éxito.",
+          "subtitle": "Añade un permiso a un rol nuevo o existente.",
+          "subtitle2": "Añade un permiso al rol ''{role}''.",
+          "title": "Añadir nuevo permiso"
+        },
+        "deleteRole": {
+          "delete": "Eliminar rol",
+          "description": "Está a punto de eliminar el rol ''{roleName}'' con {count} permisos. Está seguro de que desea eliminar todo el rol?",
+          "header": "Borrar todo el rol",
+          "partiallySuccess": "Se han eliminado {count} de {total} permisos. El rol aún existe con los permisos restantes.",
+          "success": "El rol ''{roleName}'' ha sido eliminado con éxito."
+        },
+        "deleteRule": {
+          "question": "¿Desea borrar esta regla permanentemente?",
+          "ruleInfo": "Los usuarios asignados al rol ''{role}'' no tendrán permiso para {action} los siguientes datos",
+          "success": "Regla eliminada correctamente."
+        },
+        "editRule": {
+          "saveSuccess": "Regla editada correctamente.",
+          "title": "Editar regla"
+        },
+        "errors": {
+          "uniqueIdShort": "La combinación de nombre, acción y tipo ya existe en otra regla.\nPor favor, edite la regla existente."
+        },
+        "keycloakHint": {
+          "acknowledge": "Confirmar",
+          "create": "Este rol no ha sido usado todavía. No olvide configurarlo en Keycloak!",
+          "delete": "No olvide eliminar el rol en Keycloak también!",
+          "title": "Actualizar Keycloak"
+        },
+        "roleNameMaxLength": "El nombre del rol no puede exceder {maxLength} caracteres.",
+        "roleNameNoTrailSpace": "El nombre del rol no puede terminar con un espacio.",
+        "roleRequired": "Se requiere un rol",
+        "subtitle": "Gestionar roles y permisos.",
+        "tableHeader": {
+          "aasIds": "AAS IDs",
+          "action": "Accion",
+          "name": "Rol",
+          "permissions": "Permisos",
+          "submodelIds": "Submodel IDs",
+          "type": "Tipo"
+        },
+        "title": "Gestion de roles",
+        "wildcardLabel": "Permitir todos"
+      },
+      "subHeader": "Añadir, eliminar, o modificar ajustes y configuraciones para varias características de su entorno AAS."
+    },
+    "templates": {
+      "actions": {
+        "add": "Añadir",
+        "cancel": "Cancelar",
+        "delete": "Eliminar",
+        "duplicate": "Duplicar",
+        "edit": "Editar",
+        "remove": "Eliminar",
+        "restore": "Restaurar",
+        "revertChanges": "Revertir cambios",
+        "saveChanges": "Guardar cambios"
+      },
+      "all": "Todos",
+      "boolean": {
+        "false": "falso",
+        "true": "verdadero"
+      },
+      "chooseAStartingPoint": "Elige una plantilla como punto de inicio",
+      "copyTemplateId": "Copiar ID de la plantilla",
+      "createNew": "Crear nuevo",
+      "custom": "A medida",
+      "defaultValue": "Valor predeterminado",
+      "deleteTemplateQuestion": "Desea eliminar la plantilla ''{name}'' definitivamente?",
+      "displayName": "Nombre a mostrar",
+      "emptyCustom": "Vacío (A medida)",
+      "emptyCustomDescription": "No basada en una plantilla estandarizada",
+      "errors": {
+        "unknownModelType": "ModelType desconocido: {type}"
+      },
+      "labels": {
+        "language": "Idioma",
+        "notAvailable": "-",
+        "semanticId": "semanticId",
+        "text": "Texto",
+        "value": "Valor"
+      },
+      "mappingInfo": "Información de mapeo",
+      "mappingInfoDescription": "Identificador arbitrario para importar sus datos.",
+      "messages": {
+        "changesSavedSuccessfully": "Cambios guardados correctamente",
+        "deleted": "eliminado"
+      },
+      "multiplicity": "Multiplicidad",
+      "multiplicityDescription": "Clasificador para identificar elementos obligatorios.",
+      "noTemplatesFound": "No se encontraron plantillas",
+      "templateDeletedSuccessfully": "Plantilla eliminada correctamente",
+      "templateIdCopied": "ID de la plantilla copiado al portapapeles: {id}",
+      "templatesUseExplanation": "Las plantillas le permiten crear estructuras de submodel reutilizables y ajustadas a sus requisitos.",
+      "title": "Plantillas",
+      "validation": {
+        "errors": {
+          "invalidDate": "La fecha debe ser válida y seguir formato ''yyyy-mm-dd''",
+          "invalidLong": "Debe ser un número largo válido"
+        }
+      }
+    },
+    "transfer": {
+      "aasRepository": "Repositorio AAS",
+      "chooseRepository": "Escoja repositorio AAS",
+      "chooseSubmodelRepository": "Escoja repositorio de submodels (opcional)",
+      "errorToast": "Transferencia de AAS errónea",
+      "partiallyFailedToast": "Fallo al transferir el elemento",
+      "repositoryApiKey": "Clave API del repositorio AAS",
+      "repositoryLabel": "Lista de repositorios AAS",
+      "repositoryRequired": "Se requiere repositorio AAS",
+      "submodelRepository": "Repositorio de submodels",
+      "submodelRepositoryApiKey": "Clave API del repositorio de submodels",
+      "submodelRepositoryLabel": "Lista de repositorios de submodels",
+      "subtitle": "Para importar este AAS a otro repositorio, complete los siguientes campos.",
+      "successfulToast": "Transferencia de AAS exitosa",
+      "title": "Importar",
+      "useAasRepository": "Usar repositorio de AAS",
+      "warningToast": "El AAS solo se transfirió parcialmente."
+    }
+  }
+}

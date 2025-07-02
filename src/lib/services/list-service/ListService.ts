@@ -82,7 +82,7 @@ export class ListService {
 
         const aasListDtos = assetAdministrationShells
             .filter((aas) => {
-                const aasToRemove = aas.assetInformation.specificAssetIds?.find(
+                const aasToRemove = aas.assetInformation?.specificAssetIds?.find(
                     (specificAssetId) => specificAssetId.name === 'aasListFilterId',
                 );
                 return !aasToRemove;
@@ -118,6 +118,7 @@ export class ListService {
                     SubmodelSemanticIdEnum.NameplateV1,
                     SubmodelSemanticIdEnum.NameplateV2,
                     SubmodelSemanticIdEnum.NameplateV3,
+                    SubmodelSemanticIdEnum.NameplateV4,
                 ];
                 if (nameplateKeys.includes(<SubmodelSemanticIdEnum>semanticId)) {
                     const manufacturerName = await this.submodelRepositoryClient.getSubmodelElement(
