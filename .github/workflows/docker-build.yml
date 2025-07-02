@@ -279,4 +279,4 @@ jobs:
           target: production
           push: true
           tags: |
-            ${{ github.ref == 'refs/heads/maintenance/1.x' && format('mnestix/{0}:{1}', env.IMAGE_NAME, env.IMAGE_TAG_VERSION) || '' }}
+            ${{ github.ref == 'refs/heads/main' && format('mnestix/{0}:{1}', env.IMAGE_NAME, env.IMAGE_TAG_VERSION) || '' }}
