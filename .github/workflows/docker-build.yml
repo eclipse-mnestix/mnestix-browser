@@ -2,7 +2,7 @@ name: CI and Docker Deploy
 
 on:
   push:
-    branches: ['main', 'dev', 'staging']
+    branches: ['main', 'dev', 'maintenance/1.x']
     tags: ['v*.*.*']
     paths-ignore:
       - '.github/ISSUE_TEMPLATE/**'
@@ -226,7 +226,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request' &&
       github.repository_owner == 'eclipse-mnestix' &&
-      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/dev')
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
     permissions:
       contents: read
       packages: write
