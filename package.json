@@ -109,7 +109,7 @@
     "docker:prune": "docker compose -f compose.yml  -f docker-compose/compose.test.yml -f docker-compose/compose.keycloak.yml down -v && docker network prune && docker network rm mnestix-network",
     "docker:keycloak": "docker compose -f compose.yml -f docker-compose/compose.keycloak.yml up",
     "docker:azure": "docker compose -f compose.yml -f docker-compose/compose.azure_ad.yml up",
-    "docker:rbac": "docker compose -f compose.yml -f docker-compose/compose.dynamic-rbac.yml up",
+    "docker:rbac": "docker compose -f compose.yml -f docker-compose/compose.proxy.yml -f docker-compose/compose.dynamic-rbac.yml up",
     "docker:proxy": "docker compose -f compose.yml -f docker-compose/compose.proxy.yml up"
   },
   "browserslist": {

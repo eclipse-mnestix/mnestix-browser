@@ -1,6 +1,6 @@
 import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
 import { hasSemanticId } from 'lib/util/SubmodelResolverUtil';
-import { fetchFileServerSide } from 'lib/api/infrastructure';
+import { fetchFileServerSide } from 'lib/services/fileActions';
 
 /**
  * Finds the latest idShort for a given SubmodelElementCollection based on semantic IDs or prefix to build a idShortPath.
@@ -54,7 +54,7 @@ export async function getFileUrl(fileUrl: string, accessToken?: string, reposito
     }
 
     try {
-        const response = await fetchFileServerSide(fileUrl, accessToken);
+        const response = await fetchFileServerSide(fileUrl);
         if(response.isSuccess) {
             return window.URL.createObjectURL(response.result);
         } return;
