@@ -1,6 +1,6 @@
-import { Box, SxProps, Theme, useTheme } from '@mui/material';
+import { Box, SxProps, Theme } from '@mui/material';
 import TileLayer from 'ol/layer/Tile';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import OSM from 'ol/source/OSM';
 import { Feature, Map, View } from 'ol';
 import { fromLonLat, transform } from 'ol/proj';
@@ -14,6 +14,7 @@ import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
 import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/ProductLifecycleStage.enum';
 import { ProductJourneyAddressList } from './ProductJourneyAddressList';
+import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 
 export type Address = {
     street?: string;
@@ -31,23 +32,40 @@ export type AddressPerLifeCyclePhase = {
 };
 
 export function ProductJourney(props: { addressesPerLifeCyclePhase: AddressPerLifeCyclePhase[] }) {
-    const theme = useTheme();
     const mapElement = useRef<HTMLElement>(null);
     const mapRef = useRef<Map>(null);
+    const [enrichedAddresses, setEnrichedAddresses] = useState<AddressPerLifeCyclePhase[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const coordinates: Coordinate[] = props.addressesPerLifeCyclePhase
+    useEffect(() => {
+        async function loadCoordinates() {
+            setIsLoading(true);
+            try {
+                const addresses = await enrichAddressesWithCoordinates(props.addressesPerLifeCyclePhase);
+                setEnrichedAddresses(addresses);
+            } catch (error) {
+                console.error('Error enriching addresses:', error);
+                setEnrichedAddresses(props.addressesPerLifeCyclePhase);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        loadCoordinates();
+    }, [props.addressesPerLifeCyclePhase]);
+
+    const coordinates: Coordinate[] = enrichedAddresses
         .filter((v) => v.address.latitude && v.address.longitude)
         .map((c) => [c.address.longitude as number, c.address.latitude as number]);
 
     useEffect(() => {
-        if (mapElement.current && !mapRef.current) {
+        if (mapElement.current && !isLoading && coordinates.length > 0 && !mapRef.current) {
             const osmLayer = new TileLayer({
                 preload: Infinity,
                 source: new OSM(),
             });
 
-            const markerLayers = getMarkerLayers(props.addressesPerLifeCyclePhase);
-
+            const markerLayers = getMarkerLayers(enrichedAddresses);
             const vectorLineLayer = getMultiLineLayer(coordinates, { lineColor: 'black' });
 
             const initialMap = new Map({
@@ -60,10 +78,19 @@ export function ProductJourney(props: { addressesPerLifeCyclePhase: AddressPerLi
             });
 
             fitMapToMarkers(initialMap, vectorLineLayer.getSource());
-
             mapRef.current = initialMap;
         }
-    }, [coordinates, theme, mapElement, mapRef, props.addressesPerLifeCyclePhase]);
+    }, [enrichedAddresses, coordinates, isLoading]);
+
+    // Cleanup map when component unmounts
+    useEffect(() => {
+        return () => {
+            if (mapRef.current) {
+                mapRef.current.setTarget(undefined);
+                mapRef.current = null;
+            }
+        };
+    }, []);
 
     const attributionStyling: SxProps<Theme> = {
         '& .ol-overlaycontainer-stopevent': {
@@ -86,22 +113,88 @@ export function ProductJourney(props: { addressesPerLifeCyclePhase: AddressPerLi
         '& .ol-zoom': { display: 'none' },
     };
 
+    if (!isLoading && coordinates.length === 0) {
+        return <ProductJourneyAddressList addressesPerLifeCyclePhase={enrichedAddresses} />;
+    }
+
     return (
         <>
-            <Box
-                id="map"
-                data-testid="product-journey-box"
-                sx={{
-                    height: '320px',
-                    width: '100%',
-                    marginTop: 2,
-                    ...attributionStyling,
-                }}
-                ref={mapElement}
-                className="map-container"
-            />
-            <ProductJourneyAddressList addressesPerLifeCyclePhase={props.addressesPerLifeCyclePhase} />
+            {isLoading && (
+                <CenteredLoadingSpinner 
+                    sx={{ 
+                        height: '320px', 
+                        width: '100%', 
+                        marginTop: 2 
+                    }} 
+                />
+            )}
+            {!isLoading && coordinates.length > 0 && (
+                <Box
+                    id="map"
+                    data-testid="product-journey-box"
+                    sx={{
+                        height: '320px',
+                        width: '100%',
+                        marginTop: 2,
+                        ...attributionStyling,
+                    }}
+                    ref={mapElement}
+                    className="map-container"
+                />
+            )}
+            <ProductJourneyAddressList addressesPerLifeCyclePhase={enrichedAddresses} />
         </>
+    );
+}
+
+async function enrichAddressesWithCoordinates(
+    addressesPerLifeCyclePhase: AddressPerLifeCyclePhase[]
+): Promise<AddressPerLifeCyclePhase[]> {
+    // Check if any address needs geocoding upfront
+    const needsGeocoding = addressesPerLifeCyclePhase.some(
+        item => (!item.address.latitude || !item.address.longitude) && hasAddressInformation(item.address)
+    );
+
+    // If no geocoding needed, return original array immediately
+    if (!needsGeocoding) {
+        return addressesPerLifeCyclePhase;
+    }
+
+    const enrichedAddresses = await Promise.all(
+        addressesPerLifeCyclePhase.map(async (item) => {
+            // If coordinates already exist, return as is (no geocoding needed)
+            if (item.address.latitude && item.address.longitude) {
+                return item;
+            }
+
+            // Only geocode if we have address information but no coordinates
+            if (hasAddressInformation(item.address)) {
+                const coordinates = await geocodeAddress(item.address);
+                
+                if (coordinates) {
+                    return {
+                        ...item,
+                        address: {
+                            ...item.address,
+                            latitude: coordinates.latitude,
+                            longitude: coordinates.longitude,
+                        },
+                    };
+                }
+            }
+            return item;
+        })
+    );
+
+    return enrichedAddresses;
+}
+
+function hasAddressInformation(address: Address): boolean {
+    return !!(
+        address.street || 
+        address.cityTown || 
+        address.zipCode || 
+        address.country
     );
 }
 
@@ -164,4 +257,55 @@ function fitMapToMarkers(map: Map, markerSource: VectorSource | null) {
     if (markerSource && !markerSource.getExtent().some((e) => e === Infinity)) {
         map.getView().fit(markerSource.getExtent(), { size: map.getSize(), padding: [60, 40, 20, 40], maxZoom: 12 });
     }
+}
+
+async function geocodeAddress(address: Address): Promise<{ latitude: number; longitude: number } | null> {
+    const addressString = buildAddressString(address);
+    if (!addressString.trim()) return null;
+
+    try {
+        const response = await fetch(
+            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(addressString)}&limit=1`
+        );
+        
+        if (!response.ok) throw new Error('Geocoding failed');
+        
+        const data = await response.json();
+        
+        if (data && data.length > 0) {
+            return {
+                latitude: parseFloat(data[0].lat),
+                longitude: parseFloat(data[0].lon),
+            };
+        }
+        
+        return null;
+    } catch (error) {
+        console.warn('Failed to geocode address:', addressString, error);
+        return null;
+    }
+}
+
+function buildAddressString(address: Address): string {
+    const components = [];
+    
+    if (address.street) {
+        let streetAddress = address.street;
+        if (address.houseNumber) {
+            streetAddress += ` ${address.houseNumber}`;
+        }
+        components.push(streetAddress);
+    }
+    
+    if (address.zipCode && address.cityTown) {
+        components.push(`${address.zipCode} ${address.cityTown}`);
+    } else if (address.cityTown) {
+        components.push(address.cityTown);
+    }
+    
+    if (address.country) {
+        components.push(address.country);
+    }
+    
+    return components.join(', ');
 }

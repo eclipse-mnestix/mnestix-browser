@@ -1,6 +1,10 @@
 export enum SubmodelElementSemanticIdEnum {
     Address = '0173-1#02-AAQ832#005',
     NameplateAddressV3 = 'https://admin-shell.io/zvei/nameplate/1/0/ContactInformations/AddressInformation',
+    ContactInformationNationalCode = '0173-1#02-AAO134#002',
+    ContactInformationCityTown = '0173-1#02-AAO132#002',
+    ContactInformationStreet = '0173-1#02-AAO128#002',
+    ContactInformationZipCode = '0173-1#02-AAO129#002',
     MarkingsV1 = 'https://admin-shell.io/zvei/nameplate/1/0/Nameplate/Markings',
     MarkingsV2 = 'https://admin-shell.io/zvei/nameplate/2/0/Nameplate/Markings',
     MarkingsV3 = 'https://admin-shell.io/zvei/nameplate/3/0/Nameplate/Markings',

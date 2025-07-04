@@ -16,6 +16,7 @@ import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { MultiLanguageProperty as MultiLanguagePropertyAAS } from 'lib/api/aas/models';
+import { PcfSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/PcfSubmodelElementSemanticId.enum';
 
 /**
  * Gets the translated text from either a MultiLanguageProperty or LangStringTextType array
@@ -49,7 +50,7 @@ export function getTranslationValue(element: IDataElement, locale: string): stri
 export function findSubmodelElementByIdShort(
     elements: ISubmodelElement[] | null,
     idShort: string | null,
-    semanticId: SubmodelSemanticIdEnum | SubmodelElementSemanticIdEnum | null,
+    semanticId: SubmodelSemanticIdEnum | SubmodelElementSemanticIdEnum | PcfSubmodelElementSemanticIdEnum | null,
 ): ISubmodelElement | null {
     if (!elements) return null;
     for (const el of elements) {
@@ -111,7 +112,7 @@ export function findAllSubmodelElementsBySemanticIdsOrIdShort(
 export function findValueByIdShort(
     elements: ISubmodelElement[] | null,
     idShort: string | null,
-    semanticId: SubmodelSemanticIdEnum | SubmodelElementSemanticIdEnum | null = null,
+    semanticId: SubmodelSemanticIdEnum | SubmodelElementSemanticIdEnum | PcfSubmodelElementSemanticIdEnum | null = null,
     locale: string,
 ): string | null {
     const element = findSubmodelElementByIdShort(elements, idShort, semanticId);

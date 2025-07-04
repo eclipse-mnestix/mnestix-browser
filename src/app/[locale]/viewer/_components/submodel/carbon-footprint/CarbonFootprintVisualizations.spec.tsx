@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { expect } from '@jest/globals';
 import testSubmodel from '../../submodel/carbon-footprint/test-submodel/carbonFootprint-test.json';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
@@ -44,7 +44,7 @@ describe('CarbonFootprintVisualizations Detail', () => {
     });
 });
 
-function assertOnElements() {
+async function assertOnElements() {
     const totalCo2Equivalents = screen.getByTestId('co2-equivalents');
     expect(totalCo2Equivalents).toBeDefined();
     expect(totalCo2Equivalents).toBeInTheDocument();
@@ -61,7 +61,7 @@ function assertOnElements() {
     expect(co2Comparison).toBeDefined();
     expect(co2Comparison).toBeInTheDocument();
 
-    const productJourney = screen.getByTestId('product-journey-box');
+    const productJourney = await waitFor(() => screen.getByTestId('product-journey-box'), { timeout: 3000 });
     expect(productJourney).toBeDefined();
     expect(productJourney).toBeInTheDocument();
 
