@@ -104,7 +104,7 @@ describe('ProductJourney', () => {
         }, { timeout: 3000 });
     });
 
-    it('geocodes addresses without coordinates using mocked fetch', async () => {
+    it('geocodes addresses without coordinates', async () => {
         await act(async () => {
             CustomRender(<ProductJourney addressesPerLifeCyclePhase={[addressWithoutCoordinates]} />);
         });
