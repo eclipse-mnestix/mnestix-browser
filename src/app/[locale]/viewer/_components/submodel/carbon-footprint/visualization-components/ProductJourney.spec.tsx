@@ -1,5 +1,5 @@
 import { CustomRender } from 'test-utils/CustomRender';
-import { screen, waitFor } from '@testing-library/react';
+import { screen, waitFor, act } from '@testing-library/react';
 import { expect } from '@jest/globals';
 import { AddressPerLifeCyclePhase, ProductJourney } from './ProductJourney';
 import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/ProductLifecycleStage.enum';
@@ -73,7 +73,9 @@ describe('ProductJourney', () => {
     });
 
     it('renders the ProductJourney with existing coordinates', async () => {
-        CustomRender(<ProductJourney addressesPerLifeCyclePhase={[firstAddress, secondAddress]} />);
+        await act(async () => {
+            CustomRender(<ProductJourney addressesPerLifeCyclePhase={[firstAddress, secondAddress]} />);
+        });
         
         await waitFor(() => {
             const map = screen.getByTestId('product-journey-box');
@@ -90,7 +92,9 @@ describe('ProductJourney', () => {
     });
 
     it('shows positions on the map', async () => {
-        CustomRender(<ProductJourney addressesPerLifeCyclePhase={[firstAddress, secondAddress]} />);
+        await act(async () => {
+            CustomRender(<ProductJourney addressesPerLifeCyclePhase={[firstAddress, secondAddress]} />);
+        });
 
         await waitFor(() => {
             const map = screen.getByTestId('product-journey-box');
@@ -101,7 +105,9 @@ describe('ProductJourney', () => {
     });
 
     it('geocodes addresses without coordinates using mocked fetch', async () => {
-        CustomRender(<ProductJourney addressesPerLifeCyclePhase={[addressWithoutCoordinates]} />);
+        await act(async () => {
+            CustomRender(<ProductJourney addressesPerLifeCyclePhase={[addressWithoutCoordinates]} />);
+        });
 
         await waitFor(() => {
             const map = screen.getByTestId('product-journey-box');
@@ -119,7 +125,9 @@ describe('ProductJourney', () => {
     it('handles geocoding failure gracefully', async () => {
         mockFetch.mockRejectedValueOnce(new Error('Network error'));
 
-        CustomRender(<ProductJourney addressesPerLifeCyclePhase={[addressWithoutCoordinates]} />);
+        await act(async () => {
+            CustomRender(<ProductJourney addressesPerLifeCyclePhase={[addressWithoutCoordinates]} />);
+        });
 
         await waitFor(() => {
             const addressList = screen.getAllByTestId('test-address-list');
@@ -128,20 +136,23 @@ describe('ProductJourney', () => {
         }, { timeout: 3000 });
     });
 
-    it('renders address list when no coordinates are available', async () => {
-        const addressWithoutAnyInfo: AddressPerLifeCyclePhase = {
-            address: {},
-            lifeCyclePhase: ProductLifecycleStage.A1RawMaterialSupply,
-        };
+    it('renders only address list when geocoding fails', async () => {
+        mockFetch.mockResolvedValueOnce({
+            ok: true,
+            json: async () => [],
+        });
 
-        CustomRender(<ProductJourney addressesPerLifeCyclePhase={[addressWithoutAnyInfo]} />);
+        await act(async () => {
+            CustomRender(<ProductJourney addressesPerLifeCyclePhase={[addressWithoutCoordinates]} />);
+        });
+
         await waitFor(() => {
-        const addressList = screen.getAllByTestId('test-address-list');
-        const map = screen.queryByTestId('product-journey-box');
-        
-        expect(addressList).toBeDefined();
-        expect(addressList.length).toBe(1);
-        expect(map).not.toBeInTheDocument();
+            const addressList = screen.getAllByTestId('test-address-list');
+            expect(addressList).toBeDefined();
+            expect(addressList.length).toBe(1);
+            
+            const map = screen.queryByTestId('product-journey-box');
+            expect(map).not.toBeInTheDocument();
         }, { timeout: 3000 });
     });
 });
