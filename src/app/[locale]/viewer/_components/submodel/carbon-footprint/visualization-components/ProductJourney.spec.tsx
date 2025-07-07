@@ -128,19 +128,20 @@ describe('ProductJourney', () => {
         }, { timeout: 3000 });
     });
 
-    it('renders address list when no coordinates are available', () => {
+    it('renders address list when no coordinates are available', async () => {
         const addressWithoutAnyInfo: AddressPerLifeCyclePhase = {
             address: {},
             lifeCyclePhase: ProductLifecycleStage.A1RawMaterialSupply,
         };
 
         CustomRender(<ProductJourney addressesPerLifeCyclePhase={[addressWithoutAnyInfo]} />);
-
+        await waitFor(() => {
         const addressList = screen.getAllByTestId('test-address-list');
         const map = screen.queryByTestId('product-journey-box');
         
         expect(addressList).toBeDefined();
         expect(addressList.length).toBe(1);
         expect(map).not.toBeInTheDocument();
+        }, { timeout: 3000 });
     });
 });
