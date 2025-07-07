@@ -15,6 +15,7 @@ import Stroke from 'ol/style/Stroke';
 import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/ProductLifecycleStage.enum';
 import { ProductJourneyAddressList } from './ProductJourneyAddressList';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
+import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 
 export type Address = {
     street?: string;
@@ -37,21 +38,17 @@ export function ProductJourney(props: { addressesPerLifeCyclePhase: AddressPerLi
     const [enrichedAddresses, setEnrichedAddresses] = useState<AddressPerLifeCyclePhase[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
-        async function loadCoordinates() {
-            setIsLoading(true);
-            try {
-                const addresses = await enrichAddressesWithCoordinates(props.addressesPerLifeCyclePhase);
-                setEnrichedAddresses(addresses);
-            } catch (error) {
-                console.error('Error enriching addresses:', error);
-                setEnrichedAddresses(props.addressesPerLifeCyclePhase);
-            } finally {
-                setIsLoading(false);
-            }
+    useAsyncEffect(async () => {
+        setIsLoading(true);
+        try {
+            const addresses = await enrichAddressesWithCoordinates(props.addressesPerLifeCyclePhase);
+            setEnrichedAddresses(addresses);
+        } catch (error) {
+            console.error('Error enriching addresses:', error);
+            setEnrichedAddresses(props.addressesPerLifeCyclePhase);
+        } finally {
+            setIsLoading(false);
         }
-
-        loadCoordinates();
     }, [props.addressesPerLifeCyclePhase]);
 
     const coordinates: Coordinate[] = enrichedAddresses
@@ -82,7 +79,6 @@ export function ProductJourney(props: { addressesPerLifeCyclePhase: AddressPerLi
         }
     }, [enrichedAddresses, coordinates, isLoading]);
 
-    // Cleanup map when component unmounts
     useEffect(() => {
         return () => {
             if (mapRef.current) {
@@ -150,24 +146,20 @@ export function ProductJourney(props: { addressesPerLifeCyclePhase: AddressPerLi
 async function enrichAddressesWithCoordinates(
     addressesPerLifeCyclePhase: AddressPerLifeCyclePhase[]
 ): Promise<AddressPerLifeCyclePhase[]> {
-    // Check if any address needs geocoding upfront
     const needsGeocoding = addressesPerLifeCyclePhase.some(
         item => (!item.address.latitude || !item.address.longitude) && hasAddressInformation(item.address)
     );
 
-    // If no geocoding needed, return original array immediately
     if (!needsGeocoding) {
         return addressesPerLifeCyclePhase;
     }
 
     const enrichedAddresses = await Promise.all(
         addressesPerLifeCyclePhase.map(async (item) => {
-            // If coordinates already exist, return as is (no geocoding needed)
             if (item.address.latitude && item.address.longitude) {
                 return item;
             }
 
-            // Only geocode if we have address information but no coordinates
             if (hasAddressInformation(item.address)) {
                 const coordinates = await geocodeAddress(item.address);
                 
