@@ -29,7 +29,7 @@ const firstAddress: AddressPerLifeCyclePhase = {
     address: {
         street: 'teststreet',
         cityTown: 'testtowm',
-        houseNumber: '23',
+        houseNumber: '2',
         country: 'testcountry',
         zipCode: 'testzipcode',
         latitude: 52.321705475489594,
