@@ -70,11 +70,3 @@ export const sessionLogOut = async (keycloakEnabled: boolean) => {
         console.error(err);
     }
 };
-
-export async function fetchFileServerSide(fileUrl: string, accessToken?: string) {
-    const { fetch } = mnestixFetch();
-    return await fetch<Blob>(fileUrl, {
-        headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
-        cache: 'no-store',
-    });
-}
