@@ -19,7 +19,7 @@ export function TemplateDeleteDialog(props: TemplateDeleteDialogProps) {
                 <Button onClick={(e) => props.onClose && props.onClose(e, 'escapeKeyDown')} autoFocus>
                     {t('actions.cancel')}
                 </Button>
-                <Button onClick={() => props.onDelete()} color="error">
+                <Button onClick={() => props.onDelete()} color="error" data-testid="confirm-delete-button">
                     {t('actions.delete')}
                 </Button>
             </DialogActions>
