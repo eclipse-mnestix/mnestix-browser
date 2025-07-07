@@ -369,20 +369,21 @@ export default function Page() {
                                 disabled={!changesMade}
                                 loading={isSaving}
                                 onClick={onSaveChanges}
+                                data-testid="save-changes-button"
                             >
                                 {t('actions.saveChanges')}
                             </Button>
                             <IconButton sx={{ ml: 1 }} onClick={handleMenuClick} className="more-button">
                                 <MoreVert />
                             </IconButton>
-                            <Menu anchorEl={anchorEl} open={menuOpen} onClose={handleMenuClose}>
+                            <Menu anchorEl={anchorEl} open={menuOpen} onClose={handleMenuClose} data-testid="more-options-menu">
                                 <MenuItem onClick={handleRevertClick} disabled={!changesMade}>
                                     <ListItemIcon>
                                         <Restore fontSize="small" />
                                     </ListItemIcon>
                                     {t('actions.revertChanges')}
                                 </MenuItem>
-                                <MenuItem onClick={handleDeleteClick}>
+                                <MenuItem onClick={handleDeleteClick} data-testid="delete-template-button">
                                     <ListItemIcon>
                                         <Delete fontSize="small" />
                                     </ListItemIcon>

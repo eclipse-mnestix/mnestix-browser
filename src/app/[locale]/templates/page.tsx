@@ -210,6 +210,7 @@ export default function Page() {
                         startIcon={<Add />}
                         sx={{ mb: 1 }}
                         onClick={() => setChooseTemplateDialogOpen(true)}
+                        data-testid="create-new-template-button"
                     >
                         {t('createNew')}
                     </Button>
