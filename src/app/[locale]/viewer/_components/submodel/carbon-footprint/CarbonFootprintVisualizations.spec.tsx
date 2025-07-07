@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { screen, waitFor, act } from '@testing-library/react';
 import { expect } from '@jest/globals';
 import testSubmodel from '../../submodel/carbon-footprint/test-submodel/carbonFootprint-test.json';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
@@ -52,16 +52,20 @@ describe('CarbonFootprintVisualizations Detail', () => {
     });
 
     it('should render all submodel visualilzations for irdi id', async () => {
-        CustomRender(
-            <CarbonFootprintVisualizations submodel={testSubmodel['carbonFootprint-IrdiId'] as unknown as Submodel} />,
-        );
+        await act(async () => {
+            CustomRender(
+                <CarbonFootprintVisualizations submodel={testSubmodel['carbonFootprint-IrdiId'] as unknown as Submodel} />,
+            );
+        });
         await assertOnElements();
     });
 
     it('should render all submodel visualilzations for URL id', async () => {
-        CustomRender(
-            <CarbonFootprintVisualizations submodel={testSubmodel['carbonFootprint-UrlId'] as unknown as Submodel} />,
-        );
+        await act(async () => {
+            CustomRender(
+                <CarbonFootprintVisualizations submodel={testSubmodel['carbonFootprint-UrlId'] as unknown as Submodel} />,
+            );
+        });
         await assertOnElements();
     });
 });
