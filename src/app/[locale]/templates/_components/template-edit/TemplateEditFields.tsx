@@ -1,31 +1,30 @@
 import { Box, Typography } from '@mui/material';
 import { LockedTextField } from 'components/basics/LockedTextField';
 import { useEffect, useState } from 'react';
-import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import { PropertyEditComponent } from './edit-components/property/PropertyEditComponent';
 import debounce from 'lodash/debounce';
-import {
-    File,
-    ISubmodelElement,
-    KeyTypes,
-    MultiLanguageProperty,
-    Property,
-    Submodel,
-} from '@aas-core-works/aas-core3.0-typescript/types';
-import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { MappingInfoEditComponent } from './edit-components/mapping-info/MappingInfoEditComponent';
 import { MultiplicityEditComponent } from './edit-components/multiplicity/MultiplicityEditComponent';
 import { MultiLangEditComponent } from './edit-components/multi-lang/MultiLangEditComponent';
 import { SubmodelEditComponent } from './edit-components/SubmodelEditComponent';
 import { FileEditComponent } from './edit-components/file/FileEditComponent';
 import { useTranslations } from 'next-intl';
+import {
+    KeyTypes,
+    ModelFile,
+    MultiLanguageProperty,
+    Property,
+    Submodel,
+    SubmodelElementChoice,
+} from 'lib/api/aas/models';
+import { SubmodelViewObjectSpec } from 'lib/types/SubmodelViewObject';
 
 export type TemplateEditFieldsProps = {
-    templatePart?: SubmodelViewObject;
-    onTemplatePartChange?: (newTemplatePart: SubmodelViewObject) => void;
+    templatePart?: SubmodelViewObjectSpec;
+    onTemplatePartChange?: (newTemplatePart: SubmodelViewObjectSpec) => void;
     updateTemplatePart?: (
-        newTemplatePart: SubmodelViewObject,
-        newOnTemplatePartChange: (newTemplatePart: SubmodelViewObject) => void,
+        newTemplatePart: SubmodelViewObjectSpec,
+        newOnTemplatePartChange: (newTemplatePart: SubmodelViewObjectSpec) => void,
     ) => void;
     isCustomTemplate?: boolean | undefined;
 };
@@ -38,7 +37,7 @@ export function TemplateEditFields(props: TemplateEditFieldsProps) {
         setTemplatePart(props.templatePart);
     }, [props.templatePart]);
 
-    const debouncedOnTemplateDataChange = debounce((data: Submodel | ISubmodelElement) => {
+    const debouncedOnTemplateDataChange = debounce((data: Submodel | SubmodelElementChoice) => {
         onTemplateDataChange(data);
     }, 500);
     // cleanup effect for debounce:
@@ -46,7 +45,7 @@ export function TemplateEditFields(props: TemplateEditFieldsProps) {
         debouncedOnTemplateDataChange.cancel();
     }, [debouncedOnTemplateDataChange]);
 
-    function onTemplateDataChange(data: Submodel | ISubmodelElement) {
+    function onTemplateDataChange(data: Submodel | SubmodelElementChoice) {
         if (templatePart && props.onTemplatePartChange) {
             props.onTemplatePartChange({ ...templatePart, data });
         }
@@ -57,13 +56,11 @@ export function TemplateEditFields(props: TemplateEditFieldsProps) {
     }
 
     function getRenderFields() {
-        if (!templatePart || !templatePart.data) {
+        if (!templatePart?.data) {
             return;
         }
 
-        const templatePartType = getKeyType(templatePart.data);
-
-        switch (templatePartType) {
+        switch (templatePart.data.modelType) {
             case KeyTypes.Submodel:
                 return (
                     <SubmodelEditComponent
@@ -88,7 +85,7 @@ export function TemplateEditFields(props: TemplateEditFieldsProps) {
             case KeyTypes.File:
                 return (
                     <FileEditComponent
-                        data={props.templatePart?.data as File}
+                        data={props.templatePart?.data as ModelFile}
                         onChange={debouncedOnTemplateDataChange}
                     />
                 );
@@ -100,7 +97,7 @@ export function TemplateEditFields(props: TemplateEditFieldsProps) {
             default:
                 return (
                     <Typography color="error" variant="body2" sx={{ mt: 2 }}>
-                        {t('errors.unknownModelType', { type: `${templatePartType}` })}
+                        {t('errors.unknownModelType', { type: `${templatePart.data.modelType}` })}
                     </Typography>
                 );
         }

@@ -15,7 +15,7 @@ import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
-import { MultiLanguageProperty as MultiLanguagePropertyAAS } from 'lib/api/aas/models';
+import * as SpecTypes from 'lib/api/aas/models';
 
 /**
  * Gets the translated text from either a MultiLanguageProperty or LangStringTextType array
@@ -24,7 +24,12 @@ import { MultiLanguageProperty as MultiLanguagePropertyAAS } from 'lib/api/aas/m
  * @returns The translated text for the given locale, falling back to the first available translation, or null
  */
 export function getTranslationText(
-    element: MultiLanguageProperty | IAbstractLangString[] | undefined | MultiLanguagePropertyAAS,
+    element:
+        | MultiLanguageProperty
+        | IAbstractLangString[]
+        | undefined
+        | SpecTypes.MultiLanguageProperty
+        | SpecTypes.LangStringTextType[],
     locale: string,
 ): string {
     const langStrings = Array.isArray(element) ? element : element?.value;
