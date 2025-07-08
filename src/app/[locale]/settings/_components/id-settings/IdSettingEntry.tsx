@@ -111,7 +111,9 @@ export function IdSettingEntry(props: IdSettingEntryProps) {
                 <Typography sx={{ fontWeight: 'bold', width: '160px' }}>{props.field.name}</Typography>
                 {!props.editMode && (
                     <>
-                        <Typography>{props.field.prefix.value}</Typography>
+                        <Typography data-testid={`settings-text-field-${props.index}`}>
+                            {props.field.prefix.value}
+                        </Typography>
                         <DynamicPartText
                             text={props.field.dynamicPart.value as string}
                             variant={props.field.dynamicPart.value === 'GUID' ? 'regular' : 'reference'}

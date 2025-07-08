@@ -32,7 +32,7 @@ export default defineConfig({
         SUBMODEL_REPO_API_URL: 'http://localhost:5065/repo',
         MNESTIX_BACKEND_API_URL: 'http://localhost:5064',
         AAS_DISCOVERY_API_URL: 'http://localhost:5065/discovery',
-        MNESTIX_BACKEND_API_KEY: 'verySecureApiKey',
+        MNESTIX_API_KEY: 'verySecureApiKey',
         TEST_ADMIN_USER_LOGIN: 'test-admin',
         TEST_ADMIN_USER_PASSWORD: 'admin',
         TEST_USER_LOGIN: 'test',

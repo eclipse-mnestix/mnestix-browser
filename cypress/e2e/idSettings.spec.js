@@ -1,9 +1,15 @@
 ﻿import resolutions from '../fixtures/resolutions';
 
 describe('Visit the Settings page', function () {
+    const adminTestUser = {
+        login: Cypress.env('TEST_ADMIN_USER_LOGIN'),
+        password: Cypress.env('TEST_ADMIN_USER_PASSWORD'),
+    };
+
     beforeEach(function () {
         cy.visit('/');
-        cy.getByTestId('MenuIcon').click();
+        cy.keycloakLogin(adminTestUser.login, adminTestUser.password);
+        cy.getByTestId('header-burgermenu').click();
         cy.setResolution(resolutions[0]);
     });
 
@@ -35,10 +41,12 @@ describe('Visit the Settings page', function () {
         const urlValues = ['https://example2.com', 'https://example3.com', 'https://example4.com'];
 
         prefixValues.forEach((value, i) => {
+            cy.getByTestId(`settings-edit-text-field-${i}`).click();
             cy.getByTestId(`settings-edit-text-field-${i}`).clear();
             cy.getByTestId(`settings-edit-text-field-${i}`).type(value);
         });
         urlValues.forEach((value, i) => {
+            cy.getByTestId(`settings-edit-text-field-${i + 2}`).click();
             cy.getByTestId(`settings-edit-text-field-${i + 2}`).clear();
             cy.getByTestId(`settings-edit-text-field-${i + 2}`).type(value);
         });
@@ -46,8 +54,11 @@ describe('Visit the Settings page', function () {
         cy.getByTestId('settings-save-button').click();
 
         // Verify updated values are visible
-        [...prefixValues, ...urlValues].forEach((value) => {
-            cy.contains(value).should('be.visible');
+        prefixValues.forEach((value, i) => {
+            cy.getByTestId(`settings-text-field-${i}`).should('have.text', value);
+        });
+        urlValues.forEach((value, i) => {
+            cy.getByTestId(`settings-text-field-${i + 2}`).should('have.text', value);
         });
 
         // Verify edit mode is exited
@@ -102,7 +113,26 @@ describe('Visit the Settings page', function () {
         cy.contains('ID structure').should('be.visible');
     });
 
+    it('should display validation errors for invalid prefix values (Resolution: ' + resolutions[0] + ')', function () {
+        cy.getByTestId('settings-menu-icon').click();
+        cy.getByTestId('settings-edit-button').click();
+
+        // Test invalid IRI format
+        const invalidValues = ['invalid iri', 'not-a-valid-iri'];
+
+        invalidValues.forEach((invalidValue, i) => {
+            cy.getByTestId(`settings-edit-text-field-${i}`).click();
+
+            cy.getByTestId(`settings-edit-text-field-${i}`).clear();
+            cy.getByTestId(`settings-edit-text-field-${i}`).type(invalidValue);
+            cy.getByTestId('settings-save-button').click();
+
+            //TODO: Assert that validation error is shown
+        });
+    });
+
     after(function () {
-        cy.deleteTestAas();
+        cy.getByTestId('header-burgermenu').click();
+        cy.keycloakLogout();
     });
 });
