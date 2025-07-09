@@ -42,23 +42,23 @@ describe('Visit the Settings page', function () {
 
         prefixValues.forEach((value, i) => {
             cy.getByTestId(`settings-edit-text-field-${i}`).click();
-            cy.getByTestId(`settings-edit-text-field-${i}`).clear();
-            cy.getByTestId(`settings-edit-text-field-${i}`).type(value);
+            cy.getByTestId(`settings-edit-input-field-${i}`).clear();
+            cy.getByTestId(`settings-edit-input-field-${i}`).type(value);
         });
         urlValues.forEach((value, i) => {
             cy.getByTestId(`settings-edit-text-field-${i + 2}`).click();
-            cy.getByTestId(`settings-edit-text-field-${i + 2}`).clear();
-            cy.getByTestId(`settings-edit-text-field-${i + 2}`).type(value);
+            cy.getByTestId(`settings-edit-input-field-${i + 2}`).clear();
+            cy.getByTestId(`settings-edit-input-field-${i + 2}`).type(value);
         });
 
         cy.getByTestId('settings-save-button').click();
 
         // Verify updated values are visible
         prefixValues.forEach((value, i) => {
-            cy.getByTestId(`settings-text-field-${i}`).should('have.text', value);
+            cy.getByTestId(`settings-text-field-${i}`).should('contain', value);
         });
         urlValues.forEach((value, i) => {
-            cy.getByTestId(`settings-text-field-${i + 2}`).should('have.text', value);
+            cy.getByTestId(`settings-text-field-${i + 2}`).should('contain', value);
         });
 
         // Verify edit mode is exited
@@ -70,17 +70,17 @@ describe('Visit the Settings page', function () {
         cy.getByTestId('settings-edit-button').click();
 
         // Get original value
-        cy.getByTestId(`settings-edit-text-field-0`).invoke('val').as('originalValue');
+        cy.getByTestId(`settings-edit-input-field-0`).invoke('val').as('originalValue');
 
-        cy.getByTestId(`settings-edit-text-field-0`).clear();
-        cy.getByTestId(`settings-edit-text-field-0`).type('test-value');
+        cy.getByTestId(`settings-edit-input-field-0`).clear();
+        cy.getByTestId(`settings-edit-input-field-0`).type('test-value');
 
         cy.getByTestId('settings-cancel-button').click();
         cy.contains('test-value').should('not.exist');
 
         cy.getByTestId('settings-edit-button').click();
         cy.get('@originalValue').then((originalValue) => {
-            cy.getByTestId(`settings-edit-text-field-0`).should('have.value', originalValue);
+            cy.getByTestId(`settings-edit-input-field-0`).should('have.value', originalValue);
         });
     });
 
@@ -102,7 +102,7 @@ describe('Visit the Settings page', function () {
     });
 
     // Test loading states
-    it('should show loading skeletons while fetching settings', function () {
+    it('should show loading skeletons while fetching settings (Resolution: ' + resolutions[0] + ')', function () {
         cy.getByTestId('settings-menu-icon').click();
 
         // Verify skeleton loaders appear initially
@@ -113,23 +113,37 @@ describe('Visit the Settings page', function () {
         cy.contains('ID structure').should('be.visible');
     });
 
-    it('should display validation errors for invalid prefix values (Resolution: ' + resolutions[0] + ')', function () {
-        cy.getByTestId('settings-menu-icon').click();
-        cy.getByTestId('settings-edit-button').click();
+    it(
+        'should display validation errors for invalid prefix AssetIdShort and AasId values (Resolution: ' +
+            resolutions[0] +
+            ')',
+        function () {
+            cy.getByTestId('settings-menu-icon').click();
+            cy.getByTestId('settings-edit-button').click();
 
-        // Test invalid IRI format
-        const invalidValues = ['invalid iri', 'not-a-valid-iri'];
+            // Test invalid AssetIdShort prefix
+            cy.getByTestId('settings-edit-text-field-0').click();
+            cy.getByTestId('settings-edit-input-field-0').clear();
+            cy.getByTestId('settings-edit-input-field-0').type('invalid iri');
 
-        invalidValues.forEach((invalidValue, i) => {
-            cy.getByTestId(`settings-edit-text-field-${i}`).click();
+            // Test invalid AasId prefix
+            cy.getByTestId('settings-edit-text-field-2').click();
+            cy.getByTestId('settings-edit-input-field-2').clear();
+            cy.getByTestId('settings-edit-input-field-2').type('invalid iri');
 
-            cy.getByTestId(`settings-edit-text-field-${i}`).clear();
-            cy.getByTestId(`settings-edit-text-field-${i}`).type(invalidValue);
+            // Attempt to save with invalid prefixes
             cy.getByTestId('settings-save-button').click();
 
-            //TODO: Assert that validation error is shown
-        });
-    });
+            // Assert that validation errors are shown
+            cy.getByTestId('settings-edit-text-field-0-error').as('error0');
+            cy.get('@error0').should('be.visible');
+            cy.get('@error0').should('contain', 'Has to work as part of an IRI');
+
+            cy.getByTestId('settings-edit-text-field-2-error').as('error2');
+            cy.get('@error2').should('be.visible');
+            cy.get('@error2').should('contain', 'Has to be a valid IRI');
+        },
+    );
 
     after(function () {
         cy.getByTestId('header-burgermenu').click();

@@ -136,12 +136,22 @@ export function IdSettingEntry(props: IdSettingEntryProps) {
                             render={() => (
                                 <TextField
                                     label={t('labels.staticPrefix')}
-                                    data-testid={`settings-edit-text-field-${props.index}`}
                                     sx={{ flexGrow: 1, mr: 1 }}
+                                    data-testid={`settings-edit-text-field-${props.index}`}
                                     fullWidth={true}
                                     defaultValue={props.field.prefix.value}
                                     error={!!props.errors?.idSettings?.[props.index]?.prefix}
                                     helperText={props.errors?.idSettings?.[props.index]?.prefix?.value?.message}
+                                    slotProps={{
+                                        htmlInput: {
+                                            'data-testid': `settings-edit-input-field-${props.index}`,
+                                        },
+                                        formHelperText: {
+                                            ...({
+                                                'data-testid': `settings-edit-text-field-${props.index}-error`,
+                                            } as React.HTMLAttributes<HTMLElement>),
+                                        },
+                                    }}
                                     {...props.register(`idSettings.${props.index}.prefix.value`)}
                                 />
                             )}
