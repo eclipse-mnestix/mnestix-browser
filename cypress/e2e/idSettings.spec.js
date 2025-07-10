@@ -15,6 +15,8 @@ describe('Visit the Settings page', function () {
 
     it('should open the Settings page(Resolution: ' + resolutions[0] + ')', function () {
         cy.getByTestId('settings-menu-icon').click();
+
+        // Verify the settings page is opened
         cy.getByTestId('settings-card-header').should('be.visible');
     });
 
@@ -69,16 +71,17 @@ describe('Visit the Settings page', function () {
         cy.getByTestId('settings-menu-icon').click();
         cy.getByTestId('settings-edit-button').click();
 
-        // Get original value
         cy.getByTestId(`settings-edit-input-field-0`).invoke('val').as('originalValue');
 
         cy.getByTestId(`settings-edit-input-field-0`).clear();
         cy.getByTestId(`settings-edit-input-field-0`).type('test-value');
 
         cy.getByTestId('settings-cancel-button').click();
+        // Verify changes are not saved
         cy.contains('test-value').should('not.exist');
 
         cy.getByTestId('settings-edit-button').click();
+        // Verify original value is restored
         cy.get('@originalValue').then((originalValue) => {
             cy.getByTestId(`settings-edit-input-field-0`).should('have.value', originalValue);
         });
@@ -87,21 +90,19 @@ describe('Visit the Settings page', function () {
     it('should open asset ID documentation dialog (Resolution: ' + resolutions[0] + ')', function () {
         cy.getByTestId('settings-menu-icon').click();
 
-        // Click documentation button
         cy.getByTestId('asset-id-redirect-documentation-dialog').click();
 
-        // Verify dialog is open
         cy.get('[role="dialog"]').should('be.visible');
+
+        // Verify dialog content
         cy.getByTestId('asset-id-redirect-documentation-dialog').should('exist');
 
-        // Close dialog
         cy.get('[aria-label="close"]').click();
 
         // Verify dialog is closed
         cy.get('[role="dialog"]').should('not.exist');
     });
 
-    // Test loading states
     it('should show loading skeletons while fetching settings (Resolution: ' + resolutions[0] + ')', function () {
         cy.getByTestId('settings-menu-icon').click();
 
@@ -121,20 +122,17 @@ describe('Visit the Settings page', function () {
             cy.getByTestId('settings-menu-icon').click();
             cy.getByTestId('settings-edit-button').click();
 
-            // Test invalid AssetIdShort prefix
             cy.getByTestId('settings-edit-text-field-0').click();
             cy.getByTestId('settings-edit-input-field-0').clear();
             cy.getByTestId('settings-edit-input-field-0').type('invalid iri');
 
-            // Test invalid AasId prefix
             cy.getByTestId('settings-edit-text-field-2').click();
             cy.getByTestId('settings-edit-input-field-2').clear();
             cy.getByTestId('settings-edit-input-field-2').type('invalid iri');
 
-            // Attempt to save with invalid prefixes
             cy.getByTestId('settings-save-button').click();
 
-            // Assert that validation errors are shown
+            // Verify error messages are displayed
             cy.getByTestId('settings-edit-text-field-0-error').as('error0');
             cy.get('@error0').should('be.visible');
             cy.get('@error0').should('contain', 'Has to work as part of an IRI');
