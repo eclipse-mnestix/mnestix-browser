@@ -117,8 +117,8 @@ jobs:
         # the number of containers to run more tests in parallel.
         timeout-minutes: 18
         run: |
-          docker compose -f compose.yml -f docker-compose/compose.test.yml --profile tests up -d &&
-          docker compose -f compose.yml -f docker-compose/compose.test.yml attach cypress-test
+          docker compose -f compose.yml -f docker-compose/compose.proxy.yml -f docker-compose/compose.test.yml --profile tests up -d &&
+          docker compose -f compose.yml -f docker-compose/compose.proxy.yml -f docker-compose/compose.test.yml attach cypress-test
         env:
           SPLIT: ${{ strategy.job-total }}
           SPLIT_INDEX: ${{ strategy.job-index }}
