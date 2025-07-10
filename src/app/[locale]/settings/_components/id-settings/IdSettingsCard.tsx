@@ -204,7 +204,10 @@ export function IdSettingsCard() {
                 })}
             </Box>
             <Box sx={{ display: 'flex' }}>
-                <StyledDocumentationButton onClick={() => setDocumentationModalOpen(true)}>
+                <StyledDocumentationButton
+                    onClick={() => setDocumentationModalOpen(true)}
+                    data-testid="asset-id-redirect-documentation-dialog"
+                >
                     <InfoOutlined sx={{ mr: 1 }} />
                     <Typography>{t('assetIdDocumentation.title')}</Typography>
                 </StyledDocumentationButton>

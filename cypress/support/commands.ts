@@ -38,7 +38,7 @@ Cypress.Commands.add('repoRequest', (requestMethod, urlPath, requestBody) => {
         method: requestMethod,
         url: `${Cypress.env('AAS_REPO_API_URL')}${urlPath}`,
         headers: {
-            ApiKey: Cypress.env('MNESTIX_API_KEY'),
+            'X-API-KEY': Cypress.env('MNESTIX_API_KEY'),
         },
         body: requestBody,
         failOnStatusCode: false,
@@ -169,7 +169,7 @@ Cypress.Commands.add('uploadThumbnailToAas', (aasId: string) => {
                 body: formData,
                 encoding: 'binary',
                 headers: {
-                    ApiKey: Cypress.env('MNESTIX_API_KEY'),
+                    'X-API-KEY': Cypress.env('MNESTIX_API_KEY'),
                 },
             });
         });

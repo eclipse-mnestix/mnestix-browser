@@ -1,0 +1,64 @@
+services:
+  keycloak:
+    build:
+      context: ./docker-compose/data/keycloak
+    container_name: keycloak
+    volumes:
+      - ./docker-compose/data/keycloak/realm:/opt/jboss/keycloak/imports
+    ports:
+      - 8080:8080
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HOSTNAME: localhost
+      KC_SPI_INITIALIZER_ISSUER_BASE_URI: http://keycloak:8080
+      KC_HEALTH_ENABLED: 'true'
+    command: ['start-dev', '--import-realm']
+    healthcheck: # check the endpoint for a valid response (service ready)
+      test: #keycloak has no curl in image
+        [
+          'CMD-SHELL',
+          "exec 3<>/dev/tcp/localhost/8080 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 6
+    networks:
+      - mnestix-network
+
+  mnestix-browser:
+    environment:
+      AUTHENTICATION_FEATURE_FLAG: 'true'
+      NEXTAUTH_URL: 'http://localhost:3000'
+      KEYCLOAK_ENABLED: 'true'
+      KEYCLOAK_CLIENT_ID: 'mnestix-browser-client-demo'
+      KEYCLOAK_ISSUER: 'http://keycloak:8080'
+      KEYCLOAK_LOCAL_URL: 'http://localhost:8080'
+      KEYCLOAK_REALM: 'Mnestix'
+
+  mnestix-proxy:
+    environment:
+      OpenId__EnableOpenIdAuth: 'true'
+      OpenId__Issuer: 'http://keycloak:8080/realms/Mnestix'
+      OpenId__ClientID: 'mnestixApi-demo'
+      OpenId__RequireHttpsMetadata: 'false'
+
+  mnestix-api:
+    environment:
+      Features__UseAuthentication: 'true'
+      # OpenId repository settings
+      RepositoryOpenIdConnect__EnableRepositoryOpenIdAuth: 'true'
+      RepositoryOpenIdConnect__Authority: 'http://keycloak:8080/realms/Mnestix'
+      RepositoryOpenIdConnect__DiscoveryEndpoint: '.well-known/openid-configuration'
+      RepositoryOpenIdConnect__ClientId: 'mnestix-repo-client-demo'
+      RepositoryOpenIdConnect__ClientSecret: ${REPOSITORY_API_CLIENT_SECRET:-WLOB68nSllHTlr7ViUOZWWxildWFT2nN}
+      RepositoryOpenIdConnect__ValidateIssuer: 'false'
+      RepositoryOpenIdConnect__TokenEndpoint: 'http://keycloak:8080/realms/Mnestix/protocol/openid-connect/token'
+      # OpenID Configuration
+      OpenId__EnableOpenIdAuth: 'true'
+      OpenId__Issuer: 'http://keycloak:8080/realms/Mnestix'
+      OpenId__ClientID: 'mnestixApi-demo'
+      OpenId__RequireHttpsMetadata: 'false'
+    depends_on:
+      keycloak:
+        condition: service_healthy

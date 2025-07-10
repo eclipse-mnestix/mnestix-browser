@@ -6,10 +6,11 @@ services:
       dockerfile: cypress.dockerfile
     environment:
       CYPRESS_BASE_URL: 'http://mnestix-browser:3000'
-      CYPRESS_AAS_REPO_API_URL: 'http://mnestix-api:5064/repo'
-      CYPRESS_SUBMODEL_REPO_API_URL: 'http://mnestix-api:5064/repo'
-      CYPRESS_MNESTIX_BACKEND_API_URL: 'http://mnestix-api:5064'
-      CYPRESS_AAS_DISCOVERY_API_URL: 'http://mnestix-api:5064/discovery'
+      CYPRESS_AAS_REPO_API_URL: 'http://mnestix-proxy:5065/repo'
+      CYPRESS_SUBMODEL_REPO_API_URL: 'http://mnestix-proxy:5065/repo'
+      CYPRESS_MNESTIX_BACKEND_API_URL: 'http://mnestix-proxy:5065'
+      CYPRESS_AAS_DISCOVERY_API_URL: 'http://mnestix-proxy:5065/discovery'
+      MNESTIX_API_KEY: 'verySecureApiKey'
       ELECTRON_ENABLE_LOGGING: 1
       SPLIT: ${SPLIT:-1}
       SPLIT_INDEX: ${SPLIT_INDEX:-0}
@@ -36,10 +37,10 @@ services:
   mnestix-browser:
     image: mnestix/mnestix-browser:latest
     environment:
-      AAS_REPO_API_URL: 'http://mnestix-api:5064/repo'
-      SUBMODEL_REPO_API_URL: 'http://mnestix-api:5064/repo'
-      DISCOVERY_API_URL: 'http://mnestix-api:5064/discovery'
-      MNESTIX_BACKEND_API_URL: 'http://mnestix-api:5064'
+      AAS_REPO_API_URL: 'http://mnestix-proxy:5065/repo'
+      SUBMODEL_REPO_API_URL: 'http://mnestix-proxy:5065/repo'
+      DISCOVERY_API_URL: 'http://mnestix-proxy:5065/discovery'
+      MNESTIX_BACKEND_API_URL: 'http://mnestix-proxy:5065'
       AUTHENTICATION_FEATURE_FLAG: 'true'
       NEXTAUTH_URL: 'http://mnestix-browser:3000/'
       KEYCLOAK_ENABLED: 'true'
@@ -48,6 +49,22 @@ services:
       KEYCLOAK_LOCAL_URL: 'http://localhost:8080'
       KEYCLOAK_REALM: 'Mnestix'
       NEXTAUTH_SECRET: 'test'
+
+  mnestix-proxy:
+    environment:
+      OpenId__EnableOpenIdAuth: 'true'
+      OpenId__Issuer: 'http://keycloak:8080/realms/Mnestix'
+      OpenId__ClientID: 'mnestixApi-demo'
+      OpenId__RequireHttpsMetadata: 'false'
+
+  mnestix-api:
+    environment:
+      Features__UseAuthentication: 'true'
+      # OpenID Configuration
+      OpenId__EnableOpenIdAuth: 'true'
+      OpenId__Issuer: 'http://keycloak:8080/realms/Mnestix'
+      OpenId__ClientID: 'mnestixApi-demo'
+      OpenId__RequireHttpsMetadata: 'false'
 
   keycloak:
     profiles: ['', 'tests']
