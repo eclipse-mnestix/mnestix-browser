@@ -50,6 +50,22 @@ services:
       KEYCLOAK_REALM: 'Mnestix'
       NEXTAUTH_SECRET: 'test'
 
+  mnestix-proxy:
+    environment:
+      OpenId__EnableOpenIdAuth: 'true'
+      OpenId__Issuer: 'http://keycloak:8080/realms/Mnestix'
+      OpenId__ClientID: 'mnestixApi-demo'
+      OpenId__RequireHttpsMetadata: 'false'
+
+  mnestix-api:
+    environment:
+      Features__UseAuthentication: 'true'
+      # OpenID Configuration
+      OpenId__EnableOpenIdAuth: 'true'
+      OpenId__Issuer: 'http://keycloak:8080/realms/Mnestix'
+      OpenId__ClientID: 'mnestixApi-demo'
+      OpenId__RequireHttpsMetadata: 'false'
+
   keycloak:
     profiles: ['', 'tests']
     image: keycloak/keycloak:24.0.4
