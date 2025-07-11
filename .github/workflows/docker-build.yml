@@ -2,7 +2,7 @@ name: CI and Docker Deploy
 
 on:
   push:
-    branches: ['main', 'dev', 'maintenance/1.x']
+    branches: ['main', 'dev', 'maintenance/1.x', 'new-dev']
     tags: ['v*.*.*']
     paths-ignore:
       - '.github/ISSUE_TEMPLATE/**'
@@ -11,7 +11,7 @@ on:
       - 'wiki/**'
       - 'README.md'
   pull_request:
-    branches: ['dev']
+    branches: ['dev', 'new-dev']
     paths-ignore:
       - '.github/ISSUE_TEMPLATE/**'
       - '.github/CODEOWNERS'
