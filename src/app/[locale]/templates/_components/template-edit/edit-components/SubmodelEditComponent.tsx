@@ -44,7 +44,11 @@ export function SubmodelEditComponent(props: SubmodelEditComponentProps) {
                     label={t('labels.value')}
                     onChange={onDisplayNameChange}
                     fullWidth
-                    data-testid="display-name-input"
+                    slotProps={{
+                        htmlInput: {
+                            'data-testid': 'display-name-input',
+                        }
+                    }}
                 />
             </Box>
         </>

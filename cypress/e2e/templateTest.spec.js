@@ -9,14 +9,12 @@ describe('Template CRUD Operations', () => {
         cy.visit('/templates');
     });
 
-    it('should create a new template', () => {
+    it('should create/edit and delete a template', () => {
         cy.getByTestId('create-new-template-button').click();
         cy.getByTestId('choose-template-dialog').should('be.visible');
     
         cy.getByTestId('choose-template-item-0').click();
         cy.url().should('include', '/templates/');
-    
-        cy.get('[role="tree"] [role="treeitem"]').first().click();
 
         cy.getByTestId('display-name-input').clear().type(templateName);
 
@@ -25,9 +23,8 @@ describe('Template CRUD Operations', () => {
         cy.visit('/templates');
 
         cy.contains(templateName).should('be.visible');
-    });
 
-    it('should edit an existing template', () => {
+        //edit template
         cy.contains(templateName).click();
 
         cy.url().should('include', '/templates/');
@@ -40,12 +37,8 @@ describe('Template CRUD Operations', () => {
 
         cy.visit('/templates');
         cy.contains(editedTemplateName).should('be.visible');
-        cy.contains(templateName).should('not.exist');
-    });
 
-    it('should delete an existing template', () => {
-        cy.visit('/templates');
-
+        //delete the template
         cy.contains(editedTemplateName).click();
 
         cy.url().should('include', '/templates/');

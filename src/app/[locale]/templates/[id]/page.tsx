@@ -373,7 +373,7 @@ export default function Page() {
                             >
                                 {t('actions.saveChanges')}
                             </Button>
-                            <IconButton sx={{ ml: 1 }} onClick={handleMenuClick} className="more-button">
+                            <IconButton sx={{ ml: 1 }} onClick={handleMenuClick} className="more-button" data-testid="more-options-button">
                                 <MoreVert />
                             </IconButton>
                             <Menu anchorEl={anchorEl} open={menuOpen} onClose={handleMenuClose} data-testid="more-options-menu">
