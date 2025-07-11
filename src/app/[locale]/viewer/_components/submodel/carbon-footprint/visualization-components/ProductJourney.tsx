@@ -152,10 +152,12 @@ async function enrichSingleAddressWithCoordinates( item: AddressPerLifeCyclePhas
     } 
     const coordinates = await geocodeAddress(item.address); 
     if (coordinates) { 
-        return { ...item, address: { 
-            ...item.address, 
-            latitude: coordinates.latitude, 
-            longitude: coordinates.longitude, 
+        return { 
+            ...item, 
+            address: { 
+                ...item.address, 
+                latitude: coordinates.latitude, 
+                longitude: coordinates.longitude, 
             },
         };
     }
