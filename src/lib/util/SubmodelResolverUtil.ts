@@ -50,7 +50,7 @@ export function getTranslationValue(element: IDataElement, locale: string): stri
 export function findSubmodelElementByIdShort(
     elements: ISubmodelElement[] | null,
     idShort: string | null,
-    semanticId: SubmodelSemanticIdEnum | SubmodelElementSemanticIdEnum | PcfSubmodelElementSemanticIdEnum | null,
+    semanticId: string | null,
 ): ISubmodelElement | null {
     if (!elements) return null;
     for (const el of elements) {

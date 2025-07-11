@@ -109,10 +109,6 @@ export function ProductJourney(props: { addressesPerLifeCyclePhase: AddressPerLi
         '& .ol-zoom': { display: 'none' },
     };
 
-    if (!isLoading && coordinates.length === 0) {
-        return <ProductJourneyAddressList addressesPerLifeCyclePhase={enrichedAddresses} />;
-    }
-
     return (
         <>
             {isLoading && (
@@ -143,42 +139,27 @@ export function ProductJourney(props: { addressesPerLifeCyclePhase: AddressPerLi
     );
 }
 
-async function enrichAddressesWithCoordinates(
-    addressesPerLifeCyclePhase: AddressPerLifeCyclePhase[]
-): Promise<AddressPerLifeCyclePhase[]> {
-    const needsGeocoding = addressesPerLifeCyclePhase.some(
-        item => (!item.address.latitude || !item.address.longitude) && hasAddressInformation(item.address)
-    );
+async function enrichAddressesWithCoordinates( addressesPerLifeCyclePhase: AddressPerLifeCyclePhase[] ): Promise<AddressPerLifeCyclePhase[]> { 
+    return Promise.all( addressesPerLifeCyclePhase.map(item => enrichSingleAddressWithCoordinates(item)) ); 
+} 
 
-    if (!needsGeocoding) {
-        return addressesPerLifeCyclePhase;
+async function enrichSingleAddressWithCoordinates( item: AddressPerLifeCyclePhase ): Promise<AddressPerLifeCyclePhase> {
+     if (item.address.latitude && item.address.longitude) { 
+        return item; 
+    } 
+    if (!hasAddressInformation(item.address)) { 
+        return item; 
+    } 
+    const coordinates = await geocodeAddress(item.address); 
+    if (coordinates) { 
+        return { ...item, address: { 
+            ...item.address, 
+            latitude: coordinates.latitude, 
+            longitude: coordinates.longitude, 
+            },
+        };
     }
-
-    const enrichedAddresses = await Promise.all(
-        addressesPerLifeCyclePhase.map(async (item) => {
-            if (item.address.latitude && item.address.longitude) {
-                return item;
-            }
-
-            if (hasAddressInformation(item.address)) {
-                const coordinates = await geocodeAddress(item.address);
-                
-                if (coordinates) {
-                    return {
-                        ...item,
-                        address: {
-                            ...item.address,
-                            latitude: coordinates.latitude,
-                            longitude: coordinates.longitude,
-                        },
-                    };
-                }
-            }
-            return item;
-        })
-    );
-
-    return enrichedAddresses;
+    return item; 
 }
 
 function hasAddressInformation(address: Address): boolean {
