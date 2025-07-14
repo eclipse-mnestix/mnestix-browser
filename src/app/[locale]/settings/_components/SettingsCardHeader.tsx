@@ -13,36 +13,44 @@ export type SettingsCardHeaderProps = {
     readonly title: React.ReactNode;
     readonly subtitle: React.ReactNode;
     readonly isEditMode: boolean;
-}
+};
 
 export function SettingsCardHeader(props: SettingsCardHeaderProps) {
     const t = useTranslations('pages.settings');
     return (
-            <Box display="flex" flexDirection="row" justifyContent="space-between">
-                <CardHeading
-                    title={props.title}
-                    subtitle={props.subtitle}
-                />
-                <Box display="flex" gap={2} alignContent="center" flexWrap="wrap">
-                    {props.isEditMode ? (
-                        <>
-                            <Button variant="outlined" startIcon={<CloseIcon />} onClick={() => props.onCancel()}>
-                                {t('actions.cancel')}
-                            </Button>
-                            <Button
-                                variant="contained"
-                                startIcon={<CheckIcon />}
-                                onClick={props.onSubmit}
-                            >
-                                {t('actions.saveButton')}
-                            </Button>
-                        </>
-                    ) : (
-                        <Button variant="contained" startIcon={<EditIcon />} onClick={() => props.onEdit()}>
-                            {t('actions.editButton')}
+        <Box display="flex" flexDirection="row" justifyContent="space-between" data-testid="settings-card-header">
+            <CardHeading title={props.title} subtitle={props.subtitle} />
+            <Box display="flex" gap={2} alignContent="center" flexWrap="wrap">
+                {props.isEditMode ? (
+                    <>
+                        <Button
+                            variant="outlined"
+                            startIcon={<CloseIcon />}
+                            onClick={() => props.onCancel()}
+                            data-testid="settings-cancel-button"
+                        >
+                            {t('actions.cancel')}
                         </Button>
-                    )}
-                </Box>
+                        <Button
+                            variant="contained"
+                            startIcon={<CheckIcon />}
+                            onClick={props.onSubmit}
+                            data-testid="settings-save-button"
+                        >
+                            {t('actions.saveButton')}
+                        </Button>
+                    </>
+                ) : (
+                    <Button
+                        variant="contained"
+                        startIcon={<EditIcon />}
+                        onClick={() => props.onEdit()}
+                        data-testid="settings-edit-button"
+                    >
+                        {t('actions.editButton')}
+                    </Button>
+                )}
             </Box>
+        </Box>
     );
 }
