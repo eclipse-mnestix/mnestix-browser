@@ -20,7 +20,7 @@ export function CarbonFootprintVisualizations({ submodel }: SubmodelVisualizatio
 
     const pcfSubmodelElements = getPcfSubmodelElements(submodel);
 
-    if (!pcfSubmodelElements.length) return <></>;
+    if (!pcfSubmodelElements || !pcfSubmodelElements.length) return <></>;
 
     // Sort elements by lifecycle phase
     pcfSubmodelElements.sort((a, b) => {
@@ -65,6 +65,7 @@ export function CarbonFootprintVisualizations({ submodel }: SubmodelVisualizatio
 }
 
 function getPcfSubmodelElements(submodel: Submodel): SubmodelElementCollection[] {
+    // Check for PCF Version 0.9
     const directPcfElements = findAllSubmodelElementsBySemanticIdsOrIdShort(
         submodel.submodelElements,
         null,
@@ -78,11 +79,11 @@ function getPcfSubmodelElements(submodel: Submodel): SubmodelElementCollection[]
         return directPcfElements;
     }
 
-    // Fallback: look for PCF elements in a SubmodelElementList
+    // Check for PCF Version 1.0 (due to having a intermediate submodel element list in between submodel and submodel element collection)
     const pcfSubmodelList = findSubmodelElementBySemanticIdsOrIdShort(
         submodel.submodelElements,
         null,
-        [PcfSubmodelElementSemanticIdEnum.ProductCarbonFootprintsSML]
+        [PcfSubmodelElementSemanticIdEnum.ProductCarbonFootprintsSMLV1]
     ) as SubmodelElementList | null;
 
     return (pcfSubmodelList?.value as SubmodelElementCollection[]) || [];
