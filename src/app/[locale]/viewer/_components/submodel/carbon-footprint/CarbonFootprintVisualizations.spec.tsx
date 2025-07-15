@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor, act } from '@testing-library/react';
 import { expect } from '@jest/globals';
 import testSubmodel from '../../submodel/carbon-footprint/test-submodel/carbonFootprint-test.json';
 import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
@@ -15,6 +15,19 @@ window.ResizeObserver =
         unobserve: jest.fn(),
     }));
 
+const mockFetch = jest.fn();
+global.fetch = mockFetch;
+
+const mockGeocodeResponse = {
+    ok: true,
+    json: async () => [
+        {
+            lat: '50',
+            lon: '10',
+        },
+    ],
+};
+
 jest.mock('recharts', () => {
     const OriginalRechartsModule = jest.requireActual('recharts');
 
@@ -29,44 +42,59 @@ jest.mock('recharts', () => {
 });
 
 describe('CarbonFootprintVisualizations Detail', () => {
+    beforeEach(() => {
+        mockFetch.mockClear();
+        mockFetch.mockResolvedValue(mockGeocodeResponse);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
     it('should render all submodel visualilzations for irdi id', async () => {
-        CustomRender(
-            <CarbonFootprintVisualizations submodel={testSubmodel['carbonFootprint-IrdiId'] as unknown as Submodel} />,
-        );
-        assertOnElements();
+        await act(async () => {
+            CustomRender(
+                <CarbonFootprintVisualizations submodel={testSubmodel['carbonFootprint-IrdiId'] as unknown as Submodel} />,
+            );
+        });
+        await assertOnElements();
     });
 
     it('should render all submodel visualilzations for URL id', async () => {
-        CustomRender(
-            <CarbonFootprintVisualizations submodel={testSubmodel['carbonFootprint-UrlId'] as unknown as Submodel} />,
-        );
-        assertOnElements();
+        await act(async () => {
+            CustomRender(
+                <CarbonFootprintVisualizations submodel={testSubmodel['carbonFootprint-UrlId'] as unknown as Submodel} />,
+            );
+        });
+        await assertOnElements();
     });
 });
 
-function assertOnElements() {
-    const totalCo2Equivalents = screen.getByTestId('co2-equivalents');
-    expect(totalCo2Equivalents).toBeDefined();
-    expect(totalCo2Equivalents).toBeInTheDocument();
+async function assertOnElements() {
+    await waitFor(() => {
+        const totalCo2Equivalents = screen.getByTestId('co2-equivalents');
+        const productLifecycle = screen.getByTestId('product-lifecycle-stepper');
+        const co2EquivalentsDistribution = screen.getByTestId('co2-equivalents-distribution-box');
+        const co2Comparison = screen.getByTestId('co2-comparison-box');
+        const productJourney = screen.getByTestId('product-journey-box');
+        const calculationMethod = screen.getByTestId('co2-calculation-method-text');
 
-    const productLifecycle = screen.getByTestId('product-lifecycle-stepper');
-    expect(productLifecycle).toBeDefined();
-    expect(productLifecycle).toBeInTheDocument();
+        expect(totalCo2Equivalents).toBeDefined();
+        expect(totalCo2Equivalents).toBeInTheDocument();
 
-    const co2EquivalentsDistribution = screen.getByTestId('co2-equivalents-distribution-box');
-    expect(co2EquivalentsDistribution).toBeDefined();
-    expect(co2EquivalentsDistribution).toBeInTheDocument();
+        expect(productLifecycle).toBeDefined();
+        expect(productLifecycle).toBeInTheDocument();
 
-    const co2Comparison = screen.getByTestId('co2-comparison-box');
-    expect(co2Comparison).toBeDefined();
-    expect(co2Comparison).toBeInTheDocument();
+        expect(co2EquivalentsDistribution).toBeDefined();
+        expect(co2EquivalentsDistribution).toBeInTheDocument();
 
-    const productJourney = screen.getByTestId('product-journey-box');
-    expect(productJourney).toBeDefined();
-    expect(productJourney).toBeInTheDocument();
+        expect(co2Comparison).toBeDefined();
+        expect(co2Comparison).toBeInTheDocument();
 
-    const calculationMethod = screen.getByTestId('co2-calculation-method-text');
-    expect(calculationMethod).toBeDefined();
-    expect(calculationMethod).toBeInTheDocument();
+        expect(productJourney).toBeDefined();
+        expect(productJourney).toBeInTheDocument();
+
+        expect(calculationMethod).toBeDefined();
+        expect(calculationMethod).toBeInTheDocument();
+    }, { timeout: 3000 });
 }
-
