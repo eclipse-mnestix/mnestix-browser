@@ -10,5 +10,8 @@
         "src/lib/i18n",
         "src/user-plugins/locale"
     ],
-    "i18n-ally.keystyle": "nested"
+    "i18n-ally.keystyle": "nested",
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    }
 }
