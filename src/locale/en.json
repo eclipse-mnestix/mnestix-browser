@@ -247,7 +247,8 @@
         "timeSeries": {
           "internalSegments": "Internal segments",
           "linkedSegments": "Linked segments",
-          "selectTimeframe": "Select timeframe"
+          "selectTimeframe": "Select timeframe",
+          "noTimeSeriesSegments": "No time series segments found."
         },
         "title": "Submodels",
         "unknownModelType": "Unknown ModelType: {type}",

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Alert, Box, CircularProgress, Typography } from '@mui/material';
 import { TimeSeriesLineDiagram } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesLineDiagram';
 import {
-    extractIntlValueBySemanticId,
     parseRecordsFromInternalSegment,
     TimeSeriesDataSet,
 } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesUtil';
@@ -10,6 +9,7 @@ import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescrip
 import { StyledDataRow } from 'components/basics/StyledDataRow';
 import { TimeSeriesSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesSubmodelElementSemanticId.enum';
 import { useLocale, useTranslations } from 'next-intl';
+import { findValueByIdShort } from 'lib/util/SubmodelResolverUtil';
 
 export function InternalTimeSeries(props: { submodelElement: SubmodelElementCollection }) {
     const t = useTranslations();
@@ -31,16 +31,18 @@ export function InternalTimeSeries(props: { submodelElement: SubmodelElementColl
         setIsLoading(false);
     }, [props.submodelElement]);
 
-    const name = extractIntlValueBySemanticId(
-        props.submodelElement,
-        TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegmentName,
-        locale,
-    );
-
-    const description = extractIntlValueBySemanticId(
-        props.submodelElement,
+    const name = findValueByIdShort(
+            props.submodelElement.value,
+            'Name',
+            TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegmentName,
+            locale
+        );
+    
+    const description = findValueByIdShort(
+        props.submodelElement.value,
+        'Description',
         TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegmentDescription,
-        locale,
+        locale
     );
 
     if (isLoading) return <CircularProgress />;
@@ -56,14 +58,14 @@ export function InternalTimeSeries(props: { submodelElement: SubmodelElementColl
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="timeseries-internal-wrapper">
-            <StyledDataRow title={name}>
+            <StyledDataRow title={name ? name : ''}>
                 <Box sx={{ marginTop: 1 }} />
                 <Box sx={{ display: 'flex', justifyContent: 'left' }}>
                     <Typography
                         sx={{ color: 'primary.main', fontSize: 24, fontWeight: 600, lineHeight: 1 }}
                         component="span"
                     >
-                        {description}
+                        {description ? description : ''}
                     </Typography>
                 </Box>
                 <Box sx={{ marginTop: 2 }}>
