@@ -1,13 +1,8 @@
 import {
-    MultiLanguageProperty,
     SubmodelElementCollection,
 } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import { TimeSeriesSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesSubmodelElementSemanticId.enum';
-import { getTranslationText, hasSemanticId } from 'lib/util/SubmodelResolverUtil';
-import {
-    TimeSeriesTimeFormat,
-    TimeSeriesTimeFormatSemanticIds,
-} from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesTimeFormatSemanticIds.enum';
+import { findSubmodelElementBySemanticIdsOrIdShort, hasSemanticId } from 'lib/util/SubmodelResolverUtil';
 import { Property } from '@aas-core-works/aas-core3.0-typescript/types';
 
 export type TimeSeriesDataSet = {
@@ -15,25 +10,6 @@ export type TimeSeriesDataSet = {
     names: string[];
 };
 export type DataPoint = { [key: string]: number | string };
-
-export function extractValueBySemanticId(
-    submodelElementCollection: SubmodelElementCollection,
-    semanticId: TimeSeriesSubmodelElementSemanticIdEnum,
-) {
-    return submodelElementCollection.value?.find((v) => hasSemanticId(v, semanticId));
-}
-
-export function extractIntlValueBySemanticId(
-    submodelElementCollection: SubmodelElementCollection,
-    semanticId: TimeSeriesSubmodelElementSemanticIdEnum,
-    locale: string,
-) {
-    const multiLanguageProperty: MultiLanguageProperty | undefined = extractValueBySemanticId(
-        submodelElementCollection,
-        semanticId,
-    ) as MultiLanguageProperty;
-    return multiLanguageProperty ? getTranslationText(multiLanguageProperty, locale) : '';
-}
 
 /**
  * Parses TimeSeries record variable with timestamp to Date string
@@ -58,36 +34,37 @@ export function convertRecordTimeToDate(timeProp: Property): string | null {
 }
 
 /**
- * Searches in the record for the timestamp semantic id and returns the id string
- * @param record : Record with timestamp
- */
-export function detectRecordTimeSemanticID(record: SubmodelElementCollection): string | null {
-    if (!record.value || !record.value.length) return null;
-    const variableSemIDs = record.value.map((value) => (value.semanticId?.keys[0].value ?? '') as string);
-    if (!variableSemIDs.length) return null;
-    const format = variableSemIDs
-        .map((id) => TimeSeriesTimeFormatSemanticIds[id])
-        .find((a) => a !== undefined) as TimeSeriesTimeFormat;
-    if (format === undefined) return null;
-
-    return Object.keys(TimeSeriesTimeFormatSemanticIds)[Object.values(TimeSeriesTimeFormatSemanticIds).indexOf(format)];
-}
-
-/**
  * Parses Record structure to DataSet
  * @param segment InternalSegment from TimeSeries submodel
  */
 export function parseRecordsFromInternalSegment(segment: SubmodelElementCollection): TimeSeriesDataSet | null {
     // get records
-    const recordsElement = segment.value?.find((se) =>
-        hasSemanticId(se, TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesRecords),
+    const recordsElement = findSubmodelElementBySemanticIdsOrIdShort(
+        segment.value,
+        'Records',
+        [TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesRecords],
     );
+    
     if (!recordsElement) return null;
     const records = (recordsElement as SubmodelElementCollection).value;
     if (!records || !records?.length) return null;
 
     // semantic id of record timestamps
-    const targetSemID = detectRecordTimeSemanticID(records[0] as SubmodelElementCollection);
+    const target = findSubmodelElementBySemanticIdsOrIdShort(
+        records,
+        'Time',
+        [
+            TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesTaiTime,
+            TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesTaiTimeAlt,
+            TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesRelativePointInTime,
+            TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesRelativeTimeDuration,
+            TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesRelativeTimeDurationAlt,
+            TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesUtcTime,
+            TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesUtcTimeAlt,
+        ],
+    )
+
+    const targetSemID = target?.semanticId?.keys[0].value ?? null;
     if (!targetSemID) return null;
 
     const namesSet = new Set<string>();

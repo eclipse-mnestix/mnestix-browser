@@ -247,7 +247,8 @@
         "timeSeries": {
           "internalSegments": "Segmentos internos",
           "linkedSegments": "Segmentos vinculados",
-          "selectTimeframe": "Seleccionar periodo de tiempo"
+          "selectTimeframe": "Seleccionar periodo de tiempo",
+          "noTimeSeriesSegments": "No se encontraron segmentos de series temporales."
         },
         "title": "Submodels",
         "unknownModelType": "ModelType desconocido: {type}",
