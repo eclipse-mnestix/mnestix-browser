@@ -16,3 +16,48 @@ in an extra user-friendly manner**. These are:
 - **and more!**
 
 Moreover, dedicated visualizations for submodels can be added as a further feature.
+
+## Using Mnestix Browser Asset Id Resolving
+
+Mnestix Browser support the automatic resolving of Asset Ids not only via the Main Landing Page but also via a forwarding.
+This is especially interesting for Showcases using Mnestix.
+Here it is possible to create a QR Code with the Asset Id of the Asset.
+The URL / Asset ID behind the QR Code can then point to a server redirecting to the correct Mnestix Instance.
+An overview can be seen in the following picture:
+
+
+<img width="748" height="561" alt="Image" src="https://github.com/user-attachments/assets/2ef40319-1671-479e-873c-24798af5a3b4" />
+
+This redirection can be done in multiple ways, here are some solutions, of course there are more solutions possible:
+
+### Solution 1
+The Server behind the QR Code is just serving a HTML file that executes a small Javascript to forward teh Browser of the User
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <title>Redirecting to AAS Server...</title>
+    </head>
+    <body>
+    <script>
+        window.location.replace('https://< PUBLIC MNESTIX URL >/asset?assetId=' + encodeURIComponent(window.location.href));
+    </script>
+    </body>
+</html>
+```
+
+### Solution 2
+Use a proxy solution that returns a HTTP Response with a  `300+` Redirect Response.
+Here is an example rule for Caddy
+
+```Caddyfile
+< PUBLIC QR URL > {
+	@replaceLeadingSlash {
+    	path_regexp ^/(.*)
+	}
+    
+	redir @replaceLeadingSlash https://< PUBLIC MNESTIX URL >/asset/?assetId=https%3A%2F%2F< PUBLIC QR URL >%2F{re.replaceLeadingSlash.1} html
+}
+```
+
