@@ -14,7 +14,6 @@ import { idEquals } from './IdValidationUtil';
 import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
-import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { MultiLanguageProperty as MultiLanguagePropertyAAS } from 'lib/api/aas/models';
 
 /**
@@ -49,7 +48,7 @@ export function getTranslationValue(element: IDataElement, locale: string): stri
 export function findSubmodelElementByIdShort(
     elements: ISubmodelElement[] | null,
     idShort: string | null,
-    semanticId: SubmodelSemanticIdEnum | SubmodelElementSemanticIdEnum | null,
+    semanticId: string | null,
 ): ISubmodelElement | null {
     if (!elements) return null;
     for (const el of elements) {
@@ -72,19 +71,31 @@ export function findSubmodelElementBySemanticIdsOrIdShort(
     semanticIds: string[] | null,
 ): ISubmodelElement | null {
     if (!elements) return null;
-    return (
-        elements?.find(
-            (el) =>
-                el.idShort == idShort ||
-                semanticIds?.some((semId) => idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim())) ||
-                (getKeyType(el) == KeyTypes.SubmodelElementCollection &&
-                    findSubmodelElementBySemanticIdsOrIdShort(
-                        (el as SubmodelElementCollection).value,
-                        idShort,
-                        semanticIds,
-                    )),
-        ) ?? null
-    );
+    
+    for (const el of elements) {
+        const idShortMatches = idShort && el.idShort && 
+            el.idShort.toLowerCase() === idShort.toLowerCase();
+        const semanticIdMatches = semanticIds?.some((semId) => 
+            idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim())
+        );
+        
+        if (idShortMatches || semanticIdMatches) {
+            return el;
+        }
+        
+        if (getKeyType(el) == KeyTypes.SubmodelElementCollection) {
+            const foundInCollection = findSubmodelElementBySemanticIdsOrIdShort(
+                (el as SubmodelElementCollection).value,
+                idShort,
+                semanticIds,
+            );
+            if (foundInCollection) {
+                return foundInCollection;
+            }
+        }
+    }
+    
+    return null;
 }
 
 export function findAllSubmodelElementsBySemanticIdsOrIdShort(
@@ -93,25 +104,79 @@ export function findAllSubmodelElementsBySemanticIdsOrIdShort(
     semanticIds: string[] | null,
 ): ISubmodelElement[] | null {
     if (!elements) return null;
-    return (
-        elements?.filter(
-            (el) =>
-                el.idShort == idShort ||
-                semanticIds?.some((semId) => idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim())) ||
-                (getKeyType(el) == KeyTypes.SubmodelElementCollection &&
-                    findSubmodelElementBySemanticIdsOrIdShort(
-                        (el as SubmodelElementCollection).value,
-                        idShort,
-                        semanticIds,
-                    )),
-        ) ?? null
-    );
+    
+    const matchingElements: ISubmodelElement[] = [];
+    
+    for (const el of elements) {
+        const matchesIdShort = idShort && el.idShort && 
+            el.idShort.toLowerCase() === idShort.toLowerCase();
+        const matchesSemanticId = semanticIds?.some((semId) => 
+            idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim())
+        );
+        
+        if (matchesIdShort || matchesSemanticId) {
+            matchingElements.push(el);
+        }
+        
+        if (getKeyType(el) === KeyTypes.SubmodelElementCollection) {
+            const nestedMatches = findAllSubmodelElementsBySemanticIdsOrIdShort(
+                (el as SubmodelElementCollection).value,
+                idShort,
+                semanticIds,
+            );
+            if (nestedMatches) {
+                matchingElements.push(...nestedMatches);
+            }
+        }
+    }
+    
+    return matchingElements.length > 0 ? matchingElements : null;
 }
+
+/**
+ * Finds all submodel elements by semantic IDs or idShort prefix
+ * @param elements - The elements to search through
+ * @param idShortPrefix - A prefix to match against idShort (case-insensitive)
+ * @param semanticIds - Array of semantic IDs to match
+ * @returns Array of matching submodel elements or null
+ */
+export function findAllSubmodelElementsBySemanticIdsOrIdShortPrefix(
+    elements: ISubmodelElement[] | null,
+    idShortPrefix: string | null,
+    semanticIds: string[] | null,
+): ISubmodelElement[] | null {
+    if (!elements) return null;
+    
+    const matchingElements: ISubmodelElement[] = [];
+    
+    for (const el of elements) {
+        const matchesIdShortPrefix = idShortPrefix && el.idShort && el.idShort.toLowerCase().startsWith(idShortPrefix.toLowerCase());
+        const matchesSemanticId = semanticIds?.some((semId) => idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim()));
+        
+        if (matchesIdShortPrefix || matchesSemanticId) {
+            matchingElements.push(el);
+        }
+        
+        if (getKeyType(el) === KeyTypes.SubmodelElementCollection) {
+            const nestedMatches = findAllSubmodelElementsBySemanticIdsOrIdShortPrefix(
+                (el as SubmodelElementCollection).value,
+                idShortPrefix,
+                semanticIds,
+            );
+            if (nestedMatches) {
+                matchingElements.push(...nestedMatches);
+            }
+        }
+    }
+    
+    return matchingElements.length > 0 ? matchingElements : null;
+}
+
 
 export function findValueByIdShort(
     elements: ISubmodelElement[] | null,
     idShort: string | null,
-    semanticId: SubmodelSemanticIdEnum | SubmodelElementSemanticIdEnum | null = null,
+    semanticId: string | null = null,
     locale: string,
 ): string | null {
     const element = findSubmodelElementByIdShort(elements, idShort, semanticId);
