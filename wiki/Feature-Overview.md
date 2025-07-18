@@ -71,7 +71,7 @@ end
 This redirection can be done in multiple ways, here are some solutions, of course there are more solutions possible:
 
 ### Solution 1
-The Server behind the QR Code is just serving a HTML file that executes a small Javascript to forward teh Browser of the User
+The Server behind the QR Code is just serving a HTML file that executes a small Javascript to forward the browser of the user to the correct Mnextix instance
 ```html
 <!DOCTYPE html>
 <html lang="en">
