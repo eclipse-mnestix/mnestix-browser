@@ -10,7 +10,8 @@
         "output": "aas",
         "additionalProperties": {
           "supportsES6": true,
-          "withoutRuntimeChecks": true
+          "withoutRuntimeChecks": true,
+          "withInterfaces": true
         }
       }
     }
