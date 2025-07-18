@@ -1,5 +1,9 @@
 ### Role Based Access Control (RBAC)
 
+Here is a demonstration how it works:
+
+https://github.com/user-attachments/assets/377cbdac-102e-4071-9e04-f45a70d255a7
+
 Mnestix currently uses a basic RBAC approach when `AUTHENTICATION_FEATURE_FLAG` is set to `true`.
 
 A not logged-in user is allowed to see the following pages with all features:
