@@ -15,7 +15,6 @@ import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import { MultiLanguageProperty as MultiLanguagePropertyAAS } from 'lib/api/aas/models';
-import { PcfSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/PcfSubmodelElementSemanticId.enum';
 
 /**
  * Gets the translated text from either a MultiLanguageProperty or LangStringTextType array
