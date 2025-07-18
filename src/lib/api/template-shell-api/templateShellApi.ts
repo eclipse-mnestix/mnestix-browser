@@ -3,7 +3,6 @@ import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 
 export class TemplateShellApi {
     basePathOwnApi: string;
-    basePathCustoms: string;
     enable_authentication: boolean;
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
 
@@ -13,7 +12,6 @@ export class TemplateShellApi {
         http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> },
     ) {
         this.basePathOwnApi = `${backendApiUrl}/api/Template`;
-        this.basePathCustoms = `${backendApiUrl}/templates/custom`;
         this.enable_authentication = enable_authentication;
         this.http = http ? http : window;
     }
@@ -77,7 +75,7 @@ export class TemplateShellApi {
     public async deleteCustomById(id: string): Promise<string | number> {
         // We use the regular delete endpoint, which expects an idShort, but because of our backend interception, we saved the actual id in the idShort field earlier.
         // That's why this works.
-        const response = await this.http.fetch(`${this.basePathCustoms}/${encodeBase64(id)}`, {
+        const response = await this.http.fetch(`${this.basePathOwnApi}/${encodeBase64(id)}`, {
             method: 'DELETE',
             headers: {
                 Accept: 'application/json',
