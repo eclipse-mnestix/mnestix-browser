@@ -1,12 +1,22 @@
 import resolutions from '../fixtures/resolutions';
 
+const adminTestUser = {
+    login: Cypress.env('TEST_ADMIN_USER_LOGIN'),
+    password: Cypress.env('TEST_ADMIN_USER_PASSWORD'),
+};
+
 describe('Template CRUD Operations', () => {
     const templateName = 'Test Template';
     const editedTemplateName = `${templateName} (edited)`;
 
     beforeEach(() => {
         cy.setResolution(resolutions[0]);
+        cy.keycloakLogin(adminTestUser.login, adminTestUser.password);
         cy.visit('/templates');
+    });
+
+    afterEach(() => {
+        cy.keycloakLogout();
     });
 
     it('should create/edit and delete a template', () => {
