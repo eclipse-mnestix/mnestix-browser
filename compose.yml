@@ -127,6 +127,7 @@ services:
       test: curl -f http://localhost:8081/actuator/health
       interval: 10s
       timeout: 10s
+      start-period: 30s
       retries: 6
     logging:
       driver: 'json-file'
