@@ -25,8 +25,48 @@ Here it is possible to create a QR Code with the Asset Id of the Asset.
 The URL / Asset ID behind the QR Code can then point to a server redirecting to the correct Mnestix Instance.
 An overview can be seen in the following picture:
 
-
 <img width="748" height="561" alt="Image" src="https://github.com/user-attachments/assets/2ef40319-1671-479e-873c-24798af5a3b4" />
+<details>
+	
+```plantuml
+@startuml
+actor User
+'actor "User Browser\n(Chrome/Firefox/...)" as browser
+
+participant "QR Code" as qr
+participant "Proxy" as proxy
+participant "Mnestix Browser" as browser
+participant "AAS Discovery" as discovery 
+
+User -> qr: scan
+qr --> User
+
+User -> proxy: call QR URL
+proxy -->User: redirect to Mnestix Browser /asset?assetId=URL
+
+User -> browser: /asset?assetId=URL
+browser -> discovery: getAllAasIdsForAssetId(URL)
+discovery --> browser
+
+alt multiple AAS Ids found
+
+browser --> User: present multiple options
+
+User -> browser: Choose on option
+browser --> User: show AAS View for selected AAS
+
+else one AAS Id found
+
+browser --> User: show AAS View for AAS
+else no AAS Id found
+
+browser -> User: show Error
+
+end
+@enduml
+```
+
+</details>
 
 This redirection can be done in multiple ways, here are some solutions, of course there are more solutions possible:
 
