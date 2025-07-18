@@ -16,23 +16,21 @@ describe('Template CRUD Operations', () => {
         cy.getByTestId('choose-template-item-0').click();
         cy.url().should('include', '/templates/');
 
-        cy.getByTestId('display-name-input').clear().type(templateName);
+        cy.getByTestId('display-name-input').type(templateName);
 
+        cy.contains(templateName).clear();
         cy.getByTestId('save-changes-button').click();
-
         cy.visit('/templates');
-
         cy.contains(templateName).should('be.visible');
 
         //edit template
         cy.contains(templateName).click();
-
         cy.url().should('include', '/templates/');
-
         cy.get('[role="tree"] [role="treeitem"]').first().click();
 
-        cy.getByTestId('display-name-input').clear().type(editedTemplateName);
+        cy.getByTestId('display-name-input').type(editedTemplateName);
 
+        cy.contains(editedTemplateName).clear();
         cy.getByTestId('save-changes-button').click();
 
         cy.visit('/templates');
@@ -46,9 +44,7 @@ describe('Template CRUD Operations', () => {
         cy.getByTestId('more-options-button').click();
         cy.getByTestId('more-options-menu').should('be.visible');
         cy.getByTestId('delete-template-button').click()
-
         cy.getByTestId('confirm-delete-button').click();
-
         cy.url().should('match', /\/templates$/);
 
         cy.contains(editedTemplateName).should('not.exist');
