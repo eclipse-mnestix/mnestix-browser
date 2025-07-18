@@ -80,6 +80,7 @@ The Server behind the QR Code is just serving a HTML file that executes a small 
     <title>Redirecting to AAS Server...</title>
     </head>
     <body>
+      Automatically redirecting to <a href=URL >Mnestix</a>.
     <script>
         window.location.replace('https://< PUBLIC MNESTIX URL >/asset?assetId=' + encodeURIComponent(window.location.href));
     </script>
