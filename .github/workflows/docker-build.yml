@@ -2,7 +2,7 @@ name: CI and Docker Deploy
 
 on:
   push:
-    branches: ['main', 'dev', 'maintenance/1.x', 'new-dev']
+    branches: ['main', 'dev', 'maintenance/*']
     tags: ['v*.*.*']
     paths-ignore:
       - '.github/ISSUE_TEMPLATE/**'
@@ -11,7 +11,7 @@ on:
       - 'wiki/**'
       - 'README.md'
   pull_request:
-    branches: ['dev', 'new-dev']
+    branches: ['dev', 'maintenance/*']
     paths-ignore:
       - '.github/ISSUE_TEMPLATE/**'
       - '.github/CODEOWNERS'
@@ -226,7 +226,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request' &&
       github.repository_owner == 'eclipse-mnestix' &&
-      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev' || startsWith(github.ref, 'refs/heads/maintenance/'))
     permissions:
       contents: read
       packages: write
@@ -265,7 +265,11 @@ jobs:
 
       - name: Extract branch name
         id: extract_branch
-        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        run: |
+          branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          echo "branch=${branch}" >> $GITHUB_OUTPUT
+          tag=${branch//\//_}  # This uses shell parameter substitution to replace "/" with "_"
+          echo "tag=${tag}" >> $GITHUB_OUTPUT
 
       - name: Build and push docker images
         uses: docker/build-push-action@v6
@@ -280,4 +284,4 @@ jobs:
           tags: |
             ${{ github.ref == 'refs/heads/main' && format('mnestix/{0}:{1}', env.IMAGE_NAME, env.IMAGE_TAG_VERSION) || '' }}
             ${{ github.ref == 'refs/heads/main' && format('mnestix/{0}:latest', env.IMAGE_NAME) || '' }}
-            ${{ github.ref != 'refs/heads/main' && format('mnestix/{0}:{1}', env.IMAGE_NAME, steps.extract_branch.outputs.branch) || '' }}
+            ${{ github.ref != 'refs/heads/main' && format('mnestix/{0}:{1}', env.IMAGE_NAME, steps.extract_branch.outputs.tag) || '' }}
