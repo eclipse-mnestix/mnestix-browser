@@ -1,4 +1,4 @@
-import { Property, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
+import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
 import { Box, Typography } from '@mui/material';
 import { StyledDataRow } from 'components/basics/StyledDataRow';
 import { InfluxTimeSeriesDiagram } from './InfluxTimeSeriesDiagram';
@@ -7,43 +7,44 @@ import { TimeFrameSelection as TimeFrameSelection } from './TimeFrameSelection';
 import { TimeSeriesSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesSubmodelElementSemanticId.enum';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { useEnv } from 'app/EnvProvider';
-import {
-    extractIntlValueBySemanticId,
-    extractValueBySemanticId,
-} from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesUtil';
 import { useLocale } from 'next-intl';
+import { findValueByIdShort } from 'lib/util/SubmodelResolverUtil';
 
 export function InfluxTimeSeries(props: { submodelElement: SubmodelElementCollection }) {
     const locale = useLocale();
     const env = useEnv();
-    let endpoint = (
-        extractValueBySemanticId(
-            props.submodelElement,
-            TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesLinkedSegmentEndpoint,
-        ) as Property
-    )?.value;
+
+    let endpoint = findValueByIdShort(
+        props.submodelElement.value,
+        'Endpoint',
+        TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesLinkedSegmentEndpoint,
+        locale
+    );
 
     if (endpoint && env.MNESTIX_BACKEND_API_URL && !isValidUrl(endpoint)) {
         // TODO is this safe to do? MNES-979
         endpoint = env.MNESTIX_BACKEND_API_URL + endpoint;
     }
 
-    const queryInAas = (
-        extractValueBySemanticId(
-            props.submodelElement,
-            TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesLinkedSegmentQuery,
-        ) as Property
-    )?.value;
-
-    const name = extractIntlValueBySemanticId(
-        props.submodelElement,
-        TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegmentName,
-        locale,
+    const queryInAas = findValueByIdShort(
+        props.submodelElement.value,
+        'Query',
+        TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesLinkedSegmentQuery,
+        locale
     );
-    const description = extractIntlValueBySemanticId(
-        props.submodelElement,
+
+    const name = findValueByIdShort(
+        props.submodelElement.value,
+        'Name',
+        TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegmentName,
+        locale
+    );
+
+    const description = findValueByIdShort(
+        props.submodelElement.value,
+        'Description',
         TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegmentDescription,
-        locale,
+        locale
     );
 
     const [selectedTimeFrame, setSelectedTimeFrame] = useState('1d');
@@ -56,14 +57,14 @@ export function InfluxTimeSeries(props: { submodelElement: SubmodelElementCollec
 
     return endpoint && query ? (
         <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="timeseries-influx-wrapper">
-            <StyledDataRow title={name}>
+            <StyledDataRow title={name ? name : ''}>
                 <Box sx={{ marginTop: 1 }} />
                 <Box sx={{ display: 'flex', justifyContent: 'left' }}>
                     <Typography
                         sx={{ color: 'primary.main', fontSize: 24, fontWeight: 600, lineHeight: 1 }}
                         component="span"
                     >
-                        {description}
+                        {description ? description : ''}
                     </Typography>
                 </Box>
                 {showTimeSelection && (

@@ -7,4 +7,11 @@ export enum TimeSeriesSubmodelElementSemanticIdEnum {
     TimeSeriesSegmentDescription = 'https://admin-shell.io/idta/TimeSeries/Segment/Description/1/1',
     TimeSeriesLinkedSegmentEndpoint = 'https://admin-shell.io/idta/TimeSeries/Endpoint/1/1',
     TimeSeriesLinkedSegmentQuery = 'https://admin-shell.io/idta/TimeSeries/Query/1/1',
+    TimeSeriesTaiTime = 'https://admin-shell.io/idta/TimeSeries/TaiTime/1/1',
+    TimeSeriesTaiTimeAlt = '0112/2///61360_4#ADA386#001',
+    TimeSeriesRelativePointInTime = 'https://admin-shell.io/idta/TimeSeries/RelativePointInTime/1/1',
+    TimeSeriesRelativeTimeDuration = 'https://admin-shell.io/idta/TimeSeries/RelativeTimeDuration/1/1',
+    TimeSeriesRelativeTimeDurationAlt = '0112/2///61360_4#AAE028#001',
+    TimeSeriesUtcTime = 'https://admin-shell.io/idta/TimeSeries/UtcTime/1/1',
+    TimeSeriesUtcTimeAlt = '0112/2///61360_4#ADA387#001',
 }

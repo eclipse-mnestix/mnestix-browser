@@ -247,7 +247,8 @@
         "timeSeries": {
           "internalSegments": "Interne Segmente",
           "linkedSegments": "Verlinkte Segmente",
-          "selectTimeframe": "Auswahl des Zeitabschnitts"
+          "selectTimeframe": "Auswahl des Zeitabschnitts",
+          "noTimeSeriesSegments": "Keine Zeitreihen-Segmente gefunden."
         },
         "title": "Teilmodelle",
         "unknownModelType": "Unbekannter ModelType: {type}",
