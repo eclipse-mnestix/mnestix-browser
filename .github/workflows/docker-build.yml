@@ -27,7 +27,7 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: mnestix-browser
   # Update the version manually
-  IMAGE_TAG_VERSION: 1.5.1
+  IMAGE_TAG_VERSION: 1.5.2
 
 jobs:
   build-browser-image:
