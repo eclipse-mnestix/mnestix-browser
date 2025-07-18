@@ -126,9 +126,8 @@ services:
     healthcheck: # check the endpoint for a valid response (service ready)
       test: curl -f http://localhost:8081/actuator/health
       interval: 10s
-      timeout: 10s
-      start-period: 30s
-      retries: 6
+      timeout: 15s
+      retries: 8
     logging:
       driver: 'json-file'
       options:
