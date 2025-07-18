@@ -30,7 +30,7 @@ export function ChooseTemplateDialog(props: ChooseTemplateDialogProps) {
     const t = useTranslations('pages.templates');
     const { defaultTemplates, isLoading, handleTemplateClick, ...other } = props;
     return (
-        <Dialog {...other} maxWidth="md">
+        <Dialog {...other} maxWidth="md" data-testid="choose-template-dialog">
             {isLoading && (
                 <StyledLoadingOverlay>
                     <CenteredLoadingSpinner />
@@ -46,6 +46,7 @@ export function ChooseTemplateDialog(props: ChooseTemplateDialogProps) {
                         return (
                             <ChooseTemplateItem
                                 key={i}
+                                data-testid={`choose-template-item-${i}`}
                                 label={`${template.idShort} V${template.administration?.version ?? '-'}.${
                                     template.administration?.revision ?? '-'
                                 }`}
@@ -56,6 +57,7 @@ export function ChooseTemplateDialog(props: ChooseTemplateDialogProps) {
                         );
                     })}
                     <ChooseTemplateItem
+                        data-testid="choose-template-item-empty"
                         label={t('emptyCustom')}
                         subLabel={t('emptyCustomDescription')}
                         hasDivider={false}
