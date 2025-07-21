@@ -55,7 +55,7 @@ describe('Template CRUD Operations', () => {
 
         cy.getByTestId('more-options-button').click();
         cy.getByTestId('more-options-menu').should('be.visible');
-        cy.getByTestId('delete-template-button').click()
+        cy.getByTestId('delete-template-button').click();
         cy.getByTestId('confirm-delete-button').click();
 
         cy.url().should('match', /\/templates$/);
