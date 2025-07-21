@@ -9,19 +9,25 @@ describe('Template CRUD Operations', () => {
     const templateName = 'Test Template';
     const editedTemplateName = `${templateName} (edited)`;
 
-    beforeEach(() => {
+    beforeEach(function () {
+        cy.visit('/');
         cy.setResolution(resolutions[0]);
         cy.keycloakLogin(adminTestUser.login, adminTestUser.password);
-        cy.visit('/templates');
+        cy.getByTestId('header-burgermenu').click();
+        
     });
 
     it('should create/edit and delete a template', () => {
+        
+        cy.getByTestId('templates-menu-icon').click();
+
+        cy.url().should('match', /\/templates$/);
+        
         cy.getByTestId('create-new-template-button').click();
         cy.getByTestId('choose-template-dialog').should('be.visible');
     
         cy.getByTestId('choose-template-item-0').click();
         cy.url().should('include', '/templates/');
-
         cy.getByTestId('display-name-input').clear();
         cy.getByTestId('display-name-input').type(templateName);
 
@@ -51,14 +57,15 @@ describe('Template CRUD Operations', () => {
         cy.getByTestId('more-options-menu').should('be.visible');
         cy.getByTestId('delete-template-button').click()
         cy.getByTestId('confirm-delete-button').click();
-        cy.wait(1000);
+
         cy.url().should('match', /\/templates$/);
 
         cy.contains(editedTemplateName).should('not.exist');
         cy.contains(templateName).should('not.exist');
     });
 
-    afterEach(() => {
+    afterEach(function () {
+        cy.getByTestId('header-burgermenu').click();
         cy.keycloakLogout();
     });
 });
