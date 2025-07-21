@@ -83,7 +83,7 @@
     "swr": "^2.3.4",
     "url": "^0.11.3",
     "uuid": "^11.1.0",
-    "zod": "^3.25.75"
+    "zod": "^4.0.5"
   },
   "scripts": {
     "dev": "yarn prisma migrate deploy && yarn prisma generate && next dev --turbo",
