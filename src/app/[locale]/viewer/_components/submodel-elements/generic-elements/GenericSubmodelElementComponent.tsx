@@ -11,6 +11,7 @@ import {
     MultiLanguageProperty,
     Property,
     ReferenceElement,
+    RelationshipElement,
     SubmodelElementCollection,
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { EntityComponent } from './entity-components/EntityComponent';
@@ -19,6 +20,7 @@ import { buildSubmodelElementPath } from 'lib/util/SubmodelResolverUtil';
 import { SubmodelElementComponentProps } from '../SubmodelElementComponentProps';
 import { useTranslations } from 'next-intl';
 import { ReferenceElementComponent } from './ReferenceElementComponent';
+import { RelationshipElementComponent } from './RelationshipElementComponent';
 
 type GenericSubmodelElementComponentProps = SubmodelElementComponentProps & {
     readonly submodelElementPath?: string | null;
@@ -70,6 +72,8 @@ export function GenericSubmodelElementComponent(props: GenericSubmodelElementCom
                 return <EntityComponent entity={props.submodelElement as Entity} />;
             case KeyTypes.ReferenceElement:
                 return <ReferenceElementComponent refElement={props.submodelElement as ReferenceElement} />;
+            case KeyTypes.RelationshipElement:
+                return <RelationshipElementComponent relElement={props.submodelElement as RelationshipElement} />;
             default:
                 return (
                     <Typography color="error" variant="body2">
