@@ -71,18 +71,17 @@ export function findSubmodelElementBySemanticIdsOrIdShort(
     semanticIds: string[] | null,
 ): ISubmodelElement | null {
     if (!elements) return null;
-    
+
     for (const el of elements) {
-        const idShortMatches = idShort && el.idShort && 
-            el.idShort.toLowerCase() === idShort.toLowerCase();
-        const semanticIdMatches = semanticIds?.some((semId) => 
-            idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim())
+        const idShortMatches = idShort && el.idShort && el.idShort.toLowerCase() === idShort.toLowerCase();
+        const semanticIdMatches = semanticIds?.some((semId) =>
+            idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim()),
         );
-        
+
         if (idShortMatches || semanticIdMatches) {
             return el;
         }
-        
+
         if (getKeyType(el) == KeyTypes.SubmodelElementCollection) {
             const foundInCollection = findSubmodelElementBySemanticIdsOrIdShort(
                 (el as SubmodelElementCollection).value,
@@ -94,7 +93,7 @@ export function findSubmodelElementBySemanticIdsOrIdShort(
             }
         }
     }
-    
+
     return null;
 }
 
@@ -104,20 +103,19 @@ export function findAllSubmodelElementsBySemanticIdsOrIdShort(
     semanticIds: string[] | null,
 ): ISubmodelElement[] | null {
     if (!elements) return null;
-    
+
     const matchingElements: ISubmodelElement[] = [];
-    
+
     for (const el of elements) {
-        const matchesIdShort = idShort && el.idShort && 
-            el.idShort.toLowerCase() === idShort.toLowerCase();
-        const matchesSemanticId = semanticIds?.some((semId) => 
-            idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim())
+        const matchesIdShort = idShort && el.idShort && el.idShort.toLowerCase() === idShort.toLowerCase();
+        const matchesSemanticId = semanticIds?.some((semId) =>
+            idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim()),
         );
-        
+
         if (matchesIdShort || matchesSemanticId) {
             matchingElements.push(el);
         }
-        
+
         if (getKeyType(el) === KeyTypes.SubmodelElementCollection) {
             const nestedMatches = findAllSubmodelElementsBySemanticIdsOrIdShort(
                 (el as SubmodelElementCollection).value,
@@ -129,7 +127,7 @@ export function findAllSubmodelElementsBySemanticIdsOrIdShort(
             }
         }
     }
-    
+
     return matchingElements.length > 0 ? matchingElements : null;
 }
 
@@ -146,17 +144,20 @@ export function findAllSubmodelElementsBySemanticIdsOrIdShortPrefix(
     semanticIds: string[] | null,
 ): ISubmodelElement[] | null {
     if (!elements) return null;
-    
+
     const matchingElements: ISubmodelElement[] = [];
-    
+
     for (const el of elements) {
-        const matchesIdShortPrefix = idShortPrefix && el.idShort && el.idShort.toLowerCase().startsWith(idShortPrefix.toLowerCase());
-        const matchesSemanticId = semanticIds?.some((semId) => idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim()));
-        
+        const matchesIdShortPrefix =
+            idShortPrefix && el.idShort && el.idShort.toLowerCase().startsWith(idShortPrefix.toLowerCase());
+        const matchesSemanticId = semanticIds?.some((semId) =>
+            idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim()),
+        );
+
         if (matchesIdShortPrefix || matchesSemanticId) {
             matchingElements.push(el);
         }
-        
+
         if (getKeyType(el) === KeyTypes.SubmodelElementCollection) {
             const nestedMatches = findAllSubmodelElementsBySemanticIdsOrIdShortPrefix(
                 (el as SubmodelElementCollection).value,
@@ -168,10 +169,9 @@ export function findAllSubmodelElementsBySemanticIdsOrIdShortPrefix(
             }
         }
     }
-    
+
     return matchingElements.length > 0 ? matchingElements : null;
 }
-
 
 export function findValueByIdShort(
     elements: ISubmodelElement[] | null,
@@ -264,6 +264,26 @@ export function checkIfSubmodelHasIdShortOrSemanticId(
         (submodel.submodel?.semanticId?.keys?.length && submodel.submodel?.semanticId?.keys[0].value === semanticId) ||
         submodel.submodel?.idShort === idShort
     );
+}
+
+export function checkIfSubmodelElementHasIdShortOrSemanticId(
+    submodelElement: ISubmodelElement,
+    {
+        semanticId,
+        idShort,
+    }: {
+        semanticId?: string;
+        idShort?: string;
+    },
+): boolean {
+    const hasMatchingSemanticId =
+        semanticId &&
+        submodelElement.semanticId?.keys?.length &&
+        submodelElement.semanticId?.keys.some((key) => key.value === semanticId);
+
+    const hasMatchingIdShort = idShort && submodelElement?.idShort === idShort;
+
+    return Boolean(hasMatchingSemanticId || hasMatchingIdShort);
 }
 
 /**

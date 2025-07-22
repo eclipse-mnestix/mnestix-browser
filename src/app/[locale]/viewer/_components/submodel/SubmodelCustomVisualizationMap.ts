@@ -5,6 +5,7 @@ import { ReferenceCounterDetail } from './reference-counter/ReferenceCounterDeta
 import { HierarchicalStructuresDetail } from './hierarchical-structures/HierarchicalStructuresDetail';
 import { TimeSeriesDetail } from './time-series/TimeSeriesDetail';
 import { TechnicalDataDetail } from 'app/[locale]/viewer/_components/submodel/technical-data/TechnicalDataDetail';
+import { ConfigurationParametersComponent } from 'user-plugins/submodels/configuration-parameters/ConfigurationParametersComponent';
 
 /**
  * This represents the mapping between the submodel and the submodel visualization. If you want to create a new custom
@@ -21,5 +22,6 @@ export const submodelCustomVisualizationMap = {
     [SubmodelSemanticIdEnum.HierarchicalStructuresV11]: HierarchicalStructuresDetail,
     [SubmodelSemanticIdEnum.BillOfApplications]: BillOfApplicationsDetail,
     [SubmodelSemanticIdEnum.TechnicalDataV11]: TechnicalDataDetail,
-    [SubmodelSemanticIdEnum.TechnicalDataV12]: TechnicalDataDetail
+    [SubmodelSemanticIdEnum.TechnicalDataV12]: TechnicalDataDetail,
+    ['http://sm.xitaso.com/configuration_parameters/0/1']: ConfigurationParametersComponent,
 };
