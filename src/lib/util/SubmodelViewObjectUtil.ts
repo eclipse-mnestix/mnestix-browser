@@ -1,17 +1,16 @@
 import {
     Entity,
-    ISubmodelElement,
+    SubmodelElementChoice,
     KeyTypes,
     LangStringTextType,
     MultiLanguageProperty,
     Property,
     SubmodelElementCollection,
-} from '@aas-core-works/aas-core3.0-typescript/types';
+} from 'lib/api/aas/models';
 import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import { cloneDeep, parseInt } from 'lodash';
-import { getKeyType } from './KeyTypeUtil';
 
-export function generateSubmodelViewObjectFromSubmodelElement(el: ISubmodelElement, id: string): SubmodelViewObject {
+export function generateSubmodelViewObjectFromSubmodelElement(el: SubmodelElementChoice, id: string): SubmodelViewObject {
     const localEl = cloneDeep(el);
     const frontend: SubmodelViewObject = {
         id,
@@ -22,7 +21,7 @@ export function generateSubmodelViewObjectFromSubmodelElement(el: ISubmodelEleme
         propertyValue: (localEl as Property).value ?? undefined,
     };
 
-    if (getKeyType(localEl) === KeyTypes.SubmodelElementCollection) {
+    if (localEl.modelType === KeyTypes.SubmodelElementCollection) {
         const col = localEl as SubmodelElementCollection;
         const arr = col.value || [];
         arr.forEach((child, i) => {
@@ -30,7 +29,7 @@ export function generateSubmodelViewObjectFromSubmodelElement(el: ISubmodelEleme
             frontend.children?.push(generateSubmodelViewObjectFromSubmodelElement(child, id + '-' + i));
         });
         col.value = [];
-    } else if (getKeyType(localEl) === KeyTypes.Entity) {
+    } else if (localEl.modelType === KeyTypes.Entity) {
         const entity = localEl as Entity;
         entity.statements?.forEach((child, i) => {
             if (!child) return;
@@ -44,7 +43,7 @@ export function generateSubmodelViewObjectFromSubmodelElement(el: ISubmodelEleme
 }
 
 export function viewObjectHasDataValue(el: SubmodelViewObject) {
-    switch (getKeyType(el.data!)) {
+    switch (el.data!.modelType) {
         case KeyTypes.Property:
         case KeyTypes.File:
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
