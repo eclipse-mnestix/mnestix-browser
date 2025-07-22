@@ -100,7 +100,10 @@ export function SubmodelsOverviewCard({
     const SelectedContent = useMemo(() => {
         if (selectedItem?.submodelData && !submodelsLoading) {
             return (
-                <ErrorBoundary message={t('renderError')}>
+                <ErrorBoundary 
+                    key={selectedItem.submodelData.id}
+                    message={t('renderError')}
+                >
                     <SubmodelDetail submodel={selectedItem?.submodelData} repositoryUrl={selectedItem?.repositoryUrl} />
                 </ErrorBoundary>
             );

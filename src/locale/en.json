@@ -242,7 +242,7 @@
           "count": "Count",
           "elementName": "Element"
         },
-        "renderError": "Submodel can''t be rendered.",
+        "renderError": "Submodel cannot be rendered.",
         "semanticIdLabel": "Semantic IDs:",
         "timeSeries": {
           "internalSegments": "Internal segments",
