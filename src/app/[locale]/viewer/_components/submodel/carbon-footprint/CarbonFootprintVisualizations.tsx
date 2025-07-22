@@ -8,7 +8,7 @@ import { ProductLifecycle } from './visualization-components/ProductLifecycle';
 import { findValueByIdShort, hasSemanticId, findSubmodelElementBySemanticIdsOrIdShort, findAllSubmodelElementsBySemanticIdsOrIdShort } from 'lib/util/SubmodelResolverUtil';
 import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/ProductLifecycleStage.enum';
 import { StyledDataRow } from 'components/basics/StyledDataRow';
-import { Property, Submodel, SubmodelElementCollection, SubmodelElementList } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Property, Submodel, SubmodelElementCollection, SubmodelElementList } from 'lib/api/aas/models';
 import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
 import { useLocale, useTranslations } from 'next-intl';
 import { PcfSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/PcfSubmodelElementSemanticId.enum';
