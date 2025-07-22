@@ -10,11 +10,7 @@ type RelationshipElementComponentProps = {
 export function RelationshipElementComponent(props: RelationshipElementComponentProps) {
     const t = useTranslations('components.relationshipElementComponent');
 
-    if (!props.relElement.first || props.relElement.first === undefined) {
-        return <Typography variant="body2">{t('noValueSpecified')}</Typography>;
-    }
-
-    if (!props.relElement.second || props.relElement.second === undefined) {
+    if (!props.relElement.first || !props.relElement.second) {
         return <Typography variant="body2">{t('noValueSpecified')}</Typography>;
     }
 

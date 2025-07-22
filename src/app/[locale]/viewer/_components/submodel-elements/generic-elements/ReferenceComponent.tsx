@@ -11,12 +11,12 @@ type ReferenceProps = {
 export function ReferenceComponent({ reference, showAllKeys = true }: ReferenceProps) {
     const t = useTranslations('components.referenceComponent');
 
-    if ((!props.reference.type && props.reference.type != 0) || props.reference.type === undefined) {
+    if ((!reference.type && reference.type != 0) || reference.type === undefined) {
         return <Typography data-testid="no-type-specified">{t('noTypeSpecified')}</Typography>;
     }
 
     const getKeys = () => {
-        const keys = props.reference.keys;
+        const keys = reference.keys;
         if (!showAllKeys) {
             return [keys[keys.length - 1]];
         } else {
@@ -25,7 +25,7 @@ export function ReferenceComponent({ reference, showAllKeys = true }: ReferenceP
     };
 
     const renderReferenceKeys = () => {
-        if (!props.reference?.keys || props.reference.keys.length === 0 || !Array.isArray(props.reference.keys)) {
+        if (!reference?.keys || reference.keys.length === 0 || !Array.isArray(reference.keys)) {
             return <Typography data-testid="no-reference-path-available">{t('noReferencePathAvailable')}</Typography>;
         }
 
@@ -96,7 +96,7 @@ export function ReferenceComponent({ reference, showAllKeys = true }: ReferenceP
         <Box>
             {renderReferenceKeys()}
             <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-                {t('referenceType', { type: props.reference.type })}
+                {t('referenceType', { type: reference.type })}
             </Typography>
         </Box>
     );
