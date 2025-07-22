@@ -1,7 +1,7 @@
 import { alpha, Box, Dialog, DialogProps, Paper, styled, Typography } from '@mui/material';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { ChooseTemplateItem } from './ChooseTemplateItem';
-import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Submodel } from 'lib/api/aas/models';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 import { useLocale, useTranslations } from 'next-intl';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
