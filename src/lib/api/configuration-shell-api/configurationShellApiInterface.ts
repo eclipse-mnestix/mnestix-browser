@@ -1,4 +1,4 @@
-import { Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import { Submodel } from 'lib/api/aas/models';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 
 export interface IConfigurationShellApi {

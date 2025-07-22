@@ -8,11 +8,11 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 
 import {
-    ISubmodelElement,
+    SubmodelElementChoice,
     Property,
     Qualifier,
     SubmodelElementCollection,
-} from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+} from 'lib/api/aas/models';
 import { getArrayFromString } from 'lib/util/SubmodelResolverUtil';
 import { useAuth } from 'lib/hooks/UseAuth';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
@@ -82,13 +82,12 @@ export function IdSettingsCard() {
         }
         const settings: IdGenerationSettingFrontend[] = [];
         response.result.submodelElements?.forEach((el) => {
-            const element = el as ISubmodelElement;
             const collection = el as SubmodelElementCollection;
             const _settingsList = collection.value;
             const name = el.idShort;
 
             // IdType (to apply correct validation)
-            const idTypeQualifier = element.qualifiers?.find((q: Qualifier) => {
+            const idTypeQualifier = el.qualifiers?.find((q: Qualifier) => {
                 return q.type === 'SMT/IdType';
             });
             const idType = idTypeQualifier?.value;

@@ -2,7 +2,7 @@
 
 import { ConfigurationShellApi } from 'lib/api/configuration-shell-api/configurationShellApi';
 import { mnestixFetch } from 'lib/api/infrastructure';
-import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Submodel } from 'lib/api/aas/models';
 import { envs } from 'lib/env/MnestixEnv';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 
