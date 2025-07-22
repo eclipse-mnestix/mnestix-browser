@@ -133,7 +133,6 @@ describe('ReferenceComponent', () => {
         const reference = createMockReference(keys);
         CustomRender(<ReferenceComponent reference={reference} showAllKeys={false} />);
 
-        // Only the last key should be visible
         expect(screen.queryByText('FirstKey')).not.toBeInTheDocument();
         expect(screen.queryByText('SecondKey')).not.toBeInTheDocument();
         expect(screen.queryByText('ThirdKey')).toBeInTheDocument();
