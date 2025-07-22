@@ -159,6 +159,19 @@
         "UNAUTHORIZED": "No autorizado",
         "UNKNOWN": "Error desconocido"
       }
+    },
+    "referenceComponent": {
+      "noReferencePathAvailable": "No hay ruta de referencia disponible",
+      "noTypeSpecified": "No se especificó ningún tipo",
+      "referenceType": "Tipo de referencia: {type}"
+    },
+    "referenceElementComponent": {
+      "noValueSpecified": "No se especificó ningún valor"
+    },
+    "relationshipElementComponent": {
+      "noValueSpecified": "No se especificó ningún valor",
+      "first": "Primero",
+      "second": "Segundo"
     }
   },
   "navigation": {
