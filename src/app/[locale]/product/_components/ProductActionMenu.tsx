@@ -8,7 +8,7 @@ import { useEnv } from 'app/EnvProvider';
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import { downloadAasFromRepo } from 'lib/services/repository-access/repositorySearchActions';
 import { useShowError } from 'lib/hooks/UseShowError';
-import { AssetAdministrationShell } from '@aas-core-works/aas-core3.0-typescript/types';
+import { AssetAdministrationShell } from 'lib/api/aas/models';
 
 type ActionMenuProps = {
     readonly aas: AssetAdministrationShell | null;

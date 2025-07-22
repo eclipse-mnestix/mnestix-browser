@@ -2,14 +2,13 @@ import * as React from 'react';
 import { TreeItem, useTreeItemState } from '@mui/x-tree-view';
 import clsx from 'clsx';
 import { Box, Button, IconButton, styled } from '@mui/material';
-import { Entity, ISubmodelElement, KeyTypes, RelationshipElement } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Entity, KeyTypes, RelationshipElement } from 'lib/api/aas/models';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
 import { ArrowForward, ArticleOutlined, InfoOutlined, PinDropOutlined } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import { GenericSubmodelElementComponent } from '../GenericSubmodelElementComponent';
 import { EntityDetailsDialog } from './EntityDetailsDialog';
 import { RelationShipDetailsDialog } from './RelationShipDetailsDialog';
-import { getKeyType } from 'lib/util/KeyTypeUtil';
 import {
     CustomTreeItemContentProps,
     CustomTreeItemProps,
@@ -24,16 +23,16 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
     const navigate = useRouter();
     const { classes, className, label, itemId, icon: iconProp, data, ...other } = props;
     const { disabled, expanded, selected, focused, handleExpansion } = useTreeItemState(itemId);
-    const isEntity = getKeyType(data as ISubmodelElement) === KeyTypes.Entity;
+    const isEntity = data?.modelType === KeyTypes.Entity;
     const dataIcon = isEntity ? (
         <AssetIcon fontSize="small" color="primary" />
     ) : (
         <ArticleOutlined fontSize="small" color="primary" />
     );
-    const isRelationShip = getKeyType(data as ISubmodelElement) === KeyTypes.RelationshipElement;
+    const isRelationShip = data?.modelType === KeyTypes.RelationshipElement;
     const assetId = isEntity ? (data as Entity).globalAssetId : undefined;
     const showDataDirectly = [KeyTypes.Property, KeyTypes.MultiLanguageProperty].find(
-        (mt) => mt === getKeyType(data as ISubmodelElement),
+        (mt) => mt === data?.modelType,
     );
     const [detailsModalOpen, setDetailsModalOpen] = React.useState(false);
 

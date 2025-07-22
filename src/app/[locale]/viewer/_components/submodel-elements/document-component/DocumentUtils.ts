@@ -1,4 +1,4 @@
-import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
+import { SubmodelElementCollection } from 'lib/api/aas/models';
 import { hasSemanticId } from 'lib/util/SubmodelResolverUtil';
 import { fetchFileServerSide } from 'lib/services/fileActions';
 

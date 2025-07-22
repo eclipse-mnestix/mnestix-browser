@@ -1,4 +1,4 @@
-import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
+import { SubmodelElementCollection } from 'lib/api/aas/models';
 import { expect } from '@jest/globals';
 import { screen } from '@testing-library/react';
 import { useRouter } from 'next/navigation';

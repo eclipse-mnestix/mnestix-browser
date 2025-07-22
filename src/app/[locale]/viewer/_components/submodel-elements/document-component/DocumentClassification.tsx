@@ -1,10 +1,9 @@
-import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import { SubmodelElementCollection, MultiLanguageProperty, Property } from 'lib/api/aas/models';
 import { findSubmodelElementBySemanticIdsOrIdShort, getTranslationValue } from 'lib/util/SubmodelResolverUtil';
 import {
     DocumentSpecificSemanticId,
     DocumentSpecificSemanticIdIrdi,
 } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentSemanticIds';
-import { MultiLanguageProperty, Property } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';

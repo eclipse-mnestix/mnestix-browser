@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, Typography } from '@mui/material';
-import { Entity } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Entity } from 'lib/api/aas/models';
 import { DataRow } from 'components/basics/DataRow';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 import { useTranslations } from 'next-intl';

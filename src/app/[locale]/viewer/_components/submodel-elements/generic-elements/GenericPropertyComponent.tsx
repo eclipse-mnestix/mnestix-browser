@@ -1,5 +1,5 @@
 import { Box, IconButton, Link, Skeleton, Tooltip, Typography } from '@mui/material';
-import { MultiLanguageProperty, Property, Range } from '@aas-core-works/aas-core3.0-typescript/types';
+import { MultiLanguageProperty, Property, Range } from 'lib/api/aas/models';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { ContentCopy, OpenInNew } from '@mui/icons-material';

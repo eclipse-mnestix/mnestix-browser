@@ -1,9 +1,10 @@
-import { Entity, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
+import { SubmodelElementCollection } from 'lib/api/aas/models';
 import { idEquals } from 'lib/util/IdValidationUtil';
 import { submodelElementCustomVisualizationMap } from '../../submodel-elements/SubmodelElementCustomVisualizationMap';
 import { Fragment } from 'react';
 import { GenericSubmodelElementComponent } from '../../submodel-elements/generic-elements/GenericSubmodelElementComponent';
 import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
+import { KeyTypes } from 'lib/api/aas/models';
 
 export interface CustomSubmodelElementComponentProps {
     readonly submodelElement: SubmodelElementCollection;
@@ -18,7 +19,7 @@ export function GenericSubmodelDetailComponent({ submodel, repositoryUrl }: Subm
     );
 
     // Entity element always has a line at the bottom, so we don't need an extra line on the following element
-    const isEntityElementAbove = (index: number) => submodelElements[index - 1] instanceof Entity;
+    const isEntityElementAbove = (index: number) => submodelElements[index - 1].modelType === KeyTypes.Entity;
     const hasDivider = (index: number) => !(index === 0) && !isEntityElementAbove(index);
 
     return (

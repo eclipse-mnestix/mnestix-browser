@@ -1,4 +1,4 @@
-import { ISubmodelElement } from '@aas-core-works/aas-core3.0-typescript/types';
+import { SubmodelElementChoice } from 'lib/api/aas/models';
 import { useLocale } from 'next-intl';
 import { useCallback } from 'react';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
@@ -16,7 +16,7 @@ export function useFindValueByIdShort() {
     
     return useCallback(
         (
-            elements: ISubmodelElement[] | null,
+            elements: SubmodelElementChoice[] | null,
             idShort: string | null,
             semanticId: SubmodelSemanticIdEnum | SubmodelElementSemanticIdEnum | null = null,
         ): string | null => {

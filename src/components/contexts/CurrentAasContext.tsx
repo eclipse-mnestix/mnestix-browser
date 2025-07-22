@@ -1,6 +1,6 @@
 'use client';
 import React, { createContext, PropsWithChildren, useContext, useState } from 'react';
-import { AssetAdministrationShell, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { AssetAdministrationShell, Submodel } from 'lib/api/aas/models';
 import { RegistryAasData } from 'lib/types/registryServiceTypes';
 import { useAasLoader } from 'lib/hooks/UseAasDataLoader';
 

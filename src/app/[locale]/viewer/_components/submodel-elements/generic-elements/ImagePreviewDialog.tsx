@@ -1,13 +1,13 @@
 import { Box, Dialog, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import React from 'react';
-import { File } from '@aas-core-works/aas-core3.0-typescript/types';
+import { ModelFile } from 'lib/api/aas/models';
 import { FileComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/FileComponent';
 import CloseIcon from '@mui/icons-material/Close';
 
 interface ImagePreviewDialogProps {
     open: boolean;
     onClose: () => void;
-    file: File | null;
+    file: ModelFile | null;
     submodelId?: string;
     submodelElementPath: string | null;
 }

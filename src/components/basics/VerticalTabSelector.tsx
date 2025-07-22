@@ -1,7 +1,7 @@
 import { alpha, Box, Button, styled, SvgIconProps, Tooltip, Typography } from '@mui/material';
 import { ArrowForward } from '@mui/icons-material';
 import { ReactElement, useState } from 'react';
-import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Submodel } from 'lib/api/aas/models';
 import { useTranslations } from 'next-intl';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 

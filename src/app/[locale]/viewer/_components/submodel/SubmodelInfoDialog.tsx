@@ -2,7 +2,7 @@
 import { useTranslations } from 'next-intl';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 import { DataRow } from 'components/basics/DataRow';
-import { Reference } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Reference } from 'lib/api/aas/models';
 
 type SubmodelInfoDialogProps = {
     readonly onClose: () => void;
