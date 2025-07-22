@@ -12,15 +12,12 @@ export function ReferenceComponent(props: ReferenceProps) {
     const { showAllKeys = true } = props;
     const t = useTranslations('components.referenceComponent');
 
-    if (!props.reference.type || props.reference.type === undefined) {
-        return <Typography>{t('noTypeSpecified')}</Typography>;
+    if ((!props.reference.type && props.reference.type != 0) || props.reference.type === undefined) {
+        return <Typography data-testid="no-type-specified">{t('noTypeSpecified')}</Typography>;
     }
 
     const getKeys = () => {
         const keys = props.reference.keys;
-        if (!keys || !Array.isArray(keys) || keys.length === 0) {
-            return [];
-        }
         if (!showAllKeys) {
             return [keys[keys.length - 1]];
         } else {
@@ -29,8 +26,8 @@ export function ReferenceComponent(props: ReferenceProps) {
     };
 
     const renderReferenceKeys = () => {
-        if (!props.reference?.keys || !Array.isArray(props.reference.keys)) {
-            return <Typography>{t('noReferencePathAvailable')}</Typography>;
+        if (!props.reference?.keys || props.reference.keys.length === 0 || !Array.isArray(props.reference.keys)) {
+            return <Typography data-testid="no-reference-path-available">{t('noReferencePathAvailable')}</Typography>;
         }
 
         const keys = getKeys();
