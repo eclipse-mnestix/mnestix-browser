@@ -1,22 +1,39 @@
 import { Typography, Box } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Reference } from '@aas-core-works/aas-core3.0-typescript/types';
+import { useTranslations } from 'next-intl';
 
 type ReferenceProps = {
     readonly reference: Reference;
+    readonly showAllKeys?: boolean; // Optional prop to control key display
 };
 
 export function ReferenceComponent(props: ReferenceProps) {
+    const { showAllKeys = true } = props;
+    const t = useTranslations('components.referenceComponent');
+
     if (!props.reference.type || props.reference.type === undefined) {
-        return <Typography variant="body2">No type specified</Typography>;
+        return <Typography>{t('noTypeSpecified')}</Typography>;
     }
+
+    const getKeys = () => {
+        const keys = props.reference.keys;
+        if (!keys || !Array.isArray(keys) || keys.length === 0) {
+            return [];
+        }
+        if (!showAllKeys) {
+            return [keys[keys.length - 1]];
+        } else {
+            return keys;
+        }
+    };
 
     const renderReferenceKeys = () => {
         if (!props.reference?.keys || !Array.isArray(props.reference.keys)) {
-            return <Typography variant="body2">No reference path available</Typography>;
+            return <Typography>{t('noReferencePathAvailable')}</Typography>;
         }
 
-        const keys = props.reference.keys;
+        const keys = getKeys();
 
         return (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap', marginTop: 1 }}>
@@ -83,7 +100,7 @@ export function ReferenceComponent(props: ReferenceProps) {
         <Box>
             {renderReferenceKeys()}
             <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-                Reference Type: {props.reference.type}
+                {t('referenceType', { type: props.reference.type })}
             </Typography>
         </Box>
     );

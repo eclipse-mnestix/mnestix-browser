@@ -159,6 +159,19 @@
         "UNAUTHORIZED": "Unauthorized",
         "UNKNOWN": "Unknown error"
       }
+    },
+    "referenceComponent": {
+      "noReferencePathAvailable": "No reference path available",
+      "noTypeSpecified": "No type specified",
+      "referenceType": "Reference type: {type}"
+    },
+    "referenceElementComponent": {
+      "noValueSpecified": "No value specified"
+    },
+    "relationshipElementComponent": {
+      "noValueSpecified": "No value specified",
+      "first": "First",
+      "second": "Second"
     }
   },
   "navigation": {
