@@ -14,7 +14,7 @@ import TemplatesInfoGraphic from 'assets/templates_infographic.svg';
 import EmptyDefaultTemplate from 'assets/submodels/defaultEmptySubmodel.json';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useAuth } from 'lib/hooks/UseAuth';
-import { Qualifier, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Qualifier, Submodel } from 'lib/api/aas/models';
 import { sortWithNullableValues } from 'lib/util/SortingUtil';
 import { useEnv } from 'app/EnvProvider';
 import { useRouter } from 'next/navigation';

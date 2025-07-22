@@ -52,9 +52,11 @@ export const mnestixFetchLegacy = ():
     };
 };
 
-export function mnestixFetch(): {
+export type MnestixFetch = {
     fetch<T>(url: RequestInfo | URL, init?: RequestInit | undefined): Promise<ApiResponseWrapper<T>>;
-} {
+};
+
+export function mnestixFetch(): MnestixFetch {
     return {
         fetch: async (url: RequestInfo, init?: RequestInit) => {
             return await performServerFetch(url, await initializeRequestOptions(await getBearerToken(), init));

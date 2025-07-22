@@ -1,9 +1,9 @@
-export const sortWithNullableValues = (a: string | null, b: string | null): number => {
-    // put `null` values at the end
-    if (!a) {
+export const sortWithNullableValues = (a?: string, b?: string): number => {
+    // put `undefined` values at the end
+    if (a === undefined) {
         return 1;
     }
-    if (!b) {
+    if (b === undefined) {
         return -1;
     }
     return a.localeCompare(b);

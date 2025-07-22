@@ -1,61 +1,55 @@
 import { encodeBase64 } from 'lib/util/Base64Util';
-import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Submodel } from 'lib/api/aas/models';
+import { MnestixFetch } from '../infrastructure';
+import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 
 export class TemplateShellApi {
     basePathOwnApi: string;
     enable_authentication: boolean;
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private http: MnestixFetch;
 
     constructor(
         backendApiUrl: string,
         enable_authentication: boolean,
-        http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> },
+        http: MnestixFetch,
     ) {
         this.basePathOwnApi = `${backendApiUrl}/api/Template`;
         this.enable_authentication = enable_authentication;
-        this.http = http ? http : window;
+        this.http = http;
     }
 
     static create(
         backendApiUrl: string,
         enable_authentication: boolean,
-        http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> },
+        http: MnestixFetch,
     ): TemplateShellApi {
         return new TemplateShellApi(backendApiUrl, enable_authentication, http);
     }
 
-    public async getDefaults(): Promise<Submodel[]> {
-        const response = await this.http.fetch(`${this.basePathOwnApi}/allDefaultSubmodels`, {
+    public async getDefaults(): Promise<ApiResponseWrapper<Submodel[]>> {
+        const response = await this.http.fetch<Submodel[]>(`${this.basePathOwnApi}/allDefaultSubmodels`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
             },
         });
 
-        if (response.status >= 200 && response.status < 300) {
-            return response.json();
-        } else {
-            throw response;
-        }
+        return response;
     }
 
-    public async getCustoms(): Promise<Submodel[]> {
-        const response = await this.http.fetch(`${this.basePathOwnApi}/allCustomSubmodels`, {
+    public async getCustoms(): Promise<ApiResponseWrapper<Submodel[]>> {
+        const response = await this.http.fetch<Submodel[]>(`${this.basePathOwnApi}/allCustomSubmodels`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
             },
         });
 
-        if (response.status >= 200 && response.status < 300) {
-            return response.json();
-        } else {
-            throw response;
-        }
+        return response;
     }
 
-    public async getCustom(submodelIdShort: string): Promise<Submodel> {
-        const response = await this.http.fetch(
+    public async getCustom(submodelIdShort: string): Promise<ApiResponseWrapper<Submodel>> {
+        const response = await this.http.fetch<Submodel>(
             `${this.basePathOwnApi}/CustomSubmodel/${encodeBase64(submodelIdShort)}`,
             {
                 method: 'GET',
@@ -65,27 +59,19 @@ export class TemplateShellApi {
             },
         );
 
-        if (response.status >= 200 && response.status < 300) {
-            return response.json();
-        } else {
-            throw response;
-        }
+        return response;
     }
 
-    public async deleteCustomById(id: string): Promise<string | number> {
+    public async deleteCustomById(id: string): Promise<ApiResponseWrapper<string | number>> {
         // We use the regular delete endpoint, which expects an idShort, but because of our backend interception, we saved the actual id in the idShort field earlier.
         // That's why this works.
-        const response = await this.http.fetch(`${this.basePathOwnApi}/${encodeBase64(id)}`, {
+        const response = await this.http.fetch<string | number>(`${this.basePathOwnApi}/${encodeBase64(id)}`, {
             method: 'DELETE',
             headers: {
                 Accept: 'application/json',
             },
         });
 
-        if (response.status >= 200 && response.status < 300) {
-            return response.status;
-        } else {
-            throw response;
-        }
+        return response;
     }
 }

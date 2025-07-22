@@ -1,28 +1,44 @@
 'use server';
 
-import { mnestixFetchLegacy } from 'lib/api/infrastructure';
+import { mnestixFetch } from 'lib/api/infrastructure';
 import { TemplateShellApi } from 'lib/api/template-shell-api/templateShellApi';
-import { Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import { Submodel } from 'lib/api/aas/models';;
 import { envs } from 'lib/env/MnestixEnv';
+import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 
+
+export async function getDefaultTemplates(): Promise<ApiResponseWrapper<Submodel[]>> {
 const templateApiClient = TemplateShellApi.create(
     envs.MNESTIX_BACKEND_API_URL ?? '',
     envs.AUTHENTICATION_FEATURE_FLAG,
-    mnestixFetchLegacy(),
+    mnestixFetch(),
 );
-
-export async function getDefaultTemplates(): Promise<Submodel[]> {
     return templateApiClient.getDefaults();
 }
 
-export async function getCustomTemplates(): Promise<Submodel[]> {
+export async function getCustomTemplates(): Promise<ApiResponseWrapper<Submodel[]>> {
+const templateApiClient = TemplateShellApi.create(
+    envs.MNESTIX_BACKEND_API_URL ?? '',
+    envs.AUTHENTICATION_FEATURE_FLAG,
+    mnestixFetch(),
+);
     return templateApiClient.getCustoms();
 }
 
-export async function getCustomTemplateById(id: string): Promise<Submodel> {
+export async function getCustomTemplateById(id: string): Promise<ApiResponseWrapper<Submodel>> {
+const templateApiClient = TemplateShellApi.create(
+    envs.MNESTIX_BACKEND_API_URL ?? '',
+    envs.AUTHENTICATION_FEATURE_FLAG,
+    mnestixFetch(),
+);
     return templateApiClient.getCustom(id);
 }
 
-export async function deleteCustomTemplateById(id: string): Promise<string | number> {
+export async function deleteCustomTemplateById(id: string): Promise<ApiResponseWrapper<string | number>> {
+const templateApiClient = TemplateShellApi.create(
+    envs.MNESTIX_BACKEND_API_URL ?? '',
+    envs.AUTHENTICATION_FEATURE_FLAG,
+    mnestixFetch(),
+);
     return templateApiClient.deleteCustomById(id);
 }
