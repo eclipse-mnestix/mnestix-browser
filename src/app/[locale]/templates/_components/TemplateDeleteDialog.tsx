@@ -2,7 +2,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Dialog
 import { useTranslations } from 'next-intl';
 
 interface TemplateDeleteDialogProps extends DialogProps {
-    itemName: string | null;
+    itemName?: string;
     onDelete: () => void;
 }
 
