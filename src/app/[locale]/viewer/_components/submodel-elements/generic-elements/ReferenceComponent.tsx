@@ -8,8 +8,7 @@ type ReferenceProps = {
     readonly showAllKeys?: boolean; // Optional prop to control key display
 };
 
-export function ReferenceComponent(props: ReferenceProps) {
-    const { showAllKeys = true } = props;
+export function ReferenceComponent({ reference, showAllKeys = true }: ReferenceProps) {
     const t = useTranslations('components.referenceComponent');
 
     if ((!props.reference.type && props.reference.type != 0) || props.reference.type === undefined) {
