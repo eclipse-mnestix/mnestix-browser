@@ -2235,10 +2235,10 @@
   dependencies:
     "@babel/runtime" "^7.27.6"
 
-"@mui/lab@^7.0.0-beta.13":
-  version "7.0.0-beta.13"
-  resolved "https://registry.yarnpkg.com/@mui/lab/-/lab-7.0.0-beta.13.tgz#537991d4ea85052ab4f63bb00439e3587a501c8c"
-  integrity sha512-wLSeePenug3+/kek4cFMIF3QZVC2fHt2Z3O3HwOFvakgErmT39WltYsNpWNojCnXUqcIExUp9xNW0Wk+tJShgA==
+"@mui/lab@^7.0.0-beta.14":
+  version "7.0.0-beta.14"
+  resolved "https://registry.yarnpkg.com/@mui/lab/-/lab-7.0.0-beta.14.tgz#9a62359d3438ea8598d4fe1ad865e168bb857c5e"
+  integrity sha512-pn+ZvylDcBKQOo17oa/PhtIA/UFQFq8RvpN+r/jHrztz/CjMDju2CWBne0txvQ5JIS8uTIGp2/IsTa7II1g5wg==
   dependencies:
     "@babel/runtime" "^7.27.1"
     "@mui/system" "^7.1.1"
