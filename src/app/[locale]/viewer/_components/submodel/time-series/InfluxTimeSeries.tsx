@@ -1,4 +1,4 @@
-import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
+import { SubmodelElementCollection } from 'lib/api/aas/models';
 import { Box, Typography } from '@mui/material';
 import { StyledDataRow } from 'components/basics/StyledDataRow';
 import { InfluxTimeSeriesDiagram } from './InfluxTimeSeriesDiagram';

@@ -1,14 +1,14 @@
 import {
     ConceptDescription,
-    File,
-    ISubmodelElement,
+    ModelFile,
+    SubmodelElementChoice,
     KeyTypes,
     MultiLanguageProperty,
     Property,
     Range,
     SubmodelElementList,
     SubmodelElementCollection,
-} from '@aas-core-works/aas-core3.0-typescript/types';
+} from 'lib/api/aas/models';
 import { useTranslations } from 'next-intl';
 import { Box, Typography, useTheme } from '@mui/material';
 import React, { useState } from 'react';
@@ -22,7 +22,7 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { GenericPropertyComponent } from '../../submodel-elements/generic-elements/GenericPropertyComponent';
 
 export const TechnicalDataElement = (props: {
-    elements: ISubmodelElement[];
+    elements: SubmodelElementChoice[];
     submodelId: string;
     label: string;
     header: string;
@@ -38,14 +38,14 @@ export const TechnicalDataElement = (props: {
      * Get all semantic IDs from the submodel elements and their children,
      * this is needed to fetch all concept descriptions at once.
      */
-    function getFlatMapOfAllSemanticIds(elements: ISubmodelElement[]): string[] {
+    function getFlatMapOfAllSemanticIds(elements: SubmodelElementChoice[]): string[] {
         return elements.reduce<string[]>((acc, el) => {
             if (el.semanticId?.keys[0]?.value) {
                 acc.push(el.semanticId.keys[0].value);
             }
             if (
-                getKeyType(el) === KeyTypes.SubmodelElementCollection ||
-                getKeyType(el) === KeyTypes.SubmodelElementList
+                el.modelType === KeyTypes.SubmodelElementCollection ||
+                el.modelType === KeyTypes.SubmodelElementList
             ) {
                 const collection = el as SubmodelElementCollection | SubmodelElementList;
                 if (collection.value) {
@@ -65,7 +65,7 @@ export const TechnicalDataElement = (props: {
             semanticIds.map(async (semanticId) => {
                 if (semanticId) {
                     const result = await getConceptDescriptionById(semanticId);
-                    if (result.isSuccess) return { [semanticId]: result.result };
+                    if (result.isSuccess) return { [semanticId]: result.result as unknown as ConceptDescription };
                 }
                 return null;
             }),
@@ -91,9 +91,9 @@ export const TechnicalDataElement = (props: {
         }
     }, [props.isExpanded, loadConceptDescriptions]);
 
-    const renderSubmodelElement = (element: ISubmodelElement) => {
+    const renderSubmodelElement = (element: SubmodelElementChoice) => {
         const semanticId = element.semanticId?.keys?.[0]?.value || '';
-        switch (getKeyType(element)) {
+        switch (element.modelType) {
             case KeyTypes.Property: {
                 return (
                     <DataRowWithUnit
@@ -128,7 +128,7 @@ export const TechnicalDataElement = (props: {
                     </TreeItem>
                 );
             case KeyTypes.File: {
-                const file = element as File;
+                const file = element as ModelFile;
                 const path = buildSubmodelElementPath('GeneralInformation', element.idShort);
 
                 return (
@@ -175,7 +175,7 @@ export const TechnicalDataElement = (props: {
             default:
                 return (
                     <Typography color="error" variant="body2">
-                        {t('unknownModelType', { type: `${getKeyType(element)}` })}
+                        {t('unknownModelType', { type: `${element.modelType}` })}
                     </Typography>
                 );
         }

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box, Divider } from '@mui/material';
-import { ISubmodelElement } from '@aas-core-works/aas-core3.0-typescript/types';
-import { ConceptDescription } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import { SubmodelElementChoice, ConceptDescription } from 'lib/api/aas/models';
 import { useBestLabelForSmElement } from 'app/[locale]/viewer/_components/submodel/technical-data/ConceptDescriptionHelper';
 
 /**
@@ -11,7 +10,7 @@ import { useBestLabelForSmElement } from 'app/[locale]/viewer/_components/submod
  */
 export const DataRowWithUnit = React.memo(
     (props: {
-        submodelElement: ISubmodelElement;
+        submodelElement: SubmodelElementChoice;
         children: React.ReactNode;
         conceptDescription?: ConceptDescription;
         conceptDescriptionLoading?: boolean;

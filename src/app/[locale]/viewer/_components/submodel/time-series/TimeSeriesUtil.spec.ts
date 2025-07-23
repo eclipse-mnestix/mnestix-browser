@@ -1,5 +1,5 @@
 import { expect } from '@jest/globals';
-import { Property, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Property, SubmodelElementCollection } from 'lib/api/aas/models';
 import {
     convertRecordTimeToDate,
     parseRecordsFromInternalSegment,

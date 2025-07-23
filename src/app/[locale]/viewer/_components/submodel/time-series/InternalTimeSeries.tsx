@@ -5,7 +5,7 @@ import {
     parseRecordsFromInternalSegment,
     TimeSeriesDataSet,
 } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesUtil';
-import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import { SubmodelElementCollection } from 'lib/api/aas/models';
 import { StyledDataRow } from 'components/basics/StyledDataRow';
 import { TimeSeriesSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesSubmodelElementSemanticId.enum';
 import { useLocale, useTranslations } from 'next-intl';

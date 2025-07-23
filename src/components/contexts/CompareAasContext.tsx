@@ -1,4 +1,4 @@
-﻿import { AssetAdministrationShell, Reference } from '@aas-core-works/aas-core3.0-typescript/types';
+﻿import { AssetAdministrationShell, Reference } from 'lib/api/aas/models';
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { SubmodelCompareData } from 'lib/types/SubmodelCompareData';
 import { generateSubmodelCompareData, isCompareData, isCompareDataRecord } from 'lib/util/CompareAasUtil';

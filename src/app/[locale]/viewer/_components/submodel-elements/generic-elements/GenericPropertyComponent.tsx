@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { useLocale } from 'use-intl';
 import { useTranslations } from 'next-intl';
-import { ConceptDescription } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import { ConceptDescription } from 'lib/api/aas/models';
 import { getUnitFromConceptDescription } from 'app/[locale]/viewer/_components/submodel/technical-data/ConceptDescriptionHelper';
 
 type GenericPropertyComponentProps = {

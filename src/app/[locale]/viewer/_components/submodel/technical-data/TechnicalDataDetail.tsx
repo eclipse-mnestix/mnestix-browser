@@ -4,7 +4,7 @@ import { hasSemanticId } from 'lib/util/SubmodelResolverUtil';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 import {
     SubmodelElementCollection,
-} from '@aas-core-works/aas-core3.0-typescript/types';
+} from 'lib/api/aas/models';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { TechnicalDataElement } from 'app/[locale]/viewer/_components/submodel/technical-data/TechnicalDataElement';

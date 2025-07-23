@@ -1,9 +1,9 @@
 import {
     SubmodelElementCollection,
-} from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+    Property
+} from 'lib/api/aas/models';
 import { TimeSeriesSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesSubmodelElementSemanticId.enum';
 import { findSubmodelElementBySemanticIdsOrIdShort, hasSemanticId } from 'lib/util/SubmodelResolverUtil';
-import { Property } from '@aas-core-works/aas-core3.0-typescript/types';
 
 export type TimeSeriesDataSet = {
     points: DataPoint[];

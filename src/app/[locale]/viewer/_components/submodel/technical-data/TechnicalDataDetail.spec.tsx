@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 
 import { expect } from '@jest/globals';
 import { TechnicalDataDetail } from './TechnicalDataDetail';
-import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Submodel } from 'lib/api/aas/models';
 
 // Import test data for technical data submodels
 import technicalDataTestSubmodels from './test-submodel/technical-data-test.json';

@@ -1,4 +1,4 @@
-import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
+import { SubmodelElementCollection } from 'lib/api/aas/models';
 import { TimeSeriesSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesSubmodelElementSemanticId.enum';
 import { InfluxTimeSeries } from './InfluxTimeSeries';
 import { InternalTimeSeries } from 'app/[locale]/viewer/_components/submodel/time-series/InternalTimeSeries';

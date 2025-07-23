@@ -1,4 +1,4 @@
-import { AssetAdministrationShell, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { AssetAdministrationShell, Submodel } from 'lib/api/aas/models';
 
 export type TransferDto = {
     aas: TransferAas;

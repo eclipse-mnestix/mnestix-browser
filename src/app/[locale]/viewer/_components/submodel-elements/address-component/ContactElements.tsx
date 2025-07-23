@@ -2,7 +2,7 @@ import { Box, Link, Typography } from '@mui/material';
 import { findValueByIdShort, getTranslationValue } from 'lib/util/SubmodelResolverUtil';
 import { useLocale, useTranslations } from 'next-intl';
 import { getMailToHref, getSanitizedHref, getTelHref } from 'lib/util/HrefUtil';
-import { IDataElement, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
+import { DataElementChoice, SubmodelElementCollection } from 'lib/api/aas/models';
 import enMessages from 'locale/en.json';
 import { GenericSubmodelElementComponent } from '../generic-elements/GenericSubmodelElementComponent';
 import { SubModelElementCollectionContactInfo } from 'lib/util/ApiExtensions/ExtendISubmodelElement';
@@ -26,7 +26,7 @@ function getContactType(type: string, translation: (type: ContactType) => string
 }
 
 // Build Address part
-export function AddressElement({ el, index }: { el: IDataElement; index?: number }) {
+export function AddressElement({ el, index }: { el: DataElementChoice; index?: number }) {
     const addressTypes = useTranslations('components.addressComponent.addressTypes');
     const locale = useLocale();
 
@@ -148,7 +148,7 @@ export function PersonElement({ el, index }: { el: SubModelElementCollectionCont
     );
 }
 
-export function VatElement({ el, index }: { el: IDataElement; index?: number }) {
+export function VatElement({ el, index }: { el: DataElementChoice; index?: number }) {
     const t = useTranslations('components.addressComponent');
     const locale = useLocale();
 
@@ -164,7 +164,7 @@ export function VatElement({ el, index }: { el: IDataElement; index?: number }) 
     );
 }
 
-export function LinkElement({ el, index }: { el: IDataElement; index?: number }) {
+export function LinkElement({ el, index }: { el: DataElementChoice; index?: number }) {
     const locale = useLocale();
 
     const linkAddress = getTranslationValue(el, locale);

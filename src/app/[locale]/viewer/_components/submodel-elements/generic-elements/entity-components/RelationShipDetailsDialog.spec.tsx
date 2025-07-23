@@ -2,7 +2,7 @@ import { CustomRender } from 'test-utils/CustomRender';
 import { expect } from '@jest/globals';
 import { RelationShipDetailsDialog } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/RelationShipDetailsDialog';
 import * as React from 'react';
-import { KeyTypes, RelationshipElement } from '@aas-core-works/aas-core3.0-typescript/types';
+import { KeyTypes, RelationshipElement } from 'lib/api/aas/models';
 import { RelationShipTypes } from 'lib/enums/RelationShipTypes.enum';
 
 const handleClose = jest.fn();
