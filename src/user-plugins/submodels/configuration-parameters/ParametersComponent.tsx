@@ -123,11 +123,16 @@ export function ParametersComponent({ smElement }: ParametersComponentProps) {
                                 <TableCell>{getPropertyValue(param, 'description')}</TableCell>
                                 <TableCell>{getPropertyValue(param, 'possible_values')}</TableCell>
                                 <TableCell>
-                                    {getPropertyValue(param, 'mandatory') === 'true' ? (
-                                        <Chip label="Yes" color="primary" size="small" />
-                                    ) : (
-                                        <Chip label="No" color="default" size="small" />
-                                    )}
+                                    {(() => {
+                                        const mandatoryValue = getPropertyValue(param, 'mandatory');
+                                        if (mandatoryValue === 'true') {
+                                            return <Chip label="Yes" color="primary" size="small" />;
+                                        }
+                                        if (mandatoryValue === 'false') {
+                                            return <Chip label="No" color="default" size="small" />;
+                                        }
+                                        return '-';
+                                    })()}
                                 </TableCell>
                             </TableRow>
                         ))}

@@ -111,11 +111,14 @@ export const ConfigurationParametersComponent = ({ submodel }: SubmodelVisualiza
                 {configurationsElement?.value?.map((element, index) => {
                     const confProperties = (element as SubmodelElementCollection).value ?? [];
                     const sortedConfProperties = sortSubmodelElementsWithEndElements(confProperties, ['parameters']);
+
+                    const version = getConfigurationVersion(confProperties);
+
                     return (
                         <Typography key={index} variant="h6" sx={{ marginTop: 2 }}>
                             <TreeItem
                                 itemId={index.toString()}
-                                label={element?.idShort?.toUpperCase()}
+                                label={`${element?.idShort?.toUpperCase()} v.${version}`}
                                 sx={{
                                     '& .MuiTreeItem-content': {
                                         py: 1,
@@ -167,4 +170,11 @@ export function sortSubmodelElementsWithEndElements(
         const bIdShort = b.idShort || '';
         return aIdShort.localeCompare(bIdShort);
     });
+}
+
+function getConfigurationVersion(confProperties: ISubmodelElement[]): string | null {
+    const versionElement = confProperties.find((prop) =>
+        checkIfSubmodelElementHasIdShortOrSemanticId(prop, { idShort: 'version' }),
+    );
+    return versionElement ? (versionElement as Property).value : 'N/A';
 }
