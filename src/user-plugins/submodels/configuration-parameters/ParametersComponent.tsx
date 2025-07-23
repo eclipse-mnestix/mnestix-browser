@@ -92,7 +92,7 @@ export function ParametersComponent({ smElement }: ParametersComponentProps) {
                     setSearchTerm(e.target.value);
                     setPage(0);
                 }}
-                sx={{ minWidth: 300 }}
+                sx={{ minWidth: 300, my: 1 }}
             />
             <TableContainer component={Paper}>
                 <Table>
