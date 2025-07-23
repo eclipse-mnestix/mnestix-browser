@@ -13,7 +13,7 @@ export function CompareRecordValueRow(props: { data: SubmodelCompareDataRecord; 
 
     return (
         <Grid container data-testid={'compare-Record'} justifyContent="space-between" alignItems="center">
-            {(dataRecord as SubmodelCompareDataRecord).submodelElements?.map((subElement, valueIndex) => {
+            {(dataRecord).submodelElements?.map((subElement, valueIndex) => {
                 return (
                     <Grid
                         size={{ xs: props.columnWidthCount - 0.5 }}

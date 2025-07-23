@@ -1,8 +1,7 @@
 'use server';
 
-import { AssetAdministrationShell, Submodel } from 'lib/api/aas/models';
+import { AssetAdministrationShell, Submodel, Reference } from 'lib/api/aas/models';
 import { RepoSearchResult, RepositorySearchService } from 'lib/services/repository-access/RepositorySearchService';
-import { Reference } from 'lib/api/aas/models';
 import {
     ApiFileDto,
     ApiResponseWrapper,

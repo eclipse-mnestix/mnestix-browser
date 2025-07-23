@@ -29,7 +29,7 @@ import {
 import { TemplateEditFields, TemplateEditFieldsProps } from '../_components/template-edit/TemplateEditFields';
 import { useAuth } from 'lib/hooks/UseAuth';
 import cloneDeep from 'lodash/cloneDeep';
-import { Qualifier, Submodel } from 'lib/api/aas/models';
+import { Qualifier, Submodel, SubmodelElementChoice, SubmodelElementCollection } from 'lib/api/aas/models';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useEnv } from 'app/EnvProvider';
 import { useParams, useRouter } from 'next/navigation';
@@ -37,7 +37,6 @@ import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import { updateCustomSubmodelTemplate } from 'lib/services/templateApiWithAuthActions';
 import { deleteCustomTemplateById, getCustomTemplateById, getDefaultTemplates } from 'lib/services/templatesApiActions';
 import { TemplateDeleteDialog } from 'app/[locale]/templates/_components/TemplateDeleteDialog';
-import { SubmodelElementChoice, SubmodelElementCollection } from 'lib/api/aas/models';
 import { clone } from 'lodash';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useTranslations } from 'next-intl';
@@ -97,7 +96,7 @@ export default function Page() {
 
     const fetchDefaultTemplates = async () => {
         const defaultTemplates = await getDefaultTemplates();
-        if( defaultTemplates.isSuccess ) {
+        if (defaultTemplates.isSuccess ) {
             setDefaultTemplates(defaultTemplates.result);
         } else {
             showError(defaultTemplates.message);

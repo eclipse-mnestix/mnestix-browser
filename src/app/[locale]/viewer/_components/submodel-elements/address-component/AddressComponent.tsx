@@ -3,7 +3,7 @@ import { DialerSip, Info, Mail, Phone, Place, Print, Public } from '@mui/icons-m
 import { AddressGroupWithIcon } from './AddressGroupWithIcon';
 import {
     DataElementChoice,
-    SubmodelElement,
+    SubmodelElementChoice,
     SubmodelElementCollection,
 } from 'lib/api/aas/models';
 import {
@@ -35,7 +35,7 @@ export function AddressComponent(props: CustomSubmodelElementComponentProps) {
         return <></>;
     }
 
-    const addressData: Array<SubmodelElement> = Object.values(props.submodelElement.value) as Array<SubmodelElement>;
+    const addressData: Array<SubmodelElementChoice> = Object.values(props.submodelElement.value) as Array<SubmodelElementChoice>;
     const additionalLink: Array<DataElementChoice> = [];
     const vatNumber: Array<DataElementChoice> = [];
     const phone: Array<SubmodelElementCollection> = [];

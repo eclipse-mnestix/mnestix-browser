@@ -1,5 +1,5 @@
 import { AssetAdministrationShellDescriptor, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
-import { AssetAdministrationShell } from 'lib/api/aas/models';
+import { AssetAdministrationShell, Submodel } from 'lib/api/aas/models';
 import { IDiscoveryServiceApi } from 'lib/api/discovery-service-api/discoveryServiceApiInterface';
 import { IRegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApiInterface';
 import { RegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApi';
@@ -9,7 +9,6 @@ import { RepoSearchResult, RepositorySearchService } from 'lib/services/reposito
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { AasRegistryEndpointEntryInMemory } from 'lib/api/registry-service-api/registryServiceApiInMemory';
-import { Submodel } from 'lib/api/aas/models';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import logger, { logResponseDebug } from 'lib/util/Logger';
 import { envs } from 'lib/env/MnestixEnv';

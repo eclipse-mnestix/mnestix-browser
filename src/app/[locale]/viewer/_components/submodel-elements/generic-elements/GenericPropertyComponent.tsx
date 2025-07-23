@@ -1,5 +1,5 @@
 import { Box, IconButton, Link, Skeleton, Tooltip, Typography } from '@mui/material';
-import { MultiLanguageProperty, Property, Range } from 'lib/api/aas/models';
+import { MultiLanguageProperty, Property, Range, ConceptDescription } from 'lib/api/aas/models';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { ContentCopy, OpenInNew } from '@mui/icons-material';
@@ -7,7 +7,6 @@ import { useState } from 'react';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { useLocale } from 'use-intl';
 import { useTranslations } from 'next-intl';
-import { ConceptDescription } from 'lib/api/aas/models';
 import { getUnitFromConceptDescription } from 'app/[locale]/viewer/_components/submodel/technical-data/ConceptDescriptionHelper';
 
 type GenericPropertyComponentProps = {
