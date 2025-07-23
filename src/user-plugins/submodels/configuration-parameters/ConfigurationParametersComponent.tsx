@@ -42,6 +42,7 @@ export const ConfigurationParametersComponent = ({ submodel }: SubmodelVisualiza
             case KeyTypes.Property: {
                 return (
                     <Box
+                        key={element.idShort}
                         sx={{
                             display: 'flex',
                             alignItems: 'center',
@@ -60,6 +61,7 @@ export const ConfigurationParametersComponent = ({ submodel }: SubmodelVisualiza
             case KeyTypes.MultiLanguageProperty: {
                 return (
                     <Box
+                        key={element.idShort}
                         sx={{
                             display: 'flex',
                             alignItems: 'center',
@@ -87,7 +89,6 @@ export const ConfigurationParametersComponent = ({ submodel }: SubmodelVisualiza
                     );
                 }
                 return <ParametersComponent smElement={element as SubmodelElementList} key={element.idShort} />;
-
             default:
                 return (
                     <GenericSubmodelElementComponent

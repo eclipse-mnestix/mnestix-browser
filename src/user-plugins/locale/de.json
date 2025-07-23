@@ -3,6 +3,21 @@
     "submodels": {
       "hello-world-component": {
         "title": "Hallo Welt!"
+      },
+      "configuration-parameters": {
+        "parameters-component": {
+          "parameters-id": "Parameter ID",
+          "value": "Aktueller Wert",
+          "description": "Beschreibung",
+          "possible-values": "Mögliche Werte",
+          "mandatory": "Obligatorisch",
+          "search-parameter-id": "Suche Parameter ID",
+          "no-parameters": "Keine Parameter verfügbar.",
+          "pagination": {
+            "rows-per-page": "Zeilen pro Seite",
+            "displayed-rows": "{from}-{to} von {count}"
+          }
+        }
       }
     }
   }
