@@ -1,12 +1,16 @@
-import { AssetAdministrationShell, AssetKind, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { AssetAdministrationShell, AssetKind, Submodel } from 'lib/api/aas/models';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { AssetAdministrationShellDescriptor, Endpoint, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import path from 'node:path';
 
 export function getEndpointUrl(target: AssetAdministrationShell | Submodel, targetBaseUrl: string) {
-    const subpath = target instanceof AssetAdministrationShell ? 'shells' : 'submodels';
+    const subpath = isAssetAdministrationShell(target) ? 'shells' : 'submodels';
     return new URL(path.posix.join(targetBaseUrl, subpath, encodeBase64(target.id)));
+}
+
+function isAssetAdministrationShell(obj: AssetAdministrationShell | Submodel): obj is AssetAdministrationShell {
+    return obj && typeof obj === 'object' && 'assetInformation' in obj;
 }
 
 export function createEndpointForDescriptor(target: AssetAdministrationShell | Submodel, baseUrl: string): Endpoint {
@@ -63,7 +67,7 @@ export function createSubmodelDescriptorFromSubmodel(submodel: Submodel, targetB
 }
 
 export function getInterfaceString(target: AssetAdministrationShell | Submodel): string {
-    return target instanceof AssetAdministrationShell ? 'AAS-3.0' : 'SUBMODEL-3.0';
+    return isAssetAdministrationShell(target) ? 'AAS-3.0' : 'SUBMODEL-3.0';
 }
 
 export function aasThumbnailImageIsFile(aas: AssetAdministrationShell): boolean {

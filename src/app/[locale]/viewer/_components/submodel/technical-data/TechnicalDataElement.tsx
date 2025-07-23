@@ -4,7 +4,6 @@ import {
     SubmodelElementChoice,
     KeyTypes,
     MultiLanguageProperty,
-    Property,
     Range,
     SubmodelElementList,
     SubmodelElementCollection,
@@ -12,7 +11,6 @@ import {
 import { useTranslations } from 'next-intl';
 import { Box, Typography, useTheme } from '@mui/material';
 import React, { useState } from 'react';
-import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { DataRowWithUnit } from 'app/[locale]/viewer/_components/submodel/technical-data/ConceptDescriptionDataRow';
 import { TreeItem } from '@mui/x-tree-view';
 import { FileComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/FileComponent';
@@ -65,7 +63,7 @@ export const TechnicalDataElement = (props: {
             semanticIds.map(async (semanticId) => {
                 if (semanticId) {
                     const result = await getConceptDescriptionById(semanticId);
-                    if (result.isSuccess) return { [semanticId]: result.result as unknown as ConceptDescription };
+                    if (result.isSuccess) return { [semanticId]: result.result };
                 }
                 return null;
             }),
@@ -102,7 +100,7 @@ export const TechnicalDataElement = (props: {
                         conceptDescriptionLoading={loadingConceptDescriptions}
                     >
                         <GenericPropertyComponent
-                            property={element as Property}
+                            property={element}
                             withCopyButton={true}
                             conceptDescription={props.showUnits ? conceptDescriptions[semanticId] : undefined}
                             conceptDescriptionLoading={props.showUnits ? loadingConceptDescriptions : undefined} />

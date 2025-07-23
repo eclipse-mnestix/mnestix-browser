@@ -4,7 +4,7 @@ import { mnestixFetch } from 'lib/api/infrastructure';
 import { ApiResponseWrapper, wrapErrorCode } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { envs } from 'lib/env/MnestixEnv';
-import { ConceptDescription } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import { ConceptDescription } from 'lib/api/aas/models';
 import { ConceptDescriptionApi } from 'lib/api/concept-description-api/conceptDescriptionApi';
 
 const conceptDescriptionApi = ConceptDescriptionApi.create(

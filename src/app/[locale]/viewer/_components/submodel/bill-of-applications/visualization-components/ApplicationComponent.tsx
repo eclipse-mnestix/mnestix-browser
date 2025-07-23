@@ -3,7 +3,6 @@ import { ChevronRight, ExpandMore } from '@mui/icons-material';
 import { SimpleTreeView } from '@mui/x-tree-view';
 import { Entity, SubmodelElementChoice, KeyTypes } from 'lib/api/aas/models';
 import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
-import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { generateSubmodelViewObjectFromSubmodelElement } from 'lib/util/SubmodelViewObjectUtil';
 import { ApplicationTreeItem } from './ApplicationTreeItem';
 

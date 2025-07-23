@@ -1,20 +1,19 @@
 ﻿import {
-    ISubmodelElement,
+    SubmodelElementChoice,
     KeyTypes,
     MultiLanguageProperty,
     Property,
     Submodel,
     SubmodelElementCollection,
-} from '@aas-core-works/aas-core3.0-typescript/types';
+} from 'lib/api/aas/models';
 import { SubmodelCompareData, SubmodelCompareDataRecord } from 'lib/types/SubmodelCompareData';
-import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
 
 export function generateSubmodelCompareData(sm: Submodel | SubmodelElementCollection): SubmodelCompareData {
     const semanticId = sm.semanticId?.keys?.[0]?.value ?? null;
-    const idShort = sm.idShort;
+    const idShort = sm.idShort ?? null;
     let dataRecords = null;
-    const elementType = getKeyType(sm);
+    const elementType = sm.modelType;
     if (elementType === KeyTypes.SubmodelElementCollection) {
         const submodelElementCollection = sm as SubmodelElementCollection;
         if (submodelElementCollection.value) dataRecords = getSubmodelElementsValues(submodelElementCollection.value);
@@ -37,7 +36,7 @@ export function isCompareDataRecord(
     return compareRecord !== undefined && 'submodelElements' in compareRecord;
 }
 
-export function compareRowValues(smElements: (ISubmodelElement | null)[], locale: string) {
+export function compareRowValues(smElements: (SubmodelElementChoice | null)[], locale: string) {
     const marked: number[] = [];
     const values: (string | null)[] = [];
 
@@ -45,7 +44,7 @@ export function compareRowValues(smElements: (ISubmodelElement | null)[], locale
     smElements.forEach((el) => {
         if (!el) values.push(null);
         if (el) {
-            const submodelElementType = getKeyType(el);
+            const submodelElementType = el.modelType;
             switch (submodelElementType) {
                 case KeyTypes.Property:
                     values.push((el as Property).value ?? null);
@@ -83,12 +82,12 @@ export function compareRowValues(smElements: (ISubmodelElement | null)[], locale
     return marked;
 }
 
-function getSubmodelElementsValues(sm: ISubmodelElement[]): (SubmodelCompareDataRecord | SubmodelCompareData)[] | null {
+function getSubmodelElementsValues(sm: SubmodelElementChoice[]): (SubmodelCompareDataRecord | SubmodelCompareData)[] | null {
     if (!sm) return null;
     const submodelCompareDataRecords: (SubmodelCompareDataRecord | SubmodelCompareData)[] = [];
 
     sm.forEach((el) => {
-        const submodelElementType = getKeyType(el);
+        const submodelElementType = el.modelType;
         if (submodelElementType === KeyTypes.SubmodelElementCollection) {
             const elementCollection = el as SubmodelElementCollection;
             if (elementCollection.value != null) {
@@ -98,7 +97,7 @@ function getSubmodelElementsValues(sm: ISubmodelElement[]): (SubmodelCompareData
             }
         }
         const semanticId = el.semanticId?.keys?.[0]?.value ?? null;
-        const idShort = el.idShort;
+        const idShort = el.idShort ?? null;
         submodelCompareDataRecords.push({
             semanticId: semanticId,
             idShort: idShort,

@@ -10,15 +10,13 @@ import { SubmodelRegistryServiceApi } from 'lib/api/submodel-registry-service/su
 import { AssetAdministrationShellDescriptor, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import {
     AssetAdministrationShell,
-    Blob as aasCoreBlob,
-    File as aasCoreFile,
-    ISubmodelElement,
+    Blob,
+    SubmodelElementChoice,
     KeyTypes,
     Submodel,
     SubmodelElementCollection,
-} from '@aas-core-works/aas-core3.0-typescript/types';
+} from 'lib/api/aas/models';
 import { AttachmentDetails, TransferAas, TransferResult, TransferServiceConfig, TransferSubmodel } from 'lib/types/TransferServiceData';
-import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { generateRandomId } from 'lib/util/RandomUtils';
 import {
     aasThumbnailImageIsFile,
@@ -414,9 +412,9 @@ export class TransferService {
         }
     }
 
-    private getSubmodelAttachmentsDetails(submodelElements: ISubmodelElement[] | null) {
+    private getSubmodelAttachmentsDetails(submodelElements: SubmodelElementChoice[] | null) {
         const submodelAttachmentsDetails: AttachmentDetails[] = [];
-        for (const subEl of submodelElements as ISubmodelElement[]) {
+        for (const subEl of submodelElements as SubmodelElementChoice[]) {
             const idShort = subEl.idShort;
             if (idShort === null || idShort === undefined) continue;
 
@@ -427,7 +425,7 @@ export class TransferService {
 
     private getAttachmentsDetailsFromCollection(subElColl: SubmodelElementCollection, collectionIdShortPath: string) {
         const submodelAttachmentsDetails: AttachmentDetails[] = [];
-        for (const subEl of subElColl.value as ISubmodelElement[]) {
+        for (const subEl of subElColl.value as SubmodelElementChoice[]) {
             if (subEl.idShort === null || subEl.idShort === undefined) continue;
             const idShortPath = [collectionIdShortPath, subEl.idShort].join('.');
 
@@ -437,11 +435,11 @@ export class TransferService {
     }
 
     private processSubmodelElement(
-        subEl: ISubmodelElement,
+        subEl: SubmodelElementChoice,
         idShortPath: string,
         submodelAttachmentsDetails: AttachmentDetails[],
     ) {
-        const modelType = getKeyType(subEl);
+        const modelType = subEl.modelType;
         if (modelType === KeyTypes.SubmodelElementCollection) {
             if (!(subEl as SubmodelElementCollection).value) return;
             submodelAttachmentsDetails.push(
@@ -452,12 +450,12 @@ export class TransferService {
         if (modelType === KeyTypes.Blob) {
             submodelAttachmentsDetails.push({
                 idShortPath: idShortPath,
-                fileName: [(subEl as aasCoreBlob).idShort, generateRandomId()].join(''),
+                fileName: [subEl.idShort, generateRandomId()].join(''),
             });
         }
 
         if (modelType === KeyTypes.File) {
-            const submodelEl = subEl as aasCoreFile;
+            const submodelEl = subEl;
             if (isValidUrl(submodelEl.value ?? '')) {
                 return;
             }

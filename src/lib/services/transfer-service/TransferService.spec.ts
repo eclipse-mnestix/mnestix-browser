@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
 import { TransferService } from 'lib/services/transfer-service/TransferService';
 import testData from './TransferService.data.json';
-import { AssetAdministrationShell, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { AssetAdministrationShell, Submodel } from 'lib/api/aas/models';
 import {
     createShellDescriptorFromAas,
     createSubmodelDescriptorFromSubmodel,
