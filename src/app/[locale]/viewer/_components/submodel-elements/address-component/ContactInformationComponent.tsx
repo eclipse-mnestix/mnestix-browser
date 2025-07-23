@@ -38,7 +38,7 @@ export function ContactInformationComponent(props: CustomSubmodelElementComponen
 
     const addressData: Array<SubmodelElementChoice> = Object.values(props.submodelElement.value) as Array<SubmodelElementChoice>;
     const additionalLink: Array<DataElementChoice> = [];
-    const personData: Array<SubModelElementCollectionContactInfo> = [];
+    const personData: Array<SubmodelElementCollection> = [];
     const phone: Array<SubmodelElementCollection> = [];
     const fax: Array<SubmodelElementCollection> = [];
     const email: Array<SubmodelElementCollection> = [];
@@ -68,7 +68,7 @@ export function ContactInformationComponent(props: CustomSubmodelElementComponen
             return false;
         }
         if (id && idShortsOfSubmodelElementsContainingPersonData.includes(id)) {
-            personData.push(entry as SubModelElementCollectionContactInfo);
+            personData.push(entry as SubmodelElementCollection);
             return false;
         }
         return true;

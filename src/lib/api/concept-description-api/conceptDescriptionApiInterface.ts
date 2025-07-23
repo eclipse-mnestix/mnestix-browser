@@ -1,5 +1,5 @@
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { ConceptDescription } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import { ConceptDescription } from 'lib/api/aas/models';
 
 export interface IConceptDescriptionApi {
     getBasePath(): string;

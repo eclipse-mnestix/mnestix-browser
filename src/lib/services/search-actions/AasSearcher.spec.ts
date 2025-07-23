@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import { AssetAdministrationShellDescriptor } from 'lib/types/registryServiceTypes';
-import { AssetAdministrationShell } from '@aas-core-works/aas-core3.0-typescript/types';
+import { AssetAdministrationShell } from 'lib/api/aas/models';
 import { instance, mock } from 'ts-mockito';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { Log } from 'lib/util/Log';
@@ -171,7 +171,7 @@ describe('Full Aas Search edge cases', () => {
 
 // would prefer to do without mocks but the objects are too complicated to instantiate
 function createDummyAas(id: string = 'irrelevant AasId') {
-    const aas = mock(AssetAdministrationShell);
+    const aas = mock<AssetAdministrationShell>();
     const s = instance(aas);
     s.id = id;
     return s;

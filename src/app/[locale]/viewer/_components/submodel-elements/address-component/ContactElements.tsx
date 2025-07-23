@@ -5,7 +5,6 @@ import { getMailToHref, getSanitizedHref, getTelHref } from 'lib/util/HrefUtil';
 import { DataElementChoice, SubmodelElementCollection } from 'lib/api/aas/models';
 import enMessages from 'locale/en.json';
 import { GenericSubmodelElementComponent } from '../generic-elements/GenericSubmodelElementComponent';
-import { SubModelElementCollectionContactInfo } from 'lib/util/ApiExtensions/ExtendISubmodelElement';
 
 type AddressType = keyof typeof enMessages.components.addressComponent.addressTypes;
 
@@ -137,7 +136,7 @@ export function IpElement({ el, index }: { el: SubmodelElementCollection; index?
     );
 }
 
-export function PersonElement({ el, index }: { el: SubModelElementCollectionContactInfo; index?: number }) {
+export function PersonElement({ el, index }: { el: SubmodelElementCollection; index?: number }) {
     return (
         <Box key={index} sx={{ display: 'flex' }}>
             <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>

@@ -2,7 +2,7 @@
 // TODO MNES-1605 remove url lib together with this file
 import url from 'url';
 import { Configuration } from './configuration';
-import { AssetAdministrationShell, Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { AssetAdministrationShell, Reference, Submodel } from 'lib/api/aas/models';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import {
     IAssetAdministrationShellRepositoryApi,

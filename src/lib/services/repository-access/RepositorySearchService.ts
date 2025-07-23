@@ -1,9 +1,8 @@
 import { AssetAdministrationShellRepositoryApi, SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { mnestixFetch } from 'lib/api/infrastructure';
-import { AssetAdministrationShell, Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import { AssetAdministrationShell, Submodel, Reference } from 'lib/api/aas/models';
 import { PrismaConnector } from 'lib/services/database/PrismaConnector';
 import { IPrismaConnector } from 'lib/services/database/PrismaConnectorInterface';
-import { Reference } from '@aas-core-works/aas-core3.0-typescript/types';
 import {
     ApiResponseWrapper,
     ApiResponseWrapperSuccess,

@@ -1,5 +1,4 @@
-import { AssetAdministrationShell, Reference } from '@aas-core-works/aas-core3.0-typescript/types';
-import { Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import { AssetAdministrationShell, Reference, Submodel } from 'lib/api/aas/models';
 import { AttachmentDetails } from 'lib/types/TransferServiceData';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { MultiLanguageValueOnly, PaginationData } from 'lib/api/basyx-v3/types';

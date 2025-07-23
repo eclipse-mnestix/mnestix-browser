@@ -1,6 +1,6 @@
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Submodel } from 'lib/api/aas/models';
 
 export interface ISubmodelRegistryServiceApi {
     /**

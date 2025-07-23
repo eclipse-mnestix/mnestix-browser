@@ -1,5 +1,5 @@
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { SpecificAssetId } from '@aas-core-works/aas-core3.0-typescript/types';
+import { SpecificAssetId } from 'lib/api/aas/models';
 
 export type DiscoveryEntry = {
     aasId: string;

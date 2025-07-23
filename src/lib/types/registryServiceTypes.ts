@@ -5,7 +5,7 @@ import {
     LangStringTextType,
     Reference,
     SpecificAssetId,
-} from '@aas-core-works/aas-core3.0-typescript/types';
+} from 'lib/api/aas/models';
 
 /*
  * ---------------------------------------------------------------

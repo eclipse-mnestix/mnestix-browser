@@ -1,21 +1,21 @@
 import { expect } from '@jest/globals';
 import { RbacRulesService } from './RbacRulesService';
-import { JsonValue, submodelFromJsonable } from '@aas-core-works/aas-core3.0-typescript/jsonization';
 import testData from './RbacRulesService.data.json';
 import ServiceReachable from 'test-utils/TestUtils';
 import { SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { range } from 'lodash';
+import { Submodel } from 'lib/api/aas/models';
 
-const correctRules = testData.correct as JsonValue;
-const warningRules = testData.warning as JsonValue;
+const correctRules = testData.correct as Submodel;
+const warningRules = testData.warning as Submodel;
 
 describe('RbacRulesService', () => {
     describe('getAll', () => {
         it('should parse correct SecuritySubmodel', async () => {
             const service = RbacRulesService.createNull(
-                SubmodelRepositoryApi.createNull('', [submodelFromJsonable(correctRules).mustValue()]),
+                SubmodelRepositoryApi.createNull('', [correctRules]),
             );
             const res = await service.getRules();
             expect(res.isSuccess).toBeTruthy();
@@ -25,7 +25,7 @@ describe('RbacRulesService', () => {
 
         it('should add warnings if unknown data is in SecuritySubmodel', async () => {
             const service = RbacRulesService.createNull(
-                SubmodelRepositoryApi.createNull('', [submodelFromJsonable(warningRules).mustValue()]),
+                SubmodelRepositoryApi.createNull('', [warningRules]),
             );
             const res = await service.getRules();
             expect(res.isSuccess).toBeTruthy();
@@ -36,7 +36,7 @@ describe('RbacRulesService', () => {
             const service = RbacRulesService.createNull(
                 SubmodelRepositoryApi.createNull(
                     '',
-                    [submodelFromJsonable(warningRules).mustValue()],
+                    [warningRules],
                     ServiceReachable.No,
                 ),
             );
@@ -85,7 +85,7 @@ describe('RbacRulesService', () => {
 
         it('should show error if idShort already exists', async () => {
             const service = RbacRulesService.createNull(
-                SubmodelRepositoryApi.createNull('', [submodelFromJsonable(correctRules).mustValue()]),
+                SubmodelRepositoryApi.createNull('', [correctRules]),
             );
 
             const res = await service.createRule({
@@ -104,7 +104,7 @@ describe('RbacRulesService', () => {
     describe('update', () => {
         it('should show error if idShort already exists', async () => {
             const service = RbacRulesService.createNull(
-                SubmodelRepositoryApi.createNull('', [submodelFromJsonable(correctRules).mustValue()]),
+                SubmodelRepositoryApi.createNull('', [correctRules]),
             );
 
             const res = await service.deleteAndCreate(

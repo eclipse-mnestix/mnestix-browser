@@ -5,7 +5,7 @@ import {
     AasRegistryEndpointEntryInMemory,
     RegistryServiceApiInMemory,
 } from 'lib/api/registry-service-api/registryServiceApiInMemory';
-import { AssetAdministrationShell } from '@aas-core-works/aas-core3.0-typescript/types';
+import { AssetAdministrationShell } from 'lib/api/aas/models';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import path from 'node:path';
 import ServiceReachable from 'test-utils/TestUtils';

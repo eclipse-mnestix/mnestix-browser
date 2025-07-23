@@ -1,7 +1,7 @@
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { FetchAPI } from 'lib/api/basyx-v3/api';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { ConceptDescription } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import { ConceptDescription } from 'lib/api/aas/models';
 import path from 'node:path';
 import ServiceReachable from 'test-utils/TestUtils';
 import logger, { logResponseDebug } from 'lib/util/Logger';

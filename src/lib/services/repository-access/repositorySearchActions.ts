@@ -1,8 +1,8 @@
 'use server';
 
-import { AssetAdministrationShell, Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import { AssetAdministrationShell, Submodel } from 'lib/api/aas/models';
 import { RepoSearchResult, RepositorySearchService } from 'lib/services/repository-access/RepositorySearchService';
-import { Reference } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Reference } from 'lib/api/aas/models';
 import {
     ApiFileDto,
     ApiResponseWrapper,
