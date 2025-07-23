@@ -1,0 +1,21 @@
+{
+  "modelType": "AssetAdministrationShell",
+  "assetInformation": {
+    "assetKind": "Instance",
+    "assetType": "",
+    "defaultThumbnail": {
+      "contentType": "image/jpeg",
+      "path": "https://i40.xitaso.com/testAas_thumbnail"
+    },
+    "globalAssetId": "https://i40.xitaso.com/tesAas_00",
+    "specificAssetIds": [
+      {
+        "name": "assetIdShort",
+        "value": "testAas_00"
+      }
+    ]
+  },
+  "submodels": [],
+  "id": "https://i40.xitaso.com/aas/testAas_00",
+  "idShort": "testAas_00"
+}
