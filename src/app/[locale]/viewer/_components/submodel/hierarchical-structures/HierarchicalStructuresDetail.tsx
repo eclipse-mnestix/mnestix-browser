@@ -29,7 +29,7 @@ export function HierarchicalStructuresDetail({ submodel }: SubmodelVisualization
 
     const entitySubmodelElement = smElements?.find((el) => {
         if (el.modelType === KeyTypes.Entity) {
-            return el as Entity;
+            return el;
         }
         return;
     });
@@ -39,7 +39,7 @@ export function HierarchicalStructuresDetail({ submodel }: SubmodelVisualization
             el.modelType === KeyTypes.Property &&
             el.semanticId?.keys[0].value === HierarchicalStructuresSubmodelElementSemanticIdEnum.ArcheType
         ) {
-            return el as Property;
+            return el;
         }
         return;
     });
@@ -237,7 +237,7 @@ function checkSubmodelsElements(smElements: Array<SubmodelElementChoice> | undef
 
     for (let i = 0; i < smElements.length; ++i) {
         const smElementType = smElements[i].modelType;
-        if (smElementType === KeyTypes.Entity) foundElements.push(smElements[i] as SubmodelElementChoice);
+        if (smElementType === KeyTypes.Entity) foundElements.push(smElements[i]);
 
         if (foundElements.length > 1) return true;
     }

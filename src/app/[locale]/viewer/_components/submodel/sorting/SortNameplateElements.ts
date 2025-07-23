@@ -8,12 +8,12 @@ export function SortNameplateElements(submodel: Submodel | SubmodelElementCollec
     }
 
     const key = submodel.semanticId?.keys?.[0]?.value;
-    let submodels: SubmodelElementChoice[];
+    let submodels: SubmodelElementChoice[] | undefined;
     if ('submodelElements' in submodel && submodel['submodelElements']) {
         submodels = submodel.submodelElements;
     } else {
         const collection = submodel as SubmodelElementCollection;
-        submodels = collection.value as SubmodelElementChoice[];
+        submodels = collection.value;
     }
 
     if (!submodels) {
@@ -34,7 +34,7 @@ export function SortNameplateElements(submodel: Submodel | SubmodelElementCollec
     // Recursive
     submodels.forEach((submodel) => {
         if (submodel.modelType == KeyTypes.SubmodelElementCollection) {
-            SortNameplateElements(submodel as SubmodelElementCollection);
+            SortNameplateElements(submodel);
         }
     });
 }

@@ -1,8 +1,6 @@
 ﻿import {
     SubmodelElementChoice,
     KeyTypes,
-    MultiLanguageProperty,
-    Property,
     Submodel,
     SubmodelElementCollection,
 } from 'lib/api/aas/models';
@@ -15,10 +13,10 @@ export function generateSubmodelCompareData(sm: Submodel | SubmodelElementCollec
     let dataRecords = null;
     const elementType = sm.modelType;
     if (elementType === KeyTypes.SubmodelElementCollection) {
-        const submodelElementCollection = sm as SubmodelElementCollection;
+        const submodelElementCollection = sm;
         if (submodelElementCollection.value) dataRecords = getSubmodelElementsValues(submodelElementCollection.value);
     } else {
-        const submodel = sm as Submodel;
+        const submodel = sm;
         if (submodel.submodelElements) dataRecords = getSubmodelElementsValues(submodel.submodelElements);
     }
     return { semanticId: semanticId, idShort: idShort, dataRecords: dataRecords };
@@ -47,10 +45,10 @@ export function compareRowValues(smElements: (SubmodelElementChoice | null)[], l
             const submodelElementType = el.modelType;
             switch (submodelElementType) {
                 case KeyTypes.Property:
-                    values.push((el as Property).value ?? null);
+                    values.push((el).value ?? null);
                     break;
                 case KeyTypes.MultiLanguageProperty:
-                    values.push(getTranslationText(el as MultiLanguageProperty, locale));
+                    values.push(getTranslationText(el, locale));
                     break;
             }
         }
@@ -89,7 +87,7 @@ function getSubmodelElementsValues(sm: SubmodelElementChoice[]): (SubmodelCompar
     sm.forEach((el) => {
         const submodelElementType = el.modelType;
         if (submodelElementType === KeyTypes.SubmodelElementCollection) {
-            const elementCollection = el as SubmodelElementCollection;
+            const elementCollection = el;
             if (elementCollection.value != null) {
                 const submodelRecords = generateSubmodelCompareData(elementCollection);
                 submodelCompareDataRecords.push(submodelRecords);

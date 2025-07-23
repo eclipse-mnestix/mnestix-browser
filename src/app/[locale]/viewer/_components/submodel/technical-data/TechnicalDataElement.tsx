@@ -1,12 +1,7 @@
 import {
     ConceptDescription,
-    ModelFile,
     SubmodelElementChoice,
-    KeyTypes,
-    MultiLanguageProperty,
-    Range,
-    SubmodelElementList,
-    SubmodelElementCollection,
+    KeyTypes
 } from 'lib/api/aas/models';
 import { useTranslations } from 'next-intl';
 import { Box, Typography, useTheme } from '@mui/material';
@@ -45,7 +40,7 @@ export const TechnicalDataElement = (props: {
                 el.modelType === KeyTypes.SubmodelElementCollection ||
                 el.modelType === KeyTypes.SubmodelElementList
             ) {
-                const collection = el as SubmodelElementCollection | SubmodelElementList;
+                const collection = el;
                 if (collection.value) {
                     acc.push(...getFlatMapOfAllSemanticIds(collection.value));
                 }
@@ -120,13 +115,13 @@ export const TechnicalDataElement = (props: {
                             },
                         }}
                     >
-                        {(element as SubmodelElementCollection | SubmodelElementList)?.value?.map(
+                        {(element)?.value?.map(
                             (child) => child && <React.Fragment key={child.idShort}>{renderSubmodelElement(child)}</React.Fragment>,
                         )}
                     </TreeItem>
                 );
             case KeyTypes.File: {
-                const file = element as ModelFile;
+                const file = element;
                 const path = buildSubmodelElementPath('GeneralInformation', element.idShort);
 
                 return (
@@ -150,7 +145,7 @@ export const TechnicalDataElement = (props: {
                         conceptDescriptionLoading={loadingConceptDescriptions}
                     >
                         <GenericPropertyComponent
-                            mLangProp={element as MultiLanguageProperty}
+                            mLangProp={element}
                             conceptDescription={props.showUnits ? conceptDescriptions[semanticId] : undefined}
                             conceptDescriptionLoading={props.showUnits ? loadingConceptDescriptions : undefined}
                         />
@@ -164,7 +159,7 @@ export const TechnicalDataElement = (props: {
                         conceptDescription={conceptDescriptions[semanticId]}
                     >
                         <GenericPropertyComponent
-                            range={element as Range}
+                            range={element}
                             conceptDescription={props.showUnits ? conceptDescriptions[semanticId] : undefined}
                             conceptDescriptionLoading={props.showUnits ? loadingConceptDescriptions : undefined}
                         />

@@ -82,7 +82,7 @@ export const CompareAasContextProvider = (props: PropsWithChildren) => {
     const addSeveralAas = async (input: string[]) => {
         const aasList: CompareAAS[] = [];
         let compareDataTemp: SubmodelCompareData[] = [];
-        for (const aasId of input as string[]) {
+        for (const aasId of input) {
             const { isSuccess, result } = await performFullAasSearch(aasId);
             if (isSuccess && result.aas) {
                 const aas = {

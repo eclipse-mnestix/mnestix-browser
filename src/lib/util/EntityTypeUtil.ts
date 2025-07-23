@@ -1,6 +1,6 @@
 import { EntityType } from 'lib/api/aas/models';
 
-// TODO replace any - used to be class but that doesn't exist in the generated types
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function GetEntityType(el: any): EntityType | null {
     try {
         const jsonable = JSON.parse(JSON.stringify(el));

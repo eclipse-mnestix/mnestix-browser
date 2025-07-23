@@ -1,11 +1,8 @@
 import {
-    Entity,
     SubmodelElementChoice,
     KeyTypes,
     LangStringTextType,
-    MultiLanguageProperty,
     Property,
-    SubmodelElementCollection,
 } from 'lib/api/aas/models';
 import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import { cloneDeep, parseInt } from 'lodash';
@@ -22,7 +19,7 @@ export function generateSubmodelViewObjectFromSubmodelElement(el: SubmodelElemen
     };
 
     if (localEl.modelType === KeyTypes.SubmodelElementCollection) {
-        const col = localEl as SubmodelElementCollection;
+        const col = localEl;
         const arr = col.value || [];
         arr.forEach((child, i) => {
             if (!child) return;
@@ -30,7 +27,7 @@ export function generateSubmodelViewObjectFromSubmodelElement(el: SubmodelElemen
         });
         col.value = [];
     } else if (localEl.modelType === KeyTypes.Entity) {
-        const entity = localEl as Entity;
+        const entity = localEl;
         entity.statements?.forEach((child, i) => {
             if (!child) return;
             frontend.children?.push(generateSubmodelViewObjectFromSubmodelElement(child, id + '-' + i));
@@ -49,7 +46,7 @@ export function viewObjectHasDataValue(el: SubmodelViewObject) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return !!(el.data as any).value;
         case KeyTypes.MultiLanguageProperty: {
-            const mLangProp = el.data as MultiLanguageProperty;
+            const mLangProp = el.data;
             if (Array.isArray(mLangProp.value)) {
                 return !!mLangProp.value.length;
             } else if (mLangProp.value! as Array<LangStringTextType>) {

@@ -4,7 +4,7 @@ import { SubmodelElementCollectionComponent } from './SubmodelElementCollectionC
 import { DataRow } from 'components/basics/DataRow';
 import { FileComponent } from './FileComponent';
 import { MultiLanguagePropertyComponent } from './MultiLanguagePropertyComponent';
-import { Entity, KeyTypes } from 'lib/api/aas/models';
+import { KeyTypes } from 'lib/api/aas/models';
 import { EntityComponent } from './entity-components/EntityComponent';
 import { buildSubmodelElementPath } from 'lib/util/SubmodelResolverUtil';
 import { SubmodelElementComponentProps } from '../SubmodelElementComponentProps';
@@ -55,7 +55,7 @@ export function GenericSubmodelElementComponent(props: GenericSubmodelElementCom
             case KeyTypes.MultiLanguageProperty:
                 return <MultiLanguagePropertyComponent mLangProp={props.submodelElement} />;
             case KeyTypes.Entity:
-                return <EntityComponent entity={props.submodelElement as Entity} />;
+                return <EntityComponent entity={props.submodelElement} />;
             default:
                 return (
                     <Typography color="error" variant="body2">

@@ -4,7 +4,6 @@ import {
     SubmodelElementChoice,
     Submodel,
     MultiLanguageProperty,
-    Property,
     KeyTypes,
     DataElementChoice,
     Reference,
@@ -38,9 +37,9 @@ export function getTranslationText(
 export function getTranslationValue(element: DataElementChoice, locale: string): string | null {
     switch (element.modelType) {
         case KeyTypes.MultiLanguageProperty:
-            return getTranslationText(element as MultiLanguageProperty, locale);
+            return getTranslationText(element, locale);
         case KeyTypes.Property:
-            return (element as Property).value ?? null;
+            return (element).value ?? null;
         default:
             return null;
     }
@@ -183,9 +182,9 @@ export function findValueByIdShort(
     if (!element) return null;
     switch (element.modelType) {
         case KeyTypes.MultiLanguageProperty:
-            return getTranslationText(element as MultiLanguageProperty, locale);
+            return getTranslationText(element, locale);
         case KeyTypes.Property:
-            return (element as Property).value ?? null;
+            return (element).value ?? null;
         default:
             return null;
     }

@@ -8,7 +8,6 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 
 import {
-    SubmodelElementChoice,
     Property,
     Qualifier,
     SubmodelElementCollection,

@@ -414,7 +414,9 @@ export class TransferService {
 
     private getSubmodelAttachmentsDetails(submodelElements: SubmodelElementChoice[] | null) {
         const submodelAttachmentsDetails: AttachmentDetails[] = [];
-        for (const subEl of submodelElements as SubmodelElementChoice[]) {
+        if (!submodelElements) return submodelAttachmentsDetails;
+
+        for (const subEl of submodelElements) {
             const idShort = subEl.idShort;
             if (idShort === null || idShort === undefined) continue;
 
@@ -425,7 +427,8 @@ export class TransferService {
 
     private getAttachmentsDetailsFromCollection(subElColl: SubmodelElementCollection, collectionIdShortPath: string) {
         const submodelAttachmentsDetails: AttachmentDetails[] = [];
-        for (const subEl of subElColl.value as SubmodelElementChoice[]) {
+        if (!subElColl.value || !Array.isArray(subElColl.value)) return submodelAttachmentsDetails;
+        for (const subEl of subElColl.value) {
             if (subEl.idShort === null || subEl.idShort === undefined) continue;
             const idShortPath = [collectionIdShortPath, subEl.idShort].join('.');
 
@@ -441,9 +444,9 @@ export class TransferService {
     ) {
         const modelType = subEl.modelType;
         if (modelType === KeyTypes.SubmodelElementCollection) {
-            if (!(subEl as SubmodelElementCollection).value) return;
+            if (!subEl.value) return;
             submodelAttachmentsDetails.push(
-                ...this.getAttachmentsDetailsFromCollection(subEl as SubmodelElementCollection, idShortPath),
+                ...this.getAttachmentsDetailsFromCollection(subEl, idShortPath),
             );
         }
 

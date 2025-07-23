@@ -6,7 +6,6 @@ import {
     SubmodelElementChoice,
     SubmodelElementCollection,
 } from 'lib/api/aas/models';
-import { SubModelElementCollectionContactInfo } from 'lib/util/ApiExtensions/ExtendISubmodelElement';
 import {
     AddressElement,
     EmailElement,
@@ -36,7 +35,7 @@ export function ContactInformationComponent(props: CustomSubmodelElementComponen
         return <></>;
     }
 
-    const addressData: Array<SubmodelElementChoice> = Object.values(props.submodelElement.value) as Array<SubmodelElementChoice>;
+    const addressData: Array<SubmodelElementChoice> = Object.values(props.submodelElement.value);
     const additionalLink: Array<DataElementChoice> = [];
     const personData: Array<SubmodelElementCollection> = [];
     const phone: Array<SubmodelElementCollection> = [];

@@ -13,7 +13,7 @@ interface MappingInfoEditComponentProps {
 }
 
 export function MappingInfoEditComponent(props: MappingInfoEditComponentProps) {
-    const mappingInfoData = mappingInfoDataJson as unknown as MappingInfoData;
+    const mappingInfoData = mappingInfoDataJson as MappingInfoData;
     const [data, setData] = useState(props.data);
     const [mappingInfo, setMappingInfo] = useState(getMappingInfo());
     const [valueEnabled, setValueEnabled] = useState(!!mappingInfo?.value?.length);

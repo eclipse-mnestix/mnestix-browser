@@ -30,7 +30,7 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
         <ArticleOutlined fontSize="small" color="primary" />
     );
     const isRelationShip = data?.modelType === KeyTypes.RelationshipElement;
-    const assetId = isEntity ? (data as Entity).globalAssetId : undefined;
+    const assetId = isEntity ? data.globalAssetId : undefined;
     const showDataDirectly = [KeyTypes.Property, KeyTypes.MultiLanguageProperty].find(
         (mt) => mt === data?.modelType,
     );
