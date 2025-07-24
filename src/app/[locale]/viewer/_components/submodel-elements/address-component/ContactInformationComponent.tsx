@@ -1,11 +1,7 @@
 import { DataRow } from 'components/basics/DataRow';
 import { DialerSip, Mail, Person, Phone, Place, Print, Public } from '@mui/icons-material';
 import { AddressGroupWithIcon } from './AddressGroupWithIcon';
-import {
-    DataElementChoice,
-    SubmodelElementChoice,
-    SubmodelElementCollection,
-} from 'lib/api/aas/models';
+import { DataElementChoice, SubmodelElementChoice, SubmodelElementCollection } from 'lib/api/aas/models';
 import {
     AddressElement,
     EmailElement,

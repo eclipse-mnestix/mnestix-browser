@@ -47,7 +47,7 @@ export function SubmodelEditComponent(props: SubmodelEditComponentProps) {
                     slotProps={{
                         htmlInput: {
                             'data-testid': 'display-name-input',
-                        }
+                        },
                     }}
                 />
             </Box>

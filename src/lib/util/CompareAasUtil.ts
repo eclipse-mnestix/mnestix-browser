@@ -1,9 +1,4 @@
-﻿import {
-    SubmodelElementChoice,
-    KeyTypes,
-    Submodel,
-    SubmodelElementCollection,
-} from 'lib/api/aas/models';
+﻿import { SubmodelElementChoice, KeyTypes, Submodel, SubmodelElementCollection } from 'lib/api/aas/models';
 import { SubmodelCompareData, SubmodelCompareDataRecord } from 'lib/types/SubmodelCompareData';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
 
@@ -44,7 +39,7 @@ export function compareRowValues(smElements: (SubmodelElementChoice | null)[], l
             const submodelElementType = el.modelType;
             switch (submodelElementType) {
                 case KeyTypes.Property:
-                    values.push((el).value ?? null);
+                    values.push(el.value ?? null);
                     break;
                 case KeyTypes.MultiLanguageProperty:
                     values.push(getTranslationText(el, locale));
@@ -79,7 +74,9 @@ export function compareRowValues(smElements: (SubmodelElementChoice | null)[], l
     return marked;
 }
 
-function getSubmodelElementsValues(sm: SubmodelElementChoice[]): (SubmodelCompareDataRecord | SubmodelCompareData)[] | null {
+function getSubmodelElementsValues(
+    sm: SubmodelElementChoice[],
+): (SubmodelCompareDataRecord | SubmodelCompareData)[] | null {
     if (!sm) return null;
     const submodelCompareDataRecords: (SubmodelCompareDataRecord | SubmodelCompareData)[] = [];
 

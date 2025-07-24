@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useLocale } from 'next-intl';
-import { SubmodelElementCollection, ModelFile, SubmodelElementChoice, Property, MultiLanguageProperty } from 'lib/api/aas/models';
+import {
+    SubmodelElementCollection,
+    ModelFile,
+    SubmodelElementChoice,
+    Property,
+    MultiLanguageProperty,
+} from 'lib/api/aas/models';
 import { findSubmodelElementBySemanticIdsOrIdShort, getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import {
     DocumentSpecificSemanticId,
@@ -116,7 +122,10 @@ export function useFileViewObject(submodelElement: SubmodelElementCollection, su
         return digitalFile;
     }
 
-    function getPreviewImageUrl(versionSubmodelEl: SubmodelElementChoice, previewSubmodelElement: SubmodelElementChoice) {
+    function getPreviewImageUrl(
+        versionSubmodelEl: SubmodelElementChoice,
+        previewSubmodelElement: SubmodelElementChoice,
+    ) {
         if (isValidUrl((versionSubmodelEl as ModelFile).value)) {
             return (versionSubmodelEl as ModelFile).value ?? '';
         } else if (submodelId && previewSubmodelElement.idShort && previewSubmodelElement?.idShort) {

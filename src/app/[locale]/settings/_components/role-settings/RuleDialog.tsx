@@ -168,7 +168,11 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
                 );
             case 'delete':
                 return (
-                    <DeleteRuleDialogContent rule={rule} onCancelDialog={() => setDialogMode('view')} onDelete={onDelete} />
+                    <DeleteRuleDialogContent
+                        rule={rule}
+                        onCancelDialog={() => setDialogMode('view')}
+                        onDelete={onDelete}
+                    />
                 );
             case 'create-hint':
                 return <KeycloakHint hint="create" onClose={onClose} />;

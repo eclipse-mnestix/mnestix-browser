@@ -2,7 +2,10 @@ import { SubmodelElementCollection } from 'lib/api/aas/models';
 import { TimeSeriesSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesSubmodelElementSemanticId.enum';
 import { InfluxTimeSeries } from './InfluxTimeSeries';
 import { InternalTimeSeries } from 'app/[locale]/viewer/_components/submodel/time-series/InternalTimeSeries';
-import { findAllSubmodelElementsBySemanticIdsOrIdShortPrefix, findSubmodelElementBySemanticIdsOrIdShort } from 'lib/util/SubmodelResolverUtil';
+import {
+    findAllSubmodelElementsBySemanticIdsOrIdShortPrefix,
+    findSubmodelElementBySemanticIdsOrIdShort,
+} from 'lib/util/SubmodelResolverUtil';
 import { Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
@@ -10,11 +13,9 @@ import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/subm
 export function TimeSeriesVisualizations({ submodel }: SubmodelVisualizationProps) {
     const t = useTranslations('pages.aasViewer.submodels.timeSeries');
 
-    const timeSeriesSegments = findSubmodelElementBySemanticIdsOrIdShort(
-        submodel.submodelElements,
-        'Segments',
-        [TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegments],
-    ) as SubmodelElementCollection | undefined;
+    const timeSeriesSegments = findSubmodelElementBySemanticIdsOrIdShort(submodel.submodelElements, 'Segments', [
+        TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegments,
+    ]) as SubmodelElementCollection | undefined;
 
     if (!timeSeriesSegments || !timeSeriesSegments.value || timeSeriesSegments.value.length === 0) {
         return <Typography>{t('noTimeSeriesSegments')}</Typography>;

@@ -1,11 +1,4 @@
-import {
-    Entity,
-    EntityType,
-    SubmodelElementChoice,
-    KeyTypes,
-    Property,
-    RelationshipElement,
-} from 'lib/api/aas/models';
+import { Entity, EntityType, SubmodelElementChoice, KeyTypes, Property, RelationshipElement } from 'lib/api/aas/models';
 import { EntityComponent } from '../../submodel-elements/generic-elements/entity-components/EntityComponent';
 import { cloneDeep } from 'lodash';
 import { HierarchicalStructuresSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/hierarchical-structures/HierarchicalStructuresSubmodelElementSemanticId.enum';

@@ -55,9 +55,10 @@ export async function getFileUrl(fileUrl: string, accessToken?: string, reposito
 
     try {
         const response = await fetchFileServerSide(fileUrl);
-        if(response.isSuccess) {
+        if (response.isSuccess) {
             return window.URL.createObjectURL(response.result);
-        } return;
+        }
+        return;
     } catch (e) {
         console.warn(`Failed to open file with auth: ${e}`);
         return fileUrl;

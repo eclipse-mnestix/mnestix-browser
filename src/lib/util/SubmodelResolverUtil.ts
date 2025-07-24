@@ -19,11 +19,7 @@ import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
  * @returns The translated text for the given locale, falling back to the first available translation, or null
  */
 export function getTranslationText(
-    element:
-        | MultiLanguageProperty
-        | AbstractLangString[]
-        | undefined
-        | null,
+    element: MultiLanguageProperty | AbstractLangString[] | undefined | null,
     locale: string,
 ): string {
     const langStrings = Array.isArray(element) ? element : element?.value;
@@ -39,7 +35,7 @@ export function getTranslationValue(element: DataElementChoice, locale: string):
         case KeyTypes.MultiLanguageProperty:
             return getTranslationText(element, locale);
         case KeyTypes.Property:
-            return (element).value ?? null;
+            return element.value ?? null;
         default:
             return null;
     }
@@ -82,11 +78,7 @@ export function findSubmodelElementBySemanticIdsOrIdShort(
         }
 
         if (el.modelType == KeyTypes.SubmodelElementCollection) {
-            const foundInCollection = findSubmodelElementBySemanticIdsOrIdShort(
-                el.value ?? null,
-                idShort,
-                semanticIds,
-            );
+            const foundInCollection = findSubmodelElementBySemanticIdsOrIdShort(el.value ?? null, idShort, semanticIds);
             if (foundInCollection) {
                 return foundInCollection;
             }
@@ -116,11 +108,7 @@ export function findAllSubmodelElementsBySemanticIdsOrIdShort(
         }
 
         if (el.modelType === KeyTypes.SubmodelElementCollection) {
-            const nestedMatches = findAllSubmodelElementsBySemanticIdsOrIdShort(
-                el.value ?? null,
-                idShort,
-                semanticIds,
-            );
+            const nestedMatches = findAllSubmodelElementsBySemanticIdsOrIdShort(el.value ?? null, idShort, semanticIds);
             if (nestedMatches) {
                 matchingElements.push(...nestedMatches);
             }
@@ -184,7 +172,7 @@ export function findValueByIdShort(
         case KeyTypes.MultiLanguageProperty:
             return getTranslationText(element, locale);
         case KeyTypes.Property:
-            return (element).value ?? null;
+            return element.value ?? null;
         default:
             return null;
     }

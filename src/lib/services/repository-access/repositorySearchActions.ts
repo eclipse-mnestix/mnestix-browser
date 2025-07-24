@@ -113,11 +113,11 @@ export async function downloadAasFromRepo(
     aasId: string | string[],
     submodelIds: string[],
     baseRepositoryUrl: string,
-    includeConceptDescriptions = true
+    includeConceptDescriptions = true,
 ): Promise<ApiResponseWrapper<Blob>> {
     const logger = createRequestLogger(await headers());
     logInfo(logger, 'downloadAasFromRepo', 'Requested Download', {
-        aasId: aasId
+        aasId: aasId,
     });
     const fileSearcher = AssetAdministrationShellRepositoryApi.create(baseRepositoryUrl, mnestixFetch());
     const response = await fileSearcher.downloadAAS(aasId, submodelIds, includeConceptDescriptions);

@@ -1,11 +1,7 @@
 import { DataRow } from 'components/basics/DataRow';
 import { DialerSip, Info, Mail, Phone, Place, Print, Public } from '@mui/icons-material';
 import { AddressGroupWithIcon } from './AddressGroupWithIcon';
-import {
-    DataElementChoice,
-    SubmodelElementChoice,
-    SubmodelElementCollection,
-} from 'lib/api/aas/models';
+import { DataElementChoice, SubmodelElementChoice, SubmodelElementCollection } from 'lib/api/aas/models';
 import {
     AddressElement,
     EmailElement,
@@ -35,7 +31,9 @@ export function AddressComponent(props: CustomSubmodelElementComponentProps) {
         return <></>;
     }
 
-    const addressData: Array<SubmodelElementChoice> = Object.values(props.submodelElement.value) as Array<SubmodelElementChoice>;
+    const addressData: Array<SubmodelElementChoice> = Object.values(
+        props.submodelElement.value,
+    ) as Array<SubmodelElementChoice>;
     const additionalLink: Array<DataElementChoice> = [];
     const vatNumber: Array<DataElementChoice> = [];
     const phone: Array<SubmodelElementCollection> = [];

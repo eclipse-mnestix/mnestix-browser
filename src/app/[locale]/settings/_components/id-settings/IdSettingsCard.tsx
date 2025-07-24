@@ -7,11 +7,7 @@ import { AssetIdRedirectDocumentationDialog } from './AssetIdRedirectDocumentati
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 
-import {
-    Property,
-    Qualifier,
-    SubmodelElementCollection,
-} from 'lib/api/aas/models';
+import { Property, Qualifier, SubmodelElementCollection } from 'lib/api/aas/models';
 import { getArrayFromString } from 'lib/util/SubmodelResolverUtil';
 import { useAuth } from 'lib/hooks/UseAuth';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';

@@ -8,12 +8,12 @@ import { findValueByIdShort } from 'lib/util/SubmodelResolverUtil';
 /**
  * A hook that returns a function to find values in submodel elements by idShort
  * with the current locale automatically applied.
- * 
+ *
  * @returns A function to find values by idShort that includes the current locale
  */
 export function useFindValueByIdShort() {
     const locale = useLocale();
-    
+
     return useCallback(
         (
             elements: SubmodelElementChoice[] | null,
@@ -22,6 +22,6 @@ export function useFindValueByIdShort() {
         ): string | null => {
             return findValueByIdShort(elements, idShort, semanticId, locale);
         },
-        [locale]
+        [locale],
     );
 }

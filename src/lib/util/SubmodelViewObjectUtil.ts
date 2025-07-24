@@ -1,13 +1,11 @@
-import {
-    SubmodelElementChoice,
-    KeyTypes,
-    LangStringTextType,
-    Property,
-} from 'lib/api/aas/models';
+import { SubmodelElementChoice, KeyTypes, LangStringTextType, Property } from 'lib/api/aas/models';
 import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import { cloneDeep, parseInt } from 'lodash';
 
-export function generateSubmodelViewObjectFromSubmodelElement(el: SubmodelElementChoice, id: string): SubmodelViewObject {
+export function generateSubmodelViewObjectFromSubmodelElement(
+    el: SubmodelElementChoice,
+    id: string,
+): SubmodelViewObject {
     const localEl = cloneDeep(el);
     const frontend: SubmodelViewObject = {
         id,

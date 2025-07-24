@@ -16,7 +16,13 @@ import {
     Submodel,
     SubmodelElementCollection,
 } from 'lib/api/aas/models';
-import { AttachmentDetails, TransferAas, TransferResult, TransferServiceConfig, TransferSubmodel } from 'lib/types/TransferServiceData';
+import {
+    AttachmentDetails,
+    TransferAas,
+    TransferResult,
+    TransferServiceConfig,
+    TransferSubmodel,
+} from 'lib/types/TransferServiceData';
 import { generateRandomId } from 'lib/util/RandomUtils';
 import {
     aasThumbnailImageIsFile,
@@ -51,9 +57,7 @@ export class TransferService {
         readonly apikey?: string,
     ) {}
 
-    static create(
-        config: TransferServiceConfig,
-    ): TransferService {
+    static create(config: TransferServiceConfig): TransferService {
         const targetAasRepositoryClient = AssetAdministrationShellRepositoryApi.create(
             config.targetAasRepoUrl,
             mnestixFetch(),
@@ -445,9 +449,7 @@ export class TransferService {
         const modelType = subEl.modelType;
         if (modelType === KeyTypes.SubmodelElementCollection) {
             if (!subEl.value) return;
-            submodelAttachmentsDetails.push(
-                ...this.getAttachmentsDetailsFromCollection(subEl, idShortPath),
-            );
+            submodelAttachmentsDetails.push(...this.getAttachmentsDetailsFromCollection(subEl, idShortPath));
         }
 
         if (modelType === KeyTypes.Blob) {

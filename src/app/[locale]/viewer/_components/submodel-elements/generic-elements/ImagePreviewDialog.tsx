@@ -17,24 +17,13 @@ interface ImagePreviewDialogProps {
  */
 function ImagePreviewDialog({ open, onClose, file, submodelId, submodelElementPath }: ImagePreviewDialogProps) {
     return (
-        <Dialog
-            open={open}
-            onClose={onClose}
-            maxWidth="md"
-            fullWidth
-            aria-labelledby="image-preview-dialog-title"
-        >
+        <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth aria-labelledby="image-preview-dialog-title">
             <DialogTitle
                 id="image-preview-dialog-title"
                 sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
             >
                 {file?.idShort || 'Image Preview'}
-                <IconButton
-                    onClick={onClose}
-                    edge="end"
-                    aria-label="close"
-                    size="large"
-                >
+                <IconButton onClick={onClose} edge="end" aria-label="close" size="large">
                     <CloseIcon />
                 </IconButton>
             </DialogTitle>

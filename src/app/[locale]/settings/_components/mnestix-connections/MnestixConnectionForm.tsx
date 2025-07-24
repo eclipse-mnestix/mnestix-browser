@@ -73,8 +73,7 @@ export function MnestixConnectionsForm(props: MnestixConnectionsFormProps) {
                                 defaultValue={field.url}
                                 rules={{
                                     required: t('urlFieldRequired'),
-                                    validate: (value: string) =>
-                                        !value.endsWith('/') || t('urlFieldNoTrailingSlash'),
+                                    validate: (value: string) => !value.endsWith('/') || t('urlFieldNoTrailingSlash'),
                                 }}
                                 render={({ field, fieldState: { error } }) => (
                                     <TextField
@@ -109,7 +108,7 @@ export function MnestixConnectionsForm(props: MnestixConnectionsFormProps) {
             </Typography>
             <Box display="flex" flexDirection="row" mb={4} alignItems="center">
                 <Typography variant="h4" mr={4} width="200px">
-                {t(`${dataConnectionName}.repositoryDefaultLabel`)}
+                    {t(`${dataConnectionName}.repositoryDefaultLabel`)}
                 </Typography>
                 <Typography>{defaultUrl}</Typography>
             </Box>

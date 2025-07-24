@@ -16,7 +16,7 @@ export function AboutDialog(props: AboutDialogProps) {
 
     return (
         <Dialog open={props.open} onClose={props.onClose} maxWidth="md" fullWidth={true}>
-            <DialogCloseButton handleClose={props.onClose}/>
+            <DialogCloseButton handleClose={props.onClose} />
             <DialogContent style={{ padding: '40px' }}>
                 <Box display="flex" flexDirection="column" gap="20px">
                     <Box display="flex" flexDirection="row" justifyContent="space-between">

@@ -51,4 +51,4 @@ export type TransferServiceConfig = {
     targetAasRegistryUrl?: string;
     targetSubmodelRegistryUrl?: string;
     apikey?: string;
-}
+};

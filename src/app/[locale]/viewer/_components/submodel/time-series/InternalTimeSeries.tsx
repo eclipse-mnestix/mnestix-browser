@@ -32,17 +32,17 @@ export function InternalTimeSeries(props: { submodelElement: SubmodelElementColl
     }, [props.submodelElement]);
 
     const name = findValueByIdShort(
-            props.submodelElement.value,
-            'Name',
-            TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegmentName,
-            locale
-        );
-    
+        props.submodelElement.value,
+        'Name',
+        TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegmentName,
+        locale,
+    );
+
     const description = findValueByIdShort(
         props.submodelElement.value,
         'Description',
         TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegmentDescription,
-        locale
+        locale,
     );
 
     if (isLoading) return <CircularProgress />;

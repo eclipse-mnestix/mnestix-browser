@@ -35,19 +35,19 @@ export function useNotificationContext(): NotificationContextType {
 export function NotificationContextProvider(props: PropsWithChildren) {
     // Track notification state locally but source it from the service
     const [notification, setNotificationState] = useState<Notification | null>(
-        notificationService.getCurrentNotification()
+        notificationService.getCurrentNotification(),
     );
-    
+
     // Subscribe to notification changes from the service
     useEffect(() => {
         const unsubscribe = notificationService.subscribe((newNotification) => {
             setNotificationState(newNotification);
         });
-        
+
         // Cleanup subscription on unmount
         return unsubscribe;
     }, []);
-    
+
     // Create a stable setter function
     const setNotification = useCallback((newNotification: Notification | null) => {
         if (newNotification === null) {
@@ -56,16 +56,15 @@ export function NotificationContextProvider(props: PropsWithChildren) {
             notificationService.show(newNotification);
         }
     }, []);
-    
-    // Memoize the context value to prevent unnecessary re-renders
-    const contextValue = useMemo(() => ({
-        notification,
-        setNotification
-    }), [notification, setNotification]);
 
-    return (
-        <NotificationContext.Provider value={contextValue}>
-            {props.children}
-        </NotificationContext.Provider>
+    // Memoize the context value to prevent unnecessary re-renders
+    const contextValue = useMemo(
+        () => ({
+            notification,
+            setNotification,
+        }),
+        [notification, setNotification],
     );
+
+    return <NotificationContext.Provider value={contextValue}>{props.children}</NotificationContext.Provider>;
 }

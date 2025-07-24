@@ -31,9 +31,7 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
     );
     const isRelationShip = data?.modelType === KeyTypes.RelationshipElement;
     const assetId = isEntity ? data.globalAssetId : undefined;
-    const showDataDirectly = [KeyTypes.Property, KeyTypes.MultiLanguageProperty].find(
-        (mt) => mt === data?.modelType,
-    );
+    const showDataDirectly = [KeyTypes.Property, KeyTypes.MultiLanguageProperty].find((mt) => mt === data?.modelType);
     const [detailsModalOpen, setDetailsModalOpen] = React.useState(false);
 
     const handleExpansionClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -50,9 +48,11 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
             const { isSuccess, result: aasIds } = await performDiscoveryAasSearch(assetId);
             if (!isSuccess || (isSuccess && aasIds.length === 0)) {
                 const popup = window.open(''); // Try to open a new tab
-                if (popup) { // if not null -> new tab was opened
-                    popup.location.href = assetId;    
-                } else { // popup was blocked open in same tab
+                if (popup) {
+                    // if not null -> new tab was opened
+                    popup.location.href = assetId;
+                } else {
+                    // popup was blocked open in same tab
                     navigate.push(assetId);
                 }
             } else {

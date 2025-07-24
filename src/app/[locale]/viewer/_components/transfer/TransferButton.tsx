@@ -6,21 +6,21 @@ import { useTranslations } from 'next-intl';
 export function TransferButton() {
     const [transferDialogOpen, setTransferDialogOpen] = useState(false);
     const t = useTranslations('pages');
-    
+
     const startTransfer = () => {
         setTransferDialogOpen(true);
     };
-    
+
     const closeDialog = () => {
         setTransferDialogOpen(false);
-    }
+    };
 
-    return (  
+    return (
         <>
             <Button variant="outlined" onClick={startTransfer} data-testid="detail-transfer-button">
                 {t('transfer.title')}
             </Button>
-            <TransferDialog open={transferDialogOpen} onClose={closeDialog}/>
+            <TransferDialog open={transferDialogOpen} onClose={closeDialog} />
         </>
-    )
+    );
 }

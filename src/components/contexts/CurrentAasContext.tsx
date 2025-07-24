@@ -5,7 +5,10 @@ import { RegistryAasData } from 'lib/types/registryServiceTypes';
 import { useAasLoader } from 'lib/hooks/UseAasDataLoader';
 
 export type CurrentAasContextType = {
-    aasState: [AssetAdministrationShell | undefined, React.Dispatch<React.SetStateAction<AssetAdministrationShell | undefined>>];
+    aasState: [
+        AssetAdministrationShell | undefined,
+        React.Dispatch<React.SetStateAction<AssetAdministrationShell | undefined>>,
+    ];
     submodelState: [SubmodelOrIdReference[], React.Dispatch<React.SetStateAction<SubmodelOrIdReference[]>>];
     registryAasData: [RegistryAasData | undefined, React.Dispatch<React.SetStateAction<RegistryAasData | undefined>>];
     aasOriginUrl: [string | undefined, React.Dispatch<React.SetStateAction<string | undefined>>];

@@ -1,7 +1,7 @@
 'use server';
 
 import { AasSearcher, AasSearchResult } from 'lib/services/search-actions/AasSearcher';
-import { AssetAdministrationShell, Reference, Submodel  } from 'lib/api/aas/models';
+import { AssetAdministrationShell, Reference, Submodel } from 'lib/api/aas/models';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { SubmodelSearcher, SubmodelSearchResult } from 'lib/services/searchUtilActions/SubmodelSearcher';

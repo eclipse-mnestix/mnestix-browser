@@ -275,7 +275,12 @@ export const AssetAdministrationShellRepositoryApiFp = function (configuration?:
          * @param {object} [options] - Optional. Additional options to override the default HTTP request settings.
          * @throws {RequiredError}
          */
-        downloadAAS(aasId: string | string[], submodelIds: string[], includeConceptDescriptions: boolean = true, options?: any) {
+        downloadAAS(
+            aasId: string | string[],
+            submodelIds: string[],
+            includeConceptDescriptions: boolean = true,
+            options?: any,
+        ) {
             return async (requestHandler: FetchAPI, basePath: string) => {
                 const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
                 const localVarHeaderParameter = {
@@ -284,15 +289,17 @@ export const AssetAdministrationShellRepositoryApiFp = function (configuration?:
 
                 localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options?.headers);
 
-                const aasIdsEncoded = Array.isArray(aasId) ? aasId.map(id => encodeBase64(id)) : [encodeBase64(aasId)];
-                const aasIdsQuery = aasIdsEncoded.map(id => `aasIds=${id}`).join('&');
-                const submodelIdsEncoded = submodelIds.map(id => encodeBase64(id));
-                const submodelIdsQuery = submodelIdsEncoded.map(id => `submodelIds=${id}`).join('&');
+                const aasIdsEncoded = Array.isArray(aasId)
+                    ? aasId.map((id) => encodeBase64(id))
+                    : [encodeBase64(aasId)];
+                const aasIdsQuery = aasIdsEncoded.map((id) => `aasIds=${id}`).join('&');
+                const submodelIdsEncoded = submodelIds.map((id) => encodeBase64(id));
+                const submodelIdsQuery = submodelIdsEncoded.map((id) => `submodelIds=${id}`).join('&');
                 const url = `${basePath}/serialization?${aasIdsQuery}&${submodelIdsQuery}&includeConceptDescriptions=${includeConceptDescriptions}`;
 
-            return await requestHandler.fetch<Blob>(url, localVarRequestOptions);
+                return await requestHandler.fetch<Blob>(url, localVarRequestOptions);
             };
-        }
+        },
     };
 };
 

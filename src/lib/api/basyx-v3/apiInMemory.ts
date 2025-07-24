@@ -23,12 +23,7 @@ import { encodeBase64, safeBase64Decode } from 'lib/util/Base64Util';
 import { ServiceReachable } from 'test-utils/TestUtils';
 import { MultiLanguageValueOnly, PaginationData } from 'lib/api/basyx-v3/types';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
-import {
-    LangStringTextType,
-    MultiLanguageProperty,
-    ModelType,
-    DataTypeDefXsd,
-} from 'lib/api/aas/models';
+import { LangStringTextType, MultiLanguageProperty, ModelType, DataTypeDefXsd } from 'lib/api/aas/models';
 
 const options = {
     headers: { 'Content-type': 'application/json; charset=utf-8' },

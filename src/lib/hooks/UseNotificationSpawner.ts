@@ -12,7 +12,7 @@ export function useNotificationSpawner(): NotificationSpawner {
         // Use the standalone notification service instead of the React context
         notificationService.show(notification);
     }, []);
-    
+
     return { spawn };
 }
 

@@ -8,21 +8,13 @@ export class TemplateShellApi {
     enable_authentication: boolean;
     private http: MnestixFetch;
 
-    constructor(
-        backendApiUrl: string,
-        enable_authentication: boolean,
-        http: MnestixFetch,
-    ) {
+    constructor(backendApiUrl: string, enable_authentication: boolean, http: MnestixFetch) {
         this.basePathOwnApi = `${backendApiUrl}/api/Template`;
         this.enable_authentication = enable_authentication;
         this.http = http;
     }
 
-    static create(
-        backendApiUrl: string,
-        enable_authentication: boolean,
-        http: MnestixFetch,
-    ): TemplateShellApi {
+    static create(backendApiUrl: string, enable_authentication: boolean, http: MnestixFetch): TemplateShellApi {
         return new TemplateShellApi(backendApiUrl, enable_authentication, http);
     }
 

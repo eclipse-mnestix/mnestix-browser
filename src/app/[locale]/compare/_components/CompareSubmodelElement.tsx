@@ -29,28 +29,15 @@ export function CompareSubmodelElement(props: CompareSubmodelElementProps) {
                         <Box display="flex" alignItems="center">
                             {isMarked && <DifferenceSymbol />}
                             <Box display="inline-block">
-                                <GenericPropertyComponent
-                                    property={props.submodelElement}
-                                    withCopyButton={true}
-                                />
+                                <GenericPropertyComponent property={props.submodelElement} withCopyButton={true} />
                             </Box>
                         </Box>
                     </>
                 );
             case KeyTypes.SubmodelElementCollection:
-                return (
-                    <SubmodelElementCollectionComponent
-                        submodelElementCollection={
-                            props.submodelElement
-                        }
-                    />
-                );
+                return <SubmodelElementCollectionComponent submodelElementCollection={props.submodelElement} />;
             case KeyTypes.SubmodelElementList:
-                return (
-                    <SubmodelElementCollectionComponent
-                        submodelElementCollection={props.submodelElement}
-                    />
-                );
+                return <SubmodelElementCollectionComponent submodelElementCollection={props.submodelElement} />;
             case KeyTypes.File:
                 return <FileComponent file={props.submodelElement} />;
             case KeyTypes.MultiLanguageProperty:
@@ -59,9 +46,7 @@ export function CompareSubmodelElement(props: CompareSubmodelElementProps) {
                         <Box display="flex" alignItems={'center'}>
                             {isMarked && <DifferenceSymbol />}
                             <Box display="inline-block">
-                                <MultiLanguagePropertyComponent
-                                    mLangProp={props.submodelElement}
-                                />
+                                <MultiLanguagePropertyComponent mLangProp={props.submodelElement} />
                             </Box>
                         </Box>
                     </>

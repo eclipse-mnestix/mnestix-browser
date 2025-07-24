@@ -9,8 +9,8 @@ import { ConceptDescription, MultiLanguageProperty, Property } from 'lib/api/aas
 const mockSpawn = jest.fn();
 jest.mock('./../../../../../../lib/hooks/UseNotificationSpawner', () => ({
     useNotificationSpawner: () => ({
-        spawn: mockSpawn
-    })
+        spawn: mockSpawn,
+    }),
 }));
 
 // Mock clipboard API
@@ -39,8 +39,8 @@ describe('GenericPropertyComponent', () => {
         const mLangProp: MultiLanguageProperty = {
             value: [
                 { language: 'en', text: 'English Text' },
-                { language: 'de', text: 'German Text' }
-            ]
+                { language: 'de', text: 'German Text' },
+            ],
         } as MultiLanguageProperty;
 
         CustomRender(<GenericPropertyComponent mLangProp={mLangProp} />);
@@ -125,16 +125,13 @@ describe('GenericPropertyComponent', () => {
                 {
                     dataSpecificationContent: {
                         unit: 'kg',
-                        symbol: 'kg'
-                    }
-                }
-            ]
+                        symbol: 'kg',
+                    },
+                },
+            ],
         } as any as ConceptDescription;
 
-        CustomRender(<GenericPropertyComponent
-            property={property}
-            conceptDescription={conceptDescription}
-        />);
+        CustomRender(<GenericPropertyComponent property={property} conceptDescription={conceptDescription} />);
 
         expect(screen.getByTestId('property-unit')).toHaveTextContent('kg');
     });
@@ -144,11 +141,10 @@ describe('GenericPropertyComponent', () => {
             value: '42',
         } as Property;
 
-        CustomRender(<GenericPropertyComponent
-            property={property}
-            conceptDescriptionLoading={true}
-        />);
+        CustomRender(<GenericPropertyComponent property={property} conceptDescriptionLoading={true} />);
 
-        expect(screen.getByTestId('property-content').parentElement?.querySelector('.MuiSkeleton-root')).toBeInTheDocument();
+        expect(
+            screen.getByTestId('property-content').parentElement?.querySelector('.MuiSkeleton-root'),
+        ).toBeInTheDocument();
     });
 });

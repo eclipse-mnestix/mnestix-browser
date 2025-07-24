@@ -66,10 +66,9 @@ export default function Page() {
     const fetchCustom = async () => {
         if (!id) return;
         const custom = await getCustomTemplateById(id);
-        if (custom.isSuccess){
+        if (custom.isSuccess) {
             setLocalFrontendTemplate(generateSubmodelViewObject(custom.result));
-        } 
-        else showError(custom.message);
+        } else showError(custom.message);
     };
 
     function generateSubmodelViewObject(sm: Submodel): SubmodelViewObject {
@@ -96,7 +95,7 @@ export default function Page() {
 
     const fetchDefaultTemplates = async () => {
         const defaultTemplates = await getDefaultTemplates();
-        if (defaultTemplates.isSuccess ) {
+        if (defaultTemplates.isSuccess) {
             setDefaultTemplates(defaultTemplates.result);
         } else {
             showError(defaultTemplates.message);
@@ -377,10 +376,20 @@ export default function Page() {
                             >
                                 {t('actions.saveChanges')}
                             </Button>
-                            <IconButton sx={{ ml: 1 }} onClick={handleMenuClick} className="more-button" data-testid="more-options-button">
+                            <IconButton
+                                sx={{ ml: 1 }}
+                                onClick={handleMenuClick}
+                                className="more-button"
+                                data-testid="more-options-button"
+                            >
                                 <MoreVert />
                             </IconButton>
-                            <Menu anchorEl={anchorEl} open={menuOpen} onClose={handleMenuClose} data-testid="more-options-menu">
+                            <Menu
+                                anchorEl={anchorEl}
+                                open={menuOpen}
+                                onClose={handleMenuClose}
+                                data-testid="more-options-menu"
+                            >
                                 <MenuItem onClick={handleRevertClick} disabled={!changesMade}>
                                     <ListItemIcon>
                                         <Restore fontSize="small" />

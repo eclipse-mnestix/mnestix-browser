@@ -18,7 +18,7 @@ export function InfluxTimeSeries(props: { submodelElement: SubmodelElementCollec
         props.submodelElement.value,
         'Endpoint',
         TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesLinkedSegmentEndpoint,
-        locale
+        locale,
     );
 
     if (endpoint && env.MNESTIX_BACKEND_API_URL && !isValidUrl(endpoint)) {
@@ -30,21 +30,21 @@ export function InfluxTimeSeries(props: { submodelElement: SubmodelElementCollec
         props.submodelElement.value,
         'Query',
         TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesLinkedSegmentQuery,
-        locale
+        locale,
     );
 
     const name = findValueByIdShort(
         props.submodelElement.value,
         'Name',
         TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegmentName,
-        locale
+        locale,
     );
 
     const description = findValueByIdShort(
         props.submodelElement.value,
         'Description',
         TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegmentDescription,
-        locale
+        locale,
     );
 
     const [selectedTimeFrame, setSelectedTimeFrame] = useState('1d');

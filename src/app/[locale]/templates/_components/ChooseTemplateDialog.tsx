@@ -51,7 +51,9 @@ export function ChooseTemplateDialog(props: ChooseTemplateDialogProps) {
                                     template.administration?.revision ?? '-'
                                 }`}
                                 subLabel={template.semanticId?.keys?.[0]?.value}
-                                description={template.description ? getTranslationText(template.description, locale) : undefined}
+                                description={
+                                    template.description ? getTranslationText(template.description, locale) : undefined
+                                }
                                 onClick={() => handleTemplateClick && handleTemplateClick(template)}
                             />
                         );

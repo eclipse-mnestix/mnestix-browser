@@ -11,7 +11,6 @@ const StyledLoadingButton = styled(Button)(({ theme }) => ({
     },
 }));
 
-
 const StyledSmallLoadingButton = styled(Button)(({ theme }) => ({
     padding: '.2rem',
     minWidth: '2.5rem',

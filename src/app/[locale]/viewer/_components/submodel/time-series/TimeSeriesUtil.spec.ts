@@ -317,5 +317,5 @@ describe('Parse internal Segment', () => {
         propertyStructure.valueType = 'xs:dateTime';
         const dateFromString = convertRecordTimeToDate(propertyStructure as unknown as Property);
         expect(dateFromString).toEqual('2024-10-01T07:49:10.608Z');
-    });  
+    });
 });

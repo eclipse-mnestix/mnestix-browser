@@ -14,9 +14,7 @@ const warningRules = testData.warning as Submodel;
 describe('RbacRulesService', () => {
     describe('getAll', () => {
         it('should parse correct SecuritySubmodel', async () => {
-            const service = RbacRulesService.createNull(
-                SubmodelRepositoryApi.createNull('', [correctRules]),
-            );
+            const service = RbacRulesService.createNull(SubmodelRepositoryApi.createNull('', [correctRules]));
             const res = await service.getRules();
             expect(res.isSuccess).toBeTruthy();
             expect(res.result?.warnings).toHaveLength(0);
@@ -24,9 +22,7 @@ describe('RbacRulesService', () => {
         });
 
         it('should add warnings if unknown data is in SecuritySubmodel', async () => {
-            const service = RbacRulesService.createNull(
-                SubmodelRepositoryApi.createNull('', [warningRules]),
-            );
+            const service = RbacRulesService.createNull(SubmodelRepositoryApi.createNull('', [warningRules]));
             const res = await service.getRules();
             expect(res.isSuccess).toBeTruthy();
             expect(res.result?.warnings).toHaveLength(1);
@@ -34,11 +30,7 @@ describe('RbacRulesService', () => {
 
         it('should return error if repo is not reachable/repo error', async () => {
             const service = RbacRulesService.createNull(
-                SubmodelRepositoryApi.createNull(
-                    '',
-                    [warningRules],
-                    ServiceReachable.No,
-                ),
+                SubmodelRepositoryApi.createNull('', [warningRules], ServiceReachable.No),
             );
             const res = await service.getRules();
             expect(res.isSuccess).toBeFalsy();
@@ -84,9 +76,7 @@ describe('RbacRulesService', () => {
         });
 
         it('should show error if idShort already exists', async () => {
-            const service = RbacRulesService.createNull(
-                SubmodelRepositoryApi.createNull('', [correctRules]),
-            );
+            const service = RbacRulesService.createNull(SubmodelRepositoryApi.createNull('', [correctRules]));
 
             const res = await service.createRule({
                 role: 'admin',
@@ -103,9 +93,7 @@ describe('RbacRulesService', () => {
 
     describe('update', () => {
         it('should show error if idShort already exists', async () => {
-            const service = RbacRulesService.createNull(
-                SubmodelRepositoryApi.createNull('', [correctRules]),
-            );
+            const service = RbacRulesService.createNull(SubmodelRepositoryApi.createNull('', [correctRules]));
 
             const res = await service.deleteAndCreate(
                 // admin DELETE submodel
