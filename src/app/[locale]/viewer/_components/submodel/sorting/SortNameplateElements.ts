@@ -8,15 +8,15 @@ export function SortNameplateElements(submodel: Submodel | SubmodelElementCollec
     }
 
     const key = submodel.semanticId?.keys?.[0]?.value;
-    let submodels: SubmodelElementChoice[] | undefined;
+    let submodelElements: SubmodelElementChoice[] | undefined;
     if ('submodelElements' in submodel && submodel['submodelElements']) {
-        submodels = submodel.submodelElements;
+        submodelElements = submodel.submodelElements;
     } else {
         const collection = submodel as SubmodelElementCollection;
-        submodels = collection.value;
+        submodelElements = collection.value;
     }
 
-    if (!submodels) {
+    if (!submodelElements) {
         return;
     }
 
@@ -28,11 +28,11 @@ export function SortNameplateElements(submodel: Submodel | SubmodelElementCollec
         SubmodelSemanticIdEnum.NameplateV4,
     ];
     if (nameplateKeys.includes(<SubmodelSemanticIdEnum>key)) {
-        SortSubmodelElements(submodels, NameplateSorting);
+        SortSubmodelElements(submodelElements, NameplateSorting);
     }
 
     // Recursive
-    submodels.forEach((submodel) => {
+    submodelElements.forEach((submodel) => {
         if (submodel.modelType == KeyTypes.SubmodelElementCollection) {
             SortNameplateElements(submodel);
         }

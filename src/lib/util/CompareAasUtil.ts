@@ -16,8 +16,7 @@ export function generateSubmodelCompareData(sm: Submodel | SubmodelElementCollec
         const submodelElementCollection = sm;
         if (submodelElementCollection.value) dataRecords = getSubmodelElementsValues(submodelElementCollection.value);
     } else {
-        const submodel = sm;
-        if (submodel.submodelElements) dataRecords = getSubmodelElementsValues(submodel.submodelElements);
+        if (sm.submodelElements) dataRecords = getSubmodelElementsValues(sm.submodelElements);
     }
     return { semanticId: semanticId, idShort: idShort, dataRecords: dataRecords };
 }

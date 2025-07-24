@@ -232,8 +232,8 @@ function findEntity(entityNodes: Entity[], entityName: string): Entity {
 }
 
 function checkSubmodelsElements(smElements: Array<SubmodelElementChoice> | undefined) {
-    const foundElements: SubmodelElementChoice[] = [];
     if (!smElements) return false;
+    const foundElements: SubmodelElementChoice[] = [];
 
     for (let i = 0; i < smElements.length; ++i) {
         const smElementType = smElements[i].modelType;
