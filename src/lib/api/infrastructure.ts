@@ -12,13 +12,20 @@ const initializeRequestOptions = async (bearerToken: string, init?: RequestInit)
             Authorization: `Bearer ${bearerToken}`,
         };
     } else if (!envs.AUTHENTICATION_FEATURE_FLAG) {
-        init.headers = {
-            'X-API-KEY': envs.MNESTIX_BACKEND_API_KEY || '',
-            // Overriding the ApiKey from the Mnestix configuration with the one
-            // set in the function call as the transfer feature allows users
-            // to set a separate ApiKey for the target repository.
-            ...init.headers,
-        };
+        const mnestix_v2_enabled = envs.MNESTIX_V2_ENABLED;
+        if (mnestix_v2_enabled && envs.MNESTIX_BACKEND_API_KEY) {
+            init.headers = {
+                'X-API-KEY': envs.MNESTIX_BACKEND_API_KEY || '',
+            };
+        } else {
+            init.headers = {
+                ApiKey: envs.MNESTIX_BACKEND_API_KEY || '',
+                // Overriding the ApiKey from the Mnestix configuration with the one
+                // set in the function call as the transfer feature allows users
+                // to set a separate ApiKey for the target repository.
+                ...init.headers,
+            };
+        }
     }
 
     return init;
