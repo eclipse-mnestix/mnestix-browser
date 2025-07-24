@@ -1,9 +1,8 @@
-import { ISubmodelElement } from '@aas-core-works/aas-core3.0-typescript/types';
-
+import { SubmodelElementChoice } from 'lib/api/aas/models';
 
 export type SubmodelElementComponentProps = {
-    submodelElement?: ISubmodelElement,
-    submodelId?: string
-    hasDivider?: boolean
-    key?: string | number | null
-}
+    submodelElement?: SubmodelElementChoice;
+    submodelId?: string;
+    hasDivider?: boolean;
+    key?: string | number | null;
+};

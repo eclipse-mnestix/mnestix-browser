@@ -1,9 +1,8 @@
 'use server';
 
 import { AasSearcher, AasSearchResult } from 'lib/services/search-actions/AasSearcher';
-import { AssetAdministrationShell } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import { AssetAdministrationShell, Reference, Submodel } from 'lib/api/aas/models';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { SubmodelSearcher, SubmodelSearchResult } from 'lib/services/searchUtilActions/SubmodelSearcher';
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';

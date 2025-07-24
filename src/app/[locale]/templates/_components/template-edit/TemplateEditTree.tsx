@@ -4,12 +4,14 @@ import { SyntheticEvent, useState } from 'react';
 import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import {
     viewObjectHasDataValue,
-    rewriteNodeIds, splitIdIntoArray, updateNodeIds,
+    rewriteNodeIds,
+    splitIdIntoArray,
+    updateNodeIds,
 } from 'lib/util/SubmodelViewObjectUtil';
 import { TemplateEditTreeItem } from './TemplateEditTreeItem';
 import multiplicityData from './edit-components/multiplicity/multiplicity-data.json';
 import cloneDeep from 'lodash/cloneDeep';
-import { Qualifier } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Qualifier } from 'lib/api/aas/models';
 import { MultiplicityEnum } from 'lib/enums/Multiplicity.enum';
 import { escapeRegExp, parseInt } from 'lodash';
 
@@ -126,9 +128,17 @@ export function TemplateEditTree(props: TemplateEditTreeProps) {
                 elementToDuplicate.data.idShort = elementName;
             }
             //insert the duplicated element after the original element and already existing duplicates
-            parentElement.children.splice(idArray[idArray.length - 1] + matchingNames.length + 1, 0, elementToDuplicate);
+            parentElement.children.splice(
+                idArray[idArray.length - 1] + matchingNames.length + 1,
+                0,
+                elementToDuplicate,
+            );
             //rewrite the id
-            for (let i = idArray[idArray.length - 1] + matchingNames.length + 1; i < parentElement.children.length; i++) {
+            for (
+                let i = idArray[idArray.length - 1] + matchingNames.length + 1;
+                i < parentElement.children.length;
+                i++
+            ) {
                 const newIndexArray = idArray;
                 newIndexArray.pop();
                 newIndexArray.push(i);

@@ -1,5 +1,5 @@
 import { Box, Button, Link, styled, Typography, Skeleton } from '@mui/material';
-import { File } from '@aas-core-works/aas-core3.0-typescript/types';
+import { ModelFile } from 'lib/api/aas/models';
 import { useState } from 'react';
 import { getSanitizedHref } from 'lib/util/HrefUtil';
 import { isValidUrl } from 'lib/util/UrlUtil';
@@ -18,7 +18,7 @@ const StyledFileImg = styled('img')(() => ({
 }));
 
 type FileComponentProps = {
-    readonly file: File;
+    readonly file: ModelFile;
     readonly submodelId?: string;
     readonly submodelElementPath?: string;
     readonly withPreviewDialog?: boolean;
@@ -31,10 +31,10 @@ export function FileComponent({ file, submodelId, submodelElementPath, withPrevi
     const { aasOriginUrl } = useCurrentAasContext();
 
     const [previewOpen, setPreviewOpen] = useState(false);
-    const [previewFile, setPreviewFile] = useState<File | null>(null);
+    const [previewFile, setPreviewFile] = useState<ModelFile | null>(null);
     const [previewPath, setPreviewPath] = useState<string | null>(null);
 
-    const handleOpenPreview = (file: File, path: string) => {
+    const handleOpenPreview = (file: ModelFile, path: string) => {
         setPreviewFile(file);
         setPreviewPath(path);
         setPreviewOpen(true);
@@ -50,7 +50,7 @@ export function FileComponent({ file, submodelId, submodelElementPath, withPrevi
             setLoading(true);
             setLoadError(false);
 
-            if (file.contentType?.startsWith('image')) {
+            if (file.value && file.contentType?.startsWith('image')) {
                 if (isValidUrl(file.value)) {
                     setImage(file.value);
                 } else if (submodelId && submodelElementPath) {

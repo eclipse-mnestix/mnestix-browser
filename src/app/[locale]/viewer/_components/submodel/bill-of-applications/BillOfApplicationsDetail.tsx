@@ -1,11 +1,10 @@
-import { Entity, ISubmodelElement, KeyTypes } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Entity, KeyTypes } from 'lib/api/aas/models';
 import { ApplicationComponent } from './visualization-components/ApplicationComponent';
-import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
 
 export function BillOfApplicationsDetail({ submodel }: SubmodelVisualizationProps) {
-    const submodelElements = submodel.submodelElements as ISubmodelElement[];
-    const entryNode = submodelElements.find((el) => getKeyType(el) === KeyTypes.Entity) as Entity;
+    const submodelElements = submodel.submodelElements;
+    const entryNode = submodelElements?.find((el) => el.modelType === KeyTypes.Entity);
 
     return <ApplicationComponent entity={entryNode as Entity} />;
 }

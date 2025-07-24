@@ -37,7 +37,7 @@ export async function performServerFetch<T>(
             {
                 Request_Url: input,
                 Http_Status: response?.status,
-                Http_Message: response?.statusText
+                Http_Message: response?.statusText,
             },
             'Initiating server fetch',
         );

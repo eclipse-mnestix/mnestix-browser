@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { Box, Theme, Typography, useTheme } from '@mui/material';
 import { TreeItemContentProps, TreeItemProps } from '@mui/x-tree-view';
-import { ISubmodelElement } from '@aas-core-works/aas-core3.0-typescript/types';
+import { SubmodelElementChoice } from 'lib/api/aas/models';
 import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
 
 export interface CustomTreeItemProps extends TreeItemProps {
-    data?: ISubmodelElement;
+    data?: SubmodelElementChoice;
 }
 
 export interface CustomTreeItemContentProps extends TreeItemContentProps {
-    data?: ISubmodelElement;
+    data?: SubmodelElementChoice;
 }
 
 export interface ExpandableTreeItemContentProps extends TreeItemContentProps {

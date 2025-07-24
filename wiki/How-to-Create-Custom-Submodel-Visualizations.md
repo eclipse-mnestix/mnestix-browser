@@ -70,7 +70,7 @@ You might want to have a look at them for further examples.
 ## Creating a visualization for a submodel
 
 After you created the sub-directory for your own visualization, you can create your `.tsx`-file and start developing the component.
-Custom submodel visualizations use the input type `SubmodelVisualizationProps`, which contains the submodel data as `AAS-core-3` type.
+Custom submodel visualizations use the input type `SubmodelVisualizationProps`, which contains the submodel data.
 
 You can use this stump to develop a custom submodel visualization:
 

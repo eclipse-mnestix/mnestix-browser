@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { File, Property, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
+import { ModelFile, Property, SubmodelElementCollection } from 'lib/api/aas/models';
 import { DataRow } from 'components/basics/DataRow';
 import { SingleMarkingsComponent } from 'app/[locale]/viewer/_components/submodel-elements/marking-components/SingleMarkingsComponent';
 import { CustomSubmodelElementComponentProps } from 'app/[locale]/viewer/_components/submodel/generic-submodel/GenericSubmodelDetailComponent';
@@ -15,7 +15,7 @@ export function MarkingsComponent(props: MarkingsComponentProps) {
 
     // Iterate through all markings
     const markingImages = markings.map((el, index) => {
-        let file: File | undefined;
+        let file: ModelFile | undefined;
         let name: Property | undefined;
         let additionalText: Property | undefined;
 
@@ -28,7 +28,7 @@ export function MarkingsComponent(props: MarkingsComponentProps) {
         Object.values(el.value || {}).forEach((markingPart) => {
             switch (markingPart.idShort) {
                 case 'MarkingFile':
-                    file = markingPart as File;
+                    file = markingPart as ModelFile;
                     break;
                 case 'MarkingName':
                     name = markingPart as Property;

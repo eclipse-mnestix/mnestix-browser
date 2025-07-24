@@ -1,4 +1,4 @@
-import { Entity, ISubmodelElement } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Entity, SubmodelElementChoice } from 'lib/api/aas/models';
 import { ChevronRight, ExpandMore } from '@mui/icons-material';
 import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import { generateSubmodelViewObjectFromSubmodelElement } from 'lib/util/SubmodelViewObjectUtil';
@@ -21,7 +21,7 @@ export function EntityComponent(props: EntityComponentProps) {
 
     const renderTree = (tree: SubmodelViewObject) => {
         return (
-            <EntityTreeItem key={tree.id} itemId={tree.id} label={tree.name} data={tree.data as ISubmodelElement}>
+            <EntityTreeItem key={tree.id} itemId={tree.id} label={tree.name} data={tree.data as SubmodelElementChoice}>
                 {tree.children.length ? tree.children.map((childTree) => renderTree(childTree)) : undefined}
             </EntityTreeItem>
         );

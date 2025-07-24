@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useLocale } from 'next-intl';
-import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
+import {
+    SubmodelElementCollection,
+    ModelFile,
+    SubmodelElementChoice,
+    Property,
+    MultiLanguageProperty,
+} from 'lib/api/aas/models';
 import { findSubmodelElementBySemanticIdsOrIdShort, getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import {
     DocumentSpecificSemanticId,
@@ -9,12 +15,6 @@ import {
 } from './DocumentSemanticIds';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { encodeBase64 } from 'lib/util/Base64Util';
-import {
-    File,
-    ISubmodelElement,
-    MultiLanguageProperty,
-    Property,
-} from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import { findIdShortForLatestElement } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentUtils';
 import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 
@@ -55,7 +55,7 @@ export function useFileViewObject(submodelElement: SubmodelElementCollection, su
             DocumentSpecificSemanticIdIrdi.DocumentVersion,
             DocumentSpecificSemanticIdIrdiV2.DocumentVersion,
         ]) as SubmodelElementCollection;
-        if (documentVersion?.value) {
+        if (documentVersion.value) {
             fileViewObject = extractDocumentVersionData(documentVersion, fileViewObject);
         }
         return fileViewObject;
@@ -98,15 +98,15 @@ export function useFileViewObject(submodelElement: SubmodelElementCollection, su
         return fileViewObject;
     }
 
-    function getDigitalFile(versionSubmodelEl: ISubmodelElement, fileSubmodelElement: ISubmodelElement) {
+    function getDigitalFile(versionSubmodelEl: SubmodelElementChoice, fileSubmodelElement: SubmodelElementChoice) {
         const digitalFile = {
             digitalFileUrl: '',
             mimeType: '',
         };
 
-        if (isValidUrl((versionSubmodelEl as File).value)) {
-            digitalFile.digitalFileUrl = (versionSubmodelEl as File).value || '';
-            digitalFile.mimeType = (versionSubmodelEl as File).contentType;
+        if (isValidUrl((versionSubmodelEl as ModelFile).value)) {
+            digitalFile.digitalFileUrl = (versionSubmodelEl as ModelFile).value || '';
+            digitalFile.mimeType = (versionSubmodelEl as ModelFile).contentType;
         } else if (submodelId && fileSubmodelElement.idShort && fileSubmodelElement?.idShort) {
             const idShort = findIdShortForLatestElement(
                 fileSubmodelElement as SubmodelElementCollection,
@@ -117,14 +117,17 @@ export function useFileViewObject(submodelElement: SubmodelElementCollection, su
             );
             const submodelElementPath = `${submodelElement.idShort}.${fileSubmodelElement.idShort}.${idShort}`;
             digitalFile.digitalFileUrl = `${aasOriginUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${submodelElementPath}/attachment`;
-            digitalFile.mimeType = (versionSubmodelEl as File).contentType;
+            digitalFile.mimeType = (versionSubmodelEl as ModelFile).contentType;
         }
         return digitalFile;
     }
 
-    function getPreviewImageUrl(versionSubmodelEl: ISubmodelElement, previewSubmodelElement: ISubmodelElement) {
-        if (isValidUrl((versionSubmodelEl as File).value)) {
-            return (versionSubmodelEl as File).value ?? '';
+    function getPreviewImageUrl(
+        versionSubmodelEl: SubmodelElementChoice,
+        previewSubmodelElement: SubmodelElementChoice,
+    ) {
+        if (isValidUrl((versionSubmodelEl as ModelFile).value)) {
+            return (versionSubmodelEl as ModelFile).value ?? '';
         } else if (submodelId && previewSubmodelElement.idShort && previewSubmodelElement?.idShort) {
             const idShort = findIdShortForLatestElement(
                 previewSubmodelElement as SubmodelElementCollection,

@@ -1,4 +1,4 @@
-import { Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import { Reference, Submodel } from 'lib/api/aas/models';
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { ISubmodelRegistryServiceApi } from 'lib/api/submodel-registry-service/submodelRegistryServiceApiInterface';

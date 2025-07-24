@@ -1,4 +1,4 @@
-import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Submodel } from 'lib/api/aas/models';
 
 export type SubmodelVisualizationProps = {
     readonly submodel: Submodel;

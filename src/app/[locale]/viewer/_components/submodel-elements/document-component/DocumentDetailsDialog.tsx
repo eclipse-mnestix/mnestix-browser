@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, Typography } from '@mui/material';
-import { ISubmodelElement, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
+import { SubmodelElementChoice, SubmodelElementCollection } from 'lib/api/aas/models';
 import { GenericSubmodelElementComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/GenericSubmodelElementComponent';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 import { useTranslations } from 'next-intl';
@@ -27,7 +27,7 @@ export function DocumentDetailsDialog(props: DocumentDetailsModalProps) {
                 </Typography>
                 {document.value.map((el, i) => (
                     <GenericSubmodelElementComponent
-                        submodelElement={el as ISubmodelElement}
+                        submodelElement={el as SubmodelElementChoice}
                         key={i}
                         hasDivider={i !== 0}
                     />

@@ -1,11 +1,9 @@
 import { screen, waitFor, act } from '@testing-library/react';
 import { expect } from '@jest/globals';
 import testSubmodel from '../../submodel/carbon-footprint/test-submodel/carbonFootprint-test.json';
-import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Submodel } from 'lib/api/aas/models';
 import { CustomRender } from 'test-utils/CustomRender';
-import {
-    CarbonFootprintVisualizations
-} from 'app/[locale]/viewer/_components/submodel/carbon-footprint/CarbonFootprintVisualizations';
+import { CarbonFootprintVisualizations } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/CarbonFootprintVisualizations';
 
 window.ResizeObserver =
     window.ResizeObserver ||
@@ -54,7 +52,9 @@ describe('CarbonFootprintVisualizations Detail', () => {
     it('should render all submodel visualilzations for irdi id', async () => {
         await act(async () => {
             CustomRender(
-                <CarbonFootprintVisualizations submodel={testSubmodel['carbonFootprint-IrdiId'] as unknown as Submodel} />,
+                <CarbonFootprintVisualizations
+                    submodel={testSubmodel['carbonFootprint-IrdiId'] as unknown as Submodel}
+                />,
             );
         });
         await assertOnElements();
@@ -63,7 +63,9 @@ describe('CarbonFootprintVisualizations Detail', () => {
     it('should render all submodel visualilzations for URL id', async () => {
         await act(async () => {
             CustomRender(
-                <CarbonFootprintVisualizations submodel={testSubmodel['carbonFootprint-UrlId'] as unknown as Submodel} />,
+                <CarbonFootprintVisualizations
+                    submodel={testSubmodel['carbonFootprint-UrlId'] as unknown as Submodel}
+                />,
             );
         });
         await assertOnElements();
@@ -71,30 +73,33 @@ describe('CarbonFootprintVisualizations Detail', () => {
 });
 
 async function assertOnElements() {
-    await waitFor(() => {
-        const totalCo2Equivalents = screen.getByTestId('co2-equivalents');
-        const productLifecycle = screen.getByTestId('product-lifecycle-stepper');
-        const co2EquivalentsDistribution = screen.getByTestId('co2-equivalents-distribution-box');
-        const co2Comparison = screen.getByTestId('co2-comparison-box');
-        const productJourney = screen.getByTestId('product-journey-box');
-        const calculationMethod = screen.getByTestId('co2-calculation-method-text');
+    await waitFor(
+        () => {
+            const totalCo2Equivalents = screen.getByTestId('co2-equivalents');
+            const productLifecycle = screen.getByTestId('product-lifecycle-stepper');
+            const co2EquivalentsDistribution = screen.getByTestId('co2-equivalents-distribution-box');
+            const co2Comparison = screen.getByTestId('co2-comparison-box');
+            const productJourney = screen.getByTestId('product-journey-box');
+            const calculationMethod = screen.getByTestId('co2-calculation-method-text');
 
-        expect(totalCo2Equivalents).toBeDefined();
-        expect(totalCo2Equivalents).toBeInTheDocument();
+            expect(totalCo2Equivalents).toBeDefined();
+            expect(totalCo2Equivalents).toBeInTheDocument();
 
-        expect(productLifecycle).toBeDefined();
-        expect(productLifecycle).toBeInTheDocument();
+            expect(productLifecycle).toBeDefined();
+            expect(productLifecycle).toBeInTheDocument();
 
-        expect(co2EquivalentsDistribution).toBeDefined();
-        expect(co2EquivalentsDistribution).toBeInTheDocument();
+            expect(co2EquivalentsDistribution).toBeDefined();
+            expect(co2EquivalentsDistribution).toBeInTheDocument();
 
-        expect(co2Comparison).toBeDefined();
-        expect(co2Comparison).toBeInTheDocument();
+            expect(co2Comparison).toBeDefined();
+            expect(co2Comparison).toBeInTheDocument();
 
-        expect(productJourney).toBeDefined();
-        expect(productJourney).toBeInTheDocument();
+            expect(productJourney).toBeDefined();
+            expect(productJourney).toBeInTheDocument();
 
-        expect(calculationMethod).toBeDefined();
-        expect(calculationMethod).toBeInTheDocument();
-    }, { timeout: 3000 });
+            expect(calculationMethod).toBeDefined();
+            expect(calculationMethod).toBeInTheDocument();
+        },
+        { timeout: 3000 },
+    );
 }

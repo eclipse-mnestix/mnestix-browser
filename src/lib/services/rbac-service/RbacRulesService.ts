@@ -3,7 +3,7 @@ import { SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
-import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
+import { SubmodelElementCollection } from 'lib/api/aas/models';
 import { envs } from 'lib/env/MnestixEnv';
 import { RuleParseError, ruleToIdShort, ruleToSubmodelElement, submodelToRule } from './RuleHelpers';
 import logger, { logResponseDebug, logResponseInfo, logResponseWarn } from 'lib/util/Logger';

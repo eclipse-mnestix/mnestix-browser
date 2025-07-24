@@ -14,7 +14,6 @@ import { FetchAPI } from 'lib/api/basyx-v3/api';
  * Do not edit the file manually.
  */
 
-
 export interface ConfigurationParameters {
     apiKey?: string | ((name: string) => string);
     username?: string;

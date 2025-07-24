@@ -112,12 +112,12 @@ export function ProductJourney(props: { addressesPerLifeCyclePhase: AddressPerLi
     return (
         <>
             {isLoading && (
-                <CenteredLoadingSpinner 
-                    sx={{ 
-                        height: '320px', 
-                        width: '100%', 
-                        marginTop: 2 
-                    }} 
+                <CenteredLoadingSpinner
+                    sx={{
+                        height: '320px',
+                        width: '100%',
+                        marginTop: 2,
+                    }}
                 />
             )}
             {!isLoading && coordinates.length > 0 && (
@@ -139,38 +139,35 @@ export function ProductJourney(props: { addressesPerLifeCyclePhase: AddressPerLi
     );
 }
 
-async function enrichAddressesWithCoordinates( addressesPerLifeCyclePhase: AddressPerLifeCyclePhase[] ): Promise<AddressPerLifeCyclePhase[]> { 
-    return Promise.all( addressesPerLifeCyclePhase.map(item => enrichSingleAddressWithCoordinates(item)) ); 
-} 
+async function enrichAddressesWithCoordinates(
+    addressesPerLifeCyclePhase: AddressPerLifeCyclePhase[],
+): Promise<AddressPerLifeCyclePhase[]> {
+    return Promise.all(addressesPerLifeCyclePhase.map((item) => enrichSingleAddressWithCoordinates(item)));
+}
 
-async function enrichSingleAddressWithCoordinates( item: AddressPerLifeCyclePhase ): Promise<AddressPerLifeCyclePhase> {
-     if (item.address.latitude && item.address.longitude) { 
-        return item; 
-    } 
-    if (!hasAddressInformation(item.address)) { 
-        return item; 
-    } 
-    const coordinates = await geocodeAddress(item.address); 
-    if (coordinates) { 
-        return { 
-            ...item, 
-            address: { 
-                ...item.address, 
-                latitude: coordinates.latitude, 
-                longitude: coordinates.longitude, 
+async function enrichSingleAddressWithCoordinates(item: AddressPerLifeCyclePhase): Promise<AddressPerLifeCyclePhase> {
+    if (item.address.latitude && item.address.longitude) {
+        return item;
+    }
+    if (!hasAddressInformation(item.address)) {
+        return item;
+    }
+    const coordinates = await geocodeAddress(item.address);
+    if (coordinates) {
+        return {
+            ...item,
+            address: {
+                ...item.address,
+                latitude: coordinates.latitude,
+                longitude: coordinates.longitude,
             },
         };
     }
-    return item; 
+    return item;
 }
 
 function hasAddressInformation(address: Address): boolean {
-    return !!(
-        address.street || 
-        address.cityTown || 
-        address.zipCode || 
-        address.country
-    );
+    return !!(address.street || address.cityTown || address.zipCode || address.country);
 }
 
 function getMarkerLayers(coordinatesPerLifeCyclePhase: AddressPerLifeCyclePhase[]) {
@@ -240,20 +237,20 @@ async function geocodeAddress(address: Address): Promise<{ latitude: number; lon
 
     try {
         const response = await fetch(
-            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(addressString)}&limit=1`
+            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(addressString)}&limit=1`,
         );
-        
+
         if (!response.ok) throw new Error('Geocoding failed');
-        
+
         const data = await response.json();
-        
+
         if (data && data.length > 0) {
             return {
                 latitude: parseFloat(data[0].lat),
                 longitude: parseFloat(data[0].lon),
             };
         }
-        
+
         return null;
     } catch (error) {
         console.warn('Failed to geocode address:', addressString, error);
@@ -263,7 +260,7 @@ async function geocodeAddress(address: Address): Promise<{ latitude: number; lon
 
 function buildAddressString(address: Address): string {
     const components = [];
-    
+
     if (address.street) {
         let streetAddress = address.street;
         if (address.houseNumber) {
@@ -271,16 +268,16 @@ function buildAddressString(address: Address): string {
         }
         components.push(streetAddress);
     }
-    
+
     if (address.zipCode && address.cityTown) {
         components.push(`${address.zipCode} ${address.cityTown}`);
     } else if (address.cityTown) {
         components.push(address.cityTown);
     }
-    
+
     if (address.country) {
         components.push(address.country);
     }
-    
+
     return components.join(', ');
 }

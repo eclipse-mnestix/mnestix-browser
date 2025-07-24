@@ -40,7 +40,7 @@ class NotificationService {
      */
     public subscribe(listener: (notification: Notification | null) => void): () => void {
         this.listeners.push(listener);
-        
+
         // Return unsubscribe function
         return () => {
             const index = this.listeners.indexOf(listener);
@@ -54,7 +54,7 @@ class NotificationService {
      * Notify all listeners about the current notification
      */
     private notifyListeners(): void {
-        this.listeners.forEach(listener => {
+        this.listeners.forEach((listener) => {
             listener(this.currentNotification);
         });
     }

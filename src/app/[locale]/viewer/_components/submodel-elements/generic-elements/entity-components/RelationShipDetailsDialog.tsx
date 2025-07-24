@@ -1,5 +1,5 @@
 import { Box, Dialog, DialogContent, Tooltip, Typography } from '@mui/material';
-import { RelationshipElement } from '@aas-core-works/aas-core3.0-typescript/types';
+import { RelationshipElement } from 'lib/api/aas/models';
 import { DataRow } from 'components/basics/DataRow';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 import { RelationShipTypes } from 'lib/enums/RelationShipTypes.enum';

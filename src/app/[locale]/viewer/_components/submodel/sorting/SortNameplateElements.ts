@@ -1,6 +1,6 @@
 ﻿import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import { NameplateSorting } from 'app/[locale]/viewer/_components/submodel/sorting/NameplateSorting';
-import { ISubmodelElement, Submodel, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
+import { SubmodelElementChoice, Submodel, SubmodelElementCollection, KeyTypes } from 'lib/api/aas/models';
 
 export function SortNameplateElements(submodel: Submodel | SubmodelElementCollection | undefined) {
     if (!submodel) {
@@ -8,15 +8,15 @@ export function SortNameplateElements(submodel: Submodel | SubmodelElementCollec
     }
 
     const key = submodel.semanticId?.keys?.[0]?.value;
-    let submodels: ISubmodelElement[];
+    let submodelElements: SubmodelElementChoice[] | undefined;
     if ('submodelElements' in submodel && submodel['submodelElements']) {
-        submodels = submodel.submodelElements;
+        submodelElements = submodel.submodelElements;
     } else {
         const collection = submodel as SubmodelElementCollection;
-        submodels = collection.value as ISubmodelElement[];
+        submodelElements = collection.value;
     }
 
-    if (!submodels) {
+    if (!submodelElements) {
         return;
     }
 
@@ -28,18 +28,18 @@ export function SortNameplateElements(submodel: Submodel | SubmodelElementCollec
         SubmodelSemanticIdEnum.NameplateV4,
     ];
     if (nameplateKeys.includes(<SubmodelSemanticIdEnum>key)) {
-        SortSubmodelElements(submodels, NameplateSorting);
+        SortSubmodelElements(submodelElements, NameplateSorting);
     }
 
     // Recursive
-    submodels.forEach((submodel) => {
-        if (submodel instanceof SubmodelElementCollection) {
-            SortNameplateElements(submodel as SubmodelElementCollection);
+    submodelElements.forEach((submodel) => {
+        if (submodel.modelType == KeyTypes.SubmodelElementCollection) {
+            SortNameplateElements(submodel);
         }
     });
 }
 
-function SortSubmodelElements(submodels: ISubmodelElement[], idShortOrder: string[]) {
+function SortSubmodelElements(submodels: SubmodelElementChoice[], idShortOrder: string[]) {
     submodels.sort((a, b) => {
         const aIndex = idShortOrder.indexOf(a.idShort as string);
         const bIndex = idShortOrder.indexOf(b.idShort as string);

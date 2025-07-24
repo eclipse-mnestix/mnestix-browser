@@ -1,4 +1,4 @@
-'use server'
+'use server';
 import { mnestixFetch } from 'lib/api/infrastructure';
 
 export async function fetchFileServerSide(fileUrl: string) {

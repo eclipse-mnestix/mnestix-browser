@@ -2,7 +2,7 @@
 
 import { mnestixFetchLegacy } from 'lib/api/infrastructure';
 import { TemplateClient } from 'lib/api/generated-api/clients.g';
-import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Submodel } from 'lib/api/aas/models';
 import EmptyDefaultTemplate from 'assets/submodels/defaultEmptySubmodel.json';
 import { envs } from 'lib/env/MnestixEnv';
 

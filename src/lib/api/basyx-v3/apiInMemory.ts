@@ -5,13 +5,13 @@ import {
 } from 'lib/api/basyx-v3/apiInterface';
 import type {
     AssetAdministrationShell,
-    ISubmodelElement,
+    SubmodelElementChoice,
     Property,
     Reference,
     Submodel,
     SubmodelElementCollection,
     SubmodelElementList,
-} from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+} from 'lib/api/aas/models';
 import {
     ApiResponseWrapper,
     wrapErrorCode,
@@ -23,12 +23,7 @@ import { encodeBase64, safeBase64Decode } from 'lib/util/Base64Util';
 import { ServiceReachable } from 'test-utils/TestUtils';
 import { MultiLanguageValueOnly, PaginationData } from 'lib/api/basyx-v3/types';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
-import {
-    LangStringTextType,
-    MultiLanguageProperty,
-    ModelType,
-    DataTypeDefXsd,
-} from '@aas-core-works/aas-core3.0-typescript/types';
+import { LangStringTextType, MultiLanguageProperty, ModelType, DataTypeDefXsd } from 'lib/api/aas/models';
 
 const options = {
     headers: { 'Content-type': 'application/json; charset=utf-8' },
@@ -247,7 +242,7 @@ export class SubmodelRepositoryApiInMemory implements ISubmodelRepositoryApi {
         const foundSubmodel = this.submodelsInRepository.get(submodelId);
         const element = foundSubmodel?.submodelElements?.find((el) => el.idShort === idShortPath);
         if (element) {
-            const mlpValue = convertDesignation((element as MultiLanguageProperty).value);
+            const mlpValue = convertDesignation((element as MultiLanguageProperty).value ?? null);
             const response = new Response(JSON.stringify(mlpValue), options);
             return wrapResponse(response);
         }
@@ -286,8 +281,8 @@ export function convertDesignation(mlpValue: LangStringTextType[] | null): Recor
 /* eslint-disable @typescript-eslint/no-explicit-any */
 function submodelValueOnly(submodel: Submodel) {
     type ValueOnlyType = Record<string, unknown> | unknown | Array<Record<string, unknown> | unknown>;
-    function parse(e: ISubmodelElement): ValueOnlyType {
-        switch (e.modelType()) {
+    function parse(e: SubmodelElementChoice): ValueOnlyType {
+        switch (e.modelType) {
             case ModelType.SubmodelElementCollection:
                 return Object.fromEntries(
                     Object.entries((e as SubmodelElementCollection).value ?? {}).map(([_k, v]) => [
@@ -303,20 +298,20 @@ function submodelValueOnly(submodel: Submodel) {
                     return null;
                 }
                 switch (prop.valueType) {
-                    case DataTypeDefXsd.Date:
+                    case DataTypeDefXsd.XsDate:
                         return new Date(prop.value);
-                    case DataTypeDefXsd.Integer:
-                    case DataTypeDefXsd.Int:
-                    case DataTypeDefXsd.Float:
-                    case DataTypeDefXsd.Decimal:
+                    case DataTypeDefXsd.XsInteger:
+                    case DataTypeDefXsd.XsInt:
+                    case DataTypeDefXsd.XsFloat:
+                    case DataTypeDefXsd.XsDecimal:
                         return Number(prop.value);
-                    case DataTypeDefXsd.String:
+                    case DataTypeDefXsd.XsString:
                         return prop.value;
                 }
                 throw new Error(`Unknown value type: ${prop.valueType}. Please add to apiInMemory.ts`);
             }
             default:
-                throw new Error(`Unknown model type: ${e.modelType()}. Please add to apiInMemory.ts`);
+                throw new Error(`Unknown model type: ${e.modelType}. Please add to apiInMemory.ts`);
         }
     }
 

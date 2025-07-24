@@ -1,15 +1,7 @@
-import {
-    Entity,
-    EntityType,
-    ISubmodelElement,
-    KeyTypes,
-    Property,
-    RelationshipElement,
-} from '@aas-core-works/aas-core3.0-typescript/types';
+import { Entity, EntityType, SubmodelElementChoice, KeyTypes, Property, RelationshipElement } from 'lib/api/aas/models';
 import { EntityComponent } from '../../submodel-elements/generic-elements/entity-components/EntityComponent';
 import { cloneDeep } from 'lodash';
 import { HierarchicalStructuresSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/hierarchical-structures/HierarchicalStructuresSubmodelElementSemanticId.enum';
-import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { GetEntityType } from 'lib/util/EntityTypeUtil';
 import { Box, IconButton } from '@mui/material';
 import { GenericSubmodelElementComponent } from '../../submodel-elements/generic-elements/GenericSubmodelElementComponent';
@@ -20,7 +12,7 @@ import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/subm
 import { RelationShipTypes } from 'lib/enums/RelationShipTypes.enum';
 
 export function HierarchicalStructuresDetail({ submodel }: SubmodelVisualizationProps) {
-    const submodelElements = submodel.submodelElements as ISubmodelElement[];
+    const submodelElements = submodel.submodelElements;
 
     const isSubmodelFlattened = checkSubmodelsElements(submodelElements);
 
@@ -28,19 +20,19 @@ export function HierarchicalStructuresDetail({ submodel }: SubmodelVisualization
 
     if (isSubmodelFlattened) separateEntryNode(smElements as Entity[]);
 
-    const entitySubmodelElement = smElements.find((el) => {
-        if (getKeyType(el) === KeyTypes.Entity) {
-            return el as Entity;
+    const entitySubmodelElement = smElements?.find((el) => {
+        if (el.modelType === KeyTypes.Entity) {
+            return el;
         }
         return;
     });
 
-    const archeTypePropertylElement = smElements.find((el) => {
+    const archeTypePropertylElement = smElements?.find((el) => {
         if (
-            getKeyType(el) === KeyTypes.Property &&
+            el.modelType === KeyTypes.Property &&
             el.semanticId?.keys[0].value === HierarchicalStructuresSubmodelElementSemanticIdEnum.ArcheType
         ) {
-            return el as Property;
+            return el;
         }
         return;
     });
@@ -88,15 +80,15 @@ export function HierarchicalStructuresDetail({ submodel }: SubmodelVisualization
     );
 }
 
-const prepareEntryNodeModel = (subMod?: ISubmodelElement) => {
+const prepareEntryNodeModel = (subMod?: SubmodelElementChoice) => {
     const node = subMod as Entity;
 
-    const relationShips: ISubmodelElement[] = [];
+    const relationShips: SubmodelElementChoice[] = [];
     const entityNodes: Entity[] = [];
 
     node?.statements?.forEach((el) => {
-        const elementEntity = el as Entity;
-        const elementType = getKeyType(elementEntity);
+        const elementEntity = el;
+        const elementType = elementEntity.modelType;
         if (elementType === KeyTypes.RelationshipElement) {
             relationShips.push(elementEntity);
         }
@@ -104,14 +96,14 @@ const prepareEntryNodeModel = (subMod?: ISubmodelElement) => {
         if (elementType === KeyTypes.Entity) {
             if (elementEntity.statements?.length) {
                 const [, relationShipsElements, entityNodesElements] = prepareEntryNodeModel(el as Entity);
-                relationShips.push(...(relationShipsElements as ISubmodelElement[]));
+                relationShips.push(...(relationShipsElements as SubmodelElementChoice[]));
                 entityNodes.push(...(entityNodesElements as Entity[]));
             }
 
-            for (let i = (elementEntity.statements as ISubmodelElement[])?.length - 1; i >= 0; --i) {
-                const entity = (elementEntity.statements as ISubmodelElement[])[i];
+            for (let i = (elementEntity.statements as SubmodelElementChoice[])?.length - 1; i >= 0; --i) {
+                const entity = (elementEntity.statements as SubmodelElementChoice[])[i];
                 const entityType = GetEntityType(elementEntity);
-                const keyType = getKeyType(entity);
+                const keyType = entity.modelType;
 
                 if (isBulkCountProperty(entity)) {
                     elementEntity.idShort = elementEntity.idShort + ' x' + (entity as Property).value;
@@ -232,12 +224,13 @@ function findEntity(entityNodes: Entity[], entityName: string): Entity {
     return foundEntity as Entity;
 }
 
-function checkSubmodelsElements(smElements: ISubmodelElement[]) {
-    const foundElements: ISubmodelElement[] = [];
+function checkSubmodelsElements(smElements: Array<SubmodelElementChoice> | undefined) {
+    if (!smElements) return false;
+    const foundElements: SubmodelElementChoice[] = [];
 
     for (let i = 0; i < smElements.length; ++i) {
-        const smElementType = getKeyType(smElements[i]);
-        if (smElementType === KeyTypes.Entity) foundElements.push(smElements[i] as ISubmodelElement);
+        const smElementType = smElements[i].modelType;
+        if (smElementType === KeyTypes.Entity) foundElements.push(smElements[i]);
 
         if (foundElements.length > 1) return true;
     }
@@ -255,7 +248,7 @@ function separateEntryNode(smElements: Entity[]) {
     smElements.splice(indexOfEntryNode, 1);
 
     for (let i = smElements.length - 1; i >= 0; --i) {
-        const smElementType = getKeyType(smElements[i]);
+        const smElementType = smElements[i].modelType;
         if (smElementType === KeyTypes.Entity || smElementType === KeyTypes.RelationshipElement) {
             entryNode?.statements?.push(smElements[i]);
             smElements.splice(i, 1);
@@ -264,6 +257,6 @@ function separateEntryNode(smElements: Entity[]) {
     smElements.push(entryNode as Entity);
 }
 
-function isBulkCountProperty(el: ISubmodelElement) {
+function isBulkCountProperty(el: SubmodelElementChoice) {
     return el.semanticId?.keys[0]?.value === HierarchicalStructuresSubmodelElementSemanticIdEnum.BulkCount;
 }

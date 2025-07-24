@@ -14,18 +14,16 @@ describe('Template CRUD Operations', () => {
         cy.setResolution(resolutions[0]);
         cy.keycloakLogin(adminTestUser.login, adminTestUser.password);
         cy.getByTestId('header-burgermenu').click();
-        
     });
 
     it('should create/edit and delete a template', () => {
-        
         cy.getByTestId('templates-menu-icon').click();
 
         cy.url().should('match', /\/templates$/);
-        
+
         cy.getByTestId('create-new-template-button').click();
         cy.getByTestId('choose-template-dialog').should('be.visible');
-    
+
         cy.getByTestId('choose-template-item-0').click();
         cy.url().should('include', '/templates/');
         cy.getByTestId('display-name-input').clear();

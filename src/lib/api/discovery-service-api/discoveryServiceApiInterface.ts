@@ -1,5 +1,5 @@
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { SpecificAssetId } from '@aas-core-works/aas-core3.0-typescript/types';
+import { SpecificAssetId } from 'lib/api/aas/models';
 
 export type DiscoveryEntry = {
     aasId: string;
@@ -32,7 +32,10 @@ export interface IDiscoveryServiceApi {
      * @param options additional options passed to the fetch method
      * @return Identifiers of all Asset Administration Shells which contain all asset identifier key-value-pairs in their asset information, i.e. AND-match of key-value-pairs per Asset Administration Shell.
      */
-    getAllAssetAdministrationShellIdsByAssetLink(assetIds: SpecificAssetId[], options?: object): Promise<ApiResponseWrapper<string[]>>;
+    getAllAssetAdministrationShellIdsByAssetLink(
+        assetIds: SpecificAssetId[],
+        options?: object,
+    ): Promise<ApiResponseWrapper<string[]>>;
 
     /**
      * Returns a list of asset identifier key-value-pairs based on an Asset Administration Shell id to edit discoverable content.
@@ -51,7 +54,11 @@ export interface IDiscoveryServiceApi {
      *
      * @remarks The specification explicitly gives a cardinality of one here.
      */
-    postAllAssetLinksById(aasId: string, assetLinks: SpecificAssetId, options?: object): Promise<ApiResponseWrapper<SpecificAssetId>>;
+    postAllAssetLinksById(
+        aasId: string,
+        assetLinks: SpecificAssetId,
+        options?: object,
+    ): Promise<ApiResponseWrapper<SpecificAssetId>>;
 
     /**
      * Deletes all asset identifier key-value-pairs linked to an Asset Administration Shell to edit discoverable content.

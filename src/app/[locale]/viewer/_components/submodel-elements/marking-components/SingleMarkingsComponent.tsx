@@ -1,5 +1,5 @@
 import { Box, styled, Typography } from '@mui/material';
-import { File, Property } from '@aas-core-works/aas-core3.0-typescript/types';
+import { ModelFile, Property } from 'lib/api/aas/models';
 import { useState } from 'react';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { isValidUrl } from 'lib/util/UrlUtil';
@@ -8,7 +8,7 @@ import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper
 import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 
 type SingleMarkingsComponentProps = {
-    readonly file?: File;
+    readonly file?: ModelFile;
     readonly name?: Property;
     readonly additionalText?: Property;
     readonly submodelId?: string;

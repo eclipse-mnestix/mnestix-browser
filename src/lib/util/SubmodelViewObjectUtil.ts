@@ -1,17 +1,11 @@
-import {
-    Entity,
-    ISubmodelElement,
-    KeyTypes,
-    LangStringTextType,
-    MultiLanguageProperty,
-    Property,
-    SubmodelElementCollection,
-} from '@aas-core-works/aas-core3.0-typescript/types';
+import { SubmodelElementChoice, KeyTypes, LangStringTextType, Property } from 'lib/api/aas/models';
 import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import { cloneDeep, parseInt } from 'lodash';
-import { getKeyType } from './KeyTypeUtil';
 
-export function generateSubmodelViewObjectFromSubmodelElement(el: ISubmodelElement, id: string): SubmodelViewObject {
+export function generateSubmodelViewObjectFromSubmodelElement(
+    el: SubmodelElementChoice,
+    id: string,
+): SubmodelViewObject {
     const localEl = cloneDeep(el);
     const frontend: SubmodelViewObject = {
         id,
@@ -22,16 +16,16 @@ export function generateSubmodelViewObjectFromSubmodelElement(el: ISubmodelEleme
         propertyValue: (localEl as Property).value ?? undefined,
     };
 
-    if (getKeyType(localEl) === KeyTypes.SubmodelElementCollection) {
-        const col = localEl as SubmodelElementCollection;
+    if (localEl.modelType === KeyTypes.SubmodelElementCollection) {
+        const col = localEl;
         const arr = col.value || [];
         arr.forEach((child, i) => {
             if (!child) return;
             frontend.children?.push(generateSubmodelViewObjectFromSubmodelElement(child, id + '-' + i));
         });
         col.value = [];
-    } else if (getKeyType(localEl) === KeyTypes.Entity) {
-        const entity = localEl as Entity;
+    } else if (localEl.modelType === KeyTypes.Entity) {
+        const entity = localEl;
         entity.statements?.forEach((child, i) => {
             if (!child) return;
             frontend.children?.push(generateSubmodelViewObjectFromSubmodelElement(child, id + '-' + i));
@@ -44,13 +38,13 @@ export function generateSubmodelViewObjectFromSubmodelElement(el: ISubmodelEleme
 }
 
 export function viewObjectHasDataValue(el: SubmodelViewObject) {
-    switch (getKeyType(el.data!)) {
+    switch (el.data!.modelType) {
         case KeyTypes.Property:
         case KeyTypes.File:
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return !!(el.data as any).value;
         case KeyTypes.MultiLanguageProperty: {
-            const mLangProp = el.data as MultiLanguageProperty;
+            const mLangProp = el.data;
             if (Array.isArray(mLangProp.value)) {
                 return !!mLangProp.value.length;
             } else if (mLangProp.value! as Array<LangStringTextType>) {

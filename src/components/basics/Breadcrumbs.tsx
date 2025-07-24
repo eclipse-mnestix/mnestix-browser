@@ -49,9 +49,7 @@ export function Breadcrumbs(props: BreadcrumbsProps) {
                             ) : (
                                 <Typography sx={{ color: 'text.secondary' }}>{link.label}</Typography>
                             )}
-                            {!isLast && (
-                                <ChevronRight sx={{ color: 'text.secondary', mt: '2px' }} fontSize="small" />
-                            )}
+                            {!isLast && <ChevronRight sx={{ color: 'text.secondary', mt: '2px' }} fontSize="small" />}
                         </Fragment>
                     );
                 })}

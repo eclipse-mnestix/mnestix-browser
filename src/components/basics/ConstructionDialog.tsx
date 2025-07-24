@@ -1,12 +1,4 @@
-import {
-    Box,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    Typography,
-    useTheme
-} from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, Typography, useTheme } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { DialogCloseButton } from './DialogCloseButton';
 import ConstructionIcon from '@mui/icons-material/Construction';
@@ -40,21 +32,14 @@ export function ConstructionDialog(props: ConstructionDialogProps) {
                 </Typography>
             </Box>
             <DialogContent style={{ padding: '2em' }}>
-                <Box
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
-                    gap={3}
-                >
+                <Box display="flex" flexDirection="column" alignItems="center" gap={3}>
                     <ConstructionIcon
                         sx={{
                             fontSize: 80,
-                            color: theme.palette.warning.main
+                            color: theme.palette.warning.main,
                         }}
                     />
-                    <Typography align="center">
-                        {props.customMessage || t('message')}
-                    </Typography>
+                    <Typography align="center">{props.customMessage || t('message')}</Typography>
                 </Box>
             </DialogContent>
             <DialogActions style={{ padding: '2em' }}>

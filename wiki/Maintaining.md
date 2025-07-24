@@ -74,3 +74,12 @@ will stop marking your custom commands as wrong.
 The YARP proxy route `/repo/shells` now limits resource and list returns to 104 elements due to the lack of pagination
 support.
 This change aims to prevent server overload and ensure smoother navigation through resource lists.
+
+
+### Regenerate the OpenAPI client
+If you need to regenerate the OpenAPI client, you can do so by running:
+
+```sh
+yarn openapi:generate
+```
+By adapting `src/lib/api/openapitools.json`, you can change the OpenAPI client generation settings e.g. the input spec and its version.

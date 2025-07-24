@@ -5,7 +5,7 @@ export enum ProductLifecycleStage {
     A3Production = 'A3',
     A4ToA5 = 'A4-A5',
     A4TransportToFinalDestination = 'A4',
-    A5Installation= 'A5',
+    A5Installation = 'A5',
     B1toB7 = 'B1-B7',
     B1UsagePhase = 'B1',
     B2Maintenance = 'B2',

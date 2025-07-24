@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import { expect } from '@jest/globals';
 import { SubmodelDetail } from 'app/[locale]/viewer/_components/submodel/SubmodelDetail';
 import testSubmodel from '../submodel/carbon-footprint/test-submodel/carbonFootprint-test.json';
-import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Submodel } from 'lib/api/aas/models';
 import { CustomRender } from 'test-utils/CustomRender';
 
 window.ResizeObserver =

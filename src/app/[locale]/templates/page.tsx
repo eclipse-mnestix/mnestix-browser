@@ -14,7 +14,7 @@ import TemplatesInfoGraphic from 'assets/templates_infographic.svg';
 import EmptyDefaultTemplate from 'assets/submodels/defaultEmptySubmodel.json';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useAuth } from 'lib/hooks/UseAuth';
-import { Qualifier, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Qualifier, Submodel } from 'lib/api/aas/models';
 import { sortWithNullableValues } from 'lib/util/SortingUtil';
 import { useEnv } from 'app/EnvProvider';
 import { useRouter } from 'next/navigation';
@@ -51,12 +51,10 @@ export default function Page() {
     const fetchAll = async () => {
         // fetching defaults first
         const _defaults = await getDefaultTemplates();
-        _defaults.sort((a: Submodel, b: Submodel) => sortWithNullableValues(a.idShort, b.idShort));
-        setDefaults(_defaults);
-        const _defaultItems: TabSelectorItem[] = [
-            { id: SpecialDefaultTabIds.All, label: t('all') },
-        ];
-        _defaults?.forEach((d) => {
+        _defaults.result?.sort((a: Submodel, b: Submodel) => sortWithNullableValues(a.idShort, b.idShort));
+        setDefaults(_defaults.result);
+        const _defaultItems: TabSelectorItem[] = [{ id: SpecialDefaultTabIds.All, label: t('all') }];
+        _defaults.result?.forEach((d) => {
             // In v3 submodel is identified by id, so we assume that it will always have an Id.
             const id = d.id || d.idShort;
             if (id) {
@@ -81,7 +79,7 @@ export default function Page() {
 
     const fetchCustoms = async (_defaultItems: Array<TabSelectorItem>) => {
         const _customTemplateItems: CustomTemplateItemType[] = [];
-        const customs = (await getCustomTemplates()) as Submodel[];
+        const customs = (await getCustomTemplates()).result as Submodel[];
         customs?.forEach((customSubmodel: Submodel) => {
             // get displayName out of Qualifiers or use idShort of Submodel
             const displayName =

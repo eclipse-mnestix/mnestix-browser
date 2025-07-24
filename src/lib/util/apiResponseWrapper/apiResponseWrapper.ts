@@ -32,7 +32,11 @@ export type ApiResponseWrapperError<T> = ApiResponseWrapperBase & {
     message: string;
 };
 
-export function wrapSuccess<T>(result: T, httpStatus?: number, httpText?: ApiResultStatus): ApiResponseWrapperSuccess<T> {
+export function wrapSuccess<T>(
+    result: T,
+    httpStatus?: number,
+    httpText?: ApiResultStatus,
+): ApiResponseWrapperSuccess<T> {
     return {
         isSuccess: true,
         result: result,

@@ -1,12 +1,7 @@
 import { DataRow } from 'components/basics/DataRow';
 import { DialerSip, Mail, Person, Phone, Place, Print, Public } from '@mui/icons-material';
 import { AddressGroupWithIcon } from './AddressGroupWithIcon';
-import {
-    IDataElement,
-    ISubmodelElement,
-    SubmodelElementCollection,
-} from '@aas-core-works/aas-core3.0-typescript/types';
-import { SubModelElementCollectionContactInfo } from 'lib/util/ApiExtensions/ExtendISubmodelElement';
+import { DataElementChoice, SubmodelElementChoice, SubmodelElementCollection } from 'lib/api/aas/models';
 import {
     AddressElement,
     EmailElement,
@@ -36,9 +31,9 @@ export function ContactInformationComponent(props: CustomSubmodelElementComponen
         return <></>;
     }
 
-    const addressData: Array<ISubmodelElement> = Object.values(props.submodelElement.value) as Array<ISubmodelElement>;
-    const additionalLink: Array<IDataElement> = [];
-    const personData: Array<SubModelElementCollectionContactInfo> = [];
+    const addressData: Array<SubmodelElementChoice> = Object.values(props.submodelElement.value);
+    const additionalLink: Array<DataElementChoice> = [];
+    const personData: Array<SubmodelElementCollection> = [];
     const phone: Array<SubmodelElementCollection> = [];
     const fax: Array<SubmodelElementCollection> = [];
     const email: Array<SubmodelElementCollection> = [];
@@ -60,15 +55,15 @@ export function ContactInformationComponent(props: CustomSubmodelElementComponen
             return false;
         }
         if (id === 'AddressOfAdditionalLink') {
-            additionalLink.push(entry as IDataElement);
+            additionalLink.push(entry as DataElementChoice);
             return false;
         }
         if (id?.startsWith('IPCommunication')) {
             ipCommunication.push(entry as SubmodelElementCollection);
             return false;
         }
-        if (id !== null && idShortsOfSubmodelElementsContainingPersonData.includes(id)) {
-            personData.push(entry as SubModelElementCollectionContactInfo);
+        if (id && idShortsOfSubmodelElementsContainingPersonData.includes(id)) {
+            personData.push(entry as SubmodelElementCollection);
             return false;
         }
         return true;
@@ -99,7 +94,7 @@ export function ContactInformationComponent(props: CustomSubmodelElementComponen
             {sortedAddress.length > 0 && (
                 <AddressGroupWithIcon icon={<Place color="primary" fontSize="small" />} sx={{ mt: 1 }}>
                     {sortedAddress.map((value) => (
-                        <AddressElement el={value as IDataElement} key={value.idShort} />
+                        <AddressElement el={value as DataElementChoice} key={value.idShort} />
                     ))}
                 </AddressGroupWithIcon>
             )}
