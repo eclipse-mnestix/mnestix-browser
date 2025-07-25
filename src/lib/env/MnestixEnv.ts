@@ -30,6 +30,10 @@ const keycloak = {
     KEYCLOAK_CLIENT_ID: process_env.KEYCLOAK_CLIENT_ID,
 };
 
+const mnestix_v2 = {
+    MNESTIX_V2_ENABLED: process_env.MNESTIX_V2_ENABLED?.trim().toLocaleLowerCase() === 'true' ? true : false,
+};
+
 const featureFlags = mapEnvVariables(
     [
         'LOCK_TIMESERIES_PERIOD_FEATURE_FLAG',
@@ -101,7 +105,7 @@ export const publicEnvs = { LOG_LEVEL, ...featureFlags, ...otherVariables, ...th
  *
  * Can be used in the backend. When used in frontend all envs are undefined.
  */
-export const envs = { ...publicEnvs, ...privateEnvs, ...privateAzure };
+export const envs = { ...publicEnvs, ...privateEnvs, ...privateAzure, ...mnestix_v2 };
 
 function parseFlag(value: string | undefined) {
     if (value === undefined) {

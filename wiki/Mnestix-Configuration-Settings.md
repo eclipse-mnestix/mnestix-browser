@@ -4,16 +4,17 @@ Mnestix provides the following configuration options. You can adapt the values i
 
 #### Basics
 
-| Name                        | Default value | Description                                                                                                        |
-| --------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `AAS_REPO_API_URL`          |               | Default AAS Repository to display when AAS Id is not in AAS Registry                                               |
-| `SUBMODEL_REPO_API_URL`     |               | Default Submodel Repository to display when Submodel Id is not in Submodel Registry                                |
-| `DISCOVERY_API_URL`         |               | Address of the Discovery Service to find an AAS for an Asset                                                       |
-| `REGISTRY_API_URL`          |               | Address of the AAS Registry Service to retrieve the related descriptor for an AAS                                  |
-| `SUBMODEL_REGISTRY_API_URL` |               | Address of the Submodel Registry Service to retrieve the related descriptor for a Submodel                         |
-| `MNESTIX_BACKEND_API_URL`   |               | Mnestix Backend with a lot of business comfort features like the Repository-Proxy or the Template builder          |
-| `CONCEPT_DESCRIPTION_REPO_API_URL`    |                             | Default Concept Description Repository                                                                                                                                                                                             |
-| `LOG_LEVEL`                 | "info"        | Server side log level of Mnestix Browser. "fatal" or "error" or "warn" or "info" or "debug" or "trace" or "silent" |
+| Name                               | Default value | Description                                                                                                                                 |
+| ---------------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `AAS_REPO_API_URL`                 |               | Default AAS Repository to display when AAS Id is not in AAS Registry                                                                        |
+| `SUBMODEL_REPO_API_URL`            |               | Default Submodel Repository to display when Submodel Id is not in Submodel Registry                                                         |
+| `DISCOVERY_API_URL`                |               | Address of the Discovery Service to find an AAS for an Asset                                                                                |
+| `REGISTRY_API_URL`                 |               | Address of the AAS Registry Service to retrieve the related descriptor for an AAS                                                           |
+| `SUBMODEL_REGISTRY_API_URL`        |               | Address of the Submodel Registry Service to retrieve the related descriptor for a Submodel                                                  |
+| `MNESTIX_BACKEND_API_URL`          |               | Mnestix Backend with a lot of business comfort features like the Repository-Proxy or the Template builder                                   |
+| `CONCEPT_DESCRIPTION_REPO_API_URL` |               | Default Concept Description Repository                                                                                                      |
+| `LOG_LEVEL`                        | "info"        | Server side log level of Mnestix Browser. "fatal" or "error" or "warn" or "info" or "debug" or "trace" or "silent"                          |
+| `MNESTIX_V2_ENABLED`               | "false"       | Setting to 'true' would activate a support for Mnestix API v2.0, this is work in progress updated API with separate Mnestix-Proxy component |
 
 #### Features
 
