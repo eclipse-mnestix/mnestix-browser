@@ -3,11 +3,11 @@ import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/
 import { Bar, BarChart, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { cutDecimalPlaces } from 'lib/util/NumberUtil';
 import { useTranslations } from 'next-intl';
-
-const unit = 'kg CO2e';
+import { CO2Unit } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/CarbonFootprintVisualizations';
 
 export function CO2EBarchart(props: {
     co2EquivalentsPerLifecycleStage: Partial<Record<ProductLifecycleStage, number>>;
+    unit: CO2Unit;
 }) {
     const theme = useTheme();
     const t = useTranslations('components.carbonFootprint');
@@ -44,7 +44,7 @@ export function CO2EBarchart(props: {
                             <Box key={index} sx={{ color: p.color, paddingY: '4px' }}>{`${p.name} : ${cutDecimalPlaces(
                                 Number.parseFloat(p.value),
                                 3,
-                            )} ${unit}`}</Box>
+                            )} ${props.unit} CO2e`}</Box>
                         ))}
                 </Box>
             );
@@ -57,7 +57,7 @@ export function CO2EBarchart(props: {
             <ResponsiveContainer>
                 <BarChart data={data}>
                     <XAxis dataKey="name" />
-                    <YAxis label={{ value: unit, angle: -90, position: 'insideLeft' }} />
+                    <YAxis label={{ value: `${props.unit} CO2e`, angle: -90, position: 'insideLeft' }} />
                     <Tooltip content={<CustomTooltipWithUnit />} />
                     <Legend />
                     {bars}

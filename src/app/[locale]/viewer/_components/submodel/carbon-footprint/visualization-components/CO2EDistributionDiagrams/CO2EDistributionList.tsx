@@ -3,8 +3,12 @@ import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/
 import { cutDecimalPlaces } from 'lib/util/NumberUtil';
 import React from 'react';
 import { useTranslations } from 'next-intl';
+import { CO2Unit } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/CarbonFootprintVisualizations';
 
-export function CO2EList(props: { co2EquivalentsPerLifecycleStage: Partial<Record<ProductLifecycleStage, number>> }) {
+export function CO2EList(props: {
+    co2EquivalentsPerLifecycleStage: Partial<Record<ProductLifecycleStage, number>>;
+    unit: CO2Unit;
+}) {
     const t = useTranslations('components.carbonFootprint');
     const { co2EquivalentsPerLifecycleStage } = props;
 
@@ -28,7 +32,7 @@ export function CO2EList(props: { co2EquivalentsPerLifecycleStage: Partial<Recor
                     <ItemCO2Amount elevation={0}>{`${cutDecimalPlaces(
                         co2EquivalentsPerLifecycleStage[val]!,
                         3,
-                    )} kg`}</ItemCO2Amount>
+                    )} ${props.unit}`}</ItemCO2Amount>
                 </Grid>
                 <Grid key={`grid-stage-${index}`} size={{ xs: 9, sm: 10 }}>
                     <ItemLifecycleStage elevation={1}>{t(`stages.${val}`)}</ItemLifecycleStage>

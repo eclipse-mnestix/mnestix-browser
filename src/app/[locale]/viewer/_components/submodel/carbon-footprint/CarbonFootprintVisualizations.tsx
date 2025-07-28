@@ -6,10 +6,10 @@ import { CO2EquivalentsDistribution } from './visualization-components/CO2Equiva
 import { Comparison } from './visualization-components/Comparison';
 import { ProductLifecycle } from './visualization-components/ProductLifecycle';
 import {
+    findAllSubmodelElementsBySemanticIdsOrIdShort,
+    findSubmodelElementBySemanticIdsOrIdShort,
     findValueByIdShort,
     hasSemanticId,
-    findSubmodelElementBySemanticIdsOrIdShort,
-    findAllSubmodelElementsBySemanticIdsOrIdShort,
 } from 'lib/util/SubmodelResolverUtil';
 import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/ProductLifecycleStage.enum';
 import { StyledDataRow } from 'components/basics/StyledDataRow';
@@ -18,6 +18,9 @@ import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/subm
 import { useLocale, useTranslations } from 'next-intl';
 import { PcfSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/PcfSubmodelElementSemanticId.enum';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
+import { stringToFloat } from 'lib/util/NumberUtil';
+
+export type CO2Unit = 'g' | 'kg';
 
 export function CarbonFootprintVisualizations({ submodel }: SubmodelVisualizationProps) {
     const t = useTranslations('components.carbonFootprint');
@@ -34,8 +37,13 @@ export function CarbonFootprintVisualizations({ submodel }: SubmodelVisualizatio
         return (firstPhase || '').localeCompare(secondPhase || '');
     });
 
-    const totalCO2Equivalents = extractTotalCO2Equivalents(pcfSubmodelElements);
-    const co2EquivalentsPerLifecycleStage = extractCO2EquivalentsPerLifeCycleStage(pcfSubmodelElements);
+    const totalCO2EquivalentsRaw = extractTotalCO2Equivalents(pcfSubmodelElements);
+    const unit: CO2Unit = totalCO2EquivalentsRaw < 1 ? 'g' : 'kg';
+
+    const totalCO2EquivalentsToShow =
+        totalCO2EquivalentsRaw < 1 ? totalCO2EquivalentsRaw * 1000 : totalCO2EquivalentsRaw;
+
+    const co2EquivalentsPerLifecycleStage = extractCO2EquivalentsPerLifeCycleStage(pcfSubmodelElements, unit);
     const completedStages = extractCompletedStages(pcfSubmodelElements);
     const addressesPerLifeCyclePhase = pcfSubmodelElements.map((el) => extractAddressPerLifeCyclePhase(el, locale));
     const calculationMethod = extractCalculationMethod(pcfSubmodelElements);
@@ -43,7 +51,7 @@ export function CarbonFootprintVisualizations({ submodel }: SubmodelVisualizatio
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="carbonFootprintVisualizations">
             <StyledDataRow title={t('totalCO2Equivalents')}>
-                <CO2Equivalents totalCO2Equivalents={totalCO2Equivalents} />
+                <CO2Equivalents totalCO2Equivalents={totalCO2EquivalentsToShow} unit={unit} />
             </StyledDataRow>
             <StyledDataRow title={t('completedStages')}>
                 <ProductLifecycle completedStages={completedStages} />
@@ -51,11 +59,12 @@ export function CarbonFootprintVisualizations({ submodel }: SubmodelVisualizatio
             <StyledDataRow title={t('co2EDistribution')}>
                 <CO2EquivalentsDistribution
                     co2EquivalentsPerLifecycleStage={co2EquivalentsPerLifecycleStage}
-                    totalCO2Equivalents={totalCO2Equivalents}
+                    totalCO2Equivalents={totalCO2EquivalentsToShow}
+                    unit={unit}
                 />
             </StyledDataRow>
             <StyledDataRow title={t('co2EComparison')}>
-                <Comparison co2Equivalents={totalCO2Equivalents} />
+                <Comparison co2Equivalents={totalCO2EquivalentsRaw} />
             </StyledDataRow>
             <StyledDataRow title={t('productJourney')}>
                 <ProductJourney addressesPerLifeCyclePhase={addressesPerLifeCyclePhase} />
@@ -136,6 +145,7 @@ function extractCompletedStages(pcfSubmodelElements: SubmodelElementCollection[]
 
 function extractCO2EquivalentsPerLifeCycleStage(
     pcfSubmodelElements: SubmodelElementCollection[],
+    unit: string,
 ): Partial<Record<ProductLifecycleStage, number>> {
     const result: Partial<Record<ProductLifecycleStage, number>> = {};
 
@@ -149,9 +159,10 @@ function extractCO2EquivalentsPerLifeCycleStage(
             PcfSubmodelElementSemanticIdEnum.PCFCO2eqV1,
         ]) as Property;
 
-        const co2Equivalent = Number.parseFloat(co2Value?.value ?? '0');
+        const co2Equivalent = stringToFloat(co2Value?.value ?? '0');
+        const co2EquivalentToShow = unit === 'g' ? co2Equivalent * 1000 : co2Equivalent;
 
-        result[stage] = (result[stage] || 0) + co2Equivalent;
+        result[stage] = (result[stage] || 0) + co2EquivalentToShow;
     });
 
     return result;
@@ -164,7 +175,8 @@ function extractTotalCO2Equivalents(pcfSubmodelElements: SubmodelElementCollecti
             PcfSubmodelElementSemanticIdEnum.PCFCO2eqV1,
         ]) as Property;
 
-        const co2Value = Number.parseFloat(co2Element?.value ?? '0') || 0;
+        const co2Value = stringToFloat(co2Element?.value ?? '0');
+
         return total + co2Value;
     }, 0);
 }
