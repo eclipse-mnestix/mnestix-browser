@@ -3,7 +3,7 @@ import { IConfigurationShellApi } from 'lib/api/configuration-shell-api/configur
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
-export class ConfigurationShellApi implements IConfigurationShellApi {
+export class ConfigurationShellApiV2 implements IConfigurationShellApi {
     private constructor(
         protected baseUrl: string,
         protected use_authentication: boolean,
@@ -18,15 +18,15 @@ export class ConfigurationShellApi implements IConfigurationShellApi {
         http: {
             fetch<T>(url: RequestInfo, init?: RequestInit): Promise<ApiResponseWrapper<T>>;
         },
-    ): ConfigurationShellApi {
+    ): ConfigurationShellApiV2 {
         if (!baseUrl) {
             throw new Error('Base URL is required');
         }
-        return new ConfigurationShellApi(baseUrl, use_authentication, http);
+        return new ConfigurationShellApiV2(baseUrl, use_authentication, http);
     }
 
     async getIdGenerationSettings(): Promise<ApiResponseWrapper<Submodel>> {
-        let url = this.baseUrl + '/configuration/idGeneration';
+        let url = this.baseUrl + '/api/configuration';
         url = url.replace(/[?&]$/, '');
 
         const options: RequestInit = {
@@ -50,11 +50,11 @@ export class ConfigurationShellApi implements IConfigurationShellApi {
         // THIS IS JUST A TEMPORARY FIX TILL BASYX FIXES THE PATCH CALL TO NOT GIVE 404 WHEN THERE IS NO CHANGE
         // BUG IS IN BASYX 2.0.0-milestone5
         // DANGER DANGER
-        let response = await this.putSingleSettingValue(`${idShort}.Prefix`, values.prefix, 'idGeneration');
+        let response = await this.putSingleSettingValue(`${idShort}.Prefix`, values.prefix);
         if (!response.isSuccess && response.errorCode != ApiResultStatus.NOT_FOUND) {
             return wrapErrorCode(response.errorCode, response.message);
         }
-        response = await this.putSingleSettingValue(`${idShort}.DynamicPart`, values.dynamicPart, 'idGeneration');
+        response = await this.putSingleSettingValue(`${idShort}.DynamicPart`, values.dynamicPart);
         if (!response.isSuccess && response.errorCode != ApiResultStatus.NOT_FOUND) {
             return wrapErrorCode(response.errorCode, response.message);
         }
@@ -62,14 +62,11 @@ export class ConfigurationShellApi implements IConfigurationShellApi {
         return wrapSuccess(response.result);
     }
 
-    async putSingleSettingValue(path: string, value: string, settingsType: string): Promise<ApiResponseWrapper<void>> {
-        let url = `${this.baseUrl}/configuration/${settingsType}/submodel-elements/${path}/$value`;
+    async putSingleSettingValue(path: string, value: string): Promise<ApiResponseWrapper<void>> {
+        let url = `${this.baseUrl}/api/configuration?idShortPath=${path}&value=${value}`;
         url = url.replace(/[?&]$/, '');
 
-        const content = JSON.stringify(value);
-
         const options: RequestInit = {
-            body: content,
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',

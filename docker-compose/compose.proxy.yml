@@ -33,6 +33,7 @@ services:
       SUBMODEL_REPO_API_URL: 'http://mnestix-proxy:5065/repo'
       CONCEPT_DESCRIPTION_REPO_API_URL: 'http://mnestix-proxy:5065/repo'
       MNESTIX_BACKEND_API_URL: 'http://mnestix-proxy:5065'
+      MNESTIX_V2_ENABLED: 'true' # Set to 'true' to enable the new API version
 
   mnestix-api:
     image: mnestix/mnestix-api:dev
