@@ -77,8 +77,8 @@ export async function wrapResponse<T>(response: Response): Promise<ApiResponseWr
         return wrapErrorCode(status, response.statusText, response.status, result);
     }
 
-    const contentType = response.headers.get('Content-Type') || '';
-    if (!contentType || contentType.includes('application/json')) {
+    const contentType = response.headers.get('Content-Type');
+    if (contentType?.includes('application/json')) {
         if (response.body === null) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return wrapSuccess(undefined as any);
@@ -88,6 +88,7 @@ export async function wrapResponse<T>(response: Response): Promise<ApiResponseWr
         return wrapSuccess(result, response.status, getStatus(response.status));
     }
 
+    // Default zu Blob für alles andere
     const fileFromResponse = await response.blob();
     return wrapSuccess(fileFromResponse as T, response.status, getStatus(response.status));
 }

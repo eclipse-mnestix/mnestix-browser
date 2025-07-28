@@ -13,6 +13,7 @@ import { useTranslations } from 'next-intl';
 type GenericSubmodelElementComponentProps = SubmodelElementComponentProps & {
     readonly submodelElementPath?: string | null;
     readonly wrapInDataRow?: boolean;
+    readonly repositoryUrl?: string;
 };
 
 export function GenericSubmodelElementComponent(props: GenericSubmodelElementComponentProps) {
@@ -50,6 +51,7 @@ export function GenericSubmodelElementComponent(props: GenericSubmodelElementCom
                             props.submodelElementPath,
                             props.submodelElement.idShort,
                         )}
+                        repositoryUrl={props.repositoryUrl}
                     />
                 );
             case KeyTypes.MultiLanguageProperty:
