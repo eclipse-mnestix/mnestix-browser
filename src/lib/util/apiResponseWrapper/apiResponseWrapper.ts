@@ -88,7 +88,7 @@ export async function wrapResponse<T>(response: Response): Promise<ApiResponseWr
         return wrapSuccess(result, response.status, getStatus(response.status));
     }
 
-    // Default zu Blob für alles andere
+    // Default to Blob for all other content types
     const fileFromResponse = await response.blob();
     return wrapSuccess(fileFromResponse as T, response.status, getStatus(response.status));
 }
