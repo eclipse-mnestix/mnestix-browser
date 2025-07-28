@@ -160,10 +160,9 @@ function extractCO2EquivalentsPerLifeCycleStage(
         ]) as Property;
 
         const co2Equivalent = stringToFloat(co2Value?.value ?? '0');
-        const sum = (result[stage] || 0) + co2Equivalent;
+        const co2EquivalentToShow = unit === 'g' ? co2Equivalent * 1000 : co2Equivalent;
 
-        // Convert to grams if unit is 'g'
-        result[stage] = unit === 'g' ? sum * 1000 : sum;
+        result[stage] = (result[stage] || 0) + co2EquivalentToShow;
     });
 
     return result;
