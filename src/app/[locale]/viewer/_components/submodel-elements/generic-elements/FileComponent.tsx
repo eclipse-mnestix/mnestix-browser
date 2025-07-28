@@ -96,8 +96,13 @@ export function FileComponent({ file, submodelId, submodelElementPath, withPrevi
             const repoUrl = repositoryUrl || aasOriginUrl;
             if (repoUrl && submodelId && submodelElementPath) {
                 const attachmentUrl = `${repoUrl}/submodels/${encodeURIComponent(btoa(submodelId))}/submodel-elements/${submodelElementPath}/attachment`;
-                const resolvedUrl = await getFileUrl(attachmentUrl, session?.accessToken, repoUrl);
-                setFileUrl(resolvedUrl || attachmentUrl);
+                try {
+                    const resolvedUrl = await getFileUrl(attachmentUrl, session?.accessToken, repoUrl);
+                    setFileUrl(resolvedUrl || attachmentUrl);
+                } catch (error) {
+                    console.error('Error resolving file URL:', error);
+                    setFileUrl(attachmentUrl);
+                }
             } else {
                 setFileUrl(getSanitizedHref(file.value));
             }
