@@ -51,6 +51,7 @@ export function GenericSubmodelDetailComponent({ submodel, repositoryUrl }: Subm
                                 submodelElement={el}
                                 submodelId={submodel.id}
                                 hasDivider={hasDivider(index)}
+                                repositoryUrl={repositoryUrl}
                             />
                         )}
                     </Fragment>
