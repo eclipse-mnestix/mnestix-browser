@@ -5,7 +5,7 @@ import { CO2Equivalents } from 'app/[locale]/viewer/_components/submodel/carbon-
 
 describe('CarbonFootprint - CO2 Equivalents', () => {
     it('should use correct style', async () => {
-        CustomRender(<CO2Equivalents totalCO2Equivalents={7.125} />);
+        CustomRender(<CO2Equivalents totalCO2Equivalents={7.125} unit={'kg'} />);
         const component = screen.getByTestId('co2-equivalents');
         expect(component).toBeDefined();
         expect(component).toBeInTheDocument();
@@ -16,19 +16,19 @@ describe('CarbonFootprint - CO2 Equivalents', () => {
     });
 
     it('should display three digit number', async () => {
-        CustomRender(<CO2Equivalents totalCO2Equivalents={7.125} />);
+        CustomRender(<CO2Equivalents totalCO2Equivalents={7.125} unit={'kg'} />);
         const component = screen.getByTestId('co2-equivalents');
         expect(component).toHaveTextContent('7.125 kg');
     });
 
     it('should round to three digits', async () => {
-        CustomRender(<CO2Equivalents totalCO2Equivalents={7.125857} />);
+        CustomRender(<CO2Equivalents totalCO2Equivalents={7.125857} unit={'kg'} />);
         const component = screen.getByTestId('co2-equivalents');
         expect(component).toHaveTextContent('7.126 kg');
     });
 
     it('should not fill to three digits', async () => {
-        CustomRender(<CO2Equivalents totalCO2Equivalents={7.1} />);
+        CustomRender(<CO2Equivalents totalCO2Equivalents={7.1} unit={'kg'} />);
         const component = screen.getByTestId('co2-equivalents');
         expect(component).toHaveTextContent('7.1 kg');
     });
