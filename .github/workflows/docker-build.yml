@@ -56,6 +56,12 @@ jobs:
           tags: mnestix/mnestix-browser:latest
           load: true
 
+      - name: Build cypress test image
+        run: docker compose -f compose.yml -f docker-compose/compose.proxy.yml -f docker-compose/compose.test.yml --profile tests build cypress-test
+
+      - name: Pull required images
+        run: docker compose -f compose.yml -f docker-compose/compose.proxy.yml -f docker-compose/compose.test.yml --profile tests pull
+
       - name: Cache buildx
         uses: actions/cache/save@v4
         with:
@@ -64,58 +70,49 @@ jobs:
           key: buildx-amd64-${{github.ref}}-${{ github.run_id }}
           enableCrossOsArchive: true
 
-      - name: Save mnestix-browser image
-        run: docker save mnestix/mnestix-browser:latest -o mnestix-browser.tar
+      - name: Save all images
+        run: |
+          docker save mnestix/mnestix-browser:latest -o mnestix-browser.tar
+          docker save $(docker compose -f compose.yml -f docker-compose/compose.proxy.yml -f docker-compose/compose.test.yml --profile tests config --images | grep -v '^$') -o test-images.tar
 
-      - name: Cache image
+      - name: Cache images
         uses: actions/cache/save@v4
         with:
-          path: mnestix-browser.tar
-          key: docker-image-${{github.ref}}-${{ github.run_id }}
+          path: |
+            mnestix-browser.tar
+            test-images.tar
+          key: docker-images-${{github.ref}}-${{ github.run_id }}
 
   e2e-tests:
     name: e2e test matrix
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-4-cores
     needs: ['build-browser-image']
     permissions:
       contents: read
     strategy:
       fail-fast: false
       matrix:
-        # add more containers to run more tests in parallel
-        containers: [1, 2, 3, 4]
+        containers: [1, 2, 3, 4, 5, 6]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Restore image
+      - name: Restore images
         uses: actions/cache/restore@v4
         with:
-          path: mnestix-browser.tar
-          key: docker-image-${{github.ref}}-${{ github.run_id }}
+          path: |
+            mnestix-browser.tar
+            test-images.tar
+          key: docker-images-${{github.ref}}-${{ github.run_id }}
 
-      # image too big to be reused
-      - name: Build test image
-        run: docker compose -f compose.yml -f docker-compose/compose.proxy.yml -f docker-compose/compose.test.yml --profile tests build cypress-test
-
-      - name: Pull images
-        run: docker compose -f compose.yml -f docker-compose/compose.proxy.yml -f docker-compose/compose.test.yml --profile tests pull
-
-      # Remove old image to avoid conflicts, before sometimes the old image wasn't loaded
-      # If this step fails please check docker-compose/compose.test.yml if tag is still correct
-      - name: Remove Docker image mnestix/mnestix-browser:latest, to avoid conflicts
-        run: docker rmi mnestix/mnestix-browser:latest
-
-      # overwrite the pulled image with the new image
-      - name: Load mnestix-browser image
-        run: docker load -i mnestix-browser.tar
+      - name: Load all images
+        run: |
+          docker load -i mnestix-browser.tar
+          docker load -i test-images.tar
 
       - name: Run e2e tests
-        # 18-minute timeout to speed up failing tests that are retried too long.
-        # If the timeout is reached under normal test conditions, consider increasing
-        # the number of containers to run more tests in parallel.
-        timeout-minutes: 18
+        timeout-minutes: 15
         run: |
           docker compose -f compose.yml -f docker-compose/compose.proxy.yml -f docker-compose/compose.test.yml --profile tests up -d &&
           docker compose -f compose.yml -f docker-compose/compose.proxy.yml -f docker-compose/compose.test.yml attach cypress-test
