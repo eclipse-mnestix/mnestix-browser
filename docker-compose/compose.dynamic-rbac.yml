@@ -52,7 +52,7 @@ services:
         condition: service_completed_successfully
 
   security-submodel:
-    image: eclipsebasyx/submodel-repository:2.0.0-milestone-05
+    image: eclipsebasyx/submodel-repository:2.0.0-milestone-06
     container_name: security-submodel
     depends_on:
       keycloak:
