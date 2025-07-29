@@ -30,7 +30,7 @@
       "name": "Start Mnestix w. Proxy",
       "type": "node-terminal",
       "request": "launch",
-      "command": "docker compose -f compose.yml -f docker-compose/compose.proxy.yml -f docker-compose/compose.dev.yml -p mnestix-browser up --remove-orphans -d aas-environment mongodb submodel-registry aas-discovery aas-registry mnestix-api mnestix-proxy && yarn dev",
+      "command": "docker compose -f compose.yml -f docker-compose/compose.proxy.yml -f docker-compose/compose.dev.yml -p mnestix-browser up --remove-orphans -d aas-environment mongodb submodel-registry aas-discovery aas-registry mnestix-aas-generator mnestix-proxy && yarn dev",
       "sourceMaps": true,
       "postDebugTask": "docker-down",
       "env": {
@@ -42,7 +42,7 @@
       "name": "Start Mnestix with RBAC w. Proxy",
       "type": "node-terminal",
       "request": "launch",
-      "command": "docker compose -f compose.yml -f docker-compose/compose.proxy.yml -f docker-compose/compose.dev.yml -f docker-compose/compose.dynamic-rbac.yml -f docker-compose/compose.dynamic-rbac-proxy.yml -p mnestix-browser up --remove-orphans -d aas-environment mongodb submodel-registry aas-discovery aas-registry mnestix-api mnestix-proxy && yarn dev",
+      "command": "docker compose -f compose.yml -f docker-compose/compose.proxy.yml -f docker-compose/compose.dev.yml -f docker-compose/compose.dynamic-rbac.yml -f docker-compose/compose.dynamic-rbac-proxy.yml -p mnestix-browser up --remove-orphans -d aas-environment mongodb submodel-registry aas-discovery aas-registry mnestix-aas-generator mnestix-proxy && yarn dev",
       "sourceMaps": true,
       "postDebugTask": "docker-down-rbac",
       "env": {
