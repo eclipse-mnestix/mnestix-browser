@@ -36,6 +36,7 @@ services:
       MNESTIX_V2_ENABLED: 'true' # Set to 'true' to enable the new API version
 
   mnestix-api:
+    # Replace mnestix-api with mnestix-aas-generator in the launch configurations for testing purposes
     image: mnestix/mnestix-aas-generator:0.1.0
     container_name: mnestix-api
     profiles: ['', 'backend', 'tests']
