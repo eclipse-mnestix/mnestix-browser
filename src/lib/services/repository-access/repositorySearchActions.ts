@@ -1,8 +1,7 @@
 'use server';
 
-import { AssetAdministrationShell, Submodel } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import { AssetAdministrationShell, Submodel, Reference } from 'lib/api/aas/models';
 import { RepoSearchResult, RepositorySearchService } from 'lib/services/repository-access/RepositorySearchService';
-import { Reference } from '@aas-core-works/aas-core3.0-typescript/types';
 import {
     ApiFileDto,
     ApiResponseWrapper,
@@ -114,11 +113,11 @@ export async function downloadAasFromRepo(
     aasId: string | string[],
     submodelIds: string[],
     baseRepositoryUrl: string,
-    includeConceptDescriptions = true
+    includeConceptDescriptions = true,
 ): Promise<ApiResponseWrapper<Blob>> {
     const logger = createRequestLogger(await headers());
     logInfo(logger, 'downloadAasFromRepo', 'Requested Download', {
-        aasId: aasId
+        aasId: aasId,
     });
     const fileSearcher = AssetAdministrationShellRepositoryApi.create(baseRepositoryUrl, mnestixFetch());
     const response = await fileSearcher.downloadAAS(aasId, submodelIds, includeConceptDescriptions);

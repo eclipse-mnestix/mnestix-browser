@@ -1,11 +1,14 @@
 'use client';
 import React, { createContext, PropsWithChildren, useContext, useState } from 'react';
-import { AssetAdministrationShell, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { AssetAdministrationShell, Submodel } from 'lib/api/aas/models';
 import { RegistryAasData } from 'lib/types/registryServiceTypes';
 import { useAasLoader } from 'lib/hooks/UseAasDataLoader';
 
 export type CurrentAasContextType = {
-    aasState: [AssetAdministrationShell | undefined, React.Dispatch<React.SetStateAction<AssetAdministrationShell | undefined>>];
+    aasState: [
+        AssetAdministrationShell | undefined,
+        React.Dispatch<React.SetStateAction<AssetAdministrationShell | undefined>>,
+    ];
     submodelState: [SubmodelOrIdReference[], React.Dispatch<React.SetStateAction<SubmodelOrIdReference[]>>];
     registryAasData: [RegistryAasData | undefined, React.Dispatch<React.SetStateAction<RegistryAasData | undefined>>];
     aasOriginUrl: [string | undefined, React.Dispatch<React.SetStateAction<string | undefined>>];

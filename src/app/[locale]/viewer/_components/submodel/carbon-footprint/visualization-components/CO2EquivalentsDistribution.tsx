@@ -7,17 +7,17 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import ListIcon from '@mui/icons-material/List';
 import { cutDecimalPlaces } from 'lib/util/NumberUtil';
 import { useTranslations } from 'next-intl';
+import { CO2Unit } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/CarbonFootprintVisualizations';
 
 enum chartVariants {
     barchart,
     list,
 }
 
-const unit = 'kg';
-
 export function CO2EquivalentsDistribution(props: {
     co2EquivalentsPerLifecycleStage: Partial<Record<ProductLifecycleStage, number>>;
     totalCO2Equivalents: number;
+    unit: CO2Unit;
 }) {
     const [chartVariant, setChartVariant] = useState(chartVariants.barchart);
     const t = useTranslations('components.carbonFootprint');
@@ -29,9 +29,19 @@ export function CO2EquivalentsDistribution(props: {
     const renderSwitch = (variant: chartVariants) => {
         switch (variant) {
             case chartVariants.barchart:
-                return <CO2EBarchart co2EquivalentsPerLifecycleStage={props.co2EquivalentsPerLifecycleStage} />;
+                return (
+                    <CO2EBarchart
+                        co2EquivalentsPerLifecycleStage={props.co2EquivalentsPerLifecycleStage}
+                        unit={props.unit}
+                    />
+                );
             case chartVariants.list:
-                return <CO2EList co2EquivalentsPerLifecycleStage={props.co2EquivalentsPerLifecycleStage} />;
+                return (
+                    <CO2EList
+                        co2EquivalentsPerLifecycleStage={props.co2EquivalentsPerLifecycleStage}
+                        unit={props.unit}
+                    />
+                );
         }
     };
 
@@ -43,7 +53,7 @@ export function CO2EquivalentsDistribution(props: {
                     data-testid="co2-equivalents-totalEquivalents-typography"
                 >
                     <Typography sx={{ color: 'inherit', fontSize: 'inherit', fontWeight: 600 }} component="span">
-                        {`${cutDecimalPlaces(props.totalCO2Equivalents, 3)} ${unit} `}
+                        {`${cutDecimalPlaces(props.totalCO2Equivalents, 3)} ${props.unit} `}
                     </Typography>
                     <Typography sx={{ color: 'inherit', fontSize: 'inherit' }} component="span">
                         {t('inTotal')}

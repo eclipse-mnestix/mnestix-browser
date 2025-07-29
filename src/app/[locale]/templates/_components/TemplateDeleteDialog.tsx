@@ -2,7 +2,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Dialog
 import { useTranslations } from 'next-intl';
 
 interface TemplateDeleteDialogProps extends DialogProps {
-    itemName: string | null;
+    itemName?: string;
     onDelete: () => void;
 }
 
@@ -11,15 +11,13 @@ export function TemplateDeleteDialog(props: TemplateDeleteDialogProps) {
     return (
         <Dialog open={props.open} onClose={props.onClose}>
             <DialogContent>
-                <DialogContentText>
-                    {t('deleteTemplateQuestion', { name: props.itemName ?? '' })}
-                </DialogContentText>
+                <DialogContentText>{t('deleteTemplateQuestion', { name: props.itemName ?? '' })}</DialogContentText>
             </DialogContent>
             <DialogActions>
                 <Button onClick={(e) => props.onClose && props.onClose(e, 'escapeKeyDown')} autoFocus>
                     {t('actions.cancel')}
                 </Button>
-                <Button onClick={() => props.onDelete()} color="error">
+                <Button onClick={() => props.onDelete()} color="error" data-testid="confirm-delete-button">
                     {t('actions.delete')}
                 </Button>
             </DialogActions>

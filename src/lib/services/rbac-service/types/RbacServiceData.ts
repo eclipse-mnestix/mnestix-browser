@@ -10,13 +10,14 @@ export const rbacRuleTargets = {
     'aas-discovery-service': ['aasIds', 'assetIds'],
 } as const;
 
-export type TargetInformation = { '@type': 'aas-environment'; aasIds: string[]; submodelIds: string[]; } |
-{ '@type': 'aas'; aasIds: string[]; } |
-{ '@type': 'submodel'; submodelIds: string[]; submodelElementIdShortPaths: string[]; } |
-{ '@type': 'concept-description'; conceptDescriptionIds: string[]; } |
-{ '@type': 'aas-registry'; aasIds: string[]; } |
-{ '@type': 'submodel-registry'; submodelIds: string[]; } |
-{ '@type': 'aas-discovery-service'; aasIds: string[]; assetIds: string[]; };
+export type TargetInformation =
+    | { '@type': 'aas-environment'; aasIds: string[]; submodelIds: string[] }
+    | { '@type': 'aas'; aasIds: string[] }
+    | { '@type': 'submodel'; submodelIds: string[]; submodelElementIdShortPaths: string[] }
+    | { '@type': 'concept-description'; conceptDescriptionIds: string[] }
+    | { '@type': 'aas-registry'; aasIds: string[] }
+    | { '@type': 'submodel-registry'; submodelIds: string[] }
+    | { '@type': 'aas-discovery-service'; aasIds: string[]; assetIds: string[] };
 
 export type BaSyxRbacRule = {
     idShort: string;
@@ -28,4 +29,3 @@ export type RbacRulesFetchResult = {
     rules: BaSyxRbacRule[];
     warnings: string[][];
 };
-

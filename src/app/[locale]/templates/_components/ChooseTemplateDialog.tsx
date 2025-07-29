@@ -1,7 +1,7 @@
 import { alpha, Box, Dialog, DialogProps, Paper, styled, Typography } from '@mui/material';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { ChooseTemplateItem } from './ChooseTemplateItem';
-import { Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Submodel } from 'lib/api/aas/models';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 import { useLocale, useTranslations } from 'next-intl';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
@@ -30,7 +30,7 @@ export function ChooseTemplateDialog(props: ChooseTemplateDialogProps) {
     const t = useTranslations('pages.templates');
     const { defaultTemplates, isLoading, handleTemplateClick, ...other } = props;
     return (
-        <Dialog {...other} maxWidth="md">
+        <Dialog {...other} maxWidth="md" data-testid="choose-template-dialog">
             {isLoading && (
                 <StyledLoadingOverlay>
                     <CenteredLoadingSpinner />
@@ -46,16 +46,20 @@ export function ChooseTemplateDialog(props: ChooseTemplateDialogProps) {
                         return (
                             <ChooseTemplateItem
                                 key={i}
+                                data-testid={`choose-template-item-${i}`}
                                 label={`${template.idShort} V${template.administration?.version ?? '-'}.${
                                     template.administration?.revision ?? '-'
                                 }`}
                                 subLabel={template.semanticId?.keys?.[0]?.value}
-                                description={template.description ? getTranslationText(template.description, locale) : undefined}
+                                description={
+                                    template.description ? getTranslationText(template.description, locale) : undefined
+                                }
                                 onClick={() => handleTemplateClick && handleTemplateClick(template)}
                             />
                         );
                     })}
                     <ChooseTemplateItem
+                        data-testid="choose-template-item-empty"
                         label={t('emptyCustom')}
                         subLabel={t('emptyCustomDescription')}
                         hasDivider={false}

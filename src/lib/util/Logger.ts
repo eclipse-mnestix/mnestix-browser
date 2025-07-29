@@ -51,7 +51,6 @@ export const logInfo = (logger: typeof baseLogger, methodName: string, message: 
         message,
     );
 
-
 /**
  * Logs a warning message with optional metadata.
  *

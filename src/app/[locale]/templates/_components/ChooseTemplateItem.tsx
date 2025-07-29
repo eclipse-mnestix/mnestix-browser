@@ -20,35 +20,36 @@ const StyledBox = styled(Box)(({ theme }) => ({
 }));
 
 export function ChooseTemplateItem(props: ChooseTemplateItemProps) {
+    const { label, subLabel, description, hasDivider, ...other } = props;
     return (
-        <Box>
+        <Box {...other}>
             <StyledBox onClick={props.onClick}>
                 <IconCircleWrapper sx={{ mr: 2 }}>
                     <Add color="primary" />
                 </IconCircleWrapper>
                 <Box>
                     <Typography variant="h4" color="primary">
-                        {props.label}
+                        {label}
                     </Typography>
-                    {!!props.subLabel && (
+                    {!!subLabel && (
                         <Typography
                             variant="body2"
                             color="text.secondary"
                             sx={{
                                 mt: '5px',
-                                mr: props.description ? 2 : 0,
+                                mr: description ? 2 : 0,
                                 overflowWrap: 'break-word',
                                 wordBreak: 'break-word',
                                 display: 'inline-block',
                             }}
                         >
-                            {props.subLabel}
+                            {subLabel}
                         </Typography>
                     )}
                 </Box>
-                {!!props.description && (
+                {!!description && (
                     <Tooltip
-                        title={props.description}
+                        title={description}
                         onClick={(e) => {
                             e.nativeEvent.stopImmediatePropagation();
                             e.stopPropagation();
@@ -58,7 +59,7 @@ export function ChooseTemplateItem(props: ChooseTemplateItemProps) {
                     </Tooltip>
                 )}
             </StyledBox>
-            {props.hasDivider !== false && <Divider />}
+            {hasDivider !== false && <Divider />}
         </Box>
     );
 }

@@ -1,5 +1,5 @@
 import { expect } from '@jest/globals';
-import { Property, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Property, SubmodelElementCollection } from 'lib/api/aas/models';
 import {
     convertRecordTimeToDate,
     parseRecordsFromInternalSegment,
@@ -317,5 +317,5 @@ describe('Parse internal Segment', () => {
         propertyStructure.valueType = 'xs:dateTime';
         const dateFromString = convertRecordTimeToDate(propertyStructure as unknown as Property);
         expect(dateFromString).toEqual('2024-10-01T07:49:10.608Z');
-    });  
+    });
 });

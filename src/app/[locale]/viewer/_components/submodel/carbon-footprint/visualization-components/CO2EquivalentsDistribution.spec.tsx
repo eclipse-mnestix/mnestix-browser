@@ -37,6 +37,7 @@ describe('CarbonFootprint - CO2EquivalentsDistribution', () => {
             <CO2EquivalentsDistribution
                 co2EquivalentsPerLifecycleStage={co2EquivalentsPerLifecycleStage}
                 totalCO2Equivalents={1.745}
+                unit={'kg'}
             />,
         );
     });

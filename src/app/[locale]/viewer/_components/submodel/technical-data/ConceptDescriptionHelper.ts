@@ -1,9 +1,9 @@
-import { ConceptDescription, DataSpecificationIec61360 } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import {
-    IAbstractLangString,
-    ISubmodelElement,
-    MultiLanguageProperty,
-} from '@aas-core-works/aas-core3.0-typescript/types';
+    ConceptDescription,
+    DataSpecificationIec61360,
+    LangStringPreferredNameTypeIec61360,
+    SubmodelElementChoice,
+} from 'lib/api/aas/models';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import { useLocale } from 'next-intl';
 
@@ -12,7 +12,7 @@ import { useLocale } from 'next-intl';
  * The order of preference is: submodelElement.displayName, conceptDescription.preferredName, conceptDescription.shortName, submodelElement.idShort.
  */
 export const useBestLabelForSmElement = (
-    submodelElement: ISubmodelElement,
+    submodelElement: SubmodelElementChoice,
     conceptDescription?: ConceptDescription,
 ) => {
     const locale = useLocale();
@@ -24,7 +24,7 @@ export const useBestLabelForSmElement = (
 
     if (conceptDescription?.embeddedDataSpecifications?.[0].dataSpecificationContent) {
         const iec61360Content = getDataSpecContentFromConceptDescription(conceptDescription);
-        let langString: MultiLanguageProperty | IAbstractLangString[] | undefined = [];
+        let langString: Array<LangStringPreferredNameTypeIec61360> = [];
 
         if (iec61360Content && iec61360Content.preferredName) {
             langString = iec61360Content.preferredName;
@@ -47,23 +47,9 @@ export const getDataSpecContentFromConceptDescription = (
     conceptDescription: ConceptDescription,
 ): DataSpecificationIec61360 | null => {
     if (conceptDescription?.embeddedDataSpecifications?.[0]?.dataSpecificationContent) {
-        const dataSpecContent = conceptDescription.embeddedDataSpecifications[0].dataSpecificationContent;
-        if (isDataSpecificationIec61360(dataSpecContent)) {
-            return dataSpecContent;
-        }
+        return conceptDescription.embeddedDataSpecifications[0].dataSpecificationContent;
     }
     return null;
-};
-
-/**
- * Type guard to check if the content is a DataSpecificationIec61360.
- */
-const isDataSpecificationIec61360 = (content: unknown): content is DataSpecificationIec61360 => {
-    return (
-        typeof content === 'object' &&
-        content !== null &&
-        ('preferredName' in content || 'shortName' in content || 'unit' in content)
-    );
 };
 
 /**

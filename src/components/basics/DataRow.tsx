@@ -59,7 +59,7 @@ export function DataRow(props: DataRowProps) {
                 >
                     <Typography
                         style={{ overflowWrap: 'break-word', wordBreak: 'break-word', display: 'inline-block' }}
-                        data-testid='data-row-value'
+                        data-testid="data-row-value"
                     >
                         {props.isLink ? (
                             <Link component="a" href={props.value} target="_blank" rel="noopener noreferrer">

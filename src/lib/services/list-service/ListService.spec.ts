@@ -1,10 +1,10 @@
 import { expect } from '@jest/globals';
 import { AasListDto, ListService } from 'lib/services/list-service/ListService';
 import testData from 'lib/services/list-service/ListService.data.json';
-import { AssetAdministrationShell, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { AssetAdministrationShell, Submodel } from 'lib/api/aas/models';
 import ServiceReachable from 'test-utils/TestUtils';
 
-const assetAdministrationShells = testData.assetAdministrationShells as unknown as AssetAdministrationShell[];
+const assetAdministrationShells = testData.assetAdministrationShells as AssetAdministrationShell[];
 const expectedData = testData.expectedResult as AasListDto;
 
 describe('ListService: Return List Entities', function () {

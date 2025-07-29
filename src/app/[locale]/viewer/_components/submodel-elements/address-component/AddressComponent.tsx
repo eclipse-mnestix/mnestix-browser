@@ -1,11 +1,7 @@
 import { DataRow } from 'components/basics/DataRow';
 import { DialerSip, Info, Mail, Phone, Place, Print, Public } from '@mui/icons-material';
 import { AddressGroupWithIcon } from './AddressGroupWithIcon';
-import {
-    IDataElement,
-    ISubmodelElement,
-    SubmodelElementCollection,
-} from '@aas-core-works/aas-core3.0-typescript/types';
+import { DataElementChoice, SubmodelElementChoice, SubmodelElementCollection } from 'lib/api/aas/models';
 import {
     AddressElement,
     EmailElement,
@@ -35,9 +31,11 @@ export function AddressComponent(props: CustomSubmodelElementComponentProps) {
         return <></>;
     }
 
-    const addressData: Array<ISubmodelElement> = Object.values(props.submodelElement.value) as Array<ISubmodelElement>;
-    const additionalLink: Array<IDataElement> = [];
-    const vatNumber: Array<IDataElement> = [];
+    const addressData: Array<SubmodelElementChoice> = Object.values(
+        props.submodelElement.value,
+    ) as Array<SubmodelElementChoice>;
+    const additionalLink: Array<DataElementChoice> = [];
+    const vatNumber: Array<DataElementChoice> = [];
     const phone: Array<SubmodelElementCollection> = [];
     const fax: Array<SubmodelElementCollection> = [];
     const email: Array<SubmodelElementCollection> = [];
@@ -59,11 +57,11 @@ export function AddressComponent(props: CustomSubmodelElementComponentProps) {
             return false;
         }
         if (id === 'AddressOfAdditionalLink') {
-            additionalLink.push(entry as IDataElement);
+            additionalLink.push(entry as DataElementChoice);
             return false;
         }
         if (id === 'VATNumber') {
-            vatNumber.push(entry as IDataElement);
+            vatNumber.push(entry as DataElementChoice);
             return false;
         }
         if (id?.startsWith('IPCommunication')) {
@@ -85,7 +83,7 @@ export function AddressComponent(props: CustomSubmodelElementComponentProps) {
             {sortedAddress.length > 0 && (
                 <AddressGroupWithIcon icon={<Place color="primary" fontSize="small" />} sx={{ mt: 1 }}>
                     {sortedAddress.map((value) => (
-                        <AddressElement key={value.idShort} el={value as IDataElement} />
+                        <AddressElement key={value.idShort} el={value as DataElementChoice} />
                     ))}
                 </AddressGroupWithIcon>
             )}

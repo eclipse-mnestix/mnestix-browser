@@ -1,9 +1,8 @@
 ﻿import { SyntheticEvent, useState } from 'react';
 import { ChevronRight, ExpandMore } from '@mui/icons-material';
 import { SimpleTreeView } from '@mui/x-tree-view';
-import { Entity, ISubmodelElement, KeyTypes } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Entity, SubmodelElementChoice, KeyTypes } from 'lib/api/aas/models';
 import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
-import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { generateSubmodelViewObjectFromSubmodelElement } from 'lib/util/SubmodelViewObjectUtil';
 import { ApplicationTreeItem } from './ApplicationTreeItem';
 
@@ -22,14 +21,14 @@ export function ApplicationComponent(props: ApplicationComponentProps) {
 
     const renderTree = (tree: SubmodelViewObject) => {
         const hasChildEntities =
-            tree.children.filter((child) => child.data && getKeyType(child.data) === KeyTypes.Entity).length > 0;
+            tree.children.filter((child) => child.data && child.data.modelType === KeyTypes.Entity).length > 0;
         const applicationUrl = tree.children.find((child) => child.name === 'ApplicationURL')?.propertyValue;
         return (
             <ApplicationTreeItem
                 key={tree.id}
                 itemId={tree.id}
                 label={tree.name}
-                data={tree.data as ISubmodelElement}
+                data={tree.data as SubmodelElementChoice}
                 hasChildEntities={hasChildEntities}
                 applicationUrl={applicationUrl}
             >

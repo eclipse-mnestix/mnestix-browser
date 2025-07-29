@@ -1,6 +1,6 @@
-import { Box, SxProps, Theme, useTheme } from '@mui/material';
+import { Box, SxProps, Theme } from '@mui/material';
 import TileLayer from 'ol/layer/Tile';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import OSM from 'ol/source/OSM';
 import { Feature, Map, View } from 'ol';
 import { fromLonLat, transform } from 'ol/proj';
@@ -14,6 +14,8 @@ import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
 import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/ProductLifecycleStage.enum';
 import { ProductJourneyAddressList } from './ProductJourneyAddressList';
+import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
+import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 
 export type Address = {
     street?: string;
@@ -31,23 +33,36 @@ export type AddressPerLifeCyclePhase = {
 };
 
 export function ProductJourney(props: { addressesPerLifeCyclePhase: AddressPerLifeCyclePhase[] }) {
-    const theme = useTheme();
     const mapElement = useRef<HTMLElement>(null);
     const mapRef = useRef<Map>(null);
+    const [enrichedAddresses, setEnrichedAddresses] = useState<AddressPerLifeCyclePhase[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const coordinates: Coordinate[] = props.addressesPerLifeCyclePhase
+    useAsyncEffect(async () => {
+        setIsLoading(true);
+        try {
+            const addresses = await enrichAddressesWithCoordinates(props.addressesPerLifeCyclePhase);
+            setEnrichedAddresses(addresses);
+        } catch (error) {
+            console.error('Error enriching addresses:', error);
+            setEnrichedAddresses(props.addressesPerLifeCyclePhase);
+        } finally {
+            setIsLoading(false);
+        }
+    }, [props.addressesPerLifeCyclePhase]);
+
+    const coordinates: Coordinate[] = enrichedAddresses
         .filter((v) => v.address.latitude && v.address.longitude)
         .map((c) => [c.address.longitude as number, c.address.latitude as number]);
 
     useEffect(() => {
-        if (mapElement.current && !mapRef.current) {
+        if (mapElement.current && !isLoading && coordinates.length > 0 && !mapRef.current) {
             const osmLayer = new TileLayer({
                 preload: Infinity,
                 source: new OSM(),
             });
 
-            const markerLayers = getMarkerLayers(props.addressesPerLifeCyclePhase);
-
+            const markerLayers = getMarkerLayers(enrichedAddresses);
             const vectorLineLayer = getMultiLineLayer(coordinates, { lineColor: 'black' });
 
             const initialMap = new Map({
@@ -60,10 +75,18 @@ export function ProductJourney(props: { addressesPerLifeCyclePhase: AddressPerLi
             });
 
             fitMapToMarkers(initialMap, vectorLineLayer.getSource());
-
             mapRef.current = initialMap;
         }
-    }, [coordinates, theme, mapElement, mapRef, props.addressesPerLifeCyclePhase]);
+    }, [enrichedAddresses, coordinates, isLoading]);
+
+    useEffect(() => {
+        return () => {
+            if (mapRef.current) {
+                mapRef.current.setTarget(undefined);
+                mapRef.current = null;
+            }
+        };
+    }, []);
 
     const attributionStyling: SxProps<Theme> = {
         '& .ol-overlaycontainer-stopevent': {
@@ -88,21 +111,63 @@ export function ProductJourney(props: { addressesPerLifeCyclePhase: AddressPerLi
 
     return (
         <>
-            <Box
-                id="map"
-                data-testid="product-journey-box"
-                sx={{
-                    height: '320px',
-                    width: '100%',
-                    marginTop: 2,
-                    ...attributionStyling,
-                }}
-                ref={mapElement}
-                className="map-container"
-            />
-            <ProductJourneyAddressList addressesPerLifeCyclePhase={props.addressesPerLifeCyclePhase} />
+            {isLoading && (
+                <CenteredLoadingSpinner
+                    sx={{
+                        height: '320px',
+                        width: '100%',
+                        marginTop: 2,
+                    }}
+                />
+            )}
+            {!isLoading && coordinates.length > 0 && (
+                <Box
+                    id="map"
+                    data-testid="product-journey-box"
+                    sx={{
+                        height: '320px',
+                        width: '100%',
+                        marginTop: 2,
+                        ...attributionStyling,
+                    }}
+                    ref={mapElement}
+                    className="map-container"
+                />
+            )}
+            <ProductJourneyAddressList addressesPerLifeCyclePhase={enrichedAddresses} />
         </>
     );
+}
+
+async function enrichAddressesWithCoordinates(
+    addressesPerLifeCyclePhase: AddressPerLifeCyclePhase[],
+): Promise<AddressPerLifeCyclePhase[]> {
+    return Promise.all(addressesPerLifeCyclePhase.map((item) => enrichSingleAddressWithCoordinates(item)));
+}
+
+async function enrichSingleAddressWithCoordinates(item: AddressPerLifeCyclePhase): Promise<AddressPerLifeCyclePhase> {
+    if (item.address.latitude && item.address.longitude) {
+        return item;
+    }
+    if (!hasAddressInformation(item.address)) {
+        return item;
+    }
+    const coordinates = await geocodeAddress(item.address);
+    if (coordinates) {
+        return {
+            ...item,
+            address: {
+                ...item.address,
+                latitude: coordinates.latitude,
+                longitude: coordinates.longitude,
+            },
+        };
+    }
+    return item;
+}
+
+function hasAddressInformation(address: Address): boolean {
+    return !!(address.street || address.cityTown || address.zipCode || address.country);
 }
 
 function getMarkerLayers(coordinatesPerLifeCyclePhase: AddressPerLifeCyclePhase[]) {
@@ -164,4 +229,55 @@ function fitMapToMarkers(map: Map, markerSource: VectorSource | null) {
     if (markerSource && !markerSource.getExtent().some((e) => e === Infinity)) {
         map.getView().fit(markerSource.getExtent(), { size: map.getSize(), padding: [60, 40, 20, 40], maxZoom: 12 });
     }
+}
+
+async function geocodeAddress(address: Address): Promise<{ latitude: number; longitude: number } | null> {
+    const addressString = buildAddressString(address);
+    if (!addressString.trim()) return null;
+
+    try {
+        const response = await fetch(
+            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(addressString)}&limit=1`,
+        );
+
+        if (!response.ok) throw new Error('Geocoding failed');
+
+        const data = await response.json();
+
+        if (data && data.length > 0) {
+            return {
+                latitude: parseFloat(data[0].lat),
+                longitude: parseFloat(data[0].lon),
+            };
+        }
+
+        return null;
+    } catch (error) {
+        console.warn('Failed to geocode address:', addressString, error);
+        return null;
+    }
+}
+
+function buildAddressString(address: Address): string {
+    const components = [];
+
+    if (address.street) {
+        let streetAddress = address.street;
+        if (address.houseNumber) {
+            streetAddress += ` ${address.houseNumber}`;
+        }
+        components.push(streetAddress);
+    }
+
+    if (address.zipCode && address.cityTown) {
+        components.push(`${address.zipCode} ${address.cityTown}`);
+    } else if (address.cityTown) {
+        components.push(address.cityTown);
+    }
+
+    if (address.country) {
+        components.push(address.country);
+    }
+
+    return components.join(', ');
 }

@@ -102,7 +102,7 @@ export function TimeSeriesLineDiagram(props: { data: TimeSeriesDataSet; timefram
                     <YAxis fontSize={11} />
                     <Tooltip content={<CustomTooltip />} />
                     {startDayMarkerStamp.map((marker) => (
-                        <ReferenceLine key={marker} x={marker} stroke="blue" isFront>
+                        <ReferenceLine key={marker} x={marker} stroke="blue">
                             <Label
                                 value={formatDateLabel(marker)}
                                 position="insideRight"
@@ -129,7 +129,6 @@ export function TimeSeriesLineDiagram(props: { data: TimeSeriesDataSet; timefram
                             stroke={color}
                         />
                     )}
-
                 </LineChart>
             </ResponsiveContainer>
 

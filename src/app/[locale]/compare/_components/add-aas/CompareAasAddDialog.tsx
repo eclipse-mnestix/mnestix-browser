@@ -21,7 +21,7 @@ export function CompareAasAddDialog(props: AddAasModalProps) {
             fullWidth={true}
             data-testid="compare-aas-aad-dialog"
         >
-            <DialogCloseButton handleClose={props.onClose}/>
+            <DialogCloseButton handleClose={props.onClose} />
             <DialogContent style={{ paddingLeft: '60px', paddingRight: '60px' }}>
                 <Box display="flex" flexDirection="column" gap="20px">
                     <Typography variant="h2" textAlign="center" margin="30px 0">

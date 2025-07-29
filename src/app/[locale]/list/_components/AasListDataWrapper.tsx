@@ -18,8 +18,8 @@ import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { useSearchParams } from 'next/navigation';
 
 type AasListDataWrapperProps = {
-  repositoryUrl?: string;
-  hideRepoSelection?: boolean;
+    repositoryUrl?: string;
+    hideRepoSelection?: boolean;
 };
 
 export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }: AasListDataWrapperProps) {
@@ -29,7 +29,9 @@ export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }:
     const [selectedAasList, setSelectedAasList] = useState<string[]>();
     const searchParams = useSearchParams();
     const urlParam = searchParams?.get('url');
-    const [selectedRepository, setSelectedRepository] = useState<string | null |undefined>(repositoryUrl ? repositoryUrl : urlParam);
+    const [selectedRepository, setSelectedRepository] = useState<string | null | undefined>(
+        repositoryUrl ? repositoryUrl : urlParam,
+    );
     const env = useEnv();
     const t = useTranslations('pages.aasList');
     const { showError } = useShowError();

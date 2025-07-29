@@ -1,6 +1,6 @@
 import { InfoOutlined, OpenInNew } from '@mui/icons-material';
 import { Box, Button, IconButton, Typography } from '@mui/material';
-import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
+import { SubmodelElementCollection } from 'lib/api/aas/models';
 import { DataRow } from 'components/basics/DataRow';
 import { useState } from 'react';
 import { findAllSubmodelElementsBySemanticIdsOrIdShort } from 'lib/util/SubmodelResolverUtil';

@@ -2,7 +2,7 @@ import { encodeBase64 } from 'lib/util/Base64Util';
 import { DiscoveryEntry, IDiscoveryServiceApi } from 'lib/api/discovery-service-api/discoveryServiceApiInterface';
 import { DiscoveryServiceApiInMemory } from 'lib/api/discovery-service-api/discoveryServiceApiInMemory';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { SpecificAssetId } from '@aas-core-works/aas-core3.0-typescript/types';
+import { SpecificAssetId } from 'lib/api/aas/models';
 import * as path from 'node:path';
 import ServiceReachable from 'test-utils/TestUtils';
 import logger, { logResponseDebug } from 'lib/util/Logger';

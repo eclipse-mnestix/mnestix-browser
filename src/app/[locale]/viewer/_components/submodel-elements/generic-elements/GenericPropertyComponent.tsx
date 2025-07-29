@@ -1,5 +1,5 @@
 import { Box, IconButton, Link, Skeleton, Tooltip, Typography } from '@mui/material';
-import { MultiLanguageProperty, Property, Range } from '@aas-core-works/aas-core3.0-typescript/types';
+import { MultiLanguageProperty, Property, Range, ConceptDescription } from 'lib/api/aas/models';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { ContentCopy, OpenInNew } from '@mui/icons-material';
@@ -7,7 +7,6 @@ import { useState } from 'react';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { useLocale } from 'use-intl';
 import { useTranslations } from 'next-intl';
-import { ConceptDescription } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import { getUnitFromConceptDescription } from 'app/[locale]/viewer/_components/submodel/technical-data/ConceptDescriptionHelper';
 
 type GenericPropertyComponentProps = {
@@ -42,8 +41,11 @@ export function GenericPropertyComponent(props: GenericPropertyComponentProps) {
     const handleCopyValue = () => {
         let copiedValue = value;
         if (copiedValue) {
-            if (!conceptDescriptionLoading && conceptDescription?.embeddedDataSpecifications?.[0]?.dataSpecificationContent) {
-                copiedValue += ' ' + getUnitFromConceptDescription(conceptDescription)
+            if (
+                !conceptDescriptionLoading &&
+                conceptDescription?.embeddedDataSpecifications?.[0]?.dataSpecificationContent
+            ) {
+                copiedValue += ' ' + getUnitFromConceptDescription(conceptDescription);
             }
 
             navigator.clipboard.writeText(copiedValue);
@@ -81,7 +83,6 @@ export function GenericPropertyComponent(props: GenericPropertyComponentProps) {
             >
                 <Typography data-testid="property-content">{t(`boolean.${property.value}`)}</Typography>
                 {renderCopyButton()}
-
             </Box>
         );
     }
@@ -102,7 +103,6 @@ export function GenericPropertyComponent(props: GenericPropertyComponentProps) {
                     </Link>
                 </Typography>
                 {renderCopyButton()}
-
             </Box>
         );
     }
@@ -113,25 +113,19 @@ export function GenericPropertyComponent(props: GenericPropertyComponentProps) {
             display="flex"
             alignItems="center"
             onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}>
-
+            onMouseLeave={() => setIsHovered(false)}
+        >
             <Typography data-testid="property-content">
                 {value || t('labels.notAvailable')}
                 <span> </span>
-                {!conceptDescriptionLoading && (
+                {!conceptDescriptionLoading &&
                     conceptDescription &&
-                    conceptDescription.embeddedDataSpecifications?.[0]?.dataSpecificationContent &&
-                    (
-                        <span data-testid="property-unit" > {getUnitFromConceptDescription(conceptDescription)}</span>
-                    )
-                )}
+                    conceptDescription.embeddedDataSpecifications?.[0]?.dataSpecificationContent && (
+                        <span data-testid="property-unit"> {getUnitFromConceptDescription(conceptDescription)}</span>
+                    )}
             </Typography>
 
-            {
-                conceptDescriptionLoading && (
-                    <Skeleton width="30px" sx={{ ml: 0.5 }} />
-                )
-            }
+            {conceptDescriptionLoading && <Skeleton width="30px" sx={{ ml: 0.5 }} />}
 
             {renderCopyButton()}
         </Box>

@@ -3,4 +3,4 @@ build
 obj
 */generated-api
 _open_api_spec.ts
-src/api/*
+api.ts

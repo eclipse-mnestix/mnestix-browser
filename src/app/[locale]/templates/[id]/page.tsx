@@ -19,7 +19,6 @@ import { Breadcrumbs } from 'components/basics/Breadcrumbs';
 import { TemplateEditTree } from '../_components/template-edit/TemplateEditTree';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import React, { useEffect, useState } from 'react';
-
 import {
     updateNodeIds,
     getParentOfElement,
@@ -30,7 +29,7 @@ import {
 import { TemplateEditFields, TemplateEditFieldsProps } from '../_components/template-edit/TemplateEditFields';
 import { useAuth } from 'lib/hooks/UseAuth';
 import cloneDeep from 'lodash/cloneDeep';
-import { Qualifier, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Qualifier, Submodel, SubmodelElementChoice, SubmodelElementCollection } from 'lib/api/aas/models';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useEnv } from 'app/EnvProvider';
 import { useParams, useRouter } from 'next/navigation';
@@ -38,7 +37,6 @@ import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import { updateCustomSubmodelTemplate } from 'lib/services/templateApiWithAuthActions';
 import { deleteCustomTemplateById, getCustomTemplateById, getDefaultTemplates } from 'lib/services/templatesApiActions';
 import { TemplateDeleteDialog } from 'app/[locale]/templates/_components/TemplateDeleteDialog';
-import { ISubmodelElement, SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
 import { clone } from 'lodash';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useTranslations } from 'next-intl';
@@ -46,7 +44,7 @@ import { useTranslations } from 'next-intl';
 export default function Page() {
     const { id } = useParams<{ id: string }>();
     const [localFrontendTemplate, setLocalFrontendTemplate] = useState<SubmodelViewObject | undefined>();
-    const [templateDisplayName, setTemplateDisplayName] = useState<string | null>();
+    const [templateDisplayName, setTemplateDisplayName] = useState<string>();
     const notificationSpawner = useNotificationSpawner();
     const [isLoading, setIsLoading] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
@@ -68,7 +66,9 @@ export default function Page() {
     const fetchCustom = async () => {
         if (!id) return;
         const custom = await getCustomTemplateById(id);
-        setLocalFrontendTemplate(generateSubmodelViewObject(custom));
+        if (custom.isSuccess) {
+            setLocalFrontendTemplate(generateSubmodelViewObject(custom.result));
+        } else showError(custom.message);
     };
 
     function generateSubmodelViewObject(sm: Submodel): SubmodelViewObject {
@@ -95,9 +95,12 @@ export default function Page() {
 
     const fetchDefaultTemplates = async () => {
         const defaultTemplates = await getDefaultTemplates();
-        setDefaultTemplates(defaultTemplates);
+        if (defaultTemplates.isSuccess) {
+            setDefaultTemplates(defaultTemplates.result);
+        } else {
+            showError(defaultTemplates.message);
+        }
     };
-
     useAsyncEffect(async () => {
         const _fetchCustom = async () => {
             try {
@@ -235,20 +238,20 @@ export default function Page() {
                     collection.value = generateSubmodelElements(child.children);
                     child.data = collection;
                 }
-                submodel.submodelElements?.push(child.data as ISubmodelElement);
+                submodel.submodelElements?.push(child.data as SubmodelElementChoice);
             });
         }
         return submodel;
     }
 
-    function generateSubmodelElements(viewObjects: SubmodelViewObject[]): ISubmodelElement[] {
+    function generateSubmodelElements(viewObjects: SubmodelViewObject[]): SubmodelElementChoice[] {
         return viewObjects.map((vo) => {
             if (vo.children.length) {
                 const collection = vo.data as SubmodelElementCollection;
                 collection.value = generateSubmodelElements(vo.children);
                 vo.data = collection;
             }
-            return vo.data as ISubmodelElement;
+            return vo.data as SubmodelElementChoice;
         });
     }
 
@@ -369,20 +372,31 @@ export default function Page() {
                                 disabled={!changesMade}
                                 loading={isSaving}
                                 onClick={onSaveChanges}
+                                data-testid="save-changes-button"
                             >
                                 {t('actions.saveChanges')}
                             </Button>
-                            <IconButton sx={{ ml: 1 }} onClick={handleMenuClick} className="more-button">
+                            <IconButton
+                                sx={{ ml: 1 }}
+                                onClick={handleMenuClick}
+                                className="more-button"
+                                data-testid="more-options-button"
+                            >
                                 <MoreVert />
                             </IconButton>
-                            <Menu anchorEl={anchorEl} open={menuOpen} onClose={handleMenuClose}>
+                            <Menu
+                                anchorEl={anchorEl}
+                                open={menuOpen}
+                                onClose={handleMenuClose}
+                                data-testid="more-options-menu"
+                            >
                                 <MenuItem onClick={handleRevertClick} disabled={!changesMade}>
                                     <ListItemIcon>
                                         <Restore fontSize="small" />
                                     </ListItemIcon>
                                     {t('actions.revertChanges')}
                                 </MenuItem>
-                                <MenuItem onClick={handleDeleteClick}>
+                                <MenuItem onClick={handleDeleteClick} data-testid="delete-template-button">
                                     <ListItemIcon>
                                         <Delete fontSize="small" />
                                     </ListItemIcon>
@@ -421,7 +435,7 @@ export default function Page() {
                     open={deleteDialogOpen}
                     onClose={closeDialog}
                     onDelete={() => deleteTemplate()}
-                    itemName={templateDisplayName ?? null}
+                    itemName={templateDisplayName}
                 />
             </Box>
         </PrivateRoute>

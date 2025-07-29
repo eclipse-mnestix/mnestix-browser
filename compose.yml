@@ -10,7 +10,7 @@ volumes:
 services:
   mnestix-browser:
     container_name: mnestix-browser
-    image: mnestix/mnestix-browser:1.5.2
+    image: mnestix/mnestix-browser:1.6.0
     profiles: ['', 'frontend', 'tests']
     build:
       dockerfile: Dockerfile
@@ -126,8 +126,8 @@ services:
     healthcheck: # check the endpoint for a valid response (service ready)
       test: curl -f http://localhost:8081/actuator/health
       interval: 10s
-      timeout: 10s
-      retries: 6
+      timeout: 15s
+      retries: 8
     logging:
       driver: 'json-file'
       options:

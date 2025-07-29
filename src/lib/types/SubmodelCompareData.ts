@@ -1,4 +1,4 @@
-import { ISubmodelElement } from '@aas-core-works/aas-core3.0-typescript/types';
+import { SubmodelElementChoice } from 'lib/api/aas/models';
 
 export class SubmodelCompareData {
     semanticId: string | null;
@@ -9,5 +9,5 @@ export class SubmodelCompareData {
 export class SubmodelCompareDataRecord {
     semanticId: string | null;
     idShort: string | null;
-    submodelElements: (ISubmodelElement | null)[];
+    submodelElements: (SubmodelElementChoice | null)[];
 }

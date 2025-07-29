@@ -1,20 +1,16 @@
 import {
     DataTypeDefXsd,
-    IAbstractLangString,
-    ISubmodelElement,
+    AbstractLangString,
+    SubmodelElementChoice,
     Submodel,
     MultiLanguageProperty,
-    Property,
-    SubmodelElementCollection,
     KeyTypes,
-    IDataElement,
+    DataElementChoice,
     Reference,
-} from '@aas-core-works/aas-core3.0-typescript/types';
+} from 'lib/api/aas/models';
 import { idEquals } from './IdValidationUtil';
-import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
-import { MultiLanguageProperty as MultiLanguagePropertyAAS } from 'lib/api/aas/models';
 
 /**
  * Gets the translated text from either a MultiLanguageProperty or LangStringTextType array
@@ -23,7 +19,7 @@ import { MultiLanguageProperty as MultiLanguagePropertyAAS } from 'lib/api/aas/m
  * @returns The translated text for the given locale, falling back to the first available translation, or null
  */
 export function getTranslationText(
-    element: MultiLanguageProperty | IAbstractLangString[] | undefined | MultiLanguagePropertyAAS,
+    element: MultiLanguageProperty | AbstractLangString[] | undefined | null,
     locale: string,
 ): string {
     const langStrings = Array.isArray(element) ? element : element?.value;
@@ -34,29 +30,28 @@ export function getTranslationText(
     return langStrings.find((el) => el.language === locale)?.text || langStrings[0]?.text;
 }
 
-export function getTranslationValue(element: IDataElement, locale: string): string | null {
-    switch (getKeyType(element)) {
+export function getTranslationValue(element: DataElementChoice, locale: string): string | null {
+    switch (element.modelType) {
         case KeyTypes.MultiLanguageProperty:
-            return getTranslationText(element as MultiLanguageProperty, locale);
+            return getTranslationText(element, locale);
         case KeyTypes.Property:
-            return (element as Property).value ?? null;
+            return element.value ?? null;
         default:
             return null;
     }
 }
 
 export function findSubmodelElementByIdShort(
-    elements: ISubmodelElement[] | null,
+    elements: SubmodelElementChoice[] | undefined | null,
     idShort: string | null,
     semanticId: string | null,
-): ISubmodelElement | null {
+): SubmodelElementChoice | null {
     if (!elements) return null;
     for (const el of elements) {
         if (el.idShort == idShort || (el.semanticId?.keys[0] && el.semanticId?.keys[0].value) == semanticId) {
             return el;
-        } else if (getKeyType(el) == KeyTypes.SubmodelElementCollection) {
-            const innerElements = (el as SubmodelElementCollection).value;
-            const foundElement = findSubmodelElementByIdShort(innerElements, idShort, semanticId);
+        } else if (el.modelType == KeyTypes.SubmodelElementCollection) {
+            const foundElement = findSubmodelElementByIdShort(el.value ?? null, idShort, semanticId);
             if (foundElement) {
                 return foundElement;
             }
@@ -66,70 +61,60 @@ export function findSubmodelElementByIdShort(
 }
 
 export function findSubmodelElementBySemanticIdsOrIdShort(
-    elements: ISubmodelElement[] | null,
+    elements: SubmodelElementChoice[] | null | undefined,
     idShort: string | null,
     semanticIds: string[] | null,
-): ISubmodelElement | null {
+): SubmodelElementChoice | null {
     if (!elements) return null;
-    
+
     for (const el of elements) {
-        const idShortMatches = idShort && el.idShort && 
-            el.idShort.toLowerCase() === idShort.toLowerCase();
-        const semanticIdMatches = semanticIds?.some((semId) => 
-            idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim())
+        const idShortMatches = idShort && el.idShort && el.idShort.toLowerCase() === idShort.toLowerCase();
+        const semanticIdMatches = semanticIds?.some((semId) =>
+            idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim()),
         );
-        
+
         if (idShortMatches || semanticIdMatches) {
             return el;
         }
-        
-        if (getKeyType(el) == KeyTypes.SubmodelElementCollection) {
-            const foundInCollection = findSubmodelElementBySemanticIdsOrIdShort(
-                (el as SubmodelElementCollection).value,
-                idShort,
-                semanticIds,
-            );
+
+        if (el.modelType == KeyTypes.SubmodelElementCollection) {
+            const foundInCollection = findSubmodelElementBySemanticIdsOrIdShort(el.value ?? null, idShort, semanticIds);
             if (foundInCollection) {
                 return foundInCollection;
             }
         }
     }
-    
+
     return null;
 }
 
 export function findAllSubmodelElementsBySemanticIdsOrIdShort(
-    elements: ISubmodelElement[] | null,
+    elements: SubmodelElementChoice[] | null | undefined,
     idShort: string | null,
     semanticIds: string[] | null,
-): ISubmodelElement[] | null {
+): SubmodelElementChoice[] | null {
     if (!elements) return null;
-    
-    const matchingElements: ISubmodelElement[] = [];
-    
+
+    const matchingElements: SubmodelElementChoice[] = [];
+
     for (const el of elements) {
-        const matchesIdShort = idShort && el.idShort && 
-            el.idShort.toLowerCase() === idShort.toLowerCase();
-        const matchesSemanticId = semanticIds?.some((semId) => 
-            idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim())
+        const matchesIdShort = idShort && el.idShort && el.idShort.toLowerCase() === idShort.toLowerCase();
+        const matchesSemanticId = semanticIds?.some((semId) =>
+            idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim()),
         );
-        
+
         if (matchesIdShort || matchesSemanticId) {
             matchingElements.push(el);
         }
-        
-        if (getKeyType(el) === KeyTypes.SubmodelElementCollection) {
-            const nestedMatches = findAllSubmodelElementsBySemanticIdsOrIdShort(
-                (el as SubmodelElementCollection).value,
-                idShort,
-                semanticIds,
-            );
+
+        if (el.modelType === KeyTypes.SubmodelElementCollection) {
+            const nestedMatches = findAllSubmodelElementsBySemanticIdsOrIdShort(el.value ?? null, idShort, semanticIds);
             if (nestedMatches) {
                 matchingElements.push(...nestedMatches);
             }
         }
     }
-    
+
     return matchingElements.length > 0 ? matchingElements : null;
 }
 
@@ -141,25 +126,28 @@ export function findAllSubmodelElementsBySemanticIdsOrIdShort(
  * @returns Array of matching submodel elements or null
  */
 export function findAllSubmodelElementsBySemanticIdsOrIdShortPrefix(
-    elements: ISubmodelElement[] | null,
+    elements: SubmodelElementChoice[] | null,
     idShortPrefix: string | null,
     semanticIds: string[] | null,
-): ISubmodelElement[] | null {
+): SubmodelElementChoice[] | null {
     if (!elements) return null;
-    
-    const matchingElements: ISubmodelElement[] = [];
-    
+
+    const matchingElements: SubmodelElementChoice[] = [];
+
     for (const el of elements) {
-        const matchesIdShortPrefix = idShortPrefix && el.idShort && el.idShort.toLowerCase().startsWith(idShortPrefix.toLowerCase());
-        const matchesSemanticId = semanticIds?.some((semId) => idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim()));
-        
+        const matchesIdShortPrefix =
+            idShortPrefix && el.idShort && el.idShort.toLowerCase().startsWith(idShortPrefix.toLowerCase());
+        const matchesSemanticId = semanticIds?.some((semId) =>
+            idEquals(el.semanticId?.keys[0]?.value.trim(), semId.trim()),
+        );
+
         if (matchesIdShortPrefix || matchesSemanticId) {
             matchingElements.push(el);
         }
-        
-        if (getKeyType(el) === KeyTypes.SubmodelElementCollection) {
+
+        if (el.modelType === KeyTypes.SubmodelElementCollection) {
             const nestedMatches = findAllSubmodelElementsBySemanticIdsOrIdShortPrefix(
-                (el as SubmodelElementCollection).value,
+                el.value ?? null,
                 idShortPrefix,
                 semanticIds,
             );
@@ -168,24 +156,23 @@ export function findAllSubmodelElementsBySemanticIdsOrIdShortPrefix(
             }
         }
     }
-    
+
     return matchingElements.length > 0 ? matchingElements : null;
 }
 
-
 export function findValueByIdShort(
-    elements: ISubmodelElement[] | null,
+    elements: SubmodelElementChoice[] | undefined | null,
     idShort: string | null,
     semanticId: string | null = null,
     locale: string,
 ): string | null {
     const element = findSubmodelElementByIdShort(elements, idShort, semanticId);
     if (!element) return null;
-    switch (getKeyType(element)) {
+    switch (element.modelType) {
         case KeyTypes.MultiLanguageProperty:
-            return getTranslationText(element as MultiLanguageProperty, locale);
+            return getTranslationText(element, locale);
         case KeyTypes.Property:
-            return (element as Property).value ?? null;
+            return element.value ?? null;
         default:
             return null;
     }
@@ -197,27 +184,27 @@ export function getArrayFromString(v: string): Array<string> {
     return stripped.split('|');
 }
 
-export function hasSemanticId(el: Submodel | ISubmodelElement, ...semanticIds: string[]): boolean {
+export function hasSemanticId(el: Submodel | SubmodelElementChoice, ...semanticIds: string[]): boolean {
     for (const id of semanticIds) {
         if (el.semanticId?.keys?.some((key) => idEquals(key.value.trim(), id.trim()))) return true;
     }
     return false;
 }
 
-export function getValueType(submodelElement: ISubmodelElement): DataTypeDefXsd {
+export function getValueType(submodelElement: SubmodelElementChoice): DataTypeDefXsd {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const valueType = (submodelElement as any).valueType;
     switch (valueType) {
         case 'xs:boolean':
-            return DataTypeDefXsd.Boolean;
+            return DataTypeDefXsd.XsBoolean;
         case 'xs:date':
-            return DataTypeDefXsd.Date;
+            return DataTypeDefXsd.XsDate;
         case 'xs:decimal':
-            return DataTypeDefXsd.Decimal;
+            return DataTypeDefXsd.XsDecimal;
         case 'xs:long':
-            return DataTypeDefXsd.Long;
+            return DataTypeDefXsd.XsLong;
         default:
-            return DataTypeDefXsd.String;
+            return DataTypeDefXsd.XsString;
     }
 }
 

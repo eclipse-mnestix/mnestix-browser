@@ -1,6 +1,7 @@
-import { Class, EntityType } from '@aas-core-works/aas-core3.0-typescript/types';
+import { EntityType } from 'lib/api/aas/models';
 
-export function GetEntityType(el: Class): EntityType {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function GetEntityType(el: any): EntityType | null {
     try {
         const jsonable = JSON.parse(JSON.stringify(el));
 
@@ -11,6 +12,6 @@ export function GetEntityType(el: Class): EntityType {
                 return EntityType.CoManagedEntity;
         }
     } catch {
-        return NaN;
+        return null;
     }
 }

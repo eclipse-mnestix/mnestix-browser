@@ -1,5 +1,5 @@
 import { Box, Button, Link, styled, Typography, Skeleton } from '@mui/material';
-import { File } from '@aas-core-works/aas-core3.0-typescript/types';
+import { ModelFile } from 'lib/api/aas/models';
 import { useState } from 'react';
 import { getSanitizedHref } from 'lib/util/HrefUtil';
 import { isValidUrl } from 'lib/util/UrlUtil';
@@ -9,6 +9,8 @@ import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper
 import { useTranslations } from 'next-intl';
 import ImagePreviewDialog from './ImagePreviewDialog';
 import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
+import { useSession } from 'next-auth/react';
+import { getFileUrl } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentUtils';
 
 const StyledFileImg = styled('img')(() => ({
     objectFit: 'contain',
@@ -18,23 +20,26 @@ const StyledFileImg = styled('img')(() => ({
 }));
 
 type FileComponentProps = {
-    readonly file: File;
+    readonly file: ModelFile;
     readonly submodelId?: string;
     readonly submodelElementPath?: string;
     readonly withPreviewDialog?: boolean;
+    readonly repositoryUrl?: string;
 };
 
-export function FileComponent({ file, submodelId, submodelElementPath, withPreviewDialog = true }: FileComponentProps) {
+export function FileComponent({ file, submodelId, submodelElementPath, withPreviewDialog = true, repositoryUrl }: FileComponentProps) {
     const [image, setImage] = useState<string | null>(null);
+    const [fileUrl, setFileUrl] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [, setLoadError] = useState<boolean>(false);
     const { aasOriginUrl } = useCurrentAasContext();
+    const { data: session } = useSession();
 
     const [previewOpen, setPreviewOpen] = useState(false);
-    const [previewFile, setPreviewFile] = useState<File | null>(null);
+    const [previewFile, setPreviewFile] = useState<ModelFile | null>(null);
     const [previewPath, setPreviewPath] = useState<string | null>(null);
 
-    const handleOpenPreview = (file: File, path: string) => {
+    const handleOpenPreview = (file: ModelFile, path: string) => {
         setPreviewFile(file);
         setPreviewPath(path);
         setPreviewOpen(true);
@@ -50,7 +55,7 @@ export function FileComponent({ file, submodelId, submodelElementPath, withPrevi
             setLoading(true);
             setLoadError(false);
 
-            if (file.contentType?.startsWith('image')) {
+            if (file.value && file.contentType?.startsWith('image')) {
                 if (isValidUrl(file.value)) {
                     setImage(file.value);
                 } else if (submodelId && submodelElementPath) {
@@ -79,9 +84,35 @@ export function FileComponent({ file, submodelId, submodelElementPath, withPrevi
         }
     }
 
+    async function resolveFileUrl() {
+        if (!file.value) {
+            setFileUrl(null);
+            return;
+        }
+
+        if (isValidUrl(file.value)) {
+            setFileUrl(file.value);
+        } else {
+            const repoUrl = repositoryUrl || aasOriginUrl;
+            if (repoUrl && submodelId && submodelElementPath) {
+                const attachmentUrl = `${repoUrl}/submodels/${encodeURIComponent(btoa(submodelId))}/submodel-elements/${submodelElementPath}/attachment`;
+                try {
+                    const resolvedUrl = await getFileUrl(attachmentUrl, session?.accessToken, repoUrl);
+                    setFileUrl(resolvedUrl || attachmentUrl);
+                } catch (error) {
+                    console.error('Error resolving file URL:', error);
+                    setFileUrl(attachmentUrl);
+                }
+            } else {
+                setFileUrl(getSanitizedHref(file.value));
+            }
+        }
+    }
+
     useAsyncEffect(async () => {
         await getImage();
-    }, []);
+        await resolveFileUrl();
+    }, [file.value, session?.accessToken, repositoryUrl, aasOriginUrl, submodelId, submodelElementPath]);
 
     if (!file) {
         return <></>;
@@ -124,9 +155,8 @@ export function FileComponent({ file, submodelId, submodelElementPath, withPrevi
         }
     }
 
-    // Only show link or not available message if image failed to load or isn't an image
-    return file.value ? (
-        <Link href={getSanitizedHref(file.value?.toString())} target="_blank">
+    return fileUrl ? (
+        <Link href={fileUrl} target="_blank">
             <Typography>{file.value?.toString()}</Typography>
         </Link>
     ) : (

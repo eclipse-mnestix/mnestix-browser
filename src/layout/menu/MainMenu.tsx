@@ -107,7 +107,7 @@ export default function MainMenu() {
         const templateItemToAdd = {
             label: t('templates'),
             to: '/templates',
-            icon: <TemplateIcon />,
+            icon: <TemplateIcon data-testid="templates-menu-icon" />,
         };
         basicMenu.push(templateItemToAdd);
     }

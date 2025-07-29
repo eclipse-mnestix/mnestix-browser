@@ -20,7 +20,7 @@ import { transferAasWithSubmodels } from 'lib/services/transfer-service/transfer
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { TransferAas, TransferDto, TransferResult, TransferSubmodel } from 'lib/types/TransferServiceData';
 import { useEnv } from 'app/EnvProvider';
-import { Reference } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Reference } from 'lib/api/aas/models';
 import { useTranslations } from 'next-intl';
 
 export type TransferFormModel = {

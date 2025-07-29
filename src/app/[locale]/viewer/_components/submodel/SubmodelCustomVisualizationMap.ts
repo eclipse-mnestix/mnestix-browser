@@ -21,5 +21,5 @@ export const submodelCustomVisualizationMap = {
     [SubmodelSemanticIdEnum.HierarchicalStructuresV11]: HierarchicalStructuresDetail,
     [SubmodelSemanticIdEnum.BillOfApplications]: BillOfApplicationsDetail,
     [SubmodelSemanticIdEnum.TechnicalDataV11]: TechnicalDataDetail,
-    [SubmodelSemanticIdEnum.TechnicalDataV12]: TechnicalDataDetail
+    [SubmodelSemanticIdEnum.TechnicalDataV12]: TechnicalDataDetail,
 };

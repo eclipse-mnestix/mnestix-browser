@@ -27,7 +27,14 @@ export const defaultRbacRule: BaSyxRbacRule = {
     idShort: '',
 };
 
-export function CreateRuleDialog({ onClose, afterClose, reloadRules, open, availableRoles, selectedRole }: RoleDialogProps) {
+export function CreateRuleDialog({
+    onClose,
+    afterClose,
+    reloadRules,
+    open,
+    availableRoles,
+    selectedRole,
+}: RoleDialogProps) {
     const t = useTranslations('pages.settings.rules');
     const { showError } = useShowError();
     const notificationSpawner = useNotificationSpawner();
@@ -67,20 +74,14 @@ export function CreateRuleDialog({ onClose, afterClose, reloadRules, open, avail
 
         showError(response);
     }
-    
+
     function resetState() {
         setShowHint(false);
         afterClose();
     }
 
     return (
-        <Dialog
-            open={open}
-            onClose={onClose}
-            maxWidth="md"
-            fullWidth={true}
-            onTransitionExited={resetState}
-        >
+        <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth={true} onTransitionExited={resetState}>
             <Box sx={{ mx: '2rem', mt: '1.5rem', mb: '1rem' }} data-testid="role-create-dialog">
                 <DialogCloseButton handleClose={onClose} dataTestId="rule-create-close-button" />
                 {showHint ? (

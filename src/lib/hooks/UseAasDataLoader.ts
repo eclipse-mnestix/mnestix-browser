@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Reference, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { Reference, Submodel } from 'lib/api/aas/models';
 import { useEnv } from 'app/EnvProvider';
 import {
     getAasFromRepository,

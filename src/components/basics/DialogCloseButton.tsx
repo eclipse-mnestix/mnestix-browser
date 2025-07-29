@@ -3,7 +3,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 type CloseIconButtonProps = {
     handleClose: () => void;
-    dataTestId? : string;
+    dataTestId?: string;
 };
 
 export function DialogCloseButton({ handleClose, dataTestId }: CloseIconButtonProps) {

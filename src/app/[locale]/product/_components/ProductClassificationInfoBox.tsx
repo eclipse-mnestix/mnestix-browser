@@ -14,7 +14,6 @@ export interface ProductClassification {
 
 interface ProductClassificationInfoBoxProps {
     productClassifications: ProductClassification[];
-
 }
 
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -40,29 +39,30 @@ const ValueContainer = styled(Box)(({ theme }) => ({
  * A component that displays product classification information with a label and values in a horizontal layout.
  * The component renders a box with a main label "Classification Info" followed by classification systems and their values.
  */
-export function ProductClassificationInfoBox({
-    productClassifications,
-}: ProductClassificationInfoBoxProps) {
+export function ProductClassificationInfoBox({ productClassifications }: ProductClassificationInfoBoxProps) {
     const t = useTranslations('pages.productViewer');
-    
+
     // Filter out IEC classifications and check if we have any valid classifications
-    const validClassifications = productClassifications?.filter(
-        (c) => c.ProductClassificationSystem !== 'IEC' && c.ProductClassId
-    ) ?? [];
+    const validClassifications =
+        productClassifications?.filter((c) => c.ProductClassificationSystem !== 'IEC' && c.ProductClassId) ?? [];
 
     // Return null if there are no valid classifications
     if (validClassifications.length === 0) {
         return null;
     }
 
-    const vecIcon = <VecIcon color='primary'></VecIcon>;
-    const eClassIcon = <EClassIcon color='primary'></EClassIcon>;
+    const vecIcon = <VecIcon color="primary"></VecIcon>;
+    const eClassIcon = <EClassIcon color="primary"></EClassIcon>;
 
     return (
         <Box>
             <StyledBox bgcolor={'grey.100'}>
                 <LabelContainer>
-                    <Typography sx={{ borderBottom: '2px solid', borderColor: 'primary' }} color="primary" fontWeight="bold">
+                    <Typography
+                        sx={{ borderBottom: '2px solid', borderColor: 'primary' }}
+                        color="primary"
+                        fontWeight="bold"
+                    >
                         {t('summary')}
                     </Typography>
                 </LabelContainer>
@@ -71,8 +71,8 @@ export function ProductClassificationInfoBox({
                         <Chip
                             sx={{ color: 'primary.main', backgroundColor: 'grey.200', borderRadius: 5, padding: 0.5 }}
                             label={classification.ProductClassificationSystem || 'Classification'}
-                            icon={classification.ProductClassificationSystem === 'ECLASS' ? eClassIcon : vecIcon}>
-                        </Chip>
+                            icon={classification.ProductClassificationSystem === 'ECLASS' ? eClassIcon : vecIcon}
+                        ></Chip>
                         <Typography variant="body1" ml={1}>
                             {tooltipText(classification.ProductClassId, 35) || '-'}
                         </Typography>

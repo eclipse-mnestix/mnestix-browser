@@ -1,4 +1,4 @@
-﻿import { AssetAdministrationShell, Reference } from '@aas-core-works/aas-core3.0-typescript/types';
+﻿import { AssetAdministrationShell, Reference } from 'lib/api/aas/models';
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { SubmodelCompareData } from 'lib/types/SubmodelCompareData';
 import { generateSubmodelCompareData, isCompareData, isCompareDataRecord } from 'lib/util/CompareAasUtil';
@@ -82,7 +82,7 @@ export const CompareAasContextProvider = (props: PropsWithChildren) => {
     const addSeveralAas = async (input: string[]) => {
         const aasList: CompareAAS[] = [];
         let compareDataTemp: SubmodelCompareData[] = [];
-        for (const aasId of input as string[]) {
+        for (const aasId of input) {
             const { isSuccess, result } = await performFullAasSearch(aasId);
             if (isSuccess && result.aas) {
                 const aas = {

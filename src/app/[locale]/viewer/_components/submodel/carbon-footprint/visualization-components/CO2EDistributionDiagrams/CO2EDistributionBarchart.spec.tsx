@@ -37,7 +37,7 @@ const co2EquivalentsPerLifecycleStage = {
 
 describe('CarbonFootprint - CO2EquivalentsDistribution', () => {
     it('should renders correct axis descriptions', async () => {
-        CustomRender(<CO2EBarchart co2EquivalentsPerLifecycleStage={co2EquivalentsPerLifecycleStage} />);
+        CustomRender(<CO2EBarchart co2EquivalentsPerLifecycleStage={co2EquivalentsPerLifecycleStage} unit="kg" />);
         expect(screen.getByText('kg CO2e')).toBeInTheDocument();
         expect(screen.getByText('CO2 equivalents')).toBeInTheDocument();
         expect(screen.getByText('A3')).toBeInTheDocument();

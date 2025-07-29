@@ -6,7 +6,6 @@ import { FileComponent } from 'app/[locale]/viewer/_components/submodel-elements
 import { SubmodelElementCollectionComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/SubmodelElementCollectionComponent';
 import { DifferenceSymbol } from 'components/basics/DifferenceSymbol';
 import { useTranslations } from 'next-intl';
-import type * as CoreTypes from '@aas-core-works/aas-core3.0-typescript/types';
 import { GenericPropertyComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/GenericPropertyComponent';
 
 type CompareSubmodelElementProps = {
@@ -30,45 +29,30 @@ export function CompareSubmodelElement(props: CompareSubmodelElementProps) {
                         <Box display="flex" alignItems="center">
                             {isMarked && <DifferenceSymbol />}
                             <Box display="inline-block">
-                                <GenericPropertyComponent
-                                    property={props.submodelElement as unknown as CoreTypes.Property}
-                                    withCopyButton={true}
-                                />
+                                <GenericPropertyComponent property={props.submodelElement} withCopyButton={true} />
                             </Box>
                         </Box>
                     </>
                 );
             case KeyTypes.SubmodelElementCollection:
-                return (
-                    <SubmodelElementCollectionComponent
-                        submodelElementCollection={
-                            props.submodelElement as unknown as CoreTypes.SubmodelElementCollection
-                        }
-                    />
-                );
+                return <SubmodelElementCollectionComponent submodelElementCollection={props.submodelElement} />;
             case KeyTypes.SubmodelElementList:
-                return (
-                    <SubmodelElementCollectionComponent
-                        submodelElementCollection={props.submodelElement as unknown as CoreTypes.SubmodelElementList}
-                    />
-                );
+                return <SubmodelElementCollectionComponent submodelElementCollection={props.submodelElement} />;
             case KeyTypes.File:
-                return <FileComponent file={props.submodelElement as unknown as CoreTypes.File} />;
+                return <FileComponent file={props.submodelElement} />;
             case KeyTypes.MultiLanguageProperty:
                 return (
                     <>
                         <Box display="flex" alignItems={'center'}>
                             {isMarked && <DifferenceSymbol />}
                             <Box display="inline-block">
-                                <MultiLanguagePropertyComponent
-                                    mLangProp={props.submodelElement as unknown as CoreTypes.MultiLanguageProperty}
-                                />
+                                <MultiLanguagePropertyComponent mLangProp={props.submodelElement} />
                             </Box>
                         </Box>
                     </>
                 );
             case KeyTypes.Entity:
-                return <EntityComponent entity={props.submodelElement as unknown as CoreTypes.Entity} />;
+                return <EntityComponent entity={props.submodelElement} />;
             default:
                 return (
                     <Typography color="error" variant="body2">

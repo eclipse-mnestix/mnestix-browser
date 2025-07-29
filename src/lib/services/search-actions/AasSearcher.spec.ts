@@ -1,12 +1,13 @@
 import { expect } from '@jest/globals';
 import { AssetAdministrationShellDescriptor } from 'lib/types/registryServiceTypes';
-import { AssetAdministrationShell } from '@aas-core-works/aas-core3.0-typescript/types';
-import { instance, mock } from 'ts-mockito';
+import { AssetAdministrationShell } from 'lib/api/aas/models';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { Log } from 'lib/util/Log';
 import { AasSearcher } from 'lib/services/search-actions/AasSearcher';
+import testData from 'lib/services/search-actions/AasSearcher.data.json';
 
 const AAS_ENDPOINT = new URL('https://www.origin.com/route/for/aas/');
+const assetAdministrationShells = testData as unknown as AssetAdministrationShell;
 
 describe('Full Aas Search happy paths', () => {
     it('navigates to the discovery list when more than one aasId for a given assetId', async () => {
@@ -171,10 +172,9 @@ describe('Full Aas Search edge cases', () => {
 
 // would prefer to do without mocks but the objects are too complicated to instantiate
 function createDummyAas(id: string = 'irrelevant AasId') {
-    const aas = mock(AssetAdministrationShell);
-    const s = instance(aas);
-    s.id = id;
-    return s;
+    const aas = assetAdministrationShells;
+    aas.id = id;
+    return aas;
 }
 
 function createDummyShellDescriptor(href: URL, id: string): AssetAdministrationShellDescriptor {

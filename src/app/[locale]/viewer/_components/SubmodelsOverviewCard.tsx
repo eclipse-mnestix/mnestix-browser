@@ -11,7 +11,7 @@ import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import ErrorBoundary from 'components/basics/ErrorBoundary';
 import { useTranslations } from 'next-intl';
 import { SubmodelInfoDialog } from 'app/[locale]/viewer/_components/submodel/SubmodelInfoDialog';
-import { AssetAdministrationShell } from '@aas-core-works/aas-core3.0-typescript/types';
+import { AssetAdministrationShell } from 'lib/api/aas/models';
 
 export type SubmodelsOverviewCardProps = {
     readonly aas: AssetAdministrationShell | undefined;
@@ -100,7 +100,10 @@ export function SubmodelsOverviewCard({
     const SelectedContent = useMemo(() => {
         if (selectedItem?.submodelData && !submodelsLoading) {
             return (
-                <ErrorBoundary message={t('renderError')}>
+                <ErrorBoundary 
+                    key={selectedItem.submodelData.id}
+                    message={t('renderError')}
+                >
                     <SubmodelDetail submodel={selectedItem?.submodelData} repositoryUrl={selectedItem?.repositoryUrl} />
                 </ErrorBoundary>
             );

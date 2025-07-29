@@ -1,7 +1,7 @@
 import { Box, Card, CardContent, Skeleton, Typography } from '@mui/material';
 import React from 'react';
 import { DataRow } from 'components/basics/DataRow';
-import { AssetAdministrationShell, SpecificAssetId } from '@aas-core-works/aas-core3.0-typescript/types';
+import { AssetAdministrationShell } from 'lib/api/aas/models';
 import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
 import { ShellIcon } from 'components/custom-icons/ShellIcon';
@@ -25,7 +25,7 @@ type AASOverviewCardProps = {
 
 export function AASOverviewCard(props: AASOverviewCardProps) {
     const isAccordion = props.isAccordion;
-    const specificAssetIds = props.aas?.assetInformation?.specificAssetIds as SpecificAssetId[];
+    const specificAssetIds = props.aas?.assetInformation?.specificAssetIds;
     const navigate = useRouter();
     const { addAasData } = useAasStore();
     const t = useTranslations('pages.aasViewer');

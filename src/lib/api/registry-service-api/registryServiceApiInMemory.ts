@@ -1,6 +1,6 @@
 import { IRegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApiInterface';
 import { AssetAdministrationShellDescriptor } from 'lib/types/registryServiceTypes';
-import { AssetAdministrationShell } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import { AssetAdministrationShell } from 'lib/api/aas/models';
 import {
     ApiResponseWrapper,
     wrapErrorCode,

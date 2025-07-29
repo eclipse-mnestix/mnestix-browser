@@ -12,8 +12,10 @@ const initializeRequestOptions = async (bearerToken: string, init?: RequestInit)
             Authorization: `Bearer ${bearerToken}`,
         };
     } else if (!envs.AUTHENTICATION_FEATURE_FLAG) {
+        const header = envs.MNESTIX_V2_ENABLED ? 'X-API-KEY' : 'ApiKey';
+
         init.headers = {
-            ApiKey: envs.MNESTIX_BACKEND_API_KEY || '',
+            [header]: envs.MNESTIX_BACKEND_API_KEY || '',
             // Overriding the ApiKey from the Mnestix configuration with the one
             // set in the function call as the transfer feature allows users
             // to set a separate ApiKey for the target repository.
@@ -52,9 +54,11 @@ export const mnestixFetchLegacy = ():
     };
 };
 
-export function mnestixFetch(): {
+export type MnestixFetch = {
     fetch<T>(url: RequestInfo | URL, init?: RequestInit | undefined): Promise<ApiResponseWrapper<T>>;
-} {
+};
+
+export function mnestixFetch(): MnestixFetch {
     return {
         fetch: async (url: RequestInfo, init?: RequestInit) => {
             return await performServerFetch(url, await initializeRequestOptions(await getBearerToken(), init));
@@ -70,11 +74,3 @@ export const sessionLogOut = async (keycloakEnabled: boolean) => {
         console.error(err);
     }
 };
-
-export async function fetchFileServerSide(fileUrl: string, accessToken?: string) {
-    const { fetch } = mnestixFetch();
-    return await fetch<Blob>(fileUrl, {
-        headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
-        cache: 'no-store',
-    });
-}

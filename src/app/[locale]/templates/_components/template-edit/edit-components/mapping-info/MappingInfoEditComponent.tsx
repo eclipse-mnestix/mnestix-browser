@@ -4,16 +4,16 @@ import React, { useEffect, useState } from 'react';
 import { MappingInfoData } from 'lib/types/MappingInfoData';
 import { TemplateEditSectionHeading } from '../../TemplateEditSectionHeading';
 import mappingInfoDataJson from './mapping-info-data.json';
-import { ISubmodelElement, Qualifier, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useTranslations } from 'next-intl';
+import { Qualifier, Submodel, SubmodelElementChoice } from 'lib/api/aas/models';
 
 interface MappingInfoEditComponentProps {
-    data: Submodel | ISubmodelElement;
-    onChange: (data: Submodel | ISubmodelElement) => void;
+    data: Submodel | SubmodelElementChoice;
+    onChange: (data: Submodel | SubmodelElementChoice) => void;
 }
 
 export function MappingInfoEditComponent(props: MappingInfoEditComponentProps) {
-    const mappingInfoData = mappingInfoDataJson as unknown as MappingInfoData;
+    const mappingInfoData = mappingInfoDataJson as MappingInfoData;
     const [data, setData] = useState(props.data);
     const [mappingInfo, setMappingInfo] = useState(getMappingInfo());
     const [valueEnabled, setValueEnabled] = useState(!!mappingInfo?.value?.length);
@@ -30,8 +30,8 @@ export function MappingInfoEditComponent(props: MappingInfoEditComponentProps) {
 
     const onValueChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         if (mappingInfo) {
-            setMappingInfo({ ...mappingInfo, value: event.target.value } as Qualifier);
-            handleChange({ ...mappingInfo, value: event.target.value } as Qualifier);
+            setMappingInfo({ ...mappingInfo, value: event.target.value });
+            handleChange({ ...mappingInfo, value: event.target.value });
         }
     };
 

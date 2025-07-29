@@ -3,15 +3,14 @@ import { screen } from '@testing-library/react';
 import { expect } from '@jest/globals';
 import { GenericPropertyComponent } from './GenericPropertyComponent';
 import { CustomRender } from 'test-utils/CustomRender';
-import { MultiLanguageProperty, Property } from '@aas-core-works/aas-core3.0-typescript/types';
-import { ConceptDescription } from '@aas-core-works/aas-core3.0-typescript/dist/types/types';
+import { ConceptDescription, MultiLanguageProperty, Property } from 'lib/api/aas/models';
 
 // Setup mock for the notification spawner module
 const mockSpawn = jest.fn();
 jest.mock('./../../../../../../lib/hooks/UseNotificationSpawner', () => ({
     useNotificationSpawner: () => ({
-        spawn: mockSpawn
-    })
+        spawn: mockSpawn,
+    }),
 }));
 
 // Mock clipboard API
@@ -40,8 +39,8 @@ describe('GenericPropertyComponent', () => {
         const mLangProp: MultiLanguageProperty = {
             value: [
                 { language: 'en', text: 'English Text' },
-                { language: 'de', text: 'German Text' }
-            ]
+                { language: 'de', text: 'German Text' },
+            ],
         } as MultiLanguageProperty;
 
         CustomRender(<GenericPropertyComponent mLangProp={mLangProp} />);
@@ -95,8 +94,10 @@ describe('GenericPropertyComponent', () => {
 
     test('handles empty values correctly', () => {
         const property: Property = {
-            value: null,
-        } as Property;
+            value: undefined,
+            modelType: 'Property',
+            valueType: 'xs:anyURI',
+        };
 
         CustomRender(<GenericPropertyComponent property={property} />);
 
@@ -124,16 +125,13 @@ describe('GenericPropertyComponent', () => {
                 {
                     dataSpecificationContent: {
                         unit: 'kg',
-                        symbol: 'kg'
-                    }
-                }
-            ]
+                        symbol: 'kg',
+                    },
+                },
+            ],
         } as any as ConceptDescription;
 
-        CustomRender(<GenericPropertyComponent
-            property={property}
-            conceptDescription={conceptDescription}
-        />);
+        CustomRender(<GenericPropertyComponent property={property} conceptDescription={conceptDescription} />);
 
         expect(screen.getByTestId('property-unit')).toHaveTextContent('kg');
     });
@@ -143,11 +141,10 @@ describe('GenericPropertyComponent', () => {
             value: '42',
         } as Property;
 
-        CustomRender(<GenericPropertyComponent
-            property={property}
-            conceptDescriptionLoading={true}
-        />);
+        CustomRender(<GenericPropertyComponent property={property} conceptDescriptionLoading={true} />);
 
-        expect(screen.getByTestId('property-content').parentElement?.querySelector('.MuiSkeleton-root')).toBeInTheDocument();
+        expect(
+            screen.getByTestId('property-content').parentElement?.querySelector('.MuiSkeleton-root'),
+        ).toBeInTheDocument();
     });
 });

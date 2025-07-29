@@ -26,6 +26,33 @@
       }
     },
     {
+      // Use this configuration to start Mnestix with a proxy, only for teporary use until the proxy is integrated into the main configuration
+      "name": "Start Mnestix w. Proxy",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "docker compose -f compose.yml -f docker-compose/compose.proxy.yml -f docker-compose/compose.dev.yml -p mnestix-browser up --remove-orphans -d aas-environment mongodb submodel-registry aas-discovery aas-registry mnestix-api mnestix-proxy && yarn dev",
+      "sourceMaps": true,
+      "postDebugTask": "docker-down",
+      "env": {
+        "MNESTIX_V2_ENABLED": "true"
+      }
+    },
+    {
+      // Use this configuration to start Mnestix with a proxy, only for teporary use until the proxy is integrated into the main configuration
+      "name": "Start Mnestix with RBAC w. Proxy",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "docker compose -f compose.yml -f docker-compose/compose.proxy.yml -f docker-compose/compose.dev.yml -f docker-compose/compose.dynamic-rbac.yml -f docker-compose/compose.dynamic-rbac-proxy.yml -p mnestix-browser up --remove-orphans -d aas-environment mongodb submodel-registry aas-discovery aas-registry mnestix-api mnestix-proxy && yarn dev",
+      "sourceMaps": true,
+      "postDebugTask": "docker-down-rbac",
+      "env": {
+        "BASYX_RBAC_ENABLED": "true",
+        "AUTHENTICATION_FEATURE_FLAG": "true",
+        "KEYCLOAK_ENABLED": "true",
+        "MNESTIX_V2_ENABLED": "true"
+      }
+    },
+    {
       "name": "Debug Server",
       "type": "node-terminal",
       "request": "launch",

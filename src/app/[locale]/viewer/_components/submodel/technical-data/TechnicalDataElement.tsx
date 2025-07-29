@@ -1,18 +1,7 @@
-import {
-    ConceptDescription,
-    File,
-    ISubmodelElement,
-    KeyTypes,
-    MultiLanguageProperty,
-    Property,
-    Range,
-    SubmodelElementList,
-    SubmodelElementCollection,
-} from '@aas-core-works/aas-core3.0-typescript/types';
+import { ConceptDescription, SubmodelElementChoice, KeyTypes } from 'lib/api/aas/models';
 import { useTranslations } from 'next-intl';
 import { Box, Typography, useTheme } from '@mui/material';
 import React, { useState } from 'react';
-import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { DataRowWithUnit } from 'app/[locale]/viewer/_components/submodel/technical-data/ConceptDescriptionDataRow';
 import { TreeItem } from '@mui/x-tree-view';
 import { FileComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/FileComponent';
@@ -22,12 +11,12 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { GenericPropertyComponent } from '../../submodel-elements/generic-elements/GenericPropertyComponent';
 
 export const TechnicalDataElement = (props: {
-    elements: ISubmodelElement[];
+    elements: SubmodelElementChoice[];
     submodelId: string;
     label: string;
     header: string;
     isExpanded: boolean;
-    showUnits?: boolean
+    showUnits?: boolean;
 }) => {
     const t = useTranslations('pages.aasViewer.submodels');
     const theme = useTheme();
@@ -38,16 +27,13 @@ export const TechnicalDataElement = (props: {
      * Get all semantic IDs from the submodel elements and their children,
      * this is needed to fetch all concept descriptions at once.
      */
-    function getFlatMapOfAllSemanticIds(elements: ISubmodelElement[]): string[] {
+    function getFlatMapOfAllSemanticIds(elements: SubmodelElementChoice[]): string[] {
         return elements.reduce<string[]>((acc, el) => {
             if (el.semanticId?.keys[0]?.value) {
                 acc.push(el.semanticId.keys[0].value);
             }
-            if (
-                getKeyType(el) === KeyTypes.SubmodelElementCollection ||
-                getKeyType(el) === KeyTypes.SubmodelElementList
-            ) {
-                const collection = el as SubmodelElementCollection | SubmodelElementList;
+            if (el.modelType === KeyTypes.SubmodelElementCollection || el.modelType === KeyTypes.SubmodelElementList) {
+                const collection = el;
                 if (collection.value) {
                     acc.push(...getFlatMapOfAllSemanticIds(collection.value));
                 }
@@ -91,9 +77,9 @@ export const TechnicalDataElement = (props: {
         }
     }, [props.isExpanded, loadConceptDescriptions]);
 
-    const renderSubmodelElement = (element: ISubmodelElement) => {
+    const renderSubmodelElement = (element: SubmodelElementChoice) => {
         const semanticId = element.semanticId?.keys?.[0]?.value || '';
-        switch (getKeyType(element)) {
+        switch (element.modelType) {
             case KeyTypes.Property: {
                 return (
                     <DataRowWithUnit
@@ -102,10 +88,11 @@ export const TechnicalDataElement = (props: {
                         conceptDescriptionLoading={loadingConceptDescriptions}
                     >
                         <GenericPropertyComponent
-                            property={element as Property}
+                            property={element}
                             withCopyButton={true}
                             conceptDescription={props.showUnits ? conceptDescriptions[semanticId] : undefined}
-                            conceptDescriptionLoading={props.showUnits ? loadingConceptDescriptions : undefined} />
+                            conceptDescriptionLoading={props.showUnits ? loadingConceptDescriptions : undefined}
+                        />
                     </DataRowWithUnit>
                 );
             }
@@ -122,24 +109,23 @@ export const TechnicalDataElement = (props: {
                             },
                         }}
                     >
-                        {(element as SubmodelElementCollection | SubmodelElementList)?.value?.map(
-                            (child) => child && <React.Fragment key={child.idShort}>{renderSubmodelElement(child)}</React.Fragment>,
+                        {element?.value?.map(
+                            (child) =>
+                                child && (
+                                    <React.Fragment key={child.idShort}>{renderSubmodelElement(child)}</React.Fragment>
+                                ),
                         )}
                     </TreeItem>
                 );
             case KeyTypes.File: {
-                const file = element as File;
+                const file = element;
                 const path = buildSubmodelElementPath('GeneralInformation', element.idShort);
 
                 return (
                     // With the hardcoded SubmodelElementPath, this only works for CompanyLogo and ProductLogo
                     <DataRowWithUnit submodelElement={element}>
                         <Box height="50px" overflow="hidden" sx={{ display: 'flex', overflowWrap: 'anywhere' }}>
-                            <FileComponent
-                                file={file}
-                                submodelId={props.submodelId}
-                                submodelElementPath={path}
-                            />
+                            <FileComponent file={file} submodelId={props.submodelId} submodelElementPath={path} />
                         </Box>
                     </DataRowWithUnit>
                 );
@@ -152,7 +138,7 @@ export const TechnicalDataElement = (props: {
                         conceptDescriptionLoading={loadingConceptDescriptions}
                     >
                         <GenericPropertyComponent
-                            mLangProp={element as MultiLanguageProperty}
+                            mLangProp={element}
                             conceptDescription={props.showUnits ? conceptDescriptions[semanticId] : undefined}
                             conceptDescriptionLoading={props.showUnits ? loadingConceptDescriptions : undefined}
                         />
@@ -161,12 +147,9 @@ export const TechnicalDataElement = (props: {
             case KeyTypes.Range:
                 // Range still needs styling
                 return (
-                    <DataRowWithUnit
-                        submodelElement={element}
-                        conceptDescription={conceptDescriptions[semanticId]}
-                    >
+                    <DataRowWithUnit submodelElement={element} conceptDescription={conceptDescriptions[semanticId]}>
                         <GenericPropertyComponent
-                            range={element as Range}
+                            range={element}
                             conceptDescription={props.showUnits ? conceptDescriptions[semanticId] : undefined}
                             conceptDescriptionLoading={props.showUnits ? loadingConceptDescriptions : undefined}
                         />
@@ -175,7 +158,7 @@ export const TechnicalDataElement = (props: {
             default:
                 return (
                     <Typography color="error" variant="body2">
-                        {t('unknownModelType', { type: `${getKeyType(element)}` })}
+                        {t('unknownModelType', { type: `${element.modelType}` })}
                     </Typography>
                 );
         }
@@ -203,7 +186,10 @@ export const TechnicalDataElement = (props: {
             }}
             key={props.label}
         >
-            {props.elements?.map((el, index) => el && <React.Fragment key={`${el.idShort}_${index}`}>{renderSubmodelElement(el)}</React.Fragment>)}
+            {props.elements?.map(
+                (el, index) =>
+                    el && <React.Fragment key={`${el.idShort}_${index}`}>{renderSubmodelElement(el)}</React.Fragment>,
+            )}
         </TreeItem>
     );
 };

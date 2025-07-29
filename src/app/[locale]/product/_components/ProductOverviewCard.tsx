@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { DataRow } from 'components/basics/DataRow';
 import {
     AssetAdministrationShell,
-    ISubmodelElement,
+    SubmodelElementChoice,
     Submodel,
     SubmodelElementCollection,
-} from '@aas-core-works/aas-core3.0-typescript/types';
+} from 'lib/api/aas/models';
 import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
 import { encodeBase64 } from 'lib/util/Base64Util';
@@ -49,8 +49,8 @@ type OverviewData = {
     readonly manufacturerProductType?: string;
     readonly manufacturerArticleNumber?: string;
     readonly manufacturerOrderCode?: string;
-    readonly manufacturerLogo: ISubmodelElement | null;
-    readonly companyLogo: ISubmodelElement | null;
+    readonly manufacturerLogo: SubmodelElementChoice | null;
+    readonly companyLogo: SubmodelElementChoice | null;
     readonly markings?: SubmodelElementCollection;
     readonly productClassifications?: ProductClassification[];
 };
@@ -88,7 +88,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
         }
     }, [props.submodels]);
 
-    const prepareTechnicalDataSubmodel = (technicalDataSubmodelElements: Array<ISubmodelElement>) => {
+    const prepareTechnicalDataSubmodel = (technicalDataSubmodelElements: Array<SubmodelElementChoice>) => {
         const manufacturerName = findValue(
             technicalDataSubmodelElements,
             'ManufacturerName',
@@ -152,7 +152,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             manufacturerLogo: manufacturerLogo,
         });
     };
-    const prepareNameplateData = (nameplateSubmodelElements: Array<ISubmodelElement>) => {
+    const prepareNameplateData = (nameplateSubmodelElements: Array<SubmodelElementChoice>) => {
         const manufacturerProductRoot = findValue(
             nameplateSubmodelElements,
             'ManufacturerProductRoot',
