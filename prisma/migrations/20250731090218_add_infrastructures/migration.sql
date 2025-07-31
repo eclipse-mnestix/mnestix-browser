@@ -1,10 +1,3 @@
-/*
-  Warnings:
-
-  - You are about to drop the column `typeId` on the `MnestixConnection` table. All the data in the column will be lost.
-  - Added the required column `infrastructureId` to the `MnestixConnection` table without a default value. This is not possible if the table is not empty.
-
-*/
 -- CreateTable
 CREATE TABLE "MnestixConnectionTypeRelation" (
     "connectionId" TEXT NOT NULL,
