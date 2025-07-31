@@ -51,24 +51,6 @@ CREATE TABLE "SecuritySettingsProxy" (
 INSERT INTO "MnestixConnectionTypeRelation" ("connectionId", "typeId")
 SELECT "id", "typeId" FROM "MnestixConnection" WHERE "typeId" IS NOT NULL;
 
--- RedefineTables
-PRAGMA defer_foreign_keys=ON;
-PRAGMA foreign_keys=OFF;
-CREATE TABLE "new_MnestixConnection" (
-    "id" TEXT NOT NULL PRIMARY KEY,
-    "url" TEXT NOT NULL,
-    "infrastructureId" TEXT NOT NULL,
-    CONSTRAINT "MnestixConnection_infrastructureId_fkey" FOREIGN KEY ("infrastructureId") REFERENCES "MnestixInfrastructure" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
-);
-INSERT INTO "new_MnestixConnection" ("id", "url") SELECT "id", "url" FROM "MnestixConnection";
-DROP TABLE "MnestixConnection";
-ALTER TABLE "new_MnestixConnection" RENAME TO "MnestixConnection";
-PRAGMA foreign_keys=ON;
-PRAGMA defer_foreign_keys=OFF;
-
--- CreateIndex
-CREATE UNIQUE INDEX "MnestixInfrastructure_name_key" ON "MnestixInfrastructure"("name");
-
 -- Create SecurityTypes
 INSERT INTO "SecurityType" ("id", "typeName")
 VALUES
@@ -81,7 +63,20 @@ INSERT INTO "MnestixInfrastructure" ("id", "name", "logo", "securityTypeId")
 SELECT 'infrastructure1', 'Infrastructure', NULL, '0'
 WHERE EXISTS (SELECT 1 FROM "MnestixConnection");
 
--- DATA MIGRATION: Add all existing connections to the new default infrastructure
-UPDATE "MnestixConnection"
-SET "infrastructureId" = 'infrastructure1'
-WHERE "infrastructureId" IS NULL OR "infrastructureId" = '';
+-- RedefineTables
+PRAGMA defer_foreign_keys=ON;
+PRAGMA foreign_keys=OFF;
+CREATE TABLE "new_MnestixConnection" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "url" TEXT NOT NULL,
+    "infrastructureId" TEXT NOT NULL,
+    CONSTRAINT "MnestixConnection_infrastructureId_fkey" FOREIGN KEY ("infrastructureId") REFERENCES "MnestixInfrastructure" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+INSERT INTO "new_MnestixConnection" ("id", "url", "infrastructureId") SELECT "id", "url", "infrastructure1" FROM "MnestixConnection";
+DROP TABLE "MnestixConnection";
+ALTER TABLE "new_MnestixConnection" RENAME TO "MnestixConnection";
+PRAGMA foreign_keys=ON;
+PRAGMA defer_foreign_keys=OFF;
+
+-- CreateIndex
+CREATE UNIQUE INDEX "MnestixInfrastructure_name_key" ON "MnestixInfrastructure"("name");
