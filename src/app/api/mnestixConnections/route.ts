@@ -3,7 +3,7 @@ import { NextRequest } from 'next/server';
 
 export async function GET() {
     try {
-        const mnestixConnections = await prisma.mnestixConnection.findMany({ include: { type: true } });
+        const mnestixConnections = await prisma.mnestixConnection.findMany({ include: { types: true } });
 
         return Response.json(mnestixConnections);
     } catch (error) {
@@ -28,7 +28,8 @@ export async function POST(req: NextRequest) {
         await prisma.mnestixConnection.create({
             data: {
                 url: mnestixConnectionRequest.url,
-                typeId: mnestixType.id,
+                infrastructureId: mnestixConnectionRequest.infrastructureId,
+                types: { create: [{ typeId: mnestixType.id }] },
             },
         });
         return Response.json({ message: 'MnestixConnection created' });

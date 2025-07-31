@@ -55,20 +55,21 @@ export function MnestixConnectionsCard() {
 
     async function mapFormData() {
         const rawConnectionData = await getConnectionData();
+        // TODO MNES-273 replace [0] to handle multiple types in the future
         return {
             aasRepository: rawConnectionData
-                .filter((data) => data.type.typeName === 'AAS_REPOSITORY')
+                .filter((data) => data.types[0]?.type.typeName === 'AAS_REPOSITORY')
                 .map((data) => ({
                     id: data.id,
                     url: data.url,
-                    type: data.type.typeName,
+                    type: data.types[0]?.type.typeName,
                 })),
             submodelRepository: rawConnectionData
-                .filter((data) => data.type.typeName === 'SUBMODEL_REPOSITORY')
+                .filter((data) => data.types[0]?.type.typeName === 'SUBMODEL_REPOSITORY')
                 .map((data) => ({
                     id: data.id,
                     url: data.url,
-                    type: data.type.typeName,
+                    type: data.types[0]?.type.typeName,
                 })),
         };
     }

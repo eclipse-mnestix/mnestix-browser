@@ -14,12 +14,54 @@ datasource db {
 model ConnectionType {
   id String @id @default(cuid())
   typeName String
-  connection MnestixConnection[]
+  connections MnestixConnectionTypeRelation[]
 }
 
 model MnestixConnection {
   id  String @id @default(cuid())
   url String
+  infrastructure MnestixInfrastructure @relation(fields: [infrastructureId], references: [id])
+  infrastructureId String
+  types MnestixConnectionTypeRelation[]
+}
+
+model MnestixConnectionTypeRelation {
+  connection MnestixConnection @relation(fields: [connectionId], references: [id])
+  connectionId String
   type ConnectionType @relation(fields: [typeId], references: [id])
   typeId String
+
+  @@id([connectionId, typeId])
+}
+
+model MnestixInfrastructure {
+    id String @id @default(cuid())
+    name String @unique
+    logo String?
+    connections MnestixConnection[]
+    securityTypeId String
+    securityType SecurityType @relation(fields: [securityTypeId], references: [id])
+     securitySettingsHeaders SecuritySettingsHeader[]
+     securitySettingsProxies SecuritySettingsProxy[]
+}
+
+model SecurityType {
+    id String @id @default(cuid())
+    typeName String
+    infrastructure MnestixInfrastructure[]
+}
+
+model SecuritySettingsHeader {
+    id String @id @default(cuid())
+    headerName String
+    headerValue String
+    infrastructure MnestixInfrastructure @relation(fields: [infrastructureId], references: [id])
+    infrastructureId String
+}
+
+model SecuritySettingsProxy {
+    id String @id @default(cuid())
+    headerValue String
+    infrastructure MnestixInfrastructure @relation(fields: [infrastructureId], references: [id])
+    infrastructureId String
 }
