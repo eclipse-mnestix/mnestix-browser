@@ -45,10 +45,13 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
     };
 
     function getDocumentClassificationCollection() {
-        return findAllSubmodelElementsBySemanticIdsOrIdShort(props.submodelElement.value, 'DocumentClassification', [
-            DocumentSpecificSemanticId.DocumentClassification,
-            DocumentSpecificSemanticIdIrdi.DocumentClassification,
-        ]) as SubmodelElementCollection[];
+        const result = findAllSubmodelElementsBySemanticIdsOrIdShort(
+            props.submodelElement.value,
+            'DocumentClassification',
+            [DocumentSpecificSemanticId.DocumentClassification, DocumentSpecificSemanticIdIrdi.DocumentClassification],
+        ) as SubmodelElementCollection[];
+
+        return result || [];
     }
 
     return (
@@ -63,13 +66,21 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
                         sx={{ mb: 1 }}
                     >
                         <Box display="flex" gap={1} flexDirection="row" sx={{ mb: 1 }}>
-                            <Link href={documentUrl} target="_blank">
+                            {documentUrl ? (
+                                <Link href={documentUrl} target="_blank">
+                                    <PreviewImage
+                                        previewImgUrl={fileViewObject.previewImgUrl}
+                                        mimeType={fileViewObject.mimeType}
+                                        repositoryUrl={props.repositoryUrl}
+                                    />
+                                </Link>
+                            ) : (
                                 <PreviewImage
                                     previewImgUrl={fileViewObject.previewImgUrl}
                                     mimeType={fileViewObject.mimeType}
                                     repositoryUrl={props.repositoryUrl}
                                 />
-                            </Link>
+                            )}
                             <Box>
                                 <Typography data-testid="document-title" variant="h5">
                                     {fileViewObject.title}
@@ -79,16 +90,30 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
                                         {fileViewObject.organizationName}
                                     </Typography>
                                 )}
-                                <Button
-                                    variant="outlined"
-                                    startIcon={<OpenInNew />}
-                                    sx={{ mt: 1 }}
-                                    href={documentUrl}
-                                    target="_blank"
-                                    data-testid="document-open-button"
-                                >
-                                    {t('open')}
-                                </Button>
+                                {documentUrl ? (
+                                    <Button
+                                        variant="outlined"
+                                        startIcon={<OpenInNew />}
+                                        sx={{ mt: 1 }}
+                                        href={documentUrl}
+                                        target="_blank"
+                                        data-testid="document-open-button"
+                                        component="a"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {t('open')}
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        variant="outlined"
+                                        startIcon={<OpenInNew />}
+                                        sx={{ mt: 1 }}
+                                        data-testid="document-open-button"
+                                        disabled
+                                    >
+                                        {t('open')}
+                                    </Button>
+                                )}
                             </Box>
                         </Box>
                         <DocumentClassification
