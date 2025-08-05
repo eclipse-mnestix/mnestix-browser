@@ -22,11 +22,14 @@ export type AasSearchResult = {
     redirectUrl: string;
     aas: AssetAdministrationShell | null;
     aasData: AasData | null;
+    infrastructureName?: string | null;
 };
 
 export type RegistrySearchResult = {
     endpoints: URL[];
     submodelDescriptors: SubmodelDescriptor[];
+    infrastructureName?: string | null;
+    location: string; // The base URL of the AAS registry
 };
 
 export type AasSearcherNullParams = {
@@ -207,6 +210,7 @@ export class AasSearcher {
         return wrapSuccess<RegistrySearchResult>({
             endpoints: endpointUrls,
             submodelDescriptors: submodelDescriptors,
+            location: 'TODO',
         });
     }
 

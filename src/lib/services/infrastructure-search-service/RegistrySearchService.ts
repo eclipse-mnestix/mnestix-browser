@@ -1,0 +1,179 @@
+import {
+    ApiResponseWrapper,
+    ApiResponseWrapperSuccess,
+    wrapErrorCode,
+    wrapSuccess,
+} from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { AasData, AasSearchResult, RegistrySearchResult } from 'lib/services/search-actions/AasSearcher';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
+import logger, { logResponseDebug } from 'lib/util/Logger';
+import { AssetAdministrationShell } from 'lib/api/aas/models';
+import { encodeBase64 } from 'lib/util/Base64Util';
+import { IRegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApiInterface';
+import { RegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApi';
+import { mnestixFetch } from 'lib/api/infrastructure';
+import { InfrastructureConnection } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
+
+export class AasRegistrySearchService {
+    private constructor(
+        protected readonly getRegistryApiClient: (basePath: string) => IRegistryServiceApi | null,
+        private readonly log: typeof logger = logger,
+    ) {}
+
+    static create(log?: typeof logger): AasRegistrySearchService {
+        const registryLogger = log?.child({ Service: 'AasRegistrySearchService' });
+        return new AasRegistrySearchService(
+            (baseUrl) => RegistryServiceApi.create(baseUrl, mnestixFetch(), log),
+            registryLogger,
+        );
+    }
+
+    public async searchAASInAllRegistries(
+        searchAasId: string,
+        infrastructureConnection: InfrastructureConnection[],
+    ): Promise<ApiResponseWrapper<AasSearchResult[]>> {
+        const registrySearchResult = await this.getFromMultipleRegistries(
+            infrastructureConnection,
+            (basePath) => this.performAasRegistrySearch(searchAasId, basePath),
+            `Could not find the AAS '${searchAasId}' in any AAS Registry`,
+        );
+        if (!registrySearchResult.isSuccess) {
+            return wrapErrorCode(registrySearchResult.errorCode, registrySearchResult.message);
+        }
+
+        // TODO Could be multiple results, with multiple endpoints
+        if (registrySearchResult.result.length === 0) {
+            return wrapErrorCode(ApiResultStatus.NOT_FOUND, `No AAS found for ID '${searchAasId}' in any registry`);
+        } else if (registrySearchResult.result.length > 1) {
+            this.log.warn(
+                `Multiple AAS found for ID '${searchAasId}' in multiple registries: ${registrySearchResult.result
+                    .map((result) => result.infrastructureName)
+                    .join(', ')}`,
+            );
+        }
+
+        const endpoint = registrySearchResult.result[0].endpoints[0];
+
+        const aasSearchResult = await this.getAasFromEndpoint(
+            registrySearchResult.result[0].endpoints[0],
+            registrySearchResult.result[0].location,
+        );
+        if (!aasSearchResult.isSuccess) {
+            return wrapErrorCode(aasSearchResult.errorCode, aasSearchResult.message);
+        }
+
+        /**
+         * Extracts the base URL(aasRepositoryOrigin) of the AAS repository, considering that the endpoint URL
+         * may contain a path after the repository root. We take the substring up to '/shells'
+         * to isolate the base URL.
+         */
+        const data = {
+            submodelDescriptors: registrySearchResult.result[0].submodelDescriptors,
+            aasRepositoryOrigin:
+                endpoint.origin + endpoint.pathname.substring(0, endpoint.pathname.lastIndexOf('/shells')),
+        };
+        return wrapSuccess([this.createAasResult(aasSearchResult.result, data)]);
+    }
+
+    private async performAasRegistrySearch(
+        searchAasId: string,
+        url: string,
+    ): Promise<ApiResponseWrapper<RegistrySearchResult>> {
+        const client = this.getRegistryApiClient(url);
+        const shellDescription = await client?.getAssetAdministrationShellDescriptorById(searchAasId);
+        if (!shellDescription) {
+            return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'AAS Registry service client is not defined');
+        }
+
+        if (!shellDescription.isSuccess) {
+            logResponseDebug(this.log, 'performAasRegistrySearch', 'Registry lookup unsuccessful', shellDescription, {
+                Requested_ID: searchAasId,
+            });
+            return wrapErrorCode(
+                ApiResultStatus.NOT_FOUND,
+                `Could not find the AAS '${searchAasId}' in the registry service`,
+            );
+        }
+        const endpoints = shellDescription.result.endpoints ?? [];
+        const submodelDescriptors = shellDescription.result.submodelDescriptors ?? [];
+        const endpointUrls = endpoints.map((endpoint) => new URL(endpoint.protocolInformation.href));
+        logResponseDebug(this.log, 'performAasRegistrySearch', 'Registry search successful', shellDescription, {
+            Requested_ID: searchAasId,
+        });
+        return wrapSuccess<RegistrySearchResult>({
+            endpoints: endpointUrls,
+            submodelDescriptors: submodelDescriptors,
+            location: url,
+        });
+    }
+
+    private async getAasFromEndpoint(
+        endpoint: URL,
+        registryUrl: string,
+    ): Promise<ApiResponseWrapper<AssetAdministrationShell>> {
+        const client = this.getRegistryApiClient(registryUrl);
+        if (!client) {
+            return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'AAS Registry service client is not defined');
+        }
+
+        const response = await client?.getAssetAdministrationShellFromEndpoint(endpoint);
+        if (!response.isSuccess) {
+            logResponseDebug(this.log, 'getAasFromEndpoint', 'Registry lookup unsuccessful', response, {
+                endpoint: endpoint.toString(),
+            });
+        }
+        logResponseDebug(this.log, 'getAasFromEndpoint', 'Registry search successful', response, {
+            endpoint: endpoint.toString(),
+        });
+        return response;
+    }
+
+    private createAasResult(aas: AssetAdministrationShell, data: AasData): AasSearchResult {
+        return {
+            redirectUrl: `/viewer/${encodeBase64(aas.id)}`,
+            aas: aas,
+            aasData: data,
+        };
+    }
+
+    async getFromMultipleRegistries<RegistrySearchResult>(
+        infrastructures: InfrastructureConnection[],
+        kernel: (url: string) => Promise<ApiResponseWrapper<RegistrySearchResult>>,
+        errorMsg: string,
+    ): Promise<ApiResponseWrapper<RegistrySearchResult[]>> {
+        const promises = infrastructures.flatMap((infrastructure) =>
+            infrastructure.aasRegistryUrls.map((url) => {
+                return kernel(url).then((response: ApiResponseWrapper<RegistrySearchResult>) => {
+                    return { searchResult: response, location: url, infrastructureName: infrastructure.name };
+                });
+            }),
+        );
+
+        const responses = await Promise.allSettled(promises);
+        const fulfilledResponses = responses.filter(
+            (result) => result.status === 'fulfilled' && result.value.searchResult.isSuccess,
+        );
+
+        if (fulfilledResponses.length <= 0) {
+            return wrapErrorCode(ApiResultStatus.NOT_FOUND, errorMsg);
+        }
+
+        return wrapSuccess<RegistrySearchResult[]>(
+            fulfilledResponses.map(
+                (
+                    result: PromiseFulfilledResult<{
+                        searchResult: ApiResponseWrapperSuccess<RegistrySearchResult>;
+                        location: string;
+                        infrastructureName: string;
+                    }>,
+                ) => {
+                    return {
+                        ...result.value.searchResult.result,
+                        infrastructureName: result.value.infrastructureName,
+                        location: result.value.location,
+                    };
+                },
+            ),
+        );
+    }
+}
