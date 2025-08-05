@@ -30,7 +30,7 @@ export class DiscoverySearchService {
         );
     }
 
-    public async searchAASIdInAllDiscoveryServices(
+    public async searchAASIdInMultipleDiscoveryServices(
         searchInput: string,
         infrastructureConnection: InfrastructureConnection[],
     ): Promise<ApiResponseWrapper<DiscoverySearchResult[]>> {

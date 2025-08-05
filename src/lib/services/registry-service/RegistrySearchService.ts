@@ -28,7 +28,7 @@ export class AasRegistrySearchService {
         );
     }
 
-    public async searchAASInAllRegistries(
+    public async searchAASInMultipleRegistries(
         searchAasId: string,
         infrastructureConnection: InfrastructureConnection[],
     ): Promise<ApiResponseWrapper<AasSearchResult[]>> {

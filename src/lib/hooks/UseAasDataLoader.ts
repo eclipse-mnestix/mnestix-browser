@@ -1,17 +1,14 @@
 import { useEffect } from 'react';
 import { Reference, Submodel } from 'lib/api/aas/models';
 import { useEnv } from 'app/EnvProvider';
-import {
-    getAasFromRepository,
-    performFullAasSearch,
-    performSubmodelFullSearch,
-} from 'lib/services/search-actions/searchActions';
+import { getAasFromRepository, performSubmodelFullSearch } from 'lib/services/search-actions/searchActions';
 import { LocalizedError } from 'lib/util/LocalizedError';
 import { CurrentAasContextType, SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useAasStore } from 'stores/AasStore';
+import { performFullAasSearch } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
 
 /**
  * Hook to load AAS content and its submodels asynchronously.

@@ -10,13 +10,6 @@ import { AssetAdministrationShellRepositoryApi } from 'lib/api/basyx-v3/api';
 import { headers } from 'next/headers';
 import { createRequestLogger, logInfo } from 'lib/util/Logger';
 
-export async function performFullAasSearch(searchInput: string): Promise<ApiResponseWrapper<AasSearchResult>> {
-    const logger = createRequestLogger(await headers());
-    logInfo(logger, 'performFullAasSearch', 'Initiating AAS/AssetId request', { Requested_ID: searchInput });
-    const searcher = AasSearcher.create(logger);
-    return searcher.performFullSearch(searchInput);
-}
-
 export async function getAasFromRepository(
     aasId: string,
     repositoryUrl: string,

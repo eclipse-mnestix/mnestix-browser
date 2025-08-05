@@ -13,6 +13,7 @@ import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from '
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import logger, { logResponseDebug } from 'lib/util/Logger';
 import { envs } from 'lib/env/MnestixEnv';
+import { InfrastructureConnection } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 
 export type RepoSearchResult<T> = {
     searchResult: T;
@@ -109,9 +110,12 @@ export class RepositorySearchService {
         return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'AAS not found', response.httpStatus);
     }
 
-    async getAasFromAllRepos(aasId: string): Promise<ApiResponseWrapper<RepoSearchResult<AssetAdministrationShell>[]>> {
-        return this.getFromAllRepos(
-            await this.getAasRepositories(),
+    async searchAASInMultipleRepositories(
+        aasId: string,
+        infrastructureConnection: InfrastructureConnection[],
+    ): Promise<ApiResponseWrapper<RepoSearchResult<AssetAdministrationShell>[]>> {
+        return this.getFromAllAasRepos(
+            infrastructureConnection,
             (basePath) => this.getAasFromRepo(aasId, basePath),
             `Could not find AAS ${aasId} in any Repository`,
         );
@@ -370,6 +374,47 @@ export class RepositorySearchService {
         const defaultUrl = envs.SUBMODEL_REPO_API_URL ?? envs.AAS_REPO_API_URL;
         if (!defaultUrl) return null;
         return this.getSubmodelRepositoryClient(defaultUrl);
+    }
+
+    async getFromAllAasRepos<T>(
+        infrastructures: InfrastructureConnection[],
+        kernel: (url: string) => Promise<ApiResponseWrapper<T>>,
+        errorMsg: string,
+    ): Promise<ApiResponseWrapper<RepoSearchResult<T>[]>> {
+        const promises = infrastructures.flatMap((infrastructure) =>
+            infrastructure.aasRepositoryUrls.map((url) => {
+                return kernel(url).then((response: ApiResponseWrapper<T>) => {
+                    return { searchResult: response, location: url, infrastructureName: infrastructure.name };
+                });
+            }),
+        );
+
+        const responses = await Promise.allSettled(promises);
+        const fulfilledResponses = responses.filter(
+            (result) => result.status === 'fulfilled' && result.value.searchResult.isSuccess,
+        );
+
+        if (fulfilledResponses.length <= 0) {
+            return wrapErrorCode(ApiResultStatus.NOT_FOUND, errorMsg);
+        }
+
+        return wrapSuccess<RepoSearchResult<T>[]>(
+            fulfilledResponses.map(
+                (
+                    result: PromiseFulfilledResult<{
+                        searchResult: ApiResponseWrapperSuccess<T>;
+                        location: string;
+                        infrastructureName: string;
+                    }>,
+                ) => ({
+                    searchResult: result.value.searchResult.result,
+                    location: result.value.location,
+                    infrastructureName: result.value.infrastructureName,
+                    httpStatus: result.value.searchResult.httpStatus,
+                    httpText: result.value.searchResult.httpText,
+                }),
+            ),
+        );
     }
 
     async getFromAllRepos<T>(

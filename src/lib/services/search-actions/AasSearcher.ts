@@ -180,6 +180,7 @@ export class AasSearcher {
         };
     }
 
+    // why do we redirect and load again and not return the result?
     private createMultipleAasIdResult(searchInput: string): AasSearchResult {
         return {
             redirectUrl: `/viewer/registry?aasId=${searchInput}`,

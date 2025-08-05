@@ -1,18 +1,14 @@
-// Search All Discovery Services in all Infrastructures
-// Search All Discovery Services in specific Infrastructure (later needed to choose a specific one)
-// Search All AAS Registries in all Infrastructures
-// Search All AAS Registries in current Infrastructures
-// Search All AAS Repositories in all Infrastructures
-// Search All AAS Repositories in current Infrastructures
-
 import { RepositorySearchService } from 'lib/services/repository-access/RepositorySearchService';
-import logger from 'lib/util/Logger';
-import { AasRegistrySearchService } from 'lib/services/infrastructure-search-service/RegistrySearchService';
-import { DiscoverySearchService } from 'lib/services/infrastructure-search-service/DiscoverySearchService';
-import { ApiResponseWrapper, wrapErrorCode } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { AasSearchResult } from 'lib/services/search-actions/AasSearcher';
+import logger, { logInfo } from 'lib/util/Logger';
+import { AasRegistrySearchService } from 'lib/services/registry-service/RegistrySearchService';
+import { DiscoverySearchService } from 'lib/services/discovery-service/DiscoverySearchService';
+import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { AasData, AasSearchResult } from 'lib/services/search-actions/AasSearcher';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { encodeBase64 } from 'lib/util/Base64Util';
+import { envs } from 'lib/env/MnestixEnv';
+import { AssetAdministrationShell } from 'lib/api/aas/models';
+import { fetchAllInfrastructureConnectionsFromDb } from 'lib/services/database/connectionServerActions';
 
 export type InfrastructureConnection = {
     name: string;
@@ -41,74 +37,111 @@ export class InfrastructureSearchService {
         );
     }
 
-    private getInfrastructures() {
+    private async getInfrastructures() {
         // build default infrastructure from envs
-        // get from database as flat connection list
-        const infrastructures = [
-            {
-                name: 'DefaultInfrastructure',
-                discoveryUrls: ['https://default-discovery-url.com'],
-                aasRegistryUrls: [],
-                aasRepositoryUrls: [],
-            },
-            {
-                name: 'Infrastructure1',
-                discoveryUrls: ['https://discovery1-url.com'],
-                aasRegistryUrls: ['https://aas-registry1-url.com'],
-                aasRepositoryUrls: ['https://aas-repository1-url.com'],
-            },
-            {
-                name: 'Infrastructure2',
-                discoveryUrls: ['https://discovery2-url.com'],
-                aasRegistryUrls: ['https://aas-registry2-url.com'],
-                aasRepositoryUrls: ['https://aas-repository2-url.com'],
-            },
-        ];
+        const defaultInfrastructure: InfrastructureConnection = {
+            name: 'DefaultInfrastructure',
+            discoveryUrls: envs.DISCOVERY_API_URL ? [envs.DISCOVERY_API_URL] : [],
+            aasRegistryUrls: envs.REGISTRY_API_URL ? [envs.REGISTRY_API_URL] : [],
+            aasRepositoryUrls: envs.AAS_REPO_API_URL ? [envs.AAS_REPO_API_URL] : [],
+        };
 
-        return infrastructures;
+        // get from database as flat connection list
+        const infrastructures = await fetchAllInfrastructureConnectionsFromDb();
+
+        return [defaultInfrastructure, ...infrastructures];
     }
 
     public async searchAASInAllInfrastructures(searchInput: string): Promise<ApiResponseWrapper<AasSearchResult>> {
         // Search in all discovery services in all infrastructures
-        const infrastructures = this.getInfrastructures();
-        let currentInfrastructureName: string | null = null;
+        const infrastructures = await this.getInfrastructures();
+        logInfo(this.log, 'searchAASInAllInfrastructures', 'Searching AAS in all infrastructures', infrastructures);
 
-        const discoveryResult = await this.discoveryServiceSearchService.searchAASIdInAllDiscoveryServices(
-            searchInput,
-            infrastructures,
-        );
+        let currentInfrastructureName: string | null = null;
 
         let infrastructuresToSearch = infrastructures;
         let aasId = searchInput;
 
+        const discoveryResult = await this.discoveryServiceSearchService.searchAASIdInMultipleDiscoveryServices(
+            searchInput,
+            infrastructures,
+        );
+
         if (discoveryResult.isSuccess) {
             // if multiple -> stop search and return list for the user to choose
-
+            if (discoveryResult.result.length > 1) {
+                return wrapSuccess(this.createMultipleAssetIdResult(searchInput));
+            }
             // if single -> search in the AAS registries of the current infrastructure
             currentInfrastructureName = discoveryResult.result[0]?.infrastructureName || null;
-            aasId = encodeBase64(discoveryResult.result[0].aasId!);
+            aasId = discoveryResult.result[0].aasId[0];
+            logInfo(this.log, 'AAS_ID', aasId);
+
             infrastructuresToSearch =
                 infrastructures.filter((infra) => infra.name === currentInfrastructureName) ?? infrastructures;
         }
-        const aasRegistryResult = await this.aasRegistrySearchService.searchAASInAllRegistries(
+        const aasRegistryResult = await this.aasRegistrySearchService.searchAASInMultipleRegistries(
             aasId,
             infrastructuresToSearch,
         );
 
         if (aasRegistryResult.isSuccess) {
             // if multiple -> stop search and return list for the user to choose
-
-            // if single -> search in the AAS repositories of the current infrastructure
             if (aasRegistryResult.result.length > 1) {
                 return wrapErrorCode(
                     ApiResultStatus.INTERNAL_SERVER_ERROR,
                     'Multiple AAS found, please refine your search',
                 );
             }
+
+            // TODO if single -> redirect to AAS Endpoint
         }
 
-        // handle results from repository search:
+        const encodedAasId = encodeBase64(aasId);
+        logInfo(this.log, 'AAS_ID', aasId);
+        logInfo(this.log, 'AAS_ID_BASE64', encodedAasId);
+        const aasRepositoryResult = await this.repositorySearchService.searchAASInMultipleRepositories(
+            encodedAasId,
+            infrastructuresToSearch,
+        );
+
+        if (aasRepositoryResult.isSuccess) {
+            // TODO if multiple -> stop search and return list for the user to choose copy from AasSearcher.ts for now...
+            if (aasRepositoryResult.result.length > 1) {
+                this.log.error(
+                    'searchAASInAllInfrastructures',
+                    'Multiple AAS found, please refine your search',
+                    aasRepositoryResult.result,
+                );
+                return wrapErrorCode(
+                    ApiResultStatus.INTERNAL_SERVER_ERROR,
+                    'Multiple AAS found, please refine your search',
+                );
+            }
+            const data: AasData = {
+                submodelDescriptors: undefined,
+                aasRepositoryOrigin: aasRepositoryResult.result[0].location,
+            };
+
+            // if single -> return the AAS search result
+            return wrapSuccess(this.createAasResult(aasRepositoryResult.result[0].searchResult, data));
+        }
 
         return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'No AAS found for the given ID');
+    }
+
+    private createAasResult(aas: AssetAdministrationShell, data: AasData): AasSearchResult {
+        return {
+            redirectUrl: `/viewer/${encodeBase64(aas.id)}`,
+            aas: aas,
+            aasData: data,
+        };
+    }
+    private createMultipleAssetIdResult(searchInput: string): AasSearchResult {
+        return {
+            redirectUrl: `/viewer/discovery?assetId=${searchInput}`,
+            aas: null,
+            aasData: null,
+        };
     }
 }
