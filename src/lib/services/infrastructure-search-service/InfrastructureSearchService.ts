@@ -68,11 +68,11 @@ export class InfrastructureSearchService {
         );
 
         if (discoveryResult.isSuccess) {
-            // if multiple -> stop search and return list for the user to choose
+            // multiple -> stop search and return list for the user to choose
             if (discoveryResult.result.length > 1) {
                 return wrapSuccess(this.createMultipleAssetIdResult(searchInput));
             }
-            // if single -> search in the AAS registries of the current infrastructure
+            // single -> search in the AAS registries of the current infrastructure
             currentInfrastructureName = discoveryResult.result[0]?.infrastructureName || null;
             aasId = discoveryResult.result[0].aasId[0];
             logInfo(this.log, 'AAS_ID', aasId);
@@ -86,44 +86,32 @@ export class InfrastructureSearchService {
         );
 
         if (aasRegistryResult.isSuccess) {
-            // if multiple -> stop search and return list for the user to choose
+            // multiple -> stop search and return list for the user to choose
             if (aasRegistryResult.result.length > 1) {
-                return wrapErrorCode(
-                    ApiResultStatus.INTERNAL_SERVER_ERROR,
-                    'Multiple AAS found, please refine your search',
-                );
+                return wrapSuccess(this.createMultipleAasIdResult(searchInput));
             }
-
-            // TODO if single -> redirect to AAS Endpoint
+            // single -> return the AAS search result
+            return wrapSuccess(aasRegistryResult.result[0]);
         }
 
         const encodedAasId = encodeBase64(aasId);
-        logInfo(this.log, 'AAS_ID', aasId);
-        logInfo(this.log, 'AAS_ID_BASE64', encodedAasId);
         const aasRepositoryResult = await this.repositorySearchService.searchAASInMultipleRepositories(
             encodedAasId,
             infrastructuresToSearch,
         );
 
         if (aasRepositoryResult.isSuccess) {
-            // TODO if multiple -> stop search and return list for the user to choose copy from AasSearcher.ts for now...
+            // multiple -> stop search and return list for the user to choose
             if (aasRepositoryResult.result.length > 1) {
-                this.log.error(
-                    'searchAASInAllInfrastructures',
-                    'Multiple AAS found, please refine your search',
-                    aasRepositoryResult.result,
-                );
-                return wrapErrorCode(
-                    ApiResultStatus.INTERNAL_SERVER_ERROR,
-                    'Multiple AAS found, please refine your search',
-                );
+                logInfo(this.log, 'searchAASInAllInfrastructures', 'Multiple AAS found', aasRepositoryResult.result);
+                return wrapSuccess(this.createMultipleAasIdResult(searchInput));
             }
             const data: AasData = {
                 submodelDescriptors: undefined,
                 aasRepositoryOrigin: aasRepositoryResult.result[0].location,
             };
 
-            // if single -> return the AAS search result
+            // single -> return the AAS search result
             return wrapSuccess(this.createAasResult(aasRepositoryResult.result[0].searchResult, data));
         }
 
@@ -140,6 +128,13 @@ export class InfrastructureSearchService {
     private createMultipleAssetIdResult(searchInput: string): AasSearchResult {
         return {
             redirectUrl: `/viewer/discovery?assetId=${searchInput}`,
+            aas: null,
+            aasData: null,
+        };
+    }
+    private createMultipleAasIdResult(searchInput: string): AasSearchResult {
+        return {
+            redirectUrl: `/viewer/registry?aasId=${searchInput}`,
             aas: null,
             aasData: null,
         };
