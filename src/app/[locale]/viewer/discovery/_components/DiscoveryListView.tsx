@@ -4,12 +4,13 @@ import { useSearchParams } from 'next/navigation';
 import AssetNotFound from 'components/basics/AssetNotFound';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import ListHeader from 'components/basics/ListHeader';
-import { performDiscoveryAasSearch, performRegistryAasSearch } from 'lib/services/search-actions/searchActions';
+import { performRegistryAasSearch } from 'lib/services/search-actions/searchActions';
 import { performSearchAasFromAllRepositories } from 'lib/services/repository-access/repositorySearchActions';
 import { useTranslations } from 'next-intl';
 import { LocalizedError } from 'lib/util/LocalizedError';
 import { AasListEntry } from 'lib/types/AasListEntry';
 import { GenericListDataWrapper } from 'components/basics/listBasics/GenericListDataWrapper';
+import { searchInAllDiscoveries } from 'lib/services/discovery-service/discoveryActions';
 
 async function getRepositoryUrl(aasId: string): Promise<string | undefined> {
     const registrySearchResult = await performRegistryAasSearch(aasId);
@@ -40,7 +41,7 @@ export function DiscoveryListView() {
             throw new LocalizedError('pages.discoveryList.errors.noAssetId');
         }
 
-        const response = await performDiscoveryAasSearch(assetId);
+        const response = await searchInAllDiscoveries(assetId);
 
         if (!response.isSuccess) {
             throw new LocalizedError('pages.discoveryList.errors.searchFailed');
@@ -53,10 +54,10 @@ export function DiscoveryListView() {
         const entryList: AasListEntry[] = [];
 
         await Promise.all(
-            response.result.map(async (aasId) => {
-                const repositoryUrl = await getRepositoryUrl(aasId);
+            response.result.map(async (discoverySearchResult) => {
+                const repositoryUrl = await getRepositoryUrl(discoverySearchResult.aasId);
                 entryList.push({
-                    aasId: aasId,
+                    aasId: discoverySearchResult.aasId,
                     repositoryUrl: repositoryUrl,
                 });
             }),

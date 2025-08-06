@@ -6,9 +6,8 @@ import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResp
 import { AasData, AasSearchResult } from 'lib/services/search-actions/AasSearcher';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { encodeBase64 } from 'lib/util/Base64Util';
-import { envs } from 'lib/env/MnestixEnv';
 import { AssetAdministrationShell } from 'lib/api/aas/models';
-import { fetchAllInfrastructureConnectionsFromDb } from 'lib/services/database/connectionServerActions';
+import { getInfrastructures } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
 
 export type InfrastructureConnection = {
     name: string;
@@ -37,24 +36,9 @@ export class InfrastructureSearchService {
         );
     }
 
-    private async getInfrastructures() {
-        // build default infrastructure from envs
-        const defaultInfrastructure: InfrastructureConnection = {
-            name: 'DefaultInfrastructure',
-            discoveryUrls: envs.DISCOVERY_API_URL ? [envs.DISCOVERY_API_URL] : [],
-            aasRegistryUrls: envs.REGISTRY_API_URL ? [envs.REGISTRY_API_URL] : [],
-            aasRepositoryUrls: envs.AAS_REPO_API_URL ? [envs.AAS_REPO_API_URL] : [],
-        };
-
-        // get from database as flat connection list
-        const infrastructures = await fetchAllInfrastructureConnectionsFromDb();
-
-        return [defaultInfrastructure, ...infrastructures];
-    }
-
     public async searchAASInAllInfrastructures(searchInput: string): Promise<ApiResponseWrapper<AasSearchResult>> {
         // Search in all discovery services in all infrastructures
-        const infrastructures = await this.getInfrastructures();
+        const infrastructures = await getInfrastructures();
         logInfo(this.log, 'searchAASInAllInfrastructures', 'Searching AAS in all infrastructures', infrastructures);
 
         let currentInfrastructureName: string | null = null;
