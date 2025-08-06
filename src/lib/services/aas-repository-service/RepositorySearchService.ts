@@ -14,14 +14,13 @@ import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import logger, { logResponseDebug } from 'lib/util/Logger';
 import { envs } from 'lib/env/MnestixEnv';
 import { InfrastructureConnection } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
+import { getInfrastructures } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
 
 export type RepoSearchResult<T> = {
     searchResult: T;
     location: string;
 };
 
-const noDefaultAasRepository = <T>() =>
-    wrapErrorCode<T>(ApiResultStatus.INTERNAL_SERVER_ERROR, 'No default AAS repository configured');
 const noDefaultSubmodelRepository = <T>() =>
     wrapErrorCode<T>(ApiResultStatus.INTERNAL_SERVER_ERROR, 'No default Submodel repository configured');
 
@@ -69,45 +68,11 @@ export class RepositorySearchService {
         );
     }
 
-    //TODO (MNES-1608): Split this file into multiple files, refactor its methods and add tests
-    async getAasRepositories() {
-        const defaultRepositoryClient = envs.AAS_REPO_API_URL;
-        let repositories: string[] = [];
-        try {
-            repositories = await this.prismaConnector.getConnectionDataByTypeAction({
-                id: '0',
-                typeName: 'AAS_REPOSITORY',
-            });
-        } catch (error) {
-            this.log?.warn('Failed to get AAS repositories', error);
-        }
-        return defaultRepositoryClient ? [defaultRepositoryClient, ...repositories] : repositories;
-    }
-
     async getSubmodelRepositories() {
         return this.prismaConnector.getConnectionDataByTypeAction({
             id: '2',
             typeName: 'SUBMODEL_REPOSITORY',
         });
-    }
-
-    async getAasFromDefaultRepo(aasId: string): Promise<ApiResponseWrapper<AssetAdministrationShell>> {
-        const client = this.getDefaultAasRepositoryClient();
-        if (!client) return noDefaultAasRepository();
-
-        const response = await client.getAssetAdministrationShellById(aasId);
-        if (response.isSuccess) {
-            logResponseDebug(this.log, 'getAasFromDefaultRepo', 'Querying AAS from default repository', response, {
-                Repository_Endpoint: client.getBaseUrl(),
-                AAS_ID_Base64_Encoded: aasId,
-            });
-            return response;
-        }
-        logResponseDebug(this.log, 'getAasFromDefaultRepo', 'AAS repository search unsuccessful', response, {
-            Repository_Endpoint: client.getBaseUrl(),
-            AAS_ID_Base64_Encoded: aasId,
-        });
-        return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'AAS not found', response.httpStatus);
     }
 
     async searchAASInMultipleRepositories(
@@ -116,9 +81,16 @@ export class RepositorySearchService {
     ): Promise<ApiResponseWrapper<RepoSearchResult<AssetAdministrationShell>[]>> {
         return this.getFromAllAasRepos(
             infrastructureConnection,
-            (basePath) => this.getAasFromRepo(aasId, basePath),
+            (basePath) => this.getAasFromSingleRepo(aasId, basePath),
             `Could not find AAS ${aasId} in any Repository`,
         );
+    }
+
+    async searchInAllAasRepositories(
+        aasId: string,
+    ): Promise<ApiResponseWrapper<RepoSearchResult<AssetAdministrationShell>[]>> {
+        const infrastructures = await getInfrastructures();
+        return this.searchAASInMultipleRepositories(aasId, infrastructures);
     }
 
     async getSubmodelFromDefaultRepo(submodelId: string): Promise<ApiResponseWrapper<Submodel>> {
@@ -252,48 +224,6 @@ export class RepositorySearchService {
         return Promise.reject(`Unable to fetch submodel references for AAS '${aasId}' from '${repoUrl}'`);
     }
 
-    async getFirstSubmodelReferencesFromShellFromAllRepos(aasId: string) {
-        return this.getFirstFromAllRepos(
-            await this.getAasRepositories(),
-            (basePath) => this.getSubmodelReferencesFromShellFromRepo(aasId, basePath),
-            `Submodel references for '${aasId}' not found in any repository`,
-        );
-    }
-
-    async getAasThumbnailFromDefaultRepo(aasId: string): Promise<ApiResponseWrapper<Blob>> {
-        const client = this.getDefaultAasRepositoryClient();
-        if (!client) return noDefaultAasRepository();
-        const response = await client.getThumbnailFromShell(aasId);
-        if (response.isSuccess) {
-            logResponseDebug(
-                this.log,
-                'getAasThumbnailFromDefaultRepo',
-                'Querying Thumbnail from repository unsuccessful',
-                response,
-                {
-                    Repository_Endpoint: client.getBaseUrl(),
-                    AAS_ID: aasId,
-                },
-            );
-            return response;
-        }
-        logResponseDebug(
-            this.log,
-            'getAasThumbnailFromDefaultRepo',
-            'Querying Thumbnail from repository unsuccessful',
-            response,
-            {
-                Repository_Endpoint: client.getBaseUrl(),
-                AAS_ID: aasId,
-            },
-        );
-        return wrapErrorCode(
-            ApiResultStatus.NOT_FOUND,
-            `Thumbnail for '${aasId}' not found in default repository`,
-            response.httpStatus,
-        );
-    }
-
     private async getAasThumbnailFromRepo(aasId: string, repoUrl: string): Promise<ApiResponseWrapper<Blob>> {
         const client = this.getAasRepositoryClient(repoUrl);
         const response = await client.getThumbnailFromShell(aasId);
@@ -336,14 +266,6 @@ export class RepositorySearchService {
         return response;
     }
 
-    async getFirstAasThumbnailFromAllRepos(aasId: string): Promise<ApiResponseWrapper<RepoSearchResult<Blob>>> {
-        return this.getFirstFromAllRepos(
-            await this.getAasRepositories(),
-            (basePath) => this.getAasThumbnailFromRepo(aasId, basePath),
-            `Thumbnail for '${aasId}' not found in any repository`,
-        );
-    }
-
     async getFirstFromAllRepos<T>(
         basePathUrls: string[],
         kernel: (url: string) => Promise<ApiResponseWrapper<T>>,
@@ -362,12 +284,6 @@ export class RepositorySearchService {
         } catch {
             return wrapErrorCode(ApiResultStatus.NOT_FOUND, errorMsg);
         }
-    }
-
-    private getDefaultAasRepositoryClient() {
-        const defaultUrl = envs.AAS_REPO_API_URL;
-        if (!defaultUrl) return null;
-        return this.getAasRepositoryClient(defaultUrl);
     }
 
     private getDefaultSubmodelRepositoryClient() {
@@ -417,44 +333,7 @@ export class RepositorySearchService {
         );
     }
 
-    async getFromAllRepos<T>(
-        basePathUrls: string[],
-        kernel: (url: string) => Promise<ApiResponseWrapper<T>>,
-        errorMsg: string,
-    ): Promise<ApiResponseWrapper<RepoSearchResult<T>[]>> {
-        const promises = basePathUrls.map(async (url) =>
-            kernel(url).then((response: ApiResponseWrapper<T>) => {
-                return { searchResult: response, location: url };
-            }),
-        );
-
-        const responses = await Promise.allSettled(promises);
-        const fulfilledResponses = responses.filter(
-            (result) => result.status === 'fulfilled' && result.value.searchResult.isSuccess,
-        );
-
-        if (fulfilledResponses.length <= 0) {
-            return wrapErrorCode(ApiResultStatus.NOT_FOUND, errorMsg);
-        }
-
-        return wrapSuccess<RepoSearchResult<T>[]>(
-            fulfilledResponses.map(
-                (
-                    result: PromiseFulfilledResult<{
-                        searchResult: ApiResponseWrapperSuccess<T>;
-                        location: string;
-                    }>,
-                ) => ({
-                    searchResult: result.value.searchResult.result,
-                    location: result.value.location,
-                    httpStatus: result.value.searchResult.httpStatus,
-                    httpText: result.value.searchResult.httpText,
-                }),
-            ),
-        );
-    }
-
-    private async getAasFromRepo(
+    private async getAasFromSingleRepo(
         aasId: string,
         repoUrl: string,
     ): Promise<ApiResponseWrapper<AssetAdministrationShell>> {

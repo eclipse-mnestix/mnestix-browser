@@ -1,5 +1,4 @@
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { AasData, AasSearchResult, RegistrySearchResult } from 'lib/services/search-actions/AasSearcher';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import logger, { logResponseDebug } from 'lib/util/Logger';
 import { AssetAdministrationShell } from 'lib/api/aas/models';
@@ -7,9 +6,22 @@ import { encodeBase64 } from 'lib/util/Base64Util';
 import { IRegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApiInterface';
 import { RegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApi';
 import { mnestixFetch } from 'lib/api/infrastructure';
-import { InfrastructureConnection } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
+import {
+    AasData,
+    AasSearchResult,
+    InfrastructureConnection,
+} from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import { getInfrastructures } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
 import { fetchFromMultipleEndpoints } from 'lib/services/shared/parallelFetch';
+import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
+import { RegistryServiceApiInMemory } from 'lib/api/registry-service-api/registryServiceApiInMemory';
+
+export type RegistrySearchResult = {
+    endpoints: URL[];
+    submodelDescriptors: SubmodelDescriptor[];
+    infrastructureName?: string | null;
+    location: string; // The base URL of the AAS registry
+};
 
 export class AasRegistryService {
     private constructor(
@@ -25,6 +37,13 @@ export class AasRegistryService {
         );
     }
 
+    static createNull(aasRegistryDescriptors: any[] = [], aasRegistryEndpoints: any[] = []): AasRegistryService {
+        return new AasRegistryService(
+            () => (new RegistryServiceApiInMemory(
+                '', aasRegistryDescriptors, aasRegistryEndpoints)),
+            logger,
+        );
+    }
     public async searchInAllAasRegistries(searchInput: string): Promise<ApiResponseWrapper<AasSearchResult[]>> {
         // Search in all discovery services in all infrastructures
         const infrastructures = await getInfrastructures();

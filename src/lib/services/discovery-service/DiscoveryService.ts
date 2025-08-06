@@ -31,6 +31,13 @@ export class DiscoveryService {
         );
     }
 
+    static createNull(discoveryEntries: any[] = []): DiscoveryService {
+        return new DiscoveryService(
+            () => (DiscoveryServiceApi.createNull('', discoveryEntries) as unknown as IDiscoveryServiceApi),
+            logger,
+        );
+    }
+
     public async searchAasIdInMultipleDiscoveries(
         searchInput: string,
         infrastructureConnection: InfrastructureConnection[],

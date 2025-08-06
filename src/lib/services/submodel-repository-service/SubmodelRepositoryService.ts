@@ -4,7 +4,7 @@ import { mnestixFetch } from 'lib/api/infrastructure';
 import { ISubmodelRegistryServiceApi } from 'lib/api/submodel-registry-service/submodelRegistryServiceApiInterface';
 import { SubmodelRegistryServiceApi } from 'lib/api/submodel-registry-service/submodelRegistryServiceApi';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { RepoSearchResult, RepositorySearchService } from 'lib/services/repository-access/RepositorySearchService';
+import { RepoSearchResult, RepositorySearchService } from 'lib/services/aas-repository-service/RepositorySearchService';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import logger, { logResponseDebug } from 'lib/util/Logger';
 import { envs } from 'lib/env/MnestixEnv';

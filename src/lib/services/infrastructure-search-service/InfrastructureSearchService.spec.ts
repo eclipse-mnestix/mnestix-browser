@@ -3,8 +3,8 @@ import { AssetAdministrationShellDescriptor } from 'lib/types/registryServiceTyp
 import { AssetAdministrationShell } from 'lib/api/aas/models';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { Log } from 'lib/util/Log';
-import { AasSearcher } from 'lib/services/search-actions/AasSearcher';
-import testData from 'lib/services/search-actions/AasSearcher.data.json';
+import testData from 'lib/services/infrastructure-search-service/AasSearcher.data.json';
+import { InfrastructureSearchService } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 
 const AAS_ENDPOINT = new URL('https://www.origin.com/route/for/aas/');
 const assetAdministrationShells = testData as unknown as AssetAdministrationShell;
@@ -14,14 +14,14 @@ describe('Full Aas Search happy paths', () => {
         const searchString = 'irrelevant assetId';
         const log = Log.createNull();
         const tracker = log.getTracker();
-        const searcher = AasSearcher.createNull({
+        const searcher = InfrastructureSearchService.createNull({
             discoveryEntries: [
                 { assetId: searchString, aasId: 'first found aasId 0' },
                 { assetId: searchString, aasId: 'second found aasId 1' },
             ],
         });
 
-        const search = await searcher.performFullSearch(searchString);
+        const search = await searcher.searchAASInAllInfrastructures(searchString);
 
         expect(search.isSuccess).toBeTruthy();
         expect(search.result!.redirectUrl).toBe('/viewer/discovery?assetId=' + searchString);
@@ -32,13 +32,13 @@ describe('Full Aas Search happy paths', () => {
         const aasId = 'dummy aasId';
         const searchString = 'irrelevant assetId';
         const aas = createDummyAas(aasId);
-        const searcher = AasSearcher.createNull({
+        const searcher = InfrastructureSearchService.createNull({
             discoveryEntries: [{ assetId: searchString, aasId: aasId }],
             aasRegistryDescriptors: [createDummyShellDescriptor(AAS_ENDPOINT, aasId)],
             aasRegistryEndpoints: [{ endpoint: AAS_ENDPOINT, aas: aas }],
         });
 
-        const search = await searcher.performFullSearch(searchString);
+        const search = await searcher.searchAASInAllInfrastructures(searchString);
 
         expect(search.isSuccess).toBeTruthy();
         expect(search.result!.redirectUrl).toBe('/viewer/' + encodeBase64(aasId));
@@ -50,12 +50,12 @@ describe('Full Aas Search happy paths', () => {
         const searchString = 'irrelevant assetId';
         const testUrl = 'https://testrepo.com';
         const aas = createDummyAas(aasId);
-        const searcher = AasSearcher.createNull({
+        const searcher = InfrastructureSearchService.createNull({
             discoveryEntries: [{ assetId: searchString, aasId: aasId }],
             aasInRepositories: [{ searchResult: aas, location: testUrl }],
         });
 
-        const search = await searcher.performFullSearch(searchString);
+        const search = await searcher.searchAASInAllInfrastructures(searchString);
 
         expect(search.isSuccess).toBeTruthy();
         expect(search.result!.redirectUrl).toBe('/viewer/' + encodeBase64(aasId));
@@ -66,12 +66,12 @@ describe('Full Aas Search happy paths', () => {
         const aasId = 'dummy aasId';
         const searchString = aasId;
         const aas = createDummyAas(aasId);
-        const searcher = AasSearcher.createNull({
+        const searcher = InfrastructureSearchService.createNull({
             aasRegistryDescriptors: [createDummyShellDescriptor(AAS_ENDPOINT, aasId)],
             aasRegistryEndpoints: [{ endpoint: AAS_ENDPOINT, aas: aas }],
         });
 
-        const search = await searcher.performFullSearch(searchString);
+        const search = await searcher.searchAASInAllInfrastructures(searchString);
 
         expect(search.isSuccess).toBeTruthy();
         expect(search.result!.redirectUrl).toBe('/viewer/' + encodeBase64(aasId));
@@ -83,11 +83,11 @@ describe('Full Aas Search happy paths', () => {
         const searchString = aasId;
         const testUrl = 'https://testrepo.com';
         const aas = createDummyAas(aasId);
-        const searcher = AasSearcher.createNull({
+        const searcher = InfrastructureSearchService.createNull({
             aasInRepositories: [{ searchResult: aas, location: testUrl }],
         });
 
-        const search = await searcher.performFullSearch(searchString);
+        const search = await searcher.searchAASInAllInfrastructures(searchString);
 
         expect(search.isSuccess).toBeTruthy();
         expect(search.result!.redirectUrl).toBe('/viewer/' + encodeBase64(aasId));
@@ -99,11 +99,11 @@ describe('Full Aas Search happy paths', () => {
         const searchString = aasId;
         const testUrl = 'https://testrepo.com';
         const aas = createDummyAas(aasId);
-        const searcher = AasSearcher.createNull({
+        const searcher = InfrastructureSearchService.createNull({
             aasInRepositories: [{ searchResult: aas, location: testUrl }],
         });
 
-        const search = await searcher.performFullSearch(searchString);
+        const search = await searcher.searchAASInAllInfrastructures(searchString);
 
         expect(search.isSuccess).toBeTruthy();
         expect(search.result!.redirectUrl).toBe('/viewer/' + encodeBase64(aasId));
@@ -113,14 +113,14 @@ describe('Full Aas Search happy paths', () => {
     it('returns aas for given aasId from foreign repository if two are found', async () => {
         const aasId = 'dummy aasId';
         const searchString = aasId;
-        const searcher = AasSearcher.createNull({
+        const searcher = InfrastructureSearchService.createNull({
             aasInRepositories: [
                 { searchResult: createDummyAas(aasId), location: 'https://testrepo1.com' },
                 { searchResult: createDummyAas(aasId), location: 'https://testrepo2.com' },
             ],
         });
 
-        const search = await searcher.performFullSearch(searchString);
+        const search = await searcher.searchAASInAllInfrastructures(searchString);
 
         expect(search.isSuccess).toBeTruthy();
         expect(search.result!.redirectUrl).toBe('/viewer/registry?aasId=' + searchString);
@@ -130,7 +130,7 @@ describe('Full Aas Search happy paths', () => {
 describe('Full Aas Search edge cases', () => {
     it('logs to the console when finding nothing', async () => {
         const searchString = 'irrelevant assetId';
-        const searcher = AasSearcher.createNull({});
+        const searcher = InfrastructureSearchService.createNull({});
 
         await assertThatFunctionThrows(searcher, searchString);
     });
@@ -138,7 +138,7 @@ describe('Full Aas Search edge cases', () => {
     it('throws when registry search failed', async () => {
         const searchString = 'irrelevant assetId';
         const aasId = 'irrelevantAasId';
-        const searcher = AasSearcher.createNull({
+        const searcher = InfrastructureSearchService.createNull({
             discoveryEntries: [{ assetId: searchString, aasId: aasId }],
             aasRegistryDescriptors: [createDummyShellDescriptor(AAS_ENDPOINT, aasId)],
             aasInRepositories: [
@@ -155,7 +155,7 @@ describe('Full Aas Search edge cases', () => {
     it('throws when discovery search failed', async () => {
         const searchString = 'irrelevant assetId';
         const aasId = 'irrelevantAasId';
-        const searcher = AasSearcher.createNull({
+        const searcher = InfrastructureSearchService.createNull({
             discoveryEntries: [{ assetId: 'wrong asset Id', aasId: aasId }],
             aasRegistryDescriptors: [createDummyShellDescriptor(AAS_ENDPOINT, aasId)],
             aasInRepositories: [
@@ -192,12 +192,12 @@ function createDummyShellDescriptor(href: URL, id: string): AssetAdministrationS
 }
 
 async function assertThatFunctionThrows(
-    searcher: AasSearcher,
+    searcher: InfrastructureSearchService,
     searchString: string,
     partOfExpectedErrorMessage: string | null = null,
 ) {
     try {
-        await searcher.performFullSearch(searchString);
+        await searcher.searchAASInAllInfrastructures(searchString);
         fail('Your method was expected to throw but did not throw at all.');
     } catch (e) {
         if (partOfExpectedErrorMessage) {

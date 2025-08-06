@@ -1,13 +1,14 @@
-import { RepositorySearchService } from 'lib/services/repository-access/RepositorySearchService';
 import logger, { logInfo } from 'lib/util/Logger';
 import { AasRegistryService } from 'lib/services/aas-registry-service/AasRegistryService';
 import { DiscoveryService } from 'lib/services/discovery-service/DiscoveryService';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { AasData, AasSearchResult } from 'lib/services/search-actions/AasSearcher';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { encodeBase64 } from 'lib/util/Base64Util';
-import { AssetAdministrationShell } from 'lib/api/aas/models';
+import { AssetAdministrationShell, Submodel } from 'lib/api/aas/models';
 import { getInfrastructures } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
+import { AssetAdministrationShellDescriptor, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
+import { RepoSearchResult, RepositorySearchService } from 'lib/services/aas-repository-service/RepositorySearchService';
+import { AasRegistryEndpointEntryInMemory } from 'lib/api/registry-service-api/registryServiceApiInMemory';
 
 export type InfrastructureConnection = {
     name: string;
@@ -16,6 +17,26 @@ export type InfrastructureConnection = {
     aasRepositoryUrls: string[];
 };
 
+export type AasSearchResult = {
+    redirectUrl: string;
+    aas: AssetAdministrationShell | null;
+    aasData: AasData | null;
+    infrastructureName?: string | null;
+};
+
+export type AasData = {
+    submodelDescriptors: SubmodelDescriptor[] | undefined;
+    aasRepositoryOrigin: string | undefined;
+};
+
+export type AasSearcherNullParams = {
+    aasInRepositories?: RepoSearchResult<AssetAdministrationShell>[];
+    submodelsInRepositories?: RepoSearchResult<Submodel>[];
+    discoveryEntries?: { aasId: string; assetId: string }[];
+    aasRegistryDescriptors?: AssetAdministrationShellDescriptor[];
+    aasRegistryEndpoints?: AasRegistryEndpointEntryInMemory[];
+    logger?: typeof logger;
+};
 export class InfrastructureSearchService {
     private constructor(
         readonly repositorySearchService: RepositorySearchService,
@@ -33,6 +54,20 @@ export class InfrastructureSearchService {
             aasRegistrySearchService,
             discoveryServiceSearchService,
             log,
+        );
+    }
+
+    static createNull({
+        aasInRepositories = [],
+        submodelsInRepositories = [],
+        discoveryEntries = [],
+        aasRegistryDescriptors = [],
+        aasRegistryEndpoints = [],
+    }: AasSearcherNullParams): InfrastructureSearchService {
+        return new InfrastructureSearchService(
+            RepositorySearchService.createNull(aasInRepositories, submodelsInRepositories),
+            AasRegistryService.createNull(aasRegistryDescriptors, aasRegistryEndpoints),
+            DiscoveryService.createNull(discoveryEntries),
         );
     }
 

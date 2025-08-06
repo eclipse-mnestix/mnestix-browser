@@ -1,10 +1,10 @@
 'use server';
 
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { AasSearchResult } from 'lib/services/search-actions/AasSearcher';
 import { createRequestLogger, logInfo } from 'lib/util/Logger';
 import { headers } from 'next/headers';
 import {
+    AasSearchResult,
     InfrastructureConnection,
     InfrastructureSearchService,
 } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
