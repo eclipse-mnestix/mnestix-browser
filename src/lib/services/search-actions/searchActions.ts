@@ -1,11 +1,9 @@
 'use server';
 
 import { AasSearcher, AasSearchResult } from 'lib/services/search-actions/AasSearcher';
-import { AssetAdministrationShell, Reference, Submodel } from 'lib/api/aas/models';
+import { AssetAdministrationShell, Submodel } from 'lib/api/aas/models';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { mnestixFetch } from 'lib/api/infrastructure';
-import { SubmodelSearcher, SubmodelSearchResult } from 'lib/services/searchUtilActions/SubmodelSearcher';
-import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { AssetAdministrationShellRepositoryApi } from 'lib/api/basyx-v3/api';
 import { headers } from 'next/headers';
 import { createRequestLogger, logInfo } from 'lib/util/Logger';
@@ -44,16 +42,4 @@ export async function getSubmodelFromSubmodelDescriptor(url: string): Promise<Ap
     return localFetch.fetch<Submodel>(url, {
         method: 'GET',
     });
-}
-
-export async function performSubmodelFullSearch(
-    submodelReference: Reference,
-    submodelDescriptor?: SubmodelDescriptor,
-): Promise<ApiResponseWrapper<SubmodelSearchResult>> {
-    const logger = createRequestLogger(await headers());
-    logInfo(logger, 'performSubmodelFullSearch', 'Requested SubmodelReference', {
-        referenceId: submodelReference.keys,
-    });
-    const searcher = SubmodelSearcher.create(logger);
-    return searcher.performSubmodelFullSearch(submodelReference, submodelDescriptor);
 }

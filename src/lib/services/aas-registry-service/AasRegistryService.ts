@@ -13,28 +13,37 @@ import { IRegistryServiceApi } from 'lib/api/registry-service-api/registryServic
 import { RegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApi';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { InfrastructureConnection } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
+import { getInfrastructures } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
 
-export class AasRegistrySearchService {
+export class AasRegistryService {
     private constructor(
         protected readonly getRegistryApiClient: (basePath: string) => IRegistryServiceApi | null,
         private readonly log: typeof logger = logger,
     ) {}
 
-    static create(log?: typeof logger): AasRegistrySearchService {
+    static create(log?: typeof logger): AasRegistryService {
         const registryLogger = log?.child({ Service: 'AasRegistrySearchService' });
-        return new AasRegistrySearchService(
+        return new AasRegistryService(
             (baseUrl) => RegistryServiceApi.create(baseUrl, mnestixFetch(), log),
             registryLogger,
         );
     }
 
-    public async searchAASInMultipleRegistries(
+    public async searchInAllAasRegistries(searchInput: string): Promise<ApiResponseWrapper<AasSearchResult[]>> {
+        // Search in all discovery services in all infrastructures
+        const infrastructures = await getInfrastructures();
+        this.log.info('searchAASInAllAasRegistries', 'Searching AAS in all infrastructures', infrastructures);
+
+        return this.searchInMultipleAasRegistries(searchInput, infrastructures);
+    }
+
+    public async searchInMultipleAasRegistries(
         searchAasId: string,
         infrastructureConnection: InfrastructureConnection[],
     ): Promise<ApiResponseWrapper<AasSearchResult[]>> {
         const registrySearchResult = await this.getFromMultipleRegistries(
             infrastructureConnection,
-            (basePath) => this.performAasRegistrySearch(searchAasId, basePath),
+            (basePath) => this.searchInSingleAasRegistry(searchAasId, basePath),
             `Could not find the AAS '${searchAasId}' in any AAS Registry`,
         );
         if (!registrySearchResult.isSuccess) {
@@ -75,7 +84,7 @@ export class AasRegistrySearchService {
         return wrapSuccess([this.createAasResult(aasSearchResult.result, data)]);
     }
 
-    private async performAasRegistrySearch(
+    private async searchInSingleAasRegistry(
         searchAasId: string,
         url: string,
     ): Promise<ApiResponseWrapper<RegistrySearchResult>> {

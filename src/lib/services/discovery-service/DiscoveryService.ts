@@ -18,26 +18,26 @@ export type DiscoverySearchResult = {
     location: string;
 };
 
-export class DiscoverySearchService {
+export class DiscoveryService {
     private constructor(
         protected readonly getDiscoveryApiClient: (basePath: string) => IDiscoveryServiceApi | null,
         private readonly log: typeof logger = logger,
     ) {}
-    static create(log?: typeof logger): DiscoverySearchService {
+    static create(log?: typeof logger): DiscoveryService {
         const discoveryLogger = log?.child({ Service: 'DiscoverySearchService' });
-        return new DiscoverySearchService(
+        return new DiscoveryService(
             (baseUrl) => DiscoveryServiceApi.create(baseUrl, mnestixFetch(), log),
             discoveryLogger,
         );
     }
 
-    public async searchAASIdInMultipleDiscoveryServices(
+    public async searchAasIdInMultipleDiscoveries(
         searchInput: string,
         infrastructureConnection: InfrastructureConnection[],
     ): Promise<ApiResponseWrapper<DiscoverySearchResult[]>> {
         const response = await this.getFromMultipleDiscoveries(
             infrastructureConnection,
-            (basePath) => this.performAasDiscoverySearch(searchInput, basePath),
+            (basePath) => this.searchAasIdInSingleDiscovery(searchInput, basePath),
             'Could not find in any Discovery',
         );
 
@@ -47,17 +47,18 @@ export class DiscoverySearchService {
         return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'Could not find in any Discovery');
     }
 
-    // TODO same for registires
     public async searchAASInAllDiscoveries(searchInput: string): Promise<ApiResponseWrapper<DiscoverySearchResult[]>> {
         // Search in all discovery services in all infrastructures
-        const infrastructures = await getInfrastructures;
+        const infrastructures = await getInfrastructures();
         this.log.info('searchAASInAllDiscoveries', 'Searching AAS in all infrastructures', infrastructures);
 
-        return this.searchAASIdInMultipleDiscoveryServices(searchInput, infrastructures);
+        return this.searchAasIdInMultipleDiscoveries(searchInput, infrastructures);
     }
 
-    // TODO naming -> searchAASIdInSingleDiscoveryService
-    public async performAasDiscoverySearch(searchAssetId: string, url: string): Promise<ApiResponseWrapper<string[]>> {
+    public async searchAasIdInSingleDiscovery(
+        searchAssetId: string,
+        url: string,
+    ): Promise<ApiResponseWrapper<string[]>> {
         const client = this.getDiscoveryApiClient(url);
         const response = await client?.getAasIdsByAssetId(searchAssetId);
         if (!response) {

@@ -2,13 +2,11 @@
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { SubmodelCompareData } from 'lib/types/SubmodelCompareData';
 import { generateSubmodelCompareData, isCompareData, isCompareDataRecord } from 'lib/util/CompareAasUtil';
-import {
-    getSubmodelFromSubmodelDescriptor,
-    performSubmodelFullSearch,
-} from 'lib/services/search-actions/searchActions';
+import { getSubmodelFromSubmodelDescriptor } from 'lib/services/search-actions/searchActions';
 import { performFullAasSearch } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { AasData } from 'lib/services/search-actions/AasSearcher';
+import { performSubmodelFullSearch } from 'lib/services/submodel-repository-service/submodelRepositoryActions';
 
 type CompareAasContextType = {
     compareAas: CompareAAS[];

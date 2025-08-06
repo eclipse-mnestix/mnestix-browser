@@ -1,7 +1,7 @@
 import { RepositorySearchService } from 'lib/services/repository-access/RepositorySearchService';
 import logger, { logInfo } from 'lib/util/Logger';
-import { AasRegistrySearchService } from 'lib/services/registry-service/RegistrySearchService';
-import { DiscoverySearchService } from 'lib/services/discovery-service/DiscoverySearchService';
+import { AasRegistryService } from 'lib/services/aas-registry-service/AasRegistryService';
+import { DiscoveryService } from 'lib/services/discovery-service/DiscoveryService';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { AasData, AasSearchResult } from 'lib/services/search-actions/AasSearcher';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
@@ -19,15 +19,15 @@ export type InfrastructureConnection = {
 export class InfrastructureSearchService {
     private constructor(
         readonly repositorySearchService: RepositorySearchService,
-        readonly aasRegistrySearchService: AasRegistrySearchService,
-        readonly discoveryServiceSearchService: DiscoverySearchService,
+        readonly aasRegistrySearchService: AasRegistryService,
+        readonly discoveryServiceSearchService: DiscoveryService,
         private readonly log: typeof logger = logger,
     ) {}
 
     static create(log?: typeof logger): InfrastructureSearchService {
         const repositorySearchService = RepositorySearchService.create(log);
-        const aasRegistrySearchService = AasRegistrySearchService.create();
-        const discoveryServiceSearchService = DiscoverySearchService.create();
+        const aasRegistrySearchService = AasRegistryService.create();
+        const discoveryServiceSearchService = DiscoveryService.create();
         return new InfrastructureSearchService(
             repositorySearchService,
             aasRegistrySearchService,
@@ -46,7 +46,7 @@ export class InfrastructureSearchService {
         let infrastructuresToSearch = infrastructures;
         let aasId = searchInput;
 
-        const discoveryResult = await this.discoveryServiceSearchService.searchAASIdInMultipleDiscoveryServices(
+        const discoveryResult = await this.discoveryServiceSearchService.searchAasIdInMultipleDiscoveries(
             searchInput,
             infrastructures,
         );
@@ -64,7 +64,7 @@ export class InfrastructureSearchService {
             infrastructuresToSearch =
                 infrastructures.filter((infra) => infra.name === currentInfrastructureName) ?? infrastructures;
         }
-        const aasRegistryResult = await this.aasRegistrySearchService.searchAASInMultipleRegistries(
+        const aasRegistryResult = await this.aasRegistrySearchService.searchInMultipleAasRegistries(
             aasId,
             infrastructuresToSearch,
         );
