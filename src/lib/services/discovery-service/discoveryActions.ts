@@ -1,3 +1,5 @@
+'use server';
+
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { createRequestLogger, logInfo } from 'lib/util/Logger';
 import { headers } from 'next/headers';

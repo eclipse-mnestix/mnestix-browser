@@ -1,3 +1,5 @@
+'use server';
+
 import { Reference } from 'lib/api/aas/models';
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';

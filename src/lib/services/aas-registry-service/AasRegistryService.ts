@@ -1,9 +1,4 @@
-import {
-    ApiResponseWrapper,
-    ApiResponseWrapperSuccess,
-    wrapErrorCode,
-    wrapSuccess,
-} from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { AasData, AasSearchResult, RegistrySearchResult } from 'lib/services/search-actions/AasSearcher';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import logger, { logResponseDebug } from 'lib/util/Logger';
@@ -14,6 +9,7 @@ import { RegistryServiceApi } from 'lib/api/registry-service-api/registryService
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { InfrastructureConnection } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import { getInfrastructures } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
+import { fetchFromMultipleEndpoints } from 'lib/services/shared/parallelFetch';
 
 export class AasRegistryService {
     private constructor(
@@ -151,44 +147,22 @@ export class AasRegistryService {
         };
     }
 
-    async getFromMultipleRegistries<RegistrySearchResult>(
+    async getFromMultipleRegistries(
         infrastructures: InfrastructureConnection[],
         kernel: (url: string) => Promise<ApiResponseWrapper<RegistrySearchResult>>,
         errorMsg: string,
     ): Promise<ApiResponseWrapper<RegistrySearchResult[]>> {
-        const promises = infrastructures.flatMap((infrastructure) =>
-            infrastructure.aasRegistryUrls.map((url) => {
-                return kernel(url).then((response: ApiResponseWrapper<RegistrySearchResult>) => {
-                    return { searchResult: response, location: url, infrastructureName: infrastructure.name };
-                });
-            }),
+        const requests = infrastructures.flatMap((infra) =>
+            infra.aasRegistryUrls.map((url) => ({
+                url,
+                infrastructureName: infra.name,
+            })),
         );
 
-        const responses = await Promise.allSettled(promises);
-        const fulfilledResponses = responses.filter(
-            (result) => result.status === 'fulfilled' && result.value.searchResult.isSuccess,
-        );
-
-        if (fulfilledResponses.length <= 0) {
-            return wrapErrorCode(ApiResultStatus.NOT_FOUND, errorMsg);
-        }
-
-        return wrapSuccess<RegistrySearchResult[]>(
-            fulfilledResponses.map(
-                (
-                    result: PromiseFulfilledResult<{
-                        searchResult: ApiResponseWrapperSuccess<RegistrySearchResult>;
-                        location: string;
-                        infrastructureName: string;
-                    }>,
-                ) => {
-                    return {
-                        ...result.value.searchResult.result,
-                        infrastructureName: result.value.infrastructureName,
-                        location: result.value.location,
-                    };
-                },
-            ),
-        );
+        return fetchFromMultipleEndpoints(requests, kernel, errorMsg, (result, url, infrastructureName) => ({
+            ...result.result,
+            location: url,
+            infrastructureName: infrastructureName,
+        }));
     }
 }
