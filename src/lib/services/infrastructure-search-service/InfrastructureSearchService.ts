@@ -71,8 +71,9 @@ export class InfrastructureSearchService {
 
         if (aasRegistryResult.isSuccess) {
             // multiple -> stop search and return list for the user to choose
-            if (aasRegistryResult.result.length > 1) {
-                return wrapSuccess(this.createMultipleAasIdResult(searchInput));
+            // TODO think about a better solution to know if the result is a redirect or not
+            if (aasRegistryResult.result[0].redirectUrl) {
+                return wrapSuccess(aasRegistryResult.result[0]);
             }
             // single -> return the AAS search result
             return wrapSuccess(aasRegistryResult.result[0]);

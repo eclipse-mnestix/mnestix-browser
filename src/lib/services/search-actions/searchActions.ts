@@ -1,6 +1,5 @@
 'use server';
 
-import { AasSearcher, AasSearchResult } from 'lib/services/search-actions/AasSearcher';
 import { AssetAdministrationShell, Submodel } from 'lib/api/aas/models';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { mnestixFetch } from 'lib/api/infrastructure';
@@ -19,20 +18,6 @@ export async function getAasFromRepository(
     });
     const api = AssetAdministrationShellRepositoryApi.create(repositoryUrl, mnestixFetch());
     return api.getAssetAdministrationShellById(aasId);
-}
-
-export async function performRegistryAasSearch(searchInput: string): Promise<ApiResponseWrapper<AasSearchResult>> {
-    const logger = createRequestLogger(await headers());
-    logInfo(logger, 'performRegistryAasSearch', 'Requested AAS', { requestedId: searchInput });
-    const searcher = AasSearcher.create(logger);
-    return searcher.performRegistrySearch(searchInput);
-}
-
-export async function performDiscoveryAasSearch(searchInput: string): Promise<ApiResponseWrapper<string[]>> {
-    const logger = createRequestLogger(await headers());
-    logInfo(logger, 'performDiscoveryAasSearch', 'Requested AssetId', { requestedId: searchInput });
-    const searcher = AasSearcher.create(logger);
-    return searcher.performAasDiscoverySearch(searchInput);
 }
 
 export async function getSubmodelFromSubmodelDescriptor(url: string): Promise<ApiResponseWrapper<Submodel>> {

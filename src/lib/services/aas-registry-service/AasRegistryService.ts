@@ -50,15 +50,21 @@ export class AasRegistryService {
             return wrapErrorCode(registrySearchResult.errorCode, registrySearchResult.message);
         }
 
-        // TODO Could be multiple results, with multiple endpoints
         if (registrySearchResult.result.length === 0) {
             return wrapErrorCode(ApiResultStatus.NOT_FOUND, `No AAS found for ID '${searchAasId}' in any registry`);
         } else if (registrySearchResult.result.length > 1) {
-            this.log.warn(
+            this.log.info(
                 `Multiple AAS found for ID '${searchAasId}' in multiple registries: ${registrySearchResult.result
                     .map((result) => result.infrastructureName)
                     .join(', ')}`,
             );
+            return wrapSuccess([
+                {
+                    redirectUrl: `/viewer/registry?aasId=${searchAasId}`,
+                    aas: null,
+                    aasData: null,
+                },
+            ]);
         }
 
         const endpoint = registrySearchResult.result[0].endpoints[0];
