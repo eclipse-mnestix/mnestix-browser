@@ -1,9 +1,9 @@
 import { AssetAdministrationShell } from 'lib/api/aas/models';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { getThumbnailFromShell } from 'lib/services/repository-access/repositorySearchActions';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { useState } from 'react';
 import { isValidUrl } from 'lib/util/UrlUtil';
+import { getThumbnailFromShell } from 'lib/services/aas-repository-service/repositorySearchActions';
 
 export const useProductImageUrl = (
     aas: AssetAdministrationShell | null,

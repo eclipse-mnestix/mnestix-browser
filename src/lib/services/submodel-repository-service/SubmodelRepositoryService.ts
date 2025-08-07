@@ -4,7 +4,7 @@ import { mnestixFetch } from 'lib/api/infrastructure';
 import { ISubmodelRegistryServiceApi } from 'lib/api/submodel-registry-service/submodelRegistryServiceApiInterface';
 import { SubmodelRegistryServiceApi } from 'lib/api/submodel-registry-service/submodelRegistryServiceApi';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { RepoSearchResult, RepositorySearchService } from 'lib/services/repository-access/RepositorySearchService';
+import { RepoSearchResult, RepositorySearchService } from 'lib/services/aas-repository-service/RepositorySearchService';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import logger, { logResponseDebug } from 'lib/util/Logger';
 import { envs } from 'lib/env/MnestixEnv';
@@ -18,18 +18,18 @@ export type SubmodelSearchResult = {
     submodelData: SubmodelData;
 };
 
-export class SubmodelSearcher {
+export class SubmodelRepositoryService {
     private constructor(
         protected readonly getSubmodelRegistryClient: (basePath: string) => ISubmodelRegistryServiceApi,
         protected readonly multipleDataSource: RepositorySearchService,
         private readonly log: typeof logger = logger,
     ) {}
 
-    static create(log?: typeof logger): SubmodelSearcher {
+    static create(log?: typeof logger): SubmodelRepositoryService {
         const getRegistryClient = (baseUrl: string) => SubmodelRegistryServiceApi.create(baseUrl, mnestixFetch());
         const multipleDataSource = RepositorySearchService.create(log);
         const submodelLogger = log?.child({ Service: 'SubmodelSearcher' });
-        return new SubmodelSearcher(getRegistryClient, multipleDataSource, submodelLogger);
+        return new SubmodelRepositoryService(getRegistryClient, multipleDataSource, submodelLogger);
     }
 
     async performSubmodelFullSearch(

@@ -7,7 +7,7 @@ import { useCompareAasContext } from 'components/contexts/CompareAasContext';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { LocalizedError } from 'lib/util/LocalizedError';
-import { performFullAasSearch } from 'lib/services/search-actions/searchActions';
+import { performFullAasSearch } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useTranslations } from 'next-intl';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';

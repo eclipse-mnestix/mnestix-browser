@@ -6,9 +6,9 @@ import { useTranslations } from 'use-intl';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { useEnv } from 'app/EnvProvider';
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
-import { downloadAasFromRepo } from 'lib/services/repository-access/repositorySearchActions';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { AssetAdministrationShell } from 'lib/api/aas/models';
+import { downloadAasFromRepo } from 'lib/services/aas-repository-service/repositorySearchActions';
 
 type ActionMenuProps = {
     readonly aas: AssetAdministrationShell | null;

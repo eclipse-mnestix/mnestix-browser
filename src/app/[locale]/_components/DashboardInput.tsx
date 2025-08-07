@@ -4,9 +4,9 @@ import { ManualAasInput } from 'app/[locale]/_components/ManualAasInput';
 import { QrScanner } from 'app/[locale]/_components/QrScanner';
 import { useRouter } from 'next/navigation';
 import { LocalizedError } from 'lib/util/LocalizedError';
-import { performFullAasSearch } from 'lib/services/search-actions/searchActions';
 import { useTranslations } from 'next-intl';
 import { useAasStore } from 'stores/AasStore';
+import { performFullAasSearch } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
 
 export const DashboardInput = () => {
     const { addAasData } = useAasStore();
@@ -26,6 +26,7 @@ export const DashboardInput = () => {
                 },
             });
         }
+
         navigate.push(result.redirectUrl);
     };
 

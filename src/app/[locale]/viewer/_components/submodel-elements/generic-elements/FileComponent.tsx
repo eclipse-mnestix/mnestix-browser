@@ -1,10 +1,10 @@
-import { Box, Button, Link, styled, Typography, Skeleton } from '@mui/material';
+import { Box, Button, Link, Skeleton, styled, Typography } from '@mui/material';
 import { ModelFile } from 'lib/api/aas/models';
 import { useState } from 'react';
 import { getSanitizedHref } from 'lib/util/HrefUtil';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { getAttachmentFromSubmodelElement } from 'lib/services/repository-access/repositorySearchActions';
+import { getAttachmentFromSubmodelElement } from 'lib/services/submodel-repository-service/submodelRepositoryActions';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { useTranslations } from 'next-intl';
 import ImagePreviewDialog from './ImagePreviewDialog';
@@ -27,7 +27,13 @@ type FileComponentProps = {
     readonly repositoryUrl?: string;
 };
 
-export function FileComponent({ file, submodelId, submodelElementPath, withPreviewDialog = true, repositoryUrl }: FileComponentProps) {
+export function FileComponent({
+    file,
+    submodelId,
+    submodelElementPath,
+    withPreviewDialog = true,
+    repositoryUrl,
+}: FileComponentProps) {
     const [image, setImage] = useState<string | null>(null);
     const [fileUrl, setFileUrl] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);

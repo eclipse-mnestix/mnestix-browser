@@ -3,7 +3,7 @@ import { ModelFile, Property } from 'lib/api/aas/models';
 import { useState } from 'react';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { isValidUrl } from 'lib/util/UrlUtil';
-import { getAttachmentFromSubmodelElement } from 'lib/services/repository-access/repositorySearchActions';
+import { getAttachmentFromSubmodelElement } from 'lib/services/submodel-repository-service/submodelRepositoryActions';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 

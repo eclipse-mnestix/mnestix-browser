@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { AssetAdministrationShell } from 'lib/api/aas/models';
-import { AasData } from 'lib/services/search-actions/AasSearcher';
+import { AasData } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 
 /**
  * Data structure for storing an AAS together with its submodels.
