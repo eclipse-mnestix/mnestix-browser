@@ -71,7 +71,9 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
 
     async function loadAasContent() {
         if (repoUrl) {
+            console.log(repoUrl + "  " + aasIdToLoad)
             const response = await getAasFromRepository(aasIdToLoad, repoUrl);
+            console.log('AAS from repository:', response);
             if (response.isSuccess) {
                 setAasOriginUrl(repoUrl);
                 setAasFromContext(response.result);

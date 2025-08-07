@@ -5,12 +5,35 @@ import { encodeBase64 } from 'lib/util/Base64Util';
 import { Log } from 'lib/util/Log';
 import testData from 'lib/services/infrastructure-search-service/AasSearcher.data.json';
 import { InfrastructureSearchService } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
+import { getInfrastructures } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
+
+jest.mock('./infrastructureSearchActions');
 
 const AAS_ENDPOINT = new URL('https://www.origin.com/route/for/aas/');
 const assetAdministrationShells = testData as unknown as AssetAdministrationShell;
 
 describe('Full Aas Search happy paths', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+        (getInfrastructures as jest.Mock).mockResolvedValue([
+            {
+                name: 'Test Infrastructure',
+                discoveryUrls: ['https://discovery1.com'],
+                aasRegistryUrls: ['https://registry1.com'],
+                aasRepositoryUrls: ['https://repository1.com'],
+            },
+        ]);
+    });
+
     it('navigates to the discovery list when more than one aasId for a given assetId', async () => {
+        (getInfrastructures as jest.Mock).mockResolvedValue([
+            {
+                name: 'Test Infrastructure',
+                discoveryUrls: ['https://discovery1.com', 'https://discovery2.com'],
+                aasRegistryUrls: [],
+                aasRepositoryUrls: [],
+            },
+        ]);
         const searchString = 'irrelevant assetId';
         const log = Log.createNull();
         const tracker = log.getTracker();
@@ -48,7 +71,7 @@ describe('Full Aas Search happy paths', () => {
     it('returns details of aas when exactly one aasId for a given assetId and it is not registered in the registry but saved in default repository', async () => {
         const aasId = 'dummy aasId';
         const searchString = 'irrelevant assetId';
-        const testUrl = 'https://testrepo.com';
+        const testUrl = 'https://repository1.com';
         const aas = createDummyAas(aasId);
         const searcher = InfrastructureSearchService.createNull({
             discoveryEntries: [{ assetId: searchString, aasId: aasId }],
@@ -81,7 +104,7 @@ describe('Full Aas Search happy paths', () => {
     it('returns aas for given aasId from default repository', async () => {
         const aasId = 'dummy aasId';
         const searchString = aasId;
-        const testUrl = 'https://testrepo.com';
+        const testUrl = 'https://repository1.com';
         const aas = createDummyAas(aasId);
         const searcher = InfrastructureSearchService.createNull({
             aasInRepositories: [{ searchResult: aas, location: testUrl }],
@@ -97,7 +120,7 @@ describe('Full Aas Search happy paths', () => {
     it('returns aas for given aasId from foreign repository if only one found', async () => {
         const aasId = 'dummy aasId';
         const searchString = aasId;
-        const testUrl = 'https://testrepo.com';
+        const testUrl = 'https://repository1.com';
         const aas = createDummyAas(aasId);
         const searcher = InfrastructureSearchService.createNull({
             aasInRepositories: [{ searchResult: aas, location: testUrl }],
@@ -111,6 +134,16 @@ describe('Full Aas Search happy paths', () => {
     });
 
     it('returns aas for given aasId from foreign repository if two are found', async () => {
+        jest.clearAllMocks();
+        (getInfrastructures as jest.Mock).mockResolvedValue([
+            {
+                name: 'Test Infrastructure',
+                discoveryUrls: ['https://discovery1.com'],
+                aasRegistryUrls: ['https://registry1.com'],
+                aasRepositoryUrls: ['https://testrepo1.com', 'https://testrepo2.com'],
+            },
+        ]);
+
         const aasId = 'dummy aasId';
         const searchString = aasId;
         const searcher = InfrastructureSearchService.createNull({

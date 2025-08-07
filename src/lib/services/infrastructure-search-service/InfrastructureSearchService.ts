@@ -124,6 +124,12 @@ export class InfrastructureSearchService {
             // multiple -> stop search and return list for the user to choose
             if (aasRepositoryResult.result.length > 1) {
                 logInfo(this.log, 'searchAASInAllInfrastructures', 'Multiple AAS found', aasRepositoryResult.result);
+                logInfo(
+                    this.log,
+                    'searchAASInAllInfrastructures',
+                    'Returning multiple AAS search',
+                    this.createMultipleAasIdResult(searchInput),
+                );
                 return wrapSuccess(this.createMultipleAasIdResult(searchInput));
             }
             const data: AasData = {
