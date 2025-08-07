@@ -11,6 +11,7 @@ import { AasListEntry } from 'lib/types/AasListEntry';
 import { GenericListDataWrapper } from 'components/basics/listBasics/GenericListDataWrapper';
 import { searchInAllDiscoveries } from 'lib/services/discovery-service/discoveryActions';
 import { searchAASInAllAasRegistries } from 'lib/services/aas-registry-service/aasRegistryActions';
+import { Card } from '@mui/material';
 
 type DiscoveryListEntryToFetch = {
     thumbnailUrl?: string;
@@ -93,15 +94,17 @@ export function DiscoveryListView() {
     return (
         <>
             <ListHeader header={t('title')} subHeader={t('subtitle')} optionalID={assetId} />
-            <GenericListDataWrapper
-                loadContent={loadContent}
-                showThumbnail
-                showAasId
-                showRepositoryUrl
-                showDiscoveryUrl
-            >
-                <AssetNotFound id={assetId} />
-            </GenericListDataWrapper>
+            <Card>
+                <GenericListDataWrapper
+                    loadContent={loadContent}
+                    showThumbnail
+                    showAasId
+                    showRepositoryUrl
+                    showDiscoveryUrl
+                >
+                    <AssetNotFound id={assetId} />
+                </GenericListDataWrapper>
+            </Card>
         </>
     );
 }

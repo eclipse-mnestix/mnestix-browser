@@ -9,6 +9,7 @@ import { useTranslations } from 'next-intl';
 import { LocalizedError } from 'lib/util/LocalizedError';
 import { AasListEntry } from 'lib/types/AasListEntry';
 import { GenericListDataWrapper } from 'components/basics/listBasics/GenericListDataWrapper';
+import { Card } from '@mui/material';
 
 /**
  * This component is responsible for displaying the list of AAS entries based on a given aasId.
@@ -57,9 +58,11 @@ export const RegistryListView = () => {
     return (
         <>
             <ListHeader header={t('title')} subHeader={t('subtitle')} optionalID={aasId} />
-            <GenericListDataWrapper loadContent={loadContent} showThumbnail showAssetId showRepositoryUrl>
-                <AssetNotFound id={aasId} />
-            </GenericListDataWrapper>
+            <Card>
+                <GenericListDataWrapper loadContent={loadContent} showThumbnail showAssetId showRepositoryUrl>
+                    <AssetNotFound id={aasId} />
+                </GenericListDataWrapper>
+            </Card>
         </>
     );
 };
