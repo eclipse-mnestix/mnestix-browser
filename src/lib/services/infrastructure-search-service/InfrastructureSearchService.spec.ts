@@ -3,7 +3,7 @@ import { AssetAdministrationShellDescriptor } from 'lib/types/registryServiceTyp
 import { AssetAdministrationShell } from 'lib/api/aas/models';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { Log } from 'lib/util/Log';
-import testData from 'lib/services/infrastructure-search-service/AasSearcher.data.json';
+import testData from 'lib/services/infrastructure-search-service/TestAas.data.json';
 import { InfrastructureSearchService } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import { getInfrastructures } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
 

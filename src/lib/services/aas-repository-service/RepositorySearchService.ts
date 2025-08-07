@@ -3,18 +3,14 @@ import { mnestixFetch } from 'lib/api/infrastructure';
 import { AssetAdministrationShell, Submodel } from 'lib/api/aas/models';
 import { PrismaConnector } from 'lib/services/database/PrismaConnector';
 import { IPrismaConnector } from 'lib/services/database/PrismaConnectorInterface';
-import {
-    ApiResponseWrapper,
-    ApiResponseWrapperSuccess,
-    wrapErrorCode,
-    wrapSuccess,
-} from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import logger, { logResponseDebug } from 'lib/util/Logger';
 import { envs } from 'lib/env/MnestixEnv';
 import { InfrastructureConnection } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import { getInfrastructures } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
+import { fetchFromMultipleEndpoints } from 'lib/services/shared/parallelFetch';
 
 export type RepoSearchResult<T> = {
     searchResult: T;
@@ -297,39 +293,24 @@ export class RepositorySearchService {
         kernel: (url: string) => Promise<ApiResponseWrapper<T>>,
         errorMsg: string,
     ): Promise<ApiResponseWrapper<RepoSearchResult<T>[]>> {
-        const promises = infrastructures.flatMap((infrastructure) =>
-            infrastructure.aasRepositoryUrls.map((url) => {
-                return kernel(url).then((response: ApiResponseWrapper<T>) => {
-                    return { searchResult: response, location: url, infrastructureName: infrastructure.name };
-                });
+        const urls = infrastructures.flatMap((infra) =>
+            infra.aasRepositoryUrls.map((url) => ({
+                url,
+                infrastructureName: infra.name,
+            })),
+        );
+
+        return fetchFromMultipleEndpoints<T, RepoSearchResult<T>>(
+            urls,
+            kernel,
+            errorMsg,
+            (result, url, infrastructureName) => ({
+                searchResult: result.result,
+                location: url,
+                infrastructureName,
+                httpStatus: result.httpStatus,
+                httpText: result.httpText,
             }),
-        );
-
-        const responses = await Promise.allSettled(promises);
-        const fulfilledResponses = responses.filter(
-            (result) => result.status === 'fulfilled' && result.value.searchResult.isSuccess,
-        );
-
-        if (fulfilledResponses.length <= 0) {
-            return wrapErrorCode(ApiResultStatus.NOT_FOUND, errorMsg);
-        }
-
-        return wrapSuccess<RepoSearchResult<T>[]>(
-            fulfilledResponses.map(
-                (
-                    result: PromiseFulfilledResult<{
-                        searchResult: ApiResponseWrapperSuccess<T>;
-                        location: string;
-                        infrastructureName: string;
-                    }>,
-                ) => ({
-                    searchResult: result.value.searchResult.result,
-                    location: result.value.location,
-                    infrastructureName: result.value.infrastructureName,
-                    httpStatus: result.value.searchResult.httpStatus,
-                    httpText: result.value.searchResult.httpText,
-                }),
-            ),
         );
     }
 

@@ -10,6 +10,7 @@ import { useAasStore } from 'stores/AasStore';
 import { performFullAasSearch } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
 import { performSubmodelFullSearch } from 'lib/services/submodel-repository-service/submodelRepositoryActions';
 import { getAasFromRepository } from 'lib/services/aas-repository-service/repositorySearchActions';
+import { encodeBase64 } from 'lib/util/Base64Util';
 
 /**
  * Hook to load AAS content and its submodels asynchronously.
@@ -71,9 +72,7 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
 
     async function loadAasContent() {
         if (repoUrl) {
-            console.log(repoUrl + "  " + aasIdToLoad)
-            const response = await getAasFromRepository(aasIdToLoad, repoUrl);
-            console.log('AAS from repository:', response);
+            const response = await getAasFromRepository(encodeBase64(aasIdToLoad), repoUrl);
             if (response.isSuccess) {
                 setAasOriginUrl(repoUrl);
                 setAasFromContext(response.result);

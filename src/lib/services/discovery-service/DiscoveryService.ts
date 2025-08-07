@@ -24,16 +24,16 @@ export class DiscoveryService {
         private readonly log: typeof logger = logger,
     ) {}
     static create(log?: typeof logger): DiscoveryService {
-        const discoveryLogger = log?.child({ Service: 'DiscoverySearchService' });
+        const discoveryLogger = log?.child({ Service: 'DiscoveryService' });
         return new DiscoveryService(
             (baseUrl) => DiscoveryServiceApi.create(baseUrl, mnestixFetch(), log),
             discoveryLogger,
         );
     }
 
-    static createNull(discoveryEntries: any[] = []): DiscoveryService {
+    static createNull(discoveryEntries: { assetId: string; aasId: string }[] = []): DiscoveryService {
         return new DiscoveryService(
-            () => (DiscoveryServiceApi.createNull('', discoveryEntries) as unknown as IDiscoveryServiceApi),
+            () => DiscoveryServiceApi.createNull('', discoveryEntries) as unknown as IDiscoveryServiceApi,
             logger,
         );
     }

@@ -13,8 +13,11 @@ import {
 } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import { getInfrastructures } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
 import { fetchFromMultipleEndpoints } from 'lib/services/shared/parallelFetch';
-import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
-import { RegistryServiceApiInMemory } from 'lib/api/registry-service-api/registryServiceApiInMemory';
+import { AssetAdministrationShellDescriptor, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
+import {
+    AasRegistryEndpointEntryInMemory,
+    RegistryServiceApiInMemory,
+} from 'lib/api/registry-service-api/registryServiceApiInMemory';
 
 export type RegistrySearchResult = {
     endpoints: URL[];
@@ -30,17 +33,19 @@ export class AasRegistryService {
     ) {}
 
     static create(log?: typeof logger): AasRegistryService {
-        const registryLogger = log?.child({ Service: 'AasRegistrySearchService' });
+        const registryLogger = log?.child({ Service: 'AasRegistryService' });
         return new AasRegistryService(
             (baseUrl) => RegistryServiceApi.create(baseUrl, mnestixFetch(), log),
             registryLogger,
         );
     }
 
-    static createNull(aasRegistryDescriptors: any[] = [], aasRegistryEndpoints: any[] = []): AasRegistryService {
+    static createNull(
+        aasRegistryDescriptors: AssetAdministrationShellDescriptor[] = [],
+        aasRegistryEndpoints: AasRegistryEndpointEntryInMemory[] = [],
+    ): AasRegistryService {
         return new AasRegistryService(
-            () => (new RegistryServiceApiInMemory(
-                '', aasRegistryDescriptors, aasRegistryEndpoints)),
+            () => new RegistryServiceApiInMemory('', aasRegistryDescriptors, aasRegistryEndpoints),
             logger,
         );
     }

@@ -18,7 +18,6 @@ export async function performFullAasSearch(searchInput: string): Promise<ApiResp
     return searcher.searchAASInAllInfrastructures(searchInput);
 }
 
-// TODO find better place for this function
 export async function getInfrastructures() {
     // build default infrastructure from envs
     const defaultInfrastructure: InfrastructureConnection = {
