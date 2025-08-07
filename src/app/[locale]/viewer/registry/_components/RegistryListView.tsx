@@ -43,6 +43,7 @@ export const RegistryListView = () => {
                 aasId: aasSearchResult.searchResult.id,
                 assetId: aasSearchResult.searchResult.assetInformation.globalAssetId ?? undefined,
                 repositoryUrl: aasSearchResult.location,
+                thumbnailUrl: aasSearchResult.searchResult.assetInformation.defaultThumbnail?.path,
             };
         });
 

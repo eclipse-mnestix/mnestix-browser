@@ -12,13 +12,27 @@ import { GenericListDataWrapper } from 'components/basics/listBasics/GenericList
 import { searchInAllDiscoveries } from 'lib/services/discovery-service/discoveryActions';
 import { searchAASInAllAasRegistries } from 'lib/services/aas-registry-service/aasRegistryActions';
 
-async function getRepositoryUrl(aasId: string): Promise<string | undefined> {
+type DiscoveryListEntryToFetch = {
+    thumbnailUrl?: string;
+    repositoryUrl?: string;
+};
+
+/**
+ * TODO MNE-286 this doesn't work with multiple discoveries with same entries -> it always shows the first result as repositoryUrl
+ * BUT as AasId is unique, this should not be a problem in practice?.
+ * @param aasId
+ */
+async function getRepositoryUrlAndThumbnail(aasId: string): Promise<DiscoveryListEntryToFetch | undefined> {
     const registrySearchResult = await searchAASInAllAasRegistries(aasId);
-    // TODO how to handle multiple results?
-    if (registrySearchResult.isSuccess) return registrySearchResult.result[0].aasData?.aasRepositoryOrigin;
+    if (registrySearchResult.isSuccess)
+        return { repositoryUrl: registrySearchResult.result[0].aasData?.aasRepositoryOrigin };
 
     const allRepositorySearchResult = await performSearchAasFromAllRepositories(encodeBase64(aasId));
-    if (allRepositorySearchResult.isSuccess) return allRepositorySearchResult.result[0].location;
+    if (allRepositorySearchResult.isSuccess)
+        return {
+            repositoryUrl: allRepositorySearchResult.result[0].location,
+            thumbnailUrl: allRepositorySearchResult.result[0].searchResult.assetInformation.defaultThumbnail?.path,
+        };
 
     console.warn('Did not find the URL of the AAS');
     return undefined;
@@ -28,7 +42,6 @@ async function getRepositoryUrl(aasId: string): Promise<string | undefined> {
  * This component is responsible for displaying the list of AAS entries based on a given assetId.
  * This may occur, when multiple AAS are registered to the same assetId.
  * The user can then choose which AAS to view based on AasId and repositoryUrl.
- * // TODO MNES-906: show discoveryUrl
  */
 export function DiscoveryListView() {
     const searchParams = useSearchParams();
@@ -56,10 +69,12 @@ export function DiscoveryListView() {
 
         await Promise.all(
             response.result.map(async (discoverySearchResult) => {
-                const repositoryUrl = await getRepositoryUrl(discoverySearchResult.aasId);
+                const repoUrlAndThumbnail = await getRepositoryUrlAndThumbnail(discoverySearchResult.aasId);
                 entryList.push({
                     aasId: discoverySearchResult.aasId,
-                    repositoryUrl: repositoryUrl,
+                    repositoryUrl: repoUrlAndThumbnail?.repositoryUrl,
+                    discoveryUrl: discoverySearchResult.location,
+                    thumbnailUrl: repoUrlAndThumbnail?.thumbnailUrl,
                 });
             }),
         );
@@ -78,7 +93,13 @@ export function DiscoveryListView() {
     return (
         <>
             <ListHeader header={t('title')} subHeader={t('subtitle')} optionalID={assetId} />
-            <GenericListDataWrapper loadContent={loadContent} showThumbnail showAasId showRepositoryUrl>
+            <GenericListDataWrapper
+                loadContent={loadContent}
+                showThumbnail
+                showAasId
+                showRepositoryUrl
+                showDiscoveryUrl
+            >
                 <AssetNotFound id={assetId} />
             </GenericListDataWrapper>
         </>

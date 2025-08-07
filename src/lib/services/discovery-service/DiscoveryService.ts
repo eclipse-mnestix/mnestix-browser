@@ -87,6 +87,13 @@ export class DiscoveryService {
         );
     }
 
+    /**
+     * Fetches AAS IDs from multiple discovery services across different infrastructures.
+     * If one discovery service returns multiple AAS IDs, it will return a list of DiscoverySearchResults.
+     * @param infrastructures
+     * @param kernel
+     * @param errorMsg
+     */
     async getFromMultipleDiscoveries<T>(
         infrastructures: InfrastructureConnection[],
         kernel: (url: string) => Promise<ApiResponseWrapper<T>>,
@@ -110,7 +117,7 @@ export class DiscoveryService {
         }
 
         return wrapSuccess<DiscoverySearchResult[]>(
-            fulfilledResponses.map(
+            fulfilledResponses.flatMap(
                 (
                     result: PromiseFulfilledResult<{
                         searchResult: ApiResponseWrapperSuccess<T>;
@@ -118,11 +125,12 @@ export class DiscoveryService {
                         infrastructureName: string;
                     }>,
                 ) => {
-                    return {
-                        aasId: result.value.searchResult.result as string,
+                    const aasIdResult = result.value.searchResult.result as string[];
+                    return aasIdResult.map((aasId: string) => ({
+                        aasId,
                         infrastructureName: result.value.infrastructureName,
                         location: result.value.location,
-                    };
+                    }));
                 },
             ),
         );

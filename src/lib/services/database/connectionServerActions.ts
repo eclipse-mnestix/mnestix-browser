@@ -28,7 +28,7 @@ export async function fetchAllInfrastructureConnectionsFromDb(): Promise<Infrast
     return infrastructures.map((infra) => ({
         name: infra.name,
         discoveryUrls: infra.connections.flatMap((conn) =>
-            conn.types.filter((t) => t.type.typeName === 'DISCOVERY').map(() => conn.url),
+            conn.types.filter((t) => t.type.typeName === 'DISCOVERY_SERVICE').map(() => conn.url),
         ),
         aasRegistryUrls: infra.connections.flatMap((conn) =>
             conn.types.filter((t) => t.type.typeName === 'AAS_REGISTRY').map(() => conn.url),
