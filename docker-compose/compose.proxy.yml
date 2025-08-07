@@ -1,6 +1,6 @@
 services:
   mnestix-proxy:
-    image: mnestix/mnestix-proxy:dev
+    image: mnestix/mnestix-proxy:0.1.0
     container_name: mnestix-proxy
     ports:
       - '5065:5065'
@@ -24,8 +24,8 @@ services:
 
   mnestix-browser:
     container_name: mnestix-browser
-    image: mnestix/mnestix-browser:1.5.0 #Works only with the 2.0.0 (new release) version of the backend
-    #Test with mnestix/mnestix-browser:1.5.0 until 2.0 is fully released and available
+    image: mnestix/mnestix-browser:1.6.0 #Works only with the 2.0.0 (new release) version of the backend
+    #Test with mnestix/mnestix-browser:1.6.0 until 2.0 is fully released and available
     profiles: ['', 'frontend', 'tests']
     environment:
       DISCOVERY_API_URL: 'http://mnestix-proxy:5065/discovery'
@@ -36,7 +36,8 @@ services:
       MNESTIX_V2_ENABLED: 'true' # Set to 'true' to enable the new API version
 
   mnestix-api:
-    image: mnestix/mnestix-api:dev
+    # Replace mnestix-api with mnestix-aas-generator in the launch configurations for testing purposes
+    image: mnestix/mnestix-aas-generator:0.1.0
     container_name: mnestix-api
     profiles: ['', 'backend', 'tests']
     environment:
