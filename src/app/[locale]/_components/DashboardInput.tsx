@@ -27,7 +27,6 @@ export const DashboardInput = () => {
             });
         }
 
-        console.log('AAS search result:', result);
         navigate.push(result.redirectUrl);
     };
 

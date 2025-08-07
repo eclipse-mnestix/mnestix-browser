@@ -93,7 +93,7 @@ export class InfrastructureSearchService {
             }
             // single -> search in the AAS registries of the current infrastructure
             currentInfrastructureName = discoveryResult.result[0]?.infrastructureName || null;
-            aasId = discoveryResult.result[0].aasId[0];
+            aasId = discoveryResult.result[0].aasId;
             logInfo(this.log, 'AAS_ID', aasId);
 
             infrastructuresToSearch =
