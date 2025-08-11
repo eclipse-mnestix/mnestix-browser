@@ -375,8 +375,8 @@
           "saveSuccess": "Infrastructure saved successfully",
           "saveError": "Error saving infrastructure",
           "createNew": "Create New Infrastructure",
-          "deleteConfirm": "Are you sure you want to delete the infrastructure '{name}'? This action cannot be undone.",
-          "deleteSuccess": "Infrastructure '{name}' deleted successfully",
+          "deleteConfirm": "Are you sure you want to delete the infrastructure? This action cannot be undone.",
+          "deleteSuccess": "Infrastructure deleted successfully",
           "deleteError": "Failed to delete infrastructure",
           "deleteDialogTitle": "Delete Infrastructure",
           "deleteWarning": "This action cannot be undone and will permanently remove all associated connections and security settings.",
@@ -406,7 +406,8 @@
         "subtitle": "Define which infrastructures should be used.",
         "title": "Infrastructures",
         "urlFieldNoTrailingSlash": "The URL must not end with a slash (/).",
-        "urlFieldRequired": "URL field is required"
+        "urlFieldRequired": "URL field is required",
+        "noInfrastructuresFound": "No infrastructures found"
       },
       "header": "Settings",
       "idStructure": {

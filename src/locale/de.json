@@ -375,8 +375,8 @@
           "saveSuccess": "Infrastruktur erfolgreich gespeichert",
           "saveError": "Fehler beim Speichern der Infrastruktur",
           "createNew": "Neue Infrastruktur erstellen",
-          "deleteConfirm": "Sind Sie sicher, dass Sie die Infrastruktur '{name}' löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
-          "deleteSuccess": "Infrastruktur '{name}' erfolgreich gelöscht",
+          "deleteConfirm": "Sind Sie sicher, dass Sie die Infrastruktur löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+          "deleteSuccess": "Infrastruktur erfolgreich gelöscht",
           "deleteError": "Fehler beim Löschen der Infrastruktur",
           "deleteDialogTitle": "Infrastruktur löschen",
           "deleteWarning": "Diese Aktion kann nicht rückgängig gemacht werden und entfernt dauerhaft alle zugehörigen Verbindungen und Sicherheitseinstellungen.",
@@ -406,7 +406,8 @@
         "subtitle": "Definieren Sie, welche Infrastrukturen verwendet werden sollen.",
         "title": "Infrastrukturen",
         "urlFieldNoTrailingSlash": "Die URL darf nicht mit einem Schrägstrich (/) enden.",
-        "urlFieldRequired": "URL wird benötigt"
+        "urlFieldRequired": "URL wird benötigt",
+        "noInfrastructuresFound": "Keine Infrastrukturen gefunden"
       },
       "header": "Einstellungen",
       "idStructure": {

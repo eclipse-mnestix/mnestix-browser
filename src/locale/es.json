@@ -375,8 +375,8 @@
           "saveSuccess": "Infrastructure guardada exitosamente",
           "saveError": "Error al guardar la infrastructure",
           "createNew": "Crear una Nueva Infraestructura",
-          "deleteConfirm": "¿Está seguro de que desea eliminar la infraestructura '{name}'? Esta acción no se puede deshacer.",
-          "deleteSuccess": "Infraestructura '{name}' eliminada con éxito",
+          "deleteConfirm": "¿Está seguro de que desea eliminar la infraestructura? Esta acción no se puede deshacer.",
+          "deleteSuccess": "Infraestructura eliminada con éxito",
           "deleteError": "Error al eliminar la infraestructura",
           "deleteDialogTitle": "Supprimer l'Infrastructure",
           "deleteWarning": "Cette action ne peut pas être annulée et supprimera définitivement toutes les connexions et paramètres de sécurité associés.",
@@ -406,7 +406,8 @@
         "subtitle": "Define qué infraestructuras deben ser utilizadas.",
         "title": "Fuentes de infraestructura",
         "urlFieldNoTrailingSlash": "La URL no debe terminar con una barra (/).",
-        "urlFieldRequired": "El campo URL es obligatorio"
+        "urlFieldRequired": "El campo URL es obligatorio",
+        "noInfrastructuresFound": "No se encontraron infraestructuras"
       },
       "header": "Ajustes",
       "idStructure": {

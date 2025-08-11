@@ -14,13 +14,9 @@ interface InfrastructureDeleteDialogProps {
     open: boolean;
     onClose: () => void;
     onDelete: () => void;
-    itemName?: string;
 }
 
-/**
- * Dialog component for confirming infrastructure deletion
- */
-export function InfrastructureDeleteDialog({ open, onClose, onDelete, itemName }: InfrastructureDeleteDialogProps) {
+export function InfrastructureDeleteDialog({ open, onClose, onDelete }: InfrastructureDeleteDialogProps) {
     const t = useTranslations('pages.settings.infrastructure');
 
     function handleDelete() {
@@ -32,7 +28,7 @@ export function InfrastructureDeleteDialog({ open, onClose, onDelete, itemName }
         <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
             <DialogTitle>{t('form.deleteDialogTitle')}</DialogTitle>
             <DialogContent>
-                <DialogContentText>{t('form.deleteConfirm', { name: itemName || 'Unknown' })}</DialogContentText>
+                <DialogContentText>{t('form.deleteConfirm')}</DialogContentText>
                 <Typography variant="body2" color="error" sx={{ mt: 2 }}>
                     {t('form.deleteWarning')}
                 </Typography>

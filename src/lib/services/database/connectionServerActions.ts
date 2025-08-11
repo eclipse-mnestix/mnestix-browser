@@ -4,11 +4,6 @@ import { ConnectionType } from '@prisma/client';
 import { DataSourceFormData, PrismaConnector } from 'lib/services/database/PrismaConnector';
 import type { MappedInfrastructure } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
 
-export async function getConnectionDataAction() {
-    const prismaConnector = PrismaConnector.create();
-    return prismaConnector.getConnectionData();
-}
-
 export async function getInfrastructuresAction() {
     const prismaConnector = PrismaConnector.create();
     return prismaConnector.getInfrastructures();

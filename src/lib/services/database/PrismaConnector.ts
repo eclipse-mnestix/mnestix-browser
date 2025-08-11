@@ -13,18 +13,6 @@ export type DataSourceFormData = {
 export class PrismaConnector implements IPrismaConnector {
     private constructor() {}
 
-    async getConnectionData() {
-        return prisma.mnestixConnection.findMany({
-            include: {
-                types: {
-                    include: {
-                        type: true,
-                    },
-                },
-            },
-        });
-    }
-
     async getInfrastructures() {
         return prisma.mnestixInfrastructure.findMany({
             include: {
@@ -97,7 +85,7 @@ export class PrismaConnector implements IPrismaConnector {
     async upsertInfrastructureDataAction(infrastructureData: MappedInfrastructure) {
         return await prisma.$transaction(async (tx) => {
             // Security Type finden oder erstellen
-            let securityType = await tx.securityType.findFirst({
+            const securityType = await tx.securityType.findFirst({
                 where: { typeName: infrastructureData.securityType },
             });
 
