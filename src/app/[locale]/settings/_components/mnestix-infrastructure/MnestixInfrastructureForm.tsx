@@ -119,7 +119,7 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
     function getInfrastructureFormControl() {
         return (
             <FormControl fullWidth variant="filled">
-                <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 3 }}>
                     {infrastructure.logo && (
                         <Image
                             src={infrastructure.logo}
@@ -129,6 +129,7 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
                             style={{ objectFit: 'contain' }}
                         />
                     )}
+
                     <Controller
                         name="name"
                         control={control}
@@ -171,7 +172,7 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
                             />
                         )}
                     />
-                    <Box sx={{ display: 'flex', gap: 1 }}>
+                    <Box sx={{ display: 'flex', gap: 1, alignSelf: 'flex-start' }}>
                         <Button onClick={onCancel} variant="outlined" aria-label="Cancel editing">
                             {t('form.cancel')}
                         </Button>
@@ -192,7 +193,7 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
     function getConnectionFormControl(field: FieldArrayWithId<MappedInfrastructure, 'connections'>, index: number) {
         return (
             <FormControl fullWidth variant="filled" key={field.id}>
-                <Box sx={{ mb: 4 }}>
+                <Box sx={{ mb: 4, alignItems: 'flex-start', gap: 2 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                         <Controller
                             name={`connections.${index}.url`}
@@ -226,6 +227,7 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
                             color="error"
                             aria-label={`Remove endpoint ${index + 1}`}
                             disabled={connectionFields.length === 1}
+                            sx={{ alignSelf: 'flex-start', mt: 1 }}
                         >
                             <Delete />
                         </IconButton>
