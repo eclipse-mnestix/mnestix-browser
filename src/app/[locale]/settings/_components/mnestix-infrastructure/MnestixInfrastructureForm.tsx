@@ -52,6 +52,7 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
         handleSubmit,
         formState: { errors },
     } = useForm<MappedInfrastructure>({
+        mode: 'onChange',
         defaultValues: {
             id: infrastructure.id,
             name: infrastructure.name,
@@ -115,66 +116,72 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
         });
     }
 
-    // Helper function für Infrastructure-Grunddaten (Name und Logo)
     function getInfrastructureFormControl() {
         return (
             <FormControl fullWidth variant="filled">
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
+                <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
                     {infrastructure.logo && (
-                        <Image src={infrastructure.logo} alt={`${infrastructure.name} logo`} width={64} height={64} />
+                        <Image
+                            src={infrastructure.logo}
+                            alt={`${infrastructure.name} logo`}
+                            width={32}
+                            height={32}
+                            style={{ objectFit: 'contain' }}
+                        />
                     )}
-                    <Box sx={{ flexGrow: 1 }}>
-                        <Controller
-                            name="name"
-                            control={control}
-                            rules={{ required: t('form.nameRequired') }}
-                            render={({ field, fieldState: { error } }) => (
-                                <TextField
-                                    {...field}
-                                    label={t('form.name')}
-                                    size="small"
-                                    fullWidth
-                                    error={!!error}
-                                    helperText={error ? error.message : ''}
-                                    aria-label="Infrastructure name"
-                                />
-                            )}
-                        />
-                    </Box>
-                    <Box sx={{ flexGrow: 1 }}>
-                        <Controller
-                            name="logo"
-                            control={control}
-                            rules={{
-                                validate: (value: string) => {
-                                    if (!value) return true; // Optional field
-                                    try {
-                                        new URL(value);
-                                        return true;
-                                    } catch {
-                                        return t('form.logoUrlInvalid');
-                                    }
-                                },
-                            }}
-                            render={({ field, fieldState: { error } }) => (
-                                <TextField
-                                    {...field}
-                                    label={t('form.logoUrl')}
-                                    size="small"
-                                    fullWidth
-                                    error={!!error}
-                                    helperText={error ? error.message : ''}
-                                    aria-label="Logo URL"
-                                />
-                            )}
-                        />
-                    </Box>
+                    <Controller
+                        name="name"
+                        control={control}
+                        rules={{ required: t('form.nameRequired') }}
+                        render={({ field, fieldState: { error } }) => (
+                            <TextField
+                                {...field}
+                                label={t('form.name')}
+                                size="small"
+                                fullWidth
+                                error={!!error}
+                                helperText={error?.message}
+                                aria-label="Infrastructure name"
+                            />
+                        )}
+                    />
+                    <Controller
+                        name="logo"
+                        control={control}
+                        rules={{
+                            validate: (value: string) => {
+                                if (!value) return true;
+                                try {
+                                    new URL(value);
+                                    return true;
+                                } catch {
+                                    return t('form.logoUrlInvalid');
+                                }
+                            },
+                        }}
+                        render={({ field, fieldState: { error } }) => (
+                            <TextField
+                                {...field}
+                                label={t('form.logoUrl')}
+                                size="small"
+                                fullWidth
+                                error={!!error}
+                                helperText={error?.message}
+                                aria-label="Logo URL"
+                            />
+                        )}
+                    />
                     <Box sx={{ display: 'flex', gap: 1 }}>
                         <Button onClick={onCancel} variant="outlined" aria-label="Cancel editing">
-                            CANCEL
+                            {t('form.cancel')}
                         </Button>
-                        <Button type="submit" variant="contained" aria-label="Save infrastructure">
-                            SAVE
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            aria-label="Save infrastructure"
+                            disabled={Object.keys(errors).length > 0}
+                        >
+                            {t('form.save')}
                         </Button>
                     </Box>
                 </Box>
@@ -182,12 +189,10 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
         );
     }
 
-    // Helper function für Connection/Endpoint-Felder - OHNE useState
     function getConnectionFormControl(field: FieldArrayWithId<MappedInfrastructure, 'connections'>, index: number) {
         return (
             <FormControl fullWidth variant="filled" key={field.id}>
                 <Box sx={{ mb: 2 }}>
-                    {/* URL Input */}
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                         <Controller
                             name={`connections.${index}.url`}
@@ -226,7 +231,6 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
                         </IconButton>
                     </Box>
 
-                    {/* Connection Types Multi-Select */}
                     <Controller
                         name={`connections.${index}.types`}
                         control={control}
@@ -287,76 +291,66 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
         );
     }
 
-    // Helper function für dynamische Security-Felder basierend auf dem gewählten Typ
     function getSecurityFieldsBasedOnType() {
         switch (watchedSecurityType) {
-            case SECURITY_TYPES.NONE:
-                return null;
-
             case SECURITY_TYPES.MNESTIX_PROXY:
                 return (
-                    <Box sx={{ flex: 1 }}>
-                        <Controller
-                            name="securityProxy.value"
-                            control={control}
-                            rules={{ required: t('form.proxyUrlRequired') }}
-                            render={({ field, fieldState: { error } }) => (
-                                <TextField
-                                    {...field}
-                                    label={t('form.proxyUrl')}
-                                    size="small"
-                                    fullWidth
-                                    error={!!error}
-                                    helperText={error ? error.message : ''}
-                                    placeholder="your-api-key-value"
-                                    aria-label="Proxy API Key"
-                                />
-                            )}
-                        />
-                    </Box>
+                    <Controller
+                        name="securityProxy.value"
+                        control={control}
+                        rules={{ required: t('form.proxyHeaderValueRequired') }}
+                        render={({ field, fieldState: { error } }) => (
+                            <TextField
+                                {...field}
+                                label={t('form.proxyHeaderValue')}
+                                size="small"
+                                fullWidth
+                                error={!!error}
+                                helperText={error?.message}
+                                placeholder="your-api-key-value"
+                                aria-label="Mnestix Proxy Header Value"
+                            />
+                        )}
+                    />
                 );
 
             case SECURITY_TYPES.HEADER_SECURITY:
                 return (
                     <>
-                        <Box sx={{ flex: 1 }}>
-                            <Controller
-                                name="securityHeader.name"
-                                control={control}
-                                rules={{ required: t('form.headerNameRequired') }}
-                                render={({ field, fieldState: { error } }) => (
-                                    <TextField
-                                        {...field}
-                                        label={t('form.headerName')}
-                                        size="small"
-                                        fullWidth
-                                        error={!!error}
-                                        helperText={error ? error.message : ''}
-                                        placeholder="X-API-Key"
-                                        aria-label="Security header name"
-                                    />
-                                )}
-                            />
-                        </Box>
-                        <Box sx={{ flex: 1 }}>
-                            <Controller
-                                name="securityHeader.value"
-                                control={control}
-                                rules={{ required: t('form.headerValueRequired') }}
-                                render={({ field, fieldState: { error } }) => (
-                                    <TextField
-                                        {...field}
-                                        label={t('form.headerValue')}
-                                        size="small"
-                                        fullWidth
-                                        error={!!error}
-                                        helperText={error ? error.message : ''}
-                                        placeholder="your-api-key-value"
-                                        aria-label="Security header value"
-                                    />
-                                )}
-                            />
-                        </Box>
+                        <Controller
+                            name="securityHeader.name"
+                            control={control}
+                            rules={{ required: t('form.headerNameRequired') }}
+                            render={({ field, fieldState: { error } }) => (
+                                <TextField
+                                    {...field}
+                                    label={t('form.headerName')}
+                                    size="small"
+                                    fullWidth
+                                    error={!!error}
+                                    helperText={error?.message}
+                                    placeholder="X-API-Key"
+                                    aria-label="Security header name"
+                                />
+                            )}
+                        />
+                        <Controller
+                            name="securityHeader.value"
+                            control={control}
+                            rules={{ required: t('form.headerValueRequired') }}
+                            render={({ field, fieldState: { error } }) => (
+                                <TextField
+                                    {...field}
+                                    label={t('form.headerValue')}
+                                    size="small"
+                                    fullWidth
+                                    error={!!error}
+                                    helperText={error?.message}
+                                    placeholder="your-api-key-value"
+                                    aria-label="Security header value"
+                                />
+                            )}
+                        />
                     </>
                 );
 
@@ -378,7 +372,7 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
 
                 <Divider />
 
-                <Typography variant="h3" sx={{ my: 2 }}>
+                <Typography variant="h3" sx={{ my: 2, color: theme.palette.primary.main }}>
                     {t('form.endpoints')}
                 </Typography>
 
@@ -396,7 +390,7 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
 
                 <Divider />
 
-                <Typography variant="h3" sx={{ my: 2 }}>
+                <Typography variant="h3" sx={{ my: 2, color: theme.palette.primary.main }}>
                     {t('form.security')}
                 </Typography>
 
@@ -428,7 +422,6 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
                             )}
                         />
                     </Box>
-
                     {getSecurityFieldsBasedOnType()}
                 </Box>
             </form>

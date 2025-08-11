@@ -368,10 +368,10 @@
           "headerNameRequired": "Header Name ist erforderlich",
           "headerValueRequired": "Header Wert ist erforderlich",
           "securityTypeNone": "Keine",
-          "securityTypeMnestixProxy": "Mnestix Repo Proxy",
+          "securityTypeMnestixProxy": "Mnestix Repository Proxy",
           "securityTypeHeaderSecurity": "Header Security",
-          "proxyUrl": "Proxy URL",
-          "proxyUrlRequired": "Proxy URL ist erforderlich",
+          "proxyHeaderValue": "Mnestix Proxy Header Wert",
+          "proxyHeaderValueRequired": "Mnestix Proxy Header Wert ist erforderlich",
           "saveSuccess": "Infrastruktur erfolgreich gespeichert",
           "saveError": "Fehler beim Speichern der Infrastruktur",
           "createNew": "Neue Infrastruktur erstellen",
@@ -384,7 +384,8 @@
           "delete": "Löschen",
           "connectionTypes": "Verbindungstypen",
           "selectConnectionTypes": "Verbindungstypen auswählen...",
-          "connectionTypesRequired": "Mindestens ein Verbindungstyp muss ausgewählt werden"
+          "connectionTypesRequired": "Mindestens ein Verbindungstyp muss ausgewählt werden",
+          "save": "Speichern"
         },
         "aasRepository": {
           "connectionType": "AAS_REPOSITORY",
