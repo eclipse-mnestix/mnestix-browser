@@ -6,7 +6,7 @@ import PictureTableCell from 'components/basics/listBasics/PictureTableCell';
 import { ArrowForward } from '@mui/icons-material';
 import { RoundedIconButton } from 'components/basics/Buttons';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { getThumbnailFromShell } from 'lib/services/repository-access/repositorySearchActions';
+import { getThumbnailFromShell } from 'lib/services/aas-repository-service/repositorySearchActions';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { useState } from 'react';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
@@ -65,7 +65,8 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         const baseUrl = window.location.origin;
         const pageToGo = env.PRODUCT_VIEW_FEATURE_FLAG ? '/product' : '/viewer';
 
-        window.open(baseUrl + `${pageToGo}/${encodeBase64(listEntry.aasId)}`, '_blank');
+        const repoUrlParam = repositoryUrl ? `?repoUrl=${repositoryUrl}` : '';
+        window.open(baseUrl + `${pageToGo}/${encodeBase64(listEntry.aasId)}${repoUrlParam}`, '_blank');
     };
 
     const translateListText = (property: MultiLanguageValueOnly | undefined) => {

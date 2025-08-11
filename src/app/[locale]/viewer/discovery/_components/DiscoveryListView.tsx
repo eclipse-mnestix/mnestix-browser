@@ -4,19 +4,36 @@ import { useSearchParams } from 'next/navigation';
 import AssetNotFound from 'components/basics/AssetNotFound';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import ListHeader from 'components/basics/ListHeader';
-import { performDiscoveryAasSearch, performRegistryAasSearch } from 'lib/services/search-actions/searchActions';
-import { performSearchAasFromAllRepositories } from 'lib/services/repository-access/repositorySearchActions';
+import { performSearchAasFromAllRepositories } from 'lib/services/aas-repository-service/repositorySearchActions';
 import { useTranslations } from 'next-intl';
 import { LocalizedError } from 'lib/util/LocalizedError';
 import { AasListEntry } from 'lib/types/AasListEntry';
 import { GenericListDataWrapper } from 'components/basics/listBasics/GenericListDataWrapper';
+import { searchInAllDiscoveries } from 'lib/services/discovery-service/discoveryActions';
+import { searchAASInAllAasRegistries } from 'lib/services/aas-registry-service/aasRegistryActions';
+import { Card } from '@mui/material';
 
-async function getRepositoryUrl(aasId: string): Promise<string | undefined> {
-    const registrySearchResult = await performRegistryAasSearch(aasId);
-    if (registrySearchResult.isSuccess) return registrySearchResult.result.aasData?.aasRepositoryOrigin;
+type DiscoveryListEntryToFetch = {
+    thumbnailUrl?: string;
+    repositoryUrl?: string;
+};
+
+/**
+ * TODO MNE-286 this doesn't work with multiple discoveries with same entries -> it always shows the first result as repositoryUrl
+ * BUT as AasId is unique, this should not be a problem in practice?.
+ * @param aasId
+ */
+async function getRepositoryUrlAndThumbnail(aasId: string): Promise<DiscoveryListEntryToFetch | undefined> {
+    const registrySearchResult = await searchAASInAllAasRegistries(aasId);
+    if (registrySearchResult.isSuccess)
+        return { repositoryUrl: registrySearchResult.result[0].aasData?.aasRepositoryOrigin };
 
     const allRepositorySearchResult = await performSearchAasFromAllRepositories(encodeBase64(aasId));
-    if (allRepositorySearchResult.isSuccess) return allRepositorySearchResult.result[0].location;
+    if (allRepositorySearchResult.isSuccess)
+        return {
+            repositoryUrl: allRepositorySearchResult.result[0].location,
+            thumbnailUrl: allRepositorySearchResult.result[0].searchResult.assetInformation.defaultThumbnail?.path,
+        };
 
     console.warn('Did not find the URL of the AAS');
     return undefined;
@@ -26,7 +43,6 @@ async function getRepositoryUrl(aasId: string): Promise<string | undefined> {
  * This component is responsible for displaying the list of AAS entries based on a given assetId.
  * This may occur, when multiple AAS are registered to the same assetId.
  * The user can then choose which AAS to view based on AasId and repositoryUrl.
- * // TODO MNES-906: show discoveryUrl
  */
 export function DiscoveryListView() {
     const searchParams = useSearchParams();
@@ -40,7 +56,7 @@ export function DiscoveryListView() {
             throw new LocalizedError('pages.discoveryList.errors.noAssetId');
         }
 
-        const response = await performDiscoveryAasSearch(assetId);
+        const response = await searchInAllDiscoveries(assetId);
 
         if (!response.isSuccess) {
             throw new LocalizedError('pages.discoveryList.errors.searchFailed');
@@ -53,11 +69,13 @@ export function DiscoveryListView() {
         const entryList: AasListEntry[] = [];
 
         await Promise.all(
-            response.result.map(async (aasId) => {
-                const repositoryUrl = await getRepositoryUrl(aasId);
+            response.result.map(async (discoverySearchResult) => {
+                const repoUrlAndThumbnail = await getRepositoryUrlAndThumbnail(discoverySearchResult.aasId);
                 entryList.push({
-                    aasId: aasId,
-                    repositoryUrl: repositoryUrl,
+                    aasId: discoverySearchResult.aasId,
+                    repositoryUrl: repoUrlAndThumbnail?.repositoryUrl,
+                    discoveryUrl: discoverySearchResult.location,
+                    thumbnailUrl: repoUrlAndThumbnail?.thumbnailUrl,
                 });
             }),
         );
@@ -76,9 +94,17 @@ export function DiscoveryListView() {
     return (
         <>
             <ListHeader header={t('title')} subHeader={t('subtitle')} optionalID={assetId} />
-            <GenericListDataWrapper loadContent={loadContent} showThumbnail showAasId showRepositoryUrl>
-                <AssetNotFound id={assetId} />
-            </GenericListDataWrapper>
+            <Card>
+                <GenericListDataWrapper
+                    loadContent={loadContent}
+                    showThumbnail
+                    showAasId
+                    showRepositoryUrl
+                    showDiscoveryUrl
+                >
+                    <AssetNotFound id={assetId} />
+                </GenericListDataWrapper>
+            </Card>
         </>
     );
 }
