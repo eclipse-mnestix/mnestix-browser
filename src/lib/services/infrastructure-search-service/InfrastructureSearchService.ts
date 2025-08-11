@@ -92,19 +92,20 @@ export class InfrastructureSearchService {
                 return wrapSuccess(this.createMultipleAssetIdResult(searchInput));
             }
             // single -> search in the AAS registries of the current infrastructure
-            currentInfrastructureName = discoveryResult.result[0]?.infrastructureName || null;
-            aasId = discoveryResult.result[0].aasId;
-            logInfo(this.log, 'AAS_ID', aasId);
+            if (discoveryResult.result.length === 1) {
+                currentInfrastructureName = discoveryResult.result[0].infrastructureName || null;
+                aasId = discoveryResult.result[0].aasId;
 
-            infrastructuresToSearch =
-                infrastructures.filter((infra) => infra.name === currentInfrastructureName) ?? infrastructures;
+                infrastructuresToSearch =
+                    infrastructures.filter((infra) => infra.name === currentInfrastructureName) ?? infrastructures;
+            }
         }
         const aasRegistryResult = await this.aasRegistrySearchService.searchInMultipleAasRegistries(
             aasId,
             infrastructuresToSearch,
         );
 
-        if (aasRegistryResult.isSuccess) {
+        if (aasRegistryResult.isSuccess && aasRegistryResult.result.length > 0) {
             // multiple -> stop search and return list for the user to choose
             // TODO think about a better solution to know if the result is a redirect or not
             if (aasRegistryResult.result[0].redirectUrl) {
@@ -132,13 +133,15 @@ export class InfrastructureSearchService {
                 );
                 return wrapSuccess(this.createMultipleAasIdResult(searchInput));
             }
-            const data: AasData = {
-                submodelDescriptors: undefined,
-                aasRepositoryOrigin: aasRepositoryResult.result[0].location,
-            };
-
             // single -> return the AAS search result
-            return wrapSuccess(this.createAasResult(aasRepositoryResult.result[0].searchResult, data));
+            if (aasRepositoryResult.result.length === 1) {
+                const data: AasData = {
+                    submodelDescriptors: undefined,
+                    aasRepositoryOrigin: aasRepositoryResult.result[0].location,
+                };
+
+                return wrapSuccess(this.createAasResult(aasRepositoryResult.result[0].searchResult, data));
+            }
         }
 
         return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'No AAS found for the given ID');

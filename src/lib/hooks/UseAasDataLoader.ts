@@ -14,7 +14,8 @@ import { encodeBase64 } from 'lib/util/Base64Util';
 
 /**
  * Hook to load AAS content and its submodels asynchronously.
- * @param base64AasId
+ * @param context
+ * @param aasIdToLoad
  * @param repoUrl
  */
 export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string, repoUrl: string | undefined) {

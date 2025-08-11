@@ -44,11 +44,11 @@ export const RedirectToViewer = () => {
     }, []);
 
     async function navigateToViewerOfAsset(assetId: string | undefined): Promise<void> {
-        const { isSuccess, result: discoerySearchResult } = await getAasIdsOfAsset(assetId);
+        const { isSuccess, result: discoverySearchResult } = await getAasIdsOfAsset(assetId);
 
         if (!isSuccess) throw new LocalizedError('navigation.errors.urlNotFound');
 
-        const aasIds = discoerySearchResult.map((result) => result.aasId);
+        const aasIds = discoverySearchResult.map((result) => result.aasId);
         assertAtLeastOneAasIdExists(aasIds);
         const targetUrl = determineViewerTargetUrl(aasIds);
         navigate.replace(targetUrl);

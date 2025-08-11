@@ -65,7 +65,8 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         const baseUrl = window.location.origin;
         const pageToGo = env.PRODUCT_VIEW_FEATURE_FLAG ? '/product' : '/viewer';
 
-        window.open(baseUrl + `${pageToGo}/${encodeBase64(listEntry.aasId)}?repoUrl=${repositoryUrl}`, '_blank');
+        const repoUrlParam = repositoryUrl ? `?repoUrl=${repositoryUrl}` : '';
+        window.open(baseUrl + `${pageToGo}/${encodeBase64(listEntry.aasId)}${repoUrlParam}`, '_blank');
     };
 
     const translateListText = (property: MultiLanguageValueOnly | undefined) => {

@@ -87,12 +87,14 @@ export class AasRegistryService {
             ]);
         }
 
-        const endpoint = registrySearchResult.result[0].endpoints[0];
+        const firstResult = registrySearchResult.result[0];
+        if (!firstResult.endpoints || !Array.isArray(firstResult.endpoints) || firstResult.endpoints.length === 0) {
+            return wrapErrorCode(ApiResultStatus.NOT_FOUND, `No endpoints found for AAS '${searchAasId}'`);
+        }
 
-        const aasSearchResult = await this.getAasFromEndpoint(
-            registrySearchResult.result[0].endpoints[0],
-            registrySearchResult.result[0].location,
-        );
+        const endpoint = firstResult.endpoints[0];
+        const aasSearchResult = await this.getAasFromEndpoint(endpoint, firstResult.location);
+
         if (!aasSearchResult.isSuccess) {
             return wrapErrorCode(aasSearchResult.errorCode, aasSearchResult.message);
         }
