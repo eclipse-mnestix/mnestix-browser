@@ -124,8 +124,8 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
                         <Image
                             src={infrastructure.logo}
                             alt={`${infrastructure.name} logo`}
-                            width={32}
-                            height={32}
+                            width={50}
+                            height={50}
                             style={{ objectFit: 'contain' }}
                         />
                     )}
@@ -192,7 +192,7 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
     function getConnectionFormControl(field: FieldArrayWithId<MappedInfrastructure, 'connections'>, index: number) {
         return (
             <FormControl fullWidth variant="filled" key={field.id}>
-                <Box sx={{ mb: 2 }}>
+                <Box sx={{ mb: 4 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                         <Controller
                             name={`connections.${index}.url`}
