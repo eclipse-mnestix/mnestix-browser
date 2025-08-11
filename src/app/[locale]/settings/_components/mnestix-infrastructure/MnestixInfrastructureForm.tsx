@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     Box,
     Button,
@@ -9,12 +9,14 @@ import {
     FormControl,
     Divider,
     MenuItem,
-    Menu,
+    Select,
+    InputLabel,
+    OutlinedInput,
     Checkbox,
     ListItemText,
     FormHelperText,
 } from '@mui/material';
-import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import { Add, Delete } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
 import { useTheme } from '@mui/material/styles';
 import Image from 'next/image';
@@ -45,7 +47,6 @@ const CONNECTION_TYPES = [
 function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: MnestixInfrastructureFormProps) {
     const t = useTranslations('pages.settings.infrastructure');
     const theme = useTheme();
-    const [connectionTypeMenuAnchors, setConnectionTypeMenuAnchors] = useState<Record<number, HTMLElement | null>>({});
     const {
         control,
         handleSubmit,
@@ -79,37 +80,31 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
         name: 'connections',
     });
 
-    // Event handlers
     function onSubmit(data: MappedInfrastructure) {
-        // Map form data to infrastructure object
-        const mappedData: MappedInfrastructure = {
+        const cleanedData: MappedInfrastructure = {
             id: data.id,
             name: data.name,
             logo: data.logo || undefined,
             securityType: data.securityType,
             connections: data.connections,
-        };
 
-        // Add security data based on selected type
-        switch (data.securityType) {
-            case SECURITY_TYPES.HEADER_SECURITY:
-                if (data.securityHeader?.name?.trim() && data.securityHeader?.value?.trim()) {
-                    mappedData.securityHeader = {
+            ...(data.securityType === SECURITY_TYPES.HEADER_SECURITY &&
+                data.securityHeader?.name?.trim() &&
+                data.securityHeader?.value?.trim() && {
+                    securityHeader: {
                         name: data.securityHeader.name.trim(),
                         value: data.securityHeader.value.trim(),
-                    };
-                }
-                break;
-            case SECURITY_TYPES.MNESTIX_PROXY:
-                if (data.securityProxy?.value?.trim()) {
-                    mappedData.securityProxy = {
+                    },
+                }),
+            ...(data.securityType === SECURITY_TYPES.MNESTIX_PROXY &&
+                data.securityProxy?.value?.trim() && {
+                    securityProxy: {
                         value: data.securityProxy.value.trim(),
-                    };
-                }
-                break;
-        }
+                    },
+                }),
+        };
 
-        onSave(mappedData);
+        onSave(cleanedData);
     }
 
     function addConnection() {
@@ -189,14 +184,11 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
 
     // Helper function für Connection/Endpoint-Felder - OHNE useState
     function getConnectionFormControl(field: FieldArrayWithId<MappedInfrastructure, 'connections'>, index: number) {
-        const connectionTypeMenuAnchor = connectionTypeMenuAnchors[index] || null;
-        const connectionTypeMenuOpen = Boolean(connectionTypeMenuAnchor);
-
         return (
             <FormControl fullWidth variant="filled" key={field.id}>
-                <Box display="flex" flex={1} flexDirection="column" mb={2}>
-                    {/* URL Eingabe Zeile */}
-                    <Box display="flex" alignItems="center" mb={2}>
+                <Box sx={{ mb: 2 }}>
+                    {/* URL Input */}
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                         <Controller
                             name={`connections.${index}.url`}
                             control={control}
@@ -217,9 +209,9 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
                                     {...field}
                                     label={t('form.endpointUrl')}
                                     sx={{ flexGrow: 1, mr: 1 }}
-                                    fullWidth={true}
+                                    fullWidth
                                     error={!!error}
-                                    helperText={error ? error.message : ''}
+                                    helperText={error?.message}
                                     aria-label={`Endpoint URL ${index + 1}`}
                                 />
                             )}
@@ -230,101 +222,66 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
                             aria-label={`Remove endpoint ${index + 1}`}
                             disabled={connectionFields.length === 1}
                         >
-                            <DeleteIcon />
+                            <Delete />
                         </IconButton>
                     </Box>
 
-                    {/* Connection Types Section */}
-                    <Box sx={{ mb: 2 }}>
-                        <Box sx={{ display: 'flex', mb: 1 }}>
-                            <Controller
-                                name={`connections.${index}.types`}
-                                control={control}
-                                rules={{
-                                    validate: (value: string[]) => {
-                                        if (!value || value.length === 0) {
-                                            return t('form.connectionTypesRequired');
-                                        }
-                                        return true;
-                                    },
-                                }}
-                                render={({ field, fieldState: { error } }) => (
-                                    <Box>
-                                        <Controller
-                                            name={`connections.${index}.types`}
-                                            control={control}
-                                            render={({ field }) => (
-                                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                                                    {field.value?.map((typeId) => {
-                                                        const type = CONNECTION_TYPES.find((ct) => ct.id === typeId);
-                                                        return (
-                                                            <Chip
-                                                                key={typeId}
-                                                                label={type?.label || typeId}
-                                                                size="small"
-                                                                onDelete={() =>
-                                                                    handleRemoveConnectionType(
-                                                                        typeId,
-                                                                        field.value || [],
-                                                                        field.onChange,
-                                                                    )
-                                                                }
-                                                                deleteIcon={<DeleteIcon />}
-                                                                variant="outlined"
-                                                            />
-                                                        );
-                                                    })}
-                                                </Box>
-                                            )}
-                                        />
-                                        <Box>
-                                            {error && <FormHelperText error>{error.message}</FormHelperText>}
-                                            <Button
-                                                variant="text"
-                                                startIcon={<AddIcon />}
-                                                onClick={(event) => handleConnectionTypeMenuClick(index, event)}
-                                                aria-label={`Add connection type for endpoint ${index + 1}`}
-                                                size="small"
-                                            >
-                                                {t('form.addEndpointType')}
-                                            </Button>
-                                        </Box>
-
-                                        <Menu
-                                            anchorEl={connectionTypeMenuAnchor}
-                                            open={connectionTypeMenuOpen}
-                                            onClose={() => handleConnectionTypeMenuClose(index)}
-                                            PaperProps={{
-                                                style: {
-                                                    maxHeight: 300,
-                                                },
-                                            }}
-                                        >
-                                            {CONNECTION_TYPES.map((type) => {
-                                                const isSelected = field.value?.includes(type.id);
+                    {/* Connection Types Multi-Select */}
+                    <Controller
+                        name={`connections.${index}.types`}
+                        control={control}
+                        rules={{
+                            validate: (value: string[]) => {
+                                if (!value || value.length === 0) {
+                                    return t('form.connectionTypesRequired');
+                                }
+                                return true;
+                            },
+                        }}
+                        render={({ field, fieldState: { error } }) => (
+                            <FormControl fullWidth error={!!error}>
+                                <InputLabel id={`connection-types-label-${index}`}>
+                                    {t('form.connectionTypes')}
+                                </InputLabel>
+                                <Select
+                                    {...field}
+                                    labelId={`connection-types-label-${index}`}
+                                    multiple
+                                    input={<OutlinedInput label={t('form.connectionTypes')} />}
+                                    renderValue={(selected) => (
+                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                            {selected.map((typeId) => {
+                                                const type = CONNECTION_TYPES.find((ct) => ct.id === typeId);
                                                 return (
-                                                    <MenuItem
-                                                        key={type.id}
-                                                        onClick={() => {
-                                                            handleConnectionTypeSelect(
-                                                                type.id,
-                                                                field.value || [],
-                                                                field.onChange,
-                                                            );
+                                                    <Chip
+                                                        key={typeId}
+                                                        label={type?.label || typeId}
+                                                        size="small"
+                                                        variant="outlined"
+                                                        onDelete={(e) => {
+                                                            e.stopPropagation();
+                                                            const newValue = selected.filter((item) => item !== typeId);
+                                                            field.onChange(newValue);
                                                         }}
-                                                        dense
-                                                    >
-                                                        <Checkbox checked={isSelected} size="small" sx={{ mr: 1 }} />
-                                                        <ListItemText primary={type.label} />
-                                                    </MenuItem>
+                                                        onMouseDown={(e) => e.stopPropagation()}
+                                                    />
                                                 );
                                             })}
-                                        </Menu>
-                                    </Box>
-                                )}
-                            />
-                        </Box>
-                    </Box>
+                                        </Box>
+                                    )}
+                                    aria-label={`Connection types for endpoint ${index + 1}`}
+                                >
+                                    {CONNECTION_TYPES.map((type) => (
+                                        <MenuItem key={type.id} value={type.id}>
+                                            <Checkbox checked={field.value?.indexOf(type.id) > -1} size="small" />
+                                            <ListItemText primary={type.label} />
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                                {error && <FormHelperText>{error.message}</FormHelperText>}
+                            </FormControl>
+                        )}
+                    />
                 </Box>
             </FormControl>
         );
@@ -417,32 +374,28 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
             }}
         >
             <form onSubmit={handleSubmit(onSubmit)} role="form" aria-label="Infrastructure form">
-                {/* Infrastructure Grunddaten */}
                 {getInfrastructureFormControl()}
 
                 <Divider />
 
-                {/* Endpoints Section */}
                 <Typography variant="h3" sx={{ my: 2 }}>
                     {t('form.endpoints')}
                 </Typography>
 
                 {connectionFields.map((field, index) => getConnectionFormControl(field, index))}
 
-                <Box>
-                    <Button
-                        variant="text"
-                        startIcon={<AddIcon />}
-                        onClick={addConnection}
-                        aria-label="Add new endpoint"
-                    >
-                        {t('form.addEndpoint')}
-                    </Button>
-                </Box>
+                <Button
+                    variant="text"
+                    startIcon={<Add />}
+                    onClick={addConnection}
+                    aria-label="Add new endpoint"
+                    sx={{ mb: 2 }}
+                >
+                    {t('form.addEndpoint')}
+                </Button>
 
                 <Divider />
 
-                {/* Infrastructure Security Section */}
                 <Typography variant="h3" sx={{ my: 2 }}>
                     {t('form.security')}
                 </Typography>
@@ -461,9 +414,8 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
                                     fullWidth
                                     select
                                     error={!!error}
-                                    helperText={error ? error.message : ''}
+                                    helperText={error?.message}
                                     aria-label="Security type"
-                                    defaultValue={SECURITY_TYPES.NONE}
                                 >
                                     <MenuItem value={SECURITY_TYPES.NONE}>{t('form.securityTypeNone')}</MenuItem>
                                     <MenuItem value={SECURITY_TYPES.MNESTIX_PROXY}>
@@ -477,7 +429,6 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
                         />
                     </Box>
 
-                    {/* Dynamische Felder basierend auf Security Type */}
                     {getSecurityFieldsBasedOnType()}
                 </Box>
             </form>
