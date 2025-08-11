@@ -6,6 +6,18 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig: NextConfig = {
     output: 'standalone', // Outputs a Single-Page Application (SPA).
     distDir: './dist', // Changes the build output directory to `./dist/`.
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: '**',
+            },
+            {
+                protocol: 'http',
+                hostname: '**',
+            },
+        ],
+    },
     turbopack: {
         rules: {
             '*.svg': {
