@@ -80,13 +80,12 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
     }
 
     async function loadAasContent() {
-        if (repoUrl) {
-            // TODO replace
+        if (repoUrl && infrastructureName) {
             const response = await getAasFromRepository(encodeBase64(aasIdToLoad), repoUrl);
             if (response.isSuccess) {
                 setAasOriginUrl(repoUrl);
                 setAasFromContext(response.result);
-                setInfrastructureName('DefaultInfrastructure'); // TODO: Get infrastructure name from response or context
+                setInfrastructureName(infrastructureName);
                 return { success: true };
             }
         }
@@ -126,12 +125,11 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
             setAasFromContext(aasFromStore.aas);
             setAasOriginUrl(aasFromStore.aasData?.aasRepositoryOrigin);
             setRegistryAasData(aasFromStore.aasData);
-            setInfrastructureName(aasFromStore.aasData.infrastructureName);
+            setInfrastructureName(aasFromStore.aasData?.infrastructureName || undefined);
             setIsLoadingAas(false); // initialized as true, so we need to set it to false here
             return;
         }
         setIsLoadingAas(true);
-        console.log('Loading AAS content for:', aasIdToLoad, 'from repository:', repoUrl);
         await loadAasContent();
         setIsLoadingAas(false);
     }, [aasIdToLoad, env, repoUrl]);
