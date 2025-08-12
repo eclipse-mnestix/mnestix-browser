@@ -152,6 +152,9 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
                         control={control}
                         rules={{
                             validate: (value: string) => {
+                                if (!value) {
+                                    return true;
+                                }
                                 if (!isValidUrl(value)) {
                                     return t('form.urlFieldInvalid');
                                 }
