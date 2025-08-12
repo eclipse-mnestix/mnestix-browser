@@ -51,7 +51,7 @@ export const CurrentAasContextProvider = (
     const aasOriginUrl = useState<string>();
     const isLoadingAas = useState<boolean>(true);
     const isLoadingSubmodels = useState<boolean>(true);
-    const infrastructureName = useState<string>(props.infrastructureName);
+    const infrastructureName = useState<string | undefined>(props.infrastructureName);
 
     const context = {
         aasState,

@@ -177,6 +177,7 @@ export class InfrastructureSearchService {
         const filteredInfrastructure = infrastructures.find((infra) => infra.name === infrastructureName);
 
         if (!filteredInfrastructure) {
+            logInfo(this.log, 'searchSubmodelInInfrastructure', 'Infrastructure not found', { infrastructureName });
             return wrapErrorCode(
                 ApiResultStatus.NOT_FOUND,
                 `Infrastructure with name '${infrastructureName}' not found`,

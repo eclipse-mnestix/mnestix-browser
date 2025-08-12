@@ -28,7 +28,6 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
     const setSubmodels = context.submodelState[1];
     const [aasFromContext, setAasFromContext] = context.aasState;
     const [registryAasData, setRegistryAasData] = context.registryAasData;
-    console.log(context.infrastructureName);
     const [infrastructureName, setInfrastructureName] = context.infrastructureName;
     const { showError } = useShowError();
     const aasStore = useAasStore();
@@ -82,10 +81,12 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
 
     async function loadAasContent() {
         if (repoUrl) {
+            // TODO replace
             const response = await getAasFromRepository(encodeBase64(aasIdToLoad), repoUrl);
             if (response.isSuccess) {
                 setAasOriginUrl(repoUrl);
                 setAasFromContext(response.result);
+                setInfrastructureName('DefaultInfrastructure'); // TODO: Get infrastructure name from response or context
                 return { success: true };
             }
         }
@@ -114,7 +115,6 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
     }, []);
 
     useAsyncEffect(async () => {
-        console.info(infrastructureName);
         if (!infrastructureName) return;
         await fetchSubmodels(infrastructureName);
     }, [aasFromContext]);
@@ -126,13 +126,12 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
             setAasFromContext(aasFromStore.aas);
             setAasOriginUrl(aasFromStore.aasData?.aasRepositoryOrigin);
             setRegistryAasData(aasFromStore.aasData);
-            console.log('InfrastructureName aus Store:', aasFromStore.infrastructureName);
-
-            setInfrastructureName(aasFromStore.infrastructureName);
+            setInfrastructureName(aasFromStore.aasData.infrastructureName);
             setIsLoadingAas(false); // initialized as true, so we need to set it to false here
             return;
         }
         setIsLoadingAas(true);
+        console.log('Loading AAS content for:', aasIdToLoad, 'from repository:', repoUrl);
         await loadAasContent();
         setIsLoadingAas(false);
     }, [aasIdToLoad, env, repoUrl]);

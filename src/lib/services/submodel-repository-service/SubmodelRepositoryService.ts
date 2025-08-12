@@ -8,15 +8,6 @@ import { SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { InfrastructureConnection } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 
-export type SubmodelData = {
-    submodelRepositoryOrigin: string;
-};
-
-export type SubmodelSearchResult = {
-    submodel: Submodel;
-    submodelData: SubmodelData;
-};
-
 export class SubmodelRepositoryService {
     private constructor(
         protected readonly getSubmodelRepositoryClient: (basePath: string) => ISubmodelRepositoryApi,

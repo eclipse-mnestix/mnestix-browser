@@ -29,6 +29,7 @@ export async function performSubmodelSearch(
     const logger = createRequestLogger(await headers());
     logInfo(logger, 'performSubmodelSearch', 'Initiating Submodel search', {
         Requested_Submodel_Reference: submodelReference,
+        Infrastructure_Name: infrastructureName,
     });
     const searcher = InfrastructureSearchService.create(logger);
     return searcher.searchSubmodelInInfrastructure(submodelReference, infrastructureName, submodelDescriptor);
