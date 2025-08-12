@@ -22,6 +22,7 @@ import { useTheme } from '@mui/material/styles';
 import Image from 'next/image';
 import { Controller, FieldArrayWithId, useFieldArray, useForm, useWatch } from 'react-hook-form';
 import type { MappedInfrastructure } from './InfrastructureTypes';
+import { isValidUrl } from 'lib/util/UrlUtil';
 
 export interface MnestixInfrastructureFormProps {
     infrastructure: MappedInfrastructure;
@@ -151,13 +152,13 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
                         control={control}
                         rules={{
                             validate: (value: string) => {
-                                if (!value) return true;
-                                try {
-                                    new URL(value);
-                                    return true;
-                                } catch {
-                                    return t('form.logoUrlInvalid');
+                                if (!isValidUrl(value)) {
+                                    return t('form.urlFieldInvalid');
                                 }
+                                if (value.endsWith('/')) {
+                                    return t('urlFieldNoTrailingSlash');
+                                }
+                                return true;
                             },
                         }}
                         render={({ field, fieldState: { error } }) => (
@@ -202,12 +203,13 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
                             rules={{
                                 required: t('form.urlFieldRequired'),
                                 validate: (value: string) => {
-                                    try {
-                                        new URL(value);
-                                        return true;
-                                    } catch {
+                                    if (!isValidUrl(value)) {
                                         return t('form.urlFieldInvalid');
                                     }
+                                    if (value.endsWith('/')) {
+                                        return t('urlFieldNoTrailingSlash');
+                                    }
+                                    return true;
                                 },
                             }}
                             render={({ field, fieldState: { error } }) => (
