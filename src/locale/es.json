@@ -375,7 +375,7 @@
           "deleteSuccess": "Infraestructura eliminada con éxito",
           "deleteError": "Error al eliminar la infraestructura",
           "deleteDialogTitle": "Eliminar Infraestructura",
-          "deleteWarning": "Cette action ne peut pas être annulée et supprimera définitivement toutes les connexions et paramètres de sécurité associés.",
+          "deleteWarning": "Esta acción no se puede deshacer y eliminará permanentemente todas las conexiones y configuraciones de seguridad asociadas.",
           "cancel": "Annuler",
           "delete": "Supprimer",
           "connectionTypes": "Tipos de Conexión",
