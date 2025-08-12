@@ -9,7 +9,7 @@ import {
     InfrastructureSearchService,
 } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import { envs } from 'lib/env/MnestixEnv';
-import { fetchAllInfrastructureConnectionsFromDb } from 'lib/services/database/connectionServerActions';
+import { getInfrastructuresAsListAction } from 'lib/services/database/connectionServerActions';
 
 export async function performFullAasSearch(searchInput: string): Promise<ApiResponseWrapper<AasSearchResult>> {
     const logger = createRequestLogger(await headers());
@@ -28,7 +28,7 @@ export async function getInfrastructures() {
     };
 
     // get from database as flat connection list
-    const infrastructures = await fetchAllInfrastructureConnectionsFromDb();
+    const infrastructures = await getInfrastructuresAsListAction();
 
     return [defaultInfrastructure, ...infrastructures];
 }

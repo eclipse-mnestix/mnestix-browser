@@ -380,7 +380,8 @@
           "delete": "Löschen",
           "connectionTypes": "Verbindungstypen",
           "connectionTypesRequired": "Mindestens ein Verbindungstyp muss ausgewählt werden",
-          "save": "Speichern"
+          "save": "Speichern",
+          "nameAlreadyExists": "Eine Infrastruktur mit diesem Namen existiert bereits"
         },
         "aasRepository": {},
         "submodelRepository": {},

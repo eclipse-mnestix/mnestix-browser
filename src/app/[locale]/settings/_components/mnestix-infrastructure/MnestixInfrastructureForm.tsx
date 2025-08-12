@@ -28,6 +28,7 @@ export interface MnestixInfrastructureFormProps {
     infrastructure: MappedInfrastructure;
     onCancel: () => void;
     onSave: (data: MappedInfrastructure) => void;
+    existingNames: string[];
 }
 
 const SECURITY_TYPES = {
@@ -45,7 +46,12 @@ const CONNECTION_TYPES = [
     { id: 'CONCEPT_DESCRIPTION', label: 'Concept Description' },
 ] as const;
 
-function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: MnestixInfrastructureFormProps) {
+function MnestixInfrastructureForm({
+    infrastructure,
+    onCancel,
+    onSave,
+    existingNames,
+}: MnestixInfrastructureFormProps) {
     const t = useTranslations('pages.settings.infrastructure');
     const theme = useTheme();
     const {
@@ -134,7 +140,23 @@ function MnestixInfrastructureForm({ infrastructure, onCancel, onSave }: Mnestix
                     <Controller
                         name="name"
                         control={control}
-                        rules={{ required: t('form.nameRequired') }}
+                        rules={{
+                            required: t('form.nameRequired'),
+                            validate: (value: string) => {
+                                const trimmedValue = value.trim();
+                                const isDuplicate = existingNames?.some(
+                                    (existingName) =>
+                                        existingName.toLowerCase() === trimmedValue.toLowerCase() &&
+                                        existingName !== infrastructure.name,
+                                );
+
+                                if (isDuplicate) {
+                                    return t('form.nameAlreadyExists');
+                                }
+
+                                return true;
+                            },
+                        }}
                         render={({ field, fieldState: { error } }) => (
                             <TextField
                                 {...field}

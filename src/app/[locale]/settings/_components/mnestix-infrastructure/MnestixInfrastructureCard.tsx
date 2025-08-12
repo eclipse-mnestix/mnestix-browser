@@ -169,11 +169,7 @@ function MnestixInfrastructureCard() {
         }
 
         if (infrastructures.length === 0 && !isCreatingNew) {
-            return (
-                <Typography color="theme.palette.text.secondary" sx={{ mt: 2 }}>
-                    {t('noInfrastructuresFound')}
-                </Typography>
-            );
+            return <Typography sx={{ mt: 2 }}>{t('noInfrastructuresFound')}</Typography>;
         }
 
         return infrastructures.map((infrastructure) => (
@@ -241,6 +237,7 @@ function MnestixInfrastructureCard() {
                             infrastructure={infrastructure}
                             onCancel={handleCancelEdit}
                             onSave={handleSaveEdit}
+                            existingNames={infrastructures.map((infra) => infra.name)}
                         />
                     </Box>
                 </Collapse>
@@ -274,6 +271,7 @@ function MnestixInfrastructureCard() {
                         infrastructure={createEmptyInfrastructure()}
                         onCancel={handleCancelEdit}
                         onSave={handleSaveEdit}
+                        existingNames={infrastructures.map((infra) => infra.name)}
                     />
                 </Box>
             </Collapse>

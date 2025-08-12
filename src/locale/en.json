@@ -380,7 +380,8 @@
           "delete": "Delete",
           "connectionTypes": "Connection Types",
           "connectionTypesRequired": "At least one connection type must be selected",
-          "save": "Save"
+          "save": "Save",
+          "nameAlreadyExists": "An infrastructure with this name already exists"
         },
         "subtitle": "Define which infrastructures should be used.",
         "title": "Infrastructures",
