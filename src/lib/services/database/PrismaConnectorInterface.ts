@@ -1,14 +1,32 @@
 import { ConnectionType } from '@prisma/client';
-import type { MappedInfrastructure } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
+import type {
+    MappedInfrastructure,
+    InfrastructureWithRelations,
+} from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
 
 export interface IPrismaConnector {
-    getInfrastructures(): unknown;
+    /**
+     * Retrieves all infrastructures with their related data
+     */
+    getInfrastructures(): Promise<InfrastructureWithRelations[]>;
 
+    /**
+     * Retrieves connection URLs by connection type
+     */
     getConnectionDataByTypeAction(type: ConnectionType): Promise<string[]>;
 
-    createInfrastructure(infrastructureData: MappedInfrastructure): Promise<unknown>;
+    /**
+     * Creates a new infrastructure
+     */
+    createInfrastructure(infrastructureData: MappedInfrastructure): Promise<{ id: string; name: string }>;
 
-    updateInfrastructure(infrastructureData: MappedInfrastructure): Promise<unknown>;
+    /**
+     * Updates an existing infrastructure
+     */
+    updateInfrastructure(infrastructureData: MappedInfrastructure): Promise<{ id: string; name: string }>;
 
+    /**
+     * Deletes an infrastructure by ID
+     */
     deleteInfrastructureAction(infrastructureId: string): Promise<void>;
 }
