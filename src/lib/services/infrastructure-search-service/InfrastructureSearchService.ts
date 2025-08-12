@@ -4,17 +4,21 @@ import { DiscoveryService } from 'lib/services/discovery-service/DiscoveryServic
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { encodeBase64 } from 'lib/util/Base64Util';
-import { AssetAdministrationShell, Submodel } from 'lib/api/aas/models';
+import { AssetAdministrationShell, Reference, Submodel } from 'lib/api/aas/models';
 import { getInfrastructures } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
 import { AssetAdministrationShellDescriptor, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { RepoSearchResult, RepositorySearchService } from 'lib/services/aas-repository-service/RepositorySearchService';
 import { AasRegistryEndpointEntryInMemory } from 'lib/api/registry-service-api/registryServiceApiInMemory';
+import { SubmodelRepositoryService } from 'lib/services/submodel-repository-service/SubmodelRepositoryService';
+import { SubmodelRegistryService } from 'lib/services/submodel-registry-service/SubmodelRegistryService';
 
 export type InfrastructureConnection = {
     name: string;
     discoveryUrls: string[];
     aasRegistryUrls: string[];
     aasRepositoryUrls: string[];
+    submodelRepositoryUrls: string[];
+    submodelRegistryUrls: string[];
 };
 
 export type AasSearchResult = {
@@ -35,6 +39,7 @@ export type AasSearcherNullParams = {
     discoveryEntries?: { aasId: string; assetId: string }[];
     aasRegistryDescriptors?: AssetAdministrationShellDescriptor[];
     aasRegistryEndpoints?: AasRegistryEndpointEntryInMemory[];
+    submodelRegistryDescriptors?: SubmodelDescriptor[];
     logger?: typeof logger;
 };
 export class InfrastructureSearchService {
@@ -42,6 +47,8 @@ export class InfrastructureSearchService {
         readonly repositorySearchService: RepositorySearchService,
         readonly aasRegistrySearchService: AasRegistryService,
         readonly discoveryServiceSearchService: DiscoveryService,
+        readonly submodelRepositorySearchService: SubmodelRepositoryService,
+        readonly submodelRegistrySearchService: SubmodelRegistryService,
         private readonly log: typeof logger = logger,
     ) {}
 
@@ -49,10 +56,14 @@ export class InfrastructureSearchService {
         const repositorySearchService = RepositorySearchService.create(log);
         const aasRegistrySearchService = AasRegistryService.create();
         const discoveryServiceSearchService = DiscoveryService.create();
+        const submodelRepositorySearchService = SubmodelRepositoryService.create(log);
+        const submodelRegistrySearchService = SubmodelRegistryService.create(log);
         return new InfrastructureSearchService(
             repositorySearchService,
             aasRegistrySearchService,
             discoveryServiceSearchService,
+            submodelRepositorySearchService,
+            submodelRegistrySearchService,
             log,
         );
     }
@@ -60,6 +71,7 @@ export class InfrastructureSearchService {
     static createNull({
         aasInRepositories = [],
         submodelsInRepositories = [],
+        submodelRegistryDescriptors = [],
         discoveryEntries = [],
         aasRegistryDescriptors = [],
         aasRegistryEndpoints = [],
@@ -68,6 +80,8 @@ export class InfrastructureSearchService {
             RepositorySearchService.createNull(aasInRepositories, submodelsInRepositories),
             AasRegistryService.createNull(aasRegistryDescriptors, aasRegistryEndpoints),
             DiscoveryService.createNull(discoveryEntries),
+            SubmodelRepositoryService.createNull(submodelsInRepositories),
+            SubmodelRegistryService.createNull(submodelRegistryDescriptors),
         );
     }
 
@@ -145,6 +159,73 @@ export class InfrastructureSearchService {
         }
 
         return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'No AAS found for the given ID');
+    }
+
+    public async searchSubmodelInInfrastructure(
+        reference: Reference,
+        infrastructureName: string,
+        smDescriptor?: SubmodelDescriptor,
+    ): Promise<ApiResponseWrapper<RepoSearchResult<Submodel>>> {
+        logInfo(this.log, 'searchSubmodelInInfrastructure', 'Searching Submodel in infrastructure', {
+            reference,
+            infrastructureName,
+        });
+
+        // Get Infrastructure
+        const infrastructures = await getInfrastructures();
+        const filteredInfrastructure = infrastructures.find((infra) => infra.name === infrastructureName);
+
+        if (!filteredInfrastructure) {
+            return wrapErrorCode(
+                ApiResultStatus.NOT_FOUND,
+                `Infrastructure with name '${infrastructureName}' not found`,
+            );
+        }
+
+        // Check if we already have a smDescriptor
+        if (smDescriptor && smDescriptor.endpoints.length > 0 && smDescriptor.endpoints[0].protocolInformation.href) {
+            const endpoint = smDescriptor.endpoints[0].protocolInformation.href;
+            if (endpoint) {
+                const submodelSearchResult = await this.submodelRegistrySearchService.getSubmodelFromEndpoint(endpoint);
+                if (!submodelSearchResult.isSuccess) {
+                    return wrapErrorCode(submodelSearchResult.errorCode, submodelSearchResult.message);
+                }
+                return wrapSuccess({ searchResult: submodelSearchResult.result, location: endpoint });
+            }
+        }
+
+        // Search in Submodel Registries, take first submodel descriptor
+        const submodelId = reference.keys[0].value;
+        const descriptorById = await this.submodelRegistrySearchService.searchInMultipleSubmodelRegistries(
+            submodelId,
+            filteredInfrastructure,
+        );
+
+        // If we have a descriptor, we can get the submodel from the endpoint
+        if (descriptorById && descriptorById.result?.endpoints && descriptorById.result.endpoints.length > 0) {
+            const endpoint = descriptorById.result.endpoints[0].protocolInformation.href;
+
+            const submodelSearchResult = await this.submodelRegistrySearchService.getSubmodelFromEndpoint(endpoint);
+            if (!submodelSearchResult.isSuccess) {
+                return wrapErrorCode(submodelSearchResult.errorCode, submodelSearchResult.message);
+            } else {
+                return wrapSuccess({ searchResult: submodelSearchResult.result, location: endpoint });
+            }
+        }
+
+        // If we don't have a descriptor, we search in all Submodel Repositories
+        const submodelSearchResult = await this.submodelRepositorySearchService.getFirstSubmodelFromAllRepos(
+            submodelId,
+            filteredInfrastructure,
+        );
+
+        // Search in Submodel Repositories, take first submodel
+
+        if (submodelSearchResult.isSuccess) {
+            return wrapSuccess(submodelSearchResult.result);
+        }
+
+        return wrapErrorCode(ApiResultStatus.NOT_FOUND, `Submodel with ID '${submodelId}' not found`);
     }
 
     private createAasResult(aas: AssetAdministrationShell, data: AasData): AasSearchResult {

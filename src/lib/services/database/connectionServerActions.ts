@@ -36,5 +36,11 @@ export async function fetchAllInfrastructureConnectionsFromDb(): Promise<Infrast
         aasRepositoryUrls: infra.connections.flatMap((conn) =>
             conn.types.filter((t) => t.type.typeName === 'AAS_REPOSITORY').map(() => conn.url),
         ),
+        submodelRepositoryUrls: infra.connections.flatMap((conn) =>
+            conn.types.filter((t) => t.type.typeName === 'SUBMODEL_REPOSITORY').map(() => conn.url),
+        ),
+        submodelRegistryUrls: infra.connections.flatMap((conn) =>
+            conn.types.filter((t) => t.type.typeName === 'SUBMODEL_REGISTRY').map(() => conn.url),
+        ),
     }));
 }

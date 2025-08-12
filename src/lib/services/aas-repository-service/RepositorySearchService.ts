@@ -7,7 +7,6 @@ import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResp
 import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import logger, { logResponseDebug } from 'lib/util/Logger';
-import { envs } from 'lib/env/MnestixEnv';
 import { InfrastructureConnection } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import { getInfrastructures } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
 import { fetchFromMultipleEndpoints } from 'lib/services/shared/parallelFetch';
@@ -16,9 +15,6 @@ export type RepoSearchResult<T> = {
     searchResult: T;
     location: string;
 };
-
-const noDefaultSubmodelRepository = <T>() =>
-    wrapErrorCode<T>(ApiResultStatus.INTERNAL_SERVER_ERROR, 'No default Submodel repository configured');
 
 export class RepositorySearchService {
     private constructor(
@@ -64,6 +60,7 @@ export class RepositorySearchService {
         );
     }
 
+    // TODO delete
     async getSubmodelRepositories() {
         return this.prismaConnector.getConnectionDataByTypeAction({
             id: '2',
@@ -89,60 +86,7 @@ export class RepositorySearchService {
         return this.searchAASInMultipleRepositories(aasId, infrastructures);
     }
 
-    async getSubmodelFromDefaultRepo(submodelId: string): Promise<ApiResponseWrapper<Submodel>> {
-        const client = this.getDefaultSubmodelRepositoryClient();
-        if (!client) return noDefaultSubmodelRepository();
-        const response = await client.getSubmodelById(submodelId);
-        if (response.isSuccess) {
-            logResponseDebug(
-                this.log,
-                'getSubmodelFromDefaultRepo',
-                'Querying Submodel from default repository',
-                response,
-                { Repository_Endpoint: client.getBaseUrl(), Submodel_ID: submodelId },
-            );
-            return response;
-        }
-        logResponseDebug(this.log, 'getSubmodelFromDefaultRepo', 'Submodel repository search unsuccessful', response, {
-            Repository_Endpoint: client.getBaseUrl(),
-            Submodel_ID: submodelId,
-        });
-        return wrapErrorCode(
-            ApiResultStatus.NOT_FOUND,
-            `Submodel with id '${submodelId}' not found`,
-            response.httpStatus,
-        );
-    }
-
-    private async getSubmodelFromRepo(submodelId: string, repoUrl: string): Promise<ApiResponseWrapper<Submodel>> {
-        const client = this.getSubmodelRepositoryClient(repoUrl);
-        const response = await client.getSubmodelById(submodelId);
-        if (response.isSuccess) {
-            logResponseDebug(this.log, 'getSubmodelFromRepo', 'Querying Submodel from repository', response, {
-                Repository_Endpoint: client.getBaseUrl(),
-                Submodel_ID: submodelId,
-            });
-            return response;
-        }
-        logResponseDebug(this.log, 'getSubmodelFromRepo', 'Submodel repository search unsuccessful', response, {
-            Repository_Endpoint: client.getBaseUrl(),
-            Submodel_ID: submodelId,
-        });
-        return wrapErrorCode(
-            ApiResultStatus.NOT_FOUND,
-            `Submodel with id '${submodelId}' not found in repository '${repoUrl}'`,
-            response.httpStatus,
-        );
-    }
-
-    async getFirstSubmodelFromAllRepos(submodelId: string): Promise<ApiResponseWrapper<RepoSearchResult<Submodel>>> {
-        return this.getFirstFromAllRepos(
-            await this.getSubmodelRepositories(),
-            (basePath) => this.getSubmodelFromRepo(submodelId, basePath),
-            `Could not find Submodel '${submodelId}' in any Repository`,
-        );
-    }
-
+    // TODO Move
     private async getAttachmentFromSubmodelElementFromRepo(
         submodelId: string,
         submodelElementPath: string,
@@ -180,6 +124,7 @@ export class RepositorySearchService {
         );
     }
 
+    // TODO move
     async getFirstAttachmentFromSubmodelElementFromAllRepos(
         submodelId: string,
         submodelElementPath: string,
@@ -209,12 +154,6 @@ export class RepositorySearchService {
         } catch {
             return wrapErrorCode(ApiResultStatus.NOT_FOUND, errorMsg);
         }
-    }
-
-    private getDefaultSubmodelRepositoryClient() {
-        const defaultUrl = envs.SUBMODEL_REPO_API_URL ?? envs.AAS_REPO_API_URL;
-        if (!defaultUrl) return null;
-        return this.getSubmodelRepositoryClient(defaultUrl);
     }
 
     async getFromAllAasRepos<T>(
