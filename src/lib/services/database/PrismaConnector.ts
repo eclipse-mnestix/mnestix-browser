@@ -1,5 +1,5 @@
 import { prisma } from 'lib/database/prisma';
-import { ConnectionType } from '@prisma/client';
+import { ConnectionType, Prisma } from '@prisma/client';
 import { IPrismaConnector } from 'lib/services/database/PrismaConnectorInterface';
 import { PrismaConnectorInMemory } from 'lib/services/database/PrismaConnectorInMemory';
 import type { MappedInfrastructure } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
@@ -9,6 +9,8 @@ export type DataSourceFormData = {
     url: string;
     type: string;
 };
+
+type PrismaTransaction = Prisma.TransactionClient;
 
 export class PrismaConnector implements IPrismaConnector {
     private constructor() {}
@@ -32,149 +34,56 @@ export class PrismaConnector implements IPrismaConnector {
         });
     }
 
-    async upsertInfrastructureDataAction(infrastructureData: MappedInfrastructure) {
+    async createInfrastructure(infrastructureData: MappedInfrastructure) {
         return await prisma.$transaction(async (tx) => {
-            // Security Type finden oder erstellen
-            const securityType = await tx.securityType.findFirst({
-                where: { typeName: infrastructureData.securityType },
+            const securityType = await this.findSecurityType(tx, infrastructureData.securityType);
+
+            const infrastructure = await tx.mnestixInfrastructure.create({
+                data: {
+                    name: infrastructureData.name,
+                    logo: infrastructureData.logo,
+                    securityTypeId: securityType.id,
+                },
             });
 
-            if (!securityType) {
-                throw new Error(`Security type ${infrastructureData.securityType} not found`);
-            }
+            await this.createConnections(tx, infrastructure.id, infrastructureData.connections);
+            await this.createSecuritySettings(tx, infrastructure.id, infrastructureData);
 
-            let infrastructure;
+            return infrastructure;
+        });
+    }
 
-            // Unterscheide zwischen Create (leere ID) und Update (vorhandene ID)
-            if (!infrastructureData.id || infrastructureData.id === '') {
-                // Neue Infrastructure erstellen - Prisma generiert ID automatisch
-                infrastructure = await tx.mnestixInfrastructure.create({
-                    data: {
-                        name: infrastructureData.name,
-                        logo: infrastructureData.logo,
-                        securityTypeId: securityType.id,
-                    },
-                });
-            } else {
-                // Bestehende Infrastructure aktualisieren
-                infrastructure = await tx.mnestixInfrastructure.update({
-                    where: { id: infrastructureData.id },
-                    data: {
-                        name: infrastructureData.name,
-                        logo: infrastructureData.logo,
-                        securityTypeId: securityType.id,
-                    },
-                });
-            }
+    async updateInfrastructure(infrastructureData: MappedInfrastructure) {
+        if (!infrastructureData.id) {
+            throw new Error('Infrastructure ID is required for update');
+        }
 
-            // Bestehende Connections löschen (nur bei Update)
-            if (infrastructureData.id && infrastructureData.id !== '') {
-                const existingConnections = await tx.mnestixConnection.findMany({
-                    where: { infrastructureId: infrastructure.id },
-                    select: { id: true },
-                });
+        return await prisma.$transaction(async (tx) => {
+            const securityType = await this.findSecurityType(tx, infrastructureData.securityType);
 
-                if (existingConnections.length > 0) {
-                    const connectionIds = existingConnections.map((conn) => conn.id);
-
-                    await tx.mnestixConnectionTypeRelation.deleteMany({
-                        where: { connectionId: { in: connectionIds } },
-                    });
-
-                    await tx.mnestixConnection.deleteMany({
-                        where: { infrastructureId: infrastructure.id },
-                    });
-                }
-            }
-
-            // Neue Connections erstellen
-            for (const connection of infrastructureData.connections) {
-                if (connection.url) {
-                    // Nur Connections mit URL erstellen
-                    const createdConnection = await tx.mnestixConnection.create({
-                        data: {
-                            // ID weglassen - Prisma generiert automatisch
-                            url: connection.url,
-                            infrastructureId: infrastructure.id,
-                        },
-                    });
-
-                    for (const typeName of connection.types) {
-                        const connectionType = await tx.connectionType.findFirst({
-                            where: { typeName },
-                        });
-
-                        if (connectionType) {
-                            await tx.mnestixConnectionTypeRelation.create({
-                                data: {
-                                    connectionId: createdConnection.id,
-                                    typeId: connectionType.id,
-                                },
-                            });
-                        }
-                    }
-                }
-            }
-
-            // Security Settings aktualisieren - bestehende löschen
-            await tx.securitySettingsHeader.deleteMany({
-                where: { infrastructureId: infrastructure.id },
+            const infrastructure = await tx.mnestixInfrastructure.update({
+                where: { id: infrastructureData.id },
+                data: {
+                    name: infrastructureData.name,
+                    logo: infrastructureData.logo,
+                    securityTypeId: securityType.id,
+                },
             });
 
-            await tx.securitySettingsProxy.deleteMany({
-                where: { infrastructureId: infrastructure.id },
-            });
+            await this.deleteExistingConnections(tx, infrastructure.id);
+            await this.deleteExistingSecuritySettings(tx, infrastructure.id);
+            await this.createConnections(tx, infrastructure.id, infrastructureData.connections);
+            await this.createSecuritySettings(tx, infrastructure.id, infrastructureData);
 
-            // Neue Security Settings erstellen
-            if (infrastructureData.securityHeader) {
-                await tx.securitySettingsHeader.create({
-                    data: {
-                        headerName: infrastructureData.securityHeader.name,
-                        headerValue: infrastructureData.securityHeader.value,
-                        infrastructureId: infrastructure.id,
-                    },
-                });
-            }
-
-            if (infrastructureData.securityProxy) {
-                await tx.securitySettingsProxy.create({
-                    data: {
-                        headerValue: infrastructureData.securityProxy.value,
-                        infrastructureId: infrastructure.id,
-                    },
-                });
-            }
+            return infrastructure;
         });
     }
 
     async deleteInfrastructureAction(infrastructureId: string) {
         return await prisma.$transaction(async (tx) => {
-            // Delete all connections and their type relations first
-            const connections = await tx.mnestixConnection.findMany({
-                where: { infrastructureId },
-                select: { id: true },
-            });
+            await this.deleteExistingConnections(tx, infrastructureId);
+            await this.deleteExistingSecuritySettings(tx, infrastructureId);
 
-            for (const connection of connections) {
-                await tx.mnestixConnectionTypeRelation.deleteMany({
-                    where: { connectionId: connection.id },
-                });
-            }
-
-            await tx.mnestixConnection.deleteMany({
-                where: { infrastructureId },
-            });
-
-            // Delete security settings
-            await tx.securitySettingsHeader.deleteMany({
-                where: { infrastructureId },
-            });
-
-            await tx.securitySettingsProxy.deleteMany({
-                where: { infrastructureId },
-            });
-
-            // Finally delete the infrastructure
             await tx.mnestixInfrastructure.delete({
                 where: { id: infrastructureId },
             });
@@ -201,5 +110,110 @@ export class PrismaConnector implements IPrismaConnector {
 
     static createNull(aasUrls: string[], submodelUrls: string[]) {
         return new PrismaConnectorInMemory(aasUrls, submodelUrls);
+    }
+
+    /**
+     * Helper functions
+     */
+    private async findSecurityType(tx: PrismaTransaction, typeName: string) {
+        const securityType = await tx.securityType.findFirst({
+            where: { typeName },
+        });
+
+        if (!securityType) {
+            throw new Error(`Security type ${typeName} not found`);
+        }
+
+        return securityType;
+    }
+
+    private async createConnections(
+        tx: PrismaTransaction,
+        infrastructureId: string,
+        connections: MappedInfrastructure['connections'],
+    ) {
+        for (const connection of connections) {
+            if (connection.url) {
+                const createdConnection = await tx.mnestixConnection.create({
+                    data: {
+                        url: connection.url,
+                        infrastructureId,
+                    },
+                });
+
+                await this.linkConnectionTypes(tx, createdConnection.id, connection.types);
+            }
+        }
+    }
+
+    private async linkConnectionTypes(tx: PrismaTransaction, connectionId: string, typeNames: string[]) {
+        for (const typeName of typeNames) {
+            const connectionType = await tx.connectionType.findFirst({
+                where: { typeName },
+            });
+
+            if (connectionType) {
+                await tx.mnestixConnectionTypeRelation.create({
+                    data: {
+                        connectionId,
+                        typeId: connectionType.id,
+                    },
+                });
+            }
+        }
+    }
+
+    private async createSecuritySettings(
+        tx: PrismaTransaction,
+        infrastructureId: string,
+        infrastructureData: MappedInfrastructure,
+    ) {
+        if (infrastructureData.securityHeader) {
+            await tx.securitySettingsHeader.create({
+                data: {
+                    headerName: infrastructureData.securityHeader.name,
+                    headerValue: infrastructureData.securityHeader.value,
+                    infrastructureId,
+                },
+            });
+        }
+
+        if (infrastructureData.securityProxy) {
+            await tx.securitySettingsProxy.create({
+                data: {
+                    headerValue: infrastructureData.securityProxy.value,
+                    infrastructureId,
+                },
+            });
+        }
+    }
+
+    private async deleteExistingConnections(tx: PrismaTransaction, infrastructureId: string) {
+        const existingConnections = await tx.mnestixConnection.findMany({
+            where: { infrastructureId },
+            select: { id: true },
+        });
+
+        if (existingConnections.length > 0) {
+            const connectionIds = existingConnections.map((conn) => conn.id);
+
+            await tx.mnestixConnectionTypeRelation.deleteMany({
+                where: { connectionId: { in: connectionIds } },
+            });
+
+            await tx.mnestixConnection.deleteMany({
+                where: { infrastructureId },
+            });
+        }
+    }
+
+    private async deleteExistingSecuritySettings(tx: PrismaTransaction, infrastructureId: string) {
+        await tx.securitySettingsHeader.deleteMany({
+            where: { infrastructureId },
+        });
+
+        await tx.securitySettingsProxy.deleteMany({
+            where: { infrastructureId },
+        });
     }
 }

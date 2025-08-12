@@ -35,9 +35,14 @@ export async function getConnectionDataByTypeAction(type: ConnectionType) {
     return prismaConnector.getConnectionDataByTypeAction(type);
 }
 
-export async function upsertInfrastructureDataAction(infrastructureData: MappedInfrastructure) {
+export async function createInfrastructureAction(infrastructureData: MappedInfrastructure) {
     const prismaConnector = PrismaConnector.create();
-    return prismaConnector.upsertInfrastructureDataAction(infrastructureData);
+    return prismaConnector.createInfrastructure(infrastructureData);
+}
+
+export async function updateInfrastructureAction(infrastructureData: MappedInfrastructure) {
+    const prismaConnector = PrismaConnector.create();
+    return prismaConnector.updateInfrastructure(infrastructureData);
 }
 
 export async function deleteInfrastructureAction(infrastructureId: string): Promise<void> {

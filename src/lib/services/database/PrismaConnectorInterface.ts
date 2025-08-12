@@ -1,15 +1,14 @@
 import { ConnectionType } from '@prisma/client';
-import { DataSourceFormData } from 'lib/services/database/PrismaConnector';
 import type { MappedInfrastructure } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
 
 export interface IPrismaConnector {
     getInfrastructures(): unknown;
 
-    upsertConnectionDataAction(formDataInput: DataSourceFormData[]): Promise<void>;
-
-    upsertInfrastructureDataAction(infrastructureData: MappedInfrastructure): Promise<void>;
-
     getConnectionDataByTypeAction(type: ConnectionType): Promise<string[]>;
+
+    createInfrastructure(infrastructureData: MappedInfrastructure): Promise<unknown>;
+
+    updateInfrastructure(infrastructureData: MappedInfrastructure): Promise<unknown>;
 
     deleteInfrastructureAction(infrastructureId: string): Promise<void>;
 }

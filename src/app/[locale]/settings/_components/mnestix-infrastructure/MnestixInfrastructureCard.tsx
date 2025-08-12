@@ -7,7 +7,8 @@ import Divider from '@mui/material/Divider';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import {
     getInfrastructuresAction,
-    upsertInfrastructureDataAction,
+    createInfrastructureAction,
+    updateInfrastructureAction,
     deleteInfrastructureAction,
 } from 'lib/services/database/connectionServerActions';
 import MnestixInfrastructureForm from './MnestixInfrastructureForm';
@@ -91,7 +92,11 @@ function MnestixInfrastructureCard() {
     async function handleSaveEdit(infrastructureData: MappedInfrastructure) {
         try {
             setIsLoading(true);
-            await upsertInfrastructureDataAction(infrastructureData);
+            if (infrastructureData.id) {
+                await updateInfrastructureAction(infrastructureData);
+            } else {
+                await createInfrastructureAction(infrastructureData);
+            }
 
             notificationSpawner.spawn({
                 message: t('form.saveSuccess'),
