@@ -374,7 +374,7 @@
           "deleteConfirm": "¿Está seguro de que desea eliminar la infraestructura? Esta acción no se puede deshacer.",
           "deleteSuccess": "Infraestructura eliminada con éxito",
           "deleteError": "Error al eliminar la infraestructura",
-          "deleteDialogTitle": "Supprimer l'Infrastructure",
+          "deleteDialogTitle": "Eliminar Infraestructura",
           "deleteWarning": "Cette action ne peut pas être annulée et supprimera définitivement toutes les connexions et paramètres de sécurité associés.",
           "cancel": "Annuler",
           "delete": "Supprimer",
