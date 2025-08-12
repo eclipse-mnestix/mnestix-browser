@@ -13,16 +13,59 @@ export class PrismaConnector implements IPrismaConnector {
     private constructor() {}
 
     async getConnectionData() {
-        return prisma?.mnestixConnection.findMany({ include: { type: true } });
+        return prisma?.mnestixConnection.findMany({
+            include: {
+                types: {
+                    include: {
+                        type: true,
+                    },
+                },
+            },
+        });
+    }
+
+    async getInfrastructureData() {
+        return prisma?.mnestixInfrastructure.findMany({
+            include: {
+                connections: {
+                    include: {
+                        types: {
+                            include: {
+                                type: true,
+                            },
+                        },
+                    },
+                },
+            },
+        });
     }
 
     async upsertConnectionDataAction(formDataInput: DataSourceFormData[]) {
-        const existingData = await prisma?.mnestixConnection.findMany({ include: { type: true } });
+        const existingData = await prisma?.mnestixConnection.findMany({
+            include: {
+                types: {
+                    include: { type: true },
+                },
+            },
+        });
+
         for (const existing of existingData) {
             const formData = formDataInput.find((value) => value.id === existing.id);
             // If an entry exists in the db and the updated data, update the existing db entry
             if (formData) {
-                await prisma.mnestixConnection.update({ where: { id: existing.id }, data: { url: formData.url } });
+                const type = await prisma.connectionType.findFirst({ where: { typeName: formData.type } });
+                if (!type) continue;
+
+                await prisma.mnestixConnection.update({
+                    where: { id: existing.id },
+                    data: {
+                        url: formData.url,
+                        types: {
+                            deleteMany: {},
+                            create: [{ typeId: type.id }],
+                        },
+                    },
+                });
                 // If an entry exists in the db but NOT in the updated data, delete it from the db
             } else {
                 await prisma.mnestixConnection.delete({ where: { id: existing.id } });
@@ -33,7 +76,16 @@ export class PrismaConnector implements IPrismaConnector {
             const formData = existingData.find((value) => value.id === updated.id);
             const type = await prisma.connectionType.findFirst({ where: { typeName: updated.type } });
             if (!formData && type) {
-                await prisma.mnestixConnection.create({ data: { url: updated.url, typeId: type.id } });
+                await prisma.mnestixConnection.create({
+                    data: {
+                        id: updated.id,
+                        url: updated.url,
+                        infrastructureId: 'infrastructure1', // TODO MNES-273 replace with actual infrastructureId
+                        types: {
+                            create: [{ typeId: type.id }],
+                        },
+                    },
+                });
             }
         }
     }
@@ -41,7 +93,11 @@ export class PrismaConnector implements IPrismaConnector {
     async getConnectionDataByTypeAction(type: ConnectionType) {
         const basePath = await prisma?.mnestixConnection.findMany({
             where: {
-                type: type,
+                types: {
+                    some: {
+                        typeId: type.id,
+                    },
+                },
             },
         });
 

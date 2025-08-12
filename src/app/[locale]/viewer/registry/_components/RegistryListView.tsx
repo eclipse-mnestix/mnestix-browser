@@ -4,11 +4,12 @@ import { useSearchParams } from 'next/navigation';
 import AssetNotFound from 'components/basics/AssetNotFound';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import ListHeader from 'components/basics/ListHeader';
-import { performSearchAasFromAllRepositories } from 'lib/services/repository-access/repositorySearchActions';
+import { performSearchAasFromAllRepositories } from 'lib/services/aas-repository-service/repositorySearchActions';
 import { useTranslations } from 'next-intl';
 import { LocalizedError } from 'lib/util/LocalizedError';
 import { AasListEntry } from 'lib/types/AasListEntry';
 import { GenericListDataWrapper } from 'components/basics/listBasics/GenericListDataWrapper';
+import { Card } from '@mui/material';
 
 /**
  * This component is responsible for displaying the list of AAS entries based on a given aasId.
@@ -43,6 +44,7 @@ export const RegistryListView = () => {
                 aasId: aasSearchResult.searchResult.id,
                 assetId: aasSearchResult.searchResult.assetInformation.globalAssetId ?? undefined,
                 repositoryUrl: aasSearchResult.location,
+                thumbnailUrl: aasSearchResult.searchResult.assetInformation.defaultThumbnail?.path,
             };
         });
 
@@ -56,9 +58,11 @@ export const RegistryListView = () => {
     return (
         <>
             <ListHeader header={t('title')} subHeader={t('subtitle')} optionalID={aasId} />
-            <GenericListDataWrapper loadContent={loadContent} showThumbnail showAssetId showRepositoryUrl>
-                <AssetNotFound id={aasId} />
-            </GenericListDataWrapper>
+            <Card>
+                <GenericListDataWrapper loadContent={loadContent} showThumbnail showAssetId showRepositoryUrl>
+                    <AssetNotFound id={aasId} />
+                </GenericListDataWrapper>
+            </Card>
         </>
     );
 };

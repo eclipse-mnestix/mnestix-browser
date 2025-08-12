@@ -1,21 +1,21 @@
 import { useEffect } from 'react';
 import { Reference, Submodel } from 'lib/api/aas/models';
 import { useEnv } from 'app/EnvProvider';
-import {
-    getAasFromRepository,
-    performFullAasSearch,
-    performSubmodelFullSearch,
-} from 'lib/services/search-actions/searchActions';
 import { LocalizedError } from 'lib/util/LocalizedError';
 import { CurrentAasContextType, SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useAasStore } from 'stores/AasStore';
+import { performFullAasSearch } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
+import { performSubmodelFullSearch } from 'lib/services/submodel-repository-service/submodelRepositoryActions';
+import { getAasFromRepository } from 'lib/services/aas-repository-service/repositorySearchActions';
+import { encodeBase64 } from 'lib/util/Base64Util';
 
 /**
  * Hook to load AAS content and its submodels asynchronously.
- * @param base64AasId
+ * @param context
+ * @param aasIdToLoad
  * @param repoUrl
  */
 export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string, repoUrl: string | undefined) {
@@ -73,7 +73,7 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
 
     async function loadAasContent() {
         if (repoUrl) {
-            const response = await getAasFromRepository(aasIdToLoad, repoUrl);
+            const response = await getAasFromRepository(encodeBase64(aasIdToLoad), repoUrl);
             if (response.isSuccess) {
                 setAasOriginUrl(repoUrl);
                 setAasFromContext(response.result);
