@@ -376,7 +376,7 @@
           "deleteError": "Error al eliminar la infraestructura",
           "deleteDialogTitle": "Eliminar Infraestructura",
           "deleteWarning": "Esta acción no se puede deshacer y eliminará permanentemente todas las conexiones y configuraciones de seguridad asociadas.",
-          "cancel": "Annuler",
+          "cancel": "Cancelar",
           "delete": "Supprimer",
           "connectionTypes": "Tipos de Conexión",
           "connectionTypesRequired": "Se debe seleccionar al menos un tipo de conexión",
