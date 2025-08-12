@@ -32,6 +32,22 @@ export class PrismaConnector implements IPrismaConnector {
         });
     }
 
+    async getInfrastructureData() {
+        return prisma?.mnestixInfrastructure.findMany({
+            include: {
+                connections: {
+                    include: {
+                        types: {
+                            include: {
+                                type: true,
+                            },
+                        },
+                    },
+                },
+            },
+        });
+    }
+
     async upsertConnectionDataAction(formDataInput: DataSourceFormData[]) {
         const existingData = await prisma.mnestixConnection.findMany({
             include: {
