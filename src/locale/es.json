@@ -369,7 +369,7 @@
           "proxyHeaderValue": "Mnestix Proxy Header Value",
           "proxyHeaderValueRequired": "Mnestix Proxy Header Value es obligatorio",
           "saveSuccess": "Infraestructura guardada exitosamente",
-          "saveError": "Error al guardar la infrastructure",
+          "saveError": "Error al guardar la infraestructura",
           "createNew": "Crear una Nueva Infraestructura",
           "deleteConfirm": "¿Está seguro de que desea eliminar la infraestructura? Esta acción no se puede deshacer.",
           "deleteSuccess": "Infraestructura eliminada con éxito",
