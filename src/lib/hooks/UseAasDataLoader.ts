@@ -28,6 +28,7 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
     const setSubmodels = context.submodelState[1];
     const [aasFromContext, setAasFromContext] = context.aasState;
     const [registryAasData, setRegistryAasData] = context.registryAasData;
+    console.log(context.infrastructureName);
     const [infrastructureName, setInfrastructureName] = context.infrastructureName;
     const { showError } = useShowError();
     const aasStore = useAasStore();
@@ -59,7 +60,6 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
     async function fetchSubmodels(infrastructureName: string) {
         setIsLoadingSubmodels(true);
         if (aasFromContext?.submodels) {
-            console.log('start loading');
             await Promise.all(
                 aasFromContext.submodels.map(async (smRef, i) => {
                     const newSm = await fetchSingleSubmodel(
@@ -100,6 +100,7 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
             setAasOriginUrl(result.aasData?.aasRepositoryOrigin);
             setRegistryAasData(result.aasData ?? undefined);
             setAasFromContext(result.aas);
+            setInfrastructureName(result.aasData?.infrastructureName ?? undefined);
             return { success: true };
         }
 
@@ -113,7 +114,7 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
     }, []);
 
     useAsyncEffect(async () => {
-        console.log(infrastructureName);
+        console.info(infrastructureName);
         if (!infrastructureName) return;
         await fetchSubmodels(infrastructureName);
     }, [aasFromContext]);
@@ -125,6 +126,8 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
             setAasFromContext(aasFromStore.aas);
             setAasOriginUrl(aasFromStore.aasData?.aasRepositoryOrigin);
             setRegistryAasData(aasFromStore.aasData);
+            console.log('InfrastructureName aus Store:', aasFromStore.infrastructureName);
+
             setInfrastructureName(aasFromStore.infrastructureName);
             setIsLoadingAas(false); // initialized as true, so we need to set it to false here
             return;

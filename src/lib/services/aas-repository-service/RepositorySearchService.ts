@@ -14,6 +14,7 @@ import { fetchFromMultipleEndpoints } from 'lib/services/shared/parallelFetch';
 export type RepoSearchResult<T> = {
     searchResult: T;
     location: string;
+    infrastructureName?: string;
 };
 
 export class RepositorySearchService {

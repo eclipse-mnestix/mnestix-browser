@@ -19,8 +19,8 @@ type DiscoveryListEntryToFetch = {
 };
 
 /**
- * TODO MNE-286 this doesn't work with multiple discoveries with same entries -> it always shows the first result as repositoryUrl
- * BUT as AasId is unique, this should not be a problem in practice?.
+ * This doesn't work with multiple discoveries having same entries -> it always shows the first result as repositoryUrl
+ * BUT as AasId is unique, this should not be a problem in practice.
  * @param aasId
  */
 async function getRepositoryUrlAndThumbnail(aasId: string): Promise<DiscoveryListEntryToFetch | undefined> {
@@ -76,6 +76,7 @@ export function DiscoveryListView() {
                     repositoryUrl: repoUrlAndThumbnail?.repositoryUrl,
                     discoveryUrl: discoverySearchResult.location,
                     thumbnailUrl: repoUrlAndThumbnail?.thumbnailUrl,
+                    infrastructureName: discoverySearchResult?.infrastructureName,
                 });
             }),
         );

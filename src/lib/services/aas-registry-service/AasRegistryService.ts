@@ -22,7 +22,7 @@ import {
 export type RegistrySearchResult = {
     endpoints: URL[];
     submodelDescriptors: SubmodelDescriptor[];
-    infrastructureName?: string | null;
+    infrastructureName: string | null;
     location: string; // The base URL of the AAS registry
 };
 
@@ -108,6 +108,7 @@ export class AasRegistryService {
             submodelDescriptors: registrySearchResult.result[0].submodelDescriptors,
             aasRepositoryOrigin:
                 endpoint.origin + endpoint.pathname.substring(0, endpoint.pathname.lastIndexOf('/shells')),
+            infrastructureName: firstResult.infrastructureName ?? null,
         };
         return wrapSuccess([this.createAasResult(aasSearchResult.result, data)]);
     }
@@ -141,6 +142,7 @@ export class AasRegistryService {
             endpoints: endpointUrls,
             submodelDescriptors: submodelDescriptors,
             location: url,
+            infrastructureName: null, // This will be set later in the searchInMultipleAasRegistries method
         });
     }
 

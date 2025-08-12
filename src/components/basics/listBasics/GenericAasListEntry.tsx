@@ -24,10 +24,15 @@ export const GenericAasListEntry = ({ aasListEntry, ...config }: GenericAasListT
     const env = useEnv();
     const t = useTranslations('pages.aasList');
 
-    const navigateToAas = (aasId: string, repoUrl?: string) => {
+    const navigateToAas = () => {
         const pageToGo = env.PRODUCT_VIEW_FEATURE_FLAG ? '/product' : '/viewer';
+        const aasId = aasListEntry.aasId;
+        const repoUrl = aasListEntry.repositoryUrl;
+        const infrastructureName = aasListEntry.infrastructureName;
 
-        navigate.push(`${pageToGo}/${encodeBase64(aasId)}${repoUrl ? `?repoUrl=${encodeURI(repoUrl)}` : ''}`);
+        navigate.push(
+            `${pageToGo}/${encodeBase64(aasId)}${repoUrl ? `?repoUrl=${encodeURI(repoUrl)}` : ''}${infrastructureName ? `&infrastructure=${infrastructureName}` : ''}`,
+        );
     };
 
     return (
@@ -38,7 +43,7 @@ export const GenericAasListEntry = ({ aasListEntry, ...config }: GenericAasListT
                         src={aasListEntry.thumbnailUrl ?? ''}
                         alt={'Thumbnail image for: ' + aasListEntry.assetId}
                         size={100}
-                        onClickHandler={() => navigateToAas(aasListEntry.aasId, aasListEntry.repositoryUrl)}
+                        onClickHandler={() => navigateToAas()}
                     />
                 </PictureTableCell>
             )}
@@ -75,7 +80,7 @@ export const GenericAasListEntry = ({ aasListEntry, ...config }: GenericAasListT
             <TableCell align="center">
                 <RoundedIconButton
                     endIcon={<ArrowForward />}
-                    onClick={() => navigateToAas(aasListEntry.aasId, aasListEntry.repositoryUrl)}
+                    onClick={() => navigateToAas()}
                     title={t('buttonTooltip')}
                 />
             </TableCell>

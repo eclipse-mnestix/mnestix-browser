@@ -42,14 +42,16 @@ export function useCurrentAasContext() {
     };
 }
 
-export const CurrentAasContextProvider = (props: PropsWithChildren<{ aasId: string; repoUrl?: string }>) => {
+export const CurrentAasContextProvider = (
+    props: PropsWithChildren<{ aasId: string; repoUrl?: string; infrastructureName?: string }>,
+) => {
     const aasState = useState<AssetAdministrationShell>();
     const registryAasData = useState<RegistryAasData>();
     const submodelState = useState<SubmodelOrIdReference[]>([]);
     const aasOriginUrl = useState<string>();
     const isLoadingAas = useState<boolean>(true);
     const isLoadingSubmodels = useState<boolean>(true);
-    const infrastructureName = useState<string>();
+    const infrastructureName = useState<string>(props.infrastructureName);
 
     const context = {
         aasState,

@@ -25,12 +25,12 @@ export type AasSearchResult = {
     redirectUrl: string;
     aas: AssetAdministrationShell | null;
     aasData: AasData | null;
-    infrastructureName?: string | null;
 };
 
 export type AasData = {
     submodelDescriptors: SubmodelDescriptor[] | undefined;
     aasRepositoryOrigin: string | undefined;
+    infrastructureName: string | null;
 };
 
 export type AasSearcherNullParams = {
@@ -152,6 +152,7 @@ export class InfrastructureSearchService {
                 const data: AasData = {
                     submodelDescriptors: undefined,
                     aasRepositoryOrigin: aasRepositoryResult.result[0].location,
+                    infrastructureName: aasRepositoryResult.result[0].infrastructureName || null,
                 };
 
                 return wrapSuccess(this.createAasResult(aasRepositoryResult.result[0].searchResult, data));
