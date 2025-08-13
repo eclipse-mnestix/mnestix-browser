@@ -7,10 +7,11 @@ import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { Submodel } from 'lib/api/aas/models';
 import { InfrastructureConnection } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import { fetchFromMultipleEndpoints } from 'lib/services/shared/parallelFetch';
+import { ISubmodelRegistryServiceApi } from 'lib/api/submodel-registry-service/submodelRegistryServiceApiInterface';
 
 export class SubmodelRegistryService {
     private constructor(
-        protected readonly getSubmodelRegistryClient: (basePath: string) => SubmodelRegistryServiceApi,
+        protected readonly getSubmodelRegistryClient: (basePath: string) => ISubmodelRegistryServiceApi,
         private readonly log: typeof logger = logger,
     ) {}
 
@@ -124,7 +125,7 @@ export class SubmodelRegistryService {
             })),
         );
 
-        return fetchFromMultipleEndpoints(requests, kernel, errorMsg, (result, url, infrastructureName) => ({
+        return fetchFromMultipleEndpoints(requests, kernel, errorMsg, (result) => ({
             ...result.result,
         }));
     }
