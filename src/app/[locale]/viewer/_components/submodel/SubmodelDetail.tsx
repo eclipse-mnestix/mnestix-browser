@@ -3,7 +3,8 @@ import { submodelCustomVisualizationMap } from './SubmodelCustomVisualizationMap
 import { GenericSubmodelDetailComponent } from './generic-submodel/GenericSubmodelDetailComponent';
 import { Box } from '@mui/material';
 import { findSemanticIdInMap } from 'lib/util/SubmodelResolverUtil';
-import React, { createContext, useContext } from 'react';
+import React from 'react';
+import { SubmodelRepositoryUrlProvider } from 'app/[locale]/viewer/_components/submodel/SubmodelRepositoryUrlProvider';
 
 type SubmodelDetailProps = {
     submodel: Submodel;
@@ -19,7 +20,7 @@ export function SubmodelDetail(props: SubmodelDetailProps) {
     const CustomSubmodelComponent = key ? submodelCustomVisualizationMap[key] : undefined;
 
     return (
-        <RepositoryUrlProvider repositoryUrl={props.repositoryUrl}>
+        <SubmodelRepositoryUrlProvider repositoryUrl={props.repositoryUrl}>
             <Box width="100%" key={props.submodel?.id}>
                 {CustomSubmodelComponent ? (
                     <CustomSubmodelComponent submodel={props.submodel} />
@@ -27,26 +28,6 @@ export function SubmodelDetail(props: SubmodelDetailProps) {
                     <GenericSubmodelDetailComponent submodel={props.submodel} />
                 )}
             </Box>
-        </RepositoryUrlProvider>
+        </SubmodelRepositoryUrlProvider>
     );
-}
-
-export const RepositoryUrlContext = createContext<string | undefined>(undefined);
-
-export function RepositoryUrlProvider({
-    repositoryUrl,
-    children,
-}: {
-    repositoryUrl: string;
-    children: React.ReactNode;
-}) {
-    return <RepositoryUrlContext.Provider value={repositoryUrl}>{children}</RepositoryUrlContext.Provider>;
-}
-
-export function useRepositoryUrl() {
-    const context = useContext(RepositoryUrlContext);
-    if (context === undefined) {
-        throw new Error('useRepositoryUrl muss innerhalb eines RepositoryUrlProvider verwendet werden');
-    }
-    return context;
 }

@@ -5,7 +5,7 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { getAttachmentFromSubmodelElement } from 'lib/services/submodel-repository-service/submodelRepositoryActions';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { useRepositoryUrl } from 'app/[locale]/viewer/_components/submodel/SubmodelDetail';
+import { useSubmodelRepositoryUrl } from 'app/[locale]/viewer/_components/submodel/SubmodelRepositoryUrlProvider';
 
 type SingleMarkingsComponentProps = {
     readonly file?: ModelFile;
@@ -29,7 +29,7 @@ const StyledFileImg = styled('img')(({ theme }) => ({
 export function SingleMarkingsComponent(props: SingleMarkingsComponentProps) {
     const { file, name, additionalText, submodelId, idShortPath } = props;
     const [markingImage, setMarkingImage] = useState<string>();
-    const submodelRepositoryUrl = useRepositoryUrl();
+    const submodelRepositoryUrl = useSubmodelRepositoryUrl();
 
     const StyledMarkingImageWrapper = styled(Box)(() => ({
         maxWidth: props.rowDisplay ? '4rem' : 'auto',

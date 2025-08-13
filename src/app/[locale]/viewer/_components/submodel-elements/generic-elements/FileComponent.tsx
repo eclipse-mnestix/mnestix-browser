@@ -10,7 +10,7 @@ import { useTranslations } from 'next-intl';
 import ImagePreviewDialog from './ImagePreviewDialog';
 import { useSession } from 'next-auth/react';
 import { getFileUrl } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentUtils';
-import { useRepositoryUrl } from 'app/[locale]/viewer/_components/submodel/SubmodelDetail';
+import { useSubmodelRepositoryUrl } from 'app/[locale]/viewer/_components/submodel/SubmodelRepositoryUrlProvider';
 
 const StyledFileImg = styled('img')(() => ({
     objectFit: 'contain',
@@ -31,7 +31,7 @@ export function FileComponent({ file, submodelId, submodelElementPath, withPrevi
     const [fileUrl, setFileUrl] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [, setLoadError] = useState<boolean>(false);
-    const submodelRepositoryUrl = useRepositoryUrl();
+    const submodelRepositoryUrl = useSubmodelRepositoryUrl();
     const { data: session } = useSession();
 
     const [previewOpen, setPreviewOpen] = useState(false);
