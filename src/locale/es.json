@@ -346,27 +346,48 @@
         "resetButton": "Restaurar valores predeterminados",
         "saveButton": "Guardar todos"
       },
-      "connections": {
-        "aasRepository": {
-          "connectionType": "AAS_REPOSITORY",
-          "repositories": "Repositorios de AAS",
-          "repositoryDefaultLabel": "Repositorio AAS predeterminado",
-          "repositoryLabel": "Repositorio de AAS",
-          "repositoryUrlLabel": "URL del repositorio de AAS"
+      "infrastructure": {
+        "form": {
+          "name": "Nombre",
+          "logoUrl": "URL del logotipo",
+          "endpoints": "Endpoints",
+          "endpointUrl": "URL del endpoint",
+          "addEndpoint": "Añadir endpoint",
+          "security": "Seguridad de infraestructura",
+          "securityType": "Tipo de seguridad",
+          "headerName": "Nombre del header",
+          "headerValue": "Valor del header",
+          "nameRequired": "El nombre es obligatorio",
+          "urlFieldRequired": "El campo URL es obligatorio",
+          "urlFieldInvalid": "Debe ser una URL válida",
+          "securityTypeRequired": "El tipo de seguridad es obligatorio",
+          "headerNameRequired": "El nombre del header es obligatorio",
+          "headerValueRequired": "El valor del header es obligatorio",
+          "securityTypeNone": "Ninguno",
+          "securityTypeMnestixProxy": "Proxy de Repositorio Mnestix",
+          "securityTypeHeaderSecurity": "Seguridad de Header",
+          "proxyHeaderValue": "Mnestix Proxy Header Value",
+          "proxyHeaderValueRequired": "Mnestix Proxy Header Value es obligatorio",
+          "saveSuccess": "Infraestructura guardada exitosamente",
+          "saveError": "Error al guardar la infraestructura",
+          "createNew": "Crear una Nueva Infraestructura",
+          "deleteConfirm": "¿Está seguro de que desea eliminar la infraestructura? Esta acción no se puede deshacer.",
+          "deleteSuccess": "Infraestructura eliminada con éxito",
+          "deleteError": "Error al eliminar la infraestructura",
+          "deleteDialogTitle": "Eliminar Infraestructura",
+          "deleteWarning": "Esta acción no se puede deshacer y eliminará permanentemente todas las conexiones y configuraciones de seguridad asociadas.",
+          "cancel": "Cancelar",
+          "delete": "Eliminar",
+          "connectionTypes": "Tipos de interfaz de conexión",
+          "connectionTypesRequired": "Se debe seleccionar al menos un tipo de interfaz de conexión",
+          "save": "Guardar"
         },
-        "addButton": "Añadir más",
-        "resetSuccessful": "Las conexiones se han restaurado.",
-        "submodelRepository": {
-          "connectionType": "SUBMODEL_REPOSITORY",
-          "repositories": "Repositorio de submodels",
-          "repositoryDefaultLabel": "Repositorio de submodels predeterminado",
-          "repositoryLabel": "Repositorio de submodels",
-          "repositoryUrlLabel": "URL del repositorio de submodels"
-        },
-        "subtitle": "Define qué conexiones de datos deben ser utilizadas.",
-        "title": "Fuentes de datos",
+        "aasRepository": {},
+        "submodelRepository": {},
+        "subtitle": "Define qué infraestructuras deben ser utilizadas.",
+        "title": "Fuentes de infraestructura",
         "urlFieldNoTrailingSlash": "La URL no debe terminar con una barra (/).",
-        "urlFieldRequired": "El campo URL es obligatorio"
+        "noInfrastructuresFound": "No se encontraron infraestructuras"
       },
       "header": "Ajustes",
       "idStructure": {
