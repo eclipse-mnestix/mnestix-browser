@@ -23,7 +23,7 @@ export const DashboardInput = () => {
                 aasData: {
                     aasRepositoryOrigin: result.aasData?.aasRepositoryOrigin,
                     submodelDescriptors: result.aasData?.submodelDescriptors ?? [],
-                    infrastructureName: result.aasData?.infrastructureName,
+                    infrastructureName: result.aasData?.infrastructureName || null,
                 },
             });
         }

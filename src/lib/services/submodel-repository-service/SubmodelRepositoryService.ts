@@ -82,4 +82,41 @@ export class SubmodelRepositoryService {
             return wrapErrorCode(ApiResultStatus.NOT_FOUND, errorMsg);
         }
     }
+
+    private async getAttachmentFromSubmodelElementFromRepo(
+        submodelId: string,
+        submodelElementPath: string,
+        repoUrl: string,
+    ) {
+        const client = this.getSubmodelRepositoryClient(repoUrl);
+        const response = await client.getAttachmentFromSubmodelElement(submodelId, submodelElementPath);
+        if (response.isSuccess) {
+            logResponseDebug(
+                this.log,
+                'getAttachmentFromSubmodelElementFromRepo',
+                'Querying Attachment from repository',
+                response,
+                {
+                    Repository_Endpoint: client.getBaseUrl(),
+                    Submodel_ID: submodelId,
+                    Submodel_Element_Path: submodelElementPath,
+                },
+            );
+            return response;
+        }
+        logResponseDebug(
+            this.log,
+            'getAttachmentFromSubmodelElementFromRepo',
+            'Querying Attachment from repository unsuccessful',
+            response,
+            {
+                Repository_Endpoint: client.getBaseUrl(),
+                Submodel_ID: submodelId,
+                Submodel_Element_Path: submodelElementPath,
+            },
+        );
+        return Promise.reject(
+            `Unable to fetch Attachment '${submodelElementPath}' in submodel '${submodelId}' from '${repoUrl}'`,
+        );
+    }
 }

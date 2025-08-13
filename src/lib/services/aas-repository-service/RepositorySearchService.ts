@@ -3,7 +3,7 @@ import { mnestixFetch } from 'lib/api/infrastructure';
 import { AssetAdministrationShell, Submodel } from 'lib/api/aas/models';
 import { PrismaConnector } from 'lib/services/database/PrismaConnector';
 import { IPrismaConnector } from 'lib/services/database/PrismaConnectorInterface';
-import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { ApiResponseWrapper, wrapErrorCode } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import logger, { logResponseDebug } from 'lib/util/Logger';
@@ -85,76 +85,6 @@ export class RepositorySearchService {
     ): Promise<ApiResponseWrapper<RepoSearchResult<AssetAdministrationShell>[]>> {
         const infrastructures = await getInfrastructures();
         return this.searchAASInMultipleRepositories(aasId, infrastructures);
-    }
-
-    // TODO Move
-    private async getAttachmentFromSubmodelElementFromRepo(
-        submodelId: string,
-        submodelElementPath: string,
-        repoUrl: string,
-    ) {
-        const client = this.getSubmodelRepositoryClient(repoUrl);
-        const response = await client.getAttachmentFromSubmodelElement(submodelId, submodelElementPath);
-        if (response.isSuccess) {
-            logResponseDebug(
-                this.log,
-                'getAttachmentFromSubmodelElementFromRepo',
-                'Querying Attachment from repository',
-                response,
-                {
-                    Repository_Endpoint: client.getBaseUrl(),
-                    Submodel_ID: submodelId,
-                    Submodel_Element_Path: submodelElementPath,
-                },
-            );
-            return response;
-        }
-        logResponseDebug(
-            this.log,
-            'getAttachmentFromSubmodelElementFromRepo',
-            'Querying Attachment from repository unsuccessful',
-            response,
-            {
-                Repository_Endpoint: client.getBaseUrl(),
-                Submodel_ID: submodelId,
-                Submodel_Element_Path: submodelElementPath,
-            },
-        );
-        return Promise.reject(
-            `Unable to fetch Attachment '${submodelElementPath}' in submodel '${submodelId}' from '${repoUrl}'`,
-        );
-    }
-
-    // TODO move
-    async getFirstAttachmentFromSubmodelElementFromAllRepos(
-        submodelId: string,
-        submodelElementPath: string,
-    ): Promise<ApiResponseWrapper<RepoSearchResult<Blob>>> {
-        return this.getFirstFromAllRepos(
-            await this.getSubmodelRepositories(),
-            (basePath) => this.getAttachmentFromSubmodelElementFromRepo(submodelId, submodelElementPath, basePath),
-            `Attachment for Submodel with id ${submodelId} at path ${submodelElementPath} not found in any repository`,
-        );
-    }
-
-    async getFirstFromAllRepos<T>(
-        basePathUrls: string[],
-        kernel: (url: string) => Promise<ApiResponseWrapper<T>>,
-        errorMsg: string,
-    ): Promise<ApiResponseWrapper<RepoSearchResult<T>>> {
-        const promises = basePathUrls.map(async (url) =>
-            kernel(url).then((response: ApiResponseWrapper<T>) => {
-                if (!response.isSuccess) return Promise.reject('Fetch call was not successful');
-                return { searchResult: response.result, location: url };
-            }),
-        );
-
-        try {
-            const firstResult = await Promise.any(promises);
-            return wrapSuccess(firstResult);
-        } catch {
-            return wrapErrorCode(ApiResultStatus.NOT_FOUND, errorMsg);
-        }
     }
 
     async getFromAllAasRepos<T>(

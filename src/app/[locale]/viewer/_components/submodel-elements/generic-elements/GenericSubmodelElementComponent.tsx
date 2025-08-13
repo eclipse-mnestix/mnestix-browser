@@ -51,7 +51,6 @@ export function GenericSubmodelElementComponent(props: GenericSubmodelElementCom
                             props.submodelElementPath,
                             props.submodelElement.idShort,
                         )}
-                        repositoryUrl={props.repositoryUrl}
                     />
                 );
             case KeyTypes.MultiLanguageProperty:

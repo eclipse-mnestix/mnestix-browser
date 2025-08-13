@@ -4,7 +4,6 @@ import { SubmodelCompareData } from 'lib/types/SubmodelCompareData';
 import { generateSubmodelCompareData, isCompareData, isCompareDataRecord } from 'lib/util/CompareAasUtil';
 import { performFullAasSearch } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
-import { performSubmodelFullSearch } from 'lib/services/submodel-repository-service/submodelRepositoryActions';
 import { AasData } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import { getSubmodelFromSubmodelDescriptor } from 'lib/services/aas-registry-service/aasRegistryActions';
 
