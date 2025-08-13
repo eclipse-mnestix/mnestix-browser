@@ -46,7 +46,7 @@ services:
     container_name: mnestix-api
     profiles: ['', 'backend', 'tests']
     ports:
-      - '5065:5064'
+      - '5064:5064'
     environment:
       # API key authorization
       CustomerEndpointsSecurity__ApiKey: ${MNESTIX_BACKEND_API_KEY:-verySecureApiKey}
