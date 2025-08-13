@@ -5,9 +5,9 @@ import { encodeBase64 } from 'lib/util/Base64Util';
 import { Log } from 'lib/util/Log';
 import testData from 'lib/services/infrastructure-search-service/TestAas.data.json';
 import { InfrastructureSearchService } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
-import { getInfrastructuresIncludingDefault } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
+import { getInfrastructuresIncludingDefault } from 'lib/services/database/connectionServerActions';
 
-jest.mock('./infrastructureSearchActions');
+jest.mock('./../database/connectionServerActions');
 
 const AAS_ENDPOINT = new URL('https://www.origin.com/route/for/aas/');
 const assetAdministrationShells = testData as unknown as AssetAdministrationShell;

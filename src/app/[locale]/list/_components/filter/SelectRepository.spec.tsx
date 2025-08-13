@@ -9,10 +9,16 @@ jest.mock('./../../../../../lib/services/database/connectionServerActions');
 describe('SelectRepository', () => {
     it('Fires repository changed event when changing the select value', async () => {
         const mockDB = jest.fn(() => {
-            return ['https://test-repository.de'];
+            return [
+                {
+                    url: 'https://test-repository.de/repo',
+                    infrastructureName: 'Test',
+                    id: 'test-repo-id',
+                },
+            ];
         });
         const repositoryChanged = jest.fn();
-        (connectionServerActions.getConnectionDataByTypeAction as jest.Mock).mockImplementation(mockDB);
+        (connectionServerActions.getAasRepositoriesIncludingDefault as jest.Mock).mockImplementation(mockDB);
         CustomRender(
             <SelectRepository
                 onSelectedRepositoryChanged={() => {

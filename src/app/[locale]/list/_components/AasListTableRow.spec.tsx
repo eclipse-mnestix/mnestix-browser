@@ -6,6 +6,7 @@ import { ListEntityDto } from 'lib/services/list-service/ListService';
 import * as nameplateDataActions from 'lib/services/list-service/aasListApiActions';
 import { JSX } from 'react';
 import { AasStoreProvider } from 'stores/AasStore';
+import { RepositoryWithInfrastructure } from 'lib/services/database/MappedTypes';
 
 jest.mock('next/navigation', () => ({
     useRouter() {
@@ -19,7 +20,7 @@ jest.mock('next/navigation', () => ({
 }));
 jest.mock('./../../../../lib/services/list-service/aasListApiActions');
 jest.mock('next-auth', jest.fn());
-jest.mock('./../../../../lib/services/aas-repository-service/repositorySearchActions', () => ({
+jest.mock('./../../../../lib/services/aas-repository-service/aasRepositorySearchActions', () => ({
     getThumbnailFromShell: jest.fn(() => Promise.resolve({ success: true, result: { fileType: '', fileContent: '' } })),
 }));
 describe('AasListTableRow', () => {
@@ -27,6 +28,12 @@ describe('AasListTableRow', () => {
         aasId: 'aasId',
         thumbnail: '',
         assetId: 'assetId',
+    };
+
+    const repository: RepositoryWithInfrastructure = {
+        url: 'https://test-repository.de/repo',
+        infrastructureName: 'Test',
+        id: 'test-repo-id',
     };
 
     const listRowWrapper = (children: JSX.Element) => {
@@ -53,7 +60,7 @@ describe('AasListTableRow', () => {
         );
         listRowWrapper(
             <AasListTableRow
-                repository={'https://test-repository.de'}
+                repository={repository}
                 aasListEntry={listEntry}
                 checkBoxDisabled={() => undefined}
                 comparisonFeatureFlag={true}
@@ -83,7 +90,7 @@ describe('AasListTableRow', () => {
         );
         listRowWrapper(
             <AasListTableRow
-                repository={'https://test-repository.de/repo'}
+                repository={repository}
                 aasListEntry={listEntry}
                 checkBoxDisabled={() => undefined}
                 comparisonFeatureFlag={true}

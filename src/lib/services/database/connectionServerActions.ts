@@ -6,13 +6,14 @@ import { InfrastructureConnection } from 'lib/services/infrastructure-search-ser
 import type { MappedInfrastructure } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
 import { envs } from 'lib/env/MnestixEnv';
 import { ConnectionTypeEnum, getTypeAction } from 'lib/services/database/ConnectionTypeEnum';
+import { RepositoryWithInfrastructure } from 'lib/services/database/MappedTypes';
 
 export async function getInfrastructuresAction() {
     const prismaConnector = PrismaConnector.create();
     return prismaConnector.getInfrastructures();
 }
 
-export async function getConnectionDataByTypeAction(type: ConnectionType) {
+export async function getConnectionDataByTypeAction(type: ConnectionType): Promise<RepositoryWithInfrastructure[]> {
     const prismaConnector = PrismaConnector.create();
     return prismaConnector.getConnectionDataByTypeAction(type);
 }

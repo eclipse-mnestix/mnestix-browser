@@ -6,8 +6,8 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { ConnectionTypeEnum, getTypeAction } from 'lib/services/database/ConnectionTypeEnum';
 import { Controller, useForm } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
-import { useEnv } from 'app/EnvProvider';
 import { useTranslations } from 'next-intl';
+import { RepositoryWithInfrastructure } from 'lib/services/database/MappedTypes';
 
 export type TargetRepositoryFormData = {
     repository?: string;
@@ -23,23 +23,21 @@ type TargetRepositoryProps = {
 export function TargetRepositories(props: TargetRepositoryProps) {
     const notificationSpawner = useNotificationSpawner();
     const [isLoading, setIsLoading] = useState(false);
-    const [aasRepositories, setAasRepositories] = useState<string[]>([]);
-    const [submodelRepositories, setSubmodelRepositories] = useState<string[]>([]);
-    const env = useEnv();
+    const [aasRepositories, setAasRepositories] = useState<RepositoryWithInfrastructure[]>([]);
+    const [submodelRepositories, setSubmodelRepositories] = useState<RepositoryWithInfrastructure[]>([]);
     const t = useTranslations('pages.transfer');
 
     useAsyncEffect(async () => {
         try {
             setIsLoading(true);
+            // TODO add back env variable for default repository
             const aasRepositories = await getConnectionDataByTypeAction(
                 getTypeAction(ConnectionTypeEnum.AAS_REPOSITORY),
             );
-            if (env.AAS_REPO_API_URL) aasRepositories.push(env.AAS_REPO_API_URL);
             setAasRepositories(aasRepositories);
             const submodelRepositories = await getConnectionDataByTypeAction(
                 getTypeAction(ConnectionTypeEnum.SUBMODEL_REPOSITORY),
             );
-            if (env.SUBMODEL_REPO_API_URL) submodelRepositories.push(env.SUBMODEL_REPO_API_URL);
             setSubmodelRepositories(submodelRepositories);
         } catch (error) {
             notificationSpawner.spawn({
@@ -94,8 +92,8 @@ export function TargetRepositories(props: TargetRepositoryProps) {
                                             >
                                                 {aasRepositories.map((repo, index) => {
                                                     return (
-                                                        <MenuItem key={index} value={repo}>
-                                                            {repo}
+                                                        <MenuItem key={index} value={repo.id}>
+                                                            {repo.url}
                                                         </MenuItem>
                                                     );
                                                 })}
@@ -131,8 +129,8 @@ export function TargetRepositories(props: TargetRepositoryProps) {
                                             </MenuItem>
                                             {submodelRepositories.map((repo, index) => {
                                                 return (
-                                                    <MenuItem key={index} value={repo}>
-                                                        {repo}
+                                                    <MenuItem key={index} value={repo.id}>
+                                                        {repo.url}
                                                     </MenuItem>
                                                 );
                                             })}
