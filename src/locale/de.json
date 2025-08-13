@@ -378,8 +378,8 @@
           "deleteWarning": "Diese Aktion kann nicht rückgängig gemacht werden und entfernt dauerhaft alle zugehörigen Verbindungen und Sicherheitseinstellungen.",
           "cancel": "Abbrechen",
           "delete": "Löschen",
-          "connectionTypes": "Verbindungstypen",
-          "connectionTypesRequired": "Mindestens ein Verbindungstyp muss ausgewählt werden",
+          "connectionTypes": "Verbindungsinterface-Typen",
+          "connectionTypesRequired": "Mindestens ein Verbindungsinterface-Typ muss ausgewählt werden",
           "save": "Speichern",
           "nameAlreadyExists": "Eine Infrastruktur mit diesem Namen existiert bereits"
         },

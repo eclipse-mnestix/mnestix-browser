@@ -378,8 +378,8 @@
           "deleteWarning": "This action cannot be undone and will permanently remove all associated connections and security settings.",
           "cancel": "Cancel",
           "delete": "Delete",
-          "connectionTypes": "Connection Types",
-          "connectionTypesRequired": "At least one connection type must be selected",
+          "connectionTypes": "Connection Interface Types",
+          "connectionTypesRequired": "At least one connection interface type must be selected",
           "save": "Save",
           "nameAlreadyExists": "An infrastructure with this name already exists"
         },

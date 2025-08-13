@@ -378,8 +378,8 @@
           "deleteWarning": "Esta acción no se puede deshacer y eliminará permanentemente todas las conexiones y configuraciones de seguridad asociadas.",
           "cancel": "Cancelar",
           "delete": "Eliminar",
-          "connectionTypes": "Tipos de Conexión",
-          "connectionTypesRequired": "Se debe seleccionar al menos un tipo de conexión",
+          "connectionTypes": "Tipos de interfaz de conexión",
+          "connectionTypesRequired": "Se debe seleccionar al menos un tipo de interfaz de conexión",
           "save": "Guardar"
         },
         "aasRepository": {},

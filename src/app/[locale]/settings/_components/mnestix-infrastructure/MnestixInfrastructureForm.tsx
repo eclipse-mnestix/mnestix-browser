@@ -38,12 +38,12 @@ const SECURITY_TYPES = {
 } as const;
 
 const CONNECTION_TYPES = [
-    { id: 'AAS_REPOSITORY', label: 'AAS Repository' },
-    { id: 'AAS_REGISTRY', label: 'AAS Registry' },
-    { id: 'SUBMODEL_REPOSITORY', label: 'Submodel Repository' },
-    { id: 'SUBMODEL_REGISTRY', label: 'Submodel Registry' },
-    { id: 'DISCOVERY_SERVICE', label: 'Discovery Service' },
-    { id: 'CONCEPT_DESCRIPTION', label: 'Concept Description' },
+    { id: 'AAS_REPOSITORY', label: 'AAS Repository Interface' },
+    { id: 'AAS_REGISTRY', label: 'AAS Registry Interface' },
+    { id: 'SUBMODEL_REPOSITORY', label: 'Submodel Repository Interface' },
+    { id: 'SUBMODEL_REGISTRY', label: 'Submodel Registry Interface' },
+    { id: 'DISCOVERY_SERVICE', label: 'Discovery Interface' },
+    { id: 'CONCEPT_DESCRIPTION', label: 'Concept Description Repository Interface' },
 ] as const;
 
 function MnestixInfrastructureForm({
