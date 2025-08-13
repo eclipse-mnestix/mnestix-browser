@@ -5,7 +5,7 @@ import { encodeBase64 } from 'lib/util/Base64Util';
 import { Log } from 'lib/util/Log';
 import testData from 'lib/services/infrastructure-search-service/TestAas.data.json';
 import { InfrastructureSearchService } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
-import { getInfrastructures } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
+import { getInfrastructuresIncludingDefault } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
 
 jest.mock('./infrastructureSearchActions');
 
@@ -15,7 +15,7 @@ const assetAdministrationShells = testData as unknown as AssetAdministrationShel
 describe('Full Aas Search happy paths', () => {
     beforeEach(() => {
         jest.clearAllMocks();
-        (getInfrastructures as jest.Mock).mockResolvedValue([
+        (getInfrastructuresIncludingDefault as jest.Mock).mockResolvedValue([
             {
                 name: 'Test Infrastructure',
                 discoveryUrls: ['https://discovery1.com'],
@@ -26,7 +26,7 @@ describe('Full Aas Search happy paths', () => {
     });
 
     it('navigates to the discovery list when more than one aasId for a given assetId', async () => {
-        (getInfrastructures as jest.Mock).mockResolvedValue([
+        (getInfrastructuresIncludingDefault as jest.Mock).mockResolvedValue([
             {
                 name: 'Test Infrastructure',
                 discoveryUrls: ['https://discovery1.com', 'https://discovery2.com'],
@@ -135,7 +135,7 @@ describe('Full Aas Search happy paths', () => {
 
     it('returns aas for given aasId from foreign repository if two are found', async () => {
         jest.clearAllMocks();
-        (getInfrastructures as jest.Mock).mockResolvedValue([
+        (getInfrastructuresIncludingDefault as jest.Mock).mockResolvedValue([
             {
                 name: 'Test Infrastructure',
                 discoveryUrls: ['https://discovery1.com'],

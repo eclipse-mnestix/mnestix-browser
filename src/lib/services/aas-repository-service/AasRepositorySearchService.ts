@@ -6,7 +6,7 @@ import { IAssetAdministrationShellRepositoryApi } from 'lib/api/basyx-v3/apiInte
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import logger, { logResponseDebug } from 'lib/util/Logger';
 import { InfrastructureConnection } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
-import { getInfrastructures } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
+import { getInfrastructuresIncludingDefault } from 'lib/services/database/connectionServerActions';
 import { fetchFromMultipleEndpoints } from 'lib/services/shared/parallelFetch';
 
 export type RepoSearchResult<T> = {
@@ -54,7 +54,7 @@ export class AasRepositorySearchService {
     async searchInAllAasRepositories(
         aasId: string,
     ): Promise<ApiResponseWrapper<RepoSearchResult<AssetAdministrationShell>[]>> {
-        const infrastructures = await getInfrastructures();
+        const infrastructures = await getInfrastructuresIncludingDefault();
         return this.searchAASInMultipleRepositories(aasId, infrastructures);
     }
 

@@ -11,7 +11,7 @@ import {
     AasSearchResult,
     InfrastructureConnection,
 } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
-import { getInfrastructures } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
+import { getInfrastructuresIncludingDefault } from 'lib/services/database/connectionServerActions';
 import { fetchFromMultipleEndpoints } from 'lib/services/shared/parallelFetch';
 import { AssetAdministrationShellDescriptor, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import {
@@ -51,7 +51,7 @@ export class AasRegistryService {
     }
     public async searchInAllAasRegistries(searchInput: string): Promise<ApiResponseWrapper<AasSearchResult[]>> {
         // Search in all discovery services in all infrastructures
-        const infrastructures = await getInfrastructures();
+        const infrastructures = await getInfrastructuresIncludingDefault();
         this.log.info('searchAASInAllAasRegistries', 'Searching AAS in all infrastructures', infrastructures);
 
         return this.searchInMultipleAasRegistries(searchInput, infrastructures);

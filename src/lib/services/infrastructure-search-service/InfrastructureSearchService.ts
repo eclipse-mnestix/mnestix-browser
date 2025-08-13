@@ -5,7 +5,7 @@ import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResp
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { AssetAdministrationShell, Reference, Submodel } from 'lib/api/aas/models';
-import { getInfrastructures } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
+import { getInfrastructuresIncludingDefault } from 'lib/services/database/connectionServerActions';
 import { AssetAdministrationShellDescriptor, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import {
     AasRepositorySearchService,
@@ -90,7 +90,7 @@ export class InfrastructureSearchService {
 
     public async searchAASInAllInfrastructures(searchInput: string): Promise<ApiResponseWrapper<AasSearchResult>> {
         // Search in all discovery services in all infrastructures
-        const infrastructures = await getInfrastructures();
+        const infrastructures = await getInfrastructuresIncludingDefault();
         logInfo(this.log, 'searchAASInAllInfrastructures', 'Searching AAS in all infrastructures', infrastructures);
 
         let currentInfrastructureName: string | null = null;
@@ -176,7 +176,7 @@ export class InfrastructureSearchService {
         });
 
         // Get Infrastructure
-        const infrastructures = await getInfrastructures();
+        const infrastructures = await getInfrastructuresIncludingDefault();
         const filteredInfrastructure = infrastructures.find((infra) => infra.name === infrastructureName);
 
         if (!filteredInfrastructure) {

@@ -4,6 +4,7 @@ import { ConnectionType } from '@prisma/client';
 import { PrismaConnector } from 'lib/services/database/PrismaConnector';
 import { InfrastructureConnection } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import type { MappedInfrastructure } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
+import { envs } from 'lib/env/MnestixEnv';
 
 export async function getInfrastructuresAction() {
     const prismaConnector = PrismaConnector.create();
@@ -39,6 +40,23 @@ export async function fetchAllInfrastructureConnectionsFromDb(): Promise<Infrast
             conn.types.filter((t) => t.type.typeName === 'SUBMODEL_REGISTRY').map(() => conn.url),
         ),
     }));
+}
+
+export async function getInfrastructuresIncludingDefault() {
+    // build default infrastructure from envs
+    const defaultInfrastructure: InfrastructureConnection = {
+        name: 'DefaultInfrastructure',
+        discoveryUrls: envs.DISCOVERY_API_URL ? [envs.DISCOVERY_API_URL] : [],
+        aasRegistryUrls: envs.REGISTRY_API_URL ? [envs.REGISTRY_API_URL] : [],
+        aasRepositoryUrls: envs.AAS_REPO_API_URL ? [envs.AAS_REPO_API_URL] : [],
+        submodelRepositoryUrls: envs.SUBMODEL_REPO_API_URL ? [envs.SUBMODEL_REPO_API_URL] : [],
+        submodelRegistryUrls: envs.SUBMODEL_REGISTRY_API_URL ? [envs.SUBMODEL_REGISTRY_API_URL] : [],
+    };
+
+    // get from database as flat connection list
+    const infrastructures = await fetchAllInfrastructureConnectionsFromDb();
+
+    return [defaultInfrastructure, ...infrastructures];
 }
 
 export async function createInfrastructureAction(infrastructureData: MappedInfrastructure) {
