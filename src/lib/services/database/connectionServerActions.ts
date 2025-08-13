@@ -1,35 +1,13 @@
 'use server';
 
 import { ConnectionType } from '@prisma/client';
-import { DataSourceFormData, PrismaConnector } from 'lib/services/database/PrismaConnector';
-import { InfrastructureConnection } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import { PrismaConnector } from 'lib/services/database/PrismaConnector';
-import type { MappedInfrastructure } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
 import { InfrastructureConnection } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
+import type { MappedInfrastructure } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
 
 export async function getInfrastructuresAction() {
     const prismaConnector = PrismaConnector.create();
     return prismaConnector.getInfrastructures();
-}
-
-export async function getInfrastructuresAsListAction(): Promise<InfrastructureConnection[]> {
-    const prismaConnector = PrismaConnector.create();
-    const infrastructures = await prismaConnector.getInfrastructures();
-
-    if (!infrastructures) return [];
-
-    return infrastructures.map((infra) => ({
-        name: infra.name,
-        discoveryUrls: infra.connections.flatMap((conn) =>
-            conn.types.filter((t) => t.type.typeName === 'DISCOVERY_SERVICE').map(() => conn.url),
-        ),
-        aasRegistryUrls: infra.connections.flatMap((conn) =>
-            conn.types.filter((t) => t.type.typeName === 'AAS_REGISTRY').map(() => conn.url),
-        ),
-        aasRepositoryUrls: infra.connections.flatMap((conn) =>
-            conn.types.filter((t) => t.type.typeName === 'AAS_REPOSITORY').map(() => conn.url),
-        ),
-    }));
 }
 
 export async function getConnectionDataByTypeAction(type: ConnectionType) {
@@ -39,7 +17,7 @@ export async function getConnectionDataByTypeAction(type: ConnectionType) {
 
 export async function fetchAllInfrastructureConnectionsFromDb(): Promise<InfrastructureConnection[]> {
     const connector = PrismaConnector.create();
-    const infrastructures = await connector.getInfrastructureData();
+    const infrastructures = await connector.getInfrastructures();
 
     if (!infrastructures) return [];
 
