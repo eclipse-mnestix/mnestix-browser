@@ -81,6 +81,7 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
 
     async function loadAasContent() {
         if (repoUrl && infrastructureName) {
+            console.log('hi');
             const response = await getAasFromRepository(encodeBase64(aasIdToLoad), repoUrl);
             if (response.isSuccess) {
                 setAasOriginUrl(repoUrl);
@@ -119,9 +120,11 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
     }, [aasFromContext]);
 
     useAsyncEffect(async () => {
+        console.log('hä');
         if (aasFromContext?.id === aasIdToLoad) return;
         const aasFromStore = aasStore.getAasData(aasIdToLoad);
         if (aasFromStore) {
+            console.log('AAS found in store, loading from there');
             setAasFromContext(aasFromStore.aas);
             setAasOriginUrl(aasFromStore.aasData?.aasRepositoryOrigin);
             setRegistryAasData(aasFromStore.aasData);
@@ -134,3 +137,6 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
         setIsLoadingAas(false);
     }, [aasIdToLoad, env, repoUrl]);
 }
+
+// http://localhost:3000/de/viewer/aHR0cHM6Ly9hYXMyLnVuaS1oLmRlL2Fhcy9sbmkwNzI5?repoUrl=http%3A%2F%2Flocalhost%3A5065%2Frepo&infrastructure=DefaultInfrastructure
+// http://localhost:3000/de/viewer/aHR0cHM6Ly9hYXMyLnVuaS1oLmRlL2Fhcy9sbmkwNzI5?repoUrl=http%3A%2F%2Flocalhost%3A5065%2Frepo%3Finfrastructure%3DDefaultInfrastructure

@@ -53,7 +53,7 @@ describe('AasListTableRow', () => {
         );
         listRowWrapper(
             <AasListTableRow
-                repositoryUrl={'https://test-repository.de'}
+                repository={'https://test-repository.de'}
                 aasListEntry={listEntry}
                 checkBoxDisabled={() => undefined}
                 comparisonFeatureFlag={true}
@@ -83,7 +83,7 @@ describe('AasListTableRow', () => {
         );
         listRowWrapper(
             <AasListTableRow
-                repositoryUrl={'https://test-repository.de/repo'}
+                repository={'https://test-repository.de/repo'}
                 aasListEntry={listEntry}
                 checkBoxDisabled={() => undefined}
                 comparisonFeatureFlag={true}

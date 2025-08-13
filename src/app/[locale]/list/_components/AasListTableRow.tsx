@@ -17,9 +17,10 @@ import { useLocale, useTranslations } from 'next-intl';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import useSWR from 'swr';
 import { useEnv } from 'app/EnvProvider';
+import { RepositoryWithInfrastructure } from 'lib/services/database/MappedTypes';
 
 type AasTableRowProps = {
-    repositoryUrl: string;
+    repository: RepositoryWithInfrastructure;
     aasListEntry: ListEntityDto;
     comparisonFeatureFlag: boolean | undefined;
     checkBoxDisabled: (aasId: string | undefined) => boolean | undefined;
@@ -35,7 +36,7 @@ const tableBodyText = {
 };
 export const AasListTableRow = (props: AasTableRowProps) => {
     const {
-        repositoryUrl,
+        repository,
         aasListEntry,
         comparisonFeatureFlag,
         checkBoxDisabled,
@@ -48,11 +49,11 @@ export const AasListTableRow = (props: AasTableRowProps) => {
     const env = useEnv();
     const locale = useLocale();
     const { data: nameplateValues, isLoading: isNameplateValueLoading } = useSWR(
-        [repositoryUrl, aasListEntry.aasId],
+        [repository.url, aasListEntry.aasId],
         async ([url, aasId]) => await getNameplateValuesForAAS(url, aasId),
     );
     const { data: thumbnailResponse } = useSWR(
-        [aasListEntry.aasId, repositoryUrl],
+        [aasListEntry.aasId, repository.url],
         async ([aasId, repositoryUrl]) => await getThumbnailFromShell(aasId, repositoryUrl),
         {
             revalidateIfStale: false,
@@ -65,8 +66,14 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         const baseUrl = window.location.origin;
         const pageToGo = env.PRODUCT_VIEW_FEATURE_FLAG ? '/product' : '/viewer';
 
-        const repoUrlParam = repositoryUrl ? `?repoUrl=${repositoryUrl}` : '';
-        window.open(baseUrl + `${pageToGo}/${encodeBase64(listEntry.aasId)}${repoUrlParam}`, '_blank');
+        const repoUrlParam = repository.url ? `?repoUrl=${repository.url}` : '';
+        const infrastructureParam = repository.infrastructureName
+            ? `&infrastructure=${repository.infrastructureName}`
+            : '';
+        window.open(
+            baseUrl + `${pageToGo}/${encodeBase64(listEntry.aasId)}${repoUrlParam}${infrastructureParam}`,
+            '_blank',
+        );
     };
 
     const translateListText = (property: MultiLanguageValueOnly | undefined) => {
@@ -93,7 +100,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
 
         if (isValidUrl(aasListEntry.thumbnail)) {
             setThumbnailUrl(aasListEntry.thumbnail);
-        } else if (aasListEntry.aasId && repositoryUrl) {
+        } else if (aasListEntry.aasId && repository) {
             if (thumbnailResponse?.isSuccess) {
                 const blob = mapFileDtoToBlob(thumbnailResponse?.result);
                 const blobUrl = URL.createObjectURL(blob);

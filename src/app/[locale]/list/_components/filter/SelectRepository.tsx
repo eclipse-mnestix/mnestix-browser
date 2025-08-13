@@ -1,15 +1,16 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Skeleton } from '@mui/material';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { getConnectionDataByTypeAction } from 'lib/services/database/connectionServerActions';
-import { ConnectionTypeEnum, getTypeAction } from 'lib/services/database/ConnectionTypeEnum';
+import { getAasRepositoriesIncludingDefault } from 'lib/services/database/connectionServerActions';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { useTranslations } from 'next-intl';
 import { RepositoryWithInfrastructure } from 'lib/services/database/MappedTypes';
 
-export function SelectRepository(props: { onSelectedRepositoryChanged: Dispatch<SetStateAction<string | undefined>> }) {
+export function SelectRepository(props: {
+    onSelectedRepositoryChanged: Dispatch<SetStateAction<RepositoryWithInfrastructure | undefined>>;
+}) {
     const [aasRepositories, setAasRepositories] = useState<RepositoryWithInfrastructure[]>([]);
-    const [selectedRepository, setSelectedRepository] = useState<string>();
+    const [selectedRepository, setSelectedRepository] = useState<string>('');
     const notificationSpawner = useNotificationSpawner();
     const [isLoading, setIsLoading] = useState(false);
     const t = useTranslations('pages.aasList');
@@ -17,14 +18,11 @@ export function SelectRepository(props: { onSelectedRepositoryChanged: Dispatch<
     useAsyncEffect(async () => {
         try {
             setIsLoading(true);
-            const aasRepositories: RepositoryWithInfrastructure[] = await getConnectionDataByTypeAction(
-                getTypeAction(ConnectionTypeEnum.AAS_REPOSITORY),
-            );
-            console.log(aasRepositories);
+            const aasRepositories: RepositoryWithInfrastructure[] = await getAasRepositoriesIncludingDefault();
             setAasRepositories(aasRepositories);
             if (aasRepositories.length > 0) {
                 setSelectedRepository(aasRepositories[0].id);
-                props.onSelectedRepositoryChanged(aasRepositories[0].url);
+                props.onSelectedRepositoryChanged(aasRepositories[0]);
             }
         } catch (error) {
             notificationSpawner.spawn({
@@ -39,7 +37,7 @@ export function SelectRepository(props: { onSelectedRepositoryChanged: Dispatch<
 
     const onRepositoryChanged = (event: SelectChangeEvent) => {
         setSelectedRepository(event.target.value);
-        props.onSelectedRepositoryChanged(aasRepositories.find((repo) => repo.id === event.target.value)?.url);
+        props.onSelectedRepositoryChanged(aasRepositories.find((repo) => repo.id === event.target.value));
     };
 
     return (

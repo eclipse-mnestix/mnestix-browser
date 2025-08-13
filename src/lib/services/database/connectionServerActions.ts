@@ -5,6 +5,7 @@ import { PrismaConnector } from 'lib/services/database/PrismaConnector';
 import { InfrastructureConnection } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import type { MappedInfrastructure } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
 import { envs } from 'lib/env/MnestixEnv';
+import { ConnectionTypeEnum, getTypeAction } from 'lib/services/database/ConnectionTypeEnum';
 
 export async function getInfrastructuresAction() {
     const prismaConnector = PrismaConnector.create();
@@ -57,6 +58,17 @@ export async function getInfrastructuresIncludingDefault() {
     const infrastructures = await fetchAllInfrastructureConnectionsFromDb();
 
     return [defaultInfrastructure, ...infrastructures];
+}
+
+export async function getAasRepositoriesIncludingDefault() {
+    const aasRepositoriesDb = await getConnectionDataByTypeAction(getTypeAction(ConnectionTypeEnum.AAS_REPOSITORY));
+    const defaultAasRepository = {
+        id: 'default',
+        url: envs.AAS_REPO_API_URL || '',
+        infrastructureName: 'DefaultInfrastructure',
+    };
+
+    return [defaultAasRepository, ...aasRepositoriesDb];
 }
 
 export async function createInfrastructureAction(infrastructureData: MappedInfrastructure) {
