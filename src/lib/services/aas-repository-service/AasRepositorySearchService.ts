@@ -1,10 +1,8 @@
-import { AssetAdministrationShellRepositoryApi, SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
+import { AssetAdministrationShellRepositoryApi } from 'lib/api/basyx-v3/api';
 import { mnestixFetch } from 'lib/api/infrastructure';
-import { AssetAdministrationShell, Submodel } from 'lib/api/aas/models';
-import { PrismaConnector } from 'lib/services/database/PrismaConnector';
-import { IPrismaConnector } from 'lib/services/database/PrismaConnectorInterface';
+import { AssetAdministrationShell } from 'lib/api/aas/models';
 import { ApiResponseWrapper, wrapErrorCode } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
+import { IAssetAdministrationShellRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import logger, { logResponseDebug } from 'lib/util/Logger';
 import { InfrastructureConnection } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
@@ -17,56 +15,29 @@ export type RepoSearchResult<T> = {
     infrastructureName?: string;
 };
 
-export class RepositorySearchService {
+export class AasRepositorySearchService {
     private constructor(
-        protected readonly prismaConnector: IPrismaConnector,
         protected readonly getAasRepositoryClient: (basePath: string) => IAssetAdministrationShellRepositoryApi,
-        protected readonly getSubmodelRepositoryClient: (basePath: string) => ISubmodelRepositoryApi,
         private readonly log: typeof logger = logger,
     ) {}
 
-    static create(log?: typeof logger): RepositorySearchService {
-        const prismaConnector = PrismaConnector.create();
+    static create(log?: typeof logger): AasRepositorySearchService {
         const searcherLogger = log?.child({ Service: 'RepositorySearchService' });
-        return new RepositorySearchService(
-            prismaConnector,
+        return new AasRepositorySearchService(
             (baseUrl) => AssetAdministrationShellRepositoryApi.create(baseUrl, mnestixFetch()),
-            (baseUrl) => SubmodelRepositoryApi.create(baseUrl, mnestixFetch()),
             searcherLogger,
         );
     }
 
     static createNull(
         shellsInRepositories: RepoSearchResult<AssetAdministrationShell>[] = [],
-        submodelsInRepositories: RepoSearchResult<Submodel>[] = [],
-    ): RepositorySearchService {
-        const shellUrls = new Set(shellsInRepositories.map((value) => value.location));
-        const submodelUrls = new Set(submodelsInRepositories.map((value) => value.location));
-        return new RepositorySearchService(
-            PrismaConnector.createNull([...shellUrls], [...submodelUrls]),
-            (baseUrl) =>
-                AssetAdministrationShellRepositoryApi.createNull(
-                    baseUrl,
-                    shellsInRepositories
-                        .filter((value) => value.location == baseUrl)
-                        .map((value) => value.searchResult),
-                ),
-            (baseUrl) =>
-                SubmodelRepositoryApi.createNull(
-                    baseUrl,
-                    submodelsInRepositories
-                        .filter((value) => value.location == baseUrl)
-                        .map((value) => value.searchResult),
-                ),
+    ): AasRepositorySearchService {
+        return new AasRepositorySearchService((baseUrl) =>
+            AssetAdministrationShellRepositoryApi.createNull(
+                baseUrl,
+                shellsInRepositories.filter((value) => value.location == baseUrl).map((value) => value.searchResult),
+            ),
         );
-    }
-
-    // TODO delete
-    async getSubmodelRepositories() {
-        return this.prismaConnector.getConnectionDataByTypeAction({
-            id: '2',
-            typeName: 'SUBMODEL_REPOSITORY',
-        });
     }
 
     async searchAASInMultipleRepositories(

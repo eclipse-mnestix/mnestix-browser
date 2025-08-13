@@ -1,7 +1,7 @@
 import { Submodel } from 'lib/api/aas/models';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { RepoSearchResult } from 'lib/services/aas-repository-service/RepositorySearchService';
+import { RepoSearchResult } from 'lib/services/aas-repository-service/AasRepositorySearchService';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import logger, { logResponseDebug } from 'lib/util/Logger';
 import { SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';

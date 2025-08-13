@@ -7,7 +7,10 @@ import { encodeBase64 } from 'lib/util/Base64Util';
 import { AssetAdministrationShell, Reference, Submodel } from 'lib/api/aas/models';
 import { getInfrastructures } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
 import { AssetAdministrationShellDescriptor, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
-import { RepoSearchResult, RepositorySearchService } from 'lib/services/aas-repository-service/RepositorySearchService';
+import {
+    AasRepositorySearchService,
+    RepoSearchResult,
+} from 'lib/services/aas-repository-service/AasRepositorySearchService';
 import { AasRegistryEndpointEntryInMemory } from 'lib/api/registry-service-api/registryServiceApiInMemory';
 import { SubmodelRepositoryService } from 'lib/services/submodel-repository-service/SubmodelRepositoryService';
 import { SubmodelRegistryService } from 'lib/services/submodel-registry-service/SubmodelRegistryService';
@@ -44,7 +47,7 @@ export type AasSearcherNullParams = {
 };
 export class InfrastructureSearchService {
     private constructor(
-        readonly repositorySearchService: RepositorySearchService,
+        readonly repositorySearchService: AasRepositorySearchService,
         readonly aasRegistrySearchService: AasRegistryService,
         readonly discoveryServiceSearchService: DiscoveryService,
         readonly submodelRepositorySearchService: SubmodelRepositoryService,
@@ -53,7 +56,7 @@ export class InfrastructureSearchService {
     ) {}
 
     static create(log?: typeof logger): InfrastructureSearchService {
-        const repositorySearchService = RepositorySearchService.create(log);
+        const repositorySearchService = AasRepositorySearchService.create(log);
         const aasRegistrySearchService = AasRegistryService.create();
         const discoveryServiceSearchService = DiscoveryService.create();
         const submodelRepositorySearchService = SubmodelRepositoryService.create(log);
@@ -77,7 +80,7 @@ export class InfrastructureSearchService {
         aasRegistryEndpoints = [],
     }: AasSearcherNullParams): InfrastructureSearchService {
         return new InfrastructureSearchService(
-            RepositorySearchService.createNull(aasInRepositories, submodelsInRepositories),
+            AasRepositorySearchService.createNull(aasInRepositories),
             AasRegistryService.createNull(aasRegistryDescriptors, aasRegistryEndpoints),
             DiscoveryService.createNull(discoveryEntries),
             SubmodelRepositoryService.createNull(submodelsInRepositories),

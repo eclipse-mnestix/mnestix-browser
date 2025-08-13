@@ -12,7 +12,7 @@ import { envs } from 'lib/env/MnestixEnv';
 import { fetchAllInfrastructureConnectionsFromDb } from 'lib/services/database/connectionServerActions';
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { Reference, Submodel } from 'lib/api/aas/models';
-import { RepoSearchResult } from 'lib/services/aas-repository-service/RepositorySearchService';
+import { RepoSearchResult } from 'lib/services/aas-repository-service/AasRepositorySearchService';
 
 export async function performFullAasSearch(searchInput: string): Promise<ApiResponseWrapper<AasSearchResult>> {
     const logger = createRequestLogger(await headers());
