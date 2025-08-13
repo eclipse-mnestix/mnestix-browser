@@ -6,6 +6,7 @@
     discoveryUrl?: string;
     registryUrl?: string;
     thumbnailUrl?: string;
+    infrastructureName?: string;
 };
 export type AasListConfig = {
     showThumbnail?: boolean;

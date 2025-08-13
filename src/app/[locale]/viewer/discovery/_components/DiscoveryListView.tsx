@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import AssetNotFound from 'components/basics/AssetNotFound';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import ListHeader from 'components/basics/ListHeader';
-import { performSearchAasFromAllRepositories } from 'lib/services/aas-repository-service/repositorySearchActions';
+import { performSearchAasFromAllRepositories } from 'lib/services/aas-repository-service/aasRepositorySearchActions';
 import { useTranslations } from 'next-intl';
 import { LocalizedError } from 'lib/util/LocalizedError';
 import { AasListEntry } from 'lib/types/AasListEntry';
@@ -19,8 +19,8 @@ type DiscoveryListEntryToFetch = {
 };
 
 /**
- * TODO MNE-286 this doesn't work with multiple discoveries with same entries -> it always shows the first result as repositoryUrl
- * BUT as AasId is unique, this should not be a problem in practice?.
+ * This doesn't work with multiple discoveries having same entries -> it always shows the first result as repositoryUrl
+ * BUT as AasId is unique, this should not be a problem in practice.
  * @param aasId
  */
 async function getRepositoryUrlAndThumbnail(aasId: string): Promise<DiscoveryListEntryToFetch | undefined> {
@@ -43,6 +43,7 @@ async function getRepositoryUrlAndThumbnail(aasId: string): Promise<DiscoveryLis
  * This component is responsible for displaying the list of AAS entries based on a given assetId.
  * This may occur, when multiple AAS are registered to the same assetId.
  * The user can then choose which AAS to view based on AasId and repositoryUrl.
+ * // TODO MNES-906: show discoveryUrl
  */
 export function DiscoveryListView() {
     const searchParams = useSearchParams();
@@ -76,6 +77,7 @@ export function DiscoveryListView() {
                     repositoryUrl: repoUrlAndThumbnail?.repositoryUrl,
                     discoveryUrl: discoverySearchResult.location,
                     thumbnailUrl: repoUrlAndThumbnail?.thumbnailUrl,
+                    infrastructureName: discoverySearchResult?.infrastructureName,
                 });
             }),
         );

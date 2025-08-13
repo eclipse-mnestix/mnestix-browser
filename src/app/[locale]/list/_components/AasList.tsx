@@ -3,9 +3,10 @@ import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import { AasListTableRow } from 'app/[locale]/list/_components/AasListTableRow';
 import { AasListDto } from 'lib/services/list-service/ListService';
 import { useTranslations } from 'next-intl';
+import { RepositoryWithInfrastructure } from 'lib/services/database/MappedTypes';
 
 type AasListProps = {
-    repositoryUrl: string;
+    repositoryUrl: RepositoryWithInfrastructure;
     shells: AasListDto | undefined;
     comparisonFeatureFlag?: boolean;
     selectedAasList: string[] | undefined;
@@ -74,7 +75,7 @@ export default function AasList(props: AasListProps) {
                             shells.entities?.map((aasListEntry) => (
                                 <TableRow key={aasListEntry.aasId} data-testid={`list-row-${aasListEntry.aasId}`}>
                                     <AasListTableRow
-                                        repositoryUrl={repositoryUrl}
+                                        repository={repositoryUrl}
                                         aasListEntry={aasListEntry}
                                         comparisonFeatureFlag={comparisonFeatureFlag}
                                         checkBoxDisabled={checkBoxDisabled}

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, ReactNode, useContext, useState } from 'react';
 import { AssetAdministrationShell } from 'lib/api/aas/models';
 import { AasData } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 
@@ -8,6 +8,7 @@ import { AasData } from 'lib/services/infrastructure-search-service/Infrastructu
 type AasWithAasData = {
     aas: AssetAdministrationShell;
     aasData?: AasData;
+    infrastructureName?: string;
 };
 
 /**

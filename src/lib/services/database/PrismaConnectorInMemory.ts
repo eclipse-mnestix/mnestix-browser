@@ -1,7 +1,7 @@
 import { ConnectionType } from '@prisma/client';
 import type {
-    MappedInfrastructure,
     InfrastructureWithRelations,
+    MappedInfrastructure,
 } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
 import { IPrismaConnector } from 'lib/services/database/PrismaConnectorInterface';
 import { isEqual } from 'lodash';
@@ -28,9 +28,13 @@ export class PrismaConnectorInMemory implements IPrismaConnector {
         throw new Error('Method not implemented.');
     }
 
-    async getConnectionDataByTypeAction(type: ConnectionType): Promise<string[]> {
-        if (isEqual(type, { id: '0', typeName: 'AAS_REPOSITORY' })) return this.aasData;
-        if (isEqual(type, { id: '2', typeName: 'SUBMODEL_REPOSITORY' })) return this.submodelData;
+    async getConnectionDataByTypeAction(type: ConnectionType): Promise<{ infrastructureName: string; url: string }[]> {
+        if (isEqual(type, { id: '0', typeName: 'AAS_REPOSITORY' })) {
+            return this.aasData.map((url) => ({ infrastructureName: 'AAS_REPOSITORY', url }));
+        }
+        if (isEqual(type, { id: '2', typeName: 'SUBMODEL_REPOSITORY' })) {
+            return this.submodelData.map((url) => ({ infrastructureName: 'SUBMODEL_REPOSITORY', url }));
+        }
 
         throw new Error('Method not implemented.');
     }

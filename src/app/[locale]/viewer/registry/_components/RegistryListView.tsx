@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import AssetNotFound from 'components/basics/AssetNotFound';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import ListHeader from 'components/basics/ListHeader';
-import { performSearchAasFromAllRepositories } from 'lib/services/aas-repository-service/repositorySearchActions';
+import { performSearchAasFromAllRepositories } from 'lib/services/aas-repository-service/aasRepositorySearchActions';
 import { useTranslations } from 'next-intl';
 import { LocalizedError } from 'lib/util/LocalizedError';
 import { AasListEntry } from 'lib/types/AasListEntry';
@@ -45,6 +45,7 @@ export const RegistryListView = () => {
                 assetId: aasSearchResult.searchResult.assetInformation.globalAssetId ?? undefined,
                 repositoryUrl: aasSearchResult.location,
                 thumbnailUrl: aasSearchResult.searchResult.assetInformation.defaultThumbnail?.path,
+                infrastructureName: aasSearchResult.infrastructureName ?? undefined,
             };
         });
 

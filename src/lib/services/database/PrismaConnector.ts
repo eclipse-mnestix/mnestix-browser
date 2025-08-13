@@ -3,6 +3,7 @@ import { ConnectionType, Prisma } from '@prisma/client';
 import { IPrismaConnector } from 'lib/services/database/PrismaConnectorInterface';
 import { PrismaConnectorInMemory } from 'lib/services/database/PrismaConnectorInMemory';
 import type { MappedInfrastructure } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
+import { RepositoryWithInfrastructure } from 'lib/services/database/MappedTypes';
 
 export type DataSourceFormData = {
     id: string;
@@ -90,8 +91,8 @@ export class PrismaConnector implements IPrismaConnector {
         });
     }
 
-    async getConnectionDataByTypeAction(type: ConnectionType) {
-        const basePath = await prisma.mnestixConnection.findMany({
+    async getConnectionDataByTypeAction(type: ConnectionType): Promise<RepositoryWithInfrastructure[]> {
+        const connections = await prisma.mnestixConnection.findMany({
             where: {
                 types: {
                     some: {
@@ -99,9 +100,16 @@ export class PrismaConnector implements IPrismaConnector {
                     },
                 },
             },
+            include: {
+                infrastructure: true,
+            },
         });
 
-        return basePath.map((item) => item.url);
+        return connections.map((item) => ({
+            id: item.id,
+            infrastructureName: item.infrastructure?.name ?? '',
+            url: item.url,
+        }));
     }
 
     static create() {

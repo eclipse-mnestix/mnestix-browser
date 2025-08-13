@@ -1,7 +1,10 @@
 'use server';
 
 import { AssetAdministrationShell } from 'lib/api/aas/models';
-import { RepoSearchResult, RepositorySearchService } from 'lib/services/aas-repository-service/RepositorySearchService';
+import {
+    AasRepositorySearchService,
+    RepoSearchResult,
+} from 'lib/services/aas-repository-service/AasRepositorySearchService';
 import {
     ApiFileDto,
     ApiResponseWrapper,
@@ -18,7 +21,7 @@ export async function performSearchAasFromAllRepositories(
 ): Promise<ApiResponseWrapper<RepoSearchResult<AssetAdministrationShell>[]>> {
     const logger = createRequestLogger(await headers());
     logInfo(logger, 'performSearchAasFromAllRepositories', 'Requested AAS', { requestedId: searchInput });
-    const searcher = RepositorySearchService.create(logger);
+    const searcher = AasRepositorySearchService.create(logger);
     return searcher.searchInAllAasRepositories(searchInput);
 }
 
@@ -48,6 +51,7 @@ export async function downloadAasFromRepo(
     return response;
 }
 
+// TODO no longer working -> we need the infrastructure name to get submodels
 export async function getAasFromRepository(
     aasId: string,
     repositoryUrl: string,

@@ -10,9 +10,10 @@ export default function () {
     const aasIdDecoded = safeBase64Decode(base64AasId);
     const encodedRepoUrl = useSearchParams().get('repoUrl');
     const repoUrl = encodedRepoUrl ? decodeURI(encodedRepoUrl) : undefined;
+    const infrastructureName = useSearchParams().get('infrastructure') || undefined;
 
     return (
-        <CurrentAasContextProvider aasId={aasIdDecoded} repoUrl={repoUrl}>
+        <CurrentAasContextProvider aasId={aasIdDecoded} repoUrl={repoUrl} infrastructureName={infrastructureName}>
             <AASViewer />
         </CurrentAasContextProvider>
     );

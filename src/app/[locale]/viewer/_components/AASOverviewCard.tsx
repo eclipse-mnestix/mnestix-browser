@@ -21,6 +21,7 @@ type AASOverviewCardProps = {
     readonly isAccordion: boolean;
     readonly imageLinksToDetail?: boolean;
     readonly repositoryURL?: string;
+    readonly infrastructureName?: string;
 };
 
 export function AASOverviewCard(props: AASOverviewCardProps) {
@@ -51,12 +52,13 @@ export function AASOverviewCard(props: AASOverviewCardProps) {
     };
 
     const navigateToAas = () => {
-        if (props.imageLinksToDetail && props.aas) {
+        if (props.imageLinksToDetail && props.aas && props.infrastructureName) {
             addAasData({
                 aas: props.aas,
                 aasData: {
                     aasRepositoryOrigin: props.repositoryURL,
                     submodelDescriptors: undefined,
+                    infrastructureName: props.infrastructureName,
                 },
             });
             const url = `/viewer/${encodeBase64(props.aas.id)}`;

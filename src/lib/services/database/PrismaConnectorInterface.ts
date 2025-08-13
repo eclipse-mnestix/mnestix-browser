@@ -1,7 +1,7 @@
 import { ConnectionType } from '@prisma/client';
 import type {
-    MappedInfrastructure,
     InfrastructureWithRelations,
+    MappedInfrastructure,
 } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
 
 export interface IPrismaConnector {
@@ -13,7 +13,7 @@ export interface IPrismaConnector {
     /**
      * Retrieves connection URLs by connection type
      */
-    getConnectionDataByTypeAction(type: ConnectionType): Promise<string[]>;
+    getConnectionDataByTypeAction(type: ConnectionType): Promise<{ infrastructureName: string; url: string }[]>;
 
     /**
      * Creates a new infrastructure

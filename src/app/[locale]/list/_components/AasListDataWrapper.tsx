@@ -15,23 +15,19 @@ import { useTranslations } from 'next-intl';
 import { ApiResponseWrapperError } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { AuthenticationPrompt } from 'components/authentication/AuthenticationPrompt';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
-import { useSearchParams } from 'next/navigation';
+import { RepositoryWithInfrastructure } from 'lib/services/database/MappedTypes';
 
 type AasListDataWrapperProps = {
     repositoryUrl?: string;
     hideRepoSelection?: boolean;
 };
 
-export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }: AasListDataWrapperProps) {
+export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWrapperProps) {
     const [isLoadingList, setIsLoadingList] = useState(false);
     const [aasList, setAasList] = useState<AasListDto>();
     const [, setAasListFiltered] = useState<ListEntityDto[]>();
     const [selectedAasList, setSelectedAasList] = useState<string[]>();
-    const searchParams = useSearchParams();
-    const urlParam = searchParams?.get('url');
-    const [selectedRepository, setSelectedRepository] = useState<string | null | undefined>(
-        repositoryUrl ? repositoryUrl : urlParam,
-    );
+    const [selectedRepository, setSelectedRepository] = useState<RepositoryWithInfrastructure | null | undefined>();
     const env = useEnv();
     const t = useTranslations('pages.aasList');
     const { showError } = useShowError();
@@ -60,7 +56,7 @@ export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }:
 
         setIsLoadingList(true);
         clearResults();
-        const response = await getAasListEntities(selectedRepository!, 10, newCursor);
+        const response = await getAasListEntities(selectedRepository.url, 10, newCursor);
 
         if (response.success) {
             setAasList(response);
@@ -135,7 +131,7 @@ export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }:
         </Box>
     );
 
-    const ListContent = (props: { selectedRepository: string | null | undefined }) => {
+    const ListContent = (props: { selectedRepository: RepositoryWithInfrastructure | null | undefined }) => {
         const selectedRepository = props.selectedRepository;
         if (!selectedRepository) {
             return (
