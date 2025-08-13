@@ -6,7 +6,7 @@ import PictureTableCell from 'components/basics/listBasics/PictureTableCell';
 import { ArrowForward } from '@mui/icons-material';
 import { RoundedIconButton } from 'components/basics/Buttons';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { getThumbnailFromShell } from 'lib/services/aas-repository-service/aasRepositorySearchActions';
+import { getThumbnailFromShell } from 'lib/services/aas-repository-service/repositorySearchActions';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { useState } from 'react';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
