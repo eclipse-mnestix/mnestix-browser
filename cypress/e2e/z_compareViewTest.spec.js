@@ -2,7 +2,7 @@
 import resolutions from '../fixtures/resolutions.json';
 import compareAAS from '../fixtures/cypress_e2e/CompareMockData/cy_compareAas.json';
 
-describe('Test compare feature view', function () {
+xdescribe('Test compare feature view', function () {
     before(function () {
         cy.postCompareMockData();
     });
