@@ -53,6 +53,8 @@ export function TargetRepositories(props: TargetRepositoryProps) {
     const { handleSubmit, control, formState } = useForm();
 
     const onSubmit = (data: TargetRepositoryFormData) => {
+        data.repository = aasRepositories.find((repo) => repo.id === data.repository)?.url;
+        data.submodelRepository = submodelRepositories.find((repo) => repo.id === data.submodelRepository)?.url;
         props.onSubmitStep(data);
     };
 
