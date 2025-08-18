@@ -24,12 +24,6 @@ jest.mock('./../../../../lib/services/aas-repository-service/aasRepositorySearch
     getThumbnailFromShell: jest.fn(() => Promise.resolve({ success: true, result: { fileType: '', fileContent: '' } })),
 }));
 describe('AasListTableRow', () => {
-    const listEntry: ListEntityDto = {
-        aasId: 'aasId',
-        thumbnail: '',
-        assetId: 'assetId',
-    };
-
     const repository: RepositoryWithInfrastructure = {
         url: 'https://test-repository.de/repo',
         infrastructureName: 'Test',
@@ -48,7 +42,16 @@ describe('AasListTableRow', () => {
         );
     };
 
+    beforeEach(() => {
+        jest.resetAllMocks();
+    });
+
     it('shows the table row with content in english', async () => {
+        const listEntry1: ListEntityDto = {
+            aasId: 'aasId1',
+            thumbnail: '',
+            assetId: 'assetId',
+        };
         (nameplateDataActions.getNameplateValuesForAAS as jest.Mock).mockImplementation(
             jest.fn(() => {
                 return {
@@ -61,7 +64,7 @@ describe('AasListTableRow', () => {
         listRowWrapper(
             <AasListTableRow
                 repository={repository}
-                aasListEntry={listEntry}
+                aasListEntry={listEntry1}
                 checkBoxDisabled={() => undefined}
                 comparisonFeatureFlag={true}
                 selectedAasList={undefined}
@@ -79,6 +82,11 @@ describe('AasListTableRow', () => {
     });
 
     it('shows the table row without nameplate content', async () => {
+        const listEntry2: ListEntityDto = {
+            aasId: 'aasId2',
+            thumbnail: '',
+            assetId: 'assetId',
+        };
         (nameplateDataActions.getNameplateValuesForAAS as jest.Mock).mockImplementation(
             jest.fn(() => {
                 return {
@@ -91,7 +99,7 @@ describe('AasListTableRow', () => {
         listRowWrapper(
             <AasListTableRow
                 repository={repository}
-                aasListEntry={listEntry}
+                aasListEntry={listEntry2}
                 checkBoxDisabled={() => undefined}
                 comparisonFeatureFlag={true}
                 selectedAasList={undefined}

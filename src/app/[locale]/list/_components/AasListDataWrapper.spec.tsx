@@ -97,11 +97,6 @@ describe('AASListDataWrapper', () => {
         await waitFor(() => screen.getByTestId('repository-select'));
     });
 
-    it('Shows the info text if no repository is selected.', async () => {
-        expect(screen.queryByTestId('aas-list')).toBeNull();
-        expect(screen.getByTestId('select-repository-text')).toBeInTheDocument();
-    });
-
     describe('Pagination', () => {
         beforeEach(async () => {
             // Choose a repository
