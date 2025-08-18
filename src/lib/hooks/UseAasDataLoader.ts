@@ -114,7 +114,10 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
     }, []);
 
     useAsyncEffect(async () => {
-        if (!infrastructureName) return;
+        if (!infrastructureName) {
+            setIsLoadingSubmodels(false);
+            return;
+        }
         await fetchSubmodels(infrastructureName);
     }, [aasFromContext]);
 
