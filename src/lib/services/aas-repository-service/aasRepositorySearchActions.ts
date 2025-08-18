@@ -51,7 +51,6 @@ export async function downloadAasFromRepo(
     return response;
 }
 
-// TODO no longer working -> we need the infrastructure name to get submodels
 export async function getAasFromRepository(
     aasId: string,
     repositoryUrl: string,
