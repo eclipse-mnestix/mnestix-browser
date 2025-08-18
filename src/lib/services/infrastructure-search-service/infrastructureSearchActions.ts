@@ -12,7 +12,7 @@ import { Reference, Submodel } from 'lib/api/aas/models';
 import { RepoSearchResult } from 'lib/services/aas-repository-service/AasRepositorySearchService';
 
 /**
- * Performs a full search for an Asset Administration Shell (AAS) or AssetId across all infrastructures.
+ * Performs a full search for an Asset Administration Shell or AssetId across all infrastructures.
  * @param searchInput AasId or AssetId to search for
  */
 export async function performFullAasSearch(searchInput: string): Promise<ApiResponseWrapper<AasSearchResult>> {
@@ -20,6 +20,24 @@ export async function performFullAasSearch(searchInput: string): Promise<ApiResp
     logInfo(logger, 'performFullAasSearch', 'Initiating AAS/AssetId request', { Requested_ID: searchInput });
     const searcher = InfrastructureSearchService.create(logger);
     return searcher.searchAASInAllInfrastructures(searchInput);
+}
+
+/**
+ * Performs a search for an Asset Administration Shell or AssetId in a specific infrastructure.
+ * @param searchInput
+ * @param infrastructureName
+ */
+export async function searchAasInInfrastructure(
+    searchInput: string,
+    infrastructureName: string,
+): Promise<ApiResponseWrapper<AasSearchResult>> {
+    const logger = createRequestLogger(await headers());
+    logInfo(logger, 'searchAasInInfrastructure', 'Initiating AAS/AssetId search', {
+        Requested_ID: searchInput,
+        Infrastructure_Name: infrastructureName,
+    });
+    const searcher = InfrastructureSearchService.create(logger);
+    return searcher.searchAasInInfrastructure(searchInput, infrastructureName);
 }
 
 /**

@@ -290,6 +290,8 @@
     },
     "dashboard": {
       "aasOrAssetId": "AAS ID or Asset ID",
+      "infrastructure": "Infrastructure",
+      "searchAllInfrastructures": "Search all",
       "digitalTwinMadeEasyText": "Digital Twin made easy.",
       "enterManuallyLabel": "or enter manually",
       "findOutMoreText": "Find out more",
