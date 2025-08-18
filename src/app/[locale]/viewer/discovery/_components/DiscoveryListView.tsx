@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import AssetNotFound from 'components/basics/AssetNotFound';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import ListHeader from 'components/basics/ListHeader';
-import { performSearchAasFromAllRepositories } from 'lib/services/aas-repository-service/aasRepositorySearchActions';
+import { searchAasInAllRepositories } from 'lib/services/aas-repository-service/aasRepositorySearchActions';
 import { useTranslations } from 'next-intl';
 import { LocalizedError } from 'lib/util/LocalizedError';
 import { AasListEntry } from 'lib/types/AasListEntry';
@@ -28,7 +28,7 @@ async function getRepositoryUrlAndThumbnail(aasId: string): Promise<DiscoveryLis
     if (registrySearchResult.isSuccess)
         return { repositoryUrl: registrySearchResult.result[0].aasData?.aasRepositoryOrigin };
 
-    const allRepositorySearchResult = await performSearchAasFromAllRepositories(encodeBase64(aasId));
+    const allRepositorySearchResult = await searchAasInAllRepositories(encodeBase64(aasId));
     if (allRepositorySearchResult.isSuccess)
         return {
             repositoryUrl: allRepositorySearchResult.result[0].location,

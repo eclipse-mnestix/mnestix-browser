@@ -16,7 +16,7 @@ import { mnestixFetch } from 'lib/api/infrastructure';
 import { headers } from 'next/headers';
 import { createRequestLogger, logInfo } from 'lib/util/Logger';
 
-export async function performSearchAasFromAllRepositories(
+export async function searchAasInAllRepositories(
     searchInput: string,
 ): Promise<ApiResponseWrapper<RepoSearchResult<AssetAdministrationShell>[]>> {
     const logger = createRequestLogger(await headers());

@@ -15,15 +15,6 @@ import { AasRegistryEndpointEntryInMemory } from 'lib/api/registry-service-api/r
 import { SubmodelRepositoryService } from 'lib/services/submodel-repository-service/SubmodelRepositoryService';
 import { SubmodelRegistryService } from 'lib/services/submodel-registry-service/SubmodelRegistryService';
 
-export type InfrastructureConnection = {
-    name: string;
-    discoveryUrls: string[];
-    aasRegistryUrls: string[];
-    aasRepositoryUrls: string[];
-    submodelRepositoryUrls: string[];
-    submodelRegistryUrls: string[];
-};
-
 export type AasSearchResult = {
     redirectUrl: string;
     aas: AssetAdministrationShell | null;
@@ -142,12 +133,6 @@ export class InfrastructureSearchService {
             // multiple -> stop search and return list for the user to choose
             if (aasRepositoryResult.result.length > 1) {
                 logInfo(this.log, 'searchAASInAllInfrastructures', 'Multiple AAS found', aasRepositoryResult.result);
-                logInfo(
-                    this.log,
-                    'searchAASInAllInfrastructures',
-                    'Returning multiple AAS search',
-                    this.createMultipleAasIdResult(searchInput),
-                );
                 return wrapSuccess(this.createMultipleAasIdResult(searchInput));
             }
             // single -> return the AAS search result

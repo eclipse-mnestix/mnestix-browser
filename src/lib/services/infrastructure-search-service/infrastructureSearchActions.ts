@@ -11,6 +11,10 @@ import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { Reference, Submodel } from 'lib/api/aas/models';
 import { RepoSearchResult } from 'lib/services/aas-repository-service/AasRepositorySearchService';
 
+/**
+ * Performs a full search for an Asset Administration Shell (AAS) or AssetId across all infrastructures.
+ * @param searchInput AasId or AssetId to search for
+ */
 export async function performFullAasSearch(searchInput: string): Promise<ApiResponseWrapper<AasSearchResult>> {
     const logger = createRequestLogger(await headers());
     logInfo(logger, 'performFullAasSearch', 'Initiating AAS/AssetId request', { Requested_ID: searchInput });
@@ -18,6 +22,12 @@ export async function performFullAasSearch(searchInput: string): Promise<ApiResp
     return searcher.searchAASInAllInfrastructures(searchInput);
 }
 
+/**
+ * Performs a search for a Submodel in a specific infrastructure.
+ * @param submodelReference
+ * @param infrastructureName
+ * @param submodelDescriptor
+ */
 export async function performSubmodelSearch(
     submodelReference: Reference,
     infrastructureName: string,

@@ -1,5 +1,6 @@
 import { Prisma } from '@prisma/client';
 
+// TODO move this file to database/service folder
 export type InfrastructureWithRelations = Prisma.MnestixInfrastructureGetPayload<{
     include: {
         connections: {

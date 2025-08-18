@@ -5,9 +5,9 @@ import { ApiResponseWrapper, wrapErrorCode } from 'lib/util/apiResponseWrapper/a
 import { IAssetAdministrationShellRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import logger, { logResponseDebug } from 'lib/util/Logger';
-import { InfrastructureConnection } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import { getInfrastructuresIncludingDefault } from 'lib/services/database/connectionServerActions';
 import { fetchFromMultipleEndpoints } from 'lib/services/shared/parallelFetch';
+import { InfrastructureConnection } from 'lib/services/database/MappedTypes';
 
 export type RepoSearchResult<T> = {
     searchResult: T;
@@ -58,11 +58,11 @@ export class AasRepositorySearchService {
         return this.searchAASInMultipleRepositories(aasId, infrastructures);
     }
 
-    async getFromAllAasRepos<T>(
+    async getFromAllAasRepos(
         infrastructures: InfrastructureConnection[],
-        kernel: (url: string) => Promise<ApiResponseWrapper<T>>,
+        kernel: (url: string) => Promise<ApiResponseWrapper<AssetAdministrationShell>>,
         errorMsg: string,
-    ): Promise<ApiResponseWrapper<RepoSearchResult<T>[]>> {
+    ): Promise<ApiResponseWrapper<RepoSearchResult<AssetAdministrationShell>[]>> {
         const urls = infrastructures.flatMap((infra) =>
             infra.aasRepositoryUrls.map((url) => ({
                 url,
@@ -70,7 +70,7 @@ export class AasRepositorySearchService {
             })),
         );
 
-        return fetchFromMultipleEndpoints<T, RepoSearchResult<T>>(
+        return fetchFromMultipleEndpoints<AssetAdministrationShell, RepoSearchResult<AssetAdministrationShell>>(
             urls,
             kernel,
             errorMsg,

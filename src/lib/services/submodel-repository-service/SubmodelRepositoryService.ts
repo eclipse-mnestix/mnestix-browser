@@ -6,7 +6,8 @@ import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import logger, { logResponseDebug } from 'lib/util/Logger';
 import { SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
-import { InfrastructureConnection } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
+
+import { InfrastructureConnection } from 'lib/services/database/MappedTypes';
 
 export class SubmodelRepositoryService {
     private constructor(
@@ -63,7 +64,7 @@ export class SubmodelRepositoryService {
         );
     }
 
-    async getFirstFromAllRepos<Submodel>(
+    async getFirstFromAllRepos(
         basePathUrls: string[],
         kernel: (url: string) => Promise<ApiResponseWrapper<Submodel>>,
         errorMsg: string,

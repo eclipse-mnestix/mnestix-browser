@@ -6,11 +6,7 @@ import { encodeBase64 } from 'lib/util/Base64Util';
 import { IRegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApiInterface';
 import { RegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApi';
 import { mnestixFetch } from 'lib/api/infrastructure';
-import {
-    AasData,
-    AasSearchResult,
-    InfrastructureConnection,
-} from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
+import { AasData, AasSearchResult } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import { getInfrastructuresIncludingDefault } from 'lib/services/database/connectionServerActions';
 import { fetchFromMultipleEndpoints } from 'lib/services/shared/parallelFetch';
 import { AssetAdministrationShellDescriptor, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
@@ -18,6 +14,7 @@ import {
     AasRegistryEndpointEntryInMemory,
     RegistryServiceApiInMemory,
 } from 'lib/api/registry-service-api/registryServiceApiInMemory';
+import { InfrastructureConnection } from 'lib/services/database/MappedTypes';
 
 export type RegistrySearchResult = {
     endpoints: URL[];

@@ -2,11 +2,10 @@
 
 import { ConnectionType } from '@prisma/client';
 import { PrismaConnector } from 'lib/services/database/PrismaConnector';
-import { InfrastructureConnection } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import type { MappedInfrastructure } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
 import { envs } from 'lib/env/MnestixEnv';
 import { ConnectionTypeEnum, getTypeAction } from 'lib/services/database/ConnectionTypeEnum';
-import { RepositoryWithInfrastructure } from 'lib/services/database/MappedTypes';
+import { InfrastructureConnection, RepositoryWithInfrastructure } from 'lib/services/database/MappedTypes';
 
 export async function getInfrastructuresAction() {
     const prismaConnector = PrismaConnector.create();
@@ -41,6 +40,11 @@ export async function fetchAllInfrastructureConnectionsFromDb(): Promise<Infrast
         submodelRegistryUrls: infra.connections.flatMap((conn) =>
             conn.types.filter((t) => t.type.typeName === 'SUBMODEL_REGISTRY').map(() => conn.url),
         ),
+        infrastructureSecurity: {
+            securityType: infra.securityType?.typeName || undefined,
+            securitySettingsHeaders: infra.securitySettingsHeaders || undefined,
+            securitySettingsProxies: infra.securitySettingsProxies || undefined,
+        },
     }));
 }
 
