@@ -5,22 +5,16 @@ import { useTranslations } from 'next-intl';
 import { useTheme } from '@mui/material/styles';
 import { useEnv } from 'app/EnvProvider';
 
-import { CONNECTION_TYPES } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureEnumUtil';
+import {
+    CONNECTION_TYPES,
+    ENV_KEY_BY_CONNECTION_ID,
+} from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureEnumUtil';
 
 export function DefaultInfrastructure() {
     const [open, setOpen] = useState(true);
     const t = useTranslations('pages.settings.infrastructure');
     const theme = useTheme();
     const env = useEnv();
-
-    const ENV_KEY_BY_CONNECTION_ID: Record<string, keyof ReturnType<typeof useEnv>> = {
-        AAS_REPOSITORY: 'AAS_REPO_API_URL',
-        AAS_REGISTRY: 'REGISTRY_API_URL',
-        SUBMODEL_REPOSITORY: 'SUBMODEL_REPO_API_URL',
-        SUBMODEL_REGISTRY: 'SUBMODEL_REGISTRY_API_URL',
-        DISCOVERY_SERVICE: 'DISCOVERY_API_URL',
-        CONCEPT_DESCRIPTION: 'CONCEPT_DESCRIPTION_REPO_API_URL',
-    };
 
     return (
         <>
@@ -64,7 +58,7 @@ export function DefaultInfrastructure() {
                                 <Typography sx={{ minWidth: 320 }} variant="h5">
                                     {type.label}
                                 </Typography>
-                                <Typography>{env[ENV_KEY_BY_CONNECTION_ID[type.id]]}</Typography>
+                                <Typography>{env[ENV_KEY_BY_CONNECTION_ID[type.id]] || '-'}</Typography>
                             </Box>
                         ))}
                     </Box>
