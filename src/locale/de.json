@@ -383,7 +383,8 @@
           "connectionTypes": "Verbindungsinterface-Typen",
           "connectionTypesRequired": "Mindestens ein Verbindungsinterface-Typ muss ausgewählt werden",
           "save": "Speichern",
-          "nameAlreadyExists": "Eine Infrastruktur mit diesem Namen existiert bereits"
+          "nameAlreadyExists": "Eine Infrastruktur mit diesem Namen existiert bereits",
+          "defaultInfrastructureReadonly": "Die Default Infrastruktur kann nur im Deployment über die Environment Variablen geändert werden. Bitte kontaktieren Sie Ihren Administrator um Änderungen vorzunehmen."
         },
         "aasRepository": {},
         "submodelRepository": {},

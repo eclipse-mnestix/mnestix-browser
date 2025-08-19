@@ -382,7 +382,8 @@
           "delete": "Eliminar",
           "connectionTypes": "Tipos de interfaz de conexión",
           "connectionTypesRequired": "Se debe seleccionar al menos un tipo de interfaz de conexión",
-          "save": "Guardar"
+          "save": "Guardar",
+          "defaultInfrastructureReadonly": "La infraestructura predeterminada solo se puede modificar en la implementación mediante las variables de entorno. Póngase en contacto con su administrador para realizar cambios."
         },
         "aasRepository": {},
         "submodelRepository": {},
