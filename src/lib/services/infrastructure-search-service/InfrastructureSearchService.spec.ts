@@ -52,7 +52,7 @@ describe('Full Aas Search happy paths', () => {
         expect(tracker.getData()).toHaveLength(0);
     });
 
-    it('returns details of aas when exactly one aasId for a given assetId and it is registered in the registry', async () => {
+    it('returns redirect to aas when exactly one aasId for a given assetId and it is registered in a registry', async () => {
         const aasId = 'dummy aasId';
         const searchString = 'irrelevant assetId';
         const aas = createDummyAas(aasId);
@@ -69,7 +69,7 @@ describe('Full Aas Search happy paths', () => {
         expect(search.result!.aas?.id).toEqual(aas.id);
     });
 
-    it('returns details of aas when exactly one aasId for a given assetId and it is not registered in the registry but saved in default repository', async () => {
+    it('returns redirect to aas when exactly one aasId for a given assetId and it is not registered in the registry but saved in a repository', async () => {
         const aasId = 'dummy aasId';
         const searchString = 'irrelevant assetId';
         const testUrl = 'https://repository1.com';
@@ -86,7 +86,7 @@ describe('Full Aas Search happy paths', () => {
         expect(search.result!.aas?.id).toEqual(aas.id);
     });
 
-    it('returns details of aas when discovery returns nothing and the aas is registered in the registry', async () => {
+    it('returns redirect to aas when discovery returns nothing and the aas is registered in the registry', async () => {
         const aasId = 'dummy aasId';
         const searchString = aasId;
         const aas = createDummyAas(aasId);
@@ -102,7 +102,7 @@ describe('Full Aas Search happy paths', () => {
         expect(search.result!.aas?.id).toEqual(aas.id);
     });
 
-    it('returns aas for given aasId from default repository', async () => {
+    it('returns redirect to aas for given aasId from repository', async () => {
         const aasId = 'dummy aasId';
         const searchString = aasId;
         const testUrl = 'https://repository1.com';
@@ -118,23 +118,7 @@ describe('Full Aas Search happy paths', () => {
         expect(search.result!.aas?.id).toEqual(aas.id);
     });
 
-    it('returns aas for given aasId from foreign repository if only one found', async () => {
-        const aasId = 'dummy aasId';
-        const searchString = aasId;
-        const testUrl = 'https://repository1.com';
-        const aas = createDummyAas(aasId);
-        const searcher = InfrastructureSearchService.createNull({
-            aasInRepositories: [{ searchResult: aas, location: testUrl }],
-        });
-
-        const search = await searcher.searchAASInAllInfrastructures(searchString);
-
-        expect(search.isSuccess).toBeTruthy();
-        expect(search.result!.redirectUrl).toBe('/viewer/' + encodeBase64(aasId));
-        expect(search.result!.aas?.id).toEqual(aas.id);
-    });
-
-    it('returns aas for given aasId from foreign repository if two are found', async () => {
+    it('returns redirect to list for given aasId if two aas are found', async () => {
         jest.clearAllMocks();
         (getInfrastructuresIncludingDefault as jest.Mock).mockResolvedValue([
             {
@@ -152,6 +136,30 @@ describe('Full Aas Search happy paths', () => {
                 { searchResult: createDummyAas(aasId), location: 'https://testrepo1.com' },
                 { searchResult: createDummyAas(aasId), location: 'https://testrepo2.com' },
             ],
+        });
+
+        const search = await searcher.searchAASInAllInfrastructures(searchString);
+
+        expect(search.isSuccess).toBeTruthy();
+        expect(search.result!.redirectUrl).toBe('/viewer/registry?aasId=' + searchString);
+    });
+
+    it('returns redirect to registry list for given aasId if two aas are found', async () => {
+        jest.clearAllMocks();
+        (getInfrastructuresIncludingDefault as jest.Mock).mockResolvedValue([
+            {
+                name: 'Test Infrastructure',
+                discoveryUrls: [],
+                aasRegistryUrls: ['https://registry1.com', 'https://registry2.com'],
+                aasRepositoryUrls: [],
+            },
+        ]);
+
+        const aasId = 'dummy aasId';
+        const searchString = aasId;
+        const searcher = InfrastructureSearchService.createNull({
+            aasRegistryDescriptors: [createDummyShellDescriptor(AAS_ENDPOINT, aasId)],
+            aasRegistryEndpoints: [{ endpoint: AAS_ENDPOINT, aas: createDummyAas(aasId) }],
         });
 
         const search = await searcher.searchAASInAllInfrastructures(searchString);
