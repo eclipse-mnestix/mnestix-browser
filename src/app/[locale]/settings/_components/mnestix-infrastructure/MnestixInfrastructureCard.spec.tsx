@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { act } from 'react';
 import '@testing-library/jest-dom';
+import { mockInfrastructures } from './test-data/infrastructures';
 
 import MnestixInfrastructureCard from './MnestixInfrastructureCard';
 
@@ -27,6 +28,10 @@ jest.mock('./../../../../../lib/services/database/connectionServerActions', () =
 import { useNotificationSpawner } from './../../../../../lib/hooks/UseNotificationSpawner';
 jest.mock('./../../../../../lib/hooks/UseNotificationSpawner');
 
+jest.mock('./InfrastructureDeleteDialog', () => ({
+    InfrastructureDeleteDialog: jest.fn(() => <div data-testid="infrastructure-delete-dialog">Infrastructure Delete Dialog</div>),
+}));
+
 jest.mock('next-intl', () => ({
     useTranslations: (scope?: string) => (key: string) => (scope ? `${scope}.${key}` : key),
 }));
@@ -35,74 +40,17 @@ jest.mock('./../../../../../components/basics/CenteredLoadingSpinner', () => ({
     CenteredLoadingSpinner: () => <div data-testid="loading-spinner">Loading...</div>,
 }));
 
-// Mock infrastructure data that matches the expected format from getInfrastructuresAction
-const mockInfrastructures = [
-    {
-        id: 'infra-1',
-        name: 'Test Infrastructure 1',
-        logo: 'https://example.com/logo1.png',
-        securityType: {
-            id: 'sec-1',
-            typeName: 'NONE',
-        },
-        connections: [
-            {
-                id: 'conn-1',
-                url: 'https://api.example.com',
-                types: [
-                    {
-                        type: {
-                            id: 'type-1',
-                            typeName: 'AAS_REPOSITORY',
-                        },
-                    },
-                ],
-            },
-        ],
-        securitySettingsHeaders: [],
-        securitySettingsProxies: [],
-    },
-    {
-        id: 'infra-2',
-        name: 'Test Infrastructure 2',
-        logo: null,
-        securityType: {
-            id: 'sec-2',
-            typeName: 'HEADER',
-        },
-        connections: [
-            {
-                id: 'conn-2',
-                url: 'https://api2.example.com',
-                types: [
-                    {
-                        type: {
-                            id: 'type-2',
-                            typeName: 'AAS_REGISTRY',
-                        },
-                    },
-                ],
-            },
-        ],
-        securitySettingsHeaders: [
-            {
-                id: 'header-1',
-                headerName: 'Authorization',
-                headerValue: 'Bearer token',
-            },
-        ],
-        securitySettingsProxies: [],
-    },
-];
+
 
 const messages = {
     getInfrastructuresAction_error: 'Failed to fetch infrastructures',
 };
 
-function setupMocks() {
+function setupMocks(infrastructures: typeof mockInfrastructures = mockInfrastructures) {
     (useNotificationSpawner as jest.Mock).mockReturnValue({ spawn: jest.fn() });
-    (getInfrastructuresAction as jest.Mock).mockResolvedValue(mockInfrastructures);
+    (getInfrastructuresAction as jest.Mock).mockResolvedValue(infrastructures);
 }
+
 
 function setupErrorMocks() {
     (useNotificationSpawner as jest.Mock).mockReturnValue({ spawn: jest.fn() });
@@ -218,7 +166,7 @@ describe('MnestixInfrastructureCard', () => {
 
         // Check if the infrastructure delete dialog was opened with correct infrastructure ID
         await waitFor(() => {
-            expect(screen.getByTestId('delete-dialog')).toBeInTheDocument();
+            expect(screen.getByTestId('infrastructure-delete-dialog')).toBeInTheDocument();
             // Delete should not have been called at all
             expect(deleteInfrastructureAction).toHaveBeenCalledTimes(0);
         });
@@ -238,4 +186,49 @@ describe('MnestixInfrastructureCard', () => {
             );
         });
     });
+
+    it('disables edit and delete buttons when creating new infrastructure', async () => {
+        // Test that all edit/delete buttons are disabled when isCreatingNew=true
+        setupMocks();
+        await renderMnestixInfrastructureCard();
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByLabelText('Create new infrastructure'));
+            // Verify that all edit/delete buttons are disabled
+        });
+
+        expect(screen.getByLabelText('Edit Test Infrastructure 1')).toBeDisabled();
+        expect(screen.getByLabelText('Edit Test Infrastructure 2')).toBeDisabled();
+        expect(screen.getByLabelText('Delete Test Infrastructure 1')).toBeDisabled();
+        expect(screen.getByLabelText('Delete Test Infrastructure 2')).toBeDisabled();
+    });
+
+    it('disables delete buttons and create button when editing infrastructure', async () => {
+        // Test that delete buttons and create button are disabled when editingInfrastructure is set
+        setupMocks();
+        await renderMnestixInfrastructureCard();
+
+        // Click on Edit Test Infrastructure 1
+        await waitFor(() => {
+            fireEvent.click(screen.getByLabelText('Edit Test Infrastructure 1'));
+        });
+
+        expect(screen.getByTestId('infrastructure-form')).toBeInTheDocument();
+        // Verify that the create button is disabled
+        expect(screen.getByLabelText('Create new infrastructure')).toBeDisabled();
+        // Verify that the delete button for Test Infrastructure 1 is disabled
+        expect(screen.getByLabelText('Delete Test Infrastructure 1')).toBeDisabled();
+        // Verify that the delete button for Test Infrastructure 2 is disabled
+        expect(screen.getByLabelText('Delete Test Infrastructure 2')).toBeDisabled();
+    });
+    it('shows no infrastructures message when list is empty', async () => {
+        // Mock getInfrastructuresAction to return []
+        setupMocks([]);
+        await renderMnestixInfrastructureCard();
+        // Verify "noInfrastructuresFound" message is displayed
+        await waitFor(() => {
+            expect(screen.getByText('pages.settings.infrastructure.noInfrastructuresFound')).toBeInTheDocument();
+        });
+    });
+
 });
