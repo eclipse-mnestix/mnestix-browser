@@ -1,11 +1,12 @@
 import { expect } from '@jest/globals';
-import { AssetAdministrationShellDescriptor } from 'lib/types/registryServiceTypes';
-import { AssetAdministrationShell } from 'lib/api/aas/models';
+import { AssetAdministrationShellDescriptor, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
+import { AssetAdministrationShell, Submodel } from 'lib/api/aas/models';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { Log } from 'lib/util/Log';
 import testData from 'lib/services/infrastructure-search-service/TestAas.data.json';
 import { InfrastructureSearchService } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import { getInfrastructuresIncludingDefault } from 'lib/services/database/connectionServerActions';
+import { createTestSubmodel, createTestSubmodelRef } from 'test-utils/TestUtils';
 
 jest.mock('./../database/connectionServerActions');
 
@@ -200,6 +201,95 @@ describe('Full Aas Search edge cases', () => {
         });
 
         await assertThatFunctionThrows(searcher, searchString);
+    });
+});
+
+describe('Submodel Search happy paths', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+        (getInfrastructuresIncludingDefault as jest.Mock).mockResolvedValue([
+            {
+                name: 'Test Infrastructure',
+                submodelRepositoryUrls: ['https://repository1.com'],
+                submodelRegistryUrls: ['https://registry1.com'],
+            },
+        ]);
+    });
+
+    it('returns submodel if submodel was found in a submodel repository', async () => {
+        const submodelRef = createTestSubmodelRef('https://test.de/submodel1');
+        const submodel: Submodel = createTestSubmodel('https://test.de/submodel1', 'submodel1');
+
+        const testUrl = 'https://repository1.com';
+        const searcher = InfrastructureSearchService.createNull({
+            submodelsInRepositories: [{ searchResult: submodel, location: testUrl }],
+        });
+
+        const search = await searcher.searchSubmodelInInfrastructure(submodelRef, 'Test Infrastructure');
+
+        expect(search.isSuccess).toBeTruthy();
+        expect(search.result!.searchResult.id).toBe(submodelRef.keys[0].value);
+    });
+
+    it('returns submodel for given submodel descriptor', async () => {
+        const submodelRef = createTestSubmodelRef('https://test.de/submodel1');
+        const submodel: Submodel = createTestSubmodel('https://test.de/submodel1', 'submodel1');
+
+        const submodelDescriptor: SubmodelDescriptor = {
+            endpoints: [
+                {
+                    protocolInformation: { href: 'https://test.de/submodel1/endpoint' },
+                    interface: 'AAS-3.0',
+                },
+            ],
+            id: submodel.id,
+        };
+
+        const searcher = InfrastructureSearchService.createNull({
+            submodelRegistryDescriptors: [submodelDescriptor],
+        });
+        const search = await searcher.searchSubmodelInInfrastructure(
+            submodelRef,
+            'Test Infrastructure',
+            submodelDescriptor,
+        );
+
+        expect(search.isSuccess).toBeTruthy();
+    });
+
+    it('returns submodel if submodel was found in a submodel registry', async () => {
+        const submodelRef = createTestSubmodelRef('https://test.de/submodel1');
+        const submodel: Submodel = createTestSubmodel('https://test.de/submodel1', 'submodel1');
+
+        const submodelDescriptor: SubmodelDescriptor = {
+            endpoints: [
+                {
+                    protocolInformation: { href: 'https://test.de/submodel1/endpoint' },
+                    interface: 'AAS-3.0',
+                },
+            ],
+            id: submodel.id,
+        };
+
+        const searcher = InfrastructureSearchService.createNull({
+            submodelRegistryDescriptors: [submodelDescriptor],
+        });
+        const search = await searcher.searchSubmodelInInfrastructure(submodelRef, 'Test Infrastructure');
+
+        expect(search.isSuccess).toBeTruthy();
+        expect(search.result!.searchResult.id).toBe(submodelRef.keys[0].value);
+    });
+
+    it('returns an error when submodel was not found in any repository or registry', async () => {
+        const submodelRef = createTestSubmodelRef('https://test.de/submodel1');
+
+        const searcher = InfrastructureSearchService.createNull({});
+        const search = await searcher.searchSubmodelInInfrastructure(submodelRef, 'Test Infrastructure');
+
+        expect(search.isSuccess).toBeFalsy();
+        if (!search.isSuccess) {
+            expect(search.errorCode).toContain('NOT_FOUND');
+        }
     });
 });
 
