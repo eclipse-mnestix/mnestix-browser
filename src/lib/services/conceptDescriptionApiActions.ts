@@ -58,11 +58,11 @@ export async function getConceptDescriptionById(conceptDescriptionId: string, in
         const conceptDescriptionApi = ConceptDescriptionApi.create(url, mnestixFetch());
         try {
             const response = await conceptDescriptionApi.getConceptDescriptionById(conceptDescriptionId); 
-                if (response.isSuccess) {
-                    return response;
-                } else {
-                    logResponseDebug(logger, 'getConceptDescriptionById', `Couldn't find Concept Description ${conceptDescriptionId} in ${url}`, response);
-                }
+            if (response.isSuccess) {
+                return response;
+            } else {
+                logResponseDebug(logger, 'getConceptDescriptionById', `Couldn't find Concept Description ${conceptDescriptionId} in ${url}`, response);
+            }
         } catch (error) {
             logInfo(logger, 'getConceptDescriptionById', `Failed to fetch Concept Description from ${url}`, error);
         } 
