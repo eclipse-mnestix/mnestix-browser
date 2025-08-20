@@ -49,7 +49,6 @@ export class ConceptDescriptionRepositoryService {
             const conceptDescriptionApi = this.getConceptDescriptionRepositoryClient(url);
             try {
                 const response = await conceptDescriptionApi.getConceptDescriptionById(conceptDescriptionId);
-                console.error(response);
                 if (response.isSuccess) {
                     return response;
                 } else {
