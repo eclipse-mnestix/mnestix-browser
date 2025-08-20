@@ -6,8 +6,8 @@ import { Log } from 'lib/util/Log';
 import { InfrastructureSearchService } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import { getInfrastructuresIncludingDefault } from 'lib/services/database/connectionServerActions';
 import {
-    createDummyAas,
-    createDummyShellDescriptor,
+    createTestAas,
+    createTestShellDescriptor,
     createTestSubmodel,
     createTestSubmodelRef,
 } from 'test-utils/TestUtils';
@@ -58,10 +58,10 @@ describe('Full Aas Search happy paths', () => {
     it('returns redirect to aas when exactly one aasId for a given assetId and it is registered in a registry', async () => {
         const aasId = 'dummy aasId';
         const searchString = 'irrelevant assetId';
-        const aas = createDummyAas(aasId);
+        const aas = createTestAas(aasId);
         const searcher = InfrastructureSearchService.createNull({
             discoveryEntries: [{ assetId: searchString, aasId: aasId }],
-            aasRegistryDescriptors: [createDummyShellDescriptor(AAS_ENDPOINT, aasId)],
+            aasRegistryDescriptors: [createTestShellDescriptor(AAS_ENDPOINT, aasId)],
             aasRegistryEndpoints: [{ endpoint: AAS_ENDPOINT, aas: aas }],
         });
 
@@ -76,7 +76,7 @@ describe('Full Aas Search happy paths', () => {
         const aasId = 'dummy aasId';
         const searchString = 'irrelevant assetId';
         const testUrl = 'https://repository1.com';
-        const aas = createDummyAas(aasId);
+        const aas = createTestAas(aasId);
         const searcher = InfrastructureSearchService.createNull({
             discoveryEntries: [{ assetId: searchString, aasId: aasId }],
             aasInRepositories: [{ searchResult: aas, location: testUrl }],
@@ -92,9 +92,9 @@ describe('Full Aas Search happy paths', () => {
     it('returns redirect to aas when discovery returns nothing and the aas is registered in the registry', async () => {
         const aasId = 'dummy aasId';
         const searchString = aasId;
-        const aas = createDummyAas(aasId);
+        const aas = createTestAas(aasId);
         const searcher = InfrastructureSearchService.createNull({
-            aasRegistryDescriptors: [createDummyShellDescriptor(AAS_ENDPOINT, aasId)],
+            aasRegistryDescriptors: [createTestShellDescriptor(AAS_ENDPOINT, aasId)],
             aasRegistryEndpoints: [{ endpoint: AAS_ENDPOINT, aas: aas }],
         });
 
@@ -109,7 +109,7 @@ describe('Full Aas Search happy paths', () => {
         const aasId = 'dummy aasId';
         const searchString = aasId;
         const testUrl = 'https://repository1.com';
-        const aas = createDummyAas(aasId);
+        const aas = createTestAas(aasId);
         const searcher = InfrastructureSearchService.createNull({
             aasInRepositories: [{ searchResult: aas, location: testUrl }],
         });
@@ -136,8 +136,8 @@ describe('Full Aas Search happy paths', () => {
         const searchString = aasId;
         const searcher = InfrastructureSearchService.createNull({
             aasInRepositories: [
-                { searchResult: createDummyAas(aasId), location: 'https://testrepo1.com' },
-                { searchResult: createDummyAas(aasId), location: 'https://testrepo2.com' },
+                { searchResult: createTestAas(aasId), location: 'https://testrepo1.com' },
+                { searchResult: createTestAas(aasId), location: 'https://testrepo2.com' },
             ],
         });
 
@@ -161,8 +161,8 @@ describe('Full Aas Search happy paths', () => {
         const aasId = 'dummy aasId';
         const searchString = aasId;
         const searcher = InfrastructureSearchService.createNull({
-            aasRegistryDescriptors: [createDummyShellDescriptor(AAS_ENDPOINT, aasId)],
-            aasRegistryEndpoints: [{ endpoint: AAS_ENDPOINT, aas: createDummyAas(aasId) }],
+            aasRegistryDescriptors: [createTestShellDescriptor(AAS_ENDPOINT, aasId)],
+            aasRegistryEndpoints: [{ endpoint: AAS_ENDPOINT, aas: createTestAas(aasId) }],
         });
 
         const search = await searcher.searchAASInAllInfrastructures(searchString);
@@ -185,10 +185,10 @@ describe('Full Aas Search edge cases', () => {
         const aasId = 'irrelevantAasId';
         const searcher = InfrastructureSearchService.createNull({
             discoveryEntries: [{ assetId: searchString, aasId: aasId }],
-            aasRegistryDescriptors: [createDummyShellDescriptor(AAS_ENDPOINT, aasId)],
+            aasRegistryDescriptors: [createTestShellDescriptor(AAS_ENDPOINT, aasId)],
             aasInRepositories: [
                 {
-                    searchResult: createDummyAas(aasId),
+                    searchResult: createTestAas(aasId),
                     location: AAS_ENDPOINT + 'wrong path',
                 },
             ],
@@ -202,10 +202,10 @@ describe('Full Aas Search edge cases', () => {
         const aasId = 'irrelevantAasId';
         const searcher = InfrastructureSearchService.createNull({
             discoveryEntries: [{ assetId: 'wrong asset Id', aasId: aasId }],
-            aasRegistryDescriptors: [createDummyShellDescriptor(AAS_ENDPOINT, aasId)],
+            aasRegistryDescriptors: [createTestShellDescriptor(AAS_ENDPOINT, aasId)],
             aasInRepositories: [
                 {
-                    searchResult: createDummyAas(aasId),
+                    searchResult: createTestAas(aasId),
                     location: AAS_ENDPOINT + 'wrong path',
                 },
             ],

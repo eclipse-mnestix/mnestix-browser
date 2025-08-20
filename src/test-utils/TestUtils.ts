@@ -1,5 +1,5 @@
 import { AssetAdministrationShell, Reference, Submodel } from 'lib/api/aas/models';
-import { AssetAdministrationShellDescriptor } from 'lib/types/registryServiceTypes';
+import { AssetAdministrationShellDescriptor, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import testData from 'lib/services/infrastructure-search-service/TestAas.data.json';
 
 export enum ServiceReachable {
@@ -32,13 +32,13 @@ export function createTestSubmodelRef(id: string) {
 }
 
 const assetAdministrationShells = testData as unknown as AssetAdministrationShell;
-export function createDummyAas(id: string = 'irrelevant AasId') {
+export function createTestAas(id: string = 'irrelevant AasId') {
     const aas = assetAdministrationShells;
     aas.id = id;
     return aas;
 }
 
-export function createDummyShellDescriptor(href: URL, id: string): AssetAdministrationShellDescriptor {
+export function createTestShellDescriptor(href: URL, id: string): AssetAdministrationShellDescriptor {
     return {
         endpoints: [
             {
@@ -49,5 +49,44 @@ export function createDummyShellDescriptor(href: URL, id: string): AssetAdminist
             },
         ],
         id: id,
+    };
+}
+
+export function createTestSubmodelDescriptor(href: URL, id: string): SubmodelDescriptor {
+    return {
+        endpoints: [
+            {
+                interface: 'SUBMODEL',
+                protocolInformation: {
+                    href: href.toString(),
+                },
+            },
+        ],
+        id: id,
+    };
+}
+
+export function createTestInfrastructure({
+    name = 'TestInfra',
+    discoveryUrls = [],
+    aasRegistryUrls = [],
+    aasRepositoryUrls = [],
+    submodelRegistryUrls = [],
+    submodelRepositoryUrls = [],
+}: {
+    name?: string;
+    discoveryUrls?: string[];
+    aasRegistryUrls?: string[];
+    aasRepositoryUrls?: string[];
+    submodelRegistryUrls?: string[];
+    submodelRepositoryUrls?: string[];
+} = {}) {
+    return {
+        name,
+        discoveryUrls,
+        aasRegistryUrls,
+        aasRepositoryUrls,
+        submodelRegistryUrls,
+        submodelRepositoryUrls,
     };
 }

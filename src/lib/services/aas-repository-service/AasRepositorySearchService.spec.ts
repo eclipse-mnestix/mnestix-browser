@@ -1,5 +1,5 @@
 import { AasRepositorySearchService } from 'lib/services/aas-repository-service/AasRepositorySearchService';
-import { createDummyAas } from 'test-utils/TestUtils';
+import { createTestAas, createTestInfrastructure } from 'test-utils/TestUtils';
 import { getInfrastructuresIncludingDefault } from 'lib/services/database/connectionServerActions';
 import { encodeBase64 } from 'lib/util/Base64Util';
 
@@ -21,7 +21,7 @@ describe('AasRepositorySearchService', () => {
         it('returns the aas as result if found in one repository', async () => {
             const aasId = 'testAasId';
             const mockSearchResult = {
-                searchResult: createDummyAas(aasId),
+                searchResult: createTestAas(aasId),
                 location: 'https://testrepo1.com',
                 infrastructureName: 'Test Infrastructure',
             };
@@ -38,12 +38,12 @@ describe('AasRepositorySearchService', () => {
         it('returns a list of aas as result if found in multiple repositories', async () => {
             const aasId = 'testAasId';
             const mockSearchResult1 = {
-                searchResult: createDummyAas(aasId),
+                searchResult: createTestAas(aasId),
                 location: 'https://testrepo1.com',
                 infrastructureName: 'Test Infrastructure',
             };
             const mockSearchResult2 = {
-                searchResult: createDummyAas(aasId),
+                searchResult: createTestAas(aasId),
                 location: 'https://testrepo2.com',
                 infrastructureName: 'Test Infrastructure',
             };
@@ -63,22 +63,8 @@ describe('AasRepositorySearchService', () => {
     });
     describe('two infrastructures', () => {
         const infrastructures = [
-            {
-                name: 'Test Infrastructure 1',
-                aasRepositoryUrls: ['https://testrepo1.com'],
-                discoveryUrls: [],
-                aasRegistryUrls: [],
-                submodelRepositoryUrls: [],
-                submodelRegistryUrls: [],
-            },
-            {
-                name: 'Test Infrastructure 2',
-                aasRepositoryUrls: ['https://testrepo2.com'],
-                discoveryUrls: [],
-                aasRegistryUrls: [],
-                submodelRepositoryUrls: [],
-                submodelRegistryUrls: [],
-            },
+            createTestInfrastructure({ name: 'Test Infrastructure 1', aasRepositoryUrls: ['https://testrepo1.com'] }),
+            createTestInfrastructure({ name: 'Test Infrastructure 2', aasRepositoryUrls: ['https://testrepo2.com'] }),
         ];
 
         beforeEach(() => {
@@ -89,7 +75,7 @@ describe('AasRepositorySearchService', () => {
         it('returns the aas as result if found in one repository across multiple infrastructures', async () => {
             const aasId = 'testAasId';
             const mockSearchResult = {
-                searchResult: createDummyAas(aasId),
+                searchResult: createTestAas(aasId),
                 location: 'https://testrepo1.com',
                 infrastructureName: 'Test Infrastructure 1',
             };
