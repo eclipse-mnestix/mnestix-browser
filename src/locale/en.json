@@ -290,6 +290,8 @@
     },
     "dashboard": {
       "aasOrAssetId": "AAS ID or Asset ID",
+      "infrastructure": "Infrastructure",
+      "searchAllInfrastructures": "Search all",
       "digitalTwinMadeEasyText": "Digital Twin made easy.",
       "enterManuallyLabel": "or enter manually",
       "findOutMoreText": "Find out more",
@@ -381,7 +383,8 @@
           "connectionTypes": "Connection Interface Types",
           "connectionTypesRequired": "At least one connection interface type must be selected",
           "save": "Save",
-          "nameAlreadyExists": "An infrastructure with this name already exists"
+          "nameAlreadyExists": "An infrastructure with this name already exists",
+          "defaultInfrastructureReadonly": "The default infrastructure can only be changed in the deployment via the environment variables. Please contact your administrator to make changes."
         },
         "subtitle": "Define which infrastructures should be used.",
         "title": "Infrastructures",

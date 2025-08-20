@@ -6,23 +6,20 @@ import { encodeBase64 } from 'lib/util/Base64Util';
 import { IRegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApiInterface';
 import { RegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApi';
 import { mnestixFetch } from 'lib/api/infrastructure';
-import {
-    AasData,
-    AasSearchResult,
-    InfrastructureConnection,
-} from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
-import { getInfrastructures } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
+import { AasData, AasSearchResult } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
+import { getInfrastructuresIncludingDefault } from 'lib/services/database/connectionServerActions';
 import { fetchFromMultipleEndpoints } from 'lib/services/shared/parallelFetch';
 import { AssetAdministrationShellDescriptor, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import {
     AasRegistryEndpointEntryInMemory,
     RegistryServiceApiInMemory,
 } from 'lib/api/registry-service-api/registryServiceApiInMemory';
+import { InfrastructureConnection } from 'lib/services/database/MappedTypes';
 
 export type RegistrySearchResult = {
     endpoints: URL[];
     submodelDescriptors: SubmodelDescriptor[];
-    infrastructureName?: string | null;
+    infrastructureName: string | null;
     location: string; // The base URL of the AAS registry
 };
 
@@ -51,7 +48,7 @@ export class AasRegistryService {
     }
     public async searchInAllAasRegistries(searchInput: string): Promise<ApiResponseWrapper<AasSearchResult[]>> {
         // Search in all discovery services in all infrastructures
-        const infrastructures = await getInfrastructures();
+        const infrastructures = await getInfrastructuresIncludingDefault();
         logInfo(this.log, 'searchAASInAllAasRegistries', 'Searching AAS in all infrastructures', infrastructures);
 
         return this.searchInMultipleAasRegistries(searchInput, infrastructures);
@@ -110,6 +107,7 @@ export class AasRegistryService {
             submodelDescriptors: registrySearchResult.result[0].submodelDescriptors,
             aasRepositoryOrigin:
                 endpoint.origin + endpoint.pathname.substring(0, endpoint.pathname.lastIndexOf('/shells')),
+            infrastructureName: firstResult.infrastructureName ?? null,
         };
         return wrapSuccess([this.createAasResult(aasSearchResult.result, data)]);
     }
@@ -143,6 +141,7 @@ export class AasRegistryService {
             endpoints: endpointUrls,
             submodelDescriptors: submodelDescriptors,
             location: url,
+            infrastructureName: null, // This will be set later in the searchInMultipleAasRegistries method
         });
     }
 

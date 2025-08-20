@@ -11,7 +11,7 @@ import { AasStoreProvider } from 'stores/AasStore';
 
 jest.mock('./../../../../lib/services/list-service/aasListApiActions');
 jest.mock('./../../../../lib/services/database/connectionServerActions');
-jest.mock('./../../../../lib/services/aas-repository-service/repositorySearchActions', () => ({
+jest.mock('./../../../../lib/services/aas-repository-service/aasRepositorySearchActions', () => ({
     getThumbnailFromShell: jest.fn(() => Promise.resolve({ success: true, result: { fileType: '', fileContent: '' } })),
 }));
 jest.mock('next/navigation', () => ({
@@ -81,9 +81,9 @@ describe('AASListDataWrapper', () => {
         (serverActions.getAasListEntities as jest.Mock).mockImplementation(mockActionFirstPage);
 
         const mockDB = jest.fn(() => {
-            return [REPOSITORY_URL];
+            return [{ url: REPOSITORY_URL, infrastructureName: 'Test Infrastructure', id: 'test-repo-id' }];
         });
-        (connectionServerActions.getConnectionDataByTypeAction as jest.Mock).mockImplementation(mockDB);
+        (connectionServerActions.getAasRepositoriesIncludingDefault as jest.Mock).mockImplementation(mockDB);
         (nameplateDataActions.getNameplateValuesForAAS as jest.Mock).mockImplementation(mockNameplateData);
 
         CustomRender(
@@ -95,11 +95,6 @@ describe('AASListDataWrapper', () => {
         );
 
         await waitFor(() => screen.getByTestId('repository-select'));
-    });
-
-    it('Shows the info text if no repository is selected.', async () => {
-        expect(screen.queryByTestId('aas-list')).toBeNull();
-        expect(screen.getByTestId('select-repository-text')).toBeInTheDocument();
     });
 
     describe('Pagination', () => {

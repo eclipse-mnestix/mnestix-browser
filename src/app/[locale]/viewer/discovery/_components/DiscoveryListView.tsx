@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import AssetNotFound from 'components/basics/AssetNotFound';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import ListHeader from 'components/basics/ListHeader';
-import { performSearchAasFromAllRepositories } from 'lib/services/aas-repository-service/repositorySearchActions';
+import { searchAasInAllRepositories } from 'lib/services/aas-repository-service/aasRepositorySearchActions';
 import { useTranslations } from 'next-intl';
 import { LocalizedError } from 'lib/util/LocalizedError';
 import { AasListEntry } from 'lib/types/AasListEntry';
@@ -19,8 +19,8 @@ type DiscoveryListEntryToFetch = {
 };
 
 /**
- * TODO MNE-286 this doesn't work with multiple discoveries with same entries -> it always shows the first result as repositoryUrl
- * BUT as AasId is unique, this should not be a problem in practice?.
+ * This doesn't work with multiple discoveries having same entries -> it always shows the first result as repositoryUrl
+ * BUT as AasId is unique, this should not be a problem in practice.
  * @param aasId
  */
 async function getRepositoryUrlAndThumbnail(aasId: string): Promise<DiscoveryListEntryToFetch | undefined> {
@@ -28,7 +28,7 @@ async function getRepositoryUrlAndThumbnail(aasId: string): Promise<DiscoveryLis
     if (registrySearchResult.isSuccess)
         return { repositoryUrl: registrySearchResult.result[0].aasData?.aasRepositoryOrigin };
 
-    const allRepositorySearchResult = await performSearchAasFromAllRepositories(encodeBase64(aasId));
+    const allRepositorySearchResult = await searchAasInAllRepositories(encodeBase64(aasId));
     if (allRepositorySearchResult.isSuccess)
         return {
             repositoryUrl: allRepositorySearchResult.result[0].location,
@@ -76,6 +76,7 @@ export function DiscoveryListView() {
                     repositoryUrl: repoUrlAndThumbnail?.repositoryUrl,
                     discoveryUrl: discoverySearchResult.location,
                     thumbnailUrl: repoUrlAndThumbnail?.thumbnailUrl,
+                    infrastructureName: discoverySearchResult?.infrastructureName,
                 });
             }),
         );

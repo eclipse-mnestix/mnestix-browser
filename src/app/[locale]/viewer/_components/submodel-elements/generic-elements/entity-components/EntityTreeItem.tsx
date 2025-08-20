@@ -45,7 +45,6 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
             // if so, then navigate to the asset-redirect page of this Mnestix instance,
             // if not, just navigate to the specified URL which might lead anywhere.
 
-            // TODO MNES-281 add current infrastructure to the search
             const { isSuccess, result: discoverySearchResult } = await searchInAllDiscoveries(assetId);
             if (!isSuccess || (isSuccess && discoverySearchResult.length === 0)) {
                 const popup = window.open(''); // Try to open a new tab

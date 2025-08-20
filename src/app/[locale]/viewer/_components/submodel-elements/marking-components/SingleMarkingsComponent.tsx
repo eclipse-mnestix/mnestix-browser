@@ -5,7 +5,7 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { getAttachmentFromSubmodelElement } from 'lib/services/submodel-repository-service/submodelRepositoryActions';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
+import { useSubmodelRepositoryUrl } from 'app/[locale]/viewer/_components/submodel/SubmodelRepositoryUrlProvider';
 
 type SingleMarkingsComponentProps = {
     readonly file?: ModelFile;
@@ -29,7 +29,7 @@ const StyledFileImg = styled('img')(({ theme }) => ({
 export function SingleMarkingsComponent(props: SingleMarkingsComponentProps) {
     const { file, name, additionalText, submodelId, idShortPath } = props;
     const [markingImage, setMarkingImage] = useState<string>();
-    const { aasOriginUrl } = useCurrentAasContext();
+    const submodelRepositoryUrl = useSubmodelRepositoryUrl();
 
     const StyledMarkingImageWrapper = styled(Box)(() => ({
         maxWidth: props.rowDisplay ? '4rem' : 'auto',
@@ -47,12 +47,12 @@ export function SingleMarkingsComponent(props: SingleMarkingsComponentProps) {
     }));
 
     useAsyncEffect(async () => {
-        if (!isValidUrl(file!.value)) {
+        if (!isValidUrl(file!.value) && submodelRepositoryUrl) {
             const fileIdShort = idShortPath + '.' + file?.idShort;
             const imageResponse = await getAttachmentFromSubmodelElement(
                 submodelId!,
                 fileIdShort,
-                aasOriginUrl ?? undefined,
+                submodelRepositoryUrl,
             );
             if (!imageResponse.isSuccess) {
                 console.error('Image not found for file ID: ' + fileIdShort);

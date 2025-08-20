@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { alpha, Box, IconButton, Typography, Collapse, Button } from '@mui/material';
-import { Edit, Delete, Add } from '@mui/icons-material';
+import React, { useEffect, useState } from 'react';
+import { alpha, Box, Button, Collapse, IconButton, Typography } from '@mui/material';
+import { Add, Delete, Edit } from '@mui/icons-material';
 import { CardHeading } from 'components/basics/CardHeading';
 import { useTranslations } from 'next-intl';
 import Divider from '@mui/material/Divider';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import {
-    getInfrastructuresAction,
     createInfrastructureAction,
-    updateInfrastructureAction,
     deleteInfrastructureAction,
+    getInfrastructuresAction,
+    updateInfrastructureAction,
 } from 'lib/services/database/connectionServerActions';
 import MnestixInfrastructureForm from './MnestixInfrastructureForm';
 import { InfrastructureDeleteDialog } from './InfrastructureDeleteDialog';
@@ -17,6 +17,7 @@ import { useTheme } from '@mui/material/styles';
 import Image from 'next/image';
 import type { InfrastructureWithRelations, MappedInfrastructure } from './InfrastructureTypes';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
+import { DefaultInfrastructure } from 'app/[locale]/settings/_components/mnestix-infrastructure/DefaultInfrastructure';
 
 function MnestixInfrastructureCard() {
     const t = useTranslations('pages.settings.infrastructure');
@@ -280,6 +281,8 @@ function MnestixInfrastructureCard() {
                     />
                 </Box>
             </Collapse>
+
+            <DefaultInfrastructure />
 
             {renderInfrastructureList()}
 
