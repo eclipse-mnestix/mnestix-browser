@@ -2,19 +2,19 @@ import React from 'react';
 import {
     Box,
     Button,
+    Checkbox,
+    Chip,
+    Divider,
+    FormControl,
+    FormHelperText,
+    IconButton,
+    InputLabel,
+    ListItemText,
+    MenuItem,
+    OutlinedInput,
+    Select,
     TextField,
     Typography,
-    Chip,
-    IconButton,
-    FormControl,
-    Divider,
-    MenuItem,
-    Select,
-    InputLabel,
-    OutlinedInput,
-    Checkbox,
-    ListItemText,
-    FormHelperText,
 } from '@mui/material';
 import { Add, Delete } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
@@ -23,6 +23,10 @@ import Image from 'next/image';
 import { Controller, FieldArrayWithId, useFieldArray, useForm, useWatch } from 'react-hook-form';
 import type { MappedInfrastructure } from './InfrastructureTypes';
 import { isValidUrl } from 'lib/util/UrlUtil';
+import {
+    CONNECTION_TYPES,
+    SECURITY_TYPES,
+} from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureEnumUtil';
 
 export interface MnestixInfrastructureFormProps {
     infrastructure: MappedInfrastructure;
@@ -30,21 +34,6 @@ export interface MnestixInfrastructureFormProps {
     onSave: (data: MappedInfrastructure) => void;
     existingNames: string[];
 }
-
-const SECURITY_TYPES = {
-    NONE: 'NONE',
-    HEADER_SECURITY: 'HEADER',
-    MNESTIX_PROXY: 'PROXY',
-} as const;
-
-const CONNECTION_TYPES = [
-    { id: 'AAS_REPOSITORY', label: 'AAS Repository Interface' },
-    { id: 'AAS_REGISTRY', label: 'AAS Registry Interface' },
-    { id: 'SUBMODEL_REPOSITORY', label: 'Submodel Repository Interface' },
-    { id: 'SUBMODEL_REGISTRY', label: 'Submodel Registry Interface' },
-    { id: 'DISCOVERY_SERVICE', label: 'Discovery Interface' },
-    { id: 'CONCEPT_DESCRIPTION', label: 'Concept Description Repository Interface' },
-] as const;
 
 function MnestixInfrastructureForm({
     infrastructure,

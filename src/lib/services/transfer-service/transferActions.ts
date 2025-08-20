@@ -4,7 +4,6 @@ import { TransferService } from 'lib/services/transfer-service/TransferService';
 import { TransferDto, TransferResult } from 'lib/types/TransferServiceData';
 
 export async function transferAasWithSubmodels(transferDto: TransferDto): Promise<TransferResult[]> {
-    console.log(transferDto);
     const transfer = TransferService.create({
         targetAasRepoUrl: transferDto.targetAasRepositoryBaseUrl,
         sourceAasRepoUrl: transferDto.sourceAasRepositoryBaseUrl,
