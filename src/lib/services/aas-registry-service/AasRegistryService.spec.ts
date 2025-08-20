@@ -53,7 +53,7 @@ describe('AasRegistryService', () => {
 
     it('returns error if no registry url is configured', async () => {
         const service = AasRegistryService.createNull([]);
-        const infrastructures = createTestInfrastructure({ aasRegistryUrls: ['https://repository1.com'] });
+        const infrastructures = createTestInfrastructure({ aasRegistryUrls: ['https://registry1.com'] });
 
         const result = await service.searchInMultipleAasRegistries('aasId', [infrastructures]);
         expect(result.isSuccess).toBeFalsy();
