@@ -11,7 +11,7 @@ import {
 } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureEnumUtil';
 
 export function DefaultInfrastructure() {
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
     const t = useTranslations('pages.settings.infrastructure');
     const theme = useTheme();
     const env = useEnv();
