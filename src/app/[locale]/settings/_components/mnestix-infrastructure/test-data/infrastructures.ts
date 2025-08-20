@@ -1,4 +1,4 @@
-import { MappedInfrastructure } from "../InfrastructureTypes";
+import { MappedInfrastructure } from '../InfrastructureTypes';
 
 export const mockMappedInfrastructures: MappedInfrastructure[] = [
     {
@@ -40,9 +40,9 @@ export const mockMappedInfrastructures: MappedInfrastructure[] = [
             },
         ],
         securityHeader: {
-                name: "HEADER",
-                value: "value",
-            },
+            name: 'HEADER',
+            value: 'value',
+        },
     },
     {
         id: 'infra-3',
@@ -56,9 +56,9 @@ export const mockMappedInfrastructures: MappedInfrastructure[] = [
                 types: ['AAS_REGISTRY'],
             },
         ],
-            securityProxy: {
-                value: "proxy",
-            },
+        securityProxy: {
+            value: 'proxy',
+        },
     }
 ];
 export const mockInfrastructures = [
@@ -128,16 +128,16 @@ export const emptyMappedInfrastructure: MappedInfrastructure = {
 };
 
 export const faultyMappedInfrastructure: MappedInfrastructure =
-    {
-        id: 'faulty-1',
-        name: 'Faulty Infrastructure',
-        logo: undefined,
-        securityType:  'NONE',
-        connections: [
-            {
-                id: 'conn-2',
-                url: 'https://api2.example.com',
-                types: [],
-            },
-        ],
-    }
+{
+    id: 'faulty-1',
+    name: 'Faulty Infrastructure',
+    logo: undefined,
+    securityType: 'NONE',
+    connections: [
+        {
+            id: 'conn-2',
+            url: 'https://api2.example.com',
+            types: [],
+        },
+    ],
+}

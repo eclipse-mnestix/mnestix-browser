@@ -1,8 +1,7 @@
-
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import MnestixInfrastructureForm from "./MnestixInfrastructureForm";
-import { MappedInfrastructure } from "./InfrastructureTypes";
-import { emptyMappedInfrastructure, mockMappedInfrastructures } from "./test-data/infrastructures";
+import MnestixInfrastructureForm from './MnestixInfrastructureForm';
+import { MappedInfrastructure } from './InfrastructureTypes';
+import { emptyMappedInfrastructure, mockMappedInfrastructures } from './test-data/infrastructures';
 
 jest.mock('next-intl', () => ({
     useTranslations: (scope?: string) => (key: string) => (scope ? `${scope}.${key}` : key),
@@ -93,7 +92,7 @@ describe('MnestixInfrastructureForm', () => {
         expect(securityTypeSelect).toBeInTheDocument();
 
         // Default Security Type
-        expect(screen.getByText(`pages.settings.infrastructure.form.securityTypeNone`)).toBeInTheDocument();
+        expect(screen.getByText('pages.settings.infrastructure.form.securityTypeNone')).toBeInTheDocument();
 
         // Check if all security types are present
         const securityTypes = ['NONE', 'HEADER', 'PROXY'];
