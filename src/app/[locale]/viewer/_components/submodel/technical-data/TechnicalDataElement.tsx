@@ -6,7 +6,7 @@ import { DataRowWithUnit } from 'app/[locale]/viewer/_components/submodel/techni
 import { TreeItem } from '@mui/x-tree-view';
 import { FileComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/FileComponent';
 import { buildSubmodelElementPath } from 'lib/util/SubmodelResolverUtil';
-import { getConceptDescriptionById } from 'lib/services/conceptDescriptionApiActions';
+import { getConceptDescriptionById } from 'lib/services/concept-description-service/conceptDescriptionRepositoryActions';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { GenericPropertyComponent } from '../../submodel-elements/generic-elements/GenericPropertyComponent';
 import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
