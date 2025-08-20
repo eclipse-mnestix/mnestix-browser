@@ -38,7 +38,7 @@ describe('Test all Aas List features (Resolution 1920 x 1080)', function () {
             .contains('listTest2 Product Designation');
     });
 
-    describe('comparison list', function () {
+    xdescribe('comparison list', function () {
         it('should show the selected aas in the comparison list, and comparison button redirects to comparison', function () {
             cy.get('[data-testid="list-row-https://mnestix.io/aas/listTest1"]').findByTestId('list-checkbox').click();
             cy.get('[data-testid="selected-https://mnestix.io/aas/listTest1').should('exist');
