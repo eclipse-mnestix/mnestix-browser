@@ -1,6 +1,6 @@
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
-import logger, { logResponseDebug } from 'lib/util/Logger';
+import logger, { logInfo, logResponseDebug } from 'lib/util/Logger';
 import { AssetAdministrationShell } from 'lib/api/aas/models';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { IRegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApiInterface';
@@ -70,7 +70,9 @@ export class AasRegistryService {
         if (registrySearchResult.result.length === 0) {
             return wrapErrorCode(ApiResultStatus.NOT_FOUND, `No AAS found for ID '${searchAasId}' in any registry`);
         } else if (registrySearchResult.result.length > 1) {
-            this.log.info(
+            logInfo(
+                this.log,
+                'searchInMultipleAasRegistries',
                 `Multiple AAS found for ID '${searchAasId}' in multiple registries: ${registrySearchResult.result
                     .map((result) => result.infrastructureName)
                     .join(', ')}`,
