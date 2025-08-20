@@ -41,7 +41,10 @@ export class ConceptDescriptionRepositoryService {
             conceptRepositoryUrlList = infrastructure.conceptDescriptionRepositoryUrls;
         }
         if (conceptRepositoryUrlList.length === 0) {
-            return wrapErrorCode(ApiResultStatus.NOT_FOUND, `No Concept Description repositories found for ${infrastructureName}`);
+            return wrapErrorCode(
+                ApiResultStatus.NOT_FOUND,
+                `No Concept Description repositories found for ${infrastructureName !== undefined ? infrastructureName : 'unspecified infrastructure'}`
+            );
         }
 
         const conceptRepositoryUrls = new Set(conceptRepositoryUrlList);
