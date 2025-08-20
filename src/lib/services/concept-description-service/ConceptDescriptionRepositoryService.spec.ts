@@ -1,5 +1,5 @@
-import { getInfrastructuresIncludingDefault, getDefaultInfrastructure, getInfrastructureByName } from "../database/connectionServerActions";
-import { ConceptDescriptionRepositoryService } from "./ConceptDescriptionRepositoryService";
+import { getInfrastructuresIncludingDefault, getDefaultInfrastructure, getInfrastructureByName } from '../database/connectionServerActions';
+import { ConceptDescriptionRepositoryService } from './ConceptDescriptionRepositoryService';
 
 jest.mock('../database/connectionServerActions', () => ({
     getInfrastructuresIncludingDefault: jest.fn(),
