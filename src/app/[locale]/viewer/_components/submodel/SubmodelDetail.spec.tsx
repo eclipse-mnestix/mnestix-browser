@@ -33,7 +33,7 @@ describe('Submodel Detail', () => {
         CustomRender(
             <SubmodelDetail
                 submodel={testSubmodel['carbonFootprint-IrdiId'] as unknown as Submodel}
-                repositoryUrl={'https://test.de'}
+                submodelRepositoryUrl={'https://test.de'}
             />,
         );
         const map = screen.getByTestId('carbonFootprintVisualizations');
@@ -45,7 +45,7 @@ describe('Submodel Detail', () => {
         CustomRender(
             <SubmodelDetail
                 submodel={testSubmodel['carbonFootprint-UrlId'] as unknown as Submodel}
-                repositoryUrl={'https://test.de'}
+                submodelRepositoryUrl={'https://test.de'}
             />,
         );
         const map = screen.getByTestId('carbonFootprintVisualizations');
@@ -66,7 +66,9 @@ describe('Submodel Detail', () => {
             },
         } as unknown as Submodel;
 
-        CustomRender(<SubmodelDetail submodel={testSubmodelWithMultipleIds} repositoryUrl={'https://test.de'} />);
+        CustomRender(
+            <SubmodelDetail submodel={testSubmodelWithMultipleIds} submodelRepositoryUrl={'https://test.de'} />,
+        );
 
         // Verify visualization component renders using 3rd semanticId
         const map = screen.getByTestId('carbonFootprintVisualizations');
