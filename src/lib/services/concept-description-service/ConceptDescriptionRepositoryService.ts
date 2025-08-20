@@ -31,7 +31,7 @@ export class ConceptDescriptionRepositoryService {
         );
     }
 
-    async getConceptDescriptionByIdFromRepositories(conceptDescriptionId: string, infrastructureName: string | undefined): Promise<ApiResponseWrapper<ConceptDescription>> {
+    async getConceptDescriptionByIdFromRepositories(conceptDescriptionId: string, infrastructureName: string | undefined = undefined): Promise<ApiResponseWrapper<ConceptDescription>> {
         let conceptRepositoryUrlList: string[];
         if (infrastructureName === undefined) {
             const infrastructures = await getInfrastructuresIncludingDefault();
@@ -40,16 +40,16 @@ export class ConceptDescriptionRepositoryService {
             const infrastructure = await getInfrastructureByName(infrastructureName);
             conceptRepositoryUrlList = infrastructure.conceptDescriptionRepositoryUrls;
         }
-
         if (conceptRepositoryUrlList.length === 0) {
             return wrapErrorCode(ApiResultStatus.NOT_FOUND, `No Concept Description repositories found for ${infrastructureName}`);
         }
 
         const conceptRepositoryUrls = new Set(conceptRepositoryUrlList);
         for (const url of conceptRepositoryUrls) {
-            const conceptDescriptionApi = ConceptDescriptionApi.create(url, mnestixFetch());
+            const conceptDescriptionApi = this.getConceptDescriptionRepositoryClient(url);
             try {
                 const response = await conceptDescriptionApi.getConceptDescriptionById(conceptDescriptionId);
+                console.error(response);
                 if (response.isSuccess) {
                     return response;
                 } else {
