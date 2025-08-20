@@ -30,7 +30,7 @@ export function TargetRepositories(props: TargetRepositoryProps) {
     useAsyncEffect(async () => {
         try {
             setIsLoading(true);
-            // TODO add back env variable for default repository
+            // TODO MNE-300 add back env variable for default repository
             const aasRepositories = await getConnectionDataByTypeAction(
                 getTypeAction(ConnectionTypeEnum.AAS_REPOSITORY),
             );

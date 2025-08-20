@@ -8,7 +8,7 @@ import { SubmodelRepositoryUrlProvider } from 'app/[locale]/viewer/_components/s
 
 type SubmodelDetailProps = {
     submodel: Submodel;
-    repositoryUrl: string;
+    submodelRepositoryUrl: string;
 };
 
 export function SubmodelDetail(props: SubmodelDetailProps) {
@@ -20,7 +20,7 @@ export function SubmodelDetail(props: SubmodelDetailProps) {
     const CustomSubmodelComponent = key ? submodelCustomVisualizationMap[key] : undefined;
 
     return (
-        <SubmodelRepositoryUrlProvider repositoryUrl={props.repositoryUrl}>
+        <SubmodelRepositoryUrlProvider repositoryUrl={props.submodelRepositoryUrl}>
             <Box width="100%" key={props.submodel?.id}>
                 {CustomSubmodelComponent ? (
                     <CustomSubmodelComponent submodel={props.submodel} />
