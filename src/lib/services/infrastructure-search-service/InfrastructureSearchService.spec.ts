@@ -1,17 +1,20 @@
 import { expect } from '@jest/globals';
-import { AssetAdministrationShellDescriptor, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
-import { AssetAdministrationShell, Submodel } from 'lib/api/aas/models';
+import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
+import { Submodel } from 'lib/api/aas/models';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { Log } from 'lib/util/Log';
-import testData from 'lib/services/infrastructure-search-service/TestAas.data.json';
 import { InfrastructureSearchService } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import { getInfrastructuresIncludingDefault } from 'lib/services/database/connectionServerActions';
-import { createTestSubmodel, createTestSubmodelRef } from 'test-utils/TestUtils';
+import {
+    createDummyAas,
+    createDummyShellDescriptor,
+    createTestSubmodel,
+    createTestSubmodelRef,
+} from 'test-utils/TestUtils';
 
 jest.mock('./../database/connectionServerActions');
 
 const AAS_ENDPOINT = new URL('https://www.origin.com/route/for/aas/');
-const assetAdministrationShells = testData as unknown as AssetAdministrationShell;
 
 describe('Full Aas Search happy paths', () => {
     beforeEach(() => {
@@ -300,27 +303,6 @@ describe('Submodel Search happy paths', () => {
         }
     });
 });
-
-// would prefer to do without mocks but the objects are too complicated to instantiate
-function createDummyAas(id: string = 'irrelevant AasId') {
-    const aas = assetAdministrationShells;
-    aas.id = id;
-    return aas;
-}
-
-function createDummyShellDescriptor(href: URL, id: string): AssetAdministrationShellDescriptor {
-    return {
-        endpoints: [
-            {
-                interface: 'AAS-3.0',
-                protocolInformation: {
-                    href: href.toString(),
-                },
-            },
-        ],
-        id: id,
-    };
-}
 
 async function assertThatFunctionThrows(
     searcher: InfrastructureSearchService,
