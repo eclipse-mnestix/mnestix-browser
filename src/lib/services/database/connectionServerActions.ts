@@ -73,6 +73,15 @@ export async function getInfrastructuresIncludingDefault() {
     return [defaultInfrastructure, ...infrastructures];
 }
 
+export async function getInfrastructureByName(name: string): Promise<InfrastructureConnection> {
+    const infrastructures = await getInfrastructuresIncludingDefault();
+    const found_infrastructure = infrastructures.find(infra => infra.name === name);
+    if (!found_infrastructure) {
+        throw new Error(`Infrastructure with name ${name} not found`);
+    }
+    return found_infrastructure;
+}
+
 export async function getAasRepositoriesIncludingDefault() {
     const aasRepositoriesDb = await getConnectionDataByTypeAction(getTypeAction(ConnectionTypeEnum.AAS_REPOSITORY));
     const defaultAasRepository = {

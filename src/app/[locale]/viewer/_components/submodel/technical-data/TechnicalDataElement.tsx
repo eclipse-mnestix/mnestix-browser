@@ -9,6 +9,7 @@ import { buildSubmodelElementPath } from 'lib/util/SubmodelResolverUtil';
 import { getConceptDescriptionById } from 'lib/services/conceptDescriptionApiActions';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { GenericPropertyComponent } from '../../submodel-elements/generic-elements/GenericPropertyComponent';
+import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 
 export const TechnicalDataElement = (props: {
     elements: SubmodelElementChoice[];
@@ -22,6 +23,7 @@ export const TechnicalDataElement = (props: {
     const theme = useTheme();
     const [conceptDescriptions, setConceptDescriptions] = useState<Record<string, ConceptDescription>>({});
     const [loadingConceptDescriptions, setLoadingConceptDescriptions] = useState<boolean>(true);
+    const infrastructureName = useCurrentAasContext().infrastructureName;
 
     /**
      * Get all semantic IDs from the submodel elements and their children,
@@ -50,7 +52,7 @@ export const TechnicalDataElement = (props: {
         const results = await Promise.all(
             semanticIds.map(async (semanticId) => {
                 if (semanticId) {
-                    const result = await getConceptDescriptionById(semanticId);
+                    const result = await getConceptDescriptionById(semanticId, infrastructureName);
                     if (result.isSuccess) return { [semanticId]: result.result };
                 }
                 return null;
