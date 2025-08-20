@@ -9,6 +9,7 @@ import {
     createTestAas,
     createTestShellDescriptor,
     createTestSubmodel,
+    createTestSubmodelDescriptor,
     createTestSubmodelRef,
 } from 'test-utils/TestUtils';
 
@@ -246,15 +247,10 @@ describe('Submodel Search happy paths', () => {
         const submodelRef = createTestSubmodelRef('https://test.de/submodel1');
         const submodel: Submodel = createTestSubmodel('https://test.de/submodel1', 'submodel1');
 
-        const submodelDescriptor: SubmodelDescriptor = {
-            endpoints: [
-                {
-                    protocolInformation: { href: 'https://test.de/submodel1/endpoint' },
-                    interface: 'AAS-3.0',
-                },
-            ],
-            id: submodel.id,
-        };
+        const submodelDescriptor: SubmodelDescriptor = createTestSubmodelDescriptor(
+            new URL('https://test.de/submodel1/endpoint'),
+            submodel.id,
+        );
 
         const searcher = InfrastructureSearchService.createNull({
             submodelRegistryDescriptors: [submodelDescriptor],
@@ -272,15 +268,10 @@ describe('Submodel Search happy paths', () => {
         const submodelRef = createTestSubmodelRef('https://test.de/submodel1');
         const submodel: Submodel = createTestSubmodel('https://test.de/submodel1', 'submodel1');
 
-        const submodelDescriptor: SubmodelDescriptor = {
-            endpoints: [
-                {
-                    protocolInformation: { href: 'https://test.de/submodel1/endpoint' },
-                    interface: 'AAS-3.0',
-                },
-            ],
-            id: submodel.id,
-        };
+        const submodelDescriptor: SubmodelDescriptor = createTestSubmodelDescriptor(
+            new URL('https://test.de/submodel1/endpoint'),
+            submodel.id,
+        );
 
         const searcher = InfrastructureSearchService.createNull({
             submodelRegistryDescriptors: [submodelDescriptor],
