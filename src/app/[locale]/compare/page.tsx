@@ -19,7 +19,17 @@ export default function page() {
         marginBottom: '50px',
         marginTop: '20px',
     };
-
+    // Disables the comparison feature for now as it is broken
+    // TODO MNE-299: Make Comparison Feature work again
+    if (typeof window !== 'undefined') {
+        const segments = window.location.pathname.split('/').filter(Boolean);
+        const locale = segments[0] ?? '';
+        const homepage = locale ? `/${locale}` : '/';
+        if (window.location.pathname !== homepage) {
+            window.location.replace(homepage);
+        }
+        return null;
+    }
     return (
         <CompareAasContextProvider>
             <Box sx={pageStyles}>
