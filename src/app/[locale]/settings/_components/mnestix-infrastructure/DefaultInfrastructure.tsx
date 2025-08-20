@@ -34,7 +34,7 @@ export function DefaultInfrastructure() {
                     <Typography variant="h6" sx={{ flexGrow: 1 }}>
                         Default Infrastructure
                     </Typography>
-                    <IconButton onClick={() => setOpen(!open)} sx={{ color: theme.palette.primary.main }}>
+                    <IconButton onClick={() => setOpen(!open)} sx={{ color: theme.palette.primary.main }} size="small">
                         <VisibilityIcon />
                     </IconButton>
                 </Box>
