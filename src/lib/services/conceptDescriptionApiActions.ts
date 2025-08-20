@@ -50,6 +50,10 @@ export async function getConceptDescriptionById(conceptDescriptionId: string, in
         }
     }
 
+    if (conceptRepositoryUrls.length === 0) {
+        return wrapErrorCode(ApiResultStatus.NOT_FOUND, `No Concept Description repositories found for ${infrastructureName}`);
+    }
+
     for (const url of conceptRepositoryUrls) {
         const conceptDescriptionApi = ConceptDescriptionApi.create(url, mnestixFetch());
         try {
