@@ -6,7 +6,7 @@ import {
 } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { InfrastructureConnection } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
-import logger, { logResponseDebug } from 'lib/util/Logger';
+import logger, { logInfo, logResponseDebug } from 'lib/util/Logger';
 import { IDiscoveryServiceApi } from 'lib/api/discovery-service-api/discoveryServiceApiInterface';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { DiscoveryServiceApi } from 'lib/api/discovery-service-api/discoveryServiceApi';
@@ -57,7 +57,7 @@ export class DiscoveryService {
     public async searchAASInAllDiscoveries(searchInput: string): Promise<ApiResponseWrapper<DiscoverySearchResult[]>> {
         // Search in all discovery services in all infrastructures
         const infrastructures = await getInfrastructures();
-        this.log.info('searchAASInAllDiscoveries', 'Searching AAS in all infrastructures', infrastructures);
+        logInfo(this.log, 'searchAASInAllDiscoveries', 'Searching AAS in all infrastructures', infrastructures);
 
         return this.searchAasIdInMultipleDiscoveries(searchInput, infrastructures);
     }
