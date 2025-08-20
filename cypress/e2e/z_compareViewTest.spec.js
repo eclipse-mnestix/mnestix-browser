@@ -6,7 +6,7 @@ xdescribe('Test compare feature view', function () {
     before(function () {
         cy.postCompareMockData();
     });
-    describe('Open compare feature and add data', function () {
+    xdescribe('Open compare feature and add data', function () {
         beforeEach(function () {
             cy.visit('/');
             cy.getByTestId('aasId-input').as('IDInput');

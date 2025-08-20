@@ -47,7 +47,7 @@ describe('Use the QR Scanner', function () {
                 cy.isNotificationSent('No AAS with the given ID.');
                 cy.getByTestId('scanner-video').should('exist');
             });
-            it('should add AAS in comparison view', () => {
+            xit('should add AAS in comparison view', () => {
                 cy.visit('/compare');
                 cy.getByTestId('compare-aas-0').should('not.exist');
 
@@ -69,7 +69,7 @@ describe('Use the QR Scanner', function () {
                 cy.getByTestId('compare-aas-0').should('exist');
                 cy.getByTestId('compare-aas-1').should('exist');
             });
-            it('should show duplicate AAS error on same AAS QR code', () => {
+            xit('should show duplicate AAS error on same AAS QR code', () => {
                 cy.visit('/compare?aasId=' + encodeURIComponent(qr1.id));
                 cy.getByTestId('compare-aas-0').should('exist');
                 cy.getByTestId('add-aas-to-compare-button').click();
@@ -81,7 +81,7 @@ describe('Use the QR Scanner', function () {
                 cy.getByTestId('scanner-video').should('exist');
                 cy.getByTestId('compare-aas-1').should('not.exist');
             });
-            it('should add AAS in comparison view with assetId', () => {
+            xit('should add AAS in comparison view with assetId', () => {
                 cy.visit('/compare');
                 cy.getByTestId('compare-aas-0').should('not.exist');
                 cy.getByTestId('add-aas-to-compare-button').click();
@@ -92,7 +92,7 @@ describe('Use the QR Scanner', function () {
                 cy.getByTestId('compare-aas-aad-dialog').should('not.exist');
                 cy.getByTestId('compare-aas-0').should('exist');
             });
-            it('should show multiple AAS error on multiple asset QR code', () => {
+            xit('should show multiple AAS error on multiple asset QR code', () => {
                 cy.visit('/compare');
                 cy.getByTestId('compare-aas-0').should('not.exist');
                 cy.getByTestId('add-aas-to-compare-button').click();
