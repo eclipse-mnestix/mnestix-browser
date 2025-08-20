@@ -47,7 +47,7 @@ export class AasRegistryService {
         );
     }
     public async searchInAllAasRegistries(searchInput: string): Promise<ApiResponseWrapper<AasSearchResult[]>> {
-        // Search in all discovery services in all infrastructures
+        // Search in all registries in all infrastructures
         const infrastructures = await getInfrastructuresIncludingDefault();
         logInfo(this.log, 'searchAASInAllAasRegistries', 'Searching AAS in all infrastructures', infrastructures);
 

@@ -120,5 +120,17 @@ describe('AasRepositorySearchService', () => {
                 expect(result.errorCode).toBe('NOT_FOUND');
             }
         });
+
+        it('returns error if no repository url is configured', async () => {
+            const aasId = 'testAasId';
+            const aasRepositorySearchService = AasRepositorySearchService.createNull([]);
+
+            const result = await aasRepositorySearchService.searchInAllAasRepositories(encodeBase64(aasId));
+
+            expect(result.isSuccess).toBe(false);
+            if (!result.isSuccess) {
+                expect(result.errorCode).toBe('NOT_FOUND');
+            }
+        });
     });
 });
