@@ -43,7 +43,6 @@ async function getRepositoryUrlAndThumbnail(aasId: string): Promise<DiscoveryLis
  * This component is responsible for displaying the list of AAS entries based on a given assetId.
  * This may occur, when multiple AAS are registered to the same assetId.
  * The user can then choose which AAS to view based on AasId and repositoryUrl.
- * // TODO MNES-906: show discoveryUrl
  */
 export function DiscoveryListView() {
     const searchParams = useSearchParams();
