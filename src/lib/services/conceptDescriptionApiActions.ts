@@ -35,22 +35,22 @@ import logger, { logInfo, logResponseDebug } from 'lib/util/Logger';
  */
 export async function getConceptDescriptionById(conceptDescriptionId: string, infrastructureName: string | undefined = undefined): Promise<ApiResponseWrapper<ConceptDescription>> {
 
-    const conceptRepositoryUrls: string[] = [];
+    const conceptRepositoryUrls: Set<string> = new Set();
     if (infrastructureName === undefined) {
         const infrastructures: InfrastructureConnection[] = await getInfrastructuresIncludingDefault();
         for (const infra of infrastructures) {
             for (const url of infra.conceptDescriptionRepositoryUrls) {
-                conceptRepositoryUrls.push(url);
+                conceptRepositoryUrls.add(url);
             }
         }
     } else {
         const infrastructure = await getInfrastructureByName(infrastructureName);
         for (const url of infrastructure.conceptDescriptionRepositoryUrls) {
-            conceptRepositoryUrls.push(url);
+            conceptRepositoryUrls.add(url);
         }
     }
 
-    if (conceptRepositoryUrls.length === 0) {
+    if (conceptRepositoryUrls.size === 0) {
         return wrapErrorCode(ApiResultStatus.NOT_FOUND, `No Concept Description repositories found for ${infrastructureName}`);
     }
 
@@ -65,8 +65,7 @@ export async function getConceptDescriptionById(conceptDescriptionId: string, in
                 }
         } catch (error) {
             logInfo(logger, 'getConceptDescriptionById', `Failed to fetch Concept Description from ${url}`, error);
-        }
-
+        } 
     }
-    return wrapErrorCode(ApiResultStatus.NOT_FOUND, `Couldn't find Concept Description in provided infrastructures: ${conceptRepositoryUrls.join(', ')}`);
+    return wrapErrorCode(ApiResultStatus.NOT_FOUND, `Couldn't find Concept Description in provided infrastructures: ${[...conceptRepositoryUrls].join(', ')}`);
 }
