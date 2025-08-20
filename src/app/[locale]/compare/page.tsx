@@ -1,6 +1,5 @@
 'use client';
 
-import { redirect } from 'next/navigation';
 // import { CompareAasContextProvider } from 'components/contexts/CompareAasContext';
 // import { Box } from '@mui/material';
 // import { CompareView } from './_components/CompareView';
@@ -20,9 +19,6 @@ export default function page() {
     //     marginBottom: '50px',
     //     marginTop: '20px',
     // };
-    // Disables the comparison feature for now as it is broken
-    // TODO MNE-299: Make Comparison Feature work again
-    redirect('/'); // Redirect to home page for now
     // return (
     //     <CompareAasContextProvider>
     //         <Box sx={pageStyles}>
@@ -30,4 +26,11 @@ export default function page() {
     //         </Box>
     //     </CompareAasContextProvider>
     // );
+
+    // Disables the comparison feature for now as it is broken
+    // TODO MNE-299: Make Comparison Feature work again
+    if (typeof window !== 'undefined') {
+        window.location.href = '/';
+    }
+    return <h3>Comparison Feature currently not available...</h3>;
 }
