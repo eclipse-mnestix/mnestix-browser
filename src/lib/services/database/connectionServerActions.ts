@@ -40,6 +40,9 @@ export async function fetchAllInfrastructureConnectionsFromDb(): Promise<Infrast
         submodelRegistryUrls: infra.connections.flatMap((conn) =>
             conn.types.filter((t) => t.type.typeName === 'SUBMODEL_REGISTRY').map(() => conn.url),
         ),
+        conceptDescriptionRepositoryUrls: infra.connections.flatMap((conn) =>
+            conn.types.filter((t) => t.type.typeName === 'CONCEPT_DESCRIPTION').map(() => conn.url),
+        ),
         infrastructureSecurity: {
             securityType: infra.securityType?.typeName || undefined,
             securitySettingsHeaders: infra.securitySettingsHeaders || undefined,
@@ -48,16 +51,21 @@ export async function fetchAllInfrastructureConnectionsFromDb(): Promise<Infrast
     }));
 }
 
-export async function getInfrastructuresIncludingDefault() {
-    // build default infrastructure from envs
-    const defaultInfrastructure: InfrastructureConnection = {
-        name: 'DefaultInfrastructure',
+export async function getDefaultInfrastructure(): Promise<InfrastructureConnection>{
+    return {
+        name: 'Default Infrastructure',
         discoveryUrls: envs.DISCOVERY_API_URL ? [envs.DISCOVERY_API_URL] : [],
         aasRegistryUrls: envs.REGISTRY_API_URL ? [envs.REGISTRY_API_URL] : [],
         aasRepositoryUrls: envs.AAS_REPO_API_URL ? [envs.AAS_REPO_API_URL] : [],
         submodelRepositoryUrls: envs.SUBMODEL_REPO_API_URL ? [envs.SUBMODEL_REPO_API_URL] : [],
         submodelRegistryUrls: envs.SUBMODEL_REGISTRY_API_URL ? [envs.SUBMODEL_REGISTRY_API_URL] : [],
-    };
+        conceptDescriptionRepositoryUrls: envs.CONCEPT_DESCRIPTION_REPO_API_URL ? [envs.CONCEPT_DESCRIPTION_REPO_API_URL] : [],
+    }
+}
+
+export async function getInfrastructuresIncludingDefault() {
+    // build default infrastructure from envs
+    const defaultInfrastructure = await getDefaultInfrastructure();
 
     // get from database as flat connection list
     const infrastructures = await fetchAllInfrastructureConnectionsFromDb();
@@ -70,7 +78,7 @@ export async function getAasRepositoriesIncludingDefault() {
     const defaultAasRepository = {
         id: 'default',
         url: envs.AAS_REPO_API_URL || '',
-        infrastructureName: 'DefaultInfrastructure',
+        infrastructureName: (await getDefaultInfrastructure()).name,
     };
 
     return [defaultAasRepository, ...aasRepositoriesDb];
