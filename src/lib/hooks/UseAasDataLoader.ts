@@ -11,7 +11,7 @@ import {
     performFullAasSearch,
     performSubmodelSearch,
 } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
-import { getAasFromRepository } from 'lib/services/aas-repository-service/aasRepositorySearchActions';
+import { getAasFromRepository } from 'lib/services/aas-repository-service/aasRepositoryActions';
 import { encodeBase64 } from 'lib/util/Base64Util';
 
 /**

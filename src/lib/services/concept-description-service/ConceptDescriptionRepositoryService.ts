@@ -6,7 +6,7 @@ import { ApiResponseWrapper, wrapErrorCode } from 'lib/util/apiResponseWrapper/a
 import { getInfrastructureByName, getInfrastructuresIncludingDefault } from '../database/infrastructureDatabaseActions';
 import { ConceptDescription } from 'lib/api/aas/models';
 import { IConceptDescriptionApi } from 'lib/api/concept-description-api/conceptDescriptionApiInterface';
-import { RepoSearchResult } from '../aas-repository-service/AasRepositorySearchService';
+import { RepoSearchResult } from 'lib/services/aas-repository-service/AasRepositoryService';
 
 export class ConceptDescriptionRepositoryService {
     private constructor(

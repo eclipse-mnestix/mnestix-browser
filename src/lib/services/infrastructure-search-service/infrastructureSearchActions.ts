@@ -9,7 +9,7 @@ import {
 } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { Reference, Submodel } from 'lib/api/aas/models';
-import { RepoSearchResult } from 'lib/services/aas-repository-service/AasRepositorySearchService';
+import { RepoSearchResult } from 'lib/services/aas-repository-service/AasRepositoryService';
 
 /**
  * Performs a full search for an Asset Administration Shell or AssetId across all infrastructures.

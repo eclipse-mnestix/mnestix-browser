@@ -11,7 +11,7 @@ import { AasStoreProvider } from 'stores/AasStore';
 
 jest.mock('./../../../../lib/services/list-service/aasListApiActions');
 jest.mock('./../../../../lib/services/database/infrastructureDatabaseActions');
-jest.mock('./../../../../lib/services/aas-repository-service/aasRepositorySearchActions', () => ({
+jest.mock('lib/services/aas-repository-service/aasRepositoryActions', () => ({
     getThumbnailFromShell: jest.fn(() => Promise.resolve({ success: true, result: { fileType: '', fileContent: '' } })),
 }));
 jest.mock('next/navigation', () => ({
