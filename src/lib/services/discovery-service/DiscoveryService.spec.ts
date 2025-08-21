@@ -10,7 +10,7 @@ describe('DiscoveryService', () => {
         const infrastructures = createTestInfrastructure({ discoveryUrls: ['https://discovery1.com'] });
 
         const result = await service.searchAasIdInMultipleDiscoveries(assetId, [infrastructures]);
-        expect(result.isSuccess).toBeTruthy();
+        expect(result.isSuccess).toBe(true);
         expect(result.result?.[0].aasId).toBe(aasId);
         expect(result.result?.[0].infrastructureName).toBe('TestInfra');
     });
@@ -24,9 +24,9 @@ describe('DiscoveryService', () => {
         const infrastructures = createTestInfrastructure({ discoveryUrls: ['https://discovery1.com'] });
 
         const result = await service.searchAasIdInMultipleDiscoveries(assetId, [infrastructures]);
-        expect(result.isSuccess).toBeTruthy();
+        expect(result.isSuccess).toBe(true);
         expect(result.result?.length).toBe(2);
-        expect(result.result?.map((r) => r.aasId)).toEqual(['aas-1', 'aas-2']);
+        expect(result.result?.map((r) => r.aasId).sort()).toEqual(['aas-1', 'aas-2']);
     });
 
     it('returns NOT_FOUND when assetId is not found', async () => {
@@ -34,7 +34,7 @@ describe('DiscoveryService', () => {
         const infrastructures = createTestInfrastructure({ discoveryUrls: ['https://discovery1.com'] });
 
         const result = await service.searchAasIdInMultipleDiscoveries('unknown-asset', [infrastructures]);
-        expect(result.isSuccess).toBeFalsy();
+        expect(result.isSuccess).toBe(false);
         if (!result.isSuccess) {
             expect(result.errorCode).toBe(ApiResultStatus.NOT_FOUND);
         }
@@ -45,7 +45,7 @@ describe('DiscoveryService', () => {
         const infrastructures = createTestInfrastructure();
 
         const result = await service.searchAasIdInMultipleDiscoveries('any-asset', [infrastructures]);
-        expect(result.isSuccess).toBeFalsy();
+        expect(result.isSuccess).toBe(false);
         if (!result.isSuccess) {
             expect(result.errorCode).toBe(ApiResultStatus.NOT_FOUND);
         }

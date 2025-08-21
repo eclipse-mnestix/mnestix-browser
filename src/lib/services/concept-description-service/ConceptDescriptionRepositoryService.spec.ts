@@ -55,7 +55,7 @@ describe('ConceptDescriptionRepositoryService', () => {
         ]);
 
         const result = await service.getConceptDescriptionByIdFromRepositories('cd-1');
-        expect(result.isSuccess).toBeTruthy();
+        expect(result.isSuccess).toBe(true);
         expect(result.result?.id).toBe('cd-1');
     });
 
@@ -72,7 +72,7 @@ describe('ConceptDescriptionRepositoryService', () => {
         ]);
 
         const result = await service.getConceptDescriptionByIdFromRepositories('cd-1', 'test1');
-        expect(result.isSuccess).toBeTruthy();
+        expect(result.isSuccess).toBe(true);
         expect(result.result?.id).toBe('cd-1');
     });
 
@@ -89,6 +89,6 @@ describe('ConceptDescriptionRepositoryService', () => {
         ]);
 
         const result = await service.getConceptDescriptionByIdFromRepositories('cd-1', 'default');
-        expect(result.isSuccess).toBeFalsy();
+        expect(result.isSuccess).toBe(false);
     });
 });

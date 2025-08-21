@@ -261,7 +261,8 @@ describe('Submodel Search happy paths', () => {
             submodelDescriptor,
         );
 
-        expect(search.isSuccess).toBeTruthy();
+        expect(search.isSuccess).toBe(true);
+        expect(search.result!.searchResult.id).toBe(submodelRef.keys[0].value);
     });
 
     it('returns submodel if submodel was found in a submodel registry', async () => {
