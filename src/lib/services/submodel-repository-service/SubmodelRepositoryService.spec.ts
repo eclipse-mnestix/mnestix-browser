@@ -14,7 +14,7 @@ describe('SubmodelRepositoryService', () => {
         const infrastructure = createTestInfrastructure({ submodelRepositoryUrls: [submodelRepoUrl] });
 
         const result = await service.getFirstSubmodelFromAllRepos(submodelId, infrastructure);
-        expect(result.isSuccess).toBeTruthy();
+        expect(result.isSuccess).toBe(true);
         expect(result.result?.searchResult.id).toBe(submodelId);
         expect(result.result?.location).toBe(submodelRepoUrl);
     });
@@ -25,7 +25,7 @@ describe('SubmodelRepositoryService', () => {
         const infrastructure = createTestInfrastructure({ submodelRepositoryUrls: [submodelRepoUrl] });
 
         const result = await service.getFirstSubmodelFromAllRepos('unknown-submodel', infrastructure);
-        expect(result.isSuccess).toBeFalsy();
+        expect(result.isSuccess).toBe(false);
         if (!result.isSuccess) {
             expect(result.errorCode).toBe(ApiResultStatus.NOT_FOUND);
         }
@@ -36,7 +36,7 @@ describe('SubmodelRepositoryService', () => {
         const infrastructure = createTestInfrastructure({ submodelRepositoryUrls: [] });
 
         const result = await service.getFirstSubmodelFromAllRepos('any-submodel', infrastructure);
-        expect(result.isSuccess).toBeFalsy();
+        expect(result.isSuccess).toBe(false);
         if (!result.isSuccess) {
             expect(result.errorCode).toBe(ApiResultStatus.NOT_FOUND);
         }

@@ -15,11 +15,11 @@ describe('SubmodelRegistryService', () => {
         const infrastructures = createTestInfrastructure({ submodelRegistryUrls: ['https://registry.com'] });
 
         const result = await service.searchInMultipleSubmodelRegistries(submodelId, infrastructures);
-        expect(result.isSuccess).toBeTruthy();
+        expect(result.isSuccess).toBe(true);
         expect(result.result?.id).toBe(submodelId);
     });
 
-    it('returns the first SubmodelDescriptor when multiple are found', async () => {
+    it('returns the a single SubmodelDescriptor when multiple are found', async () => {
         const submodelId = 'submodel-123';
         const dummyDescriptor1: SubmodelDescriptor = createTestSubmodelDescriptor(
             new URL('https://registry1.com/submodels/submodel-123'),
@@ -35,7 +35,7 @@ describe('SubmodelRegistryService', () => {
         });
 
         const result = await service.searchInMultipleSubmodelRegistries(submodelId, infrastructures);
-        expect(result.isSuccess).toBeTruthy();
+        expect(result.isSuccess).toBe(true);
         expect(result.result?.id).toBe(submodelId);
     });
 
@@ -44,7 +44,7 @@ describe('SubmodelRegistryService', () => {
         const infrastructures = createTestInfrastructure({ submodelRegistryUrls: ['https://registry.com'] });
 
         const result = await service.searchInMultipleSubmodelRegistries('unknown-submodel', infrastructures);
-        expect(result.isSuccess).toBeFalsy();
+        expect(result.isSuccess).toBe(false);
         if (!result.isSuccess) {
             expect(result.errorCode).toBe(ApiResultStatus.NOT_FOUND);
         }
@@ -55,7 +55,7 @@ describe('SubmodelRegistryService', () => {
         const infrastructures = createTestInfrastructure({ submodelRegistryUrls: [] });
 
         const result = await service.searchInMultipleSubmodelRegistries('any-submodel', infrastructures);
-        expect(result.isSuccess).toBeFalsy();
+        expect(result.isSuccess).toBe(false);
         if (!result.isSuccess) {
             expect(result.errorCode).toBe(ApiResultStatus.NOT_FOUND);
         }
@@ -71,7 +71,7 @@ describe('SubmodelRegistryService', () => {
         const infrastructures = createTestInfrastructure({ submodelRegistryUrls: ['https://registry.com'] });
 
         const result = await service.searchInMultipleSubmodelRegistries(submodelId, infrastructures);
-        expect(result.isSuccess).toBeFalsy();
+        expect(result.isSuccess).toBe(false);
         if (!result.isSuccess) {
             expect(result.errorCode).toBe(ApiResultStatus.NOT_FOUND);
         }

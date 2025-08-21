@@ -12,7 +12,7 @@ describe('AasRegistryService', () => {
         const infrastructures = createTestInfrastructure({ aasRegistryUrls: ['https://registry1.com'] });
 
         const result = await service.searchInMultipleAasRegistries(aasId, [infrastructures]);
-        expect(result.isSuccess).toBeTruthy();
+        expect(result.isSuccess).toBe(true);
         expect(result.result?.[0].redirectUrl).toContain('/viewer/');
     });
 
@@ -36,7 +36,7 @@ describe('AasRegistryService', () => {
         });
 
         const result = await service.searchInMultipleAasRegistries(aasId, [infrastructures]);
-        expect(result.isSuccess).toBeTruthy();
+        expect(result.isSuccess).toBe(true);
         expect(result.result?.[0].redirectUrl).toContain('/viewer/registry?aasId=testAasId');
     });
 
@@ -45,7 +45,7 @@ describe('AasRegistryService', () => {
         const infrastructures = createTestInfrastructure({ aasRegistryUrls: ['https://registry1.com'] });
 
         const result = await service.searchInMultipleAasRegistries('unknownAasId', [infrastructures]);
-        expect(result.isSuccess).toBeFalsy();
+        expect(result.isSuccess).toBe(false);
         if (!result.isSuccess) {
             expect(result.errorCode).toBe(ApiResultStatus.NOT_FOUND);
         }
@@ -56,7 +56,7 @@ describe('AasRegistryService', () => {
         const infrastructures = createTestInfrastructure({ aasRegistryUrls: ['https://registry1.com'] });
 
         const result = await service.searchInMultipleAasRegistries('aasId', [infrastructures]);
-        expect(result.isSuccess).toBeFalsy();
+        expect(result.isSuccess).toBe(false);
         if (!result.isSuccess) {
             expect(result.errorCode).toBe(ApiResultStatus.NOT_FOUND);
         }

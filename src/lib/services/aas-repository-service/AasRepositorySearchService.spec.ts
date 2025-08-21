@@ -2,6 +2,7 @@ import { AasRepositorySearchService } from 'lib/services/aas-repository-service/
 import { createTestAas, createTestInfrastructure } from 'test-utils/TestUtils';
 import { getInfrastructuresIncludingDefault } from 'lib/services/database/connectionServerActions';
 import { encodeBase64 } from 'lib/util/Base64Util';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 jest.mock('./../database/connectionServerActions');
 
@@ -103,7 +104,7 @@ describe('AasRepositorySearchService', () => {
 
             expect(result.isSuccess).toBe(false);
             if (!result.isSuccess) {
-                expect(result.errorCode).toBe('NOT_FOUND');
+                expect(result.errorCode).toBe(ApiResultStatus.NOT_FOUND);
             }
         });
 
@@ -115,7 +116,7 @@ describe('AasRepositorySearchService', () => {
 
             expect(result.isSuccess).toBe(false);
             if (!result.isSuccess) {
-                expect(result.errorCode).toBe('NOT_FOUND');
+                expect(result.errorCode).toBe(ApiResultStatus.NOT_FOUND);
             }
         });
     });
