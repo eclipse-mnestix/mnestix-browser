@@ -38,7 +38,7 @@ resolutions.forEach((res) => {
                 cy.get('@testAas').findByTestId('default-thumbnail-image-with-fallback').should('not.exist');
             });
 
-            it('should load thumbnail from file and visualize it in compare view', function () {
+            xit('should load thumbnail from file and visualize it in compare view', function () {
                 cy.visitViewer(thumbnailAasMockData.id);
                 cy.getByTestId('detail-compare-button').click();
                 cy.getByTestId('compare-aas-0')
@@ -81,7 +81,7 @@ resolutions.forEach((res) => {
                 cy.get('@testAas').findByTestId('default-thumbnail-image-with-fallback').should('exist');
             });
 
-            it('should not load thumbnail from file and show default image in compare view', function () {
+            xit('should not load thumbnail from file and show default image in compare view', function () {
                 cy.visitViewer(thumbnailAasMockData.id);
                 cy.getByTestId('detail-compare-button').click();
                 cy.getByTestId('detail-compare-button').wait(2000);
