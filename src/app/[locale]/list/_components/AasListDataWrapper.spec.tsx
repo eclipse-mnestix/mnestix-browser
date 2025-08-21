@@ -4,13 +4,13 @@ import { expect } from '@jest/globals';
 import AasListDataWrapper from 'app/[locale]/list/_components/AasListDataWrapper';
 import * as serverActions from 'lib/services/list-service/aasListApiActions';
 import * as nameplateDataActions from 'lib/services/list-service/aasListApiActions';
-import * as connectionServerActions from 'lib/services/database/connectionServerActions';
+import * as connectionServerActions from 'lib/services/database/infrastructureDatabaseActions';
 import { ListEntityDto } from 'lib/services/list-service/ListService';
 import { Internationalization } from 'lib/i18n/Internationalization';
 import { AasStoreProvider } from 'stores/AasStore';
 
 jest.mock('./../../../../lib/services/list-service/aasListApiActions');
-jest.mock('./../../../../lib/services/database/connectionServerActions');
+jest.mock('./../../../../lib/services/database/infrastructureDatabaseActions');
 jest.mock('./../../../../lib/services/aas-repository-service/aasRepositorySearchActions', () => ({
     getThumbnailFromShell: jest.fn(() => Promise.resolve({ success: true, result: { fileType: '', fileContent: '' } })),
 }));

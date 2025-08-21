@@ -1,6 +1,6 @@
 import { AasRepositorySearchService } from 'lib/services/aas-repository-service/AasRepositorySearchService';
 import { createTestAas, createTestInfrastructure } from 'test-utils/TestUtils';
-import { getInfrastructuresIncludingDefault } from 'lib/services/database/connectionServerActions';
+import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
 import { encodeBase64 } from 'lib/util/Base64Util';
 
 jest.mock('./../database/connectionServerActions');

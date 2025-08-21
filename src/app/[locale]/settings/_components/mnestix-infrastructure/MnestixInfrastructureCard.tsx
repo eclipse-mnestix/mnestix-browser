@@ -11,22 +11,22 @@ import {
     getDefaultInfrastructure,
     getInfrastructuresAction,
     updateInfrastructureAction,
-} from 'lib/services/database/connectionServerActions';
+} from 'lib/services/database/infrastructureDatabaseActions';
 import MnestixInfrastructureForm from './MnestixInfrastructureForm';
 import { InfrastructureDeleteDialog } from './InfrastructureDeleteDialog';
 import { useTheme } from '@mui/material/styles';
 import Image from 'next/image';
-import type { InfrastructureWithRelations, MappedInfrastructure } from './InfrastructureTypes';
+import type { InfrastructureFormData } from './InfrastructureTypes';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { DefaultInfrastructure } from 'app/[locale]/settings/_components/mnestix-infrastructure/DefaultInfrastructure';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { InfrastructureConnection } from 'lib/services/database/MappedTypes';
+import { InfrastructureConnection, InfrastructureWithRelations } from 'lib/services/database/MappedTypes';
 
 function MnestixInfrastructureCard() {
     const t = useTranslations('pages.settings.infrastructure');
     const theme = useTheme();
     const [isLoading, setIsLoading] = useState(true);
-    const [infrastructures, setInfrastructures] = useState<MappedInfrastructure[]>([]);
+    const [infrastructures, setInfrastructures] = useState<InfrastructureFormData[]>([]);
     const [editingInfrastructure, setEditingInfrastructure] = useState<string | null>(null);
     const [isCreatingNew, setIsCreatingNew] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -34,14 +34,13 @@ function MnestixInfrastructureCard() {
     const notificationSpawner = useNotificationSpawner();
     const [defaultInfrastructure, setDefaultInfrastructure] = useState<InfrastructureConnection | null>(null);
 
-    useAsyncEffect(
-        async () => {
-            const defaultInfra = await getDefaultInfrastructure();
-            setDefaultInfrastructure(defaultInfra);
-            setIsLoading(false);
-        }, []);
+    useAsyncEffect(async () => {
+        const defaultInfra = await getDefaultInfrastructure();
+        setDefaultInfrastructure(defaultInfra);
+        setIsLoading(false);
+    }, []);
 
-    function mapInfrastructureData(infrastructures: InfrastructureWithRelations[]): MappedInfrastructure[] {
+    function mapInfrastructureData(infrastructures: InfrastructureWithRelations[]): InfrastructureFormData[] {
         return infrastructures.map((infrastructure) => ({
             id: infrastructure.id,
             name: infrastructure.name,
@@ -101,7 +100,7 @@ function MnestixInfrastructureCard() {
         setEditingInfrastructure(null);
     }
 
-    async function handleSaveEdit(infrastructureData: MappedInfrastructure) {
+    async function handleSaveEdit(infrastructureData: InfrastructureFormData) {
         try {
             setIsLoading(true);
             if (infrastructureData.id) {
@@ -164,7 +163,7 @@ function MnestixInfrastructureCard() {
         }
     }
 
-    function createEmptyInfrastructure(): MappedInfrastructure {
+    function createEmptyInfrastructure(): InfrastructureFormData {
         return {
             id: '',
             name: '',

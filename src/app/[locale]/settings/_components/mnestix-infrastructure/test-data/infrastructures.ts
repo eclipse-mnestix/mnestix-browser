@@ -1,6 +1,6 @@
-import { MappedInfrastructure } from '../InfrastructureTypes';
+import { InfrastructureFormData } from '../InfrastructureTypes';
 
-export const mockMappedInfrastructures: MappedInfrastructure[] = [
+export const mockMappedInfrastructures: InfrastructureFormData[] = [
     {
         id: 'infra-1',
         name: 'Test Infrastructure 1',
@@ -59,7 +59,7 @@ export const mockMappedInfrastructures: MappedInfrastructure[] = [
         securityProxy: {
             value: 'proxy',
         },
-    }
+    },
 ];
 export const mockInfrastructures = [
     {
@@ -120,15 +120,14 @@ export const mockInfrastructures = [
     },
 ];
 
-export const emptyMappedInfrastructure: MappedInfrastructure = {
+export const emptyMappedInfrastructure: InfrastructureFormData = {
     id: '',
     name: '',
     securityType: 'NONE',
-    connections: []
+    connections: [],
 };
 
-export const faultyMappedInfrastructure: MappedInfrastructure =
-{
+export const faultyMappedInfrastructure: InfrastructureFormData = {
     id: 'faulty-1',
     name: 'Faulty Infrastructure',
     logo: undefined,
@@ -140,4 +139,4 @@ export const faultyMappedInfrastructure: MappedInfrastructure =
             types: [],
         },
     ],
-}
+};

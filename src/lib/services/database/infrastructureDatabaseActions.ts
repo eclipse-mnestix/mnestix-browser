@@ -2,7 +2,7 @@
 
 import { ConnectionType } from '@prisma/client';
 import { PrismaConnector } from 'lib/services/database/PrismaConnector';
-import type { MappedInfrastructure } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
+import type { InfrastructureFormData } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
 import { envs } from 'lib/env/MnestixEnv';
 import { ConnectionTypeEnum, getTypeAction } from 'lib/services/database/ConnectionTypeEnum';
 import { InfrastructureConnection, RepositoryWithInfrastructure } from 'lib/services/database/MappedTypes';
@@ -51,7 +51,7 @@ export async function fetchAllInfrastructureConnectionsFromDb(): Promise<Infrast
     }));
 }
 
-export async function getDefaultInfrastructure(): Promise<InfrastructureConnection>{
+export async function getDefaultInfrastructure(): Promise<InfrastructureConnection> {
     return {
         name: 'Default Infrastructure',
         discoveryUrls: envs.DISCOVERY_API_URL ? [envs.DISCOVERY_API_URL] : [],
@@ -59,8 +59,10 @@ export async function getDefaultInfrastructure(): Promise<InfrastructureConnecti
         aasRepositoryUrls: envs.AAS_REPO_API_URL ? [envs.AAS_REPO_API_URL] : [],
         submodelRepositoryUrls: envs.SUBMODEL_REPO_API_URL ? [envs.SUBMODEL_REPO_API_URL] : [],
         submodelRegistryUrls: envs.SUBMODEL_REGISTRY_API_URL ? [envs.SUBMODEL_REGISTRY_API_URL] : [],
-        conceptDescriptionRepositoryUrls: envs.CONCEPT_DESCRIPTION_REPO_API_URL ? [envs.CONCEPT_DESCRIPTION_REPO_API_URL] : [],
-    }
+        conceptDescriptionRepositoryUrls: envs.CONCEPT_DESCRIPTION_REPO_API_URL
+            ? [envs.CONCEPT_DESCRIPTION_REPO_API_URL]
+            : [],
+    };
 }
 
 export async function getInfrastructuresIncludingDefault() {
@@ -75,7 +77,7 @@ export async function getInfrastructuresIncludingDefault() {
 
 export async function getInfrastructureByName(name: string): Promise<InfrastructureConnection> {
     const infrastructures = await getInfrastructuresIncludingDefault();
-    const found_infrastructure = infrastructures.find(infra => infra.name === name);
+    const found_infrastructure = infrastructures.find((infra) => infra.name === name);
     if (!found_infrastructure) {
         throw new Error(`Infrastructure with name ${name} not found`);
     }
@@ -93,12 +95,25 @@ export async function getAasRepositoriesIncludingDefault() {
     return [defaultAasRepository, ...aasRepositoriesDb];
 }
 
-export async function createInfrastructureAction(infrastructureData: MappedInfrastructure) {
+export async function getSubmodelRepositoriesIncludingDefault() {
+    const submodelRepositoriesDb = await getConnectionDataByTypeAction(
+        getTypeAction(ConnectionTypeEnum.SUBMODEL_REPOSITORY),
+    );
+    const defaultSubmodelRepository = {
+        id: 'default',
+        url: envs.SUBMODEL_REGISTRY_API_URL || '',
+        infrastructureName: (await getDefaultInfrastructure()).name,
+    };
+
+    return [defaultSubmodelRepository, ...submodelRepositoriesDb];
+}
+
+export async function createInfrastructureAction(infrastructureData: InfrastructureFormData) {
     const prismaConnector = PrismaConnector.create();
     return prismaConnector.createInfrastructure(infrastructureData);
 }
 
-export async function updateInfrastructureAction(infrastructureData: MappedInfrastructure) {
+export async function updateInfrastructureAction(infrastructureData: InfrastructureFormData) {
     const prismaConnector = PrismaConnector.create();
     return prismaConnector.updateInfrastructure(infrastructureData);
 }

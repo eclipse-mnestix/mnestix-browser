@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Skeleton } from '@mui/material';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { getAasRepositoriesIncludingDefault } from 'lib/services/database/connectionServerActions';
+import { getAasRepositoriesIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { useTranslations } from 'next-intl';
 import { RepositoryWithInfrastructure } from 'lib/services/database/MappedTypes';

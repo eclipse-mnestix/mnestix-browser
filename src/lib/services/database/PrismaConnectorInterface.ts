@@ -1,8 +1,6 @@
 import { ConnectionType } from '@prisma/client';
-import type {
-    InfrastructureWithRelations,
-    MappedInfrastructure,
-} from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
+import type { InfrastructureFormData } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
+import { InfrastructureWithRelations } from 'lib/services/database/MappedTypes';
 
 export interface IPrismaConnector {
     /**
@@ -18,12 +16,12 @@ export interface IPrismaConnector {
     /**
      * Creates a new infrastructure
      */
-    createInfrastructure(infrastructureData: MappedInfrastructure): Promise<{ id: string; name: string }>;
+    createInfrastructure(infrastructureData: InfrastructureFormData): Promise<{ id: string; name: string }>;
 
     /**
      * Updates an existing infrastructure
      */
-    updateInfrastructure(infrastructureData: MappedInfrastructure): Promise<{ id: string; name: string }>;
+    updateInfrastructure(infrastructureData: InfrastructureFormData): Promise<{ id: string; name: string }>;
 
     /**
      * Deletes an infrastructure by ID

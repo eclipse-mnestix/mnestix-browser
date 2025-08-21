@@ -2,7 +2,7 @@ import { prisma } from 'lib/database/prisma';
 import { ConnectionType, Prisma } from '@prisma/client';
 import { IPrismaConnector } from 'lib/services/database/PrismaConnectorInterface';
 import { PrismaConnectorInMemory } from 'lib/services/database/PrismaConnectorInMemory';
-import type { MappedInfrastructure } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
+import type { InfrastructureFormData } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
 import { RepositoryWithInfrastructure } from 'lib/services/database/MappedTypes';
 
 export type DataSourceFormData = {
@@ -35,7 +35,7 @@ export class PrismaConnector implements IPrismaConnector {
         });
     }
 
-    async createInfrastructure(infrastructureData: MappedInfrastructure) {
+    async createInfrastructure(infrastructureData: InfrastructureFormData) {
         return await prisma.$transaction(async (tx) => {
             const securityType = await this.findSecurityType(tx, infrastructureData.securityType);
 
@@ -54,7 +54,7 @@ export class PrismaConnector implements IPrismaConnector {
         });
     }
 
-    async updateInfrastructure(infrastructureData: MappedInfrastructure) {
+    async updateInfrastructure(infrastructureData: InfrastructureFormData) {
         if (!infrastructureData.id) {
             throw new Error('Infrastructure ID is required for update');
         }
@@ -138,7 +138,7 @@ export class PrismaConnector implements IPrismaConnector {
     private async createConnections(
         tx: PrismaTransaction,
         infrastructureId: string,
-        connections: MappedInfrastructure['connections'],
+        connections: InfrastructureFormData['connections'],
     ) {
         for (const connection of connections) {
             if (connection.url) {
@@ -174,7 +174,7 @@ export class PrismaConnector implements IPrismaConnector {
     private async createSecuritySettings(
         tx: PrismaTransaction,
         infrastructureId: string,
-        infrastructureData: MappedInfrastructure,
+        infrastructureData: InfrastructureFormData,
     ) {
         if (infrastructureData.securityHeader) {
             await tx.securitySettingsHeader.create({

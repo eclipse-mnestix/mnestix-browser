@@ -1,9 +1,11 @@
 import { Box, DialogActions, Divider, FormControl, MenuItem, Skeleton, TextField, Typography } from '@mui/material';
-import { getConnectionDataByTypeAction } from 'lib/services/database/connectionServerActions';
+import {
+    getAasRepositoriesIncludingDefault,
+    getSubmodelRepositoriesIncludingDefault,
+} from 'lib/services/database/infrastructureDatabaseActions';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { Fragment, useState } from 'react';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { ConnectionTypeEnum, getTypeAction } from 'lib/services/database/ConnectionTypeEnum';
 import { Controller, useForm } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
 import { useTranslations } from 'next-intl';
@@ -30,14 +32,9 @@ export function TargetRepositories(props: TargetRepositoryProps) {
     useAsyncEffect(async () => {
         try {
             setIsLoading(true);
-            // TODO MNE-300 add back env variable for default repository
-            const aasRepositories = await getConnectionDataByTypeAction(
-                getTypeAction(ConnectionTypeEnum.AAS_REPOSITORY),
-            );
+            const aasRepositories = await getAasRepositoriesIncludingDefault();
             setAasRepositories(aasRepositories);
-            const submodelRepositories = await getConnectionDataByTypeAction(
-                getTypeAction(ConnectionTypeEnum.SUBMODEL_REPOSITORY),
-            );
+            const submodelRepositories = await getSubmodelRepositoriesIncludingDefault();
             setSubmodelRepositories(submodelRepositories);
         } catch (error) {
             notificationSpawner.spawn({

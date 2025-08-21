@@ -6,6 +6,12 @@ import { emptyMappedInfrastructure, mockInfrastructures } from './test-data/infr
 import MnestixInfrastructureCard from './MnestixInfrastructureCard';
 
 import MnestixInfrastructureForm from './MnestixInfrastructureForm';
+import {
+    deleteInfrastructureAction,
+    getInfrastructuresAction,
+} from 'lib/services/database/infrastructureDatabaseActions';
+import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
+
 jest.mock('./MnestixInfrastructureForm', () => {
     const MockComponent = jest.fn(() => <div data-testid="infrastructure-form">Infrastructure Form</div>);
     return {
@@ -14,11 +20,7 @@ jest.mock('./MnestixInfrastructureForm', () => {
     };
 });
 
-import {
-    getInfrastructuresAction,
-    deleteInfrastructureAction,
-} from './../../../../../lib/services/database/connectionServerActions';
-jest.mock('./../../../../../lib/services/database/connectionServerActions', () => ({
+jest.mock('./../../../../../lib/services/database/infrastructureDatabaseActions', () => ({
     getInfrastructuresAction: jest.fn(),
     createInfrastructureAction: jest.fn(),
     updateInfrastructureAction: jest.fn(),
@@ -26,11 +28,12 @@ jest.mock('./../../../../../lib/services/database/connectionServerActions', () =
     getDefaultInfrastructure: jest.fn(() => Promise.resolve(emptyMappedInfrastructure)),
 }));
 
-import { useNotificationSpawner } from './../../../../../lib/hooks/UseNotificationSpawner';
 jest.mock('./../../../../../lib/hooks/UseNotificationSpawner');
 
 jest.mock('./InfrastructureDeleteDialog', () => ({
-    InfrastructureDeleteDialog: jest.fn(() => <div data-testid="infrastructure-delete-dialog">Infrastructure Delete Dialog</div>),
+    InfrastructureDeleteDialog: jest.fn(() => (
+        <div data-testid="infrastructure-delete-dialog">Infrastructure Delete Dialog</div>
+    )),
 }));
 
 jest.mock('next-intl', () => ({
@@ -41,8 +44,6 @@ jest.mock('./../../../../../components/basics/CenteredLoadingSpinner', () => ({
     CenteredLoadingSpinner: () => <div data-testid="loading-spinner">Loading...</div>,
 }));
 
-
-
 const messages = {
     getInfrastructuresAction_error: 'Failed to fetch infrastructures',
 };
@@ -51,7 +52,6 @@ function setupMocks(infrastructures: typeof mockInfrastructures = mockInfrastruc
     (useNotificationSpawner as jest.Mock).mockReturnValue({ spawn: jest.fn() });
     (getInfrastructuresAction as jest.Mock).mockResolvedValue(infrastructures);
 }
-
 
 function setupErrorMocks() {
     (useNotificationSpawner as jest.Mock).mockReturnValue({ spawn: jest.fn() });
@@ -231,5 +231,4 @@ describe('MnestixInfrastructureCard', () => {
             expect(screen.getByText('pages.settings.infrastructure.noInfrastructuresFound')).toBeInTheDocument();
         });
     });
-
 });
