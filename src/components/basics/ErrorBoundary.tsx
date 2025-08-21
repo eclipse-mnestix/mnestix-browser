@@ -31,14 +31,13 @@ class ErrorBoundary extends Component<Props, State> {
 
     public render() {
         if (this.state.hasError) {
-            const t = useTranslations('components.noSearchResult');
             return (
                 <Box>
                     <Alert severity="warning">
                         <Typography>{this.props.message}</Typography>
                     </Alert>
                     <Button variant="contained" startIcon={<ArrowForward />} href="/">
-                        {t('toHomeButton')}
+                        {'Home'}
                     </Button>
                 </Box>
             );
