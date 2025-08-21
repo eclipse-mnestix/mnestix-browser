@@ -8,6 +8,7 @@ import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import {
     createInfrastructureAction,
     deleteInfrastructureAction,
+    getDefaultInfrastructure,
     getInfrastructuresAction,
     updateInfrastructureAction,
 } from 'lib/services/database/connectionServerActions';
@@ -18,17 +19,27 @@ import Image from 'next/image';
 import type { InfrastructureWithRelations, MappedInfrastructure } from './InfrastructureTypes';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { DefaultInfrastructure } from 'app/[locale]/settings/_components/mnestix-infrastructure/DefaultInfrastructure';
+import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
+import { InfrastructureConnection } from 'lib/services/database/MappedTypes';
 
 function MnestixInfrastructureCard() {
     const t = useTranslations('pages.settings.infrastructure');
     const theme = useTheme();
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [infrastructures, setInfrastructures] = useState<MappedInfrastructure[]>([]);
     const [editingInfrastructure, setEditingInfrastructure] = useState<string | null>(null);
     const [isCreatingNew, setIsCreatingNew] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [infrastructureToDelete, setInfrastructureToDelete] = useState<{ id: string; name: string } | null>(null);
     const notificationSpawner = useNotificationSpawner();
+    const [defaultInfrastructure, setDefaultInfrastructure] = useState<InfrastructureConnection | null>(null);
+
+    useAsyncEffect(
+        async () => {
+            const defaultInfra = await getDefaultInfrastructure();
+            setDefaultInfrastructure(defaultInfra);
+            setIsLoading(false);
+        }, []);
 
     function mapInfrastructureData(infrastructures: InfrastructureWithRelations[]): MappedInfrastructure[] {
         return infrastructures.map((infrastructure) => ({
@@ -169,6 +180,13 @@ function MnestixInfrastructureCard() {
         };
     }
 
+    function getExistingNames() {
+        if (defaultInfrastructure) {
+            return [...infrastructures.map((infra) => infra.name), defaultInfrastructure.name];
+        }
+        return infrastructures.map((infra) => infra.name);
+    }
+
     function renderInfrastructureList() {
         if (isLoading) {
             return <CenteredLoadingSpinner />;
@@ -243,7 +261,7 @@ function MnestixInfrastructureCard() {
                             infrastructure={infrastructure}
                             onCancel={handleCancelEdit}
                             onSave={handleSaveEdit}
-                            existingNames={infrastructures.map((infra) => infra.name)}
+                            existingNames={getExistingNames()}
                         />
                     </Box>
                 </Collapse>
@@ -277,7 +295,7 @@ function MnestixInfrastructureCard() {
                         infrastructure={createEmptyInfrastructure()}
                         onCancel={handleCancelEdit}
                         onSave={handleSaveEdit}
-                        existingNames={infrastructures.map((infra) => infra.name)}
+                        existingNames={getExistingNames()}
                     />
                 </Box>
             </Collapse>

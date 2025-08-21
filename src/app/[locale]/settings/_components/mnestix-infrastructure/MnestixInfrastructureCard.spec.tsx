@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { act } from 'react';
 import '@testing-library/jest-dom';
-import { mockInfrastructures } from './test-data/infrastructures';
+import { emptyMappedInfrastructure, mockInfrastructures } from './test-data/infrastructures';
 
 import MnestixInfrastructureCard from './MnestixInfrastructureCard';
 
@@ -23,6 +23,7 @@ jest.mock('./../../../../../lib/services/database/connectionServerActions', () =
     createInfrastructureAction: jest.fn(),
     updateInfrastructureAction: jest.fn(),
     deleteInfrastructureAction: jest.fn(),
+    getDefaultInfrastructure: jest.fn(() => Promise.resolve(emptyMappedInfrastructure)),
 }));
 
 import { useNotificationSpawner } from './../../../../../lib/hooks/UseNotificationSpawner';
