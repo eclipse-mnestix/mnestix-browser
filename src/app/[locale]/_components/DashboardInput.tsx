@@ -1,5 +1,5 @@
 'use client';
-import { Button, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { ManualAasInput } from 'app/[locale]/_components/ManualAasInput';
 import { QrScanner } from 'app/[locale]/_components/QrScanner';
 import { useRouter } from 'next/navigation';

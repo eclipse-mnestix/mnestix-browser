@@ -5,7 +5,6 @@ import { useParams, useSearchParams } from 'next/navigation';
 import { AASViewer } from '../_components/AASViewer';
 import { NoSearchResult } from 'components/basics/detailViewBasics/NoSearchResult';
 import { useShowError } from 'lib/hooks/UseShowError';
-import { alignContent } from '@mui/system';
 import { Box } from '@mui/material';
 
 export default function () {

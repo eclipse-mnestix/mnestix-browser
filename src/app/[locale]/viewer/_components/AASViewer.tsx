@@ -20,6 +20,7 @@ export function AASViewer() {
     const locale = useLocale();
     const env = useEnv();
     const t = useTranslations('pages.aasViewer');
+    const { showError } = useShowError();
 
     const { aas, submodels, isLoadingAas, isLoadingSubmodels, aasOriginUrl, infrastructureName } =
         useCurrentAasContext();
@@ -119,7 +120,6 @@ export function AASViewer() {
             </Box>
         );
     } catch (e) {
-        const { showError } = useShowError();
         showError(e);
         return (
             <Box sx={pageStyles}>

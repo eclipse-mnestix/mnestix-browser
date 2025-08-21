@@ -116,7 +116,7 @@ export class AssetAdministrationShellRepositoryApiInMemory implements IAssetAdmi
             return Promise.resolve(
                 wrapErrorCode(
                     ApiResultStatus.NOT_FOUND,
-                    `no aas found in the repository '${this.getBaseUrl()}' for aasId: '${aasId}', which is not base64 decodable.`,
+                    `no aas found in the repository '${this.getBaseUrl()}' for aasId: '${aasId}', which is not base64 decodable: ${error?.message}.`,
                 ),
             );
         }

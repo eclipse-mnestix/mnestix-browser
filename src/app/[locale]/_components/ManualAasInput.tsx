@@ -4,7 +4,6 @@ import { ArrowForward } from '@mui/icons-material';
 import CloseIcon from '@mui/icons-material/Close';
 import { SquaredIconButton } from 'components/basics/Buttons';
 import { LocalizedError } from 'lib/util/LocalizedError';
-import { useShowError } from 'lib/hooks/UseShowError';
 import { useTranslations } from 'next-intl';
 import { getInfrastructuresIncludingDefault } from 'lib/services/database/connectionServerActions';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
@@ -26,7 +25,6 @@ export function ManualAasInput(props: {
     const [infrastructures, setInfrastructures] = useState<string[]>([]);
 
     const inputRef = useRef<HTMLInputElement>(null);
-    const { showError } = useShowError();
     const t = useTranslations();
 
     useEffect(() => {
