@@ -2,8 +2,8 @@ import logger, { logInfo, logResponseDebug } from 'lib/util/Logger';
 import { ConceptDescriptionApi } from 'lib/api/concept-description-api/conceptDescriptionApi';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
-import { ApiResponseWrapper, wrapErrorCode } from '../../util/apiResponseWrapper/apiResponseWrapper';
-import { getInfrastructureByName, getInfrastructuresIncludingDefault } from '../database/connectionServerActions';
+import { ApiResponseWrapper, wrapErrorCode } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { getInfrastructureByName, getInfrastructuresIncludingDefault } from '../database/infrastructureDatabaseActions';
 import { ConceptDescription } from 'lib/api/aas/models';
 import { IConceptDescriptionApi } from 'lib/api/concept-description-api/conceptDescriptionApiInterface';
 import { RepoSearchResult } from '../aas-repository-service/AasRepositorySearchService';
@@ -11,8 +11,8 @@ import { RepoSearchResult } from '../aas-repository-service/AasRepositorySearchS
 export class ConceptDescriptionRepositoryService {
     private constructor(
         protected readonly getConceptDescriptionRepositoryClient: (basePath: string) => IConceptDescriptionApi,
-        private readonly log: typeof logger = logger
-    ) { }
+        private readonly log: typeof logger = logger,
+    ) {}
 
     static create(log?: typeof logger): ConceptDescriptionRepositoryService {
         const svcLogger = log?.child({ Service: 'ConceptDescriptionSearchService' });
@@ -22,16 +22,23 @@ export class ConceptDescriptionRepositoryService {
         );
     }
 
-    static createNull(conceptDescriptionsInRepositories: RepoSearchResult<ConceptDescription>[] = []): ConceptDescriptionRepositoryService {
+    static createNull(
+        conceptDescriptionsInRepositories: RepoSearchResult<ConceptDescription>[] = [],
+    ): ConceptDescriptionRepositoryService {
         return new ConceptDescriptionRepositoryService((baseUrl) =>
             ConceptDescriptionApi.createNull(
                 baseUrl,
-                conceptDescriptionsInRepositories.filter((value) => value.location == baseUrl).map((value) => value.searchResult),
+                conceptDescriptionsInRepositories
+                    .filter((value) => value.location == baseUrl)
+                    .map((value) => value.searchResult),
             ),
         );
     }
 
-    async getConceptDescriptionByIdFromRepositories(conceptDescriptionId: string, infrastructureName: string | undefined = undefined): Promise<ApiResponseWrapper<ConceptDescription>> {
+    async getConceptDescriptionByIdFromRepositories(
+        conceptDescriptionId: string,
+        infrastructureName: string | undefined = undefined,
+    ): Promise<ApiResponseWrapper<ConceptDescription>> {
         let conceptRepositoryUrlList: string[];
         if (infrastructureName === undefined) {
             const infrastructures = await getInfrastructuresIncludingDefault();
@@ -43,7 +50,7 @@ export class ConceptDescriptionRepositoryService {
         if (conceptRepositoryUrlList.length === 0) {
             return wrapErrorCode(
                 ApiResultStatus.NOT_FOUND,
-                `No Concept Description repositories found for ${infrastructureName !== undefined ? infrastructureName : 'unspecified infrastructure'}`
+                `No Concept Description repositories found for ${infrastructureName !== undefined ? infrastructureName : 'unspecified infrastructure'}`,
             );
         }
 
@@ -55,12 +62,20 @@ export class ConceptDescriptionRepositoryService {
                 if (response.isSuccess) {
                     return response;
                 } else {
-                    logResponseDebug(logger, 'getConceptDescriptionById', `Couldn't find Concept Description ${conceptDescriptionId} in ${url}`, response);
+                    logResponseDebug(
+                        logger,
+                        'getConceptDescriptionById',
+                        `Couldn't find Concept Description ${conceptDescriptionId} in ${url}`,
+                        response,
+                    );
                 }
             } catch (error) {
                 logInfo(logger, 'getConceptDescriptionById', `Failed to fetch Concept Description from ${url}`, error);
             }
         }
-        return wrapErrorCode(ApiResultStatus.NOT_FOUND, `Couldn't find Concept Description in provided infrastructures: ${[...conceptRepositoryUrls].join(', ')}`);
+        return wrapErrorCode(
+            ApiResultStatus.NOT_FOUND,
+            `Couldn't find Concept Description in provided infrastructures: ${[...conceptRepositoryUrls].join(', ')}`,
+        );
     }
 }

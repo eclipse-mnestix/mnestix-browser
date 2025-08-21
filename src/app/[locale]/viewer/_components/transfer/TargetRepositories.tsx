@@ -9,7 +9,7 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { Controller, useForm } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
 import { useTranslations } from 'next-intl';
-import { RepositoryWithInfrastructure } from 'lib/services/database/MappedTypes';
+import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 
 export type TargetRepositoryFormData = {
     repository?: string;

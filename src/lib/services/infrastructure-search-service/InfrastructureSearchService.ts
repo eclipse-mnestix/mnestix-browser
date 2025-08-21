@@ -14,7 +14,7 @@ import {
 import { AasRegistryEndpointEntryInMemory } from 'lib/api/registry-service-api/registryServiceApiInMemory';
 import { SubmodelRepositoryService } from 'lib/services/submodel-repository-service/SubmodelRepositoryService';
 import { SubmodelRegistryService } from 'lib/services/submodel-registry-service/SubmodelRegistryService';
-import { InfrastructureConnection } from 'lib/services/database/MappedTypes';
+import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
 
 export type AasSearchResult = {
     redirectUrl: string;

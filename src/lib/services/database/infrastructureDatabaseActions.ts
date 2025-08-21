@@ -5,7 +5,10 @@ import { PrismaConnector } from 'lib/services/database/PrismaConnector';
 import type { InfrastructureFormData } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
 import { envs } from 'lib/env/MnestixEnv';
 import { ConnectionTypeEnum, getTypeAction } from 'lib/services/database/ConnectionTypeEnum';
-import { InfrastructureConnection, RepositoryWithInfrastructure } from 'lib/services/database/MappedTypes';
+import {
+    InfrastructureConnection,
+    RepositoryWithInfrastructure,
+} from 'lib/services/database/InfrastructureMappedTypes';
 
 export async function getInfrastructuresAction() {
     const prismaConnector = PrismaConnector.create();

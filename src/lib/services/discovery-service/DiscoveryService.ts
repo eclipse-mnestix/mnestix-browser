@@ -10,7 +10,7 @@ import { IDiscoveryServiceApi } from 'lib/api/discovery-service-api/discoverySer
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { DiscoveryServiceApi } from 'lib/api/discovery-service-api/discoveryServiceApi';
 import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
-import { InfrastructureConnection } from 'lib/services/database/MappedTypes';
+import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
 
 export type DiscoverySearchResult = {
     aasId: string;

@@ -2,7 +2,7 @@ import { ConnectionType } from '@prisma/client';
 import type { InfrastructureFormData } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
 import { IPrismaConnector } from 'lib/services/database/PrismaConnectorInterface';
 import { isEqual } from 'lodash';
-import { InfrastructureWithRelations } from 'lib/services/database/MappedTypes';
+import { InfrastructureWithRelations } from 'lib/services/database/InfrastructureMappedTypes';
 
 export class PrismaConnectorInMemory implements IPrismaConnector {
     constructor(

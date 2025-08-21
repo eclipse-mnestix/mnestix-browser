@@ -20,7 +20,7 @@ import type { InfrastructureFormData } from './InfrastructureTypes';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { DefaultInfrastructure } from 'app/[locale]/settings/_components/mnestix-infrastructure/DefaultInfrastructure';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { InfrastructureConnection, InfrastructureWithRelations } from 'lib/services/database/MappedTypes';
+import { InfrastructureConnection, InfrastructureWithRelations } from 'lib/services/database/InfrastructureMappedTypes';
 
 function MnestixInfrastructureCard() {
     const t = useTranslations('pages.settings.infrastructure');

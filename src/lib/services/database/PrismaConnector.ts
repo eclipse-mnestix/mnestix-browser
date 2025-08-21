@@ -3,7 +3,7 @@ import { ConnectionType, Prisma } from '@prisma/client';
 import { IPrismaConnector } from 'lib/services/database/PrismaConnectorInterface';
 import { PrismaConnectorInMemory } from 'lib/services/database/PrismaConnectorInMemory';
 import type { InfrastructureFormData } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
-import { RepositoryWithInfrastructure } from 'lib/services/database/MappedTypes';
+import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 
 export type DataSourceFormData = {
     id: string;

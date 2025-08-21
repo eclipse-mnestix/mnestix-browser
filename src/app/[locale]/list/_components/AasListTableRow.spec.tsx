@@ -6,7 +6,7 @@ import { ListEntityDto } from 'lib/services/list-service/ListService';
 import * as nameplateDataActions from 'lib/services/list-service/aasListApiActions';
 import { JSX } from 'react';
 import { AasStoreProvider } from 'stores/AasStore';
-import { RepositoryWithInfrastructure } from 'lib/services/database/MappedTypes';
+import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 
 jest.mock('next/navigation', () => ({
     useRouter() {
