@@ -9,7 +9,15 @@ import { useTranslations } from 'next-intl';
 import { getInfrastructuresIncludingDefault } from 'lib/services/database/connectionServerActions';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 
-export function ManualAasInput(props: { onSubmit: (input: string, infrastructureName?: string) => Promise<void> }) {
+export function ManualAasInput(props: {
+    searchInput: (
+        searchString: string,
+        error_message: string,
+        onErrorCallback: (error: LocalizedError) => void,
+        onSuccessCallback: () => void,
+        infrastructureName?: string,
+    ) => Promise<void>;
+}) {
     const [inputValue, setInputValue] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isError, setIsError] = useState<boolean>(false);
@@ -41,17 +49,19 @@ export function ManualAasInput(props: { onSubmit: (input: string, infrastructure
     };
 
     const handleSubmit = async () => {
-        try {
-            setIsLoading(true);
-            const infraName = selectedInfrastructure === 'all' ? undefined : selectedInfrastructure;
+        setIsLoading(true);
+        const infraName = selectedInfrastructure === 'all' ? undefined : selectedInfrastructure;
 
-            await props.onSubmit(inputValue, infraName);
-        } catch (e) {
-            setIsLoading(false);
-            const msg = e instanceof LocalizedError ? e.descriptor : 'navigation.errors.unexpectedError';
-            setError(t(msg));
-            if (!(e instanceof LocalizedError)) showError(e);
-        }
+        await props.searchInput(
+            inputValue,
+            t('navigation.errors.unexpectedError'),
+            (error) => {
+                setIsLoading(false);
+                setError(t(error.descriptor));
+            }, // onError
+            () => {}, // onSuccess
+            infraName,
+        );
     };
 
     const handleKeyPress = async (event: React.KeyboardEvent) => {
