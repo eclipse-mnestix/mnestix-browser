@@ -1,5 +1,7 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
-import { Alert, Box, Typography } from '@mui/material';
+import { Alert, Box, Button, Typography } from '@mui/material';
+import { ArrowForward } from '@mui/icons-material';
+import { useTranslations } from 'next-intl';
 
 interface Props {
     children?: ReactNode;
@@ -29,11 +31,15 @@ class ErrorBoundary extends Component<Props, State> {
 
     public render() {
         if (this.state.hasError) {
+            const t = useTranslations('components.noSearchResult');
             return (
                 <Box>
                     <Alert severity="warning">
                         <Typography>{this.props.message}</Typography>
                     </Alert>
+                    <Button variant="contained" startIcon={<ArrowForward />} href="/">
+                        {t('toHomeButton')}
+                    </Button>
                 </Box>
             );
         }
