@@ -208,7 +208,7 @@ function MnestixInfrastructureForm({
     function getConnectionFormControl(field: FieldArrayWithId<MappedInfrastructure, 'connections'>, index: number) {
         return (
             <FormControl fullWidth variant="filled" key={field.id}>
-                <Box sx={{ mb: 4, alignItems: 'flex-start', gap: 2 }}>
+                <Box sx={{ mb: 3, alignItems: 'flex-start', gap: 2 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                         <Controller
                             name={`connections.${index}.url`}
@@ -380,9 +380,9 @@ function MnestixInfrastructureForm({
     return (
         <Box
             sx={{
-                p: 3,
-                border: `2px solid ${theme.palette.primary.main}`,
-                borderRadius: 1,
+                px: 2,
+                pt: 1,
+                pb: 3,
             }}
         >
             <form onSubmit={handleSubmit(onSubmit)} role="form" aria-label="Infrastructure form">
@@ -401,7 +401,7 @@ function MnestixInfrastructureForm({
                     startIcon={<Add />}
                     onClick={addConnection}
                     aria-label="Add new endpoint"
-                    sx={{ mb: 2 }}
+                    sx={{ mb: 2, mt: -1 }}
                 >
                     {t('form.addEndpoint')}
                 </Button>

@@ -179,7 +179,10 @@ function MnestixInfrastructureCard() {
         }
 
         return infrastructures.map((infrastructure) => (
-            <Box key={infrastructure.id} sx={{ mb: 1 }}>
+            <Box
+                key={infrastructure.id}
+                sx={{ mb: 1, border: `1px solid ${theme.palette.grey['300']}`, borderRadius: 1 }}
+            >
                 <Box
                     sx={{
                         backgroundColor: alpha(theme.palette.primary.main, 0.1),
@@ -272,7 +275,7 @@ function MnestixInfrastructureCard() {
             <Divider sx={{ my: 2 }} />
 
             <Collapse in={isCreatingNew} timeout="auto" unmountOnExit>
-                <Box sx={{ mb: 2 }}>
+                <Box sx={{ mb: 2, pt: 2, border: `1px solid ${theme.palette.grey['300']}`, borderRadius: 1 }}>
                     <MnestixInfrastructureForm
                         infrastructure={createEmptyInfrastructure()}
                         onCancel={handleCancelEdit}
