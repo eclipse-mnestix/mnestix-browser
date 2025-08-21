@@ -2,13 +2,18 @@ import { Button, Typography } from '@mui/material';
 import { ArrowForward } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
 import { safeBase64Decode } from 'lib/util/Base64Util';
+import { useShowError } from 'lib/hooks/UseShowError';
 
 export function NoSearchResult(props: { base64AasId: string }) {
-    let aas_id: string = props.base64AasId;
+    const { showError } = useShowError();
+    let aas_id: string;
     try {
         aas_id = safeBase64Decode(props.base64AasId);
     } catch (error) {
-        console.error('Failed to decode base64 AAS ID:', error);
+        showError(
+            new Error(`Failed to decode base64 AAS ID: ${error instanceof Error ? error.message : String(error)}`),
+        );
+        // If we cannot decode we show the encoded variant
         aas_id = props.base64AasId;
     }
 

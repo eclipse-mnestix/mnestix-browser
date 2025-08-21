@@ -8,6 +8,7 @@ import { useShowError } from 'lib/hooks/UseShowError';
 import { Box } from '@mui/material';
 
 export default function () {
+    const { showError } = useShowError();
     const params = useParams<{ base64AasId: string }>();
     const base64AasId = decodeURIComponent(params.base64AasId).replace(/=+$|[%3D]+$/, '');
     const encodedRepoUrl = useSearchParams().get('repoUrl');
@@ -22,7 +23,6 @@ export default function () {
             </CurrentAasContextProvider>
         );
     } catch (e) {
-        const { showError } = useShowError();
         showError(e);
         return (
             <Box

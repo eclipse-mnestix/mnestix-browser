@@ -46,7 +46,9 @@ export function ProductJourney(props: { addressesPerLifeCyclePhase: AddressPerLi
             const addresses = await enrichAddressesWithCoordinates(props.addressesPerLifeCyclePhase);
             setEnrichedAddresses(addresses);
         } catch (error) {
-            showError(new Error('Error enriching addresses:', error));
+            showError(
+                new Error(`Error enriching addresses: ${error instanceof Error ? error.message : String(error)}`),
+            );
             setEnrichedAddresses(props.addressesPerLifeCyclePhase);
         } finally {
             setIsLoading(false);
