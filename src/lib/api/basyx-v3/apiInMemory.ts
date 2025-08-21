@@ -11,6 +11,7 @@ import type {
     Submodel,
     SubmodelElementCollection,
     SubmodelElementList,
+    ConceptDescription,
 } from 'lib/api/aas/models';
 import {
     ApiResponseWrapper,
@@ -24,6 +25,7 @@ import { ServiceReachable } from 'test-utils/TestUtils';
 import { MultiLanguageValueOnly, PaginationData } from 'lib/api/basyx-v3/types';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { LangStringTextType, MultiLanguageProperty, ModelType, DataTypeDefXsd } from 'lib/api/aas/models';
+import { IConceptDescriptionApi } from '../concept-description-api/conceptDescriptionApiInterface';
 
 const options = {
     headers: { 'Content-type': 'application/json; charset=utf-8' },
@@ -150,16 +152,16 @@ export class SubmodelRepositoryApiInMemory implements ISubmodelRepositoryApi {
         });
     }
     postSubmodelElement() // submodelId: string,
-    // idShortPath: string,
-    // submodelElement: unknown,
-    // options?: Omit<RequestInit, 'body' | 'method'>,
-    : Promise<ApiResponseWrapper<Response>> {
+        // idShortPath: string,
+        // submodelElement: unknown,
+        // options?: Omit<RequestInit, 'body' | 'method'>,
+        : Promise<ApiResponseWrapper<Response>> {
         throw new Error('Method not implemented.');
     }
     deleteSubmodelElementByPath() // submodelId: string,
-    // idShortPath: string,
-    // options?: Omit<RequestInit, 'body' | 'method'>,
-    : Promise<ApiResponseWrapper<Response>> {
+        // idShortPath: string,
+        // options?: Omit<RequestInit, 'body' | 'method'>,
+        : Promise<ApiResponseWrapper<Response>> {
         throw new Error('Method not implemented.');
     }
 
@@ -323,6 +325,42 @@ function submodelValueOnly(submodel: Submodel) {
             }) ?? [],
     );
     return res;
+}
+
+export class ConceptDescriptionRepositoryApiInMemory implements IConceptDescriptionApi {
+    readonly conceptDescriptionsInRepository = new Map<string, ConceptDescription>();
+
+    constructor(
+        readonly basePath: string,
+        conceptDescriptionsInRepository: ConceptDescription[],
+        readonly reachable: ServiceReachable = ServiceReachable.Yes,
+    ) {
+        this.conceptDescriptionsInRepository = new Map<string, ConceptDescription>();
+        conceptDescriptionsInRepository.forEach((conceptDescription) => {
+            this.conceptDescriptionsInRepository.set(conceptDescription.id, conceptDescription);
+        });
+        this.basePath = basePath;
+    }
+
+    getBasePath(): string {
+        return this.basePath;
+    }
+    async getConceptDescriptionById(conceptDescriptionId: string): Promise<ApiResponseWrapper<ConceptDescription>> {
+        if (this.reachable !== ServiceReachable.Yes)
+            return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Service not reachable');
+        const foundConceptDescription = this.conceptDescriptionsInRepository.get(conceptDescriptionId);
+        if (foundConceptDescription) {
+            const response = new Response(JSON.stringify(foundConceptDescription), options);
+            return await wrapResponse(response);
+        }
+        return Promise.resolve(
+            wrapErrorCode(
+                ApiResultStatus.NOT_FOUND,
+                `no concept description found in the repository '${this.getBasePath()}' for conceptDescriptionId: '${conceptDescriptionId}', which is :'${safeBase64Decode(conceptDescriptionId)}' encoded in base64`,
+            ),
+        );
+    }
+
 }
 
 /* eslint-enable @typescript-eslint/no-explicit-any */

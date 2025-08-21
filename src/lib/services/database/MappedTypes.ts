@@ -14,6 +14,7 @@ export type InfrastructureConnection = {
     aasRepositoryUrls: string[];
     submodelRepositoryUrls: string[];
     submodelRegistryUrls: string[];
+    conceptDescriptionRepositoryUrls: string[];
     infrastructureSecurity?: InfrastructureSecurity;
 };
 

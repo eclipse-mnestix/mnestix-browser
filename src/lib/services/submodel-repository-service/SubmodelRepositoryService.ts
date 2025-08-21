@@ -6,7 +6,6 @@ import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import logger, { logResponseDebug } from 'lib/util/Logger';
 import { SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
-
 import { InfrastructureConnection } from 'lib/services/database/MappedTypes';
 
 export class SubmodelRepositoryService {
