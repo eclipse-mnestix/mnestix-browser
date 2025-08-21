@@ -73,6 +73,7 @@ export function createTestInfrastructure({
     aasRepositoryUrls = [],
     submodelRegistryUrls = [],
     submodelRepositoryUrls = [],
+    conceptDescriptionRepositoryUrls = [],
 }: {
     name?: string;
     discoveryUrls?: string[];
@@ -80,6 +81,7 @@ export function createTestInfrastructure({
     aasRepositoryUrls?: string[];
     submodelRegistryUrls?: string[];
     submodelRepositoryUrls?: string[];
+    conceptDescriptionRepositoryUrls?: string[];
 } = {}) {
     return {
         name,
@@ -88,5 +90,6 @@ export function createTestInfrastructure({
         aasRepositoryUrls,
         submodelRegistryUrls,
         submodelRepositoryUrls,
+        conceptDescriptionRepositoryUrls,
     };
 }
