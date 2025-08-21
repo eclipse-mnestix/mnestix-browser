@@ -38,6 +38,9 @@ export class ConceptDescriptionRepositoryService {
             conceptRepositoryUrlList = infrastructures.flatMap((infra) => infra.conceptDescriptionRepositoryUrls);
         } else {
             const infrastructure = await getInfrastructureByName(infrastructureName);
+            if (!infrastructure) {
+                return wrapErrorCode(ApiResultStatus.NOT_FOUND, `Infrastructure with name ${infrastructureName} not found`);
+            }
             conceptRepositoryUrlList = infrastructure.conceptDescriptionRepositoryUrls;
         }
         if (conceptRepositoryUrlList.length === 0) {

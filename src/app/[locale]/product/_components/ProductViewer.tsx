@@ -1,7 +1,6 @@
 'use client';
 
 import { Box } from '@mui/material';
-import { safeBase64Decode } from 'lib/util/Base64Util';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import {
     checkIfSubmodelHasIdShortOrSemanticId,
@@ -129,7 +128,7 @@ export function ProductViewer() {
                     />
                 </Box>
             ) : (
-                <NoSearchResult base64AasId={safeBase64Decode(base64AasId)} />
+                <NoSearchResult base64AasId={base64AasId} />
             )}
         </Box>
     );

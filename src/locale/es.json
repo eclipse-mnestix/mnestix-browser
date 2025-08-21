@@ -169,7 +169,8 @@
         "title": "Acceso no autorizado"
       },
       "unexpectedError": "Error inesperado",
-      "urlNotFound": "No hay AAS para el ID especificado."
+      "urlNotFound": "No hay AAS para el ID especificado.",
+      "generic": "Algo ha ido mal."
     },
     "footer": {
       "about": "Sobre Mnestix",

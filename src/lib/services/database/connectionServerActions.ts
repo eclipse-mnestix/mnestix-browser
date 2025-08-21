@@ -1,6 +1,7 @@
 'use server';
 
 import { ConnectionType } from '@prisma/client';
+import logger from 'lib/util/Logger';
 import { PrismaConnector } from 'lib/services/database/PrismaConnector';
 import type { MappedInfrastructure } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
 import { envs } from 'lib/env/MnestixEnv';
@@ -51,7 +52,7 @@ export async function fetchAllInfrastructureConnectionsFromDb(): Promise<Infrast
     }));
 }
 
-export async function getDefaultInfrastructure(): Promise<InfrastructureConnection>{
+export async function getDefaultInfrastructure(): Promise<InfrastructureConnection> {
     return {
         name: 'Default Infrastructure',
         discoveryUrls: envs.DISCOVERY_API_URL ? [envs.DISCOVERY_API_URL] : [],
@@ -73,24 +74,30 @@ export async function getInfrastructuresIncludingDefault() {
     return [defaultInfrastructure, ...infrastructures];
 }
 
-export async function getInfrastructureByName(name: string): Promise<InfrastructureConnection> {
+export async function getInfrastructureByName(name: string): Promise<InfrastructureConnection | undefined> {
     const infrastructures = await getInfrastructuresIncludingDefault();
     const found_infrastructure = infrastructures.find(infra => infra.name === name);
     if (!found_infrastructure) {
-        throw new Error(`Infrastructure with name ${name} not found`);
+        return undefined;
     }
     return found_infrastructure;
 }
 
 export async function getAasRepositoriesIncludingDefault() {
-    const aasRepositoriesDb = await getConnectionDataByTypeAction(getTypeAction(ConnectionTypeEnum.AAS_REPOSITORY));
     const defaultAasRepository = {
         id: 'default',
         url: envs.AAS_REPO_API_URL || '',
         infrastructureName: (await getDefaultInfrastructure()).name,
     };
+    try {
+        const aasRepositoriesDb = await getConnectionDataByTypeAction(getTypeAction(ConnectionTypeEnum.AAS_REPOSITORY));
 
-    return [defaultAasRepository, ...aasRepositoriesDb];
+
+        return [defaultAasRepository, ...aasRepositoriesDb];
+    } catch (error) {
+        logger.error('Failed to fetch AAS repositories', error);
+        return [];
+    }
 }
 
 export async function createInfrastructureAction(infrastructureData: MappedInfrastructure) {

@@ -31,14 +31,14 @@ export function CompareAasAddDialog(props: AddAasModalProps) {
                         <Typography color="text.secondary" textAlign="center">
                             {t('dashboard.scanIdLabel')}
                         </Typography>
-                        <QrScanner onScan={props.onSubmit} size={400} />
+                        <QrScanner searchInput={props.onSubmit} size={400} />
                         <Typography color="text.secondary" textAlign="center" sx={{ mb: 2, fontSize: '14px' }}>
                             {t('dashboard.enterManuallyLabel')}
                         </Typography>
                     </Box>
                 </Box>
                 <Box paddingY="20px">
-                    <ManualAasInput onSubmit={props.onSubmit} />
+                    <ManualAasInput searchInput={props.onSubmit} />
                 </Box>
             </DialogContent>
         </Dialog>

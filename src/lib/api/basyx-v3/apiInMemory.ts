@@ -105,12 +105,21 @@ export class AssetAdministrationShellRepositoryApiInMemory implements IAssetAdmi
             const response = new Response(JSON.stringify(foundAas), options);
             return await wrapResponse(response);
         }
-        return Promise.resolve(
-            wrapErrorCode(
-                ApiResultStatus.NOT_FOUND,
-                `no aas found in the repository '${this.getBaseUrl()}' for aasId: '${aasId}', which is :'${safeBase64Decode(aasId)}' encoded in base64`,
-            ),
-        );
+        try {
+            return Promise.resolve(
+                wrapErrorCode(
+                    ApiResultStatus.NOT_FOUND,
+                    `no aas found in the repository '${this.getBaseUrl()}' for aasId: '${aasId}', which is :'${safeBase64Decode(aasId)}' encoded in base64`,
+                ),
+            );
+        } catch (error) {
+            return Promise.resolve(
+                wrapErrorCode(
+                    ApiResultStatus.NOT_FOUND,
+                    `no aas found in the repository '${this.getBaseUrl()}' for aasId: '${aasId}', which is not base64 decodable.`,
+                ),
+            );
+        }
     }
 
     async getSubmodelReferencesFromShell(

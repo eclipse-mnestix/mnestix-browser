@@ -169,7 +169,8 @@
         "title": "Unautorisierter Zugriff"
       },
       "unexpectedError": "Unerwarteter Fehler",
-      "urlNotFound": "Keine Verwaltungsschale unter dieser ID."
+      "urlNotFound": "Keine Verwaltungsschale unter dieser ID.",
+      "generic": "Etwas ist schiefgelaufen."
     },
     "footer": {
       "about": "Über Mnestix",
