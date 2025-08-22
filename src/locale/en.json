@@ -169,7 +169,8 @@
         "title": "Unauthorized access"
       },
       "unexpectedError": "Unexpected error",
-      "urlNotFound": "No AAS with the given ID."
+      "urlNotFound": "No AAS with the given ID.",
+      "generic": "Something went wrong."
     },
     "footer": {
       "about": "About Mnestix",

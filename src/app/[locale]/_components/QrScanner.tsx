@@ -10,6 +10,7 @@ import { keyframes, styled } from '@mui/system';
 import { ThemeProvider } from '@mui/material/styles';
 import CircleIcon from '@mui/icons-material/Circle';
 import { useShowError } from 'lib/hooks/UseShowError';
+import { useTranslations } from 'next-intl';
 
 enum State {
     Stopped,
@@ -18,9 +19,18 @@ enum State {
     HandleQr,
 }
 
-export function QrScanner(props: { onScan: (scanResult: string) => Promise<void>; size?: number | undefined }) {
+export function QrScanner(props: {
+    searchInput: (
+        searchString: string,
+        error_message: string,
+        onErrorCallback: (error: LocalizedError) => void,
+        onSuccessCallback: () => void,
+        infrastructureName?: string,
+    ) => Promise<void>;
+    size?: number | undefined;
+}) {
     const [state, setState] = useState<State>(State.Stopped);
-
+    const t = useTranslations();
     const { showError } = useShowError();
 
     const theme = useTheme();
@@ -77,19 +87,14 @@ export function QrScanner(props: { onScan: (scanResult: string) => Promise<void>
     const handleScan = useCallback(
         async (result: string) => {
             setState(State.HandleQr);
-            try {
-                await props.onScan(result);
-                setState(State.Stopped);
-            } catch (e) {
-                showError(
-                    e instanceof LocalizedError
-                        ? e
-                        : new LocalizedError('components.qrScanner.errors.defaultCallbackErrorMsg'),
-                );
-                setState(State.LoadScanner);
-            }
+            await props.searchInput(
+                result,
+                t('components.qrScanner.errors.defaultCallbackErrorMsg'),
+                (_error) => setState(State.LoadScanner), //onError
+                () => setState(State.Stopped), //onSuccess
+            );
         },
-        [props.onScan],
+        [props.searchInput],
     );
 
     // This will allow cypress to call the callback manually and circumvent a webcam mock
