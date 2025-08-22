@@ -1,10 +1,8 @@
 import { ConnectionType } from '@prisma/client';
-import type {
-    InfrastructureWithRelations,
-    MappedInfrastructure,
-} from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
+import type { InfrastructureFormData } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
 import { IPrismaConnector } from 'lib/services/database/PrismaConnectorInterface';
 import { isEqual } from 'lodash';
+import { InfrastructureWithRelations } from 'lib/services/database/InfrastructureMappedTypes';
 
 export class PrismaConnectorInMemory implements IPrismaConnector {
     constructor(
@@ -16,11 +14,11 @@ export class PrismaConnectorInMemory implements IPrismaConnector {
         throw new Error('Method not implemented.');
     }
 
-    createInfrastructure(_infrastructureData: MappedInfrastructure): Promise<{ id: string; name: string }> {
+    createInfrastructure(_infrastructureData: InfrastructureFormData): Promise<{ id: string; name: string }> {
         throw new Error('Method not implemented.');
     }
 
-    updateInfrastructure(_infrastructureData: MappedInfrastructure): Promise<{ id: string; name: string }> {
+    updateInfrastructure(_infrastructureData: InfrastructureFormData): Promise<{ id: string; name: string }> {
         throw new Error('Method not implemented.');
     }
 

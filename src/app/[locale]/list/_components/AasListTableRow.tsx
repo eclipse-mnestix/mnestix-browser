@@ -6,7 +6,7 @@ import PictureTableCell from 'components/basics/listBasics/PictureTableCell';
 import { ArrowForward } from '@mui/icons-material';
 import { RoundedIconButton } from 'components/basics/Buttons';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { getThumbnailFromShell } from 'lib/services/aas-repository-service/aasRepositorySearchActions';
+import { getThumbnailFromShell } from 'lib/services/aas-repository-service/aasRepositoryActions';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { useState } from 'react';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
@@ -17,7 +17,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import useSWR from 'swr';
 import { useEnv } from 'app/EnvProvider';
-import { RepositoryWithInfrastructure } from 'lib/services/database/MappedTypes';
+import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 
 type AasTableRowProps = {
     repository: RepositoryWithInfrastructure;

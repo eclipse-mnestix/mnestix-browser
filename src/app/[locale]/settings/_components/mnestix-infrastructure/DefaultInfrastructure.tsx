@@ -17,7 +17,7 @@ export function DefaultInfrastructure() {
     const env = useEnv();
 
     return (
-        <>
+        <Box sx={{ border: `1px solid ${theme.palette.grey['300']}`, mb: 1, borderRadius: 1 }}>
             <Box
                 sx={{
                     backgroundColor: alpha(theme.palette.primary.main, 0.1),
@@ -27,7 +27,6 @@ export function DefaultInfrastructure() {
                         backgroundColor: theme.palette.grey['100'],
                     },
                     cursor: 'default',
-                    mb: 1,
                 }}
             >
                 <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', gap: 2 }}>
@@ -42,10 +41,9 @@ export function DefaultInfrastructure() {
             <Collapse in={open}>
                 <Box
                     sx={{
-                        p: 3,
-                        border: `2px solid ${theme.palette.primary.main}`,
-                        borderRadius: 1,
-                        mb: 2,
+                        px: 2,
+                        pt: 1,
+                        pb: 3,
                     }}
                 >
                     <Alert severity="info">{t('form.defaultInfrastructureReadonly')}</Alert>
@@ -64,6 +62,6 @@ export function DefaultInfrastructure() {
                     </Box>
                 </Box>
             </Collapse>
-        </>
+        </Box>
     );
 }

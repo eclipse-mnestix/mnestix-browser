@@ -1,20 +1,24 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import MnestixInfrastructureForm from './MnestixInfrastructureForm';
-import { MappedInfrastructure } from './InfrastructureTypes';
+import { InfrastructureFormData } from './InfrastructureTypes';
 import { emptyMappedInfrastructure, mockMappedInfrastructures } from './test-data/infrastructures';
 
 jest.mock('next-intl', () => ({
     useTranslations: (scope?: string) => (key: string) => (scope ? `${scope}.${key}` : key),
 }));
 
-
 const onSave = jest.fn();
 const onCancel = jest.fn();
 
-async function renderMnestixInfrastructureForm(infrastructure: MappedInfrastructure, existingNames: string[] = []) {
+async function renderMnestixInfrastructureForm(infrastructure: InfrastructureFormData, existingNames: string[] = []) {
     await act(async () => {
         const renderResult = render(
-            <MnestixInfrastructureForm onSave={onSave} onCancel={onCancel} infrastructure={infrastructure} existingNames={existingNames} />
+            <MnestixInfrastructureForm
+                onSave={onSave}
+                onCancel={onCancel}
+                infrastructure={infrastructure}
+                existingNames={existingNames}
+            />,
         );
 
         return {
@@ -36,7 +40,7 @@ describe('MnestixInfrastructureForm', () => {
 
     it.each(mockMappedInfrastructures)('renders correctly with mapped infrastructure', async (infrastructure) => {
         await renderMnestixInfrastructureForm(infrastructure);
-        
+
         await waitFor(() => {
             expect(screen.getByText('pages.settings.infrastructure.form.save')).toBeInTheDocument();
             fireEvent.click(screen.getByText('pages.settings.infrastructure.form.save'));
@@ -46,7 +50,7 @@ describe('MnestixInfrastructureForm', () => {
             expect(onSave).toHaveBeenCalled();
         });
 
-        const callArg = onSave.mock.calls[0][0] as MappedInfrastructure;
+        const callArg = onSave.mock.calls[0][0] as InfrastructureFormData;
 
         expect(callArg).toEqual(infrastructure);
         onSave.mockClear();
@@ -58,7 +62,6 @@ describe('MnestixInfrastructureForm', () => {
 
         const existingNames = mockMappedInfrastructures.map((infra) => infra.name);
         await renderMnestixInfrastructureForm(infrastructure1, existingNames);
-
 
         const nameInput = screen.getByLabelText('pages.settings.infrastructure.form.name');
         fireEvent.change(nameInput, { target: { value: infrastructure2.name } });
@@ -112,19 +115,37 @@ describe('MnestixInfrastructureForm', () => {
             await waitFor(() => {
                 switch (type) {
                     case 'NONE':
-                        expect(screen.queryByLabelText('pages.settings.infrastructure.form.proxyHeaderValue')).not.toBeInTheDocument();
-                        expect(screen.queryByLabelText('pages.settings.infrastructure.form.headerName')).not.toBeInTheDocument();
-                        expect(screen.queryByLabelText('pages.settings.infrastructure.form.headerValue')).not.toBeInTheDocument();
+                        expect(
+                            screen.queryByLabelText('pages.settings.infrastructure.form.proxyHeaderValue'),
+                        ).not.toBeInTheDocument();
+                        expect(
+                            screen.queryByLabelText('pages.settings.infrastructure.form.headerName'),
+                        ).not.toBeInTheDocument();
+                        expect(
+                            screen.queryByLabelText('pages.settings.infrastructure.form.headerValue'),
+                        ).not.toBeInTheDocument();
                         break;
                     case 'HEADER':
-                        expect(screen.queryByLabelText('pages.settings.infrastructure.form.proxyHeaderValue')).not.toBeInTheDocument();
-                        expect(screen.getByLabelText('pages.settings.infrastructure.form.headerName')).toBeInTheDocument();
-                        expect(screen.getByLabelText('pages.settings.infrastructure.form.headerValue')).toBeInTheDocument();
+                        expect(
+                            screen.queryByLabelText('pages.settings.infrastructure.form.proxyHeaderValue'),
+                        ).not.toBeInTheDocument();
+                        expect(
+                            screen.getByLabelText('pages.settings.infrastructure.form.headerName'),
+                        ).toBeInTheDocument();
+                        expect(
+                            screen.getByLabelText('pages.settings.infrastructure.form.headerValue'),
+                        ).toBeInTheDocument();
                         break;
                     case 'PROXY':
-                        expect(screen.getByLabelText('pages.settings.infrastructure.form.proxyHeaderValue')).toBeInTheDocument();
-                        expect(screen.queryByLabelText('pages.settings.infrastructure.form.headerName')).not.toBeInTheDocument();
-                        expect(screen.queryByLabelText('pages.settings.infrastructure.form.headerValue')).not.toBeInTheDocument();
+                        expect(
+                            screen.getByLabelText('pages.settings.infrastructure.form.proxyHeaderValue'),
+                        ).toBeInTheDocument();
+                        expect(
+                            screen.queryByLabelText('pages.settings.infrastructure.form.headerName'),
+                        ).not.toBeInTheDocument();
+                        expect(
+                            screen.queryByLabelText('pages.settings.infrastructure.form.headerValue'),
+                        ).not.toBeInTheDocument();
                         break;
                 }
             });

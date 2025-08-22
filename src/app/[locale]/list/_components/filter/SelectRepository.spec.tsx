@@ -2,9 +2,9 @@ import { expect } from '@jest/globals';
 import { CustomRender } from 'test-utils/CustomRender';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { SelectRepository } from 'app/[locale]/list/_components/filter/SelectRepository';
-import * as connectionServerActions from 'lib/services/database/connectionServerActions';
+import * as connectionServerActions from 'lib/services/database/infrastructureDatabaseActions';
 
-jest.mock('./../../../../../lib/services/database/connectionServerActions');
+jest.mock('./../../../../../lib/services/database/infrastructureDatabaseActions');
 
 describe('SelectRepository', () => {
     it('Fires repository changed event when changing the select value', async () => {

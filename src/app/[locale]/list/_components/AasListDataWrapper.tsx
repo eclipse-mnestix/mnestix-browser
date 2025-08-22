@@ -15,7 +15,7 @@ import { useTranslations } from 'next-intl';
 import { ApiResponseWrapperError } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { AuthenticationPrompt } from 'components/authentication/AuthenticationPrompt';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
-import { RepositoryWithInfrastructure } from 'lib/services/database/MappedTypes';
+import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 
 type AasListDataWrapperProps = {
     repositoryUrl?: string;

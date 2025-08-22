@@ -1,6 +1,6 @@
-import { AasRepositorySearchService } from 'lib/services/aas-repository-service/AasRepositorySearchService';
+import { AasRepositoryService } from 'lib/services/aas-repository-service/AasRepositoryService';
 import { createTestAas, createTestInfrastructure } from 'test-utils/TestUtils';
-import { getInfrastructuresIncludingDefault } from 'lib/services/database/connectionServerActions';
+import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
@@ -27,7 +27,7 @@ describe('AasRepositorySearchService', () => {
                 infrastructureName: 'Test Infrastructure',
             };
 
-            const aasRepositorySearchService = AasRepositorySearchService.createNull([mockSearchResult]);
+            const aasRepositorySearchService = AasRepositoryService.createNull([mockSearchResult]);
 
             const result = await aasRepositorySearchService.searchInAllAasRepositories(encodeBase64(aasId));
 
@@ -49,10 +49,7 @@ describe('AasRepositorySearchService', () => {
                 infrastructureName: 'Test Infrastructure',
             };
 
-            const aasRepositorySearchService = AasRepositorySearchService.createNull([
-                mockSearchResult1,
-                mockSearchResult2,
-            ]);
+            const aasRepositorySearchService = AasRepositoryService.createNull([mockSearchResult1, mockSearchResult2]);
 
             const result = await aasRepositorySearchService.searchInAllAasRepositories(encodeBase64(aasId));
 
@@ -81,7 +78,7 @@ describe('AasRepositorySearchService', () => {
                 infrastructureName: 'Test Infrastructure 1',
             };
 
-            const aasRepositorySearchService = AasRepositorySearchService.createNull([mockSearchResult]);
+            const aasRepositorySearchService = AasRepositoryService.createNull([mockSearchResult]);
 
             const result = await aasRepositorySearchService.searchAASInMultipleRepositories(
                 encodeBase64(aasId),
@@ -95,7 +92,7 @@ describe('AasRepositorySearchService', () => {
 
         it('returns not found if aas is not in any repository', async () => {
             const aasId = 'nonExistentAasId';
-            const aasRepositorySearchService = AasRepositorySearchService.createNull([]);
+            const aasRepositorySearchService = AasRepositoryService.createNull([]);
 
             const result = await aasRepositorySearchService.searchAASInMultipleRepositories(
                 encodeBase64(aasId),
@@ -110,7 +107,7 @@ describe('AasRepositorySearchService', () => {
 
         it('returns error if no repository url is configured', async () => {
             const aasId = 'testAasId';
-            const aasRepositorySearchService = AasRepositorySearchService.createNull([]);
+            const aasRepositorySearchService = AasRepositoryService.createNull([]);
 
             const result = await aasRepositorySearchService.searchInAllAasRepositories(encodeBase64(aasId));
 

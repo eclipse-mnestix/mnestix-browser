@@ -2,7 +2,7 @@ import {
     getDefaultInfrastructure,
     getInfrastructureByName,
     getInfrastructuresIncludingDefault,
-} from '../database/connectionServerActions';
+} from '../database/infrastructureDatabaseActions';
 import { ConceptDescriptionRepositoryService } from './ConceptDescriptionRepositoryService';
 
 jest.mock('../database/connectionServerActions', () => ({

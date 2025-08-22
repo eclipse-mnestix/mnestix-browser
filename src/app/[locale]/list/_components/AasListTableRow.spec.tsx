@@ -6,7 +6,7 @@ import { ListEntityDto } from 'lib/services/list-service/ListService';
 import * as nameplateDataActions from 'lib/services/list-service/aasListApiActions';
 import { JSX } from 'react';
 import { AasStoreProvider } from 'stores/AasStore';
-import { RepositoryWithInfrastructure } from 'lib/services/database/MappedTypes';
+import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 
 jest.mock('next/navigation', () => ({
     useRouter() {
@@ -20,7 +20,7 @@ jest.mock('next/navigation', () => ({
 }));
 jest.mock('./../../../../lib/services/list-service/aasListApiActions');
 jest.mock('next-auth', jest.fn());
-jest.mock('./../../../../lib/services/aas-repository-service/aasRepositorySearchActions', () => ({
+jest.mock('lib/services/aas-repository-service/aasRepositoryActions', () => ({
     getThumbnailFromShell: jest.fn(() => Promise.resolve({ success: true, result: { fileType: '', fileContent: '' } })),
 }));
 describe('AasListTableRow', () => {
