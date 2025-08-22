@@ -1,24 +1,4 @@
-import { Prisma } from '@prisma/client';
-
-// TODO MNE-300 move this file to database/service folder
-export type InfrastructureWithRelations = Prisma.MnestixInfrastructureGetPayload<{
-    include: {
-        connections: {
-            include: {
-                types: {
-                    include: {
-                        type: true;
-                    };
-                };
-            };
-        };
-        securityType: true;
-        securitySettingsHeaders: true;
-        securitySettingsProxies: true;
-    };
-}>;
-
-export type MappedInfrastructure = {
+export type InfrastructureFormData = {
     id: string;
     name: string;
     logo?: string;

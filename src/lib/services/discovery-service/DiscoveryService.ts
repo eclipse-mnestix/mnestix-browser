@@ -9,8 +9,8 @@ import logger, { logInfo, logResponseDebug } from 'lib/util/Logger';
 import { IDiscoveryServiceApi } from 'lib/api/discovery-service-api/discoveryServiceApiInterface';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { DiscoveryServiceApi } from 'lib/api/discovery-service-api/discoveryServiceApi';
-import { getInfrastructuresIncludingDefault } from 'lib/services/database/connectionServerActions';
-import { InfrastructureConnection } from 'lib/services/database/MappedTypes';
+import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
+import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
 
 export type DiscoverySearchResult = {
     aasId: string;

@@ -1,10 +1,7 @@
 'use server';
 
 import { AssetAdministrationShell } from 'lib/api/aas/models';
-import {
-    AasRepositorySearchService,
-    RepoSearchResult,
-} from 'lib/services/aas-repository-service/AasRepositorySearchService';
+import { AasRepositoryService, RepoSearchResult } from 'lib/services/aas-repository-service/AasRepositoryService';
 import {
     ApiFileDto,
     ApiResponseWrapper,
@@ -21,7 +18,7 @@ export async function searchAasInAllRepositories(
 ): Promise<ApiResponseWrapper<RepoSearchResult<AssetAdministrationShell>[]>> {
     const logger = createRequestLogger(await headers());
     logInfo(logger, 'performSearchAasFromAllRepositories', 'Requested AAS', { requestedId: searchInput });
-    const searcher = AasRepositorySearchService.create(logger);
+    const searcher = AasRepositoryService.create(logger);
     return searcher.searchInAllAasRepositories(searchInput);
 }
 

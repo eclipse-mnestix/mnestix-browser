@@ -1,6 +1,6 @@
 import { ISubmodelRegistryServiceApi } from 'lib/api/submodel-registry-service/submodelRegistryServiceApiInterface';
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
-import ServiceReachable from 'test-utils/TestUtils';
+import ServiceReachable, { createTestSubmodel } from 'test-utils/TestUtils';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { Submodel } from 'lib/api/aas/models';
@@ -77,7 +77,28 @@ export class SubmodelRegistryServiceApiInMemory implements ISubmodelRegistryServ
         return wrapSuccess(undefined);
     }
 
-    getSubmodelFromEndpoint(_endpoint: string): Promise<ApiResponseWrapper<Submodel>> {
-        throw new Error('Method not implemented.');
+    async getSubmodelFromEndpoint(endpoint: string): Promise<ApiResponseWrapper<Submodel>> {
+        if (this.reachable !== ServiceReachable.Yes)
+            return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Service not reachable');
+        const submodelDescriptor = this.registrySubmodelDescriptors
+            .values()
+            .find((descriptor) =>
+                descriptor.endpoints.find((smEndpoint) => smEndpoint.protocolInformation.href === endpoint),
+            );
+        if (!submodelDescriptor) {
+            return wrapErrorCode(
+                ApiResultStatus.NOT_FOUND,
+                `No Submodel found at endpoint '${endpoint}' in registry '${this.getBasePath()}'`,
+            );
+        }
+        const response = new Response(JSON.stringify(createTestSubmodel(submodelDescriptor.id)), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+        });
+        const submodel: Submodel = await response.json();
+        if (!submodel) {
+            return wrapErrorCode(ApiResultStatus.NOT_FOUND, `Submodel not found at endpoint '${endpoint}'`);
+        }
+        return wrapSuccess(submodel);
     }
 }

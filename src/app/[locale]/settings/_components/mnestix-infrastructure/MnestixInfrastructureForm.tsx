@@ -21,7 +21,7 @@ import { useTranslations } from 'next-intl';
 import { useTheme } from '@mui/material/styles';
 import Image from 'next/image';
 import { Controller, FieldArrayWithId, useFieldArray, useForm, useWatch } from 'react-hook-form';
-import type { MappedInfrastructure } from './InfrastructureTypes';
+import type { InfrastructureFormData } from './InfrastructureTypes';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import {
     CONNECTION_TYPES,
@@ -29,9 +29,9 @@ import {
 } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureEnumUtil';
 
 export interface MnestixInfrastructureFormProps {
-    infrastructure: MappedInfrastructure;
+    infrastructure: InfrastructureFormData;
     onCancel: () => void;
-    onSave: (data: MappedInfrastructure) => void;
+    onSave: (data: InfrastructureFormData) => void;
     existingNames: string[];
 }
 
@@ -47,7 +47,7 @@ function MnestixInfrastructureForm({
         control,
         handleSubmit,
         formState: { errors },
-    } = useForm<MappedInfrastructure>({
+    } = useForm<InfrastructureFormData>({
         mode: 'onChange',
         defaultValues: {
             id: infrastructure.id,
@@ -77,8 +77,8 @@ function MnestixInfrastructureForm({
         name: 'connections',
     });
 
-    function onSubmit(data: MappedInfrastructure) {
-        const cleanedData: MappedInfrastructure = {
+    function onSubmit(data: InfrastructureFormData) {
+        const cleanedData: InfrastructureFormData = {
             id: data.id,
             name: data.name,
             logo: data.logo || undefined,
@@ -205,10 +205,10 @@ function MnestixInfrastructureForm({
         );
     }
 
-    function getConnectionFormControl(field: FieldArrayWithId<MappedInfrastructure, 'connections'>, index: number) {
+    function getConnectionFormControl(field: FieldArrayWithId<InfrastructureFormData, 'connections'>, index: number) {
         return (
             <FormControl fullWidth variant="filled" key={field.id}>
-                <Box sx={{ mb: 4, alignItems: 'flex-start', gap: 2 }}>
+                <Box sx={{ mb: 3, alignItems: 'flex-start', gap: 2 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                         <Controller
                             name={`connections.${index}.url`}
@@ -380,9 +380,9 @@ function MnestixInfrastructureForm({
     return (
         <Box
             sx={{
-                p: 3,
-                border: `2px solid ${theme.palette.primary.main}`,
-                borderRadius: 1,
+                px: 2,
+                pt: 1,
+                pb: 3,
             }}
         >
             <form onSubmit={handleSubmit(onSubmit)} role="form" aria-label="Infrastructure form">
@@ -401,7 +401,7 @@ function MnestixInfrastructureForm({
                     startIcon={<Add />}
                     onClick={addConnection}
                     aria-label="Add new endpoint"
-                    sx={{ mb: 2 }}
+                    sx={{ mb: 2, mt: -1 }}
                 >
                     {t('form.addEndpoint')}
                 </Button>

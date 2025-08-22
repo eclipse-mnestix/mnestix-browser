@@ -1,12 +1,12 @@
 import { Submodel } from 'lib/api/aas/models';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { RepoSearchResult } from 'lib/services/aas-repository-service/AasRepositorySearchService';
+import { RepoSearchResult } from 'lib/services/aas-repository-service/AasRepositoryService';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import logger, { logResponseDebug } from 'lib/util/Logger';
 import { SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
-import { InfrastructureConnection } from 'lib/services/database/MappedTypes';
+import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
 
 export class SubmodelRepositoryService {
     private constructor(
@@ -81,42 +81,5 @@ export class SubmodelRepositoryService {
         } catch {
             return wrapErrorCode(ApiResultStatus.NOT_FOUND, errorMsg);
         }
-    }
-
-    private async getAttachmentFromSubmodelElementFromRepo(
-        submodelId: string,
-        submodelElementPath: string,
-        repoUrl: string,
-    ) {
-        const client = this.getSubmodelRepositoryClient(repoUrl);
-        const response = await client.getAttachmentFromSubmodelElement(submodelId, submodelElementPath);
-        if (response.isSuccess) {
-            logResponseDebug(
-                this.log,
-                'getAttachmentFromSubmodelElementFromRepo',
-                'Querying Attachment from repository',
-                response,
-                {
-                    Repository_Endpoint: client.getBaseUrl(),
-                    Submodel_ID: submodelId,
-                    Submodel_Element_Path: submodelElementPath,
-                },
-            );
-            return response;
-        }
-        logResponseDebug(
-            this.log,
-            'getAttachmentFromSubmodelElementFromRepo',
-            'Querying Attachment from repository unsuccessful',
-            response,
-            {
-                Repository_Endpoint: client.getBaseUrl(),
-                Submodel_ID: submodelId,
-                Submodel_Element_Path: submodelElementPath,
-            },
-        );
-        return Promise.reject(
-            `Unable to fetch Attachment '${submodelElementPath}' in submodel '${submodelId}' from '${repoUrl}'`,
-        );
     }
 }
