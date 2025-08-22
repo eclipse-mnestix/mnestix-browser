@@ -108,7 +108,7 @@ export function QrScanner(props: { onScan: (scanResult: string) => Promise<void>
                     width={size}
                     data-testid="scanner-start"
                 >
-                    <ScannerLogo style={{ color: theme.palette.primary.main }} alt="Scanner Logo" />
+                    <ScannerLogo style={{ color: 'white' }} alt="Scanner Logo" />
                 </Box>
             )}
             {state === State.ShowVideo && (

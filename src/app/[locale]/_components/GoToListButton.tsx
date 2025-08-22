@@ -1,29 +1,42 @@
 'use client';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Typography, useTheme } from '@mui/material';
 import { useEnv } from 'app/EnvProvider';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 
 export const GoToListButton = () => {
     const isMobile = useIsMobile();
     const env = useEnv();
     const navigate = useRouter();
     const t = useTranslations('pages.dashboard');
+    const theme = useTheme();
 
     return (
         <>
             {!isMobile && env.AAS_LIST_FEATURE_FLAG && (
-                <Box display="flex" flexDirection="column">
-                    <Typography color="text.secondary" textAlign="center" sx={{ mb: 2, mt: 6 }}>
+                <Box display="flex" flexDirection="column" sx={{ m: 2 }} alignItems="center">
+                    <Box
+                        sx={{
+                            backgroundColor: theme.palette.custom.mnestixYellow,
+                            borderRadius: 1,
+                            width: '50px',
+                            height: '50px',
+                            mb: 2,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <ArrowOutwardIcon sx={{ color: 'white' }} />
+                    </Box>
+                    <Typography variant="h5">Select via List</Typography>
+                    <Typography color="text.secondary" textAlign="center">
                         {t('listBtnLabel')}
                     </Typography>
-                    <Box display="flex" justifyContent="center">
-                        <Button
-                            variant="contained"
-                            data-testid="aasList-Button-Home"
-                            onClick={() => navigate.push('/list')}
-                        >
+                    <Box display="flex">
+                        <Button variant="text" data-testid="aasList-Button-Home" onClick={() => navigate.push('/list')}>
                             {t('listBtnText')}
                         </Button>
                     </Box>

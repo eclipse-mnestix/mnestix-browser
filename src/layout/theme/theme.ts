@@ -98,6 +98,10 @@ const palette: PaletteOptions = {
         disabled: 'rgba(8, 22, 23, 0.26)',
         active: 'rgba(5, 15, 15, 0.54)',
     },
+    custom: {
+        mnestixYellow: '#dda934',
+        mnestixMagenta: '#cb515e',
+    },
 };
 
 const components: Components = {
@@ -165,6 +169,21 @@ declare module '@mui/material/styles' {
     interface ThemeOptions {
         productLogo?: {
             logo?: string;
+        };
+    }
+}
+
+declare module '@mui/material/styles' {
+    interface Palette {
+        custom: {
+            mnestixYellow: string;
+            mnestixMagenta: string;
+        };
+    }
+    interface PaletteOptions {
+        custom?: {
+            mnestixYellow?: string;
+            mnestixMagenta?: string;
         };
     }
 }

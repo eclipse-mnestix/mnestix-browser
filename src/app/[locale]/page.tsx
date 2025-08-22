@@ -1,37 +1,43 @@
-import { OpenInNew } from '@mui/icons-material';
-import { Box, Divider, Link, Typography } from '@mui/material';
+import { Box, Card, Grid, Typography } from '@mui/material';
 import { getTranslations } from 'next-intl/server';
 import { DashboardInput } from './_components/DashboardInput';
 import { GoToListButton } from './_components/GoToListButton';
+import { FindOutMoreCard } from 'app/[locale]/_components/FindOutMoreCard';
 
 export default async function page() {
     const t = await getTranslations('pages.dashboard');
 
     return (
         <Box sx={{ p: 2, m: 'auto' }}>
-            <Typography data-testid="welcome-text" variant="h1" color="primary" align="center" sx={{ mt: 2 }}>
-                {t('welcomeText')}
-            </Typography>
-            <Typography variant="h3" align="center">
-                {t('digitalTwinMadeEasyText')}
-            </Typography>
-            <Divider sx={{ my: 2 }} />
+            <Box sx={{ mb: 2 }}>
+                <Typography data-testid="welcome-text" variant="h1" color="primary" sx={{ mt: 2 }}>
+                    {t('welcomeText')}
+                </Typography>
+                <Typography variant="h3">{t('digitalTwinMadeEasyText')}</Typography>
+            </Box>
 
-            <DashboardInput />
-            <GoToListButton />
-            <Typography align="center" sx={{ mt: 4 }}>
-                {t('findOutMoreText')}:
-            </Typography>
-            <Typography align="center">
-                <Link
-                    href="https://mnestix.io"
-                    target="_blank"
-                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                >
-                    <span>mnestix.io</span>
-                    <OpenInNew fontSize="small" />
-                </Link>
-            </Typography>
+            <Grid container spacing={2} alignItems="stretch">
+                <Grid size={4}>
+                    <Card>
+                        <DashboardInput />
+                    </Card>
+                </Grid>
+                <Grid size={2}>
+                    <Card sx={{ height: '100%' }}>
+                        <GoToListButton />
+                    </Card>
+                </Grid>
+                <Grid size={2}>
+                    <Card sx={{ height: '100%' }}>
+                        <FindOutMoreCard />
+                    </Card>
+                </Grid>
+                <Grid size={8}>
+                    <Card>
+                        <DashboardInput />
+                    </Card>
+                </Grid>
+            </Grid>
         </Box>
     );
 }
