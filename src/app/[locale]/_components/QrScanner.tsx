@@ -103,7 +103,13 @@ export function QrScanner(props: {
     }
 
     return (
-        <Box position="relative" margin="auto" height={size} width={size} style={{ cursor: 'pointer' }}>
+        <Box
+            position="relative"
+            margin="auto"
+            height={size}
+            width={size}
+            style={{ cursor: 'pointer', backgroundColor: theme.palette.primary.main }}
+        >
             {state === State.Stopped && (
                 <Box
                     onClick={() => setState(State.LoadScanner)}

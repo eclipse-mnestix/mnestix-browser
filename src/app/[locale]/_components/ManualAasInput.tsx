@@ -1,4 +1,4 @@
-import { Box, IconButton, InputAdornment, MenuItem, TextField } from '@mui/material';
+import { Box, IconButton, InputAdornment, MenuItem, TextField, Typography } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowForward } from '@mui/icons-material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -75,60 +75,64 @@ export function ManualAasInput(props: {
     };
 
     return (
-        <Box display="flex" justifyContent="center">
-            <TextField
-                id="manual-input"
-                label={t('pages.dashboard.aasOrAssetId')}
-                error={isError}
-                helperText={errorText}
-                onChange={handleChange}
-                onKeyDown={handleKeyPress}
-                data-testid="aasId-input"
-                autoFocus={true}
-                value={inputValue}
-                inputRef={inputRef}
-                InputProps={{
-                    endAdornment: (
-                        <InputAdornment position="end">
-                            <IconButton
-                                onClick={() => {
-                                    setInputValue('');
-                                }}
-                            >
-                                <CloseIcon />
-                            </IconButton>
-                        </InputAdornment>
-                    ),
-                }}
-            />
-            <TextField
-                select
-                variant={'outlined'}
-                label={t('pages.dashboard.infrastructure')}
-                value={selectedInfrastructure || 'all'}
-                sx={{ ml: 1, width: 200 }}
-            >
-                <MenuItem key="all" value="all" onClick={() => setSelectedInfrastructure('all')}>
-                    {t('pages.dashboard.searchAllInfrastructures')}
-                </MenuItem>
-                {infrastructures.map((infrastructure) => (
-                    <MenuItem
-                        key={infrastructure}
-                        value={infrastructure}
-                        onClick={() => setSelectedInfrastructure(infrastructure)}
-                    >
-                        {infrastructure}
+        <Box m={2} display="flex" flexDirection="column" gap={1}>
+            <Typography variant="h5">Enter manually</Typography>
+            <Box display="flex">
+                <TextField
+                    sx={{ width: '100%' }}
+                    id="manual-input"
+                    label={t('pages.dashboard.aasOrAssetId')}
+                    error={isError}
+                    helperText={errorText}
+                    onChange={handleChange}
+                    onKeyDown={handleKeyPress}
+                    data-testid="aasId-input"
+                    autoFocus={true}
+                    value={inputValue}
+                    inputRef={inputRef}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    onClick={() => {
+                                        setInputValue('');
+                                    }}
+                                >
+                                    <CloseIcon />
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+                <TextField
+                    select
+                    variant={'outlined'}
+                    label={t('pages.dashboard.infrastructure')}
+                    value={selectedInfrastructure || 'all'}
+                    sx={{ ml: 1, width: 200 }}
+                >
+                    <MenuItem key="all" value="all" onClick={() => setSelectedInfrastructure('all')}>
+                        {t('pages.dashboard.searchAllInfrastructures')}
                     </MenuItem>
-                ))}
-            </TextField>
-            <SquaredIconButton
-                sx={{ ml: 1 }}
-                endIcon={<ArrowForward />}
-                disabled={!inputValue}
-                loading={isLoading}
-                onClick={handleSubmit}
-                data-testid="aasId-submit-button"
-            />
+                    {infrastructures.map((infrastructure) => (
+                        <MenuItem
+                            key={infrastructure}
+                            value={infrastructure}
+                            onClick={() => setSelectedInfrastructure(infrastructure)}
+                        >
+                            {infrastructure}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <SquaredIconButton
+                    sx={{ ml: 1 }}
+                    endIcon={<ArrowForward />}
+                    disabled={!inputValue}
+                    loading={isLoading}
+                    onClick={handleSubmit}
+                    data-testid="aasId-submit-button"
+                />
+            </Box>
         </Box>
     );
 }

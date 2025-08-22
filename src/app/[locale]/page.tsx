@@ -1,11 +1,62 @@
-import { Box, Card, Grid, Typography } from '@mui/material';
-import { getTranslations } from 'next-intl/server';
-import { DashboardInput } from './_components/DashboardInput';
+'use client';
+
+import { Box, Card, Grid, Typography, useTheme } from '@mui/material';
 import { GoToListButton } from './_components/GoToListButton';
 import { FindOutMoreCard } from 'app/[locale]/_components/FindOutMoreCard';
+import { QrScanner } from 'app/[locale]/_components/QrScanner';
+import { LocalizedError } from 'lib/util/LocalizedError';
+import {
+    performFullAasSearch,
+    searchAasInInfrastructure,
+} from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
+import { ManualAasInput } from 'app/[locale]/_components/ManualAasInput';
+import { useTranslations } from 'next-intl';
+import { useShowError } from 'lib/hooks/UseShowError';
+import { useAasStore } from 'stores/AasStore';
+import { useRouter } from 'next/navigation';
+import { QrScannerCard } from 'app/[locale]/_components/QrScannerCard';
 
-export default async function page() {
-    const t = await getTranslations('pages.dashboard');
+export default function () {
+    const t = useTranslations('pages.dashboard');
+    const { addAasData } = useAasStore();
+    const { showError } = useShowError();
+    const navigate = useRouter();
+    const theme = useTheme();
+
+    const searchInput = async (
+        searchString: string,
+        error_message: string,
+        onErrorCallback: (error: LocalizedError) => void,
+        onSuccessCallback: () => void,
+        infrastructureName?: string,
+    ) => {
+        try {
+            const { isSuccess, result } = infrastructureName
+                ? await searchAasInInfrastructure(searchString, infrastructureName)
+                : await performFullAasSearch(searchString.trim());
+            if (!(isSuccess && result && result.aas)) {
+                const error = new LocalizedError('navigation.errors.urlNotFound');
+                showError(error);
+                onErrorCallback(error);
+            } else {
+                onSuccessCallback();
+                addAasData({
+                    aas: result.aas,
+                    aasData: {
+                        aasRepositoryOrigin: result.aasData?.aasRepositoryOrigin,
+                        submodelDescriptors: result.aasData?.submodelDescriptors ?? [],
+                        infrastructureName: result.aasData?.infrastructureName || null,
+                    },
+                });
+
+                navigate.push(result.redirectUrl);
+            }
+        } catch (e) {
+            showError(new Error(error_message));
+            onErrorCallback(e instanceof LocalizedError ? e : new LocalizedError('navigation.errors.unexpectedError'));
+            return;
+        }
+    };
 
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center', minHeight: '100vh' }}>
@@ -19,8 +70,8 @@ export default async function page() {
 
                 <Grid container spacing={2} alignItems="stretch">
                     <Grid size={{ md: 6, xs: 12 }}>
-                        <Card>
-                            <DashboardInput />
+                        <Card sx={{ backgroundColor: theme.palette.primary.main }}>
+                            <QrScanner searchInput={searchInput} />
                         </Card>
                     </Grid>
                     <Grid size={{ md: 3, xs: 6 }}>
@@ -35,9 +86,7 @@ export default async function page() {
                     </Grid>
                     <Grid size={{ md: 12, xs: 12 }}>
                         <Card sx={{ width: '100%' }}>
-                            <Box width="100%" height="200px">
-                                test
-                            </Box>
+                            <ManualAasInput searchInput={searchInput} />
                         </Card>
                     </Grid>
                 </Grid>
