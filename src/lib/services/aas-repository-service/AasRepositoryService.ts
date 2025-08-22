@@ -5,9 +5,9 @@ import { ApiResponseWrapper, wrapErrorCode } from 'lib/util/apiResponseWrapper/a
 import { IAssetAdministrationShellRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import logger, { logResponseDebug } from 'lib/util/Logger';
-import { getInfrastructuresIncludingDefault } from 'lib/services/database/connectionServerActions';
+import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
 import { fetchFromMultipleEndpoints } from 'lib/services/shared/parallelFetch';
-import { InfrastructureConnection } from 'lib/services/database/MappedTypes';
+import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
 
 export type RepoSearchResult<T> = {
     searchResult: T;
@@ -15,24 +15,22 @@ export type RepoSearchResult<T> = {
     infrastructureName?: string;
 };
 
-export class AasRepositorySearchService {
+export class AasRepositoryService {
     private constructor(
         protected readonly getAasRepositoryClient: (basePath: string) => IAssetAdministrationShellRepositoryApi,
         private readonly log: typeof logger = logger,
     ) {}
 
-    static create(log?: typeof logger): AasRepositorySearchService {
+    static create(log?: typeof logger): AasRepositoryService {
         const searcherLogger = log?.child({ Service: 'RepositorySearchService' });
-        return new AasRepositorySearchService(
+        return new AasRepositoryService(
             (baseUrl) => AssetAdministrationShellRepositoryApi.create(baseUrl, mnestixFetch()),
             searcherLogger,
         );
     }
 
-    static createNull(
-        shellsInRepositories: RepoSearchResult<AssetAdministrationShell>[] = [],
-    ): AasRepositorySearchService {
-        return new AasRepositorySearchService((baseUrl) =>
+    static createNull(shellsInRepositories: RepoSearchResult<AssetAdministrationShell>[] = []): AasRepositoryService {
+        return new AasRepositoryService((baseUrl) =>
             AssetAdministrationShellRepositoryApi.createNull(
                 baseUrl,
                 shellsInRepositories.filter((value) => value.location == baseUrl).map((value) => value.searchResult),

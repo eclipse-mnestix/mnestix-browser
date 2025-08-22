@@ -5,7 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { SquaredIconButton } from 'components/basics/Buttons';
 import { LocalizedError } from 'lib/util/LocalizedError';
 import { useTranslations } from 'next-intl';
-import { getInfrastructuresIncludingDefault } from 'lib/services/database/connectionServerActions';
+import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 
 export function ManualAasInput(props: {

@@ -1,6 +1,7 @@
 /**
  * Types and Enums for handling database entities.
  */
+import { Prisma } from '@prisma/client';
 
 export type RepositoryWithInfrastructure = {
     id: string;
@@ -28,3 +29,20 @@ export type InfrastructureSecurity = {
         value: string;
     };
 };
+
+export type InfrastructureWithRelations = Prisma.MnestixInfrastructureGetPayload<{
+    include: {
+        connections: {
+            include: {
+                types: {
+                    include: {
+                        type: true;
+                    };
+                };
+            };
+        };
+        securityType: true;
+        securitySettingsHeaders: true;
+        securitySettingsProxies: true;
+    };
+}>;

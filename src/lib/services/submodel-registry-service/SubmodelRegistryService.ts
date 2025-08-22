@@ -7,7 +7,7 @@ import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { Submodel } from 'lib/api/aas/models';
 import { fetchFromMultipleEndpoints } from 'lib/services/shared/parallelFetch';
 import { ISubmodelRegistryServiceApi } from 'lib/api/submodel-registry-service/submodelRegistryServiceApiInterface';
-import { InfrastructureConnection } from 'lib/services/database/MappedTypes';
+import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
 
 export class SubmodelRegistryService {
     private constructor(

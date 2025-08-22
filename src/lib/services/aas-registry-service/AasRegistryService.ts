@@ -7,14 +7,14 @@ import { IRegistryServiceApi } from 'lib/api/registry-service-api/registryServic
 import { RegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApi';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { AasData, AasSearchResult } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
-import { getInfrastructuresIncludingDefault } from 'lib/services/database/connectionServerActions';
+import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
 import { fetchFromMultipleEndpoints } from 'lib/services/shared/parallelFetch';
 import { AssetAdministrationShellDescriptor, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import {
     AasRegistryEndpointEntryInMemory,
     RegistryServiceApiInMemory,
 } from 'lib/api/registry-service-api/registryServiceApiInMemory';
-import { InfrastructureConnection } from 'lib/services/database/MappedTypes';
+import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
 
 export type RegistrySearchResult = {
     endpoints: URL[];
@@ -47,7 +47,7 @@ export class AasRegistryService {
         );
     }
     public async searchInAllAasRegistries(searchInput: string): Promise<ApiResponseWrapper<AasSearchResult[]>> {
-        // Search in all discovery services in all infrastructures
+        // Search in all registries in all infrastructures
         const infrastructures = await getInfrastructuresIncludingDefault();
         logInfo(this.log, 'searchAASInAllAasRegistries', 'Searching AAS in all infrastructures', infrastructures);
 

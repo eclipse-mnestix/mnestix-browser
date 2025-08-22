@@ -3,7 +3,7 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { useState } from 'react';
 import { isValidUrl } from 'lib/util/UrlUtil';
-import { getThumbnailFromShell } from 'lib/services/aas-repository-service/aasRepositorySearchActions';
+import { getThumbnailFromShell } from 'lib/services/aas-repository-service/aasRepositoryActions';
 
 export const useProductImageUrl = (
     aas: AssetAdministrationShell | null,

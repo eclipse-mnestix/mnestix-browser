@@ -3,7 +3,7 @@ import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import { AasListTableRow } from 'app/[locale]/list/_components/AasListTableRow';
 import { AasListDto } from 'lib/services/list-service/ListService';
 import { useTranslations } from 'next-intl';
-import { RepositoryWithInfrastructure } from 'lib/services/database/MappedTypes';
+import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 
 type AasListProps = {
     repositoryUrl: RepositoryWithInfrastructure;
