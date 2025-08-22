@@ -10,6 +10,8 @@ import { SessionProvider } from 'next-auth/react';
 import { EnvProvider } from 'app/EnvProvider';
 import { InvalidSessionHandler } from 'components/authentication/InvalidSessionHandler';
 import { AasStoreProvider } from 'stores/AasStore';
+import ErrorBoundary from 'components/basics/ErrorBoundary';
+import { useTranslations } from 'next-intl';
 
 export type ClientLayoutProps = {
     children: ReactNode;
@@ -21,6 +23,7 @@ export type ClientLayoutProps = {
 const FIVE_MIN = 5 * 60;
 
 export const ClientLayout = ({ children }: Readonly<ClientLayoutProps>) => {
+    const t = useTranslations('navigation');
     return (
         <EnvProvider>
             <SessionProvider refetchInterval={FIVE_MIN} refetchOnWindowFocus={true}>
@@ -30,9 +33,11 @@ export const ClientLayout = ({ children }: Readonly<ClientLayoutProps>) => {
                         <NotificationContextProvider>
                             <AasStoreProvider>
                                 <LayoutRoot>
-                                    <Box flexGrow={1} data-testid="notifications">
-                                        {children}
-                                    </Box>
+                                    <ErrorBoundary message={t('errors.generic')}>
+                                        <Box flexGrow={1} data-testid="notifications">
+                                            {children}
+                                        </Box>
+                                    </ErrorBoundary>
                                 </LayoutRoot>
                             </AasStoreProvider>
                         </NotificationContextProvider>

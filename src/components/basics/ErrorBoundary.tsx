@@ -1,5 +1,6 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
-import { Alert, Box, Typography } from '@mui/material';
+import { Alert, Box, Button, Typography } from '@mui/material';
+import { ArrowForward } from '@mui/icons-material';
 
 interface Props {
     children?: ReactNode;
@@ -34,6 +35,9 @@ class ErrorBoundary extends Component<Props, State> {
                     <Alert severity="warning">
                         <Typography>{this.props.message}</Typography>
                     </Alert>
+                    <Button variant="contained" startIcon={<ArrowForward />} href="/">
+                        {'Home'}
+                    </Button>
                 </Box>
             );
         }

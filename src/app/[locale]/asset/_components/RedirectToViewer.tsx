@@ -44,14 +44,21 @@ export const RedirectToViewer = () => {
     }, []);
 
     async function navigateToViewerOfAsset(assetId: string | undefined): Promise<void> {
-        const { isSuccess, result: discoverySearchResult } = await getAasIdsOfAsset(assetId);
+        try {
+            const { isSuccess, result: discoverySearchResult } = await getAasIdsOfAsset(assetId);
 
-        if (!isSuccess) throw new LocalizedError('navigation.errors.urlNotFound');
-
-        const aasIds = discoverySearchResult.map((result) => result.aasId);
-        assertAtLeastOneAasIdExists(aasIds);
-        const targetUrl = determineViewerTargetUrl(aasIds);
-        navigate.replace(targetUrl);
+            if (!isSuccess) {
+                throw new LocalizedError('navigation.errors.urlNotFound');
+            }
+            const aasIds = discoverySearchResult.map((result) => result.aasId);
+            assertAtLeastOneAasIdExists(aasIds);
+            const targetUrl = determineViewerTargetUrl(aasIds);
+            navigate.replace(targetUrl);
+        } catch (e) {
+            showError(e);
+            setIsError(true);
+            setIsLoading(false);
+        }
     }
 
     async function getAasIdsOfAsset(assetId: string | undefined) {
