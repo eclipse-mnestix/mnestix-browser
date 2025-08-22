@@ -13,7 +13,7 @@ export function FindOutMoreCard() {
         <Box display="flex" flexDirection="column" sx={{ m: 2 }} alignItems="center">
             <Box
                 sx={{
-                    backgroundColor: theme.palette.custom.mnestixMagenta,
+                    backgroundColor: theme.palette.secondary.main,
                     borderRadius: 1,
                     width: '50px',
                     height: '50px',
