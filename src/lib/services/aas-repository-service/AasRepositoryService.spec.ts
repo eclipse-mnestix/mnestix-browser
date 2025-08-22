@@ -4,7 +4,7 @@ import { getInfrastructuresIncludingDefault } from 'lib/services/database/infras
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
-jest.mock('./../database/connectionServerActions');
+jest.mock('./../database/infrastructureDatabaseActions');
 
 describe('AasRepositorySearchService', () => {
     describe('one infrastructure', () => {
