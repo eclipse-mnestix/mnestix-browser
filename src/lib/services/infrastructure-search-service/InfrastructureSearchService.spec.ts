@@ -13,7 +13,7 @@ import {
     createTestSubmodelRef,
 } from 'test-utils/TestUtils';
 
-jest.mock('./../database/connectionServerActions');
+jest.mock('./../database/infrastructureDatabaseActions');
 
 const AAS_ENDPOINT = new URL('https://www.origin.com/route/for/aas/');
 

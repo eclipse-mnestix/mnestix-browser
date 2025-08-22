@@ -20,7 +20,7 @@ jest.mock('next/navigation', () => ({
 }));
 jest.mock('./../../../../lib/services/list-service/aasListApiActions');
 jest.mock('next-auth', jest.fn());
-jest.mock('lib/services/aas-repository-service/aasRepositoryActions', () => ({
+jest.mock('./../../../../lib/services/aas-repository-service/aasRepositoryActions', () => ({
     getThumbnailFromShell: jest.fn(() => Promise.resolve({ success: true, result: { fileType: '', fileContent: '' } })),
 }));
 describe('AasListTableRow', () => {
