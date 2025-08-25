@@ -37,21 +37,22 @@ export default function () {
             const { isSuccess, result } = infrastructureName
                 ? await searchAasInInfrastructure(searchString, infrastructureName)
                 : await performFullAasSearch(searchString.trim());
-            if (!(isSuccess && result && result.aas)) {
+            if (!(isSuccess && result)) {
                 const error = new LocalizedError('navigation.errors.urlNotFound');
                 showError(error);
                 onErrorCallback(error);
             } else {
                 onSuccessCallback();
-                addAasData({
-                    aas: result.aas,
-                    aasData: {
-                        aasRepositoryOrigin: result.aasData?.aasRepositoryOrigin,
-                        submodelDescriptors: result.aasData?.submodelDescriptors ?? [],
-                        infrastructureName: result.aasData?.infrastructureName || null,
-                    },
-                });
-
+                if (result.aas) {
+                    addAasData({
+                        aas: result.aas,
+                        aasData: {
+                            aasRepositoryOrigin: result.aasData?.aasRepositoryOrigin,
+                            submodelDescriptors: result.aasData?.submodelDescriptors ?? [],
+                            infrastructureName: result.aasData?.infrastructureName || null,
+                        },
+                    });
+                }
                 navigate.push(result.redirectUrl);
             }
         } catch (e) {
