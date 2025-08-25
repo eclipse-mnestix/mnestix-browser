@@ -327,6 +327,7 @@ function MnestixInfrastructureForm({
                                 helperText={error?.message}
                                 placeholder="your-api-key-value"
                                 aria-label="Mnestix Proxy Header Value"
+                                type="password"
                             />
                         )}
                     />
@@ -366,6 +367,7 @@ function MnestixInfrastructureForm({
                                     helperText={error?.message}
                                     placeholder="your-api-key-value"
                                     aria-label="Security header value"
+                                    type="password"
                                 />
                             )}
                         />
