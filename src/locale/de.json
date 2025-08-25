@@ -294,9 +294,9 @@
       "infrastructure": "Infrastruktur",
       "searchAllInfrastructures": "Suche überall",
       "digitalTwinMadeEasyText": "Digitaler Zwilling leicht gemacht.",
-      "enterManuallyLabel": "oder manuell eingeben",
       "findOutMoreText": "Mehr Informationen",
-      "listBtnLabel": "oder über Liste suchen",
+      "listCardHeader": "Auswahl über Liste",
+      "listBtnLabel": "Inhalt eines Repositorys sehen",
       "listBtnText": "Zur AAS Liste",
       "scanIdLabel": "AAS ID oder Asset ID scannen",
       "welcomeText": "Willkommen bei Mnestix"

@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Card, Grid, Typography, useTheme } from '@mui/material';
-import { GoToListButton } from './_components/GoToListButton';
+import { GoToListCard } from 'app/[locale]/_components/GoToListCard';
 import { FindOutMoreCard } from 'app/[locale]/_components/FindOutMoreCard';
 import { QrScanner } from 'app/[locale]/_components/QrScanner';
 import { LocalizedError } from 'lib/util/LocalizedError';
@@ -80,7 +80,7 @@ export default function () {
                     {!isMobile && env.AAS_LIST_FEATURE_FLAG && (
                         <Grid size={{ md: 3, xs: 6 }}>
                             <Card sx={{ height: '100%' }}>
-                                <GoToListButton />
+                                <GoToListCard />
                             </Card>
                         </Grid>
                     )}

@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 
-export const GoToListButton = () => {
+export const GoToListCard = () => {
     const isMobile = useIsMobile();
     const env = useEnv();
     const navigate = useRouter();
@@ -31,11 +31,11 @@ export const GoToListButton = () => {
                     >
                         <ArrowOutwardIcon sx={{ color: 'white' }} />
                     </Box>
-                    <Typography variant="h5">Select via List</Typography>
+                    <Typography variant="h5">{t('listCardHeader')}</Typography>
                     <Typography color="text.secondary" textAlign="center">
                         {t('listBtnLabel')}
                     </Typography>
-                    <Box display="flex">
+                    <Box display="flex" mt={1}>
                         <Button variant="text" data-testid="aasList-Button-Home" onClick={() => navigate.push('/list')}>
                             {t('listBtnText')}
                         </Button>

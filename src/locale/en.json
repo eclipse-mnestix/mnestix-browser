@@ -294,9 +294,10 @@
       "infrastructure": "Infrastructure",
       "searchAllInfrastructures": "Search all",
       "digitalTwinMadeEasyText": "Digital Twin made easy.",
-      "enterManuallyLabel": "or enter manually",
-      "findOutMoreText": "Find out more",
-      "listBtnLabel": "or select via list",
+      "findOutMoreHeader": "Find out more",
+      "findOutMoreText": "Mnestix' latest version",
+      "listCardHeader": "Select via List",
+      "listBtnLabel": "See what is already in your repository",
       "listBtnText": "Go to AAS List",
       "scanIdLabel": "Scan AAS ID or Asset ID",
       "welcomeText": "Welcome to Mnestix"

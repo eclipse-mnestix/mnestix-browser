@@ -26,14 +26,14 @@ export function FindOutMoreCard() {
                 <DownloadIcon sx={{ color: 'white' }} />
             </Box>
             <Typography align="center" variant="h5">
-                {t('findOutMoreText')}:
+                {t('findOutMoreHeader')}
             </Typography>
-            <Typography align="center">{t('findOutMoreText')}:</Typography>
+            <Typography align="center">{t('findOutMoreText')}</Typography>
             <Typography align="center">
                 <Link
                     href="https://mnestix.io"
                     target="_blank"
-                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 2 }}
                 >
                     <span>mnestix.io</span>
                     <OpenInNew fontSize="small" />
