@@ -106,7 +106,7 @@ export function ManualAasInput(props: {
                 />
                 <TextField
                     select
-                    variant={'outlined'}
+                    variant={'filled'}
                     label={t('pages.dashboard.infrastructure')}
                     value={selectedInfrastructure || 'all'}
                     sx={{ ml: 1, width: 200 }}

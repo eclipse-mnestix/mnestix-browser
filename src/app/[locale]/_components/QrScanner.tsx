@@ -2,7 +2,8 @@
 
 import { useCallback, useState } from 'react';
 import ScannerLogo from 'assets/ScannerLogo.svg';
-import { Box, CircularProgress, IconButton, useTheme } from '@mui/material';
+import ScannerOutlineThin from 'assets/ScannerOutlineThin.svg';
+import { Box, CircularProgress, IconButton, Typography, useTheme } from '@mui/material';
 import { QrStream } from 'app/[locale]/_components/QrStream';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { LocalizedError } from 'lib/util/LocalizedError';
@@ -113,13 +114,21 @@ export function QrScanner(props: {
             {state === State.Stopped && (
                 <Box
                     onClick={() => setState(State.LoadScanner)}
-                    padding="50px"
-                    position="absolute"
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    justifyContent="center"
                     height={size}
                     width={size}
+                    gap={1}
+                    color="white"
                     data-testid="scanner-start"
                 >
-                    <ScannerLogo style={{ color: 'white' }} alt="Scanner Logo" />
+                    <ScannerLogo alt="Scanner Logo" width="50px" />
+                    <Typography variant="h2">Scan Code</Typography>
+                    <Box position="absolute">
+                        <ScannerOutlineThin></ScannerOutlineThin>
+                    </Box>
                 </Box>
             )}
             {state === State.ShowVideo && (

@@ -14,7 +14,8 @@ import { useTranslations } from 'next-intl';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useAasStore } from 'stores/AasStore';
 import { useRouter } from 'next/navigation';
-import { QrScannerCard } from 'app/[locale]/_components/QrScannerCard';
+import { useIsMobile } from 'lib/hooks/UseBreakpoints';
+import { useEnv } from 'app/EnvProvider';
 
 export default function () {
     const t = useTranslations('pages.dashboard');
@@ -22,6 +23,8 @@ export default function () {
     const { showError } = useShowError();
     const navigate = useRouter();
     const theme = useTheme();
+    const isMobile = useIsMobile();
+    const env = useEnv();
 
     const searchInput = async (
         searchString: string,
@@ -74,11 +77,13 @@ export default function () {
                             <QrScanner searchInput={searchInput} />
                         </Card>
                     </Grid>
-                    <Grid size={{ md: 3, xs: 6 }}>
-                        <Card sx={{ height: '100%' }}>
-                            <GoToListButton />
-                        </Card>
-                    </Grid>
+                    {!isMobile && env.AAS_LIST_FEATURE_FLAG && (
+                        <Grid size={{ md: 3, xs: 6 }}>
+                            <Card sx={{ height: '100%' }}>
+                                <GoToListButton />
+                            </Card>
+                        </Grid>
+                    )}
                     <Grid size={{ md: 3, xs: 6 }}>
                         <Card sx={{ height: '100%' }}>
                             <FindOutMoreCard />
