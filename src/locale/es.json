@@ -294,12 +294,14 @@
       "infrastructure": "Infraestructura",
       "searchAllInfrastructures": "Buscar en todas",
       "digitalTwinMadeEasyText": "Simplificando los gemelos digitales.",
-      "findOutMoreText": "Saber más",
+      "findOutMoreHeader": "Saber más",
+      "findOutMoreText": "Versión actual de Mnestix",
       "listCardHeader": "Seleccionar mediante lista",
       "listBtnLabel": "Vea lo que ya hay en su repositorio.",
       "listBtnText": "Ir a lista de AAS",
       "scanIdLabel": "Escanear ID del AAS o Asset",
-      "welcomeText": "Bienvenido/a a Mnestix"
+      "welcomeText": "Bienvenido/a a Mnestix",
+      "enterManuallyLabel": "Introducir manualmente"
     },
     "discoveryList": {
       "errors": {

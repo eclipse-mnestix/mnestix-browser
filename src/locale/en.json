@@ -300,7 +300,8 @@
       "listBtnLabel": "See what is already in your repository",
       "listBtnText": "Go to AAS List",
       "scanIdLabel": "Scan AAS ID or Asset ID",
-      "welcomeText": "Welcome to Mnestix"
+      "welcomeText": "Welcome to Mnestix",
+      "enterManuallyLabel": "Enter manually"
     },
     "discoveryList": {
       "errors": {

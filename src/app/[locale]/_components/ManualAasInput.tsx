@@ -76,7 +76,7 @@ export function ManualAasInput(props: {
 
     return (
         <Box m={2} display="flex" flexDirection="column" gap={1}>
-            <Typography variant="h5">Enter manually</Typography>
+            <Typography variant="h5">{t('pages.dashboard.enterManuallyLabel')}</Typography>
             <Box display="flex">
                 <TextField
                     sx={{ width: '100%' }}
