@@ -45,8 +45,21 @@ export function validateHeaderValue(value: string): ValidationResult {
         return { isValid: false, errorKey: VALIDATION_ERROR_KEYS.HEADER_VALUE_CRLF_NOT_ALLOWED };
     }
 
-    if (/[;'"]|--/.test(value)) {
-        return { isValid: false, errorKey: VALIDATION_ERROR_KEYS.HEADER_VALUE_ILLEGAL_CHARS };
+    const injectionPatterns = [
+        /<script/i, // Script tags
+        /javascript:/i, // JavaScript protocol
+        /vbscript:/i, // VBScript protocol
+        /on\w+\s*=/i, // Event handlers (onclick, onload, etc.)
+        // eslint-disable-next-line no-control-regex
+        /\x00/, // Null bytes
+        // eslint-disable-next-line no-control-regex
+        /[\x01-\x08\x0B\x0C\x0E-\x1F\x7F]/, // Control characters (except \t, \n, \r)
+    ];
+
+    for (const pattern of injectionPatterns) {
+        if (pattern.test(value)) {
+            return { isValid: false, errorKey: VALIDATION_ERROR_KEYS.HEADER_VALUE_ILLEGAL_CHARS };
+        }
     }
 
     return { isValid: true };

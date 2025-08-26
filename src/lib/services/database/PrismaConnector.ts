@@ -5,7 +5,7 @@ import { PrismaConnectorInMemory } from 'lib/services/database/PrismaConnectorIn
 import type { InfrastructureFormData } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
 import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 import { validateHeaderKey, validateHeaderValue } from 'lib/util/securityHelpers/ValidateSecurityInput';
-import { encryptSecret } from 'lib/util/securityHelpers/encryption';
+import { encryptSecret } from 'lib/util/securityHelpers/Encryption';
 
 export type DataSourceFormData = {
     id: string;
