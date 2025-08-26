@@ -1,5 +1,5 @@
 ﻿import { getServerSession } from 'next-auth';
-import { performServerFetch, performServerFetchLegacy } from 'lib/api/serverFetch';
+import { performServerFetch } from 'lib/api/serverFetch';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { authOptions } from 'components/authentication/authConfig';
 import { envs } from 'lib/env/MnestixEnv';
@@ -33,25 +33,6 @@ const getBearerToken = async () => {
     } else {
         return '';
     }
-};
-
-/**
- * @deprecated use mnesticFetch() instead
- */
-export const mnestixFetchLegacy = ():
-    | {
-          fetch(url: RequestInfo | URL, init?: RequestInit | undefined): Promise<Response>;
-      }
-    | undefined => {
-    return {
-        fetch: async (url: RequestInfo, init?: RequestInit) => {
-            const response = await performServerFetchLegacy(
-                url,
-                await initializeRequestOptions(await getBearerToken(), init),
-            );
-            return new Response(response);
-        },
-    };
 };
 
 export type MnestixFetch = {

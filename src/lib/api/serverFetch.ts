@@ -6,19 +6,6 @@ import { headers } from 'next/headers';
 import { createRequestLogger } from 'lib/util/Logger';
 import pino from 'pino';
 
-/**
- * @deprecated use performServerFetch() instead
- */
-export async function performServerFetchLegacy(
-    input: string | Request | URL,
-    init?: RequestInit | undefined,
-): Promise<string> {
-    const response = await fetch(input, init);
-    if (response.status >= 200 && response.status < 300) {
-        return Promise.resolve(await response.text());
-    } else throw response;
-}
-
 export async function performServerFetch<T>(
     input: string | Request | URL,
     init?: RequestInit | undefined,
