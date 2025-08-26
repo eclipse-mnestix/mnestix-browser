@@ -4,7 +4,7 @@ import { IPrismaConnector } from 'lib/services/database/PrismaConnectorInterface
 import { PrismaConnectorInMemory } from 'lib/services/database/PrismaConnectorInMemory';
 import type { InfrastructureFormData } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
 import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
-import { validateHeaderKey, validateHeaderValue } from 'lib/util/validate/ValidateSecurityInput';
+import { validateHeaderKey, validateHeaderValue } from 'lib/util/securityHelpers/ValidateSecurityInput';
 
 export type DataSourceFormData = {
     id: string;

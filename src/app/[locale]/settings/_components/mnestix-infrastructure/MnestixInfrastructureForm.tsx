@@ -27,7 +27,7 @@ import {
     CONNECTION_TYPES,
     SECURITY_TYPES,
 } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureEnumUtil';
-import { validateHeaderKey, validateHeaderValue } from 'lib/util/validate/ValidateSecurityInput';
+import { validateHeaderKey, validateHeaderValue } from 'lib/util/securityHelpers/ValidateSecurityInput';
 
 export interface MnestixInfrastructureFormProps {
     infrastructure: InfrastructureFormData;
