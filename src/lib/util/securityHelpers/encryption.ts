@@ -7,7 +7,7 @@ if (!keyB64) {
 }
 
 const KEY = Buffer.from(keyB64, 'base64');
-if (KEY.length !== 32) throw new Error('SECRET_ENC_KEY must be 32 bytes (base64)');
+if (KEY.length !== 32) throw new Error('SECRET_ENC_KEY must be a base64-encoded 32-byte key (44 characters)');
 
 export function encryptSecret(plainText: string) {
     const iv = crypto.randomBytes(12);
