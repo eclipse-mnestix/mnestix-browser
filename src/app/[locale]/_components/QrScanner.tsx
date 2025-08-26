@@ -57,12 +57,9 @@ export function QrScanner(props: {
         }
     `;
 
-    interface VideoContainerProps {
-        theme: typeof theme;
-        focused: boolean;
-    }
-
-    const VideoContainer = styled(Box)<VideoContainerProps>(({ theme, focused }) => ({
+    const VideoContainer = styled(Box, {
+        shouldForwardProp: (prop) => prop !== 'focused',
+    })<{ focused: boolean }>(({ theme, focused }) => ({
         position: 'relative',
         display: 'inline-block',
         outline: 'none',
@@ -156,7 +153,7 @@ export function QrScanner(props: {
             )}
             {(state === State.LoadScanner || state === State.ShowVideo) && (
                 <ThemeProvider theme={theme}>
-                    <VideoContainer theme={theme} focused={state === State.ShowVideo} tabIndex={0}>
+                    <VideoContainer focused={state === State.ShowVideo} tabIndex={0}>
                         <QrStream onScan={handleScan} onLoadingFinished={switchToVideoStream} />
                     </VideoContainer>
                 </ThemeProvider>
