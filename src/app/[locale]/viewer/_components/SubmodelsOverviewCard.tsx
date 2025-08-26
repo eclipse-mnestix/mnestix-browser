@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Divider, Skeleton, Typography } from '@mui/material';
+import { Box, Card, CardContent, Divider, Grid, Skeleton, Typography } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { SubmodelDetail } from './submodel/SubmodelDetail';
@@ -139,8 +139,8 @@ export function SubmodelsOverviewCard({
                         </Box>
                     ) : (
                         // Content if there are submodels
-                        <Box display="grid" gridTemplateColumns={isMobile ? '1fr' : '1fr 2fr'} gap="2rem">
-                            <Box>
+                        <Grid container spacing={2} alignItems="stretch">
+                            <Grid size={{ md: 4, xs: 12 }}>
                                 <VerticalTabSelector
                                     items={submodelSelectorItems}
                                     selected={selectedItem}
@@ -154,21 +154,23 @@ export function SubmodelsOverviewCard({
                                         data-testid="submodelOverviewLoadingSkeleton"
                                     />
                                 )}
-                            </Box>
-                            {isMobile ? (
-                                <MobileModal
-                                    selectedItem={selectedItem}
-                                    open={!!selectedItem}
-                                    handleClose={() => {
-                                        setSelectedItem(undefined);
-                                    }}
-                                    setInfoItem={setInfoItem}
-                                    content={SelectedContent}
-                                />
-                            ) : (
-                                SelectedContent
-                            )}
-                        </Box>
+                            </Grid>
+                            <Grid size={{ md: 8, xs: 12 }}>
+                                {isMobile ? (
+                                    <MobileModal
+                                        selectedItem={selectedItem}
+                                        open={!!selectedItem}
+                                        handleClose={() => {
+                                            setSelectedItem(undefined);
+                                        }}
+                                        setInfoItem={setInfoItem}
+                                        content={SelectedContent}
+                                    />
+                                ) : (
+                                    SelectedContent
+                                )}
+                            </Grid>
+                        </Grid>
                     )}
                 </CardContent>
             </Card>
