@@ -1,9 +1,15 @@
 import { envs } from 'lib/env/MnestixEnv';
 import crypto, { createDecipheriv } from 'crypto';
 
-const keyB64 = envs.SECRET_ENC_KEY;
+let keyB64 = envs.SECRET_ENC_KEY;
 if (!keyB64) {
-    throw new Error('Encryption key is not defined');
+    console.warn(
+        '[Encryption] No encryption key found in environment variables. ' +
+            'A random key will be generated for this session. ' +
+            'Note: This is insecure and should only be used for local development. ' +
+            'Please set SECRET_ENC_KEY in your production environment.',
+    );
+    keyB64 = crypto.randomBytes(32).toString('base64');
 }
 
 const KEY = Buffer.from(keyB64, 'base64');
