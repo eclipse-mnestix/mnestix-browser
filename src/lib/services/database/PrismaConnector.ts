@@ -4,6 +4,7 @@ import { IPrismaConnector } from 'lib/services/database/PrismaConnectorInterface
 import { PrismaConnectorInMemory } from 'lib/services/database/PrismaConnectorInMemory';
 import type { InfrastructureFormData } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
 import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
+import { validateHeaderKey, validateHeaderValue } from 'lib/util/validate/ValidateSecurityInput';
 
 export type DataSourceFormData = {
     id: string;
@@ -177,6 +178,16 @@ export class PrismaConnector implements IPrismaConnector {
         infrastructureData: InfrastructureFormData,
     ) {
         if (infrastructureData.securityHeader) {
+            // validate Header Key and Value on the server side.
+            const keyValidation = validateHeaderKey(infrastructureData.securityHeader.name);
+            if (!keyValidation.isValid) {
+                throw new Error(`Invalid header key: ${keyValidation.errorKey}`);
+            }
+
+            const valueValidation = validateHeaderValue(infrastructureData.securityHeader.value);
+            if (!valueValidation.isValid) {
+                throw new Error(`Invalid header value: ${valueValidation.errorKey}`);
+            }
             await tx.securitySettingsHeader.create({
                 data: {
                     headerName: infrastructureData.securityHeader.name,
@@ -187,6 +198,12 @@ export class PrismaConnector implements IPrismaConnector {
         }
 
         if (infrastructureData.securityProxy) {
+            // validate Header Value on the server side.
+            const proxyValueValidation = validateHeaderValue(infrastructureData.securityProxy.value);
+            if (!proxyValueValidation.isValid) {
+                throw new Error(`Invalid proxy header value: ${proxyValueValidation.errorKey}`);
+            }
+
             await tx.securitySettingsProxy.create({
                 data: {
                     headerValue: infrastructureData.securityProxy.value,
