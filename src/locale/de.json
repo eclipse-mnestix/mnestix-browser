@@ -294,12 +294,14 @@
       "infrastructure": "Infrastruktur",
       "searchAllInfrastructures": "Suche überall",
       "digitalTwinMadeEasyText": "Digitaler Zwilling leicht gemacht.",
-      "enterManuallyLabel": "oder manuell eingeben",
-      "findOutMoreText": "Mehr Informationen",
-      "listBtnLabel": "oder über Liste suchen",
+      "findOutMoreHeader": "Mehr Informationen",
+      "findOutMoreText": "Aktuelle Mnestix Version",
+      "listCardHeader": "Auswahl über Liste",
+      "listBtnLabel": "Inhalt eines Repositorys sehen",
       "listBtnText": "Zur AAS Liste",
       "scanIdLabel": "AAS ID oder Asset ID scannen",
-      "welcomeText": "Willkommen bei Mnestix"
+      "welcomeText": "Willkommen bei Mnestix",
+      "enterManuallyLabel": "Manuell eingeben"
     },
     "discoveryList": {
       "errors": {
@@ -393,8 +395,6 @@
           "headerValueCrLfNotAllowed": "Der Header-Wert darf keine CRLF-Sequenzen enthalten.",
           "headerValueIllegalChars": "Der Header-Wert darf keine ungültigen Zeichen enthalten."
         },
-        "aasRepository": {},
-        "submodelRepository": {},
         "subtitle": "Definieren Sie, welche Infrastrukturen verwendet werden sollen.",
         "title": "Infrastrukturen",
         "urlFieldNoTrailingSlash": "Die URL darf nicht mit einem Schrägstrich (/) enden.",

@@ -1,6 +1,6 @@
 import { Box, MenuItem, Select, styled } from '@mui/material';
 import { useLocale } from 'next-intl';
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import TranslateIcon from '@mui/icons-material/Translate';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 
@@ -96,7 +96,7 @@ export function LanguageSelector() {
                 onChange={(event) => switchLanguage(event.target.value as string)}
                 //Value of the fieldset on the closed menu
                 renderValue={() => (
-                    <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                    <Box sx={{ display: 'inline-flex', alignItems: 'center' }} data-testid="language-selector">
                         <TranslateIcon
                             fontSize="small"
                             sx={{
@@ -126,7 +126,9 @@ export function LanguageSelector() {
                 {
                     //Iteration to loop over all languages declared on the language equivalence array
                     languageOptions.map((option) => (
-                        <DropDownItem value={option.code}>{option.language}</DropDownItem>
+                        <DropDownItem value={option.code} data-testid={`language-${option.code}`}>
+                            {option.language}
+                        </DropDownItem>
                     ))
                 }
             </LanguageSelect>
