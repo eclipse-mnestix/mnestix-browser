@@ -31,8 +31,8 @@ class ErrorBoundary extends Component<Props, State> {
     public render() {
         if (this.state.hasError) {
             return (
-                <Box>
-                    <Alert severity="warning">
+                <Box m={2}>
+                    <Alert severity="warning" sx={{ mb: 2 }}>
                         <Typography>{this.props.message}</Typography>
                     </Alert>
                     <Button variant="contained" startIcon={<ArrowForward />} href="/">

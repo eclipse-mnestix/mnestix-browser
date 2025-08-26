@@ -294,12 +294,14 @@
       "infrastructure": "Infraestructura",
       "searchAllInfrastructures": "Buscar en todas",
       "digitalTwinMadeEasyText": "Simplificando los gemelos digitales.",
-      "enterManuallyLabel": "o introducir manualmente",
-      "findOutMoreText": "Saber más",
-      "listBtnLabel": "o seleccione en la lista",
+      "findOutMoreHeader": "Saber más",
+      "findOutMoreText": "Versión actual de Mnestix",
+      "listCardHeader": "Seleccionar mediante lista",
+      "listBtnLabel": "Vea lo que ya hay en su repositorio.",
       "listBtnText": "Ir a lista de AAS",
       "scanIdLabel": "Escanear ID del AAS o Asset",
-      "welcomeText": "Bienvenido/a a Mnestix"
+      "welcomeText": "Bienvenido/a a Mnestix",
+      "enterManuallyLabel": "Introducir manualmente"
     },
     "discoveryList": {
       "errors": {
@@ -384,10 +386,9 @@
           "connectionTypes": "Tipos de interfaz de conexión",
           "connectionTypesRequired": "Se debe seleccionar al menos un tipo de interfaz de conexión",
           "save": "Guardar",
+          "nameAlreadyExists": "Ya existe una infraestructura con este nombre",
           "defaultInfrastructureReadonly": "La infraestructura predeterminada solo se puede modificar en la implementación mediante las variables de entorno. Póngase en contacto con su administrador para realizar cambios."
         },
-        "aasRepository": {},
-        "submodelRepository": {},
         "subtitle": "Define qué infraestructuras deben ser utilizadas.",
         "title": "Fuentes de infraestructura",
         "urlFieldNoTrailingSlash": "La URL no debe terminar con una barra (/).",
