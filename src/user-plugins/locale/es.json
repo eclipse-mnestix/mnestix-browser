@@ -5,14 +5,5 @@
         "title": "Hola Mundo!"
       }
     }
-  },
-  "pages": {
-    "settings": {
-      "infrastructure": {
-        "form": {
-          "nameAlreadyExists": "Ya existe una infraestructura con este nombre"
-        }
-      }
-    }
   }
 }
