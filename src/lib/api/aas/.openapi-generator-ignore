@@ -24,6 +24,3 @@
 
 # no barreling of apis and models
 index.ts
-# ignore runtime and apis as this is only for types for now
-runtime.ts
-apis/

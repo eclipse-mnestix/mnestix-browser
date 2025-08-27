@@ -1,13 +1,17 @@
-import { AssetAdministrationShellRepositoryApi } from 'lib/api/basyx-v3/api';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { AssetAdministrationShell } from 'lib/api/aas/models';
 import { ApiResponseWrapper, wrapErrorCode } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { IAssetAdministrationShellRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import logger, { logResponseDebug } from 'lib/util/Logger';
 import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
 import { fetchFromMultipleEndpoints } from 'lib/services/shared/parallelFetch';
 import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
+import {
+    AssetAdministrationShellRepositoryAPIApi, AssetAdministrationShellRepositoryAPIApiInterface
+} from 'lib/api/aas/apis';
+import {
+    AssetAdministrationShellRegistryAPIApiInMemory
+} from 'lib/api/aas/apis-in-memory/AssetAdministrationShellRepositoryAPIApiInMemory';
 
 export type RepoSearchResult<T> = {
     searchResult: T;
@@ -17,24 +21,25 @@ export type RepoSearchResult<T> = {
 
 export class AasRepositoryService {
     private constructor(
-        protected readonly getAasRepositoryClient: (basePath: string) => IAssetAdministrationShellRepositoryApi,
+        protected readonly getAasRepositoryClient: (basePath: string) => AssetAdministrationShellRepositoryAPIApiInterface,
         private readonly log: typeof logger = logger,
     ) {}
 
     static create(log?: typeof logger): AasRepositoryService {
         const searcherLogger = log?.child({ Service: 'RepositorySearchService' });
         return new AasRepositoryService(
-            (baseUrl) => AssetAdministrationShellRepositoryApi.create(baseUrl, mnestixFetch()),
+            (baseUrl) => new AssetAdministrationShellRepositoryAPIApi({ basePath: baseUrl, fetchApi: mnestixFetch() }),
             searcherLogger,
         );
     }
 
     static createNull(shellsInRepositories: RepoSearchResult<AssetAdministrationShell>[] = []): AasRepositoryService {
-        return new AasRepositoryService((baseUrl) =>
-            AssetAdministrationShellRepositoryApi.createNull(
-                baseUrl,
-                shellsInRepositories.filter((value) => value.location == baseUrl).map((value) => value.searchResult),
-            ),
+        return new AasRepositoryService((baseUrl) =>{
+                return new AssetAdministrationShellRegistryAPIApiInMemory(
+                    baseUrl,
+                    shellsInRepositories.filter((value) => value.location == baseUrl).map((value) => value.searchResult),
+                );
+            },
         );
     }
 
@@ -87,10 +92,11 @@ export class AasRepositoryService {
         repoUrl: string,
     ): Promise<ApiResponseWrapper<AssetAdministrationShell>> {
         const client = this.getAasRepositoryClient(repoUrl);
-        const response = await client.getAssetAdministrationShellById(aasId);
+        // TODO: try catch block or find a way to use ApiResponseWrapper for generated apis...
+        const response = await client.getAssetAdministrationShellById({aasIdentifier: aasId});
         if (response.isSuccess) {
             logResponseDebug(this.log, 'getAasFromRepo', 'Querying AAS from repository', response, {
-                Repository_Endpoint: client.getBaseUrl(),
+                Repository_Endpoint: client.(),
                 AAS_ID: aasId,
             });
             return response;
