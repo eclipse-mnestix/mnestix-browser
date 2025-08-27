@@ -51,15 +51,15 @@ function MnestixInfrastructureCard() {
                 url: connection.url,
                 types: connection.types.map((typeRelation) => typeRelation.type.typeName),
             })),
-            securityHeader: infrastructure.securitySettingsHeaders[0]
+            securityHeader: infrastructure.securitySettingsHeaders
                 ? {
-                      name: infrastructure.securitySettingsHeaders[0].headerName,
-                      value: infrastructure.securitySettingsHeaders[0].headerValue,
+                      name: infrastructure.securitySettingsHeaders.headerName,
+                      value: infrastructure.securitySettingsHeaders.headerValue,
                   }
                 : undefined,
-            securityProxy: infrastructure.securitySettingsProxies[0]
+            securityProxy: infrastructure.securitySettingsProxies
                 ? {
-                      value: infrastructure.securitySettingsProxies[0].headerValue,
+                      value: infrastructure.securitySettingsProxies.headerValue,
                   }
                 : undefined,
         }));

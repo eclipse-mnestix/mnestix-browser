@@ -47,10 +47,20 @@ export async function fetchAllInfrastructureConnectionsFromDb(): Promise<Infrast
         conceptDescriptionRepositoryUrls: infra.connections.flatMap((conn) =>
             conn.types.filter((t) => t.type.typeName === 'CONCEPT_DESCRIPTION').map(() => conn.url),
         ),
+        isDefault: false,
         infrastructureSecurity: {
-            securityType: infra.securityType?.typeName || undefined,
-            securitySettingsHeaders: infra.securitySettingsHeaders || undefined,
-            securitySettingsProxies: infra.securitySettingsProxies || undefined,
+            securityType: infra.securityType?.typeName,
+            securityHeader: {
+                name: infra.securitySettingsHeaders?.headerName,
+                value: infra.securitySettingsHeaders?.headerValue,
+                iv: infra.securitySettingsHeaders?.iv,
+                authTag: infra.securitySettingsHeaders?.authTag,
+            },
+            securityProxy: {
+                value: infra.securitySettingsProxies?.headerValue,
+                iv: infra.securitySettingsProxies?.iv,
+                authTag: infra.securitySettingsProxies?.authTag,
+            },
         },
     }));
 }
@@ -66,6 +76,7 @@ export async function getDefaultInfrastructure(): Promise<InfrastructureConnecti
         conceptDescriptionRepositoryUrls: envs.CONCEPT_DESCRIPTION_REPO_API_URL
             ? [envs.CONCEPT_DESCRIPTION_REPO_API_URL]
             : [],
+        isDefault: true,
     };
 }
 
@@ -96,7 +107,6 @@ export async function getAasRepositoriesIncludingDefault() {
     };
     try {
         const aasRepositoriesDb = await getConnectionDataByTypeAction(getTypeAction(ConnectionTypeEnum.AAS_REPOSITORY));
-
 
         return [defaultAasRepository, ...aasRepositoriesDb];
     } catch (error) {

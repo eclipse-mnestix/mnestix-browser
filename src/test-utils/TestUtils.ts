@@ -74,6 +74,7 @@ export function createTestInfrastructure({
     submodelRegistryUrls = [],
     submodelRepositoryUrls = [],
     conceptDescriptionRepositoryUrls = [],
+    isDefault = false,
 }: {
     name?: string;
     discoveryUrls?: string[];
@@ -82,6 +83,7 @@ export function createTestInfrastructure({
     submodelRegistryUrls?: string[];
     submodelRepositoryUrls?: string[];
     conceptDescriptionRepositoryUrls?: string[];
+    isDefault?: boolean;
 } = {}) {
     return {
         name,
@@ -91,5 +93,6 @@ export function createTestInfrastructure({
         submodelRegistryUrls,
         submodelRepositoryUrls,
         conceptDescriptionRepositoryUrls,
+        isDefault,
     };
 }

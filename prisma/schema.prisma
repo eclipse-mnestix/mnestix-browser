@@ -41,8 +41,8 @@ model MnestixInfrastructure {
     connections MnestixConnection[]
     securityTypeId String
     securityType SecurityType @relation(fields: [securityTypeId], references: [id])
-     securitySettingsHeaders SecuritySettingsHeader[]
-     securitySettingsProxies SecuritySettingsProxy[]
+     securitySettingsHeaders SecuritySettingsHeader?
+     securitySettingsProxies SecuritySettingsProxy?
 }
 
 model SecurityType {
@@ -57,8 +57,8 @@ model SecuritySettingsHeader {
     headerValue String
     iv String
     authTag String
-    infrastructure MnestixInfrastructure @relation(fields: [infrastructureId], references: [id])
-    infrastructureId String
+    infrastructure MnestixInfrastructure @relation(fields: [infrastructureId], references: [id], onDelete: Cascade)
+    infrastructureId String @unique
 }
 
 model SecuritySettingsProxy {
@@ -66,6 +66,6 @@ model SecuritySettingsProxy {
     headerValue String
     iv String
     authTag String
-    infrastructure MnestixInfrastructure @relation(fields: [infrastructureId], references: [id])
-    infrastructureId String
+    infrastructure MnestixInfrastructure @relation(fields: [infrastructureId], references: [id], onDelete: Cascade)
+    infrastructureId String @unique
 }

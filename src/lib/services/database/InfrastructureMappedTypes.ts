@@ -16,17 +16,22 @@ export type InfrastructureConnection = {
     submodelRepositoryUrls: string[];
     submodelRegistryUrls: string[];
     conceptDescriptionRepositoryUrls: string[];
+    isDefault: boolean;
     infrastructureSecurity?: InfrastructureSecurity;
 };
 
 export type InfrastructureSecurity = {
     securityType?: string;
     securityHeader?: {
-        name: string;
-        value: string;
+        name?: string;
+        value?: string;
+        iv?: string;
+        authTag?: string;
     };
     securityProxy?: {
-        value: string;
+        value?: string;
+        iv?: string;
+        authTag?: string;
     };
 };
 
