@@ -11,6 +11,7 @@ import { mnestixFetch } from 'lib/api/infrastructure';
 import { DiscoveryServiceApi } from 'lib/api/discovery-service-api/discoveryServiceApi';
 import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
 import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
+import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
 
 export type DiscoverySearchResult = {
     aasId: string;
@@ -44,7 +45,7 @@ export class DiscoveryService {
     ): Promise<ApiResponseWrapper<DiscoverySearchResult[]>> {
         const response = await this.getFromMultipleDiscoveries(
             infrastructureConnection,
-            (basePath) => this.searchAasIdInSingleDiscovery(searchInput, basePath),
+            (basePath, infrastructure) => this.searchAasIdInSingleDiscovery(searchInput, basePath, infrastructure),
             'Could not find in any Discovery',
         );
 
@@ -65,7 +66,13 @@ export class DiscoveryService {
     public async searchAasIdInSingleDiscovery(
         searchAssetId: string,
         url: string,
+        infrastructure?: InfrastructureConnection,
     ): Promise<ApiResponseWrapper<string[]>> {
+        console.log('Discovery URL - This is test log only:', url);
+        if (!infrastructure?.isDefault && infrastructure) {
+            const securityHeaders = createSecurityHeaders(infrastructure);
+            console.log('Security Headers - This is test log only:', securityHeaders);
+        }
         const client = this.getDiscoveryApiClient(url);
         const response = await client?.getAasIdsByAssetId(searchAssetId);
         if (!response) {
@@ -96,12 +103,12 @@ export class DiscoveryService {
      */
     async getFromMultipleDiscoveries<T>(
         infrastructures: InfrastructureConnection[],
-        kernel: (url: string) => Promise<ApiResponseWrapper<T>>,
+        kernel: (url: string, infrastructure?: InfrastructureConnection) => Promise<ApiResponseWrapper<T>>,
         errorMsg: string,
     ): Promise<ApiResponseWrapper<DiscoverySearchResult[]>> {
         const promises = infrastructures.flatMap((infrastructure) =>
             infrastructure.discoveryUrls.map((url) => {
-                return kernel(url).then((response: ApiResponseWrapper<T>) => {
+                return kernel(url, infrastructure).then((response: ApiResponseWrapper<T>) => {
                     return { searchResult: response, location: url, infrastructureName: infrastructure.name };
                 });
             }),
