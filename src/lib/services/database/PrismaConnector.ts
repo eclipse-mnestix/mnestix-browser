@@ -37,6 +37,32 @@ export class PrismaConnector implements IPrismaConnector {
         });
     }
 
+    async getInfrastructureByUrl(url: string) {
+        return await prisma.mnestixInfrastructure.findFirst({
+            where: {
+                connections: {
+                    some: {
+                        url: url,
+                    },
+                },
+            },
+            include: {
+                connections: {
+                    include: {
+                        types: {
+                            include: {
+                                type: true,
+                            },
+                        },
+                    },
+                },
+                securityType: true,
+                securitySettingsHeaders: true,
+                securitySettingsProxies: true,
+            },
+        });
+    }
+
     async createInfrastructure(infrastructureData: InfrastructureFormData) {
         return await prisma.$transaction(async (tx) => {
             const securityType = await this.findSecurityType(tx, infrastructureData.securityType);

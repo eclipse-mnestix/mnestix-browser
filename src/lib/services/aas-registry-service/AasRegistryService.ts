@@ -15,6 +15,7 @@ import {
     RegistryServiceApiInMemory,
 } from 'lib/api/registry-service-api/registryServiceApiInMemory';
 import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
+import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
 
 export type RegistrySearchResult = {
     endpoints: URL[];
@@ -25,14 +26,17 @@ export type RegistrySearchResult = {
 
 export class AasRegistryService {
     private constructor(
-        protected readonly getRegistryApiClient: (basePath: string) => IRegistryServiceApi | null,
+        protected readonly getRegistryApiClient: (
+            basePath: string,
+            securityHeader: Record<string, string> | null,
+        ) => IRegistryServiceApi | null,
         private readonly log: typeof logger = logger,
     ) {}
 
     static create(log?: typeof logger): AasRegistryService {
         const registryLogger = log?.child({ Service: 'AasRegistryService' });
         return new AasRegistryService(
-            (baseUrl) => RegistryServiceApi.create(baseUrl, mnestixFetch(), log),
+            (baseUrl, securityHeader) => RegistryServiceApi.create(baseUrl, mnestixFetch(securityHeader), log),
             registryLogger,
         );
     }
@@ -60,7 +64,7 @@ export class AasRegistryService {
     ): Promise<ApiResponseWrapper<AasSearchResult[]>> {
         const registrySearchResult = await this.getFromMultipleRegistries(
             infrastructureConnection,
-            (basePath) => this.searchInSingleAasRegistry(searchAasId, basePath),
+            (basePath, infrastructure) => this.searchInSingleAasRegistry(searchAasId, basePath, infrastructure),
             `Could not find the AAS '${searchAasId}' in any AAS Registry`,
         );
         if (!registrySearchResult.isSuccess) {
@@ -115,8 +119,10 @@ export class AasRegistryService {
     private async searchInSingleAasRegistry(
         searchAasId: string,
         url: string,
+        infrastructure?: InfrastructureConnection,
     ): Promise<ApiResponseWrapper<RegistrySearchResult>> {
-        const client = this.getRegistryApiClient(url);
+        const securityHeader = await createSecurityHeaders(infrastructure);
+        const client = this.getRegistryApiClient(url, securityHeader);
         const shellDescription = await client?.getAssetAdministrationShellDescriptorById(searchAasId);
         if (!shellDescription) {
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'AAS Registry service client is not defined');
@@ -149,7 +155,7 @@ export class AasRegistryService {
         endpoint: URL,
         registryUrl: string,
     ): Promise<ApiResponseWrapper<AssetAdministrationShell>> {
-        const client = this.getRegistryApiClient(registryUrl);
+        const client = this.getRegistryApiClient(registryUrl, null); // TODO: Implement security headers
         if (!client) {
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'AAS Registry service client is not defined');
         }
@@ -176,7 +182,10 @@ export class AasRegistryService {
 
     async getFromMultipleRegistries(
         infrastructures: InfrastructureConnection[],
-        kernel: (url: string) => Promise<ApiResponseWrapper<RegistrySearchResult>>,
+        kernel: (
+            url: string,
+            infrastructure?: InfrastructureConnection,
+        ) => Promise<ApiResponseWrapper<RegistrySearchResult>>,
         errorMsg: string,
     ): Promise<ApiResponseWrapper<RegistrySearchResult[]>> {
         const requests = infrastructures.flatMap((infra) =>

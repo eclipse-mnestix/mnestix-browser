@@ -1,11 +1,23 @@
 import { envs } from 'lib/env/MnestixEnv';
 import { InfrastructureConnection, InfrastructureSecurity } from 'lib/services/database/InfrastructureMappedTypes';
 import { decryptSecret } from './Encryption';
+import { getServerSession } from 'next-auth';
+import { authOptions } from 'components/authentication/authConfig';
 
-export function createSecurityHeaders(infrastructure: InfrastructureConnection): Record<string, string> | null {
+export async function createSecurityHeaders(
+    infrastructure?: InfrastructureConnection,
+): Promise<Record<string, string> | null> {
+    if (!infrastructure) {
+        return null;
+    }
+
     const securityType = infrastructure.infrastructureSecurity?.securityType;
     const securityData = infrastructure.infrastructureSecurity as InfrastructureSecurity;
     const header = envs.MNESTIX_V2_ENABLED ? 'X-API-KEY' : 'ApiKey';
+
+    if (infrastructure.isDefault) {
+        return createDefaultSecurityHeaders(await getBearerToken());
+    }
 
     if (!securityData || !securityType) {
         return null;
@@ -43,3 +55,26 @@ export function createSecurityHeaders(infrastructure: InfrastructureConnection):
             return null;
     }
 }
+
+function createDefaultSecurityHeaders(bearerToken: string): Record<string, string> | null {
+    if (envs.AUTHENTICATION_FEATURE_FLAG && bearerToken) {
+        return {
+            Authorization: `Bearer ${bearerToken}`,
+        };
+    } else if (!envs.AUTHENTICATION_FEATURE_FLAG) {
+        const header = envs.MNESTIX_V2_ENABLED ? 'X-API-KEY' : 'ApiKey';
+        return {
+            [header]: envs.MNESTIX_BACKEND_API_KEY || '',
+        };
+    }
+    return null;
+}
+
+const getBearerToken = async () => {
+    const session = await getServerSession(authOptions);
+    if (session && session.accessToken) {
+        return session.accessToken;
+    } else {
+        return '';
+    }
+};

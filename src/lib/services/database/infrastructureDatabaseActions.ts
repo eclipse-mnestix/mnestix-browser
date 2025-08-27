@@ -8,6 +8,7 @@ import { envs } from 'lib/env/MnestixEnv';
 import { ConnectionTypeEnum, getTypeAction } from 'lib/services/database/ConnectionTypeEnum';
 import {
     InfrastructureConnection,
+    InfrastructureWithRelations,
     RepositoryWithInfrastructure,
 } from 'lib/services/database/InfrastructureMappedTypes';
 
@@ -21,48 +22,22 @@ export async function getConnectionDataByTypeAction(type: ConnectionType): Promi
     return prismaConnector.getConnectionDataByTypeAction(type);
 }
 
+export async function getInfrastructureByUrl(url: string) {
+    const prismaConnector = PrismaConnector.create();
+    const infrastructure = await prismaConnector.getInfrastructureByUrl(url);
+
+    if (!infrastructure) return null;
+
+    return infrastructureMapper(infrastructure);
+}
+
 export async function fetchAllInfrastructureConnectionsFromDb(): Promise<InfrastructureConnection[]> {
     const connector = PrismaConnector.create();
     const infrastructures = await connector.getInfrastructures();
 
     if (!infrastructures) return [];
 
-    return infrastructures.map((infra) => ({
-        name: infra.name,
-        discoveryUrls: infra.connections.flatMap((conn) =>
-            conn.types.filter((t) => t.type.typeName === 'DISCOVERY_SERVICE').map(() => conn.url),
-        ),
-        aasRegistryUrls: infra.connections.flatMap((conn) =>
-            conn.types.filter((t) => t.type.typeName === 'AAS_REGISTRY').map(() => conn.url),
-        ),
-        aasRepositoryUrls: infra.connections.flatMap((conn) =>
-            conn.types.filter((t) => t.type.typeName === 'AAS_REPOSITORY').map(() => conn.url),
-        ),
-        submodelRepositoryUrls: infra.connections.flatMap((conn) =>
-            conn.types.filter((t) => t.type.typeName === 'SUBMODEL_REPOSITORY').map(() => conn.url),
-        ),
-        submodelRegistryUrls: infra.connections.flatMap((conn) =>
-            conn.types.filter((t) => t.type.typeName === 'SUBMODEL_REGISTRY').map(() => conn.url),
-        ),
-        conceptDescriptionRepositoryUrls: infra.connections.flatMap((conn) =>
-            conn.types.filter((t) => t.type.typeName === 'CONCEPT_DESCRIPTION').map(() => conn.url),
-        ),
-        isDefault: false,
-        infrastructureSecurity: {
-            securityType: infra.securityType?.typeName,
-            securityHeader: {
-                name: infra.securitySettingsHeaders?.headerName,
-                value: infra.securitySettingsHeaders?.headerValue,
-                iv: infra.securitySettingsHeaders?.iv,
-                authTag: infra.securitySettingsHeaders?.authTag,
-            },
-            securityProxy: {
-                value: infra.securitySettingsProxies?.headerValue,
-                iv: infra.securitySettingsProxies?.iv,
-                authTag: infra.securitySettingsProxies?.authTag,
-            },
-        },
-    }));
+    return infrastructures.map((infra) => infrastructureMapper(infra));
 }
 
 export async function getDefaultInfrastructure(): Promise<InfrastructureConnection> {
@@ -141,4 +116,43 @@ export async function updateInfrastructureAction(infrastructureData: Infrastruct
 export async function deleteInfrastructureAction(infrastructureId: string): Promise<void> {
     const connector = PrismaConnector.create();
     await connector.deleteInfrastructureAction(infrastructureId);
+}
+
+function infrastructureMapper(infra: InfrastructureWithRelations): InfrastructureConnection {
+    return {
+        name: infra.name,
+        discoveryUrls: infra.connections.flatMap((conn) =>
+            conn.types.filter((t) => t.type.typeName === 'DISCOVERY_SERVICE').map(() => conn.url),
+        ),
+        aasRegistryUrls: infra.connections.flatMap((conn) =>
+            conn.types.filter((t) => t.type.typeName === 'AAS_REGISTRY').map(() => conn.url),
+        ),
+        aasRepositoryUrls: infra.connections.flatMap((conn) =>
+            conn.types.filter((t) => t.type.typeName === 'AAS_REPOSITORY').map(() => conn.url),
+        ),
+        submodelRepositoryUrls: infra.connections.flatMap((conn) =>
+            conn.types.filter((t) => t.type.typeName === 'SUBMODEL_REPOSITORY').map(() => conn.url),
+        ),
+        submodelRegistryUrls: infra.connections.flatMap((conn) =>
+            conn.types.filter((t) => t.type.typeName === 'SUBMODEL_REGISTRY').map(() => conn.url),
+        ),
+        conceptDescriptionRepositoryUrls: infra.connections.flatMap((conn) =>
+            conn.types.filter((t) => t.type.typeName === 'CONCEPT_DESCRIPTION').map(() => conn.url),
+        ),
+        isDefault: false,
+        infrastructureSecurity: {
+            securityType: infra.securityType?.typeName,
+            securityHeader: {
+                name: infra.securitySettingsHeaders?.headerName,
+                value: infra.securitySettingsHeaders?.headerValue,
+                iv: infra.securitySettingsHeaders?.iv,
+                authTag: infra.securitySettingsHeaders?.authTag,
+            },
+            securityProxy: {
+                value: infra.securitySettingsProxies?.headerValue,
+                iv: infra.securitySettingsProxies?.iv,
+                authTag: infra.securitySettingsProxies?.authTag,
+            },
+        },
+    };
 }

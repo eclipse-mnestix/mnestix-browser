@@ -21,13 +21,16 @@ export type DiscoverySearchResult = {
 
 export class DiscoveryService {
     private constructor(
-        protected readonly getDiscoveryApiClient: (basePath: string) => IDiscoveryServiceApi | null,
+        protected readonly getDiscoveryApiClient: (
+            basePath: string,
+            securityHeader: Record<string, string> | null,
+        ) => IDiscoveryServiceApi | null,
         private readonly log: typeof logger = logger,
     ) {}
     static create(log?: typeof logger): DiscoveryService {
         const discoveryLogger = log?.child({ Service: 'DiscoveryService' });
         return new DiscoveryService(
-            (baseUrl) => DiscoveryServiceApi.create(baseUrl, mnestixFetch(), log),
+            (baseUrl, securityHeader) => DiscoveryServiceApi.create(baseUrl, mnestixFetch(securityHeader), log),
             discoveryLogger,
         );
     }
@@ -68,12 +71,9 @@ export class DiscoveryService {
         url: string,
         infrastructure?: InfrastructureConnection,
     ): Promise<ApiResponseWrapper<string[]>> {
-        console.log('Discovery URL - This is test log only:', url);
-        if (!infrastructure?.isDefault && infrastructure) {
-            const securityHeaders = createSecurityHeaders(infrastructure);
-            console.log('Security Headers - This is test log only:', securityHeaders);
-        }
-        const client = this.getDiscoveryApiClient(url);
+        const securityHeader = await createSecurityHeaders(infrastructure);
+
+        const client = this.getDiscoveryApiClient(url, securityHeader);
         const response = await client?.getAasIdsByAssetId(searchAssetId);
         if (!response) {
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Discovery service client is not defined');

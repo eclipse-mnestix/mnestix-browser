@@ -17,7 +17,7 @@ export class ConceptDescriptionRepositoryService {
     static create(log?: typeof logger): ConceptDescriptionRepositoryService {
         const svcLogger = log?.child({ Service: 'ConceptDescriptionSearchService' });
         return new ConceptDescriptionRepositoryService(
-            (baseUrl) => ConceptDescriptionApi.create(baseUrl, mnestixFetch()),
+            (baseUrl) => ConceptDescriptionApi.create(baseUrl, mnestixFetch(null)),
             svcLogger ?? logger,
         );
     }
@@ -46,7 +46,10 @@ export class ConceptDescriptionRepositoryService {
         } else {
             const infrastructure = await getInfrastructureByName(infrastructureName);
             if (!infrastructure) {
-                return wrapErrorCode(ApiResultStatus.NOT_FOUND, `Infrastructure with name ${infrastructureName} not found`);
+                return wrapErrorCode(
+                    ApiResultStatus.NOT_FOUND,
+                    `Infrastructure with name ${infrastructureName} not found`,
+                );
             }
             conceptRepositoryUrlList = infrastructure.conceptDescriptionRepositoryUrls;
         }
