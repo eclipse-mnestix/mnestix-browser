@@ -387,7 +387,13 @@
           "connectionTypesRequired": "At least one connection interface type must be selected",
           "save": "Save",
           "nameAlreadyExists": "An infrastructure with this name already exists",
-          "defaultInfrastructureReadonly": "The default infrastructure can only be changed in the deployment via the environment variables. Please contact your administrator to make changes."
+          "defaultInfrastructureReadonly": "The default infrastructure can only be changed in the deployment via the environment variables. Please contact your administrator to make changes.",
+          "headerKeyDangerous": "The header key is considered dangerous.",
+          "headerKeyInvalidFormat": "The header key is not in a valid format.",
+          "headerKeyCrLfNotAllowed": "The header key must not contain CRLF sequences.",
+          "headerValueTooLong": "The header value is too long.",
+          "headerValueCrLfNotAllowed": "The header value must not contain CRLF sequences.",
+          "headerValueIllegalChars": "The header value must not contain illegal characters."
         },
         "subtitle": "Define which infrastructures should be used.",
         "title": "Infrastructures",

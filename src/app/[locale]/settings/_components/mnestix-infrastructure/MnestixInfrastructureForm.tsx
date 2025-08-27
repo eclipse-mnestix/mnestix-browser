@@ -27,6 +27,7 @@ import {
     CONNECTION_TYPES,
     SECURITY_TYPES,
 } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureEnumUtil';
+import { validateHeaderKey, validateHeaderValue } from 'lib/util/securityHelpers/ValidateSecurityInput';
 
 export interface MnestixInfrastructureFormProps {
     infrastructure: InfrastructureFormData;
@@ -316,7 +317,16 @@ function MnestixInfrastructureForm({
                     <Controller
                         name="securityProxy.value"
                         control={control}
-                        rules={{ required: t('form.proxyHeaderValueRequired') }}
+                        rules={{
+                            required: t('form.proxyHeaderValueRequired'),
+                            validate: (value: string) => {
+                                const { isValid, errorKey } = validateHeaderValue(value);
+                                if (!isValid && errorKey) {
+                                    return t(errorKey);
+                                }
+                                return true;
+                            },
+                        }}
                         render={({ field, fieldState: { error } }) => (
                             <TextField
                                 {...field}
@@ -327,6 +337,7 @@ function MnestixInfrastructureForm({
                                 helperText={error?.message}
                                 placeholder="your-api-key-value"
                                 aria-label="Mnestix Proxy Header Value"
+                                type="password"
                             />
                         )}
                     />
@@ -338,7 +349,16 @@ function MnestixInfrastructureForm({
                         <Controller
                             name="securityHeader.name"
                             control={control}
-                            rules={{ required: t('form.headerNameRequired') }}
+                            rules={{
+                                required: t('form.headerNameRequired'),
+                                validate: (value: string) => {
+                                    const { isValid, errorKey } = validateHeaderKey(value);
+                                    if (!isValid && errorKey) {
+                                        return t(errorKey);
+                                    }
+                                    return true;
+                                },
+                            }}
                             render={({ field, fieldState: { error } }) => (
                                 <TextField
                                     {...field}
@@ -355,7 +375,16 @@ function MnestixInfrastructureForm({
                         <Controller
                             name="securityHeader.value"
                             control={control}
-                            rules={{ required: t('form.headerValueRequired') }}
+                            rules={{
+                                required: t('form.headerValueRequired'),
+                                validate: (value: string) => {
+                                    const { isValid, errorKey } = validateHeaderValue(value);
+                                    if (!isValid && errorKey) {
+                                        return t(errorKey);
+                                    }
+                                    return true;
+                                },
+                            }}
                             render={({ field, fieldState: { error } }) => (
                                 <TextField
                                     {...field}
@@ -366,6 +395,7 @@ function MnestixInfrastructureForm({
                                     helperText={error?.message}
                                     placeholder="your-api-key-value"
                                     aria-label="Security header value"
+                                    type="password"
                                 />
                             )}
                         />

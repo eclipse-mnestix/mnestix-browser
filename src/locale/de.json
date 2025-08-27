@@ -387,7 +387,13 @@
           "connectionTypesRequired": "Mindestens ein Verbindungsinterface-Typ muss ausgewählt werden",
           "save": "Speichern",
           "nameAlreadyExists": "Eine Infrastruktur mit diesem Namen existiert bereits",
-          "defaultInfrastructureReadonly": "Die Default Infrastruktur kann nur im Deployment über die Environment Variablen geändert werden. Bitte kontaktieren Sie Ihren Administrator um Änderungen vorzunehmen."
+          "defaultInfrastructureReadonly": "Die Default Infrastruktur kann nur im Deployment über die Environment Variablen geändert werden. Bitte kontaktieren Sie Ihren Administrator um Änderungen vorzunehmen.",
+          "headerKeyDangerous": "Der Header-Schlüssel wird als gefährlich angesehen.",
+          "headerKeyInvalidFormat": "Der Header-Schlüssel hat kein gültiges Format.",
+          "headerKeyCrLfNotAllowed": "Der Header-Schlüssel darf keine CRLF-Sequenzen enthalten.",
+          "headerValueTooLong": "Der Header-Wert ist zu lang.",
+          "headerValueCrLfNotAllowed": "Der Header-Wert darf keine CRLF-Sequenzen enthalten.",
+          "headerValueIllegalChars": "Der Header-Wert darf keine ungültigen Zeichen enthalten."
         },
         "subtitle": "Definieren Sie, welche Infrastrukturen verwendet werden sollen.",
         "title": "Infrastrukturen",
