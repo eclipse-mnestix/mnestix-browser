@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Link, Typography, useTheme } from '@mui/material';
+import { Box, Divider, Link, Typography, useTheme } from '@mui/material';
 import { OpenInNew } from '@mui/icons-material';
 import DownloadIcon from '@mui/icons-material/Download';
 import { useTranslations } from 'next-intl';
@@ -31,7 +31,14 @@ export function FindOutMoreCard() {
             <Typography align="center" color="text.secondary">
                 {t('findOutMoreText')}
             </Typography>
-            <hr style={{ width: '85%', margin: '16px 0 0 0' }} />
+
+            <Divider
+                orientation="horizontal"
+                flexItem
+                sx={{
+                    marginTop: '16px',
+                }}
+            />
             <Typography align="center">
                 <Link
                     href="https://mnestix.io"
