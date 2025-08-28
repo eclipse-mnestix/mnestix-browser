@@ -12,9 +12,8 @@ import { useTranslations } from 'next-intl';
 import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 
 export type TargetRepositoryFormData = {
-    repository?: string;
-    submodelRepository?: string;
-    repositoryApiKey?: string;
+    repository?: RepositoryWithInfrastructure;
+    submodelRepository?: RepositoryWithInfrastructure;
 };
 
 type TargetRepositoryProps = {
@@ -50,8 +49,9 @@ export function TargetRepositories(props: TargetRepositoryProps) {
     const { handleSubmit, control, formState } = useForm();
 
     const onSubmit = (data: TargetRepositoryFormData) => {
-        data.repository = aasRepositories.find((repo) => repo.id === data.repository)?.url;
-        data.submodelRepository = submodelRepositories.find((repo) => repo.id === data.submodelRepository)?.url;
+        data.repository = aasRepositories.find((repo) => repo.id === data.repository?.id) || undefined;
+        data.submodelRepository =
+            submodelRepositories.find((repo) => repo.id === data.submodelRepository?.id) || undefined;
         props.onSubmitStep(data);
     };
 
@@ -97,16 +97,6 @@ export function TargetRepositories(props: TargetRepositoryProps) {
                                                     );
                                                 })}
                                             </TextField>
-                                        )}
-                                    />
-                                </FormControl>
-                                <FormControl fullWidth sx={{ mt: 2 }}>
-                                    <Controller
-                                        name="repositoryApiKey"
-                                        control={control}
-                                        defaultValue=""
-                                        render={({ field }) => (
-                                            <TextField type="password" label={t('repositoryApiKey')} {...field} />
                                         )}
                                     />
                                 </FormControl>

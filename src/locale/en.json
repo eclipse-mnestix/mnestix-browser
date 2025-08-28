@@ -548,7 +548,7 @@
     },
     "transfer": {
       "aasRepository": "AAS repository",
-      "chooseRepository": "Choose AAS repository",
+      "chooseRepository": "Choose AAS repository to transfer into:",
       "chooseSubmodelRepository": "Choose submodel repository (optional)",
       "errorToast": "Transfer of AAS not successful",
       "partiallyFailedToast": "Failed to transfer element",
@@ -558,9 +558,9 @@
       "submodelRepository": "Submodel repository",
       "submodelRepositoryApiKey": "Submodel repository APIKey",
       "submodelRepositoryLabel": "List of submodel repositories",
-      "subtitle": "To import this AAS to another repository, fill out the following fields.",
+      "subtitle": "Transfer \"{aasId}\" from \"{repoUrl}\" to:",
       "successfulToast": "Transfer of AAS successful",
-      "title": "Import",
+      "title": "Transfer",
       "useAasRepository": "Use AAS repository",
       "warningToast": "AAS was only partially transferred."
     }
