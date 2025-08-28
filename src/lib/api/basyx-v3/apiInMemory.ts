@@ -42,6 +42,14 @@ export class AssetAdministrationShellRepositoryApiInMemory implements IAssetAdmi
         this.shellsInRepository = new Map<string, AssetAdministrationShell>();
         shellsInRepository.forEach((value) => this.shellsInRepository.set(encodeBase64(value.id), value));
     }
+    downloadAAS(
+        _aasId: string | string[],
+        _submodelIds: string[],
+        _includeConceptDescriptions: boolean,
+        _options?: object,
+    ): Promise<ApiResponseWrapper<Blob>> {
+        throw new Error('Method not implemented.');
+    }
 
     getBaseUrl(): string {
         return this.baseUrl;
@@ -161,16 +169,16 @@ export class SubmodelRepositoryApiInMemory implements ISubmodelRepositoryApi {
         });
     }
     postSubmodelElement() // submodelId: string,
-        // idShortPath: string,
-        // submodelElement: unknown,
-        // options?: Omit<RequestInit, 'body' | 'method'>,
-        : Promise<ApiResponseWrapper<Response>> {
+    // idShortPath: string,
+    // submodelElement: unknown,
+    // options?: Omit<RequestInit, 'body' | 'method'>,
+    : Promise<ApiResponseWrapper<Response>> {
         throw new Error('Method not implemented.');
     }
     deleteSubmodelElementByPath() // submodelId: string,
-        // idShortPath: string,
-        // options?: Omit<RequestInit, 'body' | 'method'>,
-        : Promise<ApiResponseWrapper<Response>> {
+    // idShortPath: string,
+    // options?: Omit<RequestInit, 'body' | 'method'>,
+    : Promise<ApiResponseWrapper<Response>> {
         throw new Error('Method not implemented.');
     }
 
@@ -369,7 +377,6 @@ export class ConceptDescriptionRepositoryApiInMemory implements IConceptDescript
             ),
         );
     }
-
 }
 
 /* eslint-enable @typescript-eslint/no-explicit-any */

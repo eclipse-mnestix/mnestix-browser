@@ -76,6 +76,13 @@ export interface IAssetAdministrationShellRepositoryApi {
         aas: AssetAdministrationShell,
         options?: object,
     ): Promise<ApiResponseWrapper<AssetAdministrationShell>>;
+
+    downloadAAS(
+        aasId: string | string[],
+        submodelIds: string[],
+        includeConceptDescriptions: boolean,
+        options?: object,
+    ): Promise<ApiResponseWrapper<Blob>>;
 }
 
 type PropertyValue = string | number | boolean;

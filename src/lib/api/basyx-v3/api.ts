@@ -112,7 +112,7 @@ export class AssetAdministrationShellRepositoryApi implements IAssetAdministrati
             image,
             fileName,
             options,
-        )(mnestixFetch(), this.basePath);
+        )(mnestixFetch(null), this.basePath);
     }
 
     async postAssetAdministrationShell(
