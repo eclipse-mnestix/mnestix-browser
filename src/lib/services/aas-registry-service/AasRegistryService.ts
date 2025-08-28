@@ -191,7 +191,7 @@ export class AasRegistryService {
         const requests = infrastructures.flatMap((infra) =>
             infra.aasRegistryUrls.map((url) => ({
                 url,
-                infrastructureName: infra.name,
+                infrastructure: infra,
             })),
         );
 
