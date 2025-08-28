@@ -18,9 +18,12 @@ import {
 } from '@mui/x-tree-view/TreeItem';
 import { TreeItemIcon } from '@mui/x-tree-view/TreeItemIcon';
 import { TreeItemProvider } from '@mui/x-tree-view/TreeItemProvider';
-import { ExpandableTreeitem } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/TreeItem';
+import {
+    ExpandableTreeitem,
+    getTreeItemStyle,
+} from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/TreeItem';
 
-const CustomTreeItemContent = styled(TreeItemContent)(({ theme }) => ({
+export const CustomTreeItemContent = styled(TreeItemContent)(({ theme }) => ({
     padding: theme.spacing(0.5, 1),
     borderBottom: `1px solid ${theme.palette.divider}`, // Add a bottom border
 }));
@@ -119,6 +122,8 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
     );
 });
 
+const StyledTreeItem = styled(CustomTreeItem)(({ theme }) => getTreeItemStyle(theme));
+
 export const ApplicationTreeItem = (props: ApplicationTreeItemProps) => {
-    return <CustomTreeItem {...props} />;
+    return <StyledTreeItem {...props} />;
 };
