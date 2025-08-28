@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TreeItem, useTreeItemState } from '@mui/x-tree-view';
+import { TreeItem, UseTreeItemStatus } from '@mui/x-tree-view';
 import clsx from 'clsx';
 import { Box, Button, IconButton, styled } from '@mui/material';
 import { Entity, KeyTypes, RelationshipElement } from 'lib/api/aas/models';

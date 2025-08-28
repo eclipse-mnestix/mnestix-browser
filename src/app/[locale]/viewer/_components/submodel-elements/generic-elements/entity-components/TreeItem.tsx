@@ -1,27 +1,24 @@
 import * as React from 'react';
 import { Box, Theme, Typography, useTheme } from '@mui/material';
-import { TreeItemContentProps, TreeItemProps } from '@mui/x-tree-view';
-import { SubmodelElementChoice } from 'lib/api/aas/models';
+import { treeItemClasses, UseTreeItemParameters } from '@mui/x-tree-view';
 import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
 
-export interface CustomTreeItemProps extends TreeItemProps {
-    data?: SubmodelElementChoice;
-}
-
-export interface CustomTreeItemContentProps extends TreeItemContentProps {
-    data?: SubmodelElementChoice;
-}
-
-export interface ExpandableTreeItemContentProps extends TreeItemContentProps {
-    icon: React.ReactNode;
+interface ExpandableTreeItemContentProps
+    extends Omit<UseTreeItemParameters, 'rootRef'>,
+        React.HTMLAttributes<HTMLLIElement> {
+    bgColor?: string;
+    bgColorForDarkMode?: string;
+    color?: string;
+    colorForDarkMode?: string;
+    labelInfo?: string;
     dataIcon: React.JSX.Element;
 }
 
 export const getTreeItemStyle = (theme: Theme) => ({
-    '.MuiTreeItem-content': {
+    [`& .${treeItemClasses.content}`]: {
         userSelect: 'none',
         margin: 0,
-        borderBottom: '1px solid',
+        borderBottom: '1px solid !important',
         borderColor: theme.palette.divider,
         '&.Mui-focused': {
             backgroundColor: 'transparent',
@@ -37,14 +34,10 @@ export const getTreeItemStyle = (theme: Theme) => ({
 
 export const ExpandableTreeitem = React.forwardRef(function CustomContent(props: ExpandableTreeItemContentProps, _ref) {
     const theme = useTheme();
-    const { classes, label, icon: iconProp, expansionIcon, displayIcon, dataIcon } = props;
+    const { label, dataIcon } = props;
 
-    const toggleIcon = iconProp || expansionIcon || displayIcon;
     return (
         <>
-            <Box data-testid="expand-entity-icon" className={classes.iconContainer} sx={{ py: 1 }}>
-                {toggleIcon}
-            </Box>
             <Box
                 sx={{
                     [theme.breakpoints.down(480)]: {
@@ -67,7 +60,7 @@ export const ExpandableTreeitem = React.forwardRef(function CustomContent(props:
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
                     }}
-                    className={classes.label}
+                    className={treeItemClasses.label}
                 >
                     {label}
                 </Typography>
