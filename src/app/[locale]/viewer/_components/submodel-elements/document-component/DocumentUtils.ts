@@ -62,6 +62,6 @@ export async function getFileUrl(fileUrl: string, accessToken?: string, reposito
         return;
     } catch (e) {
         console.warn(`Failed to open file with auth: ${e}`);
-        return repository.url;
+        return fileUrl;
     }
 }
