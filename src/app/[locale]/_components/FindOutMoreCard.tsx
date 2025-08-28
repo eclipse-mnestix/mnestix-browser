@@ -14,9 +14,9 @@ export function FindOutMoreCard() {
             <Box
                 sx={{
                     backgroundColor: theme.palette.secondary.main,
-                    borderRadius: 1,
-                    width: '50px',
-                    height: '50px',
+                    borderRadius: '8px',
+                    width: '64px',
+                    height: '64px',
                     mb: 2,
                     display: 'flex',
                     alignItems: 'center',
@@ -25,17 +25,18 @@ export function FindOutMoreCard() {
             >
                 <DownloadIcon sx={{ color: 'white' }} />
             </Box>
-            <Typography align="center" variant="h5">
+            <Typography align="center" variant="h4">
                 {t('findOutMoreHeader')}
             </Typography>
-            <Typography align="center">{t('findOutMoreText')}</Typography>
+            <Typography align="center" color="text.secondary" >{t('findOutMoreText')}</Typography>
+            <hr style={{ width: '85%', margin: '16px 0 0 0' }} />
             <Typography align="center">
                 <Link
                     href="https://mnestix.io"
                     target="_blank"
                     sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 2 }}
                 >
-                    <span>mnestix.io</span>
+                    <span>mnestix.io </span>
                     <OpenInNew fontSize="small" />
                 </Link>
             </Typography>

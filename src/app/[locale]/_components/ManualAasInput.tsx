@@ -76,10 +76,12 @@ export function ManualAasInput(props: {
 
     return (
         <Box m={2} display="flex" flexDirection="column" gap={1}>
-            <Typography variant="h5">{t('pages.dashboard.enterManuallyLabel')}</Typography>
+            <Typography variant="h5" sx={{
+                marginBottom: "8px"
+            }}>{t('pages.dashboard.enterManuallyLabel')}</Typography>
             <Box display="flex">
                 <TextField
-                    sx={{ width: '100%' }}
+                    sx={{ width: '75%' }}
                     id="manual-input"
                     label={t('pages.dashboard.aasOrAssetId')}
                     error={isError}
@@ -109,7 +111,7 @@ export function ManualAasInput(props: {
                     variant={'filled'}
                     label={t('pages.dashboard.infrastructure')}
                     value={selectedInfrastructure || 'all'}
-                    sx={{ ml: 1, width: 200 }}
+                    sx={{ ml: 1, width: "25%", minWidth: 125, maxWidth: 250 }}
                 >
                     <MenuItem key="all" value="all" onClick={() => setSelectedInfrastructure('all')}>
                         {t('pages.dashboard.searchAllInfrastructures')}
@@ -125,7 +127,7 @@ export function ManualAasInput(props: {
                     ))}
                 </TextField>
                 <SquaredIconButton
-                    sx={{ ml: 1 }}
+                    sx={{ ml: 1 , mb: "16px"}}
                     endIcon={<ArrowForward />}
                     disabled={!inputValue}
                     loading={isLoading}
