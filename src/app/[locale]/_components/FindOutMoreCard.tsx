@@ -28,7 +28,9 @@ export function FindOutMoreCard() {
             <Typography align="center" variant="h4">
                 {t('findOutMoreHeader')}
             </Typography>
-            <Typography align="center" color="text.secondary" >{t('findOutMoreText')}</Typography>
+            <Typography align="center" color="text.secondary">
+                {t('findOutMoreText')}
+            </Typography>
             <hr style={{ width: '85%', margin: '16px 0 0 0' }} />
             <Typography align="center">
                 <Link
