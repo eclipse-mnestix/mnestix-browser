@@ -91,4 +91,6 @@ export class SubmodelRepositoryService {
             return wrapErrorCode(ApiResultStatus.NOT_FOUND, errorMsg);
         }
     }
+
+    async getAttachmentFromSubmodelElement() {}
 }

@@ -11,6 +11,7 @@ import ImagePreviewDialog from './ImagePreviewDialog';
 import { useSession } from 'next-auth/react';
 import { getFileUrl } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentUtils';
 import { useSubmodelRepositoryUrl } from 'app/[locale]/viewer/_components/submodel/SubmodelRepositoryUrlProvider';
+import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 
 const StyledFileImg = styled('img')(() => ({
     objectFit: 'contain',
@@ -33,6 +34,7 @@ export function FileComponent({ file, submodelId, submodelElementPath, withPrevi
     const [, setLoadError] = useState<boolean>(false);
     const submodelRepositoryUrl = useSubmodelRepositoryUrl();
     const { data: session } = useSession();
+    const currentAASContext = useCurrentAasContext();
 
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewFile, setPreviewFile] = useState<ModelFile | null>(null);
@@ -58,11 +60,11 @@ export function FileComponent({ file, submodelId, submodelElementPath, withPrevi
                 if (isValidUrl(file.value)) {
                     setImage(file.value);
                 } else if (submodelId && submodelElementPath && submodelRepositoryUrl) {
-                    const imageResponse = await getAttachmentFromSubmodelElement(
-                        submodelId,
-                        submodelElementPath,
-                        submodelRepositoryUrl,
-                    );
+                    const imageResponse = await getAttachmentFromSubmodelElement(submodelId, submodelElementPath, {
+                        id: 'unknown',
+                        infrastructureName: currentAASContext.infrastructureName || '',
+                        url: submodelRepositoryUrl,
+                    });
                     if (!imageResponse.isSuccess) {
                         console.error('Image not found' + imageResponse.message);
                         setLoadError(true);
@@ -95,7 +97,11 @@ export function FileComponent({ file, submodelId, submodelElementPath, withPrevi
             if (submodelRepositoryUrl && submodelId && submodelElementPath) {
                 const attachmentUrl = `${submodelRepositoryUrl}/submodels/${encodeURIComponent(btoa(submodelId))}/submodel-elements/${submodelElementPath}/attachment`;
                 try {
-                    const resolvedUrl = await getFileUrl(attachmentUrl, session?.accessToken, submodelRepositoryUrl);
+                    const resolvedUrl = await getFileUrl(attachmentUrl, session?.accessToken, {
+                        id: 'unknown',
+                        infrastructureName: currentAASContext.infrastructureName || '',
+                        url: submodelRepositoryUrl,
+                    });
                     setFileUrl(resolvedUrl || attachmentUrl);
                 } catch (error) {
                     console.error('Error resolving file URL:', error);

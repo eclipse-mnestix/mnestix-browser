@@ -152,9 +152,11 @@ export const CompareAasContextProvider = (props: PropsWithChildren) => {
 
         if (submodelDescriptors && submodelDescriptors.length > 0) {
             for (const submodelDescriptor of submodelDescriptors) {
-                const submodelResponse = await getSubmodelFromSubmodelDescriptor(
-                    submodelDescriptor.endpoints[0].protocolInformation.href,
-                );
+                const submodelResponse = await getSubmodelFromSubmodelDescriptor({
+                    url: submodelDescriptor.endpoints[0].protocolInformation.href,
+                    id: 'unknown',
+                    infrastructureName: infrastructureName || '',
+                });
                 if (submodelResponse.isSuccess) {
                     const dataRecord = generateSubmodelCompareData(submodelResponse.result);
                     newCompareData.push(dataRecord);

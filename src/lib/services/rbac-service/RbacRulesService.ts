@@ -8,6 +8,8 @@ import { envs } from 'lib/env/MnestixEnv';
 import { RuleParseError, ruleToIdShort, ruleToSubmodelElement, submodelToRule } from './RuleHelpers';
 import logger, { logResponseDebug, logResponseInfo, logResponseWarn } from 'lib/util/Logger';
 import { BaSyxRbacRule, RbacRulesFetchResult } from 'lib/services/rbac-service/types/RbacServiceData';
+import { getDefaultInfrastructure } from '../database/infrastructureDatabaseActions';
+import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
 
 const SEC_SUB_ID = 'SecuritySubmodel';
 /**
@@ -19,14 +21,19 @@ export class RbacRulesService {
         private readonly log: typeof logger = logger,
     ) {}
 
-    static createService(log?: typeof logger): RbacRulesService {
+    static async createService(log?: typeof logger): Promise<RbacRulesService> {
         const baseUrl = envs.BASYX_RBAC_SEC_SM_API_URL;
 
         if (!baseUrl) {
             throw 'Security Submodel not configured! Check beforehand!';
         }
         const rbacRulesServiceLogger = log?.child({ Service: 'RbacRulesService' });
-        return new RbacRulesService(SubmodelRepositoryApi.create(baseUrl, mnestixFetch()), rbacRulesServiceLogger);
+        const defaultInfrastructure = await getDefaultInfrastructure();
+        const securityHeaders = await createSecurityHeaders(defaultInfrastructure);
+        return new RbacRulesService(
+            SubmodelRepositoryApi.create(baseUrl, mnestixFetch(securityHeaders)),
+            rbacRulesServiceLogger,
+        );
     }
 
     static createNull(subRepoApi: ISubmodelRepositoryApi): RbacRulesService {

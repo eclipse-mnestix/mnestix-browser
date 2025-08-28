@@ -18,6 +18,7 @@ import { CustomSubmodelElementComponentProps } from 'app/[locale]/viewer/_compon
 import Link from 'next/link';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { getFileUrl } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentUtils';
+import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 
 export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
     const t = useTranslations('components.documentComponent');
@@ -25,12 +26,17 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
     const fileViewObject = useFileViewObject(props.submodelElement, props.submodelId);
     const [documentUrl, setDocumentUrl] = useState<string>('');
     const { data: session } = useSession();
+    const currentAASContext = useCurrentAasContext();
 
     useAsyncEffect(async () => {
         if (!fileViewObject?.digitalFileUrl) {
             return;
         }
-        const url = await getFileUrl(fileViewObject?.digitalFileUrl, session?.accessToken, props.repositoryUrl);
+        const url = await getFileUrl(fileViewObject?.digitalFileUrl, session?.accessToken, {
+            url: props.repositoryUrl ?? '',
+            id: 'unknown',
+            infrastructureName: currentAASContext.infrastructureName || '',
+        });
         if (url) {
             setDocumentUrl(url);
         }

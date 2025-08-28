@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { getFileUrl } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentUtils';
+import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 
 const StyledImageWrapper = styled(Box)(({ theme }) => ({
     display: 'flex',
@@ -32,9 +33,14 @@ export const PreviewImage = (props: { previewImgUrl: string; mimeType: string; r
     const [imageError, setImageError] = useState<boolean>(false);
     const [imageUrl, setImageUrl] = useState<string>();
     const { data: session } = useSession();
+    const currentAASContext = useCurrentAasContext();
 
     useAsyncEffect(async () => {
-        const url = await getFileUrl(props.previewImgUrl, session?.accessToken, props.repositoryUrl);
+        const url = await getFileUrl(props.previewImgUrl, session?.accessToken, {
+            url: props.repositoryUrl ?? '',
+            id: 'unknown',
+            infrastructureName: currentAASContext.infrastructureName || '',
+        });
         setImageUrl(url);
     }, [props.previewImgUrl, session?.accessToken, props.repositoryUrl]);
 

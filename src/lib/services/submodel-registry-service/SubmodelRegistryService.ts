@@ -8,17 +8,21 @@ import { Submodel } from 'lib/api/aas/models';
 import { fetchFromMultipleEndpoints } from 'lib/services/shared/parallelFetch';
 import { ISubmodelRegistryServiceApi } from 'lib/api/submodel-registry-service/submodelRegistryServiceApiInterface';
 import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
+import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
 
 export class SubmodelRegistryService {
     private constructor(
-        protected readonly getSubmodelRegistryClient: (basePath: string) => ISubmodelRegistryServiceApi,
+        protected readonly getSubmodelRegistryClient: (
+            basePath: string,
+            securityHeader: Record<string, string> | null,
+        ) => ISubmodelRegistryServiceApi,
         private readonly log: typeof logger = logger,
     ) {}
 
     static create(log?: typeof logger): SubmodelRegistryService {
         const submodelLogger = log?.child({ Service: 'SubmodelSearcher' });
         return new SubmodelRegistryService(
-            (baseUrl) => SubmodelRegistryServiceApi.create(baseUrl, mnestixFetch()),
+            (baseUrl, securityHeader) => SubmodelRegistryServiceApi.create(baseUrl, mnestixFetch(securityHeader)),
             submodelLogger,
         );
     }
@@ -35,7 +39,7 @@ export class SubmodelRegistryService {
     ): Promise<ApiResponseWrapper<SubmodelDescriptor>> {
         const registrySearchResult = await this.getFromMultipleSubmodelRegistries(
             [infrastructure],
-            (basePath) => this.searchInSingleSubmodelRegistry(submodelId, basePath),
+            (basePath) => this.searchInSingleSubmodelRegistry(submodelId, basePath, infrastructure),
             `Could not find Submodel with id '${submodelId}' in any of the Submodel registries`,
         );
 
@@ -60,8 +64,12 @@ export class SubmodelRegistryService {
     async searchInSingleSubmodelRegistry(
         submodelId: string,
         url: string,
+        infrastructure?: InfrastructureConnection,
     ): Promise<ApiResponseWrapper<SubmodelDescriptor>> {
-        const response = await this.getSubmodelRegistryClient(url).getSubmodelDescriptorById(submodelId);
+        const securityHeader = await createSecurityHeaders(infrastructure);
+        const response = await this.getSubmodelRegistryClient(url, securityHeader).getSubmodelDescriptorById(
+            submodelId,
+        );
         if (response.isSuccess) {
             logResponseDebug(
                 this.log,
@@ -92,7 +100,7 @@ export class SubmodelRegistryService {
     }
 
     async getSubmodelFromEndpoint(endpoint: string): Promise<ApiResponseWrapper<Submodel>> {
-        const response = await this.getSubmodelRegistryClient('').getSubmodelFromEndpoint(endpoint);
+        const response = await this.getSubmodelRegistryClient('', null).getSubmodelFromEndpoint(endpoint);
         if (response.isSuccess) {
             logResponseDebug(
                 this.log,
@@ -121,7 +129,7 @@ export class SubmodelRegistryService {
         const requests = infrastructures.flatMap((infra) =>
             infra.submodelRegistryUrls.map((url) => ({
                 url,
-                infrastructureName: infra.name,
+                infrastructure: infra,
             })),
         );
 
