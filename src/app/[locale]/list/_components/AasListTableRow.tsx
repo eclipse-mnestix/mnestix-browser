@@ -49,12 +49,12 @@ export const AasListTableRow = (props: AasTableRowProps) => {
     const env = useEnv();
     const locale = useLocale();
     const { data: nameplateValues, isLoading: isNameplateValueLoading } = useSWR(
-        [repository.url, aasListEntry.aasId],
-        async ([url, aasId]) => await getNameplateValuesForAAS(url, aasId),
+        [repository, aasListEntry.aasId],
+        async ([repo, aasId]) => await getNameplateValuesForAAS(repo, aasId),
     );
     const { data: thumbnailResponse } = useSWR(
-        [aasListEntry.aasId, repository.url],
-        async ([aasId, repositoryUrl]) => await getThumbnailFromShell(aasId, repositoryUrl),
+        [aasListEntry.aasId, repository],
+        async ([aasId, repo]) => await getThumbnailFromShell(aasId, repo),
         {
             revalidateIfStale: false,
             revalidateOnFocus: false,

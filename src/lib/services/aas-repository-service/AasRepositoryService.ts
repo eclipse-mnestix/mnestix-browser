@@ -11,11 +11,14 @@ import { IAssetAdministrationShellRepositoryApi } from 'lib/api/basyx-v3/apiInte
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import logger, { logResponseDebug } from 'lib/util/Logger';
 import {
-    getInfrastructureByUrl,
+    getInfrastructureByName,
     getInfrastructuresIncludingDefault,
 } from 'lib/services/database/infrastructureDatabaseActions';
 import { fetchFromMultipleEndpoints } from 'lib/services/shared/parallelFetch';
-import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
+import {
+    InfrastructureConnection,
+    RepositoryWithInfrastructure,
+} from 'lib/services/database/InfrastructureMappedTypes';
 import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
 
 export type RepoSearchResult<T> = {
@@ -100,18 +103,21 @@ export class AasRepositoryService {
 
     async getAasFromRepository(
         aasId: string,
-        repositoryUrl: string,
+        repository: RepositoryWithInfrastructure,
     ): Promise<ApiResponseWrapper<AssetAdministrationShell>> {
-        const infrastructure = await getInfrastructureByUrl(repositoryUrl);
+        const infrastructure = await getInfrastructureByName(repository.infrastructureName);
         const securityHeader = await createSecurityHeaders(infrastructure || undefined);
-        const client = this.getAasRepositoryClient(repositoryUrl, securityHeader);
+        const client = this.getAasRepositoryClient(repository.url, securityHeader);
         return client.getAssetAdministrationShellById(aasId);
     }
 
-    async getThumbnailFromShell(aasId: string, baseRepositoryUrl: string): Promise<ApiResponseWrapper<ApiFileDto>> {
-        const infrastructure = await getInfrastructureByUrl(baseRepositoryUrl);
+    async getThumbnailFromShell(
+        aasId: string,
+        repository: RepositoryWithInfrastructure,
+    ): Promise<ApiResponseWrapper<ApiFileDto>> {
+        const infrastructure = await getInfrastructureByName(repository.infrastructureName);
         const securityHeader = await createSecurityHeaders(infrastructure || undefined);
-        const client = this.getAasRepositoryClient(baseRepositoryUrl, securityHeader);
+        const client = this.getAasRepositoryClient(repository.url, securityHeader);
         const searchResponse = await client.getThumbnailFromShell(aasId);
         if (!searchResponse.isSuccess) return wrapErrorCode(searchResponse.errorCode, searchResponse.message);
         return wrapFile(searchResponse.result);
@@ -120,12 +126,12 @@ export class AasRepositoryService {
     async downloadAasFromRepo(
         aasId: string | string[],
         submodelIds: string[],
-        baseRepositoryUrl: string,
+        repository: RepositoryWithInfrastructure,
         includeConceptDescriptions = true,
     ): Promise<ApiResponseWrapper<Blob>> {
-        const infrastructure = await getInfrastructureByUrl(baseRepositoryUrl);
+        const infrastructure = await getInfrastructureByName(repository.infrastructureName);
         const securityHeader = await createSecurityHeaders(infrastructure || undefined);
-        const client = this.getAasRepositoryClient(baseRepositoryUrl, securityHeader);
+        const client = this.getAasRepositoryClient(repository.url, securityHeader);
         const response = await client.downloadAAS(aasId, submodelIds, includeConceptDescriptions);
         if (!response.isSuccess) return wrapErrorCode(response.errorCode, response.message);
         return response;

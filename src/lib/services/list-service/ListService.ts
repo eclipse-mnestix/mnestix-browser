@@ -6,9 +6,10 @@ import ServiceReachable from 'test-utils/TestUtils';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { MultiLanguageValueOnly } from 'lib/api/basyx-v3/types';
-import { getInfrastructureByUrl } from '../database/infrastructureDatabaseActions';
+import { getInfrastructureByName } from '../database/infrastructureDatabaseActions';
 import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
 import logger, { logInfo } from 'lib/util/Logger';
+import { RepositoryWithInfrastructure } from '../database/InfrastructureMappedTypes';
 
 export type ListEntityDto = {
     aasId: string;
@@ -37,15 +38,23 @@ export class ListService {
         private readonly log: typeof logger = logger,
     ) {}
 
-    static async create(targetAasRepositoryBaseUrl: string, log?: typeof logger): Promise<ListService> {
+    /**
+     * Factory method to create a ListService instance with real API clients.
+     * Retrieves infrastructure configuration and security headers for the specified repository.
+     * If the infrastructure is not found, uses the provided repository URL directly.
+     * @param targetAasRepository - RepositoryWithInfrastructure object containing repository details
+     * @param log - Optional logger instance for logging
+     * @returns Promise that resolves to a configured ListService instance
+     */
+    static async create(targetAasRepository: RepositoryWithInfrastructure, log?: typeof logger): Promise<ListService> {
         const listServiceLogger = log?.child({ Service: 'ListService' });
-        const infrastructure = await getInfrastructureByUrl(targetAasRepositoryBaseUrl); //TODO: Handle default repository
+        const infrastructure = await getInfrastructureByName(targetAasRepository.infrastructureName);
         const securityHeader = await createSecurityHeaders(infrastructure || undefined);
+
         return new ListService(
-            () =>
-                AssetAdministrationShellRepositoryApi.create(targetAasRepositoryBaseUrl, mnestixFetch(securityHeader)),
+            () => AssetAdministrationShellRepositoryApi.create(targetAasRepository.url, mnestixFetch(securityHeader)),
             // For now, we only use the same repository.
-            () => SubmodelRepositoryApi.create(targetAasRepositoryBaseUrl, mnestixFetch(securityHeader)),
+            () => SubmodelRepositoryApi.create(targetAasRepository.url, mnestixFetch(securityHeader)),
             listServiceLogger,
         );
     }

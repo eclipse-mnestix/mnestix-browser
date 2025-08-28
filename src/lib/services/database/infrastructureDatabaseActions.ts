@@ -12,6 +12,8 @@ import {
     RepositoryWithInfrastructure,
 } from 'lib/services/database/InfrastructureMappedTypes';
 
+const DEFAULT_INFRASTRUCTURE = 'Default Infrastructure';
+
 export async function getInfrastructuresAction() {
     const prismaConnector = PrismaConnector.create();
     return prismaConnector.getInfrastructures();
@@ -20,15 +22,6 @@ export async function getInfrastructuresAction() {
 export async function getConnectionDataByTypeAction(type: ConnectionType): Promise<RepositoryWithInfrastructure[]> {
     const prismaConnector = PrismaConnector.create();
     return prismaConnector.getConnectionDataByTypeAction(type);
-}
-
-export async function getInfrastructureByUrl(url: string) {
-    const prismaConnector = PrismaConnector.create();
-    const infrastructure = await prismaConnector.getInfrastructureByUrl(url);
-
-    if (!infrastructure) return null;
-
-    return infrastructureMapper(infrastructure);
 }
 
 export async function fetchAllInfrastructureConnectionsFromDb(): Promise<InfrastructureConnection[]> {
@@ -42,7 +35,7 @@ export async function fetchAllInfrastructureConnectionsFromDb(): Promise<Infrast
 
 export async function getDefaultInfrastructure(): Promise<InfrastructureConnection> {
     return {
-        name: 'Default Infrastructure',
+        name: DEFAULT_INFRASTRUCTURE,
         discoveryUrls: envs.DISCOVERY_API_URL ? [envs.DISCOVERY_API_URL] : [],
         aasRegistryUrls: envs.REGISTRY_API_URL ? [envs.REGISTRY_API_URL] : [],
         aasRepositoryUrls: envs.AAS_REPO_API_URL ? [envs.AAS_REPO_API_URL] : [],
