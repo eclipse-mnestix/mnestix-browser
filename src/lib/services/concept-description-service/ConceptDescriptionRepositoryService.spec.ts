@@ -42,23 +42,6 @@ describe('ConceptDescriptionRepositoryService', () => {
         });
     });
 
-    it('fetches concept description by ID all infrastructures', async () => {
-        const service = ConceptDescriptionRepositoryService.createNull([
-            {
-                searchResult: {
-                    id: 'cd-1',
-                    modelType: 'ConceptDescription',
-                },
-                location: 'https://conceptDescriptionRepo1.com',
-                infrastructureName: 'test1',
-            },
-        ]);
-
-        const result = await service.getConceptDescriptionByIdFromRepositories('cd-1');
-        expect(result.isSuccess).toBe(true);
-        expect(result.result?.id).toBe('cd-1');
-    });
-
     it('fetches concept description by ID from the specified infrastructure', async () => {
         const service = ConceptDescriptionRepositoryService.createNull([
             {
@@ -71,12 +54,44 @@ describe('ConceptDescriptionRepositoryService', () => {
             },
         ]);
 
-        const result = await service.getConceptDescriptionByIdFromRepositories('cd-1', 'test1');
+        const result = await service.getConceptDescriptionByIdFromInfrastructure('cd-1', 'test1');
         expect(result.isSuccess).toBe(true);
         expect(result.result?.id).toBe('cd-1');
     });
 
-    it('does not fetch concept description by ID from the specified infrastructure if not available', async () => {
+    it('fetches concept description by ID from the specified infrastructure with multiple results', async () => {
+        const service = ConceptDescriptionRepositoryService.createNull([
+            {
+                searchResult: {
+                    id: 'cd-1',
+                    modelType: 'ConceptDescription',
+                },
+                location: 'https://conceptDescriptionRepo1.com',
+                infrastructureName: 'test1',
+            },
+            {
+                searchResult: {
+                    id: 'cd-1',
+                    modelType: 'ConceptDescription',
+                },
+                location: 'https://conceptDescriptionRepo2.com',
+                infrastructureName: 'test1',
+            },
+            {
+                searchResult: {
+                    id: 'cd-1',
+                    modelType: 'ConceptDescription',
+                },
+                location: 'https://conceptDescriptionRepo2.com',
+                infrastructureName: 'test1',
+            },
+        ]);
+
+        const result = await service.getConceptDescriptionByIdFromInfrastructure('cd-1', 'test1');
+        expect(result.isSuccess).toBe(true);
+        expect(result.result?.id).toBe('cd-1');
+    });
+    it('does not fetch concept description by ID from the specified infrastructure if id not available', async () => {
         const service = ConceptDescriptionRepositoryService.createNull([
             {
                 searchResult: {
@@ -88,7 +103,23 @@ describe('ConceptDescriptionRepositoryService', () => {
             },
         ]);
 
-        const result = await service.getConceptDescriptionByIdFromRepositories('cd-1', 'default');
+        const result = await service.getConceptDescriptionByIdFromInfrastructure('cd-2', 'test1');
+        expect(result.isSuccess).toBe(false);
+    });
+
+    it('does not fetch concept description by ID from the specified infrastructure if infrastructure not available', async () => {
+        const service = ConceptDescriptionRepositoryService.createNull([
+            {
+                searchResult: {
+                    id: 'cd-1',
+                    modelType: 'ConceptDescription',
+                },
+                location: 'https://conceptDescriptionRepo1.com',
+                infrastructureName: 'test1',
+            },
+        ]);
+
+        const result = await service.getConceptDescriptionByIdFromInfrastructure('cd-1', 'default');
         expect(result.isSuccess).toBe(false);
     });
 });
