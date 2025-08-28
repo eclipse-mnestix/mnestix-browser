@@ -15,7 +15,6 @@ import {
 } from 'lib/api/basyx-v3/apiInMemory';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { AttachmentDetails } from 'lib/types/TransferServiceData';
-import { mnestixFetch } from 'lib/api/infrastructure';
 import { ServiceReachable } from 'test-utils/TestUtils';
 import { MultiLanguageValueOnly, PaginationData } from 'lib/api/basyx-v3/types';
 
@@ -112,7 +111,7 @@ export class AssetAdministrationShellRepositoryApi implements IAssetAdministrati
             image,
             fileName,
             options,
-        )(mnestixFetch(null), this.basePath);
+        )(this.http, this.basePath);
     }
 
     async postAssetAdministrationShell(
