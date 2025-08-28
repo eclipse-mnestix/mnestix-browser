@@ -59,6 +59,23 @@ describe('ConceptDescriptionRepositoryService', () => {
         expect(result.result?.id).toBe('cd-1');
     });
 
+    it('fetches concept description by ID from all infrastructures', async () => {
+        const service = ConceptDescriptionRepositoryService.createNull([
+            {
+                searchResult: {
+                    id: 'cd-1',
+                    modelType: 'ConceptDescription',
+                },
+                location: 'https://conceptDescriptionRepo1.com',
+                infrastructureName: 'test1',
+            },
+        ]);
+
+        const result = await service.getConceptDescriptionByIdFromAllInfrastructure('cd-1');
+        expect(result.isSuccess).toBe(true);
+        expect(result.result?.id).toBe('cd-1');
+    });
+
     it('fetches concept description by ID from the specified infrastructure with multiple results', async () => {
         const service = ConceptDescriptionRepositoryService.createNull([
             {

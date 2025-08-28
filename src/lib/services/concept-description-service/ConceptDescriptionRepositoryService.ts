@@ -8,7 +8,7 @@ import {
     wrapErrorCode,
     wrapSuccess,
 } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { getInfrastructureByName } from '../database/infrastructureDatabaseActions';
+import { getInfrastructureByName, getInfrastructuresIncludingDefault } from '../database/infrastructureDatabaseActions';
 import { ConceptDescription } from 'lib/api/aas/models';
 import { IConceptDescriptionApi } from 'lib/api/concept-description-api/conceptDescriptionApiInterface';
 import { RepoSearchResult } from 'lib/services/aas-repository-service/AasRepositoryService';
@@ -87,7 +87,7 @@ export class ConceptDescriptionRepositoryService {
                 return result.value.result;
             },
         );
-        if (fulfilledResponses.length < 1 && allFoundConceptDescriptions.length < 1) {
+        if (fulfilledResponses.length < 1 || allFoundConceptDescriptions.length < 1) {
             return wrapErrorCode(
                 ApiResultStatus.NOT_FOUND,
                 `Failed to fetch Concept Description ${conceptDescriptionId}.`,
@@ -95,6 +95,17 @@ export class ConceptDescriptionRepositoryService {
         }
 
         return wrapSuccess(allFoundConceptDescriptions[0]);
+    }
+
+    async getConceptDescriptionByIdFromAllInfrastructure(conceptDescriptionId: string) {
+        const infrastructures = await getInfrastructuresIncludingDefault();
+        const conceptDescriptionRepoUrls = infrastructures.flatMap((infra) => {
+            return infra.conceptDescriptionRepositoryUrls;
+        });
+        return this.getConceptDescriptionByIdFromMultipleRepositoryUrls(
+            conceptDescriptionId,
+            conceptDescriptionRepoUrls,
+        );
     }
 
     async getConceptDescriptionByIdFromInfrastructure(

@@ -19,7 +19,7 @@ export async function getConceptDescriptionById(
     if (infrastructureName == undefined) {
         return wrapErrorCode(
             ApiResultStatus.BAD_REQUEST,
-            `No infrastructure name provided to catch ${conceptDescriptionId} from.`,
+            `No infrastructure name provided to fetch ${conceptDescriptionId} from.`,
         );
     }
     const service = ConceptDescriptionRepositoryService.create();
