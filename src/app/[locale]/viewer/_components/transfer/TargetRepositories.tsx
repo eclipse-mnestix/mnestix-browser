@@ -1,4 +1,14 @@
-import { Box, DialogActions, Divider, FormControl, MenuItem, Skeleton, TextField, Typography } from '@mui/material';
+import {
+    Box,
+    Button,
+    DialogActions,
+    Divider,
+    FormControl,
+    MenuItem,
+    Skeleton,
+    TextField,
+    Typography,
+} from '@mui/material';
 import {
     getAasRepositoriesIncludingDefault,
     getSubmodelRepositoriesIncludingDefault,
@@ -7,7 +17,6 @@ import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { Fragment, useState } from 'react';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { Controller, useForm } from 'react-hook-form';
-import { LoadingButton } from '@mui/lab';
 import { useTranslations } from 'next-intl';
 import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 
@@ -140,7 +149,7 @@ export function TargetRepositories(props: TargetRepositoryProps) {
                         </Box>
                         <Divider sx={{ mt: 6, mb: 4 }} />
                         <DialogActions>
-                            <LoadingButton
+                            <Button
                                 sx={{ mr: 1 }}
                                 variant="outlined"
                                 disabled={!formState.isValid}
@@ -148,7 +157,7 @@ export function TargetRepositories(props: TargetRepositoryProps) {
                                 onClick={handleSubmit(onSubmit)}
                             >
                                 {t('title')}
-                            </LoadingButton>
+                            </Button>
                         </DialogActions>
                     </Box>
                 </form>
