@@ -29,9 +29,11 @@ export const GoToListCard = () => {
                             justifyContent: 'center',
                         }}
                     >
-                        <ArrowOutwardIcon sx={{ color: 'white'}} />
+                        <ArrowOutwardIcon sx={{ color: 'white' }} />
                     </Box>
-                    <Typography textAlign="center" variant="h4">{t('listCardHeader')}</Typography>
+                    <Typography textAlign="center" variant="h4">
+                        {t('listCardHeader')}
+                    </Typography>
                     <Typography color="text.secondary" textAlign="center">
                         {t('listBtnLabel')}
                     </Typography>
