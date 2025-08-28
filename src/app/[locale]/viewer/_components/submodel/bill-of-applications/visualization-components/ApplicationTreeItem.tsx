@@ -2,7 +2,7 @@
 import { ArrowForward, InfoOutlined } from '@mui/icons-material';
 import AppShortcutIcon from '@mui/icons-material/AppShortcut';
 import { Box, Button, IconButton, styled } from '@mui/material';
-import { Entity, KeyTypes } from 'lib/api/aas/models';
+import { Entity, KeyTypes, SubmodelElementChoice } from 'lib/api/aas/models';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { EntityDetailsDialog } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/EntityDetailsDialog';
@@ -18,10 +18,7 @@ import {
 } from '@mui/x-tree-view/TreeItem';
 import { TreeItemIcon } from '@mui/x-tree-view/TreeItemIcon';
 import { TreeItemProvider } from '@mui/x-tree-view/TreeItemProvider';
-import {
-    ExpandableTreeitem,
-    getTreeItemStyle,
-} from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/TreeItem';
+import { ExpandableTreeitem } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/TreeItem';
 
 export const CustomTreeItemContent = styled(TreeItemContent)(({ theme }) => ({
     padding: theme.spacing(0.5, 1),
@@ -33,7 +30,7 @@ interface ApplicationTreeItemProps
         Omit<React.HTMLAttributes<HTMLLIElement>, 'onFocus'> {
     hasChildEntities: boolean;
     applicationUrl?: string;
-    data?: Entity;
+    data?: SubmodelElementChoice;
 }
 
 const CustomTreeItem = React.forwardRef(function CustomTreeItem(
@@ -122,8 +119,6 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
     );
 });
 
-const StyledTreeItem = styled(CustomTreeItem)(({ theme }) => getTreeItemStyle(theme));
-
 export const ApplicationTreeItem = (props: ApplicationTreeItemProps) => {
-    return <StyledTreeItem {...props} />;
+    return <CustomTreeItem {...props} />;
 };

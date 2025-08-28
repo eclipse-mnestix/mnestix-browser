@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { TreeItemRoot } from '@mui/x-tree-view';
-import { Box, Button, IconButton, styled } from '@mui/material';
+import { Box, Button, IconButton } from '@mui/material';
 import { Entity, KeyTypes, RelationshipElement, SubmodelElementChoice } from 'lib/api/aas/models';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
 import { ArrowForward, ArticleOutlined, InfoOutlined, PinDropOutlined } from '@mui/icons-material';
@@ -8,10 +8,7 @@ import { useRouter } from 'next/navigation';
 import { GenericSubmodelElementComponent } from '../GenericSubmodelElementComponent';
 import { EntityDetailsDialog } from './EntityDetailsDialog';
 import { RelationShipDetailsDialog } from './RelationShipDetailsDialog';
-import {
-    ExpandableTreeitem,
-    getTreeItemStyle,
-} from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/TreeItem';
+import { ExpandableTreeitem } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/TreeItem';
 import { useTranslations } from 'next-intl';
 import { searchInAllDiscoveries } from 'lib/services/discovery-service/discoveryActions';
 import { TreeItemCheckbox, TreeItemGroupTransition, TreeItemIconContainer } from '@mui/x-tree-view/TreeItem';
@@ -23,7 +20,6 @@ import { useTreeItem, UseTreeItemParameters } from '@mui/x-tree-view/useTreeItem
 interface EntityTreeItemProps
     extends Omit<UseTreeItemParameters, 'rootRef'>,
         Omit<React.HTMLAttributes<HTMLLIElement>, 'onFocus'> {
-    hasChildEntities: boolean;
     applicationUrl?: string;
     data?: SubmodelElementChoice;
 }
@@ -153,8 +149,6 @@ const CustomContent = React.forwardRef(function CustomContent(
     );
 });
 
-const StyledTreeItem = styled(CustomContent)(({ theme }) => getTreeItemStyle(theme));
-
 export const EntityTreeItem = (props: EntityTreeItemProps) => {
-    return <StyledTreeItem {...props} />;
+    return <CustomContent {...props} />;
 };

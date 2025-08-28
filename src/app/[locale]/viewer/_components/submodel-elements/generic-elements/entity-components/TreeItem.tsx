@@ -1,36 +1,13 @@
 import * as React from 'react';
-import { Box, Theme, Typography, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { treeItemClasses, UseTreeItemParameters } from '@mui/x-tree-view';
 import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
 
 interface ExpandableTreeItemContentProps
     extends Omit<UseTreeItemParameters, 'rootRef'>,
         React.HTMLAttributes<HTMLLIElement> {
-    bgColor?: string;
-    bgColorForDarkMode?: string;
-    color?: string;
-    colorForDarkMode?: string;
-    labelInfo?: string;
     dataIcon: React.JSX.Element;
 }
-
-export const getTreeItemStyle = (theme: Theme) => ({
-    [`& .${treeItemClasses.content}`]: {
-        userSelect: 'none',
-        margin: 0,
-        borderBottom: '1px solid !important',
-        borderColor: theme.palette.divider,
-        '&.Mui-focused': {
-            backgroundColor: 'transparent',
-        },
-        '&.Mui-focused:hover': {
-            backgroundColor: theme.palette.action.hover,
-        },
-        '&.Mui-focused.Mui-selected': {
-            backgroundColor: theme.palette.action.selected,
-        },
-    },
-});
 
 export const ExpandableTreeitem = React.forwardRef(function CustomContent(props: ExpandableTreeItemContentProps, _ref) {
     const theme = useTheme();
