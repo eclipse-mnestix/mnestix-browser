@@ -127,7 +127,13 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
                             <Box
                                 display="flex"
                                 alignItems="left"
-                                style={{ whiteSpace: 'nowrap', paddingRight: '20px', maxWidth: '100%' }}
+                                style={{
+                                    whiteSpace: 'nowrap',
+                                    paddingRight: '20px',
+                                    maxWidth: '100%',
+                                    minWidth: 0,
+                                    flex: 1,
+                                }}
                             >
                                 <Typography
                                     sx={{
@@ -141,7 +147,7 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
                                 </Typography>
                             </Box>
 
-                            <Box display="flex" alignItems="center" gap={2}>
+                            <Box display="flex" alignItems="center" gap={2} sx={{ minWidth: 0, flexShrink: 0 }}>
                                 <TooltipContent item={item} />
                                 <ArrowForward color={item.submodelError ? 'disabled' : 'primary'} />
                             </Box>
