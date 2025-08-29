@@ -7,6 +7,7 @@ import { LocalizedError } from 'lib/util/LocalizedError';
 import { useTranslations } from 'next-intl';
 import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
+import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 
 export function ManualAasInput(props: {
     searchInput: (
@@ -23,7 +24,7 @@ export function ManualAasInput(props: {
     const [errorText, setErrorText] = useState<string>('');
     const [selectedInfrastructure, setSelectedInfrastructure] = useState<string>('all');
     const [infrastructures, setInfrastructures] = useState<string[]>([]);
-
+    const isMobile = useIsMobile();
     const inputRef = useRef<HTMLInputElement>(null);
     const t = useTranslations();
 
@@ -84,9 +85,9 @@ export function ManualAasInput(props: {
             >
                 {t('pages.dashboard.enterManuallyLabel')}
             </Typography>
-            <Box display="flex">
+            <Box display="flex" flexDirection={isMobile ? 'column' : 'row'} gap={1}>
                 <TextField
-                    sx={{ width: '75%' }}
+                    sx={{ width: isMobile ? '100%' : '75%' }}
                     id="manual-input"
                     label={t('pages.dashboard.aasOrAssetId')}
                     error={isError}
@@ -116,7 +117,7 @@ export function ManualAasInput(props: {
                     variant={'filled'}
                     label={t('pages.dashboard.infrastructure')}
                     value={selectedInfrastructure || 'all'}
-                    sx={{ ml: 1, width: '25%', minWidth: 125, maxWidth: 250 }}
+                    sx={{ width: isMobile ? '100%' : '25%', minWidth: 125, maxWidth: isMobile ? '100%' : 250 }}
                 >
                     <MenuItem key="all" value="all" onClick={() => setSelectedInfrastructure('all')}>
                         {t('pages.dashboard.searchAllInfrastructures')}
@@ -132,7 +133,7 @@ export function ManualAasInput(props: {
                     ))}
                 </TextField>
                 <SquaredIconButton
-                    sx={{ ml: 1, mb: '16px' }}
+                    sx={{ mb: '16px', width: isMobile ? '100%' : 'auto' }}
                     endIcon={<ArrowForward />}
                     disabled={!inputValue}
                     loading={isLoading}
