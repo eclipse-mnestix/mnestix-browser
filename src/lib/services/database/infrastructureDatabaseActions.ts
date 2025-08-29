@@ -12,7 +12,11 @@ import {
     RepositoryWithInfrastructure,
 } from 'lib/services/database/InfrastructureMappedTypes';
 
-const DEFAULT_INFRASTRUCTURE = 'Default Infrastructure';
+const DEFAULT_INFRASTRUCTURE_NAME = 'Default Infrastructure';
+
+export async function getDefaultInfrastructureName() {
+    return DEFAULT_INFRASTRUCTURE_NAME;
+}
 
 export async function getInfrastructuresAction() {
     const prismaConnector = PrismaConnector.create();
@@ -35,7 +39,7 @@ export async function fetchAllInfrastructureConnectionsFromDb(): Promise<Infrast
 
 export async function getDefaultInfrastructure(): Promise<InfrastructureConnection> {
     return {
-        name: DEFAULT_INFRASTRUCTURE,
+        name: DEFAULT_INFRASTRUCTURE_NAME,
         discoveryUrls: envs.DISCOVERY_API_URL ? [envs.DISCOVERY_API_URL] : [],
         aasRegistryUrls: envs.REGISTRY_API_URL ? [envs.REGISTRY_API_URL] : [],
         aasRepositoryUrls: envs.AAS_REPO_API_URL ? [envs.AAS_REPO_API_URL] : [],
