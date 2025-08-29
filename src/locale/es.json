@@ -562,7 +562,15 @@
       "successfulToast": "Transferencia de AAS exitosa",
       "title": "Transferencia",
       "useAasRepository": "Usar repositorio de AAS",
-      "warningToast": "El AAS solo se transfirió parcialmente."
+      "warningToast": "El AAS solo se transfirió parcialmente.",
+      "aasIdentifier": {
+        "display": "\"{aasId}\"",
+        "default": "ID de AAS desconocido"
+      },
+      "aasOriginUrl": {
+        "display": "\"{repoUrl}\"",
+        "default": "URL de origen de AAS desconocida"
+      }
     }
   }
 }

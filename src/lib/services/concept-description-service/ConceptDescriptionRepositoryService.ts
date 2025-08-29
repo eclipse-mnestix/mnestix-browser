@@ -17,7 +17,7 @@ export class ConceptDescriptionRepositoryService {
     static create(log?: typeof logger): ConceptDescriptionRepositoryService {
         const svcLogger = log?.child({ Service: 'ConceptDescriptionSearchService' });
         return new ConceptDescriptionRepositoryService(
-            (baseUrl) => ConceptDescriptionApi.create(baseUrl, mnestixFetch(null)),
+            (baseUrl) => ConceptDescriptionApi.create(baseUrl, mnestixFetch(null)), // TODO MNE-316, refactor service to use parallelFetch
             svcLogger ?? logger,
         );
     }

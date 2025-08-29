@@ -61,7 +61,6 @@ export function FileComponent({ file, submodelId, submodelElementPath, withPrevi
                     setImage(file.value);
                 } else if (submodelId && submodelElementPath && submodelRepositoryUrl) {
                     const imageResponse = await getAttachmentFromSubmodelElement(submodelId, submodelElementPath, {
-                        id: 'unknown',
                         infrastructureName: currentAASContext.infrastructureName || '',
                         url: submodelRepositoryUrl,
                     });
@@ -98,7 +97,6 @@ export function FileComponent({ file, submodelId, submodelElementPath, withPrevi
                 const attachmentUrl = `${submodelRepositoryUrl}/submodels/${encodeURIComponent(btoa(submodelId))}/submodel-elements/${submodelElementPath}/attachment`;
                 try {
                     const resolvedUrl = await getFileUrl(attachmentUrl, session?.accessToken, {
-                        id: 'unknown',
                         infrastructureName: currentAASContext.infrastructureName || '',
                         url: submodelRepositoryUrl,
                     });

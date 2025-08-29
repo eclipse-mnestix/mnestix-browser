@@ -27,7 +27,7 @@ export type TransferFormModel = {
     targetAasRepositoryFormModel: TargetRepositoryFormData;
 };
 
-// TODO pull aas and origin URLs into props
+// TODO MNE-318, pull aas and origin URLs into props
 export function TransferDialog(props: DialogProps) {
     const [transferDto, setTransferDto] = useState<TransferFormModel>();
     const { aas, submodels, aasOriginUrl, infrastructureName } = useCurrentAasContext();
@@ -79,7 +79,7 @@ export function TransferDialog(props: DialogProps) {
             aas: aasToTransfer,
             submodels: submodelsToTransfer,
             targetAasRepository: values.repository,
-            sourceAasRepository: { url: aasOriginUrl, infrastructureName: infrastructureName ?? '', id: 'unknown' },
+            sourceAasRepository: { url: aasOriginUrl, infrastructureName: infrastructureName ?? '' },
             targetSubmodelRepository:
                 values.submodelRepository && values.submodelRepository.url !== '0'
                     ? values.submodelRepository
@@ -87,13 +87,11 @@ export function TransferDialog(props: DialogProps) {
             sourceSubmodelRepository: {
                 url: aasOriginUrl,
                 infrastructureName: infrastructureName ?? '',
-                id: 'unknown',
             },
             targetDiscovery: {
                 url: env.DISCOVERY_API_URL ?? '',
                 infrastructureName: infrastructureName ?? '',
-                id: 'unknown',
-            }, //TODO, check target infrastructure for discovery
+            }, //TODO MNE-317, check target infrastructure for discovery
         };
         return dtoToSubmit;
     }
@@ -154,6 +152,10 @@ export function TransferDialog(props: DialogProps) {
         }
     };
 
+    const aasIdDisplay = aas?.id ? t('aasIdentifier.display', { aasId: aas.id }) : t('aasIdentifier.default');
+    const originDisplay = aasOriginUrl
+        ? t('aasOriginUrl.display', { repoUrl: aasOriginUrl })
+        : t('aasOriginUrl.default');
     return (
         <Dialog
             open={props.open}
@@ -167,7 +169,7 @@ export function TransferDialog(props: DialogProps) {
                 <Typography variant="h2" color="primary">
                     {t('title')}
                 </Typography>
-                <Typography>{t('subtitle', { aasId: aas?.id ?? '', repoUrl: aasOriginUrl ?? '' })}</Typography>
+                <Typography>{t('subtitle', { aasId: aasIdDisplay, repoUrl: originDisplay })}</Typography>
             </Box>
             <IconButton
                 aria-label="close"

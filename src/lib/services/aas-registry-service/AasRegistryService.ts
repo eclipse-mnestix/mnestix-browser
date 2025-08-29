@@ -155,7 +155,7 @@ export class AasRegistryService {
         endpoint: URL,
         registryUrl: string,
     ): Promise<ApiResponseWrapper<AssetAdministrationShell>> {
-        const client = this.getRegistryApiClient(registryUrl, null); // TODO: Implement security headers
+        const client = this.getRegistryApiClient(registryUrl, null);
         if (!client) {
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'AAS Registry service client is not defined');
         }

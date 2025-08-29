@@ -54,7 +54,6 @@ export function SingleMarkingsComponent(props: SingleMarkingsComponentProps) {
             const imageResponse = await getAttachmentFromSubmodelElement(submodelId!, fileIdShort, {
                 url: submodelRepositoryUrl,
                 infrastructureName: currentAASContext.infrastructureName || '',
-                id: 'unknown',
             });
             if (!imageResponse.isSuccess) {
                 console.error('Image not found for file ID: ' + fileIdShort);

@@ -154,7 +154,6 @@ export const CompareAasContextProvider = (props: PropsWithChildren) => {
             for (const submodelDescriptor of submodelDescriptors) {
                 const submodelResponse = await getSubmodelFromSubmodelDescriptor({
                     url: submodelDescriptor.endpoints[0].protocolInformation.href,
-                    id: 'unknown',
                     infrastructureName: infrastructureName || '',
                 });
                 if (submodelResponse.isSuccess) {

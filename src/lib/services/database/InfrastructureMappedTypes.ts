@@ -4,7 +4,7 @@
 import { Prisma } from '@prisma/client';
 
 export type RepositoryWithInfrastructure = {
-    id: string;
+    id?: string;
     infrastructureName: string;
     url: string;
 };

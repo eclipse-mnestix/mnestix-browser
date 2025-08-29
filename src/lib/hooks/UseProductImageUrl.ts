@@ -26,7 +26,6 @@ export const useProductImageUrl = (
         }
 
         const response = await getThumbnailFromShell(aas.id, {
-            id: 'unknown',
             infrastructureName: currentAASContext.infrastructureName || '',
             url: repositoryURL,
         });

@@ -60,7 +60,6 @@ export function ActionMenu({ aas, submodels, repositoryURL, className }: ActionM
         const submodelIds = Array.isArray(submodels) ? submodels.map((s) => s.id) : [];
         try {
             const response = await downloadAasFromRepo(aas?.id, submodelIds, {
-                id: 'unknown',
                 infrastructureName: currentAASContext.infrastructureName || '',
                 url: repositoryURL,
             });

@@ -81,7 +81,7 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
 
     async function loadAasContent() {
         if (repoUrl && infrastructureName) {
-            const infrastructure = { id: 'unknown', infrastructureName: infrastructureName, url: repoUrl };
+            const infrastructure = { infrastructureName: infrastructureName, url: repoUrl };
             const response = await getAasFromRepository(encodeBase64(aasIdToLoad), infrastructure);
             if (response.isSuccess) {
                 setAasOriginUrl(repoUrl);
