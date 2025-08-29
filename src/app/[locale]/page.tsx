@@ -74,24 +74,24 @@ export default function () {
 
                 <Grid container spacing={2} alignItems="stretch">
                     <Grid size={{ md: 6, xs: 12 }}>
-                        <Card sx={{ backgroundColor: theme.palette.primary.main }}>
+                        <Card sx={{ backgroundColor: theme.palette.primary.main, borderRadius: '12px' }}>
                             <QrScanner searchInput={searchInput} />
                         </Card>
                     </Grid>
                     {!isMobile && env.AAS_LIST_FEATURE_FLAG && (
                         <Grid size={{ md: 3, xs: 6 }}>
-                            <Card sx={{ height: '100%' }}>
+                            <Card sx={{ height: '100%', borderRadius: '12px' }}>
                                 <GoToListCard />
                             </Card>
                         </Grid>
                     )}
                     <Grid size={{ md: 3, xs: 6 }}>
-                        <Card sx={{ height: '100%' }}>
+                        <Card sx={{ height: '100%', borderRadius: '12px' }}>
                             <FindOutMoreCard />
                         </Card>
                     </Grid>
                     <Grid size={{ md: 12, xs: 12 }}>
-                        <Card sx={{ width: '100%' }}>
+                        <Card sx={{ width: '100%', borderRadius: '12px' }}>
                             <ManualAasInput searchInput={searchInput} />
                         </Card>
                     </Grid>

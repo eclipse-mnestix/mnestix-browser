@@ -20,9 +20,9 @@ export const GoToListCard = () => {
                     <Box
                         sx={{
                             backgroundColor: theme.palette.secondary.main,
-                            borderRadius: 1,
-                            width: '50px',
-                            height: '50px',
+                            borderRadius: '8px',
+                            width: '64px',
+                            height: '64px',
                             mb: 2,
                             display: 'flex',
                             alignItems: 'center',
@@ -31,7 +31,9 @@ export const GoToListCard = () => {
                     >
                         <ArrowOutwardIcon sx={{ color: 'white' }} />
                     </Box>
-                    <Typography variant="h5">{t('listCardHeader')}</Typography>
+                    <Typography textAlign="center" variant="h4">
+                        {t('listCardHeader')}
+                    </Typography>
                     <Typography color="text.secondary" textAlign="center">
                         {t('listBtnLabel')}
                     </Typography>

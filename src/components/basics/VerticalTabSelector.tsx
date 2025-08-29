@@ -93,7 +93,7 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
     const TooltipContent = ({ item }: { item: TabSelectorItem }) => {
         if (item.submodelError) {
             return (
-                <Tooltip title={t(item.submodelError)}>
+                <Tooltip title={`${t(item.submodelError)}: ${item.id}`}>
                     <Box display="flex" sx={{ cursor: 'pointer' }}>
                         {item.startIcon}
                     </Box>
