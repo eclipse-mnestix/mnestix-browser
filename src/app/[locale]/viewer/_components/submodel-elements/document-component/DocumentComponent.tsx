@@ -29,11 +29,11 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
     const currentAASContext = useCurrentAasContext();
 
     useAsyncEffect(async () => {
-        if (!fileViewObject?.digitalFileUrl || !props.repositoryUrl) {
+        if (!fileViewObject?.digitalFileUrl) {
             return;
         }
         const url = await getFileUrl(fileViewObject?.digitalFileUrl, session?.accessToken, {
-            url: props.repositoryUrl,
+            url: fileViewObject?.digitalFileUrl,
             infrastructureName: currentAASContext.infrastructureName || '',
         });
         if (url) {

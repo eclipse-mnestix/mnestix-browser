@@ -36,9 +36,8 @@ export const PreviewImage = (props: { previewImgUrl: string; mimeType: string; r
     const currentAASContext = useCurrentAasContext();
 
     useAsyncEffect(async () => {
-        if (!props.repositoryUrl) return;
         const url = await getFileUrl(props.previewImgUrl, session?.accessToken, {
-            url: props.repositoryUrl,
+            url: props.previewImgUrl,
             infrastructureName: currentAASContext.infrastructureName || '',
         });
         setImageUrl(url);
