@@ -12,6 +12,7 @@ import { getInfrastructureByName, getInfrastructuresIncludingDefault } from '../
 import { ConceptDescription } from 'lib/api/aas/models';
 import { IConceptDescriptionApi } from 'lib/api/concept-description-api/conceptDescriptionApiInterface';
 import { RepoSearchResult } from 'lib/services/aas-repository-service/AasRepositoryService';
+import { RepositoryWithInfrastructure } from '../database/InfrastructureMappedTypes';
 
 export class ConceptDescriptionRepositoryService {
     private constructor(
@@ -42,16 +43,16 @@ export class ConceptDescriptionRepositoryService {
 
     async getConceptDescriptionByIdFromSingleRepositoryUrl(
         conceptDescriptionId: string,
-        url: string,
+        repo: RepositoryWithInfrastructure,
     ): Promise<ApiResponseWrapper<ConceptDescription>> {
-        const conceptDescriptionApi = this.getConceptDescriptionRepositoryClient(url);
+        const conceptDescriptionApi = this.getConceptDescriptionRepositoryClient(repo.url);
         try {
             const response = await conceptDescriptionApi.getConceptDescriptionById(conceptDescriptionId);
             if (!response.isSuccess) {
                 logResponseDebug(
                     this.log,
                     'getConceptDescriptionByIdFromSingleRepository',
-                    `Couldn't find Concept Description ${conceptDescriptionId} in ${url}`,
+                    `Couldn't find Concept Description ${conceptDescriptionId} in ${repo.url}`,
                     response,
                 );
             }
@@ -60,22 +61,22 @@ export class ConceptDescriptionRepositoryService {
             logInfo(
                 this.log,
                 'getConceptDescriptionByIdFromSingleRepository',
-                `Failed to fetch Concept Description from ${url}`,
+                `Failed to fetch Concept Description from ${repo.url}`,
                 error,
             );
             return wrapErrorCode(
                 ApiResultStatus.BAD_REQUEST,
-                `Failed to fetch Concept Description ${conceptDescriptionId} from ${url}`,
+                `Failed to fetch Concept Description ${conceptDescriptionId} from ${repo.url}`,
             );
         }
     }
 
     async getConceptDescriptionByIdFromMultipleRepositoryUrls(
         conceptDescriptionId: string,
-        repository_urls: string[],
+        repositories: RepositoryWithInfrastructure[],
     ): Promise<ApiResponseWrapper<ConceptDescription>> {
-        const promises = repository_urls.flatMap((url) => {
-            return this.getConceptDescriptionByIdFromSingleRepositoryUrl(conceptDescriptionId, url);
+        const promises = repositories.flatMap((repo) => {
+            return this.getConceptDescriptionByIdFromSingleRepositoryUrl(conceptDescriptionId, repo);
         });
         const responses = await Promise.allSettled(promises);
         const fulfilledResponses = responses.filter((result) => {
@@ -97,10 +98,18 @@ export class ConceptDescriptionRepositoryService {
         return wrapSuccess(allFoundConceptDescriptions[0]);
     }
 
-    async getConceptDescriptionByIdFromAllInfrastructure(conceptDescriptionId: string) {
+    async getConceptDescriptionByIdFromAllInfrastructure(
+        conceptDescriptionId: string,
+    ): Promise<ApiResponseWrapper<ConceptDescription>> {
         const infrastructures = await getInfrastructuresIncludingDefault();
-        const conceptDescriptionRepoUrls = infrastructures.flatMap((infra) => {
-            return infra.conceptDescriptionRepositoryUrls;
+        const conceptDescriptionRepoUrls: RepositoryWithInfrastructure[] = infrastructures.flatMap((infra) => {
+            return infra.conceptDescriptionRepositoryUrls.flatMap((url) => {
+                return {
+                    id: '', //TODO MNE-319
+                    url: url,
+                    infrastructureName: infra.name,
+                };
+            });
         });
         return this.getConceptDescriptionByIdFromMultipleRepositoryUrls(
             conceptDescriptionId,
@@ -129,7 +138,13 @@ export class ConceptDescriptionRepositoryService {
 
         return this.getConceptDescriptionByIdFromMultipleRepositoryUrls(
             conceptDescriptionId,
-            Array.from(conceptRepositoryUrls),
+            Array.from(conceptRepositoryUrls).flatMap((url) => {
+                return {
+                    id: '', //TODO MNE-319
+                    url: url,
+                    infrastructureName: infrastructure.name,
+                };
+            }),
         );
     }
 }
