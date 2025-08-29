@@ -7,17 +7,21 @@ import logger, { logResponseDebug } from 'lib/util/Logger';
 import { SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
+import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
 
 export class SubmodelRepositoryService {
     private constructor(
-        protected readonly getSubmodelRepositoryClient: (basePath: string) => ISubmodelRepositoryApi,
+        protected readonly getSubmodelRepositoryClient: (
+            basePath: string,
+            securityHeader: Record<string, string> | null,
+        ) => ISubmodelRepositoryApi,
         private readonly log: typeof logger = logger,
     ) {}
 
     static create(log?: typeof logger): SubmodelRepositoryService {
         const submodelLogger = log?.child({ Service: 'SubmodelSearcher' });
         return new SubmodelRepositoryService(
-            (baseUrl) => SubmodelRepositoryApi.create(baseUrl, mnestixFetch()),
+            (baseUrl, securityHeader) => SubmodelRepositoryApi.create(baseUrl, mnestixFetch(securityHeader)),
             submodelLogger,
         );
     }
@@ -31,8 +35,13 @@ export class SubmodelRepositoryService {
         );
     }
 
-    private async getSubmodelFromRepo(submodelId: string, repoUrl: string): Promise<ApiResponseWrapper<Submodel>> {
-        const client = this.getSubmodelRepositoryClient(repoUrl);
+    private async getSubmodelFromRepo(
+        submodelId: string,
+        repoUrl: string,
+        infrastructure: InfrastructureConnection,
+    ): Promise<ApiResponseWrapper<Submodel>> {
+        const securityHeader = await createSecurityHeaders(infrastructure);
+        const client = this.getSubmodelRepositoryClient(repoUrl, securityHeader);
         const response = await client.getSubmodelById(submodelId);
         if (response.isSuccess) {
             logResponseDebug(this.log, 'getSubmodelFromRepo', 'Querying Submodel from repository', response, {
@@ -57,19 +66,19 @@ export class SubmodelRepositoryService {
         infrastructure: InfrastructureConnection,
     ): Promise<ApiResponseWrapper<RepoSearchResult<Submodel>>> {
         return this.getFirstFromAllRepos(
-            infrastructure.submodelRepositoryUrls,
-            (basePath) => this.getSubmodelFromRepo(submodelId, basePath),
+            infrastructure,
+            (basePath, infrastructure) => this.getSubmodelFromRepo(submodelId, basePath, infrastructure),
             `Could not find Submodel '${submodelId}' in any Repository`,
         );
     }
 
     async getFirstFromAllRepos(
-        basePathUrls: string[],
-        kernel: (url: string) => Promise<ApiResponseWrapper<Submodel>>,
+        infrastructure: InfrastructureConnection,
+        kernel: (url: string, infrastructure: InfrastructureConnection) => Promise<ApiResponseWrapper<Submodel>>,
         errorMsg: string,
     ): Promise<ApiResponseWrapper<RepoSearchResult<Submodel>>> {
-        const promises = basePathUrls.map(async (url) =>
-            kernel(url).then((response: ApiResponseWrapper<Submodel>) => {
+        const promises = infrastructure.submodelRepositoryUrls.map(async (url) =>
+            kernel(url, infrastructure).then((response: ApiResponseWrapper<Submodel>) => {
                 if (!response.isSuccess) return Promise.reject('Fetch call was not successful');
                 return { searchResult: response.result, location: url };
             }),

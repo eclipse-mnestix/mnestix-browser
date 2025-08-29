@@ -13,17 +13,21 @@ import { ConceptDescription } from 'lib/api/aas/models';
 import { IConceptDescriptionApi } from 'lib/api/concept-description-api/conceptDescriptionApiInterface';
 import { RepoSearchResult } from 'lib/services/aas-repository-service/AasRepositoryService';
 import { RepositoryWithInfrastructure } from '../database/InfrastructureMappedTypes';
+import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
 
 export class ConceptDescriptionRepositoryService {
     private constructor(
-        protected readonly getConceptDescriptionRepositoryClient: (basePath: string) => IConceptDescriptionApi,
+        protected readonly getConceptDescriptionRepositoryClient: (
+            basePath: string,
+            securityHeaders: Record<string, string> | null,
+        ) => IConceptDescriptionApi,
         private readonly log: typeof logger = logger,
     ) {}
 
     static create(log?: typeof logger): ConceptDescriptionRepositoryService {
         const svcLogger = log?.child({ Service: 'ConceptDescriptionSearchService' });
         return new ConceptDescriptionRepositoryService(
-            (baseUrl) => ConceptDescriptionApi.create(baseUrl, mnestixFetch()),
+            (baseUrl, securityHeaders) => ConceptDescriptionApi.create(baseUrl, mnestixFetch(securityHeaders)),
             svcLogger ?? logger,
         );
     }
@@ -45,7 +49,10 @@ export class ConceptDescriptionRepositoryService {
         conceptDescriptionId: string,
         repo: RepositoryWithInfrastructure,
     ): Promise<ApiResponseWrapper<ConceptDescription>> {
-        const conceptDescriptionApi = this.getConceptDescriptionRepositoryClient(repo.url);
+        const infrastructure = await getInfrastructureByName(repo.infrastructureName);
+        const securityHeaders = await createSecurityHeaders(infrastructure);
+
+        const conceptDescriptionApi = this.getConceptDescriptionRepositoryClient(repo.url, securityHeaders);
         try {
             const response = await conceptDescriptionApi.getConceptDescriptionById(conceptDescriptionId);
             if (!response.isSuccess) {
@@ -105,7 +112,6 @@ export class ConceptDescriptionRepositoryService {
         const conceptDescriptionRepoUrls: RepositoryWithInfrastructure[] = infrastructures.flatMap((infra) => {
             return infra.conceptDescriptionRepositoryUrls.flatMap((url) => {
                 return {
-                    id: '', //TODO MNE-319
                     url: url,
                     infrastructureName: infra.name,
                 };
@@ -140,7 +146,6 @@ export class ConceptDescriptionRepositoryService {
             conceptDescriptionId,
             Array.from(conceptRepositoryUrls).flatMap((url) => {
                 return {
-                    id: '', //TODO MNE-319
                     url: url,
                     infrastructureName: infrastructure.name,
                 };

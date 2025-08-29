@@ -11,6 +11,7 @@ import { mnestixFetch } from 'lib/api/infrastructure';
 import { DiscoveryServiceApi } from 'lib/api/discovery-service-api/discoveryServiceApi';
 import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
 import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
+import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
 
 export type DiscoverySearchResult = {
     aasId: string;
@@ -20,13 +21,16 @@ export type DiscoverySearchResult = {
 
 export class DiscoveryService {
     private constructor(
-        protected readonly getDiscoveryApiClient: (basePath: string) => IDiscoveryServiceApi | null,
+        protected readonly getDiscoveryApiClient: (
+            basePath: string,
+            securityHeader: Record<string, string> | null,
+        ) => IDiscoveryServiceApi | null,
         private readonly log: typeof logger = logger,
     ) {}
     static create(log?: typeof logger): DiscoveryService {
         const discoveryLogger = log?.child({ Service: 'DiscoveryService' });
         return new DiscoveryService(
-            (baseUrl) => DiscoveryServiceApi.create(baseUrl, mnestixFetch(), log),
+            (baseUrl, securityHeader) => DiscoveryServiceApi.create(baseUrl, mnestixFetch(securityHeader), log),
             discoveryLogger,
         );
     }
@@ -44,7 +48,7 @@ export class DiscoveryService {
     ): Promise<ApiResponseWrapper<DiscoverySearchResult[]>> {
         const response = await this.getFromMultipleDiscoveries(
             infrastructureConnection,
-            (basePath) => this.searchAasIdInSingleDiscovery(searchInput, basePath),
+            (basePath, infrastructure) => this.searchAasIdInSingleDiscovery(searchInput, basePath, infrastructure),
             'Could not find in any Discovery',
         );
 
@@ -65,8 +69,11 @@ export class DiscoveryService {
     public async searchAasIdInSingleDiscovery(
         searchAssetId: string,
         url: string,
+        infrastructure?: InfrastructureConnection,
     ): Promise<ApiResponseWrapper<string[]>> {
-        const client = this.getDiscoveryApiClient(url);
+        const securityHeader = await createSecurityHeaders(infrastructure);
+
+        const client = this.getDiscoveryApiClient(url, securityHeader);
         const response = await client?.getAasIdsByAssetId(searchAssetId);
         if (!response) {
             return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Discovery service client is not defined');
@@ -96,12 +103,12 @@ export class DiscoveryService {
      */
     async getFromMultipleDiscoveries<T>(
         infrastructures: InfrastructureConnection[],
-        kernel: (url: string) => Promise<ApiResponseWrapper<T>>,
+        kernel: (url: string, infrastructure?: InfrastructureConnection) => Promise<ApiResponseWrapper<T>>,
         errorMsg: string,
     ): Promise<ApiResponseWrapper<DiscoverySearchResult[]>> {
         const promises = infrastructures.flatMap((infrastructure) =>
             infrastructure.discoveryUrls.map((url) => {
-                return kernel(url).then((response: ApiResponseWrapper<T>) => {
+                return kernel(url, infrastructure).then((response: ApiResponseWrapper<T>) => {
                     return { searchResult: response, location: url, infrastructureName: infrastructure.name };
                 });
             }),

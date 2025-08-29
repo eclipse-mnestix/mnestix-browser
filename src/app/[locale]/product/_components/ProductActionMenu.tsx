@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useTranslations } from 'use-intl';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { useEnv } from 'app/EnvProvider';
-import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
+import { SubmodelOrIdReference, useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { AssetAdministrationShell } from 'lib/api/aas/models';
 import { downloadAasFromRepo } from 'lib/services/aas-repository-service/aasRepositoryActions';
@@ -23,6 +23,7 @@ export function ActionMenu({ aas, submodels, repositoryURL, className }: ActionM
     const t = useTranslations('pages');
     const env = useEnv();
     const { showError } = useShowError();
+    const currentAASContext = useCurrentAasContext();
 
     const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -58,7 +59,10 @@ export function ActionMenu({ aas, submodels, repositoryURL, className }: ActionM
         }
         const submodelIds = Array.isArray(submodels) ? submodels.map((s) => s.id) : [];
         try {
-            const response = await downloadAasFromRepo(aas?.id, submodelIds, repositoryURL);
+            const response = await downloadAasFromRepo(aas?.id, submodelIds, {
+                infrastructureName: currentAASContext.infrastructureName || '',
+                url: repositoryURL,
+            });
             if (response.isSuccess && response.result) {
                 const url = window.URL.createObjectURL(response.result);
                 const link = document.createElement('a');

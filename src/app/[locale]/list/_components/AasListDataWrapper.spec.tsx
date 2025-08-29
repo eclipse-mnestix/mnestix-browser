@@ -8,6 +8,7 @@ import * as connectionServerActions from 'lib/services/database/infrastructureDa
 import { ListEntityDto } from 'lib/services/list-service/ListService';
 import { Internationalization } from 'lib/i18n/Internationalization';
 import { AasStoreProvider } from 'stores/AasStore';
+import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 
 jest.mock('./../../../../lib/services/list-service/aasListApiActions');
 jest.mock('./../../../../lib/services/database/infrastructureDatabaseActions');
@@ -33,6 +34,10 @@ jest.mock('next-auth', jest.fn());
 
 const REPOSITORY_URL = 'https://test-repository.de';
 const FIRST_PAGE_CURSOR = '123123';
+const REPOSITORY = { url: REPOSITORY_URL, infrastructureName: 'Test Infrastructure', id: 'test-repo-id' };
+const mockDB = jest.fn(() => {
+    return [REPOSITORY];
+});
 
 const createTestListEntries = (from = 0, to = 10): ListEntityDto[] => {
     const objects: ListEntityDto[] = [];
@@ -50,23 +55,27 @@ const createTestListEntries = (from = 0, to = 10): ListEntityDto[] => {
     return objects;
 };
 
-const mockActionFirstPage = jest.fn((_repositoryUrl: string, _count: number, _cursor: string | undefined) => {
-    return {
-        success: true,
-        entities: createTestListEntries(0, 10),
-        cursor: FIRST_PAGE_CURSOR,
-        error: {},
-    };
-});
+const mockActionFirstPage = jest.fn(
+    (_repository: RepositoryWithInfrastructure, _count: number, _cursor: string | undefined) => {
+        return {
+            success: true,
+            entities: createTestListEntries(0, 10),
+            cursor: FIRST_PAGE_CURSOR,
+            error: {},
+        };
+    },
+);
 
-const mockActionSecondPage = jest.fn((_repositoryUrl: string, _count: number, _cursor: string | undefined) => {
-    return {
-        success: true,
-        entities: createTestListEntries(10, 12),
-        cursor: undefined,
-        error: {},
-    };
-});
+const mockActionSecondPage = jest.fn(
+    (_repository: RepositoryWithInfrastructure, _count: number, _cursor: string | undefined) => {
+        return {
+            success: true,
+            entities: createTestListEntries(10, 12),
+            cursor: undefined,
+            error: {},
+        };
+    },
+);
 
 const mockNameplateData = jest.fn(() => {
     return {
@@ -80,9 +89,6 @@ describe('AASListDataWrapper', () => {
     beforeEach(async () => {
         (serverActions.getAasListEntities as jest.Mock).mockImplementation(mockActionFirstPage);
 
-        const mockDB = jest.fn(() => {
-            return [{ url: REPOSITORY_URL, infrastructureName: 'Test Infrastructure', id: 'test-repo-id' }];
-        });
         (connectionServerActions.getAasRepositoriesIncludingDefault as jest.Mock).mockImplementation(mockDB);
         (nameplateDataActions.getNameplateValuesForAAS as jest.Mock).mockImplementation(mockNameplateData);
 
@@ -124,7 +130,7 @@ describe('AASListDataWrapper', () => {
             expect(screen.getByText('assetId10', { exact: false })).toBeInTheDocument();
             expect(screen.getByText('Page 2', { exact: false })).toBeInTheDocument();
             expect(screen.getByTestId('list-next-button')).toBeDisabled();
-            expect(mockActionSecondPage).toHaveBeenCalledWith(REPOSITORY_URL, 10, FIRST_PAGE_CURSOR);
+            expect(mockActionSecondPage).toHaveBeenCalledWith(REPOSITORY, 10, FIRST_PAGE_CURSOR);
         });
 
         it('Navigates one page back when clicking on the back button', async () => {
@@ -140,7 +146,7 @@ describe('AASListDataWrapper', () => {
 
             expect(screen.getByText('assetId3', { exact: false })).toBeInTheDocument();
             expect(screen.getByText('Page 1', { exact: false })).toBeInTheDocument();
-            expect(mockActionFirstPage).toHaveBeenCalledWith(REPOSITORY_URL, 10, undefined);
+            expect(mockActionFirstPage).toHaveBeenCalledWith(REPOSITORY, 10, undefined);
         });
     });
 });

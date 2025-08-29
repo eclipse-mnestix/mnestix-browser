@@ -4,17 +4,23 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useTranslations } from 'next-intl';
 import { useTheme } from '@mui/material/styles';
 import { useEnv } from 'app/EnvProvider';
-
 import {
     CONNECTION_TYPES,
     ENV_KEY_BY_CONNECTION_ID,
 } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureEnumUtil';
+import { getDefaultInfrastructureName } from 'lib/services/database/infrastructureDatabaseActions';
+import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 
 export function DefaultInfrastructure() {
     const [open, setOpen] = useState(false);
     const t = useTranslations('pages.settings.infrastructure');
     const theme = useTheme();
     const env = useEnv();
+    const [defaultInfrastructureName, setDefaultInfrastructureName] = useState('Default');
+
+    useAsyncEffect(async () => {
+        setDefaultInfrastructureName(await getDefaultInfrastructureName());
+    }, []);
 
     return (
         <Box sx={{ border: `1px solid ${theme.palette.grey['300']}`, mb: 1, borderRadius: 1 }}>
@@ -31,7 +37,7 @@ export function DefaultInfrastructure() {
             >
                 <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', gap: 2 }}>
                     <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                        Default Infrastructure
+                        {defaultInfrastructureName}
                     </Typography>
                     <IconButton onClick={() => setOpen(!open)} sx={{ color: theme.palette.primary.main }} size="small">
                         <VisibilityIcon />

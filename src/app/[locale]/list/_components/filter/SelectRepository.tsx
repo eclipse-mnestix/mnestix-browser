@@ -20,7 +20,7 @@ export function SelectRepository(props: {
             setIsLoading(true);
             const aasRepositories: RepositoryWithInfrastructure[] = await getAasRepositoriesIncludingDefault();
             setAasRepositories(aasRepositories);
-            if (aasRepositories.length > 0) {
+            if (aasRepositories.length > 0 && aasRepositories[0].id) {
                 setSelectedRepository(aasRepositories[0].id);
                 props.onSelectedRepositoryChanged(aasRepositories[0]);
             }

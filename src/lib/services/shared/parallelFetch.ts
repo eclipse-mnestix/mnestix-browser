@@ -5,15 +5,16 @@ import {
     wrapSuccess,
 } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
+import { InfrastructureConnection } from '../database/InfrastructureMappedTypes';
 
 export async function fetchFromMultipleEndpoints<T, R>(
-    urls: { url: string; infrastructureName: string }[],
-    kernel: (url: string) => Promise<ApiResponseWrapper<T>>,
+    urls: { url: string; infrastructure: InfrastructureConnection }[],
+    kernel: (url: string, infrastructure: InfrastructureConnection) => Promise<ApiResponseWrapper<T>>,
     errorMsg: string,
     mapResult: (result: ApiResponseWrapperSuccess<T>, url: string, infrastructureName: string) => R,
 ): Promise<ApiResponseWrapper<R[]>> {
-    const promises = urls.map(({ url, infrastructureName }) =>
-        kernel(url).then((response) => ({ response, url, infrastructureName })),
+    const promises = urls.map(({ url, infrastructure }) =>
+        kernel(url, infrastructure).then((response) => ({ response, url, infrastructureName: infrastructure.name })),
     );
 
     const results = await Promise.allSettled(promises);

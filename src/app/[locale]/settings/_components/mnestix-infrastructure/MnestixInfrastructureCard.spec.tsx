@@ -26,6 +26,7 @@ jest.mock('./../../../../../lib/services/database/infrastructureDatabaseActions'
     updateInfrastructureAction: jest.fn(),
     deleteInfrastructureAction: jest.fn(),
     getDefaultInfrastructure: jest.fn(() => Promise.resolve(emptyMappedInfrastructure)),
+    getDefaultInfrastructureName: jest.fn(() => Promise.resolve('Default Infrastructure')),
 }));
 
 jest.mock('./../../../../../lib/hooks/UseNotificationSpawner');

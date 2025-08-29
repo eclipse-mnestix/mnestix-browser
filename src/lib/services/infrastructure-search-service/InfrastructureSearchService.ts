@@ -80,7 +80,12 @@ export class InfrastructureSearchService {
     public async searchAASInAllInfrastructures(searchInput: string): Promise<ApiResponseWrapper<AasSearchResult>> {
         // Search in all discovery services in all infrastructures
         const infrastructures = await getInfrastructuresIncludingDefault();
-        logInfo(this.log, 'searchAASInAllInfrastructures', 'Searching AAS in all infrastructures', infrastructures);
+        logInfo(
+            this.log,
+            'searchAASInAllInfrastructures',
+            'Searching AAS in all infrastructures',
+            infrastructures.map((infra) => infra.name),
+        );
 
         return this.searchAasInMultipleInfrastructures(searchInput, infrastructures);
     }

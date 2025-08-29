@@ -4,7 +4,7 @@
 import { Prisma } from '@prisma/client';
 
 export type RepositoryWithInfrastructure = {
-    id: string;
+    id?: string;
     infrastructureName: string;
     url: string;
 };
@@ -16,6 +16,7 @@ export type InfrastructureConnection = {
     submodelRepositoryUrls: string[];
     submodelRegistryUrls: string[];
     conceptDescriptionRepositoryUrls: string[];
+    isDefault: boolean;
     infrastructureSecurity?: InfrastructureSecurity;
 };
 
@@ -24,9 +25,13 @@ export type InfrastructureSecurity = {
     securityHeader?: {
         name: string;
         value: string;
+        initVector: string;
+        authTag: string;
     };
     securityProxy?: {
         value: string;
+        initVector: string;
+        authTag: string;
     };
 };
 

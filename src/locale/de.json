@@ -548,7 +548,7 @@
     },
     "transfer": {
       "aasRepository": "AAS Repository",
-      "chooseRepository": "AAS Repository auswählen",
+      "chooseRepository": "Wählen Sie das AAS-Repository, in das übertragen werden soll:",
       "chooseSubmodelRepository": "Submodel Repository auswählen (optional)",
       "errorToast": "Transfer der AAS nicht erfolgreich",
       "partiallyFailedToast": "Teil des Transfers fehlgeschlagen",
@@ -558,11 +558,19 @@
       "submodelRepository": "Submodel Repository",
       "submodelRepositoryApiKey": "Submodel Repository ApiKey",
       "submodelRepositoryLabel": "Liste der Submodel Repositorys",
-      "subtitle": "Füllen Sie die folgenden Felder aus, um eine Verwaltungsschale in ein anderes Repository zu importieren",
+      "subtitle": "Transfer \"{aasId}\" von \"{repoUrl}\" zu:",
       "successfulToast": "Transfer der AAS erfolgreich",
-      "title": "Import",
+      "title": "Transfer",
       "useAasRepository": "AAS Repository verwenden",
-      "warningToast": "Transfer der AAS nur teilweise erfolgreich."
+      "warningToast": "Transfer der AAS nur teilweise erfolgreich.",
+      "aasIdentifier": {
+        "display": "\"{aasId}\"",
+        "default": "Unbekannte AAS-ID"
+      },
+      "aasOriginUrl": {
+        "display": "\"{repoUrl}\"",
+        "default": "Unbekannte AAS-Origin-URL"
+      }
     }
   }
 }

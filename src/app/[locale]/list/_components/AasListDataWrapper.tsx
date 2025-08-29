@@ -56,7 +56,7 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
 
         setIsLoadingList(true);
         clearResults();
-        const response = await getAasListEntities(selectedRepository.url, 10, newCursor);
+        const response = await getAasListEntities(selectedRepository, 10, newCursor);
 
         if (response.success) {
             setAasList(response);

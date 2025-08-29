@@ -42,6 +42,11 @@ jest.mock('./../../../../lib/hooks/useFindValueByIdShort', () => ({
     }),
 }));
 
+// Mock the CurrentAasContext
+jest.mock('../../../../components/contexts/CurrentAasContext', () => ({
+    useCurrentAasContext: jest.fn(),
+}));
+
 // Mock utility functions
 jest.mock('./../../../../lib/util/SubmodelResolverUtil', () => ({
     findSubmodelByIdOrSemanticId: jest.fn().mockImplementation((submodels, semanticId, idShort) => {

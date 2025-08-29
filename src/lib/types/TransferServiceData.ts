@@ -1,16 +1,16 @@
 import { AssetAdministrationShell, Submodel } from 'lib/api/aas/models';
+import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 
 export type TransferDto = {
     aas: TransferAas;
     submodels: TransferSubmodel[];
-    targetAasRepositoryBaseUrl: string;
-    sourceAasRepositoryBaseUrl: string;
-    targetSubmodelRepositoryBaseUrl: string;
-    sourceSubmodelRepositoryBaseUrl: string;
-    targetDiscoveryBaseUrl?: string;
-    targetAasRegistryBaseUrl?: string;
-    targetSubmodelRegistryBaseUrl?: string;
-    apikey?: string;
+    targetAasRepository: RepositoryWithInfrastructure;
+    sourceAasRepository: RepositoryWithInfrastructure;
+    targetSubmodelRepository: RepositoryWithInfrastructure;
+    sourceSubmodelRepository: RepositoryWithInfrastructure;
+    targetDiscovery?: RepositoryWithInfrastructure;
+    targetAasRegistry?: RepositoryWithInfrastructure;
+    targetSubmodelRegistry?: RepositoryWithInfrastructure;
 };
 
 export type TransferSubmodel = {
@@ -43,12 +43,11 @@ export type AttachmentDetails = {
 };
 
 export type TransferServiceConfig = {
-    targetAasRepoUrl: string;
-    sourceAasRepoUrl: string;
-    targetSubmodelRepoUrl: string;
-    sourceSubmodelRepoUrl: string;
-    targetDiscoveryUrl?: string;
-    targetAasRegistryUrl?: string;
-    targetSubmodelRegistryUrl?: string;
-    apikey?: string;
+    targetAasRepo: RepositoryWithInfrastructure;
+    sourceAasRepo: RepositoryWithInfrastructure;
+    targetSubmodelRepo: RepositoryWithInfrastructure;
+    sourceSubmodelRepo: RepositoryWithInfrastructure;
+    targetDiscovery?: RepositoryWithInfrastructure;
+    targetAasRegistry?: RepositoryWithInfrastructure;
+    targetSubmodelRegistry?: RepositoryWithInfrastructure;
 };

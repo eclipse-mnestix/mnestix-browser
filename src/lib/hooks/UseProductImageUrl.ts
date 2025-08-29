@@ -4,6 +4,7 @@ import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper
 import { useState } from 'react';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { getThumbnailFromShell } from 'lib/services/aas-repository-service/aasRepositoryActions';
+import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 
 export const useProductImageUrl = (
     aas: AssetAdministrationShell | null,
@@ -11,6 +12,7 @@ export const useProductImageUrl = (
     productImage?: string,
 ) => {
     const [productImageUrl, setProductImageUrl] = useState<string>('');
+    const currentAASContext = useCurrentAasContext();
 
     useAsyncEffect(async () => {
         if (!aas || !repositoryURL || !productImage) {
@@ -23,7 +25,10 @@ export const useProductImageUrl = (
             return;
         }
 
-        const response = await getThumbnailFromShell(aas.id, repositoryURL);
+        const response = await getThumbnailFromShell(aas.id, {
+            infrastructureName: currentAASContext.infrastructureName || '',
+            url: repositoryURL,
+        });
         if (!response.isSuccess) {
             console.error('Image not found');
             return;
