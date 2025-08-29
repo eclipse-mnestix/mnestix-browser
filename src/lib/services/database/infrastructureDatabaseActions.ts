@@ -134,18 +134,22 @@ function infrastructureMapper(infra: InfrastructureWithRelations): Infrastructur
         ),
         isDefault: false,
         infrastructureSecurity: {
-            securityType: infra.securityType?.typeName,
-            securityHeader: {
-                name: infra.securitySettingsHeaders?.headerName,
-                value: infra.securitySettingsHeaders?.headerValue,
-                iv: infra.securitySettingsHeaders?.iv,
-                authTag: infra.securitySettingsHeaders?.authTag,
-            },
-            securityProxy: {
-                value: infra.securitySettingsProxies?.headerValue,
-                iv: infra.securitySettingsProxies?.iv,
-                authTag: infra.securitySettingsProxies?.authTag,
-            },
+            securityType: infra.securityType.typeName,
+            securityHeader: infra.securitySettingsHeaders
+                ? {
+                      name: infra.securitySettingsHeaders.headerName,
+                      value: infra.securitySettingsHeaders.headerValue,
+                      initVector: infra.securitySettingsHeaders.initVector,
+                      authTag: infra.securitySettingsHeaders.authTag,
+                  }
+                : undefined,
+            securityProxy: infra.securitySettingsProxies
+                ? {
+                      value: infra.securitySettingsProxies.headerValue,
+                      initVector: infra.securitySettingsProxies.initVector,
+                      authTag: infra.securitySettingsProxies.authTag,
+                  }
+                : undefined,
         },
     };
 }

@@ -23,15 +23,15 @@ export type InfrastructureConnection = {
 export type InfrastructureSecurity = {
     securityType?: string;
     securityHeader?: {
-        name?: string;
-        value?: string;
-        iv?: string;
-        authTag?: string;
+        name: string;
+        value: string;
+        initVector: string;
+        authTag: string;
     };
     securityProxy?: {
-        value?: string;
-        iv?: string;
-        authTag?: string;
+        value: string;
+        initVector: string;
+        authTag: string;
     };
 };
 

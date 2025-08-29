@@ -28,12 +28,12 @@ export async function createSecurityHeaders(
             return null;
         case 'HEADER': {
             // Return the header configuration for HEADER security type
-            if (securityData.securityHeader?.name === undefined) return null;
+            if (!securityData.securityHeader || securityData.securityHeader.name === undefined) return null;
 
             const headerValue = decryptSecret(
-                securityData.securityHeader?.value || '',
-                securityData.securityHeader?.iv || '',
-                securityData.securityHeader?.authTag || '',
+                securityData.securityHeader.value,
+                securityData.securityHeader.initVector,
+                securityData.securityHeader.authTag,
             );
 
             return {
@@ -42,10 +42,12 @@ export async function createSecurityHeaders(
         }
         case 'PROXY': {
             // Return proxy authorization header
+            if (!securityData.securityProxy) return null;
+
             const headerValue = decryptSecret(
-                securityData.securityProxy?.value || '',
-                securityData.securityProxy?.iv || '',
-                securityData.securityProxy?.authTag || '',
+                securityData.securityProxy.value,
+                securityData.securityProxy.initVector,
+                securityData.securityProxy.authTag,
             );
             return {
                 [header]: headerValue,

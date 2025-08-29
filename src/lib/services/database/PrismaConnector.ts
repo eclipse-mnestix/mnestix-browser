@@ -196,7 +196,7 @@ export class PrismaConnector implements IPrismaConnector {
                 data: {
                     headerName: infrastructureData.securityHeader.name,
                     headerValue: encryptedSecret.cipherTextB64,
-                    iv: encryptedSecret.ivB64,
+                    initVector: encryptedSecret.ivB64,
                     authTag: encryptedSecret.authTagB64,
                     infrastructureId,
                 },
@@ -215,7 +215,7 @@ export class PrismaConnector implements IPrismaConnector {
             await tx.securitySettingsProxy.create({
                 data: {
                     headerValue: encryptedSecret.cipherTextB64,
-                    iv: encryptedSecret.ivB64,
+                    initVector: encryptedSecret.ivB64,
                     authTag: encryptedSecret.authTagB64,
                     infrastructureId,
                 },

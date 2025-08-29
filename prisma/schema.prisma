@@ -55,7 +55,7 @@ model SecuritySettingsHeader {
     id String @id @default(cuid())
     headerName String
     headerValue String
-    iv String
+    initVector String
     authTag String
     infrastructure MnestixInfrastructure @relation(fields: [infrastructureId], references: [id], onDelete: Cascade)
     infrastructureId String @unique
@@ -64,7 +64,7 @@ model SecuritySettingsHeader {
 model SecuritySettingsProxy {
     id String @id @default(cuid())
     headerValue String
-    iv String
+    initVector String
     authTag String
     infrastructure MnestixInfrastructure @relation(fields: [infrastructureId], references: [id], onDelete: Cascade)
     infrastructureId String @unique
