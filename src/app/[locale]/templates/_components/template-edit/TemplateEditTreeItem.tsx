@@ -2,16 +2,33 @@ import * as React from 'react';
 import { useState } from 'react';
 import { treeItemClasses, TreeItemRoot } from '@mui/x-tree-view';
 import Typography from '@mui/material/Typography';
-import { Box } from '@mui/material';
+import { Box, styled } from '@mui/material';
 import { TextSnippet } from '@mui/icons-material';
 import { MultiplicityEnum } from 'lib/enums/Multiplicity.enum';
 import { TemplateEditTreeItemMenu } from './TemplateEditTreeItemMenu';
 import { useTranslations } from 'next-intl';
 import { useTreeItem, UseTreeItemParameters } from '@mui/x-tree-view/useTreeItem';
-import { TreeItemCheckbox, TreeItemGroupTransition, TreeItemIconContainer } from '@mui/x-tree-view/TreeItem';
+import {
+    TreeItemCheckbox,
+    TreeItemContent,
+    TreeItemGroupTransition,
+    TreeItemIconContainer,
+} from '@mui/x-tree-view/TreeItem';
 import { TreeItemIcon } from '@mui/x-tree-view/TreeItemIcon';
 import { TreeItemProvider } from '@mui/x-tree-view/TreeItemProvider';
-import { CustomTreeItemContent } from 'app/[locale]/viewer/_components/submodel/bill-of-applications/visualization-components/ApplicationTreeItem';
+
+const CustomTreeItemContent = styled(TreeItemContent)(({ theme }) => ({
+    userSelect: 'none',
+    '&[data-expanded]': {
+        backgroundColor: 'transparent',
+    },
+    '&:hover': {
+        backgroundColor: theme.palette.action.hover,
+    },
+    '&[data-focused], &[data-selected], &[data-selected][data-focused]': {
+        backgroundColor: theme.palette.action.selected,
+    },
+}));
 
 interface CustomTreeItemProps
     extends Omit<UseTreeItemParameters, 'rootRef'>,
@@ -111,8 +128,9 @@ const CustomContent = React.forwardRef(function CustomContent(
                             width: '100%',
                             alignItems: 'center',
                         }}
+                        onClick={handleSelectionClick}
                     >
-                        <Box onClick={handleSelectionClick}>
+                        <Box>
                             {isAboutToBeDeletedLocally || isParentAboutToBeDeleted ? (
                                 <>
                                     <Typography
