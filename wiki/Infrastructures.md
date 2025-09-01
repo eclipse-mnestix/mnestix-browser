@@ -80,6 +80,8 @@ A critical environment variable must be set for each Mnestix instance:
 ### ⚠️ Warning
 
 - If `SECRET_ENC_KEY` is **not provided**, Mnestix will generate a random key at startup.
+    - **This applies only when the application is started locally.**
+    - In **Docker environments**, a validation script enforces this requirement and will **throw an exception** if the variable is missing or incorrectly set.
 - The generated key will **not be retrievable**.
 - This option should **never** be used in a production environment.
 - It is intended **only for testing purposes**.
