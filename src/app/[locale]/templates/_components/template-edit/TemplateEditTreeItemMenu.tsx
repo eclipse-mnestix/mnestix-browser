@@ -58,34 +58,36 @@ export const TemplateEditTreeItemMenu = (props: TemplateEditTreeItemMenuProps) =
 
     //Menu
     const handleMoreMenuClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        event.stopPropagation();
         setEditMenuOpen(true);
         setMenuAnchor(event.currentTarget);
     };
 
-    const handleMoreMenuClose = () => {
+    const handleMoreMenuClose = (event: React.MouseEvent) => {
+        event.stopPropagation();
         setEditMenuOpen(false);
         setMenuAnchor(null);
     };
 
-    const handleDuplicateClick = () => {
-        handleMoreMenuClose();
+    const handleDuplicateClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        handleMoreMenuClose(event);
         props.onDuplicate(props.nodeId);
     };
 
-    const handleDeleteClick = () => {
-        handleMoreMenuClose();
+    const handleDeleteClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        handleMoreMenuClose(event);
         props.onDelete(props.nodeId);
     };
 
-    const handleRestoreClick = () => {
-        handleMoreMenuClose();
+    const handleRestoreClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        handleMoreMenuClose(event);
         props.onRestore(props.nodeId);
     };
 
     //components
     function DuplicateButton() {
         return (
-            <MenuItem onClick={handleDuplicateClick}>
+            <MenuItem onClick={(e) => handleDuplicateClick(e)}>
                 <ListItemIcon>
                     <ContentCopy fontSize="small" />
                 </ListItemIcon>
@@ -96,7 +98,7 @@ export const TemplateEditTreeItemMenu = (props: TemplateEditTreeItemMenuProps) =
 
     function DeleteButton() {
         return (
-            <MenuItem onClick={handleDeleteClick}>
+            <MenuItem onClick={(e) => handleDeleteClick(e)}>
                 <ListItemIcon>
                     <Delete fontSize="small" />
                 </ListItemIcon>
@@ -107,7 +109,7 @@ export const TemplateEditTreeItemMenu = (props: TemplateEditTreeItemMenuProps) =
 
     function RevertButton() {
         return (
-            <MenuItem onClick={handleRestoreClick}>
+            <MenuItem onClick={(e) => handleRestoreClick(e)}>
                 <ListItemIcon>
                     <Restore fontSize="small" />
                 </ListItemIcon>
