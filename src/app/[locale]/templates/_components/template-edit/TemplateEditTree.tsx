@@ -261,6 +261,7 @@ export function TemplateEditTree(props: TemplateEditTreeProps) {
             selectedItems={selectedTreeItem}
             onExpandedItemsChange={handleToggle}
             onSelectedItemsChange={handleSelect}
+            itemChildrenIndentation={24}
         >
             {props.rootTree &&
                 renderTree(

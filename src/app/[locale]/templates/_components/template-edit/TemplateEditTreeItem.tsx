@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { TreeItem, treeItemClasses, TreeItemRoot } from '@mui/x-tree-view';
+import { treeItemClasses, TreeItemRoot } from '@mui/x-tree-view';
 import Typography from '@mui/material/Typography';
-import { Box, styled } from '@mui/material';
+import { Box } from '@mui/material';
 import { TextSnippet } from '@mui/icons-material';
 import { MultiplicityEnum } from 'lib/enums/Multiplicity.enum';
 import { TemplateEditTreeItemMenu } from './TemplateEditTreeItemMenu';
@@ -27,23 +27,6 @@ interface CustomTreeItemProps
     isParentAboutToBeDeleted: boolean | undefined;
     isAboutToBeDeleted: boolean | undefined;
 }
-
-const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
-    '.MuiTreeItem-content': {
-        userSelect: 'none',
-        margin: 0,
-        '&.Mui-focused': {
-            backgroundColor: 'transparent',
-        },
-        '&.Mui-focused:hover': {
-            backgroundColor: theme.palette.action.hover,
-        },
-        '&.Mui-focused.Mui-selected': {
-            backgroundColor: theme.palette.action.selected,
-        },
-    },
-}));
-
 const CustomContent = React.forwardRef(function CustomContent(
     props: CustomTreeItemProps,
     ref: React.Ref<HTMLLIElement>,
@@ -59,6 +42,11 @@ const CustomContent = React.forwardRef(function CustomContent(
         semanticId,
         children,
         disabled,
+        onDuplicate,
+        onDelete,
+        onRestore,
+        isParentAboutToBeDeleted,
+        isAboutToBeDeleted,
         ...other
     } = props;
 
@@ -72,16 +60,16 @@ const CustomContent = React.forwardRef(function CustomContent(
         status,
     } = useTreeItem({ id, itemId, children, label, disabled, rootRef: ref });
 
-    const [isAboutToBeDeleted, setIsAboutToBeDeleted] = useState(false);
+    const [isAboutToBeDeletedLocally, setIsAboutToBeDeletedLocally] = useState(false);
     const t = useTranslations('pages.templates');
 
     React.useEffect(() => {
-        setIsAboutToBeDeleted(false);
+        setIsAboutToBeDeletedLocally(false);
     }, [label, semanticId]);
 
     React.useEffect(() => {
         if (props.isAboutToBeDeleted) {
-            setIsAboutToBeDeleted(true);
+            setIsAboutToBeDeletedLocally(true);
         }
     }, [props.isAboutToBeDeleted]);
 
@@ -96,14 +84,14 @@ const CustomContent = React.forwardRef(function CustomContent(
         customOnSelect();
     };
 
-    const onDelete = () => {
-        props.onDelete(itemId);
-        setIsAboutToBeDeleted(true);
+    const handleDelete = () => {
+        onDelete(itemId);
+        setIsAboutToBeDeletedLocally(true);
     };
 
-    const onRestore = () => {
-        props.onRestore(itemId);
-        setIsAboutToBeDeleted(false);
+    const handleRestore = () => {
+        onRestore(itemId);
+        setIsAboutToBeDeletedLocally(false);
     };
 
     return (
@@ -114,9 +102,18 @@ const CustomContent = React.forwardRef(function CustomContent(
                         <TreeItemIcon status={status} />
                     </TreeItemIconContainer>
                     <TreeItemCheckbox {...getCheckboxProps()} />
-                    <Box sx={{ py: 1, pr: 1, display: 'flex' }}>
+                    <Box
+                        sx={{
+                            py: 1,
+                            pr: 1,
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            width: '100%',
+                            alignItems: 'center',
+                        }}
+                    >
                         <Box onClick={handleSelectionClick}>
-                            {isAboutToBeDeleted || props.isParentAboutToBeDeleted ? (
+                            {isAboutToBeDeletedLocally || isParentAboutToBeDeleted ? (
                                 <>
                                     <Typography
                                         component="div"
@@ -143,12 +140,12 @@ const CustomContent = React.forwardRef(function CustomContent(
                         <TemplateEditTreeItemMenu
                             elementMultiplicity={multiplicity}
                             numberOfThisElement={getNumberOfElementsWithSameSemanticId(semanticId)}
-                            onDuplicate={props.onDuplicate}
-                            onDelete={onDelete}
-                            onRestore={onRestore}
+                            onDuplicate={onDuplicate}
+                            onDelete={handleDelete}
+                            onRestore={handleRestore}
                             nodeId={itemId}
-                            isElementAboutToBeDeleted={props.isAboutToBeDeleted || isAboutToBeDeleted}
-                            isParentAboutToBeDeleted={props.isParentAboutToBeDeleted}
+                            isElementAboutToBeDeleted={isAboutToBeDeleted || isAboutToBeDeletedLocally}
+                            isParentAboutToBeDeleted={isParentAboutToBeDeleted}
                         />
                     </Box>
                 </CustomTreeItemContent>

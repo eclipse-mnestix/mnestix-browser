@@ -19,10 +19,29 @@ import {
 import { TreeItemIcon } from '@mui/x-tree-view/TreeItemIcon';
 import { TreeItemProvider } from '@mui/x-tree-view/TreeItemProvider';
 import { ExpandableTreeitem } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/TreeItem';
+import { treeItemClasses } from '@mui/x-tree-view';
 
 export const CustomTreeItemContent = styled(TreeItemContent)(({ theme }) => ({
     padding: theme.spacing(0.5, 1),
     borderBottom: `1px solid ${theme.palette.divider}`, // Add a bottom border
+    userSelect: 'none',
+    margin: 0,
+    '&[data-expanded]': {
+        backgroundColor: 'transparent',
+    },
+    '&:hover': {
+        backgroundColor: theme.palette.action.hover,
+    },
+    '&[data-focused], &[data-selected], &[data-selected][data-focused]': {
+        backgroundColor: theme.palette.action.selected,
+    },
+    [`& .${treeItemClasses.groupTransition}`]: {
+        marginLeft: 15, // This is the default margin, you can adjust it
+        paddingLeft: 'var(--TreeView-itemChildrenIndentation)', // Use the CSS variable for dynamic indentation
+    },
+    [`& .${treeItemClasses.iconContainer}`]: {
+        marginLeft: 5,
+    },
 }));
 
 interface ApplicationTreeItemProps

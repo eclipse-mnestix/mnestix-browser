@@ -69,17 +69,17 @@ export const TemplateEditTreeItemMenu = (props: TemplateEditTreeItemMenuProps) =
         setMenuAnchor(null);
     };
 
-    const handleDuplicateClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const handleDuplicateClick = (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
         handleMoreMenuClose(event);
         props.onDuplicate(props.nodeId);
     };
 
-    const handleDeleteClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const handleDeleteClick = (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
         handleMoreMenuClose(event);
         props.onDelete(props.nodeId);
     };
 
-    const handleRestoreClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const handleRestoreClick = (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
         handleMoreMenuClose(event);
         props.onRestore(props.nodeId);
     };
