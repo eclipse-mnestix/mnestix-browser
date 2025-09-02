@@ -27,10 +27,10 @@ export type TransferFormModel = {
     targetAasRepositoryFormModel: TargetRepositoryFormData;
 };
 
-// TODO pull aas and origin URLs into props
+// TODO MNE-318, pull aas and origin URLs into props
 export function TransferDialog(props: DialogProps) {
     const [transferDto, setTransferDto] = useState<TransferFormModel>();
-    const { aas, submodels, aasOriginUrl } = useCurrentAasContext();
+    const { aas, submodels, aasOriginUrl, infrastructureName } = useCurrentAasContext();
     const notificationSpawner = useNotificationSpawner();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const theme = useTheme();
@@ -78,15 +78,20 @@ export function TransferDialog(props: DialogProps) {
         const dtoToSubmit: TransferDto = {
             aas: aasToTransfer,
             submodels: submodelsToTransfer,
-            targetAasRepositoryBaseUrl: values.repository,
-            sourceAasRepositoryBaseUrl: aasOriginUrl,
-            targetSubmodelRepositoryBaseUrl:
-                values.submodelRepository && values.submodelRepository !== '0'
+            targetAasRepository: values.repository,
+            sourceAasRepository: { url: aasOriginUrl, infrastructureName: infrastructureName ?? '' },
+            targetSubmodelRepository:
+                values.submodelRepository && values.submodelRepository.url !== '0'
                     ? values.submodelRepository
                     : values.repository,
-            sourceSubmodelRepositoryBaseUrl: aasOriginUrl,
-            apikey: values.repositoryApiKey,
-            targetDiscoveryBaseUrl: env.DISCOVERY_API_URL,
+            sourceSubmodelRepository: {
+                url: aasOriginUrl,
+                infrastructureName: infrastructureName ?? '',
+            },
+            targetDiscovery: {
+                url: env.DISCOVERY_API_URL ?? '',
+                infrastructureName: infrastructureName ?? '',
+            }, //TODO MNE-317, check target infrastructure for discovery
         };
         return dtoToSubmit;
     }
@@ -147,6 +152,10 @@ export function TransferDialog(props: DialogProps) {
         }
     };
 
+    const aasIdDisplay = aas?.id ? t('aasIdentifier.display', { aasId: aas.id }) : t('aasIdentifier.default');
+    const originDisplay = aasOriginUrl
+        ? t('aasOriginUrl.display', { repoUrl: aasOriginUrl })
+        : t('aasOriginUrl.default');
     return (
         <Dialog
             open={props.open}
@@ -160,7 +169,7 @@ export function TransferDialog(props: DialogProps) {
                 <Typography variant="h2" color="primary">
                     {t('title')}
                 </Typography>
-                <Typography>{t('subtitle')}</Typography>
+                <Typography>{t('subtitle', { aasId: aasIdDisplay, repoUrl: originDisplay })}</Typography>
             </Box>
             <IconButton
                 aria-label="close"

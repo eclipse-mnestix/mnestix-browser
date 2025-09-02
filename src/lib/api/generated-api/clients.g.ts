@@ -9,89 +9,27 @@
 
 // ReSharper disable InconsistentNaming
 
-export class AasListClient {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
-    private readonly baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    private constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : (window as any);
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : '';
-    }
-
-    static create(
-        _baseUrl: string = '',
-        http?: {
-            fetch(url: RequestInfo, init?: RequestInit): Promise<Response>;
-        },
-    ): AasListClient {
-        return new AasListClient(_baseUrl, http ?? window);
-    }
-
-    /**
-     * Return a list of all AAS as entries
-     */
-    getAasListEntries(signal?: AbortSignal | undefined): Promise<AasListEntry[]> {
-        let url_ = this.baseUrl + '/api/AasList';
-        url_ = url_.replace(/[?&]$/, '');
-
-        let options_: RequestInit = {
-            method: 'GET',
-            signal,
-            headers: {
-                Accept: 'application/json',
-            },
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGetAasListEntries(_response);
-        });
-    }
-
-    protected processGetAasListEntries(response: Response): Promise<AasListEntry[]> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && response.headers.forEach) {
-            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
-        }
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-                let result200: any = null;
-                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                if (Array.isArray(resultData200)) {
-                    result200 = [] as any;
-                    for (let item of resultData200) result200!.push(item);
-                } else {
-                    result200 = <any>null;
-                }
-                return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-                return throwException('An unexpected server error occurred.', status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<AasListEntry[]>(null as any);
-    }
-}
+import { MnestixFetch } from '../infrastructure';
+import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 
 export class TemplateClient {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private http: MnestixFetch;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : (window as any);
+    constructor(baseUrl?: string, http?: MnestixFetch) {
+        this.http = http
+            ? http
+            : {
+                  fetch: () => {
+                      throw new Error('MnestixFetch instance required');
+                  },
+              };
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : '';
     }
 
-    static create(
-        _baseUrl: string = '',
-        http?: {
-            fetch(url: RequestInfo, init?: RequestInit): Promise<Response>;
-        },
-    ): TemplateClient {
-        return new TemplateClient(_baseUrl, http ?? window);
+    static create(_baseUrl: string = '', http?: MnestixFetch): TemplateClient {
+        return new TemplateClient(_baseUrl, http);
     }
 
     /**
@@ -116,38 +54,26 @@ export class TemplateClient {
             },
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.http.fetch(url_, options_).then((_response) => {
             return this.processCreateCustomSubmodel(_response);
         });
     }
 
-    protected processCreateCustomSubmodel(response: Response): Promise<string> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && response.headers.forEach) {
-            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
-        }
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-                let result200: any = null;
-                let resultData200 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    protected processCreateCustomSubmodel(response: ApiResponseWrapper<unknown>): Promise<string> {
+        if (response.isSuccess) {
+            return Promise.resolve(response.result as string);
+        } else {
+            const status = response.httpStatus || 500;
+            const message = response.message || 'An unexpected server error occurred.';
+            let _headers: any = {};
 
-                return result200;
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-                let result400: any = null;
-                let resultData400 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result400 = ProblemDetails.fromJS(resultData400);
-                return throwException('A server side error occurred.', status, _responseText, _headers, result400);
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-                return throwException('An unexpected server error occurred.', status, _responseText, _headers);
-            });
+            if (status === 400 && response.result) {
+                const result400 = ProblemDetails.fromJS(response.result);
+                return throwException('A server side error occurred.', status, message, _headers, result400);
+            } else {
+                return throwException(message, status, message, _headers);
+            }
         }
-        return Promise.resolve<string>(null as any);
     }
 
     /**
@@ -174,34 +100,26 @@ export class TemplateClient {
             },
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.http.fetch(url_, options_).then((_response) => {
             return this.processUpdateCustomSubmodel(_response);
         });
     }
 
-    protected processUpdateCustomSubmodel(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && response.headers.forEach) {
-            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
+    protected processUpdateCustomSubmodel(response: ApiResponseWrapper<unknown>): Promise<void> {
+        if (response.isSuccess) {
+            return Promise.resolve();
+        } else {
+            const status = response.httpStatus || 500;
+            const message = response.message || 'An unexpected server error occurred.';
+            let _headers: any = {};
+
+            if (status === 400 && response.result) {
+                const result400 = ProblemDetails.fromJS(response.result);
+                return throwException('A server side error occurred.', status, message, _headers, result400);
+            } else {
+                return throwException(message, status, message, _headers);
+            }
         }
-        if (status === 204) {
-            return response.text().then((_responseText) => {
-                return;
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-                let result400: any = null;
-                let resultData400 = _responseText === '' ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result400 = ProblemDetails.fromJS(resultData400);
-                return throwException('A server side error occurred.', status, _responseText, _headers, result400);
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-                return throwException('An unexpected server error occurred.', status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(null as any);
     }
 }
 
@@ -260,64 +178,6 @@ export interface IProblemDetails {
     extensions?: { [key: string]: any };
 
     [key: string]: any;
-}
-
-export class AasListEntry implements IAasListEntry {
-    thumbnailUrl?: string | undefined;
-    aasId?: string | undefined;
-    assetId?: string | undefined;
-    manufacturerProductDesignation?: { [key: string]: string } | undefined;
-    manufacturerName?: { [key: string]: string } | undefined;
-    productGroup?: string | undefined;
-
-    constructor(data?: IAasListEntry) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property)) (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.thumbnailUrl = _data['thumbnailUrl'];
-            this.aasId = _data['aasId'];
-            this.assetId = _data['assetId'];
-            if (_data['manufacturerProductDesignation']) {
-                this.manufacturerProductDesignation = {} as any;
-                for (let key in _data['manufacturerProductDesignation']) {
-                    if (_data['manufacturerProductDesignation'].hasOwnProperty(key))
-                        (<any>this.manufacturerProductDesignation)![key] = _data['manufacturerProductDesignation'][key];
-                }
-            }
-            if (_data['manufacturerName']) {
-                this.manufacturerName = {} as any;
-                for (let key in _data['manufacturerName']) {
-                    if (_data['manufacturerName'].hasOwnProperty(key))
-                        (<any>this.manufacturerName)![key] = _data['manufacturerName'][key];
-                }
-            }
-            this.productGroup = _data['productGroup'];
-        }
-    }
-}
-
-export interface IAasListEntry {
-    thumbnailUrl?: string | undefined;
-    aasId?: string | undefined;
-    assetId?: string | undefined;
-    manufacturerProductDesignation?: { [key: string]: string } | undefined;
-    manufacturerName?: { [key: string]: string } | undefined;
-    productGroup?: string | undefined;
-}
-
-export interface IAas {
-    aasId?: string;
-    assetIdShort?: string | undefined;
-}
-
-export interface IAddDataToAasResponse {
-    results?: AasDataSupplyResult[];
 }
 
 export class AasDataSupplyResult implements IAasDataSupplyResult {

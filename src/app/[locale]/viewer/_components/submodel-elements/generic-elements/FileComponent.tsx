@@ -1,16 +1,17 @@
-import { Box, Button, Link, styled, Typography, Skeleton } from '@mui/material';
+import { Box, Button, Link, Skeleton, styled, Typography } from '@mui/material';
 import { ModelFile } from 'lib/api/aas/models';
 import { useState } from 'react';
 import { getSanitizedHref } from 'lib/util/HrefUtil';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { getAttachmentFromSubmodelElement } from 'lib/services/repository-access/repositorySearchActions';
+import { getAttachmentFromSubmodelElement } from 'lib/services/submodel-repository-service/submodelRepositoryActions';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { useTranslations } from 'next-intl';
 import ImagePreviewDialog from './ImagePreviewDialog';
-import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 import { useSession } from 'next-auth/react';
 import { getFileUrl } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentUtils';
+import { useSubmodelRepositoryUrl } from 'app/[locale]/viewer/_components/submodel/SubmodelRepositoryUrlProvider';
+import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 
 const StyledFileImg = styled('img')(() => ({
     objectFit: 'contain',
@@ -24,16 +25,16 @@ type FileComponentProps = {
     readonly submodelId?: string;
     readonly submodelElementPath?: string;
     readonly withPreviewDialog?: boolean;
-    readonly repositoryUrl?: string;
 };
 
-export function FileComponent({ file, submodelId, submodelElementPath, withPreviewDialog = true, repositoryUrl }: FileComponentProps) {
+export function FileComponent({ file, submodelId, submodelElementPath, withPreviewDialog = true }: FileComponentProps) {
     const [image, setImage] = useState<string | null>(null);
     const [fileUrl, setFileUrl] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [, setLoadError] = useState<boolean>(false);
-    const { aasOriginUrl } = useCurrentAasContext();
+    const submodelRepositoryUrl = useSubmodelRepositoryUrl();
     const { data: session } = useSession();
+    const currentAASContext = useCurrentAasContext();
 
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewFile, setPreviewFile] = useState<ModelFile | null>(null);
@@ -58,12 +59,11 @@ export function FileComponent({ file, submodelId, submodelElementPath, withPrevi
             if (file.value && file.contentType?.startsWith('image')) {
                 if (isValidUrl(file.value)) {
                     setImage(file.value);
-                } else if (submodelId && submodelElementPath) {
-                    const imageResponse = await getAttachmentFromSubmodelElement(
-                        submodelId,
-                        submodelElementPath,
-                        aasOriginUrl ?? undefined,
-                    );
+                } else if (submodelId && submodelElementPath && submodelRepositoryUrl) {
+                    const imageResponse = await getAttachmentFromSubmodelElement(submodelId, submodelElementPath, {
+                        infrastructureName: currentAASContext.infrastructureName || '',
+                        url: submodelRepositoryUrl,
+                    });
                     if (!imageResponse.isSuccess) {
                         console.error('Image not found' + imageResponse.message);
                         setLoadError(true);
@@ -93,11 +93,13 @@ export function FileComponent({ file, submodelId, submodelElementPath, withPrevi
         if (isValidUrl(file.value)) {
             setFileUrl(file.value);
         } else {
-            const repoUrl = repositoryUrl || aasOriginUrl;
-            if (repoUrl && submodelId && submodelElementPath) {
-                const attachmentUrl = `${repoUrl}/submodels/${encodeURIComponent(btoa(submodelId))}/submodel-elements/${submodelElementPath}/attachment`;
+            if (submodelRepositoryUrl && submodelId && submodelElementPath) {
+                const attachmentUrl = `${submodelRepositoryUrl}/submodels/${encodeURIComponent(btoa(submodelId))}/submodel-elements/${submodelElementPath}/attachment`;
                 try {
-                    const resolvedUrl = await getFileUrl(attachmentUrl, session?.accessToken, repoUrl);
+                    const resolvedUrl = await getFileUrl(attachmentUrl, session?.accessToken, {
+                        infrastructureName: currentAASContext.infrastructureName || '',
+                        url: submodelRepositoryUrl,
+                    });
                     setFileUrl(resolvedUrl || attachmentUrl);
                 } catch (error) {
                     console.error('Error resolving file URL:', error);
@@ -112,7 +114,7 @@ export function FileComponent({ file, submodelId, submodelElementPath, withPrevi
     useAsyncEffect(async () => {
         await getImage();
         await resolveFileUrl();
-    }, [file.value, session?.accessToken, repositoryUrl, aasOriginUrl, submodelId, submodelElementPath]);
+    }, [file.value, session?.accessToken, submodelRepositoryUrl, submodelId, submodelElementPath]);
 
     if (!file) {
         return <></>;

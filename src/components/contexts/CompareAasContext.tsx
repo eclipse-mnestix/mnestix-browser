@@ -3,12 +3,12 @@ import { createContext, PropsWithChildren, useContext, useEffect, useState } fro
 import { SubmodelCompareData } from 'lib/types/SubmodelCompareData';
 import { generateSubmodelCompareData, isCompareData, isCompareDataRecord } from 'lib/util/CompareAasUtil';
 import {
-    getSubmodelFromSubmodelDescriptor,
     performFullAasSearch,
-    performSubmodelFullSearch,
-} from 'lib/services/search-actions/searchActions';
+    performSubmodelSearch,
+} from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
 import { SubmodelDescriptor } from 'lib/types/registryServiceTypes';
-import { AasData } from 'lib/services/search-actions/AasSearcher';
+import { AasData } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
+import { getSubmodelFromSubmodelDescriptor } from 'lib/services/submodel-registry-service/submodelRegistryActions';
 
 type CompareAasContextType = {
     compareAas: CompareAAS[];
@@ -68,6 +68,7 @@ export const CompareAasContextProvider = (props: PropsWithChildren) => {
                     inputAas.submodels,
                     compareAas.length,
                     data.submodelDescriptors,
+                    data.infrastructureName || undefined,
                 );
                 setCompareData(compareDataTemp);
             }
@@ -145,14 +146,16 @@ export const CompareAasContextProvider = (props: PropsWithChildren) => {
         input: Reference[],
         aasCount: number,
         submodelDescriptors?: SubmodelDescriptor[],
+        infrastructureName?: string,
     ) => {
         const newCompareData: SubmodelCompareData[] = [];
 
         if (submodelDescriptors && submodelDescriptors.length > 0) {
             for (const submodelDescriptor of submodelDescriptors) {
-                const submodelResponse = await getSubmodelFromSubmodelDescriptor(
-                    submodelDescriptor.endpoints[0].protocolInformation.href,
-                );
+                const submodelResponse = await getSubmodelFromSubmodelDescriptor({
+                    url: submodelDescriptor.endpoints[0].protocolInformation.href,
+                    infrastructureName: infrastructureName || '',
+                });
                 if (submodelResponse.isSuccess) {
                     const dataRecord = generateSubmodelCompareData(submodelResponse.result);
                     newCompareData.push(dataRecord);
@@ -161,9 +164,13 @@ export const CompareAasContextProvider = (props: PropsWithChildren) => {
         } else {
             await Promise.all(
                 input.map(async (reference) => {
-                    const { result: searchResult, isSuccess: success } = await performSubmodelFullSearch(reference);
-                    if (success && searchResult) {
-                        const dataRecord = generateSubmodelCompareData(searchResult.submodel);
+                    if (!infrastructureName) return;
+                    const { result: result, isSuccess: success } = await performSubmodelSearch(
+                        reference,
+                        infrastructureName,
+                    );
+                    if (success && result) {
+                        const dataRecord = generateSubmodelCompareData(result.searchResult);
                         newCompareData.push(dataRecord);
                     }
                 }),

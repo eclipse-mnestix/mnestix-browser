@@ -14,6 +14,7 @@ export type CurrentAasContextType = {
     aasOriginUrl: [string | undefined, React.Dispatch<React.SetStateAction<string | undefined>>];
     isLoadingAas: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
     isLoadingSubmodels: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+    infrastructureName: [string | undefined, React.Dispatch<React.SetStateAction<string | undefined>>];
 };
 
 export type SubmodelOrIdReference = {
@@ -37,16 +38,20 @@ export function useCurrentAasContext() {
         aasOriginUrl: context.aasOriginUrl[0],
         isLoadingAas: context.isLoadingAas[0],
         isLoadingSubmodels: context.isLoadingSubmodels[0],
+        infrastructureName: context.infrastructureName[0],
     };
 }
 
-export const CurrentAasContextProvider = (props: PropsWithChildren<{ aasId: string; repoUrl?: string }>) => {
+export const CurrentAasContextProvider = (
+    props: PropsWithChildren<{ aasId: string; repoUrl?: string; infrastructureName?: string }>,
+) => {
     const aasState = useState<AssetAdministrationShell>();
     const registryAasData = useState<RegistryAasData>();
     const submodelState = useState<SubmodelOrIdReference[]>([]);
     const aasOriginUrl = useState<string>();
     const isLoadingAas = useState<boolean>(true);
     const isLoadingSubmodels = useState<boolean>(true);
+    const infrastructureName = useState<string | undefined>(props.infrastructureName);
 
     const context = {
         aasState,
@@ -55,6 +60,7 @@ export const CurrentAasContextProvider = (props: PropsWithChildren<{ aasId: stri
         aasOriginUrl,
         isLoadingAas,
         isLoadingSubmodels,
+        infrastructureName,
     };
     useAasLoader(context, props.aasId, props.repoUrl);
 

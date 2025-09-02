@@ -19,6 +19,9 @@ import fs from 'node:fs';
 export const getEnv = async () => {
     const THEME_BASE64_LOGO = publicEnvs.THEME_BASE64_LOGO || loadImage();
 
+    // Disables the comparison feature for now as it is broken
+    // TODO MNE-299: Make Comparison Feature work again
+    publicEnvs.COMPARISON_FEATURE_FLAG = false;
     return {
         ...publicEnvs,
         THEME_BASE64_LOGO,

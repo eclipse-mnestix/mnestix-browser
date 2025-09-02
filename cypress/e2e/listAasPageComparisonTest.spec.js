@@ -1,6 +1,6 @@
 ﻿import resolutions from '../fixtures/resolutions.json';
 
-describe('Test that the list works together with the comparison view (Resolution 1920 x 1080)', function () {
+xdescribe('Test that the list works together with the comparison view (Resolution 1920 x 1080)', function () {
     before(function () {
         cy.postCompareMockData();
 

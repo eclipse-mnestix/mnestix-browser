@@ -41,7 +41,7 @@ export async function createRbacRule(newRule: Omit<BaSyxRbacRule, 'idShort'>) {
         return errorWrapper;
     }
     logInfo(logger, 'createRbacRule', 'Creating new RBAC rule', { New_rule: newRule.role });
-    const client = RbacRulesService.createService(logger);
+    const client = await RbacRulesService.createService(logger);
     const res = await client.createRule(newRule);
     return res;
 }
@@ -56,7 +56,7 @@ export async function getRbacRules() {
         return errorWrapper;
     }
     logInfo(logger, 'getRbacRules', 'Querying all RBAC rules');
-    const client = RbacRulesService.createService(logger);
+    const client = await RbacRulesService.createService(logger);
     const rules = await client.getRules();
     return rules;
 }
@@ -71,7 +71,7 @@ export async function deleteRbacRule(idShort: string) {
         return errorWrapper;
     }
     logInfo(logger, 'deleteRbacRule', 'Deleting RBAC rule', { Rule_idShort: idShort });
-    const client = RbacRulesService.createService(logger);
+    const client = await RbacRulesService.createService(logger);
     const res = await client.delete(idShort);
     return res;
 }
@@ -89,7 +89,7 @@ export async function deleteAndCreateRbacRule(idShort: string, rule: BaSyxRbacRu
         Rule_idShort: idShort,
         New_rule: rule.role,
     });
-    const client = RbacRulesService.createService(logger);
+    const client = await RbacRulesService.createService(logger);
     const res = await client.deleteAndCreate(idShort, rule);
     return res;
 }

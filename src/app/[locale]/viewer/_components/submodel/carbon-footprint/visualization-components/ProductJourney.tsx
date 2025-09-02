@@ -16,6 +16,7 @@ import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/
 import { ProductJourneyAddressList } from './ProductJourneyAddressList';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
+import { useShowError } from 'lib/hooks/UseShowError';
 
 export type Address = {
     street?: string;
@@ -37,6 +38,7 @@ export function ProductJourney(props: { addressesPerLifeCyclePhase: AddressPerLi
     const mapRef = useRef<Map>(null);
     const [enrichedAddresses, setEnrichedAddresses] = useState<AddressPerLifeCyclePhase[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const { showError } = useShowError();
 
     useAsyncEffect(async () => {
         setIsLoading(true);
@@ -44,7 +46,9 @@ export function ProductJourney(props: { addressesPerLifeCyclePhase: AddressPerLi
             const addresses = await enrichAddressesWithCoordinates(props.addressesPerLifeCyclePhase);
             setEnrichedAddresses(addresses);
         } catch (error) {
-            console.error('Error enriching addresses:', error);
+            showError(
+                new Error(`Error enriching addresses: ${error instanceof Error ? error.message : String(error)}`),
+            );
             setEnrichedAddresses(props.addressesPerLifeCyclePhase);
         } finally {
             setIsLoading(false);

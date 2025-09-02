@@ -169,7 +169,8 @@
         "title": "Unauthorized access"
       },
       "unexpectedError": "Unexpected error",
-      "urlNotFound": "No AAS with the given ID."
+      "urlNotFound": "No AAS with the given ID.",
+      "generic": "Something went wrong."
     },
     "footer": {
       "about": "About Mnestix",
@@ -290,13 +291,17 @@
     },
     "dashboard": {
       "aasOrAssetId": "AAS ID or Asset ID",
+      "infrastructure": "Infrastructure",
+      "searchAllInfrastructures": "Search all",
       "digitalTwinMadeEasyText": "Digital Twin made easy.",
-      "enterManuallyLabel": "or enter manually",
-      "findOutMoreText": "Find out more",
-      "listBtnLabel": "or select via list",
+      "findOutMoreHeader": "Find out more",
+      "findOutMoreText": "Mnestix' latest version",
+      "listCardHeader": "Select via List",
+      "listBtnLabel": "See what is already in your repository",
       "listBtnText": "Go to AAS List",
       "scanIdLabel": "Scan AAS ID or Asset ID",
-      "welcomeText": "Welcome to Mnestix"
+      "welcomeText": "Welcome to Mnestix",
+      "enterManuallyLabel": "Enter manually"
     },
     "discoveryList": {
       "errors": {
@@ -346,27 +351,54 @@
         "resetButton": "Reset to default",
         "saveButton": "Save all"
       },
-      "connections": {
-        "aasRepository": {
-          "connectionType": "AAS_REPOSITORY",
-          "repositories": "AAS repositories",
-          "repositoryDefaultLabel": "Default AAS repository",
-          "repositoryLabel": "AAS repository",
-          "repositoryUrlLabel": "AAS repository URL"
+      "infrastructure": {
+        "form": {
+          "name": "Name",
+          "logoUrl": "Logo URL",
+          "endpoints": "Endpoints",
+          "endpointUrl": "Endpoint URL",
+          "addEndpoint": "Add endpoint",
+          "security": "Infrastructure Security",
+          "securityType": "Security type",
+          "headerName": "Header name",
+          "headerValue": "Header value",
+          "nameRequired": "Name is required",
+          "urlFieldRequired": "URL field is required",
+          "urlFieldInvalid": "Must be a valid URL",
+          "securityTypeRequired": "Security type is required",
+          "headerNameRequired": "Header name is required",
+          "headerValueRequired": "Header value is required",
+          "securityTypeNone": "None",
+          "securityTypeMnestixProxy": "Mnestix Repository Proxy",
+          "securityTypeHeaderSecurity": "Header Security",
+          "proxyHeaderValue": "Mnestix Proxy Header Value",
+          "proxyHeaderValueRequired": "Mnestix Proxy Header Value is required",
+          "saveSuccess": "Infrastructure saved successfully",
+          "saveError": "Error saving infrastructure",
+          "createNew": "Create New Infrastructure",
+          "deleteConfirm": "Are you sure you want to delete the infrastructure? This action cannot be undone.",
+          "deleteSuccess": "Infrastructure deleted successfully",
+          "deleteError": "Failed to delete infrastructure",
+          "deleteDialogTitle": "Delete Infrastructure",
+          "deleteWarning": "This action cannot be undone and will permanently remove all associated connections and security settings.",
+          "cancel": "Cancel",
+          "delete": "Delete",
+          "connectionTypes": "Connection Interface Types",
+          "connectionTypesRequired": "At least one connection interface type must be selected",
+          "save": "Save",
+          "nameAlreadyExists": "An infrastructure with this name already exists",
+          "defaultInfrastructureReadonly": "The default infrastructure can only be changed in the deployment via the environment variables. Please contact your administrator to make changes.",
+          "headerKeyDangerous": "The header key is considered dangerous.",
+          "headerKeyInvalidFormat": "The header key is not in a valid format.",
+          "headerKeyCrLfNotAllowed": "The header key must not contain CRLF sequences.",
+          "headerValueTooLong": "The header value is too long.",
+          "headerValueCrLfNotAllowed": "The header value must not contain CRLF sequences.",
+          "headerValueIllegalChars": "The header value must not contain illegal characters."
         },
-        "addButton": "Add more",
-        "resetSuccessful": "Connections were reset.",
-        "submodelRepository": {
-          "connectionType": "SUBMODEL_REPOSITORY",
-          "repositories": "Submodel repositories",
-          "repositoryDefaultLabel": "Default submodel repository",
-          "repositoryLabel": "Submodel repository",
-          "repositoryUrlLabel": "Submodel repository URL"
-        },
-        "subtitle": "Define which data connections should be used.",
-        "title": "Data sources",
+        "subtitle": "Define which infrastructures should be used.",
+        "title": "Infrastructures",
         "urlFieldNoTrailingSlash": "The URL must not end with a slash (/).",
-        "urlFieldRequired": "URL field is required"
+        "noInfrastructuresFound": "No infrastructures found"
       },
       "header": "Settings",
       "idStructure": {
@@ -516,7 +548,7 @@
     },
     "transfer": {
       "aasRepository": "AAS repository",
-      "chooseRepository": "Choose AAS repository",
+      "chooseRepository": "Choose AAS repository to transfer into:",
       "chooseSubmodelRepository": "Choose submodel repository (optional)",
       "errorToast": "Transfer of AAS not successful",
       "partiallyFailedToast": "Failed to transfer element",
@@ -526,11 +558,19 @@
       "submodelRepository": "Submodel repository",
       "submodelRepositoryApiKey": "Submodel repository APIKey",
       "submodelRepositoryLabel": "List of submodel repositories",
-      "subtitle": "To import this AAS to another repository, fill out the following fields.",
+      "subtitle": "Transfer \"{aasId}\" from \"{repoUrl}\" to:",
       "successfulToast": "Transfer of AAS successful",
-      "title": "Import",
+      "title": "Transfer",
       "useAasRepository": "Use AAS repository",
-      "warningToast": "AAS was only partially transferred."
+      "warningToast": "AAS was only partially transferred.",
+      "aasIdentifier": {
+        "display": "\"{aasId}\"",
+        "default": "Unknown AAS ID"
+      },
+      "aasOriginUrl": {
+        "display": "\"{repoUrl}\"",
+        "default": "Unknown AAS Origin URL"
+      }
     }
   }
 }

@@ -6,7 +6,7 @@ import PictureTableCell from 'components/basics/listBasics/PictureTableCell';
 import { ArrowForward } from '@mui/icons-material';
 import { RoundedIconButton } from 'components/basics/Buttons';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { getThumbnailFromShell } from 'lib/services/repository-access/repositorySearchActions';
+import { getThumbnailFromShell } from 'lib/services/aas-repository-service/aasRepositoryActions';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { useState } from 'react';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
@@ -17,9 +17,10 @@ import { useLocale, useTranslations } from 'next-intl';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import useSWR from 'swr';
 import { useEnv } from 'app/EnvProvider';
+import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 
 type AasTableRowProps = {
-    repositoryUrl: string;
+    repository: RepositoryWithInfrastructure;
     aasListEntry: ListEntityDto;
     comparisonFeatureFlag: boolean | undefined;
     checkBoxDisabled: (aasId: string | undefined) => boolean | undefined;
@@ -35,7 +36,7 @@ const tableBodyText = {
 };
 export const AasListTableRow = (props: AasTableRowProps) => {
     const {
-        repositoryUrl,
+        repository,
         aasListEntry,
         comparisonFeatureFlag,
         checkBoxDisabled,
@@ -48,12 +49,12 @@ export const AasListTableRow = (props: AasTableRowProps) => {
     const env = useEnv();
     const locale = useLocale();
     const { data: nameplateValues, isLoading: isNameplateValueLoading } = useSWR(
-        [repositoryUrl, aasListEntry.aasId],
-        async ([url, aasId]) => await getNameplateValuesForAAS(url, aasId),
+        [repository, aasListEntry.aasId],
+        async ([repo, aasId]) => await getNameplateValuesForAAS(repo, aasId),
     );
     const { data: thumbnailResponse } = useSWR(
-        [aasListEntry.aasId, repositoryUrl],
-        async ([aasId, repositoryUrl]) => await getThumbnailFromShell(aasId, repositoryUrl),
+        [aasListEntry.aasId, repository],
+        async ([aasId, repo]) => await getThumbnailFromShell(aasId, repo),
         {
             revalidateIfStale: false,
             revalidateOnFocus: false,
@@ -65,7 +66,14 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         const baseUrl = window.location.origin;
         const pageToGo = env.PRODUCT_VIEW_FEATURE_FLAG ? '/product' : '/viewer';
 
-        window.open(baseUrl + `${pageToGo}/${encodeBase64(listEntry.aasId)}`, '_blank');
+        const repoUrlParam = repository.url ? `?repoUrl=${repository.url}` : '';
+        const infrastructureParam = repository.infrastructureName
+            ? `&infrastructure=${repository.infrastructureName}`
+            : '';
+        window.open(
+            baseUrl + `${pageToGo}/${encodeBase64(listEntry.aasId)}${repoUrlParam}${infrastructureParam}`,
+            '_blank',
+        );
     };
 
     const translateListText = (property: MultiLanguageValueOnly | undefined) => {
@@ -92,7 +100,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
 
         if (isValidUrl(aasListEntry.thumbnail)) {
             setThumbnailUrl(aasListEntry.thumbnail);
-        } else if (aasListEntry.aasId && repositoryUrl) {
+        } else if (aasListEntry.aasId && repository) {
             if (thumbnailResponse?.isSuccess) {
                 const blob = mapFileDtoToBlob(thumbnailResponse?.result);
                 const blobUrl = URL.createObjectURL(blob);
