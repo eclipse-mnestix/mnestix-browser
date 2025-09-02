@@ -38,6 +38,7 @@ export const ExpandableTreeitem = React.forwardRef(function CustomContent(props:
                         whiteSpace: 'nowrap',
                     }}
                     className={treeItemClasses.label}
+                    data-testid="tree-item-label"
                 >
                     {label}
                 </Typography>
