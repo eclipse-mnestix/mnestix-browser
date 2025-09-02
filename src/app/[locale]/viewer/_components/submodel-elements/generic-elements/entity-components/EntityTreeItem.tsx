@@ -92,7 +92,7 @@ const CustomContent = React.forwardRef(function CustomContent(
                         <TreeItemIcon status={status} />
                     </TreeItemIconContainer>
                     <TreeItemCheckbox {...getCheckboxProps()} />
-                    <Box sx={{ flexGrow: 1, display: 'flex', gap: 1 }}>
+                    <Box sx={{ flexGrow: 1, display: 'flex', gap: 1 }} data-testid="bom-entity">
                         <ExpandableTreeitem dataIcon={dataIcon} itemId={itemId} label={label} {...other} />
                         <Box sx={{ ml: 'auto', pl: 1, display: 'flex' }}>
                             {assetId && !showDataDirectly && (

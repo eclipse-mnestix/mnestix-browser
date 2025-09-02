@@ -132,7 +132,7 @@ const CustomContent = React.forwardRef(function CustomContent(
                     >
                         <Box>
                             {isAboutToBeDeletedLocally || isParentAboutToBeDeleted ? (
-                                <>
+                                <Box display="flex">
                                     <Typography
                                         component="div"
                                         className={treeItemClasses.label}
@@ -143,16 +143,16 @@ const CustomContent = React.forwardRef(function CustomContent(
                                     {hasValue && (
                                         <TextSnippet fontSize="small" sx={{ color: 'text.disabled', ml: '3px' }} />
                                     )}
-                                </>
+                                </Box>
                             ) : (
-                                <>
+                                <Box display="flex">
                                     <Typography component="div" className={treeItemClasses.label}>
                                         {label}
                                     </Typography>
                                     {hasValue && (
                                         <TextSnippet fontSize="small" sx={{ color: 'text.secondary', ml: '3px' }} />
                                     )}
-                                </>
+                                </Box>
                             )}
                         </Box>
                         <TemplateEditTreeItemMenu

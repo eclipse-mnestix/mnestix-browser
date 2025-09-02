@@ -20,11 +20,11 @@ import { TemplateEditTree } from '../_components/template-edit/TemplateEditTree'
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import React, { useEffect, useState } from 'react';
 import {
-    updateNodeIds,
-    getParentOfElement,
-    splitIdIntoArray,
-    rewriteNodeIds,
     generateSubmodelViewObjectFromSubmodelElement,
+    getParentOfElement,
+    rewriteNodeIds,
+    splitIdIntoArray,
+    updateNodeIds,
 } from 'lib/util/SubmodelViewObjectUtil';
 import { TemplateEditFields, TemplateEditFieldsProps } from '../_components/template-edit/TemplateEditFields';
 import { useAuth } from 'lib/hooks/UseAuth';
@@ -425,10 +425,17 @@ export default function Page() {
                     </Box>
                     <Divider orientation="vertical" flexItem />
                     <Box sx={{ p: 2, flex: 1, overflow: 'auto' }}>
-                        <TemplateEditFields
-                            {...editFieldsProps}
-                            isCustomTemplate={isCustomTemplate(localFrontendTemplate)}
-                        />
+                        {isLoading ? (
+                            <>
+                                <Skeleton variant="text" width="80%" sx={{ my: 2 }} />
+                                <Skeleton variant="text" width="50%" />
+                            </>
+                        ) : (
+                            <TemplateEditFields
+                                {...editFieldsProps}
+                                isCustomTemplate={isCustomTemplate(localFrontendTemplate)}
+                            />
+                        )}
                     </Box>
                 </Paper>
                 <TemplateDeleteDialog
