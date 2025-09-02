@@ -42,10 +42,10 @@ describe('Test the Bill-of-Material', function () {
 
             it('Test closing and opening the tree tabs', function () {
                 //close the first item of the tree and assert the tree only has one item left
-                cy.getByTestId('ExpandMoreIcon').should('exist').eq(0).as('FirstEntityOpen');
+                cy.getByTestId('tree-item-label').should('exist').eq(0).as('FirstEntityOpen');
                 cy.get('@FirstEntityOpen').click();
                 cy.getByTestId('bom-entity').should('have.length', 1);
-                cy.getByTestId('ChevronRightIcon').should('exist').eq(0).as('FirstEntityClosed');
+                cy.getByTestId('tree-item-label').should('exist').eq(0).as('FirstEntityClosed');
 
                 //open the first item of the tree again and assert that there are more items now
                 cy.get('@FirstEntityClosed').click();
