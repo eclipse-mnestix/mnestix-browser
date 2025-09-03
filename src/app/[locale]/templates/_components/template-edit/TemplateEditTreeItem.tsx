@@ -77,16 +77,16 @@ const CustomContent = React.forwardRef(function CustomContent(
         status,
     } = useTreeItem({ id, itemId, children, label, disabled, rootRef: ref });
 
-    const [isAboutToBeDeletedLocally, setIsAboutToBeDeletedLocally] = useState(false);
+    const [isMarkedForDeletion, setIsMarkedForDeletion] = useState(false);
     const t = useTranslations('pages.templates');
 
     React.useEffect(() => {
-        setIsAboutToBeDeletedLocally(false);
+        setIsMarkedForDeletion(false);
     }, [label, semanticId]);
 
     React.useEffect(() => {
         if (props.isAboutToBeDeleted) {
-            setIsAboutToBeDeletedLocally(true);
+            setIsMarkedForDeletion(true);
         }
     }, [props.isAboutToBeDeleted]);
 
@@ -103,12 +103,12 @@ const CustomContent = React.forwardRef(function CustomContent(
 
     const handleDelete = () => {
         onDelete(itemId);
-        setIsAboutToBeDeletedLocally(true);
+        setIsMarkedForDeletion(true);
     };
 
     const handleRestore = () => {
         onRestore(itemId);
-        setIsAboutToBeDeletedLocally(false);
+        setIsMarkedForDeletion(false);
     };
 
     return (
@@ -131,7 +131,7 @@ const CustomContent = React.forwardRef(function CustomContent(
                         onClick={handleSelectionClick}
                     >
                         <Box>
-                            {isAboutToBeDeletedLocally || isParentAboutToBeDeleted ? (
+                            {isMarkedForDeletion || isParentAboutToBeDeleted ? (
                                 <Box display="flex">
                                     <Typography
                                         component="div"
@@ -162,7 +162,7 @@ const CustomContent = React.forwardRef(function CustomContent(
                             onDelete={handleDelete}
                             onRestore={handleRestore}
                             nodeId={itemId}
-                            isElementAboutToBeDeleted={isAboutToBeDeleted || isAboutToBeDeletedLocally}
+                            isElementAboutToBeDeleted={isAboutToBeDeleted || isMarkedForDeletion}
                             isParentAboutToBeDeleted={isParentAboutToBeDeleted}
                         />
                     </Box>
