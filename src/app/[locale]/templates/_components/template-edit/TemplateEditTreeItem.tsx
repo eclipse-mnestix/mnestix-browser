@@ -1,200 +1,178 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { TreeItem, TreeItemContentProps, TreeItemProps, useTreeItemState } from '@mui/x-tree-view';
-import clsx from 'clsx';
+import { treeItemClasses, TreeItemRoot } from '@mui/x-tree-view';
 import Typography from '@mui/material/Typography';
 import { Box, styled } from '@mui/material';
 import { TextSnippet } from '@mui/icons-material';
 import { MultiplicityEnum } from 'lib/enums/Multiplicity.enum';
 import { TemplateEditTreeItemMenu } from './TemplateEditTreeItemMenu';
 import { useTranslations } from 'next-intl';
+import { useTreeItem, UseTreeItemParameters } from '@mui/x-tree-view/useTreeItem';
+import {
+    TreeItemCheckbox,
+    TreeItemContent,
+    TreeItemGroupTransition,
+    TreeItemIconContainer,
+} from '@mui/x-tree-view/TreeItem';
+import { TreeItemIcon } from '@mui/x-tree-view/TreeItemIcon';
+import { TreeItemProvider } from '@mui/x-tree-view/TreeItemProvider';
 
-interface CustomTreeItemProps extends TreeItemProps {
-    hasValue?: boolean;
-    customOnSelect: () => void;
-    multiplicity: MultiplicityEnum | undefined;
-    onDuplicate: (nodeId: string) => void;
-    onDelete: (nodeId: string) => void;
-    onRestore: (nodeId: string) => void;
-    getNumberOfElementsWithSameSemanticId: (semanticId: string | undefined) => number;
-    semanticId: string | undefined;
-    isParentAboutToBeDeleted: boolean | undefined;
-    isAboutToBeDeleted: boolean | undefined;
-}
-
-interface CustomTreeItemContentProps extends TreeItemContentProps {
-    hasValue?: boolean;
-    customOnSelect: () => void;
-    multiplicity: MultiplicityEnum | undefined;
-    onDuplicate: (nodeId: string) => void;
-    onDelete: (nodeId: string) => void;
-    onRestore: (nodeId: string) => void;
-    getNumberOfElementsWithSameSemanticId: (semanticId: string | undefined) => number;
-    semanticId: string | undefined;
-    isParentAboutToBeDeleted: boolean | undefined;
-    isAboutToBeDeleted: boolean | undefined;
-}
-
-const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
-    '.MuiTreeItem-content': {
-        userSelect: 'none',
-        margin: 0,
-        '&.Mui-focused': {
-            backgroundColor: 'transparent',
-        },
-        '&.Mui-focused:hover': {
-            backgroundColor: theme.palette.action.hover,
-        },
-        '&.Mui-focused.Mui-selected': {
-            backgroundColor: theme.palette.action.selected,
-        },
+const CustomTreeItemContent = styled(TreeItemContent)(({ theme }) => ({
+    userSelect: 'none',
+    '&[data-expanded]': {
+        backgroundColor: 'transparent',
+    },
+    '&:hover': {
+        backgroundColor: theme.palette.action.hover,
+    },
+    '&[data-focused], &[data-selected], &[data-selected][data-focused]': {
+        backgroundColor: theme.palette.action.selected,
     },
 }));
 
-const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeItemContentProps, ref) {
+interface CustomTreeItemProps
+    extends Omit<UseTreeItemParameters, 'rootRef'>,
+        Omit<React.HTMLAttributes<HTMLLIElement>, 'onFocus'> {
+    hasValue?: boolean;
+    customOnSelect: () => void;
+    multiplicity: MultiplicityEnum | undefined;
+    onDuplicate: (nodeId: string) => void;
+    onDelete: (nodeId: string) => void;
+    onRestore: (nodeId: string) => void;
+    getNumberOfElementsWithSameSemanticId: (semanticId: string | undefined) => number;
+    semanticId: string | undefined;
+    isParentAboutToBeDeleted: boolean | undefined;
+    isAboutToBeDeleted: boolean | undefined;
+}
+const CustomContent = React.forwardRef(function CustomContent(
+    props: CustomTreeItemProps,
+    ref: React.Ref<HTMLLIElement>,
+) {
     const {
-        classes,
-        className,
+        id,
         label,
         itemId,
-        icon: iconProp,
-        expansionIcon,
-        displayIcon,
         hasValue,
         customOnSelect,
         multiplicity,
         getNumberOfElementsWithSameSemanticId,
         semanticId,
+        children,
+        disabled,
+        onDuplicate,
+        onDelete,
+        onRestore,
+        isParentAboutToBeDeleted,
+        isAboutToBeDeleted,
+        ...other
     } = props;
 
-    const { disabled, expanded, selected, focused, handleExpansion, handleSelection, preventSelection } =
-        useTreeItemState(itemId);
+    const {
+        getRootProps,
+        getContentProps,
+        getIconContainerProps,
+        getCheckboxProps,
 
-    const icon = iconProp || expansionIcon || displayIcon;
+        getGroupTransitionProps,
+        status,
+    } = useTreeItem({ id, itemId, children, label, disabled, rootRef: ref });
 
-    const [isAboutToBeDeleted, setIsAboutToBeDeleted] = useState(false);
+    const [isMarkedForDeletion, setIsMarkedForDeletion] = useState(false);
     const t = useTranslations('pages.templates');
 
     React.useEffect(() => {
-        setIsAboutToBeDeleted(false);
+        setIsMarkedForDeletion(false);
     }, [label, semanticId]);
 
     React.useEffect(() => {
         if (props.isAboutToBeDeleted) {
-            setIsAboutToBeDeleted(true);
+            setIsMarkedForDeletion(true);
         }
     }, [props.isAboutToBeDeleted]);
 
     React.useEffect(() => {
         // Trigger the customOnSelect initially for the first selected element, so the edit fields are displayed
-        if (selected) {
+        if (status.selected) {
             customOnSelect();
         }
     }, []);
 
-    const handleMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        preventSelection(event);
-    };
-
-    const handleExpansionClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        handleExpansion(event);
-    };
-
-    const handleSelectionClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const handleSelectionClick = () => {
         customOnSelect();
-        handleSelection(event);
     };
 
-    const onDelete = () => {
-        props.onDelete(itemId);
-        setIsAboutToBeDeleted(true);
+    const handleDelete = () => {
+        onDelete(itemId);
+        setIsMarkedForDeletion(true);
     };
 
-    const onRestore = () => {
-        props.onRestore(itemId);
-        setIsAboutToBeDeleted(false);
+    const handleRestore = () => {
+        onRestore(itemId);
+        setIsMarkedForDeletion(false);
     };
 
     return (
-        <Box
-            className={clsx(className, classes.root, {
-                [classes.expanded]: expanded,
-                [classes.selected]: selected,
-                [classes.focused]: focused,
-                [classes.disabled]: disabled,
-            })}
-            onMouseDown={handleMouseDown}
-            ref={ref as React.Ref<HTMLDivElement>}
-        >
-            <Box onClick={handleExpansionClick} className={classes.iconContainer} sx={{ py: 1 }}>
-                {icon}
-            </Box>
-            <Box onClick={handleSelectionClick} display="flex" sx={{ width: '100%' }}>
-                <Box sx={{ py: 1, pr: 1, display: 'flex' }} onClick={handleSelectionClick}>
-                    {isAboutToBeDeleted || props.isParentAboutToBeDeleted ? (
-                        <>
-                            <Typography component="div" className={classes.label} sx={{ color: 'text.disabled' }}>
-                                {`${label} (${t('messages.deleted')})`}
-                            </Typography>
-                            {hasValue && <TextSnippet fontSize="small" sx={{ color: 'text.disabled', ml: '3px' }} />}
-                        </>
-                    ) : (
-                        <>
-                            <Typography component="div" className={classes.label}>
-                                {label}
-                            </Typography>
-                            {hasValue && <TextSnippet fontSize="small" sx={{ color: 'text.secondary', ml: '3px' }} />}
-                        </>
-                    )}
-                </Box>
-            </Box>
-            <TemplateEditTreeItemMenu
-                elementMultiplicity={multiplicity}
-                numberOfThisElement={getNumberOfElementsWithSameSemanticId(semanticId)}
-                onDuplicate={props.onDuplicate}
-                onDelete={onDelete}
-                onRestore={onRestore}
-                nodeId={itemId}
-                isElementAboutToBeDeleted={props.isAboutToBeDeleted || isAboutToBeDeleted}
-                isParentAboutToBeDeleted={props.isParentAboutToBeDeleted}
-            />
-        </Box>
+        <TreeItemProvider itemId={itemId} id={id}>
+            <TreeItemRoot {...getRootProps(other)}>
+                <CustomTreeItemContent {...getContentProps()}>
+                    <TreeItemIconContainer {...getIconContainerProps()}>
+                        <TreeItemIcon status={status} />
+                    </TreeItemIconContainer>
+                    <TreeItemCheckbox {...getCheckboxProps()} />
+                    <Box
+                        sx={{
+                            py: 1,
+                            pr: 1,
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            width: '100%',
+                            alignItems: 'center',
+                        }}
+                        onClick={handleSelectionClick}
+                    >
+                        <Box>
+                            {isMarkedForDeletion || isParentAboutToBeDeleted ? (
+                                <Box display="flex">
+                                    <Typography
+                                        component="div"
+                                        className={treeItemClasses.label}
+                                        sx={{ color: 'text.disabled' }}
+                                    >
+                                        {`${label} (${t('messages.deleted')})`}
+                                    </Typography>
+                                    {hasValue && (
+                                        <TextSnippet fontSize="small" sx={{ color: 'text.disabled', ml: '3px' }} />
+                                    )}
+                                </Box>
+                            ) : (
+                                <Box display="flex">
+                                    <Typography component="div" className={treeItemClasses.label}>
+                                        {label}
+                                    </Typography>
+                                    {hasValue && (
+                                        <TextSnippet fontSize="small" sx={{ color: 'text.secondary', ml: '3px' }} />
+                                    )}
+                                </Box>
+                            )}
+                        </Box>
+                        <TemplateEditTreeItemMenu
+                            elementMultiplicity={multiplicity}
+                            numberOfThisElement={getNumberOfElementsWithSameSemanticId(semanticId)}
+                            onDuplicate={onDuplicate}
+                            onDelete={handleDelete}
+                            onRestore={handleRestore}
+                            nodeId={itemId}
+                            isElementAboutToBeDeleted={isAboutToBeDeleted || isMarkedForDeletion}
+                            isParentAboutToBeDeleted={isParentAboutToBeDeleted}
+                        />
+                    </Box>
+                </CustomTreeItemContent>
+                {children && <TreeItemGroupTransition {...getGroupTransitionProps()} />}
+            </TreeItemRoot>
+        </TreeItemProvider>
     );
 });
 
 export const TemplateEditTreeItem = (props: CustomTreeItemProps) => {
-    const {
-        customOnSelect,
-        hasValue,
-        multiplicity,
-        onDuplicate,
-        onDelete,
-        onRestore,
-        getNumberOfElementsWithSameSemanticId,
-        semanticId,
-        isParentAboutToBeDeleted,
-        isAboutToBeDeleted,
-        ...other
-    } = props;
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    return (
-        <StyledTreeItem
-            ContentComponent={CustomContent}
-            ContentProps={
-                {
-                    customOnSelect,
-                    hasValue,
-                    multiplicity,
-                    onDuplicate,
-                    onDelete,
-                    onRestore,
-                    getNumberOfElementsWithSameSemanticId,
-                    semanticId,
-                    isParentAboutToBeDeleted,
-                    isAboutToBeDeleted,
-                } as any
-            }
-            {...other}
-        />
-    );
+    return <CustomContent {...props} />;
 };

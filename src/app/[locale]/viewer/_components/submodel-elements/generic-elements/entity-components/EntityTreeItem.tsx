@@ -1,28 +1,46 @@
 import * as React from 'react';
-import { TreeItem, useTreeItemState } from '@mui/x-tree-view';
-import clsx from 'clsx';
-import { Box, Button, IconButton, styled } from '@mui/material';
-import { Entity, KeyTypes, RelationshipElement } from 'lib/api/aas/models';
+import { TreeItemRoot } from '@mui/x-tree-view';
+import { Box, Button, IconButton } from '@mui/material';
+import { Entity, KeyTypes, RelationshipElement, SubmodelElementChoice } from 'lib/api/aas/models';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
 import { ArrowForward, ArticleOutlined, InfoOutlined, PinDropOutlined } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import { GenericSubmodelElementComponent } from '../GenericSubmodelElementComponent';
 import { EntityDetailsDialog } from './EntityDetailsDialog';
 import { RelationShipDetailsDialog } from './RelationShipDetailsDialog';
-import {
-    CustomTreeItemContentProps,
-    CustomTreeItemProps,
-    ExpandableTreeitem,
-    getTreeItemStyle,
-} from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/TreeItem';
+import { ExpandableTreeitem } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/TreeItem';
 import { useTranslations } from 'next-intl';
 import { searchInAllDiscoveries } from 'lib/services/discovery-service/discoveryActions';
+import { TreeItemCheckbox, TreeItemGroupTransition, TreeItemIconContainer } from '@mui/x-tree-view/TreeItem';
+import { TreeItemIcon } from '@mui/x-tree-view/TreeItemIcon';
+import { TreeItemProvider } from '@mui/x-tree-view/TreeItemProvider';
+import { CustomTreeItemContent } from '../../../submodel/bill-of-applications/visualization-components/ApplicationTreeItem';
+import { useTreeItem, UseTreeItemParameters } from '@mui/x-tree-view/useTreeItem';
 
-const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeItemContentProps, ref) {
+interface EntityTreeItemProps
+    extends Omit<UseTreeItemParameters, 'rootRef'>,
+        Omit<React.HTMLAttributes<HTMLLIElement>, 'onFocus'> {
+    applicationUrl?: string;
+    data?: SubmodelElementChoice;
+}
+
+const CustomContent = React.forwardRef(function CustomContent(
+    props: EntityTreeItemProps,
+    ref: React.Ref<HTMLLIElement>,
+) {
     const t = useTranslations('pages.aasViewer.submodels');
     const navigate = useRouter();
-    const { classes, className, label, itemId, icon: iconProp, data, ...other } = props;
-    const { disabled, expanded, selected, focused, handleExpansion } = useTreeItemState(itemId);
+    const { id, label, itemId, children, data, disabled, ...other } = props;
+    const {
+        getRootProps,
+        getContentProps,
+        getIconContainerProps,
+        getCheckboxProps,
+
+        getGroupTransitionProps,
+        status,
+    } = useTreeItem({ id, itemId, children, label, disabled, rootRef: ref });
+
     const isEntity = data?.modelType === KeyTypes.Entity;
     const dataIcon = isEntity ? (
         <AssetIcon fontSize="small" color="primary" />
@@ -33,10 +51,6 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
     const assetId = isEntity ? data.globalAssetId : undefined;
     const showDataDirectly = [KeyTypes.Property, KeyTypes.MultiLanguageProperty].find((mt) => mt === data?.modelType);
     const [detailsModalOpen, setDetailsModalOpen] = React.useState(false);
-
-    const handleExpansionClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        handleExpansion(event);
-    };
 
     const handleAssetNavigateClick = async (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
         event.stopPropagation();
@@ -71,56 +85,52 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
     };
 
     return (
-        <>
-            <Box
-                className={clsx(className, classes.root, {
-                    [classes.expanded]: expanded,
-                    [classes.selected]: selected,
-                    [classes.focused]: focused,
-                    [classes.disabled]: disabled,
-                })}
-                onClick={handleExpansionClick}
-                ref={ref as React.Ref<HTMLDivElement>}
-                data-testid="bom-entity"
-            >
-                <ExpandableTreeitem
-                    icon={iconProp}
-                    dataIcon={dataIcon}
-                    classes={classes}
-                    itemId={itemId}
-                    label={label}
-                    {...other}
-                />
-                <Box sx={{ ml: 'auto', pl: 1, display: 'flex' }}>
-                    {assetId && !showDataDirectly && (
-                        <>
-                            <IconButton sx={{ mr: 1 }} onClick={handleDetailsClick}>
-                                <InfoOutlined data-testid="entity-info-icon" sx={{ color: 'text.secondary' }} />
-                            </IconButton>
-                            <Button
-                                endIcon={<ArrowForward />}
-                                size="small"
-                                onClick={handleAssetNavigateClick}
-                                data-testid="view-asset-button"
-                            >
-                                {t('actions.view')}
-                            </Button>
-                        </>
-                    )}
-                    {showDataDirectly && (
-                        <GenericSubmodelElementComponent submodelElement={data} wrapInDataRow={false} />
-                    )}
-                </Box>
-                {isRelationShip && (
-                    <Box sx={{ ml: '2px', pl: 1, display: 'flex' }}>
-                        <>
-                            <IconButton sx={{ mr: 1 }} onClick={handleDetailsClick}>
-                                <PinDropOutlined data-testid="entity-info-icon" sx={{ color: 'text.secondary' }} />
-                            </IconButton>
-                        </>
+        <TreeItemProvider itemId={itemId} id={id}>
+            <TreeItemRoot {...getRootProps(other)}>
+                <CustomTreeItemContent {...getContentProps()}>
+                    <TreeItemIconContainer {...getIconContainerProps()}>
+                        <TreeItemIcon status={status} />
+                    </TreeItemIconContainer>
+                    <TreeItemCheckbox {...getCheckboxProps()} />
+                    <Box sx={{ flexGrow: 1, display: 'flex', gap: 1 }} data-testid="bom-entity">
+                        <ExpandableTreeitem dataIcon={dataIcon} itemId={itemId} label={label} {...other} />
+                        <Box sx={{ ml: 'auto', pl: 1, display: 'flex' }}>
+                            {assetId && !showDataDirectly && (
+                                <>
+                                    <IconButton sx={{ mr: 1 }} onClick={handleDetailsClick}>
+                                        <InfoOutlined data-testid="entity-info-icon" sx={{ color: 'text.secondary' }} />
+                                    </IconButton>
+                                    <Button
+                                        endIcon={<ArrowForward />}
+                                        size="small"
+                                        onClick={handleAssetNavigateClick}
+                                        data-testid="view-asset-button"
+                                    >
+                                        {t('actions.view')}
+                                    </Button>
+                                </>
+                            )}
+                            {showDataDirectly && (
+                                <GenericSubmodelElementComponent submodelElement={data} wrapInDataRow={false} />
+                            )}
+                        </Box>
+                        {isRelationShip && (
+                            <Box sx={{ ml: '2px', pl: 1, display: 'flex' }}>
+                                <>
+                                    <IconButton sx={{ mr: 1 }} onClick={handleDetailsClick}>
+                                        <PinDropOutlined
+                                            data-testid="entity-info-icon"
+                                            sx={{ color: 'text.secondary' }}
+                                        />
+                                    </IconButton>
+                                </>
+                            </Box>
+                        )}
                     </Box>
-                )}
-            </Box>
+                </CustomTreeItemContent>
+                {children && <TreeItemGroupTransition {...getGroupTransitionProps()} />}
+            </TreeItemRoot>
+
             {isEntity && (
                 <EntityDetailsDialog
                     open={detailsModalOpen}
@@ -135,14 +145,10 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
                     relationship={props.data as RelationshipElement}
                 />
             )}
-        </>
+        </TreeItemProvider>
     );
 });
 
-const StyledTreeItem = styled(TreeItem)(({ theme }) => getTreeItemStyle(theme));
-
-export const EntityTreeItem = (props: CustomTreeItemProps) => {
-    const { data, ...other } = props;
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    return <StyledTreeItem ContentComponent={CustomContent} ContentProps={{ data } as any} {...other} />;
+export const EntityTreeItem = (props: EntityTreeItemProps) => {
+    return <CustomContent {...props} />;
 };

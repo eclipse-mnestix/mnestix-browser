@@ -3,10 +3,10 @@ import { SimpleTreeView } from '@mui/x-tree-view';
 import { SyntheticEvent, useState } from 'react';
 import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import {
-    viewObjectHasDataValue,
     rewriteNodeIds,
     splitIdIntoArray,
     updateNodeIds,
+    viewObjectHasDataValue,
 } from 'lib/util/SubmodelViewObjectUtil';
 import { TemplateEditTreeItem } from './TemplateEditTreeItem';
 import multiplicityData from './edit-components/multiplicity/multiplicity-data.json';
@@ -261,6 +261,7 @@ export function TemplateEditTree(props: TemplateEditTreeProps) {
             selectedItems={selectedTreeItem}
             onExpandedItemsChange={handleToggle}
             onSelectedItemsChange={handleSelect}
+            itemChildrenIndentation={24}
         >
             {props.rootTree &&
                 renderTree(
