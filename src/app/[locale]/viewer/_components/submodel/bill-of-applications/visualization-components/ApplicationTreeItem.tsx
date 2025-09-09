@@ -21,7 +21,6 @@ import { TreeItemProvider } from '@mui/x-tree-view/TreeItemProvider';
 import { ExpandableTreeitem } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/TreeItem';
 
 export const CustomTreeItemContent = styled(TreeItemContent)(({ theme }) => ({
-    padding: theme.spacing(0.5, 1),
     borderBottom: `1px solid ${theme.palette.divider}`, // Add a bottom border
     userSelect: 'none',
     margin: 0,
