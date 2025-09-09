@@ -216,12 +216,17 @@
     "aasViewer": {
       "actions": {
         "compareButton": "Vergleichen",
-        "toProductView": "Produktansicht"
+        "toProductView": "Produktansicht",
+        "download": "AAS herunterladen"
       },
       "asset": "Asset",
       "assetAdministrationShell": "Verwaltungsschale",
       "errors": {
-        "influxError": "Beim Abrufen der Daten ist ein Fehler aufgetreten."
+        "influxError": "Beim Abrufen der Daten ist ein Fehler aufgetreten.",
+        "downloadError": "Fehler beim Herunterladen der AAS."
+      },
+      "messages": {
+        "downloadSuccess": "Download erfolgreich von: {endpoint} (Infrastruktur: {infrastructure})"
       },
       "labels": {
         "copied": "In Zwischenablage kopiert",

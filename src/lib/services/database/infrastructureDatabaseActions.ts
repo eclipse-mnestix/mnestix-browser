@@ -48,6 +48,7 @@ export async function getDefaultInfrastructure(): Promise<InfrastructureConnecti
         conceptDescriptionRepositoryUrls: envs.CONCEPT_DESCRIPTION_REPO_API_URL
             ? [envs.CONCEPT_DESCRIPTION_REPO_API_URL]
             : [],
+        serializationEndpointUrls: envs.SERIALIZATION_API_URL ? [envs.SERIALIZATION_API_URL] : [],
         isDefault: true,
     };
 }
@@ -135,6 +136,9 @@ function infrastructureMapper(infra: InfrastructureWithRelations): Infrastructur
         ),
         conceptDescriptionRepositoryUrls: infra.connections.flatMap((conn) =>
             conn.types.filter((t) => t.type.typeName === 'CONCEPT_DESCRIPTION').map(() => conn.url),
+        ),
+        serializationEndpointUrls: infra.connections.flatMap((conn) =>
+            conn.types.filter((t) => t.type.typeName === 'SERIALIZATION_ENDPOINT').map(() => conn.url),
         ),
         isDefault: false,
         infrastructureSecurity: {

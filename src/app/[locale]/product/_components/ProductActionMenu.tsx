@@ -8,7 +8,7 @@ import { useEnv } from 'app/EnvProvider';
 import { SubmodelOrIdReference, useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { AssetAdministrationShell } from 'lib/api/aas/models';
-import { downloadAasFromRepo } from 'lib/services/aas-repository-service/aasRepositoryActions';
+import { serializeAasFromInfrastructure } from 'lib/services/serialization-service/serializationActions';
 
 type ActionMenuProps = {
     readonly aas: AssetAdministrationShell | null;
@@ -59,12 +59,13 @@ export function ActionMenu({ aas, submodels, repositoryURL, className }: ActionM
         }
         const submodelIds = Array.isArray(submodels) ? submodels.map((s) => s.id) : [];
         try {
-            const response = await downloadAasFromRepo(aas?.id, submodelIds, {
-                infrastructureName: currentAASContext.infrastructureName || '',
-                url: repositoryURL,
-            });
+            const response = await serializeAasFromInfrastructure(
+                aas?.id,
+                submodelIds,
+                currentAASContext.infrastructureName || '',
+            );
             if (response.isSuccess && response.result) {
-                const url = window.URL.createObjectURL(response.result);
+                const url = window.URL.createObjectURL(response.result.blob);
                 const link = document.createElement('a');
                 link.href = url;
                 link.setAttribute('download', `${aas?.idShort}.aasx`);

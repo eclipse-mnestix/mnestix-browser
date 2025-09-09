@@ -1,6 +1,7 @@
 import {
     IAssetAdministrationShellRepositoryApi,
     ISubmodelRepositoryApi,
+    ISerializationApi,
     SubmodelElementValue,
 } from 'lib/api/basyx-v3/apiInterface';
 import type {
@@ -376,6 +377,42 @@ export class ConceptDescriptionRepositoryApiInMemory implements IConceptDescript
                 `no concept description found in the repository '${this.getBasePath()}' for conceptDescriptionId: '${conceptDescriptionId}', which is :'${safeBase64Decode(conceptDescriptionId)}' encoded in base64`,
             ),
         );
+    }
+}
+
+export class SerializationApiInMemory implements ISerializationApi {
+    constructor(
+        readonly baseUrl: string,
+        readonly reachable: ServiceReachable = ServiceReachable.Yes,
+    ) {}
+
+    getBaseUrl(): string {
+        return this.baseUrl;
+    }
+
+    async downloadAAS(
+        _aasId: string | string[],
+        _submodelIds: string[],
+        _includeConceptDescriptions: boolean = true,
+        _outputFormat: 'xml' | 'json' | 'aasx' = 'aasx',
+        _options?: object,
+    ): Promise<ApiResponseWrapper<Blob>> {
+        if (this.reachable === ServiceReachable.No) {
+            return Promise.resolve(
+                wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Service unreachable in test environment'),
+            );
+        }
+
+        // Create a mock serialized AAS as a Blob
+        const mockSerializedContent = JSON.stringify({
+            assetAdministrationShells: [],
+            submodels: [],
+            conceptDescriptions: [],
+            timestamp: new Date().toISOString(),
+        });
+
+        const blob = new Blob([mockSerializedContent], { type: 'application/json' });
+        return Promise.resolve(wrapSuccess(blob));
     }
 }
 

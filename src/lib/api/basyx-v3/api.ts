@@ -7,11 +7,13 @@ import { encodeBase64 } from 'lib/util/Base64Util';
 import {
     IAssetAdministrationShellRepositoryApi,
     ISubmodelRepositoryApi,
+    ISerializationApi,
     SubmodelElementValue,
 } from 'lib/api/basyx-v3/apiInterface';
 import {
     AssetAdministrationShellRepositoryApiInMemory,
     SubmodelRepositoryApiInMemory,
+    SerializationApiInMemory,
 } from 'lib/api/basyx-v3/apiInMemory';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { AttachmentDetails } from 'lib/types/TransferServiceData';
@@ -122,20 +124,6 @@ export class AssetAdministrationShellRepositoryApi implements IAssetAdministrati
             this.http,
             this.basePath,
         );
-    }
-
-    async downloadAAS(
-        aasId: string | string[],
-        submodelIds: string[],
-        includeConceptDescriptions = true,
-        options?: object,
-    ): Promise<ApiResponseWrapper<Blob>> {
-        return AssetAdministrationShellRepositoryApiFp(this.configuration).downloadAAS(
-            aasId,
-            submodelIds,
-            includeConceptDescriptions,
-            options,
-        )(this.http, this.basePath);
     }
 }
 
@@ -264,39 +252,6 @@ export const AssetAdministrationShellRepositoryApiFp = function (configuration?:
                     basePath + '/shells',
                     localVarRequestOptions,
                 );
-            };
-        },
-        /**
-         * @summary Downloads the Asset Administration Shell (AAS) and its submodels.
-         * @param {string | string[]} aasId - The ID(s) of the Asset Administration Shell(s) to be downloaded.
-         * @param {string[]} submodelIds - An array of IDs of the submodels to be included in the download.
-         * @param {boolean} [includeConceptDescriptions=true] - Optional. Whether to include concept descriptions in the download.
-         * @param {object} [options] - Optional. Additional options to override the default HTTP request settings.
-         * @throws {RequiredError}
-         */
-        downloadAAS(
-            aasId: string | string[],
-            submodelIds: string[],
-            includeConceptDescriptions: boolean = true,
-            options?: any,
-        ) {
-            return async (requestHandler: FetchAPI, basePath: string) => {
-                const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-                const localVarHeaderParameter = {
-                    Accept: 'application/asset-administration-shell-package+xml',
-                } as any;
-
-                localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options?.headers);
-
-                const aasIdsEncoded = Array.isArray(aasId)
-                    ? aasId.map((id) => encodeBase64(id))
-                    : [encodeBase64(aasId)];
-                const aasIdsQuery = aasIdsEncoded.map((id) => `aasIds=${id}`).join('&');
-                const submodelIdsEncoded = submodelIds.map((id) => encodeBase64(id));
-                const submodelIdsQuery = submodelIdsEncoded.map((id) => `submodelIds=${id}`).join('&');
-                const url = `${basePath}/serialization?${aasIdsQuery}&${submodelIdsQuery}&includeConceptDescriptions=${includeConceptDescriptions}`;
-
-                return await requestHandler.fetch<Blob>(url, localVarRequestOptions);
             };
         },
     };
@@ -828,6 +783,99 @@ export const SubmodelRepositoryApiFetchParamCreator = function (configuration?: 
             return {
                 url: url.format(localVarUrlObj),
                 options: localVarRequestOptions,
+            };
+        },
+    };
+};
+
+/**
+ * SerializationApi - object-oriented interface
+ * @class SerializationApi
+ */
+export class SerializationApi implements ISerializationApi {
+    private constructor(
+        private basePath: string,
+        private http: FetchAPI,
+        private configuration?: Configuration,
+    ) {}
+
+    static create(baseUrl: string, http: FetchAPI, configuration?: Configuration): SerializationApi {
+        return new SerializationApi(baseUrl, http, configuration);
+    }
+
+    static createNull(baseUrl: string): SerializationApiInMemory {
+        return new SerializationApiInMemory(baseUrl);
+    }
+
+    getBaseUrl(): string {
+        return this.basePath;
+    }
+
+    async downloadAAS(
+        aasId: string | string[],
+        submodelIds: string[],
+        includeConceptDescriptions: boolean = true,
+        outputFormat: 'xml' | 'json' | 'aasx' = 'aasx',
+        options?: object,
+    ): Promise<ApiResponseWrapper<Blob>> {
+        return SerializationApiFp(this.configuration).downloadAAS(
+            aasId,
+            submodelIds,
+            includeConceptDescriptions,
+            outputFormat,
+            options,
+        )(this.http, this.basePath);
+    }
+}
+
+/**
+ * SerializationApi - functional programming interface
+ */
+export const SerializationApiFp = function (configuration?: Configuration) {
+    return {
+        /**
+         * @summary Downloads the Asset Administration Shell (AAS) and its submodels.
+         * @param {string | string[]} aasId - The ID(s) of the Asset Administration Shell(s) to be downloaded.
+         * @param {string[]} submodelIds - An array of IDs of the submodels to be included in the download.
+         * @param {boolean} [includeConceptDescriptions=true] - Optional. Whether to include concept descriptions in the download.
+         * @param {'xml' | 'json' | 'aasx'} [outputFormat='aasx'] - The format of the downloaded AAS.
+         * @param {object} [options] - Optional. Additional options to override the default HTTP request settings.
+         * @throws {RequiredError}
+         */
+        downloadAAS(
+            aasId: string | string[],
+            submodelIds: string[],
+            includeConceptDescriptions: boolean = true,
+            outputFormat: 'xml' | 'json' | 'aasx' = 'aasx',
+            options?: any,
+        ) {
+            return async (requestHandler: FetchAPI, basePath: string) => {
+                const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+                
+                // Set appropriate Accept header based on output format
+                let acceptHeader = 'application/asset-administration-shell-package+xml';
+                if (outputFormat === 'json') {
+                    acceptHeader = 'application/json';
+                } else if (outputFormat === 'xml') {
+                    acceptHeader = 'application/xml';
+                }
+                
+                const localVarHeaderParameter = {
+                    Accept: acceptHeader,
+                } as any;
+
+                localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options?.headers);
+
+                const aasIdsEncoded = Array.isArray(aasId)
+                    ? aasId.map((id) => encodeBase64(id))
+                    : [encodeBase64(aasId)];
+                const aasIdsQuery = aasIdsEncoded.map((id) => `aasIds=${id}`).join('&');
+                const submodelIdsEncoded = submodelIds.map((id) => encodeBase64(id));
+                const submodelIdsQuery = submodelIdsEncoded.map((id) => `submodelIds=${id}`).join('&');
+                
+                const url = `${basePath}/serialization?${aasIdsQuery}&${submodelIdsQuery}&includeConceptDescriptions=${includeConceptDescriptions}&outputFormat=${outputFormat}`;
+
+                return await requestHandler.fetch<Blob>(url, localVarRequestOptions);
             };
         },
     };

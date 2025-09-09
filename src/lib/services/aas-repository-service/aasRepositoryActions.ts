@@ -26,20 +26,6 @@ export async function getThumbnailFromShell(
     return aasRepoService.getThumbnailFromShell(aasId, repository);
 }
 
-export async function downloadAasFromRepo(
-    aasId: string | string[],
-    submodelIds: string[],
-    repository: RepositoryWithInfrastructure,
-    includeConceptDescriptions = true,
-): Promise<ApiResponseWrapper<Blob>> {
-    const logger = createRequestLogger(await headers());
-    logInfo(logger, 'downloadAasFromRepo', 'Requested Download', {
-        aasId: aasId,
-    });
-    const aasRepoService = AasRepositoryService.create(logger);
-    return aasRepoService.downloadAasFromRepo(aasId, submodelIds, repository, includeConceptDescriptions);
-}
-
 export async function getAasFromRepository(
     aasId: string,
     repository: RepositoryWithInfrastructure,

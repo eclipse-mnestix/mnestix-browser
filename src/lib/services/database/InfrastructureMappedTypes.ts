@@ -16,6 +16,7 @@ export type InfrastructureConnection = {
     submodelRepositoryUrls: string[];
     submodelRegistryUrls: string[];
     conceptDescriptionRepositoryUrls: string[];
+    serializationEndpointUrls: string[];
     isDefault: boolean;
     infrastructureSecurity?: InfrastructureSecurity;
 };
