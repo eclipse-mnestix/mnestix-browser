@@ -31,7 +31,7 @@ const keycloak = {
 };
 
 const mnestix_v2 = {
-    MNESTIX_V2_ENABLED: process_env.MNESTIX_V2_ENABLED?.trim().toLocaleLowerCase() === 'true' ? true : false,
+    MNESTIX_V2_ENABLED: process_env.MNESTIX_V2_ENABLED?.trim().toLocaleLowerCase() !== 'false',
 };
 
 const security = {

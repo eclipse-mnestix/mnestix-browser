@@ -4,29 +4,29 @@ Mnestix provides the following configuration options. You can adapt the values i
 
 #### Basics
 
-| Name                               | Default value | Description                                                                                                                                 |
-| ---------------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `AAS_REPO_API_URL`                 |               | Default AAS Repository to display when AAS Id is not in AAS Registry                                                                        |
-| `SUBMODEL_REPO_API_URL`            |               | Default Submodel Repository to display when Submodel Id is not in Submodel Registry                                                         |
-| `DISCOVERY_API_URL`                |               | Address of the Discovery Service to find an AAS for an Asset                                                                                |
-| `REGISTRY_API_URL`                 |               | Address of the AAS Registry Service to retrieve the related descriptor for an AAS                                                           |
-| `SUBMODEL_REGISTRY_API_URL`        |               | Address of the Submodel Registry Service to retrieve the related descriptor for a Submodel                                                  |
-| `MNESTIX_BACKEND_API_URL`          |               | Mnestix Backend with a lot of business comfort features like the Repository-Proxy or the Template builder                                   |
-| `CONCEPT_DESCRIPTION_REPO_API_URL` |               | Default Concept Description Repository                                                                                                      |
-| `LOG_LEVEL`                        | "info"        | Server side log level of Mnestix Browser. "fatal" or "error" or "warn" or "info" or "debug" or "trace" or "silent"                          |
-| `MNESTIX_V2_ENABLED`               | "false"       | Setting to 'true' would activate a support for Mnestix API v2.0, this is work in progress updated API with separate Mnestix-Proxy component |
+| Name                               | Default value | Description                                                                                                                                      |
+| ---------------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `AAS_REPO_API_URL`                 |               | Default AAS Repository to display when AAS Id is not in AAS Registry                                                                             |
+| `SUBMODEL_REPO_API_URL`            |               | Default Submodel Repository to display when Submodel Id is not in Submodel Registry                                                              |
+| `DISCOVERY_API_URL`                |               | Address of the Discovery Service to find an AAS for an Asset                                                                                     |
+| `REGISTRY_API_URL`                 |               | Address of the AAS Registry Service to retrieve the related descriptor for an AAS                                                                |
+| `SUBMODEL_REGISTRY_API_URL`        |               | Address of the Submodel Registry Service to retrieve the related descriptor for a Submodel                                                       |
+| `MNESTIX_BACKEND_API_URL`          |               | Mnestix Backend with a lot of business comfort features like the Repository-Proxy or the Template builder                                        |
+| `CONCEPT_DESCRIPTION_REPO_API_URL` |               | Default Concept Description Repository                                                                                                           |
+| `LOG_LEVEL`                        | "info"        | Server side log level of Mnestix Browser. "fatal" or "error" or "warn" or "info" or "debug" or "trace" or "silent"                               |
+| `MNESTIX_V2_ENABLED`               | "true"        | Setting to 'false' to support older Mnestix API versions (v1._._), the support for those Mnestix API versions will be stopped in the near future |
 
 #### Features
 
-| Name                          | Default value | Description                                                                                                                                                                                   |
-| ----------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `AAS_LIST_FEATURE_FLAG`       | false         | Enables or disables the AasList in the frontend. This only works in combination with `Features__AllowRetrievingAllShellsAndSubmodels` being set to `true` (Needs the Mnestix Backend to work) |
-| `TRANSFER_FEATURE_FLAG`       | false         | Enables or disables the Transfer Feature in the frontend. If enabled, it is possible to import a viewed AAS to a configured repository. This feature is currently being developed.            |
-| `AUTHENTICATION_FEATURE_FLAG` | false         | Enable or disable the authentication in the frontend. (Needs the Mnestix Backend to work)                                                                                                     |
-| <del>`COMPARISON_FEATURE_FLAG`</del>     | false **always false**         | Enables or disables the comparison feature. **This feature is currently disabled after 1.6.0. If you need this feature feel free to contact us to find a solution.**                                                                                                                                                   |
-| `PRODUCT_VIEW_FEATURE_FLAG`   | false         | Enables or disables the product view feature.                                                                                                                                                 |
-| `WHITELIST_FEATURE_FLAG`      | false         | Enables or disables the feature for showing/hiding specific submodels.                                                                                                                        |
-| `SUBMODEL_WHITELIST`          |               | This variable can be used to specify a list of submodel semantic ids in order to show them when the `WHITELIST_FEATURE_FLAG` is set to true.                                                  |
+| Name                                 | Default value          | Description                                                                                                                                                                                   |
+| ------------------------------------ | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `AAS_LIST_FEATURE_FLAG`              | false                  | Enables or disables the AasList in the frontend. This only works in combination with `Features__AllowRetrievingAllShellsAndSubmodels` being set to `true` (Needs the Mnestix Backend to work) |
+| `TRANSFER_FEATURE_FLAG`              | false                  | Enables or disables the Transfer Feature in the frontend. If enabled, it is possible to import a viewed AAS to a configured repository. This feature is currently being developed.            |
+| `AUTHENTICATION_FEATURE_FLAG`        | false                  | Enable or disable the authentication in the frontend. (Needs the Mnestix Backend to work)                                                                                                     |
+| <del>`COMPARISON_FEATURE_FLAG`</del> | false **always false** | Enables or disables the comparison feature. **This feature is currently disabled after 1.6.0. If you need this feature feel free to contact us to find a solution.**                          |
+| `PRODUCT_VIEW_FEATURE_FLAG`          | false                  | Enables or disables the product view feature.                                                                                                                                                 |
+| `WHITELIST_FEATURE_FLAG`             | false                  | Enables or disables the feature for showing/hiding specific submodels.                                                                                                                        |
+| `SUBMODEL_WHITELIST`                 |                        | This variable can be used to specify a list of submodel semantic ids in order to show them when the `WHITELIST_FEATURE_FLAG` is set to true.                                                  |
 
 #### Keycloak
 
