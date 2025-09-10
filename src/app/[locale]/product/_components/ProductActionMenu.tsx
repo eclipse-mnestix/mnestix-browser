@@ -88,7 +88,7 @@ export function ActionMenu({ aas, submodels, repositoryURL, className }: ActionM
     }
 
     useAsyncEffect(async () => {
-        if (currentAASContext.infrastructureName) {
+        if (currentAASContext && currentAASContext.infrastructureName) {
             const serializationEndpointAvailable = await checkIfInfrastructureHasSerializationEndpoints(
                 currentAASContext.infrastructureName,
             );
