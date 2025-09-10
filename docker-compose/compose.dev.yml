@@ -11,6 +11,10 @@ services:
     volumes:
       - ./src:/app/src
       - ./public:/app/public
+  
+  mnestix-api:
+    ports:
+      - '5064:5064'
 
   mongodb:
     ports:
