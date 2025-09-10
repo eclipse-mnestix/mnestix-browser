@@ -34,10 +34,6 @@ export class SerializationService {
         );
     }
 
-    static createNull(): SerializationService {
-        return new SerializationService((baseUrl) => SerializationApi.createNull(baseUrl));
-    }
-
     /**
      * Finds serialization endpoints for a specific infrastructure by name
      */

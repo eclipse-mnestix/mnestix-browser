@@ -13,7 +13,6 @@ import {
 import {
     AssetAdministrationShellRepositoryApiInMemory,
     SubmodelRepositoryApiInMemory,
-    SerializationApiInMemory,
 } from 'lib/api/basyx-v3/apiInMemory';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { AttachmentDetails } from 'lib/types/TransferServiceData';
@@ -803,10 +802,6 @@ export class SerializationApi implements ISerializationApi {
         return new SerializationApi(baseUrl, http, configuration);
     }
 
-    static createNull(baseUrl: string): SerializationApiInMemory {
-        return new SerializationApiInMemory(baseUrl);
-    }
-
     getBaseUrl(): string {
         return this.basePath;
     }
@@ -862,7 +857,7 @@ export const SerializationApiFp = function (configuration?: Configuration) {
                 
                 const localVarHeaderParameter = {
                     Accept: acceptHeader,
-                } as any;
+                };
 
                 localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options?.headers);
 
