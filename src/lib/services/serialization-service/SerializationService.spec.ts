@@ -1,9 +1,6 @@
 import { SerializationService } from 'lib/services/serialization-service/SerializationService';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
-import {
-    getInfrastructureByName,
-    getInfrastructuresIncludingDefault,
-} from 'lib/services/database/infrastructureDatabaseActions';
+import { getInfrastructureByName } from 'lib/services/database/infrastructureDatabaseActions';
 
 jest.mock('lib/services/database/infrastructureDatabaseActions', () => ({
     getInfrastructuresIncludingDefault: jest.fn(),
@@ -22,16 +19,17 @@ describe('SerializationService', () => {
     });
 
     it('returns URL when infrastructure exists', async () => {
-        (getInfrastructuresIncludingDefault as jest.Mock).mockResolvedValue([
-            { name: 'TestInfrastructure', serializationEndpointUrls: ['https://endpoint.com/serialize'] },
-        ]);
+        (getInfrastructureByName as jest.Mock).mockResolvedValue({
+            name: 'TestInfrastructure',
+            serializationEndpointUrls: ['https://endpoint.com/serialize'],
+        });
         const result = await service.getSerializationEndpointsFromInfrastructure('TestInfrastructure');
         expect(result.isSuccess).toBe(true);
         expect(result.result).toEqual(['https://endpoint.com/serialize']);
     });
 
     it('returns NOT_FOUND if infrastructure does not exist', async () => {
-        (getInfrastructuresIncludingDefault as jest.Mock).mockResolvedValue([]);
+        (getInfrastructureByName as jest.Mock).mockResolvedValue([]);
         const result = await service.getSerializationEndpointsFromInfrastructure('unknown');
         expect(result.isSuccess).toBe(false);
         if (!result.isSuccess) {
@@ -40,9 +38,10 @@ describe('SerializationService', () => {
     });
 
     it('returns NOT_FOUND if infrastructure has no endpoints', async () => {
-        (getInfrastructuresIncludingDefault as jest.Mock).mockResolvedValue([
-            { name: 'Infrastructure2', serializationEndpointUrls: [] },
-        ]);
+        (getInfrastructureByName as jest.Mock).mockResolvedValue({
+            name: 'Infrastructure2',
+            serializationEndpointUrls: [],
+        });
         const result = await service.getSerializationEndpointsFromInfrastructure('Infrastructure2');
         expect(result.isSuccess).toBe(false);
         if (!result.isSuccess) {
@@ -51,10 +50,10 @@ describe('SerializationService', () => {
     });
 
     it('returns serialization result if serialization succeeds', async () => {
-        (getInfrastructuresIncludingDefault as jest.Mock).mockResolvedValue([
-            { name: 'TestInfrastructure', serializationEndpointUrls: ['https://endpoint.com/serialize'] },
-        ]);
-        (getInfrastructureByName as jest.Mock).mockResolvedValue({ name: 'TestInfrastructure' });
+        (getInfrastructureByName as jest.Mock).mockResolvedValue({
+            name: 'TestInfrastructure',
+            serializationEndpointUrls: ['https://endpoint.com/serialize'],
+        });
 
         service = SerializationService.createNull(() => ({
             downloadAAS: jest.fn().mockResolvedValue({
@@ -78,10 +77,10 @@ describe('SerializationService', () => {
     });
 
     it('returns error if all endpoints fail', async () => {
-        (getInfrastructuresIncludingDefault as jest.Mock).mockResolvedValue([
-            { name: 'TestInfrastructure', serializationEndpointUrls: ['https://endpoint.com/serialize'] },
-        ]);
-        (getInfrastructureByName as jest.Mock).mockResolvedValue({ name: 'TestInfrastructure' });
+        (getInfrastructureByName as jest.Mock).mockResolvedValue({
+            name: 'TestInfrastructure',
+            serializationEndpointUrls: ['https://endpoint.com/serialize'],
+        });
 
         service = SerializationService.createNull(() => ({
             downloadAAS: jest.fn().mockResolvedValue({

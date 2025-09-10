@@ -13,8 +13,13 @@ import { useLocale, useTranslations } from 'next-intl';
 import { NoSearchResult } from 'components/basics/detailViewBasics/NoSearchResult';
 import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 import { useShowError } from 'lib/hooks/UseShowError';
-import { serializeAasFromInfrastructure } from 'lib/services/serialization-service/serializationActions';
+import {
+    checkIfInfrastructureHasSerializationEndpoints,
+    serializeAasFromInfrastructure,
+} from 'lib/services/serialization-service/serializationActions';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
+import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
+import { useState } from 'react';
 
 export function AASViewer() {
     const navigate = useRouter();
@@ -24,6 +29,7 @@ export function AASViewer() {
     const t = useTranslations('pages.aasViewer');
     const { showError } = useShowError();
     const { spawn } = useNotificationSpawner();
+    const [showDownloadButton, setShowDownloadButton] = useState(false);
 
     const { aas, submodels, isLoadingAas, isLoadingSubmodels, aasOriginUrl, infrastructureName } =
         useCurrentAasContext();
@@ -50,12 +56,13 @@ export function AASViewer() {
     };
 
     async function downloadAAS() {
-        if (!aas?.id) {
+        if (!aas?.id || !infrastructureName) {
+            showError(t('errors.downloadError'));
             return;
         }
         const submodelIds = Array.isArray(submodels) ? submodels.map((s) => s.id) : [];
         try {
-            const response = await serializeAasFromInfrastructure(aas?.id, submodelIds, infrastructureName || '');
+            const response = await serializeAasFromInfrastructure(aas?.id, submodelIds, infrastructureName);
             if (response.isSuccess && response.result) {
                 const { blob, endpointUrl, infrastructureName: infra } = response.result;
                 const url = window.URL.createObjectURL(blob);
@@ -70,9 +77,9 @@ export function AASViewer() {
                 // Show success message with endpoint information
                 spawn({
                     title: t('actions.download'),
-                    message: t('messages.downloadSuccess', { 
-                        endpoint: endpointUrl, 
-                        infrastructure: infra 
+                    message: t('messages.downloadSuccess', {
+                        endpoint: endpointUrl,
+                        infrastructure: infra,
                     }),
                     severity: 'success',
                 });
@@ -83,6 +90,14 @@ export function AASViewer() {
             showError(t('errors.downloadError'));
         }
     }
+
+    useAsyncEffect(async () => {
+        if (infrastructureName) {
+            const serializationEndpointAvailable =
+                await checkIfInfrastructureHasSerializationEndpoints(infrastructureName);
+            setShowDownloadButton(serializationEndpointAvailable.isSuccess);
+        }
+    }, []);
 
     try {
         const aasIdDecoded = safeBase64Decode(base64AasId);
@@ -144,18 +159,20 @@ export function AASViewer() {
                                 </Button>
                             )}
                             {env.TRANSFER_FEATURE_FLAG && <TransferButton />}
-                            <Button
-                                variant="contained"
-                                sx={{
-                                    whiteSpace: 'nowrap',
-                                    ml: 2,
-                                    minWidth: 'auto',
-                                    padding: '6px 16px',
-                                }}
-                                onClick={downloadAAS}
-                            >
-                                {t('actions.download')}
-                            </Button>
+                            {showDownloadButton && (
+                                <Button
+                                    variant="contained"
+                                    sx={{
+                                        whiteSpace: 'nowrap',
+                                        ml: 2,
+                                        minWidth: 'auto',
+                                        padding: '6px 16px',
+                                    }}
+                                    onClick={downloadAAS}
+                                >
+                                    {t('actions.download')}
+                                </Button>
+                            )}
                         </Box>
                         <AASOverviewCard
                             aas={aas ?? null}
