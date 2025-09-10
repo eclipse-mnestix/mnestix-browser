@@ -1,6 +1,6 @@
 'use server';
 
-import { SerializationService, SerializationResult } from './serializationService';
+import { SerializationResult, SerializationService } from 'lib/services/serialization-service/SerializationService';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { createRequestLogger, logInfo } from 'lib/util/Logger';
 import { headers } from 'next/headers';

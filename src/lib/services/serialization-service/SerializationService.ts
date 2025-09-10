@@ -10,6 +10,7 @@ import {
 } from 'lib/services/database/infrastructureDatabaseActions';
 import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
+import { SerializationApiInMemory } from 'lib/api/basyx-v3/apiInMemory';
 
 export type SerializationResult = {
     blob: Blob;
@@ -34,6 +35,11 @@ export class SerializationService {
         );
     }
 
+    static createNull(clientFactory?: () => ISerializationApi): SerializationService {
+        return new SerializationService(
+            (baseUrl, _securityHeader) => clientFactory?.() || new SerializationApiInMemory(baseUrl),
+        );
+    }
     /**
      * Finds serialization endpoints for a specific infrastructure by name
      */
