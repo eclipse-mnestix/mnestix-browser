@@ -2,8 +2,26 @@
   Docker Image Cache.<br>
   **Mnestix Browser on port 3000 - http://localhost:3000**
 
+```shell
+docker compose up
+```
+
 - **docker-compose/compose.frontend.yml** - runs Mnestix Browser with a Basyx environment (AAS-Environment with MongoDB, Discovery Service, AAS/Submodel Registry) but without the Mnestix-API.<br>
   **Mnestix Browser on port 3000 - http://localhost:3000**
+
+```shell
+docker compose -f docker-compose/compose.frontend.yml up
+```
+
+### Override Files
+
+The files listed below
+are [override compose files](https://docs.docker.com/compose/multiple-compose-files/merge/), which must be added with
+the `-f <filename>` flag (Look inside the `package.json` for examples).<br>
+The services are grouped into three [compose profiles](https://docs.docker.com/compose/profiles/): `basyx`, `backend`
+and `frontend`.
+They can be started together without defining `--profile` or separately by adding `--profile <profilename>` to the
+docker command.
 
 - **docker-compose/compose.dev.yml** - override file to run Mnestix Browser in a development environment. A development
   image will be built if it is not found in the local Docker Image Cache.<br>
@@ -27,13 +45,6 @@
   Basyx security submodel.
   More information can be found [here](https://github.com/eclipse-mnestix/mnestix-browser/wiki/Role-Based-Access-Control).
 
-The files in the `docker-compose` directory
-are [override compose files](https://docs.docker.com/compose/multiple-compose-files/merge/), which must be added with
-the `-f <filename>` flag (Look inside the `package.json` for examples).<br>
-The services are grouped into three [compose profiles](https://docs.docker.com/compose/profiles/): `basyx`, `backend`
-and `frontend`.
-They can be started together without defining `--profile` or separately by adding `--profile <profilename>` to the
-docker command.
 One example to start the backend in dev mode with authentication:
 
 ```shell
