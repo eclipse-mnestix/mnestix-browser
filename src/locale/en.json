@@ -216,12 +216,17 @@
     "aasViewer": {
       "actions": {
         "compareButton": "Compare",
-        "toProductView": "Product view"
+        "toProductView": "Product view",
+        "download": "Download AAS"
       },
       "asset": "Asset",
       "assetAdministrationShell": "Asset Administration Shell",
       "errors": {
-        "influxError": "There was a problem retrieving the time series data."
+        "influxError": "There was a problem retrieving the time series data.",
+        "downloadError": "Error while downloading AAS."
+      },
+      "messages": {
+        "downloadSuccess": "Download successful from: {endpoint} (Infrastructure: {infrastructure})"
       },
       "labels": {
         "copied": "Copied to clipboard",

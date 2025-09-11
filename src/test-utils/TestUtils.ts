@@ -74,6 +74,7 @@ export function createTestInfrastructure({
     submodelRegistryUrls = [],
     submodelRepositoryUrls = [],
     conceptDescriptionRepositoryUrls = [],
+    serializationEndpointUrls = [],
     isDefault = false,
 }: {
     name?: string;
@@ -83,6 +84,7 @@ export function createTestInfrastructure({
     submodelRegistryUrls?: string[];
     submodelRepositoryUrls?: string[];
     conceptDescriptionRepositoryUrls?: string[];
+    serializationEndpointUrls?: string[];
     isDefault?: boolean;
 } = {}) {
     return {
@@ -93,6 +95,7 @@ export function createTestInfrastructure({
         submodelRegistryUrls,
         submodelRepositoryUrls,
         conceptDescriptionRepositoryUrls,
+        serializationEndpointUrls,
         isDefault,
     };
 }

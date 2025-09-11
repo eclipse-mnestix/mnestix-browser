@@ -13,6 +13,7 @@ export const CONNECTION_TYPES = [
     { id: 'SUBMODEL_REGISTRY', label: 'Submodel Registry Interface' },
     { id: 'DISCOVERY_SERVICE', label: 'Discovery Interface' },
     { id: 'CONCEPT_DESCRIPTION', label: 'Concept Description Repository Interface' },
+    { id: 'SERIALIZATION_ENDPOINT', label: 'Serialization Interface' },
 ] as const;
 
 export const ENV_KEY_BY_CONNECTION_ID: Record<string, keyof ReturnType<typeof useEnv>> = {
@@ -22,4 +23,5 @@ export const ENV_KEY_BY_CONNECTION_ID: Record<string, keyof ReturnType<typeof us
     SUBMODEL_REGISTRY: 'SUBMODEL_REGISTRY_API_URL',
     DISCOVERY_SERVICE: 'DISCOVERY_API_URL',
     CONCEPT_DESCRIPTION: 'CONCEPT_DESCRIPTION_REPO_API_URL',
+    SERIALIZATION_ENDPOINT: 'SERIALIZATION_API_URL',
 };

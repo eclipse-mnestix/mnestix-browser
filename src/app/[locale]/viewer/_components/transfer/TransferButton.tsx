@@ -17,7 +17,17 @@ export function TransferButton() {
 
     return (
         <>
-            <Button variant="outlined" onClick={startTransfer} data-testid="detail-transfer-button">
+            <Button
+                variant="outlined"
+                sx={{
+                    whiteSpace: 'nowrap',
+                    ml: 2,
+                    minWidth: 'auto',
+                    padding: '6px 16px',
+                }}
+                onClick={startTransfer}
+                data-testid="detail-transfer-button"
+            >
                 {t('transfer.title')}
             </Button>
             <TransferDialog open={transferDialogOpen} onClose={closeDialog} />

@@ -79,6 +79,7 @@ const otherVariables = {
             'AAS_REPO_API_URL',
             'SUBMODEL_REPO_API_URL',
             'MNESTIX_AAS_GENERATOR_API_URL',
+            'SERIALIZATION_API_URL',
             'IMPRINT_URL',
             'DATA_PRIVACY_URL',
         ] as const,

@@ -29,6 +29,7 @@ function createMockInfrastructure(overrides: Partial<InfrastructureConnection> =
         aasRepositoryUrls: [],
         conceptDescriptionRepositoryUrls: [],
         discoveryUrls: [],
+        serializationEndpointUrls: [],
         infrastructureSecurity: undefined,
         ...overrides,
     };

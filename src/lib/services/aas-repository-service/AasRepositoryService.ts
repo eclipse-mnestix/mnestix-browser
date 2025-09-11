@@ -123,20 +123,6 @@ export class AasRepositoryService {
         return wrapFile(searchResponse.result);
     }
 
-    async downloadAasFromRepo(
-        aasId: string | string[],
-        submodelIds: string[],
-        repository: RepositoryWithInfrastructure,
-        includeConceptDescriptions = true,
-    ): Promise<ApiResponseWrapper<Blob>> {
-        const infrastructure = await getInfrastructureByName(repository.infrastructureName);
-        const securityHeader = await createSecurityHeaders(infrastructure || undefined);
-        const client = this.getAasRepositoryClient(repository.url, securityHeader);
-        const response = await client.downloadAAS(aasId, submodelIds, includeConceptDescriptions);
-        if (!response.isSuccess) return wrapErrorCode(response.errorCode, response.message);
-        return response;
-    }
-
     private async getAasFromSingleRepo(
         aasId: string,
         repoUrl: string,
