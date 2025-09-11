@@ -43,7 +43,7 @@ services:
       - mnestix-database:/app/prisma/database
 
   mnestix-proxy:
-    image: mnestix/mnestix-proxy:0.1.0
+    image: mnestix/mnestix-proxy:1.0.0
     container_name: mnestix-proxy
     profiles: ['', 'proxy', 'backend', 'tests']
     ports:
@@ -67,7 +67,7 @@ services:
       - mnestix-network
 
   mnestix-api:
-    image: mnestix/mnestix-aas-generator:0.1.0
+    image: mnestix/mnestix-aas-generator:1.0.0
     container_name: mnestix-api
     profiles: ['', 'backend', 'tests']
     environment:
