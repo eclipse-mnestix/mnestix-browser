@@ -22,6 +22,7 @@ services:
       AAS_REPO_API_URL: 'http://aas-environment:8081'
       SUBMODEL_REPO_API_URL: 'http://aas-environment:8081'
       CONCEPT_DESCRIPTION_REPO_API_URL: 'http://aas-environment:8081'
+      SERIALIZATION_API_URL: 'http://aas-environment:5064/repo'
       AAS_LIST_FEATURE_FLAG: 'true'
       MNESTIX_BACKEND_API_URL: ''
       TRANSFER_FEATURE_FLAG: 'false'

@@ -36,6 +36,7 @@ export const initialEnvValues: EnvironmentalVariables = {
     KEYCLOAK_LOCAL_URL: undefined,
     KEYCLOAK_REALM: undefined,
     KEYCLOAK_CLIENT_ID: undefined,
+    SERIALIZATION_API_URL: undefined,
 };
 
 const EnvContext = createContext(initialEnvValues);
