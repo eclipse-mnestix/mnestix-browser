@@ -11,8 +11,8 @@ services:
     volumes:
       - ./src:/app/src
       - ./public:/app/public
-  
-  mnestix-api:
+
+  mnestix-aas-generator:
     ports:
       - '5064:5064'
 

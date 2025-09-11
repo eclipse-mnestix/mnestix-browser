@@ -53,7 +53,7 @@ services:
       # API key authorization
       CustomerEndpointsSecurity__ApiKey: ${MNESTIX_AAS_GENERATOR_API_KEY:-verySecureApiKey}
       # Connection to Repository Service:
-      ReverseProxy__Clusters__mnestixApiCluster__Destinations__destination1__Address: 'http://mnestix-api:5064/'
+      ReverseProxy__Clusters__mnestixApiCluster__Destinations__destination1__Address: 'http://mnestix-aas-generator:5064/'
       ReverseProxy__Clusters__aasRepoCluster__Destinations__destination1__Address: 'http://aas-environment:8081/'
       ReverseProxy__Clusters__submodelRepoCluster__Destinations__destination1__Address: 'http://aas-environment:8081/'
       ReverseProxy__Clusters__discoveryCluster__Destinations__destination1__Address: 'http://aas-discovery:8081/'
@@ -67,9 +67,9 @@ services:
     networks:
       - mnestix-network
 
-  mnestix-api:
+  mnestix-aas-generator:
     image: mnestix/mnestix-aas-generator:1.0.0
-    container_name: mnestix-api
+    container_name: mnestix-aas-generator
     profiles: ['', 'backend', 'tests']
     environment:
       # API key authorization
