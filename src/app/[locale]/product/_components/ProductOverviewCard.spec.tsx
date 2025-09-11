@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { CustomRender } from 'test-utils/CustomRender';
 import { ProductOverviewCard } from './ProductOverviewCard';
 import { useAasStore } from 'stores/AasStore';
+import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 
 // Mock the next/navigation router
 jest.mock('next/navigation', () => ({
@@ -127,6 +128,9 @@ describe('ProductOverviewCard', () => {
         jest.clearAllMocks();
         (useRouter as jest.Mock).mockReturnValue({ push: mockPush });
         (useAasStore as jest.Mock).mockReturnValue({ addAasData: mockAddData });
+        (useCurrentAasContext as jest.Mock).mockReturnValue({
+            infrastructureName: 'TestInfrastructure',
+        });
     });
 
     const mockAas = {
