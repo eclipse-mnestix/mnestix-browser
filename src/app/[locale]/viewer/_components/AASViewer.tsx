@@ -97,7 +97,7 @@ export function AASViewer() {
                 await checkIfInfrastructureHasSerializationEndpoints(infrastructureName);
             setShowDownloadButton(serializationEndpointAvailable.isSuccess);
         }
-    }, []);
+    }, [infrastructureName]);
 
     try {
         const aasIdDecoded = safeBase64Decode(base64AasId);

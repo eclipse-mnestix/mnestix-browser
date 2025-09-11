@@ -94,7 +94,7 @@ export function ActionMenu({ aas, submodels, repositoryURL, className }: ActionM
             );
             setShowDownloadButton(serializationEndpointAvailable.isSuccess);
         }
-    }, []);
+    }, [currentAASContext.infrastructureName]);
 
     return (
         <>

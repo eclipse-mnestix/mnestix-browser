@@ -29,7 +29,7 @@ describe('SerializationService', () => {
     });
 
     it('returns NOT_FOUND if infrastructure does not exist', async () => {
-        (getInfrastructureByName as jest.Mock).mockResolvedValue([]);
+        (getInfrastructureByName as jest.Mock).mockResolvedValue(undefined);
         const result = await service.getSerializationEndpointsFromInfrastructure('unknown');
         expect(result.isSuccess).toBe(false);
         if (!result.isSuccess) {
