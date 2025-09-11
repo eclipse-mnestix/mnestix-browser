@@ -32,13 +32,13 @@ async function getConfigurationApi(): Promise<IConfigurationShellApi> {
     const securityHeaders = await createSecurityHeaders(defaultInfrastructure);
     if (isMnestixApiV2Enabled) {
         return ConfigurationShellApiV2.create(
-            envs.MNESTIX_BACKEND_API_URL,
+            envs.MNESTIX_AAS_GENERATOR_API_URL,
             envs.AUTHENTICATION_FEATURE_FLAG,
             mnestixFetch(securityHeaders),
         );
     }
     return ConfigurationShellApi.create(
-        envs.MNESTIX_BACKEND_API_URL,
+        envs.MNESTIX_AAS_GENERATOR_API_URL,
         envs.AUTHENTICATION_FEATURE_FLAG,
         mnestixFetch(securityHeaders),
     );

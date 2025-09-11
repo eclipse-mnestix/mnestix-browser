@@ -8,7 +8,7 @@ services:
       CYPRESS_BASE_URL: 'http://mnestix-browser:3000'
       CYPRESS_AAS_REPO_API_URL: 'http://mnestix-proxy:5065/repo'
       CYPRESS_SUBMODEL_REPO_API_URL: 'http://mnestix-proxy:5065/repo'
-      CYPRESS_MNESTIX_BACKEND_API_URL: 'http://mnestix-proxy:5065'
+      CYPRESS_MNESTIX_AAS_GENERATOR_API_URL: 'http://mnestix-proxy:5065'
       CYPRESS_AAS_DISCOVERY_API_URL: 'http://mnestix-proxy:5065/discovery'
       MNESTIX_API_KEY: 'verySecureApiKey'
       ELECTRON_ENABLE_LOGGING: 1
@@ -40,7 +40,7 @@ services:
       AAS_REPO_API_URL: 'http://mnestix-proxy:5065/repo'
       SUBMODEL_REPO_API_URL: 'http://mnestix-proxy:5065/repo'
       DISCOVERY_API_URL: 'http://mnestix-proxy:5065/discovery'
-      MNESTIX_BACKEND_API_URL: 'http://mnestix-proxy:5065'
+      MNESTIX_AAS_GENERATOR_API_URL: 'http://mnestix-proxy:5065'
       AUTHENTICATION_FEATURE_FLAG: 'true'
       NEXTAUTH_URL: 'http://mnestix-browser:3000/'
       KEYCLOAK_ENABLED: 'true'

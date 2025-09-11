@@ -12,7 +12,7 @@ export async function createCustomSubmodelTemplate(template: Submodel | typeof E
     const defaultInfrastructure = await getDefaultInfrastructure();
     const securityHeaders = await createSecurityHeaders(defaultInfrastructure);
     const templateApiClientWithAuth = TemplateClient.create(
-        envs.MNESTIX_BACKEND_API_URL,
+        envs.MNESTIX_AAS_GENERATOR_API_URL,
         mnestixFetch(securityHeaders),
     );
     return templateApiClientWithAuth.createCustomSubmodel(template);
@@ -22,7 +22,7 @@ export async function updateCustomSubmodelTemplate(submodel: Submodel, submodelI
     const defaultInfrastructure = await getDefaultInfrastructure();
     const securityHeaders = await createSecurityHeaders(defaultInfrastructure);
     const templateApiClientWithAuth = TemplateClient.create(
-        envs.MNESTIX_BACKEND_API_URL,
+        envs.MNESTIX_AAS_GENERATOR_API_URL,
         mnestixFetch(securityHeaders),
     );
     return templateApiClientWithAuth.updateCustomSubmodel(submodel, submodelId);

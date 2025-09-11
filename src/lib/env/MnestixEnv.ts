@@ -13,7 +13,7 @@
 // In production builds `process` is not defined on client side
 const process_env: Record<string, string | undefined> = typeof process !== 'undefined' ? process.env : {};
 
-const privateEnvs = mapEnvVariables(['MNESTIX_BACKEND_API_KEY', 'BASYX_RBAC_SEC_SM_API_URL'] as const);
+const privateEnvs = mapEnvVariables(['MNESTIX_AAS_GENERATOR_API_KEY', 'BASYX_RBAC_SEC_SM_API_URL'] as const);
 
 const privateAzure = mapEnvVariables([
     'AD_CLIENT_ID',
@@ -78,7 +78,7 @@ const otherVariables = {
             'CONCEPT_DESCRIPTION_REPO_API_URL',
             'AAS_REPO_API_URL',
             'SUBMODEL_REPO_API_URL',
-            'MNESTIX_BACKEND_API_URL',
+            'MNESTIX_AAS_GENERATOR_API_URL',
             'IMPRINT_URL',
             'DATA_PRIVACY_URL',
         ] as const,

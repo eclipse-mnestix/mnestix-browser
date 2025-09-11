@@ -103,7 +103,7 @@ export default function MainMenu() {
         basicMenu.push(listItemToAdd);
     }
 
-    if (env.MNESTIX_BACKEND_API_URL && checkIfRouteIsAllowed('/templates')) {
+    if (env.MNESTIX_AAS_GENERATOR_API_URL && checkIfRouteIsAllowed('/templates')) {
         const templateItemToAdd = {
             label: t('templates'),
             to: '/templates',

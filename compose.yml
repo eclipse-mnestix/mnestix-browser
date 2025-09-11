@@ -24,8 +24,8 @@ services:
       AAS_REPO_API_URL: 'http://mnestix-proxy:5065/repo'
       SUBMODEL_REPO_API_URL: 'http://mnestix-proxy:5065/repo'
       CONCEPT_DESCRIPTION_REPO_API_URL: 'http://mnestix-proxy:5065/repo'
-      MNESTIX_BACKEND_API_URL: 'http://mnestix-proxy:5065'
-      MNESTIX_BACKEND_API_KEY: ${MNESTIX_BACKEND_API_KEY:-verySecureApiKey}
+      MNESTIX_AAS_GENERATOR_API_URL: 'http://mnestix-proxy:5065'
+      MNESTIX_AAS_GENERATOR_API_KEY: ${MNESTIX_AAS_GENERATOR_API_KEY:-verySecureApiKey}
       AAS_LIST_FEATURE_FLAG: 'true'
       TRANSFER_FEATURE_FLAG: 'false'
       COMPARISON_FEATURE_FLAG: 'true'
@@ -50,7 +50,7 @@ services:
       - '5065:5065'
     environment:
       # API key authorization
-      CustomerEndpointsSecurity__ApiKey: ${MNESTIX_BACKEND_API_KEY:-verySecureApiKey}
+      CustomerEndpointsSecurity__ApiKey: ${MNESTIX_AAS_GENERATOR_API_KEY:-verySecureApiKey}
       # Connection to Repository Service:
       ReverseProxy__Clusters__mnestixApiCluster__Destinations__destination1__Address: 'http://mnestix-api:5064/'
       ReverseProxy__Clusters__aasRepoCluster__Destinations__destination1__Address: 'http://aas-environment:8081/'
@@ -72,7 +72,7 @@ services:
     profiles: ['', 'backend', 'tests']
     environment:
       # API key authorization
-      CustomerEndpointsSecurity__ApiKey: ${MNESTIX_BACKEND_API_KEY:-verySecureApiKey}
+      CustomerEndpointsSecurity__ApiKey: ${MNESTIX_AAS_GENERATOR_API_KEY:-verySecureApiKey}
       # Connection to Repository Service:
       ReverseProxy__Clusters__aasRepoCluster__Destinations__destination1__Address: 'http://aas-environment:8081/'
       ReverseProxy__Clusters__submodelRepoCluster__Destinations__destination1__Address: 'http://aas-environment:8081/'

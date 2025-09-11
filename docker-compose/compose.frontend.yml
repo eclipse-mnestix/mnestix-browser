@@ -23,7 +23,7 @@ services:
       SUBMODEL_REPO_API_URL: 'http://aas-environment:8081'
       CONCEPT_DESCRIPTION_REPO_API_URL: 'http://aas-environment:8081'
       AAS_LIST_FEATURE_FLAG: 'true'
-      MNESTIX_BACKEND_API_URL: ''
+      MNESTIX_AAS_GENERATOR_API_URL: ''
       TRANSFER_FEATURE_FLAG: 'false'
       COMPARISON_FEATURE_FLAG: 'true'
       AUTHENTICATION_FEATURE_FLAG: 'false'
