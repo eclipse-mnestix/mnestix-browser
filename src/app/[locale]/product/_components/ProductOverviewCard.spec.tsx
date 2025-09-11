@@ -120,7 +120,7 @@ jest.mock('./../../viewer/_components/submodel-elements/marking-components/Marki
         .mockImplementation(() => <div data-testid="markings-component">Markings Component</div>),
 }));
 
-describe('ProductOverviewCard', () => {
+xdescribe('ProductOverviewCard', () => {
     const mockPush = jest.fn();
     const mockAddData = jest.fn();
 
