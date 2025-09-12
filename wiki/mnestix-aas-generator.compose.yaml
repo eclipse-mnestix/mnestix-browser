@@ -1,7 +1,7 @@
 services:
-  mnestix-api:
-    image: mnestix/mnestix-api:1.3.2
-    container_name: mnestix-api
+  mnestix-aas-generator:
+    image: mnestix/mnestix-aas-generator:1.0.0
+    container_name: mnestix-aas-generator
     # Port Mapping
     # Map host port 5064 to container port 5064
     ports:
@@ -9,24 +9,9 @@ services:
     environment:
       # Application Settings
       # API Key:
-      CustomerEndpointsSecurity__ApiKey: YOUR_API_KEY_HERE # Set your API key for Mnestix API
-      # Connection to Repository Service:
-      ReverseProxy__Clusters__aasRepoCluster__Destinations__destination1__Address: "http://aas:8081/"
-      ReverseProxy__Clusters__submodelRepoCluster__Destinations__destination1__Address: "http://aas:8081/"
-      ReverseProxy__Clusters__discoveryCluster__Destinations__destination1__Address: "http://aas-discovery:8081/"
+      CustomerEndpointsSecurity__ApiKey: YOUR_API_KEY_HERE # Set your API key for Mnestix AAS Generator
       # Features Configuration
-      Features__AasRegistryMiddleware: true
-      Features__AllowRetrievingAllShellsAndSubmodels: true
       Features__UseAuthentication: true
-      # InfluxDB Configuration
-      # URL to specify the host and port where InfluxDB is running:
-      ReverseProxy__Clusters__influxCluster__Destinations__destination1__Address: "YOUR_INFLUX_DB_ADDRESS_HERE" # Replace with you Influx DB adress
-      # Token:
-      ReverseProxy__Routes__InfluxRoute__Transforms__1__Set: "YOUR_TOKEN_HERE" # Replace with you Influx DB token
-      # MongoDB Configuration
-      BasyxDbConnectionConfiguration__MongoConnectionString: "mongodb://mongoAdmin:mongoPassword@mongodb:27017/?authSource=admin"
-      BasyxDbConnectionConfiguration__DatabaseName: basyxdb
-      BasyxDbConnectionConfiguration__AasCollectionName: "aas-repo"
       # OpenId repository settings
       RepositoryOpenIdConnect__EnableRepositoryOpenIdAuth: "false"
       RepositoryOpenIdConnect__Authority: "http://YOUR_KEYCLOAK_SERVER/realms/YOUR_REALM" # Replace with your keycloak data
@@ -45,6 +30,8 @@ services:
       OpenId__RequireHttpsMetadata: "false"
       # ASP.NET Core URLs
       ASPNETCORE_URLS: "http://+:5064"
+      # ServerUrls
+      ServerUrls: 'http://mnestix-proxy:5065/repo/'
     depends_on:
       aas:
         condition: service_healthy # only after the healthcheck in aas is successful, the mnestix container is being created

@@ -1,5 +1,9 @@
 > [!IMPORTANT]
 >
+> A new Mnestix Proxy and AAS Generator (Mnestix API v2.*) has been released. For detailed information and usage instructions, please refer to the [Mnestix-AAS-Generator](Mnestix-AAS-Generator) documentation.
+
+> [!IMPORTANT]
+>
 > This part of the documentation is for the [Mnestix API](https://hub.docker.com/r/mnestix/mnestix-api) and will be moved once the API is Open Source.
 > For now the different functionalities are all combined in the Mnestix API.
 
