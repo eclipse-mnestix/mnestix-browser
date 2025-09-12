@@ -30,5 +30,7 @@
 - [Mnestix AAS Generator Documentation](Mnestix-AAS-Generator)
     - [AAS Generator (Data Ingest Endpoint) Usage](Mnestix-API-Data-Ingest)
 
+- [Configuring Mnestix for different versions](Different-versions-configuration)
+
     <br></br>
     <br></br>
