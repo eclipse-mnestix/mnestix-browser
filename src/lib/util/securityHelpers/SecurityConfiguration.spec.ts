@@ -40,7 +40,7 @@ describe('createSecurityHeaders', () => {
         jest.clearAllMocks();
         mockedEnvs.MNESTIX_V2_ENABLED = false;
         mockedEnvs.AUTHENTICATION_FEATURE_FLAG = false;
-        mockedEnvs.MNESTIX_AAS_GENERATOR_API_KEY = 'test-api-key';
+        mockedEnvs.MNESTIX_BACKEND_API_KEY = 'test-api-key';
     });
 
     describe('when infrastructure is undefined or null', () => {
@@ -69,7 +69,7 @@ describe('createSecurityHeaders', () => {
             const mockDefaultInfrastructure = createMockInfrastructure({ isDefault: true });
             mockedEnvs.AUTHENTICATION_FEATURE_FLAG = false;
             mockedEnvs.MNESTIX_V2_ENABLED = false;
-            mockedEnvs.MNESTIX_AAS_GENERATOR_API_KEY = 'test-api-key';
+            mockedEnvs.MNESTIX_BACKEND_API_KEY = 'test-api-key';
 
             const result = await createSecurityHeaders(mockDefaultInfrastructure);
 
@@ -82,7 +82,7 @@ describe('createSecurityHeaders', () => {
             const mockDefaultInfrastructure = createMockInfrastructure({ isDefault: true });
             mockedEnvs.AUTHENTICATION_FEATURE_FLAG = false;
             mockedEnvs.MNESTIX_V2_ENABLED = true;
-            mockedEnvs.MNESTIX_AAS_GENERATOR_API_KEY = 'test-api-key';
+            mockedEnvs.MNESTIX_BACKEND_API_KEY = 'test-api-key';
 
             const result = await createSecurityHeaders(mockDefaultInfrastructure);
 

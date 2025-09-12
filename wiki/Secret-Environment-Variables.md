@@ -6,7 +6,7 @@ This `.env` file will be used automatically by docker compose and Next.js.
 
 ```yaml
 AD_SECRET_VALUE: '<<YOUR_SECRET>>'
-MNESTIX_AAS_GENERATOR_API_KEY: '<<YOUR_API_KEY>>'
+MNESTIX_BACKEND_API_KEY: '<<YOUR_API_KEY>>'
 NEXTAUTH_SECRET: '<<YOUR_SECRET>>'
 SECRET_ENC_KEY: '<<YOUR_SECRET>>'
 ```

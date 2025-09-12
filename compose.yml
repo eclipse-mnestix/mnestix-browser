@@ -26,7 +26,7 @@ services:
       CONCEPT_DESCRIPTION_REPO_API_URL: 'http://mnestix-proxy:5065/repo'
       SERIALIZATION_API_URL: 'http://mnestix-proxy:5065/repo'
       MNESTIX_AAS_GENERATOR_API_URL: 'http://mnestix-proxy:5065'
-      MNESTIX_AAS_GENERATOR_API_KEY: ${MNESTIX_AAS_GENERATOR_API_KEY:-verySecureApiKey}
+      MNESTIX_BACKEND_API_KEY: ${MNESTIX_BACKEND_API_KEY:-verySecureApiKey}
       AAS_LIST_FEATURE_FLAG: 'true'
       TRANSFER_FEATURE_FLAG: 'false'
       COMPARISON_FEATURE_FLAG: 'true'
@@ -51,7 +51,7 @@ services:
       - '5065:5065'
     environment:
       # API key authorization
-      CustomerEndpointsSecurity__ApiKey: ${MNESTIX_AAS_GENERATOR_API_KEY:-verySecureApiKey}
+      CustomerEndpointsSecurity__ApiKey: ${MNESTIX_BACKEND_API_KEY:-verySecureApiKey}
       # Connection to Repository Service:
       ReverseProxy__Clusters__mnestixApiCluster__Destinations__destination1__Address: 'http://mnestix-aas-generator:5064/'
       ReverseProxy__Clusters__aasRepoCluster__Destinations__destination1__Address: 'http://aas-environment:8081/'
@@ -73,25 +73,9 @@ services:
     profiles: ['', 'backend', 'tests']
     environment:
       # API key authorization
-      CustomerEndpointsSecurity__ApiKey: ${MNESTIX_AAS_GENERATOR_API_KEY:-verySecureApiKey}
-      # Connection to Repository Service:
-      ReverseProxy__Clusters__aasRepoCluster__Destinations__destination1__Address: 'http://aas-environment:8081/'
-      ReverseProxy__Clusters__submodelRepoCluster__Destinations__destination1__Address: 'http://aas-environment:8081/'
-      ReverseProxy__Clusters__discoveryCluster__Destinations__destination1__Address: 'http://aas-discovery:8081/'
+      CustomerEndpointsSecurity__ApiKey: ${MNESTIX_BACKEND_API_KEY:-verySecureApiKey}
       # Features Configuration
-      Features__AasRegistryMiddleware: 'true'
-      Features__UseMongoDbBasedAasIdStorage: 'true'
-      Features__AllowRetrievingAllShellsAndSubmodels: 'true'
       Features__UseAuthentication: 'false'
-      # InfluxDB Configuration
-      # URL to specify the host and port where InfluxDB is running:
-      ReverseProxy__Clusters__influxCluster__Destinations__destination1__Address: 'http://example/'
-      # Token:
-      ReverseProxy__Routes__InfluxRoute__Transforms__1__Set: 'Token '
-      # MongoDB Configuration
-      BasyxDbConnectionConfiguration__MongoConnectionString: 'mongodb://mongoAdmin:mongoPassword@mongodb:27017/?authSource=admin'
-      BasyxDbConnectionConfiguration__DatabaseName: basyxdb
-      BasyxDbConnectionConfiguration__AasCollectionName: 'aas-repo'
       # ASP.NET Core URLs
       ASPNETCORE_URLS: 'http://+:5064'
       # ServerUrls

@@ -23,7 +23,7 @@ services:
     ports:
       - '5149:5149'
     environment:
-      AuthenticationSettings__ApiKey: ${MNESTIX_AAS_GENERATOR_API_KEY:-verySecureApiKey}
+      AuthenticationSettings__ApiKey: ${MNESTIX_BACKEND_API_KEY:-verySecureApiKey}
       AasSearcherDatabase__ConnectionString: 'mongodb://admin:superSecureSecret@searcher-mongodb:27017'
       BaseUrlSettings__AasRepositoryBaseUrl: 'https://vws4ls-api.dev.mnestix.xitaso.net/repo'
       BaseUrlSettings__SubmodelRepositoryBaseUrl: 'https://vws4ls-api.dev.mnestix.xitaso.net/repo'

@@ -135,12 +135,12 @@ Notably, the following flags must be set `AUTHENTICATION_FEATURE_FLAG: true` and
 
 To have the full functionality of the Mnestix Browser you can configure the environment variables for the mnestix-aas-generator
 service in the `compose.yml` file.
-It is also necessary to set `MNESTIX_AAS_GENERATOR_API_KEY`.
+It is also necessary to set `MNESTIX_BACKEND_API_KEY`.
 This may be any string and acts as your password for the aas generator backend api and the repo proxy.
 This can be done directly in the `compose.yml` or by defining the environment variable in your `.env` file:
 
 ```yaml
-MNESTIX_AAS_GENERATOR_API_KEY: '<<YOUR_API_KEY>>'
+MNESTIX_BACKEND_API_KEY: '<<YOUR_API_KEY>>'
 ```
 
 ### Retrieval of AAS and Submodels?

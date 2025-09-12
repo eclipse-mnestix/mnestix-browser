@@ -66,7 +66,7 @@ function createDefaultSecurityHeaders(bearerToken: string): Record<string, strin
     } else if (!envs.AUTHENTICATION_FEATURE_FLAG) {
         const mnestixProxyHeaderName = envs.MNESTIX_V2_ENABLED ? 'X-API-KEY' : 'ApiKey';
         return {
-            [mnestixProxyHeaderName]: envs.MNESTIX_AAS_GENERATOR_API_KEY || '',
+            [mnestixProxyHeaderName]: envs.MNESTIX_BACKEND_API_KEY || '',
         };
     }
     return null;
