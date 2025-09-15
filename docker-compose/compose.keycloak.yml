@@ -47,6 +47,14 @@ services:
       KEYCLOAK_LOCAL_URL: 'http://localhost:8080'
       KEYCLOAK_REALM: 'Mnestix'
 
+  mnestix-proxy:
+    environment:
+      # OpenID Configuration
+      OpenId__EnableOpenIdAuth: 'true'
+      OpenId__Issuer: 'http://keycloak:8080/realms/Mnestix'
+      OpenId__ClientID: 'mnestixApi-demo'
+      OpenId__RequireHttpsMetadata: 'false'
+
   mnestix-aas-generator:
     environment:
       Features__UseAuthentication: 'true'
