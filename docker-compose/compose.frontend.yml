@@ -63,7 +63,7 @@ services:
       - mnestix-network
 
   aas-environment:
-    image: eclipsebasyx/aas-environment:2.0.0-milestone-06
+    image: eclipsebasyx/aas-environment:2.0.0-milestone-07
     container_name: aas-environment
     depends_on:
       - mongodb
@@ -96,7 +96,7 @@ services:
       - mnestix-network
 
   aas-discovery:
-    image: eclipsebasyx/aas-discovery:2.0.0-milestone-06
+    image: eclipsebasyx/aas-discovery:2.0.0-milestone-07
     container_name: aas-discovery
     depends_on:
       - mongodb
@@ -123,7 +123,7 @@ services:
       - mnestix-network
 
   aas-registry:
-    image: eclipsebasyx/aas-registry-log-mongodb:2.0.0-milestone-06
+    image: eclipsebasyx/aas-registry-log-mongodb:2.0.0-milestone-07
     container_name: aas-registry
     ports:
       - '8083:8080'
@@ -142,7 +142,7 @@ services:
       - mnestix-network
 
   submodel-registry:
-    image: eclipsebasyx/submodel-registry-log-mongodb:2.0.0-milestone-06
+    image: eclipsebasyx/submodel-registry-log-mongodb:2.0.0-milestone-07
     container_name: submodel-registry
     ports:
       - '8084:8080'
