@@ -11,7 +11,7 @@ services:
       BASYX_RBAC_ENABLED: 'true'
       BASYX_RBAC_SEC_SM_API_URL: 'http://security-submodel:8081'
 
-  mnestix-api:
+  mnestix-aas-generator:
     environment:
       Features__UseAuthentication: 'true'
       # OpenId repository settings

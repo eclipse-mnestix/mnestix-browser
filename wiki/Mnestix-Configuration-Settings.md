@@ -11,7 +11,7 @@ Mnestix provides the following configuration options. You can adapt the values i
 | `DISCOVERY_API_URL`                |               | Address of the Discovery Service to find an AAS for an Asset                                                                                     |
 | `REGISTRY_API_URL`                 |               | Address of the AAS Registry Service to retrieve the related descriptor for an AAS                                                                |
 | `SUBMODEL_REGISTRY_API_URL`        |               | Address of the Submodel Registry Service to retrieve the related descriptor for a Submodel                                                       |
-| `MNESTIX_BACKEND_API_URL`          |               | Mnestix Backend with a lot of business comfort features like the Repository-Proxy or the Template builder                                        |
+| `MNESTIX_AAS_GENERATOR_API_URL`    |               | Mnestix Aas Generator with a lot of business comfort features to create AAS via templates                                                        |
 | `CONCEPT_DESCRIPTION_REPO_API_URL` |               | Default Concept Description Repository                                                                                                           |
 | `LOG_LEVEL`                        | "info"        | Server side log level of Mnestix Browser. "fatal" or "error" or "warn" or "info" or "debug" or "trace" or "silent"                               |
 | `MNESTIX_V2_ENABLED`               | "true"        | Setting to 'false' to support older Mnestix API versions (v1._._), the support for those Mnestix API versions will be stopped in the near future |
@@ -129,14 +129,14 @@ If you want to start the browser with Next.js and Azure authentication directly,
 and update the environment variables mentioned above in there.
 Notably, the following flags must be set `AUTHENTICATION_FEATURE_FLAG: true` and `KEYCLOAK_ENABLED: false`.
 
-### Using the Mnestix Backend
+### Using the Mnestix Aas Generator
 
 > Without specifying your own API key, Mnestix will use the default 'verySecureApiKey'!
 
-To have the full functionality of the Mnestix Browser you can configure the environment variables for the mnestix-api
+To have the full functionality of the Mnestix Browser you can configure the environment variables for the mnestix-aas-generator
 service in the `compose.yml` file.
 It is also necessary to set `MNESTIX_BACKEND_API_KEY`.
-This may be any string and acts as your password for the backend api service and the repo proxy.
+This may be any string and acts as your password for the aas generator backend api and the repo proxy.
 This can be done directly in the `compose.yml` or by defining the environment variable in your `.env` file:
 
 ```yaml
@@ -171,14 +171,14 @@ Here it is possible to set an API Key, for example, to secure your backend servi
 service.
 When running the [Mnestix API](https://hub.docker.com/r/mnestix/mnestix-api) you can change the paths to the different
 services like described in the [Mnestix API Documentation](https://hub.docker.com/r/mnestix/mnestix-api).
-For example (change `{{MNESTIX_BACKEND_API_URL}}` to the URL of the
+For example (change `{{MNESTIX_AAS_GENERATOR_API_URL}}` to the URL of the
 running [Mnestix API](https://hub.docker.com/r/mnestix/mnestix-api))
 
 ```yaml
-DISCOVERY_API_URL: '{{MNESTIX_BACKEND_API_URL}}/discovery'
-AAS_REPO_API_URL: '{{MNESTIX_BACKEND_API_URL}}/repo'
-SUBMODEL_REPO_API_URL: '{{MNESTIX_BACKEND_API_URL}}/repo'
-MNESTIX_BACKEND_API_URL: '{{MNESTIX_BACKEND_API_URL}}'
+DISCOVERY_API_URL: '{{MNESTIX_AAS_GENERATOR_API_URL}}/discovery'
+AAS_REPO_API_URL: '{{MNESTIX_AAS_GENERATOR_API_URL}}/repo'
+SUBMODEL_REPO_API_URL: '{{MNESTIX_AAS_GENERATOR_API_URL}}/repo'
+MNESTIX_AAS_GENERATOR_API_URL: '{{MNESTIX_AAS_GENERATOR_API_URL}}'
 ```
 
 #### Running Mnestix without its API

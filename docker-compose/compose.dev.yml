@@ -12,6 +12,10 @@ services:
       - ./src:/app/src
       - ./public:/app/public
 
+  mnestix-aas-generator:
+    ports:
+      - '5064:5064'
+
   mongodb:
     ports:
       - '27017:27017'

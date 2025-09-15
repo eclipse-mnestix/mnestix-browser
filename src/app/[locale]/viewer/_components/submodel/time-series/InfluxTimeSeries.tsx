@@ -21,9 +21,9 @@ export function InfluxTimeSeries(props: { submodelElement: SubmodelElementCollec
         locale,
     );
 
-    if (endpoint && env.MNESTIX_BACKEND_API_URL && !isValidUrl(endpoint)) {
+    if (endpoint && env.MNESTIX_AAS_GENERATOR_API_URL && !isValidUrl(endpoint)) {
         // TODO is this safe to do? MNES-979
-        endpoint = env.MNESTIX_BACKEND_API_URL + endpoint;
+        endpoint = env.MNESTIX_AAS_GENERATOR_API_URL + endpoint;
     }
 
     const queryInAas = findValueByIdShort(

@@ -30,7 +30,7 @@ export default function Page() {
         },
     ];
 
-    if (env.MNESTIX_BACKEND_API_URL) {
+    if (env.MNESTIX_AAS_GENERATOR_API_URL) {
         const settingsTabToAdd = {
             id: settingsPageTypes[settingsPageTypes.ID_STRUCTURE],
             label: t('idStructure.title'),

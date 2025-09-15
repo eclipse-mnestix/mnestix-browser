@@ -7,7 +7,7 @@ services:
       APPLICATION_ID_URI: 'api://mnestix-test-web-api/'
       AUTHENTICATION_FEATURE_FLAG: 'true'
 
-  mnestix-api:
+  mnestix-aas-generator:
     environment:
       AzureAd__Domain: 'mnestixtest.onmicrosoft.com'
       AzureAd__TenantId: 6c4ccecf-2dd4-4241-b7fc-6e95b32dcfac

@@ -47,7 +47,7 @@ services:
       KEYCLOAK_LOCAL_URL: 'http://localhost:8080'
       KEYCLOAK_REALM: 'Mnestix'
 
-  mnestix-api:
+  mnestix-aas-generator:
     environment:
       Features__UseAuthentication: 'true'
       # OpenId repository settings

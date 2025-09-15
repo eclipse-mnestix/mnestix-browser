@@ -12,7 +12,7 @@ export async function getDefaultTemplates(): Promise<ApiResponseWrapper<Submodel
     const defaultInfrastructure = await getDefaultInfrastructure();
     const securityHeaders = await createSecurityHeaders(defaultInfrastructure);
     const templateApiClient = TemplateShellApi.create(
-        envs.MNESTIX_BACKEND_API_URL ?? '',
+        envs.MNESTIX_AAS_GENERATOR_API_URL ?? '',
         envs.AUTHENTICATION_FEATURE_FLAG,
         mnestixFetch(securityHeaders),
     );
@@ -23,7 +23,7 @@ export async function getCustomTemplates(): Promise<ApiResponseWrapper<Submodel[
     const defaultInfrastructure = await getDefaultInfrastructure();
     const securityHeaders = await createSecurityHeaders(defaultInfrastructure);
     const templateApiClient = TemplateShellApi.create(
-        envs.MNESTIX_BACKEND_API_URL ?? '',
+        envs.MNESTIX_AAS_GENERATOR_API_URL ?? '',
         envs.AUTHENTICATION_FEATURE_FLAG,
         mnestixFetch(securityHeaders),
     );
@@ -34,7 +34,7 @@ export async function getCustomTemplateById(id: string): Promise<ApiResponseWrap
     const defaultInfrastructure = await getDefaultInfrastructure();
     const securityHeaders = await createSecurityHeaders(defaultInfrastructure);
     const templateApiClient = TemplateShellApi.create(
-        envs.MNESTIX_BACKEND_API_URL ?? '',
+        envs.MNESTIX_AAS_GENERATOR_API_URL ?? '',
         envs.AUTHENTICATION_FEATURE_FLAG,
         mnestixFetch(securityHeaders),
     );
@@ -45,7 +45,7 @@ export async function deleteCustomTemplateById(id: string): Promise<ApiResponseW
     const defaultInfrastructure = await getDefaultInfrastructure();
     const securityHeaders = await createSecurityHeaders(defaultInfrastructure);
     const templateApiClient = TemplateShellApi.create(
-        envs.MNESTIX_BACKEND_API_URL ?? '',
+        envs.MNESTIX_AAS_GENERATOR_API_URL ?? '',
         envs.AUTHENTICATION_FEATURE_FLAG,
         mnestixFetch(securityHeaders),
     );
