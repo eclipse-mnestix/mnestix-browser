@@ -11,6 +11,14 @@ services:
       BASYX_RBAC_ENABLED: 'true'
       BASYX_RBAC_SEC_SM_API_URL: 'http://security-submodel:8081'
 
+  mnestix-proxy:
+    environment:
+      # OpenID Configuration
+      OpenId__EnableOpenIdAuth: 'true'
+      OpenId__Issuer: 'http://keycloak:8080/realms/Mnestix'
+      OpenId__ClientID: 'mnestixApi-demo'
+      OpenId__RequireHttpsMetadata: 'false'
+
   mnestix-aas-generator:
     environment:
       Features__UseAuthentication: 'true'
