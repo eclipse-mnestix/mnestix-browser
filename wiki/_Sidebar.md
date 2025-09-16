@@ -10,6 +10,7 @@
 
 ## Configuration
 
+- [Migrate from Mnestix v1 to v2](Migrate-from-Mnestix-v1-to-v2)
 - [Mnestix Configuration Settings](Mnestix-Configuration-Settings)
 - [Secret Environment Variables](Secret-environment-variables)
 - [Docker Compose Files](Docker-Compose-Files)
