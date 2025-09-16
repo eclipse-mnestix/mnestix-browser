@@ -188,7 +188,7 @@ function MnestixInfrastructureForm({
                             />
                         )}
                     />
-                    <Box sx={{ display: 'flex', gap: 1, alignSelf: 'flex-start' }}>
+                    <Box sx={{ display: 'flex', gap: 1, alignSelf: 'center' }}>
                         <Button onClick={onCancel} variant="outlined" aria-label="Cancel editing">
                             {t('form.cancel')}
                         </Button>
