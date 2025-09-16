@@ -32,6 +32,8 @@ import {
 import { ApiResponseWrapperError } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { ServiceReachable } from 'test-utils/TestUtils';
+import { getInfrastructureByName } from '../database/infrastructureDatabaseActions';
+import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
 
 export type TransferServiceNullParams = {
     targetAasRepository: ServiceReachable;
@@ -54,40 +56,45 @@ export class TransferService {
         readonly targetAasDiscoveryClient?: IDiscoveryServiceApi,
         readonly targetAasRegistryClient?: IRegistryServiceApi,
         readonly targetSubmodelRegistryClient?: ISubmodelRegistryServiceApi,
-        readonly apikey?: string,
     ) {}
 
-    static create(config: TransferServiceConfig): TransferService {
+    static async create(config: TransferServiceConfig): Promise<TransferService> {
+        const targetInfrastructure = await getInfrastructureByName(config.targetAasRepo.infrastructureName);
+        const targetSecurityHeader = await createSecurityHeaders(targetInfrastructure || undefined);
+
+        const sourceInfrastructure = await getInfrastructureByName(config.sourceAasRepo.infrastructureName);
+        const sourceSecurityHeader = await createSecurityHeaders(sourceInfrastructure || undefined);
+
         const targetAasRepositoryClient = AssetAdministrationShellRepositoryApi.create(
-            config.targetAasRepoUrl,
-            mnestixFetch(),
+            config.targetAasRepo.url,
+            mnestixFetch(targetSecurityHeader),
         );
 
         const sourceAasRepositoryClient = AssetAdministrationShellRepositoryApi.create(
-            config.sourceAasRepoUrl,
-            mnestixFetch(),
+            config.sourceAasRepo.url,
+            mnestixFetch(sourceSecurityHeader),
         );
 
         const targetSubmodelRepositoryClient = SubmodelRepositoryApi.create(
-            config.targetSubmodelRepoUrl,
-            mnestixFetch(),
+            config.targetSubmodelRepo.url,
+            mnestixFetch(targetSecurityHeader),
         );
 
         const sourceSubmodelRepositoryClient = SubmodelRepositoryApi.create(
-            config.sourceSubmodelRepoUrl,
-            mnestixFetch(),
+            config.sourceSubmodelRepo.url,
+            mnestixFetch(sourceSecurityHeader),
         );
 
-        const targetAasDiscoveryClient = config.targetDiscoveryUrl
-            ? DiscoveryServiceApi.create(config.targetDiscoveryUrl, mnestixFetch())
+        const targetAasDiscoveryClient = config.targetDiscovery?.url
+            ? DiscoveryServiceApi.create(config.targetDiscovery.url, mnestixFetch(targetSecurityHeader))
             : undefined;
 
-        const targetAasRegistryClient = config.targetAasRegistryUrl
-            ? RegistryServiceApi.create(config.targetAasRegistryUrl, mnestixFetch())
+        const targetAasRegistryClient = config.targetAasRegistry?.url
+            ? RegistryServiceApi.create(config.targetAasRegistry.url, mnestixFetch(targetSecurityHeader))
             : undefined;
 
-        const targetSubmodelRegistryClient = config.targetSubmodelRegistryUrl
-            ? SubmodelRegistryServiceApi.create(config.targetSubmodelRegistryUrl, mnestixFetch())
+        const targetSubmodelRegistryClient = config.targetSubmodelRegistry?.url
+            ? SubmodelRegistryServiceApi.create(config.targetSubmodelRegistry.url, mnestixFetch(targetSecurityHeader))
             : undefined;
 
         return new TransferService(
@@ -98,7 +105,6 @@ export class TransferService {
             targetAasDiscoveryClient,
             targetAasRegistryClient,
             targetSubmodelRegistryClient,
-            config.apikey,
         );
     }
 
@@ -184,16 +190,14 @@ export class TransferService {
         const promises = [];
         const attachmentPromises: Promise<TransferResult>[] = [];
 
-        promises.push(this.postAasToRepository(transferAas.aas, this.apikey));
+        promises.push(this.postAasToRepository(transferAas.aas));
 
         if (aasThumbnailImageIsFile(transferAas.aas)) {
-            attachmentPromises.push(
-                this.transferThumbnailImageToShell(transferAas.originalAasId, transferAas.aas.id, this.apikey),
-            );
+            attachmentPromises.push(this.transferThumbnailImageToShell(transferAas.originalAasId, transferAas.aas.id));
         }
 
         if (this.targetAasDiscoveryClient && transferAas.aas.assetInformation.globalAssetId) {
-            promises.push(this.registerAasAtDiscovery(transferAas.aas, this.apikey));
+            promises.push(this.registerAasAtDiscovery(transferAas.aas));
         }
 
         if (this.targetAasRegistryClient) {
@@ -201,7 +205,7 @@ export class TransferService {
         }
 
         for (const transferSubmodel of transferSubmodels) {
-            promises.push(this.postSubmodelToRepository(transferSubmodel.submodel, this.apikey));
+            promises.push(this.postSubmodelToRepository(transferSubmodel.submodel));
 
             if (transferSubmodel.submodel.submodelElements) {
                 const attachmentDetails = this.getSubmodelAttachmentsDetails(
@@ -211,7 +215,6 @@ export class TransferService {
                     transferSubmodel.originalSubmodelId,
                     transferSubmodel.submodel.id,
                     attachmentDetails,
-                    this.apikey,
                 );
                 attachmentPromises.push(...result);
             }
@@ -236,12 +239,8 @@ export class TransferService {
         return [...mainResults, ...attachmentResults];
     }
 
-    private async postAasToRepository(aas: AssetAdministrationShell, apikey?: string): Promise<TransferResult> {
-        const response = await this.targetAasRepositoryClient.postAssetAdministrationShell(aas, {
-            headers: {
-                ApiKey: apikey,
-            },
-        });
+    private async postAasToRepository(aas: AssetAdministrationShell): Promise<TransferResult> {
+        const response = await this.targetAasRepositoryClient.postAssetAdministrationShell(aas);
         if (response.isSuccess) {
             return { success: true, operationKind: 'AasRepository', resourceId: aas.id, error: '' };
         } else {
@@ -263,12 +262,8 @@ export class TransferService {
         }
     }
 
-    private async postSubmodelToRepository(submodel: Submodel, apikey?: string): Promise<TransferResult> {
-        const response = await this.targetSubmodelRepositoryClient.postSubmodel(submodel, {
-            headers: {
-                ApiKey: apikey,
-            },
-        });
+    private async postSubmodelToRepository(submodel: Submodel): Promise<TransferResult> {
+        const response = await this.targetSubmodelRepositoryClient.postSubmodel(submodel);
         if (response.isSuccess) {
             return { success: true, operationKind: 'SubmodelRepository', resourceId: submodel.id, error: '' };
         } else {
@@ -295,11 +290,7 @@ export class TransferService {
         }
     }
 
-    private async transferThumbnailImageToShell(
-        originalAasId: string,
-        targetAasId: string,
-        apikey?: string,
-    ): Promise<TransferResult> {
+    private async transferThumbnailImageToShell(originalAasId: string, targetAasId: string): Promise<TransferResult> {
         const response = await this.sourceAasRepositoryClient.getThumbnailFromShell(originalAasId);
         if (!response.isSuccess) {
             return {
@@ -316,11 +307,6 @@ export class TransferService {
             targetAasId,
             aasThumbnail,
             fileName,
-            {
-                headers: {
-                    ApiKey: apikey,
-                },
-            },
         );
         if (pushResponse.isSuccess) {
             return { success: true, operationKind: 'FileTransfer', resourceId: 'Thumbnail transfer.', error: '' };
@@ -338,7 +324,6 @@ export class TransferService {
         originalSubmodelId: string,
         targetSubmodelId: string,
         attachmentDetails: AttachmentDetails[],
-        apikey?: string,
     ) {
         const promises = [];
 
@@ -366,7 +351,7 @@ export class TransferService {
                     attachmentDetail.fileName,
                     this.getExtensionFromFileType(attachmentDetail.file.type),
                 ].join('.');
-                promises.push(this.putAttachmentToSubmodelElement(targetSubmodelId, attachmentDetail, apikey));
+                promises.push(this.putAttachmentToSubmodelElement(targetSubmodelId, attachmentDetail));
             }
         }
         return promises;
@@ -375,16 +360,10 @@ export class TransferService {
     private async putAttachmentToSubmodelElement(
         submodelId: string,
         attachment: AttachmentDetails,
-        apikey?: string,
     ): Promise<TransferResult> {
         const response = await this.targetSubmodelRepositoryClient.putAttachmentToSubmodelElement(
             submodelId,
             attachment,
-            {
-                headers: {
-                    ApiKey: apikey,
-                },
-            },
         );
         if (response.isSuccess) {
             return {
@@ -403,11 +382,10 @@ export class TransferService {
         }
     }
 
-    private async registerAasAtDiscovery(aas: AssetAdministrationShell, apikey?: string): Promise<TransferResult> {
+    private async registerAasAtDiscovery(aas: AssetAdministrationShell): Promise<TransferResult> {
         const response = await this.targetAasDiscoveryClient!.linkAasIdAndAssetId(
             aas.id,
             aas.assetInformation.globalAssetId!,
-            apikey,
         );
         if (response.isSuccess) {
             return { success: true, operationKind: 'Discovery', resourceId: aas.id, error: '' };

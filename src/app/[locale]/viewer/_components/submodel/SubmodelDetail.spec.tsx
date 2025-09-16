@@ -30,14 +30,24 @@ jest.mock('next-auth', jest.fn());
 
 describe('Submodel Detail', () => {
     it('should render CarbonFootprintVisualizations for irdi id', async () => {
-        CustomRender(<SubmodelDetail submodel={testSubmodel['carbonFootprint-IrdiId'] as unknown as Submodel} />);
+        CustomRender(
+            <SubmodelDetail
+                submodel={testSubmodel['carbonFootprint-IrdiId'] as unknown as Submodel}
+                submodelRepositoryUrl={'https://test.de'}
+            />,
+        );
         const map = screen.getByTestId('carbonFootprintVisualizations');
         expect(map).toBeDefined();
         expect(map).toBeInTheDocument();
     });
 
     it('should render CarbonFootprintVisualizations for URL id', async () => {
-        CustomRender(<SubmodelDetail submodel={testSubmodel['carbonFootprint-UrlId'] as unknown as Submodel} />);
+        CustomRender(
+            <SubmodelDetail
+                submodel={testSubmodel['carbonFootprint-UrlId'] as unknown as Submodel}
+                submodelRepositoryUrl={'https://test.de'}
+            />,
+        );
         const map = screen.getByTestId('carbonFootprintVisualizations');
         expect(map).toBeDefined();
         expect(map).toBeInTheDocument();
@@ -56,7 +66,9 @@ describe('Submodel Detail', () => {
             },
         } as unknown as Submodel;
 
-        CustomRender(<SubmodelDetail submodel={testSubmodelWithMultipleIds} />);
+        CustomRender(
+            <SubmodelDetail submodel={testSubmodelWithMultipleIds} submodelRepositoryUrl={'https://test.de'} />,
+        );
 
         // Verify visualization component renders using 3rd semanticId
         const map = screen.getByTestId('carbonFootprintVisualizations');

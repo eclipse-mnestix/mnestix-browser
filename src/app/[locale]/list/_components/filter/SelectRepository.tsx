@@ -1,32 +1,29 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Skeleton } from '@mui/material';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { getConnectionDataByTypeAction } from 'lib/services/database/connectionServerActions';
-import { ConnectionTypeEnum, getTypeAction } from 'lib/services/database/ConnectionTypeEnum';
+import { getAasRepositoriesIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
-import { useEnv } from 'app/EnvProvider';
 import { useTranslations } from 'next-intl';
+import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 
-export function SelectRepository(props: { onSelectedRepositoryChanged: Dispatch<SetStateAction<string | undefined>> }) {
-    const [aasRepositories, setAasRepositories] = useState<string[]>([]);
+export function SelectRepository(props: {
+    onSelectedRepositoryChanged: Dispatch<SetStateAction<RepositoryWithInfrastructure | undefined>>;
+}) {
+    const [aasRepositories, setAasRepositories] = useState<RepositoryWithInfrastructure[]>([]);
     const [selectedRepository, setSelectedRepository] = useState<string>('');
     const notificationSpawner = useNotificationSpawner();
     const [isLoading, setIsLoading] = useState(false);
     const t = useTranslations('pages.aasList');
-    const env = useEnv();
 
     useAsyncEffect(async () => {
         try {
             setIsLoading(true);
-            const aasRepositories = await getConnectionDataByTypeAction(
-                getTypeAction(ConnectionTypeEnum.AAS_REPOSITORY),
-            );
-            if (env.AAS_REPO_API_URL) {
-                aasRepositories.push(env.AAS_REPO_API_URL);
-                setSelectedRepository(env.AAS_REPO_API_URL);
-                props.onSelectedRepositoryChanged(env.AAS_REPO_API_URL);
-            }
+            const aasRepositories: RepositoryWithInfrastructure[] = await getAasRepositoriesIncludingDefault();
             setAasRepositories(aasRepositories);
+            if (aasRepositories.length > 0 && aasRepositories[0].id) {
+                setSelectedRepository(aasRepositories[0].id);
+                props.onSelectedRepositoryChanged(aasRepositories[0]);
+            }
         } catch (error) {
             notificationSpawner.spawn({
                 message: error,
@@ -40,7 +37,7 @@ export function SelectRepository(props: { onSelectedRepositoryChanged: Dispatch<
 
     const onRepositoryChanged = (event: SelectChangeEvent) => {
         setSelectedRepository(event.target.value);
-        props.onSelectedRepositoryChanged(event.target.value);
+        props.onSelectedRepositoryChanged(aasRepositories.find((repo) => repo.id === event.target.value));
     };
 
     return (
@@ -62,8 +59,8 @@ export function SelectRepository(props: { onSelectedRepositoryChanged: Dispatch<
                     >
                         {aasRepositories.map((repo, index) => {
                             return (
-                                <MenuItem key={index} value={repo} data-testid={`repository-select-item-${index}`}>
-                                    {repo}
+                                <MenuItem key={index} value={repo.id} data-testid={`repository-select-item-${index}`}>
+                                    {repo.url}
                                 </MenuItem>
                             );
                         })}

@@ -6,13 +6,14 @@ import path from 'node:path';
 import ServiceReachable from 'test-utils/TestUtils';
 import logger, { logResponseDebug } from 'lib/util/Logger';
 import { IConceptDescriptionApi } from 'lib/api/concept-description-api/conceptDescriptionApiInterface';
+import { ConceptDescriptionRepositoryApiInMemory } from '../basyx-v3/apiInMemory';
 
 export class ConceptDescriptionApi implements IConceptDescriptionApi {
     constructor(
         private baseUrl: string,
         private http: FetchAPI,
         private readonly log: typeof logger = logger,
-    ) {}
+    ) { }
 
     static create(baseUrl: string, mnestixFetch: FetchAPI, log?: typeof logger) {
         const cDLogger = log?.child({ service: 'SubmodelRegistryServiceApi' });
@@ -23,7 +24,13 @@ export class ConceptDescriptionApi implements IConceptDescriptionApi {
         baseUrl: string,
         conceptDescriptions: ConceptDescription[],
         _reachable: ServiceReachable = ServiceReachable.Yes,
-    ) {}
+    ) {
+        return new ConceptDescriptionRepositoryApiInMemory(
+            baseUrl,
+            conceptDescriptions,
+            _reachable
+        );
+    }
 
     getBasePath(): string {
         return this.baseUrl;

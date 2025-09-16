@@ -19,7 +19,7 @@ export const initialEnvValues: EnvironmentalVariables = {
     AAS_REPO_API_URL: undefined,
     SUBMODEL_REPO_API_URL: undefined,
     CONCEPT_DESCRIPTION_REPO_API_URL: undefined,
-    MNESTIX_BACKEND_API_URL: undefined,
+    MNESTIX_AAS_GENERATOR_API_URL: undefined,
     THEME_PRIMARY_COLOR: undefined,
     THEME_SECONDARY_COLOR: undefined,
     THEME_BASE64_LOGO: undefined,
@@ -36,6 +36,7 @@ export const initialEnvValues: EnvironmentalVariables = {
     KEYCLOAK_LOCAL_URL: undefined,
     KEYCLOAK_REALM: undefined,
     KEYCLOAK_CLIENT_ID: undefined,
+    SERIALIZATION_API_URL: undefined,
 };
 
 const EnvContext = createContext(initialEnvValues);

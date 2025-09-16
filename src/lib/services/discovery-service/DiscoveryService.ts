@@ -1,0 +1,145 @@
+import {
+    ApiResponseWrapper,
+    ApiResponseWrapperSuccess,
+    wrapErrorCode,
+    wrapSuccess,
+} from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
+import logger, { logInfo, logResponseDebug } from 'lib/util/Logger';
+import { IDiscoveryServiceApi } from 'lib/api/discovery-service-api/discoveryServiceApiInterface';
+import { mnestixFetch } from 'lib/api/infrastructure';
+import { DiscoveryServiceApi } from 'lib/api/discovery-service-api/discoveryServiceApi';
+import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
+import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
+import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
+
+export type DiscoverySearchResult = {
+    aasId: string;
+    infrastructureName: string;
+    location: string;
+};
+
+export class DiscoveryService {
+    private constructor(
+        protected readonly getDiscoveryApiClient: (
+            basePath: string,
+            securityHeader: Record<string, string> | null,
+        ) => IDiscoveryServiceApi | null,
+        private readonly log: typeof logger = logger,
+    ) {}
+    static create(log?: typeof logger): DiscoveryService {
+        const discoveryLogger = log?.child({ Service: 'DiscoveryService' });
+        return new DiscoveryService(
+            (baseUrl, securityHeader) => DiscoveryServiceApi.create(baseUrl, mnestixFetch(securityHeader), log),
+            discoveryLogger,
+        );
+    }
+
+    static createNull(discoveryEntries: { assetId: string; aasId: string }[] = []): DiscoveryService {
+        return new DiscoveryService(
+            () => DiscoveryServiceApi.createNull('', discoveryEntries) as unknown as IDiscoveryServiceApi,
+            logger,
+        );
+    }
+
+    public async searchAasIdInMultipleDiscoveries(
+        searchInput: string,
+        infrastructureConnection: InfrastructureConnection[],
+    ): Promise<ApiResponseWrapper<DiscoverySearchResult[]>> {
+        const response = await this.getFromMultipleDiscoveries(
+            infrastructureConnection,
+            (basePath, infrastructure) => this.searchAasIdInSingleDiscovery(searchInput, basePath, infrastructure),
+            'Could not find in any Discovery',
+        );
+
+        if (response.isSuccess) {
+            return wrapSuccess(response.result);
+        }
+        return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'Could not find in any Discovery');
+    }
+
+    public async searchAASInAllDiscoveries(searchInput: string): Promise<ApiResponseWrapper<DiscoverySearchResult[]>> {
+        // Search in all discovery services in all infrastructures
+        const infrastructures = await getInfrastructuresIncludingDefault();
+        logInfo(this.log, 'searchAASInAllDiscoveries', 'Searching AAS in all infrastructures', infrastructures);
+
+        return this.searchAasIdInMultipleDiscoveries(searchInput, infrastructures);
+    }
+
+    public async searchAasIdInSingleDiscovery(
+        searchAssetId: string,
+        url: string,
+        infrastructure?: InfrastructureConnection,
+    ): Promise<ApiResponseWrapper<string[]>> {
+        const securityHeader = await createSecurityHeaders(infrastructure);
+
+        const client = this.getDiscoveryApiClient(url, securityHeader);
+        const response = await client?.getAasIdsByAssetId(searchAssetId);
+        if (!response) {
+            return wrapErrorCode(ApiResultStatus.INTERNAL_SERVER_ERROR, 'Discovery service client is not defined');
+        }
+
+        if (response?.isSuccess) {
+            logResponseDebug(this.log, 'performAasDiscoverySearch', 'Executing AAS discovery search', response, {
+                Requested_Asset_ID: searchAssetId,
+            });
+            return wrapSuccess(response.result);
+        }
+        logResponseDebug(this.log, 'performAasDiscoverySearch', 'AAS discovery search unsuccessful', response, {
+            Requested_Asset_ID: searchAssetId,
+        });
+        return wrapErrorCode(
+            ApiResultStatus.NOT_FOUND,
+            `Could not find the asset '${searchAssetId}' in the discovery service`,
+        );
+    }
+
+    /**
+     * Fetches AAS IDs from multiple discovery services across different infrastructures.
+     * If one discovery service returns multiple AAS IDs, it will return a list of DiscoverySearchResults.
+     * @param infrastructures
+     * @param kernel
+     * @param errorMsg
+     */
+    async getFromMultipleDiscoveries<T>(
+        infrastructures: InfrastructureConnection[],
+        kernel: (url: string, infrastructure?: InfrastructureConnection) => Promise<ApiResponseWrapper<T>>,
+        errorMsg: string,
+    ): Promise<ApiResponseWrapper<DiscoverySearchResult[]>> {
+        const promises = infrastructures.flatMap((infrastructure) =>
+            infrastructure.discoveryUrls.map((url) => {
+                return kernel(url, infrastructure).then((response: ApiResponseWrapper<T>) => {
+                    return { searchResult: response, location: url, infrastructureName: infrastructure.name };
+                });
+            }),
+        );
+
+        const responses = await Promise.allSettled(promises);
+        const fulfilledResponses = responses.filter(
+            (result) => result.status === 'fulfilled' && result.value.searchResult.isSuccess,
+        );
+
+        if (fulfilledResponses.length <= 0) {
+            return wrapErrorCode(ApiResultStatus.NOT_FOUND, errorMsg);
+        }
+
+        return wrapSuccess<DiscoverySearchResult[]>(
+            fulfilledResponses.flatMap(
+                (
+                    result: PromiseFulfilledResult<{
+                        searchResult: ApiResponseWrapperSuccess<T>;
+                        location: string;
+                        infrastructureName: string;
+                    }>,
+                ) => {
+                    const aasIdResult = result.value.searchResult.result as string[];
+                    return aasIdResult.map((aasId: string) => ({
+                        aasId,
+                        infrastructureName: result.value.infrastructureName,
+                        location: result.value.location,
+                    }));
+                },
+            ),
+        );
+    }
+}

@@ -1,6 +1,7 @@
 import { SubmodelElementCollection } from 'lib/api/aas/models';
 import { hasSemanticId } from 'lib/util/SubmodelResolverUtil';
 import { fetchFileServerSide } from 'lib/services/fileActions';
+import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 
 /**
  * Finds the latest idShort for a given SubmodelElementCollection based on semantic IDs or prefix to build a idShortPath.
@@ -48,13 +49,13 @@ export function findIdShortForLatestElement(
  * @param accessToken
  * @param repositoryUrl
  */
-export async function getFileUrl(fileUrl: string, accessToken?: string, repositoryUrl?: string) {
-    if (!accessToken || !repositoryUrl || !fileUrl.startsWith(repositoryUrl)) {
+export async function getFileUrl(fileUrl: string, accessToken?: string, repository?: RepositoryWithInfrastructure) {
+    if (!accessToken || !repository?.url || !fileUrl.startsWith(repository.url)) {
         return fileUrl;
     }
 
     try {
-        const response = await fetchFileServerSide(fileUrl);
+        const response = await fetchFileServerSide(repository);
         if (response.isSuccess) {
             return window.URL.createObjectURL(response.result);
         }

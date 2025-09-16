@@ -36,7 +36,6 @@ describe('Template CRUD Operations', () => {
         //edit template
         cy.contains(templateName).click();
         cy.url().should('include', '/templates/');
-        cy.get('[role="tree"] [role="treeitem"]').first().click();
 
         cy.getByTestId('display-name-input').clear();
         cy.getByTestId('display-name-input').type(editedTemplateName);

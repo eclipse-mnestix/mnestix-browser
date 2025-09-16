@@ -7,14 +7,14 @@ import { TabSelectorItem, VerticalTabSelector } from 'components/basics/Vertical
 import { useState } from 'react';
 import { IdSettingsCard } from './_components/id-settings/IdSettingsCard';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
-import { MnestixConnectionsCard } from 'app/[locale]/settings/_components/mnestix-connections/MnestixConnectionsCard';
+import MnestixInfrastructureCard from 'app/[locale]/settings/_components/mnestix-infrastructure/MnestixInfrastructureCard';
 import { useEnv } from 'app/EnvProvider';
 import { RuleSettings } from 'app/[locale]/settings/_components/role-settings/RuleSettings';
 import { useTranslations } from 'next-intl';
 
 enum settingsPageTypes {
     ID_STRUCTURE,
-    MNESTIX_CONNECTIONS,
+    MNESTIX_INFRASTRUCTURE,
     ROLES,
 }
 
@@ -25,12 +25,12 @@ export default function Page() {
 
     const settingsTabItems: TabSelectorItem[] = [
         {
-            id: settingsPageTypes[settingsPageTypes.MNESTIX_CONNECTIONS],
-            label: t('connections.title'),
+            id: settingsPageTypes[settingsPageTypes.MNESTIX_INFRASTRUCTURE],
+            label: t('infrastructure.title'),
         },
     ];
 
-    if (env.MNESTIX_BACKEND_API_URL) {
+    if (env.MNESTIX_AAS_GENERATOR_API_URL) {
         const settingsTabToAdd = {
             id: settingsPageTypes[settingsPageTypes.ID_STRUCTURE],
             label: t('idStructure.title'),
@@ -52,8 +52,8 @@ export default function Page() {
         switch (selectedTab.id) {
             case settingsPageTypes[settingsPageTypes.ID_STRUCTURE]:
                 return <IdSettingsCard />;
-            case settingsPageTypes[settingsPageTypes.MNESTIX_CONNECTIONS]:
-                return <MnestixConnectionsCard />;
+            case settingsPageTypes[settingsPageTypes.MNESTIX_INFRASTRUCTURE]:
+                return <MnestixInfrastructureCard />;
             case settingsPageTypes[settingsPageTypes.ROLES]:
                 return <RuleSettings />;
             default:

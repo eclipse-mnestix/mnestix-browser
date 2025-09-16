@@ -1,18 +1,28 @@
-import { Box, DialogActions, Divider, FormControl, MenuItem, Skeleton, TextField, Typography } from '@mui/material';
-import { getConnectionDataByTypeAction } from 'lib/services/database/connectionServerActions';
+import {
+    Box,
+    Button,
+    DialogActions,
+    Divider,
+    FormControl,
+    MenuItem,
+    Skeleton,
+    TextField,
+    Typography,
+} from '@mui/material';
+import {
+    getAasRepositoriesIncludingDefault,
+    getSubmodelRepositoriesIncludingDefault,
+} from 'lib/services/database/infrastructureDatabaseActions';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { Fragment, useState } from 'react';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { ConnectionTypeEnum, getTypeAction } from 'lib/services/database/ConnectionTypeEnum';
 import { Controller, useForm } from 'react-hook-form';
-import { LoadingButton } from '@mui/lab';
-import { useEnv } from 'app/EnvProvider';
 import { useTranslations } from 'next-intl';
+import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 
 export type TargetRepositoryFormData = {
-    repository?: string;
-    submodelRepository?: string;
-    repositoryApiKey?: string;
+    repository?: RepositoryWithInfrastructure;
+    submodelRepository?: RepositoryWithInfrastructure;
 };
 
 type TargetRepositoryProps = {
@@ -23,23 +33,16 @@ type TargetRepositoryProps = {
 export function TargetRepositories(props: TargetRepositoryProps) {
     const notificationSpawner = useNotificationSpawner();
     const [isLoading, setIsLoading] = useState(false);
-    const [aasRepositories, setAasRepositories] = useState<string[]>([]);
-    const [submodelRepositories, setSubmodelRepositories] = useState<string[]>([]);
-    const env = useEnv();
+    const [aasRepositories, setAasRepositories] = useState<RepositoryWithInfrastructure[]>([]);
+    const [submodelRepositories, setSubmodelRepositories] = useState<RepositoryWithInfrastructure[]>([]);
     const t = useTranslations('pages.transfer');
 
     useAsyncEffect(async () => {
         try {
             setIsLoading(true);
-            const aasRepositories = await getConnectionDataByTypeAction(
-                getTypeAction(ConnectionTypeEnum.AAS_REPOSITORY),
-            );
-            if (env.AAS_REPO_API_URL) aasRepositories.push(env.AAS_REPO_API_URL);
+            const aasRepositories = await getAasRepositoriesIncludingDefault();
             setAasRepositories(aasRepositories);
-            const submodelRepositories = await getConnectionDataByTypeAction(
-                getTypeAction(ConnectionTypeEnum.SUBMODEL_REPOSITORY),
-            );
-            if (env.SUBMODEL_REPO_API_URL) submodelRepositories.push(env.SUBMODEL_REPO_API_URL);
+            const submodelRepositories = await getSubmodelRepositoriesIncludingDefault();
             setSubmodelRepositories(submodelRepositories);
         } catch (error) {
             notificationSpawner.spawn({
@@ -55,6 +58,9 @@ export function TargetRepositories(props: TargetRepositoryProps) {
     const { handleSubmit, control, formState } = useForm();
 
     const onSubmit = (data: TargetRepositoryFormData) => {
+        data.repository = aasRepositories.find((repo) => repo.id === data.repository?.id) || undefined;
+        data.submodelRepository =
+            submodelRepositories.find((repo) => repo.id === data.submodelRepository?.id) || undefined;
         props.onSubmitStep(data);
     };
 
@@ -94,22 +100,12 @@ export function TargetRepositories(props: TargetRepositoryProps) {
                                             >
                                                 {aasRepositories.map((repo, index) => {
                                                     return (
-                                                        <MenuItem key={index} value={repo}>
-                                                            {repo}
+                                                        <MenuItem key={index} value={repo.id}>
+                                                            {repo.url}
                                                         </MenuItem>
                                                     );
                                                 })}
                                             </TextField>
-                                        )}
-                                    />
-                                </FormControl>
-                                <FormControl fullWidth sx={{ mt: 2 }}>
-                                    <Controller
-                                        name="repositoryApiKey"
-                                        control={control}
-                                        defaultValue=""
-                                        render={({ field }) => (
-                                            <TextField type="password" label={t('repositoryApiKey')} {...field} />
                                         )}
                                     />
                                 </FormControl>
@@ -131,8 +127,8 @@ export function TargetRepositories(props: TargetRepositoryProps) {
                                             </MenuItem>
                                             {submodelRepositories.map((repo, index) => {
                                                 return (
-                                                    <MenuItem key={index} value={repo}>
-                                                        {repo}
+                                                    <MenuItem key={index} value={repo.id}>
+                                                        {repo.url}
                                                     </MenuItem>
                                                 );
                                             })}
@@ -143,7 +139,7 @@ export function TargetRepositories(props: TargetRepositoryProps) {
                         </Box>
                         <Divider sx={{ mt: 6, mb: 4 }} />
                         <DialogActions>
-                            <LoadingButton
+                            <Button
                                 sx={{ mr: 1 }}
                                 variant="outlined"
                                 disabled={!formState.isValid}
@@ -151,7 +147,7 @@ export function TargetRepositories(props: TargetRepositoryProps) {
                                 onClick={handleSubmit(onSubmit)}
                             >
                                 {t('title')}
-                            </LoadingButton>
+                            </Button>
                         </DialogActions>
                     </Box>
                 </form>

@@ -7,10 +7,10 @@ import { useState } from 'react';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { useRouter, useSearchParams } from 'next/navigation';
 import AssetNotFound from 'components/basics/AssetNotFound';
-import { performDiscoveryAasSearch } from 'lib/services/search-actions/searchActions';
 import { wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { LocalizedError } from 'lib/util/LocalizedError';
 import { useShowError } from 'lib/hooks/UseShowError';
+import { searchInAllDiscoveries } from 'lib/services/discovery-service/discoveryActions';
 
 export const RedirectToViewer = () => {
     const navigate = useRouter();
@@ -44,20 +44,28 @@ export const RedirectToViewer = () => {
     }, []);
 
     async function navigateToViewerOfAsset(assetId: string | undefined): Promise<void> {
-        const { isSuccess, result: aasIds } = await getAasIdsOfAsset(assetId);
+        try {
+            const { isSuccess, result: discoverySearchResult } = await getAasIdsOfAsset(assetId);
 
-        if (!isSuccess) throw new LocalizedError('navigation.errors.urlNotFound');
-
-        assertAtLeastOneAasIdExists(aasIds);
-        const targetUrl = determineViewerTargetUrl(aasIds);
-        navigate.replace(targetUrl);
+            if (!isSuccess) {
+                throw new LocalizedError('navigation.errors.urlNotFound');
+            }
+            const aasIds = discoverySearchResult.map((result) => result.aasId);
+            assertAtLeastOneAasIdExists(aasIds);
+            const targetUrl = determineViewerTargetUrl(aasIds);
+            navigate.replace(targetUrl);
+        } catch (e) {
+            showError(e);
+            setIsError(true);
+            setIsLoading(false);
+        }
     }
 
     async function getAasIdsOfAsset(assetId: string | undefined) {
         if (!assetId) {
             throw new NotFoundError();
         }
-        const response = await performDiscoveryAasSearch(assetId);
+        const response = await searchInAllDiscoveries(assetId);
         if (response.isSuccess) return response;
         return wrapSuccess([]);
     }

@@ -11,7 +11,15 @@ services:
       BASYX_RBAC_ENABLED: 'true'
       BASYX_RBAC_SEC_SM_API_URL: 'http://security-submodel:8081'
 
-  mnestix-api:
+  mnestix-proxy:
+    environment:
+      # OpenID Configuration
+      OpenId__EnableOpenIdAuth: 'true'
+      OpenId__Issuer: 'http://keycloak:8080/realms/Mnestix'
+      OpenId__ClientID: 'mnestixApi-demo'
+      OpenId__RequireHttpsMetadata: 'false'
+
+  mnestix-aas-generator:
     environment:
       Features__UseAuthentication: 'true'
       # OpenId repository settings
@@ -52,7 +60,7 @@ services:
         condition: service_completed_successfully
 
   security-submodel:
-    image: eclipsebasyx/submodel-repository:2.0.0-milestone-06
+    image: eclipsebasyx/submodel-repository:2.0.0-milestone-07
     container_name: security-submodel
     depends_on:
       keycloak:

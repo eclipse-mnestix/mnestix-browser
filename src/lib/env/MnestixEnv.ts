@@ -31,7 +31,11 @@ const keycloak = {
 };
 
 const mnestix_v2 = {
-    MNESTIX_V2_ENABLED: process_env.MNESTIX_V2_ENABLED?.trim().toLocaleLowerCase() === 'true' ? true : false,
+    MNESTIX_V2_ENABLED: process_env.MNESTIX_V2_ENABLED?.trim().toLocaleLowerCase() !== 'false',
+};
+
+const security = {
+    SECRET_ENC_KEY: process_env.SECRET_ENC_KEY,
 };
 
 const featureFlags = mapEnvVariables(
@@ -74,7 +78,8 @@ const otherVariables = {
             'CONCEPT_DESCRIPTION_REPO_API_URL',
             'AAS_REPO_API_URL',
             'SUBMODEL_REPO_API_URL',
-            'MNESTIX_BACKEND_API_URL',
+            'MNESTIX_AAS_GENERATOR_API_URL',
+            'SERIALIZATION_API_URL',
             'IMPRINT_URL',
             'DATA_PRIVACY_URL',
         ] as const,
@@ -105,7 +110,7 @@ export const publicEnvs = { LOG_LEVEL, ...featureFlags, ...otherVariables, ...th
  *
  * Can be used in the backend. When used in frontend all envs are undefined.
  */
-export const envs = { ...publicEnvs, ...privateEnvs, ...privateAzure, ...mnestix_v2 };
+export const envs = { ...publicEnvs, ...privateEnvs, ...privateAzure, ...mnestix_v2, ...security };
 
 function parseFlag(value: string | undefined) {
     if (value === undefined) {

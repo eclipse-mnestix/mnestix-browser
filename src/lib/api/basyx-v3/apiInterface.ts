@@ -78,6 +78,29 @@ export interface IAssetAdministrationShellRepositoryApi {
     ): Promise<ApiResponseWrapper<AssetAdministrationShell>>;
 }
 
+export interface ISerializationApi {
+    /**
+     * Returns the base URL of this repository endpoint.
+     */
+    getBaseUrl(): string;
+
+    /**
+     * Downloads an Asset Administration Shell (AAS) from the repository.
+     * @param aasId The ID of the AAS to download.
+     * @param submodelIds The IDs of the submodels to include in the download.
+     * @param includeConceptDescriptions Whether to include concept descriptions in the download.
+     * @param outputFormat The format of the downloaded AAS (e.g., XML, JSON, AASX).
+     * @param options Optional. Additional options to customize the download request.
+     */
+    downloadAAS(
+        aasId: string | string[],
+        submodelIds: string[],
+        includeConceptDescriptions: boolean,
+        outputFormat: 'xml' | 'json' | 'aasx',
+        options?: object,
+    ): Promise<ApiResponseWrapper<Blob>>;
+}
+
 type PropertyValue = string | number | boolean;
 
 export type SubmodelElementValue =

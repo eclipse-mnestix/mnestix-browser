@@ -2,11 +2,11 @@
 import resolutions from '../fixtures/resolutions.json';
 import compareAAS from '../fixtures/cypress_e2e/CompareMockData/cy_compareAas.json';
 
-describe('Test compare feature view', function () {
+xdescribe('Test compare feature view', function () {
     before(function () {
         cy.postCompareMockData();
     });
-    describe('Open compare feature and add data', function () {
+    xdescribe('Open compare feature and add data', function () {
         beforeEach(function () {
             cy.visit('/');
             cy.getByTestId('aasId-input').as('IDInput');

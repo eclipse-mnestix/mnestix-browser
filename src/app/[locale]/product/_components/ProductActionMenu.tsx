@@ -5,10 +5,14 @@ import { useState } from 'react';
 import { useTranslations } from 'use-intl';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { useEnv } from 'app/EnvProvider';
-import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
-import { downloadAasFromRepo } from 'lib/services/repository-access/repositorySearchActions';
+import { SubmodelOrIdReference, useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { AssetAdministrationShell } from 'lib/api/aas/models';
+import {
+    checkIfInfrastructureHasSerializationEndpoints,
+    serializeAasFromInfrastructure,
+} from 'lib/services/serialization-service/serializationActions';
+import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 
 type ActionMenuProps = {
     readonly aas: AssetAdministrationShell | null;
@@ -23,6 +27,8 @@ export function ActionMenu({ aas, submodels, repositoryURL, className }: ActionM
     const t = useTranslations('pages');
     const env = useEnv();
     const { showError } = useShowError();
+    const currentAASContext = useCurrentAasContext();
+    const [showDownloadButton, setShowDownloadButton] = useState(false);
 
     const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -47,7 +53,7 @@ export function ActionMenu({ aas, submodels, repositoryURL, className }: ActionM
     };
 
     async function downloadAAS() {
-        if (!aas?.id) {
+        if (!aas?.id || !currentAASContext.infrastructureName) {
             handleMenuClose();
             return;
         }
@@ -58,9 +64,13 @@ export function ActionMenu({ aas, submodels, repositoryURL, className }: ActionM
         }
         const submodelIds = Array.isArray(submodels) ? submodels.map((s) => s.id) : [];
         try {
-            const response = await downloadAasFromRepo(aas?.id, submodelIds, repositoryURL);
+            const response = await serializeAasFromInfrastructure(
+                aas?.id,
+                submodelIds,
+                currentAASContext.infrastructureName,
+            );
             if (response.isSuccess && response.result) {
-                const url = window.URL.createObjectURL(response.result);
+                const url = window.URL.createObjectURL(response.result.blob);
                 const link = document.createElement('a');
                 link.href = url;
                 link.setAttribute('download', `${aas?.idShort}.aasx`);
@@ -76,6 +86,15 @@ export function ActionMenu({ aas, submodels, repositoryURL, className }: ActionM
         }
         handleMenuClose();
     }
+
+    useAsyncEffect(async () => {
+        if (currentAASContext && currentAASContext.infrastructureName) {
+            const serializationEndpointAvailable = await checkIfInfrastructureHasSerializationEndpoints(
+                currentAASContext.infrastructureName,
+            );
+            setShowDownloadButton(serializationEndpointAvailable.isSuccess);
+        }
+    }, []);
 
     return (
         <>
@@ -100,9 +119,11 @@ export function ActionMenu({ aas, submodels, repositoryURL, className }: ActionM
                         {t('productViewer.actions.toAasView')}
                     </MenuItem>
                 )}
-                <MenuItem onClick={downloadAAS} data-testid="detail-download-button">
-                    {t('productViewer.actions.download')}
-                </MenuItem>
+                {showDownloadButton && (
+                    <MenuItem onClick={downloadAAS} data-testid="detail-download-button">
+                        {t('productViewer.actions.download')}
+                    </MenuItem>
+                )}
             </Menu>
         </>
     );

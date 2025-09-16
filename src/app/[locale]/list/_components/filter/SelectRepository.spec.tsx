@@ -2,17 +2,23 @@ import { expect } from '@jest/globals';
 import { CustomRender } from 'test-utils/CustomRender';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { SelectRepository } from 'app/[locale]/list/_components/filter/SelectRepository';
-import * as connectionServerActions from 'lib/services/database/connectionServerActions';
+import * as connectionServerActions from 'lib/services/database/infrastructureDatabaseActions';
 
-jest.mock('./../../../../../lib/services/database/connectionServerActions');
+jest.mock('./../../../../../lib/services/database/infrastructureDatabaseActions');
 
 describe('SelectRepository', () => {
     it('Fires repository changed event when changing the select value', async () => {
         const mockDB = jest.fn(() => {
-            return ['https://test-repository.de'];
+            return [
+                {
+                    url: 'https://test-repository.de/repo',
+                    infrastructureName: 'Test',
+                    id: 'test-repo-id',
+                },
+            ];
         });
         const repositoryChanged = jest.fn();
-        (connectionServerActions.getConnectionDataByTypeAction as jest.Mock).mockImplementation(mockDB);
+        (connectionServerActions.getAasRepositoriesIncludingDefault as jest.Mock).mockImplementation(mockDB);
         CustomRender(
             <SelectRepository
                 onSelectedRepositoryChanged={() => {

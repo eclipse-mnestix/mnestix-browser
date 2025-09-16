@@ -169,7 +169,8 @@
         "title": "Acceso no autorizado"
       },
       "unexpectedError": "Error inesperado",
-      "urlNotFound": "No hay AAS para el ID especificado."
+      "urlNotFound": "No hay AAS para el ID especificado.",
+      "generic": "Algo ha ido mal."
     },
     "footer": {
       "about": "Sobre Mnestix",
@@ -215,12 +216,17 @@
     "aasViewer": {
       "actions": {
         "compareButton": "Comparar",
-        "toProductView": "Vista de producto"
+        "toProductView": "Vista de producto",
+        "download": "Descargar AAS"
       },
       "asset": "Asset",
       "assetAdministrationShell": "Asset Administration Shell",
       "errors": {
-        "influxError": "Hubo un problema recuperando la serie temporal de datos."
+        "influxError": "Hubo un problema recuperando la serie temporal de datos.",
+        "downloadError": "Error al descargar AAS."
+      },
+      "messages": {
+        "downloadSuccess": "Descarga exitosa desde: {endpoint} (Infraestructura: {infrastructure})"
       },
       "labels": {
         "copied": "Copiado al portapapeles",
@@ -290,13 +296,17 @@
     },
     "dashboard": {
       "aasOrAssetId": "AAS ID o Asset ID",
+      "infrastructure": "Infraestructura",
+      "searchAllInfrastructures": "Buscar en todas",
       "digitalTwinMadeEasyText": "Simplificando los gemelos digitales.",
-      "enterManuallyLabel": "o introducir manualmente",
-      "findOutMoreText": "Saber más",
-      "listBtnLabel": "o seleccione en la lista",
+      "findOutMoreHeader": "Saber más",
+      "findOutMoreText": "Versión actual de Mnestix",
+      "listCardHeader": "Seleccionar mediante lista",
+      "listBtnLabel": "Vea lo que ya hay en su repositorio.",
       "listBtnText": "Ir a lista de AAS",
       "scanIdLabel": "Escanear ID del AAS o Asset",
-      "welcomeText": "Bienvenido/a a Mnestix"
+      "welcomeText": "Bienvenido/a a Mnestix",
+      "enterManuallyLabel": "Introducir manualmente"
     },
     "discoveryList": {
       "errors": {
@@ -346,27 +356,54 @@
         "resetButton": "Restaurar valores predeterminados",
         "saveButton": "Guardar todos"
       },
-      "connections": {
-        "aasRepository": {
-          "connectionType": "AAS_REPOSITORY",
-          "repositories": "Repositorios de AAS",
-          "repositoryDefaultLabel": "Repositorio AAS predeterminado",
-          "repositoryLabel": "Repositorio de AAS",
-          "repositoryUrlLabel": "URL del repositorio de AAS"
+      "infrastructure": {
+        "form": {
+          "name": "Nombre",
+          "logoUrl": "URL del logotipo",
+          "endpoints": "Endpoints",
+          "endpointUrl": "URL del endpoint",
+          "addEndpoint": "Añadir endpoint",
+          "security": "Seguridad de infraestructura",
+          "securityType": "Tipo de seguridad",
+          "headerName": "Nombre del header",
+          "headerValue": "Valor del header",
+          "nameRequired": "El nombre es obligatorio",
+          "urlFieldRequired": "El campo URL es obligatorio",
+          "urlFieldInvalid": "Debe ser una URL válida",
+          "securityTypeRequired": "El tipo de seguridad es obligatorio",
+          "headerNameRequired": "El nombre del header es obligatorio",
+          "headerValueRequired": "El valor del header es obligatorio",
+          "securityTypeNone": "Ninguno",
+          "securityTypeMnestixProxy": "Clave API Mnestix",
+          "securityTypeHeaderSecurity": "Header Personalizado",
+          "proxyHeaderValue": "Mnestix API Key Header Value",
+          "proxyHeaderValueRequired": "Mnestix API Key Header Value es obligatorio",
+          "saveSuccess": "Infraestructura guardada exitosamente",
+          "saveError": "Error al guardar la infraestructura",
+          "createNew": "Crear una Nueva Infraestructura",
+          "deleteConfirm": "¿Está seguro de que desea eliminar la infraestructura? Esta acción no se puede deshacer.",
+          "deleteSuccess": "Infraestructura eliminada con éxito",
+          "deleteError": "Error al eliminar la infraestructura",
+          "deleteDialogTitle": "Eliminar Infraestructura",
+          "deleteWarning": "Esta acción no se puede deshacer y eliminará permanentemente todas las conexiones y configuraciones de seguridad asociadas.",
+          "cancel": "Cancelar",
+          "delete": "Eliminar",
+          "connectionTypes": "Tipos de interfaz de conexión",
+          "connectionTypesRequired": "Se debe seleccionar al menos un tipo de interfaz de conexión",
+          "save": "Guardar",
+          "nameAlreadyExists": "Ya existe una infraestructura con este nombre",
+          "defaultInfrastructureReadonly": "La infraestructura predeterminada solo se puede modificar en la implementación mediante las variables de entorno. Póngase en contacto con su administrador para realizar cambios.",
+          "headerKeyDangerous": "El encabezado se considera peligroso.",
+          "headerKeyInvalidFormat": "El encabezado no tiene un formato válido.",
+          "headerKeyCrLfNotAllowed": "El encabezado no debe contener secuencias CRLF.",
+          "headerValueTooLong": "El valor del encabezado es demasiado largo.",
+          "headerValueCrLfNotAllowed": "El valor del encabezado no debe contener secuencias CRLF.",
+          "headerValueIllegalChars": "El valor del encabezado no debe contener caracteres no permitidos."
         },
-        "addButton": "Añadir más",
-        "resetSuccessful": "Las conexiones se han restaurado.",
-        "submodelRepository": {
-          "connectionType": "SUBMODEL_REPOSITORY",
-          "repositories": "Repositorio de submodels",
-          "repositoryDefaultLabel": "Repositorio de submodels predeterminado",
-          "repositoryLabel": "Repositorio de submodels",
-          "repositoryUrlLabel": "URL del repositorio de submodels"
-        },
-        "subtitle": "Define qué conexiones de datos deben ser utilizadas.",
-        "title": "Fuentes de datos",
+        "subtitle": "Define qué infraestructuras deben ser utilizadas.",
+        "title": "Fuentes de infraestructura",
         "urlFieldNoTrailingSlash": "La URL no debe terminar con una barra (/).",
-        "urlFieldRequired": "El campo URL es obligatorio"
+        "noInfrastructuresFound": "No se encontraron infraestructuras"
       },
       "header": "Ajustes",
       "idStructure": {
@@ -516,7 +553,7 @@
     },
     "transfer": {
       "aasRepository": "Repositorio AAS",
-      "chooseRepository": "Escoja repositorio AAS",
+      "chooseRepository": "Elija el repositorio AAS al que desea transferir:",
       "chooseSubmodelRepository": "Escoja repositorio de submodels (opcional)",
       "errorToast": "Transferencia de AAS errónea",
       "partiallyFailedToast": "Fallo al transferir el elemento",
@@ -526,11 +563,19 @@
       "submodelRepository": "Repositorio de submodels",
       "submodelRepositoryApiKey": "Clave API del repositorio de submodels",
       "submodelRepositoryLabel": "Lista de repositorios de submodels",
-      "subtitle": "Para importar este AAS a otro repositorio, complete los siguientes campos.",
+      "subtitle": "Transferir \"{aasId}\" desde \"{repoUrl}\" a:",
       "successfulToast": "Transferencia de AAS exitosa",
-      "title": "Importar",
+      "title": "Transferencia",
       "useAasRepository": "Usar repositorio de AAS",
-      "warningToast": "El AAS solo se transfirió parcialmente."
+      "warningToast": "El AAS solo se transfirió parcialmente.",
+      "aasIdentifier": {
+        "display": "\"{aasId}\"",
+        "default": "ID de AAS desconocido"
+      },
+      "aasOriginUrl": {
+        "display": "\"{repoUrl}\"",
+        "default": "URL de origen de AAS desconocida"
+      }
     }
   }
 }

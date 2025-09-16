@@ -169,7 +169,8 @@
         "title": "Unautorisierter Zugriff"
       },
       "unexpectedError": "Unerwarteter Fehler",
-      "urlNotFound": "Keine Verwaltungsschale unter dieser ID."
+      "urlNotFound": "Keine Verwaltungsschale unter dieser ID.",
+      "generic": "Etwas ist schiefgelaufen."
     },
     "footer": {
       "about": "Über Mnestix",
@@ -215,12 +216,17 @@
     "aasViewer": {
       "actions": {
         "compareButton": "Vergleichen",
-        "toProductView": "Produktansicht"
+        "toProductView": "Produktansicht",
+        "download": "AAS herunterladen"
       },
       "asset": "Asset",
       "assetAdministrationShell": "Verwaltungsschale",
       "errors": {
-        "influxError": "Beim Abrufen der Daten ist ein Fehler aufgetreten."
+        "influxError": "Beim Abrufen der Daten ist ein Fehler aufgetreten.",
+        "downloadError": "Fehler beim Herunterladen der AAS."
+      },
+      "messages": {
+        "downloadSuccess": "Download erfolgreich von: {endpoint} (Infrastruktur: {infrastructure})"
       },
       "labels": {
         "copied": "In Zwischenablage kopiert",
@@ -290,13 +296,17 @@
     },
     "dashboard": {
       "aasOrAssetId": "AAS ID oder Asset ID",
+      "infrastructure": "Infrastruktur",
+      "searchAllInfrastructures": "Suche überall",
       "digitalTwinMadeEasyText": "Digitaler Zwilling leicht gemacht.",
-      "enterManuallyLabel": "oder manuell eingeben",
-      "findOutMoreText": "Mehr Informationen",
-      "listBtnLabel": "oder über Liste suchen",
+      "findOutMoreHeader": "Mehr Informationen",
+      "findOutMoreText": "Aktuelle Mnestix Version",
+      "listCardHeader": "Auswahl über Liste",
+      "listBtnLabel": "Inhalt eines Repositorys sehen",
       "listBtnText": "Zur AAS Liste",
       "scanIdLabel": "AAS ID oder Asset ID scannen",
-      "welcomeText": "Willkommen bei Mnestix"
+      "welcomeText": "Willkommen bei Mnestix",
+      "enterManuallyLabel": "Manuell eingeben"
     },
     "discoveryList": {
       "errors": {
@@ -346,27 +356,54 @@
         "resetButton": "Auf Default zurücksetzen",
         "saveButton": "Alle speichern"
       },
-      "connections": {
-        "aasRepository": {
-          "connectionType": "AAS_REPOSITORY",
-          "repositories": "AAS Repositorys",
-          "repositoryDefaultLabel": "Default AAS Repository",
-          "repositoryLabel": "AAS Repository",
-          "repositoryUrlLabel": "AAS Repository URL"
+      "infrastructure": {
+        "form": {
+          "name": "Name",
+          "logoUrl": "Bild URL",
+          "endpoints": "Endpunkte",
+          "endpointUrl": "Endpunkt URL",
+          "addEndpoint": "Endpunkt hinzufügen",
+          "security": "Infrastruktur Sicherheit",
+          "securityType": "Sicherheitstyp",
+          "headerName": "Header Name",
+          "headerValue": "Header Wert",
+          "nameRequired": "Name ist erforderlich",
+          "urlFieldRequired": "URL ist erforderlich",
+          "urlFieldInvalid": "Muss eine gültige URL sein",
+          "securityTypeRequired": "Sicherheitstyp ist erforderlich",
+          "headerNameRequired": "Header Name ist erforderlich",
+          "headerValueRequired": "Header Wert ist erforderlich",
+          "securityTypeNone": "Keine",
+          "securityTypeMnestixProxy": "Mnestix API Key",
+          "securityTypeHeaderSecurity": "Custom Header",
+          "proxyHeaderValue": "Mnestix API Key Header Wert",
+          "proxyHeaderValueRequired": "Mnestix API Key Header Wert ist erforderlich",
+          "saveSuccess": "Infrastruktur erfolgreich gespeichert",
+          "saveError": "Fehler beim Speichern der Infrastruktur",
+          "createNew": "Neue Infrastruktur erstellen",
+          "deleteConfirm": "Sind Sie sicher, dass Sie die Infrastruktur löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+          "deleteSuccess": "Infrastruktur erfolgreich gelöscht",
+          "deleteError": "Fehler beim Löschen der Infrastruktur",
+          "deleteDialogTitle": "Infrastruktur löschen",
+          "deleteWarning": "Diese Aktion kann nicht rückgängig gemacht werden und entfernt dauerhaft alle zugehörigen Verbindungen und Sicherheitseinstellungen.",
+          "cancel": "Abbrechen",
+          "delete": "Löschen",
+          "connectionTypes": "Verbindungsinterface-Typen",
+          "connectionTypesRequired": "Mindestens ein Verbindungsinterface-Typ muss ausgewählt werden",
+          "save": "Speichern",
+          "nameAlreadyExists": "Eine Infrastruktur mit diesem Namen existiert bereits",
+          "defaultInfrastructureReadonly": "Die Default Infrastruktur kann nur im Deployment über die Environment Variablen geändert werden. Bitte kontaktieren Sie Ihren Administrator um Änderungen vorzunehmen.",
+          "headerKeyDangerous": "Der Header-Schlüssel wird als gefährlich angesehen.",
+          "headerKeyInvalidFormat": "Der Header-Schlüssel hat kein gültiges Format.",
+          "headerKeyCrLfNotAllowed": "Der Header-Schlüssel darf keine CRLF-Sequenzen enthalten.",
+          "headerValueTooLong": "Der Header-Wert ist zu lang.",
+          "headerValueCrLfNotAllowed": "Der Header-Wert darf keine CRLF-Sequenzen enthalten.",
+          "headerValueIllegalChars": "Der Header-Wert darf keine ungültigen Zeichen enthalten."
         },
-        "addButton": "Hinzufügen",
-        "resetSuccessful": "Quellen wurden zurückgesetzt.",
-        "submodelRepository": {
-          "connectionType": "SUBMODEL_REPOSITORY",
-          "repositories": "Submodel Repositorys",
-          "repositoryDefaultLabel": "Default Submodel Repository",
-          "repositoryLabel": "Submodel Repository",
-          "repositoryUrlLabel": "Submodel Repository URL"
-        },
-        "subtitle": "Definieren Sie, welche Datenquellen verwendet werden sollen.",
-        "title": "Datenquellen",
+        "subtitle": "Definieren Sie, welche Infrastrukturen verwendet werden sollen.",
+        "title": "Infrastrukturen",
         "urlFieldNoTrailingSlash": "Die URL darf nicht mit einem Schrägstrich (/) enden.",
-        "urlFieldRequired": "URL wird benötigt"
+        "noInfrastructuresFound": "Keine Infrastrukturen gefunden"
       },
       "header": "Einstellungen",
       "idStructure": {
@@ -516,7 +553,7 @@
     },
     "transfer": {
       "aasRepository": "AAS Repository",
-      "chooseRepository": "AAS Repository auswählen",
+      "chooseRepository": "Wählen Sie das AAS-Repository, in das übertragen werden soll:",
       "chooseSubmodelRepository": "Submodel Repository auswählen (optional)",
       "errorToast": "Transfer der AAS nicht erfolgreich",
       "partiallyFailedToast": "Teil des Transfers fehlgeschlagen",
@@ -526,11 +563,19 @@
       "submodelRepository": "Submodel Repository",
       "submodelRepositoryApiKey": "Submodel Repository ApiKey",
       "submodelRepositoryLabel": "Liste der Submodel Repositorys",
-      "subtitle": "Füllen Sie die folgenden Felder aus, um eine Verwaltungsschale in ein anderes Repository zu importieren",
+      "subtitle": "Transfer \"{aasId}\" von \"{repoUrl}\" zu:",
       "successfulToast": "Transfer der AAS erfolgreich",
-      "title": "Import",
+      "title": "Transfer",
       "useAasRepository": "AAS Repository verwenden",
-      "warningToast": "Transfer der AAS nur teilweise erfolgreich."
+      "warningToast": "Transfer der AAS nur teilweise erfolgreich.",
+      "aasIdentifier": {
+        "display": "\"{aasId}\"",
+        "default": "Unbekannte AAS-ID"
+      },
+      "aasOriginUrl": {
+        "display": "\"{repoUrl}\"",
+        "default": "Unbekannte AAS-Origin-URL"
+      }
     }
   }
 }

@@ -1,62 +1,68 @@
 ﻿import * as React from 'react';
 import { ArrowForward, InfoOutlined } from '@mui/icons-material';
 import AppShortcutIcon from '@mui/icons-material/AppShortcut';
-import { TreeItem, useTreeItemState } from '@mui/x-tree-view';
 import { Box, Button, IconButton, styled } from '@mui/material';
-import clsx from 'clsx';
-import { Entity, KeyTypes } from 'lib/api/aas/models';
+import { Entity, KeyTypes, SubmodelElementChoice } from 'lib/api/aas/models';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { EntityDetailsDialog } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/EntityDetailsDialog';
-import {
-    CustomTreeItemContentProps,
-    CustomTreeItemProps,
-    ExpandableTreeitem,
-    getTreeItemStyle,
-} from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/TreeItem';
 import { useTranslations } from 'next-intl';
 import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
+import { useTreeItem, UseTreeItemParameters } from '@mui/x-tree-view/useTreeItem';
+import {
+    TreeItemCheckbox,
+    TreeItemContent,
+    TreeItemGroupTransition,
+    TreeItemIconContainer,
+    TreeItemRoot,
+} from '@mui/x-tree-view/TreeItem';
+import { TreeItemIcon } from '@mui/x-tree-view/TreeItemIcon';
+import { TreeItemProvider } from '@mui/x-tree-view/TreeItemProvider';
+import { ExpandableTreeitem } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/entity-components/TreeItem';
 
-interface ApplicationTreeItemProps extends CustomTreeItemProps {
+export const CustomTreeItemContent = styled(TreeItemContent)(({ theme }) => ({
+    borderBottom: `1px solid ${theme.palette.divider}`, // Add a bottom border
+    userSelect: 'none',
+    margin: 0,
+    '&[data-expanded]': {
+        backgroundColor: 'transparent',
+    },
+    '&:hover': {
+        backgroundColor: theme.palette.action.hover,
+    },
+    '&[data-focused], &[data-selected], &[data-selected][data-focused]': {
+        backgroundColor: theme.palette.action.selected,
+    },
+}));
+
+interface ApplicationTreeItemProps
+    extends Omit<UseTreeItemParameters, 'rootRef'>,
+        Omit<React.HTMLAttributes<HTMLLIElement>, 'onFocus'> {
     hasChildEntities: boolean;
     applicationUrl?: string;
+    data?: SubmodelElementChoice;
 }
 
-interface ApplicationTreeItemContentProps extends CustomTreeItemContentProps {
-    hasChildEntities: boolean;
-    applicationUrl?: string;
-}
+const CustomTreeItem = React.forwardRef(function CustomTreeItem(
+    props: ApplicationTreeItemProps,
+    ref: React.Ref<HTMLLIElement>,
+) {
+    const { id, itemId, label, disabled, children, hasChildEntities, applicationUrl, ...other } = props;
 
-const StyledTreeItem = styled(TreeItem)(({ theme }) => getTreeItemStyle(theme));
-
-const CustomContent = React.forwardRef(function CustomContent(props: ApplicationTreeItemContentProps, ref) {
     const {
-        classes,
-        className,
-        label,
-        itemId,
-        icon: iconProp,
-        data,
-        hasChildEntities,
-        applicationUrl,
-        ...other
-    } = props;
-    const { disabled, expanded, selected, focused, handleExpansion } = useTreeItemState(itemId);
-    const isEntity = data && data.modelType === KeyTypes.Entity;
+        getRootProps,
+        getContentProps,
+        getIconContainerProps,
+        getCheckboxProps,
+
+        getGroupTransitionProps,
+        status,
+    } = useTreeItem({ id, itemId, children, label, disabled, rootRef: ref });
+
     const { aas } = useCurrentAasContext();
     const assetId = aas?.assetInformation.globalAssetId;
     const t = useTranslations('pages.aasViewer');
-
-    const dataIcon = hasChildEntities ? (
-        <AssetIcon fontSize="small" color="primary" />
-    ) : (
-        <AppShortcutIcon fontSize="small" color="primary" />
-    );
     const [detailsModalOpen, setDetailsModalOpen] = React.useState(false);
-
-    const handleExpansionClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        handleExpansion(event);
-    };
 
     const handleAssetNavigateClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
         event.stopPropagation();
@@ -75,64 +81,54 @@ const CustomContent = React.forwardRef(function CustomContent(props: Application
         setDetailsModalOpen(false);
     };
 
+    const dataIcon = hasChildEntities ? (
+        <AssetIcon fontSize="small" color="primary" />
+    ) : (
+        <AppShortcutIcon fontSize="small" color="primary" />
+    );
+
     return (
-        <>
-            <Box
-                className={clsx(className, classes.root, {
-                    [classes.expanded]: expanded,
-                    [classes.selected]: selected,
-                    [classes.focused]: focused,
-                    [classes.disabled]: disabled,
-                })}
-                onClick={handleExpansionClick}
-                ref={ref as React.Ref<HTMLDivElement>}
-                data-testid="boa-entity"
-            >
-                <ExpandableTreeitem
-                    icon={iconProp}
-                    dataIcon={dataIcon}
-                    classes={classes}
-                    itemId={itemId}
-                    label={label}
-                    {...other}
-                />
-                <Box sx={{ ml: 'auto', pl: 1, display: 'flex' }}>
-                    {!hasChildEntities && (
-                        <>
-                            <IconButton sx={{ mr: 1 }} onClick={handleDetailsClick}>
-                                <InfoOutlined data-testid="entity-info-icon" sx={{ color: 'text.secondary' }} />
-                            </IconButton>
-                            <Button
-                                endIcon={<ArrowForward />}
-                                size="small"
-                                onClick={handleAssetNavigateClick}
-                                data-testid="view-asset-button"
-                            >
-                                {t('submodels.actions.open')}
-                            </Button>
-                        </>
-                    )}
-                </Box>
-            </Box>
-            {isEntity && (
+        <TreeItemProvider itemId={itemId} id={id}>
+            <TreeItemRoot {...getRootProps(other)}>
+                <CustomTreeItemContent {...{ ...getContentProps(), 'data-testid': 'tree-item-' + label }}>
+                    <TreeItemIconContainer {...getIconContainerProps()}>
+                        <TreeItemIcon status={status} />
+                    </TreeItemIconContainer>
+                    <TreeItemCheckbox {...getCheckboxProps()} />
+                    <Box sx={{ flexGrow: 1, display: 'flex', gap: 1 }}>
+                        <ExpandableTreeitem dataIcon={dataIcon} itemId={itemId} label={label} {...other} />
+                        <Box sx={{ ml: 'auto', pl: 1, display: 'flex' }}>
+                            {!hasChildEntities && (
+                                <>
+                                    <IconButton sx={{ mr: 1 }} onClick={handleDetailsClick}>
+                                        <InfoOutlined data-testid="entity-info-icon" sx={{ color: 'text.secondary' }} />
+                                    </IconButton>
+                                    <Button
+                                        endIcon={<ArrowForward />}
+                                        size="small"
+                                        onClick={handleAssetNavigateClick}
+                                        data-testid="view-asset-button"
+                                    >
+                                        {t('submodels.actions.open')}
+                                    </Button>
+                                </>
+                            )}
+                        </Box>
+                    </Box>
+                </CustomTreeItemContent>
+                {children && <TreeItemGroupTransition {...getGroupTransitionProps()} />}
+            </TreeItemRoot>
+            {props.data && props.data.modelType === KeyTypes.Entity && (
                 <EntityDetailsDialog
                     open={detailsModalOpen}
                     handleClose={handleDetailsModalClose}
                     entity={props.data as Entity}
                 />
             )}
-        </>
+        </TreeItemProvider>
     );
 });
 
 export const ApplicationTreeItem = (props: ApplicationTreeItemProps) => {
-    const { data, hasChildEntities, applicationUrl, ...other } = props;
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    return (
-        <StyledTreeItem
-            ContentComponent={CustomContent}
-            ContentProps={{ data, hasChildEntities, applicationUrl } as any}
-            {...other}
-        />
-    );
+    return <CustomTreeItem {...props} />;
 };

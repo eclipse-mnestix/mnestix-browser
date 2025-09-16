@@ -43,7 +43,7 @@ services:
       OpenId__ClientID: 'mnestixApi-demo'
       OpenId__RequireHttpsMetadata: 'false'
 
-  mnestix-api:
+  mnestix-aas-generator:
     environment:
       Features__UseAuthentication: 'true'
       # OpenId repository settings
