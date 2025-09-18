@@ -1,18 +1,17 @@
 'use client';
 
-import { Box, Button, Dialog, DialogContent, IconButton, TextField, Typography, CircularProgress } from '@mui/material';
-import { Chat, Send, Close } from '@mui/icons-material';
+import { Box, Fab, Paper, IconButton, TextField, Typography, CircularProgress, Collapse } from '@mui/material';
+import { Chat, Send, Close, Minimize } from '@mui/icons-material';
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 import { sendChatMessage, ChatbotResponse } from 'lib/services/chatbot-service/chatbotActions';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 
 export function ChatbotButton() {
-    const [dialogOpen, setDialogOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [chatHistory, setChatHistory] = useState<Array<{ type: 'user' | 'bot'; message: string }>>([]);
@@ -46,15 +45,13 @@ export function ChatbotButton() {
         scrollToBottom();
     }, [chatHistory, isLoading]);
 
-    const openDialog = () => {
-        setDialogOpen(true);
+    const toggleChat = () => {
+        setIsOpen(!isOpen);
     };
 
-    const closeDialog = () => {
-        setDialogOpen(false);
+    const closeChat = () => {
+        setIsOpen(false);
         setMessage('');
-        // Optionally clear chat history when closing to maintain session per dialog opening
-        // setChatHistory([]);
     };
 
     const handleSendMessage = async () => {
@@ -111,45 +108,70 @@ export function ChatbotButton() {
 
     return (
         <>
-            <Button
-                variant="contained"
+            {/* Floating Chat Button */}
+            <Fab
+                color="primary"
                 sx={{
-                    whiteSpace: 'nowrap',
-                    ml: 2,
-                    minWidth: 'auto',
-                    padding: '6px 16px',
+                    position: 'fixed',
+                    bottom: 24,
+                    right: 24,
+                    zIndex: 1000,
                 }}
-                onClick={openDialog}
-                startIcon={<Chat />}
-                data-testid="chatbot-button"
+                onClick={toggleChat}
+                data-testid="chatbot-fab"
             >
-                {t('button')}
-            </Button>
+                <Chat />
+            </Fab>
 
-            <Dialog open={dialogOpen} onClose={closeDialog} maxWidth="sm" fullWidth data-testid="chatbot-dialog">
-                <DialogCloseButton handleClose={closeDialog} dataTestId="chatbot-dialog-close" />
-
-                <DialogContent sx={{ pb: 3 }}>
-                    <Typography variant="h2" sx={{ mb: 3, pt: 2 }} color="primary">
-                        {t('title')}
-                    </Typography>
+            {/* Chat Window */}
+            <Collapse in={isOpen}>
+                <Paper
+                    sx={{
+                        position: 'fixed',
+                        bottom: 90,
+                        right: 24,
+                        width: 400,
+                        height: 500,
+                        zIndex: 999,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        boxShadow: 3,
+                    }}
+                    data-testid="chatbot-window"
+                >
+                    {/* Chat Header */}
+                    <Box
+                        sx={{
+                            p: 2,
+                            borderBottom: '1px solid',
+                            borderColor: 'grey.300',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            backgroundColor: 'primary.main',
+                            color: 'primary.contrastText',
+                        }}
+                    >
+                        <Typography variant="h6">{t('title')}</Typography>
+                        <IconButton size="small" onClick={closeChat} sx={{ color: 'inherit' }}>
+                            <Close />
+                        </IconButton>
+                    </Box>
 
                     {/* Session ID indicator for development */}
-                    <Typography variant="caption" color="text.secondary" sx={{ mb: 2, display: 'block' }}>
-                        Session: {sessionId}
-                    </Typography>
+                    <Box sx={{ px: 2, py: 1, backgroundColor: 'grey.50' }}>
+                        <Typography variant="caption" color="text.secondary">
+                            Session: {sessionId}
+                        </Typography>
+                    </Box>
 
-                    {/* Chat History */}
+                    {/* Chat Messages */}
                     <Box
                         ref={chatContainerRef}
                         sx={{
-                            height: '300px',
+                            flex: 1,
                             overflowY: 'auto',
-                            border: '1px solid',
-                            borderColor: 'grey.300',
-                            borderRadius: 1,
                             p: 2,
-                            mb: 2,
                             backgroundColor: 'grey.50',
                         }}
                     >
@@ -334,7 +356,7 @@ export function ChatbotButton() {
                     </Box>
 
                     {/* Message Input */}
-                    <Box sx={{ display: 'flex', gap: 1 }}>
+                    <Box sx={{ p: 2, borderTop: '1px solid', borderColor: 'grey.300', display: 'flex', gap: 1 }}>
                         <TextField
                             fullWidth
                             variant="outlined"
@@ -345,6 +367,7 @@ export function ChatbotButton() {
                             disabled={isLoading}
                             multiline
                             maxRows={3}
+                            size="small"
                             data-testid="chatbot-input"
                         />
                         <IconButton
@@ -356,8 +379,8 @@ export function ChatbotButton() {
                             <Send />
                         </IconButton>
                     </Box>
-                </DialogContent>
-            </Dialog>
+                </Paper>
+            </Collapse>
         </>
     );
 }
