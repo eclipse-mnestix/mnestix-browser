@@ -13,20 +13,37 @@ export type ChatbotResponse = {
 export async function sendChatMessage(
     chatInput: string,
     sessionId: string,
+    aasContext?: any,
+    submodelsContext?: any[],
 ): Promise<ApiResponseWrapper<ChatbotResponse>> {
     const logger = createRequestLogger(await headers());
     logInfo(logger, 'sendChatMessage', 'Sending message to chatbot', {
         messageLength: chatInput.length,
         sessionId,
+        hasAasContext: !!aasContext,
+        submodelsCount: submodelsContext?.length || 0,
     });
 
     try {
+        const requestBody: any = {
+            chatInput,
+            sessionId,
+        };
+
+        // Add context data if available
+        if (aasContext || submodelsContext) {
+            requestBody.contextString = JSON.stringify({
+                aas: aasContext,
+                submodels: submodelsContext,
+            });
+        }
+
         const response = await fetch('https://n8n.demo.xitaso.es/webhook/mnestix', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ chatInput, sessionId }),
+            body: JSON.stringify(requestBody),
         });
 
         logger.debug(

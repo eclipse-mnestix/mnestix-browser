@@ -5,6 +5,7 @@ import { Chat, Send, Close } from '@mui/icons-material';
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 import { sendChatMessage, ChatbotResponse } from 'lib/services/chatbot-service/chatbotActions';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
@@ -17,7 +18,7 @@ export function ChatbotButton() {
     const [chatHistory, setChatHistory] = useState<Array<{ type: 'user' | 'bot'; message: string }>>([]);
     const { spawn } = useNotificationSpawner();
     const t = useTranslations('components.chatbot');
-    const { aas } = useCurrentAasContext();
+    const { aas, submodels } = useCurrentAasContext();
     const chatContainerRef = useRef<HTMLDivElement>(null);
 
     // Generate a unique session ID based on AAS ID and component instance
@@ -67,7 +68,12 @@ export function ChatbotButton() {
         setChatHistory((prev) => [...prev, { type: 'user', message: userMessage }]);
 
         try {
-            const response = await sendChatMessage(userMessage, sessionId);
+            // Prepare context data - only send actual submodel data, not errors
+            const submodelsData = submodels
+                ?.filter((sm) => sm.submodel) // Only include submodels that loaded successfully
+                .map((sm) => sm.submodel);
+
+            const response = await sendChatMessage(userMessage, sessionId, aas, submodelsData);
 
             if (response.isSuccess) {
                 // Add bot response to chat history
@@ -176,6 +182,7 @@ export function ChatbotButton() {
                                             <Typography variant="body2">{entry.message}</Typography>
                                         ) : (
                                             <ReactMarkdown
+                                                remarkPlugins={[remarkGfm]}
                                                 components={{
                                                     p: ({ children }) => (
                                                         <Typography
@@ -238,6 +245,74 @@ export function ChatbotButton() {
                                                                 borderColor: 'grey.300',
                                                             }}
                                                         />
+                                                    ),
+                                                    table: ({ children }) => (
+                                                        <Box
+                                                            component="table"
+                                                            sx={{
+                                                                width: '100%',
+                                                                borderCollapse: 'collapse',
+                                                                mb: 2,
+                                                                border: '1px solid',
+                                                                borderColor: 'grey.300',
+                                                                backgroundColor: 'background.paper',
+                                                            }}
+                                                        >
+                                                            {children}
+                                                        </Box>
+                                                    ),
+                                                    thead: ({ children }) => (
+                                                        <Box
+                                                            component="thead"
+                                                            sx={{
+                                                                backgroundColor: 'grey.100',
+                                                            }}
+                                                        >
+                                                            {children}
+                                                        </Box>
+                                                    ),
+                                                    tbody: ({ children }) => <Box component="tbody">{children}</Box>,
+                                                    tr: ({ children }) => (
+                                                        <Box
+                                                            component="tr"
+                                                            sx={{
+                                                                borderBottom: '1px solid',
+                                                                borderColor: 'grey.200',
+                                                                '&:hover': {
+                                                                    backgroundColor: 'grey.50',
+                                                                },
+                                                            }}
+                                                        >
+                                                            {children}
+                                                        </Box>
+                                                    ),
+                                                    th: ({ children }) => (
+                                                        <Typography
+                                                            component="th"
+                                                            variant="body2"
+                                                            sx={{
+                                                                p: 1,
+                                                                fontWeight: 'bold',
+                                                                textAlign: 'left',
+                                                                border: '1px solid',
+                                                                borderColor: 'grey.300',
+                                                            }}
+                                                        >
+                                                            {children}
+                                                        </Typography>
+                                                    ),
+                                                    td: ({ children }) => (
+                                                        <Typography
+                                                            component="td"
+                                                            variant="body2"
+                                                            sx={{
+                                                                p: 1,
+                                                                border: '1px solid',
+                                                                borderColor: 'grey.300',
+                                                            }}
+                                                        >
+                                                            {children}
+                                                        </Typography>
                                                     ),
                                                 }}
                                             >
