@@ -20,6 +20,7 @@ import {
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useState } from 'react';
+import { ChatbotButton } from 'components/chatbot/ChatbotButton';
 
 export function AASViewer() {
     const navigate = useRouter();
@@ -173,6 +174,7 @@ export function AASViewer() {
                                     {t('actions.download')}
                                 </Button>
                             )}
+                            <ChatbotButton />
                         </Box>
                         <AASOverviewCard
                             aas={aas ?? null}

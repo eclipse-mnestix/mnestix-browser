@@ -76,6 +76,7 @@
     "react": "^19",
     "react-dom": "^19",
     "react-hook-form": "^7.62.0",
+    "react-markdown": "^10.1.0",
     "recharts": "^3.2.0",
     "sqlite3": "^5.1.7",
     "swr": "^2.3.6",

@@ -159,6 +159,26 @@
         "UNAUTHORIZED": "No autorizado",
         "UNKNOWN": "Error desconocido"
       }
+    },
+    "chatbot": {
+      "button": "Chat",
+      "title": "Asistente IA",
+      "placeholder": "Inicia una conversación con el asistente de IA...",
+      "inputPlaceholder": "Escribe tu mensaje aquí...",
+      "loading": "El asistente está escribiendo...",
+      "labels": {
+        "you": "Tú",
+        "assistant": "Asistente"
+      },
+      "responses": {
+        "defaultResponse": "¡Estoy aquí para ayudar! ¿Cómo puedo asistirte?",
+        "errorResponse": "Lo siento, estoy teniendo problemas para responder ahora. Por favor, inténtalo de nuevo."
+      },
+      "errors": {
+        "title": "Error del Chatbot",
+        "unknownError": "Ha ocurrido un error desconocido.",
+        "networkError": "Error de red. Por favor, verifica tu conexión e inténtalo de nuevo."
+      }
     }
   },
   "navigation": {

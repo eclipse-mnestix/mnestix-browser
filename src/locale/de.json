@@ -159,6 +159,26 @@
         "UNAUTHORIZED": "Nicht autorisiert",
         "UNKNOWN": "Unbekannter Fehler"
       }
+    },
+    "chatbot": {
+      "button": "Chat",
+      "title": "KI-Assistent",
+      "placeholder": "Beginnen Sie eine Unterhaltung mit dem KI-Assistenten...",
+      "inputPlaceholder": "Geben Sie Ihre Nachricht hier ein...",
+      "loading": "Assistent schreibt...",
+      "labels": {
+        "you": "Sie",
+        "assistant": "Assistent"
+      },
+      "responses": {
+        "defaultResponse": "Ich bin hier, um zu helfen! Wie kann ich Ihnen helfen?",
+        "errorResponse": "Entschuldigung, ich habe gerade Probleme zu antworten. Bitte versuchen Sie es erneut."
+      },
+      "errors": {
+        "title": "Chatbot-Fehler",
+        "unknownError": "Ein unbekannter Fehler ist aufgetreten.",
+        "networkError": "Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut."
+      }
     }
   },
   "navigation": {

@@ -159,6 +159,26 @@
         "UNAUTHORIZED": "Unauthorized",
         "UNKNOWN": "Unknown error"
       }
+    },
+    "chatbot": {
+      "button": "Chat",
+      "title": "AI Assistant",
+      "placeholder": "Start a conversation with the AI assistant...",
+      "inputPlaceholder": "Type your message here...",
+      "loading": "Assistant is typing...",
+      "labels": {
+        "you": "You",
+        "assistant": "Assistant"
+      },
+      "responses": {
+        "defaultResponse": "I'm here to help! How can I assist you?",
+        "errorResponse": "Sorry, I'm having trouble responding right now. Please try again."
+      },
+      "errors": {
+        "title": "Chatbot Error",
+        "unknownError": "An unknown error occurred.",
+        "networkError": "Network error. Please check your connection and try again."
+      }
     }
   },
   "navigation": {
