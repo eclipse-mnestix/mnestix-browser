@@ -257,7 +257,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Login to DockerHub
+      - name: Login to Gitlab Registry
         uses: docker/login-action@v3
         with:
           registry: ${{ secrets.GITLAB_REGISTRY_URL }}
@@ -283,6 +283,6 @@ jobs:
           target: production
           push: true
           tags: |
-            ${{ github.ref == 'refs/heads/main' && format('{0}/mnestix-browser-fair-demo/{1}:{2}',secrets.GITLAB_REGISTRY_URL, env.IMAGE_NAME, env.IMAGE_TAG_VERSION) || '' }}
-            ${{ github.ref == 'refs/heads/main' && format('{0}/mnestix-browser-fair-demo/{1}:latest',secrets.GITLAB_REGISTRY_URL, env.IMAGE_NAME || '' }}
-            ${{ github.ref != 'refs/heads/main' && format('{0}/mnestix-browser-fair-demo/{1}:{2}',secrets.GITLAB_REGISTRY_URL, env.IMAGE_NAME, steps.extract_branch.outputs.tag) || '' }}
+            ${{ github.ref == 'refs/heads/main' && format('{0}/mnestix-browser-fair-demo/{1}:{2}', secrets.GITLAB_REGISTRY_URL, env.IMAGE_NAME, env.IMAGE_TAG_VERSION) || '' }}
+            ${{ github.ref == 'refs/heads/main' && format('{0}/mnestix-browser-fair-demo/{1}:latest', secrets.GITLAB_REGISTRY_URL, env.IMAGE_NAME) || '' }}
+            ${{ github.ref != 'refs/heads/main' && format('{0}/mnestix-browser-fair-demo/{1}:{2}', secrets.GITLAB_REGISTRY_URL, env.IMAGE_NAME, steps.extract_branch.outputs.tag) || '' }}
