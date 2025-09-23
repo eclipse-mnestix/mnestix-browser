@@ -28,6 +28,7 @@ env:
   IMAGE_NAME: mnestix-browser-fair-demo
   # Update the version manually
   IMAGE_TAG_VERSION: 2.0.99
+  GITLAB_PROJECT_PATH: mnes
 
 jobs:
   build-browser-image:
@@ -283,6 +284,6 @@ jobs:
           target: production
           push: true
           tags: |
-            ${{ github.ref == 'refs/heads/main' && format('{0}/mnestix-browser-fair-demo/{1}:{2}', secrets.GITLAB_REGISTRY_URL, env.IMAGE_NAME, env.IMAGE_TAG_VERSION) || '' }}
-            ${{ github.ref == 'refs/heads/main' && format('{0}/mnestix-browser-fair-demo/{1}:latest', secrets.GITLAB_REGISTRY_URL, env.IMAGE_NAME) || '' }}
-            ${{ github.ref != 'refs/heads/main' && format('{0}/mnestix-browser-fair-demo/{1}:{2}', secrets.GITLAB_REGISTRY_URL, env.IMAGE_NAME, steps.extract_branch.outputs.tag) || '' }}
+            ${{ github.ref == 'refs/heads/main' && format('{0}/{1}/{2}:{3}', secrets.GITLAB_REGISTRY_URL, env.GITLAB_PROJECT_PATH, env.IMAGE_NAME, env.IMAGE_TAG_VERSION) || '' }}
+            ${{ github.ref == 'refs/heads/main' && format('{0}/{1}/{2}:latest', secrets.GITLAB_REGISTRY_URL, env.GITLAB_PROJECT_PATH, env.IMAGE_NAME) || '' }}
+            ${{ github.ref != 'refs/heads/main' && format('{0}/{1}/{2}:{3}', secrets.GITLAB_REGISTRY_URL, env.GITLAB_PROJECT_PATH, env.IMAGE_NAME, steps.extract_branch.outputs.tag) || '' }}
