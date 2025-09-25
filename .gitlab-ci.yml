@@ -58,6 +58,7 @@ build-browser-image:
 # Unit tests
 unit-test:
   extends: 
+    - .node-setup
     - .common-rules
   stage: test
   script:
@@ -65,7 +66,8 @@ unit-test:
 
 # Linting and type checking
 lint:
-  extends: 
+  extends:
+    - .node-setup
     - .common-rules
   stage: test
   script:

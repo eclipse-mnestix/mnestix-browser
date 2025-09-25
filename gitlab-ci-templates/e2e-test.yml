@@ -6,7 +6,6 @@
     SPLIT: "4"  # Total number of parallel containers
   before_script:
     - apk add --no-cache docker-compose git
-    - docker info
   script:
     - |
       # Load the built image
