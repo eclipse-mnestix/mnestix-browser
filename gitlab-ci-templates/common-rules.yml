@@ -1,0 +1,21 @@
+# Common rules for when jobs should run
+.common-rules:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "update-pipeline" || $CI_COMMIT_BRANCH =~ /^maintenance\//
+      when: always
+    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/
+      when: always
+  except:
+    changes:
+      - "README.md"
+
+# Rules for deployment jobs (no MR deployments)
+.deploy-rules:
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "merge_request_event" && ($CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "update-pipeline" || $CI_COMMIT_BRANCH =~ /^maintenance\//)
+      when: on_success
+  except:
+    changes:
+      - "README.md"

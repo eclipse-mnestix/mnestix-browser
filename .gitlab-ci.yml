@@ -1,0 +1,167 @@
+include:
+  - local: 'gitlab-ci-templates/node-setup.yml'
+  - local: 'gitlab-ci-templates/e2e-test.yml'
+  - local: 'gitlab-ci-templates/common-rules.yml'
+  - local: 'gitlab-ci-templates/docker-build.yml'
+
+stages:
+  - build-cache
+  - build
+  - test
+  - deploy
+
+variables:
+  IMAGE_NAME: "mnestix-browser"
+  IMAGE_TAG_VERSION: "2.0.0"
+  DOCKER_BUILDKIT: "1"
+  DOCKER_DRIVER: overlay2
+
+# Build Docker image cache for amd64
+build-browser-image:
+  extends: 
+    - .docker-build-template
+    - .common-rules
+  stage: build-cache
+  script:
+    - |
+      # Build image for amd64
+      docker buildx build \
+        --platform linux/amd64 \
+        --target production \
+        --cache-from type=registry,ref=${CI_REGISTRY_IMAGE}/cache:amd64 \
+        --cache-to type=registry,ref=${CI_REGISTRY_IMAGE}/cache:amd64,mode=max \
+        --output type=docker,dest=mnestix-browser-amd64.tar \
+        --tag mnestix/mnestix-browser:latest \
+        .
+  artifacts:
+    paths:
+      - mnestix-browser-amd64.tar
+    expire_in: 2 hours
+
+# Build ARM64 cache (separate job due to performance considerations)
+build-arm-cache:
+  extends: 
+    - .docker-build-template
+    - .deploy-rules
+  stage: build-cache
+  tags:
+    - arm64  # Use ARM64 runner if available, otherwise will use QEMU
+  script:
+    - |
+      # Build ARM64 cache
+      docker buildx build \
+        --platform linux/arm64 \
+        --target production \
+        --cache-from type=registry,ref=${CI_REGISTRY_IMAGE}/cache:arm64 \
+        --cache-to type=registry,ref=${CI_REGISTRY_IMAGE}/cache:arm64,mode=max \
+        --output type=cacheonly \
+        .
+
+# Unit tests
+unit-test:
+  extends: 
+    - .node-setup
+    - .common-rules
+  stage: test
+  script:
+    - npx jest
+
+# Linting and type checking
+lint:
+  extends: 
+    - .node-setup
+    - .common-rules
+  stage: test
+  script:
+    - yarn typecheck
+    - yarn typecheck:e2e
+    - yarn lint
+
+# E2E tests (parallel execution)
+e2e-test-1:
+  extends: .e2e-test-template
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+    SPLIT: "4"
+    SPLIT_INDEX: "0"
+    TEST_ADMIN_USER_PASSWORD: ${TEST_ADMIN_USER_PASSWORD}
+    TEST_USER_PASSWORD: ${TEST_USER_PASSWORD}
+
+e2e-test-2:
+  extends: .e2e-test-template
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+    SPLIT: "4"
+    SPLIT_INDEX: "1"
+    TEST_ADMIN_USER_PASSWORD: ${TEST_ADMIN_USER_PASSWORD}
+    TEST_USER_PASSWORD: ${TEST_USER_PASSWORD}
+
+e2e-test-3:
+  extends: .e2e-test-template
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+    SPLIT: "4"
+    SPLIT_INDEX: "2"
+    TEST_ADMIN_USER_PASSWORD: ${TEST_ADMIN_USER_PASSWORD}
+    TEST_USER_PASSWORD: ${TEST_USER_PASSWORD}
+
+e2e-test-4:
+  extends: .e2e-test-template
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+    SPLIT: "4"
+    SPLIT_INDEX: "3"
+    TEST_ADMIN_USER_PASSWORD: ${TEST_ADMIN_USER_PASSWORD}
+    TEST_USER_PASSWORD: ${TEST_USER_PASSWORD}
+
+# CI success gate job (equivalent to GitHub's ci-success)
+ci-success:
+  extends: .common-rules
+  stage: test
+  image: alpine:latest
+  script:
+    - echo "All CI checks passed successfully!"
+  needs:
+    - lint
+    - unit-test
+    - e2e-test-1
+    - e2e-test-2
+    - e2e-test-3
+    - e2e-test-4
+
+# Deploy/Push Docker images
+push-image:
+  extends: 
+    - .docker-build-template
+    - .deploy-rules
+  stage: deploy
+  before_script:
+    - apk add --no-cache git
+    - docker info
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker buildx create --use --name mybuilder --driver docker-container
+  script:
+    - |
+      # Extract branch name and create appropriate tags
+      if [ "$CI_COMMIT_BRANCH" = "main" ]; then
+        VERSION_TAG="${IMAGE_TAG_VERSION}"
+        TAGS="$CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH,$CI_REGISTRY_IMAGE:${VERSION_TAG}"
+      else
+        BRANCH_TAG=$(echo "$CI_COMMIT_BRANCH" | sed 's/\//_/g')
+        TAGS="$CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH"
+      fi
+      
+      echo "Building and pushing with tags: $TAGS"
+      
+      # Build and push multi-platform image
+      docker buildx build \
+        --provenance=false \
+        --platform linux/amd64 \
+        --target production \
+        --cache-from type=registry,ref=${CI_REGISTRY_IMAGE}/cache:amd64 \
+        --push \
+        --tag $TAGS \
+        .
+  needs:
+    - ci-success
+    - build-arm-cache
