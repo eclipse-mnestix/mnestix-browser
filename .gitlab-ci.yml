@@ -145,7 +145,7 @@ push-image:
     - .deploy-rules
   stage: deploy
   before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
   script:
     - |
       # Load the pre-built image from artifact
@@ -154,11 +154,15 @@ push-image:
 
       # Extract branch name and create appropriate tags
       if [ "$CI_COMMIT_BRANCH" = "main" ]; then
+        docker tag mnestix/mnestix-browser:latest $CI_REGISTRY_IMAGE:${IMAGE_TAG_VERSION}
+        docker tag mnestix/mnestix-browser:latest $CI_REGISTRY_IMAGE:${BRANCH_TAG}
         docker push $CI_REGISTRY_IMAGE:${IMAGE_TAG_VERSION}
         docker push $CI_REGISTRY_IMAGE:${BRANCH_TAG}
       else
         # Tag and push branch-specific image
+        docker tag mnestix/mnestix-browser:latest $CI_REGISTRY_IMAGE:${BRANCH_TAG}
         docker push $CI_REGISTRY_IMAGE:${BRANCH_TAG}
       fi
   needs:
     - ci-success
+    - build-browser-image
