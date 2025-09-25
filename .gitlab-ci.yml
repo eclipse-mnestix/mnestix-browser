@@ -22,13 +22,6 @@ build-browser-image:
     - .docker-build-template
     - .common-rules
   stage: build-cache
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-    - update-binfmts --display
-    - update-binfmts --enable # Important: Ensures execution of other binary formats is enabled in the kernel
-    - docker buildx create --driver=docker-container --driver-opt image=moby/buildkit:v0.11.6 --use
-    - docker buildx inspect --bootstrap
   script:
     - |
       # Build image for amd64

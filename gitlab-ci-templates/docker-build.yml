@@ -6,6 +6,9 @@
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
   before_script:
-    - docker info
-    - apk add --no-cache git
-    - docker buildx create --use --name mybuilder --driver docker-container
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+    - update-binfmts --display
+    - update-binfmts --enable # Important: Ensures execution of other binary formats is enabled in the kernel
+    - docker buildx create --driver=docker-container --driver-opt image=moby/buildkit:v0.11.6 --use
+    - docker buildx inspect --bootstrap
