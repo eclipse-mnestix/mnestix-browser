@@ -10,6 +10,12 @@ stages:
   - test
   - deploy
 
+
+default:
+  image: docker:26.1.2
+  services:
+    - docker:26.1.2-dind
+
 variables:
   IMAGE_NAME: "mnestix-browser"
   IMAGE_TAG_VERSION: "2.0.0"
@@ -18,10 +24,19 @@ variables:
 
 # Build Docker image cache for amd64
 build-browser-image:
-  extends: 
-    - .docker-build-template
+  image: nofusscomputing/docker-buildx-qemu:0.3.0
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  extends:
     - .common-rules
   stage: build-cache
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+    - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+    - update-binfmts --display
+    - update-binfmts --enable # Important: Ensures execution of other binary formats is enabled in the kernel
+    - docker buildx create --driver=docker-container --driver-opt image=moby/buildkit:v0.11.6 --use
+    - docker buildx inspect --bootstrap
   script:
     - |
       # Build image for amd64
@@ -42,7 +57,6 @@ build-browser-image:
 # Unit tests
 unit-test:
   extends: 
-    - .node-setup
     - .common-rules
   stage: test
   script:
@@ -51,7 +65,6 @@ unit-test:
 # Linting and type checking
 lint:
   extends: 
-    - .node-setup
     - .common-rules
   stage: test
   script:
@@ -108,7 +121,6 @@ e2e-test-4:
 ci-success:
   extends: .common-rules
   stage: test
-  image: alpine:latest
   script:
     - echo "All CI checks passed successfully!"
   needs:
@@ -126,7 +138,6 @@ ci-success:
 # Deploy/Push Docker images
 push-image:
   extends: 
-    - .docker-build-template
     - .deploy-rules
   stage: deploy
   before_script:

@@ -1,9 +1,6 @@
 # E2E test template for Cypress testing with Docker
 .e2e-test-template:
   stage: test
-  image: docker:26.1.2
-  services:
-    - docker:26.1.2-dind
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
     SPLIT: "4"  # Total number of parallel containers
