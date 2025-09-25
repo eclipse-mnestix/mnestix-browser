@@ -1,8 +1,6 @@
 include:
-  - local: 'gitlab-ci-templates/node-setup.yml'
   - local: 'gitlab-ci-templates/e2e-test.yml'
   - local: 'gitlab-ci-templates/common-rules.yml'
-  - local: 'gitlab-ci-templates/docker-build.yml'
 
 stages:
   - build-cache
