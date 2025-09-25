@@ -79,7 +79,9 @@ lint:
 
 # E2E tests (parallel execution)
 e2e-test-1:
-  extends: .e2e-test-template
+  extends: 
+    - .e2e-test-template
+    - .common-rules
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
     SPLIT: "4"
@@ -88,7 +90,9 @@ e2e-test-1:
     TEST_USER_PASSWORD: ${TEST_USER_PASSWORD}
 
 e2e-test-2:
-  extends: .e2e-test-template
+  extends:
+    - .e2e-test-template
+    - .common-rules
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
     SPLIT: "4"
@@ -97,7 +101,9 @@ e2e-test-2:
     TEST_USER_PASSWORD: ${TEST_USER_PASSWORD}
 
 e2e-test-3:
-  extends: .e2e-test-template
+  extends:
+    - .e2e-test-template
+    - .common-rules
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
     SPLIT: "4"
@@ -106,7 +112,9 @@ e2e-test-3:
     TEST_USER_PASSWORD: ${TEST_USER_PASSWORD}
 
 e2e-test-4:
-  extends: .e2e-test-template
+  extends:
+    - .e2e-test-template
+    - .common-rules
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
     SPLIT: "4"
@@ -124,10 +132,14 @@ ci-success:
   needs:
     - lint
     - unit-test
-    - e2e-test-1
-    - e2e-test-2
-    - e2e-test-3
-    - e2e-test-4
+    - job: e2e-test-1
+      optional: true
+    - job: e2e-test-2
+      optional: true
+    - job: e2e-test-3
+      optional: true
+    - job: e2e-test-4
+      optional: true
 
 # Deploy/Push Docker images
 push-image:
