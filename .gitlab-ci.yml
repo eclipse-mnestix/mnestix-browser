@@ -22,10 +22,18 @@ build-browser-image:
     - .docker-build-template
     - .common-rules
   stage: build-cache
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+    - update-binfmts --display
+    - update-binfmts --enable # Important: Ensures execution of other binary formats is enabled in the kernel
+    - docker buildx create --driver=docker-container --driver-opt image=moby/buildkit:v0.11.6 --use
+    - docker buildx inspect --bootstrap
   script:
     - |
       # Build image for amd64
       docker buildx build \
+        --provenance=false \
         --platform linux/amd64 \
         --target production \
         --cache-from type=registry,ref=${CI_REGISTRY_IMAGE}/cache:amd64 \
@@ -37,25 +45,6 @@ build-browser-image:
     paths:
       - mnestix-browser-amd64.tar
     expire_in: 2 hours
-
-# Build ARM64 cache (separate job due to performance considerations)
-build-arm-cache:
-  extends: 
-    - .docker-build-template
-    - .deploy-rules
-  stage: build-cache
-  tags:
-    - arm64  # Use ARM64 runner if available, otherwise will use QEMU
-  script:
-    - |
-      # Build ARM64 cache
-      docker buildx build \
-        --platform linux/arm64 \
-        --target production \
-        --cache-from type=registry,ref=${CI_REGISTRY_IMAGE}/cache:arm64 \
-        --cache-to type=registry,ref=${CI_REGISTRY_IMAGE}/cache:arm64,mode=max \
-        --output type=cacheonly \
-        .
 
 # Unit tests
 unit-test:
@@ -149,33 +138,19 @@ push-image:
   stage: deploy
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-    - update-binfmts --display
-    - update-binfmts --enable # Important: Ensures execution of other binary formats is enabled in the kernel
-    - docker buildx create --driver=docker-container --driver-opt image=moby/buildkit:v0.11.6 --use
-    - docker buildx inspect --bootstrap
   script:
     - |
+      # Load the pre-built image from artifact
+      docker load -i mnestix-browser-amd64.tar
+      BRANCH_TAG=$(echo "$CI_COMMIT_BRANCH" | sed 's/\//_/g')
+
       # Extract branch name and create appropriate tags
       if [ "$CI_COMMIT_BRANCH" = "main" ]; then
-        VERSION_TAG="${IMAGE_TAG_VERSION}"
-        TAGS="$CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH,$CI_REGISTRY_IMAGE:${VERSION_TAG}"
+        docker push $CI_REGISTRY_IMAGE:${IMAGE_TAG_VERSION}
+        docker push $CI_REGISTRY_IMAGE:${BRANCH_TAG}
       else
-        BRANCH_TAG=$(echo "$CI_COMMIT_BRANCH" | sed 's/\//_/g')
-        TAGS="$CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH"
+        # Tag and push branch-specific image
+        docker push $CI_REGISTRY_IMAGE:${BRANCH_TAG}
       fi
-      
-      echo "Building and pushing with tags: $TAGS"
-      
-      # Build and push multi-platform image
-      docker buildx build \
-        --provenance=false \
-        --platform linux/amd64 \
-        --target production \
-        --cache-from type=registry,ref=${CI_REGISTRY_IMAGE}/cache:amd64 \
-        --push \
-        --tag $TAGS \
-        .
   needs:
     - ci-success
-    - build-arm-cache
