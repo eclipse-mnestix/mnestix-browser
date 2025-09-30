@@ -6,17 +6,11 @@ import { Submodel } from 'lib/api/aas/models';
 import { envs } from 'lib/env/MnestixEnv';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
+import { fetchSubmodelTemplates } from 'lib/services/submodel-templates-service/submodelTemplatesService';
 import { getDefaultInfrastructure } from './database/infrastructureDatabaseActions';
 
 export async function getDefaultTemplates(): Promise<ApiResponseWrapper<Submodel[]>> {
-    const defaultInfrastructure = await getDefaultInfrastructure();
-    const securityHeaders = await createSecurityHeaders(defaultInfrastructure);
-    const templateApiClient = TemplateShellApi.create(
-        envs.MNESTIX_AAS_GENERATOR_API_URL ?? '',
-        envs.AUTHENTICATION_FEATURE_FLAG,
-        mnestixFetch(securityHeaders),
-    );
-    return templateApiClient.getDefaults();
+    return fetchSubmodelTemplates();
 }
 
 export async function getCustomTemplates(): Promise<ApiResponseWrapper<Submodel[]>> {
