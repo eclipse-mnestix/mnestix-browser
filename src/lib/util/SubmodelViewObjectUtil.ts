@@ -5,30 +5,40 @@ import { cloneDeep, parseInt } from 'lodash';
 export function generateSubmodelViewObjectFromSubmodelElement(
     el: SubmodelElementChoice,
     id: string,
+    language: string,
 ): SubmodelViewObject {
     const localEl = cloneDeep(el);
+    const name =
+        localEl.displayName?.find((ln) => ln.language === language)?.text ??
+        localEl.displayName?.find((ln) => ln.language === 'en')?.text ??
+        localEl.idShort ??
+        localEl.modelType ??
+        'unknown';
     const frontend: SubmodelViewObject = {
         id,
-        name: localEl.idShort ?? '',
+        name,
         children: [],
         hasValue: false,
         isAboutToBeDeleted: false,
         propertyValue: (localEl as Property).value ?? undefined,
     };
 
-    if (localEl.modelType === KeyTypes.SubmodelElementCollection) {
+    if (
+        localEl.modelType === KeyTypes.SubmodelElementCollection ||
+        localEl.modelType === KeyTypes.SubmodelElementList
+    ) {
         const col = localEl;
         const arr = col.value || [];
         arr.forEach((child, i) => {
             if (!child) return;
-            frontend.children?.push(generateSubmodelViewObjectFromSubmodelElement(child, id + '-' + i));
+            frontend.children?.push(generateSubmodelViewObjectFromSubmodelElement(child, id + '-' + i, language));
         });
         col.value = [];
     } else if (localEl.modelType === KeyTypes.Entity) {
         const entity = localEl;
         entity.statements?.forEach((child, i) => {
             if (!child) return;
-            frontend.children?.push(generateSubmodelViewObjectFromSubmodelElement(child, id + '-' + i));
+            frontend.children?.push(generateSubmodelViewObjectFromSubmodelElement(child, id + '-' + i, language));
         });
         entity.statements = [];
     }
