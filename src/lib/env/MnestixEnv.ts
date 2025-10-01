@@ -69,7 +69,6 @@ function removeTrailingSlash(url: string | undefined): string | undefined {
  * All environment variables in this object (except SUBMODEL_WHITELIST) are URLs and are automatically provided without a trailing slash.
  * This ensures consistent URL formats for API calls and external links.
  */
-const defaultSubmodelTemplatesUrl = 'https://smt-repo.admin-shell-io.com/api/v3.0/submodels';
 
 const otherVariables = {
     ...mapEnvVariables(
@@ -86,10 +85,6 @@ const otherVariables = {
             'DATA_PRIVACY_URL',
         ] as const,
         removeTrailingSlash,
-    ),
-    SUBMODEL_TEMPLATES_API_URL: removeTrailingSlash(
-        process_env.SUBMODEL_TEMPLATES_API_URL ??
-            defaultSubmodelTemplatesUrl,
     ),
     // Strong typing and parsing have been neglected here as this is a temporary feature.
     // Validation is also not implemented.

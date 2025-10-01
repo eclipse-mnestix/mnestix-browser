@@ -21,6 +21,7 @@ import { useRouter } from 'next/navigation';
 import { createCustomSubmodelTemplate } from 'lib/services/templateApiWithAuthActions';
 import { deleteCustomTemplateById, getCustomTemplates, getDefaultTemplates } from 'lib/services/templatesApiActions';
 import { useTranslations } from 'next-intl';
+import { findSemanticIdOfType } from 'lib/util/SubmodelResolverUtil';
 
 enum SpecialDefaultTabIds {
     All = 'all',
@@ -54,13 +55,15 @@ export default function Page() {
         _defaults.result?.sort((a: Submodel, b: Submodel) => sortWithNullableValues(a.idShort, b.idShort));
         setDefaults(_defaults.result);
         const _defaultItems: TabSelectorItem[] = [];
-        _defaults.result?.forEach((d) => {
+        _defaults.result?.forEach((defaultTemplate) => {
             // In v3 submodel is identified by id, so we assume that it will always have an Id.
-            const id = d.id || d.idShort;
+            const id =
+                findSemanticIdOfType(['Submodel', 'GlobalReference'], defaultTemplate.semanticId?.keys) ||
+                defaultTemplate.idShort;
             if (id) {
                 _defaultItems.push({
                     id,
-                    label: `${d.idShort} V${d.administration?.version ?? '-'}.${d.administration?.revision ?? '-'}`,
+                    label: `${defaultTemplate.idShort} V${defaultTemplate.administration?.version ?? '-'}.${defaultTemplate.administration?.revision ?? '-'}`,
                     startIcon: <FolderOutlined fontSize="small" />,
                 });
             }
