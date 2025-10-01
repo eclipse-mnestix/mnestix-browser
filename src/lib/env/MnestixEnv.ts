@@ -69,7 +69,6 @@ function removeTrailingSlash(url: string | undefined): string | undefined {
  * All environment variables in this object (except SUBMODEL_WHITELIST) are URLs and are automatically provided without a trailing slash.
  * This ensures consistent URL formats for API calls and external links.
  */
-
 const otherVariables = {
     ...mapEnvVariables(
         [
