@@ -50,25 +50,33 @@ export default function Page() {
 
     const { showError } = useShowError();
     const fetchAll = async () => {
+        const _defaultItems: TabSelectorItem[] = [];
         // fetching defaults first
         const _defaults = await getDefaultTemplates();
-        _defaults.result?.sort((a: Submodel, b: Submodel) => sortWithNullableValues(a.idShort, b.idShort));
-        setDefaults(_defaults.result);
-        const _defaultItems: TabSelectorItem[] = [];
-        _defaults.result?.forEach((defaultTemplate) => {
-            // In v3 submodel is identified by id, so we assume that it will always have an Id.
-            const id =
-                findSemanticIdOfType(['Submodel', 'GlobalReference'], defaultTemplate.semanticId?.keys) ||
-                defaultTemplate.idShort;
-            if (id) {
-                _defaultItems.push({
-                    id,
-                    label: `${defaultTemplate.idShort} V${defaultTemplate.administration?.version ?? '-'}.${defaultTemplate.administration?.revision ?? '-'}`,
-                    startIcon: <FolderOutlined fontSize="small" />,
-                });
-            }
-        });
-        _defaultItems.sort((a: TabSelectorItem, b: TabSelectorItem) => a.label.localeCompare(b.label));
+        if (!_defaults.result?.length) {
+            notificationSpawner.spawn({
+                message: t('fetchDefaultsWarning'),
+                severity: 'warning',
+            });
+        } else {
+            _defaults.result?.sort((a: Submodel, b: Submodel) => sortWithNullableValues(a.idShort, b.idShort));
+            setDefaults(_defaults.result);
+            _defaults.result?.forEach((defaultTemplate) => {
+                // In v3 submodel is identified by id, so we assume that it will always have an Id.
+                const id =
+                    findSemanticIdOfType(['Submodel', 'GlobalReference'], defaultTemplate.semanticId?.keys) ||
+                    defaultTemplate.idShort;
+                if (id) {
+                    _defaultItems.push({
+                        id,
+                        label: `${defaultTemplate.idShort} V${defaultTemplate.administration?.version ?? '-'}.${defaultTemplate.administration?.revision ?? '-'}`,
+                        startIcon: <FolderOutlined fontSize="small" />,
+                    });
+                }
+            });
+            _defaultItems.sort((a: TabSelectorItem, b: TabSelectorItem) => a.label.localeCompare(b.label));
+        }
+
         // adding 'all' defaultItem at the beginning of the list
         _defaultItems.unshift({
             id: SpecialDefaultTabIds.All,
@@ -88,6 +96,12 @@ export default function Page() {
     const fetchCustoms = async (_defaultItems: Array<TabSelectorItem>) => {
         const _customTemplateItems: CustomTemplateItemType[] = [];
         const customs = (await getCustomTemplates()).result as Submodel[];
+        if (!customs?.length) {
+            notificationSpawner.spawn({
+                message: t('noBlueprintsWarning'),
+                severity: 'warning',
+            });
+        }
         customs?.forEach((customSubmodel: Submodel) => {
             // get displayName out of Qualifiers or use idShort of Submodel
             const displayName =

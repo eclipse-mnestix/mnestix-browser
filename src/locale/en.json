@@ -541,6 +541,7 @@
       "multiplicityDescription": "A qualifier used to identify obligatory elements.",
       "noTemplatesFound": "No templates found",
       "templateDeletedSuccessfully": "Template deleted successfully",
+      "fetchDefaultsWarning": "No default templates available. Showing only custom templates.",
       "templateIdCopied": "Template ID copied to clipboard: {id}",
       "templatesUseExplanation": "Templates allow you to create a reusable submodel structure, adjusted to your requirements.",
       "title": "Templates",
@@ -549,7 +550,8 @@
           "invalidDate": "Has to be a valid date in format ''yyyy-mm-dd''",
           "invalidLong": "Has to be a valid long"
         }
-      }
+      },
+      "noBlueprintsWarning": "No blueprints available."
     },
     "transfer": {
       "aasRepository": "AAS repository",
