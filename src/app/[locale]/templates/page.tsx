@@ -53,7 +53,7 @@ export default function Page() {
         const _defaults = await getDefaultTemplates();
         _defaults.result?.sort((a: Submodel, b: Submodel) => sortWithNullableValues(a.idShort, b.idShort));
         setDefaults(_defaults.result);
-        const _defaultItems: TabSelectorItem[] = [{ id: SpecialDefaultTabIds.All, label: t('all') }];
+        const _defaultItems: TabSelectorItem[] = [];
         _defaults.result?.forEach((d) => {
             // In v3 submodel is identified by id, so we assume that it will always have an Id.
             const id = d.id || d.idShort;
@@ -66,6 +66,11 @@ export default function Page() {
             }
         });
         _defaultItems.sort((a: TabSelectorItem, b: TabSelectorItem) => a.label.localeCompare(b.label));
+        // adding 'all' defaultItem at the beginning of the list
+        _defaultItems.unshift({
+            id: SpecialDefaultTabIds.All,
+            label: t('all'),
+        });
         // the 'custom' defaultItem should always the last one in the list
         _defaultItems.push({
             id: SpecialDefaultTabIds.Custom,
