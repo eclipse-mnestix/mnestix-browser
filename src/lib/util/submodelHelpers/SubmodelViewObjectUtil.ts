@@ -2,6 +2,12 @@ import { SubmodelElementChoice, KeyTypes, LangStringTextType, Property } from 'l
 import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import { cloneDeep, parseInt } from 'lodash';
 
+/**
+ * Generates a SubmodelViewObject from a SubmodelElement to visualize it as tree structure.
+ * @param el
+ * @param id
+ * @param language
+ */
 export function generateSubmodelViewObjectFromSubmodelElement(
     el: SubmodelElementChoice,
     id: string,

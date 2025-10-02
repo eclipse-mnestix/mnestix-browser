@@ -2,12 +2,10 @@ import {
     generateSubmodelViewObjectFromSubmodelElement,
     viewObjectHasDataValue,
     splitIdIntoArray,
-    getParentOfElement,
     rewriteNodeIds,
     updateNodeIds,
 } from './SubmodelViewObjectUtil';
 import {
-    SubmodelElementChoice,
     KeyTypes,
     Property,
     SubmodelElementList,
@@ -189,7 +187,7 @@ describe('SubmodelViewObjectUtil', () => {
                 displayName: [{ language: 'de', text: 'Liste mit Nullen' }],
                 orderRelevant: true,
                 typeValueListElement: 'Property',
-                value: [null, undefined] as any,
+                value: [null, undefined] as (Property | null | undefined)[],
             };
 
             const result = generateSubmodelViewObjectFromSubmodelElement(submodelElementList, '0', 'de');
