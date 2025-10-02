@@ -11,8 +11,8 @@ import {
     SubmodelElementList,
     SubmodelElementCollection,
     Entity,
-    File,
     MultiLanguageProperty,
+    ModelFile,
 } from 'lib/api/aas/models';
 import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import { describe, it, expect } from '@jest/globals';
@@ -187,7 +187,7 @@ describe('SubmodelViewObjectUtil', () => {
                 displayName: [{ language: 'de', text: 'Liste mit Nullen' }],
                 orderRelevant: true,
                 typeValueListElement: 'Property',
-                value: [null, undefined] as (Property | null | undefined)[],
+                value: [null, undefined] as never[],
             };
 
             const result = generateSubmodelViewObjectFromSubmodelElement(submodelElementList, '0', 'de');
@@ -232,7 +232,7 @@ describe('SubmodelViewObjectUtil', () => {
                 data: {
                     modelType: KeyTypes.File,
                     value: '/path/to/file',
-                } as File,
+                } as ModelFile,
             };
 
             expect(viewObjectHasDataValue(viewObject)).toBe(true);
