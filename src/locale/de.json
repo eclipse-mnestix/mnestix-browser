@@ -551,7 +551,7 @@
           "invalidLong": "Muss eine valide Zahl sein"
         }
       },
-      "noBlueprintsWarning": "Keine Blaupausen verfügbar."
+      "noBlueprintsWarning": "Keine Blueprints verfügbar."
     },
     "transfer": {
       "aasRepository": "AAS Repository",
