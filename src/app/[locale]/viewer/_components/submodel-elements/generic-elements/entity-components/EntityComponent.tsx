@@ -5,6 +5,7 @@ import { generateSubmodelViewObjectFromSubmodelElement } from 'lib/util/submodel
 import { SimpleTreeView } from '@mui/x-tree-view';
 import { EntityTreeItem } from './EntityTreeItem';
 import { SyntheticEvent, useState } from 'react';
+import { useLocale } from 'next-intl';
 
 type EntityComponentProps = {
     readonly entity: Entity;
@@ -12,8 +13,9 @@ type EntityComponentProps = {
 
 export function EntityComponent(props: EntityComponentProps) {
     const { entity } = props;
+    const locale = useLocale();
     const [expandedTreeItems, setExpandedTreeItems] = useState<string[]>(['0']);
-    const entityTree: SubmodelViewObject = generateSubmodelViewObjectFromSubmodelElement(entity, '0');
+    const entityTree: SubmodelViewObject = generateSubmodelViewObjectFromSubmodelElement(entity, '0', locale);
 
     const handleToggle = (event: SyntheticEvent, nodeIds: string[]) => {
         setExpandedTreeItems(nodeIds);

@@ -5,6 +5,7 @@ import { Entity, SubmodelElementChoice, KeyTypes } from 'lib/api/aas/models';
 import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import { generateSubmodelViewObjectFromSubmodelElement } from 'lib/util/submodelHelpers/SubmodelViewObjectUtil';
 import { ApplicationTreeItem } from './ApplicationTreeItem';
+import { useLocale } from 'next-intl';
 
 type ApplicationComponentProps = {
     readonly entity: Entity;
@@ -12,8 +13,9 @@ type ApplicationComponentProps = {
 
 export function ApplicationComponent(props: ApplicationComponentProps) {
     const { entity } = props;
+    const locale = useLocale();
     const [expandedTreeItems, setExpandedTreeItems] = useState<string[]>(['0']);
-    const entityTree: SubmodelViewObject = generateSubmodelViewObjectFromSubmodelElement(entity, '0');
+    const entityTree: SubmodelViewObject = generateSubmodelViewObjectFromSubmodelElement(entity, '0', locale);
 
     const handleToggle = (_event: SyntheticEvent, nodeIds: string[]) => {
         setExpandedTreeItems(nodeIds);
