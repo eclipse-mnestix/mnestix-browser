@@ -541,7 +541,7 @@
       "multiplicityDescription": "Parameter, mit dem Sie festlegen können, welche Elemente verpflichtend sind.",
       "noTemplatesFound": "Keine Templates gefunden",
       "templateDeletedSuccessfully": "Template erfolgreich gelöscht.",
-      "fetchDefaultsWarning": "Keine Standardvorlagen verfügbar. Es werden nur eigene Templates angezeigt.",
+      "fetchDefaultsWarning": "Keine Standardvorlagen verfügbar. Es werden nur Custom Templates angezeigt.",
       "templateIdCopied": "Template-ID in die Zwischenablage kopiert: {id}",
       "templatesUseExplanation": "Templates erlauben es Ihnen, eine wiederverwendbare Teilmodell-Struktur, angepasst auf Ihre Bedürfnisse, zu definieren.",
       "title": "Templates",
