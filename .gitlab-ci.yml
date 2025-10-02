@@ -1,0 +1,168 @@
+include:
+  - local: 'gitlab-ci-templates/node-setup.yml'
+  - local: 'gitlab-ci-templates/e2e-test.yml'
+  - local: 'gitlab-ci-templates/common-rules.yml'
+
+stages:
+  - build-cache
+  - build
+  - test
+  - deploy
+
+
+default:
+  image: docker:26.1.2
+  services:
+    - docker:26.1.2-dind
+
+variables:
+  IMAGE_NAME: "mnestix-browser"
+  IMAGE_TAG_VERSION: "2.0.0"
+  DOCKER_BUILDKIT: "1"
+  DOCKER_DRIVER: overlay2
+
+# Build Docker image cache for amd64
+build-browser-image:
+  image: nofusscomputing/docker-buildx-qemu:0.3.0
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  extends:
+    - .common-rules
+  stage: build-cache
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+    - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+    - update-binfmts --display
+    - update-binfmts --enable # Important: Ensures execution of other binary formats is enabled in the kernel
+    - docker buildx create --driver=docker-container --driver-opt image=moby/buildkit:v0.11.6 --use
+    - docker buildx inspect --bootstrap
+  script:
+    - |
+      # Build image for amd64
+      docker buildx build \
+        --provenance=false \
+        --platform linux/amd64 \
+        --target production \
+        --cache-from type=registry,ref=${CI_REGISTRY_IMAGE}/cache:amd64 \
+        --cache-to type=registry,ref=${CI_REGISTRY_IMAGE}/cache:amd64,mode=max \
+        --output type=docker,dest=mnestix-browser-amd64.tar \
+        --tag mnestix/mnestix-browser:latest \
+        .
+  artifacts:
+    paths:
+      - mnestix-browser-amd64.tar
+    expire_in: 2 hours
+
+# Unit tests
+unit-test:
+  extends: 
+    - .node-setup
+    - .common-rules
+  stage: test
+  script:
+    - npx jest
+
+# Linting and type checking
+lint:
+  extends:
+    - .node-setup
+    - .common-rules
+  stage: test
+  script:
+    - yarn typecheck
+    - yarn typecheck:e2e
+    - yarn lint
+
+# E2E tests (parallel execution)
+e2e-test-1:
+  extends: 
+    - .e2e-test-template
+    - .common-rules
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+    SPLIT: "4"
+    SPLIT_INDEX: "0"
+    TEST_ADMIN_USER_PASSWORD: ${TEST_ADMIN_USER_PASSWORD}
+    TEST_USER_PASSWORD: ${TEST_USER_PASSWORD}
+
+e2e-test-2:
+  extends:
+    - .e2e-test-template
+    - .common-rules
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+    SPLIT: "4"
+    SPLIT_INDEX: "1"
+    TEST_ADMIN_USER_PASSWORD: ${TEST_ADMIN_USER_PASSWORD}
+    TEST_USER_PASSWORD: ${TEST_USER_PASSWORD}
+
+e2e-test-3:
+  extends:
+    - .e2e-test-template
+    - .common-rules
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+    SPLIT: "4"
+    SPLIT_INDEX: "2"
+    TEST_ADMIN_USER_PASSWORD: ${TEST_ADMIN_USER_PASSWORD}
+    TEST_USER_PASSWORD: ${TEST_USER_PASSWORD}
+
+e2e-test-4:
+  extends:
+    - .e2e-test-template
+    - .common-rules
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+    SPLIT: "4"
+    SPLIT_INDEX: "3"
+    TEST_ADMIN_USER_PASSWORD: ${TEST_ADMIN_USER_PASSWORD}
+    TEST_USER_PASSWORD: ${TEST_USER_PASSWORD}
+
+# CI success gate job (equivalent to GitHub's ci-success)
+ci-success:
+  extends: .common-rules
+  stage: test
+  script:
+    - echo "All CI checks passed successfully!"
+  needs:
+    - lint
+    - unit-test
+    - job: e2e-test-1
+      optional: true
+    - job: e2e-test-2
+      optional: true
+    - job: e2e-test-3
+      optional: true
+    - job: e2e-test-4
+      optional: true
+
+# Deploy/Push Docker images
+push-image:
+  extends: 
+    - .deploy-rules
+  stage: deploy
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+  script:
+    - |
+      # Load the pre-built image from artifact
+      docker load -i mnestix-browser-amd64.tar
+      BRANCH_TAG=$(echo "$CI_COMMIT_BRANCH" | sed 's/\//_/g')
+
+      # Extract branch name and create appropriate tags
+      if [ "$CI_COMMIT_BRANCH" = "main" ]; then
+        docker tag mnestix/mnestix-browser:latest $CI_REGISTRY_IMAGE:${IMAGE_TAG_VERSION}
+        docker tag mnestix/mnestix-browser:latest $CI_REGISTRY_IMAGE:${BRANCH_TAG}
+        docker push $CI_REGISTRY_IMAGE:${IMAGE_TAG_VERSION}
+        docker push $CI_REGISTRY_IMAGE:${BRANCH_TAG}
+      else
+        # Tag and push branch-specific image
+        docker tag mnestix/mnestix-browser:latest $CI_REGISTRY_IMAGE:${BRANCH_TAG}
+        docker push $CI_REGISTRY_IMAGE:${BRANCH_TAG}
+      fi
+  needs:
+    - ci-success
+    - build-browser-image
