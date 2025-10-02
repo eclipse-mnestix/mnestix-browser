@@ -25,7 +25,7 @@ import {
     rewriteNodeIds,
     splitIdIntoArray,
     updateNodeIds,
-} from 'lib/util/SubmodelViewObjectUtil';
+} from 'lib/util/submodelHelpers/SubmodelViewObjectUtil';
 import { TemplateEditFields, TemplateEditFieldsProps } from '../_components/template-edit/TemplateEditFields';
 import { useAuth } from 'lib/hooks/UseAuth';
 import cloneDeep from 'lodash/cloneDeep';

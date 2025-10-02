@@ -1,7 +1,7 @@
 import { Entity, SubmodelElementChoice } from 'lib/api/aas/models';
 import { ChevronRight, ExpandMore } from '@mui/icons-material';
 import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
-import { generateSubmodelViewObjectFromSubmodelElement } from 'lib/util/SubmodelViewObjectUtil';
+import { generateSubmodelViewObjectFromSubmodelElement } from 'lib/util/submodelHelpers/SubmodelViewObjectUtil';
 import { SimpleTreeView } from '@mui/x-tree-view';
 import { EntityTreeItem } from './EntityTreeItem';
 import { SyntheticEvent, useState } from 'react';
