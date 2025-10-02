@@ -541,6 +541,7 @@
       "multiplicityDescription": "Parameter, mit dem Sie festlegen können, welche Elemente verpflichtend sind.",
       "noTemplatesFound": "Keine Templates gefunden",
       "templateDeletedSuccessfully": "Template erfolgreich gelöscht.",
+      "fetchDefaultsWarning": "Keine Standardvorlagen verfügbar. Es werden nur Custom Templates angezeigt.",
       "templateIdCopied": "Template-ID in die Zwischenablage kopiert: {id}",
       "templatesUseExplanation": "Templates erlauben es Ihnen, eine wiederverwendbare Teilmodell-Struktur, angepasst auf Ihre Bedürfnisse, zu definieren.",
       "title": "Templates",
@@ -549,7 +550,8 @@
           "invalidDate": "Muss ein gültiges Datum sein, im Format ''yyyy-mm-dd''",
           "invalidLong": "Muss eine valide Zahl sein"
         }
-      }
+      },
+      "noBlueprintsWarning": "Keine Blueprints verfügbar."
     },
     "transfer": {
       "aasRepository": "AAS Repository",

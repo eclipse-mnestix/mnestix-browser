@@ -541,6 +541,7 @@
       "multiplicityDescription": "Clasificador para identificar elementos obligatorios.",
       "noTemplatesFound": "No se encontraron plantillas",
       "templateDeletedSuccessfully": "Plantilla eliminada correctamente",
+      "fetchDefaultsWarning": "No hay plantillas predeterminadas disponibles. Solo se muestran plantillas personalizadas.",
       "templateIdCopied": "ID de la plantilla copiado al portapapeles: {id}",
       "templatesUseExplanation": "Las plantillas le permiten crear estructuras de submodel reutilizables y ajustadas a sus requisitos.",
       "title": "Plantillas",
@@ -549,7 +550,8 @@
           "invalidDate": "La fecha debe ser válida y seguir formato ''yyyy-mm-dd''",
           "invalidLong": "Debe ser un número largo válido"
         }
-      }
+      },
+      "noBlueprintsWarning": "No hay planos disponibles."
     },
     "transfer": {
       "aasRepository": "Repositorio AAS",
