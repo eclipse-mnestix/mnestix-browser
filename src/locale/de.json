@@ -513,14 +513,14 @@
         "true": "wahr"
       },
       "chooseAStartingPoint": "Wählen Sie ein Template als Ausgangspunkt",
-      "copyTemplateId": "Blueprint-ID kopieren",
+      "copyBlueprintId": "Blueprint-ID kopieren",
       "createNew": "Blueprint erstellen",
       "custom": "Custom",
       "defaultValue": "Defaultwert",
-      "deleteTemplateQuestion": "Blueprint ''{name}'' unwiderruflich löschen?",
+      "deleteBlueprintQuestion": "Blueprint ''{name}'' unwiderruflich löschen?",
       "displayName": "Anzeigename",
-      "emptyCustom": "Leer (Custom)",
-      "emptyCustomDescription": "Basiert auf keinem standardisierten Template",
+      "emptyTemplate": "Leer (Custom)",
+      "emptyTemplateDescription": "Basiert auf keinem standardisierten Template",
       "errors": {
         "unknownModelType": "Unbekannter ModelType: {type}"
       },
@@ -539,11 +539,11 @@
       },
       "multiplicity": "Multiplizität",
       "multiplicityDescription": "Parameter, mit dem Sie festlegen können, welche Elemente verpflichtend sind.",
-      "noTemplatesFound": "Keine Blueprints gefunden",
-      "templateDeletedSuccessfully": "Blueprint erfolgreich gelöscht.",
-      "fetchDefaultsWarning": "Keine Templates verfügbar. Es werden nur Blueprints angezeigt.",
-      "templateIdCopied": "Blueprint-ID in die Zwischenablage kopiert: {id}",
-      "templatesUseExplanation": "Blueprints erlauben es Ihnen, eine wiederverwendbare Teilmodell-Struktur, angepasst auf Ihre Bedürfnisse, zu definieren.",
+      "noBlueprintsFound": "Keine Blueprints gefunden",
+      "blueprintDeletedSuccessfully": "Blueprint erfolgreich gelöscht.",
+      "noTemplatesWarning": "Keine Templates verfügbar. Es werden nur Blueprints angezeigt.",
+      "blueprintIdCopied": "Blueprint-ID in die Zwischenablage kopiert: {id}",
+      "blueprintUseExplanation": "Blueprints erlauben es Ihnen, eine wiederverwendbare Teilmodell-Struktur, angepasst auf Ihre Bedürfnisse, zu definieren.",
       "title": "Templates & Blueprints",
       "validation": {
         "errors": {

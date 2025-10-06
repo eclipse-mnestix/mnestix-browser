@@ -513,14 +513,14 @@
         "true": "verdadero"
       },
       "chooseAStartingPoint": "Elige una template como punto de inicio",
-      "copyTemplateId": "Copiar ID de la blueprint",
+      "copyBlueprintId": "Copiar ID de la blueprint",
       "createNew": "Crear blueprint",
       "custom": "A medida",
       "defaultValue": "Valor predeterminado",
-      "deleteTemplateQuestion": "Desea eliminar la blueprint ''{name}'' definitivamente?",
+      "deleteBlueprintQuestion": "Desea eliminar la blueprint ''{name}'' definitivamente?",
       "displayName": "Nombre a mostrar",
-      "emptyCustom": "Vacío (A medida)",
-      "emptyCustomDescription": "No basada en una template estandarizada",
+      "emptyTemplate": "Vacío (A medida)",
+      "emptyTemplateDescription": "No basada en una template estandarizada",
       "errors": {
         "unknownModelType": "ModelType desconocido: {type}"
       },
@@ -539,11 +539,11 @@
       },
       "multiplicity": "Multiplicidad",
       "multiplicityDescription": "Clasificador para identificar elementos obligatorios.",
-      "noTemplatesFound": "No se encontraron blueprints",
-      "templateDeletedSuccessfully": "Blueprint eliminada correctamente",
-      "fetchDefaultsWarning": "No hay templates disponibles. Solo se muestran blueprints.",
-      "templateIdCopied": "ID de la blueprint copiado al portapapeles: {id}",
-      "templatesUseExplanation": "Las blueprints le permiten crear estructuras de submodel reutilizables y ajustadas a sus requisitos.",
+      "noBlueprintsFound": "No se encontraron blueprints",
+      "blueprintDeletedSuccessfully": "Blueprint eliminada correctamente",
+      "noTemplatesWarning": "No hay templates disponibles. Solo se muestran blueprints.",
+      "blueprintIdCopied": "ID de la blueprint copiado al portapapeles: {id}",
+      "blueprintUseExplanation": "Las blueprints le permiten crear estructuras de submodel reutilizables y ajustadas a sus requisitos.",
       "title": "Templates & Blueprints",
       "validation": {
         "errors": {

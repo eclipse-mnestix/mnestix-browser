@@ -55,7 +55,7 @@ export default function Page() {
         const _templates = await getTemplates();
         if (!_templates.result?.length) {
             notificationSpawner.spawn({
-                message: t('fetchDefaultsWarning'),
+                message: t('noTemplatesWarning'),
                 severity: 'warning',
             });
         } else {
@@ -210,7 +210,7 @@ export default function Page() {
         try {
             await deleteBlueprintById(item.id);
             notificationSpawner.spawn({
-                message: t('templateDeletedSuccessfully'),
+                message: t('blueprintDeletedSuccessfully'),
                 severity: 'success',
             });
             await fetchBlueprints(templateItems);
@@ -274,11 +274,11 @@ export default function Page() {
                         {filteredBlueprintItems?.length === 0 && !isLoading && (
                             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', m: 2 }}>
                                 <Typography align="center" variant="h3" color="text.secondary">
-                                    {t('noTemplatesFound')}
+                                    {t('noBlueprintsFound')}
                                 </Typography>
                                 <TemplatesInfoGraphic style={{ display: 'block', maxWidth: '250px' }} />
                                 <Typography sx={{ maxWidth: '350px' }} align="center" color="text.secondary">
-                                    {t('templatesUseExplanation')}
+                                    {t('blueprintUseExplanation')}
                                 </Typography>
                             </Box>
                         )}

@@ -60,8 +60,8 @@ export function ChooseTemplateDialog(props: ChooseTemplateDialogProps) {
                     })}
                     <ChooseTemplateItem
                         data-testid="choose-template-item-empty"
-                        label={t('emptyCustom')}
-                        subLabel={t('emptyCustomDescription')}
+                        label={t('emptyTemplate')}
+                        subLabel={t('emptyTemplateDescription')}
                         hasDivider={false}
                         onClick={() => handleTemplateClick && handleTemplateClick()}
                     />

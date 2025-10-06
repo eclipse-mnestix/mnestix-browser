@@ -11,7 +11,7 @@ export function BlueprintDeleteDialog(props: BlueprintDeleteDialogProps) {
     return (
         <Dialog open={props.open} onClose={props.onClose}>
             <DialogContent>
-                <DialogContentText>{t('deleteTemplateQuestion', { name: props.itemName ?? '' })}</DialogContentText>
+                <DialogContentText>{t('deleteBlueprintQuestion', { name: props.itemName ?? '' })}</DialogContentText>
             </DialogContent>
             <DialogActions>
                 <Button onClick={(e) => props.onClose && props.onClose(e, 'escapeKeyDown')} autoFocus>

@@ -170,7 +170,7 @@ export default function Page() {
         try {
             await deleteBlueprintById(id);
             notificationSpawner.spawn({
-                message: t('templateDeletedSuccessfully'),
+                message: t('blueprintDeletedSuccessfully'),
                 severity: 'success',
             });
             navigate.push('/templates');
@@ -371,13 +371,13 @@ export default function Page() {
                                 onClick={() => {
                                     navigator.clipboard.writeText(id || '');
                                     notificationSpawner.spawn({
-                                        message: t('templateIdCopied', { id }),
+                                        message: t('blueprintIdCopied', { id }),
                                         severity: 'success',
                                     });
                                 }}
                                 style={{ marginRight: '1rem' }}
                             >
-                                {t('copyTemplateId')}
+                                {t('copyBlueprintId')}
                             </Button>
                             <Button
                                 variant="contained"
