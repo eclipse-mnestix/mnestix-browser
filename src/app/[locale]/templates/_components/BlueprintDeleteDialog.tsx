@@ -1,12 +1,12 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogProps } from '@mui/material';
 import { useTranslations } from 'next-intl';
 
-interface TemplateDeleteDialogProps extends DialogProps {
+interface BlueprintDeleteDialogProps extends DialogProps {
     itemName?: string;
     onDelete: () => void;
 }
 
-export function TemplateDeleteDialog(props: TemplateDeleteDialogProps) {
+export function BlueprintDeleteDialog(props: BlueprintDeleteDialogProps) {
     const t = useTranslations('pages.templates');
     return (
         <Dialog open={props.open} onClose={props.onClose}>

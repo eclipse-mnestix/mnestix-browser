@@ -36,7 +36,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import { updateCustomSubmodelTemplate } from 'lib/services/templateApiWithAuthActions';
 import { deleteCustomTemplateById, getCustomTemplateById, getDefaultTemplates } from 'lib/services/templatesApiActions';
-import { TemplateDeleteDialog } from 'app/[locale]/templates/_components/TemplateDeleteDialog';
+import { BlueprintDeleteDialog } from 'app/[locale]/templates/_components/BlueprintDeleteDialog';
 import { clone } from 'lodash';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useLocale, useTranslations } from 'next-intl';
@@ -439,7 +439,7 @@ export default function Page() {
                         )}
                     </Box>
                 </Paper>
-                <TemplateDeleteDialog
+                <BlueprintDeleteDialog
                     open={deleteDialogOpen}
                     onClose={closeDialog}
                     onDelete={() => deleteTemplate()}

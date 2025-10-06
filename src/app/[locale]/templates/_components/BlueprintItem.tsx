@@ -3,7 +3,7 @@ import { Box, Divider, IconButton, ListItemIcon, Menu, MenuItem, styled, Typogra
 import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
 import { TemplateIcon } from 'components/custom-icons/TemplateIcon';
 import React, { useState } from 'react';
-import { TemplateDeleteDialog } from './TemplateDeleteDialog';
+import { BlueprintDeleteDialog } from 'app/[locale]/templates/_components/BlueprintDeleteDialog';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
@@ -120,7 +120,7 @@ export function BlueprintItem(props: BlueprintItemProps) {
                 </Menu>
             </StyledBlueprintItem>
             {props.hasDivider !== false && <Divider />}
-            <TemplateDeleteDialog
+            <BlueprintDeleteDialog
                 open={deleteDialogOpen}
                 onClose={closeDialog}
                 onDelete={deleteBlueprint}
