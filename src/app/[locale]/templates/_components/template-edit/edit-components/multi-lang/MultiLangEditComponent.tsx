@@ -1,7 +1,7 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Autocomplete, Box, Button, IconButton, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { TemplateEditSectionHeading } from '../../TemplateEditSectionHeading';
+import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/template-edit/BlueprintEditSectionHeading';
 import options from './language-suggestions.json';
 import { useTranslations } from 'next-intl';
 import { LangStringTextType, MultiLanguageProperty } from 'lib/api/aas/models';
@@ -57,7 +57,7 @@ export function MultiLangEditComponent(props: MultiLangEditComponentProps) {
 
     return (
         <>
-            <TemplateEditSectionHeading type="defaultValue" />
+            <BlueprintEditSectionHeading type="defaultValue" />
             {Array.isArray(langStrings) &&
                 langStrings.map((langString, i) => (
                     <Box display="flex" alignContent="center" sx={{ mb: 1 }} key={i + '-' + langStrings.length}>

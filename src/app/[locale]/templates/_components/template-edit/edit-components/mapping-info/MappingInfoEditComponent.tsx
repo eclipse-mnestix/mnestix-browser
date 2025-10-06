@@ -2,7 +2,7 @@ import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Box, Button, IconButton, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { MappingInfoData } from 'lib/types/MappingInfoData';
-import { TemplateEditSectionHeading } from '../../TemplateEditSectionHeading';
+import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/template-edit/BlueprintEditSectionHeading';
 import mappingInfoDataJson from './mapping-info-data.json';
 import { useTranslations } from 'next-intl';
 import { Qualifier, Submodel, SubmodelElementChoice } from 'lib/api/aas/models';
@@ -70,7 +70,7 @@ export function MappingInfoEditComponent(props: MappingInfoEditComponentProps) {
 
     return (
         <>
-            <TemplateEditSectionHeading type="mappingInfo" />
+            <BlueprintEditSectionHeading type="mappingInfo" />
             {valueEnabled && mappingInfo ? (
                 <Box display="flex" alignContent="center">
                     <TextField

@@ -1,6 +1,6 @@
 import { Box, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { TemplateEditSectionHeading } from '../TemplateEditSectionHeading';
+import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/template-edit/BlueprintEditSectionHeading';
 import { useTranslations } from 'next-intl';
 import { Qualifier, Submodel } from 'lib/api/aas/models';
 
@@ -37,7 +37,7 @@ export function SubmodelEditComponent(props: SubmodelEditComponentProps) {
 
     return (
         <>
-            <TemplateEditSectionHeading type="displayName" />
+            <BlueprintEditSectionHeading type="displayName" />
             <Box display="flex" alignContent="center">
                 <TextField
                     defaultValue={getDisplayName()}

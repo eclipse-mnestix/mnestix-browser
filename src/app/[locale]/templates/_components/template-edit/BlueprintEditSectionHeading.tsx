@@ -6,7 +6,7 @@ type TemplateEditSectionHeadingProps = {
     readonly type: 'defaultValue' | 'displayName' | 'mappingInfo' | 'multiplicity';
 };
 
-export function TemplateEditSectionHeading(props: TemplateEditSectionHeadingProps) {
+export function BlueprintEditSectionHeading(props: TemplateEditSectionHeadingProps) {
     const t = useTranslations('pages.templates');
     const getIcon = () => {
         switch (props.type) {

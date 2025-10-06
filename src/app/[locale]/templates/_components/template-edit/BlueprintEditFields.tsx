@@ -19,7 +19,7 @@ import { SubmodelEditComponent } from './edit-components/SubmodelEditComponent';
 import { FileEditComponent } from './edit-components/file/FileEditComponent';
 import { useTranslations } from 'next-intl';
 
-export type TemplateEditFieldsProps = {
+export type BlueprintEditFieldsProps = {
     templatePart?: SubmodelViewObject;
     onTemplatePartChange?: (newTemplatePart: SubmodelViewObject) => void;
     updateTemplatePart?: (
@@ -29,7 +29,7 @@ export type TemplateEditFieldsProps = {
     isCustomTemplate?: boolean | undefined;
 };
 
-export function TemplateEditFields(props: TemplateEditFieldsProps) {
+export function BlueprintEditFields(props: BlueprintEditFieldsProps) {
     const [templatePart, setTemplatePart] = useState(props.templatePart);
     const t = useTranslations('pages.templates');
 

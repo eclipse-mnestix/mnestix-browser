@@ -26,7 +26,10 @@ import {
     splitIdIntoArray,
     updateNodeIds,
 } from 'lib/util/submodelHelpers/SubmodelViewObjectUtil';
-import { TemplateEditFields, TemplateEditFieldsProps } from '../_components/template-edit/TemplateEditFields';
+import {
+    BlueprintEditFields,
+    BlueprintEditFieldsProps,
+} from 'app/[locale]/templates/_components/template-edit/BlueprintEditFields';
 import { useAuth } from 'lib/hooks/UseAuth';
 import cloneDeep from 'lodash/cloneDeep';
 import { Qualifier, Submodel, SubmodelElementChoice, SubmodelElementCollection } from 'lib/api/aas/models';
@@ -53,7 +56,7 @@ export default function Page() {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const menuOpen = Boolean(anchorEl);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-    const [editFieldsProps, setEditFieldsProps] = useState<TemplateEditFieldsProps>();
+    const [editFieldsProps, setEditFieldsProps] = useState<BlueprintEditFieldsProps>();
     const navigate = useRouter();
     const auth = useAuth();
     const bearerToken = auth.getBearerToken();
@@ -432,7 +435,7 @@ export default function Page() {
                                 <Skeleton variant="text" width="50%" />
                             </>
                         ) : (
-                            <TemplateEditFields
+                            <BlueprintEditFields
                                 {...editFieldsProps}
                                 isCustomTemplate={isCustomTemplate(localFrontendTemplate)}
                             />
