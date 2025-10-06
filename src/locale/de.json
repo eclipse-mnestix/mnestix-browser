@@ -507,7 +507,7 @@
         "revertChanges": "Änderungen zurücksetzen",
         "saveChanges": "Änderungen speichern"
       },
-      "all": "Alle Templates",
+      "all": "Alle",
       "boolean": {
         "false": "falsch",
         "true": "wahr"
@@ -515,7 +515,7 @@
       "chooseAStartingPoint": "Wählen Sie ein Template als Ausgangspunkt",
       "copyTemplateId": "Blueprint-ID kopieren",
       "createNew": "Blueprint erstellen",
-      "custom": "Custom Templates",
+      "custom": "Custom",
       "defaultValue": "Defaultwert",
       "deleteTemplateQuestion": "Blueprint ''{name}'' unwiderruflich löschen?",
       "displayName": "Anzeigename",
@@ -541,7 +541,7 @@
       "multiplicityDescription": "Parameter, mit dem Sie festlegen können, welche Elemente verpflichtend sind.",
       "noTemplatesFound": "Keine Blueprints gefunden",
       "templateDeletedSuccessfully": "Blueprint erfolgreich gelöscht.",
-      "fetchDefaultsWarning": "Keine Standardvorlagen verfügbar. Es werden nur Custom Templates angezeigt.",
+      "fetchDefaultsWarning": "Keine Templates verfügbar. Es werden nur Blueprints angezeigt.",
       "templateIdCopied": "Blueprint-ID in die Zwischenablage kopiert: {id}",
       "templatesUseExplanation": "Blueprints erlauben es Ihnen, eine wiederverwendbare Teilmodell-Struktur, angepasst auf Ihre Bedürfnisse, zu definieren.",
       "title": "Templates & Blueprints",

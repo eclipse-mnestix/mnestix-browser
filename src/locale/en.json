@@ -507,7 +507,7 @@
         "revertChanges": "Revert changes",
         "saveChanges": "Save changes"
       },
-      "all": "All templates",
+      "all": "All",
       "boolean": {
         "false": "false",
         "true": "true"
@@ -515,7 +515,7 @@
       "chooseAStartingPoint": "Choose a template as starting point",
       "copyTemplateId": "Copy blueprint ID",
       "createNew": "New blueprint",
-      "custom": "Custom templates",
+      "custom": "Custom",
       "defaultValue": "Default value",
       "deleteTemplateQuestion": "Delete blueprint ''{name}'' irretrievably?",
       "displayName": "Display name",
@@ -541,7 +541,7 @@
       "multiplicityDescription": "A qualifier used to identify obligatory elements.",
       "noTemplatesFound": "No blueprints found",
       "templateDeletedSuccessfully": "Blueprint deleted successfully",
-      "fetchDefaultsWarning": "No default templates available. Showing only custom templates.",
+      "fetchDefaultsWarning": "No templates available. Showing only blueprints.",
       "templateIdCopied": "Blueprint ID copied to clipboard: {id}",
       "templatesUseExplanation": "Blueprints allow you to create a reusable submodel structure, adjusted to your requirements.",
       "title": "Templates & Blueprints",

@@ -507,7 +507,7 @@
         "revertChanges": "Revertir cambios",
         "saveChanges": "Guardar cambios"
       },
-      "all": "Todos templates",
+      "all": "Todos",
       "boolean": {
         "false": "falso",
         "true": "verdadero"
@@ -515,7 +515,7 @@
       "chooseAStartingPoint": "Elige una template como punto de inicio",
       "copyTemplateId": "Copiar ID de la blueprint",
       "createNew": "Crear blueprint",
-      "custom": "A medida templates",
+      "custom": "A medida",
       "defaultValue": "Valor predeterminado",
       "deleteTemplateQuestion": "Desea eliminar la blueprint ''{name}'' definitivamente?",
       "displayName": "Nombre a mostrar",
@@ -541,7 +541,7 @@
       "multiplicityDescription": "Clasificador para identificar elementos obligatorios.",
       "noTemplatesFound": "No se encontraron blueprints",
       "templateDeletedSuccessfully": "Blueprint eliminada correctamente",
-      "fetchDefaultsWarning": "No hay plantillas predeterminadas disponibles. Solo se muestran plantillas personalizadas.",
+      "fetchDefaultsWarning": "No hay templates disponibles. Solo se muestran blueprints.",
       "templateIdCopied": "ID de la blueprint copiado al portapapeles: {id}",
       "templatesUseExplanation": "Las blueprints le permiten crear estructuras de submodel reutilizables y ajustadas a sus requisitos.",
       "title": "Templates & Blueprints",
