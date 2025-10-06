@@ -185,7 +185,7 @@
       "logout": "Logout",
       "repository": "Repository",
       "settings": "Settings",
-      "templates": "Templates"
+      "templates": "Templates & Blueprints"
     }
   },
   "pages": {
@@ -507,17 +507,17 @@
         "revertChanges": "Revert changes",
         "saveChanges": "Save changes"
       },
-      "all": "All",
+      "all": "All templates",
       "boolean": {
         "false": "false",
         "true": "true"
       },
       "chooseAStartingPoint": "Choose a template as starting point",
-      "copyTemplateId": "Copy template ID",
-      "createNew": "Create new",
-      "custom": "Custom",
+      "copyTemplateId": "Copy blueprint ID",
+      "createNew": "New blueprint",
+      "custom": "Custom templates",
       "defaultValue": "Default value",
-      "deleteTemplateQuestion": "Delete template ''{name}'' irretrievably?",
+      "deleteTemplateQuestion": "Delete blueprint ''{name}'' irretrievably?",
       "displayName": "Display name",
       "emptyCustom": "Empty (Custom)",
       "emptyCustomDescription": "Is not based upon a standardized template",
@@ -539,11 +539,11 @@
       },
       "multiplicity": "Multiplicity",
       "multiplicityDescription": "A qualifier used to identify obligatory elements.",
-      "noTemplatesFound": "No templates found",
-      "templateDeletedSuccessfully": "Template deleted successfully",
-      "templateIdCopied": "Template ID copied to clipboard: {id}",
-      "templatesUseExplanation": "Templates allow you to create a reusable submodel structure, adjusted to your requirements.",
-      "title": "Templates",
+      "noTemplatesFound": "No blueprints found",
+      "templateDeletedSuccessfully": "Blueprint deleted successfully",
+      "templateIdCopied": "Blueprint ID copied to clipboard: {id}",
+      "templatesUseExplanation": "Blueprints allow you to create a reusable submodel structure, adjusted to your requirements.",
+      "title": "Templates & Blueprints",
       "validation": {
         "errors": {
           "invalidDate": "Has to be a valid date in format ''yyyy-mm-dd''",

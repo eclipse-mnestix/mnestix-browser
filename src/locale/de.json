@@ -185,7 +185,7 @@
       "logout": "Abmelden",
       "repository": "Repository",
       "settings": "Einstellungen",
-      "templates": "Templates"
+      "templates": "Templates & Blueprints"
     }
   },
   "pages": {
@@ -507,17 +507,17 @@
         "revertChanges": "Änderungen zurücksetzen",
         "saveChanges": "Änderungen speichern"
       },
-      "all": "Alle",
+      "all": "Alle Templates",
       "boolean": {
         "false": "falsch",
         "true": "wahr"
       },
       "chooseAStartingPoint": "Wählen Sie ein Template als Ausgangspunkt",
-      "copyTemplateId": "Template-ID kopieren",
-      "createNew": "Neu erstellen",
-      "custom": "Custom",
+      "copyTemplateId": "Blueprint-ID kopieren",
+      "createNew": "Blueprint erstellen",
+      "custom": "Custom Templates",
       "defaultValue": "Defaultwert",
-      "deleteTemplateQuestion": "Template ''{name}'' unwiderruflich löschen?",
+      "deleteTemplateQuestion": "Blueprint ''{name}'' unwiderruflich löschen?",
       "displayName": "Anzeigename",
       "emptyCustom": "Leer (Custom)",
       "emptyCustomDescription": "Basiert auf keinem standardisierten Template",
@@ -539,11 +539,11 @@
       },
       "multiplicity": "Multiplizität",
       "multiplicityDescription": "Parameter, mit dem Sie festlegen können, welche Elemente verpflichtend sind.",
-      "noTemplatesFound": "Keine Templates gefunden",
-      "templateDeletedSuccessfully": "Template erfolgreich gelöscht.",
-      "templateIdCopied": "Template-ID in die Zwischenablage kopiert: {id}",
-      "templatesUseExplanation": "Templates erlauben es Ihnen, eine wiederverwendbare Teilmodell-Struktur, angepasst auf Ihre Bedürfnisse, zu definieren.",
-      "title": "Templates",
+      "noTemplatesFound": "Keine Blueprints gefunden",
+      "templateDeletedSuccessfully": "Blueprint erfolgreich gelöscht.",
+      "templateIdCopied": "Blueprint-ID in die Zwischenablage kopiert: {id}",
+      "templatesUseExplanation": "Blueprints erlauben es Ihnen, eine wiederverwendbare Teilmodell-Struktur, angepasst auf Ihre Bedürfnisse, zu definieren.",
+      "title": "Templates & Blueprints",
       "validation": {
         "errors": {
           "invalidDate": "Muss ein gültiges Datum sein, im Format ''yyyy-mm-dd''",
