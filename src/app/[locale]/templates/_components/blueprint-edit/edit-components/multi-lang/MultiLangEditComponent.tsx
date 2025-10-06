@@ -1,7 +1,7 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Autocomplete, Box, Button, IconButton, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/template-edit/BlueprintEditSectionHeading';
+import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
 import options from './language-suggestions.json';
 import { useTranslations } from 'next-intl';
 import { LangStringTextType, MultiLanguageProperty } from 'lib/api/aas/models';

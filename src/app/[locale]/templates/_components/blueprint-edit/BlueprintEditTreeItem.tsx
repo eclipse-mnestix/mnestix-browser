@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import { Box, styled } from '@mui/material';
 import { TextSnippet } from '@mui/icons-material';
 import { MultiplicityEnum } from 'lib/enums/Multiplicity.enum';
-import { BlueprintEditTreeItemMenu } from 'app/[locale]/templates/_components/template-edit/BlueprintEditTreeItemMenu';
+import { BlueprintEditTreeItemMenu } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditTreeItemMenu';
 import { useTranslations } from 'next-intl';
 import { useTreeItem, UseTreeItemParameters } from '@mui/x-tree-view/useTreeItem';
 import {

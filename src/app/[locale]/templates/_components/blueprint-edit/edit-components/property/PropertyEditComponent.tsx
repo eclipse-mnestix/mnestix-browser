@@ -1,7 +1,7 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Box, Button, IconButton } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/template-edit/BlueprintEditSectionHeading';
+import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
 import { BooleanPropertyEditComponent } from './data-specific/BooleanPropertyEditComponent';
 import { StringPropertyEditComponent } from './data-specific/StringPropertyEditComponent';
 import { DatePropertyEditComponent } from './data-specific/DatePropertyEditComponent';

@@ -1,7 +1,7 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select } from '@mui/material';
 import { useState } from 'react';
-import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/template-edit/BlueprintEditSectionHeading';
+import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
 import multiplicityDataJson from './multiplicity-data.json';
 import { MultiplicityEnum } from 'lib/enums/Multiplicity.enum';
 import { MultiplicityData } from 'lib/types/MultiplicityData';

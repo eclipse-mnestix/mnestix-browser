@@ -16,7 +16,7 @@ import {
     Typography,
 } from '@mui/material';
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
-import { BlueprintEditTree } from 'app/[locale]/templates/_components/template-edit/BlueprintEditTree';
+import { BlueprintEditTree } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditTree';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import React, { useEffect, useState } from 'react';
 import {
@@ -29,7 +29,7 @@ import {
 import {
     BlueprintEditFields,
     BlueprintEditFieldsProps,
-} from 'app/[locale]/templates/_components/template-edit/BlueprintEditFields';
+} from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditFields';
 import { useAuth } from 'lib/hooks/UseAuth';
 import cloneDeep from 'lodash/cloneDeep';
 import { Qualifier, Submodel, SubmodelElementChoice, SubmodelElementCollection } from 'lib/api/aas/models';

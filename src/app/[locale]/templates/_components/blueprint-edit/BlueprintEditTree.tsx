@@ -8,7 +8,7 @@ import {
     updateNodeIds,
     viewObjectHasDataValue,
 } from 'lib/util/submodelHelpers/SubmodelViewObjectUtil';
-import { BlueprintEditTreeItem } from 'app/[locale]/templates/_components/template-edit/BlueprintEditTreeItem';
+import { BlueprintEditTreeItem } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditTreeItem';
 import multiplicityData from './edit-components/multiplicity/multiplicity-data.json';
 import cloneDeep from 'lodash/cloneDeep';
 import { Qualifier } from 'lib/api/aas/models';

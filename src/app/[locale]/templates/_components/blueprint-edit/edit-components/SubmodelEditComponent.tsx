@@ -1,6 +1,6 @@
 import { Box, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/template-edit/BlueprintEditSectionHeading';
+import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
 import { useTranslations } from 'next-intl';
 import { Qualifier, Submodel } from 'lib/api/aas/models';
 
