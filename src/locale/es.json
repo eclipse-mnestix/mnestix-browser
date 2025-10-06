@@ -23,6 +23,7 @@
     "authentication": {
       "authenticationNeeded": "Es necesario identificarse",
       "contactAdmin": "No es posible acceder a esta página. Por favor, contacte al administrador.",
+      "nonDefaultRepositoryInfo": "Ponte en contacto con tu administrador del sistema para actualizar la autenticación de la infraestructura.",
       "sessionExpired": "La sesión ha caducado. Por favor, inicie sesión de nuevo."
     },
     "carbonFootprint": {
@@ -208,7 +209,7 @@
       },
       "maxElementsWarning": "No se pueden comparar más de 3 elementos",
       "page": "Página",
-      "repositoryDropdown": "AAS repository",
+      "infrastructureDropdownLabel": "Infraestructura",
       "selectRepository": "Por favor, seleccione un repositorio",
       "subHeader": "Todos los AAS de su repositorio se muestran aquí. Puede seleccionar otro repositorio para cambiar la fuente de los datos.",
       "titleComparisonAddButton": "Añadir AAS a la comparación"

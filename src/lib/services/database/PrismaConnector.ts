@@ -111,6 +111,7 @@ export class PrismaConnector implements IPrismaConnector {
             id: item.id,
             infrastructureName: item.infrastructure?.name ?? '',
             url: item.url,
+            isDefault: false,
         }));
     }
 

@@ -47,20 +47,20 @@ export function SelectRepository(props: {
             ) : (
                 <FormControl variant="standard" sx={{ minWidth: 200, maxWidth: 300 }}>
                     <InputLabel id="aas-repository-select" sx={{ color: 'text.secondary' }}>
-                        {t('repositoryDropdown')}
+                        {t('infrastructureDropdownLabel')}
                     </InputLabel>
                     <Select
                         data-testid="repository-select"
                         labelId="aas-repository-select"
                         variant="standard"
                         value={selectedRepository}
-                        label={t('repositoryDropdown')}
+                        label={t('infrastructureDropdownLabel')}
                         onChange={onRepositoryChanged}
                     >
                         {aasRepositories.map((repo, index) => {
                             return (
                                 <MenuItem key={index} value={repo.id} data-testid={`repository-select-item-${index}`}>
-                                    {repo.url}
+                                    {repo.infrastructureName}
                                 </MenuItem>
                             );
                         })}

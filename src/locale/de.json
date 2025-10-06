@@ -23,6 +23,7 @@
     "authentication": {
       "authenticationNeeded": "Authentifizierung erforderlich",
       "contactAdmin": "Sie können diese Seite nicht besuchen. Bitte wenden Sie sich an Ihren Administrator.",
+      "nonDefaultRepositoryInfo": "Bitte wenden Sie sich an Ihre Systemadministratorin oder Ihren Systemadministrator, um die Infrastruktur-Authentifizierung zu aktualisieren.",
       "sessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an."
     },
     "carbonFootprint": {
@@ -208,7 +209,7 @@
       },
       "maxElementsWarning": "Maximal 3 Elemente selektierbar",
       "page": "Seite",
-      "repositoryDropdown": "AAS Repository",
+      "infrastructureDropdownLabel": "Infrastruktur",
       "selectRepository": "Bitte wählen Sie ein Repository aus",
       "subHeader": "Hier finden Sie alle AAS aus Ihrem Repository. Sie können ein AAS-Repository auswählen, um zwischen den Datenquellen zu wechseln.",
       "titleComparisonAddButton": "AAS zum Vergleich hinzufügen"
