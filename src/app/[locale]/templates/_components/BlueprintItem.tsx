@@ -7,20 +7,20 @@ import { TemplateDeleteDialog } from './TemplateDeleteDialog';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-export type CustomTemplateItemType = {
+export type BlueprintItemType = {
     id?: string;
     displayName?: string;
     basedOnTemplate?: string;
     basedOnTemplateId?: string;
 };
 
-interface CustomTemplateItemProps {
-    item: CustomTemplateItemType;
+interface BlueprintItemProps {
+    item: BlueprintItemType;
     hasDivider?: boolean;
     onDelete?: () => void;
 }
 
-const StyledCustomTemplateItem = styled(Box)(({ theme }) => ({
+const StyledBlueprintItem = styled(Box)(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     padding: theme.spacing(2),
@@ -39,7 +39,7 @@ const StyledCustomTemplateItem = styled(Box)(({ theme }) => ({
     },
 }));
 
-export function CustomTemplateItem(props: CustomTemplateItemProps) {
+export function BlueprintItem(props: BlueprintItemProps) {
     const navigate = useRouter();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -59,7 +59,7 @@ export function CustomTemplateItem(props: CustomTemplateItemProps) {
 
     const handleEditClick = (event: React.MouseEvent<HTMLElement>) => {
         handleMenuClose(event);
-        navigateToTemplate();
+        navigateToBlueprint();
     };
 
     const handleDeleteClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -75,21 +75,21 @@ export function CustomTemplateItem(props: CustomTemplateItemProps) {
         setDeleteDialogOpen(false);
     };
 
-    const deleteTemplate = () => {
+    const deleteBlueprint = () => {
         closeDialog();
         if (props.onDelete) {
             props.onDelete();
         }
     };
 
-    const navigateToTemplate = () => {
+    const navigateToBlueprint = () => {
         if (props.item.id) {
             navigate.push(`/templates/${encodeURIComponent(props.item.id)}`);
         }
     };
     return (
         <>
-            <StyledCustomTemplateItem onClick={navigateToTemplate} className={menuOpen ? 'active' : ''}>
+            <StyledBlueprintItem onClick={navigateToBlueprint} className={menuOpen ? 'active' : ''}>
                 <Box sx={{ mr: 2 }}>
                     <IconCircleWrapper>
                         <TemplateIcon fontSize="small" />
@@ -118,12 +118,12 @@ export function CustomTemplateItem(props: CustomTemplateItemProps) {
                         {t('actions.delete')}
                     </MenuItem>
                 </Menu>
-            </StyledCustomTemplateItem>
+            </StyledBlueprintItem>
             {props.hasDivider !== false && <Divider />}
             <TemplateDeleteDialog
                 open={deleteDialogOpen}
                 onClose={closeDialog}
-                onDelete={deleteTemplate}
+                onDelete={deleteBlueprint}
                 itemName={props.item.displayName}
             />
         </>

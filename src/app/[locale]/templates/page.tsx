@@ -6,7 +6,7 @@ import { Box, Button, Divider, Paper, Skeleton, Typography } from '@mui/material
 import { TabSelectorItem, VerticalTabSelector } from 'components/basics/VerticalTabSelector';
 import { ViewHeading } from 'components/basics/ViewHeading';
 import { ChooseTemplateDialog } from './_components/ChooseTemplateDialog';
-import { CustomTemplateItem, CustomTemplateItemType } from './_components/CustomTemplateItem';
+import { BlueprintItem, BlueprintItemType } from 'app/[locale]/templates/_components/BlueprintItem';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { useState } from 'react';
 import { useShowError } from 'lib/hooks/UseShowError';
@@ -35,8 +35,8 @@ export default function Page() {
     const notificationSpawner = useNotificationSpawner();
     const [defaults, setDefaults] = useState<Submodel[]>();
     const [defaultItems, setDefaultItems] = useState<Array<TabSelectorItem>>([]);
-    const [customItems, setCustomItems] = useState<Array<CustomTemplateItemType>>([]);
-    const [filteredCustomItems, setFilteredCustomItems] = useState<Array<CustomTemplateItemType>>();
+    const [customItems, setCustomItems] = useState<Array<BlueprintItemType>>([]);
+    const [filteredCustomItems, setFilteredCustomItems] = useState<Array<BlueprintItemType>>();
     const [selectedEntry, setSelectedEntry] = useState<TabSelectorItem>({
         id: SpecialDefaultTabIds.All,
         label: t('all'),
@@ -94,7 +94,7 @@ export default function Page() {
     };
 
     const fetchCustoms = async (_defaultItems: Array<TabSelectorItem>) => {
-        const _customTemplateItems: CustomTemplateItemType[] = [];
+        const _customTemplateItems: BlueprintItemType[] = [];
         const customs = (await getCustomTemplates()).result as Submodel[];
         if (!customs?.length) {
             notificationSpawner.spawn({
@@ -135,7 +135,7 @@ export default function Page() {
                 id,
             });
         });
-        _customTemplateItems.sort((a: CustomTemplateItemType, b: CustomTemplateItemType) =>
+        _customTemplateItems.sort((a: BlueprintItemType, b: BlueprintItemType) =>
             sortWithNullableValues(a.displayName, b.displayName),
         );
         setCustomItems(_customTemplateItems);
@@ -203,7 +203,7 @@ export default function Page() {
         }
     };
 
-    const deleteTemplate = async (item: CustomTemplateItemType) => {
+    const deleteTemplate = async (item: BlueprintItemType) => {
         if (!item.id) return;
         try {
             await deleteCustomTemplateById(item.id);
@@ -261,7 +261,7 @@ export default function Page() {
                             !isLoading &&
                             filteredCustomItems.map((item, index) => {
                                 return (
-                                    <CustomTemplateItem
+                                    <BlueprintItem
                                         key={index}
                                         item={item}
                                         hasDivider={index + 1 < filteredCustomItems.length}
