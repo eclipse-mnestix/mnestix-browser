@@ -20,22 +20,22 @@ import { FileEditComponent } from './edit-components/file/FileEditComponent';
 import { useTranslations } from 'next-intl';
 
 export type BlueprintEditFieldsProps = {
-    templatePart?: SubmodelViewObject;
-    onTemplatePartChange?: (newTemplatePart: SubmodelViewObject) => void;
-    updateTemplatePart?: (
-        newTemplatePart: SubmodelViewObject,
-        newOnTemplatePartChange: (newTemplatePart: SubmodelViewObject) => void,
+    blueprintPart?: SubmodelViewObject;
+    onBlueprintPartChange?: (newBlueprintPart: SubmodelViewObject) => void;
+    updateBlueprintPart?: (
+        newBlueprintPart: SubmodelViewObject,
+        newOnBlueprintPartChange: (newBlueprintPart: SubmodelViewObject) => void,
     ) => void;
     isCustomTemplate?: boolean | undefined;
 };
 
 export function BlueprintEditFields(props: BlueprintEditFieldsProps) {
-    const [templatePart, setTemplatePart] = useState(props.templatePart);
+    const [templatePart, setTemplatePart] = useState(props.blueprintPart);
     const t = useTranslations('pages.templates');
 
     useEffect(() => {
-        setTemplatePart(props.templatePart);
-    }, [props.templatePart]);
+        setTemplatePart(props.blueprintPart);
+    }, [props.blueprintPart]);
 
     const debouncedOnTemplateDataChange = debounce((data: Submodel | SubmodelElementChoice) => {
         onTemplateDataChange(data);
@@ -46,12 +46,12 @@ export function BlueprintEditFields(props: BlueprintEditFieldsProps) {
     }, [debouncedOnTemplateDataChange]);
 
     function onTemplateDataChange(data: Submodel | SubmodelElementChoice) {
-        if (templatePart && props.onTemplatePartChange) {
-            props.onTemplatePartChange({ ...templatePart, data });
+        if (templatePart && props.onBlueprintPartChange) {
+            props.onBlueprintPartChange({ ...templatePart, data });
         }
         // keep template part input up to date, when not triggered by tree selection change
-        if (templatePart && props.updateTemplatePart && props.onTemplatePartChange) {
-            props.updateTemplatePart({ ...templatePart, data }, props.onTemplatePartChange);
+        if (templatePart && props.updateBlueprintPart && props.onBlueprintPartChange) {
+            props.updateBlueprintPart({ ...templatePart, data }, props.onBlueprintPartChange);
         }
     }
 
@@ -64,28 +64,28 @@ export function BlueprintEditFields(props: BlueprintEditFieldsProps) {
             case KeyTypes.Submodel:
                 return (
                     <SubmodelEditComponent
-                        data={props.templatePart?.data as Submodel}
+                        data={props.blueprintPart?.data as Submodel}
                         onChange={debouncedOnTemplateDataChange}
                     />
                 );
             case KeyTypes.Property:
                 return (
                     <PropertyEditComponent
-                        data={props.templatePart?.data as Property}
+                        data={props.blueprintPart?.data as Property}
                         onChange={debouncedOnTemplateDataChange}
                     />
                 );
             case KeyTypes.MultiLanguageProperty:
                 return (
                     <MultiLangEditComponent
-                        data={props.templatePart?.data as MultiLanguageProperty}
+                        data={props.blueprintPart?.data as MultiLanguageProperty}
                         onChange={debouncedOnTemplateDataChange}
                     />
                 );
             case KeyTypes.File:
                 return (
                     <FileEditComponent
-                        data={props.templatePart?.data as ModelFile}
+                        data={props.blueprintPart?.data as ModelFile}
                         onChange={debouncedOnTemplateDataChange}
                     />
                 );
@@ -104,28 +104,28 @@ export function BlueprintEditFields(props: BlueprintEditFieldsProps) {
     }
 
     return (
-        <Box key={props.templatePart?.id}>
+        <Box key={props.blueprintPart?.id}>
             <LockedTextField
                 label="idShort"
-                key={props.templatePart?.data?.idShort}
-                defaultValue={props.templatePart?.data?.idShort}
+                key={props.blueprintPart?.data?.idShort}
+                defaultValue={props.blueprintPart?.data?.idShort}
                 fullWidth
             />
 
             {getRenderFields()}
 
-            {props.templatePart?.data && (
+            {props.blueprintPart?.data && (
                 <>
                     <MappingInfoEditComponent
-                        data={props.templatePart.data}
+                        data={props.blueprintPart.data}
                         onChange={debouncedOnTemplateDataChange}
-                        key={'mapping-info-' + props.templatePart.data.idShort}
+                        key={'mapping-info-' + props.blueprintPart.data.idShort}
                     />
                     <MultiplicityEditComponent
-                        data={props.templatePart.data}
+                        data={props.blueprintPart.data}
                         onChange={debouncedOnTemplateDataChange}
-                        key={'multiplicity-type' + props.templatePart.data.idShort}
-                        allowMultiplicityToBeSet={!!props.isCustomTemplate && !props.templatePart.isAboutToBeDeleted}
+                        key={'multiplicity-type' + props.blueprintPart.data.idShort}
+                        allowMultiplicityToBeSet={!!props.isCustomTemplate && !props.blueprintPart.isAboutToBeDeleted}
                     />
                 </>
             )}

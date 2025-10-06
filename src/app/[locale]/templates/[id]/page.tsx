@@ -46,8 +46,8 @@ import { useLocale, useTranslations } from 'next-intl';
 
 export default function Page() {
     const { id } = useParams<{ id: string }>();
-    const [localFrontendTemplate, setLocalFrontendTemplate] = useState<SubmodelViewObject | undefined>();
-    const [templateDisplayName, setTemplateDisplayName] = useState<string>();
+    const [localFrontendBlueprint, setLocalFrontendBlueprint] = useState<SubmodelViewObject | undefined>();
+    const [blueprintDisplayName, setBlueprintDisplayName] = useState<string>();
     const notificationSpawner = useNotificationSpawner();
     const [isLoading, setIsLoading] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
@@ -61,17 +61,17 @@ export default function Page() {
     const auth = useAuth();
     const bearerToken = auth.getBearerToken();
     const [deletedItems, setDeletedItems] = useState<string[]>([]);
-    const [defaultTemplates, setDefaultTemplates] = useState<Submodel[]>();
+    const [templates, setTemplates] = useState<Submodel[]>();
     const env = useEnv();
     const { showError } = useShowError();
     const t = useTranslations('pages.templates');
     const locale = useLocale();
 
-    const fetchCustom = async () => {
+    const fetchBlueprint = async () => {
         if (!id) return;
         const custom = await getCustomTemplateById(id);
         if (custom.isSuccess) {
-            setLocalFrontendTemplate(generateSubmodelViewObject(custom.result));
+            setLocalFrontendBlueprint(generateSubmodelViewObject(custom.result));
         } else showError(custom.message);
     };
 
@@ -97,12 +97,12 @@ export default function Page() {
         return frontend;
     }
 
-    const fetchDefaultTemplates = async () => {
-        const defaultTemplates = await getDefaultTemplates();
-        if (defaultTemplates.isSuccess) {
-            setDefaultTemplates(defaultTemplates.result);
+    const fetchTemplates = async () => {
+        const templates = await getDefaultTemplates();
+        if (templates.isSuccess) {
+            setTemplates(templates.result);
         } else {
-            showError(defaultTemplates.message);
+            showError(templates.message);
         }
     };
     useAsyncEffect(async () => {
@@ -110,8 +110,8 @@ export default function Page() {
             try {
                 setIsLoading(true);
                 if (bearerToken || !env.AUTHENTICATION_FEATURE_FLAG) {
-                    await fetchDefaultTemplates();
-                    await fetchCustom();
+                    await fetchTemplates();
+                    await fetchBlueprint();
                 }
             } catch (e) {
                 showError(e);
@@ -125,12 +125,12 @@ export default function Page() {
 
     useEffect(() => {
         // get displayName out of Qualifiers or use idShort of Submodel
-        setTemplateDisplayName(
-            localFrontendTemplate?.data?.qualifiers?.find((q: Qualifier) => {
+        setBlueprintDisplayName(
+            localFrontendBlueprint?.data?.qualifiers?.find((q: Qualifier) => {
                 return q.type === 'displayName';
-            })?.value || localFrontendTemplate?.data?.idShort,
+            })?.value || localFrontendBlueprint?.data?.idShort,
         );
-    }, [localFrontendTemplate]);
+    }, [localFrontendBlueprint]);
 
     const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -147,7 +147,7 @@ export default function Page() {
     const handleRevertClick = async () => {
         try {
             setIsLoading(true);
-            await fetchCustom();
+            await fetchBlueprint();
             setChangesMade(false);
             handleMenuClose();
         } catch (e) {
@@ -165,7 +165,7 @@ export default function Page() {
     };
 
     // TODO: reuse method from TemplateView
-    const deleteTemplate = async () => {
+    const deleteBlueprint = async () => {
         if (!id) return;
         try {
             await deleteCustomTemplateById(id);
@@ -180,50 +180,59 @@ export default function Page() {
     };
 
     const onSelectionChange = (treePart: SubmodelViewObject, onTreePartChange: (tree: SubmodelViewObject) => void) => {
-        if (editFieldsProps?.templatePart?.id !== treePart.id) {
-            setEditFieldsProps({ templatePart: treePart, onTemplatePartChange: onTreePartChange, updateTemplatePart });
+        if (editFieldsProps?.blueprintPart?.id !== treePart.id) {
+            setEditFieldsProps({
+                blueprintPart: treePart,
+                onBlueprintPartChange: onTreePartChange,
+                updateBlueprintPart: updateBlueprintPart,
+            });
         }
     };
 
     const onTemplateChange = (template: SubmodelViewObject, deletedItemIds?: string[]) => {
         setChangesMade(true);
-        setLocalFrontendTemplate(template);
+        setLocalFrontendBlueprint(template);
         if (deletedItemIds) {
             setDeletedItems(deletedItemIds);
         }
         //Update about to be deleted here
-        if (editFieldsProps?.templatePart?.id) {
-            if (deletedItemIds?.includes(editFieldsProps?.templatePart?.id)) {
-                const newTemplatePart = cloneDeep(editFieldsProps.templatePart);
+        if (editFieldsProps?.blueprintPart?.id) {
+            if (deletedItemIds?.includes(editFieldsProps?.blueprintPart?.id)) {
+                const newTemplatePart = cloneDeep(editFieldsProps.blueprintPart);
                 newTemplatePart.isAboutToBeDeleted = true;
-                setEditFieldsProps({ ...editFieldsProps, templatePart: newTemplatePart });
-            } else if (editFieldsProps.templatePart.isAboutToBeDeleted) {
-                const newTemplatePart = cloneDeep(editFieldsProps.templatePart);
+                setEditFieldsProps({ ...editFieldsProps, blueprintPart: newTemplatePart });
+            } else if (editFieldsProps.blueprintPart.isAboutToBeDeleted) {
+                const newTemplatePart = cloneDeep(editFieldsProps.blueprintPart);
                 newTemplatePart.isAboutToBeDeleted = false;
-                setEditFieldsProps({ ...editFieldsProps, templatePart: newTemplatePart });
+                setEditFieldsProps({ ...editFieldsProps, blueprintPart: newTemplatePart });
             }
         }
     };
 
-    const updateTemplatePart = (templatePart: SubmodelViewObject, onChange: (obj: SubmodelViewObject) => void) => {
-        setEditFieldsProps({ ...editFieldsProps, templatePart, onTemplatePartChange: onChange, updateTemplatePart });
+    const updateBlueprintPart = (blueprintPart: SubmodelViewObject, onChange: (obj: SubmodelViewObject) => void) => {
+        setEditFieldsProps({
+            ...editFieldsProps,
+            blueprintPart: blueprintPart,
+            onBlueprintPartChange: onChange,
+            updateBlueprintPart: updateBlueprintPart,
+        });
     };
 
     const onSaveChanges = async () => {
-        let updatedTemplate;
+        let updatedBlueprint;
         if (deletedItems) {
-            updatedTemplate = await deleteElements();
+            updatedBlueprint = await deleteElements();
             setDeletedItems([]);
         } else {
-            updatedTemplate = localFrontendTemplate;
+            updatedBlueprint = localFrontendBlueprint;
         }
-        if (updatedTemplate) {
+        if (updatedBlueprint) {
             try {
                 setIsSaving(true);
-                const submodel = generateSubmodel(updatedTemplate);
+                const submodel = generateSubmodel(updatedBlueprint);
                 await updateCustomSubmodelTemplate(submodel, submodel.id);
                 handleSuccessfulSave();
-                setLocalFrontendTemplate(updatedTemplate);
+                setLocalFrontendBlueprint(updatedBlueprint);
             } catch (e) {
                 showError(e);
             } finally {
@@ -260,13 +269,13 @@ export default function Page() {
     }
 
     async function deleteElements() {
-        if (localFrontendTemplate) {
-            let newLocalFrontendTemplate = cloneDeep(localFrontendTemplate);
+        if (localFrontendBlueprint) {
+            let newLocalFrontendBlueprint = cloneDeep(localFrontendBlueprint);
             for (const nodeId of deletedItems) {
-                newLocalFrontendTemplate = deleteItem(nodeId, newLocalFrontendTemplate);
+                newLocalFrontendBlueprint = deleteItem(nodeId, newLocalFrontendBlueprint);
             }
-            await rewriteNodeIds(newLocalFrontendTemplate, '0');
-            return newLocalFrontendTemplate;
+            await rewriteNodeIds(newLocalFrontendBlueprint, '0');
+            return newLocalFrontendBlueprint;
         }
         return undefined;
     }
@@ -313,9 +322,9 @@ export default function Page() {
         let returnValue: boolean | undefined;
         if (template) {
             const id = template.data?.semanticId?.keys?.[0]?.value;
-            if (id && defaultTemplates) {
+            if (id && templates) {
                 returnValue = true;
-                for (const d of defaultTemplates) {
+                for (const d of templates) {
                     if (id == d.semanticId?.keys?.[0]?.value) {
                         returnValue = false;
                     }
@@ -340,14 +349,14 @@ export default function Page() {
                     <Box sx={{ minWidth: '50%' }}>
                         <Typography variant="h2" color="primary" sx={{ my: 1 }}>
                             {/* TODO: Make this editable as an input field */}
-                            {isLoading ? <Skeleton width="40%" /> : templateDisplayName || ''}
+                            {isLoading ? <Skeleton width="40%" /> : blueprintDisplayName || ''}
                         </Typography>
                         <Typography color="text.secondary">
                             {isLoading ? (
                                 <Skeleton width="60%" />
                             ) : (
-                                !!localFrontendTemplate?.data?.semanticId?.keys?.[0]?.value &&
-                                localFrontendTemplate.data?.semanticId.keys[0].value
+                                !!localFrontendBlueprint?.data?.semanticId?.keys?.[0]?.value &&
+                                localFrontendBlueprint.data?.semanticId.keys[0].value
                             )}
                         </Typography>
                     </Box>
@@ -421,7 +430,7 @@ export default function Page() {
                             </>
                         ) : (
                             <BlueprintEditTree
-                                rootTree={localFrontendTemplate}
+                                rootTree={localFrontendBlueprint}
                                 onTreeChange={onTemplateChange}
                                 onSelectionChange={onSelectionChange}
                             />
@@ -437,7 +446,7 @@ export default function Page() {
                         ) : (
                             <BlueprintEditFields
                                 {...editFieldsProps}
-                                isCustomTemplate={isCustomTemplate(localFrontendTemplate)}
+                                isCustomTemplate={isCustomTemplate(localFrontendBlueprint)}
                             />
                         )}
                     </Box>
@@ -445,8 +454,8 @@ export default function Page() {
                 <BlueprintDeleteDialog
                     open={deleteDialogOpen}
                     onClose={closeDialog}
-                    onDelete={() => deleteTemplate()}
-                    itemName={templateDisplayName}
+                    onDelete={() => deleteBlueprint()}
+                    itemName={blueprintDisplayName}
                 />
             </Box>
         </PrivateRoute>

@@ -239,7 +239,7 @@ export default function Page() {
                     <ChooseTemplateDialog
                         open={chooseTemplateDialogOpen}
                         onClose={() => setChooseTemplateDialogOpen(false)}
-                        defaultTemplates={templates}
+                        templates={templates}
                         isLoading={isCreatingBlueprint}
                         handleTemplateClick={handleCreateTemplateClick}
                     />

@@ -22,7 +22,7 @@ export function FileEditComponent(props: FileEditComponentProps) {
 
     const onRemove = () => {
         setDefaultValueEnabled(false);
-        //TODO Reset MimeType to initial value from default template on remove
+        //TODO Reset MimeType to initial value from template on remove
         props.onChange({ ...data, value: '' });
     };
 

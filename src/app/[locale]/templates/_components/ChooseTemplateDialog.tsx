@@ -7,7 +7,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
 
 interface ChooseTemplateDialogProps extends DialogProps {
-    defaultTemplates?: Submodel[];
+    templates?: Submodel[];
     isLoading?: boolean;
     handleTemplateClick?: (template?: Submodel) => void;
     onClose: () => void;
@@ -28,7 +28,7 @@ const StyledLoadingOverlay = styled(Box)(({ theme }) => ({
 export function ChooseTemplateDialog(props: ChooseTemplateDialogProps) {
     const locale = useLocale();
     const t = useTranslations('pages.templates');
-    const { defaultTemplates, isLoading, handleTemplateClick, ...other } = props;
+    const { templates, isLoading, handleTemplateClick, ...other } = props;
     return (
         <Dialog {...other} maxWidth="md" data-testid="choose-template-dialog">
             {isLoading && (
@@ -42,7 +42,7 @@ export function ChooseTemplateDialog(props: ChooseTemplateDialogProps) {
                     {t('chooseAStartingPoint')}
                 </Typography>
                 <Box sx={{ my: 2 }}>
-                    {defaultTemplates?.map((template, i) => {
+                    {templates?.map((template, i) => {
                         return (
                             <ChooseTemplateItem
                                 key={i}
