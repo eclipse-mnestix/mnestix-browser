@@ -1,0 +1,30 @@
+# E2E test template for Cypress testing with Docker
+.e2e-test-template:
+  stage: test
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+    SPLIT: "4"  # Total number of parallel containers
+  before_script:
+    - apk add --no-cache docker-compose git
+  script:
+    - |
+      # Load the built image
+      docker load -i mnestix-browser-amd64.tar
+      
+      # Build test image
+      docker compose -f compose.yml -f docker-compose/compose.test.yml --profile tests build cypress-test
+      
+      # Pull required images
+      docker compose -f compose.yml -f docker-compose/compose.test.yml --profile tests pull
+      
+      # Run E2E tests
+      docker compose -f compose.yml -f docker-compose/compose.test.yml --profile tests up -d
+      docker compose -f compose.yml -f docker-compose/compose.test.yml attach cypress-test
+  timeout: 18m
+  dependencies:
+    - build-browser-image
+  artifacts:
+    when: always
+    paths:
+      - cypress-artifacts/
+    expire_in: 1 week

@@ -7,7 +7,7 @@ import {
     splitIdIntoArray,
     updateNodeIds,
     viewObjectHasDataValue,
-} from 'lib/util/SubmodelViewObjectUtil';
+} from 'lib/util/submodelHelpers/SubmodelViewObjectUtil';
 import { TemplateEditTreeItem } from './TemplateEditTreeItem';
 import multiplicityData from './edit-components/multiplicity/multiplicity-data.json';
 import cloneDeep from 'lodash/cloneDeep';
