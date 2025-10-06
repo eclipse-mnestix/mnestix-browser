@@ -25,7 +25,7 @@ import {
     rewriteNodeIds,
     splitIdIntoArray,
     updateNodeIds,
-} from 'lib/util/SubmodelViewObjectUtil';
+} from 'lib/util/submodelHelpers/SubmodelViewObjectUtil';
 import { TemplateEditFields, TemplateEditFieldsProps } from '../_components/template-edit/TemplateEditFields';
 import { useAuth } from 'lib/hooks/UseAuth';
 import cloneDeep from 'lodash/cloneDeep';
@@ -39,7 +39,7 @@ import { deleteCustomTemplateById, getCustomTemplateById, getDefaultTemplates } 
 import { TemplateDeleteDialog } from 'app/[locale]/templates/_components/TemplateDeleteDialog';
 import { clone } from 'lodash';
 import { useShowError } from 'lib/hooks/UseShowError';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 export default function Page() {
     const { id } = useParams<{ id: string }>();
@@ -62,6 +62,7 @@ export default function Page() {
     const env = useEnv();
     const { showError } = useShowError();
     const t = useTranslations('pages.templates');
+    const locale = useLocale();
 
     const fetchCustom = async () => {
         if (!id) return;
@@ -84,7 +85,7 @@ export default function Page() {
         if (localSm.submodelElements) {
             const arr = localSm.submodelElements;
             arr.forEach((el, i) =>
-                frontend.children?.push(generateSubmodelViewObjectFromSubmodelElement(el, '0-' + i)),
+                frontend.children?.push(generateSubmodelViewObjectFromSubmodelElement(el, '0-' + i, locale)),
             );
             localSm.submodelElements = [];
         }
