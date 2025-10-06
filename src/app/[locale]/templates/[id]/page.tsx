@@ -16,7 +16,7 @@ import {
     Typography,
 } from '@mui/material';
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
-import { TemplateEditTree } from '../_components/template-edit/TemplateEditTree';
+import { BlueprintEditTree } from 'app/[locale]/templates/_components/template-edit/BlueprintEditTree';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import React, { useEffect, useState } from 'react';
 import {
@@ -420,7 +420,7 @@ export default function Page() {
                                 ))}
                             </>
                         ) : (
-                            <TemplateEditTree
+                            <BlueprintEditTree
                                 rootTree={localFrontendTemplate}
                                 onTreeChange={onTemplateChange}
                                 onSelectionChange={onSelectionChange}
