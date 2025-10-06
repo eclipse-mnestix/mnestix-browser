@@ -26,7 +26,7 @@ export type BlueprintEditFieldsProps = {
         newBlueprintPart: SubmodelViewObject,
         newOnBlueprintPartChange: (newBlueprintPart: SubmodelViewObject) => void,
     ) => void;
-    isCustomTemplate?: boolean | undefined;
+    isBasedOnCustomTemplate?: boolean | undefined;
 };
 
 export function BlueprintEditFields(props: BlueprintEditFieldsProps) {
@@ -125,7 +125,9 @@ export function BlueprintEditFields(props: BlueprintEditFieldsProps) {
                         data={props.blueprintPart.data}
                         onChange={debouncedOnTemplateDataChange}
                         key={'multiplicity-type' + props.blueprintPart.data.idShort}
-                        allowMultiplicityToBeSet={!!props.isCustomTemplate && !props.blueprintPart.isAboutToBeDeleted}
+                        allowMultiplicityToBeSet={
+                            !!props.isBasedOnCustomTemplate && !props.blueprintPart.isAboutToBeDeleted
+                        }
                     />
                 </>
             )}

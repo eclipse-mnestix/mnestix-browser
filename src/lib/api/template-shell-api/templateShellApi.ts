@@ -21,7 +21,7 @@ export class TemplateShellApi {
         return new TemplateShellApi(backendApiUrl, enable_authentication, http);
     }
 
-    public async getDefaults(): Promise<ApiResponseWrapper<Submodel[]>> {
+    public async getTemplates(): Promise<ApiResponseWrapper<Submodel[]>> {
         const response = await this.http.fetch<Submodel[]>(`${this.basePathOwnApi}/allDefaultSubmodels`, {
             method: 'GET',
             headers: {
@@ -32,7 +32,7 @@ export class TemplateShellApi {
         return response;
     }
 
-    public async getCustoms(): Promise<ApiResponseWrapper<Submodel[]>> {
+    public async getBlueprints(): Promise<ApiResponseWrapper<Submodel[]>> {
         const response = await this.http.fetch<Submodel[]>(`${this.basePathOwnApi}/allCustomSubmodels`, {
             method: 'GET',
             headers: {
@@ -43,7 +43,7 @@ export class TemplateShellApi {
         return response;
     }
 
-    public async getCustom(submodelIdShort: string): Promise<ApiResponseWrapper<Submodel>> {
+    public async getBlueprint(submodelIdShort: string): Promise<ApiResponseWrapper<Submodel>> {
         const response = await this.http.fetch<Submodel>(
             `${this.basePathOwnApi}/CustomSubmodel/${encodeBase64(submodelIdShort)}`,
             {
@@ -57,7 +57,7 @@ export class TemplateShellApi {
         return response;
     }
 
-    public async deleteCustomById(id: string): Promise<ApiResponseWrapper<string | number>> {
+    public async deleteBlueprintById(id: string): Promise<ApiResponseWrapper<string | number>> {
         // We use the regular delete endpoint, which expects an idShort, but because of our backend interception, we saved the actual id in the idShort field earlier.
         // That's why this works.
         const isMnestixApiV2Enabled = envs.MNESTIX_V2_ENABLED;

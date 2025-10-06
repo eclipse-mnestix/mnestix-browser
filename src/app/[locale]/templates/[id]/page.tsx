@@ -37,8 +37,8 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useEnv } from 'app/EnvProvider';
 import { useParams, useRouter } from 'next/navigation';
 import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
-import { updateCustomSubmodelTemplate } from 'lib/services/templateApiWithAuthActions';
-import { deleteCustomTemplateById, getCustomTemplateById, getDefaultTemplates } from 'lib/services/templatesApiActions';
+import { updateBlueprint } from 'lib/services/templateApiWithAuthActions';
+import { deleteBlueprintById, getBlueprintById, getTemplates } from 'lib/services/templatesApiActions';
 import { BlueprintDeleteDialog } from 'app/[locale]/templates/_components/BlueprintDeleteDialog';
 import { clone } from 'lodash';
 import { useShowError } from 'lib/hooks/UseShowError';
@@ -69,7 +69,7 @@ export default function Page() {
 
     const fetchBlueprint = async () => {
         if (!id) return;
-        const custom = await getCustomTemplateById(id);
+        const custom = await getBlueprintById(id);
         if (custom.isSuccess) {
             setLocalFrontendBlueprint(generateSubmodelViewObject(custom.result));
         } else showError(custom.message);
@@ -98,7 +98,7 @@ export default function Page() {
     }
 
     const fetchTemplates = async () => {
-        const templates = await getDefaultTemplates();
+        const templates = await getTemplates();
         if (templates.isSuccess) {
             setTemplates(templates.result);
         } else {
@@ -168,7 +168,7 @@ export default function Page() {
     const deleteBlueprint = async () => {
         if (!id) return;
         try {
-            await deleteCustomTemplateById(id);
+            await deleteBlueprintById(id);
             notificationSpawner.spawn({
                 message: t('templateDeletedSuccessfully'),
                 severity: 'success',
@@ -230,7 +230,7 @@ export default function Page() {
             try {
                 setIsSaving(true);
                 const submodel = generateSubmodel(updatedBlueprint);
-                await updateCustomSubmodelTemplate(submodel, submodel.id);
+                await updateBlueprint(submodel, submodel.id);
                 handleSuccessfulSave();
                 setLocalFrontendBlueprint(updatedBlueprint);
             } catch (e) {
@@ -318,7 +318,7 @@ export default function Page() {
         }, 3000);
     };
 
-    function isCustomTemplate(template: SubmodelViewObject | undefined): boolean | undefined {
+    function isBasedOnCustomTemplate(template: SubmodelViewObject | undefined): boolean | undefined {
         let returnValue: boolean | undefined;
         if (template) {
             const id = template.data?.semanticId?.keys?.[0]?.value;
@@ -446,7 +446,7 @@ export default function Page() {
                         ) : (
                             <BlueprintEditFields
                                 {...editFieldsProps}
-                                isCustomTemplate={isCustomTemplate(localFrontendBlueprint)}
+                                isBasedOnCustomTemplate={isBasedOnCustomTemplate(localFrontendBlueprint)}
                             />
                         )}
                     </Box>

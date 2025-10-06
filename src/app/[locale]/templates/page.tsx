@@ -18,8 +18,8 @@ import { Qualifier, Submodel } from 'lib/api/aas/models';
 import { sortWithNullableValues } from 'lib/util/SortingUtil';
 import { useEnv } from 'app/EnvProvider';
 import { useRouter } from 'next/navigation';
-import { createCustomSubmodelTemplate } from 'lib/services/templateApiWithAuthActions';
-import { deleteCustomTemplateById, getCustomTemplates, getDefaultTemplates } from 'lib/services/templatesApiActions';
+import { createBlueprint } from 'lib/services/templateApiWithAuthActions';
+import { deleteBlueprintById, getBlueprints, getTemplates } from 'lib/services/templatesApiActions';
 import { useTranslations } from 'next-intl';
 import { findSemanticIdOfType } from 'lib/util/SubmodelResolverUtil';
 
@@ -52,7 +52,7 @@ export default function Page() {
     const fetchTemplatesAndBlueprints = async () => {
         const _templateItems: TabSelectorItem[] = [];
         // fetching defaults first
-        const _templates = await getDefaultTemplates();
+        const _templates = await getTemplates();
         if (!_templates.result?.length) {
             notificationSpawner.spawn({
                 message: t('fetchDefaultsWarning'),
@@ -95,7 +95,7 @@ export default function Page() {
 
     const fetchBlueprints = async (_defaultItems: Array<TabSelectorItem>) => {
         const _blueprintItems: BlueprintItemType[] = [];
-        const customs = (await getCustomTemplates()).result as Submodel[];
+        const customs = (await getBlueprints()).result as Submodel[];
         if (!customs?.length) {
             notificationSpawner.spawn({
                 message: t('noBlueprintsWarning'),
@@ -196,7 +196,7 @@ export default function Page() {
     const handleCreateTemplateClick = async (template?: Submodel) => {
         setIsCreatingBlueprint(true);
         try {
-            const newId = await createCustomSubmodelTemplate(template || EmptyDefaultTemplate);
+            const newId = await createBlueprint(template || EmptyDefaultTemplate);
             setIsCreatingBlueprint(false);
             navigate.push(`/templates/${encodeURIComponent(newId)}`);
         } catch (e) {
@@ -208,7 +208,7 @@ export default function Page() {
     const deleteTemplate = async (item: BlueprintItemType) => {
         if (!item.id) return;
         try {
-            await deleteCustomTemplateById(item.id);
+            await deleteBlueprintById(item.id);
             notificationSpawner.spawn({
                 message: t('templateDeletedSuccessfully'),
                 severity: 'success',
