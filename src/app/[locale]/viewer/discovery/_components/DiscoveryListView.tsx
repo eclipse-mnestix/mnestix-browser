@@ -4,7 +4,10 @@ import { useSearchParams } from 'next/navigation';
 import AssetNotFound from 'components/basics/AssetNotFound';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import ListHeader from 'components/basics/ListHeader';
-import { searchAasInAllRepositories } from 'lib/services/aas-repository-service/aasRepositoryActions';
+import {
+    searchAasInAllRepositories,
+    getThumbnailFromShell,
+} from 'lib/services/aas-repository-service/aasRepositoryActions';
 import { useTranslations } from 'next-intl';
 import { LocalizedError } from 'lib/util/LocalizedError';
 import { AasListEntry } from 'lib/types/AasListEntry';
@@ -12,6 +15,8 @@ import { GenericListDataWrapper } from 'components/basics/listBasics/GenericList
 import { searchInAllDiscoveries } from 'lib/services/discovery-service/discoveryActions';
 import { searchAASInAllAasRegistries } from 'lib/services/aas-registry-service/aasRegistryActions';
 import { Card } from '@mui/material';
+import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { isValidUrl } from 'lib/util/UrlUtil';
 
 type DiscoveryListEntryToFetch = {
     thumbnailUrl?: string;
@@ -29,11 +34,32 @@ async function getRepositoryUrlAndThumbnail(aasId: string): Promise<DiscoveryLis
         return { repositoryUrl: registrySearchResult.result[0].aasData?.aasRepositoryOrigin };
 
     const allRepositorySearchResult = await searchAasInAllRepositories(encodeBase64(aasId));
-    if (allRepositorySearchResult.isSuccess)
+    if (allRepositorySearchResult.isSuccess) {
+        const defaultThumbnailPath =
+            allRepositorySearchResult.result[0].searchResult.assetInformation.defaultThumbnail?.path;
+
+        let thumbnailUrl: string | undefined;
+
+        if (defaultThumbnailPath && isValidUrl(defaultThumbnailPath)) {
+            thumbnailUrl = defaultThumbnailPath;
+        } else {
+            const thumbnailResponse = await getThumbnailFromShell(allRepositorySearchResult.result[0].searchResult.id, {
+                url: allRepositorySearchResult.result[0].location,
+                infrastructureName: allRepositorySearchResult.result[0].infrastructureName ?? '',
+            });
+
+            if (thumbnailResponse.isSuccess) {
+                const blob = mapFileDtoToBlob(thumbnailResponse.result);
+                const blobUrl = URL.createObjectURL(blob);
+                thumbnailUrl = blobUrl;
+            }
+        }
+
         return {
             repositoryUrl: allRepositorySearchResult.result[0].location,
-            thumbnailUrl: allRepositorySearchResult.result[0].searchResult.assetInformation.defaultThumbnail?.path,
+            thumbnailUrl: thumbnailUrl,
         };
+    }
 
     console.warn('Did not find the URL of the AAS');
     return undefined;
@@ -101,6 +127,7 @@ export function DiscoveryListView() {
                     showThumbnail
                     showAasId
                     showRepositoryUrl
+                    showInfrastructureName
                     showDiscoveryUrl
                 >
                     <AssetNotFound id={assetId} />

@@ -39,7 +39,7 @@ export function GenericListDataWrapper({ loadContent, children, ...config }: Gen
     return (
         <>
             {isLoadingList && <CenteredLoadingSpinner sx={{ mt: 10 }} />}
-            {isError ? { children } : <GenericAasList data={listEntries} {...config} />}
+            {isError ? children : <GenericAasList data={listEntries} {...config} />}
         </>
     );
 }

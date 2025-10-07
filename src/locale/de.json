@@ -205,6 +205,7 @@
         "productDesignation": "Hersteller Produktbezeichnung",
         "registryUrl": "Registry URL",
         "repositoryUrl": "Repository URL",
+        "infrastructureName": "Infrastruktur",
         "viewAASButton": "AAS anzeigen"
       },
       "maxElementsWarning": "Maximal 3 Elemente selektierbar",
