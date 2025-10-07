@@ -6,7 +6,7 @@ import { Box, Button, Divider, Paper, Skeleton, Typography } from '@mui/material
 import { TabSelectorItem, VerticalTabSelector } from 'components/basics/VerticalTabSelector';
 import { ViewHeading } from 'components/basics/ViewHeading';
 import { ChooseTemplateDialog } from './_components/ChooseTemplateDialog';
-import { CustomTemplateItem, CustomTemplateItemType } from './_components/CustomTemplateItem';
+import { BlueprintItem, BlueprintItemType } from 'app/[locale]/templates/_components/BlueprintItem';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { useState } from 'react';
 import { useShowError } from 'lib/hooks/UseShowError';
@@ -18,8 +18,8 @@ import { Qualifier, Submodel } from 'lib/api/aas/models';
 import { sortWithNullableValues } from 'lib/util/SortingUtil';
 import { useEnv } from 'app/EnvProvider';
 import { useRouter } from 'next/navigation';
-import { createCustomSubmodelTemplate } from 'lib/services/templateApiWithAuthActions';
-import { deleteCustomTemplateById, getCustomTemplates, getDefaultTemplates } from 'lib/services/templatesApiActions';
+import { createBlueprint } from 'lib/services/templateApiWithAuthActions';
+import { deleteBlueprintById, getBlueprints, getTemplates } from 'lib/services/templatesApiActions';
 import { useTranslations } from 'next-intl';
 import { findSemanticIdOfType } from 'lib/util/SubmodelResolverUtil';
 
@@ -33,69 +33,69 @@ export default function Page() {
     const env = useEnv();
     const navigate = useRouter();
     const notificationSpawner = useNotificationSpawner();
-    const [defaults, setDefaults] = useState<Submodel[]>();
-    const [defaultItems, setDefaultItems] = useState<Array<TabSelectorItem>>([]);
-    const [customItems, setCustomItems] = useState<Array<CustomTemplateItemType>>([]);
-    const [filteredCustomItems, setFilteredCustomItems] = useState<Array<CustomTemplateItemType>>();
+    const [templates, setTemplates] = useState<Submodel[]>();
+    const [templateItems, setTemplateItems] = useState<Array<TabSelectorItem>>([]);
+    const [blueprintItems, setBlueprintItems] = useState<Array<BlueprintItemType>>([]);
+    const [filteredBlueprintItems, setFilteredBlueprintItems] = useState<Array<BlueprintItemType>>();
     const [selectedEntry, setSelectedEntry] = useState<TabSelectorItem>({
         id: SpecialDefaultTabIds.All,
         label: t('all'),
     });
     const [isLoading, setIsLoading] = useState(false);
-    const [isCreatingTemplate, setIsCreatingTemplate] = useState(false);
+    const [isCreatingBlueprint, setIsCreatingBlueprint] = useState(false);
     const [chooseTemplateDialogOpen, setChooseTemplateDialogOpen] = useState(false);
 
     const auth = useAuth();
     const bearerToken = auth.getBearerToken();
 
     const { showError } = useShowError();
-    const fetchAll = async () => {
-        const _defaultItems: TabSelectorItem[] = [];
+    const fetchTemplatesAndBlueprints = async () => {
+        const _templateItems: TabSelectorItem[] = [];
         // fetching defaults first
-        const _defaults = await getDefaultTemplates();
-        if (!_defaults.result?.length) {
+        const _templates = await getTemplates();
+        if (!_templates.result?.length) {
             notificationSpawner.spawn({
-                message: t('fetchDefaultsWarning'),
+                message: t('noTemplatesWarning'),
                 severity: 'warning',
             });
         } else {
-            _defaults.result?.sort((a: Submodel, b: Submodel) => sortWithNullableValues(a.idShort, b.idShort));
-            setDefaults(_defaults.result);
-            _defaults.result?.forEach((defaultTemplate) => {
+            _templates.result?.sort((a: Submodel, b: Submodel) => sortWithNullableValues(a.idShort, b.idShort));
+            setTemplates(_templates.result);
+            _templates.result?.forEach((template) => {
                 // In v3 submodel is identified by id, so we assume that it will always have an Id.
                 const id =
-                    findSemanticIdOfType(['Submodel', 'GlobalReference'], defaultTemplate.semanticId?.keys) ||
-                    defaultTemplate.idShort;
+                    findSemanticIdOfType(['Submodel', 'GlobalReference'], template.semanticId?.keys) ||
+                    template.idShort;
                 if (id) {
-                    _defaultItems.push({
+                    _templateItems.push({
                         id,
-                        label: `${defaultTemplate.idShort} V${defaultTemplate.administration?.version ?? '-'}.${defaultTemplate.administration?.revision ?? '-'}`,
+                        label: `${template.idShort} V${template.administration?.version ?? '-'}.${template.administration?.revision ?? '-'}`,
                         startIcon: <FolderOutlined fontSize="small" />,
                     });
                 }
             });
-            _defaultItems.sort((a: TabSelectorItem, b: TabSelectorItem) => a.label.localeCompare(b.label));
+            _templateItems.sort((a: TabSelectorItem, b: TabSelectorItem) => a.label.localeCompare(b.label));
         }
 
         // adding 'all' defaultItem at the beginning of the list
-        _defaultItems.unshift({
+        _templateItems.unshift({
             id: SpecialDefaultTabIds.All,
             label: t('all'),
         });
         // the 'custom' defaultItem should always the last one in the list
-        _defaultItems.push({
+        _templateItems.push({
             id: SpecialDefaultTabIds.Custom,
             label: t('custom'),
             startIcon: <FolderOutlined fontSize="small" />,
         });
-        setDefaultItems(_defaultItems);
-        // fetching customs, which need default items to be mapped to their ids
-        await fetchCustoms(_defaultItems);
+        setTemplateItems(_templateItems);
+        // fetching blueprints, which need template items to be mapped to their ids
+        await fetchBlueprints(_templateItems);
     };
 
-    const fetchCustoms = async (_defaultItems: Array<TabSelectorItem>) => {
-        const _customTemplateItems: CustomTemplateItemType[] = [];
-        const customs = (await getCustomTemplates()).result as Submodel[];
+    const fetchBlueprints = async (_defaultItems: Array<TabSelectorItem>) => {
+        const _blueprintItems: BlueprintItemType[] = [];
+        const customs = (await getBlueprints()).result as Submodel[];
         if (!customs?.length) {
             notificationSpawner.spawn({
                 message: t('noBlueprintsWarning'),
@@ -128,26 +128,26 @@ export default function Page() {
                 }
             }
 
-            _customTemplateItems.push({
+            _blueprintItems.push({
                 displayName,
                 basedOnTemplate,
                 basedOnTemplateId,
                 id,
             });
         });
-        _customTemplateItems.sort((a: CustomTemplateItemType, b: CustomTemplateItemType) =>
+        _blueprintItems.sort((a: BlueprintItemType, b: BlueprintItemType) =>
             sortWithNullableValues(a.displayName, b.displayName),
         );
-        setCustomItems(_customTemplateItems);
+        setBlueprintItems(_blueprintItems);
         if (selectedEntry.id === SpecialDefaultTabIds.All) {
-            setFilteredCustomItems(_customTemplateItems);
+            setFilteredBlueprintItems(_blueprintItems);
         }
     };
 
     async function _fetchAll() {
         try {
             setIsLoading(true);
-            await fetchAll();
+            await fetchTemplatesAndBlueprints();
         } catch (e) {
             showError(e);
         } finally {
@@ -165,17 +165,17 @@ export default function Page() {
     // Filtering items
     useAsyncEffect(async () => {
         // TODO: This shouldn't happen in the frontend later on, should happen via API calls
-        if (customItems.length) {
+        if (blueprintItems.length) {
             switch (selectedEntry.id) {
                 case SpecialDefaultTabIds.All:
                     // show all
-                    setFilteredCustomItems(customItems);
+                    setFilteredBlueprintItems(blueprintItems);
                     break;
                 case SpecialDefaultTabIds.Custom:
                     // show all not included in defaults
-                    setFilteredCustomItems(
-                        customItems.filter((item) => {
-                            for (const defItem of defaultItems) {
+                    setFilteredBlueprintItems(
+                        blueprintItems.filter((item) => {
+                            for (const defItem of templateItems) {
                                 if (item.basedOnTemplateId === defItem.id) {
                                     return false;
                                 }
@@ -186,32 +186,34 @@ export default function Page() {
                     break;
                 default:
                     // show all matching with id
-                    setFilteredCustomItems(customItems.filter((item) => item.basedOnTemplateId === selectedEntry.id));
+                    setFilteredBlueprintItems(
+                        blueprintItems.filter((item) => item.basedOnTemplateId === selectedEntry.id),
+                    );
             }
         }
-    }, [selectedEntry, customItems, defaultItems]);
+    }, [selectedEntry, blueprintItems, templateItems]);
 
     const handleCreateTemplateClick = async (template?: Submodel) => {
-        setIsCreatingTemplate(true);
+        setIsCreatingBlueprint(true);
         try {
-            const newId = await createCustomSubmodelTemplate(template || EmptyDefaultTemplate);
-            setIsCreatingTemplate(false);
+            const newId = await createBlueprint(template || EmptyDefaultTemplate);
+            setIsCreatingBlueprint(false);
             navigate.push(`/templates/${encodeURIComponent(newId)}`);
         } catch (e) {
-            setIsCreatingTemplate(false);
+            setIsCreatingBlueprint(false);
             showError(e);
         }
     };
 
-    const deleteTemplate = async (item: CustomTemplateItemType) => {
+    const deleteTemplate = async (item: BlueprintItemType) => {
         if (!item.id) return;
         try {
-            await deleteCustomTemplateById(item.id);
+            await deleteBlueprintById(item.id);
             notificationSpawner.spawn({
-                message: t('templateDeletedSuccessfully'),
+                message: t('blueprintDeletedSuccessfully'),
                 severity: 'success',
             });
-            await fetchCustoms(defaultItems);
+            await fetchBlueprints(templateItems);
         } catch (e) {
             showError(e);
         }
@@ -237,16 +239,16 @@ export default function Page() {
                     <ChooseTemplateDialog
                         open={chooseTemplateDialogOpen}
                         onClose={() => setChooseTemplateDialogOpen(false)}
-                        defaultTemplates={defaults}
-                        isLoading={isCreatingTemplate}
+                        templates={templates}
+                        isLoading={isCreatingBlueprint}
                         handleTemplateClick={handleCreateTemplateClick}
                     />
                 </Box>
                 <Paper sx={{ p: 2, width: '100%', display: 'flex' }}>
                     <Box sx={{ minWidth: '340px', flex: '1', mr: 3 }}>
-                        {defaultItems.length && !isLoading ? (
+                        {templateItems.length && !isLoading ? (
                             <VerticalTabSelector
-                                items={defaultItems}
+                                items={templateItems}
                                 selected={selectedEntry}
                                 setSelected={setSelectedEntry}
                             />
@@ -257,30 +259,30 @@ export default function Page() {
                         )}
                     </Box>
                     <Box sx={{ ml: 3, width: '100%' }}>
-                        {!!filteredCustomItems?.length &&
+                        {!!filteredBlueprintItems?.length &&
                             !isLoading &&
-                            filteredCustomItems.map((item, index) => {
+                            filteredBlueprintItems.map((item, index) => {
                                 return (
-                                    <CustomTemplateItem
+                                    <BlueprintItem
                                         key={index}
                                         item={item}
-                                        hasDivider={index + 1 < filteredCustomItems.length}
+                                        hasDivider={index + 1 < filteredBlueprintItems.length}
                                         onDelete={() => deleteTemplate(item)}
                                     />
                                 );
                             })}
-                        {filteredCustomItems?.length === 0 && !isLoading && (
+                        {filteredBlueprintItems?.length === 0 && !isLoading && (
                             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', m: 2 }}>
                                 <Typography align="center" variant="h3" color="text.secondary">
-                                    {t('noTemplatesFound')}
+                                    {t('noBlueprintsFound')}
                                 </Typography>
                                 <TemplatesInfoGraphic style={{ display: 'block', maxWidth: '250px' }} />
                                 <Typography sx={{ maxWidth: '350px' }} align="center" color="text.secondary">
-                                    {t('templatesUseExplanation')}
+                                    {t('blueprintUseExplanation')}
                                 </Typography>
                             </Box>
                         )}
-                        {!filteredCustomItems &&
+                        {!filteredBlueprintItems &&
                             [0, 1, 2].map((i) => {
                                 return (
                                     <Box sx={{ my: 2 }} key={i}>

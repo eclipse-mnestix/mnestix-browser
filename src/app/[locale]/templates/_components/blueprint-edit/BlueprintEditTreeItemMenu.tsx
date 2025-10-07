@@ -5,7 +5,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
-interface TemplateEditTreeItemMenuProps {
+interface BlueprintEditTreeItemMenuProps {
     elementMultiplicity: MultiplicityEnum | undefined;
     numberOfThisElement: number;
     onDuplicate: (nodeId: string) => void;
@@ -16,7 +16,7 @@ interface TemplateEditTreeItemMenuProps {
     isParentAboutToBeDeleted: boolean | undefined;
 }
 
-export const TemplateEditTreeItemMenu = (props: TemplateEditTreeItemMenuProps) => {
+export const BlueprintEditTreeItemMenu = (props: BlueprintEditTreeItemMenuProps) => {
     const isElementAboutToBeDeleted = props.isElementAboutToBeDeleted;
     const menuElements = generateMenuElementsBasedOnMultiplicity(props.elementMultiplicity, props.numberOfThisElement);
     const [editMenuOpen, setEditMenuOpen] = useState(false);

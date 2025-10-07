@@ -1,7 +1,7 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Box, Button, IconButton } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { TemplateEditSectionHeading } from '../../TemplateEditSectionHeading';
+import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
 import { BooleanPropertyEditComponent } from './data-specific/BooleanPropertyEditComponent';
 import { StringPropertyEditComponent } from './data-specific/StringPropertyEditComponent';
 import { DatePropertyEditComponent } from './data-specific/DatePropertyEditComponent';
@@ -53,7 +53,7 @@ export function PropertyEditComponent(props: PropertyEditComponentProps) {
 
     return (
         <>
-            <TemplateEditSectionHeading type="defaultValue" />
+            <BlueprintEditSectionHeading type="defaultValue" />
             {defaultValueEnabled ? (
                 <Box display="flex" alignContent="center">
                     {getEditElement()}

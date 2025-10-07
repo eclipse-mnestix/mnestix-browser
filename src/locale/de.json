@@ -186,7 +186,7 @@
       "logout": "Abmelden",
       "repository": "Repository",
       "settings": "Einstellungen",
-      "templates": "Templates"
+      "templates": "Templates & Blueprints"
     }
   },
   "pages": {
@@ -515,14 +515,14 @@
         "true": "wahr"
       },
       "chooseAStartingPoint": "Wählen Sie ein Template als Ausgangspunkt",
-      "copyTemplateId": "Template-ID kopieren",
-      "createNew": "Neu erstellen",
+      "copyBlueprintId": "Blueprint-ID kopieren",
+      "createNew": "Blueprint erstellen",
       "custom": "Custom",
       "defaultValue": "Defaultwert",
-      "deleteTemplateQuestion": "Template ''{name}'' unwiderruflich löschen?",
+      "deleteBlueprintQuestion": "Blueprint ''{name}'' unwiderruflich löschen?",
       "displayName": "Anzeigename",
-      "emptyCustom": "Leer (Custom)",
-      "emptyCustomDescription": "Basiert auf keinem standardisierten Template",
+      "emptyTemplate": "Leer (Custom)",
+      "emptyTemplateDescription": "Basiert auf keinem standardisierten Template",
       "errors": {
         "unknownModelType": "Unbekannter ModelType: {type}"
       },
@@ -541,12 +541,12 @@
       },
       "multiplicity": "Multiplizität",
       "multiplicityDescription": "Parameter, mit dem Sie festlegen können, welche Elemente verpflichtend sind.",
-      "noTemplatesFound": "Keine Templates gefunden",
-      "templateDeletedSuccessfully": "Template erfolgreich gelöscht.",
-      "fetchDefaultsWarning": "Keine Standardvorlagen verfügbar. Es werden nur Custom Templates angezeigt.",
-      "templateIdCopied": "Template-ID in die Zwischenablage kopiert: {id}",
-      "templatesUseExplanation": "Templates erlauben es Ihnen, eine wiederverwendbare Teilmodell-Struktur, angepasst auf Ihre Bedürfnisse, zu definieren.",
-      "title": "Templates",
+      "noBlueprintsFound": "Keine Blueprints gefunden",
+      "blueprintDeletedSuccessfully": "Blueprint erfolgreich gelöscht.",
+      "noTemplatesWarning": "Keine Templates verfügbar. Es werden nur Blueprints angezeigt.",
+      "blueprintIdCopied": "Blueprint-ID in die Zwischenablage kopiert: {id}",
+      "blueprintUseExplanation": "Blueprints erlauben es Ihnen, eine wiederverwendbare Teilmodell-Struktur, angepasst auf Ihre Bedürfnisse, zu definieren.",
+      "title": "Templates & Blueprints",
       "validation": {
         "errors": {
           "invalidDate": "Muss ein gültiges Datum sein, im Format ''yyyy-mm-dd''",

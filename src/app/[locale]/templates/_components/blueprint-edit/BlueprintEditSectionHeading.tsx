@@ -2,11 +2,11 @@ import { InfoOutlined, Mediation, Numbers, TextSnippet, Visibility } from '@mui/
 import { Box, Divider, Tooltip, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 
-type TemplateEditSectionHeadingProps = {
+type BlueprintEditSectionHeadingProps = {
     readonly type: 'defaultValue' | 'displayName' | 'mappingInfo' | 'multiplicity';
 };
 
-export function TemplateEditSectionHeading(props: TemplateEditSectionHeadingProps) {
+export function BlueprintEditSectionHeading(props: BlueprintEditSectionHeadingProps) {
     const t = useTranslations('pages.templates');
     const getIcon = () => {
         switch (props.type) {

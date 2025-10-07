@@ -186,7 +186,7 @@
       "logout": "Cerrar sesión",
       "repository": "Repositorio",
       "settings": "Ajustes",
-      "templates": "Plantillas"
+      "templates": "Templates & Blueprints"
     }
   },
   "pages": {
@@ -514,15 +514,15 @@
         "false": "falso",
         "true": "verdadero"
       },
-      "chooseAStartingPoint": "Elige una plantilla como punto de inicio",
-      "copyTemplateId": "Copiar ID de la plantilla",
-      "createNew": "Crear nuevo",
+      "chooseAStartingPoint": "Elige una template como punto de inicio",
+      "copyBlueprintId": "Copiar ID de la blueprint",
+      "createNew": "Crear blueprint",
       "custom": "A medida",
       "defaultValue": "Valor predeterminado",
-      "deleteTemplateQuestion": "Desea eliminar la plantilla ''{name}'' definitivamente?",
+      "deleteBlueprintQuestion": "Desea eliminar la blueprint ''{name}'' definitivamente?",
       "displayName": "Nombre a mostrar",
-      "emptyCustom": "Vacío (A medida)",
-      "emptyCustomDescription": "No basada en una plantilla estandarizada",
+      "emptyTemplate": "Vacío (A medida)",
+      "emptyTemplateDescription": "No basada en una template estandarizada",
       "errors": {
         "unknownModelType": "ModelType desconocido: {type}"
       },
@@ -541,12 +541,12 @@
       },
       "multiplicity": "Multiplicidad",
       "multiplicityDescription": "Clasificador para identificar elementos obligatorios.",
-      "noTemplatesFound": "No se encontraron plantillas",
-      "templateDeletedSuccessfully": "Plantilla eliminada correctamente",
-      "fetchDefaultsWarning": "No hay plantillas predeterminadas disponibles. Solo se muestran plantillas personalizadas.",
-      "templateIdCopied": "ID de la plantilla copiado al portapapeles: {id}",
-      "templatesUseExplanation": "Las plantillas le permiten crear estructuras de submodel reutilizables y ajustadas a sus requisitos.",
-      "title": "Plantillas",
+      "noBlueprintsFound": "No se encontraron blueprints",
+      "blueprintDeletedSuccessfully": "Blueprint eliminada correctamente",
+      "noTemplatesWarning": "No hay templates disponibles. Solo se muestran blueprints.",
+      "blueprintIdCopied": "ID de la blueprint copiado al portapapeles: {id}",
+      "blueprintUseExplanation": "Las blueprints le permiten crear estructuras de submodel reutilizables y ajustadas a sus requisitos.",
+      "title": "Templates & Blueprints",
       "validation": {
         "errors": {
           "invalidDate": "La fecha debe ser válida y seguir formato ''yyyy-mm-dd''",
