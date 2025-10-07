@@ -8,7 +8,7 @@ import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapp
 import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
 import { getDefaultInfrastructure } from './database/infrastructureDatabaseActions';
 
-export async function getDefaultTemplates(): Promise<ApiResponseWrapper<Submodel[]>> {
+export async function getTemplates(): Promise<ApiResponseWrapper<Submodel[]>> {
     const defaultInfrastructure = await getDefaultInfrastructure();
     const securityHeaders = await createSecurityHeaders(defaultInfrastructure);
     const templateApiClient = TemplateShellApi.create(
@@ -16,10 +16,10 @@ export async function getDefaultTemplates(): Promise<ApiResponseWrapper<Submodel
         envs.AUTHENTICATION_FEATURE_FLAG,
         mnestixFetch(securityHeaders),
     );
-    return templateApiClient.getDefaults();
+    return templateApiClient.getTemplates();
 }
 
-export async function getCustomTemplates(): Promise<ApiResponseWrapper<Submodel[]>> {
+export async function getBlueprints(): Promise<ApiResponseWrapper<Submodel[]>> {
     const defaultInfrastructure = await getDefaultInfrastructure();
     const securityHeaders = await createSecurityHeaders(defaultInfrastructure);
     const templateApiClient = TemplateShellApi.create(
@@ -27,10 +27,10 @@ export async function getCustomTemplates(): Promise<ApiResponseWrapper<Submodel[
         envs.AUTHENTICATION_FEATURE_FLAG,
         mnestixFetch(securityHeaders),
     );
-    return templateApiClient.getCustoms();
+    return templateApiClient.getBlueprints();
 }
 
-export async function getCustomTemplateById(id: string): Promise<ApiResponseWrapper<Submodel>> {
+export async function getBlueprintById(id: string): Promise<ApiResponseWrapper<Submodel>> {
     const defaultInfrastructure = await getDefaultInfrastructure();
     const securityHeaders = await createSecurityHeaders(defaultInfrastructure);
     const templateApiClient = TemplateShellApi.create(
@@ -38,10 +38,10 @@ export async function getCustomTemplateById(id: string): Promise<ApiResponseWrap
         envs.AUTHENTICATION_FEATURE_FLAG,
         mnestixFetch(securityHeaders),
     );
-    return templateApiClient.getCustom(id);
+    return templateApiClient.getBlueprint(id);
 }
 
-export async function deleteCustomTemplateById(id: string): Promise<ApiResponseWrapper<string | number>> {
+export async function deleteBlueprintById(id: string): Promise<ApiResponseWrapper<string | number>> {
     const defaultInfrastructure = await getDefaultInfrastructure();
     const securityHeaders = await createSecurityHeaders(defaultInfrastructure);
     const templateApiClient = TemplateShellApi.create(
@@ -49,5 +49,5 @@ export async function deleteCustomTemplateById(id: string): Promise<ApiResponseW
         envs.AUTHENTICATION_FEATURE_FLAG,
         mnestixFetch(securityHeaders),
     );
-    return templateApiClient.deleteCustomById(id);
+    return templateApiClient.deleteBlueprintById(id);
 }

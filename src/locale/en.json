@@ -185,7 +185,7 @@
       "logout": "Logout",
       "repository": "Repository",
       "settings": "Settings",
-      "templates": "Templates"
+      "templates": "Templates & Blueprints"
     }
   },
   "pages": {
@@ -513,14 +513,14 @@
         "true": "true"
       },
       "chooseAStartingPoint": "Choose a template as starting point",
-      "copyTemplateId": "Copy template ID",
-      "createNew": "Create new",
+      "copyBlueprintId": "Copy blueprint ID",
+      "createNew": "New blueprint",
       "custom": "Custom",
       "defaultValue": "Default value",
-      "deleteTemplateQuestion": "Delete template ''{name}'' irretrievably?",
+      "deleteBlueprintQuestion": "Delete blueprint ''{name}'' irretrievably?",
       "displayName": "Display name",
-      "emptyCustom": "Empty (Custom)",
-      "emptyCustomDescription": "Is not based upon a standardized template",
+      "emptyTemplate": "Empty (Custom)",
+      "emptyTemplateDescription": "Is not based upon a standardized template",
       "errors": {
         "unknownModelType": "Unknown ModelType: {type}"
       },
@@ -539,12 +539,12 @@
       },
       "multiplicity": "Multiplicity",
       "multiplicityDescription": "A qualifier used to identify obligatory elements.",
-      "noTemplatesFound": "No templates found",
-      "templateDeletedSuccessfully": "Template deleted successfully",
-      "fetchDefaultsWarning": "No default templates available. Showing only custom templates.",
-      "templateIdCopied": "Template ID copied to clipboard: {id}",
-      "templatesUseExplanation": "Templates allow you to create a reusable submodel structure, adjusted to your requirements.",
-      "title": "Templates",
+      "noBlueprintsFound": "No blueprints found",
+      "blueprintDeletedSuccessfully": "Blueprint deleted successfully",
+      "noTemplatesWarning": "No templates available. Showing only blueprints.",
+      "blueprintIdCopied": "Blueprint ID copied to clipboard: {id}",
+      "blueprintUseExplanation": "Blueprints allow you to create a reusable submodel structure, adjusted to your requirements.",
+      "title": "Templates & Blueprints",
       "validation": {
         "errors": {
           "invalidDate": "Has to be a valid date in format ''yyyy-mm-dd''",

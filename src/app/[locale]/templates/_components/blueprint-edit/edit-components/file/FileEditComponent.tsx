@@ -1,7 +1,7 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { TemplateEditSectionHeading } from '../../TemplateEditSectionHeading';
+import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
 import options from './mime-types.json';
 import { useTranslations } from 'next-intl';
 import { ModelFile } from 'lib/api/aas/models';
@@ -22,7 +22,7 @@ export function FileEditComponent(props: FileEditComponentProps) {
 
     const onRemove = () => {
         setDefaultValueEnabled(false);
-        //TODO Reset MimeType to initial value from default template on remove
+        //TODO Reset MimeType to initial value from template on remove
         props.onChange({ ...data, value: '' });
     };
 
@@ -38,7 +38,7 @@ export function FileEditComponent(props: FileEditComponentProps) {
 
     return (
         <>
-            <TemplateEditSectionHeading type="defaultValue" />
+            <BlueprintEditSectionHeading type="defaultValue" />
             {defaultValueEnabled ? (
                 <>
                     <FormControl variant="filled" fullWidth sx={{ mt: 1 }}>

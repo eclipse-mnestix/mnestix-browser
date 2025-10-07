@@ -8,20 +8,20 @@ import {
     updateNodeIds,
     viewObjectHasDataValue,
 } from 'lib/util/submodelHelpers/SubmodelViewObjectUtil';
-import { TemplateEditTreeItem } from './TemplateEditTreeItem';
+import { BlueprintEditTreeItem } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditTreeItem';
 import multiplicityData from './edit-components/multiplicity/multiplicity-data.json';
 import cloneDeep from 'lodash/cloneDeep';
 import { Qualifier } from 'lib/api/aas/models';
 import { MultiplicityEnum } from 'lib/enums/Multiplicity.enum';
 import { escapeRegExp, parseInt } from 'lodash';
 
-type TemplateEditTreeProps = {
+type BlueprintEditTreeProps = {
     rootTree?: SubmodelViewObject;
     onTreeChange: (tree: SubmodelViewObject, deletedItems?: string[]) => void;
     onSelectionChange: (treePart: SubmodelViewObject, onChange: (tree: SubmodelViewObject) => void) => void;
 };
 
-export function TemplateEditTree(props: TemplateEditTreeProps) {
+export function BlueprintEditTree(props: BlueprintEditTreeProps) {
     const [expandedTreeItems, setExpandedTreeItems] = useState<string[]>(props.rootTree ? [props.rootTree?.id] : []);
     const [selectedTreeItem, setSelectedTreeItem] = useState<string | null>(props.rootTree ? props.rootTree.id : null);
     const [deletedItems, setDeletedItems] = useState<string[]>([]);
@@ -40,7 +40,7 @@ export function TemplateEditTree(props: TemplateEditTreeProps) {
         onChange: (tree: SubmodelViewObject) => void,
     ) => {
         return (
-            <TemplateEditTreeItem
+            <BlueprintEditTreeItem
                 key={tree.id}
                 itemId={tree.id}
                 label={tree.name}
@@ -66,7 +66,7 @@ export function TemplateEditTree(props: TemplateEditTreeProps) {
                           ),
                       )
                     : undefined}
-            </TemplateEditTreeItem>
+            </BlueprintEditTreeItem>
         );
     };
 

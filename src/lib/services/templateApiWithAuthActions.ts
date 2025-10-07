@@ -8,7 +8,7 @@ import { envs } from 'lib/env/MnestixEnv';
 import { getDefaultInfrastructure } from './database/infrastructureDatabaseActions';
 import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
 
-export async function createCustomSubmodelTemplate(template: Submodel | typeof EmptyDefaultTemplate): Promise<string> {
+export async function createBlueprint(template: Submodel | typeof EmptyDefaultTemplate): Promise<string> {
     const defaultInfrastructure = await getDefaultInfrastructure();
     const securityHeaders = await createSecurityHeaders(defaultInfrastructure);
     const templateApiClientWithAuth = TemplateClient.create(
@@ -18,7 +18,7 @@ export async function createCustomSubmodelTemplate(template: Submodel | typeof E
     return templateApiClientWithAuth.createCustomSubmodel(template);
 }
 
-export async function updateCustomSubmodelTemplate(submodel: Submodel, submodelId: string): Promise<void> {
+export async function updateBlueprint(submodel: Submodel, submodelId: string): Promise<void> {
     const defaultInfrastructure = await getDefaultInfrastructure();
     const securityHeaders = await createSecurityHeaders(defaultInfrastructure);
     const templateApiClientWithAuth = TemplateClient.create(

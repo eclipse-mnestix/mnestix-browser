@@ -1,7 +1,7 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select } from '@mui/material';
 import { useState } from 'react';
-import { TemplateEditSectionHeading } from '../../TemplateEditSectionHeading';
+import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
 import multiplicityDataJson from './multiplicity-data.json';
 import { MultiplicityEnum } from 'lib/enums/Multiplicity.enum';
 import { MultiplicityData } from 'lib/types/MultiplicityData';
@@ -78,7 +78,7 @@ export function MultiplicityEditComponent(props: MultiplicityEditComponentProps)
 
     return (
         <>
-            <TemplateEditSectionHeading type="multiplicity" />
+            <BlueprintEditSectionHeading type="multiplicity" />
             {valueEnabled ? (
                 <>
                     {allowMultiplicityToBeSet ? (

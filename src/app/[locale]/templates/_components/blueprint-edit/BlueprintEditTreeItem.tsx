@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import { Box, styled } from '@mui/material';
 import { TextSnippet } from '@mui/icons-material';
 import { MultiplicityEnum } from 'lib/enums/Multiplicity.enum';
-import { TemplateEditTreeItemMenu } from './TemplateEditTreeItemMenu';
+import { BlueprintEditTreeItemMenu } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditTreeItemMenu';
 import { useTranslations } from 'next-intl';
 import { useTreeItem, UseTreeItemParameters } from '@mui/x-tree-view/useTreeItem';
 import {
@@ -155,7 +155,7 @@ const CustomContent = React.forwardRef(function CustomContent(
                                 </Box>
                             )}
                         </Box>
-                        <TemplateEditTreeItemMenu
+                        <BlueprintEditTreeItemMenu
                             elementMultiplicity={multiplicity}
                             numberOfThisElement={getNumberOfElementsWithSameSemanticId(semanticId)}
                             onDuplicate={onDuplicate}
@@ -173,6 +173,6 @@ const CustomContent = React.forwardRef(function CustomContent(
     );
 });
 
-export const TemplateEditTreeItem = (props: CustomTreeItemProps) => {
+export const BlueprintEditTreeItem = (props: CustomTreeItemProps) => {
     return <CustomContent {...props} />;
 };
