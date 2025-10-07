@@ -74,7 +74,6 @@ export function DiscoveryListView() {
     const searchParams = useSearchParams();
     const encodedAssetId = searchParams.get('assetId');
     const assetId = encodedAssetId ? decodeURI(encodedAssetId) : undefined;
-
     const t = useTranslations('pages.discoveryList');
 
     async function loadContent() {

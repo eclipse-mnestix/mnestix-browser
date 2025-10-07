@@ -1,5 +1,5 @@
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import GenericAasList from 'components/basics/listBasics/GenericAasList';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { AasListConfig, AasListEntry } from 'lib/types/AasListEntry';
@@ -35,6 +35,17 @@ export function GenericListDataWrapper({ loadContent, children, ...config }: Gen
 
         setIsLoadingList(false);
     }, []);
+
+    // Cleanup blob URLs when component unmounts or list entries change
+    useEffect(() => {
+        return () => {
+            listEntries.forEach((entry) => {
+                if (entry.thumbnailUrl?.startsWith('blob:')) {
+                    URL.revokeObjectURL(entry.thumbnailUrl);
+                }
+            });
+        };
+    }, [listEntries]);
 
     return (
         <>
