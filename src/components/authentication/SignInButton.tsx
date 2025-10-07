@@ -3,10 +3,6 @@ import { Login } from '@mui/icons-material';
 import { useAuth } from 'lib/hooks/UseAuth';
 import { useTranslations } from 'next-intl';
 
-type SignInButtonProps = {
-    isDefault: boolean;
-};
-
 /**
  * Button that triggers the sign-in flow when clicked.
  */
