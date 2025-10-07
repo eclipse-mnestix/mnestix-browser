@@ -259,7 +259,7 @@
           "noTimeSeriesSegments": "No time series segments found."
         },
         "title": "Submodels",
-        "unknownModelType": "Unknown ModelType: {type}",
+        "unknownModelType": "Mnestix doesn't support this model type yet ({type}).",
         "repositoryUrlLabel": "Repository URL:"
       }
     },
@@ -292,7 +292,7 @@
         "aasAddError": "AAS could not be added.",
         "aasAlreadyAdded": "AAS cannot be added more than once.",
         "moreAasFound": "More than one AAS found in the discovery service, please provide the AAS ID instead.",
-        "unknownModelType": "Unknown ModelType: {type}"
+        "unknownModelType": "Mnestix doesn't support this model type yet ({type})."
       },
       "title": "Compare AAS"
     },
@@ -524,7 +524,7 @@
       "emptyTemplate": "Empty (Custom)",
       "emptyTemplateDescription": "Is not based upon a standardized template",
       "errors": {
-        "unknownModelType": "Unknown ModelType: {type}"
+        "unknownModelType": "Mnestix doesn't support this model type yet ({type})."
       },
       "labels": {
         "language": "Language",

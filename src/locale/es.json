@@ -259,7 +259,7 @@
           "noTimeSeriesSegments": "No se encontraron segmentos de series temporales."
         },
         "title": "Submodels",
-        "unknownModelType": "ModelType desconocido: {type}",
+        "unknownModelType": "Mnestix aún no admite este ModelType ({type}).",
         "repositoryUrlLabel": "Repository URL:"
       }
     },
@@ -292,7 +292,7 @@
         "aasAddError": "No se pudo añadir el AAS.",
         "aasAlreadyAdded": "No se puede añadir este AAS más de una vez.",
         "moreAasFound": "Más de un AAS encontrado en el servicio de descubrimiento, introduzca el ID del AAS, por favor.",
-        "unknownModelType": "ModelType desconocido: {type}"
+        "unknownModelType": "Mnestix aún no admite este ModelType ({type})."
       },
       "title": "Comparar AAS"
     },
@@ -524,7 +524,7 @@
       "emptyTemplate": "Vacío (A medida)",
       "emptyTemplateDescription": "No basada en una template estandarizada",
       "errors": {
-        "unknownModelType": "ModelType desconocido: {type}"
+        "unknownModelType": "Mnestix aún no admite este ModelType ({type})."
       },
       "labels": {
         "language": "Idioma",

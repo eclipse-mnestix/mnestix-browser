@@ -259,7 +259,7 @@
           "noTimeSeriesSegments": "Keine Zeitreihen-Segmente gefunden."
         },
         "title": "Teilmodelle",
-        "unknownModelType": "Unbekannter ModelType: {type}",
+        "unknownModelType": "Mnestix unterstützt diesen ModelType noch nicht ({type}).",
         "repositoryUrlLabel": "Repository URL:"
       }
     },
@@ -292,7 +292,7 @@
         "aasAddError": "AAS konnte nicht hinzugefügt werden.",
         "aasAlreadyAdded": "AAS kann nicht mehrmals hinzugefügt werden.",
         "moreAasFound": "Mehr als eine AAS im Discovery Service gefunden, bitte geben Sie die AAS-ID an.",
-        "unknownModelType": "Unbekannter ModelType: {type}"
+        "unknownModelType": "Mnestix unterstützt diesen ModelType noch nicht ({type})."
       },
       "title": "AAS vergleichen"
     },
@@ -524,7 +524,7 @@
       "emptyTemplate": "Leer (Custom)",
       "emptyTemplateDescription": "Basiert auf keinem standardisierten Template",
       "errors": {
-        "unknownModelType": "Unbekannter ModelType: {type}"
+        "unknownModelType": "Mnestix unterstützt diesen ModelType noch nicht ({type})."
       },
       "labels": {
         "language": "Sprache",
