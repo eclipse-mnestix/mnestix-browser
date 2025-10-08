@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Skeleton } from '@mui/material';
+import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Skeleton, Typography } from '@mui/material';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { getAasRepositoriesIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
@@ -43,24 +43,24 @@ export function SelectRepository(props: {
     return (
         <Box>
             {isLoading ? (
-                <Skeleton sx={{ mt: 2 }} width="200px" height="40px" variant="rectangular"></Skeleton>
+                <Skeleton sx={{ mt: 2 }} width="300px" height="40px" variant="rectangular"></Skeleton>
             ) : (
-                <FormControl variant="standard" sx={{ minWidth: 200, maxWidth: 300 }}>
+                <FormControl variant="standard" sx={{ minWidth: 300, maxWidth: 400 }}>
                     <InputLabel id="aas-repository-select" sx={{ color: 'text.secondary' }}>
-                        {t('infrastructureDropdownLabel')}
+                        {t('repositoryDropdownLabel')}
                     </InputLabel>
                     <Select
                         data-testid="repository-select"
                         labelId="aas-repository-select"
                         variant="standard"
                         value={selectedRepository}
-                        label={t('infrastructureDropdownLabel')}
+                        label={t('repositoryDropdownLabel')}
                         onChange={onRepositoryChanged}
                     >
                         {aasRepositories.map((repo, index) => {
                             return (
                                 <MenuItem key={index} value={repo.id} data-testid={`repository-select-item-${index}`}>
-                                    {repo.infrastructureName}
+                                    {repo.url} <Typography component="span" variant="body2" color="text.secondary" sx={{ml: '5px'}}>({repo.infrastructureName})</Typography>
                                 </MenuItem>
                             );
                         })}

@@ -210,7 +210,7 @@
       },
       "maxElementsWarning": "Cannot compare more than 3 elements",
       "page": "Page",
-      "infrastructureDropdownLabel": "Infrastructure",
+      "repositoryDropdownLabel": "AAS Repository (Infrastructure)",
       "selectRepository": "Please select a repository",
       "subHeader": "You will find all AAS from your repository here. You can select an AAS repository to switch between data sources.",
       "titleComparisonAddButton": "Add AAS to comparison"
