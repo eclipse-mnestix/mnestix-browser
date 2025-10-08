@@ -269,15 +269,20 @@ export default function Page() {
     }
 
     async function deleteElements() {
-        if (localFrontendBlueprint) {
-            let newLocalFrontendBlueprint = cloneDeep(localFrontendBlueprint);
-            for (const nodeId of deletedItems) {
-                newLocalFrontendBlueprint = deleteItem(nodeId, newLocalFrontendBlueprint);
-            }
-            await rewriteNodeIds(newLocalFrontendBlueprint, '0');
-            return newLocalFrontendBlueprint;
+        if (!localFrontendBlueprint) {
+            return undefined;
         }
-        return undefined;
+
+        const pendingIds = deletedItems
+            .slice()
+            .sort((a, b) => splitIdIntoArray(b).length - splitIdIntoArray(a).length || b.localeCompare(a));
+
+        let newLocalFrontendBlueprint = cloneDeep(localFrontendBlueprint);
+        for (const nodeId of pendingIds) {
+            newLocalFrontendBlueprint = deleteItem(nodeId, newLocalFrontendBlueprint);
+        }
+        await rewriteNodeIds(newLocalFrontendBlueprint, '0');
+        return newLocalFrontendBlueprint;
     }
 
     function deleteItem(elementToDeleteId: string, submodel: SubmodelViewObject): SubmodelViewObject {
