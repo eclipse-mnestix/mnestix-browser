@@ -4,10 +4,10 @@
   "generator-cli": {
     "version": "7.13.0",
     "generators": {
-      "typescript-fetch": {
+      "mnestix-aas-generator": {
         "generatorName": "typescript-fetch",
-        "inputSpec": "https://api.swaggerhub.com/apis/Plattform_i40/Entire-API-Collection/V3.0.4#/",
-        "output": "aas",
+        "output": ".",
+        "inputSpec": "http://localhost:5064/swagger/v1/swagger.json",
         "additionalProperties": {
           "supportsES6": true,
           "withoutRuntimeChecks": true

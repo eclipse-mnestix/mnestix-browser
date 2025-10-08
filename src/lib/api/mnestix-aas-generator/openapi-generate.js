@@ -2,8 +2,7 @@
 /* eslint-disable no-undef */
 
 import { execSync } from 'node:child_process';
-import { readdirSync } from 'node:fs';
-import { join, dirname } from 'node:path';
+import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 // In IDE process is not defined as we are in a browser context
@@ -23,16 +22,4 @@ function run(command) {
 run('npx --yes --package @openapitools/openapi-generator-cli@2.20.0 openapi-generator-cli generate');
 
 // Format generated TypeScript so there are nicer diffs
-run(`yarn prettier --write "${script_dir}/aas/**/*.ts"`);
-
-// Apply patches
-const patchDir = join(script_dir, 'patches');
-const patches = readdirSync(patchDir)
-    .filter((name) => name.endsWith('.patch'))
-    .sort();
-
-for (const patch of patches) {
-    const patchPath = join(patchDir, patch);
-    console.log(`Applying patch ${patchPath}`);
-    run(`git apply --whitespace=fix "${patchPath}"`);
-}
+run(`yarn prettier --write "${script_dir}/**/*.ts"`);
