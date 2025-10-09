@@ -6,7 +6,7 @@
     "generators": {
       "mnestix-aas-generator-v1": {
         "generatorName": "typescript-fetch",
-        "output": ".v1",
+        "output": "v1",
         "inputSpec": "http://localhost:5064/swagger/v1/swagger.json",
         "additionalProperties": {
           "supportsES6": true,
@@ -16,7 +16,7 @@
       },
       "mnestix-aas-generator-v2": {
         "generatorName": "typescript-fetch",
-        "output": ".v2",
+        "output": "v2",
         "inputSpec": "http://localhost:5064/swagger/v2/swagger.json",
         "additionalProperties": {
           "supportsES6": true,

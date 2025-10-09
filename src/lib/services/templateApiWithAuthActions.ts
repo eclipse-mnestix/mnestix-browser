@@ -7,15 +7,22 @@ import EmptyDefaultTemplate from 'assets/submodels/defaultEmptySubmodel.json';
 import { envs } from 'lib/env/MnestixEnv';
 import { getDefaultInfrastructure } from './database/infrastructureDatabaseActions';
 import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
+import { BlueprintsApi } from 'lib/api/mnestix-aas-generator/.v2';
+import { Configuration } from 'lib/api/mnestix-aas-generator/.v2/runtime';
 
 export async function createBlueprint(template: Submodel | typeof EmptyDefaultTemplate): Promise<string> {
     const defaultInfrastructure = await getDefaultInfrastructure();
     const securityHeaders = await createSecurityHeaders(defaultInfrastructure);
-    const templateApiClientWithAuth = TemplateClient.create(
-        envs.MNESTIX_AAS_GENERATOR_API_URL,
-        mnestixFetch(securityHeaders),
-    );
-    return templateApiClientWithAuth.createCustomSubmodel(template);
+
+    const apiConfig = new Configuration({ basePath: envs.MNESTIX_AAS_GENERATOR_API_URL, fetchApi: mnestixFetch });
+    const blueprintApiClient = new BlueprintsApi(apiConfig);
+    return blueprintApiClient.blueprintsCreateBlueprint(template);
+
+    // const templateApiClientWithAuth = TemplateClient.create(
+    //     envs.MNESTIX_AAS_GENERATOR_API_URL,
+    //     mnestixFetch(securityHeaders),
+    // );
+    // return templateApiClientWithAuth.createCustomSubmodel(template);
 }
 
 export async function updateBlueprint(submodel: Submodel, submodelId: string): Promise<void> {
