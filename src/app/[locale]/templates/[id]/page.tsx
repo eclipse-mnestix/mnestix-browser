@@ -412,13 +412,13 @@ export default function Page() {
                                     <ListItemIcon>
                                         <Restore fontSize="small" />
                                     </ListItemIcon>
-                                    {t('actions.revertChanges')}
+                                    {t('actions.revertChanges').toUpperCase()}
                                 </MenuItem>
                                 <MenuItem onClick={handleDeleteClick} data-testid="delete-template-button">
                                     <ListItemIcon>
                                         <Delete fontSize="small" />
                                     </ListItemIcon>
-                                    {t('actions.delete')}
+                                    {t('actions.delete').toUpperCase()}
                                 </MenuItem>
                             </Menu>
                         </Box>

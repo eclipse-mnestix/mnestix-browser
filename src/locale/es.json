@@ -23,6 +23,7 @@
     "authentication": {
       "authenticationNeeded": "Es necesario identificarse",
       "contactAdmin": "No es posible acceder a esta página. Por favor, contacte al administrador.",
+      "nonDefaultRepositoryInfo": "Ponte en contacto con tu administrador del sistema para actualizar la autenticación de la infraestructura.",
       "sessionExpired": "La sesión ha caducado. Por favor, inicie sesión de nuevo."
     },
     "carbonFootprint": {
@@ -204,11 +205,12 @@
         "productDesignation": "Denominación del producto (según fabricante)",
         "registryUrl": "Registry URL",
         "repositoryUrl": "Repository URL",
+        "infrastructureName": "Infraestructura",
         "viewAASButton": "Ver AAS"
       },
       "maxElementsWarning": "No se pueden comparar más de 3 elementos",
       "page": "Página",
-      "repositoryDropdown": "AAS repository",
+      "repositoryDropdownLabel": "AAS repository (Infrastructure)",
       "selectRepository": "Por favor, seleccione un repositorio",
       "subHeader": "Todos los AAS de su repositorio se muestran aquí. Puede seleccionar otro repositorio para cambiar la fuente de los datos.",
       "titleComparisonAddButton": "Añadir AAS a la comparación"
@@ -257,7 +259,7 @@
           "noTimeSeriesSegments": "No se encontraron segmentos de series temporales."
         },
         "title": "Submodels",
-        "unknownModelType": "ModelType desconocido: {type}",
+        "unknownModelType": "Mnestix aún no admite este ModelType ({type}).",
         "repositoryUrlLabel": "Repository URL:"
       }
     },
@@ -290,7 +292,7 @@
         "aasAddError": "No se pudo añadir el AAS.",
         "aasAlreadyAdded": "No se puede añadir este AAS más de una vez.",
         "moreAasFound": "Más de un AAS encontrado en el servicio de descubrimiento, introduzca el ID del AAS, por favor.",
-        "unknownModelType": "ModelType desconocido: {type}"
+        "unknownModelType": "Mnestix aún no admite este ModelType ({type})."
       },
       "title": "Comparar AAS"
     },
@@ -522,7 +524,7 @@
       "emptyTemplate": "Vacío (A medida)",
       "emptyTemplateDescription": "No basada en una template estandarizada",
       "errors": {
-        "unknownModelType": "ModelType desconocido: {type}"
+        "unknownModelType": "Mnestix aún no admite este ModelType ({type})."
       },
       "labels": {
         "language": "Idioma",
