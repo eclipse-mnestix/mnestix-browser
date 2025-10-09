@@ -17,39 +17,76 @@ export interface Aas {
      * @type {string}
      * @memberof Aas
      */
-    assetIdShort?: string | null;
+    assetIdShort?: string;
 }
 /**
  *
  * @export
- * @interface AasDataSupplyResult
+ * @interface AasGeneratorErrorInfo
  */
-export interface AasDataSupplyResult {
+export interface AasGeneratorErrorInfo {
+    /**
+     *
+     * @type {Array<string>}
+     * @memberof AasGeneratorErrorInfo
+     */
+    logs?: Array<string>;
     /**
      *
      * @type {string}
-     * @memberof AasDataSupplyResult
+     * @memberof AasGeneratorErrorInfo
+     */
+    qualifier?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof AasGeneratorErrorInfo
+     */
+    qualifierPath?: string;
+}
+/**
+ *
+ * @export
+ * @interface AasGeneratorResult
+ */
+export interface AasGeneratorResult {
+    /**
+     *
+     * @type {string}
+     * @memberof AasGeneratorResult
      */
     templateId?: string;
     /**
      *
      * @type {boolean}
-     * @memberof AasDataSupplyResult
+     * @memberof AasGeneratorResult
      */
     success?: boolean;
     /**
      *
      * @type {string}
-     * @memberof AasDataSupplyResult
+     * @memberof AasGeneratorResult
      */
     message?: string;
     /**
      *
      * @type {string}
-     * @memberof AasDataSupplyResult
+     * @memberof AasGeneratorResult
      */
     generatedSubmodelId?: string;
+    /**
+     *
+     * @type {AasGeneratorResultErrorInfo}
+     * @memberof AasGeneratorResult
+     */
+    errorInfo?: AasGeneratorResultErrorInfo;
 }
+/**
+ * @type AasGeneratorResultErrorInfo
+ *
+ * @export
+ */
+export type AasGeneratorResultErrorInfo = AasGeneratorErrorInfo;
 /**
  *
  * @export
@@ -114,10 +151,10 @@ export interface AddDataToAasRequest {
 export interface AddDataToAasResponse {
     /**
      *
-     * @type {Array<AasDataSupplyResult>}
+     * @type {Array<AasGeneratorResult>}
      * @memberof AddDataToAasResponse
      */
-    results?: Array<AasDataSupplyResult>;
+    results?: Array<AasGeneratorResult>;
 }
 /**
  *
@@ -162,31 +199,31 @@ export interface ProblemDetails {
      * @type {string}
      * @memberof ProblemDetails
      */
-    type?: string | null;
+    type?: string;
     /**
      *
      * @type {string}
      * @memberof ProblemDetails
      */
-    title?: string | null;
+    title?: string;
     /**
      *
      * @type {number}
      * @memberof ProblemDetails
      */
-    status?: number | null;
+    status?: number;
     /**
      *
      * @type {string}
      * @memberof ProblemDetails
      */
-    detail?: string | null;
+    detail?: string;
     /**
      *
      * @type {string}
      * @memberof ProblemDetails
      */
-    instance?: string | null;
+    instance?: string;
     /**
      *
      * @type {{ [key: string]: any; }}

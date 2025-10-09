@@ -7,3 +7,4 @@ export * from './CustomTemplatesApi';
 export * from './DataIngestApi';
 export * from './DefaultTemplatesApi';
 export * from './IdGeneratorApi';
+export * from './TemplateApi';

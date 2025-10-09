@@ -1,3 +1,4 @@
+.openapi-generator-ignore
 apis/AasCreatorApi.ts
 apis/AasRelationshipApi.ts
 apis/ConfigurationApi.ts

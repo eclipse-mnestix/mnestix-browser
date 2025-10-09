@@ -19,7 +19,7 @@ function run(command) {
 }
 
 // cli cannot be run from yarn as this ignores the config file
-run('npx --yes --package @openapitools/openapi-generator-cli@2.20.0 openapi-generator-cli generate');
+run('npx --yes --package @openapitools/openapi-generator-cli@2.2.0 openapi-generator-cli generate');
 
 // Format generated TypeScript so there are nicer diffs
 run(`yarn prettier --write "${script_dir}/**/*.ts"`);

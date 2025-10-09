@@ -1,16 +1,27 @@
 {
-  "$schema": "../../../node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "$schema": "../../../../node_modules/@openapitools/openapi-generator-cli/config.schema.json",
   "spaces": 2,
   "generator-cli": {
-    "version": "7.13.0",
+    "version": "7.4.0",
     "generators": {
-      "mnestix-aas-generator": {
+      "mnestix-aas-generator-v1": {
         "generatorName": "typescript-fetch",
-        "output": ".",
+        "output": ".v1",
         "inputSpec": "http://localhost:5064/swagger/v1/swagger.json",
         "additionalProperties": {
           "supportsES6": true,
-          "withoutRuntimeChecks": true
+          "withoutRuntimeChecks": true,
+          "withInterfaces": true
+        }
+      },
+      "mnestix-aas-generator-v2": {
+        "generatorName": "typescript-fetch",
+        "output": ".v2",
+        "inputSpec": "http://localhost:5064/swagger/v2/swagger.json",
+        "additionalProperties": {
+          "supportsES6": true,
+          "withoutRuntimeChecks": true,
+          "withInterfaces": true
         }
       }
     }
