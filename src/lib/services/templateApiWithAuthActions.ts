@@ -1,23 +1,33 @@
 'use server';
 
-import { mnestixFetch } from 'lib/api/infrastructure';
+import { mnestixFetch, mnestixFetchExternal } from 'lib/api/infrastructure';
 import { TemplateClient } from 'lib/api/generated-api/clients.g';
 import { Submodel } from 'lib/api/aas/models';
 import EmptyDefaultTemplate from 'assets/submodels/defaultEmptySubmodel.json';
 import { envs } from 'lib/env/MnestixEnv';
 import { getDefaultInfrastructure } from './database/infrastructureDatabaseActions';
 import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
-import { BlueprintsApi } from 'lib/api/mnestix-aas-generator/.v2';
-import { Configuration } from 'lib/api/mnestix-aas-generator/.v2/runtime';
+import { Configuration } from 'lib/api/mnestix-aas-generator/v2/runtime';
+import { BlueprintsApi } from 'lib/api/mnestix-aas-generator/v2/apis/BlueprintsApi';
 
 export async function createBlueprint(template: Submodel | typeof EmptyDefaultTemplate): Promise<string> {
     const defaultInfrastructure = await getDefaultInfrastructure();
     const securityHeaders = await createSecurityHeaders(defaultInfrastructure);
+    const fetchClient = mnestixFetchExternal(securityHeaders);
 
-    const apiConfig = new Configuration({ basePath: envs.MNESTIX_AAS_GENERATOR_API_URL, fetchApi: mnestixFetch });
+    const apiConfig = new Configuration({
+        basePath: envs.MNESTIX_AAS_GENERATOR_API_URL,
+        fetchApi: (input: RequestInfo | URL, init?: RequestInit) => fetchClient.fetch(input, init),
+    });
+
+    // TODO if v2:
     const blueprintApiClient = new BlueprintsApi(apiConfig);
-    return blueprintApiClient.blueprintsCreateBlueprint(template);
+    return blueprintApiClient.blueprintsCreateBlueprint({
+        apiVersion: 'v2',
+        body: template,
+    });
 
+    // TODO if v1:
     // const templateApiClientWithAuth = TemplateClient.create(
     //     envs.MNESTIX_AAS_GENERATOR_API_URL,
     //     mnestixFetch(securityHeaders),
