@@ -60,7 +60,15 @@ export function SelectRepository(props: {
                         {aasRepositories.map((repo, index) => {
                             return (
                                 <MenuItem key={index} value={repo.id} data-testid={`repository-select-item-${index}`}>
-                                    {repo.url} <Typography component="span" variant="body2" color="text.secondary" sx={{ml: '5px'}}>({repo.infrastructureName})</Typography>
+                                    {repo.url}{' '}
+                                    <Typography
+                                        component="span"
+                                        variant="body2"
+                                        color="text.secondary"
+                                        sx={{ ml: '5px' }}
+                                    >
+                                        ({repo.infrastructureName})
+                                    </Typography>
                                 </MenuItem>
                             );
                         })}
