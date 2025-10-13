@@ -77,6 +77,10 @@ export class DefaultTemplatesApi extends runtime.BaseAPI implements DefaultTempl
 
         headerParameters['Content-Type'] = 'application/json';
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // Bearer-Token authentication
+        }
+
         const response = await this.request(
             {
                 path: `/api/DefaultTemplates`,

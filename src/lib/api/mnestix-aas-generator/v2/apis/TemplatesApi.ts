@@ -74,6 +74,10 @@ export class TemplatesApi extends runtime.BaseAPI implements TemplatesApiInterfa
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // Bearer-Token authentication
+        }
+
         const response = await this.request(
             {
                 path: `/api/v2/Templates`,

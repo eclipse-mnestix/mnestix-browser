@@ -52,7 +52,7 @@ export default function Page() {
     const fetchTemplatesAndBlueprints = async () => {
         const _templateItems: TabSelectorItem[] = [];
         // fetching defaults first
-        const _templates = await getTemplates();
+        const _templates = await getTemplates("v2");
         if (!_templates.result?.length) {
             notificationSpawner.spawn({
                 message: t('noTemplatesWarning'),

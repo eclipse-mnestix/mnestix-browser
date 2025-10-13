@@ -32,6 +32,7 @@ export async function getTemplates(apiVersion: string): Promise<ApiResponseWrapp
         );
         return templateApiClient.getTemplates();
     }
+}
 
 export async function getBlueprints(): Promise<ApiResponseWrapper<Submodel[]>> {
     const defaultInfrastructure = await getDefaultInfrastructure();

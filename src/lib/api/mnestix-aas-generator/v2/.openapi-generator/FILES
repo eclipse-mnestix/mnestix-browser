@@ -1,5 +1,6 @@
 apis/BlueprintsApi.ts
 apis/TemplatesApi.ts
+apis/index.ts
 index.ts
 models/index.ts
 runtime.ts

@@ -103,6 +103,10 @@ export class TemplateApi extends runtime.BaseAPI implements TemplateApiInterface
 
         headerParameters['Content-Type'] = 'application/json';
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // Bearer-Token authentication
+        }
+
         const response = await this.request(
             {
                 path: `/api/Template/createCustomSubmodel`,
@@ -146,6 +150,10 @@ export class TemplateApi extends runtime.BaseAPI implements TemplateApiInterface
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // Bearer-Token authentication
+        }
 
         const response = await this.request(
             {

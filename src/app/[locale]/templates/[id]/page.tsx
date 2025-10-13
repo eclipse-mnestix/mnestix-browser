@@ -98,7 +98,7 @@ export default function Page() {
     }
 
     const fetchTemplates = async () => {
-        const templates = await getTemplates();
+        const templates = await getTemplates('v2');
         if (templates.isSuccess) {
             setTemplates(templates.result);
         } else {

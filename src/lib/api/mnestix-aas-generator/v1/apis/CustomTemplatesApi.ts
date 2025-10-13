@@ -94,6 +94,10 @@ export class CustomTemplatesApi extends runtime.BaseAPI implements CustomTemplat
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // Bearer-Token authentication
+        }
+
         const response = await this.request(
             {
                 path: `/api/CustomTemplates`,
@@ -138,6 +142,10 @@ export class CustomTemplatesApi extends runtime.BaseAPI implements CustomTemplat
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // Bearer-Token authentication
+        }
 
         const response = await this.request(
             {
