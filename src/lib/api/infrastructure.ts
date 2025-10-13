@@ -25,11 +25,11 @@ export function mnestixFetch(securityHeader: Record<string, string> | null): Mne
     };
 }
 
-export type MnestixFetchExternal = {
+export type MnestixFetchRaw = {
     fetch(url: RequestInfo | URL, init?: RequestInit | undefined): Promise<Response>;
 };
 
-export function mnestixFetchExternal(securityHeader: Record<string, string> | null): MnestixFetchExternal {
+export function mnestixFetchRaw(securityHeader: Record<string, string> | null): MnestixFetchRaw {
     return {
         fetch: async (url: RequestInfo | URL, init?: RequestInit) => {
             return await performServerFetchExternal(url, await initializeRequestOptions(init, securityHeader));

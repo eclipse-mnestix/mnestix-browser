@@ -1,6 +1,6 @@
 'use server';
 
-import { mnestixFetch, mnestixFetchExternal } from 'lib/api/infrastructure';
+import { mnestixFetch, mnestixFetchRaw } from 'lib/api/infrastructure';
 import { TemplateClient } from 'lib/api/generated-api/clients.g';
 import { Submodel } from 'lib/api/aas/models';
 import EmptyDefaultTemplate from 'assets/submodels/defaultEmptySubmodel.json';
@@ -13,7 +13,7 @@ import { BlueprintsApi } from 'lib/api/mnestix-aas-generator/v2/apis/BlueprintsA
 export async function createBlueprint(template: Submodel | typeof EmptyDefaultTemplate): Promise<string> {
     const defaultInfrastructure = await getDefaultInfrastructure();
     const securityHeaders = await createSecurityHeaders(defaultInfrastructure);
-    const fetchClient = mnestixFetchExternal(securityHeaders);
+    const fetchClient = mnestixFetchRaw(securityHeaders);
 
     const apiConfig = new Configuration({
         basePath: envs.MNESTIX_AAS_GENERATOR_API_URL,
