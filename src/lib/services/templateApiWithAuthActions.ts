@@ -21,18 +21,17 @@ export async function createBlueprint(template: Submodel | typeof EmptyDefaultTe
     });
 
     // TODO if v2:
-    const blueprintApiClient = new BlueprintsApi(apiConfig);
+/*     const blueprintApiClient = new BlueprintsApi(apiConfig);
     return blueprintApiClient.blueprintsCreateBlueprint({
         apiVersion: 'v2',
         body: template,
     });
-
-    // TODO if v1:
-    // const templateApiClientWithAuth = TemplateClient.create(
-    //     envs.MNESTIX_AAS_GENERATOR_API_URL,
-    //     mnestixFetch(securityHeaders),
-    // );
-    // return templateApiClientWithAuth.createCustomSubmodel(template);
+ */
+    const templateApiClientWithAuth = TemplateClient.create(
+        envs.MNESTIX_AAS_GENERATOR_API_URL,
+        mnestixFetch(securityHeaders),
+    );
+    return templateApiClientWithAuth.createCustomSubmodel(template);
 }
 
 export async function updateBlueprint(submodel: Submodel, submodelId: string): Promise<void> {
