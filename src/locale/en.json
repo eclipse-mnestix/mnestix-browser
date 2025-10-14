@@ -402,6 +402,13 @@
           "headerValueCrLfNotAllowed": "The header value must not contain CRLF sequences.",
           "headerValueIllegalChars": "The header value must not contain illegal characters."
         },
+        "healthCheck": {
+          "checking": "Checking...",
+          "unreachable": "Backend not reachable",
+          "offline": "Offline",
+          "version": "API Version: ",
+          "buildDate": "Build date"
+        },
         "subtitle": "Define which infrastructures should be used.",
         "title": "Infrastructures",
         "urlFieldNoTrailingSlash": "The URL must not end with a slash (/).",

@@ -10,6 +10,7 @@ import {
 } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureEnumUtil';
 import { getDefaultInfrastructureName } from 'lib/services/database/infrastructureDatabaseActions';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
+import { HealthCheckIndicator } from 'components/basics/HealthCheckIndicator';
 
 export function DefaultInfrastructure() {
     const [open, setOpen] = useState(false);
@@ -39,6 +40,7 @@ export function DefaultInfrastructure() {
                     <Typography variant="h6" sx={{ flexGrow: 1 }}>
                         {defaultInfrastructureName}
                     </Typography>
+                    <HealthCheckIndicator />
                     <IconButton onClick={() => setOpen(!open)} sx={{ color: theme.palette.primary.main }} size="small">
                         <VisibilityIcon />
                     </IconButton>

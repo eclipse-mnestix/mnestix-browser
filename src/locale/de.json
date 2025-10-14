@@ -402,6 +402,13 @@
           "headerValueCrLfNotAllowed": "Der Header-Wert darf keine CRLF-Sequenzen enthalten.",
           "headerValueIllegalChars": "Der Header-Wert darf keine ungültigen Zeichen enthalten."
         },
+        "healthCheck": {
+          "checking": "Prüfe...",
+          "unreachable": "Backend nicht erreichbar",
+          "offline": "Offline",
+          "version": "API-Version: ",
+          "buildDate": "Build-Datum"
+        },
         "subtitle": "Definieren Sie, welche Infrastrukturen verwendet werden sollen.",
         "title": "Infrastrukturen",
         "urlFieldNoTrailingSlash": "Die URL darf nicht mit einem Schrägstrich (/) enden.",
