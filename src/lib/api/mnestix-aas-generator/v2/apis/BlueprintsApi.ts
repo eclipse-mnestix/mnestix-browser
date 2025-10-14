@@ -16,17 +16,20 @@ import * as runtime from '../runtime';
 import type { ProblemDetails } from '../models/index';
 
 export interface BlueprintsCreateBlueprintRequest {
-    apiVersion: string | null;
     body: any | null;
 }
 
-export interface BlueprintsGetAllBlueprintsRequest {
-    apiVersion: string | null;
+export interface BlueprintsDeleteBlueprintRequest {
+    base64EncodedBlueprintId: string;
 }
 
 export interface BlueprintsGetBlueprintByIdRequest {
     base64EncodedBlueprintId: string;
-    apiVersion: string | null;
+}
+
+export interface BlueprintsUpdateBlueprintRequest {
+    submodelId: string;
+    body: any | null;
 }
 
 /**
@@ -38,8 +41,7 @@ export interface BlueprintsGetBlueprintByIdRequest {
 export interface BlueprintsApiInterface {
     /**
      *
-     * @summary ONLY FOR INTERNAL USAGE. BearerToken needed. Creates a new blueprint of the given submodel semantic id.
-     * @param {string} apiVersion
+     * @summary Creates a new blueprint of the given submodel semantic id.
      * @param {any} body The blueprint as json string
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -51,7 +53,7 @@ export interface BlueprintsApiInterface {
     ): Promise<runtime.ApiResponse<string>>;
 
     /**
-     * ONLY FOR INTERNAL USAGE. BearerToken needed. Creates a new blueprint of the given submodel semantic id.
+     * Creates a new blueprint of the given submodel semantic id.
      */
     blueprintsCreateBlueprint(
         requestParameters: BlueprintsCreateBlueprintRequest,
@@ -60,30 +62,45 @@ export interface BlueprintsApiInterface {
 
     /**
      *
-     * @summary Returns all blueprints.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
-     * @param {string} apiVersion
+     * @summary Deletes a blueprint identified by the base64-encoded template ID.
+     * @param {string} base64EncodedBlueprintId A base64-encoded string representing the unique identifier of the blueprint to be deleted.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BlueprintsApiInterface
      */
-    blueprintsGetAllBlueprintsRaw(
-        requestParameters: BlueprintsGetAllBlueprintsRequest,
+    blueprintsDeleteBlueprintRaw(
+        requestParameters: BlueprintsDeleteBlueprintRequest,
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<runtime.ApiResponse<void>>;
 
     /**
-     * Returns all blueprints.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
+     * Deletes a blueprint identified by the base64-encoded template ID.
      */
-    blueprintsGetAllBlueprints(
-        requestParameters: BlueprintsGetAllBlueprintsRequest,
+    blueprintsDeleteBlueprint(
+        requestParameters: BlueprintsDeleteBlueprintRequest,
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<void>;
 
     /**
      *
+     * @summary Returns all blueprints. This endpoint uses the template transformer to ensure the returned submodels are standard conform.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BlueprintsApiInterface
+     */
+    blueprintsGetAllBlueprintsRaw(
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     * Returns all blueprints. This endpoint uses the template transformer to ensure the returned submodels are standard conform.
+     */
+    blueprintsGetAllBlueprints(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+
+    /**
+     *
      * @summary Returns the blueprint with the specified shortId.
      * @param {string} base64EncodedBlueprintId
-     * @param {string} apiVersion
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BlueprintsApiInterface
@@ -100,6 +117,28 @@ export interface BlueprintsApiInterface {
         requestParameters: BlueprintsGetBlueprintByIdRequest,
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<void>;
+
+    /**
+     *
+     * @summary Updates a blueprint.
+     * @param {string} submodelId The id of the submodel
+     * @param {any} body The blueprint to update as json string
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BlueprintsApiInterface
+     */
+    blueprintsUpdateBlueprintRaw(
+        requestParameters: BlueprintsUpdateBlueprintRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     * Updates a blueprint.
+     */
+    blueprintsUpdateBlueprint(
+        requestParameters: BlueprintsUpdateBlueprintRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<void>;
 }
 
 /**
@@ -107,19 +146,12 @@ export interface BlueprintsApiInterface {
  */
 export class BlueprintsApi extends runtime.BaseAPI implements BlueprintsApiInterface {
     /**
-     * ONLY FOR INTERNAL USAGE. BearerToken needed. Creates a new blueprint of the given submodel semantic id.
+     * Creates a new blueprint of the given submodel semantic id.
      */
     async blueprintsCreateBlueprintRaw(
         requestParameters: BlueprintsCreateBlueprintRequest,
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<runtime.ApiResponse<string>> {
-        if (requestParameters['apiVersion'] == null) {
-            throw new runtime.RequiredError(
-                'apiVersion',
-                'Required parameter "apiVersion" was null or undefined when calling blueprintsCreateBlueprint().',
-            );
-        }
-
         if (requestParameters['body'] == null) {
             throw new runtime.RequiredError(
                 'body',
@@ -129,16 +161,12 @@ export class BlueprintsApi extends runtime.BaseAPI implements BlueprintsApiInter
 
         const queryParameters: any = {};
 
-        if (requestParameters['apiVersion'] != null) {
-            queryParameters['api-version'] = requestParameters['apiVersion'];
-        }
-
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // Bearer-Token authentication
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // ApiKey authentication
         }
 
         const response = await this.request(
@@ -160,7 +188,7 @@ export class BlueprintsApi extends runtime.BaseAPI implements BlueprintsApiInter
     }
 
     /**
-     * ONLY FOR INTERNAL USAGE. BearerToken needed. Creates a new blueprint of the given submodel semantic id.
+     * Creates a new blueprint of the given submodel semantic id.
      */
     async blueprintsCreateBlueprint(
         requestParameters: BlueprintsCreateBlueprintRequest,
@@ -171,29 +199,65 @@ export class BlueprintsApi extends runtime.BaseAPI implements BlueprintsApiInter
     }
 
     /**
-     * Returns all blueprints.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
+     * Deletes a blueprint identified by the base64-encoded template ID.
      */
-    async blueprintsGetAllBlueprintsRaw(
-        requestParameters: BlueprintsGetAllBlueprintsRequest,
+    async blueprintsDeleteBlueprintRaw(
+        requestParameters: BlueprintsDeleteBlueprintRequest,
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['apiVersion'] == null) {
+        if (requestParameters['base64EncodedBlueprintId'] == null) {
             throw new runtime.RequiredError(
-                'apiVersion',
-                'Required parameter "apiVersion" was null or undefined when calling blueprintsGetAllBlueprints().',
+                'base64EncodedBlueprintId',
+                'Required parameter "base64EncodedBlueprintId" was null or undefined when calling blueprintsDeleteBlueprint().',
             );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['apiVersion'] != null) {
-            queryParameters['api-version'] = requestParameters['apiVersion'];
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // ApiKey authentication
         }
+
+        const response = await this.request(
+            {
+                path: `/api/v2/Blueprints/{base64EncodedBlueprintId}`.replace(
+                    `{${'base64EncodedBlueprintId'}}`,
+                    encodeURIComponent(String(requestParameters['base64EncodedBlueprintId'])),
+                ),
+                method: 'DELETE',
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Deletes a blueprint identified by the base64-encoded template ID.
+     */
+    async blueprintsDeleteBlueprint(
+        requestParameters: BlueprintsDeleteBlueprintRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<void> {
+        await this.blueprintsDeleteBlueprintRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Returns all blueprints. This endpoint uses the template transformer to ensure the returned submodels are standard conform.
+     */
+    async blueprintsGetAllBlueprintsRaw(
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // Bearer-Token authentication
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // ApiKey authentication
         }
 
         const response = await this.request(
@@ -210,13 +274,10 @@ export class BlueprintsApi extends runtime.BaseAPI implements BlueprintsApiInter
     }
 
     /**
-     * Returns all blueprints.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
+     * Returns all blueprints. This endpoint uses the template transformer to ensure the returned submodels are standard conform.
      */
-    async blueprintsGetAllBlueprints(
-        requestParameters: BlueprintsGetAllBlueprintsRequest,
-        initOverrides?: RequestInit | runtime.InitOverrideFunction,
-    ): Promise<void> {
-        await this.blueprintsGetAllBlueprintsRaw(requestParameters, initOverrides);
+    async blueprintsGetAllBlueprints(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.blueprintsGetAllBlueprintsRaw(initOverrides);
     }
 
     /**
@@ -233,23 +294,12 @@ export class BlueprintsApi extends runtime.BaseAPI implements BlueprintsApiInter
             );
         }
 
-        if (requestParameters['apiVersion'] == null) {
-            throw new runtime.RequiredError(
-                'apiVersion',
-                'Required parameter "apiVersion" was null or undefined when calling blueprintsGetBlueprintById().',
-            );
-        }
-
         const queryParameters: any = {};
-
-        if (requestParameters['apiVersion'] != null) {
-            queryParameters['api-version'] = requestParameters['apiVersion'];
-        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // Bearer-Token authentication
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // ApiKey authentication
         }
 
         const response = await this.request(
@@ -276,5 +326,63 @@ export class BlueprintsApi extends runtime.BaseAPI implements BlueprintsApiInter
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<void> {
         await this.blueprintsGetBlueprintByIdRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Updates a blueprint.
+     */
+    async blueprintsUpdateBlueprintRaw(
+        requestParameters: BlueprintsUpdateBlueprintRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters['submodelId'] == null) {
+            throw new runtime.RequiredError(
+                'submodelId',
+                'Required parameter "submodelId" was null or undefined when calling blueprintsUpdateBlueprint().',
+            );
+        }
+
+        if (requestParameters['body'] == null) {
+            throw new runtime.RequiredError(
+                'body',
+                'Required parameter "body" was null or undefined when calling blueprintsUpdateBlueprint().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // ApiKey authentication
+        }
+
+        const response = await this.request(
+            {
+                path: `/api/v2/Blueprints/{submodelId}`.replace(
+                    `{${'submodelId'}}`,
+                    encodeURIComponent(String(requestParameters['submodelId'])),
+                ),
+                method: 'POST',
+                headers: headerParameters,
+                query: queryParameters,
+                body: requestParameters['body'] as any,
+            },
+            initOverrides,
+        );
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Updates a blueprint.
+     */
+    async blueprintsUpdateBlueprint(
+        requestParameters: BlueprintsUpdateBlueprintRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<void> {
+        await this.blueprintsUpdateBlueprintRaw(requestParameters, initOverrides);
     }
 }

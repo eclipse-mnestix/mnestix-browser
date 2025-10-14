@@ -1,7 +1,6 @@
 apis/CustomTemplatesApi.ts
 apis/DefaultTemplatesApi.ts
 apis/TemplateApi.ts
-apis/index.ts
 index.ts
 models/index.ts
 runtime.ts

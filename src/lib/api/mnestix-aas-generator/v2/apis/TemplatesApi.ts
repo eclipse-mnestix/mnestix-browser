@@ -15,8 +15,8 @@
 import * as runtime from '../runtime';
 import type { ProblemDetails } from '../models/index';
 
-export interface TemplatesGetAllTemplatesRequest {
-    apiVersion: string | null;
+export interface TemplatesCreateTemplateRequest {
+    body: any | null;
 }
 
 /**
@@ -27,25 +27,42 @@ export interface TemplatesGetAllTemplatesRequest {
  */
 export interface TemplatesApiInterface {
     /**
+     * If SubmodelTemplatesApiUrl is configured, the endpoint returns Status403Forbidden instructing clients to use the remote templates API instead. Otherwise, it logs the payload\'s id and forwards the body to AddNewSubmodelInDefaultTemplateAasAsync.
+     * @summary Creates a new template in the templates AAS when the local endpoint is enabled.
+     * @param {any} body
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TemplatesApiInterface
+     */
+    templatesCreateTemplateRaw(
+        requestParameters: TemplatesCreateTemplateRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<string>>;
+
+    /**
+     * If SubmodelTemplatesApiUrl is configured, the endpoint returns Status403Forbidden instructing clients to use the remote templates API instead. Otherwise, it logs the payload\'s id and forwards the body to AddNewSubmodelInDefaultTemplateAasAsync.
+     * Creates a new template in the templates AAS when the local endpoint is enabled.
+     */
+    templatesCreateTemplate(
+        requestParameters: TemplatesCreateTemplateRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<string>;
+
+    /**
      *
-     * @summary ONLY FOR INTERNAL USAGE. BearerToken needed. Returns all submodel templates from the templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
-     * @param {string} apiVersion
+     * @summary Returns all submodel templates from the templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TemplatesApiInterface
      */
     templatesGetAllTemplatesRaw(
-        requestParameters: TemplatesGetAllTemplatesRequest,
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<runtime.ApiResponse<void>>;
 
     /**
-     * ONLY FOR INTERNAL USAGE. BearerToken needed. Returns all submodel templates from the templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
+     * Returns all submodel templates from the templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
      */
-    templatesGetAllTemplates(
-        requestParameters: TemplatesGetAllTemplatesRequest,
-        initOverrides?: RequestInit | runtime.InitOverrideFunction,
-    ): Promise<void>;
+    templatesGetAllTemplates(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
 }
 
 /**
@@ -53,29 +70,72 @@ export interface TemplatesApiInterface {
  */
 export class TemplatesApi extends runtime.BaseAPI implements TemplatesApiInterface {
     /**
-     * ONLY FOR INTERNAL USAGE. BearerToken needed. Returns all submodel templates from the templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
+     * If SubmodelTemplatesApiUrl is configured, the endpoint returns Status403Forbidden instructing clients to use the remote templates API instead. Otherwise, it logs the payload\'s id and forwards the body to AddNewSubmodelInDefaultTemplateAasAsync.
+     * Creates a new template in the templates AAS when the local endpoint is enabled.
      */
-    async templatesGetAllTemplatesRaw(
-        requestParameters: TemplatesGetAllTemplatesRequest,
+    async templatesCreateTemplateRaw(
+        requestParameters: TemplatesCreateTemplateRequest,
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
-    ): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['apiVersion'] == null) {
+    ): Promise<runtime.ApiResponse<string>> {
+        if (requestParameters['body'] == null) {
             throw new runtime.RequiredError(
-                'apiVersion',
-                'Required parameter "apiVersion" was null or undefined when calling templatesGetAllTemplates().',
+                'body',
+                'Required parameter "body" was null or undefined when calling templatesCreateTemplate().',
             );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['apiVersion'] != null) {
-            queryParameters['api-version'] = requestParameters['apiVersion'];
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // ApiKey authentication
         }
+
+        const response = await this.request(
+            {
+                path: `/api/v2/Templates`,
+                method: 'POST',
+                headers: headerParameters,
+                query: queryParameters,
+                body: requestParameters['body'] as any,
+            },
+            initOverrides,
+        );
+
+        if (this.isJsonMime(response.headers.get('content-type'))) {
+            return new runtime.JSONApiResponse<string>(response);
+        } else {
+            return new runtime.TextApiResponse(response) as any;
+        }
+    }
+
+    /**
+     * If SubmodelTemplatesApiUrl is configured, the endpoint returns Status403Forbidden instructing clients to use the remote templates API instead. Otherwise, it logs the payload\'s id and forwards the body to AddNewSubmodelInDefaultTemplateAasAsync.
+     * Creates a new template in the templates AAS when the local endpoint is enabled.
+     */
+    async templatesCreateTemplate(
+        requestParameters: TemplatesCreateTemplateRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<string> {
+        const response = await this.templatesCreateTemplateRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Returns all submodel templates from the templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
+     */
+    async templatesGetAllTemplatesRaw(
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // Bearer-Token authentication
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // ApiKey authentication
         }
 
         const response = await this.request(
@@ -92,12 +152,9 @@ export class TemplatesApi extends runtime.BaseAPI implements TemplatesApiInterfa
     }
 
     /**
-     * ONLY FOR INTERNAL USAGE. BearerToken needed. Returns all submodel templates from the templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
+     * Returns all submodel templates from the templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
      */
-    async templatesGetAllTemplates(
-        requestParameters: TemplatesGetAllTemplatesRequest,
-        initOverrides?: RequestInit | runtime.InitOverrideFunction,
-    ): Promise<void> {
-        await this.templatesGetAllTemplatesRaw(requestParameters, initOverrides);
+    async templatesGetAllTemplates(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.templatesGetAllTemplatesRaw(initOverrides);
     }
 }

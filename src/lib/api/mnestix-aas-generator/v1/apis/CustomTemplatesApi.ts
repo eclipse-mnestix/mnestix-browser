@@ -15,13 +15,8 @@
 import * as runtime from '../runtime';
 import type { ProblemDetails } from '../models/index';
 
-export interface CustomTemplatesGetAllCustomSubmodelsRequest {
-    apiVersion?: string;
-}
-
 export interface CustomTemplatesGetCustomSubmodelRequest {
     base64EncodedCustomTemplateId: string;
-    apiVersion?: string;
 }
 
 /**
@@ -34,29 +29,23 @@ export interface CustomTemplatesApiInterface {
     /**
      *
      * @summary Returns all submodel templates from the custom templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
-     * @param {string} [apiVersion]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CustomTemplatesApiInterface
      */
     customTemplatesGetAllCustomSubmodelsRaw(
-        requestParameters: CustomTemplatesGetAllCustomSubmodelsRequest,
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<runtime.ApiResponse<void>>;
 
     /**
      * Returns all submodel templates from the custom templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
      */
-    customTemplatesGetAllCustomSubmodels(
-        requestParameters: CustomTemplatesGetAllCustomSubmodelsRequest,
-        initOverrides?: RequestInit | runtime.InitOverrideFunction,
-    ): Promise<void>;
+    customTemplatesGetAllCustomSubmodels(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
 
     /**
      *
      * @summary Returns the submodel template from the custom templates AAS with the specified shortId.
      * @param {string} base64EncodedCustomTemplateId
-     * @param {string} [apiVersion]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CustomTemplatesApiInterface
@@ -83,24 +72,19 @@ export class CustomTemplatesApi extends runtime.BaseAPI implements CustomTemplat
      * Returns all submodel templates from the custom templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
      */
     async customTemplatesGetAllCustomSubmodelsRaw(
-        requestParameters: CustomTemplatesGetAllCustomSubmodelsRequest,
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
 
-        if (requestParameters['apiVersion'] != null) {
-            queryParameters['api-version'] = requestParameters['apiVersion'];
-        }
-
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // Bearer-Token authentication
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // ApiKey authentication
         }
 
         const response = await this.request(
             {
-                path: `/api/CustomTemplates`,
+                path: `/api/v1/CustomTemplates`,
                 method: 'GET',
                 headers: headerParameters,
                 query: queryParameters,
@@ -115,10 +99,9 @@ export class CustomTemplatesApi extends runtime.BaseAPI implements CustomTemplat
      * Returns all submodel templates from the custom templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
      */
     async customTemplatesGetAllCustomSubmodels(
-        requestParameters: CustomTemplatesGetAllCustomSubmodelsRequest = {},
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<void> {
-        await this.customTemplatesGetAllCustomSubmodelsRaw(requestParameters, initOverrides);
+        await this.customTemplatesGetAllCustomSubmodelsRaw(initOverrides);
     }
 
     /**
@@ -137,19 +120,15 @@ export class CustomTemplatesApi extends runtime.BaseAPI implements CustomTemplat
 
         const queryParameters: any = {};
 
-        if (requestParameters['apiVersion'] != null) {
-            queryParameters['api-version'] = requestParameters['apiVersion'];
-        }
-
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // Bearer-Token authentication
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // ApiKey authentication
         }
 
         const response = await this.request(
             {
-                path: `/api/CustomTemplates/{base64EncodedCustomTemplateId}`.replace(
+                path: `/api/v1/CustomTemplates/{base64EncodedCustomTemplateId}`.replace(
                     `{${'base64EncodedCustomTemplateId'}}`,
                     encodeURIComponent(String(requestParameters['base64EncodedCustomTemplateId'])),
                 ),

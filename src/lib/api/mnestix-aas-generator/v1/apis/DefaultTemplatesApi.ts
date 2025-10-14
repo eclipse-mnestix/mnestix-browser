@@ -16,7 +16,6 @@ import * as runtime from '../runtime';
 
 export interface DefaultTemplatesAddDefaultSubmodelTemplateRequest {
     body: any | null;
-    apiVersion?: string;
 }
 
 /**
@@ -30,7 +29,6 @@ export interface DefaultTemplatesApiInterface {
      *
      * @summary Creates a new custom template in the custom templates AAS. Submodel Id needs to be unique and present in JSON body.
      * @param {any} body The submodel template to add as json.
-     * @param {string} [apiVersion]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultTemplatesApiInterface
@@ -69,21 +67,17 @@ export class DefaultTemplatesApi extends runtime.BaseAPI implements DefaultTempl
 
         const queryParameters: any = {};
 
-        if (requestParameters['apiVersion'] != null) {
-            queryParameters['api-version'] = requestParameters['apiVersion'];
-        }
-
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // Bearer-Token authentication
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // ApiKey authentication
         }
 
         const response = await this.request(
             {
-                path: `/api/DefaultTemplates`,
+                path: `/api/v1/DefaultTemplates`,
                 method: 'POST',
                 headers: headerParameters,
                 query: queryParameters,

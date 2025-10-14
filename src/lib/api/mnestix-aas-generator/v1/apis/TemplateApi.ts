@@ -15,13 +15,25 @@
 import * as runtime from '../runtime';
 import type { ProblemDetails } from '../models/index';
 
-export interface TemplateCreateCustomSubmodelRequest {
+export interface TemplateAddDefaultSubmodelRequest {
     body: any | null;
-    apiVersion?: string;
 }
 
-export interface TemplateGetAllDefaultSubmodelsRequest {
-    apiVersion?: string;
+export interface TemplateCreateCustomSubmodelRequest {
+    body: any | null;
+}
+
+export interface TemplateDeleteCustomSubmodelRequest {
+    base64EncodedCustomTemplateId: string;
+}
+
+export interface TemplateGetCustomSubmodelRequest {
+    submodelIdShort: string;
+}
+
+export interface TemplateUpdateCustomSubmodelRequest {
+    submodelId: string;
+    body: any | null;
 }
 
 /**
@@ -33,9 +45,29 @@ export interface TemplateGetAllDefaultSubmodelsRequest {
 export interface TemplateApiInterface {
     /**
      *
+     * @summary ONLY FOR INTERNAL USAGE. BearerToken needed. Creates a new custom template in the custom templates AAS.
+     * @param {any} body
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TemplateApiInterface
+     */
+    templateAddDefaultSubmodelRaw(
+        requestParameters: TemplateAddDefaultSubmodelRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<string>>;
+
+    /**
+     * ONLY FOR INTERNAL USAGE. BearerToken needed. Creates a new custom template in the custom templates AAS.
+     */
+    templateAddDefaultSubmodel(
+        requestParameters: TemplateAddDefaultSubmodelRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<string>;
+
+    /**
+     *
      * @summary ONLY FOR INTERNAL USAGE. BearerToken needed. Creates a new custom template in the custom templates AAS of the given submodel semantic id.
      * @param {any} body The default submodel as json string
-     * @param {string} [apiVersion]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TemplateApiInterface
@@ -55,22 +87,97 @@ export interface TemplateApiInterface {
 
     /**
      *
+     * @summary Deletes a custom submodel identified by the base64-encoded template ID.
+     * @param {string} base64EncodedCustomTemplateId A base64-encoded string representing the unique identifier of the custom template to be deleted.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TemplateApiInterface
+     */
+    templateDeleteCustomSubmodelRaw(
+        requestParameters: TemplateDeleteCustomSubmodelRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     * Deletes a custom submodel identified by the base64-encoded template ID.
+     */
+    templateDeleteCustomSubmodel(
+        requestParameters: TemplateDeleteCustomSubmodelRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<void>;
+
+    /**
+     *
+     * @summary ONLY FOR INTERNAL USAGE. BearerToken needed. Returns all submodel templates from the custom templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TemplateApiInterface
+     */
+    templateGetAllCustomSubmodelsRaw(
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     * ONLY FOR INTERNAL USAGE. BearerToken needed. Returns all submodel templates from the custom templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
+     */
+    templateGetAllCustomSubmodels(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+
+    /**
+     *
      * @summary ONLY FOR INTERNAL USAGE. BearerToken needed. Returns all default submodel templates from the default templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
-     * @param {string} [apiVersion]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TemplateApiInterface
      */
     templateGetAllDefaultSubmodelsRaw(
-        requestParameters: TemplateGetAllDefaultSubmodelsRequest,
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<runtime.ApiResponse<void>>;
 
     /**
      * ONLY FOR INTERNAL USAGE. BearerToken needed. Returns all default submodel templates from the default templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
      */
-    templateGetAllDefaultSubmodels(
-        requestParameters: TemplateGetAllDefaultSubmodelsRequest,
+    templateGetAllDefaultSubmodels(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+
+    /**
+     *
+     * @summary ONLY FOR INTERNAL USAGE. BearerToken needed. Returns one submodel templates from the custom templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
+     * @param {string} submodelIdShort
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TemplateApiInterface
+     */
+    templateGetCustomSubmodelRaw(
+        requestParameters: TemplateGetCustomSubmodelRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     * ONLY FOR INTERNAL USAGE. BearerToken needed. Returns one submodel templates from the custom templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
+     */
+    templateGetCustomSubmodel(
+        requestParameters: TemplateGetCustomSubmodelRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<void>;
+
+    /**
+     *
+     * @summary ONLY FOR INTERNAL USAGE. BearerToken needed. Updates a custom template in the custom templates AAS.
+     * @param {string} submodelId The id of the submodel
+     * @param {any} body The submodel to update as json string
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TemplateApiInterface
+     */
+    templateUpdateCustomSubmodelRaw(
+        requestParameters: TemplateUpdateCustomSubmodelRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     * ONLY FOR INTERNAL USAGE. BearerToken needed. Updates a custom template in the custom templates AAS.
+     */
+    templateUpdateCustomSubmodel(
+        requestParameters: TemplateUpdateCustomSubmodelRequest,
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<void>;
 }
@@ -79,6 +186,59 @@ export interface TemplateApiInterface {
  *
  */
 export class TemplateApi extends runtime.BaseAPI implements TemplateApiInterface {
+    /**
+     * ONLY FOR INTERNAL USAGE. BearerToken needed. Creates a new custom template in the custom templates AAS.
+     */
+    async templateAddDefaultSubmodelRaw(
+        requestParameters: TemplateAddDefaultSubmodelRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<string>> {
+        if (requestParameters['body'] == null) {
+            throw new runtime.RequiredError(
+                'body',
+                'Required parameter "body" was null or undefined when calling templateAddDefaultSubmodel().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // ApiKey authentication
+        }
+
+        const response = await this.request(
+            {
+                path: `/api/v1/Template/addDefaultSubmodel`,
+                method: 'POST',
+                headers: headerParameters,
+                query: queryParameters,
+                body: requestParameters['body'] as any,
+            },
+            initOverrides,
+        );
+
+        if (this.isJsonMime(response.headers.get('content-type'))) {
+            return new runtime.JSONApiResponse<string>(response);
+        } else {
+            return new runtime.TextApiResponse(response) as any;
+        }
+    }
+
+    /**
+     * ONLY FOR INTERNAL USAGE. BearerToken needed. Creates a new custom template in the custom templates AAS.
+     */
+    async templateAddDefaultSubmodel(
+        requestParameters: TemplateAddDefaultSubmodelRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<string> {
+        const response = await this.templateAddDefaultSubmodelRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
     /**
      * ONLY FOR INTERNAL USAGE. BearerToken needed. Creates a new custom template in the custom templates AAS of the given submodel semantic id.
      */
@@ -95,21 +255,17 @@ export class TemplateApi extends runtime.BaseAPI implements TemplateApiInterface
 
         const queryParameters: any = {};
 
-        if (requestParameters['apiVersion'] != null) {
-            queryParameters['api-version'] = requestParameters['apiVersion'];
-        }
-
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // Bearer-Token authentication
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // ApiKey authentication
         }
 
         const response = await this.request(
             {
-                path: `/api/Template/createCustomSubmodel`,
+                path: `/api/v1/Template/createCustomSubmodel`,
                 method: 'POST',
                 headers: headerParameters,
                 query: queryParameters,
@@ -137,27 +293,104 @@ export class TemplateApi extends runtime.BaseAPI implements TemplateApiInterface
     }
 
     /**
-     * ONLY FOR INTERNAL USAGE. BearerToken needed. Returns all default submodel templates from the default templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
+     * Deletes a custom submodel identified by the base64-encoded template ID.
      */
-    async templateGetAllDefaultSubmodelsRaw(
-        requestParameters: TemplateGetAllDefaultSubmodelsRequest,
+    async templateDeleteCustomSubmodelRaw(
+        requestParameters: TemplateDeleteCustomSubmodelRequest,
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<runtime.ApiResponse<void>> {
-        const queryParameters: any = {};
-
-        if (requestParameters['apiVersion'] != null) {
-            queryParameters['api-version'] = requestParameters['apiVersion'];
+        if (requestParameters['base64EncodedCustomTemplateId'] == null) {
+            throw new runtime.RequiredError(
+                'base64EncodedCustomTemplateId',
+                'Required parameter "base64EncodedCustomTemplateId" was null or undefined when calling templateDeleteCustomSubmodel().',
+            );
         }
+
+        const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // Bearer-Token authentication
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // ApiKey authentication
         }
 
         const response = await this.request(
             {
-                path: `/api/Template/allDefaultSubmodels`,
+                path: `/api/v1/Template/{base64EncodedCustomTemplateId}`.replace(
+                    `{${'base64EncodedCustomTemplateId'}}`,
+                    encodeURIComponent(String(requestParameters['base64EncodedCustomTemplateId'])),
+                ),
+                method: 'DELETE',
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Deletes a custom submodel identified by the base64-encoded template ID.
+     */
+    async templateDeleteCustomSubmodel(
+        requestParameters: TemplateDeleteCustomSubmodelRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<void> {
+        await this.templateDeleteCustomSubmodelRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * ONLY FOR INTERNAL USAGE. BearerToken needed. Returns all submodel templates from the custom templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
+     */
+    async templateGetAllCustomSubmodelsRaw(
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // ApiKey authentication
+        }
+
+        const response = await this.request(
+            {
+                path: `/api/v1/Template/allCustomSubmodels`,
+                method: 'GET',
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * ONLY FOR INTERNAL USAGE. BearerToken needed. Returns all submodel templates from the custom templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
+     */
+    async templateGetAllCustomSubmodels(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.templateGetAllCustomSubmodelsRaw(initOverrides);
+    }
+
+    /**
+     * ONLY FOR INTERNAL USAGE. BearerToken needed. Returns all default submodel templates from the default templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
+     */
+    async templateGetAllDefaultSubmodelsRaw(
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // ApiKey authentication
+        }
+
+        const response = await this.request(
+            {
+                path: `/api/v1/Template/allDefaultSubmodels`,
                 method: 'GET',
                 headers: headerParameters,
                 query: queryParameters,
@@ -171,10 +404,113 @@ export class TemplateApi extends runtime.BaseAPI implements TemplateApiInterface
     /**
      * ONLY FOR INTERNAL USAGE. BearerToken needed. Returns all default submodel templates from the default templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
      */
-    async templateGetAllDefaultSubmodels(
-        requestParameters: TemplateGetAllDefaultSubmodelsRequest = {},
+    async templateGetAllDefaultSubmodels(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.templateGetAllDefaultSubmodelsRaw(initOverrides);
+    }
+
+    /**
+     * ONLY FOR INTERNAL USAGE. BearerToken needed. Returns one submodel templates from the custom templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
+     */
+    async templateGetCustomSubmodelRaw(
+        requestParameters: TemplateGetCustomSubmodelRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters['submodelIdShort'] == null) {
+            throw new runtime.RequiredError(
+                'submodelIdShort',
+                'Required parameter "submodelIdShort" was null or undefined when calling templateGetCustomSubmodel().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // ApiKey authentication
+        }
+
+        const response = await this.request(
+            {
+                path: `/api/v1/Template/customSubmodel/{submodelIdShort}`.replace(
+                    `{${'submodelIdShort'}}`,
+                    encodeURIComponent(String(requestParameters['submodelIdShort'])),
+                ),
+                method: 'GET',
+                headers: headerParameters,
+                query: queryParameters,
+            },
+            initOverrides,
+        );
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * ONLY FOR INTERNAL USAGE. BearerToken needed. Returns one submodel templates from the custom templates AAS.  This endpoint uses the template transformer to ensure the returned submodels are standard conform.
+     */
+    async templateGetCustomSubmodel(
+        requestParameters: TemplateGetCustomSubmodelRequest,
         initOverrides?: RequestInit | runtime.InitOverrideFunction,
     ): Promise<void> {
-        await this.templateGetAllDefaultSubmodelsRaw(requestParameters, initOverrides);
+        await this.templateGetCustomSubmodelRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * ONLY FOR INTERNAL USAGE. BearerToken needed. Updates a custom template in the custom templates AAS.
+     */
+    async templateUpdateCustomSubmodelRaw(
+        requestParameters: TemplateUpdateCustomSubmodelRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters['submodelId'] == null) {
+            throw new runtime.RequiredError(
+                'submodelId',
+                'Required parameter "submodelId" was null or undefined when calling templateUpdateCustomSubmodel().',
+            );
+        }
+
+        if (requestParameters['body'] == null) {
+            throw new runtime.RequiredError(
+                'body',
+                'Required parameter "body" was null or undefined when calling templateUpdateCustomSubmodel().',
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters['X-API-KEY'] = await this.configuration.apiKey('X-API-KEY'); // ApiKey authentication
+        }
+
+        const response = await this.request(
+            {
+                path: `/api/v1/Template/updateCustomSubmodel/{submodelId}`.replace(
+                    `{${'submodelId'}}`,
+                    encodeURIComponent(String(requestParameters['submodelId'])),
+                ),
+                method: 'POST',
+                headers: headerParameters,
+                query: queryParameters,
+                body: requestParameters['body'] as any,
+            },
+            initOverrides,
+        );
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * ONLY FOR INTERNAL USAGE. BearerToken needed. Updates a custom template in the custom templates AAS.
+     */
+    async templateUpdateCustomSubmodel(
+        requestParameters: TemplateUpdateCustomSubmodelRequest,
+        initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    ): Promise<void> {
+        await this.templateUpdateCustomSubmodelRaw(requestParameters, initOverrides);
     }
 }
