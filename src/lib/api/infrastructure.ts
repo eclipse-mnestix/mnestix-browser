@@ -1,4 +1,4 @@
-﻿import { performServerFetch, performServerFetchExternal } from 'lib/api/serverFetch';
+﻿import { performServerFetch, performServerFetchRaw } from 'lib/api/serverFetch';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 
 const initializeRequestOptions = async (init?: RequestInit, securityHeader?: Record<string, string> | null) => {
@@ -32,7 +32,7 @@ export type MnestixFetchRaw = {
 export function mnestixFetchRaw(securityHeader: Record<string, string> | null): MnestixFetchRaw {
     return {
         fetch: async (url: RequestInfo | URL, init?: RequestInit) => {
-            return await performServerFetchExternal(url, await initializeRequestOptions(init, securityHeader));
+            return await performServerFetchRaw(url, await initializeRequestOptions(init, securityHeader));
         },
     };
 }

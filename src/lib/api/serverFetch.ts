@@ -40,7 +40,7 @@ export async function performServerFetch<T>(
     }
 }
 
-export async function performServerFetchExternal(
+export async function performServerFetchRaw(
     input: string | Request | URL,
     init?: RequestInit | undefined,
 ): Promise<Response> {
