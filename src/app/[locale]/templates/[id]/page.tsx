@@ -37,8 +37,8 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useEnv } from 'app/EnvProvider';
 import { useParams, useRouter } from 'next/navigation';
 import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
-import { updateBlueprint } from 'lib/services/templateApiWithAuthActions';
-import { deleteBlueprintById, getBlueprintById, getTemplates } from 'lib/services/templatesApiActions';
+import { updateBlueprint } from 'lib/services/aas-generator/blueprintsApiActions';
+import { deleteBlueprintById, getBlueprintById, getTemplates } from 'lib/services/aas-generator/templatesApiActions';
 import { BlueprintDeleteDialog } from 'app/[locale]/templates/_components/BlueprintDeleteDialog';
 import { clone } from 'lodash';
 import { useShowError } from 'lib/hooks/UseShowError';
@@ -63,13 +63,14 @@ export default function Page() {
     const [deletedItems, setDeletedItems] = useState<string[]>([]);
     const [templates, setTemplates] = useState<Submodel[]>();
     const env = useEnv();
+    const templateApiVersion = 'v1'; // TODO replace with version from context
     const { showError } = useShowError();
     const t = useTranslations('pages.templates');
     const locale = useLocale();
 
     const fetchBlueprint = async () => {
         if (!id) return;
-        const custom = await getBlueprintById(id);
+    const custom = await getBlueprintById(id, templateApiVersion);
         if (custom.isSuccess) {
             setLocalFrontendBlueprint(generateSubmodelViewObject(custom.result));
         } else showError(custom.message);
@@ -98,7 +99,7 @@ export default function Page() {
     }
 
     const fetchTemplates = async () => {
-        const templates = await getTemplates('v2');
+    const templates = await getTemplates(templateApiVersion);
         if (templates.isSuccess) {
             setTemplates(templates.result);
         } else {
@@ -168,7 +169,7 @@ export default function Page() {
     const deleteBlueprint = async () => {
         if (!id) return;
         try {
-            await deleteBlueprintById(id);
+            await deleteBlueprintById(id, templateApiVersion);
             notificationSpawner.spawn({
                 message: t('blueprintDeletedSuccessfully'),
                 severity: 'success',
@@ -230,7 +231,7 @@ export default function Page() {
             try {
                 setIsSaving(true);
                 const submodel = generateSubmodel(updatedBlueprint);
-                await updateBlueprint(submodel, submodel.id);
+                await updateBlueprint(submodel, submodel.id, templateApiVersion);
                 handleSuccessfulSave();
                 setLocalFrontendBlueprint(updatedBlueprint);
             } catch (e) {

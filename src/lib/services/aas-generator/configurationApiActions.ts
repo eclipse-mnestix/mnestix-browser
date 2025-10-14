@@ -7,7 +7,7 @@ import { envs } from 'lib/env/MnestixEnv';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { IConfigurationShellApi } from 'lib/api/configuration-shell-api/configurationShellApiInterface';
 import { ConfigurationShellApiV2 } from 'lib/api/configuration-shell-api/configurationShellApiV2';
-import { getDefaultInfrastructure } from './database/infrastructureDatabaseActions';
+import { getDefaultInfrastructure } from '../database/infrastructureDatabaseActions';
 import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
 
 export async function getIdGenerationSettings(): Promise<ApiResponseWrapper<Submodel>> {

@@ -7,19 +7,16 @@ import { envs } from 'lib/env/MnestixEnv';
 export class TemplateShellApi {
     basePathOwnApi: string;
     basePathCustoms: string;
-    // not used anywhere?!?!
-    enable_authentication: boolean;
     private http: MnestixFetch;
 
-    constructor(backendApiUrl: string, enable_authentication: boolean, http: MnestixFetch) {
+    constructor(backendApiUrl: string, http: MnestixFetch) {
         this.basePathOwnApi = `${backendApiUrl}/api/Template`;
         this.basePathCustoms = `${backendApiUrl}/templates/custom`;
-        this.enable_authentication = enable_authentication;
         this.http = http;
     }
 
-    static create(backendApiUrl: string, enable_authentication: boolean, http: MnestixFetch): TemplateShellApi {
-        return new TemplateShellApi(backendApiUrl, enable_authentication, http);
+    static create(backendApiUrl: string, http: MnestixFetch): TemplateShellApi {
+        return new TemplateShellApi(backendApiUrl, http);
     }
 
     public async getTemplates(): Promise<ApiResponseWrapper<Submodel[]>> {
