@@ -21,10 +21,7 @@ import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import React, { useEffect, useState } from 'react';
 import {
     generateSubmodelViewObjectFromSubmodelElement,
-    getParentOfElement,
     rewriteNodeIds,
-    splitIdIntoArray,
-    updateNodeIds,
 } from 'lib/util/submodelHelpers/SubmodelViewObjectUtil';
 import {
     BlueprintEditFields,
@@ -40,7 +37,6 @@ import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import { updateBlueprint } from 'lib/services/templateApiWithAuthActions';
 import { deleteBlueprintById, getBlueprintById, getTemplates } from 'lib/services/templatesApiActions';
 import { BlueprintDeleteDialog } from 'app/[locale]/templates/_components/BlueprintDeleteDialog';
-import { clone } from 'lodash';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useLocale, useTranslations } from 'next-intl';
 
@@ -273,42 +269,20 @@ export default function Page() {
             return undefined;
         }
 
-        const pendingIds = deletedItems
-            .slice()
-            .sort((a, b) => splitIdIntoArray(b).length - splitIdIntoArray(a).length || b.localeCompare(a));
-
-        let newLocalFrontendBlueprint = cloneDeep(localFrontendBlueprint);
-        for (const nodeId of pendingIds) {
-            newLocalFrontendBlueprint = deleteItem(nodeId, newLocalFrontendBlueprint);
+        // Recursively filter out all elements marked for deletion
+        function filterDeletedElements(element: SubmodelViewObject): SubmodelViewObject {
+            return {
+                ...element,
+                children: element.children
+                    .filter((child) => !child.isAboutToBeDeleted)
+                    .map((child) => filterDeletedElements(child)),
+            };
         }
+
+        const newLocalFrontendBlueprint = filterDeletedElements(cloneDeep(localFrontendBlueprint));
+        // Rewrite all IDs to be consistent (0, 0-0, 0-1, etc.)
         await rewriteNodeIds(newLocalFrontendBlueprint, '0');
         return newLocalFrontendBlueprint;
-    }
-
-    function deleteItem(elementToDeleteId: string, submodel: SubmodelViewObject): SubmodelViewObject {
-        const idArray = splitIdIntoArray(elementToDeleteId);
-        const parentElement = getParentOfElement(elementToDeleteId, submodel);
-        if (parentElement) {
-            //search for the current index of the element to delete because through deleting, the arrays shift
-            let childIndex = -1;
-            parentElement.children.filter((el, index) => {
-                if ((el as SubmodelViewObject).id == idArray.join('-')) {
-                    childIndex = index;
-                }
-            });
-            if (childIndex >= 0) {
-                parentElement.children.splice(childIndex, 1);
-            }
-            //update all element ids after the deleted one
-            for (let i = idArray[idArray.length - 1]; i < parentElement.children.length; i++) {
-                const oldId = clone(idArray);
-                oldId[oldId.length - 1] = i + 1;
-                const newId = clone(idArray);
-                newId[newId.length - 1] = i;
-                updateNodeIds(oldId.join('-'), newId.join('-'), parentElement.children[i]);
-            }
-        }
-        return submodel;
     }
 
     const handleSuccessfulSave = () => {
