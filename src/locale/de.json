@@ -535,6 +535,8 @@
       },
       "mappingInfo": "Mapping-Info",
       "mappingInfoDescription": "Frei wählbarer Identifikator, auf den Sie bei Datenimporten zurückgreifen können.",
+      "collectionMappingInfo": "Information zum Mappen von Collections",
+      "collectionMappingInfoDescription": "Kennung, die Sie zum Duplizieren von Elementen in einer Sammlung während der Datenimporte verwenden können.",
       "messages": {
         "changesSavedSuccessfully": "Änderungen erfolgreich gespeichert.",
         "deleted": "gelöscht"

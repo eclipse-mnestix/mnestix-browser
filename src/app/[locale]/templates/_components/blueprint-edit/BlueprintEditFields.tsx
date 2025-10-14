@@ -18,6 +18,7 @@ import { MultiLangEditComponent } from './edit-components/multi-lang/MultiLangEd
 import { SubmodelEditComponent } from './edit-components/SubmodelEditComponent';
 import { FileEditComponent } from './edit-components/file/FileEditComponent';
 import { useTranslations } from 'next-intl';
+import { CollectionMappingInfoEditComponent } from '../template-edit/edit-components/collection-mapping-info/CollectionMappingInfoEditComponent';
 
 export type BlueprintEditFieldsProps = {
     blueprintPart?: SubmodelViewObject;
@@ -116,6 +117,11 @@ export function BlueprintEditFields(props: BlueprintEditFieldsProps) {
 
             {props.blueprintPart?.data && (
                 <>
+                    <CollectionMappingInfoEditComponent
+                        data={props.blueprintPart.data}
+                        onChange={debouncedOnTemplateDataChange}
+                        key={'collection-mapping-info-' + props.blueprintPart.data.idShort}
+                    />
                     <MappingInfoEditComponent
                         data={props.blueprintPart.data}
                         onChange={debouncedOnTemplateDataChange}

@@ -535,6 +535,8 @@
       },
       "mappingInfo": "Mapping info",
       "mappingInfoDescription": "Arbitrary identifier that you can use for your data imports.",
+      "collectionMappingInfo": "Collection Mapping info",
+      "collectionMappingInfoDescription": "Arbitrary identifier that you can use for duplicating elements in a collection during data imports.",
       "messages": {
         "changesSavedSuccessfully": "Changes saved successfully",
         "deleted": "deleted"
