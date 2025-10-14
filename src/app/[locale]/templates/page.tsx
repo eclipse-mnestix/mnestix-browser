@@ -19,7 +19,8 @@ import { sortWithNullableValues } from 'lib/util/SortingUtil';
 import { useEnv } from 'app/EnvProvider';
 import { useRouter } from 'next/navigation';
 import { createBlueprint } from 'lib/services/aas-generator/blueprintsApiActions';
-import { deleteBlueprintById, getBlueprints, getTemplates } from 'lib/services/aas-generator/templatesApiActions';
+import { getTemplates } from 'lib/services/aas-generator/templatesApiActions';
+import { deleteBlueprintById, getBlueprints } from 'lib/services/aas-generator/blueprintsApiActions';
 import { useTranslations } from 'next-intl';
 import { findSemanticIdOfType } from 'lib/util/SubmodelResolverUtil';
 
@@ -49,7 +50,7 @@ export default function Page() {
     const bearerToken = auth.getBearerToken();
 
     const { showError } = useShowError();
-    const templateApiVersion = 'v1';
+    const templateApiVersion = 'v1'; // TODO get from Context
 
     const fetchTemplatesAndBlueprints = async () => {
         const _templateItems: TabSelectorItem[] = [];

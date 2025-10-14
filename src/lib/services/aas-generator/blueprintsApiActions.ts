@@ -7,6 +7,11 @@ import {
     createVersionedAasGeneratorClients,
     resolveTemplateApiVersion,
 } from './aasGeneratorVersioning';
+import { ResponseError } from 'lib/api/mnestix-aas-generator/v2';
+import { ApiResponseWrapper, wrapResponse, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { mapStatusToResult } from 'lib/util/apiResponseWrapper/apiResultStatus';
+import { encodeBase64 } from 'lib/util/Base64Util';
+import { handleResponseError } from './apiHelper';
 
 export async function createBlueprint(
     template: Submodel | typeof EmptyDefaultTemplate,
@@ -41,3 +46,75 @@ export async function updateBlueprint(
 
     return clients.v1.templateClient.updateCustomSubmodel(submodel, submodelId);
 }
+
+export async function getBlueprints(apiVersion?: AasGeneratorApiVersion): Promise<ApiResponseWrapper<Submodel[]>> {
+    const version = resolveTemplateApiVersion(apiVersion);
+    const clients = await createVersionedAasGeneratorClients();
+
+    if (version === 'v2') {
+        try {
+            const response = await clients.v2.blueprintsApi.blueprintsGetAllBlueprintsRaw();
+            return await wrapResponse<Submodel[]>(response.raw);
+        } catch (error) {
+            if (error instanceof ResponseError) {
+                return handleResponseError<Submodel[]>(error);
+            }
+            throw error;
+        }
+    }
+
+    return clients.v1.shellApi.getBlueprints();
+}
+
+export async function getBlueprintById(
+    id: string,
+    apiVersion?: AasGeneratorApiVersion
+): Promise<ApiResponseWrapper<Submodel>> {
+    const version = resolveTemplateApiVersion(apiVersion);
+    const clients = await createVersionedAasGeneratorClients();
+
+    if (version === 'v2') {
+        try {
+            const response = await clients.v2.blueprintsApi.blueprintsGetBlueprintByIdRaw({
+                base64EncodedBlueprintId: encodeBase64(id),
+            });
+            return await wrapResponse<Submodel>(response.raw);
+        } catch (error) {
+            if (error instanceof ResponseError) {
+                return handleResponseError<Submodel>(error);
+            }
+            throw error;
+        }
+    }
+
+    return clients.v1.shellApi.getBlueprint(id);
+}
+
+export async function deleteBlueprintById(
+    id: string,
+    apiVersion?: AasGeneratorApiVersion
+): Promise<ApiResponseWrapper<string | number>> {
+    const version = resolveTemplateApiVersion(apiVersion);
+    const clients = await createVersionedAasGeneratorClients();
+
+    if (version === 'v2') {
+        try {
+            const response = await clients.v2.blueprintsApi.blueprintsDeleteBlueprintRaw({
+                base64EncodedBlueprintId: encodeBase64(id),
+            });
+
+            const status = response.raw.status;
+            const statusText = mapStatusToResult(status);
+
+            return wrapSuccess<number>(status, status, statusText);
+        } catch (error) {
+            if (error instanceof ResponseError) {
+                return handleResponseError<string | number>(error);
+            }
+            throw error;
+        }
+    }
+
+    return clients.v1.shellApi.deleteBlueprintById(id);
+}
+
