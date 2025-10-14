@@ -14,16 +14,16 @@ export async function getTemplates(apiVersion: string): Promise<ApiResponseWrapp
     const defaultInfrastructure = await getDefaultInfrastructure();
     const securityHeaders = await createSecurityHeaders(defaultInfrastructure);
     const fetchClient = mnestixFetchRaw(securityHeaders);
-    
+
     const apiConfig = new Configuration({
         basePath: envs.MNESTIX_AAS_GENERATOR_API_URL,
         fetchApi: (input: RequestInfo | URL, init?: RequestInit) => fetchClient.fetch(input, init),
     });
-    
+
     if (apiVersion === 'v2') {
-    const templateApiClient =  new TemplatesApi(apiConfig);
-    const result = await templateApiClient.templatesGetAllTemplates({ apiVersion: 'v2' });
-    return wrapSuccess<Submodel[]>(result as unknown as Submodel[]);
+        const templateApiClient = new TemplatesApi(apiConfig);
+        const result = await templateApiClient.templatesGetAllTemplates();
+        return wrapSuccess<Submodel[]>(result as unknown as Submodel[]);
     } else {
         const templateApiClient = TemplateShellApi.create(
             envs.MNESTIX_AAS_GENERATOR_API_URL ?? '',
