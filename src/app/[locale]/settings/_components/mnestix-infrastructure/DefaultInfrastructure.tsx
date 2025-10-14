@@ -1,6 +1,7 @@
 import { Alert, alpha, Box, Collapse, IconButton, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import { useTranslations } from 'next-intl';
 import { useTheme } from '@mui/material/styles';
 import { useEnv } from 'app/EnvProvider';
@@ -11,6 +12,7 @@ import {
 import { getDefaultInfrastructureName } from 'lib/services/database/infrastructureDatabaseActions';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { HealthCheckIndicator } from 'components/basics/HealthCheckIndicator';
+import { useHealthCheckContext } from 'components/contexts/HealthCheckContext';
 
 export function DefaultInfrastructure() {
     const [open, setOpen] = useState(false);
@@ -18,10 +20,18 @@ export function DefaultInfrastructure() {
     const theme = useTheme();
     const env = useEnv();
     const [defaultInfrastructureName, setDefaultInfrastructureName] = useState('Default');
+    const { fetchHealthCheck } = useHealthCheckContext();
 
     useAsyncEffect(async () => {
         setDefaultInfrastructureName(await getDefaultInfrastructureName());
     }, []);
+
+    // Fetch health check when default infrastructure panel is opened
+    useEffect(() => {
+        if (open) {
+            fetchHealthCheck();
+        }
+    }, [open]);
 
     return (
         <Box sx={{ border: `1px solid ${theme.palette.grey['300']}`, mb: 1, borderRadius: 1 }}>
@@ -40,7 +50,6 @@ export function DefaultInfrastructure() {
                     <Typography variant="h6" sx={{ flexGrow: 1 }}>
                         {defaultInfrastructureName}
                     </Typography>
-                    <HealthCheckIndicator />
                     <IconButton onClick={() => setOpen(!open)} sx={{ color: theme.palette.primary.main }} size="small">
                         <VisibilityIcon />
                     </IconButton>
@@ -55,6 +64,25 @@ export function DefaultInfrastructure() {
                     }}
                 >
                     <Alert severity="info">{t('form.defaultInfrastructureReadonly')}</Alert>
+
+                    {env.MNESTIX_AAS_GENERATOR_API_URL && (
+                        <Box display="flex" gap={2} my={2} alignItems="center">
+                            <Typography sx={{ minWidth: 320 }} variant="h5">
+                                {t('healthCheck.aasGeneratorLabel')}
+                            </Typography>
+                            <Typography>{env.MNESTIX_AAS_GENERATOR_API_URL}</Typography>
+                            <HealthCheckIndicator />
+                            <IconButton
+                                onClick={fetchHealthCheck}
+                                size="small"
+                                sx={{ ml: 0 }}
+                                title={t('healthCheck.refresh')}
+                            >
+                                <RefreshIcon fontSize="small" />
+                            </IconButton>
+                        </Box>
+                    )}
+
                     <Typography variant="h3" sx={{ my: 2, color: theme.palette.primary.main }}>
                         {t('form.endpoints')}
                     </Typography>

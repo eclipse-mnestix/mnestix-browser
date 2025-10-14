@@ -1,5 +1,16 @@
 export interface HealthCheckResponse {
-    status: 'healthy' | 'unhealthy';
-    version: string;
-    buildDate: string;
+    status: 'Healthy' | 'Unhealthy' | 'Degraded';
+    totalDuration: string;
+    entries: {
+        application_info: {
+            status: 'Healthy' | 'Unhealthy' | 'Degraded';
+            description: string;
+            duration: string;
+            data: {
+                applicationVersion: string;
+                apiVersion: string;
+                buildDate: string;
+            };
+        };
+    };
 }

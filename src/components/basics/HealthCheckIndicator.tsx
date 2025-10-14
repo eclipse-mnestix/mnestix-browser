@@ -28,14 +28,27 @@ export function HealthCheckIndicator() {
         );
     }
 
-    const formattedBuildDate = new Date(healthStatus.buildDate).toLocaleString();
+    const applicationData = healthStatus.entries.application_info.data;
+    const formattedBuildDate = new Date(applicationData.buildDate).toLocaleString();
 
     return (
         <Tooltip title={`${t('healthCheck.buildDate')}: ${formattedBuildDate}`}>
             <Chip
-                icon={healthStatus.status === 'healthy' ? <CheckCircleIcon /> : <ErrorIcon />}
-                label={`${t('healthCheck.version')} ${healthStatus.version}`}
-                color={healthStatus.status === 'healthy' ? 'success' : 'error'}
+                icon={healthStatus.status === 'Healthy' ? <CheckCircleIcon /> : <ErrorIcon />}
+                label={
+                    <Box component="span" display="inline-flex" alignItems="center" gap={0.5}>
+                        <span>
+                            {t('healthCheck.applicationVersion')}: {applicationData.applicationVersion}
+                        </span>
+                        <Box component="span" sx={{ opacity: 0.7, fontSize: '0.9em' }}>
+                            {' | '}
+                        </Box>
+                        <span>
+                            {t('healthCheck.version')} {applicationData.apiVersion}
+                        </span>
+                    </Box>
+                }
+                color={healthStatus.status === 'Healthy' ? 'success' : 'error'}
                 size="small"
             />
         </Tooltip>

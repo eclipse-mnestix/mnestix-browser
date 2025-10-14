@@ -404,10 +404,13 @@
         },
         "healthCheck": {
           "checking": "Comprobando...",
-          "unreachable": "Backend no accesible",
+          "unreachable": "Mnestix AAS Generator no accesible",
           "offline": "Sin conexión",
           "version": "Versión de la API: ",
-          "buildDate": "Fecha de compilación"
+          "buildDate": "Fecha de compilación",
+          "aasGeneratorLabel": "Mnestix AAS Generator",
+          "applicationVersion": "Versión de la aplicación",
+          "refresh": "Actualizar estado"
         },
         "subtitle": "Define qué infraestructuras deben ser utilizadas.",
         "title": "Fuentes de infraestructura",
