@@ -55,7 +55,7 @@ export interface AasGeneratorResult {
      * @type {string}
      * @memberof AasGeneratorResult
      */
-    templateId?: string;
+    blueprintId?: string;
     /**
      *
      * @type {boolean}
@@ -141,7 +141,7 @@ export interface AddDataToAasRequest {
      * @type {Array<string>}
      * @memberof AddDataToAasRequest
      */
-    customTemplateIds: Array<string>;
+    blueprintsIds: Array<string>;
 }
 /**
  *
