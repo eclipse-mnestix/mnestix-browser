@@ -23,7 +23,7 @@ function run(command) {
 run('npx --yes --package @openapitools/openapi-generator-cli@2.20.0 openapi-generator-cli generate');
 
 // Format generated TypeScript so there are nicer diffs
-run(`yarn prettier --write "${script_dir}/aas/**/*.ts"`);
+run(`yarn prettier --write "${script_dir}/**/*.ts"`);
 
 // Apply patches
 const patchDir = join(script_dir, 'patches');

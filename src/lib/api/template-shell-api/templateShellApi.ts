@@ -7,6 +7,7 @@ import { envs } from 'lib/env/MnestixEnv';
 export class TemplateShellApi {
     basePathOwnApi: string;
     basePathCustoms: string;
+    // not used anywhere?!?!
     enable_authentication: boolean;
     private http: MnestixFetch;
 
