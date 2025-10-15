@@ -11,7 +11,7 @@ import { TemplateApi } from 'lib/api/mnestix-aas-generator/v1';
 
 export type AasGeneratorApiVersion = 'v1' | 'v2';
 
-export const DEFAULT_TEMPLATE_API_VERSION: AasGeneratorApiVersion = 'v1';
+export const DEFAULT_TEMPLATE_API_VERSION: AasGeneratorApiVersion = 'v2';
 
 export function resolveTemplateApiVersion(version?: AasGeneratorApiVersion): AasGeneratorApiVersion {
     return version ?? DEFAULT_TEMPLATE_API_VERSION;

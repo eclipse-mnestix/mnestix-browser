@@ -53,7 +53,7 @@ export default function Page() {
 
     const { showError } = useShowError();
     const { healthStatus } = useHealthCheckContext();
-    const apiVersion = (healthStatus?.entries?.application_info?.data?.apiVersion ?? 'v1') as AasGeneratorApiVersion;
+    const apiVersion = (healthStatus?.entries?.application_info?.data?.apiVersion ?? 'v2') as AasGeneratorApiVersion;
 
     const fetchTemplatesAndBlueprints = async () => {
         const _templateItems: TabSelectorItem[] = [];
@@ -202,7 +202,7 @@ export default function Page() {
         setIsCreatingBlueprint(true);
             const creationResponse = await createBlueprint(template || EmptyDefaultTemplate, apiVersion);
             setIsCreatingBlueprint(false);
-
+            console.log(creationResponse);
             if (!creationResponse.isSuccess) {
                 showError(creationResponse.message);
             } else {

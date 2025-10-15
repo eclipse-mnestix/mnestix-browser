@@ -63,7 +63,7 @@ export default function Page() {
     const [templates, setTemplates] = useState<Submodel[]>();
     const env = useEnv();
     const { healthStatus } = useHealthCheckContext();
-    const apiVersion = (healthStatus?.entries?.application_info?.data?.apiVersion ?? 'v1') as AasGeneratorApiVersion;
+    const apiVersion = (healthStatus?.entries?.application_info?.data?.apiVersion ?? 'v2') as AasGeneratorApiVersion;
     const { showError } = useShowError();
     const t = useTranslations('pages.templates');
     const locale = useLocale();

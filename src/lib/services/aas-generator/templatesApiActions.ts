@@ -31,5 +31,3 @@ export async function getTemplates(apiVersion?: AasGeneratorApiVersion): Promise
 
     return clients.v1.shellApi.getTemplates();
 }
-
-

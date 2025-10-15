@@ -5,6 +5,7 @@ import EmptyDefaultTemplate from 'assets/submodels/defaultEmptySubmodel.json';
 import {
     AasGeneratorApiVersion,
     createVersionedAasGeneratorClients,
+    initializeAasGeneratorApiDependencies,
     resolveTemplateApiVersion,
 } from './aasGeneratorVersioning';
 import { ResponseError as ResponseErrorV1 } from 'lib/api/mnestix-aas-generator/v1/runtime';
@@ -29,10 +30,10 @@ export async function createBlueprint(
 
     if (version === 'v2') {
         try {
-            const response = await clients.v2.blueprintsApi.blueprintsCreateBlueprintRaw({
+            const createdId = await clients.v2.blueprintsApi.blueprintsCreateBlueprint({
                 body: template,
             });
-            return await wrapResponse<string>(response.raw);
+            return wrapSuccess<string>(createdId);
         } catch (error) {
             if (isResponseError(error)) {
                 return handleResponseError<string>(asV1ResponseError(error));
@@ -42,8 +43,8 @@ export async function createBlueprint(
     }
 
     try {
-        const response = await clients.v1.templateClient.templateCreateCustomSubmodelRaw({ body: template });
-        return await wrapResponse<string>(response.raw);
+        const createdId = await clients.v1.templateClient.templateCreateCustomSubmodel({ body: template });
+        return wrapSuccess<string>(createdId);
     } catch (error) {
         if (isResponseError(error)) {
             return handleResponseError<string>(asV1ResponseError(error));
@@ -62,12 +63,11 @@ export async function updateBlueprint(
 
     if (version === 'v2') {
         try {
-            const response = await clients.v2.blueprintsApi.blueprintsUpdateBlueprintRaw({
+            await clients.v2.blueprintsApi.blueprintsUpdateBlueprint({
                 submodelId,
                 body: submodel,
             });
-            const status = response.raw.status;
-            return wrapSuccess<void>(undefined, status, mapStatusToResult(status));
+            return wrapSuccess<void>(undefined);
         } catch (error) {
             if (isResponseError(error)) {
                 return handleResponseError<void>(asV1ResponseError(error));
@@ -77,9 +77,8 @@ export async function updateBlueprint(
     }
 
     try {
-        const response = await clients.v1.templateClient.templateUpdateCustomSubmodelRaw({ submodelId, body: submodel });
-        const status = response.raw.status;
-        return wrapSuccess<void>(undefined, status, mapStatusToResult(status));
+        await clients.v1.templateClient.templateUpdateCustomSubmodel({ submodelId, body: submodel });
+        return wrapSuccess<void>(undefined);
     } catch (error) {
         if (isResponseError(error)) {
             return handleResponseError<void>(asV1ResponseError(error));
