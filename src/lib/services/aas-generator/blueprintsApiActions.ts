@@ -44,7 +44,7 @@ export async function updateBlueprint(
         });
     }
 
-    return clients.v1.templateClient.templateUpdateCustomSubmodel({ submodelId, body: submodelId });
+    return clients.v1.templateClient.templateUpdateCustomSubmodel({ submodelId, body: submodel });
 }
 
 export async function getBlueprints(apiVersion?: AasGeneratorApiVersion): Promise<ApiResponseWrapper<Submodel[]>> {

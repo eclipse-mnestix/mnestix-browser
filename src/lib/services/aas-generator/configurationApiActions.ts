@@ -30,7 +30,6 @@ async function getConfigurationApi(): Promise<IConfigurationShellApi> {
     const isMnestixApiV2Enabled = envs.MNESTIX_V2_ENABLED;
     const defaultInfrastructure = await getDefaultInfrastructure();
     const securityHeaders = await createSecurityHeaders(defaultInfrastructure);
-    // TODO: how to handle this feature flag + the versions of the api??
     if (isMnestixApiV2Enabled) {
         return ConfigurationShellApiV2.create(
             envs.MNESTIX_AAS_GENERATOR_API_URL,
