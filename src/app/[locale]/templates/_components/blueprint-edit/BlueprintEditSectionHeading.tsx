@@ -1,9 +1,9 @@
-import { InfoOutlined, Mediation, Numbers, TextSnippet, Visibility } from '@mui/icons-material';
+import { InfoOutlined, Mediation, Repeat, Numbers, TextSnippet, Visibility } from '@mui/icons-material';
 import { Box, Divider, Tooltip, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 
 type BlueprintEditSectionHeadingProps = {
-    readonly type: 'defaultValue' | 'displayName' | 'mappingInfo' | 'multiplicity';
+    readonly type: 'defaultValue' | 'displayName' | 'mappingInfo' | 'multiplicity' | 'collectionMappingInfo';
 };
 
 export function BlueprintEditSectionHeading(props: BlueprintEditSectionHeadingProps) {
@@ -14,6 +14,8 @@ export function BlueprintEditSectionHeading(props: BlueprintEditSectionHeadingPr
                 return <Visibility fontSize="small" />;
             case 'mappingInfo':
                 return <Mediation fontSize="small" />;
+            case 'collectionMappingInfo':
+                return <Repeat fontSize="small" />;
             case 'multiplicity':
                 return <Numbers fontSize="small" />;
             case 'defaultValue':
@@ -28,6 +30,8 @@ export function BlueprintEditSectionHeading(props: BlueprintEditSectionHeadingPr
                 return t('displayName');
             case 'mappingInfo':
                 return t('mappingInfo');
+            case 'collectionMappingInfo':
+                return t('collectionMappingInfo');
             case 'defaultValue':
                 return t('defaultValue');
             case 'multiplicity':
@@ -41,6 +45,8 @@ export function BlueprintEditSectionHeading(props: BlueprintEditSectionHeadingPr
         switch (props.type) {
             case 'mappingInfo':
                 return t('mappingInfoDescription');
+            case 'collectionMappingInfo':
+                return t('collectionMappingInfoDescription');
             case 'multiplicity':
                 return t('multiplicityDescription');
             default:

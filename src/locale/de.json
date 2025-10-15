@@ -23,6 +23,7 @@
     "authentication": {
       "authenticationNeeded": "Authentifizierung erforderlich",
       "contactAdmin": "Sie können diese Seite nicht besuchen. Bitte wenden Sie sich an Ihren Administrator.",
+      "nonDefaultRepositoryInfo": "Bitte wenden Sie sich an Ihre Systemadministratorin oder Ihren Systemadministrator, um die Infrastruktur-Authentifizierung zu aktualisieren.",
       "sessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an."
     },
     "carbonFootprint": {
@@ -204,11 +205,12 @@
         "productDesignation": "Hersteller Produktbezeichnung",
         "registryUrl": "Registry URL",
         "repositoryUrl": "Repository URL",
+        "infrastructureName": "Infrastruktur",
         "viewAASButton": "AAS anzeigen"
       },
       "maxElementsWarning": "Maximal 3 Elemente selektierbar",
       "page": "Seite",
-      "repositoryDropdown": "AAS Repository",
+      "repositoryDropdownLabel": "AAS Repository (Infrastruktur)",
       "selectRepository": "Bitte wählen Sie ein Repository aus",
       "subHeader": "Hier finden Sie alle AAS aus Ihrem Repository. Sie können ein AAS-Repository auswählen, um zwischen den Datenquellen zu wechseln.",
       "titleComparisonAddButton": "AAS zum Vergleich hinzufügen"
@@ -257,7 +259,7 @@
           "noTimeSeriesSegments": "Keine Zeitreihen-Segmente gefunden."
         },
         "title": "Teilmodelle",
-        "unknownModelType": "Unbekannter ModelType: {type}",
+        "unknownModelType": "Mnestix unterstützt diesen ModelType noch nicht ({type}).",
         "repositoryUrlLabel": "Repository URL:"
       }
     },
@@ -290,7 +292,7 @@
         "aasAddError": "AAS konnte nicht hinzugefügt werden.",
         "aasAlreadyAdded": "AAS kann nicht mehrmals hinzugefügt werden.",
         "moreAasFound": "Mehr als eine AAS im Discovery Service gefunden, bitte geben Sie die AAS-ID an.",
-        "unknownModelType": "Unbekannter ModelType: {type}"
+        "unknownModelType": "Mnestix unterstützt diesen ModelType noch nicht ({type})."
       },
       "title": "AAS vergleichen"
     },
@@ -522,7 +524,7 @@
       "emptyTemplate": "Leer (Custom)",
       "emptyTemplateDescription": "Basiert auf keinem standardisierten Template",
       "errors": {
-        "unknownModelType": "Unbekannter ModelType: {type}"
+        "unknownModelType": "Mnestix unterstützt diesen ModelType noch nicht ({type})."
       },
       "labels": {
         "language": "Sprache",
@@ -533,6 +535,8 @@
       },
       "mappingInfo": "Mapping-Info",
       "mappingInfoDescription": "Frei wählbarer Identifikator, auf den Sie bei Datenimporten zurückgreifen können.",
+      "collectionMappingInfo": "Information zum Mappen von Collections",
+      "collectionMappingInfoDescription": "Kennung, die Sie zum Duplizieren von Elementen in einer Sammlung während der Datenimporte verwenden können.",
       "messages": {
         "changesSavedSuccessfully": "Änderungen erfolgreich gespeichert.",
         "deleted": "gelöscht"
