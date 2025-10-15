@@ -1,12 +1,13 @@
 import { mnestixFetch, mnestixFetchRaw, MnestixFetch, MnestixFetchRaw } from 'lib/api/infrastructure';
 import { TemplateShellApi } from 'lib/api/template-shell-api/templateShellApi';
-import { TemplateClient } from 'lib/api/generated-api/clients.g';
 import { TemplatesApi } from 'lib/api/mnestix-aas-generator/v2/apis/TemplatesApi';
 import { BlueprintsApi } from 'lib/api/mnestix-aas-generator/v2/apis/BlueprintsApi';
-import { Configuration } from 'lib/api/mnestix-aas-generator/v2';
+import { Configuration as ConfigurationV1 } from 'lib/api/mnestix-aas-generator/v1';
+import { Configuration as ConfigurationV2 } from 'lib/api/mnestix-aas-generator/v2';
 import { envs } from 'lib/env/MnestixEnv';
 import { getDefaultInfrastructure } from '../database/infrastructureDatabaseActions';
 import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
+import { TemplateApi } from 'lib/api/mnestix-aas-generator/v1';
 
 export type AasGeneratorApiVersion = 'v1' | 'v2';
 
@@ -19,7 +20,8 @@ export function resolveTemplateApiVersion(version?: AasGeneratorApiVersion): Aas
 type ApiDependencies = {
     fetchWrapped: MnestixFetch;
     fetchRaw: MnestixFetchRaw;
-    configuration: Configuration;
+    configurationV1: ConfigurationV1;
+    configurationV2: ConfigurationV2;
     generatorBaseUrl: string;
 };
 
@@ -30,7 +32,12 @@ export async function initializeAasGeneratorApiDependencies(): Promise<ApiDepend
     const fetchRaw = mnestixFetchRaw(securityHeaders);
     const generatorBaseUrl = envs.MNESTIX_AAS_GENERATOR_API_URL ?? '';
 
-    const configuration = new Configuration({
+    const configurationV1 = new ConfigurationV1({
+        basePath: envs.MNESTIX_AAS_GENERATOR_API_URL,
+        fetchApi: (input: RequestInfo | URL, init?: RequestInit) => fetchRaw.fetch(input, init),
+    });
+
+    const configurationV2 = new ConfigurationV2({
         basePath: envs.MNESTIX_AAS_GENERATOR_API_URL,
         fetchApi: (input: RequestInfo | URL, init?: RequestInit) => fetchRaw.fetch(input, init),
     });
@@ -38,7 +45,8 @@ export async function initializeAasGeneratorApiDependencies(): Promise<ApiDepend
     return {
         fetchWrapped,
         fetchRaw,
-        configuration,
+        configurationV1,
+        configurationV2,
         generatorBaseUrl,
     };
 }
@@ -46,7 +54,7 @@ export async function initializeAasGeneratorApiDependencies(): Promise<ApiDepend
 export type VersionedAasGeneratorClients = {
     v1: {
         shellApi: TemplateShellApi;
-        templateClient: TemplateClient;
+        templateClient: TemplateApi;
     };
     v2: {
         templatesApi: TemplatesApi;
@@ -55,16 +63,16 @@ export type VersionedAasGeneratorClients = {
 };
 
 export async function createVersionedAasGeneratorClients(): Promise<VersionedAasGeneratorClients> {
-    const { fetchWrapped, configuration, generatorBaseUrl } = await initializeAasGeneratorApiDependencies();
+    const { fetchWrapped, configurationV1, configurationV2, generatorBaseUrl } = await initializeAasGeneratorApiDependencies();
 
     return {
         v1: {
             shellApi: TemplateShellApi.create(generatorBaseUrl, fetchWrapped),
-            templateClient: TemplateClient.create(generatorBaseUrl, fetchWrapped),
+            templateClient: new TemplateApi(configurationV1),
         },
         v2: {
-            templatesApi: new TemplatesApi(configuration),
-            blueprintsApi: new BlueprintsApi(configuration),
+            templatesApi: new TemplatesApi(configurationV2),
+            blueprintsApi: new BlueprintsApi(configurationV2),
         },
     };
 }

@@ -26,7 +26,7 @@ export async function createBlueprint(
         });
     }
 
-    return clients.v1.templateClient.createCustomSubmodel(template);
+    return clients.v1.templateClient.templateCreateCustomSubmodel({ body: template });
 }
 
 export async function updateBlueprint(
@@ -44,7 +44,7 @@ export async function updateBlueprint(
         });
     }
 
-    return clients.v1.templateClient.updateCustomSubmodel(submodel, submodelId);
+    return clients.v1.templateClient.templateUpdateCustomSubmodel({ submodelId, body: submodelId });
 }
 
 export async function getBlueprints(apiVersion?: AasGeneratorApiVersion): Promise<ApiResponseWrapper<Submodel[]>> {

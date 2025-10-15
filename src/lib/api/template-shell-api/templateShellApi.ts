@@ -4,6 +4,9 @@ import { MnestixFetch } from '../infrastructure';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { envs } from 'lib/env/MnestixEnv';
 
+/**
+ * @deprecated use TemplateClient from generated-api instead!
+ */
 export class TemplateShellApi {
     basePathOwnApi: string;
     basePathCustoms: string;
