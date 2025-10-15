@@ -225,17 +225,16 @@ export default function Page() {
             updatedBlueprint = localFrontendBlueprint;
         }
         if (updatedBlueprint) {
-            try {
                 setIsSaving(true);
                 const submodel = generateSubmodel(updatedBlueprint);
-                await updateBlueprint(submodel, submodel.id, templateApiVersion);
-                handleSuccessfulSave();
-                setLocalFrontendBlueprint(updatedBlueprint);
-            } catch (e) {
-                showError(e);
-            } finally {
-                setIsSaving(false);
-            }
+                const updateResponse = await updateBlueprint(submodel, submodel.id, templateApiVersion);
+                if (!updateResponse.isSuccess) {
+                     showError(updateResponse.message);
+                } else {
+                    handleSuccessfulSave();
+                    setLocalFrontendBlueprint(updatedBlueprint);
+                }
+                setIsSaving(false); 
         }
     };
 

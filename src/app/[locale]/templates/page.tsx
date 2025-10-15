@@ -167,7 +167,6 @@ export default function Page() {
 
     // Filtering items
     useAsyncEffect(async () => {
-        // TODO: This shouldn't happen in the frontend later on, should happen via API calls
         if (blueprintItems.length) {
             switch (selectedEntry.id) {
                 case SpecialDefaultTabIds.All:
@@ -198,14 +197,14 @@ export default function Page() {
 
     const handleCreateTemplateClick = async (template?: Submodel) => {
         setIsCreatingBlueprint(true);
-        try {
-            const newId = await createBlueprint(template || EmptyDefaultTemplate, templateApiVersion);
+            const creationResponse = await createBlueprint(template || EmptyDefaultTemplate, templateApiVersion);
             setIsCreatingBlueprint(false);
-            navigate.push(`/templates/${encodeURIComponent(newId)}`);
-        } catch (e) {
-            setIsCreatingBlueprint(false);
-            showError(e);
-        }
+
+            if (!creationResponse.isSuccess) {
+                showError(creationResponse.message);
+            } else {
+                navigate.push(`/templates/${encodeURIComponent(creationResponse.result)}`);
+            }
     };
 
     const deleteTemplate = async (item: BlueprintItemType) => {
