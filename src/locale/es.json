@@ -402,6 +402,16 @@
           "headerValueCrLfNotAllowed": "El valor del encabezado no debe contener secuencias CRLF.",
           "headerValueIllegalChars": "El valor del encabezado no debe contener caracteres no permitidos."
         },
+        "healthCheck": {
+          "checking": "Comprobando...",
+          "unreachable": "Mnestix AAS Generator no accesible",
+          "offline": "Sin conexión",
+          "version": "Versión de la API: ",
+          "buildDate": "Fecha de compilación",
+          "aasGeneratorLabel": "Mnestix AAS Generator",
+          "applicationVersion": "Versión de la aplicación",
+          "refresh": "Actualizar estado"
+        },
         "subtitle": "Define qué infraestructuras deben ser utilizadas.",
         "title": "Fuentes de infraestructura",
         "urlFieldNoTrailingSlash": "La URL no debe terminar con una barra (/).",
