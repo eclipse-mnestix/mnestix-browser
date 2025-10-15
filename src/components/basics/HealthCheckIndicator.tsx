@@ -13,7 +13,7 @@ export function HealthCheckIndicator() {
 
     if (isLoading && !healthStatus) {
         return (
-            <Box display="flex" alignItems="center" gap={1}>
+            <Box display="flex" alignItems="center" gap={1} data-testid="health-loading-indicator">
                 <CircularProgress size={20} />
                 <Typography variant="body2">{t('healthCheck.checking')}</Typography>
             </Box>
@@ -23,7 +23,13 @@ export function HealthCheckIndicator() {
     if (hasError || !healthStatus) {
         return (
             <Tooltip title={t('healthCheck.unreachable')}>
-                <Chip icon={<ErrorIcon />} label={t('healthCheck.offline')} color="error" size="small" />
+                <Chip
+                    icon={<ErrorIcon />}
+                    label={t('healthCheck.offline')}
+                    color="error"
+                    size="small"
+                    data-testid="health-offline-indicator"
+                />
             </Tooltip>
         );
     }
@@ -50,6 +56,7 @@ export function HealthCheckIndicator() {
                 }
                 color={healthStatus.status === 'Healthy' ? 'success' : 'error'}
                 size="small"
+                data-testid="health-status-indicator"
             />
         </Tooltip>
     );
