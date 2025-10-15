@@ -93,8 +93,8 @@ export async function getBlueprints(apiVersion?: AasGeneratorApiVersion): Promis
 
     if (version === 'v2') {
         try {
-            const response = await clients.v2.blueprintsApi.blueprintsGetAllBlueprintsRaw();
-            return await wrapResponse<Submodel[]>(response.raw);
+            const response = await clients.v2.blueprintsApi.blueprintsGetAllBlueprints();
+            return await wrapSuccess<Submodel[]>(response as unknown as Submodel[]);
         } catch (error) {
             if (isResponseError(error)) {
                 return handleResponseError<Submodel[]>(asV1ResponseError(error));
@@ -115,10 +115,10 @@ export async function getBlueprintById(
 
     if (version === 'v2') {
         try {
-            const response = await clients.v2.blueprintsApi.blueprintsGetBlueprintByIdRaw({
+            const response = await clients.v2.blueprintsApi.blueprintsGetBlueprintById({
                 base64EncodedBlueprintId: encodeBase64(id),
             });
-            return await wrapResponse<Submodel>(response.raw);
+            return await wrapSuccess<Submodel>(response as unknown as Submodel);
         } catch (error) {
             if (isResponseError(error)) {
                 return handleResponseError<Submodel>(asV1ResponseError(error));
