@@ -12,6 +12,17 @@ import {
 } from 'lib/services/database/infrastructureDatabaseActions';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 
+const mockFetchHealthCheck = jest.fn();
+
+jest.mock('../../../../../components/contexts/HealthCheckContext', () => ({
+    useHealthCheckContext: jest.fn(() => ({
+        healthStatus: null,
+        isLoading: false,
+        hasError: false,
+        fetchHealthCheck: mockFetchHealthCheck,
+    })),
+}));
+
 jest.mock('./MnestixInfrastructureForm', () => {
     const MockComponent = jest.fn(() => <div data-testid="infrastructure-form">Infrastructure Form</div>);
     return {
