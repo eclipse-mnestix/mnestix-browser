@@ -9,9 +9,12 @@ import { getDefaultInfrastructure } from '../database/infrastructureDatabaseActi
 import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
 import { TemplateApi } from 'lib/api/mnestix-aas-generator/v1';
 
-export type AasGeneratorApiVersion = 'v1' | 'v2';
+export enum AasGeneratorApiVersion {
+    V1 = 'v1',
+    V2 = 'v2'
+}
 
-export const DEFAULT_TEMPLATE_API_VERSION: AasGeneratorApiVersion = 'v2';
+export const DEFAULT_TEMPLATE_API_VERSION: AasGeneratorApiVersion = AasGeneratorApiVersion.V2;
 
 export function resolveTemplateApiVersion(version?: AasGeneratorApiVersion): AasGeneratorApiVersion {
     return version ?? DEFAULT_TEMPLATE_API_VERSION;

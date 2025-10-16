@@ -53,7 +53,7 @@ export default function Page() {
 
     const { showError } = useShowError();
     const { healthStatus } = useHealthCheckContext();
-    const apiVersion = (healthStatus?.entries?.application_info?.data?.apiVersion ?? 'v2') as AasGeneratorApiVersion;
+    const apiVersion = (healthStatus?.entries?.application_info?.data?.apiVersion ?? AasGeneratorApiVersion.V2) as AasGeneratorApiVersion;
 
     const fetchTemplatesAndBlueprints = async () => {
         const _templateItems: TabSelectorItem[] = [];

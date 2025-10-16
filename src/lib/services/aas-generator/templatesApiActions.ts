@@ -17,7 +17,7 @@ export async function getTemplates(apiVersion?: AasGeneratorApiVersion): Promise
     const version = resolveTemplateApiVersion(apiVersion);
     const clients = await createVersionedAasGeneratorClients();
 
-    if (version === 'v2') {
+    if (version === AasGeneratorApiVersion.V2) {
         try {
             const response = await clients.v2.templatesApi.templatesGetAllTemplatesRaw();
             return await wrapResponse<Submodel[]>(response.raw);

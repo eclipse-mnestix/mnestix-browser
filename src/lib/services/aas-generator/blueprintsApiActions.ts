@@ -5,7 +5,6 @@ import EmptyDefaultTemplate from 'assets/submodels/defaultEmptySubmodel.json';
 import {
     AasGeneratorApiVersion,
     createVersionedAasGeneratorClients,
-    initializeAasGeneratorApiDependencies,
     resolveTemplateApiVersion,
 } from './aasGeneratorVersioning';
 import { ResponseError as ResponseErrorV1 } from 'lib/api/mnestix-aas-generator/v1/runtime';
@@ -28,7 +27,7 @@ export async function createBlueprint(
     const version = resolveTemplateApiVersion(apiVersion);
     const clients = await createVersionedAasGeneratorClients();
 
-    if (version === 'v2') {
+    if (version === AasGeneratorApiVersion.V2) {
         try {
             const createdId = await clients.v2.blueprintsApi.blueprintsCreateBlueprint({
                 body: template,
@@ -61,7 +60,7 @@ export async function updateBlueprint(
     const version = resolveTemplateApiVersion(apiVersion);
     const clients = await createVersionedAasGeneratorClients();
 
-    if (version === 'v2') {
+    if (version === AasGeneratorApiVersion.V2) {
         try {
             await clients.v2.blueprintsApi.blueprintsUpdateBlueprint({
                 submodelId,
@@ -91,7 +90,7 @@ export async function getBlueprints(apiVersion?: AasGeneratorApiVersion): Promis
     const version = resolveTemplateApiVersion(apiVersion);
     const clients = await createVersionedAasGeneratorClients();
 
-    if (version === 'v2') {
+    if (version === AasGeneratorApiVersion.V2) {
         try {
             const response = await clients.v2.blueprintsApi.blueprintsGetAllBlueprints();
             return await wrapSuccess<Submodel[]>(response as unknown as Submodel[]);
@@ -113,7 +112,7 @@ export async function getBlueprintById(
     const version = resolveTemplateApiVersion(apiVersion);
     const clients = await createVersionedAasGeneratorClients();
 
-    if (version === 'v2') {
+    if (version === AasGeneratorApiVersion.V2) {
         try {
             const response = await clients.v2.blueprintsApi.blueprintsGetBlueprintById({
                 base64EncodedBlueprintId: encodeBase64(id),
@@ -137,7 +136,7 @@ export async function deleteBlueprintById(
     const version = resolveTemplateApiVersion(apiVersion);
     const clients = await createVersionedAasGeneratorClients();
 
-    if (version === 'v2') {
+    if (version === AasGeneratorApiVersion.V2) {
         try {
             const response = await clients.v2.blueprintsApi.blueprintsDeleteBlueprintRaw({
                 base64EncodedBlueprintId: encodeBase64(id),
