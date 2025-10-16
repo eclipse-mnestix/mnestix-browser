@@ -9,7 +9,7 @@ import {
 } from './aasGeneratorVersioning';
 import { ResponseError as ResponseErrorV1 } from 'lib/api/mnestix-aas-generator/v1/runtime';
 import { ResponseError as ResponseErrorV2 } from 'lib/api/mnestix-aas-generator/v2/runtime';
-import { ApiResponseWrapper, wrapResponse, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { ApiResponseWrapper, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { mapStatusToResult } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { handleResponseError } from './apiHelper';

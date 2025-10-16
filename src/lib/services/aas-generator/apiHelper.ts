@@ -11,12 +11,14 @@ export const handleResponseError = async <T>(error: ResponseError): Promise<ApiR
         if (contentType?.includes('application/json')) {
             parsedBody = (await clone.json()) as T;
         }
-    } finally {
-        return wrapErrorCode(
-            mapStatusToResult(error.response.status),
-            error.response.statusText,
-            error.response.status,
-            parsedBody,
-        );
+    } catch {
+        // ignore json parsing errors, we'll return without body information
     }
+
+    return wrapErrorCode(
+        mapStatusToResult(error.response.status),
+        error.response.statusText,
+        error.response.status,
+        parsedBody,
+    );
 };
