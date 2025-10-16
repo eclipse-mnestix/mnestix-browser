@@ -6,28 +6,40 @@ import { headers } from 'next/headers';
 import { createRequestLogger } from 'lib/util/Logger';
 import pino from 'pino';
 
+async function createServerFetchLogger(): Promise<pino.Logger<never, boolean>> {
+    try {
+        return createRequestLogger(await headers());
+    } catch {
+        return createRequestLogger();
+    }
+}
+
+function logServerFetchDebug(
+    log: pino.Logger<never, boolean>,
+    input: string | Request | URL,
+    response: Response,
+    context: string,
+): void {
+    log.debug(
+        {
+            Request_Url: input,
+            Http_Status: response?.status,
+            Http_Message: response?.statusText,
+        },
+        context,
+    );
+}
+
 export async function performServerFetch<T>(
     input: string | Request | URL,
     init?: RequestInit | undefined,
 ): Promise<ApiResponseWrapper<T>> {
-    let log: pino.Logger<never, boolean>;
-
-    try {
-        log = createRequestLogger(await headers());
-    } catch {
-        log = createRequestLogger();
-    }
+    const log = await createServerFetchLogger();
 
     try {
         const response = await fetch(input, init);
-        log.debug(
-            {
-                Request_Url: input,
-                Http_Status: response?.status,
-                Http_Message: response?.statusText,
-            },
-            'Initiating server fetch',
-        );
+        logServerFetchDebug(log, input, response, 'Initiating server fetch');
+
         return await wrapResponse<T>(response);
     } catch (e) {
         if (e instanceof Error) {
@@ -44,24 +56,12 @@ export async function performServerFetchRaw(
     input: string | Request | URL,
     init?: RequestInit | undefined,
 ): Promise<Response> {
-    let log: pino.Logger<never, boolean>;
-
-    try {
-        log = createRequestLogger(await headers());
-    } catch {
-        log = createRequestLogger();
-    }
+    const log = await createServerFetchLogger();
 
     try {
         const response = await fetch(input, init);
-        log.debug(
-            {
-                Request_Url: input,
-                Http_Status: response?.status,
-                Http_Message: response?.statusText,
-            },
-            'Initiating server fetch (raw)',
-        );
+        logServerFetchDebug(log, input, response, 'Initiating server fetch (raw)');
+
         return response;
     } catch (e) {
         if (e instanceof Error) {

@@ -34,11 +34,14 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useEnv } from 'app/EnvProvider';
 import { useParams, useRouter } from 'next/navigation';
 import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
-import { updateBlueprint } from 'lib/services/templateApiWithAuthActions';
-import { deleteBlueprintById, getBlueprintById, getTemplates } from 'lib/services/templatesApiActions';
+import { updateBlueprint } from 'lib/services/aas-generator/blueprintsApiActions';
+import { getTemplates } from 'lib/services/aas-generator/templatesApiActions';
+import { deleteBlueprintById, getBlueprintById } from 'lib/services/aas-generator/blueprintsApiActions';
 import { BlueprintDeleteDialog } from 'app/[locale]/templates/_components/BlueprintDeleteDialog';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useLocale, useTranslations } from 'next-intl';
+import { useHealthCheckContext } from 'components/contexts/HealthCheckContext';
+import { AasGeneratorApiVersion } from 'lib/services/aas-generator/aasGeneratorVersioning';
 
 export default function Page() {
     const { id } = useParams<{ id: string }>();
@@ -59,13 +62,15 @@ export default function Page() {
     const [deletedItems, setDeletedItems] = useState<string[]>([]);
     const [templates, setTemplates] = useState<Submodel[]>();
     const env = useEnv();
+    const { healthStatus } = useHealthCheckContext();
+    const apiVersion = (healthStatus?.entries?.application_info?.data?.apiVersion ?? AasGeneratorApiVersion.V2) as AasGeneratorApiVersion;
     const { showError } = useShowError();
     const t = useTranslations('pages.templates');
     const locale = useLocale();
 
     const fetchBlueprint = async () => {
         if (!id) return;
-        const custom = await getBlueprintById(id);
+    const custom = await getBlueprintById(id, apiVersion);
         if (custom.isSuccess) {
             setLocalFrontendBlueprint(generateSubmodelViewObject(custom.result));
         } else showError(custom.message);
@@ -94,7 +99,7 @@ export default function Page() {
     }
 
     const fetchTemplates = async () => {
-        const templates = await getTemplates('v2');
+    const templates = await getTemplates(apiVersion);
         if (templates.isSuccess) {
             setTemplates(templates.result);
         } else {
@@ -164,7 +169,7 @@ export default function Page() {
     const deleteBlueprint = async () => {
         if (!id) return;
         try {
-            await deleteBlueprintById(id);
+            await deleteBlueprintById(id, apiVersion);
             notificationSpawner.spawn({
                 message: t('blueprintDeletedSuccessfully'),
                 severity: 'success',
@@ -223,17 +228,16 @@ export default function Page() {
             updatedBlueprint = localFrontendBlueprint;
         }
         if (updatedBlueprint) {
-            try {
                 setIsSaving(true);
                 const submodel = generateSubmodel(updatedBlueprint);
-                await updateBlueprint(submodel, submodel.id);
-                handleSuccessfulSave();
-                setLocalFrontendBlueprint(updatedBlueprint);
-            } catch (e) {
-                showError(e);
-            } finally {
-                setIsSaving(false);
-            }
+                const updateResponse = await updateBlueprint(submodel, submodel.id, apiVersion);
+                if (!updateResponse.isSuccess) {
+                     showError(updateResponse.message);
+                } else {
+                    handleSuccessfulSave();
+                    setLocalFrontendBlueprint(updatedBlueprint);
+                }
+                setIsSaving(false); 
         }
     };
 

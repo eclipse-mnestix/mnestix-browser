@@ -3,6 +3,9 @@ import { IConfigurationShellApi } from 'lib/api/configuration-shell-api/configur
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
+/**
+ * @deprecated use generated aas-generator client instead!
+ */
 export class ConfigurationShellApiV2 implements IConfigurationShellApi {
     private constructor(
         protected baseUrl: string,
@@ -10,7 +13,7 @@ export class ConfigurationShellApiV2 implements IConfigurationShellApi {
         protected http: {
             fetch<T>(url: RequestInfo, init?: RequestInit): Promise<ApiResponseWrapper<T>>;
         },
-    ) {}
+    ) { }
 
     static create(
         baseUrl: string | undefined,

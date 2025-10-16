@@ -27,7 +27,7 @@ export interface TemplatesCreateTemplateRequest {
  */
 export interface TemplatesApiInterface {
     /**
-     * If SubmodelTemplatesApiUrl is configured, the endpoint returns Status403Forbidden instructing clients to use the remote templates API instead. Otherwise, it logs the payload\'s id and forwards the body to AddNewSubmodelInDefaultTemplateAasAsync.
+     * If SubmodelTemplatesApiUrl is configured, the endpoint returns Status403Forbidden instructing clients to use the remote templates API instead. Otherwise, it logs the payload\'s id and forwards the body to AddNewSubmodelInTemplateAasAsync.
      * @summary Creates a new template in the templates AAS when the local endpoint is enabled.
      * @param {any} body
      * @param {*} [options] Override http request option.
@@ -40,7 +40,7 @@ export interface TemplatesApiInterface {
     ): Promise<runtime.ApiResponse<string>>;
 
     /**
-     * If SubmodelTemplatesApiUrl is configured, the endpoint returns Status403Forbidden instructing clients to use the remote templates API instead. Otherwise, it logs the payload\'s id and forwards the body to AddNewSubmodelInDefaultTemplateAasAsync.
+     * If SubmodelTemplatesApiUrl is configured, the endpoint returns Status403Forbidden instructing clients to use the remote templates API instead. Otherwise, it logs the payload\'s id and forwards the body to AddNewSubmodelInTemplateAasAsync.
      * Creates a new template in the templates AAS when the local endpoint is enabled.
      */
     templatesCreateTemplate(
@@ -70,7 +70,7 @@ export interface TemplatesApiInterface {
  */
 export class TemplatesApi extends runtime.BaseAPI implements TemplatesApiInterface {
     /**
-     * If SubmodelTemplatesApiUrl is configured, the endpoint returns Status403Forbidden instructing clients to use the remote templates API instead. Otherwise, it logs the payload\'s id and forwards the body to AddNewSubmodelInDefaultTemplateAasAsync.
+     * If SubmodelTemplatesApiUrl is configured, the endpoint returns Status403Forbidden instructing clients to use the remote templates API instead. Otherwise, it logs the payload\'s id and forwards the body to AddNewSubmodelInTemplateAasAsync.
      * Creates a new template in the templates AAS when the local endpoint is enabled.
      */
     async templatesCreateTemplateRaw(
@@ -113,7 +113,7 @@ export class TemplatesApi extends runtime.BaseAPI implements TemplatesApiInterfa
     }
 
     /**
-     * If SubmodelTemplatesApiUrl is configured, the endpoint returns Status403Forbidden instructing clients to use the remote templates API instead. Otherwise, it logs the payload\'s id and forwards the body to AddNewSubmodelInDefaultTemplateAasAsync.
+     * If SubmodelTemplatesApiUrl is configured, the endpoint returns Status403Forbidden instructing clients to use the remote templates API instead. Otherwise, it logs the payload\'s id and forwards the body to AddNewSubmodelInTemplateAasAsync.
      * Creates a new template in the templates AAS when the local endpoint is enabled.
      */
     async templatesCreateTemplate(

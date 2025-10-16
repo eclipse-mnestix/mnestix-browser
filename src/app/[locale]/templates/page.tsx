@@ -18,10 +18,13 @@ import { Qualifier, Submodel } from 'lib/api/aas/models';
 import { sortWithNullableValues } from 'lib/util/SortingUtil';
 import { useEnv } from 'app/EnvProvider';
 import { useRouter } from 'next/navigation';
-import { createBlueprint } from 'lib/services/templateApiWithAuthActions';
-import { deleteBlueprintById, getBlueprints, getTemplates } from 'lib/services/templatesApiActions';
+import { createBlueprint } from 'lib/services/aas-generator/blueprintsApiActions';
+import { getTemplates } from 'lib/services/aas-generator/templatesApiActions';
+import { deleteBlueprintById, getBlueprints } from 'lib/services/aas-generator/blueprintsApiActions';
 import { useTranslations } from 'next-intl';
 import { findSemanticIdOfType } from 'lib/util/SubmodelResolverUtil';
+import { useHealthCheckContext } from 'components/contexts/HealthCheckContext';
+import { AasGeneratorApiVersion } from 'lib/services/aas-generator/aasGeneratorVersioning';
 
 enum SpecialDefaultTabIds {
     All = 'all',
@@ -49,10 +52,13 @@ export default function Page() {
     const bearerToken = auth.getBearerToken();
 
     const { showError } = useShowError();
+    const { healthStatus } = useHealthCheckContext();
+    const apiVersion = (healthStatus?.entries?.application_info?.data?.apiVersion ?? AasGeneratorApiVersion.V2) as AasGeneratorApiVersion;
+
     const fetchTemplatesAndBlueprints = async () => {
         const _templateItems: TabSelectorItem[] = [];
         // fetching defaults first
-        const _templates = await getTemplates('v2');
+        const _templates = await getTemplates(apiVersion);
         if (!_templates.result?.length) {
             notificationSpawner.spawn({
                 message: t('noTemplatesWarning'),
@@ -95,7 +101,7 @@ export default function Page() {
 
     const fetchBlueprints = async (_defaultItems: Array<TabSelectorItem>) => {
         const _blueprintItems: BlueprintItemType[] = [];
-        const customs = (await getBlueprints()).result as Submodel[];
+    const customs = (await getBlueprints(apiVersion)).result as Submodel[];
         if (!customs?.length) {
             notificationSpawner.spawn({
                 message: t('noBlueprintsWarning'),
@@ -164,7 +170,6 @@ export default function Page() {
 
     // Filtering items
     useAsyncEffect(async () => {
-        // TODO: This shouldn't happen in the frontend later on, should happen via API calls
         if (blueprintItems.length) {
             switch (selectedEntry.id) {
                 case SpecialDefaultTabIds.All:
@@ -195,20 +200,20 @@ export default function Page() {
 
     const handleCreateTemplateClick = async (template?: Submodel) => {
         setIsCreatingBlueprint(true);
-        try {
-            const newId = await createBlueprint(template || EmptyDefaultTemplate);
+            const creationResponse = await createBlueprint(template || EmptyDefaultTemplate, apiVersion);
             setIsCreatingBlueprint(false);
-            navigate.push(`/templates/${encodeURIComponent(newId)}`);
-        } catch (e) {
-            setIsCreatingBlueprint(false);
-            showError(e);
-        }
+            console.log(creationResponse);
+            if (!creationResponse.isSuccess) {
+                showError(creationResponse.message);
+            } else {
+                navigate.push(`/templates/${encodeURIComponent(creationResponse.result)}`);
+            }
     };
 
     const deleteTemplate = async (item: BlueprintItemType) => {
         if (!item.id) return;
         try {
-            await deleteBlueprintById(item.id);
+            await deleteBlueprintById(item.id, apiVersion);
             notificationSpawner.spawn({
                 message: t('blueprintDeletedSuccessfully'),
                 severity: 'success',

@@ -17,6 +17,9 @@ export type MnestixFetch = {
     fetch<T>(url: RequestInfo | URL, init?: RequestInit | undefined): Promise<ApiResponseWrapper<T>>;
 };
 
+/**
+ * @deprecated use mnestixFetchRaw instead! We don't want to wrap the response in ApiResponseWrapper at this low level anymore.
+ */
 export function mnestixFetch(securityHeader: Record<string, string> | null): MnestixFetch {
     return {
         fetch: async (url: RequestInfo, init?: RequestInit) => {
