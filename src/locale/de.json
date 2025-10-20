@@ -92,7 +92,9 @@
     "copyButton": {
       "copied": "In Zwischenablage kopiert",
       "copy": "Kopieren",
-      "copyBase64": "Base64-kodiert kopieren"
+      "copyBase64": "Base64-kodiert kopieren",
+      "copyFailed": "Fehler beim Kopieren in die Zwischenablage",
+      "requiresHttps": "Zwischenablage-Funktion erfordert HTTPS"
     },
     "documentComponent": {
       "classification": "Dokument Klassifikation",

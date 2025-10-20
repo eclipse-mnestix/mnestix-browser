@@ -22,13 +22,32 @@ export function CopyButton({
     const t = useTranslations('components.copyButton');
     const notificationSpawner = useNotificationSpawner();
 
-    const handleCopyValue = () => {
-        if (value) {
-            const textToCopy = withBase64 ? encodeBase64(value) : value;
-            navigator.clipboard.writeText(textToCopy);
+    const handleCopyValue = async () => {
+        if (!value) return;
+
+        const textToCopy = withBase64 ? encodeBase64(value) : value;
+
+        // Check if Clipboard API is available (requires HTTPS or localhost)
+        if (!navigator.clipboard || !window.isSecureContext) {
+            console.warn('Clipboard API requires a secure context (HTTPS)');
+            notificationSpawner.spawn({
+                message: t('requiresHttps'),
+                severity: 'warning',
+            });
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(textToCopy);
             notificationSpawner.spawn({
                 message: t('copied') + ': ' + textToCopy,
                 severity: 'success',
+            });
+        } catch (err) {
+            console.warn('Failed to copy text: ', err);
+            notificationSpawner.spawn({
+                message: t('copyFailed'),
+                severity: 'error',
             });
         }
     };
