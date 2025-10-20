@@ -203,7 +203,6 @@ export default function Page() {
         setIsCreatingBlueprint(true);
         const creationResponse = await createBlueprint(template || EmptyDefaultTemplate, apiVersion);
         setIsCreatingBlueprint(false);
-        console.log(creationResponse);
         if (!creationResponse.isSuccess) {
             showError(creationResponse.message);
         } else {
