@@ -29,7 +29,11 @@ Some screenshots can be found in the [screenshots folder](screenshots).
 
 ### **If you need support feel free to contact us through our website [here](https://xitaso.com/kompetenzen/mnestix/#support).**
 
-### **Join our Mnestix Community Hour, register [here](https://xitaso.com/event/mnestix-open-hour/).**
+<p align="center">
+  <a href="https://xitaso.com/en/competences/mnestix-2/#optin_form">
+    <img height="200px" alt="Subscribe to our Newsletter" src="https://github.com/user-attachments/assets/46f1de98-a756-4943-9346-6915d323637f" />
+  </a>
+</p>
 
 ## Quickstart
 
