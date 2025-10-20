@@ -212,7 +212,7 @@ export class TemplateApi extends runtime.BaseAPI implements TemplateApiInterface
 
         const response = await this.request(
             {
-                path: `/api/v1/Template/addDefaultSubmodel`,
+                path: `/api/Template/addDefaultSubmodel`,
                 method: 'POST',
                 headers: headerParameters,
                 query: queryParameters,
@@ -265,7 +265,7 @@ export class TemplateApi extends runtime.BaseAPI implements TemplateApiInterface
 
         const response = await this.request(
             {
-                path: `/api/v1/Template/createCustomSubmodel`,
+                path: `/api/Template/createCustomSubmodel`,
                 method: 'POST',
                 headers: headerParameters,
                 query: queryParameters,
@@ -316,7 +316,7 @@ export class TemplateApi extends runtime.BaseAPI implements TemplateApiInterface
 
         const response = await this.request(
             {
-                path: `/api/v1/Template/{base64EncodedCustomTemplateId}`.replace(
+                path: `/api/Template/{base64EncodedCustomTemplateId}`.replace(
                     `{${'base64EncodedCustomTemplateId'}}`,
                     encodeURIComponent(String(requestParameters['base64EncodedCustomTemplateId'])),
                 ),
@@ -356,7 +356,7 @@ export class TemplateApi extends runtime.BaseAPI implements TemplateApiInterface
 
         const response = await this.request(
             {
-                path: `/api/v1/Template/allCustomSubmodels`,
+                path: `/api/Template/allCustomSubmodels`,
                 method: 'GET',
                 headers: headerParameters,
                 query: queryParameters,
@@ -390,7 +390,7 @@ export class TemplateApi extends runtime.BaseAPI implements TemplateApiInterface
 
         const response = await this.request(
             {
-                path: `/api/v1/Template/allDefaultSubmodels`,
+                path: `/api/Template/allDefaultSubmodels`,
                 method: 'GET',
                 headers: headerParameters,
                 query: queryParameters,
@@ -432,7 +432,7 @@ export class TemplateApi extends runtime.BaseAPI implements TemplateApiInterface
 
         const response = await this.request(
             {
-                path: `/api/v1/Template/customSubmodel/{submodelIdShort}`.replace(
+                path: `/api/Template/customSubmodel/{submodelIdShort}`.replace(
                     `{${'submodelIdShort'}}`,
                     encodeURIComponent(String(requestParameters['submodelIdShort'])),
                 ),
@@ -489,7 +489,7 @@ export class TemplateApi extends runtime.BaseAPI implements TemplateApiInterface
 
         const response = await this.request(
             {
-                path: `/api/v1/Template/updateCustomSubmodel/{submodelId}`.replace(
+                path: `/api/Template/updateCustomSubmodel/{submodelId}`.replace(
                     `{${'submodelId'}}`,
                     encodeURIComponent(String(requestParameters['submodelId'])),
                 ),

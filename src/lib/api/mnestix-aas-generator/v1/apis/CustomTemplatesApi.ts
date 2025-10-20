@@ -84,7 +84,7 @@ export class CustomTemplatesApi extends runtime.BaseAPI implements CustomTemplat
 
         const response = await this.request(
             {
-                path: `/api/v1/CustomTemplates`,
+                path: `/api/CustomTemplates`,
                 method: 'GET',
                 headers: headerParameters,
                 query: queryParameters,
@@ -128,7 +128,7 @@ export class CustomTemplatesApi extends runtime.BaseAPI implements CustomTemplat
 
         const response = await this.request(
             {
-                path: `/api/v1/CustomTemplates/{base64EncodedCustomTemplateId}`.replace(
+                path: `/api/CustomTemplates/{base64EncodedCustomTemplateId}`.replace(
                     `{${'base64EncodedCustomTemplateId'}}`,
                     encodeURIComponent(String(requestParameters['base64EncodedCustomTemplateId'])),
                 ),

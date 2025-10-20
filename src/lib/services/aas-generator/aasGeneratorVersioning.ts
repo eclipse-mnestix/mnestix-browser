@@ -11,10 +11,10 @@ import { TemplateApi } from 'lib/api/mnestix-aas-generator/v1';
 
 export enum AasGeneratorApiVersion {
     V1 = 'v1',
-    V2 = 'v2'
+    V2 = 'v2',
 }
 
-export const DEFAULT_TEMPLATE_API_VERSION: AasGeneratorApiVersion = AasGeneratorApiVersion.V2;
+export const DEFAULT_TEMPLATE_API_VERSION: AasGeneratorApiVersion = AasGeneratorApiVersion.V1;
 
 export function resolveTemplateApiVersion(version?: AasGeneratorApiVersion): AasGeneratorApiVersion {
     return version ?? DEFAULT_TEMPLATE_API_VERSION;
@@ -66,7 +66,8 @@ export type VersionedAasGeneratorClients = {
 };
 
 export async function createVersionedAasGeneratorClients(): Promise<VersionedAasGeneratorClients> {
-    const { fetchWrapped, configurationV1, configurationV2, generatorBaseUrl } = await initializeAasGeneratorApiDependencies();
+    const { fetchWrapped, configurationV1, configurationV2, generatorBaseUrl } =
+        await initializeAasGeneratorApiDependencies();
 
     return {
         v1: {

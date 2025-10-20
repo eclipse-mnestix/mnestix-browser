@@ -63,14 +63,15 @@ export default function Page() {
     const [templates, setTemplates] = useState<Submodel[]>();
     const env = useEnv();
     const { healthStatus } = useHealthCheckContext();
-    const apiVersion = (healthStatus?.entries?.application_info?.data?.apiVersion ?? AasGeneratorApiVersion.V2) as AasGeneratorApiVersion;
+    const apiVersion = (healthStatus?.entries?.application_info?.data?.apiVersion ??
+        AasGeneratorApiVersion.V1) as AasGeneratorApiVersion;
     const { showError } = useShowError();
     const t = useTranslations('pages.templates');
     const locale = useLocale();
 
     const fetchBlueprint = async () => {
         if (!id) return;
-    const custom = await getBlueprintById(id, apiVersion);
+        const custom = await getBlueprintById(id, apiVersion);
         if (custom.isSuccess) {
             setLocalFrontendBlueprint(generateSubmodelViewObject(custom.result));
         } else showError(custom.message);
@@ -99,7 +100,7 @@ export default function Page() {
     }
 
     const fetchTemplates = async () => {
-    const templates = await getTemplates(apiVersion);
+        const templates = await getTemplates(apiVersion);
         if (templates.isSuccess) {
             setTemplates(templates.result);
         } else {
@@ -228,16 +229,16 @@ export default function Page() {
             updatedBlueprint = localFrontendBlueprint;
         }
         if (updatedBlueprint) {
-                setIsSaving(true);
-                const submodel = generateSubmodel(updatedBlueprint);
-                const updateResponse = await updateBlueprint(submodel, submodel.id, apiVersion);
-                if (!updateResponse.isSuccess) {
-                     showError(updateResponse.message);
-                } else {
-                    handleSuccessfulSave();
-                    setLocalFrontendBlueprint(updatedBlueprint);
-                }
-                setIsSaving(false); 
+            setIsSaving(true);
+            const submodel = generateSubmodel(updatedBlueprint);
+            const updateResponse = await updateBlueprint(submodel, submodel.id, apiVersion);
+            if (!updateResponse.isSuccess) {
+                showError(updateResponse.message);
+            } else {
+                handleSuccessfulSave();
+                setLocalFrontendBlueprint(updatedBlueprint);
+            }
+            setIsSaving(false);
         }
     };
 
