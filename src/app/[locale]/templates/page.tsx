@@ -53,7 +53,8 @@ export default function Page() {
 
     const { showError } = useShowError();
     const { healthStatus } = useHealthCheckContext();
-    const apiVersion = (healthStatus?.entries?.application_info?.data?.apiVersion ?? AasGeneratorApiVersion.V2) as AasGeneratorApiVersion;
+    const apiVersion = (healthStatus?.entries?.application_info?.data?.apiVersion ??
+        AasGeneratorApiVersion.V1) as AasGeneratorApiVersion;
 
     const fetchTemplatesAndBlueprints = async () => {
         const _templateItems: TabSelectorItem[] = [];
@@ -101,7 +102,7 @@ export default function Page() {
 
     const fetchBlueprints = async (_defaultItems: Array<TabSelectorItem>) => {
         const _blueprintItems: BlueprintItemType[] = [];
-    const customs = (await getBlueprints(apiVersion)).result as Submodel[];
+        const customs = (await getBlueprints(apiVersion)).result as Submodel[];
         if (!customs?.length) {
             notificationSpawner.spawn({
                 message: t('noBlueprintsWarning'),
@@ -200,14 +201,14 @@ export default function Page() {
 
     const handleCreateTemplateClick = async (template?: Submodel) => {
         setIsCreatingBlueprint(true);
-            const creationResponse = await createBlueprint(template || EmptyDefaultTemplate, apiVersion);
-            setIsCreatingBlueprint(false);
-            console.log(creationResponse);
-            if (!creationResponse.isSuccess) {
-                showError(creationResponse.message);
-            } else {
-                navigate.push(`/templates/${encodeURIComponent(creationResponse.result)}`);
-            }
+        const creationResponse = await createBlueprint(template || EmptyDefaultTemplate, apiVersion);
+        setIsCreatingBlueprint(false);
+        console.log(creationResponse);
+        if (!creationResponse.isSuccess) {
+            showError(creationResponse.message);
+        } else {
+            navigate.push(`/templates/${encodeURIComponent(creationResponse.result)}`);
+        }
     };
 
     const deleteTemplate = async (item: BlueprintItemType) => {

@@ -404,7 +404,7 @@
         },
         "healthCheck": {
           "checking": "Comprobando...",
-          "unreachable": "Mnestix AAS Generator no accesible",
+          "unreachable": "Mnestix AAS Generator no accesible (Nota: Mnestix Generator V1 no admite comprobaciones de estado y siempre se mostrará como desconectado. Por favor, actualice a la versión 2 para utilizar comprobaciones de estado)",
           "offline": "Sin conexión",
           "version": "Versión de la API: ",
           "buildDate": "Fecha de compilación",

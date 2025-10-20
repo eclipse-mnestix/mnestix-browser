@@ -107,7 +107,7 @@ export async function getBlueprints(apiVersion?: AasGeneratorApiVersion): Promis
 
 export async function getBlueprintById(
     id: string,
-    apiVersion?: AasGeneratorApiVersion
+    apiVersion?: AasGeneratorApiVersion,
 ): Promise<ApiResponseWrapper<Submodel>> {
     const version = resolveTemplateApiVersion(apiVersion);
     const clients = await createVersionedAasGeneratorClients();
@@ -131,7 +131,7 @@ export async function getBlueprintById(
 
 export async function deleteBlueprintById(
     id: string,
-    apiVersion?: AasGeneratorApiVersion
+    apiVersion?: AasGeneratorApiVersion,
 ): Promise<ApiResponseWrapper<string | number>> {
     const version = resolveTemplateApiVersion(apiVersion);
     const clients = await createVersionedAasGeneratorClients();
@@ -156,4 +156,3 @@ export async function deleteBlueprintById(
 
     return clients.v1.shellApi.deleteBlueprintById(id);
 }
-

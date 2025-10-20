@@ -404,7 +404,7 @@
         },
         "healthCheck": {
           "checking": "Prüfe...",
-          "unreachable": "Mnestix AAS Generator nicht erreichbar",
+          "unreachable": "Mnestix AAS Generator nicht erreichbar (Hinweis: Mnestix Generator V1 unterstützt keine Health Checks und wird immer als offline angezeigt. Bitte aktualisieren Sie auf Version 2, um Health Checks zu nutzen)",
           "offline": "Offline",
           "version": "API-Version: ",
           "buildDate": "Build-Datum",
