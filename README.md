@@ -13,6 +13,7 @@
 [![MIT License](https://img.shields.io/badge/License-MIT-005962.svg?style=flat-square)](https://choosealicense.com/licenses/mit/)
 [![Yarn License](https://img.shields.io/badge/YARN-V1.22.22-005962?style=flat-square)]()
 [![Join our Community](https://img.shields.io/badge/Join_our_Community-005962?style=flat-square)](https://xitaso.com/kompetenzen/mnestix/#support)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/eclipse-mnestix/mnestix-browser)
 
 ### Welcome to the Mnestix Community!
 
