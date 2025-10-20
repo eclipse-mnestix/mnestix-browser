@@ -92,7 +92,9 @@
     "copyButton": {
       "copied": "Copiado al portapapeles",
       "copy": "Copiar",
-      "copyBase64": "Copiar encriptado en base64"
+      "copyBase64": "Copiar encriptado en base64",
+      "copyFailed": "Error al copiar al portapapeles",
+      "requiresHttps": "La función del portapapeles requiere HTTPS"
     },
     "documentComponent": {
       "classification": "Clasificación del documento",

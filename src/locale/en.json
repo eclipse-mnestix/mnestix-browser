@@ -92,7 +92,9 @@
     "copyButton": {
       "copied": "Copied to clipboard",
       "copy": "Copy",
-      "copyBase64": "Copy base64 encoded"
+      "copyBase64": "Copy base64 encoded",
+      "copyFailed": "Failed to copy to clipboard",
+      "requiresHttps": "Clipboard feature requires HTTPS"
     },
     "documentComponent": {
       "classification": "Document classification",
