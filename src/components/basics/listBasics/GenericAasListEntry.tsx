@@ -67,6 +67,11 @@ export const GenericAasListEntry = ({ aasListEntry, ...config }: GenericAasListT
                     {aasListEntry.repositoryUrl ?? '-'}
                 </TableCell>
             )}
+            {config.showInfrastructureName && (
+                <TableCell align="left" sx={tableBodyText} data-testid="list-row-infrastructureName">
+                    {aasListEntry.infrastructureName ?? '-'}
+                </TableCell>
+            )}
             {config.showDiscoveryUrl && (
                 <TableCell align="left" sx={tableBodyText} data-testid="list-row-discoveryUrl">
                     {aasListEntry.discoveryUrl ?? '-'}

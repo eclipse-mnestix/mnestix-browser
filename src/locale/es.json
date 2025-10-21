@@ -23,6 +23,7 @@
     "authentication": {
       "authenticationNeeded": "Es necesario identificarse",
       "contactAdmin": "No es posible acceder a esta página. Por favor, contacte al administrador.",
+      "nonDefaultRepositoryInfo": "Ponte en contacto con tu administrador del sistema para actualizar la autenticación de la infraestructura.",
       "sessionExpired": "La sesión ha caducado. Por favor, inicie sesión de nuevo."
     },
     "carbonFootprint": {
@@ -91,7 +92,8 @@
     "copyButton": {
       "copied": "Copiado al portapapeles",
       "copy": "Copiar",
-      "copyBase64": "Copiar encriptado en base64"
+      "copyBase64": "Copiar encriptado en base64",
+      "copyFailed": "Error al copiar al portapapeles"
     },
     "documentComponent": {
       "classification": "Clasificación del documento",
@@ -185,7 +187,7 @@
       "logout": "Cerrar sesión",
       "repository": "Repositorio",
       "settings": "Ajustes",
-      "templates": "Plantillas"
+      "templates": "Templates & Blueprints"
     }
   },
   "pages": {
@@ -204,11 +206,12 @@
         "productDesignation": "Denominación del producto (según fabricante)",
         "registryUrl": "Registry URL",
         "repositoryUrl": "Repository URL",
+        "infrastructureName": "Infraestructura",
         "viewAASButton": "Ver AAS"
       },
       "maxElementsWarning": "No se pueden comparar más de 3 elementos",
       "page": "Página",
-      "repositoryDropdown": "AAS repository",
+      "repositoryDropdownLabel": "AAS repository (Infrastructure)",
       "selectRepository": "Por favor, seleccione un repositorio",
       "subHeader": "Todos los AAS de su repositorio se muestran aquí. Puede seleccionar otro repositorio para cambiar la fuente de los datos.",
       "titleComparisonAddButton": "Añadir AAS a la comparación"
@@ -257,7 +260,7 @@
           "noTimeSeriesSegments": "No se encontraron segmentos de series temporales."
         },
         "title": "Submodels",
-        "unknownModelType": "ModelType desconocido: {type}",
+        "unknownModelType": "Mnestix aún no admite este ModelType ({type}).",
         "repositoryUrlLabel": "Repository URL:"
       }
     },
@@ -290,7 +293,7 @@
         "aasAddError": "No se pudo añadir el AAS.",
         "aasAlreadyAdded": "No se puede añadir este AAS más de una vez.",
         "moreAasFound": "Más de un AAS encontrado en el servicio de descubrimiento, introduzca el ID del AAS, por favor.",
-        "unknownModelType": "ModelType desconocido: {type}"
+        "unknownModelType": "Mnestix aún no admite este ModelType ({type})."
       },
       "title": "Comparar AAS"
     },
@@ -399,6 +402,16 @@
           "headerValueTooLong": "El valor del encabezado es demasiado largo.",
           "headerValueCrLfNotAllowed": "El valor del encabezado no debe contener secuencias CRLF.",
           "headerValueIllegalChars": "El valor del encabezado no debe contener caracteres no permitidos."
+        },
+        "healthCheck": {
+          "checking": "Comprobando...",
+          "unreachable": "Mnestix AAS Generator no accesible (Nota: Mnestix Generator V1 no admite comprobaciones de estado y siempre se mostrará como desconectado. Por favor, actualice a la versión 2 para utilizar comprobaciones de estado)",
+          "offline": "Sin conexión",
+          "version": "Versión de la API: ",
+          "buildDate": "Fecha de compilación",
+          "aasGeneratorLabel": "Mnestix AAS Generator",
+          "applicationVersion": "Versión de la aplicación",
+          "refresh": "Actualizar estado"
         },
         "subtitle": "Define qué infraestructuras deben ser utilizadas.",
         "title": "Fuentes de infraestructura",
@@ -512,17 +525,17 @@
         "false": "falso",
         "true": "verdadero"
       },
-      "chooseAStartingPoint": "Elige una plantilla como punto de inicio",
-      "copyTemplateId": "Copiar ID de la plantilla",
-      "createNew": "Crear nuevo",
+      "chooseAStartingPoint": "Elige una template como punto de inicio",
+      "copyBlueprintId": "Copiar ID de la blueprint",
+      "createNew": "Crear blueprint",
       "custom": "A medida",
       "defaultValue": "Valor predeterminado",
-      "deleteTemplateQuestion": "Desea eliminar la plantilla ''{name}'' definitivamente?",
+      "deleteBlueprintQuestion": "Desea eliminar la blueprint ''{name}'' definitivamente?",
       "displayName": "Nombre a mostrar",
-      "emptyCustom": "Vacío (A medida)",
-      "emptyCustomDescription": "No basada en una plantilla estandarizada",
+      "emptyTemplate": "Vacío (A medida)",
+      "emptyTemplateDescription": "No basada en una template estandarizada",
       "errors": {
-        "unknownModelType": "ModelType desconocido: {type}"
+        "unknownModelType": "Mnestix aún no admite este ModelType ({type})."
       },
       "labels": {
         "language": "Idioma",
@@ -533,23 +546,27 @@
       },
       "mappingInfo": "Información de mapeo",
       "mappingInfoDescription": "Identificador arbitrario para importar sus datos.",
+      "collectionMappingInfo": "Información de mapeo de colección",
+      "collectionMappingInfoDescription": "Identificador arbitrario que puede usar para duplicar elementos en una colección durante las importaciones de datos.",
       "messages": {
         "changesSavedSuccessfully": "Cambios guardados correctamente",
         "deleted": "eliminado"
       },
       "multiplicity": "Multiplicidad",
       "multiplicityDescription": "Clasificador para identificar elementos obligatorios.",
-      "noTemplatesFound": "No se encontraron plantillas",
-      "templateDeletedSuccessfully": "Plantilla eliminada correctamente",
-      "templateIdCopied": "ID de la plantilla copiado al portapapeles: {id}",
-      "templatesUseExplanation": "Las plantillas le permiten crear estructuras de submodel reutilizables y ajustadas a sus requisitos.",
-      "title": "Plantillas",
+      "noBlueprintsFound": "No se encontraron blueprints",
+      "blueprintDeletedSuccessfully": "Blueprint eliminada correctamente",
+      "noTemplatesWarning": "No hay templates disponibles. Solo se muestran blueprints.",
+      "blueprintIdCopied": "ID de la blueprint copiado al portapapeles: {id}",
+      "blueprintUseExplanation": "Las blueprints le permiten crear estructuras de submodel reutilizables y ajustadas a sus requisitos.",
+      "title": "Templates & Blueprints",
       "validation": {
         "errors": {
           "invalidDate": "La fecha debe ser válida y seguir formato ''yyyy-mm-dd''",
           "invalidLong": "Debe ser un número largo válido"
         }
-      }
+      },
+      "noBlueprintsWarning": "No hay planos disponibles."
     },
     "transfer": {
       "aasRepository": "Repositorio AAS",

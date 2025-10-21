@@ -77,6 +77,7 @@ export async function getAasRepositoriesIncludingDefault() {
         id: 'default',
         url: envs.AAS_REPO_API_URL || '',
         infrastructureName: (await getDefaultInfrastructure()).name,
+        isDefault: true,
     };
     try {
         const aasRepositoriesDb = await getConnectionDataByTypeAction(getTypeAction(ConnectionTypeEnum.AAS_REPOSITORY));

@@ -1,0 +1,18 @@
+{
+  "qualifierTypes": ["CollectionMappingInfo", "SMT/CollectionMappingInfo"],
+  "emptyTemplate": {
+    "semanticId": {
+      "type": "ExternalReference",
+      "keys": [
+        {
+          "type": "GlobalReference",
+          "value": "https://admin-shell.io/SubmodelTemplates/CollectionMappingInfo/1/0"
+        }
+      ]
+    },
+    "kind": "TemplateQualifier",
+    "type": "SMT/CollectionMappingInfo",
+    "valueType": "xs:string",
+    "value": ""
+  }
+}
