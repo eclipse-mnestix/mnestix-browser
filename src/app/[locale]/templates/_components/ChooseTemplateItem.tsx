@@ -20,10 +20,10 @@ const StyledBox = styled(Box)(({ theme }) => ({
 }));
 
 export function ChooseTemplateItem(props: ChooseTemplateItemProps) {
-    const { label, subLabel, description, hasDivider, ...other } = props;
+    const { label, subLabel, description, hasDivider, onClick, ...other } = props;
     return (
         <Box {...other}>
-            <StyledBox onClick={props.onClick}>
+            <StyledBox onClick={onClick}>
                 <IconCircleWrapper sx={{ mr: 2 }}>
                     <Add color="primary" />
                 </IconCircleWrapper>

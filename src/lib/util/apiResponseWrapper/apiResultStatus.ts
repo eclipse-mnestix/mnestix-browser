@@ -48,3 +48,19 @@ export const httpStatusMessage: Record<number, ApiResultStatus> = {
     503: ApiResultStatus.SERVICE_UNAVAILABLE,
     504: ApiResultStatus.GATEWAY_TIMEOUT,
 };
+
+export const mapStatusToResult = (status: number): ApiResultStatus => {
+    if (httpStatusMessage[status]) {
+        return httpStatusMessage[status];
+    }
+
+    if (status >= 500) {
+        return ApiResultStatus.INTERNAL_SERVER_ERROR;
+    }
+
+    if (status >= 400) {
+        return ApiResultStatus.UNKNOWN_ERROR;
+    }
+
+    return ApiResultStatus.SUCCESS;
+};

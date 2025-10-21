@@ -12,7 +12,7 @@ import { getArrayFromString } from 'lib/util/SubmodelResolverUtil';
 import { useAuth } from 'lib/hooks/UseAuth';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { SettingsCardHeader } from 'app/[locale]/settings/_components/SettingsCardHeader';
-import { getIdGenerationSettings, putSingleIdGenerationSetting } from 'lib/services/configurationApiActions';
+import { getIdGenerationSettings, putSingleIdGenerationSetting } from 'lib/services/aas-generator/configurationApiActions';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useTranslations } from 'next-intl';
 import { LocalizedError } from 'lib/util/LocalizedError';
