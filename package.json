@@ -52,7 +52,7 @@
     "@fontsource/saira": "^5.2.9",
     "@influxdata/influxdb-client-browser": "^1.33.2",
     "@mui/icons-material": "^7.3.2",
-    "@mui/lab": "^7.0.0-beta.14",
+    "@mui/lab": "^7.0.0-beta.17",
     "@mui/material": "^7.3.2",
     "@mui/material-nextjs": "^7.3.2",
     "@mui/styled-engine": "^7.3.2",
