@@ -16,6 +16,23 @@ const unlocalizedPathsRegex = RegExp(
 );
 
 export function middleware(req: NextRequest) {
+    // Generate a unique correlation ID for tracking requests
+    const correlationId = uuidv4();
+    req.headers.set('x-correlation-id', correlationId);
+
+    // Server actions require the response to stay untouched so that Next.js can
+    // stream the expected RSC(React Server Components) payload. Any rewrite or redirect (including those
+    // coming from the i18n middleware) changes the response shape and results in
+    // the "An unexpected response was received from the server" error on the
+    // client. When a server action is detected (Next.js sends the `next-action`
+    // header), we simply let the request pass through while preserving the
+    // correlation id for logging purposes.
+    if (req.headers.has('next-action')) {
+        const res = NextResponse.next();
+        res.headers.set('x-correlation-id', correlationId);
+        return res;
+    }
+
     const { pathname } = req.nextUrl;
     //paths which should be redirected to 404 page if feature flag is disabled
     if (!envs.AAS_LIST_FEATURE_FLAG && pathname.includes('list')) {
@@ -32,10 +49,6 @@ export function middleware(req: NextRequest) {
     if (envs.PRODUCT_VIEW_FEATURE_FLAG && req.nextUrl.pathname === '/') {
         return NextResponse.redirect(new URL('/marketplace', req.url));
     }
-
-    // Generate a unique correlation ID for tracking requests
-    const correlationId = uuidv4();
-    req.headers.set('x-correlation-id', correlationId);
 
     if (req.nextUrl.pathname.match(unlocalizedPathsRegex)) {
         return NextResponse.next();

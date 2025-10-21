@@ -3,7 +3,15 @@ import AuthenticationLock from 'assets/authentication_lock.svg';
 import SignInButton from 'components/authentication/SignInButton';
 import { useTranslations } from 'next-intl';
 
-export function AuthenticationPrompt() {
+type AuthenticationPromptProps = {
+    isDefaultRepo?: boolean;
+};
+
+/**
+ * Renders the prompt shown when authentication is required.
+ * Displays admin guidance if the current repository is not the default and there is an authentication error.
+ */
+export function AuthenticationPrompt({ isDefaultRepo }: AuthenticationPromptProps) {
     const t = useTranslations('components.authentication');
     return (
         <Box
@@ -20,7 +28,19 @@ export function AuthenticationPrompt() {
                 {t('authenticationNeeded')}
             </Typography>
             <AuthenticationLock data-testid="authentication-prompt-lock" />
-            <SignInButton />
+            {isDefaultRepo ? (
+                <SignInButton />
+            ) : (
+                <Typography
+                    variant="body1"
+                    sx={{ mt: 3 }}
+                    color="text.primary"
+                    align="center"
+                    data-testid="authentication-prompt-contact-admin"
+                >
+                    {t('nonDefaultRepositoryInfo')}
+                </Typography>
+            )}
         </Box>
     );
 }

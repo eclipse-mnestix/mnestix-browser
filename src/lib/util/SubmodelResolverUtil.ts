@@ -7,6 +7,7 @@ import {
     KeyTypes,
     DataElementChoice,
     Reference,
+    Key,
 } from 'lib/api/aas/models';
 import { idEquals } from './IdValidationUtil';
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
@@ -269,4 +270,16 @@ export function findSemanticIdInMap<T extends Record<string, string | ((...args:
     return Object.keys(map).find((mapKey) => semanticId?.keys?.some((id) => idEquals(id.value, mapKey))) as
         | keyof T
         | undefined;
+}
+
+/**
+ * Finds the value of the first key with a matching type in the provided keys array.
+ *
+ * @param type - The type(s) to match (can be a string or an array of strings, e.g. 'Submodel' | 'Global').
+ * @param keys - The array of Key objects to search.
+ * @returns The value of the first matching key, or undefined if no match is found.
+ */
+export function findSemanticIdOfType(type: string | string[], keys: Key[] | undefined): string | undefined {
+    const types = Array.isArray(type) ? type : [type];
+    return keys?.find((key) => types.some((t) => idEquals(key.type, t)))?.value;
 }

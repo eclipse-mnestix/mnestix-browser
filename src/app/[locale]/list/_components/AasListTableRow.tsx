@@ -8,7 +8,7 @@ import { RoundedIconButton } from 'components/basics/Buttons';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { getThumbnailFromShell } from 'lib/services/aas-repository-service/aasRepositoryActions';
 import { isValidUrl } from 'lib/util/UrlUtil';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ListEntityDto } from 'lib/services/list-service/ListService';
 import { getNameplateValuesForAAS } from 'lib/services/list-service/aasListApiActions';
@@ -108,6 +108,15 @@ export const AasListTableRow = (props: AasTableRowProps) => {
             }
         }
     }, [aasListEntry.thumbnail, thumbnailResponse]);
+
+    // Cleanup blob URL when component unmounts or thumbnailUrl changes
+    useEffect(() => {
+        return () => {
+            if (thumbnailUrl?.startsWith('blob:')) {
+                URL.revokeObjectURL(thumbnailUrl);
+            }
+        };
+    }, [thumbnailUrl]);
 
     const showMaxElementsNotification = () => {
         notificationSpawner.spawn({

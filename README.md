@@ -13,6 +13,7 @@
 [![MIT License](https://img.shields.io/badge/License-MIT-005962.svg?style=flat-square)](https://choosealicense.com/licenses/mit/)
 [![Yarn License](https://img.shields.io/badge/YARN-V1.22.22-005962?style=flat-square)]()
 [![Join our Community](https://img.shields.io/badge/Join_our_Community-005962?style=flat-square)](https://xitaso.com/kompetenzen/mnestix/#support)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/eclipse-mnestix/mnestix-browser)
 
 ### Welcome to the Mnestix Community!
 
@@ -29,7 +30,11 @@ Some screenshots can be found in the [screenshots folder](screenshots).
 
 ### **If you need support feel free to contact us through our website [here](https://xitaso.com/kompetenzen/mnestix/#support).**
 
-### **Join our Mnestix Community Hour, register [here](https://xitaso.com/event/mnestix-open-hour/).**
+<p align="center">
+  <a href="https://xitaso.com/en/competences/mnestix-2/#optin_form">
+    <img height="200px" alt="Subscribe to our Newsletter" src="https://github.com/user-attachments/assets/46f1de98-a756-4943-9346-6915d323637f" />
+  </a>
+</p>
 
 ## Quickstart
 

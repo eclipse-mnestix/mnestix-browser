@@ -16,4 +16,5 @@ export type AasListConfig = {
     showRepositoryUrl?: boolean;
     showDiscoveryUrl?: boolean;
     showRegistryUrl?: boolean;
+    showInfrastructureName?: boolean;
 };

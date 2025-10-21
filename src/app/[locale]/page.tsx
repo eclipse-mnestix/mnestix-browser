@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Card, Grid, Typography, useTheme } from '@mui/material';
+import { Box, Card, CardActionArea, Grid, Typography, useTheme } from '@mui/material';
 import { GoToListCard } from 'app/[locale]/_components/GoToListCard';
 import { FindOutMoreCard } from 'app/[locale]/_components/FindOutMoreCard';
 import { QrScanner } from 'app/[locale]/_components/QrScanner';
@@ -81,13 +81,28 @@ export default function () {
                     {!isMobile && env.AAS_LIST_FEATURE_FLAG && (
                         <Grid size={{ md: 3, xs: 6 }}>
                             <Card sx={{ height: '100%', borderRadius: '12px' }}>
-                                <GoToListCard />
+                                <CardActionArea
+                                    onClick={() => navigate.push('/list')}
+                                    aria-label={t('listBtnText')}
+                                    sx={{ height: '100%', display: 'flex', alignItems: 'stretch' }}
+                                >
+                                    <GoToListCard />
+                                </CardActionArea>
                             </Card>
                         </Grid>
                     )}
                     <Grid size={{ md: 3, xs: 6 }}>
                         <Card sx={{ height: '100%', borderRadius: '12px' }}>
-                            <FindOutMoreCard />
+                            <CardActionArea
+                                component="a"
+                                href="https://mnestix.io"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={`${t('findOutMoreHeader')} mnestix.io`}
+                                sx={{ height: '100%', display: 'flex', alignItems: 'stretch' }}
+                            >
+                                <FindOutMoreCard />
+                            </CardActionArea>
                         </Card>
                     </Grid>
                     <Grid size={{ md: 12, xs: 12 }}>
