@@ -81,6 +81,8 @@ Once configured, clients must include this same API key in the `X-API-KEY` heade
 X-API-KEY: my-secret-key-123
 ```
 
+> Mnestix Browser adds this automatically when configured right
+
 ##### **JWT Bearer Token Authentication (OAuth 2.0)**
 
 For OAuth 2.0 authentication, you can configure either Microsoft Entra ID (Azure AD) or an OpenID Connect provider (e.g., Keycloak).
@@ -90,6 +92,8 @@ To use JWT Bearer authentication in your requests, include the token in the Auth
 ```
 Authorization: Bearer YOUR_JWT_TOKEN
 ```
+
+> Mnestix Browser adds this automatically when configured right
 
 > **Note:** The Swagger UI is configured to show API Key authentication for simplicity, but JWT Bearer token authentication is fully supported at runtime.
 
