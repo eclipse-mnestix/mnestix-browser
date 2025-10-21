@@ -57,15 +57,43 @@ The Mnestix Template Builder is already integrated within Mnestix Browser and is
 
 The Mnestix AAS Generator is configured using environment variables in your `compose.yml` file. Below are the key settings you can adjust:
 
-#### **API Key**
+#### **Authentication**
+
+The Mnestix AAS Generator supports two authentication methods that can be used simultaneously:
+
+1. **API Key Authentication** (recommended for simple integrations)
+2. **OAuth 2.0 with JWT Bearer tokens** (for advanced integrations)
+
+You can use either method to authenticate your requests. The API will accept whichever authentication method is provided first.
+
+##### **API Key Authentication**
+
+First, configure the API key on the server side:
 
 - `CustomerEndpointsSecurity__ApiKey`:  
   Set your API key to secure all API endpoints except the AasList endpoint.  
   Example:  
-  `CustomerEndpointsSecurity__ApiKey: YOUR_API_KEY_HERE`
-    > Replace `YOUR_API_KEY_HERE` with your actual API key.
+  `CustomerEndpointsSecurity__ApiKey: my-secret-key-123`
 
-#### **Feature Flags**
+Once configured, clients must include this same API key in the `X-API-KEY` header when making requests:
+
+```
+X-API-KEY: my-secret-key-123
+```
+
+##### **JWT Bearer Token Authentication (OAuth 2.0)**
+
+For OAuth 2.0 authentication, you can configure either Microsoft Entra ID (Azure AD) or an OpenID Connect provider (e.g., Keycloak).
+
+To use JWT Bearer authentication in your requests, include the token in the Authorization header:
+
+```
+Authorization: Bearer YOUR_JWT_TOKEN
+```
+
+> **Note:** The Swagger UI is configured to show API Key authentication for simplicity, but JWT Bearer token authentication is fully supported at runtime.
+
+##### **Feature Flags**
 
 - `Features__UseAuthentication`:  
   Enable or disable authentication for the backend.  
@@ -73,7 +101,7 @@ The Mnestix AAS Generator is configured using environment variables in your `com
   `Features__UseAuthentication: true`  
   Set to `true` to require authentication, or `false` to disable.
 
-#### **Authentication Providers**
+##### **Authentication Providers**
 
 You can secure the API using Microsoft Entra ID (Azure AD) or an OpenID Connect provider (e.g., Keycloak).
 
