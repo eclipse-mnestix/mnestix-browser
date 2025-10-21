@@ -142,7 +142,7 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
         }
 
         if (needAuthentication) {
-            return <AuthenticationPrompt />;
+            return <AuthenticationPrompt isDefaultRepo={selectedRepository?.isDefault} />;
         }
 
         return (

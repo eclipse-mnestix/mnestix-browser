@@ -29,6 +29,12 @@ Some screenshots can be found in the [screenshots folder](https://github.com/ecl
 
 ### **If you need support feel free to contact us through our website [here](https://xitaso.com/kompetenzen/mnestix/#support).**
 
+<p align="center">
+  <a href="https://xitaso.com/en/competences/mnestix-2/#optin_form">
+    <img height="200px" alt="Subscribe to our Newsletter" src="https://github.com/user-attachments/assets/46f1de98-a756-4943-9346-6915d323637f" />
+  </a>
+</p>
+
 ## Quickstart
 
 All you need to start your first Mnestix instance is the `compose.yml` (or clone the repository).
