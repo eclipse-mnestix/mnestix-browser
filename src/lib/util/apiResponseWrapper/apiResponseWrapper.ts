@@ -103,3 +103,5 @@ export async function mapBlobToFileDto(content: Blob): Promise<ApiFileDto> {
         fileType: content.type,
     };
 }
+
+

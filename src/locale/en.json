@@ -23,6 +23,7 @@
     "authentication": {
       "authenticationNeeded": "Authentication needed",
       "contactAdmin": "You cannot visit this page. Please contact your administrator.",
+      "nonDefaultRepositoryInfo": "Please contact your system administrator to update the infrastructure authentication.",
       "sessionExpired": "Your session has expired. Please log in again."
     },
     "carbonFootprint": {
@@ -91,7 +92,8 @@
     "copyButton": {
       "copied": "Copied to clipboard",
       "copy": "Copy",
-      "copyBase64": "Copy base64 encoded"
+      "copyBase64": "Copy base64 encoded",
+      "copyFailed": "Failed to copy to clipboard"
     },
     "documentComponent": {
       "classification": "Document classification",
@@ -185,7 +187,7 @@
       "logout": "Logout",
       "repository": "Repository",
       "settings": "Settings",
-      "templates": "Templates"
+      "templates": "Templates & Blueprints"
     }
   },
   "pages": {
@@ -204,11 +206,12 @@
         "productDesignation": "Manufacturer product designation",
         "registryUrl": "Registry URL",
         "repositoryUrl": "Repository URL",
+        "infrastructureName": "Infrastructure",
         "viewAASButton": "View AAS"
       },
       "maxElementsWarning": "Cannot compare more than 3 elements",
       "page": "Page",
-      "repositoryDropdown": "AAS Repository",
+      "repositoryDropdownLabel": "AAS Repository (Infrastructure)",
       "selectRepository": "Please select a repository",
       "subHeader": "You will find all AAS from your repository here. You can select an AAS repository to switch between data sources.",
       "titleComparisonAddButton": "Add AAS to comparison"
@@ -257,7 +260,7 @@
           "noTimeSeriesSegments": "No time series segments found."
         },
         "title": "Submodels",
-        "unknownModelType": "Unknown ModelType: {type}",
+        "unknownModelType": "Mnestix doesn't support this model type yet ({type}).",
         "repositoryUrlLabel": "Repository URL:"
       }
     },
@@ -290,7 +293,7 @@
         "aasAddError": "AAS could not be added.",
         "aasAlreadyAdded": "AAS cannot be added more than once.",
         "moreAasFound": "More than one AAS found in the discovery service, please provide the AAS ID instead.",
-        "unknownModelType": "Unknown ModelType: {type}"
+        "unknownModelType": "Mnestix doesn't support this model type yet ({type})."
       },
       "title": "Compare AAS"
     },
@@ -399,6 +402,16 @@
           "headerValueTooLong": "The header value is too long.",
           "headerValueCrLfNotAllowed": "The header value must not contain CRLF sequences.",
           "headerValueIllegalChars": "The header value must not contain illegal characters."
+        },
+        "healthCheck": {
+          "checking": "Checking...",
+          "unreachable": "Mnestix AAS Generator not reachable (Note: Mnestix Generator V1 does not support health checks and will always show as offline. Please update to version 2 to use health checks)",
+          "offline": "Offline",
+          "version": "API Version: ",
+          "buildDate": "Build date",
+          "aasGeneratorLabel": "Mnestix AAS Generator",
+          "applicationVersion": "Application Version",
+          "refresh": "Refresh health status"
         },
         "subtitle": "Define which infrastructures should be used.",
         "title": "Infrastructures",
@@ -513,16 +526,16 @@
         "true": "true"
       },
       "chooseAStartingPoint": "Choose a template as starting point",
-      "copyTemplateId": "Copy template ID",
-      "createNew": "Create new",
+      "copyBlueprintId": "Copy blueprint ID",
+      "createNew": "New blueprint",
       "custom": "Custom",
       "defaultValue": "Default value",
-      "deleteTemplateQuestion": "Delete template ''{name}'' irretrievably?",
+      "deleteBlueprintQuestion": "Delete blueprint ''{name}'' irretrievably?",
       "displayName": "Display name",
-      "emptyCustom": "Empty (Custom)",
-      "emptyCustomDescription": "Is not based upon a standardized template",
+      "emptyTemplate": "Empty (Custom)",
+      "emptyTemplateDescription": "Is not based upon a standardized template",
       "errors": {
-        "unknownModelType": "Unknown ModelType: {type}"
+        "unknownModelType": "Mnestix doesn't support this model type yet ({type})."
       },
       "labels": {
         "language": "Language",
@@ -533,23 +546,27 @@
       },
       "mappingInfo": "Mapping info",
       "mappingInfoDescription": "Arbitrary identifier that you can use for your data imports.",
+      "collectionMappingInfo": "Collection Mapping info",
+      "collectionMappingInfoDescription": "Arbitrary identifier that you can use for duplicating elements in a collection during data imports.",
       "messages": {
         "changesSavedSuccessfully": "Changes saved successfully",
         "deleted": "deleted"
       },
       "multiplicity": "Multiplicity",
       "multiplicityDescription": "A qualifier used to identify obligatory elements.",
-      "noTemplatesFound": "No templates found",
-      "templateDeletedSuccessfully": "Template deleted successfully",
-      "templateIdCopied": "Template ID copied to clipboard: {id}",
-      "templatesUseExplanation": "Templates allow you to create a reusable submodel structure, adjusted to your requirements.",
-      "title": "Templates",
+      "noBlueprintsFound": "No blueprints found",
+      "blueprintDeletedSuccessfully": "Blueprint deleted successfully",
+      "noTemplatesWarning": "No templates available. Showing only blueprints.",
+      "blueprintIdCopied": "Blueprint ID copied to clipboard: {id}",
+      "blueprintUseExplanation": "Blueprints allow you to create a reusable submodel structure, adjusted to your requirements.",
+      "title": "Templates & Blueprints",
       "validation": {
         "errors": {
           "invalidDate": "Has to be a valid date in format ''yyyy-mm-dd''",
           "invalidLong": "Has to be a valid long"
         }
-      }
+      },
+      "noBlueprintsWarning": "No blueprints available."
     },
     "transfer": {
       "aasRepository": "AAS repository",
