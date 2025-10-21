@@ -21,7 +21,7 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
         const value = props.getValues(
             `targetInformation.${props.type}.${props.rule}` as 'targetInformation.aas.aasIds',
         );
-        return value[0].id === '*';
+        return value?.[0]?.id === '*';
     };
     const [isWildcard, setIsWildcard] = useState(checkIfWildcard());
     const { fields, append, remove } = useFieldArray<RuleFormModel>({
