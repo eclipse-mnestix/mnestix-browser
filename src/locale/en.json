@@ -93,8 +93,7 @@
       "copied": "Copied to clipboard",
       "copy": "Copy",
       "copyBase64": "Copy base64 encoded",
-      "copyFailed": "Failed to copy to clipboard",
-      "requiresHttps": "Clipboard feature requires HTTPS"
+      "copyFailed": "Failed to copy to clipboard"
     },
     "documentComponent": {
       "classification": "Document classification",

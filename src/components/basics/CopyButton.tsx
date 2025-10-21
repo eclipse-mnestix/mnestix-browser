@@ -27,16 +27,6 @@ export function CopyButton({
 
         const textToCopy = withBase64 ? encodeBase64(value) : value;
 
-        // Check if Clipboard API is available (requires HTTPS or localhost)
-        if (!navigator.clipboard || !window.isSecureContext) {
-            console.warn('Clipboard API requires a secure context (HTTPS)');
-            notificationSpawner.spawn({
-                message: t('requiresHttps'),
-                severity: 'warning',
-            });
-            return;
-        }
-
         try {
             await navigator.clipboard.writeText(textToCopy);
             notificationSpawner.spawn({

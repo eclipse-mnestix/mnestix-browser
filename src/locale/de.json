@@ -93,8 +93,7 @@
       "copied": "In Zwischenablage kopiert",
       "copy": "Kopieren",
       "copyBase64": "Base64-kodiert kopieren",
-      "copyFailed": "Fehler beim Kopieren in die Zwischenablage",
-      "requiresHttps": "Zwischenablage-Funktion erfordert HTTPS"
+      "copyFailed": "Fehler beim Kopieren in die Zwischenablage"
     },
     "documentComponent": {
       "classification": "Dokument Klassifikation",
