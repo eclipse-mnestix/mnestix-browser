@@ -127,7 +127,7 @@ jobs:
 
       - name: E2E test collect artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: cypress-artifacts-${{ matrix.containers }}
           path: cypress-artifacts/
@@ -142,7 +142,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: 'yarn'
@@ -162,7 +162,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: 'yarn'
