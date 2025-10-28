@@ -182,7 +182,7 @@ export class ListService {
             const submodelRepositoryClient = this.getTargetSubmodelRepositoryClient();
             const submodelResponse = await submodelRepositoryClient.getSubmodelMetaData(submodelId);
             if (submodelResponse.isSuccess) {
-                const semanticId = submodelResponse.result?.semanticId?.keys[0].value;
+                const semanticId = submodelResponse.result?.semanticId?.keys[0]?.value;
                 const nameplateKeys = [
                     SubmodelSemanticIdEnum.NameplateV1,
                     SubmodelSemanticIdEnum.NameplateV2,
