@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { Submodel, SubmodelElementList } from 'lib/api/aas/models';
 import { findSubmodelElementBySemanticIdsOrIdShort } from 'lib/util/SubmodelResolverUtil';
 import { DocumentSpecificSemanticIdIrdi, DocumentSpecificSemanticIdIrdiV2 } from './DocumentSemanticIds';
-import { 
-    postSubmodelElement, 
-    postSubmodelElementByPath, 
-    putAttachmentToSubmodelElement 
+import {
+    postSubmodelElement,
+    postSubmodelElementByPath,
+    putAttachmentToSubmodelElement,
 } from 'lib/services/submodel-repository-service/submodelRepositoryActions';
 import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 
