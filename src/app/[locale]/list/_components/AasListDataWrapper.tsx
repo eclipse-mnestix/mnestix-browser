@@ -151,6 +151,7 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
                 <AasList
                     data-testid="aas-list"
                     repositoryUrl={selectedRepository}
+                    connectionType={selectedType}
                     shells={aasList}
                     selectedAasList={selectedAasList}
                     updateSelectedAasList={updateSelectedAasList}

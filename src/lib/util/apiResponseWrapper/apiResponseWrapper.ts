@@ -98,7 +98,7 @@ export async function wrapResponse<T>(response: Response): Promise<ApiResponseWr
     // Try to parse as JSON if Content-Type says so or if it looks like JSON
     const isJsonContentType = contentType?.includes('application/json');
     const trimmed = text.trim();
-    const looksLikeJson = /^[\[{"']|^(-?\d+\.?\d*|true|false|null)$/.test(trimmed);
+    const looksLikeJson = /^[[\]{"']|^(-?\d+\.?\d*|true|false|null)$/.test(trimmed);
 
     if (isJsonContentType || looksLikeJson) {
         try {
