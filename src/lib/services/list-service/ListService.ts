@@ -199,10 +199,22 @@ export class ListService {
                         'ManufacturerProductDesignation',
                     );
 
+                    // The API might return the value directly or wrapped in an object with the property name as key
+                    const extractValue = (response: any): MultiLanguageValueOnly | undefined => {
+                        if (!response) return undefined;
+                        if (Array.isArray(response)) return response;
+                        // If response is an object with a single key, extract that value
+                        const keys = Object.keys(response);
+                        if (keys.length === 1 && Array.isArray(response[keys[0]])) {
+                            return response[keys[0]];
+                        }
+                        return response;
+                    };
+
                     return {
                         success: true,
-                        manufacturerName: manufacturerName.result,
-                        manufacturerProductDesignation: manufacturerProduct.result,
+                        manufacturerName: extractValue(manufacturerName.result),
+                        manufacturerProductDesignation: extractValue(manufacturerProduct.result),
                     };
                 }
             }
