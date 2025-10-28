@@ -28,6 +28,7 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
     const [, setAasListFiltered] = useState<ListEntityDto[]>();
     const [selectedAasList, setSelectedAasList] = useState<string[]>();
     const [selectedRepository, setSelectedRepository] = useState<RepositoryWithInfrastructure | null | undefined>();
+    const [selectedType, setSelectedType] = useState<'repository' | 'registry' | undefined>();
     const env = useEnv();
     const t = useTranslations('pages.aasList');
     const { showError } = useShowError();
@@ -56,7 +57,7 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
 
         setIsLoadingList(true);
         clearResults();
-        const response = await getAasListEntities(selectedRepository, 10, newCursor);
+        const response = await getAasListEntities(selectedRepository, 10, newCursor, selectedType);
 
         if (response.success) {
             setAasList(response);
@@ -166,7 +167,10 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
                 {!hideRepoSelection && (
                     <Box display="flex" justifyContent="space-between" marginBottom="1.625rem" paddingX="1rem">
                         <Box display="flex" gap={4}>
-                            <SelectRepository onSelectedRepositoryChanged={setSelectedRepository} />
+                            <SelectRepository
+                                onSelectedRepositoryChanged={setSelectedRepository}
+                                onSelectedTypeChanged={setSelectedType}
+                            />
                         </Box>
                         {env.COMPARISON_FEATURE_FLAG && (
                             <AasListComparisonHeader

@@ -1,5 +1,6 @@
 import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { AssetAdministrationShellRepositoryApi, SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
+import { RegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApi';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { AssetAdministrationShell, Submodel } from 'lib/api/aas/models';
 import ServiceReachable from 'test-utils/TestUtils';
@@ -10,6 +11,8 @@ import { getInfrastructureByName } from '../database/infrastructureDatabaseActio
 import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
 import logger, { logInfo } from 'lib/util/Logger';
 import { RepositoryWithInfrastructure } from '../database/InfrastructureMappedTypes';
+import { IRegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApiInterface';
+import { AssetAdministrationShellDescriptor } from 'lib/types/registryServiceTypes';
 
 export type ListEntityDto = {
     aasId: string;
@@ -35,6 +38,7 @@ export class ListService {
     private constructor(
         protected readonly getTargetAasRepositoryClient: () => IAssetAdministrationShellRepositoryApi,
         protected readonly getTargetSubmodelRepositoryClient: () => ISubmodelRepositoryApi,
+        protected readonly getTargetAasRegistryClient: () => IRegistryServiceApi,
         private readonly log: typeof logger = logger,
     ) {}
 
@@ -55,6 +59,7 @@ export class ListService {
             () => AssetAdministrationShellRepositoryApi.create(targetAasRepository.url, mnestixFetch(securityHeader)),
             // For now, we only use the same repository.
             () => SubmodelRepositoryApi.create(targetAasRepository.url, mnestixFetch(securityHeader)),
+            () => RegistryServiceApi.create(targetAasRepository.url, mnestixFetch(securityHeader), listServiceLogger),
             listServiceLogger,
         );
     }
@@ -74,9 +79,16 @@ export class ListService {
             submodelInRepositories,
             targetAasRepository,
         );
+        const targetAasRegistryClient = RegistryServiceApi.createNull(
+            'https://targetAasRegistryClient.com',
+            shellsInRepositories,
+            [],
+            targetAasRepository,
+        );
         return new ListService(
             () => targetAasRepositoryClient,
             () => targetSubmodelRepositoryClient,
+            () => targetAasRegistryClient,
         );
     }
 
@@ -87,18 +99,53 @@ export class ListService {
      * This logic is needed to hide the configuration AASs created by the mnestix-api.
      * @param limit
      * @param cursor
+     * @param type
      */
-    async getAasListEntities(limit: number, cursor?: string): Promise<AasListDto> {
-        logInfo(this.log, 'getAasListEntities', 'Fetching aas list from repository');
-        const targetAasRepositoryClient = this.getTargetAasRepositoryClient();
-        const response = await targetAasRepositoryClient.getAllAssetAdministrationShells(limit, cursor);
+    async getAasListEntities(limit: number, cursor?: string, type?: 'repository' | 'registry'): Promise<AasListDto> {
+        let assetAdministrationShells: AssetAdministrationShell[] = [];
+        let nextCursor: string | undefined;
 
-        if (!response.isSuccess) {
-            return { success: false, error: response };
+        if (type === 'registry') {
+            logInfo(this.log, 'getAasListEntities', 'Fetching aas list from registry');
+            const targetAasRegistryClient = this.getTargetAasRegistryClient();
+            const descriptorsResponse = await targetAasRegistryClient.getAllAssetAdministrationShellDescriptors(
+                limit,
+                cursor,
+            );
+
+            if (!descriptorsResponse.isSuccess) {
+                return { success: false, error: descriptorsResponse };
+            }
+
+            const { result: descriptors, paging_metadata } = descriptorsResponse.result;
+            nextCursor = paging_metadata?.cursor;
+
+            // Fetch all AAS from their endpoints in parallel
+            const aasPromises = descriptors.map(async (descriptor: AssetAdministrationShellDescriptor) => {
+                if (!descriptor.endpoints || descriptor.endpoints.length === 0) {
+                    this.log?.warn(`Descriptor ${descriptor.id} has no endpoints`);
+                    return null;
+                }
+                const endpoint = new URL(descriptor.endpoints[0].protocolInformation.href);
+                const aasResponse = await targetAasRegistryClient.getAssetAdministrationShellFromEndpoint(endpoint);
+                return aasResponse.isSuccess ? aasResponse.result : null;
+            });
+
+            const aasResults = await Promise.all(aasPromises);
+            assetAdministrationShells = aasResults.filter((aas): aas is AssetAdministrationShell => aas !== null);
+        } else {
+            logInfo(this.log, 'getAasListEntities', 'Fetching aas list from repository');
+            const targetAasRepositoryClient = this.getTargetAasRepositoryClient();
+            const response = await targetAasRepositoryClient.getAllAssetAdministrationShells(limit, cursor);
+
+            if (!response.isSuccess) {
+                return { success: false, error: response };
+            }
+
+            const { result: shells, paging_metadata } = response.result;
+            assetAdministrationShells = shells;
+            nextCursor = paging_metadata?.cursor;
         }
-
-        const { result: assetAdministrationShells, paging_metadata } = response.result;
-        const nextCursor = paging_metadata.cursor;
 
         const aasListDtos = assetAdministrationShells
             .filter((aas) => {

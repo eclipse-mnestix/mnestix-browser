@@ -10,6 +10,7 @@ import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapp
 import path from 'node:path';
 import ServiceReachable from 'test-utils/TestUtils';
 import logger, { logResponseDebug } from 'lib/util/Logger';
+import { PaginationData } from 'lib/api/basyx-v3/types';
 
 export class RegistryServiceApi implements IRegistryServiceApi {
     constructor(
@@ -42,6 +43,41 @@ export class RegistryServiceApi implements IRegistryServiceApi {
 
     getBaseUrl(): string {
         return this.baseUrl;
+    }
+
+    async getAllAssetAdministrationShellDescriptors(
+        limit?: number,
+        cursor?: string,
+    ): Promise<ApiResponseWrapper<PaginationData<AssetAdministrationShellDescriptor[]>>> {
+        const headers = {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        };
+
+        const url = new URL(this.baseUrl + `/shell-descriptors?limit=${limit}&cursor=${cursor ?? ''}`);
+
+        const response = await this.http.fetch<PaginationData<AssetAdministrationShellDescriptor[]>>(url, {
+            method: 'GET',
+            headers,
+        });
+
+        if (!response.isSuccess) {
+            logResponseDebug(
+                this.log,
+                'getAllAssetAdministrationShellDescriptors',
+                'Registry fetch failed, no AAS descriptors found',
+                response,
+                { message: response.message },
+            );
+            return response;
+        }
+        logResponseDebug(
+            this.log,
+            'getAllAssetAdministrationShellDescriptors',
+            'Registry fetch successful, AAS descriptors found',
+            response,
+        );
+        return response;
     }
 
     async getAssetAdministrationShellDescriptorById(

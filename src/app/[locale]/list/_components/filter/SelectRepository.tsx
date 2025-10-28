@@ -1,16 +1,32 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Skeleton, Typography } from '@mui/material';
+import {
+    Box,
+    FormControl,
+    InputLabel,
+    ListSubheader,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+    Skeleton,
+    Typography,
+} from '@mui/material';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { getAasRepositoriesIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
+import {
+    getAasRegistriesIncludingDefault,
+    getAasRepositoriesIncludingDefault,
+} from 'lib/services/database/infrastructureDatabaseActions';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { useTranslations } from 'next-intl';
 import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 
+type ConnectionWithType = RepositoryWithInfrastructure & { type: 'repository' | 'registry' };
+
 export function SelectRepository(props: {
     onSelectedRepositoryChanged: Dispatch<SetStateAction<RepositoryWithInfrastructure | undefined>>;
+    onSelectedTypeChanged?: Dispatch<SetStateAction<'repository' | 'registry' | undefined>>;
 }) {
-    const [aasRepositories, setAasRepositories] = useState<RepositoryWithInfrastructure[]>([]);
-    const [selectedRepository, setSelectedRepository] = useState<string>('');
+    const [aasConnections, setAasConnections] = useState<ConnectionWithType[]>([]);
+    const [selectedConnectionIndex, setSelectedConnectionIndex] = useState<number>(0);
     const notificationSpawner = useNotificationSpawner();
     const [isLoading, setIsLoading] = useState(false);
     const t = useTranslations('pages.aasList');
@@ -19,10 +35,18 @@ export function SelectRepository(props: {
         try {
             setIsLoading(true);
             const aasRepositories: RepositoryWithInfrastructure[] = await getAasRepositoriesIncludingDefault();
-            setAasRepositories(aasRepositories);
-            if (aasRepositories.length > 0 && aasRepositories[0].id) {
-                setSelectedRepository(aasRepositories[0].id);
-                props.onSelectedRepositoryChanged(aasRepositories[0]);
+            const aasRegistries: RepositoryWithInfrastructure[] = await getAasRegistriesIncludingDefault();
+
+            const connections: ConnectionWithType[] = [
+                ...aasRepositories.map((repo) => ({ ...repo, type: 'repository' as const })),
+                ...aasRegistries.map((registry) => ({ ...registry, type: 'registry' as const })),
+            ];
+
+            setAasConnections(connections);
+            if (connections.length > 0) {
+                setSelectedConnectionIndex(0);
+                props.onSelectedRepositoryChanged(connections[0]);
+                props.onSelectedTypeChanged?.(connections[0].type);
             }
         } catch (error) {
             notificationSpawner.spawn({
@@ -35,9 +59,12 @@ export function SelectRepository(props: {
         }
     }, []);
 
-    const onRepositoryChanged = (event: SelectChangeEvent) => {
-        setSelectedRepository(event.target.value);
-        props.onSelectedRepositoryChanged(aasRepositories.find((repo) => repo.id === event.target.value));
+    const onRepositoryChanged = (event: SelectChangeEvent<number>) => {
+        const index = event.target.value as number;
+        setSelectedConnectionIndex(index);
+        const selected = aasConnections[index];
+        props.onSelectedRepositoryChanged(selected);
+        props.onSelectedTypeChanged?.(selected?.type);
     };
 
     return (
@@ -53,25 +80,52 @@ export function SelectRepository(props: {
                         data-testid="repository-select"
                         labelId="aas-repository-select"
                         variant="standard"
-                        value={selectedRepository}
+                        value={selectedConnectionIndex}
                         label={t('repositoryDropdownLabel')}
                         onChange={onRepositoryChanged}
                     >
-                        {aasRepositories.map((repo, index) => {
-                            return (
-                                <MenuItem key={index} value={repo.id} data-testid={`repository-select-item-${index}`}>
-                                    {repo.url}{' '}
+                        <ListSubheader>Repositories</ListSubheader>
+                        {aasConnections
+                            .map((conn, index) => (conn.type === 'repository' ? { conn, index } : null))
+                            .filter((item): item is { conn: ConnectionWithType; index: number } => item !== null)
+                            .map(({ conn, index }) => (
+                                <MenuItem
+                                    key={`repo-${index}`}
+                                    value={index}
+                                    data-testid={`repository-select-item-${index}`}
+                                >
+                                    {conn.url}{' '}
                                     <Typography
                                         component="span"
                                         variant="body2"
                                         color="text.secondary"
                                         sx={{ ml: '5px' }}
                                     >
-                                        ({repo.infrastructureName})
+                                        ({conn.infrastructureName})
                                     </Typography>
                                 </MenuItem>
-                            );
-                        })}
+                            ))}
+                        <ListSubheader>Registries</ListSubheader>
+                        {aasConnections
+                            .map((conn, index) => (conn.type === 'registry' ? { conn, index } : null))
+                            .filter((item): item is { conn: ConnectionWithType; index: number } => item !== null)
+                            .map(({ conn, index }) => (
+                                <MenuItem
+                                    key={`registry-${index}`}
+                                    value={index}
+                                    data-testid={`registry-select-item-${index}`}
+                                >
+                                    {conn.url}{' '}
+                                    <Typography
+                                        component="span"
+                                        variant="body2"
+                                        color="text.secondary"
+                                        sx={{ ml: '5px' }}
+                                    >
+                                        ({conn.infrastructureName})
+                                    </Typography>
+                                </MenuItem>
+                            ))}
                     </Select>
                 </FormControl>
             )}

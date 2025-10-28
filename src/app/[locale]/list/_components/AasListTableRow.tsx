@@ -88,7 +88,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
             // this can happen if the property is not a MultiLanguageValueOnly type
             // e.g. if the property is a AAS Property type (incorrect by specification but possible) string or an error occurs
             if (typeof property === 'string') return property;
-            console.error('Error translating property:', e);
+            console.error('Error translating property:', e, 'Property:', property);
             return '';
         }
     };

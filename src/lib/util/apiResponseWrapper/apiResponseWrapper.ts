@@ -78,19 +78,42 @@ export async function wrapResponse<T>(response: Response): Promise<ApiResponseWr
     }
 
     const contentType = response.headers.get('Content-Type');
-    if (contentType?.includes('application/json')) {
-        if (response.body === null) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            return wrapSuccess(undefined as any);
-        }
 
-        const result = await response.json().catch((e) => console.warn(e.message));
-        return wrapSuccess(result, response.status, getStatus(response.status));
+    // Check if it's a binary content type (images, etc.)
+    const binaryContentTypes = ['image/', 'application/octet-stream', 'application/pdf', 'video/', 'audio/'];
+    const isBinaryContent = binaryContentTypes.some((type) => contentType?.includes(type));
+
+    if (isBinaryContent) {
+        const fileFromResponse = await response.blob();
+        return wrapSuccess(fileFromResponse as T, response.status, getStatus(response.status));
     }
 
-    // Default to Blob for all other content types
-    const fileFromResponse = await response.blob();
-    return wrapSuccess(fileFromResponse as T, response.status, getStatus(response.status));
+    // For all other content types, read as text
+    const text = await response.text();
+    if (!text?.trim()) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return wrapSuccess(undefined as any, response.status, getStatus(response.status));
+    }
+
+    // Try to parse as JSON if Content-Type says so or if it looks like JSON
+    const isJsonContentType = contentType?.includes('application/json');
+    const trimmed = text.trim();
+    const looksLikeJson = /^[\[{"']|^(-?\d+\.?\d*|true|false|null)$/.test(trimmed);
+
+    if (isJsonContentType || looksLikeJson) {
+        try {
+            const jsonResult = JSON.parse(text);
+            return wrapSuccess(jsonResult as T, response.status, getStatus(response.status));
+        } catch (error) {
+            if (isJsonContentType) {
+                console.warn('Failed to parse JSON response despite application/json Content-Type:', error);
+            }
+        }
+    }
+
+    // Default to Blob for plain text
+    const blob = new Blob([text], { type: contentType || 'text/plain' });
+    return wrapSuccess(blob as T, response.status, getStatus(response.status));
 }
 
 export function mapFileDtoToBlob(fileDto: ApiFileDto): Blob {
@@ -103,5 +126,3 @@ export async function mapBlobToFileDto(content: Blob): Promise<ApiFileDto> {
         fileType: content.type,
     };
 }
-
-

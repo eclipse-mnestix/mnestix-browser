@@ -8,10 +8,11 @@ export async function getAasListEntities(
     targetRepository: RepositoryWithInfrastructure,
     limit: number,
     cursor?: string,
+    type?: 'repository' | 'registry',
 ) {
     const logger = createRequestLogger(await headers());
     const listService = await ListService.create(targetRepository, logger);
-    return listService.getAasListEntities(limit, cursor);
+    return listService.getAasListEntities(limit, cursor, type);
 }
 
 export async function getNameplateValuesForAAS(targetRepository: RepositoryWithInfrastructure, aasId: string) {

@@ -89,6 +89,23 @@ export async function getAasRepositoriesIncludingDefault() {
     }
 }
 
+export async function getAasRegistriesIncludingDefault() {
+    const defaultAasRegistry = {
+        id: 'default',
+        url: envs.REGISTRY_API_URL || '',
+        infrastructureName: (await getDefaultInfrastructure()).name,
+        isDefault: true,
+    };
+    try {
+        const aasRegistriesDb = await getConnectionDataByTypeAction(getTypeAction(ConnectionTypeEnum.AAS_REGISTRY));
+
+        return [defaultAasRegistry, ...aasRegistriesDb];
+    } catch (error) {
+        logger.error('Failed to fetch AAS registries', error);
+        return [];
+    }
+}
+
 export async function getSubmodelRepositoriesIncludingDefault() {
     const submodelRepositoriesDb = await getConnectionDataByTypeAction(
         getTypeAction(ConnectionTypeEnum.SUBMODEL_REPOSITORY),
