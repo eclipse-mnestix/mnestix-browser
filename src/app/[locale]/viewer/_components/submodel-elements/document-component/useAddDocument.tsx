@@ -65,11 +65,9 @@ export function useAddDocument(
     function getDocumentsListIdShort(): string | null {
         if (!submodel?.submodelElements) return null;
 
-        const documentsElement = findSubmodelElementBySemanticIdsOrIdShort(
-            submodel.submodelElements,
-            'Documents',
-            [DocumentSpecificSemanticIdIrdiV2.Documents],
-        ) as SubmodelElementList;
+        const documentsElement = findSubmodelElementBySemanticIdsOrIdShort(submodel.submodelElements, 'Documents', [
+            DocumentSpecificSemanticIdIrdiV2.Documents,
+        ]) as SubmodelElementList;
 
         return documentsElement?.idShort || null;
     }
@@ -255,7 +253,7 @@ export function useAddDocument(
             // If a file is selected, upload it
             if (newDocument.file) {
                 const idShortPath = `${documentsListIdShort}.${documentIdShort}.${documentVersionIdShort}.DigitalFile`;
-                
+
                 // First add the DigitalFile element
                 const fileAddOperations: JsonPatchOperation[] = [
                     {
