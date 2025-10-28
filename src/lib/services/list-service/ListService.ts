@@ -200,20 +200,15 @@ export class ListService {
                     );
 
                     // The API might return the value directly or wrapped in an object with the property name as key
-                    const extractValue = (response: unknown): MultiLanguageValueOnly | undefined => {
+                    const extractValue = (response: any): MultiLanguageValueOnly | undefined => {
                         if (!response) return undefined;
                         if (Array.isArray(response)) return response;
                         // If response is an object with a single key, extract that value
-                        if (typeof response === 'object' && response !== null) {
-                            const keys = Object.keys(response);
-                            if (keys.length === 1) {
-                                const value = (response as Record<string, unknown>)[keys[0]];
-                                if (Array.isArray(value)) {
-                                    return value;
-                                }
-                            }
+                        const keys = Object.keys(response);
+                        if (keys.length === 1 && Array.isArray(response[keys[0]])) {
+                            return response[keys[0]];
                         }
-                        return undefined;
+                        return response;
                     };
 
                     return {
