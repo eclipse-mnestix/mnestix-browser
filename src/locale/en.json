@@ -100,7 +100,22 @@
       "documentDetails": "Document details",
       "fileNotFound": "File not found",
       "open": "Open",
-      "showMoreButton": "show more"
+      "showMoreButton": "show more",
+      "titleLabel": "Title",
+      "descriptionLabel": "Description",
+      "organizationLabel": "Organization",
+      "save": "Save",
+      "cancel": "Cancel",
+      "uploadFile": "Upload File",
+      "chooseFile": "Choose File",
+      "noFileSelected": "No file selected",
+      "uploading": "Uploading...",
+      "addDocument": "Add New Document",
+      "addDocumentButton": "Add Document",
+      "versionLabel": "Version",
+      "languageLabel": "Language",
+      "adding": "Adding...",
+      "newDocument": "New Document"
     },
     "dummyComponent": {
       "dummyText": "This is a dummy component. It is used to test the layout and design of the application."

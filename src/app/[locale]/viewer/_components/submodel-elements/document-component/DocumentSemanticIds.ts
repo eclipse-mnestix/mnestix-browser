@@ -25,10 +25,43 @@ export enum DocumentSpecificSemanticIdIrdi {
     DocumentClassification = '0173-1#02-ABI502#001/0173-1#01-AHF581#001',
 }
 
+/**
+ * Handover Documentation V2.0 (IDTA-02004-2-0)
+ */
 export enum DocumentSpecificSemanticIdIrdiV2 {
+    // Main structure
+    Documents = '0173-1#02-ABI500#003',
+    Document = '0173-1#02-ABI500#003/0173-1#01-AHF579#003',
+    DocumentIds = '0173-1#02-ABI501#003',
+    DocumentClassifications = '0173-1#02-ABI502#003',
+    DocumentClassification = '0173-1#02-ABI502#003/0173-1#01-AHF581#003',
+    DocumentVersions = '0173-1#02-ABI503#003',
     DocumentVersion = '0173-1#02-ABI503#003/0173-1#01-AHF582#003',
-    Title = '0173-1#02-ABG940#004',
+    
+    // DocumentVersion fields
+    Languages = '0173-1#02-AAN468#008',
+    Version = '0173-1#02-AAP003#005',
+    Title = '0173-1#02-ABG940#003',
+    Subtitle = '0173-1#02-ABH998#003',
+    Description = '0173-1#02-AAN466#004',
+    KeyWords = '0173-1#02-ABH999#003',
+    StatusSetDate = '0173-1#02-ABI000#003',
+    StatusValue = '0173-1#02-ABI001#003',
     OrganizationShortName = '0173-1#02-ABI002#003',
-    DigitalFile = '0173-1#02-ABK126#003',
+    OrganizationOfficialName = '0173-1#02-ABI004#003',
+    
+    // Files
+    DigitalFiles = '0173-1#02-ABK126#002',
+    DigitalFile = '0173-1#02-ABK126#002', // Same as DigitalFiles for backward compatibility
     PreviewFile = '0173-1#02-ABK127#002',
+    
+    // Classifications
+    ClassId = '0173-1#02-ABH996#003',
+    ClassName = '0173-1#02-ABJ219#002',
+    ClassificationSystem = '0173-1#02-ABH997#003',
+    
+    // References
+    RefersToEntities = '0173-1#02-ABK288#002',
+    BasedOnReferences = '0173-1#02-ABK289#002',
+    TranslationOfEntities = '0173-1#02-ABK290#002',
 }

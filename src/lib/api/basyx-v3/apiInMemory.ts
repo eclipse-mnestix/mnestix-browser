@@ -195,6 +195,14 @@ export class SubmodelRepositoryApiInMemory implements ISubmodelRepositoryApi {
         throw new Error('Method not implemented.');
     }
 
+    patchSubmodelByJsonPatch(
+        _submodelId: string,
+        _patchOperations: any[],
+        _options?: object,
+    ): Promise<ApiResponseWrapper<Response>> {
+        throw new Error('Method not implemented.');
+    }
+
     async postSubmodel(submodel: Submodel, _options?: object): Promise<ApiResponseWrapper<Submodel>> {
         if (this.reachable !== ServiceReachable.Yes)
             return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Service not reachable');

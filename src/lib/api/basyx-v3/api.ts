@@ -484,6 +484,18 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
             options,
         )(this.http, this.baseUrl);
     }
+
+    patchSubmodelByJsonPatch(
+        submodelId: string,
+        patchOperations: any[],
+        options?: any,
+    ): Promise<ApiResponseWrapper<Response>> {
+        return SubmodelRepositoryApiFp(this.configuration).patchSubmodelByJsonPatch(
+            submodelId,
+            patchOperations,
+            options,
+        )(this.http, this.baseUrl);
+    }
 }
 
 /**
@@ -615,6 +627,31 @@ export const SubmodelRepositoryApiFp = function (configuration?: Configuration) 
                             .replace(`{submodelIdentifier}`, encodeBase64(String(submodelId)))
                             .replace(`{idShortPath}`, attachmentDetails.idShortPath)
                             .replace(`{fileName}`, attachmentDetails.fileName ?? 'Document'),
+                    localVarRequestOptions,
+                );
+            };
+        },
+
+        /**
+         * @summary Patches a submodel using JSON Patch (RFC 6902)
+         * @param {string} submodelId The Submodels unique id
+         * @param {Array<any>} patchOperations Array of JSON Patch operations
+         * @param {*} [options] Override http request option
+         * @throws {RequiredError}
+         */
+        patchSubmodelByJsonPatch(submodelId: string, patchOperations: any[], options: any) {
+            return async (requestHandler: FetchAPI, baseUrl: string) => {
+                const localVarRequestOptions = Object.assign({ method: 'PATCH' }, options);
+                const localVarHeaderParameter = {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json-patch+json',
+                } as any;
+
+                localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options?.headers);
+                localVarRequestOptions.body = JSON.stringify(patchOperations);
+
+                return await requestHandler.fetch<Response>(
+                    baseUrl + `/submodels/{submodelIdentifier}`.replace(`{submodelIdentifier}`, encodeBase64(String(submodelId))),
                     localVarRequestOptions,
                 );
             };

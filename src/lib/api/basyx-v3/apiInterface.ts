@@ -204,4 +204,26 @@ export interface ISubmodelRepositoryApi {
         attachmentData: AttachmentDetails,
         options?: object,
     ): Promise<ApiResponseWrapper<Response>>;
+
+    /**
+     * @summary Patches a submodel using JSON Patch (RFC 6902)
+     * @param {string} submodelId - The unique identifier of the submodel
+     * @param {Array<JsonPatchOperation>} patchOperations - Array of JSON Patch operations
+     * @param {object} [options] - Optional. Additional options to override default HTTP request settings.
+     * @returns {Promise<ApiResponseWrapper<Response>>} A promise that resolves to the server's response after patching
+     * @memberof SubmodelRepositoryApi
+     */
+    patchSubmodelByJsonPatch(
+        submodelId: string,
+        patchOperations: JsonPatchOperation[],
+        options?: object,
+    ): Promise<ApiResponseWrapper<Response>>;
 }
+
+export type JsonPatchOperation = {
+    op: 'add' | 'remove' | 'replace' | 'copy' | 'move' | 'test';
+    path: string;
+    value?: unknown;
+    from?: string;
+};
+
