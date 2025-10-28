@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Submodel, SubmodelElementList } from 'lib/api/aas/models';
 import { findSubmodelElementBySemanticIdsOrIdShort } from 'lib/util/SubmodelResolverUtil';
-import { DocumentSpecificSemanticIdIrdiV2 } from './DocumentSemanticIds';
-import { JsonPatchOperation } from 'lib/api/basyx-v3/apiInterface';
-import { patchSubmodelByJsonPatch } from 'lib/services/submodel-repository-service/submodelRepositoryActions';
-import { putAttachmentToSubmodelElement } from 'lib/services/submodel-repository-service/submodelRepositoryActions';
+import { DocumentSpecificSemanticIdIrdi, DocumentSpecificSemanticIdIrdiV2 } from './DocumentSemanticIds';
+import { 
+    postSubmodelElement, 
+    postSubmodelElementByPath, 
+    putAttachmentToSubmodelElement 
+} from 'lib/services/submodel-repository-service/submodelRepositoryActions';
 import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 
 export type NewDocumentData = {
@@ -60,16 +62,19 @@ export function useAddDocument(
     }
 
     /**
-     * Find or determine the Documents list idShort
+     * Find or determine the Documents list idShort (V2.0) or check if V1.2
      */
-    function getDocumentsListIdShort(): string | null {
-        if (!submodel?.submodelElements) return null;
+    function getDocumentsListIdShort(): { idShort: string | null; isV2: boolean } {
+        if (!submodel?.submodelElements) return { idShort: null, isV2: false };
 
         const documentsElement = findSubmodelElementBySemanticIdsOrIdShort(submodel.submodelElements, 'Documents', [
             DocumentSpecificSemanticIdIrdiV2.Documents,
         ]) as SubmodelElementList;
 
-        return documentsElement?.idShort || null;
+        return {
+            idShort: documentsElement?.idShort || null,
+            isV2: !!documentsElement,
+        };
     }
 
     /**
@@ -88,9 +93,9 @@ export function useAddDocument(
     }
 
     /**
-     * Build the new Document structure
+     * Build the new Document structure for V2.0
      */
-    function buildNewDocumentStructure(documentIdShort: string, documentVersionIdShort: string) {
+    function buildNewDocumentStructureV2(documentIdShort: string, documentVersionIdShort: string) {
         return {
             modelType: 'SubmodelElementCollection',
             idShort: documentIdShort,
@@ -209,6 +214,95 @@ export function useAddDocument(
     }
 
     /**
+     * Build the new Document structure for V1.2
+     */
+    function buildNewDocumentStructureV1_2(documentIdShort: string) {
+        return {
+            modelType: 'SubmodelElementCollection',
+            idShort: documentIdShort,
+            semanticId: {
+                type: 'ExternalReference',
+                keys: [
+                    {
+                        type: 'GlobalReference',
+                        value: DocumentSpecificSemanticIdIrdi.Document,
+                    },
+                ],
+            },
+            value: [
+                {
+                    modelType: 'SubmodelElementCollection',
+                    idShort: 'DocumentVersion',
+                    semanticId: {
+                        type: 'ExternalReference',
+                        keys: [
+                            {
+                                type: 'GlobalReference',
+                                value: DocumentSpecificSemanticIdIrdi.DocumentVersion,
+                            },
+                        ],
+                    },
+                    value: [
+                        {
+                            modelType: 'MultiLanguageProperty',
+                            idShort: 'Title',
+                            semanticId: {
+                                type: 'ExternalReference',
+                                keys: [
+                                    {
+                                        type: 'GlobalReference',
+                                        value: DocumentSpecificSemanticIdIrdi.Title,
+                                    },
+                                ],
+                            },
+                            value: [
+                                {
+                                    language: newDocument.language,
+                                    text: newDocument.title,
+                                },
+                            ],
+                        },
+                        {
+                            modelType: 'MultiLanguageProperty',
+                            idShort: 'Summary',
+                            semanticId: {
+                                type: 'ExternalReference',
+                                keys: [
+                                    {
+                                        type: 'GlobalReference',
+                                        value: DocumentSpecificSemanticIdIrdi.Summary,
+                                    },
+                                ],
+                            },
+                            value: [
+                                {
+                                    language: newDocument.language,
+                                    text: newDocument.description || '',
+                                },
+                            ],
+                        },
+                        {
+                            modelType: 'Property',
+                            idShort: 'OrganizationName',
+                            semanticId: {
+                                type: 'ExternalReference',
+                                keys: [
+                                    {
+                                        type: 'GlobalReference',
+                                        value: DocumentSpecificSemanticIdIrdi.OrganizationName,
+                                    },
+                                ],
+                            },
+                            valueType: 'xs:string',
+                            value: newDocument.organizationShortName || '',
+                        },
+                    ],
+                },
+            ],
+        };
+    }
+
+    /**
      * Add the new document to the submodel
      */
     async function addDocument(): Promise<boolean> {
@@ -222,75 +316,133 @@ export function useAddDocument(
         setAddError('');
 
         try {
-            const documentsListIdShort = getDocumentsListIdShort();
-            if (!documentsListIdShort) {
-                setAddError('Documents list not found in submodel');
-                setIsAdding(false);
-                return false;
-            }
+            const { idShort: documentsListIdShort, isV2 } = getDocumentsListIdShort();
 
-            const documentIdShort = generateDocumentIdShort();
-            const documentVersionIdShort = generateDocumentVersionIdShort();
-            const newDocumentStructure = buildNewDocumentStructure(documentIdShort, documentVersionIdShort);
+            if (isV2) {
+                // V2.0: Add to Documents list using POST at path
+                if (!documentsListIdShort) {
+                    setAddError('Documents list not found in submodel');
+                    setIsAdding(false);
+                    return false;
+                }
 
-            // Add the new Document to the Documents list via PATCH
-            const patchOperations: JsonPatchOperation[] = [
-                {
-                    op: 'add',
-                    path: `/submodelElements/${documentsListIdShort}/value/-`,
-                    value: newDocumentStructure,
-                },
-            ];
+                const documentIdShort = generateDocumentIdShort();
+                const documentVersionIdShort = generateDocumentVersionIdShort();
+                const newDocumentStructure = buildNewDocumentStructureV2(documentIdShort, documentVersionIdShort);
 
-            const patchResult = await patchSubmodelByJsonPatch(submodelId, patchOperations, repository);
+                // POST the new Document to the Documents list path
+                const postResult = await postSubmodelElementByPath(
+                    submodelId,
+                    documentsListIdShort,
+                    newDocumentStructure,
+                    repository,
+                );
 
-            if (!patchResult.isSuccess) {
-                setAddError(patchResult.message || 'Failed to add document');
-                setIsAdding(false);
-                return false;
-            }
+                if (!postResult.isSuccess) {
+                    setAddError(postResult.message || 'Failed to add document');
+                    setIsAdding(false);
+                    return false;
+                }
 
-            // If a file is selected, upload it
-            if (newDocument.file) {
-                const idShortPath = `${documentsListIdShort}.${documentIdShort}.${documentVersionIdShort}.DigitalFile`;
+                // If a file is selected, upload it
+                if (newDocument.file) {
+                    const documentVersionPath = `${documentsListIdShort}.${documentIdShort}.DocumentVersions[0]`;
 
-                // First add the DigitalFile element
-                const fileAddOperations: JsonPatchOperation[] = [
-                    {
-                        op: 'add',
-                        path: `/submodelElements/${documentsListIdShort}/value/${documentIdShort}/value/0/value/0/value/-`,
-                        value: {
-                            modelType: 'File',
-                            idShort: 'DigitalFile',
-                            semanticId: {
-                                type: 'ExternalReference',
-                                keys: [
-                                    {
-                                        type: 'GlobalReference',
-                                        value: DocumentSpecificSemanticIdIrdiV2.DigitalFile,
-                                    },
-                                ],
-                            },
-                            contentType: newDocument.file.type || 'application/octet-stream',
-                            value: '',
+                    // First add the DigitalFile element to the DocumentVersion
+                    const digitalFileElement = {
+                        modelType: 'File',
+                        idShort: 'DigitalFile',
+                        semanticId: {
+                            type: 'ExternalReference',
+                            keys: [
+                                {
+                                    type: 'GlobalReference',
+                                    value: DocumentSpecificSemanticIdIrdiV2.DigitalFile,
+                                },
+                            ],
                         },
-                    },
-                ];
+                        contentType: newDocument.file.type || 'application/octet-stream',
+                        value: '',
+                    };
 
-                const fileElementResult = await patchSubmodelByJsonPatch(submodelId, fileAddOperations, repository);
-
-                if (fileElementResult.isSuccess) {
-                    // Upload the actual file
-                    const blob = new Blob([newDocument.file], { type: newDocument.file.type });
-                    await putAttachmentToSubmodelElement(
+                    const digitalFileResult = await postSubmodelElementByPath(
                         submodelId,
-                        {
-                            idShortPath: idShortPath,
-                            fileName: newDocument.file.name,
-                            file: blob,
-                        },
+                        documentVersionPath,
+                        digitalFileElement,
                         repository,
                     );
+
+                    if (digitalFileResult.isSuccess) {
+                        // Upload the actual file
+                        const idShortPath = `${documentVersionPath}.DigitalFile`;
+                        const blob = new Blob([newDocument.file], { type: newDocument.file.type });
+                        await putAttachmentToSubmodelElement(
+                            submodelId,
+                            {
+                                idShortPath: idShortPath,
+                                fileName: newDocument.file.name,
+                                file: blob,
+                            },
+                            repository,
+                        );
+                    }
+                }
+            } else {
+                // V1.2: Add Document directly to submodelElements using POST
+                const documentIdShort = generateDocumentIdShort();
+                const newDocumentStructure = buildNewDocumentStructureV1_2(documentIdShort);
+
+                // POST the new Document directly to submodelElements
+                const postResult = await postSubmodelElement(submodelId, newDocumentStructure, repository);
+
+                if (!postResult.isSuccess) {
+                    setAddError(postResult.message || 'Failed to add document');
+                    setIsAdding(false);
+                    return false;
+                }
+
+                // If a file is selected, upload it
+                if (newDocument.file) {
+                    const documentVersionPath = `${documentIdShort}.DocumentVersion`;
+
+                    // First add the File element (V1.2 uses DigitalFile semantic ID)
+                    const digitalFileElement = {
+                        modelType: 'File',
+                        idShort: 'File',
+                        semanticId: {
+                            type: 'ExternalReference',
+                            keys: [
+                                {
+                                    type: 'GlobalReference',
+                                    value: DocumentSpecificSemanticIdIrdi.DigitalFile,
+                                },
+                            ],
+                        },
+                        contentType: newDocument.file.type || 'application/octet-stream',
+                        value: '',
+                    };
+
+                    const digitalFileResult = await postSubmodelElementByPath(
+                        submodelId,
+                        documentVersionPath,
+                        digitalFileElement,
+                        repository,
+                    );
+
+                    if (digitalFileResult.isSuccess) {
+                        // Upload the actual file
+                        const idShortPath = `${documentVersionPath}.File`;
+                        const blob = new Blob([newDocument.file], { type: newDocument.file.type });
+                        await putAttachmentToSubmodelElement(
+                            submodelId,
+                            {
+                                idShortPath: idShortPath,
+                                fileName: newDocument.file.name,
+                                file: blob,
+                            },
+                            repository,
+                        );
+                    }
                 }
             }
 

@@ -22,7 +22,12 @@ import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 import { useDocumentEdit } from 'app/[locale]/viewer/_components/submodel-elements/document-component/useDocumentEdit';
 import { useDocumentFileUpload } from 'app/[locale]/viewer/_components/submodel-elements/document-component/useDocumentFileUpload';
 
-export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
+export type DocumentComponentProps = CustomSubmodelElementComponentProps & {
+    onRefresh?: () => void;
+    documentsListIdShort?: string | null;
+};
+
+export function DocumentComponent(props: DocumentComponentProps) {
     const t = useTranslations('components.documentComponent');
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
@@ -40,7 +45,6 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
         setEditedDescription,
         setEditedOrganization,
         validateAndSave,
-        cancelEdit,
         initializeEditMode,
     } = useDocumentEdit(
         props.submodelElement,
@@ -49,15 +53,11 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
             url: props.repositoryUrl || '',
             infrastructureName: currentAASContext.infrastructureName || '',
         },
+        props.documentsListIdShort,
         () => {
             setIsEditMode(false);
-            // Trigger re-render by updating the document URL
-            if (fileViewObject?.digitalFileUrl) {
-                getFileUrl(fileViewObject.digitalFileUrl, session?.accessToken, {
-                    url: props.repositoryUrl || '',
-                    infrastructureName: currentAASContext.infrastructureName || '',
-                }).then((url) => url && setDocumentUrl(url));
-            }
+            // Trigger full submodel refresh
+            props.onRefresh?.();
         },
     );
 
@@ -125,7 +125,6 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
     };
 
     const handleCancel = () => {
-        cancelEdit();
         setIsEditMode(false);
     };
 

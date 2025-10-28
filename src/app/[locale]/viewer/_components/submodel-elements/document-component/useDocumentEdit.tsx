@@ -7,21 +7,22 @@ import {
     DocumentSpecificSemanticIdIrdi,
     DocumentSpecificSemanticIdIrdiV2,
 } from './DocumentSemanticIds';
-import { JsonPatchOperation } from 'lib/api/basyx-v3/apiInterface';
-import { patchSubmodelByJsonPatch } from 'lib/services/submodel-repository-service/submodelRepositoryActions';
+import { putSubmodelElementByPath } from 'lib/services/submodel-repository-service/submodelRepositoryActions';
 import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 
 /**
- * Hook for handling document editing functionality
+ * Hook for handling document editing functionality using PUT
  * @param submodelElement The document submodel element collection
  * @param submodelId The submodel ID
  * @param repository Repository information
+ * @param documentsListIdShort The idShort of the Documents list (V2.0 only, null for V1.2)
  * @param onSaveSuccess Callback function called after successful save
  */
 export function useDocumentEdit(
     submodelElement: SubmodelElementCollection,
     submodelId: string,
     repository: RepositoryWithInfrastructure,
+    documentsListIdShort: string | null | undefined,
     onSaveSuccess?: () => void,
 ) {
     const locale = useLocale();
@@ -32,20 +33,69 @@ export function useDocumentEdit(
     const [isSaving, setIsSaving] = useState(false);
 
     /**
+     * Detect if V1.2 or V2.0 based on structure
+     */
+    function detectVersion(): '1.2' | '2.0' {
+        if (!submodelElement?.value) return '2.0';
+
+        // V1.2: DocumentVersion is a SubmodelElementCollection (singular)
+        // V2.0: DocumentVersions is a SubmodelElementList (plural)
+        const documentVersions = findSubmodelElementBySemanticIdsOrIdShort(submodelElement.value, 'DocumentVersions', [
+            DocumentSpecificSemanticIdIrdiV2.DocumentVersions,
+        ]);
+
+        return documentVersions ? '2.0' : '1.2';
+    }
+
+    /**
+     * Get the base path for API calls
+     */
+    function getBasePath(): string {
+        const documentIdShort = submodelElement.idShort || 'Document';
+        const version = detectVersion();
+
+        if (version === '1.2') {
+            // V1.2: Document.DocumentVersion
+            return `${documentIdShort}.DocumentVersion`;
+        } else {
+            // V2.0: Documents.Document_xyz.DocumentVersions[0]
+            // documentsListIdShort is passed from parent (e.g., "Documents")
+            const listIdShort = documentsListIdShort || 'Documents';
+            return `${listIdShort}.${documentIdShort}.DocumentVersions[0]`;
+        }
+    }
+
+    /**
      * Initialize edit mode with current values
      */
     function initializeEditMode() {
         if (!submodelElement?.value) return;
 
-        const documentVersion = findSubmodelElementBySemanticIdsOrIdShort(submodelElement.value, 'DocumentVersion', [
-            DocumentSpecificSemanticId.DocumentVersion,
-            DocumentSpecificSemanticIdIrdi.DocumentVersion,
-            DocumentSpecificSemanticIdIrdiV2.DocumentVersion,
-        ]) as SubmodelElementCollection;
+        const version = detectVersion();
+        let documentVersion: SubmodelElementCollection | undefined;
+
+        if (version === '1.2') {
+            // V1.2: Find DocumentVersion (Collection)
+            documentVersion = findSubmodelElementBySemanticIdsOrIdShort(submodelElement.value, 'DocumentVersion', [
+                DocumentSpecificSemanticId.DocumentVersion,
+                DocumentSpecificSemanticIdIrdi.DocumentVersion,
+            ]) as SubmodelElementCollection;
+        } else {
+            // V2.0: Find DocumentVersions (List), then get first element
+            const documentVersionsList = findSubmodelElementBySemanticIdsOrIdShort(
+                submodelElement.value,
+                'DocumentVersions',
+                [DocumentSpecificSemanticIdIrdiV2.DocumentVersions],
+            ) as any;
+
+            if (documentVersionsList?.value && Array.isArray(documentVersionsList.value)) {
+                documentVersion = documentVersionsList.value[0] as SubmodelElementCollection;
+            }
+        }
 
         if (!documentVersion?.value) return;
 
-        // Extract current title
+        // Get Title
         const titleElement = findSubmodelElementBySemanticIdsOrIdShort(documentVersion.value, null, [
             DocumentSpecificSemanticId.Title,
             DocumentSpecificSemanticIdIrdi.Title,
@@ -54,16 +104,18 @@ export function useDocumentEdit(
         const title = titleElement ? getTranslationText(titleElement as MultiLanguageProperty, locale) : '';
         setEditedTitle(title);
 
-        // Extract current description
+        // Get Description/Summary (V1.2 uses "Summary", V2.0 uses "Description")
         const descriptionElement = findSubmodelElementBySemanticIdsOrIdShort(documentVersion.value, null, [
-            DocumentSpecificSemanticIdIrdiV2.Description,
+            DocumentSpecificSemanticId.Title, // Fallback
+            DocumentSpecificSemanticIdIrdi.Summary, // V1.2
+            DocumentSpecificSemanticIdIrdiV2.Description, // V2.0
         ]);
         const description = descriptionElement
             ? getTranslationText(descriptionElement as MultiLanguageProperty, locale)
             : '';
         setEditedDescription(description);
 
-        // Extract current organization
+        // Get Organization (V1.2: OrganizationName, V2.0: OrganizationShortName)
         const organizationElement = findSubmodelElementBySemanticIdsOrIdShort(documentVersion.value, null, [
             DocumentSpecificSemanticId.OrganizationName,
             DocumentSpecificSemanticIdIrdi.OrganizationName,
@@ -81,7 +133,6 @@ export function useDocumentEdit(
     function validate(): boolean {
         let isValid = true;
 
-        // Title is required according to IDTA-02004-2-0
         if (!editedTitle || editedTitle.trim() === '') {
             setTitleError('Title is required');
             isValid = false;
@@ -93,87 +144,58 @@ export function useDocumentEdit(
     }
 
     /**
-     * Build JSON Patch operations for the edits
+     * Build the complete SubmodelElement for a MultiLanguageProperty
      */
-    function buildPatchOperations(): JsonPatchOperation[] {
-        const operations: JsonPatchOperation[] = [];
-
-        if (!submodelElement?.value) return operations;
-
-        const documentVersion = findSubmodelElementBySemanticIdsOrIdShort(submodelElement.value, 'DocumentVersion', [
-            DocumentSpecificSemanticId.DocumentVersion,
-            DocumentSpecificSemanticIdIrdi.DocumentVersion,
-            DocumentSpecificSemanticIdIrdiV2.DocumentVersion,
-        ]) as SubmodelElementCollection;
-
-        if (!documentVersion?.value || !documentVersion?.idShort || !submodelElement?.idShort) return operations;
-
-        const basePath = `/submodelElements/${submodelElement.idShort}/value/${documentVersion.idShort}/value`;
-
-        // Update Title (MultiLanguageProperty)
-        const titleElement = findSubmodelElementBySemanticIdsOrIdShort(documentVersion.value, null, [
-            DocumentSpecificSemanticId.Title,
-            DocumentSpecificSemanticIdIrdi.Title,
-            DocumentSpecificSemanticIdIrdiV2.Title,
-        ]);
-        if (titleElement?.idShort) {
-            const titleIndex = documentVersion.value.findIndex((el) => el.idShort === titleElement.idShort);
-            if (titleIndex !== -1) {
-                operations.push({
-                    op: 'replace',
-                    path: `${basePath}/${titleIndex}/value`,
-                    value: [
-                        {
-                            language: locale,
-                            text: editedTitle,
-                        },
-                    ],
-                });
-            }
-        }
-
-        // Update Description (MultiLanguageProperty)
-        const descriptionElement = findSubmodelElementBySemanticIdsOrIdShort(documentVersion.value, null, [
-            DocumentSpecificSemanticIdIrdiV2.Description,
-        ]);
-        if (descriptionElement?.idShort && editedDescription) {
-            const descIndex = documentVersion.value.findIndex((el) => el.idShort === descriptionElement.idShort);
-            if (descIndex !== -1) {
-                operations.push({
-                    op: 'replace',
-                    path: `${basePath}/${descIndex}/value`,
-                    value: [
-                        {
-                            language: locale,
-                            text: editedDescription,
-                        },
-                    ],
-                });
-            }
-        }
-
-        // Update Organization (Property)
-        const organizationElement = findSubmodelElementBySemanticIdsOrIdShort(documentVersion.value, null, [
-            DocumentSpecificSemanticId.OrganizationName,
-            DocumentSpecificSemanticIdIrdi.OrganizationName,
-            DocumentSpecificSemanticIdIrdiV2.OrganizationShortName,
-        ]);
-        if (organizationElement?.idShort && editedOrganization) {
-            const orgIndex = documentVersion.value.findIndex((el) => el.idShort === organizationElement.idShort);
-            if (orgIndex !== -1) {
-                operations.push({
-                    op: 'replace',
-                    path: `${basePath}/${orgIndex}/value`,
-                    value: editedOrganization,
-                });
-            }
-        }
-
-        return operations;
+    function buildMultiLanguageProperty(
+        idShort: string,
+        semanticIdValue: string,
+        text: string,
+        language: string = locale,
+    ): MultiLanguageProperty {
+        return {
+            modelType: 'MultiLanguageProperty',
+            idShort,
+            semanticId: {
+                type: 'ExternalReference',
+                keys: [
+                    {
+                        type: 'GlobalReference',
+                        value: semanticIdValue,
+                    },
+                ],
+            },
+            value: [
+                {
+                    language,
+                    text,
+                },
+            ],
+        };
     }
 
     /**
-     * Validate and save the edits
+     * Build the complete SubmodelElement for a Property
+     */
+    function buildProperty(idShort: string, semanticIdValue: string, value: string): Property {
+        return {
+            modelType: 'Property',
+            idShort,
+            semanticId: {
+                type: 'ExternalReference',
+                keys: [
+                    {
+                        type: 'GlobalReference',
+                        value: semanticIdValue,
+                    },
+                ],
+            },
+            valueType: 'xs:string',
+            value,
+        };
+    }
+
+    /**
+     * Save the edited values using 3 separate PUT calls
      */
     async function validateAndSave(): Promise<boolean> {
         if (!validate()) {
@@ -183,41 +205,82 @@ export function useDocumentEdit(
         setIsSaving(true);
 
         try {
-            const patchOperations = buildPatchOperations();
+            const basePath = getBasePath();
+            const version = detectVersion();
+            const errors: string[] = [];
 
-            if (patchOperations.length === 0) {
-                console.warn('No patch operations generated');
+            // 1. PUT Title
+            const titleSemanticId =
+                version === '1.2' ? DocumentSpecificSemanticIdIrdi.Title : DocumentSpecificSemanticIdIrdiV2.Title;
+
+            const titleElement = buildMultiLanguageProperty('Title', titleSemanticId, editedTitle);
+            const titleResult = await putSubmodelElementByPath(
+                submodelId,
+                `${basePath}.Title`,
+                titleElement,
+                repository,
+            );
+
+            if (!titleResult.isSuccess) {
+                errors.push(`Title update failed: ${titleResult.message}`);
+            }
+
+            // 2. PUT Description/Summary
+            if (editedDescription) {
+                const descSemanticId =
+                    version === '1.2'
+                        ? DocumentSpecificSemanticIdIrdi.Summary
+                        : DocumentSpecificSemanticIdIrdiV2.Description;
+                const descIdShort = version === '1.2' ? 'Summary' : 'Description';
+
+                const descElement = buildMultiLanguageProperty(descIdShort, descSemanticId, editedDescription);
+                const descResult = await putSubmodelElementByPath(
+                    submodelId,
+                    `${basePath}.${descIdShort}`,
+                    descElement,
+                    repository,
+                );
+
+                if (!descResult.isSuccess) {
+                    errors.push(`${descIdShort} update failed: ${descResult.message}`);
+                }
+            }
+
+            // 3. PUT Organization
+            if (editedOrganization) {
+                const orgSemanticId =
+                    version === '1.2'
+                        ? DocumentSpecificSemanticIdIrdi.OrganizationName
+                        : DocumentSpecificSemanticIdIrdiV2.OrganizationShortName;
+                const orgIdShort = version === '1.2' ? 'OrganizationName' : 'OrganizationShortName';
+
+                const orgElement = buildProperty(orgIdShort, orgSemanticId, editedOrganization);
+                const orgResult = await putSubmodelElementByPath(
+                    submodelId,
+                    `${basePath}.${orgIdShort}`,
+                    orgElement,
+                    repository,
+                );
+
+                if (!orgResult.isSuccess) {
+                    errors.push(`${orgIdShort} update failed: ${orgResult.message}`);
+                }
+            }
+
+            if (errors.length > 0) {
+                console.error('Some updates failed:', errors);
                 setIsSaving(false);
                 return false;
             }
 
-            const result = await patchSubmodelByJsonPatch(submodelId, patchOperations, repository);
-
-            if (result.isSuccess) {
-                onSaveSuccess?.();
-                return true;
-            } else {
-                console.error('Failed to save document edits:', result.message);
-                setTitleError(result.message || 'Failed to save changes');
-                return false;
-            }
+            onSaveSuccess?.();
+            return true;
         } catch (error) {
-            console.error('Error saving document edits:', error);
-            setTitleError('An error occurred while saving');
+            console.error('Error saving document:', error);
             return false;
         } finally {
             setIsSaving(false);
         }
-    }
-
-    /**
-     * Cancel edit mode
-     */
-    function cancelEdit() {
-        setEditedTitle('');
-        setEditedDescription('');
-        setEditedOrganization('');
-        setTitleError('');
     }
 
     return {
@@ -229,8 +292,7 @@ export function useDocumentEdit(
         setEditedTitle,
         setEditedDescription,
         setEditedOrganization,
-        validateAndSave,
-        cancelEdit,
         initializeEditMode,
+        validateAndSave,
     };
 }

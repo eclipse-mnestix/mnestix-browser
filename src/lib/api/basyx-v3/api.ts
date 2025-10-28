@@ -438,6 +438,28 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
         return this.http.fetch<Response>(url, reqOptions);
     }
 
+    async postSubmodelElementByPath(
+        submodelId: string,
+        idShortPath: string,
+        submodelElement: object,
+        options: Omit<RequestInit, 'body' | 'method'> = {},
+    ): Promise<ApiResponseWrapper<Response>> {
+        options.headers = Object.assign(
+            {},
+            {
+                'Content-Type': 'application/json',
+            },
+            options.headers,
+        );
+        const url = `${this.baseUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${idShortPath}`;
+        const reqOptions = {
+            ...options,
+            body: JSON.stringify(submodelElement),
+            method: 'POST',
+        };
+        return this.http.fetch<Response>(url, reqOptions);
+    }
+
     async getSubmodelMetaData(submodelId: string, options?: object): Promise<ApiResponseWrapper<Submodel>> {
         return SubmodelRepositoryApiFp(this.configuration).getSubmodelMetadataById(submodelId, options)(
             this.http,
@@ -493,6 +515,34 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
         return SubmodelRepositoryApiFp(this.configuration).patchSubmodelByJsonPatch(
             submodelId,
             patchOperations,
+            options,
+        )(this.http, this.baseUrl);
+    }
+
+    patchSubmodelElementByPath(
+        submodelId: string,
+        idShortPath: string,
+        submodelElement: object,
+        options?: any,
+    ): Promise<ApiResponseWrapper<Response>> {
+        return SubmodelRepositoryApiFp(this.configuration).patchSubmodelElementByPath(
+            submodelId,
+            idShortPath,
+            submodelElement,
+            options,
+        )(this.http, this.baseUrl);
+    }
+
+    putSubmodelElementByPath(
+        submodelId: string,
+        idShortPath: string,
+        submodelElement: object,
+        options?: any,
+    ): Promise<ApiResponseWrapper<Response>> {
+        return SubmodelRepositoryApiFp(this.configuration).putSubmodelElementByPath(
+            submodelId,
+            idShortPath,
+            submodelElement,
             options,
         )(this.http, this.baseUrl);
     }
@@ -638,6 +688,7 @@ export const SubmodelRepositoryApiFp = function (configuration?: Configuration) 
          * @param {Array<any>} patchOperations Array of JSON Patch operations
          * @param {*} [options] Override http request option
          * @throws {RequiredError}
+         * @deprecated This method is not part of the AAS specification
          */
         patchSubmodelByJsonPatch(submodelId: string, patchOperations: any[], options: any) {
             return async (requestHandler: FetchAPI, baseUrl: string) => {
@@ -652,6 +703,64 @@ export const SubmodelRepositoryApiFp = function (configuration?: Configuration) 
 
                 return await requestHandler.fetch<Response>(
                     baseUrl + `/submodels/{submodelIdentifier}`.replace(`{submodelIdentifier}`, encodeBase64(String(submodelId))),
+                    localVarRequestOptions,
+                );
+            };
+        },
+
+        /**
+         * @summary Updates a submodel element at a specified path (AAS Spec: PatchSubmodelElementByPath)
+         * @param {string} submodelId The Submodels unique id
+         * @param {string} idShortPath The path to the submodel element
+         * @param {object} submodelElement The submodel element object with updated values
+         * @param {*} [options] Override http request option
+         * @throws {RequiredError}
+         */
+        patchSubmodelElementByPath(submodelId: string, idShortPath: string, submodelElement: any, options: any) {
+            return async (requestHandler: FetchAPI, baseUrl: string) => {
+                const localVarRequestOptions = Object.assign({ method: 'PATCH' }, options);
+                const localVarHeaderParameter = {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                } as any;
+
+                localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options?.headers);
+                localVarRequestOptions.body = JSON.stringify(submodelElement);
+
+                return await requestHandler.fetch<Response>(
+                    baseUrl +
+                        `/submodels/{submodelIdentifier}/submodel-elements/{idShortPath}`
+                            .replace(`{submodelIdentifier}`, encodeBase64(String(submodelId)))
+                            .replace(`{idShortPath}`, idShortPath),
+                    localVarRequestOptions,
+                );
+            };
+        },
+
+        /**
+         * @summary Replaces a submodel element at a specified path (AAS Spec: PutSubmodelElementByPath)
+         * @param {string} submodelId The Submodels unique id
+         * @param {string} idShortPath The path to the submodel element
+         * @param {object} submodelElement The complete submodel element object to replace
+         * @param {*} [options] Override http request option
+         * @throws {RequiredError}
+         */
+        putSubmodelElementByPath(submodelId: string, idShortPath: string, submodelElement: any, options: any) {
+            return async (requestHandler: FetchAPI, baseUrl: string) => {
+                const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
+                const localVarHeaderParameter = {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                } as any;
+
+                localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options?.headers);
+                localVarRequestOptions.body = JSON.stringify(submodelElement);
+
+                return await requestHandler.fetch<Response>(
+                    baseUrl +
+                        `/submodels/{submodelIdentifier}/submodel-elements/{idShortPath}`
+                            .replace(`{submodelIdentifier}`, encodeBase64(String(submodelId)))
+                            .replace(`{idShortPath}`, idShortPath),
                     localVarRequestOptions,
                 );
             };

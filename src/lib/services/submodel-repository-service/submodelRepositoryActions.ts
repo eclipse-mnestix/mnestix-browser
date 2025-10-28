@@ -47,6 +47,7 @@ export async function getAttachmentFromSubmodelElement(
  * @param submodelId The unique identifier of the submodel
  * @param patchOperations Array of JSON Patch operations
  * @param repository Repository with infrastructure information
+ * @deprecated This method is not part of the AAS specification. Use putSubmodelElementByPath instead.
  */
 export async function patchSubmodelByJsonPatch(
     submodelId: string,
@@ -64,12 +65,44 @@ export async function patchSubmodelByJsonPatch(
 
     const submodelApi = SubmodelRepositoryApi.create(repository.url, mnestixFetch(securityHeader));
     const patchResponse = await submodelApi.patchSubmodelByJsonPatch(submodelId, patchOperations);
-    
+
     if (!patchResponse.isSuccess) {
         return wrapErrorCode(patchResponse.errorCode, patchResponse.message);
     }
-    
+
     return patchResponse;
+}
+
+/**
+ * Replaces a submodel element at a specified path using PUT (AAS Spec: PutSubmodelElementByPath).
+ * @param submodelId The unique identifier of the submodel
+ * @param idShortPath The path to the submodel element (e.g., "Document.DocumentVersion.Title")
+ * @param submodelElement The complete submodel element object to replace
+ * @param repository Repository with infrastructure information
+ */
+export async function putSubmodelElementByPath(
+    submodelId: string,
+    idShortPath: string,
+    submodelElement: object,
+    repository: RepositoryWithInfrastructure,
+): Promise<ApiResponseWrapper<Response>> {
+    const logger = createRequestLogger(await headers());
+    logInfo(logger, putSubmodelElementByPath.name, 'Replacing submodel element', {
+        submodelId: submodelId,
+        idShortPath: idShortPath,
+    });
+
+    const infrastructure = await getInfrastructureByName(repository.infrastructureName);
+    const securityHeader = await createSecurityHeaders(infrastructure);
+
+    const submodelApi = SubmodelRepositoryApi.create(repository.url, mnestixFetch(securityHeader));
+    const putResponse = await submodelApi.putSubmodelElementByPath(submodelId, idShortPath, submodelElement);
+
+    if (!putResponse.isSuccess) {
+        return wrapErrorCode(putResponse.errorCode, putResponse.message);
+    }
+
+    return putResponse;
 }
 
 /**
@@ -95,11 +128,71 @@ export async function putAttachmentToSubmodelElement(
 
     const submodelApi = SubmodelRepositoryApi.create(repository.url, mnestixFetch(securityHeader));
     const uploadResponse = await submodelApi.putAttachmentToSubmodelElement(submodelId, attachmentData);
-    
+
     if (!uploadResponse.isSuccess) {
         return wrapErrorCode(uploadResponse.errorCode, uploadResponse.message);
     }
-    
+
     return uploadResponse;
 }
 
+/**
+ * Posts a new submodel element to the submodel.
+ * @param submodelId The unique identifier of the submodel
+ * @param submodelElement The complete submodel element object to add
+ * @param repository Repository with infrastructure information
+ */
+export async function postSubmodelElement(
+    submodelId: string,
+    submodelElement: object,
+    repository: RepositoryWithInfrastructure,
+): Promise<ApiResponseWrapper<Response>> {
+    const logger = createRequestLogger(await headers());
+    logInfo(logger, postSubmodelElement.name, 'Adding submodel element', {
+        submodelId: submodelId,
+    });
+
+    const infrastructure = await getInfrastructureByName(repository.infrastructureName);
+    const securityHeader = await createSecurityHeaders(infrastructure);
+
+    const submodelApi = SubmodelRepositoryApi.create(repository.url, mnestixFetch(securityHeader));
+    const postResponse = await submodelApi.postSubmodelElement(submodelId, submodelElement);
+
+    if (!postResponse.isSuccess) {
+        return wrapErrorCode(postResponse.errorCode, postResponse.message);
+    }
+
+    return postResponse;
+}
+
+/**
+ * Posts a new submodel element to a specific path within the submodel.
+ * @param submodelId The unique identifier of the submodel
+ * @param idShortPath The path where the element should be added (e.g., "Documents")
+ * @param submodelElement The complete submodel element object to add
+ * @param repository Repository with infrastructure information
+ */
+export async function postSubmodelElementByPath(
+    submodelId: string,
+    idShortPath: string,
+    submodelElement: object,
+    repository: RepositoryWithInfrastructure,
+): Promise<ApiResponseWrapper<Response>> {
+    const logger = createRequestLogger(await headers());
+    logInfo(logger, postSubmodelElementByPath.name, 'Adding submodel element at path', {
+        submodelId: submodelId,
+        idShortPath: idShortPath,
+    });
+
+    const infrastructure = await getInfrastructureByName(repository.infrastructureName);
+    const securityHeader = await createSecurityHeaders(infrastructure);
+
+    const submodelApi = SubmodelRepositoryApi.create(repository.url, mnestixFetch(securityHeader));
+    const postResponse = await submodelApi.postSubmodelElementByPath(submodelId, idShortPath, submodelElement);
+
+    if (!postResponse.isSuccess) {
+        return wrapErrorCode(postResponse.errorCode, postResponse.message);
+    }
+
+    return postResponse;
+}

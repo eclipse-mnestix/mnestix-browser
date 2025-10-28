@@ -140,6 +140,20 @@ export interface ISubmodelRepositoryApi {
         options?: Omit<RequestInit, 'body' | 'method'>,
     ): Promise<ApiResponseWrapper<Response>>;
 
+    /**
+     * Posts a new submodel element to a specific path within the submodel
+     * @param submodelId The unique identifier of the submodel
+     * @param idShortPath The path where the element should be added (e.g., "Documents" or "Document.DocumentVersion")
+     * @param submodelElement The complete submodel element object to add
+     * @param options Optional request options
+     */
+    postSubmodelElementByPath(
+        submodelId: string,
+        idShortPath: string,
+        submodelElement: object,
+        options?: Omit<RequestInit, 'body' | 'method'>,
+    ): Promise<ApiResponseWrapper<Response>>;
+
     deleteSubmodelElementByPath(
         submodelId: string,
         idShortPath: string,
@@ -212,10 +226,43 @@ export interface ISubmodelRepositoryApi {
      * @param {object} [options] - Optional. Additional options to override default HTTP request settings.
      * @returns {Promise<ApiResponseWrapper<Response>>} A promise that resolves to the server's response after patching
      * @memberof SubmodelRepositoryApi
+     * @deprecated This method is not part of the AAS specification. Use patchSubmodelElementByPath instead.
      */
     patchSubmodelByJsonPatch(
         submodelId: string,
         patchOperations: JsonPatchOperation[],
+        options?: object,
+    ): Promise<ApiResponseWrapper<Response>>;
+
+    /**
+     * @summary Updates a submodel element at a specified path (AAS Spec: PatchSubmodelElementByPath)
+     * @param {string} submodelId - The unique identifier of the submodel
+     * @param {string} idShortPath - The path to the submodel element (e.g., "Document.DocumentVersion")
+     * @param {object} submodelElement - The submodel element object with updated values
+     * @param {object} [options] - Optional. Additional options to override default HTTP request settings.
+     * @returns {Promise<ApiResponseWrapper<Response>>} A promise that resolves to the server's response
+     * @memberof SubmodelRepositoryApi
+     */
+    patchSubmodelElementByPath(
+        submodelId: string,
+        idShortPath: string,
+        submodelElement: object,
+        options?: object,
+    ): Promise<ApiResponseWrapper<Response>>;
+
+    /**
+     * @summary Replaces a submodel element at a specified path (AAS Spec: PutSubmodelElementByPath)
+     * @param {string} submodelId - The unique identifier of the submodel
+     * @param {string} idShortPath - The path to the submodel element (e.g., "Document.DocumentVersion.Title")
+     * @param {object} submodelElement - The complete submodel element object to replace
+     * @param {object} [options] - Optional. Additional options to override default HTTP request settings.
+     * @returns {Promise<ApiResponseWrapper<Response>>} A promise that resolves to the server's response
+     * @memberof SubmodelRepositoryApi
+     */
+    putSubmodelElementByPath(
+        submodelId: string,
+        idShortPath: string,
+        submodelElement: object,
         options?: object,
     ): Promise<ApiResponseWrapper<Response>>;
 }
@@ -226,4 +273,3 @@ export type JsonPatchOperation = {
     value?: unknown;
     from?: string;
 };
-

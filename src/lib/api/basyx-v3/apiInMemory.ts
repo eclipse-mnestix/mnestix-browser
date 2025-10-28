@@ -176,6 +176,15 @@ export class SubmodelRepositoryApiInMemory implements ISubmodelRepositoryApi {
     : Promise<ApiResponseWrapper<Response>> {
         throw new Error('Method not implemented.');
     }
+
+    postSubmodelElementByPath() // submodelId: string,
+    // idShortPath: string,
+    // submodelElement: object,
+    // options?: Omit<RequestInit, 'body' | 'method'>,
+    : Promise<ApiResponseWrapper<Response>> {
+        throw new Error('Method not implemented.');
+    }
+
     deleteSubmodelElementByPath() // submodelId: string,
     // idShortPath: string,
     // options?: Omit<RequestInit, 'body' | 'method'>,
@@ -198,6 +207,24 @@ export class SubmodelRepositoryApiInMemory implements ISubmodelRepositoryApi {
     patchSubmodelByJsonPatch(
         _submodelId: string,
         _patchOperations: any[],
+        _options?: object,
+    ): Promise<ApiResponseWrapper<Response>> {
+        throw new Error('Method not implemented.');
+    }
+
+    patchSubmodelElementByPath(
+        _submodelId: string,
+        _idShortPath: string,
+        _submodelElement: object,
+        _options?: object,
+    ): Promise<ApiResponseWrapper<Response>> {
+        throw new Error('Method not implemented.');
+    }
+
+    putSubmodelElementByPath(
+        _submodelId: string,
+        _idShortPath: string,
+        _submodelElement: object,
         _options?: object,
     ): Promise<ApiResponseWrapper<Response>> {
         throw new Error('Method not implemented.');

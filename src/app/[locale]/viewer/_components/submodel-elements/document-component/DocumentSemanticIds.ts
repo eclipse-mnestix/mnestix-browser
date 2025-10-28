@@ -14,8 +14,10 @@ export enum DocumentSpecificSemanticId {
  * Handover Documentation V1.2
  */
 export enum DocumentSpecificSemanticIdIrdi {
+    Document = '0173-1#02-ABI500#001/0173-1#01-AHF579#001',
     DocumentVersion = '0173-1#02-ABI503#001/0173-1#01-AHF582#001',
     Title = '0173-1#02-AAO105#002',
+    Summary = '0173-1#02-AAO106#002',
     OrganizationName = '0173-1#02-ABI002#001',
     DigitalFile = '0173-1#02-ABI504#001/0173-1#01-AHF583#001',
     PreviewFile = '0173-1#02-ABI505#001/0173-1#01-AHF584#001',
@@ -37,7 +39,7 @@ export enum DocumentSpecificSemanticIdIrdiV2 {
     DocumentClassification = '0173-1#02-ABI502#003/0173-1#01-AHF581#003',
     DocumentVersions = '0173-1#02-ABI503#003',
     DocumentVersion = '0173-1#02-ABI503#003/0173-1#01-AHF582#003',
-    
+
     // DocumentVersion fields
     Languages = '0173-1#02-AAN468#008',
     Version = '0173-1#02-AAP003#005',
@@ -49,17 +51,17 @@ export enum DocumentSpecificSemanticIdIrdiV2 {
     StatusValue = '0173-1#02-ABI001#003',
     OrganizationShortName = '0173-1#02-ABI002#003',
     OrganizationOfficialName = '0173-1#02-ABI004#003',
-    
+
     // Files
     DigitalFiles = '0173-1#02-ABK126#002',
     DigitalFile = '0173-1#02-ABK126#002', // Same as DigitalFiles for backward compatibility
     PreviewFile = '0173-1#02-ABK127#002',
-    
+
     // Classifications
     ClassId = '0173-1#02-ABH996#003',
     ClassName = '0173-1#02-ABJ219#002',
     ClassificationSystem = '0173-1#02-ABH997#003',
-    
+
     // References
     RefersToEntities = '0173-1#02-ABK288#002',
     BasedOnReferences = '0173-1#02-ABK289#002',
