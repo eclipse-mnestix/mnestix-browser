@@ -10,9 +10,15 @@ import { useAasStore } from 'stores/AasStore';
 import {
     performFullAasSearch,
     performSubmodelSearch,
+    searchAasInInfrastructure,
 } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
+import {
+    AasSearchResult
+} from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import { getAasFromRepository } from 'lib/services/aas-repository-service/aasRepositoryActions';
 import { encodeBase64 } from 'lib/util/Base64Util';
+import { InfrastructureSearchService } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
+import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 
 /**
  * Hook to load AAS content and its submodels asynchronously.
@@ -91,7 +97,16 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
             }
         }
 
-        const { isSuccess, result } = await performFullAasSearch(aasIdToLoad);
+        let response: ApiResponseWrapper<AasSearchResult> | undefined = undefined;
+
+        if (infrastructureName) {
+            response = await searchAasInInfrastructure(aasIdToLoad, infrastructureName);
+        } else {
+            response = await performFullAasSearch(aasIdToLoad);
+        }
+
+        const { isSuccess, result } = response;
+
         if (!isSuccess) {
             showError(new LocalizedError('navigation.errors.urlNotFound'));
             return { success: false };

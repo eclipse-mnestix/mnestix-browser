@@ -53,8 +53,15 @@ export class RegistryServiceApi implements IRegistryServiceApi {
             Accept: 'application/json',
             'Content-Type': 'application/json',
         };
-
-        const url = new URL(this.baseUrl + `/shell-descriptors?limit=${limit}&cursor=${cursor ?? ''}`);
+        
+        let url = new URL(this.baseUrl + `/shell-descriptors`)
+        
+        if (limit) {
+            url.searchParams.append('limit', limit.toString());
+        }
+        if (cursor) {
+            url.searchParams.append('cursor', cursor);
+        }
 
         const response = await this.http.fetch<PaginationData<AssetAdministrationShellDescriptor[]>>(url, {
             method: 'GET',

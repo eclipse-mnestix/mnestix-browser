@@ -9,7 +9,7 @@ import { encodeBase64 } from 'lib/util/Base64Util';
 import { MultiLanguageValueOnly } from 'lib/api/basyx-v3/types';
 import { getInfrastructureByName } from '../database/infrastructureDatabaseActions';
 import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
-import logger, { logInfo } from 'lib/util/Logger';
+import logger, { logInfo, logWarn } from 'lib/util/Logger';
 import { RepositoryWithInfrastructure } from '../database/InfrastructureMappedTypes';
 import { IRegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApiInterface';
 import { AssetAdministrationShellDescriptor } from 'lib/types/registryServiceTypes';
@@ -36,6 +36,7 @@ export type AasListDto = {
 
 export class ListService {
     private constructor(
+        protected readonly repositoryWithInfrastructure: RepositoryWithInfrastructure,
         protected readonly getTargetAasRepositoryClient: () => IAssetAdministrationShellRepositoryApi,
         protected readonly getTargetSubmodelRepositoryClient: () => ISubmodelRepositoryApi,
         protected readonly getTargetAasRegistryClient: () => IRegistryServiceApi,
@@ -56,6 +57,7 @@ export class ListService {
         const securityHeader = await createSecurityHeaders(infrastructure || undefined);
 
         return new ListService(
+            targetAasRepository,
             () => AssetAdministrationShellRepositoryApi.create(targetAasRepository.url, mnestixFetch(securityHeader)),
             // For now, we only use the same repository.
             () => SubmodelRepositoryApi.create(targetAasRepository.url, mnestixFetch(securityHeader)),
@@ -69,6 +71,10 @@ export class ListService {
         submodelInRepositories: Submodel[] = [],
         targetAasRepository = ServiceReachable.Yes,
     ): ListService {
+        const repositoryWithInfrastructure = {
+            infrastructureName: 'null',
+            url: 'https://targetAasRepositoryClient.com',
+        };
         const targetAasRepositoryClient = AssetAdministrationShellRepositoryApi.createNull(
             'https://targetAasRepositoryClient.com',
             shellsInRepositories,
@@ -86,6 +92,7 @@ export class ListService {
             targetAasRepository,
         );
         return new ListService(
+            repositoryWithInfrastructure,
             () => targetAasRepositoryClient,
             () => targetSubmodelRepositoryClient,
             () => targetAasRegistryClient,
@@ -126,7 +133,14 @@ export class ListService {
                     this.log?.warn(`Descriptor ${descriptor.id} has no endpoints`);
                     return null;
                 }
-                const endpoint = new URL(descriptor.endpoints[0].protocolInformation.href);
+                let hrefValue = descriptor.endpoints[0].protocolInformation.href;
+                if (hrefValue.startsWith("/")) {
+                    const host = new URL(this.repositoryWithInfrastructure.url).origin;
+                    logWarn(this.log, 'getAasListEntities', `Descriptor with id "${descriptor.id}" does not contain a standardconform URL, trying a workaround. Please update your data.`);
+                    hrefValue = host.concat(hrefValue);
+                }   
+
+                const endpoint = new URL(hrefValue);
                 const aasResponse = await targetAasRegistryClient.getAssetAdministrationShellFromEndpoint(endpoint);
                 return aasResponse.isSuccess ? aasResponse.result : null;
             });
