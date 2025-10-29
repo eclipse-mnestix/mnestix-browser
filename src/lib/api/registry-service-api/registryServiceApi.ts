@@ -54,7 +54,7 @@ export class RegistryServiceApi implements IRegistryServiceApi {
             'Content-Type': 'application/json',
         };
         
-        let url = new URL(this.baseUrl + `/shell-descriptors`)
+        const url = new URL(this.baseUrl + '/shell-descriptors')
         
         if (limit) {
             url.searchParams.append('limit', limit.toString());

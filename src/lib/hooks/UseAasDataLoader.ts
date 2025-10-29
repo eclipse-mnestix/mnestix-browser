@@ -12,12 +12,9 @@ import {
     performSubmodelSearch,
     searchAasInInfrastructure,
 } from 'lib/services/infrastructure-search-service/infrastructureSearchActions';
-import {
-    AasSearchResult
-} from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
+import { AasSearchResult } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import { getAasFromRepository } from 'lib/services/aas-repository-service/aasRepositoryActions';
 import { encodeBase64 } from 'lib/util/Base64Util';
-import { InfrastructureSearchService } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 
 /**
@@ -97,7 +94,7 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
             }
         }
 
-        let response: ApiResponseWrapper<AasSearchResult> | undefined = undefined;
+        let response: ApiResponseWrapper<AasSearchResult> | undefined = undefined;
 
         if (infrastructureName) {
             response = await searchAasInInfrastructure(aasIdToLoad, infrastructureName);

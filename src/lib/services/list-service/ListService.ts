@@ -134,7 +134,7 @@ export class ListService {
                     return null;
                 }
                 let hrefValue = descriptor.endpoints[0].protocolInformation.href;
-                if (hrefValue.startsWith("/")) {
+                if (hrefValue.startsWith('/')) {
                     const host = new URL(this.repositoryWithInfrastructure.url).origin;
                     logWarn(this.log, 'getAasListEntities', `Descriptor with id "${descriptor.id}" does not contain a standardconform URL, trying a workaround. Please update your data.`);
                     hrefValue = host.concat(hrefValue);
@@ -214,6 +214,7 @@ export class ListService {
                     );
 
                     // The API might return the value directly or wrapped in an object with the property name as key
+                    // eslint-disable-next-line
                     const extractValue = (response: any): MultiLanguageValueOnly | undefined => {
                         if (!response) return undefined;
                         if (Array.isArray(response)) return response;
