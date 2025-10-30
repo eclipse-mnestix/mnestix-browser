@@ -45,6 +45,20 @@
       "sourceMapPathOverrides": {
         "/turbopack/[project]/*": "${webRoot}/*"
       }
+    },
+    {
+      "name": "Debug Jest file",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/jest",
+      "args": ["${fileBasenameNoExtension}", "--runInBand", "--watch", "--coverage=false", "--no-cache"],
+      "cwd": "${workspaceRoot}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "sourceMaps": true,
+      "windows": {
+        "program": "${workspaceFolder}/node_modules/jest/bin/jest"
+      }
     }
   ]
 }
