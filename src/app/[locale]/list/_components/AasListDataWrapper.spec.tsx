@@ -9,6 +9,7 @@ import { ListEntityDto } from 'lib/services/list-service/ListService';
 import { Internationalization } from 'lib/i18n/Internationalization';
 import { AasStoreProvider } from 'stores/AasStore';
 import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
+import { ConnectionWithType } from 'app/[locale]/list/_components/filter/SelectRepository';
 
 jest.mock('./../../../../lib/services/list-service/aasListApiActions');
 jest.mock('./../../../../lib/services/database/infrastructureDatabaseActions');
@@ -35,6 +36,12 @@ jest.mock('next-auth', jest.fn());
 const REPOSITORY_URL = 'https://test-repository.de';
 const FIRST_PAGE_CURSOR = '123123';
 const REPOSITORY = { url: REPOSITORY_URL, infrastructureName: 'Test Infrastructure', id: 'test-repo-id' };
+const REPOSITORY_CONNECTION_TYPE = {
+    url: REPOSITORY.url,
+    infrastructureName: REPOSITORY.infrastructureName,
+    id: REPOSITORY.id,
+    type: 'repository',
+};
 const mockDB = jest.fn(() => {
     return [REPOSITORY];
 });
@@ -56,7 +63,12 @@ const createTestListEntries = (from = 0, to = 10): ListEntityDto[] => {
 };
 
 const mockActionFirstPage = jest.fn(
-    (_repository: RepositoryWithInfrastructure, _count: number, _cursor: string | undefined) => {
+    (
+        _repository: RepositoryWithInfrastructure | ConnectionWithType,
+        _count: number,
+        _cursor: string | undefined,
+        _type: string | undefined,
+    ) => {
         return {
             success: true,
             entities: createTestListEntries(0, 10),
@@ -67,7 +79,12 @@ const mockActionFirstPage = jest.fn(
 );
 
 const mockActionSecondPage = jest.fn(
-    (_repository: RepositoryWithInfrastructure, _count: number, _cursor: string | undefined) => {
+    (
+        _repository: RepositoryWithInfrastructure,
+        _count: number,
+        _cursor: string | undefined,
+        _type: string | undefined,
+    ) => {
         return {
             success: true,
             entities: createTestListEntries(10, 12),
@@ -90,6 +107,11 @@ describe('AASListDataWrapper', () => {
         (serverActions.getAasListEntities as jest.Mock).mockImplementation(mockActionFirstPage);
 
         (connectionServerActions.getAasRepositoriesIncludingDefault as jest.Mock).mockImplementation(mockDB);
+        (connectionServerActions.getAasRegistriesIncludingDefault as jest.Mock).mockImplementation(
+            jest.fn(() => {
+                return [];
+            }),
+        );
         (nameplateDataActions.getNameplateValuesForAAS as jest.Mock).mockImplementation(mockNameplateData);
 
         CustomRender(
@@ -109,7 +131,8 @@ describe('AASListDataWrapper', () => {
             await waitFor(() => screen.getByTestId('repository-select'));
             const select = screen.getAllByRole('combobox')[0];
             fireEvent.mouseDown(select);
-            const firstElement = screen.getAllByRole('option')[0];
+            // const firstElement = screen.getAllByRole('option')[0];
+            const firstElement = screen.getByTestId('repository-select-item-0');
             fireEvent.click(firstElement);
 
             await waitFor(() => screen.getByTestId('list-next-button'));
@@ -130,7 +153,12 @@ describe('AASListDataWrapper', () => {
             expect(screen.getByText('assetId10', { exact: false })).toBeInTheDocument();
             expect(screen.getByText('Page 2', { exact: false })).toBeInTheDocument();
             expect(screen.getByTestId('list-next-button')).toBeDisabled();
-            expect(mockActionSecondPage).toHaveBeenCalledWith(REPOSITORY, 10, FIRST_PAGE_CURSOR);
+            expect(mockActionSecondPage).toHaveBeenCalledWith(
+                REPOSITORY_CONNECTION_TYPE,
+                10,
+                FIRST_PAGE_CURSOR,
+                'repository',
+            );
         });
 
         it('Navigates one page back when clicking on the back button', async () => {
@@ -146,7 +174,7 @@ describe('AASListDataWrapper', () => {
 
             expect(screen.getByText('assetId3', { exact: false })).toBeInTheDocument();
             expect(screen.getByText('Page 1', { exact: false })).toBeInTheDocument();
-            expect(mockActionFirstPage).toHaveBeenCalledWith(REPOSITORY, 10, undefined);
+            expect(mockActionFirstPage).toHaveBeenCalledWith(REPOSITORY_CONNECTION_TYPE, 10, undefined, 'repository');
         });
     });
 });

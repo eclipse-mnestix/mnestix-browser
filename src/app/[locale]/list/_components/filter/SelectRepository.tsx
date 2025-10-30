@@ -19,7 +19,7 @@ import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { useTranslations } from 'next-intl';
 import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 
-type ConnectionWithType = RepositoryWithInfrastructure & { type: 'repository' | 'registry' };
+export type ConnectionWithType = RepositoryWithInfrastructure & { type: 'repository' | 'registry' };
 
 export function SelectRepository(props: {
     onSelectedRepositoryChanged: Dispatch<SetStateAction<RepositoryWithInfrastructure | undefined>>;

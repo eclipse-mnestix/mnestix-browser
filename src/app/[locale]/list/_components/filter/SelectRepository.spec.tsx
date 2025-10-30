@@ -19,6 +19,11 @@ describe('SelectRepository', () => {
         });
         const repositoryChanged = jest.fn();
         (connectionServerActions.getAasRepositoriesIncludingDefault as jest.Mock).mockImplementation(mockDB);
+        (connectionServerActions.getAasRegistriesIncludingDefault as jest.Mock).mockImplementation(
+            jest.fn(() => {
+                return [];
+            }),
+        );
         CustomRender(
             <SelectRepository
                 onSelectedRepositoryChanged={() => {
@@ -31,7 +36,8 @@ describe('SelectRepository', () => {
         const select = screen.getByRole('combobox');
         fireEvent.mouseDown(select);
 
-        const firstElement = screen.getAllByRole('option')[0];
+        // const firstElement = screen.getAllByRole('option')[0];
+        const firstElement = screen.getByTestId('repository-select-item-0');
         fireEvent.click(firstElement);
 
         expect(repositoryChanged).toHaveBeenCalled();
