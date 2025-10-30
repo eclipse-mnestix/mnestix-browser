@@ -1,6 +1,6 @@
 <svg width="189" height="179" viewBox="0 0 189 179" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M187 127L187 177L137 177" stroke="#508785" stroke-width="3"/>
-<path d="M137 2L187 2L187 52" stroke="#508785" stroke-width="3"/>
-<path d="M2 52V2H52" stroke="#508785" stroke-width="3"/>
-<path d="M52 177L2 177L2.00001 127" stroke="#508785" stroke-width="3"/>
+<path d="M187 127L187 177L137 177" stroke="#ffffff" stroke-width="3"/>
+<path d="M137 2L187 2L187 52" stroke="#ffffff" stroke-width="3"/>
+<path d="M2 52V2H52" stroke="#ffffff" stroke-width="3"/>
+<path d="M52 177L2 177L2.00001 127" stroke="#ffffff" stroke-width="3"/>
 </svg>

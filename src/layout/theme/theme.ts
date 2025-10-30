@@ -1,4 +1,11 @@
-import { Components, PaletteOptions, ThemeOptions, TypographyVariantsOptions } from '@mui/material';
+import {
+    Components,
+    PaletteColor,
+    PaletteColorOptions,
+    PaletteOptions,
+    ThemeOptions,
+    TypographyVariantsOptions,
+} from '@mui/material';
 import '@fontsource/saira/400.css';
 import '@fontsource/saira/500.css';
 import '@fontsource/saira/600.css';
@@ -150,6 +157,9 @@ export const theme: ThemeOptions = {
     palette,
     components,
     productLogo: { logo: '' },
+    customColors: {
+        menuBackground: { main: '#005962' },
+    },
 };
 
 /**
@@ -160,11 +170,17 @@ declare module '@mui/material/styles' {
         productLogo: {
             logo: string;
         };
+        customColors: {
+            menuBackground: PaletteColor;
+        };
     }
 
     interface ThemeOptions {
         productLogo?: {
             logo?: string;
+        };
+        customColors?: {
+            menuBackground?: PaletteColorOptions;
         };
     }
 }

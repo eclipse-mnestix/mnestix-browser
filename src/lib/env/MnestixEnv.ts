@@ -96,6 +96,7 @@ const themingVariables = mapEnvVariables([
     'THEME_BASE64_LOGO',
     'THEME_LOGO_URL',
     'THEME_LOGO_MIME_TYPE',
+    'THEME_MENU_COLOR',
 ] as const);
 
 const LOG_LEVEL = process_env.LOG_LEVEL || (process_env.NODE_ENV === 'production' ? 'info' : 'debug');

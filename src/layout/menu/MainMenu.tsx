@@ -16,7 +16,7 @@ import { MnestixRole } from 'components/authentication/AllowedRoutes';
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
     '.MuiDrawer-paper': {
         color: theme.palette.primary.contrastText,
-        background: theme.palette.primary.main,
+        background: theme.customColors.menuBackground.main,
         width: '275px',
         paddingTop: theme.mixins.toolbar.minHeight,
         '.MuiListItem-root, .MuiListItemButton-root': {
@@ -28,7 +28,7 @@ const StyledDrawer = styled(Drawer)(({ theme }) => ({
         '.MuiListItemButton-root': {
             color: theme.palette.primary.contrastText,
             '&:hover': {
-                backgroundColor: alpha(theme.palette.primary.dark, 0.8),
+                backgroundColor: alpha(theme.customColors.menuBackground.main, 0.8),
             },
             '&:focus': {
                 backgroundColor: 'transparent',
