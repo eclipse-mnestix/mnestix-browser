@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
 import { CustomRender } from 'test-utils/CustomRender';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
-import { SelectRepository } from 'app/[locale]/list/_components/filter/SelectRepository';
+import { SelectListSource } from 'app/[locale]/list/_components/filter/SelectListSource';
 import * as connectionServerActions from 'lib/services/database/infrastructureDatabaseActions';
 
 jest.mock('./../../../../../lib/services/database/infrastructureDatabaseActions');
@@ -19,8 +19,13 @@ describe('SelectRepository', () => {
         });
         const repositoryChanged = jest.fn();
         (connectionServerActions.getAasRepositoriesIncludingDefault as jest.Mock).mockImplementation(mockDB);
+        (connectionServerActions.getAasRegistriesIncludingDefault as jest.Mock).mockImplementation(
+            jest.fn(() => {
+                return [];
+            }),
+        );
         CustomRender(
-            <SelectRepository
+            <SelectListSource
                 onSelectedRepositoryChanged={() => {
                     repositoryChanged();
                 }}
@@ -31,7 +36,8 @@ describe('SelectRepository', () => {
         const select = screen.getByRole('combobox');
         fireEvent.mouseDown(select);
 
-        const firstElement = screen.getAllByRole('option')[0];
+        // const firstElement = screen.getAllByRole('option')[0];
+        const firstElement = screen.getByTestId('repository-select-item-0');
         fireEvent.click(firstElement);
 
         expect(repositoryChanged).toHaveBeenCalled();

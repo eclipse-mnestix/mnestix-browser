@@ -21,6 +21,7 @@ import { RepositoryWithInfrastructure } from 'lib/services/database/Infrastructu
 
 type AasTableRowProps = {
     repository: RepositoryWithInfrastructure;
+    connectionType?: 'repository' | 'registry';
     aasListEntry: ListEntityDto;
     comparisonFeatureFlag: boolean | undefined;
     checkBoxDisabled: (aasId: string | undefined) => boolean | undefined;
@@ -37,6 +38,7 @@ const tableBodyText = {
 export const AasListTableRow = (props: AasTableRowProps) => {
     const {
         repository,
+        connectionType,
         aasListEntry,
         comparisonFeatureFlag,
         checkBoxDisabled,
@@ -66,9 +68,10 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         const baseUrl = window.location.origin;
         const pageToGo = env.PRODUCT_VIEW_FEATURE_FLAG ? '/product' : '/viewer';
 
-        const repoUrlParam = repository.url ? `?repoUrl=${repository.url}` : '';
+        // Only send repoUrl parameter if it's a repository, not a registry
+        const repoUrlParam = connectionType === 'repository' && repository.url ? `?repoUrl=${repository.url}` : '';
         const infrastructureParam = repository.infrastructureName
-            ? `&infrastructure=${repository.infrastructureName}`
+            ? `${repoUrlParam ? '&' : '?'}infrastructure=${repository.infrastructureName}`
             : '';
         window.open(
             baseUrl + `${pageToGo}/${encodeBase64(listEntry.aasId)}${repoUrlParam}${infrastructureParam}`,
@@ -88,7 +91,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
             // this can happen if the property is not a MultiLanguageValueOnly type
             // e.g. if the property is a AAS Property type (incorrect by specification but possible) string or an error occurs
             if (typeof property === 'string') return property;
-            console.error('Error translating property:', e);
+            console.error('Error translating property:', e, 'Property:', property);
             return '';
         }
     };

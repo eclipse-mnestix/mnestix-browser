@@ -7,6 +7,7 @@ import { RepositoryWithInfrastructure } from 'lib/services/database/Infrastructu
 
 type AasListProps = {
     repositoryUrl: RepositoryWithInfrastructure;
+    connectionType?: 'repository' | 'registry';
     shells: AasListDto | undefined;
     comparisonFeatureFlag?: boolean;
     selectedAasList: string[] | undefined;
@@ -14,7 +15,8 @@ type AasListProps = {
 };
 
 export default function AasList(props: AasListProps) {
-    const { repositoryUrl, shells, selectedAasList, updateSelectedAasList, comparisonFeatureFlag } = props;
+    const { repositoryUrl, connectionType, shells, selectedAasList, updateSelectedAasList, comparisonFeatureFlag } =
+        props;
     const t = useTranslations('pages.aasList');
     const MAX_SELECTED_ITEMS = 3;
 
@@ -76,6 +78,7 @@ export default function AasList(props: AasListProps) {
                                 <TableRow key={aasListEntry.aasId} data-testid={`list-row-${aasListEntry.aasId}`}>
                                     <AasListTableRow
                                         repository={repositoryUrl}
+                                        connectionType={connectionType}
                                         aasListEntry={aasListEntry}
                                         comparisonFeatureFlag={comparisonFeatureFlag}
                                         checkBoxDisabled={checkBoxDisabled}

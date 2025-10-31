@@ -10,7 +10,7 @@ import { AasListComparisonHeader } from './AasListComparisonHeader';
 import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { SelectRepository } from './filter/SelectRepository';
+import { SelectListSource } from './filter/SelectListSource';
 import { useTranslations } from 'next-intl';
 import { ApiResponseWrapperError } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { AuthenticationPrompt } from 'components/authentication/AuthenticationPrompt';
@@ -28,6 +28,7 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
     const [, setAasListFiltered] = useState<ListEntityDto[]>();
     const [selectedAasList, setSelectedAasList] = useState<string[]>();
     const [selectedRepository, setSelectedRepository] = useState<RepositoryWithInfrastructure | null | undefined>();
+    const [selectedType, setSelectedType] = useState<'repository' | 'registry' | undefined>();
     const env = useEnv();
     const t = useTranslations('pages.aasList');
     const { showError } = useShowError();
@@ -56,7 +57,7 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
 
         setIsLoadingList(true);
         clearResults();
-        const response = await getAasListEntities(selectedRepository, 10, newCursor);
+        const response = await getAasListEntities(selectedRepository, 10, newCursor, selectedType);
 
         if (response.success) {
             setAasList(response);
@@ -136,7 +137,7 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
         if (!selectedRepository) {
             return (
                 <Box>
-                    <Typography data-testid="select-repository-text">{t('selectRepository')}</Typography>
+                    <Typography data-testid="select-repository-text">{t('selectListSource')}</Typography>
                 </Box>
             );
         }
@@ -150,6 +151,7 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
                 <AasList
                     data-testid="aas-list"
                     repositoryUrl={selectedRepository}
+                    connectionType={selectedType}
                     shells={aasList}
                     selectedAasList={selectedAasList}
                     updateSelectedAasList={updateSelectedAasList}
@@ -166,7 +168,10 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
                 {!hideRepoSelection && (
                     <Box display="flex" justifyContent="space-between" marginBottom="1.625rem" paddingX="1rem">
                         <Box display="flex" gap={4}>
-                            <SelectRepository onSelectedRepositoryChanged={setSelectedRepository} />
+                            <SelectListSource
+                                onSelectedRepositoryChanged={setSelectedRepository}
+                                onSelectedTypeChanged={setSelectedType}
+                            />
                         </Box>
                         {env.COMPARISON_FEATURE_FLAG && (
                             <AasListComparisonHeader
