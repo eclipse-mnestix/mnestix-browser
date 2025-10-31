@@ -10,7 +10,7 @@ import { AasListComparisonHeader } from './AasListComparisonHeader';
 import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { SelectRepository } from './filter/SelectRepository';
+import { SelectListSource } from './filter/SelectListSource';
 import { useTranslations } from 'next-intl';
 import { ApiResponseWrapperError } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { AuthenticationPrompt } from 'components/authentication/AuthenticationPrompt';
@@ -137,7 +137,7 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
         if (!selectedRepository) {
             return (
                 <Box>
-                    <Typography data-testid="select-repository-text">{t('selectRepository')}</Typography>
+                    <Typography data-testid="select-repository-text">{t('selectListSource')}</Typography>
                 </Box>
             );
         }
@@ -168,7 +168,7 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
                 {!hideRepoSelection && (
                     <Box display="flex" justifyContent="space-between" marginBottom="1.625rem" paddingX="1rem">
                         <Box display="flex" gap={4}>
-                            <SelectRepository
+                            <SelectListSource
                                 onSelectedRepositoryChanged={setSelectedRepository}
                                 onSelectedTypeChanged={setSelectedType}
                             />

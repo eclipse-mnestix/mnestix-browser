@@ -21,7 +21,7 @@ import { RepositoryWithInfrastructure } from 'lib/services/database/Infrastructu
 
 export type ConnectionWithType = RepositoryWithInfrastructure & { type: 'repository' | 'registry' };
 
-export function SelectRepository(props: {
+export function SelectListSource(props: {
     onSelectedRepositoryChanged: Dispatch<SetStateAction<RepositoryWithInfrastructure | undefined>>;
     onSelectedTypeChanged?: Dispatch<SetStateAction<'repository' | 'registry' | undefined>>;
 }) {

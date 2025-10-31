@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
 import { CustomRender } from 'test-utils/CustomRender';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
-import { SelectRepository } from 'app/[locale]/list/_components/filter/SelectRepository';
+import { SelectListSource } from 'app/[locale]/list/_components/filter/SelectListSource';
 import * as connectionServerActions from 'lib/services/database/infrastructureDatabaseActions';
 
 jest.mock('./../../../../../lib/services/database/infrastructureDatabaseActions');
@@ -25,7 +25,7 @@ describe('SelectRepository', () => {
             }),
         );
         CustomRender(
-            <SelectRepository
+            <SelectListSource
                 onSelectedRepositoryChanged={() => {
                     repositoryChanged();
                 }}

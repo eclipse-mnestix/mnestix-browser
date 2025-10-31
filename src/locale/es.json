@@ -212,7 +212,7 @@
       "maxElementsWarning": "No se pueden comparar más de 3 elementos",
       "page": "Página",
       "repositoryDropdownLabel": "AAS repository o AAS registry (Infrastructure)",
-      "selectRepository": "Por favor, seleccione un repositorio o AAS registry",
+      "selectListSource": "Por favor, seleccione un repositorio o AAS registry",
       "subHeader": "Todos los AAS de su repositorio o AAS registry se muestran aquí. Puede seleccionar otro repositorio o AAS registry para cambiar la fuente de los datos.",
       "titleComparisonAddButton": "Añadir AAS a la comparación"
     },

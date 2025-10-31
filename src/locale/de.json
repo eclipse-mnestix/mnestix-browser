@@ -212,7 +212,7 @@
       "maxElementsWarning": "Maximal 3 Elemente selektierbar",
       "page": "Seite",
       "repositoryDropdownLabel": "AAS Repository oder AAS Registry (Infrastruktur)",
-      "selectRepository": "Bitte wählen Sie ein Repository oder AAS Registry aus",
+      "selectListSource": "Bitte wählen Sie ein Repository oder AAS Registry aus",
       "subHeader": "Hier finden Sie alle AAS aus Ihrem Repository oder AAS Registry. Sie können ein AAS-Repository oder AAS Registry auswählen, um zwischen den Datenquellen zu wechseln.",
       "titleComparisonAddButton": "AAS zum Vergleich hinzufügen"
     },

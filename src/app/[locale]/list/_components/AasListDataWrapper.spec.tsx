@@ -9,7 +9,7 @@ import { ListEntityDto } from 'lib/services/list-service/ListService';
 import { Internationalization } from 'lib/i18n/Internationalization';
 import { AasStoreProvider } from 'stores/AasStore';
 import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
-import { ConnectionWithType } from 'app/[locale]/list/_components/filter/SelectRepository';
+import { ConnectionWithType } from 'app/[locale]/list/_components/filter/SelectListSource';
 
 jest.mock('./../../../../lib/services/list-service/aasListApiActions');
 jest.mock('./../../../../lib/services/database/infrastructureDatabaseActions');
