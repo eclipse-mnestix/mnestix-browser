@@ -103,6 +103,17 @@ export async function wrapResponse<T>(response: Response): Promise<ApiResponseWr
     if (isJsonContentType || looksLikeJson) {
         try {
             const jsonResult = JSON.parse(text);
+
+            // Send out a warning if the content type differs from application/json but looks like JSON
+            // Cannot use Pino Logger here as this function gets called on client and on server
+            // We try to use the content anyways if it looks like JSON, but
+            // if this hinders you in your progress dear future dev, remove it if needed
+            if (!isJsonContentType && looksLikeJson) {
+                console.warn(
+                    '[WARN] Server did not return Content-Type Header "application/json", but data was of type JSON. To ensure full compatibility, make sure the Server sets their appropriate Content-Type Headers for each request.',
+                    response,
+                );
+            }
             return wrapSuccess(jsonResult as T, response.status, getStatus(response.status));
         } catch (error) {
             if (isJsonContentType) {
