@@ -1,4 +1,4 @@
-import { SubmodelElementCollection } from 'lib/api/aas/models';
+import { SubmodelElementCollection, SubmodelElementList } from 'lib/api/aas/models';
 import { idEquals } from 'lib/util/IdValidationUtil';
 import { submodelElementCustomVisualizationMap } from '../../submodel-elements/SubmodelElementCustomVisualizationMap';
 import { Fragment } from 'react';
@@ -7,7 +7,7 @@ import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/subm
 import { KeyTypes } from 'lib/api/aas/models';
 
 export interface CustomSubmodelElementComponentProps {
-    readonly submodelElement: SubmodelElementCollection;
+    readonly submodelElement: SubmodelElementCollection | SubmodelElementList;
     readonly hasDivider: boolean;
     readonly submodelId: string;
     readonly repositoryUrl?: string;
