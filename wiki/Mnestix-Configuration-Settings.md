@@ -28,6 +28,12 @@ Mnestix provides the following configuration options. You can adapt the values i
 | `WHITELIST_FEATURE_FLAG`             | false                  | Enables or disables the feature for showing/hiding specific submodels.                                                                                                                        |
 | `SUBMODEL_WHITELIST`                 |                        | This variable can be used to specify a list of submodel semantic ids in order to show them when the `WHITELIST_FEATURE_FLAG` is set to true.                                                  |
 
+#### Experimental Features
+
+| Name                               | Default value | Description                                                                                                                                                                                                                                                                        |
+| ---------------------------------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `EXPERIMENTAL_HIGHLIGHT_DATA_FLAG` | false | Enables highlighting of specific submodels, properties, and multilang properties rendered with the default/fallback visualization. When enabled, elements can be visually emphasized using a `HighlightColor` qualifier. Example qualifier configuration: `{"kind": "ValueQualifier", "type": "HighlightColor", "value": "rgb(255,0,0)", "valueType": "xs:string"}`. For visual examples, see [PR #491](https://github.com/eclipse-mnestix/mnestix-browser/pull/491). |
+
 #### Keycloak
 
 See [Keycloak Configuration](Keycloak-Configuration) for more information about the Keycloak setup.
