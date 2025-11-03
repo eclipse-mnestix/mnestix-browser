@@ -16,3 +16,4 @@
 !.env.local
 /.env*.local
 /cypress-artifacts
+*.DS_Store
