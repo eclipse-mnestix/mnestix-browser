@@ -6,6 +6,7 @@ import {
     SubmodelElementChoice,
     Property,
     MultiLanguageProperty,
+    SubmodelElementList,
 } from 'lib/api/aas/models';
 import { findSubmodelElementBySemanticIdsOrIdShort, getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import {
@@ -31,7 +32,7 @@ export type FileViewObject = {
  * @param submodelElement
  * @param submodelId
  */
-export function useFileViewObject(submodelElement: SubmodelElementCollection, submodelId: string) {
+export function useFileViewObject(submodelElement: SubmodelElementCollection | SubmodelElementList, submodelId: string) {
     const locale = useLocale();
     const { aasOriginUrl } = useCurrentAasContext();
     const [fileViewObject, setFileViewObject] = useState<FileViewObject>();
