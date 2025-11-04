@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Button, Stack } from '@mui/material';
 import { Address, AddressPerLifeCyclePhase, ProductJourney } from './visualization-components/ProductJourney';
 import { CalculationMethod } from './visualization-components/CalculationMethod';
 import { CO2Equivalents } from './visualization-components/CO2Equivalents';
@@ -19,12 +19,27 @@ import { useLocale, useTranslations } from 'next-intl';
 import { PcfSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/PcfSubmodelElementSemanticId.enum';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { stringToFloat } from 'lib/util/NumberUtil';
+import { useState } from 'react';
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Cancel';
+import {
+    CarbonFootprintCO2Update,
+    updateCarbonFootprintCO2Values,
+} from 'lib/services/carbon-footprint-service/carbonFootprintActions';
+import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
+import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 
 export type CO2Unit = 'g' | 'kg';
 
 export function CarbonFootprintVisualizations({ submodel }: SubmodelVisualizationProps) {
     const t = useTranslations('components.carbonFootprint');
     const locale = useLocale();
+    const notificationSpawner = useNotificationSpawner();
+    const currentAasContext = useCurrentAasContext();
+
+    const repositoryUrl = currentAasContext.aasOriginUrl;
+    const infrastructureName = currentAasContext.infrastructureName;
 
     const pcfSubmodelElements = getPcfSubmodelElements(submodel);
 
@@ -37,24 +52,204 @@ export function CarbonFootprintVisualizations({ submodel }: SubmodelVisualizatio
         return (firstPhase || '').localeCompare(secondPhase || '');
     });
 
-    const totalCO2EquivalentsRaw = extractTotalCO2Equivalents(pcfSubmodelElements);
+    const totalCO2EquivalentsRawInitial = extractTotalCO2Equivalents(pcfSubmodelElements);
+    const unitInitial: CO2Unit = totalCO2EquivalentsRawInitial < 1 ? 'g' : 'kg';
+
+    const co2EquivalentsPerLifecycleStageInitial = extractCO2EquivalentsPerLifeCycleStage(
+        pcfSubmodelElements,
+        unitInitial,
+    );
+
+    const [co2EquivalentsPerLifecycleStage, setCo2EquivalentsPerLifecycleStage] = useState(
+        co2EquivalentsPerLifecycleStageInitial,
+    );
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [tempValues, setTempValues] = useState(co2EquivalentsPerLifecycleStageInitial);
+    const [isSaving, setIsSaving] = useState(false);
+
+    // Calculate total dynamically from current state
+    // Convert all values to kg first for correct calculation
+    const totalCO2EquivalentsRaw = Object.values(co2EquivalentsPerLifecycleStage).reduce((sum, value) => {
+        // Values are stored in initial display unit, convert to kg
+        const valueInKg = unitInitial === 'g' ? value / 1000 : value;
+        return sum + valueInKg;
+    }, 0);
+
+    // Determine unit based on total
     const unit: CO2Unit = totalCO2EquivalentsRaw < 1 ? 'g' : 'kg';
 
-    const totalCO2EquivalentsToShow =
-        totalCO2EquivalentsRaw < 1 ? totalCO2EquivalentsRaw * 1000 : totalCO2EquivalentsRaw;
+    // Convert total to display unit
+    const totalCO2EquivalentsToShow = unit === 'g' ? totalCO2EquivalentsRaw * 1000 : totalCO2EquivalentsRaw;
 
-    const co2EquivalentsPerLifecycleStage = extractCO2EquivalentsPerLifeCycleStage(pcfSubmodelElements, unit);
     const completedStages = extractCompletedStages(pcfSubmodelElements);
     const addressesPerLifeCyclePhase = pcfSubmodelElements.map((el) => extractAddressPerLifeCyclePhase(el, locale));
     const calculationMethod = extractCalculationMethod(pcfSubmodelElements);
+
+    function handleEditClick() {
+        setTempValues(co2EquivalentsPerLifecycleStage);
+        setIsEditMode(true);
+    }
+
+    function handleCancelClick() {
+        setTempValues(co2EquivalentsPerLifecycleStage);
+        setIsEditMode(false);
+    }
+
+    async function handleSaveClick() {
+        if (!repositoryUrl || !infrastructureName) {
+            notificationSpawner.spawn({
+                message: 'Repository information missing',
+                severity: 'error',
+            });
+            return;
+        }
+
+        setIsSaving(true);
+
+        try {
+            const updates: CarbonFootprintCO2Update[] = [];
+
+            for (const [stage, value] of Object.entries(tempValues)) {
+                const previousValue = co2EquivalentsPerLifecycleStage[stage as ProductLifecycleStage];
+                if (previousValue !== value && value !== undefined) {
+                    // Convert display value to kg for storage
+                    // tempValues are in initial display unit (unitInitial)
+                    const valueInKg = unitInitial === 'g' ? value / 1000 : value;
+
+                    const pcfElement = pcfSubmodelElements.find((el) => {
+                        const lifeCyclePhaseValue = extractLifeCyclePhaseValue(el);
+                        const elementStage = lifeCyclePhaseValue?.split(' ')[0].trim();
+                        return elementStage?.toLowerCase().includes(stage.toLowerCase());
+                    });
+
+                    if (!pcfElement) continue;
+
+                    const co2Property = pcfElement.value?.find(
+                        (v) =>
+                            v.semanticId?.keys?.[0]?.value === PcfSubmodelElementSemanticIdEnum.PCFCO2eq ||
+                            v.semanticId?.keys?.[0]?.value === PcfSubmodelElementSemanticIdEnum.PCFCO2eqV1,
+                    ) as Property | undefined;
+
+                    if (!co2Property) continue;
+
+                    const pcfElementIndex = pcfSubmodelElements.indexOf(pcfElement);
+                    const basePath = getPcfBasePath(submodel);
+                    const idShortPath = basePath
+                        ? `${basePath}[${pcfElementIndex}].${co2Property.idShort}`
+                        : `${pcfElement.idShort}.${co2Property.idShort}`;
+
+                    updates.push({
+                        stage,
+                        value: valueInKg,
+                        idShortPath,
+                        existingProperty: co2Property,
+                    });
+                }
+            }
+
+            if (updates.length === 0) {
+                setIsEditMode(false);
+                setIsSaving(false);
+                return;
+            }
+
+            const result = await updateCarbonFootprintCO2Values(submodel.id, updates, {
+                url: repositoryUrl,
+                infrastructureName: infrastructureName,
+            });
+
+            if (result.isSuccess) {
+                // Update state with new values (still in initial display unit)
+                setCo2EquivalentsPerLifecycleStage(tempValues);
+                setIsEditMode(false);
+                notificationSpawner.spawn({
+                    message: `Carbon Footprint successfully updated: ${result.result.updatedStages.join(', ')}`,
+                    severity: 'success',
+                });
+            } else {
+                notificationSpawner.spawn({
+                    message: result.message || 'Failed to update Carbon Footprint',
+                    severity: 'error',
+                });
+            }
+        } catch (error) {
+            notificationSpawner.spawn({
+                message: error instanceof Error ? error.message : 'Failed to update Carbon Footprint',
+                severity: 'error',
+            });
+        } finally {
+            setIsSaving(false);
+        }
+    }
+
+    function getPcfBasePath(submodel: Submodel): string | null {
+        const pcfList = findSubmodelElementBySemanticIdsOrIdShort(submodel.submodelElements, null, [
+            PcfSubmodelElementSemanticIdEnum.ProductCarbonFootprintsSMLV1,
+        ]) as SubmodelElementList | null;
+
+        return pcfList?.idShort || null;
+    }
+
+    function handleLifecycleValueChange(stage: ProductLifecycleStage, newValue: number) {
+        setTempValues((prev) => ({
+            ...prev,
+            [stage]: newValue,
+        }));
+    }
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="carbonFootprintVisualizations">
             <StyledDataRow title={t('totalCO2Equivalents')}>
                 <CO2Equivalents totalCO2Equivalents={totalCO2EquivalentsToShow} unit={unit} />
             </StyledDataRow>
-            <StyledDataRow title={t('completedStages')}>
-                <ProductLifecycle completedStages={completedStages} />
+            <StyledDataRow
+                title={t('completedStages')}
+                actions={
+                    <Stack direction="row" spacing={1}>
+                        {!isEditMode ? (
+                            <Button
+                                variant="outlined"
+                                size="small"
+                                startIcon={<EditIcon />}
+                                onClick={handleEditClick}
+                                data-testid="edit-lifecycle-button"
+                            >
+                                {t('edit')}
+                            </Button>
+                        ) : (
+                            <>
+                                <Button
+                                    variant="contained"
+                                    size="small"
+                                    startIcon={<SaveIcon />}
+                                    onClick={handleSaveClick}
+                                    disabled={isSaving}
+                                    data-testid="save-lifecycle-button"
+                                >
+                                    {t('save')}
+                                </Button>
+                                <Button
+                                    variant="outlined"
+                                    size="small"
+                                    startIcon={<CancelIcon />}
+                                    onClick={handleCancelClick}
+                                    disabled={isSaving}
+                                    data-testid="cancel-lifecycle-button"
+                                >
+                                    {t('cancel')}
+                                </Button>
+                            </>
+                        )}
+                    </Stack>
+                }
+            >
+                <ProductLifecycle
+                    completedStages={completedStages}
+                    unit={unitInitial}
+                    co2EquivalentsPerLifecycleStage={isEditMode ? tempValues : co2EquivalentsPerLifecycleStage}
+                    editable={isEditMode}
+                    onValueChange={handleLifecycleValueChange}
+                />
             </StyledDataRow>
             <StyledDataRow title={t('co2EDistribution')}>
                 <CO2EquivalentsDistribution

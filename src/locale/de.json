@@ -29,15 +29,18 @@
     "carbonFootprint": {
       "beech": "Eine Buche",
       "calculationMethod": "Berechnungsmethode",
+      "cancel": "Abbrechen",
       "co2EComparison": "Vergleich",
       "co2EDistribution": "CO2e Verteilung",
       "comparisonAssumption": "Unter der Annahme von 12,5 kg CO2e Speicherung pro Jahr.",
       "comparisonNeeds": "braucht",
       "completedStages": "Emissionen berechnet basierend auf folgenden Lebenszyklusphasen",
+      "edit": "Bearbeiten",
       "equivalents": "CO2 Äquivalente",
       "inTotal": "gesamt",
       "notIncludedHint": "nicht mit einbezogen",
       "productJourney": "Produktreise",
+      "save": "Speichern",
       "stages": {
         "A1": "A1 - Rohstoffversorgung (und vorgelagerte Produktion)",
         "A1-A3": "A1-A3 - Rohstoffversorgung bis Produktion",

@@ -29,15 +29,18 @@
     "carbonFootprint": {
       "beech": "Un árbol de haya",
       "calculationMethod": "Método de cálculo",
+      "cancel": "Cancelar",
       "co2EComparison": "Comparación",
       "co2EDistribution": "Emisiones de CO2e",
       "comparisonAssumption": "Suponiendo que un haya recoge 12.5kg de CO2e al año.",
       "comparisonNeeds": "necesita",
       "completedStages": "Emisiones calculadas según el ciclo de vida del producto",
+      "edit": "Editar",
       "equivalents": "Equivalente en CO2",
       "inTotal": "en total",
       "notIncludedHint": "no incluido todavía",
       "productJourney": "Ruta del producto",
+      "save": "Guardar",
       "stages": {
         "A1": "A1 - Provisión de materia prima (y anterior)",
         "A1-A3": "A1-A3 - Provisión de materia prima a fábrica",

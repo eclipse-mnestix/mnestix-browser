@@ -13,6 +13,7 @@ type DataRowProps = {
     readonly sx?: SxProps<Theme>;
     readonly testId?: string;
     readonly withBase64?: boolean;
+    readonly actions?: React.ReactNode;
 };
 
 export function DataRow(props: DataRowProps) {
@@ -45,11 +46,14 @@ export function DataRow(props: DataRowProps) {
             sx={{ display: 'flex', flexDirection: 'column', gap: '5px', marginBottom: '15px', ...props.sx }}
         >
             {props.hasDivider !== false && <Divider style={{ marginBottom: '10px' }} />}
-            {props.title && (
-                <Typography noWrap color="text.secondary" variant="body2" data-testid="data-row-title">
-                    {props.title}
-                </Typography>
-            )}
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                {props.title && (
+                    <Typography noWrap color="text.secondary" variant="body2" data-testid="data-row-title">
+                        {props.title}
+                    </Typography>
+                )}
+                {props.actions && <Box>{props.actions}</Box>}
+            </Box>
             {props.value && (
                 <Box
                     display="flex"

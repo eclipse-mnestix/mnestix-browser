@@ -29,15 +29,18 @@
     "carbonFootprint": {
       "beech": "One beech tree",
       "calculationMethod": "Calculation method",
+      "cancel": "Cancel",
       "co2EComparison": "Comparison",
       "co2EDistribution": "CO2e distribution",
       "comparisonAssumption": "Assuming one beech tree stores 12.5 kg CO2e per year.",
       "comparisonNeeds": "needs",
       "completedStages": "Emissions calculated based on product life cycle",
+      "edit": "Edit",
       "equivalents": "CO2 equivalents",
       "inTotal": "in total",
       "notIncludedHint": "not yet included",
       "productJourney": "Product journey",
+      "save": "Save",
       "stages": {
         "A1": "A1 - Raw material supply (and upstream production)",
         "A1-A3": "A1-A3 - Raw material supply to production",
