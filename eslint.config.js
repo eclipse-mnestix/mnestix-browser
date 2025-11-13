@@ -48,7 +48,6 @@ export default tseslint.config(
             parser: tsParser,
         },
         plugins: {
-            '@typescript-eslint': tsPlugin,
             formatjs,
         },
         rules: {
