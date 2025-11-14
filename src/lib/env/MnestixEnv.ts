@@ -43,6 +43,7 @@ const featureFlags = mapEnvVariables(
         'WHITELIST_FEATURE_FLAG',
         'KEYCLOAK_ENABLED',
         'BASYX_RBAC_ENABLED',
+        'CART_ENABLED_FEATURE_FLAG',
     ] as const,
     parseFlag,
 );

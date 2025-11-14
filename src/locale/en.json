@@ -179,6 +179,7 @@
       "documentation": "Documentation"
     },
     "mainMenu": {
+      "cart": "Shopping Cart",
       "aasList": "AAS List",
       "dashboard": "Dashboard",
       "findOutMore": "Find out more",
