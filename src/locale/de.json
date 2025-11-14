@@ -191,6 +191,11 @@
     }
   },
   "pages": {
+    "cart": {
+      "header": "Einkaufswagen",
+      "subHeader": "In Ihrem Einkaufswagen sind die folgenden Produkte.",
+      "buttonTooltip": "Zum Einkaufswagen"
+    },
     "aasList": {
       "buttonTooltip": "Zur AAS",
       "compare": "Vergleichen",
