@@ -179,6 +179,7 @@
       "documentation": "Documentación"
     },
     "mainMenu": {
+      "cart": "Carrito de compras",
       "aasList": "Lista de AAS",
       "dashboard": "Dashboard",
       "findOutMore": "Saber más",
@@ -190,6 +191,11 @@
     }
   },
   "pages": {
+    "cart": {
+      "header": "Carrito de compras",
+      "subHeader": "Aquí puede ver los productos que ha añadido a su carrito de compras.",
+      "buttonTooltip": "Ir al carrito de compras"
+    },
     "aasList": {
       "buttonTooltip": "Ir a AAS",
       "compare": "Comparar",

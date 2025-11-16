@@ -179,6 +179,7 @@
       "documentation": "Dokumentation"
     },
     "mainMenu": {
+      "cart": "Einkaufswagen",
       "aasList": "AAS Liste",
       "dashboard": "Dashboard",
       "findOutMore": "Mehr Informationen",
@@ -190,6 +191,11 @@
     }
   },
   "pages": {
+    "cart": {
+      "header": "Einkaufswagen",
+      "subHeader": "In Ihrem Einkaufswagen sind die folgenden Produkte.",
+      "buttonTooltip": "Zum Einkaufswagen"
+    },
     "aasList": {
       "buttonTooltip": "Zur AAS",
       "compare": "Vergleichen",

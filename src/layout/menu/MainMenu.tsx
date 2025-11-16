@@ -7,6 +7,7 @@ import { TemplateIcon } from 'components/custom-icons/TemplateIcon';
 import { MenuHeading } from './MenuHeading';
 import { MenuListItem, MenuListItemProps } from './MenuListItem';
 import ListIcon from '@mui/icons-material/List';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import packageJson from '../../../package.json';
 import { useEnv } from 'app/EnvProvider';
 import BottomMenu from 'layout/menu/BottomMenu';
@@ -114,6 +115,15 @@ export default function MainMenu() {
             icon: <TemplateIcon />,
         };
         basicMenu.push(templateItemToAdd);
+    }
+
+    if (env.CART_ENABLED_FEATURE_FLAG) {
+        const listItemToAdd = {
+            label: t('cart'),
+            to: '/cart',
+            icon: <ShoppingCartIcon />,
+        };
+        basicMenu.push(listItemToAdd);
     }
 
     if (checkIfRouteIsAllowed('/settings')) {
