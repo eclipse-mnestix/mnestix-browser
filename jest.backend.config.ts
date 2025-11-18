@@ -8,6 +8,7 @@ const config: Config = {
     testEnvironment: 'node',
     testMatch: ['**/__tests__/**/*.ts', '**/?(*.)+(spec|test).ts'],
     modulePathIgnorePatterns: ['cypress', 'dist/standalone/'],
+    transformIgnorePatterns: ['/node_modules/(?!(uuid|flat)/)'],
 };
 
 export default config;

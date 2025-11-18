@@ -16,7 +16,23 @@ const config: Config = {
         TextDecoder: TextDecoder,
     },
     transform: {
-        '^.+\\.(t|j)sx?$': '@swc/jest',
+        '^.+\\.(t|j)sx?$': ['@swc/jest', {
+            jsc: {
+                parser: {
+                    syntax: 'typescript',
+                    tsx: true,
+                    dynamicImport: true,
+                },
+                transform: {
+                    react: {
+                        runtime: 'automatic',
+                    },
+                },
+            },
+            module: {
+                type: 'commonjs',
+            },
+        }],
     },
     // mock all svg files
     moduleNameMapper: {
@@ -24,19 +40,19 @@ const config: Config = {
     },
     testMatch: ['**/__tests__/**/*.tsx', '**/?(*.)+(spec|test).tsx'],
     moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
-    transformIgnorePatterns: ['/node_modules/(?!(flat)/)'],
+    transformIgnorePatterns: [],
 };
 
-export default async (...args: any): Promise<Config> => {
+export default async function (...args: any): Promise<Config> {
     const fn = createJestConfig(config);
     // @ts-expect-error We don't know the type
     const res = await fn(...args);
 
-    // Don't ignore specific node_modules during transformation. This is needed if a node_module doesn't return valid JavaScript files.
+    // Transform specific ES module packages in node_modules
     res.transformIgnorePatterns = [
         ...res.transformIgnorePatterns!.filter((pattern) => !pattern.includes('/node_modules/')),
-        '/node_modules/(?!.+)',
+        '/node_modules/(?!(uuid|flat)/)'
     ];
 
     return res;
-};
+}
