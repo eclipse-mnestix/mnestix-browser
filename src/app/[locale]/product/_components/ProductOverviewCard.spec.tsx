@@ -59,7 +59,25 @@ jest.mock('./../../../../lib/util/SubmodelResolverUtil', () => ({
         } else if (idShort === 'Nameplate') {
             return {
                 id: 'nameplate-id',
-                submodelElements: [],
+                submodelElements: [
+                    {
+                        idShort: 'Markings',
+                        modelType: { name: 'SubmodelElementCollection' },
+                        value: [
+                            {
+                                idShort: 'Marking',
+                                modelType: { name: 'SubmodelElementCollection' },
+                                value: [
+                                    {
+                                        idShort: 'MarkingName',
+                                        modelType: { name: 'Property' },
+                                        value: 'CE',
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
             };
         }
         return undefined;
@@ -71,12 +89,18 @@ jest.mock('./../../../../lib/util/SubmodelResolverUtil', () => ({
                 modelType: { name: 'SubmodelElementCollection' },
                 value: [
                     {
-                        idShort: 'CEMarking',
-                        modelType: { name: 'Property' },
-                        value: 'CE',
+                        idShort: 'Marking',
+                        modelType: { name: 'SubmodelElementCollection' },
+                        value: [
+                            {
+                                idShort: 'MarkingName',
+                                modelType: { name: 'Property' },
+                                value: 'CE',
+                            },
+                        ],
                     },
                 ],
-            } as unknown as SubmodelElementCollection;
+            };
         }
         if (idShort === 'CompanyLogo' || idShort === 'ManufacturerLogo') {
             return {
@@ -107,20 +131,13 @@ jest.mock('./../../../../lib/util/SubmodelResolverUtil', () => ({
                         ],
                     },
                 ],
-            } as unknown as SubmodelElementCollection;
+            };
         }
         return undefined;
     }),
 }));
 
-// Mock the MarkingsComponent
-jest.mock('./../../viewer/_components/submodel-elements/marking-components/MarkingsComponent', () => ({
-    MarkingsComponent: jest
-        .fn()
-        .mockImplementation(() => <div data-testid="markings-component">Markings Component</div>),
-}));
-
-xdescribe('ProductOverviewCard', () => {
+describe('ProductOverviewCard', () => {
     const mockPush = jest.fn();
     const mockAddData = jest.fn();
 
@@ -185,8 +202,8 @@ xdescribe('ProductOverviewCard', () => {
         expect(screen.getByTestId('datarow-manufacturer-name')).toBeInTheDocument();
         expect(screen.getByTestId('datarow-manufacturer-product-designation')).toBeInTheDocument();
 
-        // Check for markings component
-        expect(screen.getByTestId('markings-component')).toBeInTheDocument();
+        // Check for markings element in KeyFactsBox
+        expect(screen.getByTestId('markings-element')).toBeInTheDocument();
     });
 
     it('renders in accordion mode correctly', () => {

@@ -66,7 +66,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
 
     const navigateToAas = (listEntry: ListEntityDto) => {
         const baseUrl = window.location.origin;
-        const pageToGo = env.PRODUCT_VIEW_FEATURE_FLAG ? '/product' : '/viewer';
+        const pageToGo = env.EXPERIMENTAL_PRODUCT_VIEW_FEATURE_FLAG ? '/product' : '/viewer';
 
         // Only send repoUrl parameter if it's a repository, not a registry
         const repoUrlParam = connectionType === 'repository' && repository.url ? `?repoUrl=${repository.url}` : '';

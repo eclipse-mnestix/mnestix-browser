@@ -25,7 +25,7 @@ export const GenericAasListEntry = ({ aasListEntry, ...config }: GenericAasListT
     const t = useTranslations('pages.aasList');
 
     const navigateToAas = () => {
-        const pageToGo = env.PRODUCT_VIEW_FEATURE_FLAG ? '/product' : '/viewer';
+        const pageToGo = env.EXPERIMENTAL_PRODUCT_VIEW_FEATURE_FLAG ? '/product' : '/viewer';
         const aasId = aasListEntry.aasId;
         const repoUrl = aasListEntry.repositoryUrl;
         const infrastructureName = aasListEntry.infrastructureName;

@@ -1,12 +1,6 @@
-import { Box, Card, CardContent, Skeleton, Typography, Divider } from '@mui/material';
+import { Box, Card, CardContent, Skeleton, Typography, Tooltip, Divider } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { DataRow } from 'components/basics/DataRow';
-import {
-    AssetAdministrationShell,
-    SubmodelElementChoice,
-    Submodel,
-    SubmodelElementCollection,
-} from 'lib/api/aas/models';
 import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
 import { encodeBase64 } from 'lib/util/Base64Util';
@@ -17,12 +11,19 @@ import { useTranslations } from 'next-intl';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import { findSubmodelByIdOrSemanticId, findSubmodelElementByIdShort } from 'lib/util/SubmodelResolverUtil';
 import { MobileAccordion } from 'components/basics/detailViewBasics/MobileAccordion';
-import { ProductClassificationInfoBox } from './ProductClassificationInfoBox';
+import { KeyFactsBox } from 'app/[locale]/product/_components/KeyFactsBox';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { useProductImageUrl } from 'lib/hooks/UseProductImageUrl';
 import { useFindValueByIdShort } from 'lib/hooks/useFindValueByIdShort';
-import { MarkingsComponent } from 'app/[locale]/viewer/_components/submodel-elements/marking-components/MarkingsComponent';
 import { ActionMenu } from './ProductActionMenu';
+import LinkIcon from '@mui/icons-material/Link';
+import { MnestixConnection } from '@prisma/client';
+import {
+    AssetAdministrationShell,
+    Property,
+    SubmodelElementChoice,
+    SubmodelElementCollection,
+} from 'lib/api/aas/models';
 import { useAasStore } from 'stores/AasStore';
 
 type ProductOverviewCardProps = {
@@ -34,6 +35,8 @@ type ProductOverviewCardProps = {
     readonly imageLinksToDetail?: boolean;
     readonly repositoryURL?: string;
     readonly displayName: string | null;
+    readonly catalogConfig?: MnestixConnection;
+    readonly infrastructureName?: string;
 };
 
 type ProductClassification = {
@@ -51,19 +54,19 @@ type OverviewData = {
     readonly manufacturerOrderCode?: string;
     readonly manufacturerLogo: SubmodelElementChoice | null;
     readonly companyLogo: SubmodelElementChoice | null;
-    readonly markings?: SubmodelElementCollection;
+    readonly markings: string[] | null;
     readonly productClassifications?: ProductClassification[];
+    readonly URIOfTheProduct?: string | null;
 };
 
 export function ProductOverviewCard(props: ProductOverviewCardProps) {
     const isAccordion = props.isAccordion;
     const navigate = useRouter();
-    const { addAasData } = useAasStore();
     const t = useTranslations('pages.productViewer');
     const [overviewData, setOverviewData] = useState<OverviewData>();
     const findValue = useFindValueByIdShort();
-    const productImageUrl = useProductImageUrl(props.aas, props.repositoryURL, props.productImage);
-    const [nameplateSubmodel, setNameplateSubmodel] = useState<Submodel | undefined>(undefined);
+    const productImageUrl = useProductImageUrl(props.aas, props.repositoryURL ?? undefined, props.productImage);
+    const { addAasData } = useAasStore();
 
     useEffect(() => {
         if (props.submodels && props.submodels.length > 0) {
@@ -81,7 +84,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                 SubmodelSemanticIdEnum.NameplateV2,
                 'Nameplate',
             );
-            setNameplateSubmodel(nameplate);
             if (nameplate?.submodelElements) {
                 prepareNameplateData(nameplate.submodelElements);
             }
@@ -104,7 +106,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             'ManufacturerArticleNumber',
             SubmodelElementSemanticIdEnum.ManufacturerArticleNumber,
         );
-
         const manufacturerOrderCode = findValue(
             technicalDataSubmodelElements,
             'ManufacturerOrderCode',
@@ -115,40 +116,75 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             'ManufacturerLogo',
             SubmodelElementSemanticIdEnum.ManufacturerLogo,
         );
-
         const productClassifications = findSubmodelElementByIdShort(
             technicalDataSubmodelElements,
             'ProductClassifications',
             SubmodelElementSemanticIdEnum.ProductClassifications,
         ) as SubmodelElementCollection;
         const classifications: ProductClassification[] = [];
-        productClassifications?.value?.forEach((productClassification) => {
-            const submodelClassification = productClassification as SubmodelElementCollection;
-            if (submodelClassification?.value) {
-                const classification = {
-                    ProductClassificationSystem:
-                        findValue(
-                            submodelClassification.value,
-                            'ProductClassificationSystem',
-                            SubmodelElementSemanticIdEnum.ProductClassificationSystem,
-                        ) || undefined,
-                    ProductClassId:
-                        findValue(
-                            submodelClassification.value,
-                            'ProductClassId',
-                            SubmodelElementSemanticIdEnum.ProductClassId,
-                        ) || undefined,
-                };
-                classifications.push(classification);
-            }
-        });
+
+        // If ProductClassifications is a flat list, we can directly use it
+        // This is not standard conform but we support it for now.
+        if (
+            productClassifications?.value &&
+            productClassifications.value.find((element) => element.idShort === 'ProductClassificationSystem')
+        ) {
+            const classification = {
+                ProductClassificationSystem:
+                    findValue(
+                        productClassifications.value,
+                        'ProductClassificationSystem',
+                        SubmodelElementSemanticIdEnum.ProductClassificationSystem,
+                    ) || undefined,
+                ProductClassId:
+                    findValue(
+                        productClassifications.value,
+                        'ProductClassId',
+                        SubmodelElementSemanticIdEnum.ProductClassId,
+                    ) || undefined,
+            };
+            classifications.push(classification);
+        } else {
+            productClassifications?.value?.forEach((productClassification) => {
+                const submodelClassification = productClassification as SubmodelElementCollection;
+                if (submodelClassification?.value) {
+                    const classification = {
+                        ProductClassificationSystem:
+                            findValue(
+                                submodelClassification.value,
+                                'ProductClassificationSystem',
+                                SubmodelElementSemanticIdEnum.ProductClassificationSystem,
+                            ) || undefined,
+                        ProductClassId:
+                            findValue(
+                                submodelClassification.value,
+                                'ProductClassId',
+                                SubmodelElementSemanticIdEnum.ProductClassId,
+                            ) || undefined,
+                    };
+                    // Filter out classifications without a ProductClassId
+                    if (!classification.ProductClassId) {
+                        return;
+                    }
+                    classifications.push(classification);
+                }
+            });
+        }
         setOverviewData({
-            manufacturerName: manufacturerName ?? '-',
-            manufacturerProductDesignation: manufacturerProductDesignation ?? '-',
+            manufacturerName: !manufacturerName || manufacturerName.trim() === '' ? undefined : manufacturerName,
+            manufacturerProductDesignation:
+                !manufacturerProductDesignation || manufacturerProductDesignation.trim() === ''
+                    ? undefined
+                    : manufacturerProductDesignation,
             productClassifications: classifications,
-            manufacturerArticleNumber: manufacturerArticleNumber ?? '-',
-            manufacturerOrderCode: manufacturerOrderCode ?? '-',
+            manufacturerArticleNumber:
+                !manufacturerArticleNumber || manufacturerArticleNumber.trim() === ''
+                    ? undefined
+                    : manufacturerArticleNumber,
+            manufacturerOrderCode:
+                !manufacturerOrderCode || manufacturerOrderCode.trim() === '' ? undefined : manufacturerOrderCode,
             companyLogo: null,
+            markings: null,
             manufacturerLogo: manufacturerLogo,
         });
     };
@@ -168,25 +204,83 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             'ManufacturerProductType',
             SubmodelElementSemanticIdEnum.ManufacturerProductType,
         );
-        const markings = findSubmodelElementByIdShort(
+        const markingsElement = findSubmodelElementByIdShort(
             nameplateSubmodelElements,
             'Markings',
             SubmodelElementSemanticIdEnum.MarkingsV3,
-        );
+        ) as SubmodelElementCollection;
+
+        const markings = prepareMarkingTexts(markingsElement || null);
+
         const companyLogo = findSubmodelElementByIdShort(
             nameplateSubmodelElements,
             'CompanyLogo',
             SubmodelElementSemanticIdEnum.CompanyLogo,
         );
+        const URIOfTheProduct = findValue(nameplateSubmodelElements, 'URIOfTheProducts', [
+            SubmodelElementSemanticIdEnum.URIOfTheProductV2,
+            SubmodelElementSemanticIdEnum.URIOfTheProductV3,
+        ]);
+        const manufacturerName = findValue(
+            nameplateSubmodelElements,
+            'ManufacturerName',
+            SubmodelElementSemanticIdEnum.ManufacturerName,
+        );
+        const manufacturerProductDesignation = findValue(
+            nameplateSubmodelElements,
+            'ManufacturerProductDesignation',
+            SubmodelElementSemanticIdEnum.ManufacturerProductDesignation,
+        );
+        const manufacturerArticleNumber = findValue(
+            nameplateSubmodelElements,
+            'ProductArticleNumberOfManufacturer',
+            SubmodelElementSemanticIdEnum.ManufacturerArticleNumber,
+        );
+        const manufacturerOrderCode = findValue(
+            nameplateSubmodelElements,
+            'OrderCodeOfManufacturer',
+            SubmodelElementSemanticIdEnum.ManufacturerOrderCode,
+        );
         setOverviewData((prevData) => ({
             ...prevData,
+            manufacturerName: prevData?.manufacturerName ? prevData.manufacturerName : (manufacturerName ?? '-'),
+            manufacturerProductDesignation: prevData?.manufacturerProductDesignation
+                ? prevData.manufacturerProductDesignation
+                : (manufacturerProductDesignation ?? '-'),
+            manufacturerArticleNumber: prevData?.manufacturerArticleNumber
+                ? prevData.manufacturerArticleNumber
+                : (manufacturerArticleNumber ?? '-'),
+            manufacturerOrderCode: prevData?.manufacturerOrderCode
+                ? prevData.manufacturerOrderCode
+                : (manufacturerOrderCode ?? '-'),
             manufacturerProductRoot: manufacturerProductRoot ?? '-',
             manufacturerProductFamily: manufacturerProductFamily ?? '-',
             manufacturerProductType: manufacturerProductType ?? '-',
-            markings: markings as SubmodelElementCollection,
+            markings: markings,
             manufacturerLogo: prevData?.manufacturerLogo || null,
             companyLogo: companyLogo || null,
+            URIOfTheProduct: URIOfTheProduct || null,
         }));
+    };
+
+    /**
+     * Prepare marking texts from the SubmodelElementCollection by extracting the 'MarkingName' properties.
+     * @param markings
+     */
+    const prepareMarkingTexts = (markings: SubmodelElementCollection | null): string[] => {
+        if (!markings?.value) return [];
+
+        const result: string[] = [];
+        markings.value.forEach((el) => {
+            Object.values(el || {}).forEach((marking) => {
+                Object.values(marking || {}).forEach((markingProperty: SubmodelElementChoice) => {
+                    if (markingProperty?.idShort === 'MarkingName' && (markingProperty as Property).value) {
+                        result.push((markingProperty as Property).value || '');
+                    }
+                });
+            });
+        });
+        return result;
     };
 
     const infoBoxStyle = {
@@ -209,10 +303,24 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
     };
 
     const navigateToAas = () => {
-        if (props.imageLinksToDetail && props.aas) {
-            addAasData({ aas: props.aas });
+        if (props.imageLinksToDetail && props.aas && props.infrastructureName) {
+            addAasData({
+                aas: props.aas,
+                aasData: {
+                    aasRepositoryOrigin: props.repositoryURL,
+                    submodelDescriptors: undefined,
+                    infrastructureName: props.infrastructureName,
+                },
+            });
             const url = `/product/${encodeBase64(props.aas.id)}`;
             navigate.push(url);
+        }
+    };
+
+    const navigateToProduct = () => {
+        if (overviewData?.URIOfTheProduct) {
+            const url = overviewData.URIOfTheProduct;
+            window.open(url, '_blank', 'noopener,noreferrer');
         }
     };
 
@@ -252,6 +360,10 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
         </Box>
     );
 
+    const showKeyFactsBox =
+        (overviewData?.productClassifications && overviewData.productClassifications.length > 0) ||
+        (overviewData?.markings && overviewData.markings.length > 0);
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const classificationInfo = (
         <Box sx={infoBoxStyle} data-testid="asset-data">
@@ -283,19 +395,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                 testId="datarow-manufacturer-product-type"
                 withBase64={false}
             />
-        </Box>
-    );
-
-    const markings = (
-        <Box sx={infoBoxStyle} data-testid="markings-data">
-            {overviewData?.markings && nameplateSubmodel?.id && (
-                <MarkingsComponent
-                    submodelElement={overviewData?.markings}
-                    submodelId={nameplateSubmodel?.id}
-                    columnDisplay
-                    hasDivider={false}
-                ></MarkingsComponent>
-            )}
         </Box>
     );
 
@@ -376,27 +475,38 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                             }}
                                         >
                                             {props.displayName || t('title')}
+                                            {overviewData?.URIOfTheProduct && (
+                                                <Tooltip title={overviewData.URIOfTheProduct}>
+                                                    <LinkIcon
+                                                        sx={{ ml: 1, cursor: 'pointer' }}
+                                                        fontSize="small"
+                                                        role="button"
+                                                        onClick={navigateToProduct}
+                                                        data-testid="product-uri-link"
+                                                    />
+                                                </Tooltip>
+                                            )}
                                         </Typography>
                                         <ActionMenu
                                             aas={props.aas}
+                                            infrastructureName={props.infrastructureName}
                                             submodels={props.submodels}
-                                            repositoryURL={props.repositoryURL}
                                             className="product-action-menu"
                                         />
                                     </Box>
                                     <Divider sx={{ mb: 2 }} />
-                                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
-                                        {productInfo}
-                                        {markings}
-                                    </Box>
+                                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>{productInfo}</Box>
                                 </Box>
                             </>
                         )}
                     </>
                 )}
             </CardContent>
-            {overviewData?.productClassifications && overviewData.productClassifications.length > 0 && (
-                <ProductClassificationInfoBox productClassifications={overviewData.productClassifications} />
+            {showKeyFactsBox && (
+                <KeyFactsBox
+                    productClassifications={overviewData.productClassifications ?? []}
+                    markings={overviewData.markings ?? []}
+                />
             )}
         </Card>
     );
