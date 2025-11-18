@@ -48,11 +48,10 @@ export default async function (...args: any): Promise<Config> {
     // @ts-expect-error We don't know the type
     const res = await fn(...args);
 
-    // Transform specific ES module packages in node_modules
-    res.transformIgnorePatterns = [
-        ...res.transformIgnorePatterns!.filter((pattern) => !pattern.includes('/node_modules/')),
-        '/node_modules/(?!(uuid|flat)/)'
-    ];
+    // Transform all node_modules to handle ES modules
+    res.transformIgnorePatterns = res.transformIgnorePatterns!.filter(
+        (pattern) => !pattern.includes('/node_modules/')
+    );
 
     return res;
 }
