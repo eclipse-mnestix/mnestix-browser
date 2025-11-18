@@ -1,34 +1,36 @@
 import { Alert, AlertTitle, Snackbar, SnackbarCloseReason } from '@mui/material';
 import { useNotificationContext } from 'components/contexts/NotificationContext';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 
 export function NotificationOutlet() {
     const { notification } = useNotificationContext();
     const [open, setOpen] = useState(false);
 
-    useEffect(() => {
-        if (notification) {
-            setOpen(true);
-        }
-    }, [notification]);
+    // Derive open state from notification presence
+    const isOpen = open && notification !== null;
 
-    const handleClose = (event: Event | SyntheticEvent, reason: SnackbarCloseReason) => {
+    function handleClose(event: Event | SyntheticEvent, reason: SnackbarCloseReason) {
         if (reason === 'clickaway') {
             return;
         }
         setOpen(false);
-    };
+    }
 
-    const handleAlertClose = () => {
+    function handleAlertClose() {
         setOpen(false);
-    };
+    }
+
+    // Open when new notification arrives
+    if (notification && !open) {
+        setOpen(true);
+    }
 
     return (
         <Snackbar
-            open={open}
+            open={isOpen}
             autoHideDuration={4000}
             // to force rerender when contents change
-            key={Date.now()}
+            key={notification ? `${notification.severity}-${notification.message}` : 'empty'}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             onClose={handleClose}
         >

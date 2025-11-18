@@ -1,5 +1,5 @@
 import { Box, FormControlLabel, Switch } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 interface BooleanPropertyEditComponentProps {
@@ -9,16 +9,13 @@ interface BooleanPropertyEditComponentProps {
 }
 
 export function BooleanPropertyEditComponent(props: BooleanPropertyEditComponentProps) {
-    const [realBoolean, setRealBoolean] = useState(props.dataValue.toLowerCase() === 'true');
-    const t = useTranslations('pages.templates');
-
-    useEffect(() => {
-        // intial value should be true
+    const [realBoolean, setRealBoolean] = useState(() => {
         if (props.defaultValueEnabled && props.dataValue !== 'false') {
-            setRealBoolean(true);
-            props.onChange('true');
+            return true;
         }
-    }, [props.defaultValueEnabled]);
+        return props.dataValue.toLowerCase() === 'true';
+    });
+    const t = useTranslations('pages.templates');
 
     const onValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRealBoolean(event.target.checked);

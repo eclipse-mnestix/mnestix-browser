@@ -22,6 +22,58 @@ type AasListDataWrapperProps = {
     hideRepoSelection?: boolean;
 };
 
+type ListContentProps = {
+    selectedRepository: RepositoryWithInfrastructure | null | undefined;
+    needAuthentication: boolean;
+    aasList: AasListDto | undefined;
+    selectedAasList: string[] | undefined;
+    updateSelectedAasList: (isChecked: boolean, aasId: string | undefined) => void;
+    selectedType: 'repository' | 'registry' | undefined;
+    pagination: React.ReactNode;
+    comparisonFeatureFlag: boolean;
+};
+
+function ListContent(props: ListContentProps) {
+    const t = useTranslations('pages.aasList');
+    const {
+        selectedRepository,
+        needAuthentication,
+        aasList,
+        selectedAasList,
+        updateSelectedAasList,
+        selectedType,
+        pagination,
+        comparisonFeatureFlag,
+    } = props;
+
+    if (!selectedRepository) {
+        return (
+            <Box>
+                <Typography data-testid="select-repository-text">{t('selectListSource')}</Typography>
+            </Box>
+        );
+    }
+
+    if (needAuthentication) {
+        return <AuthenticationPrompt isDefaultRepo={selectedRepository?.isDefault} />;
+    }
+
+    return (
+        <>
+            <AasList
+                data-testid="aas-list"
+                repositoryUrl={selectedRepository}
+                connectionType={selectedType}
+                shells={aasList}
+                selectedAasList={selectedAasList}
+                updateSelectedAasList={updateSelectedAasList}
+                comparisonFeatureFlag={comparisonFeatureFlag}
+            ></AasList>
+            {pagination}
+        </>
+    );
+}
+
 export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWrapperProps) {
     const [isLoadingList, setIsLoadingList] = useState(false);
     const [aasList, setAasList] = useState<AasListDto>();
@@ -41,18 +93,18 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
     //Authentication
     const [needAuthentication, setNeedAuthentication] = useState<boolean>(false);
 
-    const clearResults = () => {
+    function clearResults() {
         setAasList(undefined);
         setCurrentCursor(undefined);
         setNeedAuthentication(false);
-    };
+    }
 
-    useAsyncEffect(async () => {
-        resetPagination();
-        await fetchListData();
-    }, [selectedRepository]);
+    function resetPagination() {
+        setCursorHistory([]);
+        setCurrentPage(0);
+    }
 
-    const fetchListData = async (newCursor?: string | undefined, isNext = true) => {
+    async function fetchListData(newCursor?: string | undefined, isNext = true) {
         if (!selectedRepository) return;
 
         setIsLoadingList(true);
@@ -75,32 +127,32 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
             }
         }
         setIsLoadingList(false);
-    };
+    }
 
-    const handleNextPage = async () => {
+    useAsyncEffect(async () => {
+        resetPagination();
+        await fetchListData();
+    }, [selectedRepository]);
+
+    async function handleNextPage() {
         await fetchListData(currentCursor, true);
         setCurrentPage((prevPage) => prevPage + 1);
-    };
+    }
 
     /**
      * Handle a click on the back button.
      * To load the page one step back, we need to use the cursor from two pages back.
      */
-    const handleGoBack = async () => {
+    async function handleGoBack() {
         const previousCursor = cursorHistory[currentPage - 2] ?? undefined;
         await fetchListData(previousCursor, false);
         setCurrentPage((prevPage) => prevPage - 1);
-    };
-
-    const resetPagination = () => {
-        setCursorHistory([]);
-        setCurrentPage(0);
-    };
+    }
 
     /**
      * Update the list of currently selected aas
      */
-    const updateSelectedAasList = (isChecked: boolean, aasId: string | undefined) => {
+    function updateSelectedAasList(isChecked: boolean, aasId: string | undefined) {
         if (!aasId) return;
         let selected: string[] = [];
 
@@ -116,7 +168,7 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
         }
 
         setSelectedAasList(selected);
-    };
+    }
 
     const pagination = (
         <Box display="flex" justifyContent="flex-end" alignItems="center" marginTop={0}>
@@ -131,36 +183,6 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
             </IconButton>
         </Box>
     );
-
-    const ListContent = (props: { selectedRepository: RepositoryWithInfrastructure | null | undefined }) => {
-        const selectedRepository = props.selectedRepository;
-        if (!selectedRepository) {
-            return (
-                <Box>
-                    <Typography data-testid="select-repository-text">{t('selectListSource')}</Typography>
-                </Box>
-            );
-        }
-
-        if (needAuthentication) {
-            return <AuthenticationPrompt isDefaultRepo={selectedRepository?.isDefault} />;
-        }
-
-        return (
-            <>
-                <AasList
-                    data-testid="aas-list"
-                    repositoryUrl={selectedRepository}
-                    connectionType={selectedType}
-                    shells={aasList}
-                    selectedAasList={selectedAasList}
-                    updateSelectedAasList={updateSelectedAasList}
-                    comparisonFeatureFlag={env.COMPARISON_FEATURE_FLAG}
-                ></AasList>
-                {pagination}
-            </>
-        );
-    };
 
     return (
         <Card>
@@ -184,7 +206,16 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
                 {isLoadingList ? (
                     <CenteredLoadingSpinner sx={{ my: 10 }} />
                 ) : (
-                    <ListContent selectedRepository={selectedRepository} />
+                    <ListContent
+                        selectedRepository={selectedRepository}
+                        needAuthentication={needAuthentication}
+                        aasList={aasList}
+                        selectedAasList={selectedAasList}
+                        updateSelectedAasList={updateSelectedAasList}
+                        selectedType={selectedType}
+                        pagination={pagination}
+                        comparisonFeatureFlag={env.COMPARISON_FEATURE_FLAG}
+                    />
                 )}
             </CardContent>
         </Card>

@@ -1,12 +1,7 @@
 import { Box, Card, CardContent, Skeleton, Typography, Divider } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import { DataRow } from 'components/basics/DataRow';
-import {
-    AssetAdministrationShell,
-    SubmodelElementChoice,
-    Submodel,
-    SubmodelElementCollection,
-} from 'lib/api/aas/models';
+import { AssetAdministrationShell, SubmodelElementChoice, SubmodelElementCollection } from 'lib/api/aas/models';
 import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
 import { encodeBase64 } from 'lib/util/Base64Util';
@@ -60,134 +55,143 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
     const navigate = useRouter();
     const { addAasData } = useAasStore();
     const t = useTranslations('pages.productViewer');
-    const [overviewData, setOverviewData] = useState<OverviewData>();
     const findValue = useFindValueByIdShort();
     const productImageUrl = useProductImageUrl(props.aas, props.repositoryURL, props.productImage);
-    const [nameplateSubmodel, setNameplateSubmodel] = useState<Submodel | undefined>(undefined);
 
-    useEffect(() => {
-        if (props.submodels && props.submodels.length > 0) {
-            const technicalData = findSubmodelByIdOrSemanticId(
-                props.submodels,
-                SubmodelSemanticIdEnum.TechnicalDataV11,
-                'TechnicalData',
-            );
-            if (technicalData?.submodelElements) {
-                prepareTechnicalDataSubmodel(technicalData.submodelElements);
-            }
-
-            const nameplate = findSubmodelByIdOrSemanticId(
-                props.submodels,
-                SubmodelSemanticIdEnum.NameplateV2,
-                'Nameplate',
-            );
-            setNameplateSubmodel(nameplate);
-            if (nameplate?.submodelElements) {
-                prepareNameplateData(nameplate.submodelElements);
-            }
-        }
+    const nameplateSubmodel = useMemo(() => {
+        if (!props.submodels) return undefined;
+        return findSubmodelByIdOrSemanticId(props.submodels, SubmodelSemanticIdEnum.NameplateV2, 'Nameplate');
     }, [props.submodels]);
 
-    const prepareTechnicalDataSubmodel = (technicalDataSubmodelElements: Array<SubmodelElementChoice>) => {
-        const manufacturerName = findValue(
-            technicalDataSubmodelElements,
-            'ManufacturerName',
-            SubmodelElementSemanticIdEnum.ManufacturerName,
-        );
-        const manufacturerProductDesignation = findValue(
-            technicalDataSubmodelElements,
-            'ManufacturerProductDesignation',
-            SubmodelElementSemanticIdEnum.ManufacturerProductDesignation,
-        );
-        const manufacturerArticleNumber = findValue(
-            technicalDataSubmodelElements,
-            'ManufacturerArticleNumber',
-            SubmodelElementSemanticIdEnum.ManufacturerArticleNumber,
+    const overviewData: OverviewData | undefined = useMemo(() => {
+        if (!props.submodels || props.submodels.length === 0) {
+            return undefined;
+        }
+
+        let techData: Partial<OverviewData> = {};
+        let nameplateData: Partial<OverviewData> = {};
+
+        const technicalData = findSubmodelByIdOrSemanticId(
+            props.submodels,
+            SubmodelSemanticIdEnum.TechnicalDataV11,
+            'TechnicalData',
         );
 
-        const manufacturerOrderCode = findValue(
-            technicalDataSubmodelElements,
-            'ManufacturerOrderCode',
-            SubmodelElementSemanticIdEnum.ManufacturerOrderCode,
-        );
-        const manufacturerLogo = findSubmodelElementByIdShort(
-            technicalDataSubmodelElements,
-            'ManufacturerLogo',
-            SubmodelElementSemanticIdEnum.ManufacturerLogo,
-        );
+        if (technicalData?.submodelElements) {
+            const technicalDataSubmodelElements = technicalData.submodelElements;
+            const manufacturerName = findValue(
+                technicalDataSubmodelElements,
+                'ManufacturerName',
+                SubmodelElementSemanticIdEnum.ManufacturerName,
+            );
+            const manufacturerProductDesignation = findValue(
+                technicalDataSubmodelElements,
+                'ManufacturerProductDesignation',
+                SubmodelElementSemanticIdEnum.ManufacturerProductDesignation,
+            );
+            const manufacturerArticleNumber = findValue(
+                technicalDataSubmodelElements,
+                'ManufacturerArticleNumber',
+                SubmodelElementSemanticIdEnum.ManufacturerArticleNumber,
+            );
+            const manufacturerOrderCode = findValue(
+                technicalDataSubmodelElements,
+                'ManufacturerOrderCode',
+                SubmodelElementSemanticIdEnum.ManufacturerOrderCode,
+            );
+            const manufacturerLogo = findSubmodelElementByIdShort(
+                technicalDataSubmodelElements,
+                'ManufacturerLogo',
+                SubmodelElementSemanticIdEnum.ManufacturerLogo,
+            );
+            const productClassifications = findSubmodelElementByIdShort(
+                technicalDataSubmodelElements,
+                'ProductClassifications',
+                SubmodelElementSemanticIdEnum.ProductClassifications,
+            ) as SubmodelElementCollection;
+            const classifications: ProductClassification[] = [];
+            productClassifications?.value?.forEach((productClassification) => {
+                const submodelClassification = productClassification as SubmodelElementCollection;
+                if (submodelClassification?.value) {
+                    const classification = {
+                        ProductClassificationSystem:
+                            findValue(
+                                submodelClassification.value,
+                                'ProductClassificationSystem',
+                                SubmodelElementSemanticIdEnum.ProductClassificationSystem,
+                            ) || undefined,
+                        ProductClassId:
+                            findValue(
+                                submodelClassification.value,
+                                'ProductClassId',
+                                SubmodelElementSemanticIdEnum.ProductClassId,
+                            ) || undefined,
+                    };
+                    classifications.push(classification);
+                }
+            });
 
-        const productClassifications = findSubmodelElementByIdShort(
-            technicalDataSubmodelElements,
-            'ProductClassifications',
-            SubmodelElementSemanticIdEnum.ProductClassifications,
-        ) as SubmodelElementCollection;
-        const classifications: ProductClassification[] = [];
-        productClassifications?.value?.forEach((productClassification) => {
-            const submodelClassification = productClassification as SubmodelElementCollection;
-            if (submodelClassification?.value) {
-                const classification = {
-                    ProductClassificationSystem:
-                        findValue(
-                            submodelClassification.value,
-                            'ProductClassificationSystem',
-                            SubmodelElementSemanticIdEnum.ProductClassificationSystem,
-                        ) || undefined,
-                    ProductClassId:
-                        findValue(
-                            submodelClassification.value,
-                            'ProductClassId',
-                            SubmodelElementSemanticIdEnum.ProductClassId,
-                        ) || undefined,
-                };
-                classifications.push(classification);
-            }
-        });
-        setOverviewData({
-            manufacturerName: manufacturerName ?? '-',
-            manufacturerProductDesignation: manufacturerProductDesignation ?? '-',
-            productClassifications: classifications,
-            manufacturerArticleNumber: manufacturerArticleNumber ?? '-',
-            manufacturerOrderCode: manufacturerOrderCode ?? '-',
-            companyLogo: null,
-            manufacturerLogo: manufacturerLogo,
-        });
-    };
-    const prepareNameplateData = (nameplateSubmodelElements: Array<SubmodelElementChoice>) => {
-        const manufacturerProductRoot = findValue(
-            nameplateSubmodelElements,
-            'ManufacturerProductRoot',
-            SubmodelElementSemanticIdEnum.ManufacturerProductRoot,
-        );
-        const manufacturerProductFamily = findValue(
-            nameplateSubmodelElements,
-            'ManufacturerProductFamily',
-            SubmodelElementSemanticIdEnum.ManufacturerProductFamily,
-        );
-        const manufacturerProductType = findValue(
-            nameplateSubmodelElements,
-            'ManufacturerProductType',
-            SubmodelElementSemanticIdEnum.ManufacturerProductType,
-        );
-        const markings = findSubmodelElementByIdShort(
-            nameplateSubmodelElements,
-            'Markings',
-            SubmodelElementSemanticIdEnum.MarkingsV3,
-        );
-        const companyLogo = findSubmodelElementByIdShort(
-            nameplateSubmodelElements,
-            'CompanyLogo',
-            SubmodelElementSemanticIdEnum.CompanyLogo,
-        );
-        setOverviewData((prevData) => ({
-            ...prevData,
-            manufacturerProductRoot: manufacturerProductRoot ?? '-',
-            manufacturerProductFamily: manufacturerProductFamily ?? '-',
-            manufacturerProductType: manufacturerProductType ?? '-',
-            markings: markings as SubmodelElementCollection,
-            manufacturerLogo: prevData?.manufacturerLogo || null,
-            companyLogo: companyLogo || null,
-        }));
-    };
+            techData = {
+                manufacturerName: manufacturerName ?? '-',
+                manufacturerProductDesignation: manufacturerProductDesignation ?? '-',
+                productClassifications: classifications,
+                manufacturerArticleNumber: manufacturerArticleNumber ?? '-',
+                manufacturerOrderCode: manufacturerOrderCode ?? '-',
+                manufacturerLogo: manufacturerLogo,
+            };
+        }
+
+        if (nameplateSubmodel?.submodelElements) {
+            const nameplateSubmodelElements = nameplateSubmodel.submodelElements;
+            const manufacturerProductRoot = findValue(
+                nameplateSubmodelElements,
+                'ManufacturerProductRoot',
+                SubmodelElementSemanticIdEnum.ManufacturerProductRoot,
+            );
+            const manufacturerProductFamily = findValue(
+                nameplateSubmodelElements,
+                'ManufacturerProductFamily',
+                SubmodelElementSemanticIdEnum.ManufacturerProductFamily,
+            );
+            const manufacturerProductType = findValue(
+                nameplateSubmodelElements,
+                'ManufacturerProductType',
+                SubmodelElementSemanticIdEnum.ManufacturerProductType,
+            );
+            const markings = findSubmodelElementByIdShort(
+                nameplateSubmodelElements,
+                'Markings',
+                SubmodelElementSemanticIdEnum.MarkingsV3,
+            );
+            const companyLogo = findSubmodelElementByIdShort(
+                nameplateSubmodelElements,
+                'CompanyLogo',
+                SubmodelElementSemanticIdEnum.CompanyLogo,
+            );
+
+            nameplateData = {
+                manufacturerProductRoot: manufacturerProductRoot ?? '-',
+                manufacturerProductFamily: manufacturerProductFamily ?? '-',
+                manufacturerProductType: manufacturerProductType ?? '-',
+                markings: markings as SubmodelElementCollection,
+                companyLogo: companyLogo || null,
+            };
+        }
+
+        return {
+            manufacturerName: techData.manufacturerName,
+            manufacturerProductDesignation: techData.manufacturerProductDesignation,
+            productClassifications: techData.productClassifications,
+            manufacturerArticleNumber: techData.manufacturerArticleNumber,
+            manufacturerOrderCode: techData.manufacturerOrderCode,
+            manufacturerLogo: techData.manufacturerLogo || null,
+            manufacturerProductRoot: nameplateData.manufacturerProductRoot,
+            manufacturerProductFamily: nameplateData.manufacturerProductFamily,
+            manufacturerProductType: nameplateData.manufacturerProductType,
+            markings: nameplateData.markings,
+            companyLogo: nameplateData.companyLogo || null,
+        };
+    }, [props.submodels, findValue, nameplateSubmodel]);
 
     const infoBoxStyle = {
         display: 'flex',

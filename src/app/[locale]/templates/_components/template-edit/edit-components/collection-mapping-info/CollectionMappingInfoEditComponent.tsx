@@ -1,6 +1,6 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Box, Button, IconButton, TextField } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { MappingInfoData } from 'lib/types/MappingInfoData';
 import collectiopnMappingInfoDataJson from './collection-mapping-info-data.json';
 import { useTranslations } from 'next-intl';
@@ -14,59 +14,58 @@ interface CollectionMappingInfoEditComponentProps {
 
 export function CollectionMappingInfoEditComponent(props: CollectionMappingInfoEditComponentProps) {
     const collectionMappingInfoData = collectiopnMappingInfoDataJson as unknown as MappingInfoData;
-    const [data, setData] = useState(props.data);
-    const [collectionMappingInfo, setCollectionMappingInfo] = useState(getMappingInfo());
+
+    function getMappingInfo(dataSource: Submodel | SubmodelElementChoice): Qualifier | undefined {
+        return dataSource?.qualifiers?.find((q: Qualifier) =>
+            collectionMappingInfoData.qualifierTypes.includes(q.type),
+        );
+    }
+
+    const collectionMappingInfo = useMemo(() => getMappingInfo(props.data), [props.data]);
     const [valueEnabled, setValueEnabled] = useState(!!collectionMappingInfo?.value?.length);
     const t = useTranslations('pages.templates');
 
-    useEffect(() => {
-        setData(props.data);
-        setCollectionMappingInfo(getMappingInfo());
-    }, [props.data]);
-
-    function getMappingInfo(): Qualifier | undefined {
-        return data?.qualifiers?.find((q: Qualifier) => collectionMappingInfoData.qualifierTypes.includes(q.type));
+    function onValueChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+        if (collectionMappingInfo) {
+            const updatedMappingInfo = { ...collectionMappingInfo, value: event.target.value } as Qualifier;
+            handleChange(updatedMappingInfo);
+        }
     }
 
-    const onValueChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        if (collectionMappingInfo) {
-            setCollectionMappingInfo({ ...collectionMappingInfo, value: event.target.value } as Qualifier);
-            handleChange({ ...collectionMappingInfo, value: event.target.value } as Qualifier);
-        }
-    };
-
-    const onRemove = () => {
+    function onRemove() {
         setValueEnabled(false);
-        setCollectionMappingInfo(undefined);
         handleChange(undefined);
-    };
+    }
 
-    const onAdd = () => {
+    function onAdd() {
         setValueEnabled(true);
-        if (!collectionMappingInfo) {
-            setCollectionMappingInfo(collectionMappingInfoData.emptyTemplate);
-        }
         handleChange(collectionMappingInfoData.emptyTemplate);
-    };
+    }
 
-    const handleChange = (newMappingInfo: Qualifier | undefined) => {
-        const qualifiersIndex = data?.qualifiers?.findIndex((q: Qualifier) =>
+    function handleChange(newMappingInfo: Qualifier | undefined) {
+        const qualifiersIndex = props.data?.qualifiers?.findIndex((q: Qualifier) =>
             collectionMappingInfoData.qualifierTypes.includes(q.type),
         );
 
+        const updatedData = { ...props.data };
+
         // update/remove if existing
-        if (data.qualifiers && qualifiersIndex !== undefined && qualifiersIndex > -1) {
+        if (updatedData.qualifiers && qualifiersIndex !== undefined && qualifiersIndex > -1) {
+            updatedData.qualifiers = [...updatedData.qualifiers];
             if (newMappingInfo) {
-                data.qualifiers[qualifiersIndex] = newMappingInfo;
+                updatedData.qualifiers[qualifiersIndex] = newMappingInfo;
             } else {
-                data.qualifiers.splice(qualifiersIndex, 1);
+                updatedData.qualifiers.splice(qualifiersIndex, 1);
             }
             // add as new
         } else if (newMappingInfo) {
-            data.qualifiers = data.qualifiers ? [...data.qualifiers, newMappingInfo] : [newMappingInfo];
+            updatedData.qualifiers = updatedData.qualifiers
+                ? [...updatedData.qualifiers, newMappingInfo]
+                : [newMappingInfo];
         }
-        props.onChange(data);
-    };
+
+        props.onChange(updatedData);
+    }
 
     return (
         <>

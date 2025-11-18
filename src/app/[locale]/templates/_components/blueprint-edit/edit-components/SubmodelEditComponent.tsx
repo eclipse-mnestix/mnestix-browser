@@ -1,5 +1,5 @@
 import { Box, TextField } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
 import { useTranslations } from 'next-intl';
 import { Qualifier, Submodel } from 'lib/api/aas/models';
@@ -10,22 +10,21 @@ interface SubmodelEditComponentProps {
 }
 
 export function SubmodelEditComponent(props: SubmodelEditComponentProps) {
-    const [data, setData] = useState(props.data);
     const t = useTranslations('pages.templates');
 
     useEffect(() => {
-        setData(props.data);
+        props.onChange(props.data);
     }, [props.data]);
 
     const getDisplayName = () => {
-        return data.qualifiers?.find((q: Qualifier) => q.type === 'displayName')?.value;
+        return props.data.qualifiers?.find((q: Qualifier) => q.type === 'displayName')?.value;
     };
 
     const onDisplayNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (data && data.qualifiers) {
+        if (props.data && props.data.qualifiers) {
             props.onChange({
-                ...data,
-                qualifiers: data.qualifiers.map((q: Qualifier) => {
+                ...props.data,
+                qualifiers: props.data.qualifiers.map((q: Qualifier) => {
                     if (q.type === 'displayName') {
                         q.value = event.target.value;
                     }

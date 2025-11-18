@@ -50,49 +50,51 @@ function getUTCMidnightEquivalentTime(dates: string[]) {
     });
 }
 
-export function TimeSeriesLineDiagram(props: { data: TimeSeriesDataSet; timeframeSelectable?: boolean }) {
-    const uniqueDates = [...new Set(props.data.points.map((point) => getDateStamp(point['timestamp'] as string)))];
+function CustomTooltip({
+    active,
+    payload,
+    label,
+    uniqueDatesCount,
+}: {
+    active?: boolean;
+    payload?: Array<{ color: string; name: string; value: string }>;
+    label?: string;
+    uniqueDatesCount: number;
+}) {
+    if (payload && payload.length && label) {
+        return (
+            <Box
+                sx={{
+                    bgcolor: 'white',
+                    border: '1px solid #CCCCCC',
+                    visibility: !active ? 'hidden' : undefined,
+                    padding: '10px',
+                }}
+            >
+                <Typography>{formatDate(label, uniqueDatesCount <= 2)}</Typography>
+                {payload.map((p, index) => (
+                    <Box
+                        key={index}
+                        sx={{ fontSize: 11, color: p.color, paddingY: '4px' }}
+                    >{`${p.name} : ${p.value} `}</Box>
+                ))}
+            </Box>
+        );
+    }
+    return null;
+}
+
+export function TimeSeriesLineDiagram(props: { data: TimeSeriesDataSet | null; timeframeSelectable?: boolean }) {
+    const uniqueDates = [...new Set(props.data?.points.map((point) => getDateStamp(point['timestamp'] as string)))];
     const startDayMarkerStamp = uniqueDates.length > 2 ? getUTCMidnightEquivalentTime(uniqueDates) : [];
     const t = useTranslations('pages.aasViewer.submodels.timeSeries');
     const theme = useTheme();
     const color = theme.palette.primary.main;
 
-    const CustomTooltip = ({
-        active,
-        payload,
-        label,
-    }: {
-        active?: boolean;
-        payload?: Array<{ color: string; name: string; value: string }>;
-        label?: string;
-    }) => {
-        if (payload && payload.length && label) {
-            return (
-                <Box
-                    sx={{
-                        bgcolor: 'white',
-                        border: '1px solid #CCCCCC',
-                        visibility: !active ? 'hidden' : undefined,
-                        padding: '10px',
-                    }}
-                >
-                    <Typography>{formatDate(label, uniqueDates.length <= 2)}</Typography>
-                    {payload.map((p, index) => (
-                        <Box
-                            key={index}
-                            sx={{ fontSize: 11, color: p.color, paddingY: '4px' }}
-                        >{`${p.name} : ${p.value} `}</Box>
-                    ))}
-                </Box>
-            );
-        }
-        return null;
-    };
-
     return (
         <Box sx={{ width: '100%', height: '250px' }} data-testid="timeseries-line-chart">
             <ResponsiveContainer>
-                <LineChart data={props.data.points} margin={{ top: 5, right: 30, left: -20, bottom: 10 }}>
+                <LineChart data={props.data?.points} margin={{ top: 5, right: 30, left: -20, bottom: 10 }}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis
                         fontSize={11}
@@ -100,7 +102,7 @@ export function TimeSeriesLineDiagram(props: { data: TimeSeriesDataSet; timefram
                         tickFormatter={(v) => formatDate(v, uniqueDates.length <= 2)}
                     />
                     <YAxis fontSize={11} />
-                    <Tooltip content={<CustomTooltip />} />
+                    <Tooltip content={<CustomTooltip uniqueDatesCount={uniqueDates.length} />} />
                     {startDayMarkerStamp.map((marker) => (
                         <ReferenceLine key={marker} x={marker} stroke="blue">
                             <Label
@@ -112,7 +114,7 @@ export function TimeSeriesLineDiagram(props: { data: TimeSeriesDataSet; timefram
                             />
                         </ReferenceLine>
                     ))}
-                    {props.data.names.map((name, index) => (
+                    {props.data?.names.map((name, index) => (
                         <Line
                             type="monotone"
                             key={index}

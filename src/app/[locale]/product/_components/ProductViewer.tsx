@@ -13,8 +13,8 @@ import { SubmodelsOverviewCard } from 'app/[locale]/viewer/_components/Submodels
 import { ProductOverviewCard } from '../_components/ProductOverviewCard';
 import { NoSearchResult } from 'components/basics/detailViewBasics/NoSearchResult';
 import { useLocale } from 'next-intl';
-import { useEffect, useState } from 'react';
-import { SubmodelOrIdReference, useCurrentAasContext } from 'components/contexts/CurrentAasContext';
+import { useMemo, useState } from 'react';
+import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
@@ -24,42 +24,24 @@ export function ProductViewer() {
     const base64AasId = decodeURIComponent(searchParams.base64AasId).replace(/=+$|[%3D]+$/, '');
     const isMobile = useIsMobile();
     const locale = useLocale();
-    const [filteredSubmodels, setFilteredSubmodels] = useState<SubmodelOrIdReference[]>([]);
     const [breadcrumbLinks] = useState<Array<{ label: string; path: string }>>([]);
 
     const { aas, aasOriginUrl, isLoadingAas, isLoadingSubmodels, submodels } = useCurrentAasContext();
 
-    useEffect(() => {
-        if (submodels) {
-            const filtered = submodels.filter(
-                (submodel) =>
-                    !(
-                        checkIfSubmodelHasIdShortOrSemanticId(submodel, undefined, 'AasDesignerChangelog') ||
-                        checkIfSubmodelHasIdShortOrSemanticId(
-                            submodel,
-                            SubmodelSemanticIdEnum.NameplateV1,
-                            'Nameplate',
-                        ) ||
-                        checkIfSubmodelHasIdShortOrSemanticId(
-                            submodel,
-                            SubmodelSemanticIdEnum.NameplateV2,
-                            'Nameplate',
-                        ) ||
-                        checkIfSubmodelHasIdShortOrSemanticId(
-                            submodel,
-                            SubmodelSemanticIdEnum.NameplateV3,
-                            'Nameplate',
-                        ) ||
-                        checkIfSubmodelHasIdShortOrSemanticId(
-                            submodel,
-                            SubmodelSemanticIdEnum.NameplateV4,
-                            'Nameplate',
-                        ) ||
-                        checkIfSubmodelHasIdShortOrSemanticId(submodel, undefined, 'VEC_SML')
-                    ),
-            );
-            setFilteredSubmodels(filtered);
-        }
+    const filteredSubmodels = useMemo(() => {
+        if (!submodels) return [];
+
+        return submodels.filter(
+            (submodel) =>
+                !(
+                    checkIfSubmodelHasIdShortOrSemanticId(submodel, undefined, 'AasDesignerChangelog') ||
+                    checkIfSubmodelHasIdShortOrSemanticId(submodel, SubmodelSemanticIdEnum.NameplateV1, 'Nameplate') ||
+                    checkIfSubmodelHasIdShortOrSemanticId(submodel, SubmodelSemanticIdEnum.NameplateV2, 'Nameplate') ||
+                    checkIfSubmodelHasIdShortOrSemanticId(submodel, SubmodelSemanticIdEnum.NameplateV3, 'Nameplate') ||
+                    checkIfSubmodelHasIdShortOrSemanticId(submodel, SubmodelSemanticIdEnum.NameplateV4, 'Nameplate') ||
+                    checkIfSubmodelHasIdShortOrSemanticId(submodel, undefined, 'VEC_SML')
+                ),
+        );
     }, [submodels]);
 
     const nameplate = findSubmodelByIdOrSemanticId(submodels, SubmodelSemanticIdEnum.NameplateV2, 'Nameplate');

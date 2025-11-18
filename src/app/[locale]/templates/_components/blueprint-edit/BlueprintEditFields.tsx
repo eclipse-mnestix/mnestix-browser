@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { LockedTextField } from 'components/basics/LockedTextField';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
 import { PropertyEditComponent } from './edit-components/property/PropertyEditComponent';
 import debounce from 'lodash/debounce';
@@ -31,37 +31,34 @@ export type BlueprintEditFieldsProps = {
 };
 
 export function BlueprintEditFields(props: BlueprintEditFieldsProps) {
-    const [templatePart, setTemplatePart] = useState(props.blueprintPart);
     const t = useTranslations('pages.templates');
-
-    useEffect(() => {
-        setTemplatePart(props.blueprintPart);
-    }, [props.blueprintPart]);
 
     const debouncedOnTemplateDataChange = debounce((data: Submodel | SubmodelElementChoice) => {
         onTemplateDataChange(data);
     }, 500);
     // cleanup effect for debounce:
     useEffect(() => {
-        debouncedOnTemplateDataChange.cancel();
+        return () => {
+            debouncedOnTemplateDataChange.cancel();
+        };
     }, [debouncedOnTemplateDataChange]);
 
     function onTemplateDataChange(data: Submodel | SubmodelElementChoice) {
-        if (templatePart && props.onBlueprintPartChange) {
-            props.onBlueprintPartChange({ ...templatePart, data });
+        if (props.blueprintPart && props.onBlueprintPartChange) {
+            props.onBlueprintPartChange({ ...props.blueprintPart, data });
         }
         // keep template part input up to date, when not triggered by tree selection change
-        if (templatePart && props.updateBlueprintPart && props.onBlueprintPartChange) {
-            props.updateBlueprintPart({ ...templatePart, data }, props.onBlueprintPartChange);
+        if (props.blueprintPart && props.updateBlueprintPart && props.onBlueprintPartChange) {
+            props.updateBlueprintPart({ ...props.blueprintPart, data }, props.onBlueprintPartChange);
         }
     }
 
     function getRenderFields() {
-        if (!templatePart?.data) {
+        if (!props.blueprintPart?.data) {
             return;
         }
 
-        switch (templatePart.data.modelType) {
+        switch (props.blueprintPart.data.modelType) {
             case KeyTypes.Submodel:
                 return (
                     <SubmodelEditComponent
@@ -98,7 +95,7 @@ export function BlueprintEditFields(props: BlueprintEditFieldsProps) {
             default:
                 return (
                     <Typography color="error" variant="body2" sx={{ mt: 2 }}>
-                        {t('errors.unknownModelType', { type: `${templatePart.data.modelType}` })}
+                        {t('errors.unknownModelType', { type: `${props.blueprintPart.data.modelType}` })}
                     </Typography>
                 );
         }

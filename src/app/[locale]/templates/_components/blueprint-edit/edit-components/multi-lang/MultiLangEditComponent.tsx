@@ -1,6 +1,6 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Autocomplete, Box, Button, IconButton, TextField } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
 import options from './language-suggestions.json';
 import { useTranslations } from 'next-intl';
@@ -12,25 +12,19 @@ interface MultiLangEditComponentProps {
 }
 
 export function MultiLangEditComponent(props: MultiLangEditComponentProps) {
-    const [data, setData] = useState(props.data);
-    const [langStrings, setLangStrings] = useState<LangStringTextType[]>(data.value ?? []);
+    const [langStrings, setLangStrings] = useState<LangStringTextType[]>(props.data.value ?? []);
     const t = useTranslations('pages.templates');
-
-    useEffect(() => {
-        setData(props.data);
-        setLangStrings(props.data.value ?? []);
-    }, [props.data]);
 
     const onAdd = () => {
         const newLangStrings = [...langStrings, { language: '', text: '' }];
         setLangStrings(newLangStrings);
-        props.onChange({ ...data, value: newLangStrings });
+        props.onChange({ ...props.data, value: newLangStrings });
     };
 
     const onRemove = (i: number) => {
         const newLangStrings = [...langStrings.slice(0, i), ...langStrings.slice(i + 1, langStrings.length)];
         setLangStrings(newLangStrings);
-        props.onChange({ ...data, value: newLangStrings });
+        props.onChange({ ...props.data, value: newLangStrings });
     };
 
     const onTextChange = (index: number, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -41,7 +35,7 @@ export function MultiLangEditComponent(props: MultiLangEditComponentProps) {
             return el;
         });
         setLangStrings(newLangStrings);
-        props.onChange({ ...data, value: newLangStrings });
+        props.onChange({ ...props.data, value: newLangStrings });
     };
 
     const onLanguageChange = (index: number, value: string) => {
@@ -52,7 +46,7 @@ export function MultiLangEditComponent(props: MultiLangEditComponentProps) {
             return el;
         });
         setLangStrings(newLangStrings);
-        props.onChange({ ...data, value: newLangStrings });
+        props.onChange({ ...props.data, value: newLangStrings });
     };
 
     return (

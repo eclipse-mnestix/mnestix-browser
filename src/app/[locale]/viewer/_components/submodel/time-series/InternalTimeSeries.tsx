@@ -1,10 +1,6 @@
-import { useEffect, useState } from 'react';
-import { Alert, Box, CircularProgress, Typography } from '@mui/material';
+import { Alert, Box, Typography } from '@mui/material';
 import { TimeSeriesLineDiagram } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesLineDiagram';
-import {
-    parseRecordsFromInternalSegment,
-    TimeSeriesDataSet,
-} from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesUtil';
+import { parseRecordsFromInternalSegment } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesUtil';
 import { SubmodelElementCollection } from 'lib/api/aas/models';
 import { StyledDataRow } from 'components/basics/StyledDataRow';
 import { TimeSeriesSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesSubmodelElementSemanticId.enum';
@@ -14,22 +10,9 @@ import { findValueByIdShort } from 'lib/util/SubmodelResolverUtil';
 export function InternalTimeSeries(props: { submodelElement: SubmodelElementCollection }) {
     const t = useTranslations();
     const locale = useLocale();
-    const [data, setData] = useState<TimeSeriesDataSet>({ names: [], points: [] });
-    const [error, setError] = useState<boolean>(false);
-    const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        setIsLoading(true);
-        const points = parseRecordsFromInternalSegment(props.submodelElement);
-
-        if (!points) {
-            setIsLoading(false);
-            setError(true);
-            return;
-        }
-        setData(points);
-        setIsLoading(false);
-    }, [props.submodelElement]);
+    const data = parseRecordsFromInternalSegment(props.submodelElement);
+    const error = !data;
 
     const name = findValueByIdShort(
         props.submodelElement.value,
@@ -44,8 +27,6 @@ export function InternalTimeSeries(props: { submodelElement: SubmodelElementColl
         TimeSeriesSubmodelElementSemanticIdEnum.TimeSeriesSegmentDescription,
         locale,
     );
-
-    if (isLoading) return <CircularProgress />;
 
     if (error)
         return (

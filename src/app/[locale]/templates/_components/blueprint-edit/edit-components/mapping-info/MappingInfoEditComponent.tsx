@@ -1,6 +1,6 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Box, Button, IconButton, TextField } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { MappingInfoData } from 'lib/types/MappingInfoData';
 import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
 import mappingInfoDataJson from './mapping-info-data.json';
@@ -14,59 +14,63 @@ interface MappingInfoEditComponentProps {
 
 export function MappingInfoEditComponent(props: MappingInfoEditComponentProps) {
     const mappingInfoData = mappingInfoDataJson as MappingInfoData;
-    const [data, setData] = useState(props.data);
-    const [mappingInfo, setMappingInfo] = useState(getMappingInfo());
+
+    const mappingInfo = useMemo(() => {
+        return props.data?.qualifiers?.find((q: Qualifier) => mappingInfoData.qualifierTypes.includes(q.type));
+    }, [props.data, mappingInfoData.qualifierTypes]);
+
     const [valueEnabled, setValueEnabled] = useState(!!mappingInfo?.value?.length);
     const t = useTranslations('pages.templates');
 
-    useEffect(() => {
-        setData(props.data);
-        setMappingInfo(getMappingInfo());
-    }, [props.data]);
-
-    function getMappingInfo(): Qualifier | undefined {
-        return data?.qualifiers?.find((q: Qualifier) => mappingInfoData.qualifierTypes.includes(q.type));
+    function onValueChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+        if (mappingInfo) {
+            const updatedMappingInfo = { ...mappingInfo, value: event.target.value };
+            handleChange(updatedMappingInfo);
+        }
     }
 
-    const onValueChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        if (mappingInfo) {
-            setMappingInfo({ ...mappingInfo, value: event.target.value });
-            handleChange({ ...mappingInfo, value: event.target.value });
-        }
-    };
-
-    const onRemove = () => {
+    function onRemove() {
         setValueEnabled(false);
-        setMappingInfo(undefined);
         handleChange(undefined);
-    };
+    }
 
-    const onAdd = () => {
+    function onAdd() {
         setValueEnabled(true);
-        if (!mappingInfo) {
-            setMappingInfo(mappingInfoData.emptyTemplate);
-        }
         handleChange(mappingInfoData.emptyTemplate);
-    };
+    }
 
-    const handleChange = (newMappingInfo: Qualifier | undefined) => {
-        const qualifiersIndex = data?.qualifiers?.findIndex((q: Qualifier) =>
+    function handleChange(newMappingInfo: Qualifier | undefined) {
+        const qualifiersIndex = props.data?.qualifiers?.findIndex((q: Qualifier) =>
             mappingInfoData.qualifierTypes.includes(q.type),
         );
 
+        let updatedData = { ...props.data };
+
         // update/remove if existing
-        if (data.qualifiers && qualifiersIndex !== undefined && qualifiersIndex > -1) {
+        if (updatedData.qualifiers && qualifiersIndex !== undefined && qualifiersIndex > -1) {
             if (newMappingInfo) {
-                data.qualifiers[qualifiersIndex] = newMappingInfo;
+                updatedData = {
+                    ...updatedData,
+                    qualifiers: updatedData.qualifiers.map((q, index) =>
+                        index === qualifiersIndex ? newMappingInfo : q,
+                    ),
+                };
             } else {
-                data.qualifiers.splice(qualifiersIndex, 1);
+                updatedData = {
+                    ...updatedData,
+                    qualifiers: updatedData.qualifiers.filter((_, index) => index !== qualifiersIndex),
+                };
             }
             // add as new
         } else if (newMappingInfo) {
-            data.qualifiers = data.qualifiers ? [...data.qualifiers, newMappingInfo] : [newMappingInfo];
+            updatedData = {
+                ...updatedData,
+                qualifiers: updatedData.qualifiers ? [...updatedData.qualifiers, newMappingInfo] : [newMappingInfo],
+            };
         }
-        props.onChange(data);
-    };
+
+        props.onChange(updatedData);
+    }
 
     return (
         <>
@@ -79,12 +83,12 @@ export function MappingInfoEditComponent(props: MappingInfoEditComponentProps) {
                         onChange={onValueChange}
                         fullWidth
                     />
-                    <IconButton color="primary" onClick={() => onRemove()} sx={{ alignSelf: 'center', ml: 1 }}>
+                    <IconButton color="primary" onClick={onRemove} sx={{ alignSelf: 'center', ml: 1 }}>
                         <RemoveCircleOutline />
                     </IconButton>
                 </Box>
             ) : (
-                <Button size="large" startIcon={<AddCircleOutline />} onClick={() => onAdd()}>
+                <Button size="large" startIcon={<AddCircleOutline />} onClick={onAdd}>
                     {t('actions.add')}
                 </Button>
             )}

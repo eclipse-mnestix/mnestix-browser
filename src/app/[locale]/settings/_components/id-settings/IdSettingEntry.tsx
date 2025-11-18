@@ -60,7 +60,7 @@ const StyledCircularProgressWrapper = styled(Box)(() => ({
 }));
 
 export function IdSettingEntry(props: IdSettingEntryProps) {
-    const [hasTriggeredChange, setHasTriggeredChange] = useState(true);
+    const [hasTriggeredChange, setHasTriggeredChange] = useState(false);
     const t = useTranslations('pages.settings.idStructure');
 
     const validateInput = (value: string | null | undefined) => {
@@ -75,12 +75,16 @@ export function IdSettingEntry(props: IdSettingEntryProps) {
         return;
     };
 
-    // reset loading state if loading is complete
+    const isCurrentlyLoading = props.isLoading && hasTriggeredChange;
+
     useEffect(() => {
-        if (!props.isLoading) {
-            setHasTriggeredChange(false);
+        if (!props.isLoading && hasTriggeredChange) {
+            // Use queueMicrotask to avoid synchronous setState in effect
+            queueMicrotask(() => {
+                setHasTriggeredChange(false);
+            });
         }
-    }, [props.isLoading, setHasTriggeredChange]);
+    }, [props.isLoading, hasTriggeredChange]);
 
     // When there is only one allowed value, we show a locked Textfield instead of a dropdown.
     // The whole thing is wrapped in a <Controller> during render to make it work with react-hook-form
@@ -107,7 +111,7 @@ export function IdSettingEntry(props: IdSettingEntryProps) {
 
     return (
         <Box>
-            <StyledWrapper className={`${hasTriggeredChange ? 'is-loading' : ''}`}>
+            <StyledWrapper className={`${isCurrentlyLoading ? 'is-loading' : ''}`}>
                 <Typography sx={{ fontWeight: 'bold', width: '160px' }}>{props.field.name}</Typography>
                 {!props.editMode && (
                     <>

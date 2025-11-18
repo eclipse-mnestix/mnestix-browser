@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Box, FormControl, MenuItem, Select, Typography } from '@mui/material';
 import { rbacRuleTargets } from 'lib/services/rbac-service/types/RbacServiceData';
 import { useTranslations } from 'next-intl';
@@ -11,16 +11,22 @@ type TargetInformationProps = {
     readonly setValue: UseFormSetValue<RuleFormModel>;
     readonly getValues: UseFormGetValues<RuleFormModel>;
 };
+
+function getInitialState(getValues: UseFormGetValues<RuleFormModel>) {
+    const type = getValues('type') as keyof typeof rbacRuleTargets;
+    const currentTypeInformation = getValues(`targetInformation.${type}` as 'targetInformation.aas');
+    const keys = currentTypeInformation ? Object.keys(currentTypeInformation) : [];
+
+    return { type, keys };
+}
+
 export const TargetInformationForm = (props: TargetInformationProps) => {
     const t = useTranslations('pages.settings');
-    const [keys, setKeys] = useState<string[]>([]);
-    const [currentType, setCurrentType] = useState<keyof typeof rbacRuleTargets>('aas');
+    const initialState = getInitialState(props.getValues);
+    const [keys, setKeys] = useState<string[]>(initialState.keys);
+    const [currentType, setCurrentType] = useState<keyof typeof rbacRuleTargets>(initialState.type);
 
     const ruleTypes = Object.keys(rbacRuleTargets);
-
-    useEffect(() => {
-        adaptTargetInformationForm(props.getValues('type') as keyof typeof rbacRuleTargets);
-    }, []);
 
     const adaptTargetInformationForm = (value: keyof typeof rbacRuleTargets) => {
         const currentTypeInformation = props.getValues(`targetInformation.${value}` as 'targetInformation.aas');

@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import ScannerLogo from 'assets/ScannerLogo.svg';
 import ScannerOutlineThin from 'assets/ScannerOutlineThin.svg';
 import { Box, CircularProgress, IconButton, Typography, useTheme } from '@mui/material';
@@ -20,6 +20,42 @@ enum State {
     HandleQr,
 }
 
+const expandFromCenter = keyframes`
+    0% {
+        width: 0;
+        left: 50%;
+    }
+    100% {
+        width: 100%;
+        left: 0;
+    }
+`;
+
+const VideoContainer = styled(Box, {
+    shouldForwardProp: (prop) => prop !== 'focused',
+})<{ focused: boolean; size: number }>(({ theme, focused, size }) => ({
+    position: 'relative',
+    display: 'inline-block',
+    outline: 'none',
+    '& video': {
+        display: 'block',
+        borderTopLeftRadius: 4,
+        borderTopRightRadius: 4,
+        width: size,
+        height: size,
+    },
+    '&::after': {
+        content: '""',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        height: 4,
+        backgroundColor: theme.palette.primary.main,
+        transition: 'background-color 0.3s ease-in-out',
+        animation: focused ? `${expandFromCenter} 0.25s forwards` : 'none',
+    },
+}));
+
 export function QrScanner(props: {
     searchInput: (
         searchString: string,
@@ -37,53 +73,20 @@ export function QrScanner(props: {
     const theme = useTheme();
     const size = props.size || 250;
 
-    const switchToVideoStream = useCallback((loadingSuccessful: boolean) => {
-        if (loadingSuccessful) {
-            setState(State.ShowVideo);
-        } else {
-            showError(new LocalizedError('components.qrScanner.errors.errorOnQrScannerOpen'));
-            setState(State.Stopped);
-        }
-    }, []);
-
-    const expandFromCenter = keyframes`
-        0% {
-            width: 0;
-            left: 50%;
-        }
-        100% {
-            width: 100%;
-            left: 0;
-        }
-    `;
-
-    const VideoContainer = styled(Box, {
-        shouldForwardProp: (prop) => prop !== 'focused',
-    })<{ focused: boolean }>(({ theme, focused }) => ({
-        position: 'relative',
-        display: 'inline-block',
-        outline: 'none',
-        '& video': {
-            display: 'block',
-            borderTopLeftRadius: 4,
-            borderTopRightRadius: 4,
-            width: size,
-            height: size,
+    const switchToVideoStream = useCallback(
+        function switchToVideoStream(loadingSuccessful: boolean) {
+            if (loadingSuccessful) {
+                setState(State.ShowVideo);
+            } else {
+                showError(new LocalizedError('components.qrScanner.errors.errorOnQrScannerOpen'));
+                setState(State.Stopped);
+            }
         },
-        '&::after': {
-            content: '""',
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            height: 4,
-            backgroundColor: theme.palette.primary.main,
-            transition: 'background-color 0.3s ease-in-out',
-            animation: focused ? `${expandFromCenter} 0.25s forwards` : 'none',
-        },
-    }));
+        [showError],
+    );
 
     const handleScan = useCallback(
-        async (result: string) => {
+        async function handleScan(result: string) {
             setState(State.HandleQr);
             await props.searchInput(
                 result,
@@ -92,13 +95,15 @@ export function QrScanner(props: {
                 () => setState(State.Stopped), //onSuccess
             );
         },
-        [props.searchInput],
+        [props, t],
     );
 
     // This will allow cypress to call the callback manually and circumvent a webcam mock
-    if (typeof window !== 'undefined' && typeof window.Cypress !== 'undefined') {
-        window.Cypress.scannerCallback = handleScan;
-    }
+    useEffect(() => {
+        if (typeof window !== 'undefined' && typeof window.Cypress !== 'undefined') {
+            window.Cypress.scannerCallback = handleScan;
+        }
+    }, [handleScan]);
 
     return (
         <Box
@@ -137,7 +142,7 @@ export function QrScanner(props: {
                         position: 'absolute',
                         zIndex: 995,
                         right: 0,
-                    }} // Align to the right top corner and render in front of everything
+                    }}
                 >
                     <CircleIcon fontSize="medium" style={{ color: 'white', position: 'absolute', zIndex: 993 }} />
                     <CancelIcon fontSize="large" color="primary" style={{ zIndex: 994 }} />
@@ -153,7 +158,7 @@ export function QrScanner(props: {
             )}
             {(state === State.LoadScanner || state === State.ShowVideo) && (
                 <ThemeProvider theme={theme}>
-                    <VideoContainer focused={state === State.ShowVideo} tabIndex={0}>
+                    <VideoContainer focused={state === State.ShowVideo} size={size} tabIndex={0}>
                         <QrStream onScan={handleScan} onLoadingFinished={switchToVideoStream} />
                     </VideoContainer>
                 </ThemeProvider>

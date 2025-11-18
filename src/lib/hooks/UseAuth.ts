@@ -37,14 +37,20 @@ export function useAuth() {
         },
         getAccount: (): Session | null => {
             if (session && session.user) {
-                // MnestixUser is the default role for a logged-in user
-                session.user.mnestixRole = MnestixRole.MnestixUser;
-                session.user.allowedRoutes = AllowedRoutes.mnestixUser;
+                // Determine role and allowed routes based on user roles
+                const isAdmin = session.user.roles?.find((role) => role === MnestixRole.MnestixAdmin);
+                const mnestixRole = isAdmin ? MnestixRole.MnestixAdmin : MnestixRole.MnestixUser;
+                const allowedRoutes = isAdmin ? AllowedRoutes.mnestixAdmin : AllowedRoutes.mnestixUser;
 
-                if (session.user.roles && session.user.roles.find((role) => role === MnestixRole.MnestixAdmin)) {
-                    session.user.mnestixRole = MnestixRole.MnestixAdmin;
-                    session.user.allowedRoutes = AllowedRoutes.mnestixAdmin;
-                }
+                // Return a new session object with the computed properties
+                return {
+                    ...session,
+                    user: {
+                        ...session.user,
+                        mnestixRole,
+                        allowedRoutes,
+                    },
+                };
             }
             return session;
         },
