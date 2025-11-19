@@ -84,8 +84,8 @@ function CustomTooltip({
     return null;
 }
 
-export function TimeSeriesLineDiagram(props: { data: TimeSeriesDataSet | null; timeframeSelectable?: boolean }) {
-    const uniqueDates = [...new Set(props.data?.points.map((point) => getDateStamp(point['timestamp'] as string)))];
+export function TimeSeriesLineDiagram(props: { data: TimeSeriesDataSet; timeframeSelectable?: boolean }) {
+    const uniqueDates = [...new Set(props.data.points.map((point) => getDateStamp(point['timestamp'] as string)))];
     const startDayMarkerStamp = uniqueDates.length > 2 ? getUTCMidnightEquivalentTime(uniqueDates) : [];
     const t = useTranslations('pages.aasViewer.submodels.timeSeries');
     const theme = useTheme();
@@ -94,7 +94,7 @@ export function TimeSeriesLineDiagram(props: { data: TimeSeriesDataSet | null; t
     return (
         <Box sx={{ width: '100%', height: '250px' }} data-testid="timeseries-line-chart">
             <ResponsiveContainer>
-                <LineChart data={props.data?.points} margin={{ top: 5, right: 30, left: -20, bottom: 10 }}>
+                <LineChart data={props.data.points} margin={{ top: 5, right: 30, left: -20, bottom: 10 }}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis
                         fontSize={11}
@@ -114,7 +114,7 @@ export function TimeSeriesLineDiagram(props: { data: TimeSeriesDataSet | null; t
                             />
                         </ReferenceLine>
                     ))}
-                    {props.data?.names.map((name, index) => (
+                    {props.data.names.map((name, index) => (
                         <Line
                             type="monotone"
                             key={index}
