@@ -80,6 +80,9 @@
     "url": "^0.11.3",
     "uuid": "^13.0.0"
   },
+  "resolutions": {
+    "caniuse-lite": "1.0.30001753"
+  },
   "scripts": {
     "dev": "yarn prisma migrate deploy && yarn prisma generate && next dev --turbo",
     "debug": "yarn prisma migrate deploy && yarn prisma generate && next dev",
