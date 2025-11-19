@@ -3,29 +3,27 @@ import { useNotificationContext } from 'components/contexts/NotificationContext'
 import { SyntheticEvent, useState } from 'react';
 
 export function NotificationOutlet() {
-    const { notification, clearNotification } = useNotificationContext();
-    const [manuallyClosing, setManuallyClosing] = useState(false);
+    const { notification } = useNotificationContext();
+    const [open, setOpen] = useState(false);
 
     // Derive open state from notification presence
-    const isOpen = notification !== null && !manuallyClosing;
+    const isOpen = open && notification !== null;
 
     function handleClose(event: Event | SyntheticEvent, reason: SnackbarCloseReason) {
         if (reason === 'clickaway') {
             return;
         }
-        setManuallyClosing(true);
-        setTimeout(() => {
-            clearNotification();
-            setManuallyClosing(false);
-        }, 300);
+        setOpen(false);
     }
 
     function handleAlertClose() {
-        setManuallyClosing(true);
-        setTimeout(() => {
-            clearNotification();
-            setManuallyClosing(false);
-        }, 300);
+        setOpen(false);
+    }
+
+    // TODO remove state setting during render
+    // Open when new notification arrives
+    if (notification && !open) {
+        setOpen(true);
     }
 
     return (
