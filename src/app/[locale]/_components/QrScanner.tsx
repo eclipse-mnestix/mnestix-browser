@@ -66,6 +66,7 @@ export function QrScanner(props: {
     ) => Promise<void>;
     size?: number | undefined;
 }) {
+    const { searchInput } = props;
     const [state, setState] = useState<State>(State.Stopped);
     const t = useTranslations();
     const { showError } = useShowError();
@@ -88,14 +89,14 @@ export function QrScanner(props: {
     const handleScan = useCallback(
         async function handleScan(result: string) {
             setState(State.HandleQr);
-            await props.searchInput(
+            await searchInput(
                 result,
                 t('components.qrScanner.errors.defaultCallbackErrorMsg'),
                 (_error) => setState(State.LoadScanner), //onError
                 () => setState(State.Stopped), //onSuccess
             );
         },
-        [props, t],
+        [searchInput, t],
     );
 
     // This will allow cypress to call the callback manually and circumvent a webcam mock

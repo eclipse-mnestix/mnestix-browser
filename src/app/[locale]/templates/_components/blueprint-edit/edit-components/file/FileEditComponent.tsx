@@ -55,7 +55,7 @@ export function FileEditComponent(props: FileEditComponentProps) {
                     </FormControl>
                     <TextField
                         sx={{ mt: 1 }}
-                        value={props.data.value}
+                        defaultValue={props.data.value}
                         label={t('labels.value')}
                         onChange={(e) => onTextChange(e)}
                         fullWidth

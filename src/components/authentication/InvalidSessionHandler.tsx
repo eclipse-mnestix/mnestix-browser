@@ -28,7 +28,7 @@ export function InvalidSessionHandler() {
             showSessionExpired();
         }
         prefSessionRef.current = session;
-    }, [session]);
+    }, [session, notificationSpawner]);
 
     return <></>;
 }
