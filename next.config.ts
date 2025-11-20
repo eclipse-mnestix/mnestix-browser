@@ -26,9 +26,6 @@ const nextConfig: NextConfig = {
             },
         },
     },
-    eslint: {
-        ignoreDuringBuilds: !!process.env.NO_LINT,
-    },
     typescript: {
         ignoreBuildErrors: !!process.env.NO_TYPECHECK,
     },
