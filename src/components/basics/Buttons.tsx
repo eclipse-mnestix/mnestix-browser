@@ -27,7 +27,9 @@ const StyledSmallLoadingButton = styled(Button)(({ theme }) => ({
     },
 }));
 
-const StyledRoundButton = styled(StyledLoadingButton)<{ buttonSize: string }>(({ theme, buttonSize }) => ({
+const StyledRoundButton = styled(StyledLoadingButton, {
+    shouldForwardProp: (prop) => prop !== 'buttonSize',
+})<{ buttonSize: string }>(({ theme, buttonSize }) => ({
     backgroundColor: theme.palette.background.default,
     color: theme.palette.primary.main,
     '&:hover': {
