@@ -107,7 +107,9 @@ export function AASViewer() {
         };
 
         const goToProductView = () => {
-            navigate.push(`/product/${params.base64AasId}`);
+            navigate.push(
+                `/product/${params.base64AasId}?repoUrl=${encodeURIComponent(aasOriginUrl || '')}&infrastructure=${infrastructureName || ''}`,
+            );
         };
 
         return (
@@ -145,7 +147,7 @@ export function AASViewer() {
                                     {t('actions.compareButton')}
                                 </Button>
                             )}
-                            {env.PRODUCT_VIEW_FEATURE_FLAG && (
+                            {env.EXPERIMENTAL_PRODUCT_VIEW_FEATURE_FLAG && (
                                 <Button
                                     variant="contained"
                                     sx={{

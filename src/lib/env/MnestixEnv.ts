@@ -45,11 +45,11 @@ const featureFlags = mapEnvVariables(
         'COMPARISON_FEATURE_FLAG',
         'TRANSFER_FEATURE_FLAG',
         'AAS_LIST_FEATURE_FLAG',
-        'PRODUCT_VIEW_FEATURE_FLAG',
+        'EXPERIMENTAL_PRODUCT_VIEW_FEATURE_FLAG',
         'WHITELIST_FEATURE_FLAG',
         'KEYCLOAK_ENABLED',
         'BASYX_RBAC_ENABLED',
-        'EXPERIMENTAL_HIGHLIGHT_DATA_FLAG'
+        'EXPERIMENTAL_HIGHLIGHT_DATA_FLAG',
     ] as const,
     parseFlag,
 );
