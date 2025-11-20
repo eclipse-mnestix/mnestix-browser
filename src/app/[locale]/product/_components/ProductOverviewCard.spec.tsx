@@ -1,4 +1,3 @@
-import { SubmodelElementCollection } from 'lib/api/aas/models';
 import { expect } from '@jest/globals';
 import { screen } from '@testing-library/react';
 import { useRouter } from 'next/navigation';
