@@ -102,7 +102,7 @@
     "docker:frontend": "docker compose -f compose.yml -f docker-compose/compose.dev.yml --profile frontend up",
     "docker:backend": "docker compose -f compose.yml -f docker-compose/compose.dev.yml --profile basyx --profile backend up",
     "docker:prod": "docker compose up",
-    "docker:test": "docker compose -f compose.yml -f docker-compose/compose.test.yml --profile tests up -d --build && docker compose -f compose.yml -f docker-compose/compose.proxy.yml -f docker-compose/compose.test.yml attach cypress-test",
+    "docker:test": "docker compose -f compose.yml -f docker-compose/compose.test.yml --profile tests up -d --build && docker compose -f compose.yml -f docker-compose/compose.test.yml attach cypress-test",
     "docker:stop": "docker compose -f compose.yml -f docker-compose/compose.test.yml kill",
     "docker:down": "docker compose -f compose.yml -f docker-compose/compose.test.yml down",
     "docker:prune": "docker compose -f compose.yml  -f docker-compose/compose.test.yml -f docker-compose/compose.keycloak.yml down -v && docker network prune && docker network rm mnestix-network",
