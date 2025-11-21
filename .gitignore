@@ -16,3 +16,5 @@
 !.env.local
 /.env*.local
 /cypress-artifacts
+
+.idea
