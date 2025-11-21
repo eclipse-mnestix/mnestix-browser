@@ -14,7 +14,7 @@
 [![Yarn License](https://img.shields.io/badge/YARN-V1.22.22-005962?style=flat-square)]()
 [![Join our Community](https://img.shields.io/badge/Join_our_Community-005962?style=flat-square)](https://xitaso.com/kompetenzen/mnestix/#support)
 
-### Welcome to the Mnestix Community!
+### Welcome to Team
 
 Mnestix Browser is an open source software designed to simplify the implementation of the Asset Administration Shell.
 Together
