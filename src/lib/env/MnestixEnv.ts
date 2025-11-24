@@ -122,6 +122,14 @@ function parseExternalLinks(value: string | undefined): ExternalLink[] {
                 if (typeof item.url !== 'string') {
                     return false;
                 }
+                // Validate optional icon property
+                if (item.icon !== undefined && typeof item.icon !== 'string') {
+                    return false;
+                }
+                // Validate optional target property
+                if (item.target !== undefined && typeof item.target !== 'string') {
+                    return false;
+                }
                 // Check if label is either a string or an object with string values
                 if (typeof item.label === 'string') {
                     return true;
@@ -131,6 +139,8 @@ function parseExternalLinks(value: string | undefined): ExternalLink[] {
                 }
                 return false;
             });
+        } else {
+            console.error('EXTERNAL_LINKS must be a JSON array, but got:', typeof parsed, parsed);
         }
     } catch (error) {
         console.error('Failed to parse EXTERNAL_LINKS environment variable:', error);

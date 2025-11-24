@@ -182,9 +182,6 @@
     "mainMenu": {
       "aasList": "Lista de AAS",
       "dashboard": "Dashboard",
-      "externalLinks": {
-        "description": "Los enlaces externos se configuran mediante la variable de entorno EXTERNAL_LINKS"
-      },
       "findOutMore": "Saber más",
       "login": "Identificarse",
       "logout": "Cerrar sesión",

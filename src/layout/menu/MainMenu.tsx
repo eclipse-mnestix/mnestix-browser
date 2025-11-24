@@ -88,27 +88,6 @@ export default function MainMenu() {
         return (useAuthentication && auth.isLoggedIn && allowedRoutes.includes(route)) || !useAuthentication;
     };
 
-    const getLocalizedLabel = (label: string | Record<string, string>): string => {
-        if (typeof label === 'string') {
-            return label;
-        }
-        // Try current locale
-        if (label[locale]) {
-            return label[locale];
-        }
-        // Fallback to English
-        if (label['en']) {
-            return label['en'];
-        }
-        // Fallback to first available language
-        const firstKey = Object.keys(label)[0];
-        if (firstKey) {
-            return label[firstKey];
-        }
-        // Last resort
-        return String(label);
-    };
-
     const basicMenu: MenuListItemProps[] = [
         {
             label: t('dashboard'),
@@ -146,8 +125,12 @@ export default function MainMenu() {
 
     if (env.EXTERNAL_LINKS && env.EXTERNAL_LINKS.length > 0) {
         env.EXTERNAL_LINKS.forEach((link) => {
+            const label =
+                typeof link.label === 'string'
+                    ? link.label
+                    : (link.label[locale] ?? link.label['en'] ?? Object.values(link.label)[0]);
             const externalLink: MenuListItemProps = {
-                label: getLocalizedLabel(link.label),
+                label,
                 to: link.url,
                 icon: <DynamicIcon iconName={link.icon} fallback={<Link />} />,
                 external: true,

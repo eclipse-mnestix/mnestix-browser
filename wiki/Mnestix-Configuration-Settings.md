@@ -100,8 +100,6 @@ environment:
     EXTERNAL_LINKS: '[{"label":{"en":"Custom Link","de":"Benutzerdefinierter Link"},"url":"https://example.com","icon":"data:image/png;base64,iVBORw0KG...","target":"_blank"}]'
 ```
 
-For detailed documentation, see [docs/ExternalLinksConfiguration.md](../docs/ExternalLinksConfiguration.md).
-
 #### Keycloak
 
 See [Keycloak Configuration](Keycloak-Configuration) for more information about the Keycloak setup.
