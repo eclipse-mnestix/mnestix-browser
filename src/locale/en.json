@@ -182,6 +182,9 @@
     "mainMenu": {
       "aasList": "AAS List",
       "dashboard": "Dashboard",
+      "externalLinks": {
+        "description": "External links are configured via the EXTERNAL_LINKS environment variable"
+      },
       "findOutMore": "Find out more",
       "login": "Login",
       "logout": "Logout",

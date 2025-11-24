@@ -37,8 +37,13 @@ export const initialEnvValues: EnvironmentalVariables = {
     KEYCLOAK_LOCAL_URL: undefined,
     KEYCLOAK_REALM: undefined,
     KEYCLOAK_CLIENT_ID: undefined,
+<<<<<<< HEAD
     SERIALIZATION_API_URL: undefined,
     EXPERIMENTAL_HIGHLIGHT_DATA_FLAG: false,
+=======
+    BUILD_DATETIME: undefined,
+    EXTERNAL_LINKS: [],
+>>>>>>> b65e2d9 (feat: add support for external links configuration via environment variable)
 };
 
 const EnvContext = createContext(initialEnvValues);
