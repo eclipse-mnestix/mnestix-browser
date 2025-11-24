@@ -42,11 +42,13 @@ export function SelectListSource(props: {
                 ...aasRegistries.map((registry) => ({ ...registry, type: 'registry' as const })),
             ];
 
-            setAasConnections(connections);
-            if (connections.length > 0) {
+            const filteredConnections = connections.filter((connection) => (connection.url ?? '').trim().length > 0);
+
+            setAasConnections(filteredConnections);
+            if (filteredConnections.length > 0) {
                 setSelectedConnectionIndex(0);
-                props.onSelectedRepositoryChanged(connections[0]);
-                props.onSelectedTypeChanged?.(connections[0].type);
+                props.onSelectedRepositoryChanged(filteredConnections[0]);
+                props.onSelectedTypeChanged?.(filteredConnections[0].type);
             }
         } catch (error) {
             notificationSpawner.spawn({
