@@ -145,19 +145,15 @@ const LOG_LEVEL = process_env.LOG_LEVEL || (process_env.NODE_ENV === 'production
 /**
  * Public envs that are sent to the client and can be used with the `useEnv` hook.
  */
-<<<<<<< HEAD
-export const publicEnvs = { LOG_LEVEL, ...featureFlags, ...otherVariables, ...themingVariables, ...keycloak };
-=======
+
 export const publicEnvs = {
     LOG_LEVEL,
     ...featureFlags,
     ...otherVariables,
     ...themingVariables,
     ...keycloak,
-    ...cfgBuildEnvs,
     EXTERNAL_LINKS: externalLinks,
 };
->>>>>>> b65e2d9 (feat: add support for external links configuration via environment variable)
 
 /**
  * Mnestix envs
