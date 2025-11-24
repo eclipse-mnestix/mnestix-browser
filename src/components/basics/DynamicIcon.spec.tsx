@@ -43,10 +43,9 @@ describe('DynamicIcon', () => {
             'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
         CustomRender(<DynamicIcon iconName={base64Image} />);
         const imgElement = screen.getByRole('img');
-        expect(imgElement).toHaveStyle({
-            width: '24px',
-            height: '24px',
-            objectFit: 'contain',
-        });
+        expect(imgElement).toHaveAttribute('src', base64Image);
+        expect(imgElement).toHaveAttribute('width', '24');
+        expect(imgElement).toHaveAttribute('height', '24');
+        expect(imgElement).toHaveStyle({ objectFit: 'contain' });
     });
 });
