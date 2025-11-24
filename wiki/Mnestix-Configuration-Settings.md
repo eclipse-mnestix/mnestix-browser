@@ -4,16 +4,16 @@ Mnestix provides the following configuration options. You can adapt the values i
 
 #### Basics
 
-| Name                        | Default value | Description                                                                                                        |
-| --------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `AAS_REPO_API_URL`          |               | Default AAS Repository to display when AAS Id is not in AAS Registry                                               |
-| `SUBMODEL_REPO_API_URL`     |               | Default Submodel Repository to display when Submodel Id is not in Submodel Registry                                |
-| `DISCOVERY_API_URL`         |               | Address of the Discovery Service to find an AAS for an Asset                                                       |
-| `REGISTRY_API_URL`          |               | Address of the AAS Registry Service to retrieve the related descriptor for an AAS                                  |
-| `SUBMODEL_REGISTRY_API_URL` |               | Address of the Submodel Registry Service to retrieve the related descriptor for a Submodel                         |
-| `MNESTIX_BACKEND_API_URL`   |               | Mnestix Backend with a lot of business comfort features like the Repository-Proxy or the Template builder          |
-| `CONCEPT_DESCRIPTION_REPO_API_URL`    |                             | Default Concept Description Repository                                                                                                                                                                                             |
-| `LOG_LEVEL`                 | "info"        | Server side log level of Mnestix Browser. "fatal" or "error" or "warn" or "info" or "debug" or "trace" or "silent" |
+| Name                               | Default value | Description                                                                                                        |
+| ---------------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `AAS_REPO_API_URL`                 |               | Default AAS Repository to display when AAS Id is not in AAS Registry                                               |
+| `SUBMODEL_REPO_API_URL`            |               | Default Submodel Repository to display when Submodel Id is not in Submodel Registry                                |
+| `DISCOVERY_API_URL`                |               | Address of the Discovery Service to find an AAS for an Asset                                                       |
+| `REGISTRY_API_URL`                 |               | Address of the AAS Registry Service to retrieve the related descriptor for an AAS                                  |
+| `SUBMODEL_REGISTRY_API_URL`        |               | Address of the Submodel Registry Service to retrieve the related descriptor for a Submodel                         |
+| `MNESTIX_BACKEND_API_URL`          |               | Mnestix Backend with a lot of business comfort features like the Repository-Proxy or the Template builder          |
+| `CONCEPT_DESCRIPTION_REPO_API_URL` |               | Default Concept Description Repository                                                                             |
+| `LOG_LEVEL`                        | "info"        | Server side log level of Mnestix Browser. "fatal" or "error" or "warn" or "info" or "debug" or "trace" or "silent" |
 
 #### Features
 
@@ -26,6 +26,74 @@ Mnestix provides the following configuration options. You can adapt the values i
 | `PRODUCT_VIEW_FEATURE_FLAG`   | false         | Enables or disables the product view feature.                                                                                                                                                 |
 | `WHITELIST_FEATURE_FLAG`      | false         | Enables or disables the feature for showing/hiding specific submodels.                                                                                                                        |
 | `SUBMODEL_WHITELIST`          |               | This variable can be used to specify a list of submodel semantic ids in order to show them when the `WHITELIST_FEATURE_FLAG` is set to true.                                                  |
+| `EXTERNAL_LINKS`              |               | JSON array of external links to display in the main menu. See [External Links](#external-links) for details.                                                                                  |
+
+#### External Links
+
+You can configure custom external links to appear in the main menu by setting the `EXTERNAL_LINKS` environment variable. This variable accepts a JSON array of link objects.
+
+**Format:**
+
+```json
+[
+    {
+        "label": "Link Label",
+        "url": "https://example.com",
+        "icon": "OpenInNew",
+        "target": "_blank"
+    }
+]
+```
+
+**Properties:**
+
+- `label` (required): The display text for the link. Can be a string or an object with language codes for internationalization
+- `url` (required): The URL to navigate to
+- `icon` (optional): Either a Material-UI icon name (e.g., "OpenInNew", "Language", "MenuBook") or a base64 encoded image (e.g., "data:image/png;base64,...")
+- `target` (optional): Link target attribute, defaults to "\_blank"
+
+**Internationalization:**
+
+Labels support multiple languages using an object with language codes:
+
+```json
+{
+    "label": {
+        "en": "Documentation",
+        "de": "Dokumentation"
+    },
+    "url": "https://docs.example.com",
+    "icon": "MenuBook"
+}
+```
+
+The system will automatically display the label in the user's current language, with fallback to English if the translation is not available.
+
+**Available Material-UI Icons:**
+Some commonly used icons include: `OpenInNew`, `Link`, `Language`, `MenuBook`, `Description`, `Code`, `Help`, `Info`, `Launch`, `Public`, `Web`
+
+**Example Configuration (Simple):**
+
+```yaml
+environment:
+    EXTERNAL_LINKS: '[{"label":"Documentation","url":"https://docs.example.com","icon":"MenuBook","target":"_blank"},{"label":"Support","url":"https://support.example.com","icon":"Help"}]'
+```
+
+**Example Configuration (Multilingual):**
+
+```yaml
+environment:
+    EXTERNAL_LINKS: '[{"label":{"en":"Documentation","de":"Dokumentation"},"url":"https://docs.example.com","icon":"MenuBook"},{"label":{"en":"Support","de":"Unterstützung"},"url":"https://support.example.com","icon":"Help"}]'
+```
+
+**Example with Base64 Image:**
+
+```yaml
+environment:
+    EXTERNAL_LINKS: '[{"label":{"en":"Custom Link","de":"Benutzerdefinierter Link"},"url":"https://example.com","icon":"data:image/png;base64,iVBORw0KG...","target":"_blank"}]'
+```
+
+For detailed documentation, see [docs/ExternalLinksConfiguration.md](../docs/ExternalLinksConfiguration.md).
 
 #### Keycloak
 

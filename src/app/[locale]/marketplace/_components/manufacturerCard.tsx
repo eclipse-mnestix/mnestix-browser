@@ -9,6 +9,7 @@ import { searchProducts } from 'lib/api/graphql/catalogActions';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useState } from 'react';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
+import Image from 'next/image';
 
 type ManufacturerCardProps = {
     connection: MnestixConnection;
@@ -63,7 +64,7 @@ export function ManufacturerCard({ connection }: ManufacturerCardProps) {
             onClick={onNavigate}
         >
             {connection.image ? (
-                <img
+                <Image
                     src={connection.image}
                     alt={`${manufacturer} Logo`}
                     width={180}

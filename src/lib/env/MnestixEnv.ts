@@ -10,6 +10,8 @@
  * Provide Validation in /scripts/validateEnvs.sh
  */
 
+import { ExternalLink } from 'lib/types/ExternalLink';
+
 // In production builds `process` is not defined on client side
 const process_env: Record<string, string | undefined> = typeof process !== 'undefined' ? process.env : {};
 
@@ -91,6 +93,44 @@ const themingVariables = mapEnvVariables([
     'THEME_LOGO_MIME_TYPE',
 ] as const);
 
+/**
+ * Parses the EXTERNAL_LINKS environment variable
+ * Expected format: JSON array of objects with label, url, icon (optional), and target (optional)
+ * Label can be a string or an object with language-specific labels
+ */
+function parseExternalLinks(value: string | undefined): ExternalLink[] {
+    if (!value) {
+        return [];
+    }
+    try {
+        const parsed = JSON.parse(value);
+        if (Array.isArray(parsed)) {
+            return parsed.filter((item): item is ExternalLink => {
+                if (typeof item !== 'object' || item === null) {
+                    return false;
+                }
+                // Check if url is a string
+                if (typeof item.url !== 'string') {
+                    return false;
+                }
+                // Check if label is either a string or an object with string values
+                if (typeof item.label === 'string') {
+                    return true;
+                }
+                if (typeof item.label === 'object' && item.label !== null) {
+                    return Object.values(item.label).every((val) => typeof val === 'string');
+                }
+                return false;
+            });
+        }
+    } catch (error) {
+        console.error('Failed to parse EXTERNAL_LINKS environment variable:', error);
+    }
+    return [];
+}
+
+const externalLinks = parseExternalLinks(process_env.EXTERNAL_LINKS);
+
 const LOG_LEVEL = process_env.LOG_LEVEL || (process_env.NODE_ENV === 'production' ? 'info' : 'debug');
 
 /**
@@ -103,6 +143,7 @@ export const publicEnvs = {
     ...themingVariables,
     ...keycloak,
     ...cfgBuildEnvs,
+    EXTERNAL_LINKS: externalLinks,
 };
 
 /**
