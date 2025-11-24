@@ -11,6 +11,7 @@
  */
 
 import { ExternalLink } from 'lib/types/ExternalLink';
+import { isValidUrl } from 'lib/util/UrlUtil';
 
 // In production builds `process` is not defined on client side
 const process_env: Record<string, string | undefined> = typeof process !== 'undefined' ? process.env : {};
@@ -118,8 +119,8 @@ function parseExternalLinks(value: string | undefined): ExternalLink[] {
                 if (typeof item !== 'object' || item === null) {
                     return false;
                 }
-                // Check if url is a string
-                if (typeof item.url !== 'string') {
+                // Check if url is a string and valid URL
+                if (typeof item.url !== 'string' || !isValidUrl(item.url)) {
                     return false;
                 }
                 // Validate optional icon property
