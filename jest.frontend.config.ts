@@ -1,5 +1,5 @@
 import nextJest from 'next/jest.js';
-import { Config } from 'jest';
+import type { Config } from 'jest';
 import { TextDecoder, TextEncoder } from 'util';
 
 const createJestConfig = nextJest({
