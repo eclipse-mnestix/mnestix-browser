@@ -18,8 +18,8 @@ Mnestix provides the following configuration options. You can adapt the values i
 
 #### Features
 
-| Name                          | Default value | Description                                                                                                                                                                                   |
-| ----------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Name                                 | Default value          | Description                                                                                                                                                                                   |
+| ------------------------------------ | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `AAS_LIST_FEATURE_FLAG`              | false                  | Enables or disables the AasList in the frontend. This only works in combination with `Features__AllowRetrievingAllShellsAndSubmodels` being set to `true` (Needs the Mnestix Backend to work) |
 | `TRANSFER_FEATURE_FLAG`              | false                  | Enables or disables the Transfer Feature in the frontend. If enabled, it is possible to import a viewed AAS to a configured repository. This feature is currently being developed.            |
 | `AUTHENTICATION_FEATURE_FLAG`        | false                  | Enable or disable the authentication in the frontend. (Needs the Mnestix Backend to work)                                                                                                     |
