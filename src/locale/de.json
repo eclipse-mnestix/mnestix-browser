@@ -181,6 +181,9 @@
     "mainMenu": {
       "aasList": "AAS Liste",
       "dashboard": "Dashboard",
+      "externalLinks": {
+        "description": "Externe Links werden über die EXTERNAL_LINKS Umgebungsvariable konfiguriert"
+      },
       "findOutMore": "Mehr Informationen",
       "login": "Anmelden",
       "logout": "Abmelden",
