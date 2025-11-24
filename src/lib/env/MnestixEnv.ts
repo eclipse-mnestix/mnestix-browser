@@ -115,20 +115,24 @@ function parseExternalLinks(value: string | undefined): ExternalLink[] {
     try {
         const parsed = JSON.parse(value);
         if (Array.isArray(parsed)) {
-            return parsed.filter((item): item is ExternalLink => {
+            const validLinks = parsed.filter((item): item is ExternalLink => {
                 if (typeof item !== 'object' || item === null) {
+                    console.warn('EXTERNAL_LINKS: Skipping invalid item (not an object):', item);
                     return false;
                 }
                 // Check if url is a string and valid URL
                 if (typeof item.url !== 'string' || !isValidUrl(item.url)) {
+                    console.warn('EXTERNAL_LINKS: Skipping item with invalid or missing url:', item);
                     return false;
                 }
                 // Validate optional icon property
                 if (item.icon !== undefined && typeof item.icon !== 'string') {
+                    console.warn('EXTERNAL_LINKS: Skipping item with invalid icon property:', item);
                     return false;
                 }
                 // Validate optional target property
                 if (item.target !== undefined && typeof item.target !== 'string') {
+                    console.warn('EXTERNAL_LINKS: Skipping item with invalid target property:', item);
                     return false;
                 }
                 // Check if label is either a string or an object with string values
@@ -136,10 +140,16 @@ function parseExternalLinks(value: string | undefined): ExternalLink[] {
                     return true;
                 }
                 if (typeof item.label === 'object' && item.label !== null) {
-                    return Object.values(item.label).every((val) => typeof val === 'string');
+                    const isValid = Object.values(item.label).every((val) => typeof val === 'string');
+                    if (!isValid) {
+                        console.warn('EXTERNAL_LINKS: Skipping item with invalid label translations:', item);
+                    }
+                    return isValid;
                 }
+                console.warn('EXTERNAL_LINKS: Skipping item with invalid or missing label:', item);
                 return false;
             });
+            return validLinks;
         } else {
             console.error('EXTERNAL_LINKS must be a JSON array, but got:', typeof parsed, parsed);
         }
