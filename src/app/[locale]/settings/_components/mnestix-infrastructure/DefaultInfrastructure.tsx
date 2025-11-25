@@ -87,14 +87,18 @@ export function DefaultInfrastructure() {
                         {t('form.endpoints')}
                     </Typography>
                     <Box>
-                        {CONNECTION_TYPES.map((type) => (
-                            <Box key={type.id} display="flex" gap={2} mb={1}>
-                                <Typography sx={{ minWidth: 320 }} variant="h5">
-                                    {type.label}
-                                </Typography>
-                                <Typography>{env[ENV_KEY_BY_CONNECTION_ID[type.id]] || '-'}</Typography>
-                            </Box>
-                        ))}
+                        {CONNECTION_TYPES.map((type) => {
+                            const value = env[ENV_KEY_BY_CONNECTION_ID[type.id]];
+                            const displayValue = typeof value === 'string' ? value : '-';
+                            return (
+                                <Box key={type.id} display="flex" gap={2} mb={1}>
+                                    <Typography sx={{ minWidth: 320 }} variant="h5">
+                                        {type.label}
+                                    </Typography>
+                                    <Typography>{displayValue}</Typography>
+                                </Box>
+                            );
+                        })}
                     </Box>
                 </Box>
             </Collapse>
