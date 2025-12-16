@@ -10,7 +10,7 @@ volumes:
 services:
   mnestix-browser:
     container_name: mnestix-browser
-    image: mnestix/mnestix-browser:2.0.0
+    image: mnestix/mnestix-browser:2.0.1
     profiles: ['', 'frontend', 'tests']
     build:
       dockerfile: Dockerfile
