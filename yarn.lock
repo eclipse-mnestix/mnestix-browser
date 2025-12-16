@@ -7724,7 +7724,7 @@ negotiator@^1.0.0:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-1.0.0.tgz#b6c91bb47172d69f93cfd7c357bbb529019b5f6a"
   integrity sha512-8Ofs/AUQh8MaEcrlq5xOX0CQ9ypTF5dl78mjlMNfOK08fzpgTHQRQPBxcPlEtIw0yRpws+Zo/3r+5WRby7u3Gg==
 
-next-auth@^4.24.11:
+next-auth@^4.24.13:
   version "4.24.13"
   resolved "https://registry.yarnpkg.com/next-auth/-/next-auth-4.24.13.tgz#e55e524b3c060d670c3fa2c0731026894b9897c6"
   integrity sha512-sgObCfcfL7BzIK76SS5TnQtc3yo2Oifp/yIpfv6fMfeBOiBJkDWF3A2y9+yqnmJ4JKc2C+nMjSjmgDeTwgN1rQ==
@@ -7744,7 +7744,7 @@ next-intl-swc-plugin-extractor@^4.6.0:
   resolved "https://registry.yarnpkg.com/next-intl-swc-plugin-extractor/-/next-intl-swc-plugin-extractor-4.6.0.tgz#1a9333a0fabda8fb43eea21a648ed9a8a55e94cd"
   integrity sha512-H0Qd44LfvVWRidzmtDHicWPANrAsiLIR2jPwCVck3tNuf7H/F6g4JwucmR1TWrd/X6wOJe8pbYHRA9THhjc4vQ==
 
-next-intl@^4.3.8:
+next-intl@^4.5.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/next-intl/-/next-intl-4.6.0.tgz#bf5da06887e503fac0426b6a03d78dd5e3788b6f"
   integrity sha512-Z2LUrIwqMt1/pnh7LwU0OUju17Q0eO1b75I2hAsVU5zZhOkxRP7dRKabgDPg4Hy4EoEx70jNqLVKll+BT1wz0w==
@@ -7982,7 +7982,7 @@ oidc-token-hash@^5.0.3:
   resolved "https://registry.yarnpkg.com/oidc-token-hash/-/oidc-token-hash-5.2.0.tgz#be8a8885c7e2478d21a674e15afa31f1bcc4a61f"
   integrity sha512-6gj2m8cJZ+iSW8bm0FXdGF0YhIQbKrfP4yWTNzxc31U6MOjfEmB1rHvlYvxI1B7t7BCi1F2vYTT6YhtQRG4hxw==
 
-ol@^10.6.1:
+ol@^10.7.0:
   version "10.7.0"
   resolved "https://registry.yarnpkg.com/ol/-/ol-10.7.0.tgz#6a072a602cab3a5d9b35356de8b837221d78379b"
   integrity sha512-122U5gamPqNgLpLOkogFJhgpywvd/5en2kETIDW+Ubfi9lPnZ0G9HWRdG+CX0oP8od2d6u6ky3eewIYYlrVczw==
@@ -8653,10 +8653,10 @@ real-require@^0.2.0:
   resolved "https://registry.yarnpkg.com/real-require/-/real-require-0.2.0.tgz#209632dea1810be2ae063a6ac084fee7e33fba78"
   integrity sha512-57frrGM/OCTLqLOAh0mhVA9VBMHd+9U7Zb2THMGdBUoZVOtGbJzjxsYGDJ3A9AYYCP4hn6y1TVbaOfzWtm5GFg==
 
-recharts@^3.4.0:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/recharts/-/recharts-3.6.0.tgz#403f0606581153601857e46733277d1411633df3"
-  integrity sha512-L5bjxvQRAe26RlToBAziKUB7whaGKEwD3znoM6fz3DrTowCIC/FnJYnuq1GEzB8Zv2kdTfaxQfi5GoH0tBinyg==
+recharts@3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/recharts/-/recharts-3.4.0.tgz#4e96294f9bac052e7f1c3ab6aca5991593ceb95c"
+  integrity sha512-rbt8pqoxVYcsFvms5AmSZJFXxWC5FwZF0VanMskmkIvrOAfU4tyXHBWMDY51aJbSJiTnHEPXBKMYwy82anR5UQ==
   dependencies:
     "@reduxjs/toolkit" "1.x.x || 2.x.x"
     clsx "^2.1.1"
