@@ -1,6 +1,6 @@
 import MenuIcon from '@mui/icons-material/Menu';
 import { alpha, Box, Divider, Drawer, IconButton, List, styled, Typography } from '@mui/material';
-import { Dashboard, OpenInNew, Settings } from '@mui/icons-material';
+import { Dashboard, OpenInNew, Settings, Link } from '@mui/icons-material';
 import React, { useState } from 'react';
 import { useAuth } from 'lib/hooks/UseAuth';
 import { TemplateIcon } from 'components/custom-icons/TemplateIcon';
@@ -10,8 +10,9 @@ import ListIcon from '@mui/icons-material/List';
 import packageJson from '../../../package.json';
 import { useEnv } from 'app/EnvProvider';
 import BottomMenu from 'layout/menu/BottomMenu';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { MnestixRole } from 'components/authentication/AllowedRoutes';
+import { DynamicIcon } from 'components/basics/DynamicIcon';
 
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
     '.MuiDrawer-paper': {
@@ -63,6 +64,7 @@ export default function MainMenu() {
     const mnestixRole = auth.getAccount()?.user.mnestixRole ?? MnestixRole.MnestixGuest;
     const allowedRoutes = auth.getAccount()?.user.allowedRoutes ?? [];
     const t = useTranslations('navigation.mainMenu');
+    const locale = useLocale();
 
     const getAuthName = () => {
         const user = auth?.getAccount()?.user;
@@ -119,6 +121,23 @@ export default function MainMenu() {
             icon: <Settings data-testid="settings-menu-icon" />,
         };
         basicMenu.push(settingsMenu);
+    }
+
+    if (env.EXTERNAL_LINKS && env.EXTERNAL_LINKS.length > 0) {
+        env.EXTERNAL_LINKS.forEach((link) => {
+            const label =
+                typeof link.label === 'string'
+                    ? link.label
+                    : (link.label[locale] ?? link.label['en'] ?? Object.values(link.label)[0]);
+            const externalLink: MenuListItemProps = {
+                label,
+                to: link.url,
+                icon: <DynamicIcon iconName={link.icon} fallback={<Link />} />,
+                external: true,
+                target: link.target || '_blank',
+            };
+            basicMenu.push(externalLink);
+        });
     }
 
     const guestMoreMenu: MenuListItemProps[] = [

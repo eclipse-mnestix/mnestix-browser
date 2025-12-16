@@ -26,6 +26,7 @@ Mnestix provides the following configuration options. You can adapt the values i
 | <del>`COMPARISON_FEATURE_FLAG`</del> | false **always false** | Enables or disables the comparison feature. **This feature is currently disabled after 1.6.0. If you need this feature feel free to contact us to find a solution.**                          |
 | `WHITELIST_FEATURE_FLAG`             | false                  | Enables or disables the feature for showing/hiding specific submodels.                                                                                                                        |
 | `SUBMODEL_WHITELIST`                 |                        | This variable can be used to specify a list of submodel semantic ids in order to show them when the `WHITELIST_FEATURE_FLAG` is set to true.                                                  |
+| `EXTERNAL_LINKS`                     |                        | JSON array of external links to display in the main menu. See [External Links](#external-links) for details.                                                                                  |
 
 #### Experimental Features
 
@@ -33,6 +34,71 @@ Mnestix provides the following configuration options. You can adapt the values i
 | ---------------------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `EXPERIMENTAL_PRODUCT_VIEW_FEATURE_FLAG` | false         | Enables or disables the experimental product view feature.                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `EXPERIMENTAL_HIGHLIGHT_DATA_FLAG`       | false         | Enables highlighting of specific submodels, properties, and multilang properties rendered with the default/fallback visualization. When enabled, elements can be visually emphasized using a `HighlightColor` qualifier. Example qualifier configuration: `{"kind": "ValueQualifier", "type": "HighlightColor", "value": "rgb(255,0,0)", "valueType": "xs:string"}`. For visual examples, see [PR #491](https://github.com/eclipse-mnestix/mnestix-browser/pull/491). |
+
+#### External Links
+
+You can configure custom external links to appear in the main menu by setting the `EXTERNAL_LINKS` environment variable. This variable accepts a JSON array of link objects.
+
+**Format:**
+
+```json
+[
+    {
+        "label": "Link Label",
+        "url": "https://example.com",
+        "icon": "OpenInNew",
+        "target": "_blank"
+    }
+]
+```
+
+**Properties:**
+
+- `label` (required): The display text for the link. Can be a string or an object with language codes for internationalization
+- `url` (required): The URL to navigate to
+- `icon` (optional): Either a Material-UI icon name (e.g., "OpenInNew", "Language", "MenuBook") or a base64 encoded image (e.g., "data:image/png;base64,...")
+- `target` (optional): Link target attribute, defaults to "\_blank"
+
+**Internationalization:**
+
+Labels support multiple languages using an object with language codes:
+
+```json
+{
+    "label": {
+        "en": "Documentation",
+        "de": "Dokumentation"
+    },
+    "url": "https://docs.example.com",
+    "icon": "MenuBook"
+}
+```
+
+The system will automatically display the label in the user's current language, with fallback to English if the translation is not available.
+
+**Available Material-UI Icons:**
+Some commonly used icons include: `OpenInNew`, `Link`, `Language`, `MenuBook`, `Description`, `Code`, `Help`, `Info`, `Launch`, `Public`, `Web`
+
+**Example Configuration (Simple):**
+
+```yaml
+environment:
+    EXTERNAL_LINKS: '[{"label":"Documentation","url":"https://docs.example.com","icon":"MenuBook","target":"_blank"},{"label":"Support","url":"https://support.example.com","icon":"Help"}]'
+```
+
+**Example Configuration (Multilingual):**
+
+```yaml
+environment:
+    EXTERNAL_LINKS: '[{"label":{"en":"Documentation","de":"Dokumentation"},"url":"https://docs.example.com","icon":"MenuBook"},{"label":{"en":"Support","de":"Unterstützung"},"url":"https://support.example.com","icon":"Help"}]'
+```
+
+**Example with Base64 Image:**
+
+```yaml
+environment:
+    EXTERNAL_LINKS: '[{"label":{"en":"Custom Link","de":"Benutzerdefinierter Link"},"url":"https://example.com","icon":"data:image/png;base64,iVBORw0KG...","target":"_blank"}]'
+```
 
 #### Keycloak
 

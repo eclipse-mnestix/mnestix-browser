@@ -10,6 +10,9 @@
  * Provide Validation in /scripts/validateEnvs.sh
  */
 
+import { ExternalLink } from 'lib/types/ExternalLink';
+import { isValidUrl } from 'lib/util/UrlUtil';
+
 // In production builds `process` is not defined on client side
 const process_env: Record<string, string | undefined> = typeof process !== 'undefined' ? process.env : {};
 
@@ -100,12 +103,78 @@ const themingVariables = mapEnvVariables([
     'THEME_MENU_COLOR',
 ] as const);
 
+/**
+ * Parses the EXTERNAL_LINKS environment variable
+ * Expected format: JSON array of objects with label, url, icon (optional), and target (optional)
+ * Label can be a string or an object with language-specific labels
+ */
+function parseExternalLinks(value: string | undefined): ExternalLink[] {
+    if (!value) {
+        return [];
+    }
+    try {
+        const parsed = JSON.parse(value);
+        if (Array.isArray(parsed)) {
+            const validLinks = parsed.filter((item): item is ExternalLink => {
+                if (typeof item !== 'object' || item === null) {
+                    console.warn('EXTERNAL_LINKS: Skipping invalid item (not an object):', item);
+                    return false;
+                }
+                // Check if url is a string and valid URL
+                if (typeof item.url !== 'string' || !isValidUrl(item.url)) {
+                    console.warn('EXTERNAL_LINKS: Skipping item with invalid or missing url:', item);
+                    return false;
+                }
+                // Validate optional icon property
+                if (item.icon !== undefined && typeof item.icon !== 'string') {
+                    console.warn('EXTERNAL_LINKS: Skipping item with invalid icon property:', item);
+                    return false;
+                }
+                // Validate optional target property
+                if (item.target !== undefined && typeof item.target !== 'string') {
+                    console.warn('EXTERNAL_LINKS: Skipping item with invalid target property:', item);
+                    return false;
+                }
+                // Check if label is either a string or an object with string values
+                if (typeof item.label === 'string') {
+                    return true;
+                }
+                if (typeof item.label === 'object' && item.label !== null) {
+                    const isValid = Object.values(item.label).every((val) => typeof val === 'string');
+                    if (!isValid) {
+                        console.warn('EXTERNAL_LINKS: Skipping item with invalid label translations:', item);
+                    }
+                    return isValid;
+                }
+                console.warn('EXTERNAL_LINKS: Skipping item with invalid or missing label:', item);
+                return false;
+            });
+            return validLinks;
+        } else {
+            console.error('EXTERNAL_LINKS must be a JSON array, but got:', typeof parsed, parsed);
+        }
+    } catch (error) {
+        console.error('Failed to parse EXTERNAL_LINKS environment variable:', error);
+    }
+    return [];
+}
+
+const externalLinks = parseExternalLinks(process_env.EXTERNAL_LINKS);
+
 const LOG_LEVEL = process_env.LOG_LEVEL || (process_env.NODE_ENV === 'production' ? 'info' : 'debug');
 
 /**
  * Public envs that are sent to the client and can be used with the `useEnv` hook.
  */
-export const publicEnvs = { LOG_LEVEL, ...featureFlags, ...otherVariables, ...themingVariables, ...keycloak };
+
+export const publicEnvs = {
+    LOG_LEVEL,
+    ...featureFlags,
+    ...otherVariables,
+    ...themingVariables,
+    ...keycloak,
+    EXTERNAL_LINKS: externalLinks,
+};
 
 /**
  * Mnestix envs
