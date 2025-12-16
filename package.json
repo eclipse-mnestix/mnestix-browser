@@ -1,6 +1,6 @@
 {
   "name": "mnestix-browser",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "type": "module",
   "private": true,
   "license": "MIT",
@@ -66,7 +66,7 @@
     "graphql": "^16.11.0",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
-    "next": "^15.5.3",
+    "next": "15.5.9",
     "next-auth": "^4.24.11",
     "next-intl": "^4.3.8",
     "ol": "^10.6.1",
