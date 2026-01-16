@@ -1,0 +1,51 @@
+services:
+  aas-digital-twin-registry:
+    image: eclipsebasyx/digitaltwinregistry:2.0.0-SNAPSHOT
+    ports:
+      - '8085:8081'
+    depends_on:
+      - mongodb
+    environment:
+      BASYX__BACKEND: MongoDB
+      BASYX_CORS_ALLOWED-METHODS: GET,POST,PATCH,DELETE,PUT,OPTIONS,HEAD
+      BASYX_CORS_ALLOWED-ORIGINS: '*'
+      REGISTRY__DISCOVERY__ENABLED: 'true'
+      # Using URI to strictly enforce authentication against 'admin' db while using 'basyxdb' for data
+      SPRING_DATA_MONGODB_URI: 'mongodb://mongoAdmin:mongoPassword@mongodb:27017/basyxdb?authSource=admin'
+      SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE: 100000KB
+      SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE: 100000KB
+    healthcheck: # check the endpoint for a valid response (service ready)
+      test: curl -f http://localhost:8081/actuator/health
+      interval: 30s
+      timeout: 10s
+      retries: 6
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '5'
+        max-size: '100m'
+    networks:
+      - mnestix-network
+
+  mnestix-browser:
+    environment:
+      REGISTRY_API_URL: 'http://aas-digital-twin-registry:8081/'
+      SUBMODEL_REGISTRY_API_URL: 'http://aas-digital-twin-registry:8081/'
+      # We do not need to adjust the Discovery URL as it already points to the Proxy which routes to the Digital Twin Registry
+
+  mnestix-proxy:
+    environment:
+      ReverseProxy__Clusters__discoveryCluster__Destinations__destination1__Address: 'http://aas-digital-twin-registry:8081/'
+
+  submodel-registry:
+    profiles: ['do-not-start']
+    restart: 'no'
+    entrypoint: ['echo', 'Submodel Registry disabled in Digital Twin Registry setup.']
+  aas-registry:
+    profiles: ['do-not-start']
+    restart: 'no'
+    entrypoint: ['echo', 'AAS Registry disabled in Digital Twin Registry setup.']
+  aas-discovery:
+    profiles: ['do-not-start']
+    restart: 'no'
+    entrypoint: ['echo', 'AAS Discovery disabled in Digital Twin Registry setup.']
