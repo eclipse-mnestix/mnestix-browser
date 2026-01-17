@@ -1,5 +1,16 @@
 {
   "components": {
+    "addToCartButton": {
+      "addToCart": "Añadir al carrito",
+      "addMore": "Añadir más",
+      "ariaLabel": "Añadir {productName} al carrito"
+    },
+    "addToCartDialog": {
+      "title": "Añadido al carrito",
+      "message": "{quantity, plural, =1 {1 artículo de \"{productName}\" fue} other {# artículos de \"{productName}\" fueron}} añadido(s) a su carrito.",
+      "continueShopping": "Seguir comprando",
+      "goToCart": "Ir al carrito"
+    },
     "constructionDialog": {
       "title": "En Construcción",
       "message": "Esta función está actualmente en construcción y estará disponible próximamente.",

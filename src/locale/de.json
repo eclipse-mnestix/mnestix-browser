@@ -1,5 +1,16 @@
 {
   "components": {
+    "addToCartButton": {
+      "addToCart": "In den Warenkorb",
+      "addMore": "Weitere hinzufügen",
+      "ariaLabel": "{productName} in den Warenkorb legen"
+    },
+    "addToCartDialog": {
+      "title": "Zum Warenkorb hinzugefügt",
+      "message": "{quantity, plural, =1 {1 Artikel von \"{productName}\" wurde} other {# Artikel von \"{productName}\" wurden}} in Ihren Warenkorb gelegt.",
+      "continueShopping": "Weiter einkaufen",
+      "goToCart": "Zum Warenkorb"
+    },
     "constructionDialog": {
       "title": "In Bearbeitung",
       "message": "Diese Funktion befindet sich derzeit im Aufbau und wird in Kürze verfügbar sein.",
