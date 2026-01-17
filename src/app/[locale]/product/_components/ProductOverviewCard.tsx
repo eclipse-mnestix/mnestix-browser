@@ -485,6 +485,12 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                             commercialDataUrl={props.catalogConfig?.commercialData ?? undefined}
                                             assetId={props.aas?.assetInformation.globalAssetId ?? undefined}
                                             onProductUriRedirect={navigateToProduct}
+                                            aasId={props.aas?.id}
+                                            productName={props.displayName ?? overviewData?.manufacturerProductDesignation ?? t('title')}
+                                            manufacturerName={overviewData?.manufacturerName}
+                                            articleNumber={overviewData?.manufacturerArticleNumber}
+                                            productImageUrl={productImageUrl}
+                                            repositoryUrl={props.repositoryURL ?? undefined}
                                         />
                                     </Box>
                                 </Box>

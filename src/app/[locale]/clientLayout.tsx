@@ -3,6 +3,7 @@
 import { Box } from '@mui/material';
 import { CurrentAasContextProvider } from 'components/contexts/CurrentAasContext';
 import { NotificationContextProvider } from 'components/contexts/NotificationContext';
+import { CartContextProvider } from 'components/contexts/CartContext';
 import { LayoutRoot } from 'layout/LayoutRoot';
 import { CustomThemeProvider } from 'layout/theme/CustomThemeProvider';
 import { Internationalization } from 'lib/i18n/Internationalization';
@@ -28,13 +29,15 @@ export const ClientLayout = ({ children }: Readonly<ClientLayoutProps>) => {
                 <Internationalization>
                     <CustomThemeProvider>
                         <CurrentAasContextProvider>
-                            <NotificationContextProvider>
-                                <LayoutRoot>
-                                    <Box flexGrow={1} data-testid="notifications">
-                                        {children}
-                                    </Box>
-                                </LayoutRoot>
-                            </NotificationContextProvider>
+                            <CartContextProvider>
+                                <NotificationContextProvider>
+                                    <LayoutRoot>
+                                        <Box flexGrow={1} data-testid="notifications">
+                                            {children}
+                                        </Box>
+                                    </LayoutRoot>
+                                </NotificationContextProvider>
+                            </CartContextProvider>
                         </CurrentAasContextProvider>
                     </CustomThemeProvider>
                 </Internationalization>
