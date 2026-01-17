@@ -11,6 +11,7 @@ export const initialEnvValues: EnvironmentalVariables = {
     COMPARISON_FEATURE_FLAG: false,
     TRANSFER_FEATURE_FLAG: false,
     PRODUCT_VIEW_FEATURE_FLAG: false,
+    CART_ENABLED_FEATURE_FLAG: true,
     KEYCLOAK_ENABLED: false,
     LOCK_TIMESERIES_PERIOD_FEATURE_FLAG: false,
     DISCOVERY_API_URL: undefined,
