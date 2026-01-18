@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, PropsWithChildren, useContext, useState, useCallback } from 'react';
+import React, { createContext, PropsWithChildren, useContext, useState, useCallback, useEffect } from 'react';
 import { CartItem } from 'lib/types/CartItem';
 
 type CartContextType = {
@@ -15,6 +15,9 @@ type CartContextType = {
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
+
+// Local storage key for persisting cart data
+const CART_STORAGE_KEY = 'shoppingCart';
 
 // TODO: Make MAX_QUANTITY configurable
 const MAX_QUANTITY = 9999;
@@ -36,7 +39,17 @@ export function useCart() {
  * Manages cart state and provides cart operations to child components.
  */
 export function CartContextProvider(props: PropsWithChildren) {
-    const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+        if (typeof window === 'undefined') {
+            return [];
+        }
+        const storedCart = localStorage.getItem(CART_STORAGE_KEY);
+        return storedCart ? JSON.parse(storedCart) : [];
+    });
+
+    useEffect(() => {
+        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
+    }, [cartItems]);
 
     const addToCart = useCallback((item: Omit<CartItem, 'quantity'>, quantity: number = 1) => {
         setCartItems((prevItems) => {
@@ -71,6 +84,7 @@ export function CartContextProvider(props: PropsWithChildren) {
 
     const clearCart = useCallback(() => {
         setCartItems([]);
+        localStorage.removeItem(CART_STORAGE_KEY);
     }, []);
 
     const getCartItemCount = useCallback(() => {
