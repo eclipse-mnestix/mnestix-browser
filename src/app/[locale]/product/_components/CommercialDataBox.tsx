@@ -27,6 +27,7 @@ export type CommercialDataBoxProps = {
 
 export function CommercialDataBox(props: CommercialDataBoxProps) {
     const t = useTranslations('pages.productViewer');
+    const tComponents = useTranslations('components');
     const env = useEnv();
     const [priceInfo, setPriceInfo] = useState<{
         grossPrice?: string;
@@ -93,10 +94,10 @@ export function CommercialDataBox(props: CommercialDataBoxProps) {
             const priceType = findSubmodelElementBySemanticIdsOrIdShort(productPriceCollection, 'PriceType', null)?.value || undefined;
             const productPrice = findValueByIdShort(productPriceCollection, 'Price', null, locale) || undefined;
             setPriceInfo({ grossPrice, productPrice, priceType, currency, currencyCode });
-            console.log('Prepared commercial data:', { grossPrice, productPrice, priceType, currency });
+            console.warn('Prepared commercial data:', { grossPrice, productPrice, priceType, currency });
         } else {
             setError('No item found in commercial data.');
-            console.log('No item found in commercial data for asset ID:', props.assetId);
+            console.warn('No item found in commercial data for asset ID:', props.assetId);
         }
     };
 
@@ -110,7 +111,42 @@ export function CommercialDataBox(props: CommercialDataBoxProps) {
         return isNaN(numericValue) ? undefined : numericValue;
     }
 
-    const showAddToCart = env.CART_ENABLED_FEATURE_FLAG && props.aasId && props.assetId && props.productName;
+    /**
+     * Determines if the 'Add to Cart'-button should be disabled, log reason
+     */
+    function getCartButtonState(): { disabled: boolean; reason?: string } {
+        if (!env.CART_ENABLED_FEATURE_FLAG) {
+            return {
+                disabled: true,
+                reason: tComponents('addToCartButton.disabledReasons.featureDisabled'),
+            };
+        }
+
+        if (!props.aasId) {
+            return {
+                disabled: true,
+                reason: tComponents('addToCartButton.disabledReasons.missingProductId'),
+            };
+        }
+
+        if (!props.assetId) {
+            return {
+                disabled: true,
+                reason: tComponents('addToCartButton.disabledReasons.missingAssetId'),
+            };
+        }
+
+        if (!props.productName) {
+            return {
+                disabled: true,
+                reason: tComponents('addToCartButton.disabledReasons.missingProductName'),
+            };
+        }
+
+        return { disabled: false };
+    }
+
+    const cartButtonState = getCartButtonState();
 
     return (
         <>
@@ -133,19 +169,19 @@ export function CommercialDataBox(props: CommercialDataBoxProps) {
                                 {t('commercialData.perItem')}
                             </Typography>
                             <Box display="flex" gap={1} flexDirection="column">
-                                {showAddToCart && (
-                                    <AddToCartButton
-                                        aasId={props.aasId!}
-                                        assetId={props.assetId!}
-                                        productName={props.productName!}
-                                        manufacturerName={props.manufacturerName}
-                                        articleNumber={props.articleNumber}
-                                        pricePerUnit={parsePriceToNumber(priceInfo.grossPrice || priceInfo.productPrice)}
-                                        currency={priceInfo.currencyCode}
-                                        productImageUrl={props.productImageUrl}
-                                        repositoryUrl={props.repositoryUrl}
-                                    />
-                                )}
+                                <AddToCartButton
+                                    aasId={props.aasId || ''}
+                                    assetId={props.assetId || ''}
+                                    productName={props.productName || ''}
+                                    manufacturerName={props.manufacturerName}
+                                    articleNumber={props.articleNumber}
+                                    pricePerUnit={parsePriceToNumber(priceInfo.grossPrice || priceInfo.productPrice)}
+                                    currency={priceInfo.currencyCode}
+                                    productImageUrl={props.productImageUrl}
+                                    repositoryUrl={props.repositoryUrl}
+                                    disabled={cartButtonState.disabled}
+                                    disabledReason={cartButtonState.reason}
+                                />
                                 <Button
                                     variant="outlined"
                                     onClick={() => props.onProductUriRedirect()}
@@ -158,17 +194,17 @@ export function CommercialDataBox(props: CommercialDataBoxProps) {
                         </Box>
                     ) : (
                         <Box display="flex" gap={1} flexDirection="column">
-                            {showAddToCart && (
-                                <AddToCartButton
-                                    aasId={props.aasId!}
-                                    assetId={props.assetId!}
-                                    productName={props.productName!}
-                                    manufacturerName={props.manufacturerName}
-                                    articleNumber={props.articleNumber}
-                                    productImageUrl={props.productImageUrl}
-                                    repositoryUrl={props.repositoryUrl}
-                                />
-                            )}
+                            <AddToCartButton
+                                aasId={props.aasId || ''}
+                                assetId={props.assetId || ''}
+                                productName={props.productName || ''}
+                                manufacturerName={props.manufacturerName}
+                                articleNumber={props.articleNumber}
+                                productImageUrl={props.productImageUrl}
+                                repositoryUrl={props.repositoryUrl}
+                                disabled={cartButtonState.disabled}
+                                disabledReason={cartButtonState.reason}
+                            />
                             <Button
                                 variant="outlined"
                                 onClick={() => props.onProductUriRedirect()}

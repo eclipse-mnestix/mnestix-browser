@@ -1,9 +1,9 @@
 'use client';
 
-import { Button, CircularProgress } from '@mui/material';
+import { Button, CircularProgress, Tooltip } from '@mui/material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCart } from 'components/contexts/CartContext';
 import { AddToCartDialog } from 'components/cart/AddToCartDialog';
 import { CartItem } from 'lib/types/CartItem';
@@ -19,6 +19,7 @@ type AddToCartButtonProps = {
     readonly productImageUrl?: string;
     readonly repositoryUrl?: string;
     readonly disabled?: boolean;
+    readonly disabledReason?: string;
     readonly variant?: 'text' | 'outlined' | 'contained';
 };
 
@@ -38,6 +39,7 @@ export function AddToCartButton(props: AddToCartButtonProps) {
         productImageUrl,
         repositoryUrl,
         disabled = false,
+        disabledReason,
         variant = 'contained',
     } = props;
 
@@ -48,6 +50,16 @@ export function AddToCartButton(props: AddToCartButtonProps) {
     const [addedQuantity, setAddedQuantity] = useState(1);
 
     const alreadyInCart = isInCart(aasId);
+
+    useEffect(() => {
+        if (disabled && disabledReason) {
+            console.warn('Add to Cart button disabled:', disabledReason, {
+                aasId,
+                assetId,
+                productName,
+            });
+        }
+    }, [disabled, disabledReason, aasId, assetId, productName]);
 
     function handleAddToCart() {
         setIsLoading(true);
@@ -74,19 +86,29 @@ export function AddToCartButton(props: AddToCartButtonProps) {
         setIsDialogOpen(false);
     }
 
+    const buttonContent = (
+        <Button
+            variant={variant}
+            color="primary"
+            onClick={handleAddToCart}
+            disabled={disabled || isLoading}
+            startIcon={isLoading ? <CircularProgress size={20} /> : <AddShoppingCartIcon />}
+            data-testid="add-to-cart-button"
+            aria-label={`Add ${productName} to cart`}
+        >
+            {alreadyInCart ? t('addToCartButton.addMore') : t('addToCartButton.addToCart')}
+        </Button>
+    );
+
     return (
         <>
-            <Button
-                variant={variant}
-                color="primary"
-                onClick={handleAddToCart}
-                disabled={disabled || isLoading}
-                startIcon={isLoading ? <CircularProgress size={20} /> : <AddShoppingCartIcon />}
-                data-testid="add-to-cart-button"
-                aria-label={`Add ${productName} to cart`}
-            >
-                {alreadyInCart ? t('addToCartButton.addMore') : t('addToCartButton.addToCart')}
-            </Button>
+            {disabled && disabledReason ? (
+                <Tooltip title={disabledReason} arrow>
+                    {buttonContent}
+                </Tooltip>
+            ) : (
+                buttonContent
+            )}
             <AddToCartDialog
                 open={isDialogOpen}
                 onClose={handleDialogClose}

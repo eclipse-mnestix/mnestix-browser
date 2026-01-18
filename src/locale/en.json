@@ -3,7 +3,14 @@
     "addToCartButton": {
       "addToCart": "Add to Cart",
       "addMore": "Add More",
-      "ariaLabel": "Add {productName} to cart"
+      "ariaLabel": "Add {productName} to cart",
+      "disabledReasons": {
+        "featureDisabled": "Shopping cart feature is not enabled",
+        "missingData": "Missing required product information",
+        "missingProductName": "Product name is required",
+        "missingProductId": "Product ID is required",
+        "missingAssetId": "Asset ID is required"
+      }
     },
     "addToCartDialog": {
       "title": "Added to Cart",

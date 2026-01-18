@@ -3,7 +3,14 @@
     "addToCartButton": {
       "addToCart": "Añadir al carrito",
       "addMore": "Añadir más",
-      "ariaLabel": "Añadir {productName} al carrito"
+      "ariaLabel": "Añadir {productName} al carrito",
+      "disabledReasons": {
+        "featureDisabled": "La función de carrito de compras no está habilitada",
+        "missingData": "Falta información del producto requerida",
+        "missingProductName": "El nombre del producto es requerido",
+        "missingProductId": "El ID del producto es requerido",
+        "missingAssetId": "El ID del activo es requerido"
+      }
     },
     "addToCartDialog": {
       "title": "Añadido al carrito",

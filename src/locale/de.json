@@ -3,7 +3,14 @@
     "addToCartButton": {
       "addToCart": "In den Warenkorb",
       "addMore": "Weitere hinzufügen",
-      "ariaLabel": "{productName} in den Warenkorb legen"
+      "ariaLabel": "{productName} in den Warenkorb legen",
+      "disabledReasons": {
+        "featureDisabled": "Warenkorb-Funktion ist nicht aktiviert",
+        "missingData": "Erforderliche Produktinformationen fehlen",
+        "missingProductName": "Produktname ist erforderlich",
+        "missingProductId": "Produkt-ID ist erforderlich",
+        "missingAssetId": "Asset-ID ist erforderlich"
+      }
     },
     "addToCartDialog": {
       "title": "Zum Warenkorb hinzugefügt",
@@ -204,10 +211,10 @@
   "pages": {
     "cart": {
       "header": "Einkaufswagen",
-      "subHeader": "In Ihrem Einkaufswagen sind die folgenden Produkte.",
+      "subHeader": "Alle  Produkte im Einkaufswagen",
       "buttonTooltip": "Zum Einkaufswagen",
-      "emptyCartMessage": "Ihr Einkaufswagen ist leer",
-      "backToProducts": "Zurück zu Produkten",
+      "emptyCartMessage": "Einkaufswagen ist leer",
+      "backToProducts": "Zu den Produkten",
       "productName": "Produkt",
       "quantity": "Menge",
       "pricePerUnit": "Preis pro Einheit",
