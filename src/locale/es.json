@@ -1,5 +1,23 @@
 {
   "components": {
+    "addToCartButton": {
+      "addToCart": "Añadir al carrito",
+      "addMore": "Añadir más",
+      "ariaLabel": "Añadir {productName} al carrito",
+      "disabledReasons": {
+        "featureDisabled": "La función de carrito de compras no está habilitada",
+        "missingData": "Falta información del producto requerida",
+        "missingProductName": "El nombre del producto es requerido",
+        "missingProductId": "El ID del producto es requerido",
+        "missingAssetId": "El ID del activo es requerido"
+      }
+    },
+    "addToCartDialog": {
+      "title": "Añadido al carrito",
+      "message": "{quantity, plural, =1 {1 artículo de \"{productName}\" fue} other {# artículos de \"{productName}\" fueron}} añadido(s) a su carrito.",
+      "continueShopping": "Seguir comprando",
+      "goToCart": "Ir al carrito"
+    },
     "constructionDialog": {
       "title": "En Construcción",
       "message": "Esta función está actualmente en construcción y estará disponible próximamente.",
@@ -179,6 +197,7 @@
       "documentation": "Documentación"
     },
     "mainMenu": {
+      "cart": "Carrito de compras",
       "aasList": "Lista de AAS",
       "dashboard": "Dashboard",
       "findOutMore": "Saber más",
@@ -190,6 +209,23 @@
     }
   },
   "pages": {
+    "cart": {
+      "header": "Carrito de compras",
+      "subHeader": "Aquí puede ver los productos que ha añadido a su carrito de compras.",
+      "buttonTooltip": "Ir al carrito de compras",
+      "emptyCartMessage": "Su carrito está vacío",
+      "backToProducts": "Volver a productos",
+      "productName": "Producto",
+      "quantity": "Cantidad",
+      "pricePerUnit": "Precio por unidad",
+      "lineTotal": "Total",
+      "totalPrice": "Precio total",
+      "remove": "Eliminar",
+      "checkout": "Finalizar compra",
+      "increaseQuantity": "Aumentar cantidad",
+      "decreaseQuantity": "Disminuir cantidad",
+      "removeAriaLabel": "Eliminar {productName} del carrito"
+    },
     "aasList": {
       "buttonTooltip": "Ir a AAS",
       "compare": "Comparar",

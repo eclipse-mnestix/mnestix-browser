@@ -1,4 +1,4 @@
-import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Badge, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import Link from 'next/link';
 
 export interface MenuListItemProps {
@@ -8,12 +8,25 @@ export interface MenuListItemProps {
     label?: React.ReactElement | string;
     target?: string;
     onClick?: React.MouseEventHandler<HTMLElement>;
+    badgeContent?: number;
 }
 
 export function MenuListItem(props: MenuListItemProps) {
+    const iconElement = props.icon && (
+        <ListItemIcon>
+            {props.badgeContent !== undefined && props.badgeContent > 0 ? (
+                <Badge badgeContent={props.badgeContent} color="secondary" max={999}>
+                    {props.icon}
+                </Badge>
+            ) : (
+                props.icon
+            )}
+        </ListItemIcon>
+    );
+
     const content = (
         <>
-            {props.icon && <ListItemIcon>{props.icon}</ListItemIcon>}
+            {iconElement}
             {props.label && <ListItemText data-testid="sidebar-button">{props.label}</ListItemText>}
         </>
     );

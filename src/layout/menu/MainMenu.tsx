@@ -7,11 +7,13 @@ import { TemplateIcon } from 'components/custom-icons/TemplateIcon';
 import { MenuHeading } from './MenuHeading';
 import { MenuListItem, MenuListItemProps } from './MenuListItem';
 import ListIcon from '@mui/icons-material/List';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import packageJson from '../../../package.json';
 import { useEnv } from 'app/EnvProvider';
 import BottomMenu from 'layout/menu/BottomMenu';
 import { useTranslations } from 'next-intl';
 import { MnestixRole } from 'components/authentication/AllowedRoutes';
+import { useCart } from 'components/contexts/CartContext';
 
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
     '.MuiDrawer-paper': {
@@ -58,6 +60,7 @@ export default function MainMenu() {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const auth = useAuth();
     const env = useEnv();
+    const { getCartItemCount } = useCart();
     const useAuthentication = env.AUTHENTICATION_FEATURE_FLAG;
     const buildDateUTC = env.BUILD_DATETIME;
 
@@ -114,6 +117,17 @@ export default function MainMenu() {
             icon: <TemplateIcon />,
         };
         basicMenu.push(templateItemToAdd);
+    }
+
+    if (env.CART_ENABLED_FEATURE_FLAG) {
+        const cartItemCount = getCartItemCount();
+        const listItemToAdd = {
+            label: t('cart'),
+            to: '/cart',
+            icon: <ShoppingCartIcon />,
+            badgeContent: cartItemCount,
+        };
+        basicMenu.push(listItemToAdd);
     }
 
     if (checkIfRouteIsAllowed('/settings')) {

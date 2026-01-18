@@ -1,5 +1,23 @@
 {
   "components": {
+    "addToCartButton": {
+      "addToCart": "In den Warenkorb",
+      "addMore": "Weitere hinzufügen",
+      "ariaLabel": "{productName} in den Warenkorb legen",
+      "disabledReasons": {
+        "featureDisabled": "Warenkorb-Funktion ist nicht aktiviert",
+        "missingData": "Erforderliche Produktinformationen fehlen",
+        "missingProductName": "Produktname ist erforderlich",
+        "missingProductId": "Produkt-ID ist erforderlich",
+        "missingAssetId": "Asset-ID ist erforderlich"
+      }
+    },
+    "addToCartDialog": {
+      "title": "Zum Warenkorb hinzugefügt",
+      "message": "{quantity, plural, =1 {1 Artikel von \"{productName}\" wurde} other {# Artikel von \"{productName}\" wurden}} in Ihren Warenkorb gelegt.",
+      "continueShopping": "Weiter einkaufen",
+      "goToCart": "Zum Warenkorb"
+    },
     "constructionDialog": {
       "title": "In Bearbeitung",
       "message": "Diese Funktion befindet sich derzeit im Aufbau und wird in Kürze verfügbar sein.",
@@ -179,6 +197,7 @@
       "documentation": "Dokumentation"
     },
     "mainMenu": {
+      "cart": "Einkaufswagen",
       "aasList": "AAS Liste",
       "dashboard": "Dashboard",
       "findOutMore": "Mehr Informationen",
@@ -190,6 +209,23 @@
     }
   },
   "pages": {
+    "cart": {
+      "header": "Einkaufswagen",
+      "subHeader": "Alle  Produkte im Einkaufswagen",
+      "buttonTooltip": "Zum Einkaufswagen",
+      "emptyCartMessage": "Einkaufswagen ist leer",
+      "backToProducts": "Zu den Produkten",
+      "productName": "Produkt",
+      "quantity": "Menge",
+      "pricePerUnit": "Preis pro Einheit",
+      "lineTotal": "Gesamt",
+      "totalPrice": "Gesamtpreis",
+      "remove": "Entfernen",
+      "checkout": "Zur Kasse",
+      "increaseQuantity": "Menge erhöhen",
+      "decreaseQuantity": "Menge verringern",
+      "removeAriaLabel": "{productName} aus dem Warenkorb entfernen"
+    },
     "aasList": {
       "buttonTooltip": "Zur AAS",
       "compare": "Vergleichen",

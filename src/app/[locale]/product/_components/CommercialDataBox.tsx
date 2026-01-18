@@ -9,19 +9,32 @@ import {
     findValueByIdShort,
 } from 'lib/util/SubmodelResolverUtil';
 import { SubmodelElementList } from 'lib/api/aas/models';
+import { AddToCartButton } from 'components/cart/AddToCartButton';
+import { useEnv } from 'app/EnvProvider';
 
-export const CommercialDataBox = (props: {
+export type CommercialDataBoxProps = {
     commercialDataUrl?: string;
     productURI?: string;
     assetId?: string;
     onProductUriRedirect: () => void;
-}) => {
+    aasId?: string;
+    productName?: string;
+    manufacturerName?: string;
+    articleNumber?: string;
+    productImageUrl?: string;
+    repositoryUrl?: string;
+};
+
+export function CommercialDataBox(props: CommercialDataBoxProps) {
     const t = useTranslations('pages.productViewer');
+    const tComponents = useTranslations('components');
+    const env = useEnv();
     const [priceInfo, setPriceInfo] = useState<{
         grossPrice?: string;
         productPrice?: string;
         priceType?: string;
         currency?: string;
+        currencyCode?: string;
     }>({});
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
@@ -80,13 +93,60 @@ export const CommercialDataBox = (props: {
             // @ts-expect-error value is there
             const priceType = findSubmodelElementBySemanticIdsOrIdShort(productPriceCollection, 'PriceType', null)?.value || undefined;
             const productPrice = findValueByIdShort(productPriceCollection, 'Price', null, locale) || undefined;
-            setPriceInfo({ grossPrice, productPrice, priceType, currency });
-            console.log('Prepared commercial data:', { grossPrice, productPrice, priceType, currency });
+            setPriceInfo({ grossPrice, productPrice, priceType, currency, currencyCode });
+            console.warn('Prepared commercial data:', { grossPrice, productPrice, priceType, currency });
         } else {
             setError('No item found in commercial data.');
-            console.log('No item found in commercial data for asset ID:', props.assetId);
+            console.warn('No item found in commercial data for asset ID:', props.assetId);
         }
     };
+
+    /**
+     * Helper to parse price string to number for cart
+     */
+    function parsePriceToNumber(priceString?: string): number | undefined {
+        if (!priceString) return undefined;
+        // Remove currency symbols and parse
+        const numericValue = parseFloat(priceString.replace(/[^0-9.,]/g, '').replace(',', '.'));
+        return isNaN(numericValue) ? undefined : numericValue;
+    }
+
+    /**
+     * Determines if the 'Add to Cart'-button should be disabled, log reason
+     */
+    function getCartButtonState(): { disabled: boolean; reason?: string } {
+        if (!env.CART_ENABLED_FEATURE_FLAG) {
+            return {
+                disabled: true,
+                reason: tComponents('addToCartButton.disabledReasons.featureDisabled'),
+            };
+        }
+
+        if (!props.aasId) {
+            return {
+                disabled: true,
+                reason: tComponents('addToCartButton.disabledReasons.missingProductId'),
+            };
+        }
+
+        if (!props.assetId) {
+            return {
+                disabled: true,
+                reason: tComponents('addToCartButton.disabledReasons.missingAssetId'),
+            };
+        }
+
+        if (!props.productName) {
+            return {
+                disabled: true,
+                reason: tComponents('addToCartButton.disabledReasons.missingProductName'),
+            };
+        }
+
+        return { disabled: false };
+    }
+
+    const cartButtonState = getCartButtonState();
 
     return (
         <>
@@ -108,28 +168,56 @@ export const CommercialDataBox = (props: {
                             <Typography variant="h4" color="text.secondary" mb={3}>
                                 {t('commercialData.perItem')}
                             </Typography>
+                            <Box display="flex" gap={1} flexDirection="column">
+                                <AddToCartButton
+                                    aasId={props.aasId || ''}
+                                    assetId={props.assetId || ''}
+                                    productName={props.productName || ''}
+                                    manufacturerName={props.manufacturerName}
+                                    articleNumber={props.articleNumber}
+                                    pricePerUnit={parsePriceToNumber(priceInfo.grossPrice || priceInfo.productPrice)}
+                                    currency={priceInfo.currencyCode}
+                                    productImageUrl={props.productImageUrl}
+                                    repositoryUrl={props.repositoryUrl}
+                                    disabled={cartButtonState.disabled}
+                                    disabledReason={cartButtonState.reason}
+                                />
+                                <Button
+                                    variant="outlined"
+                                    onClick={() => props.onProductUriRedirect()}
+                                    disabled={!props.productURI}
+                                    title={!props.productURI ? t('commercialData.noProductUriAvailable') : ''}
+                                >
+                                    {t('commercialData.orderButton')}
+                                </Button>
+                            </Box>
+                        </Box>
+                    ) : (
+                        <Box display="flex" gap={1} flexDirection="column">
+                            <AddToCartButton
+                                aasId={props.aasId || ''}
+                                assetId={props.assetId || ''}
+                                productName={props.productName || ''}
+                                manufacturerName={props.manufacturerName}
+                                articleNumber={props.articleNumber}
+                                productImageUrl={props.productImageUrl}
+                                repositoryUrl={props.repositoryUrl}
+                                disabled={cartButtonState.disabled}
+                                disabledReason={cartButtonState.reason}
+                            />
                             <Button
                                 variant="outlined"
                                 onClick={() => props.onProductUriRedirect()}
                                 disabled={!props.productURI}
                                 title={!props.productURI ? t('commercialData.noProductUriAvailable') : ''}
                             >
-                                {t('commercialData.orderButton')}
+                                {t('commercialData.requestPrice')}
                             </Button>
                         </Box>
-                    ) : (
-                        <Button
-                            variant="outlined"
-                            onClick={() => props.onProductUriRedirect()}
-                            disabled={!props.productURI}
-                            title={!props.productURI ? t('commercialData.noProductUriAvailable') : ''}
-                        >
-                            {t('commercialData.requestPrice')}
-                        </Button>
                     )}
                     {!props.productURI && error && <Typography color="warning">{error}</Typography>}
                 </Box>
             )}
         </>
     );
-};
+}

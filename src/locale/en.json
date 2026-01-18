@@ -1,5 +1,23 @@
 {
   "components": {
+    "addToCartButton": {
+      "addToCart": "Add to Cart",
+      "addMore": "Add More",
+      "ariaLabel": "Add {productName} to cart",
+      "disabledReasons": {
+        "featureDisabled": "Shopping cart feature is not enabled",
+        "missingData": "Missing required product information",
+        "missingProductName": "Product name is required",
+        "missingProductId": "Product ID is required",
+        "missingAssetId": "Asset ID is required"
+      }
+    },
+    "addToCartDialog": {
+      "title": "Added to Cart",
+      "message": "{quantity, plural, =1 {1 item of \"{productName}\" was} other {# items of \"{productName}\" were}} added to your cart.",
+      "continueShopping": "Continue Shopping",
+      "goToCart": "Go to Cart"
+    },
     "constructionDialog": {
       "title": "Under Construction",
       "message": "This feature is currently under construction and will be available soon.",
@@ -179,6 +197,7 @@
       "documentation": "Documentation"
     },
     "mainMenu": {
+      "cart": "Shopping Cart",
       "aasList": "AAS List",
       "dashboard": "Dashboard",
       "findOutMore": "Find out more",
@@ -190,6 +209,23 @@
     }
   },
   "pages": {
+    "cart": {
+      "header": "Cart",
+      "subHeader": "You have added the following products to your cart.",
+      "buttonTooltip": "Go to cart",
+      "emptyCartMessage": "Your cart is empty",
+      "backToProducts": "Back to Products",
+      "productName": "Product",
+      "quantity": "Quantity",
+      "pricePerUnit": "Price per Unit",
+      "lineTotal": "Total",
+      "totalPrice": "Total Price",
+      "remove": "Remove",
+      "checkout": "Checkout",
+      "increaseQuantity": "Increase quantity",
+      "decreaseQuantity": "Decrease quantity",
+      "removeAriaLabel": "Remove {productName} from cart"
+    },
     "aasList": {
       "buttonTooltip": "Go to AAS",
       "compare": "Compare",
