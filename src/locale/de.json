@@ -205,7 +205,19 @@
     "cart": {
       "header": "Einkaufswagen",
       "subHeader": "In Ihrem Einkaufswagen sind die folgenden Produkte.",
-      "buttonTooltip": "Zum Einkaufswagen"
+      "buttonTooltip": "Zum Einkaufswagen",
+      "emptyCartMessage": "Ihr Einkaufswagen ist leer",
+      "backToProducts": "Zurück zu Produkten",
+      "productName": "Produkt",
+      "quantity": "Menge",
+      "pricePerUnit": "Preis pro Einheit",
+      "lineTotal": "Gesamt",
+      "totalPrice": "Gesamtpreis",
+      "remove": "Entfernen",
+      "checkout": "Zur Kasse",
+      "increaseQuantity": "Menge erhöhen",
+      "decreaseQuantity": "Menge verringern",
+      "removeAriaLabel": "{productName} aus dem Warenkorb entfernen"
     },
     "aasList": {
       "buttonTooltip": "Zur AAS",

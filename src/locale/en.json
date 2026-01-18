@@ -205,7 +205,19 @@
     "cart": {
       "header": "Cart",
       "subHeader": "You have added the following products to your cart.",
-      "buttonTooltip": "Got to cart"
+      "buttonTooltip": "Go to cart",
+      "emptyCartMessage": "Your cart is empty",
+      "backToProducts": "Back to Products",
+      "productName": "Product",
+      "quantity": "Quantity",
+      "pricePerUnit": "Price per Unit",
+      "lineTotal": "Total",
+      "totalPrice": "Total Price",
+      "remove": "Remove",
+      "checkout": "Checkout",
+      "increaseQuantity": "Increase quantity",
+      "decreaseQuantity": "Decrease quantity",
+      "removeAriaLabel": "Remove {productName} from cart"
     },
     "aasList": {
       "buttonTooltip": "Go to AAS",

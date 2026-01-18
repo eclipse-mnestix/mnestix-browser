@@ -205,7 +205,19 @@
     "cart": {
       "header": "Carrito de compras",
       "subHeader": "Aquí puede ver los productos que ha añadido a su carrito de compras.",
-      "buttonTooltip": "Ir al carrito de compras"
+      "buttonTooltip": "Ir al carrito de compras",
+      "emptyCartMessage": "Su carrito está vacío",
+      "backToProducts": "Volver a productos",
+      "productName": "Producto",
+      "quantity": "Cantidad",
+      "pricePerUnit": "Precio por unidad",
+      "lineTotal": "Total",
+      "totalPrice": "Precio total",
+      "remove": "Eliminar",
+      "checkout": "Finalizar compra",
+      "increaseQuantity": "Aumentar cantidad",
+      "decreaseQuantity": "Disminuir cantidad",
+      "removeAriaLabel": "Eliminar {productName} del carrito"
     },
     "aasList": {
       "buttonTooltip": "Ir a AAS",
