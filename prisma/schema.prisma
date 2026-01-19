@@ -8,7 +8,6 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./database/mnestix-database.db"
 }
 
 model ConnectionType {

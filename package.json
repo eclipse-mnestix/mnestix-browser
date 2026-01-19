@@ -5,7 +5,7 @@
   "private": true,
   "license": "MIT",
   "engines": {
-    "node": "^22.0.0"
+    "node": "^24.13.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
@@ -59,6 +59,7 @@
     "@mui/system": "^7.1.0",
     "@mui/x-date-pickers": "^8.17.0",
     "@mui/x-tree-view": "^8.10.2",
+    "@prisma/adapter-better-sqlite3": "^7.2.0",
     "@prisma/client": "^7.2.0",
     "@svgr/webpack": "^8.1.0",
     "buffer": "^6.0.3",
@@ -83,10 +84,10 @@
     "uuid": "^13.0.0"
   },
   "scripts": {
-    "dev": "yarn prisma migrate deploy && yarn prisma generate && next dev --turbo",
-    "debug": "yarn prisma migrate deploy && yarn prisma generate && next dev",
+    "dev": "yarn prisma:migrate && yarn prisma:generate && next dev --turbo",
+    "debug": "yarn prisma:migrate && yarn prisma:generate && next dev",
     "build": "next build",
-    "start": "yarn prisma migrate deploy && yarn prisma generate && next start",
+    "start": "yarn prisma:migrate && yarn prisma:generate && next start",
     "format": "prettier --write ./",
     "lint": "eslint src cypress --no-warn-ignored",
     "typecheck": "tsc --noEmit",
@@ -108,7 +109,9 @@
     "docker:keycloak": "docker compose -f compose.yml -f docker-compose/compose.keycloak.yml up",
     "docker:azure": "docker compose -f compose.yml -f docker-compose/compose.azure_ad.yml up",
     "docker:rbac": "docker compose -f compose.yml -f docker-compose/compose.dynamic-rbac.yml up",
-    "docker:proxy": "docker compose -f compose.yml -f docker-compose/compose.mnestix.keycloak.yml up -d"
+    "docker:proxy": "docker compose -f compose.yml -f docker-compose/compose.mnestix.keycloak.yml up -d",
+    "prisma:migrate": "yarn prisma migrate deploy --config prisma/prisma.config.ts",
+    "prisma:generate": "yarn prisma generate --config prisma/prisma.config.ts"
   },
   "browserslist": {
     "production": [
