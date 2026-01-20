@@ -19,8 +19,8 @@ WORKDIR /app
 COPY . .
 
 # Run initial database setup: apply migrations and generate Prisma client
-RUN yarn prisma migrate deploy
-RUN yarn prisma generate
+RUN yarn prisma:migrate
+RUN yarn prisma:generate
 
 ENV NO_TYPECHECK=1
 ENV NO_LINT=1
