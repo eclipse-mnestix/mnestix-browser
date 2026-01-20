@@ -46,7 +46,8 @@
     "types": [
       "./svgr.d.ts",
       "node",
-      "jest"
+      "jest",
+      "jsdom"
     ],
     "incremental": true
   },
@@ -61,7 +62,8 @@
     "src/**/*.tsx",
     "./dist/types/**/*.ts",
     "dist/types/**/*.ts",
-    "dist/dev/types/**/*.ts"
+    "dist/dev/types/**/*.ts",
+    "./dist/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

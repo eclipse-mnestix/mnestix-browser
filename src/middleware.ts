@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 import { routing } from 'i18n/routing';
-import { v4 as uuidv4 } from 'uuid';
 import { envs } from 'lib/env/MnestixEnv';
 
 // next-intl does also provide methods for navigation (useRouter etc.) but we
@@ -17,7 +16,7 @@ const unlocalizedPathsRegex = RegExp(
 
 export function middleware(req: NextRequest) {
     // Generate a unique correlation ID for tracking requests
-    const correlationId = uuidv4();
+    const correlationId = crypto.randomUUID();
     req.headers.set('x-correlation-id', correlationId);
 
     // Server actions require the response to stay untouched so that Next.js can
