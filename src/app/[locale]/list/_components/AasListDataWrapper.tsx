@@ -4,7 +4,7 @@ import { getAasListEntities } from 'lib/services/list-service/aasListApiActions'
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useState } from 'react';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
-import AasList from './AasList';
+import AasList, { SortOrder, SortableColumn, sortableColumns } from './AasList';
 import { useEnv } from 'app/EnvProvider';
 import { AasListComparisonHeader } from './AasListComparisonHeader';
 import { Box, Card, CardContent, IconButton, MenuItem, Select, Typography } from '@mui/material';
@@ -16,11 +16,15 @@ import { ApiResponseWrapperError } from 'lib/util/apiResponseWrapper/apiResponse
 import { AuthenticationPrompt } from 'components/authentication/AuthenticationPrompt';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { useSearchParams } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation'
 
 type AasListDataWrapperProps = {
-  repositoryUrl?: string;
-  hideRepoSelection?: boolean;
+    repositoryUrl?: string;
+    hideRepoSelection?: boolean;
 };
+
+const SEARCH_PARAM_SORT_BY_NAME: string = 'sortby'
+const SEARCH_PARAM_ORDER_NAME: string = 'order'
 
 export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }: AasListDataWrapperProps) {
     const [isLoadingList, setIsLoadingList] = useState(false);
@@ -29,10 +33,12 @@ export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }:
     const [selectedAasList, setSelectedAasList] = useState<string[]>();
     const searchParams = useSearchParams();
     const urlParam = searchParams?.get('url');
-    const [selectedRepository, setSelectedRepository] = useState<string | null |undefined>(repositoryUrl ? repositoryUrl : urlParam);
+    const [selectedRepository, setSelectedRepository] = useState<string | null | undefined>(repositoryUrl ? repositoryUrl : urlParam);
     const env = useEnv();
     const t = useTranslations('pages.aasList');
     const { showError } = useShowError();
+    const router = useRouter();
+    const pathname = usePathname();
 
     //Pagination
     const [currentCursor, setCurrentCursor] = useState<string>();
@@ -42,6 +48,34 @@ export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }:
 
     //Authentication
     const [needAuthentication, setNeedAuthentication] = useState<boolean>(false);
+
+    // checks the passed sorting params and returns an object if valid
+    const checkSortingParams = () => {
+        const sortBy = searchParams?.get(SEARCH_PARAM_SORT_BY_NAME);
+        const sortOrder = searchParams?.get(SEARCH_PARAM_ORDER_NAME);
+        // Check for valid data
+        if (sortBy &&
+            sortOrder &&
+            sortableColumns.includes(sortBy as SortableColumn) &&
+            ['asc', 'desc'].includes(sortOrder as SortOrder)
+        ) {
+            // Return valid props
+            return {
+                column: sortBy as SortableColumn,
+                order: sortOrder as SortOrder,
+            }
+        } else {
+            // invalid data
+            return undefined;
+        }
+    }
+
+    const updateSortingParams = (column: SortableColumn, order: SortOrder) => {
+        const params = new URLSearchParams(searchParams?.toString());
+        params.set(SEARCH_PARAM_SORT_BY_NAME, column);
+        params.set(SEARCH_PARAM_ORDER_NAME, order);
+        router.replace(`${pathname}?${params.toString()}`);
+    }
 
     const clearResults = () => {
         setAasList(undefined);
@@ -165,6 +199,8 @@ export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }:
                     selectedAasList={selectedAasList}
                     updateSelectedAasList={updateSelectedAasList}
                     comparisonFeatureFlag={env.COMPARISON_FEATURE_FLAG}
+                    initialSortOrder={checkSortingParams()}
+                    columnSortUpdateCallback={updateSortingParams}
                 ></AasList>
                 {pagination}
             </>
