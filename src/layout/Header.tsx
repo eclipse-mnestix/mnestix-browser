@@ -39,9 +39,11 @@ export function Header() {
         <>
             <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
                 <Toolbar disableGutters>
+                    {/* Login button for desktop */}
                     <Box display="flex" alignItems="center">
                         <MainMenu />
                         {useAuthentication && !isMobile && (
+
                             <LoginButton
                                 mnestixRole={mnestixRole}
                                 name={getAuthName() ?? ''}
@@ -60,6 +62,7 @@ export function Header() {
                             <HeaderLogo />
                         </Box>
                     </StyledLogoWrapper>
+                    {/* Login button for mobile */}
                     <Box display="flex" alignItems="center" marginLeft="auto">
                         {
                             useAuthentication && isMobile && (

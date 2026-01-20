@@ -50,6 +50,7 @@ export default function AasList(props: AasListProps) {
     const locale = useLocale();
     const MAX_SELECTED_ITEMS = 3;
 
+    // Set initial state for sorting based on url params
     const [sortColumn, setSortColumn] = useState<SortableColumn | null>(props.initialSortOrder ? props.initialSortOrder.column : null);
     const [sortOrder, setSortOrder] = useState<SortOrder>(props.initialSortOrder ? props.initialSortOrder.order : 'asc');
 

@@ -70,6 +70,7 @@ export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }:
         }
     }
 
+    /// Updates the sorting parameters in the url based on user selection
     const updateSortingParams = (column: SortableColumn, order: SortOrder) => {
         const params = new URLSearchParams(searchParams?.toString());
         params.set(SEARCH_PARAM_SORT_BY_NAME, column);
