@@ -14,3 +14,4 @@ cypress-artifacts
 Dockerfile
 docker-compose
 prisma/database
+prisma/generated

@@ -1,6 +1,6 @@
 'use server';
 
-import { ConnectionType } from '@prisma/client';
+import { ConnectionType } from '../../../prisma/generated/client';
 import logger from 'lib/util/Logger';
 import { PrismaConnector } from 'lib/services/database/PrismaConnector';
 import type { InfrastructureFormData } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';

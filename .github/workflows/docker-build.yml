@@ -149,6 +149,9 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Generate Prisma Client
+        run: yarn prisma:generate
+
       - name: Run unit tests
         run: npx jest
 
@@ -168,6 +171,9 @@ jobs:
           cache: "yarn"
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+
+      - name: Generate Prisma Client
+        run: yarn prisma:generate
 
       - name: Typescript check
         run: yarn typecheck
