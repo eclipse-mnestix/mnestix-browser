@@ -2,6 +2,11 @@ import { AppBar, Box, styled, Toolbar } from '@mui/material';
 import MainMenu from './menu/MainMenu';
 import { HeaderLogo } from './HeaderLogo';
 import { LanguageSelector } from './LanguageSelector';
+import { MnestixRole } from 'components/authentication/AllowedRoutes';
+import { useAuth } from 'lib/hooks/UseAuth';
+import LoginButton from './LoginButton';
+import { useIsMobile } from 'lib/hooks/UseBreakpoints';
+import { useEnv } from 'app/EnvProvider';
 
 const Offset = styled(Box)(({ theme }) => theme.mixins.toolbar);
 
@@ -18,25 +23,58 @@ const StyledLogoWrapper = styled(Box)(() => ({
 }));
 
 export function Header() {
+    const auth = useAuth();
+    const isMobile = useIsMobile();
+    const env = useEnv();
+    const useAuthentication = env.AUTHENTICATION_FEATURE_FLAG;
+    const mnestixRole = auth.getAccount()?.user.mnestixRole ?? MnestixRole.MnestixGuest;
+    const getAuthName = () => {
+        const user = auth?.getAccount()?.user;
+        if (!user) return;
+        if (user.email) return user.email;
+        if (user.name) return user.name;
+        return;
+    };
     return (
         <>
             <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
                 <Toolbar disableGutters>
-                    <MainMenu />
+                    {/* Login button for desktop */}
+                    <Box display="flex" alignItems="center">
+                        <MainMenu />
+                        {useAuthentication && !isMobile && (
+
+                            <LoginButton
+                                mnestixRole={mnestixRole}
+                                name={getAuthName() ?? ''}
+                                isLoggedIn={auth.isLoggedIn}
+                            />
+                        )}
+                    </Box>
                     <StyledLogoWrapper
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
-                        width="100%"
-                        marginRight="18%"
-                        position="absolute"
-                        alignSelf="center"
+                        flexGrow={1}
+                        minWidth={0}
                     >
                         <Box className="logo">
                             <HeaderLogo />
                         </Box>
                     </StyledLogoWrapper>
-                    <LanguageSelector />
+                    {/* Login button for mobile */}
+                    <Box display="flex" alignItems="center" marginLeft="auto">
+                        {
+                            useAuthentication && isMobile && (
+                                <LoginButton
+                                    mnestixRole={mnestixRole}
+                                    name={getAuthName() ?? ''}
+                                    isLoggedIn={auth.isLoggedIn}
+                                />
+                            )
+                        }
+                        <LanguageSelector />
+                    </Box>
                 </Toolbar>
             </AppBar>
             <Offset />

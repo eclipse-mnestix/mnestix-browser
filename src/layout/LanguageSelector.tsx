@@ -21,8 +21,8 @@ const languageOptions = [
  * Styled selector -> select component as a dropdown to select language
  */
 const LanguageSelect = styled(Select)(({ theme }) => ({
-    marginLeft: 'auto',
-    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    marginRight: theme.spacing(1.5),
     backgroundColor: 'transparent', //takes background color and does not overlap if mobile is narrow
     borderRadius: 0,
     width: 'auto',
