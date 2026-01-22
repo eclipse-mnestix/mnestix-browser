@@ -63,7 +63,8 @@
     "./dist/types/**/*.ts",
     "dist/types/**/*.ts",
     "dist/dev/types/**/*.ts",
-    "./dist/dev/types/**/*.ts"
+    "./dist/dev/types/**/*.ts",
+    "./prisma/generated/client/*.ts"
   ],
   "exclude": [
     "node_modules"
