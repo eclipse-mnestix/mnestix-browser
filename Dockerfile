@@ -1,4 +1,4 @@
-FROM node:22-alpine AS base
+FROM node:24-alpine AS base
 RUN apk update && apk add --no-cache openssl
 
 FROM base AS deps
@@ -19,8 +19,8 @@ WORKDIR /app
 COPY . .
 
 # Run initial database setup: apply migrations and generate Prisma client
-RUN yarn prisma migrate deploy
-RUN yarn prisma generate
+RUN yarn prisma:migrate
+RUN yarn prisma:generate
 
 ENV NO_TYPECHECK=1
 ENV NO_LINT=1
@@ -30,7 +30,7 @@ FROM base AS production
 WORKDIR /app
 
 ENV NODE_ENV=production
-RUN yarn add prisma@6.19.0
+RUN yarn add prisma@7.2.0
 
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
@@ -52,7 +52,7 @@ FROM deps AS dev
 ENV NODE_ENV=development
 COPY . .
 
-RUN yarn prisma migrate deploy
-RUN yarn prisma generate
+RUN yarn prisma:migrate
+RUN yarn prisma:generate
 
 CMD [ "yarn", "dev"]

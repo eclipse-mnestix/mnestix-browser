@@ -7,6 +7,8 @@ import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { useLocale } from 'use-intl';
 import { useTranslations } from 'next-intl';
 import { MultiLanguageProperty } from 'lib/api/aas/models';
+import { useEnv } from 'app/EnvProvider';
+import { renderHighlight } from '../../HighlightBoxExperimental';
 
 type MultiLanguagePropertyComponentProps = {
     readonly mLangProp: MultiLanguageProperty;
@@ -19,6 +21,8 @@ export function MultiLanguagePropertyComponent(props: MultiLanguagePropertyCompo
     const value = getTranslationText(mLangProp, locale);
     const [isHovered, setIsHovered] = useState(false);
     const notificationSpawner = useNotificationSpawner();
+    const env = useEnv();
+    const highlightData = env.EXPERIMENTAL_HIGHLIGHT_DATA_FLAG;
 
     const handleCopyValue = () => {
         if (value) {
@@ -72,6 +76,7 @@ export function MultiLanguagePropertyComponent(props: MultiLanguagePropertyCompo
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
+            {renderHighlight(highlightData, props.mLangProp)}
             <Typography data-testid="mlproperty-content">{value || '-'}</Typography>
             {renderCopyButton()}
         </Box>

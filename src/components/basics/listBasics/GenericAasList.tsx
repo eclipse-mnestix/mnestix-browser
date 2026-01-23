@@ -48,6 +48,11 @@ export default function GenericAasList({ data, ...config }: AasListProps) {
                                     {t('repositoryUrl')}
                                 </TableCell>
                             )}
+                            {config.showInfrastructureName && (
+                                <TableCell sx={tableHeaderText} data-testid="list-header-infrastructureName">
+                                    {t('infrastructureName')}
+                                </TableCell>
+                            )}
                             {config.showDiscoveryUrl && (
                                 <TableCell sx={tableHeaderText} data-testid="list-header-discoveryUrl">
                                     {t('discoveryUrl')}

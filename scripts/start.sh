@@ -20,12 +20,12 @@ echo -e '\033[0m' # Reset to default color
 
 # Apply any new database migrations to ensure the schema is up-to-date with the latest application version.
 # This step supports upgrades for existing databases by applying pending migrations before starting the application.
-status_output=$(yarn prisma migrate status --schema=/app/prisma/schema.prisma 2>&1 || true)
+status_output=$(yarn prisma migrate status --config prisma/prisma.config.ts 2>&1 || true)
 if echo "$status_output" | grep -q "Database schema is up to date!"; then
   echo "No pending migrations found."
 else
   echo "Pending migrations found, applying them..."
-  yarn prisma migrate deploy --schema=/app/prisma/schema.prisma
+  yarn prisma migrate deploy --config prisma/prisma.config.ts
 fi
 
 # Validate envs for production

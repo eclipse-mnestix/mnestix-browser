@@ -1,4 +1,4 @@
-FROM cypress/included:14.5.3
+FROM cypress/included:cypress-15.8.2-node-24.13.0-chrome-143.0.7499.192-1-ff-147.0-edge-143.0.3650.139-1
 
 ENV NO_COLOR=1
 

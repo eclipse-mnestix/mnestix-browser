@@ -20,7 +20,9 @@ export function MarkingsComponent(props: MarkingsComponentProps) {
         let additionalText: Property | undefined;
 
         let idShortPath = '';
-        if (props.submodelElement?.idShort) {
+        if (props.submodelElement?.modelType == 'SubmodelElementList') {
+            idShortPath = props.submodelElement?.idShort + encodeURIComponent('[' + index.toString() + ']');
+        } else if (props.submodelElement?.idShort) {
             idShortPath = props.submodelElement?.idShort + '.' + el.idShort;
         }
 

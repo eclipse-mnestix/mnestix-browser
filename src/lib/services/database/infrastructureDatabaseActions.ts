@@ -1,6 +1,6 @@
 'use server';
 
-import { ConnectionType } from '@prisma/client';
+import { ConnectionType } from '../../../../prisma/generated/client';
 import logger from 'lib/util/Logger';
 import { PrismaConnector } from 'lib/services/database/PrismaConnector';
 import type { InfrastructureFormData } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
@@ -77,6 +77,7 @@ export async function getAasRepositoriesIncludingDefault() {
         id: 'default',
         url: envs.AAS_REPO_API_URL || '',
         infrastructureName: (await getDefaultInfrastructure()).name,
+        isDefault: true,
     };
     try {
         const aasRepositoriesDb = await getConnectionDataByTypeAction(getTypeAction(ConnectionTypeEnum.AAS_REPOSITORY));
@@ -84,6 +85,23 @@ export async function getAasRepositoriesIncludingDefault() {
         return [defaultAasRepository, ...aasRepositoriesDb];
     } catch (error) {
         logger.error('Failed to fetch AAS repositories', error);
+        return [];
+    }
+}
+
+export async function getAasRegistriesIncludingDefault() {
+    const defaultAasRegistry = {
+        id: 'default',
+        url: envs.REGISTRY_API_URL || '',
+        infrastructureName: (await getDefaultInfrastructure()).name,
+        isDefault: true,
+    };
+    try {
+        const aasRegistriesDb = await getConnectionDataByTypeAction(getTypeAction(ConnectionTypeEnum.AAS_REGISTRY));
+
+        return [defaultAasRegistry, ...aasRegistriesDb];
+    } catch (error) {
+        logger.error('Failed to fetch AAS registries', error);
         return [];
     }
 }

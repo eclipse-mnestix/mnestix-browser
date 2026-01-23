@@ -24,9 +24,81 @@ Mnestix provides the following configuration options. You can adapt the values i
 | `TRANSFER_FEATURE_FLAG`              | false                  | Enables or disables the Transfer Feature in the frontend. If enabled, it is possible to import a viewed AAS to a configured repository. This feature is currently being developed.            |
 | `AUTHENTICATION_FEATURE_FLAG`        | false                  | Enable or disable the authentication in the frontend. (Needs the Mnestix Backend to work)                                                                                                     |
 | <del>`COMPARISON_FEATURE_FLAG`</del> | false **always false** | Enables or disables the comparison feature. **This feature is currently disabled after 1.6.0. If you need this feature feel free to contact us to find a solution.**                          |
-| `PRODUCT_VIEW_FEATURE_FLAG`          | false                  | Enables or disables the product view feature.                                                                                                                                                 |
 | `WHITELIST_FEATURE_FLAG`             | false                  | Enables or disables the feature for showing/hiding specific submodels.                                                                                                                        |
 | `SUBMODEL_WHITELIST`                 |                        | This variable can be used to specify a list of submodel semantic ids in order to show them when the `WHITELIST_FEATURE_FLAG` is set to true.                                                  |
+| `EXTERNAL_LINKS`                     |                        | JSON array of external links to display in the main menu. See [External Links](#external-links) for details.                                                                                  |
+
+#### Experimental Features
+
+| Name                                     | Default value | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| ---------------------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `EXPERIMENTAL_PRODUCT_VIEW_FEATURE_FLAG` | false         | Enables or disables the experimental product view feature.                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `EXPERIMENTAL_HIGHLIGHT_DATA_FLAG`       | false         | Enables highlighting of specific submodels, properties, and multilang properties rendered with the default/fallback visualization. When enabled, elements can be visually emphasized using a `HighlightColor` qualifier. Example qualifier configuration: `{"kind": "ValueQualifier", "type": "HighlightColor", "value": "rgb(255,0,0)", "valueType": "xs:string"}`. For visual examples, see [PR #491](https://github.com/eclipse-mnestix/mnestix-browser/pull/491). |
+
+#### External Links
+
+You can configure custom external links to appear in the main menu by setting the `EXTERNAL_LINKS` environment variable. This variable accepts a JSON array of link objects.
+
+**Format:**
+
+```json
+[
+    {
+        "label": "Link Label",
+        "url": "https://example.com",
+        "icon": "OpenInNew",
+        "target": "_blank"
+    }
+]
+```
+
+**Properties:**
+
+- `label` (required): The display text for the link. Can be a string or an object with language codes for internationalization
+- `url` (required): The URL to navigate to
+- `icon` (optional): Either a Material-UI icon name (e.g., "OpenInNew", "Language", "MenuBook") or a base64 encoded image (e.g., "data:image/png;base64,...")
+- `target` (optional): Link target attribute, defaults to "\_blank"
+
+**Internationalization:**
+
+Labels support multiple languages using an object with language codes:
+
+```json
+{
+    "label": {
+        "en": "Documentation",
+        "de": "Dokumentation"
+    },
+    "url": "https://docs.example.com",
+    "icon": "MenuBook"
+}
+```
+
+The system will automatically display the label in the user's current language, with fallback to English if the translation is not available.
+
+**Available Material-UI Icons:**
+Some commonly used icons include: `OpenInNew`, `Link`, `Language`, `MenuBook`, `Description`, `Code`, `Help`, `Info`, `Launch`, `Public`, `Web`
+
+**Example Configuration (Simple):**
+
+```yaml
+environment:
+    EXTERNAL_LINKS: '[{"label":"Documentation","url":"https://docs.example.com","icon":"MenuBook","target":"_blank"},{"label":"Support","url":"https://support.example.com","icon":"Help"}]'
+```
+
+**Example Configuration (Multilingual):**
+
+```yaml
+environment:
+    EXTERNAL_LINKS: '[{"label":{"en":"Documentation","de":"Dokumentation"},"url":"https://docs.example.com","icon":"MenuBook"},{"label":{"en":"Support","de":"Unterstützung"},"url":"https://support.example.com","icon":"Help"}]'
+```
+
+**Example with Base64 Image:**
+
+```yaml
+environment:
+    EXTERNAL_LINKS: '[{"label":{"en":"Custom Link","de":"Benutzerdefinierter Link"},"url":"https://example.com","icon":"data:image/png;base64,iVBORw0KG...","target":"_blank"}]'
+```
 
 #### Keycloak
 
@@ -44,15 +116,16 @@ See [Keycloak Configuration](Keycloak-Configuration) for more information about 
 
 ### Branding
 
-| Name                                  | Default value           | Description                                                                                                                                                                                      |
-| ------------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `LOCK_TIMESERIES_PERIOD_FEATURE_FLAG` | false                   | Enables or disables the selection of the timerange in the TimeSeries submodel.                                                                                                                   |
-| `THEME_PRIMARY_COLOR`                 | Mnestix Primary Color   | Changes the primary color of Mnestix Browser, e.g. '#00ff00'. The following formats are supported: #nnn, #nnnnnn, rgb(), rgba(), hsl(), hsla(), color()                                          |
-| `THEME_SECONDARY_COLOR`               | Mnestix Secondary Color | Changes the secondary color of Mnestix Browser, e.g. '#0d2'. The following formats are supported: #nnn, #nnnnnn, rgb(), rgba(), hsl(), hsla(), color()                                           |
-| `THEME_LOGO_MIME_TYPE`                |                         | Used in parsing the logo mounted `-v /path/to/logo:/app/public/logo` the mime type is needed, e.g. `image/svg+xml`, `image/png`, `image/jpg`                                                     |
-| `THEME_LOGO_URL`                      |                         | This variable **overwrites** the Logo in the theme, and thus the environment variable `THEME_LOGO_MIME_TYPE` will not be evaluated and it is not necessary to mount the image as specified below |
-| `IMPRINT_URL`                         |                         | Address that will be used in the imprint link. Will only show the link, if a value has been set.                                                                                                 |
-| `DATA_PRIVACY_URL`                    |                         | Address that will be used in the data privacy link. Will only show the link, if a value has been set.                                                                                            |
+| Name                                  | Default value           | Description                                                                                                                                                                                                 |
+| ------------------------------------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `LOCK_TIMESERIES_PERIOD_FEATURE_FLAG` | false                   | Enables or disables the selection of the timerange in the TimeSeries submodel.                                                                                                                              |
+| `THEME_PRIMARY_COLOR`                 | Mnestix Primary Color   | Changes the primary color of Mnestix Browser, e.g. '#00ff00'. The following formats are supported: #nnn, #nnnnnn, rgb(), rgba(), hsl(), hsla(), color()                                                     |
+| `THEME_SECONDARY_COLOR`               | Mnestix Secondary Color | Changes the secondary color of Mnestix Browser, e.g. '#0d2'. The following formats are supported: #nnn, #nnnnnn, rgb(), rgba(), hsl(), hsla(), color()                                                      |
+| `THEME_LOGO_MIME_TYPE`                |                         | Used in parsing the logo mounted `-v /path/to/logo:/app/public/logo` the mime type is needed, e.g. `image/svg+xml`, `image/png`, `image/jpg`                                                                |
+| `THEME_LOGO_URL`                      |                         | This variable **overwrites** the Logo in the theme, and thus the environment variable `THEME_LOGO_MIME_TYPE` will not be evaluated and it is not necessary to mount the image as specified below            |
+| `THEME_MENU_COLOR`                    | `THEME_PRIMARY_COLOR`   | This variable **overwrites** the color of the Header and the Menu (normally the same as `THEME_PRIMARY_COLOR`) in order to support whitelabelling with brighter colors / colors that conflict with the logo |
+| `IMPRINT_URL`                         |                         | Address that will be used in the imprint link. Will only show the link, if a value has been set.                                                                                                            |
+| `DATA_PRIVACY_URL`                    |                         | Address that will be used in the data privacy link. Will only show the link, if a value has been set.                                                                                                       |
 
 ### How to set a custom logo
 

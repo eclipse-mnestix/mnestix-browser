@@ -4,6 +4,8 @@ import { ReactElement, useState } from 'react';
 import { Submodel } from 'lib/api/aas/models';
 import { useTranslations } from 'next-intl';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
+import { useEnv } from 'app/EnvProvider';
+import { renderHighlight } from 'app/[locale]/viewer/_components/HighlightBoxExperimental';
 
 export type TabSelectorItem = {
     readonly id: string;
@@ -87,6 +89,8 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
     const [hoveredItem, setHoveredItem] = useState<TabSelectorItem>();
     const isMobile = useIsMobile();
     const t = useTranslations('components.verticalTabSelector.errors');
+    const env = useEnv();
+    const highlightData = env.EXPERIMENTAL_HIGHLIGHT_DATA_FLAG;
 
     const selectedCSSClass = (id: string) => (id === props.selected?.id ? 'selected' : '');
 
@@ -135,6 +139,8 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
                                     flex: 1,
                                 }}
                             >
+                                {renderHighlight(highlightData, item.submodelData)}
+
                                 <Typography
                                     sx={{
                                         overflow: 'hidden',

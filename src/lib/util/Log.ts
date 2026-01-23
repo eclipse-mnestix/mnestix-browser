@@ -120,7 +120,9 @@ class NulledLog implements Console {
         this.logs.push({ level: 'warning', message: JSON.stringify(message) });
     }
 
-    Console: console.ConsoleConstructor;
+    // There were errors in the type definitions for Console in @types/node,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    Console: any;
 
     profile(_label?: string | undefined): void {
         throw new Error('Method not implemented.');

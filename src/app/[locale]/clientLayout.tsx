@@ -12,6 +12,7 @@ import { InvalidSessionHandler } from 'components/authentication/InvalidSessionH
 import { AasStoreProvider } from 'stores/AasStore';
 import ErrorBoundary from 'components/basics/ErrorBoundary';
 import { useTranslations } from 'next-intl';
+import { HealthCheckProvider } from 'components/contexts/HealthCheckContext';
 
 export type ClientLayoutProps = {
     children: ReactNode;
@@ -31,15 +32,17 @@ export const ClientLayout = ({ children }: Readonly<ClientLayoutProps>) => {
                 <Internationalization>
                     <CustomThemeProvider>
                         <NotificationContextProvider>
-                            <AasStoreProvider>
-                                <LayoutRoot>
-                                    <ErrorBoundary message={t('errors.generic')}>
-                                        <Box flexGrow={1} data-testid="notifications">
-                                            {children}
-                                        </Box>
-                                    </ErrorBoundary>
-                                </LayoutRoot>
-                            </AasStoreProvider>
+                            <HealthCheckProvider>
+                                <AasStoreProvider>
+                                    <LayoutRoot>
+                                        <ErrorBoundary message={t('errors.generic')}>
+                                            <Box flexGrow={1} data-testid="notifications">
+                                                {children}
+                                            </Box>
+                                        </ErrorBoundary>
+                                    </LayoutRoot>
+                                </AasStoreProvider>
+                            </HealthCheckProvider>
                         </NotificationContextProvider>
                     </CustomThemeProvider>
                 </Internationalization>

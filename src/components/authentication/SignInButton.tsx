@@ -3,6 +3,9 @@ import { Login } from '@mui/icons-material';
 import { useAuth } from 'lib/hooks/UseAuth';
 import { useTranslations } from 'next-intl';
 
+/**
+ * Button that triggers the sign-in flow when clicked.
+ */
 const SignInButton = () => {
     const auth = useAuth();
     const t = useTranslations('navigation.mainMenu');

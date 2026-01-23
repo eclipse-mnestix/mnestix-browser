@@ -1,5 +1,10 @@
 import { Box, IconButton, Link, Skeleton, Tooltip, Typography } from '@mui/material';
-import { MultiLanguageProperty, Property, Range, ConceptDescription } from 'lib/api/aas/models';
+import {
+    MultiLanguageProperty,
+    Property,
+    Range,
+    ConceptDescription,
+} from 'lib/api/aas/models';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { ContentCopy, OpenInNew } from '@mui/icons-material';
@@ -8,6 +13,8 @@ import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { useLocale } from 'use-intl';
 import { useTranslations } from 'next-intl';
 import { getUnitFromConceptDescription } from 'app/[locale]/viewer/_components/submodel/technical-data/ConceptDescriptionHelper';
+import { useEnv } from 'app/EnvProvider';
+import { renderHighlight } from '../../HighlightBoxExperimental';
 
 type GenericPropertyComponentProps = {
     readonly property?: Property;
@@ -28,6 +35,8 @@ export function GenericPropertyComponent(props: GenericPropertyComponentProps) {
     const locale = useLocale();
     const [isHovered, setIsHovered] = useState(false);
     const notificationSpawner = useNotificationSpawner();
+    const env = useEnv();
+    const highlightData = env.EXPERIMENTAL_HIGHLIGHT_DATA_FLAG;
 
     let value: string | null = null;
     if (mLangProp) {
@@ -115,6 +124,7 @@ export function GenericPropertyComponent(props: GenericPropertyComponentProps) {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
+            {renderHighlight(highlightData, property)}
             <Typography data-testid="property-content">
                 {value || t('labels.notAvailable')}
                 <span> </span>

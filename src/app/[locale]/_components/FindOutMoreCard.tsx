@@ -1,7 +1,6 @@
 'use client';
 
-import { Box, Divider, Link, Typography, useTheme } from '@mui/material';
-import { OpenInNew } from '@mui/icons-material';
+import { Box, Typography, useTheme } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import { useTranslations } from 'next-intl';
 
@@ -10,7 +9,14 @@ export function FindOutMoreCard() {
     const theme = useTheme();
 
     return (
-        <Box display="flex" flexDirection="column" sx={{ m: 2 }} alignItems="center">
+        <Box
+            display="flex"
+            flex={1}
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="flex-start"
+            sx={{ px: 3, py: 4, gap: 1, height: '100%', width: '100%' }}
+        >
             <Box
                 sx={{
                     backgroundColor: theme.palette.secondary.main,
@@ -30,24 +36,6 @@ export function FindOutMoreCard() {
             </Typography>
             <Typography align="center" color="text.secondary">
                 {t('findOutMoreText')}
-            </Typography>
-
-            <Divider
-                orientation="horizontal"
-                flexItem
-                sx={{
-                    marginTop: '16px',
-                }}
-            />
-            <Typography align="center">
-                <Link
-                    href="https://mnestix.io"
-                    target="_blank"
-                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 2 }}
-                >
-                    <span>mnestix.io </span>
-                    <OpenInNew fontSize="small" />
-                </Link>
             </Typography>
         </Box>
     );

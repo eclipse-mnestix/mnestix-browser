@@ -9,6 +9,7 @@ import {
 } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import ServiceReachable from 'test-utils/TestUtils';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
+import { PaginationData } from 'lib/api/basyx-v3/types';
 
 export type AasRegistryEndpointEntryInMemory = {
     endpoint: URL | string;
@@ -29,6 +30,30 @@ export class RegistryServiceApiInMemory implements IRegistryServiceApi {
 
     getBaseUrl(): string {
         return this.baseUrl;
+    }
+
+    async getAllAssetAdministrationShellDescriptors(
+        limit?: number,
+        cursor?: string,
+    ): Promise<ApiResponseWrapper<PaginationData<AssetAdministrationShellDescriptor[]>>> {
+        if (this.reachable !== ServiceReachable.Yes)
+            return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Service not reachable');
+
+        const startIndex = cursor ? parseInt(cursor, 10) : 0;
+        const endIndex = limit ? startIndex + limit : this.registryShellDescriptors.length;
+        const descriptors = this.registryShellDescriptors.slice(startIndex, endIndex);
+        const nextCursor = endIndex < this.registryShellDescriptors.length ? endIndex.toString() : '';
+
+        const paginationData: PaginationData<AssetAdministrationShellDescriptor[]> = {
+            result: descriptors,
+            paging_metadata: {
+                cursor: nextCursor,
+            },
+        };
+
+        const response = new Response(JSON.stringify(paginationData), options);
+        const value = await wrapResponse<PaginationData<AssetAdministrationShellDescriptor[]>>(response);
+        return Promise.resolve(value);
     }
 
     async postAssetAdministrationShellDescriptor(
