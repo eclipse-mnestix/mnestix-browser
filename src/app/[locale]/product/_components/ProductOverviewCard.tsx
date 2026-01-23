@@ -17,7 +17,7 @@ import { useProductImageUrl } from 'lib/hooks/UseProductImageUrl';
 import { useFindValueByIdShort } from 'lib/hooks/useFindValueByIdShort';
 import { ActionMenu } from './ProductActionMenu';
 import LinkIcon from '@mui/icons-material/Link';
-import { MnestixConnection } from '@prisma/client';
+import { MnestixConnection } from '../../../../../prisma/generated/client';
 import {
     AssetAdministrationShell,
     Property,
