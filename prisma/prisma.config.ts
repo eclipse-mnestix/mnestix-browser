@@ -1,6 +1,5 @@
 import 'dotenv/config';
 import { defineConfig } from "prisma/config";
-import { DATABASE_URL } from "../src/constants";
 
 export default defineConfig({
   schema: './schema.prisma',
@@ -9,6 +8,6 @@ export default defineConfig({
     seed: 'tsx ./seed.ts',
   },
   datasource: { 
-    url: DATABASE_URL,
+    url: 'file:./database/mnestix-database.db',
   }
 });

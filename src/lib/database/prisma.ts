@@ -1,12 +1,11 @@
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 import { PrismaClient } from '../../../prisma/generated/client';
-import { DATABASE_URL } from '../../constants';
 
 /**
  * For using prisma with Next.js, it is recommended to use the PrismaClient as Singleton.
  */
 const prismaClientSingleton = () => {
-    const adapter = new PrismaBetterSqlite3({ url: DATABASE_URL });
+    const adapter = new PrismaBetterSqlite3({ url: 'file:./prisma/database/mnestix-database.db' });
     return new PrismaClient({ adapter });
 };
 
