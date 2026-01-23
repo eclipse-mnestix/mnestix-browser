@@ -29,6 +29,13 @@ docker command.
   **Mnestix Api on port 5064 - http://localhost:5064** <br>
   **AAS Repo on port 8081 - http://localhost:8081/swagger-ui/index.html**
 
+- **docker-compose/compose.digital-twin-registry.yml** - adds the BaSyx Digital Twin registry instead
+  of the AAS Registry, SM Registry and AAS Discovery. These services will be disabled and replaced
+  with the Digital Twin Registry service.
+  More information can be found [here](https://github.com/eclipse-basyx/basyx-java-server-sdk/tree/main/basyx.aasdigitaltwinregistry)
+  or in the [corresponding GitHub Issue](https://github.com/eclipse-mnestix/mnestix-browser/issues/498).
+  Run `docker compose -f compose.yml -f docker-compose/compose.digital-twin-registry.yml up` to see it working.
+
 - **docker-compose/compose.test.yml** - override file used to configure and run end-to-end (E2E) tests using Cypress.
   When this file is executed, it will start the necessary services for the application and execute the Cypress tests.
   If any test fails, the results and logs will be saved in a designated directory for further analysis.
