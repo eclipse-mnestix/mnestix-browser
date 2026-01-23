@@ -30,17 +30,12 @@ services:
   mnestix-browser:
     environment:
       REGISTRY_API_URL: 'http://aas-digital-twin-registry:8081/'
-      SUBMODEL_REGISTRY_API_URL: 'http://aas-digital-twin-registry:8081/'
       # We do not need to adjust the Discovery URL as it already points to the Proxy which routes to the Digital Twin Registry
 
   mnestix-proxy:
     environment:
       ReverseProxy__Clusters__discoveryCluster__Destinations__destination1__Address: 'http://aas-digital-twin-registry:8081/'
 
-  submodel-registry:
-    profiles: ['do-not-start']
-    restart: 'no'
-    entrypoint: ['echo', 'Submodel Registry disabled in Digital Twin Registry setup.']
   aas-registry:
     profiles: ['do-not-start']
     restart: 'no'
