@@ -399,6 +399,15 @@
           "submodelRepositoryHint": "Submodel Repository kann aktuell nur über den separaten Abschnitt unten gesetzt werden.",
           "noDuplicatedNames": "Es dürfen keine zwei Repositorys mit dem gleichen Namen existieren."
         },
+        "preview": {
+          "title": "Repository-Vorschau",
+          "previewButton": "Vorschau",
+          "itemCount": "Anzahl Elemente",
+          "loading": "Wird geladen...",
+          "loadError": "Fehler beim Laden der Repository-Daten",
+          "loadCountHint": "URL eingeben um Elementanzahl zu laden",
+          "reloadCount": "Elementanzahl neu laden"
+        },
         "addButton": "Hinzufügen",
         "resetSuccessful": "Quellen wurden zurückgesetzt.",
         "submodelRepository": {
