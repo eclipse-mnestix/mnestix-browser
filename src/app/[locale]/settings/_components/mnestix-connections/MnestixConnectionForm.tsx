@@ -135,7 +135,7 @@ export function MnestixConnectionsForm(props: MnestixConnectionsFormProps) {
                     startIcon={<ControlPointIcon />}
                     onClick={() => {
                         setIsEditMode(true);
-                        append({ id: 'temp', type: dataConnectionType, url: '' });
+                        append({ id: 'temp', type: dataConnectionType, url: '', active: true });
                     }}
                 >
                     {t('addButton')}

@@ -11,6 +11,7 @@ export type DataSourceFormData = {
     image?: string;
     name?: string;
     commercialData?: string;
+    active: boolean;
 };
 
 export class PrismaConnector implements IPrismaConnector {
@@ -34,6 +35,7 @@ export class PrismaConnector implements IPrismaConnector {
                         image: formData.image,
                         name: formData.name,
                         commercialData: formData.commercialData,
+                        active: formData.active,
                     },
                 });
                 // If an entry exists in the db but NOT in the updated data, delete it from the db
@@ -54,6 +56,7 @@ export class PrismaConnector implements IPrismaConnector {
                         image: updated.image,
                         name: updated.name,
                         commercialData: updated.commercialData,
+                        active: updated.active,
                     },
                 });
             }
@@ -81,7 +84,13 @@ export class PrismaConnector implements IPrismaConnector {
     async getRepositoryConfigurationGroups() {
         return prisma?.mnestixConnection.findMany({
             where: {
-                type: { id: '0', typeName: 'AAS_REPOSITORY' },
+                type: {
+                    is: {
+                        id: '0',
+                        typeName: 'AAS_REPOSITORY',
+                    },
+                },
+                active: true,
             },
         });
     }

@@ -11,6 +11,7 @@
     "jsx": "preserve",
     "noEmit": true,
     "moduleResolution": "node",
+    "ignoreDeprecations": "6.0", // Ignore deprecations for version 6.0 because "modeResolution" and "baseUrl" are deprecated in TS 7.0
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
