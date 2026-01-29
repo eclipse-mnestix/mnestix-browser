@@ -399,6 +399,15 @@
           "submodelRepositoryHint": "Submodel Repository can currently only be set via the separate section below.",
           "noDuplicatedNames": "AAS repository names must be unique."
         },
+        "preview": {
+          "title": "Repository Preview",
+          "previewButton": "Preview",
+          "itemCount": "Number of items",
+          "loading": "Loading...",
+          "loadError": "Error loading repository data",
+          "loadCountHint": "Enter URL to load item count",
+          "reloadCount": "Reload item count"
+        },
         "addButton": "Add more",
         "resetSuccessful": "Connections were reset.",
         "submodelRepository": {

@@ -398,6 +398,15 @@
           "submodelRepositoryHint": "Actualmente, el repositorio de submodelos sólo puede configurarse a través de la siguiente sección.",
           "noDuplicatedNames": "No se permiten nombres duplicados"
         },
+        "preview": {
+          "title": "Vista previa del repositorio",
+          "previewButton": "Vista previa",
+          "itemCount": "Número de elementos",
+          "loading": "Cargando...",
+          "loadError": "Error al cargar los datos del repositorio",
+          "loadCountHint": "Ingrese la URL para cargar el número de elementos",
+          "reloadCount": "Recargar número de elementos"
+        },
         "addButton": "Añadir más",
         "resetSuccessful": "Las conexiones se han restaurado.",
         "submodelRepository": {
