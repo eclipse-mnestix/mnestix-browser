@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogContent, DialogTitle, Divider, FormControl, IconButton, Skeleton, TextField, Tooltip, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogContent, DialogTitle, Divider, FormControl, IconButton, Skeleton, TextField, Tooltip, Typography, Switch, FormControlLabel } from '@mui/material';
 import { Dispatch, Fragment, SetStateAction, useState, useEffect } from 'react';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import {
@@ -243,9 +243,33 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                             <IconButton>
                                 <RemoveCircleOutlineIcon onClick={() => remove(index)} />
                             </IconButton>
+                            <Controller
+                                name={`aasRepository.${index}.active`}
+                                control={control}
+                                defaultValue={field.active ?? true}
+                                render={({ field: controllerField }) => (
+                                    <FormControlLabel
+                                        label={t('aasRepository.activeLabel')}
+                                        control={
+                                            <Switch
+                                                checked={controllerField.value}
+                                                onChange={controllerField.onChange}
+                                            />
+                                        }
+                                    />
+                                )}
+                            />
                         </Box>
                     ) : (
-                        <Box display="flex" flexDirection="row" flex={1} gap={2}>
+                        <Box
+                            display="flex"
+                            flexDirection="row"
+                            flex={1}
+                            gap={1}
+                            sx={{
+                                opacity: getValues(`aasRepository.${index}.active`) === false ? 0.5 : 1,
+                            }}
+                        >
                             <Box display="flex" flexDirection="column" flex={1} gap={2}>
                                 <Box>
                                     <Typography sx={{ fontSize: '0.8rem', color: 'text.secondary' }}>
@@ -360,7 +384,7 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                     startIcon={<ControlPointIcon />}
                     onClick={() => {
                         setIsEditMode(true);
-                        append({ id: 'temp', type: 'AAS_REPOSITORY', url: '' });
+                        append({ id: 'temp', type: 'AAS_REPOSITORY', url: '', active: true });
                     }}
                 >
                     {t('addButton')}
