@@ -400,6 +400,15 @@
           "noDuplicatedNames": "Es dürfen keine zwei Repositorys mit dem gleichen Namen existieren.",
           "activeLabel": "Aktiv"
         },
+        "preview": {
+          "title": "Repository-Vorschau",
+          "previewButton": "Vorschau",
+          "itemCount": "Anzahl Elemente",
+          "loading": "Wird geladen...",
+          "loadError": "Fehler beim Laden der Repository-Daten",
+          "loadCountHint": "URL eingeben um Elementanzahl zu laden",
+          "reloadCount": "Elementanzahl neu laden"
+        },
         "addButton": "Hinzufügen",
         "resetSuccessful": "Quellen wurden zurückgesetzt.",
         "submodelRepository": {

@@ -399,6 +399,15 @@
           "noDuplicatedNames": "No se permiten nombres duplicados",
           "activeLabel": "activo"
         },
+        "preview": {
+          "title": "Vista previa del repositorio",
+          "previewButton": "Vista previa",
+          "itemCount": "Número de elementos",
+          "loading": "Cargando...",
+          "loadError": "Error al cargar los datos del repositorio",
+          "loadCountHint": "Ingrese la URL para cargar el número de elementos",
+          "reloadCount": "Recargar número de elementos"
+        },
         "addButton": "Añadir más",
         "resetSuccessful": "Las conexiones se han restaurado.",
         "submodelRepository": {

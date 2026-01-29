@@ -122,7 +122,6 @@ export function MnestixConnectionsCard() {
 
     async function saveConnectionData(data: ConnectionFormData) {
         try {
-            console.log(data)
             await upsertConnectionDataAction([...data.aasRepository, ...data.submodelRepository]);
             notificationSpawner.spawn({
                 message: t('messages.changesSavedSuccessfully'),

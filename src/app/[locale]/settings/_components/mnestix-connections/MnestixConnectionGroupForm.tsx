@@ -1,5 +1,5 @@
-import { Box, Button, Divider, FormControl, IconButton, Skeleton, TextField, Tooltip, Typography, Switch, FormControlLabel } from '@mui/material';
-import { Dispatch, Fragment, SetStateAction } from 'react';
+import { Box, Button, Dialog, DialogContent, DialogTitle, Divider, FormControl, IconButton, Skeleton, TextField, Tooltip, Typography, Switch, FormControlLabel } from '@mui/material';
+import { Dispatch, Fragment, SetStateAction, useState, useEffect } from 'react';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import {
     Control,
@@ -13,6 +13,10 @@ import { ConnectionFormData } from 'app/[locale]/settings/_components/mnestix-co
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { tooltipText } from 'lib/util/ToolTipText';
 import { useTranslations } from 'next-intl';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import AasList from 'app/[locale]/list/_components/AasList';
+import { AasListDto } from 'lib/services/list-service/ListService';
+import { getAasListEntities } from 'lib/services/list-service/aasListApiActions';
 
 export type MnestixConnectionsGroupFormProps = {
     readonly defaultUrl: string | undefined;
@@ -27,11 +31,81 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
     const { getValues, isLoading, setIsEditMode, isEditMode } = props;
     const control = props.control as Control<ConnectionFormData, never>;
     const t = useTranslations('pages.settings.connections');
+    const [previewDialogOpen, setPreviewDialogOpen] = useState(false);
+    const [selectedRepositoryForPreview, setSelectedRepositoryForPreview] = useState<{ url: string; name: string } | null>(null);
+    const [aasListData, setAasListData] = useState<AasListDto | undefined>(undefined);
+    const [isLoadingAasList, setIsLoadingAasList] = useState(false);
+    const [repositoryItemCounts, setRepositoryItemCounts] = useState<Record<number, number | null>>({});
+    const [isLoadingItemCounts, setIsLoadingItemCounts] = useState<Record<number, boolean>>({});
 
     const { fields, append, remove } = useFieldArray<ConnectionFormData>({
         control,
         name: 'aasRepository',
     });
+
+    const getTotalItemCount = async (repoUrl: string): Promise<number> => {
+        let totalCount = 0;
+        let cursor: string | undefined = undefined;
+        let hasMore = true;
+
+        while (hasMore) {
+            try {
+                const result = await getAasListEntities(repoUrl, 100, cursor);
+                if (result.success && result.entities) {
+                    totalCount += result.entities.length;
+                    cursor = result.cursor;
+                    hasMore = !!cursor && result.entities.length > 0;
+                } else {
+                    hasMore = false;
+                }
+            } catch (error) {
+                console.error('Error counting AAS items:', error);
+                hasMore = false;
+            }
+        }
+
+        return totalCount;
+    };
+
+    const handleLoadRepositoryInfo = async (repoUrl: string, repoName: string, index: number) => {
+        // Load total count
+        setIsLoadingItemCounts(prev => ({ ...prev, [index]: true }));
+        try {
+            const totalCount = await getTotalItemCount(repoUrl);
+            setRepositoryItemCounts(prev => ({ ...prev, [index]: totalCount }));
+        } catch (error) {
+            console.error('Error loading repository info:', error);
+            setRepositoryItemCounts(prev => ({ ...prev, [index]: null }));
+        } finally {
+            setIsLoadingItemCounts(prev => ({ ...prev, [index]: false }));
+        }
+    };
+
+    const handleOpenPreview = async (repoUrl: string, repoName: string) => {
+        setSelectedRepositoryForPreview({ url: repoUrl, name: repoName });
+        setIsLoadingAasList(true);
+        try {
+            const result = await getAasListEntities(repoUrl, 25);
+            setAasListData(result);
+        } catch (error) {
+            console.error('Error loading AAS list:', error);
+            setAasListData(undefined);
+        } finally {
+            setIsLoadingAasList(false);
+        }
+        setPreviewDialogOpen(true);
+    };
+
+    // Load repository item counts on component mount and when fields change
+    useEffect(() => {
+        fields.forEach((field, index) => {
+            const url = getValues(`aasRepository.${index}.url`);
+            const name = getValues(`aasRepository.${index}.name`);
+            if (url && repositoryItemCounts[index] === undefined) {
+                handleLoadRepositoryInfo(url, name ?? '', index);
+            }
+        });
+    }, [fields.length]);
 
     function validateNoTrailingSlash(value: string) {
         return !value || !value.endsWith('/') || t('urlFieldNoTrailingSlash');
@@ -42,12 +116,16 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
     }
 
     function getFormControl(field: FieldArrayWithId<ConnectionFormData, keyof ConnectionFormData>, index: number) {
+        const repoUrl = getValues(`aasRepository.${index}.url`);
+        const repoName = getValues(`aasRepository.${index}.name`);
+
         return (
             <FormControl fullWidth variant="filled" key={field.id}>
-                <Box display="flex" flex={1} flexDirection="row" mb={6} alignItems="center">
-                    <Typography variant="h4" mr={4} width="200px">
+                <Box display="flex" flex={1} flexDirection="column" mb={6}>
+                    <Typography variant="h4" mr={4} mb={2}>
                         {t('aasRepository.repositoryLabel')} {index + 1}
                     </Typography>
+
                     {isEditMode ? (
                         <Box display="flex" alignItems="center" flex={1} gap={1}>
                             <Box display="flex" alignItems="start" flex={1} gap={1}>
@@ -68,7 +146,7 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                             <TextField
                                                 {...field}
                                                 label={t('aasRepository.nameLabel')}
-                                                sx={{ flexGrow: 1, mr: 1 }}
+                                                sx={{ flexGrow: 1 }}
                                                 fullWidth={true}
                                                 error={!!error}
                                                 helperText={error ? error.message : ''}
@@ -87,7 +165,7 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                             <TextField
                                                 {...field}
                                                 label={t('aasRepository.imageUrlLabel')}
-                                                sx={{ flexGrow: 1, mr: 1 }}
+                                                sx={{ flexGrow: 1 }}
                                                 fullWidth={true}
                                                 error={!!error}
                                                 helperText={error ? error.message : ''}
@@ -105,7 +183,7 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                             <TextField
                                                 {...field}
                                                 label={t('aasRepository.commercialDataUrlLabel')}
-                                                sx={{ flexGrow: 1, mr: 1 }}
+                                                sx={{ flexGrow: 1 }}
                                                 fullWidth={true}
                                                 error={!!error}
                                                 helperText={error ? error.message : ''}
@@ -129,7 +207,7 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                             <TextField
                                                 {...field}
                                                 label={t('aasRepository.repositoryUrlLabel')}
-                                                sx={{ flexGrow: 1, mr: 1 }}
+                                                sx={{ flexGrow: 1 }}
                                                 fullWidth={true}
                                                 error={!!error}
                                                 helperText={error ? error.message : ''}
@@ -147,7 +225,7 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                             <TextField
                                                 {...field}
                                                 label={t('aasRepository.aasSearcherUrlLabel')}
-                                                sx={{ flexGrow: 1, mr: 1 }}
+                                                sx={{ flexGrow: 1 }}
                                                 fullWidth={true}
                                                 error={!!error}
                                                 helperText={error ? error.message : ''}
@@ -197,7 +275,7 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                     <Typography sx={{ fontSize: '0.8rem', color: 'text.secondary' }}>
                                         {t('aasRepository.nameLabel')}
                                     </Typography>
-                                    <Typography>{renderUrlValue(getValues(`aasRepository.${index}.name`))}</Typography>
+                                    <Typography>{renderUrlValue(repoName)}</Typography>
                                 </Box>
 
                                 <Box>
@@ -229,7 +307,7 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                                     <Typography sx={{ fontSize: '0.8rem', color: 'text.secondary' }}>
                                         {t('aasRepository.repositoryUrlLabel')}
                                     </Typography>
-                                    <Typography>{renderUrlValue(getValues(`aasRepository.${index}.url`))}</Typography>
+                                    <Typography>{renderUrlValue(repoUrl)}</Typography>
                                 </Box>
                                 <Box>
                                     <Typography sx={{ fontSize: '0.8rem', color: 'text.secondary' }}>
@@ -242,6 +320,43 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                             </Box>
                         </Box>
                     )}
+
+                    <Box sx={{ mt: 2, pt: 2 }}>
+                        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 1 }}>
+                            <Button
+                                variant="outlined"
+                                size="small"
+                                startIcon={<VisibilityIcon />}
+                                onClick={() => {
+                                    handleOpenPreview(repoUrl, repoName || `${t('aasRepository.repositoryLabel')} ${index + 1}`);
+                                }}
+                                disabled={!repoUrl}
+                            >
+                                {t('preview.previewButton')}
+                            </Button>
+                            {isLoadingItemCounts[index] ? (
+                                <Typography variant="body2" color="text.secondary">
+                                    {t('preview.loading')}
+                                </Typography>
+                            ) : repositoryItemCounts[index] !== undefined ? (
+                                <Typography variant="body2" color="text.secondary">
+                                    {t('preview.itemCount')}: {repositoryItemCounts[index]}
+                                </Typography>
+                            ) : null}
+                            <Button
+                                variant="text"
+                                size="small"
+                                onClick={() => {
+                                    if (repoUrl) {
+                                        handleLoadRepositoryInfo(repoUrl, repoName ?? '', index);
+                                    }
+                                }}
+                                disabled={!repoUrl || isLoadingItemCounts[index]}
+                            >
+                                {t('preview.reloadCount')}
+                            </Button>
+                        </Box>
+                    </Box>
                 </Box>
             </FormControl>
         );
@@ -275,6 +390,35 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                     {t('addButton')}
                 </Button>
             </Box>
+            <Dialog open={previewDialogOpen} onClose={() => setPreviewDialogOpen(false)} maxWidth="lg" fullWidth>
+                <DialogTitle>
+                    {t('preview.title')} - {selectedRepositoryForPreview?.name}
+                    {aasListData && aasListData.success && (
+                        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+                            {t('preview.itemCount')}: {aasListData.entities?.length ?? 0}
+                        </Typography>
+                    )}
+                </DialogTitle>
+                <DialogContent dividers sx={{ p: 0 }}>
+                    {isLoadingAasList ? (
+                        <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+                            <Typography>{t('preview.loading')}</Typography>
+                        </Box>
+                    ) : aasListData ? (
+                        <AasList
+                            repositoryUrl={selectedRepositoryForPreview?.url ?? ''}
+                            shells={aasListData}
+                            selectedAasList={undefined}
+                            updateSelectedAasList={() => { }}
+                            columnSortUpdateCallback={() => { }}
+                        />
+                    ) : (
+                        <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+                            <Typography color="error">{t('preview.loadError')}</Typography>
+                        </Box>
+                    )}
+                </DialogContent>
+            </Dialog>
         </Box>
     );
 }
