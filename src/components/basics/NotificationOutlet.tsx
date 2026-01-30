@@ -1,22 +1,22 @@
 import { Alert, AlertTitle, Snackbar, SnackbarCloseReason } from '@mui/material';
 import { useNotificationContext } from 'components/contexts/NotificationContext';
-import { SyntheticEvent, useMemo, useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 
 export function NotificationOutlet() {
     const { notification } = useNotificationContext();
     const [open, setOpen] = useState(false);
     const [lastNotification, setLastNotification] = useState<typeof notification>(null);
+    const [keyCounter, setKeyCounter] = useState(0);
 
     // Adjust state during render when notification changes
     if (notification !== lastNotification) {
         setOpen(!!notification);
         setLastNotification(notification);
+        setKeyCounter((prev) => prev + 1);
     }
 
     // Generate key for remounting when notification changes
-    const notificationKey = useMemo(() => {
-        return notification?.id ?? Date.now();
-    }, [notification]);
+    const notificationKey = notification?.id ?? keyCounter;
 
     const handleClose = (event: Event | SyntheticEvent, reason: SnackbarCloseReason) => {
         if (reason === 'clickaway') {

@@ -27,26 +27,26 @@ const StyledFileImg = styled('img')(({ theme }) => ({
     padding: theme.spacing(1),
 }));
 
+const StyledMarkingImageWrapper = styled(Box)<{ rowDisplay?: boolean }>(({ rowDisplay }) => ({
+    maxWidth: rowDisplay ? '4rem' : 'auto',
+    minWidth: rowDisplay ? '4rem' : '5rem',
+    minHeight: rowDisplay ? '4rem' : '5rem',
+    display: 'flex',
+    flexDirection: 'column',
+}));
+
+const StyledMarkingContainer = styled(Box)<{ rowDisplay?: boolean }>(({ rowDisplay }) => ({
+    maxWidth: rowDisplay ? '200px' : 'calc(25% - 15px)',
+    display: 'flex',
+    flexDirection: rowDisplay ? 'row' : 'column',
+    '@media(max-width: 1120px)': !rowDisplay ? { width: 'calc(50% - 10px)' } : undefined,
+}));
+
 export function SingleMarkingsComponent(props: SingleMarkingsComponentProps) {
     const { file, name, additionalText, submodelId, idShortPath } = props;
     const [markingImage, setMarkingImage] = useState<string>();
     const submodelRepositoryUrl = useSubmodelRepositoryUrl();
     const currentAASContext = useCurrentAasContext();
-
-    const StyledMarkingImageWrapper = styled(Box)(() => ({
-        maxWidth: props.rowDisplay ? '4rem' : 'auto',
-        minWidth: props.rowDisplay ? '4rem' : '5rem',
-        minHeight: props.rowDisplay ? '4rem' : '5rem',
-        display: 'flex',
-        flexDirection: 'column',
-    }));
-
-    const StyledMarkingContainer = styled(Box)(() => ({
-        maxWidth: props.rowDisplay ? '200px' : 'calc(25% - 15px)',
-        display: 'flex',
-        flexDirection: props.rowDisplay ? 'row' : 'column',
-        '@media(max-width: 1120px)': !props.rowDisplay ? { width: 'calc(50% - 10px)' } : undefined,
-    }));
 
     useAsyncEffect(async () => {
         if (!isValidUrl(file!.value) && submodelRepositoryUrl) {
@@ -68,8 +68,8 @@ export function SingleMarkingsComponent(props: SingleMarkingsComponentProps) {
 
     return (
         !!file && (
-            <StyledMarkingContainer>
-                <StyledMarkingImageWrapper sx={{ boxShadow: 2 }}>
+            <StyledMarkingContainer rowDisplay={props.rowDisplay}>
+                <StyledMarkingImageWrapper rowDisplay={props.rowDisplay} sx={{ boxShadow: 2 }}>
                     <StyledFileImg src={markingImage} />
 
                     {/* TODO get this value from concept description if there is only an IRDI? */}

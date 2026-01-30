@@ -5,7 +5,7 @@ import {
     DocumentSpecificSemanticIdIrdi,
 } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentSemanticIds';
 import { useLocale, useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { tooltipText } from 'lib/util/ToolTipText';
 
@@ -19,10 +19,9 @@ export const DocumentClassification = (props: {
     openDetailDialog: () => void;
 }) => {
     const locale = useLocale();
-    const [classificationData, setClassificationData] = useState<DocumentClassification[]>();
     const t = useTranslations('components.documentComponent');
 
-    function extractDocumentClassificationData() {
+    const classificationData = useMemo(() => {
         const classifications: DocumentClassification[] = [];
         props.classificationData.map((classificationElement) => {
             const classId = findSubmodelElementBySemanticIdsOrIdShort(classificationElement.value, 'ClassId', [
@@ -59,11 +58,7 @@ export const DocumentClassification = (props: {
         });
 
         return classifications;
-    }
-
-    useEffect(() => {
-        setClassificationData(extractDocumentClassificationData());
-    }, [props.classificationData]);
+    }, [props.classificationData, locale]);
 
     return (
         <>

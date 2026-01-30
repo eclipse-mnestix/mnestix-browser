@@ -19,7 +19,6 @@ export function InternalTimeSeries(props: { submodelElement: SubmodelElementColl
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        setIsLoading(true);
         const points = parseRecordsFromInternalSegment(props.submodelElement);
 
         if (!points) {
