@@ -4,7 +4,6 @@ import { getAasListEntities } from 'lib/services/list-service/aasListApiActions'
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useState } from 'react';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
-import AasList from './AasList';
 import { useEnv } from 'app/EnvProvider';
 import { AasListComparisonHeader } from './AasListComparisonHeader';
 import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
@@ -13,9 +12,9 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { SelectListSource } from './filter/SelectListSource';
 import { useTranslations } from 'next-intl';
 import { ApiResponseWrapperError } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { AuthenticationPrompt } from 'components/authentication/AuthenticationPrompt';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
+import { AasListContent } from './AasListContent';
 
 type AasListDataWrapperProps = {
     repositoryUrl?: string;
@@ -132,36 +131,6 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
         </Box>
     );
 
-    const ListContent = (props: { selectedRepository: RepositoryWithInfrastructure | null | undefined }) => {
-        const selectedRepository = props.selectedRepository;
-        if (!selectedRepository) {
-            return (
-                <Box>
-                    <Typography data-testid="select-repository-text">{t('selectListSource')}</Typography>
-                </Box>
-            );
-        }
-
-        if (needAuthentication) {
-            return <AuthenticationPrompt isDefaultRepo={selectedRepository?.isDefault} />;
-        }
-
-        return (
-            <>
-                <AasList
-                    data-testid="aas-list"
-                    repositoryUrl={selectedRepository}
-                    connectionType={selectedType}
-                    shells={aasList}
-                    selectedAasList={selectedAasList}
-                    updateSelectedAasList={updateSelectedAasList}
-                    comparisonFeatureFlag={env.COMPARISON_FEATURE_FLAG}
-                ></AasList>
-                {pagination}
-            </>
-        );
-    };
-
     return (
         <Card>
             <CardContent sx={{ paddingX: 0, paddingY: '1.625rem', '&:last-child': { paddingBottom: '0' } }}>
@@ -184,7 +153,16 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
                 {isLoadingList ? (
                     <CenteredLoadingSpinner sx={{ my: 10 }} />
                 ) : (
-                    <ListContent selectedRepository={selectedRepository} />
+                    <AasListContent
+                        selectedRepository={selectedRepository}
+                        selectedType={selectedType}
+                        needAuthentication={needAuthentication}
+                        aasList={aasList}
+                        selectedAasList={selectedAasList}
+                        updateSelectedAasList={updateSelectedAasList}
+                        comparisonFeatureFlag={env.COMPARISON_FEATURE_FLAG}
+                        pagination={pagination}
+                    />
                 )}
             </CardContent>
         </Card>

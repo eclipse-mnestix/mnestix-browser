@@ -15,6 +15,7 @@ export function BooleanPropertyEditComponent(props: BooleanPropertyEditComponent
     useEffect(() => {
         // intial value should be true
         if (props.defaultValueEnabled && props.dataValue !== 'false') {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setRealBoolean(true);
             props.onChange('true');
         }
