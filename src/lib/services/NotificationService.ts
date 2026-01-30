@@ -7,13 +7,18 @@ import { Notification } from 'components/contexts/NotificationContext';
 class NotificationService {
     private listeners: ((notification: Notification | null) => void)[] = [];
     private currentNotification: Notification | null = null;
+    private idCounter = 0;
 
     /**
      * Show a notification
      * @param notification The notification to display
      */
     public show(notification: Notification): void {
-        this.currentNotification = notification;
+        // Auto-assign an id if not provided to ensure uniqueness
+        this.currentNotification = {
+            ...notification,
+            id: notification.id ?? ++this.idCounter,
+        };
         this.notifyListeners();
     }
 

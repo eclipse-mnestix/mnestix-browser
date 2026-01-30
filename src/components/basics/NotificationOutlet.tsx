@@ -1,15 +1,21 @@
 import { Alert, AlertTitle, Snackbar, SnackbarCloseReason } from '@mui/material';
 import { useNotificationContext } from 'components/contexts/NotificationContext';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { SyntheticEvent, useMemo, useState } from 'react';
 
 export function NotificationOutlet() {
     const { notification } = useNotificationContext();
     const [open, setOpen] = useState(false);
+    const [lastNotification, setLastNotification] = useState<typeof notification>(null);
 
-    useEffect(() => {
-        if (notification) {
-            setOpen(true);
-        }
+    // Adjust state during render when notification changes
+    if (notification !== lastNotification) {
+        setOpen(!!notification);
+        setLastNotification(notification);
+    }
+
+    // Generate key for remounting when notification changes
+    const notificationKey = useMemo(() => {
+        return notification?.id ?? Date.now();
     }, [notification]);
 
     const handleClose = (event: Event | SyntheticEvent, reason: SnackbarCloseReason) => {
@@ -27,8 +33,7 @@ export function NotificationOutlet() {
         <Snackbar
             open={open}
             autoHideDuration={4000}
-            // to force rerender when contents change
-            key={Date.now()}
+            key={notificationKey}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             onClose={handleClose}
         >

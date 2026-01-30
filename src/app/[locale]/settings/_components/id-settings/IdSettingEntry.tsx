@@ -80,7 +80,7 @@ export function IdSettingEntry(props: IdSettingEntryProps) {
         if (!props.isLoading) {
             setHasTriggeredChange(false);
         }
-    }, [props.isLoading, setHasTriggeredChange]);
+    }, [props.isLoading]);
 
     // When there is only one allowed value, we show a locked Textfield instead of a dropdown.
     // The whole thing is wrapped in a <Controller> during render to make it work with react-hook-form

@@ -47,10 +47,10 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
         setNeedAuthentication(false);
     };
 
-    useAsyncEffect(async () => {
-        resetPagination();
-        await fetchListData();
-    }, [selectedRepository]);
+    const resetPagination = () => {
+        setCursorHistory([]);
+        setCurrentPage(0);
+    };
 
     const fetchListData = async (newCursor?: string | undefined, isNext = true) => {
         if (!selectedRepository) return;
@@ -82,6 +82,11 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
         setCurrentPage((prevPage) => prevPage + 1);
     };
 
+    useAsyncEffect(async () => {
+        resetPagination();
+        await fetchListData();
+    }, [selectedRepository]);
+
     /**
      * Handle a click on the back button.
      * To load the page one step back, we need to use the cursor from two pages back.
@@ -90,11 +95,6 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
         const previousCursor = cursorHistory[currentPage - 2] ?? undefined;
         await fetchListData(previousCursor, false);
         setCurrentPage((prevPage) => prevPage - 1);
-    };
-
-    const resetPagination = () => {
-        setCursorHistory([]);
-        setCurrentPage(0);
     };
 
     /**

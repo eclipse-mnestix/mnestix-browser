@@ -68,28 +68,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
     const productImageUrl = useProductImageUrl(props.aas, props.repositoryURL ?? undefined, props.productImage);
     const { addAasData } = useAasStore();
 
-    useEffect(() => {
-        if (props.submodels && props.submodels.length > 0) {
-            const technicalData = findSubmodelByIdOrSemanticId(
-                props.submodels,
-                SubmodelSemanticIdEnum.TechnicalDataV11,
-                'TechnicalData',
-            );
-            if (technicalData?.submodelElements) {
-                prepareTechnicalDataSubmodel(technicalData.submodelElements);
-            }
-
-            const nameplate = findSubmodelByIdOrSemanticId(
-                props.submodels,
-                SubmodelSemanticIdEnum.NameplateV2,
-                'Nameplate',
-            );
-            if (nameplate?.submodelElements) {
-                prepareNameplateData(nameplate.submodelElements);
-            }
-        }
-    }, [props.submodels]);
-
     const prepareTechnicalDataSubmodel = (technicalDataSubmodelElements: Array<SubmodelElementChoice>) => {
         const manufacturerName = findValue(
             technicalDataSubmodelElements,
@@ -262,6 +240,28 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             URIOfTheProduct: URIOfTheProduct || null,
         }));
     };
+
+    useEffect(() => {
+        if (props.submodels && props.submodels.length > 0) {
+            const technicalData = findSubmodelByIdOrSemanticId(
+                props.submodels,
+                SubmodelSemanticIdEnum.TechnicalDataV11,
+                'TechnicalData',
+            );
+            if (technicalData?.submodelElements) {
+                prepareTechnicalDataSubmodel(technicalData.submodelElements);
+            }
+
+            const nameplate = findSubmodelByIdOrSemanticId(
+                props.submodels,
+                SubmodelSemanticIdEnum.NameplateV2,
+                'Nameplate',
+            );
+            if (nameplate?.submodelElements) {
+                prepareNameplateData(nameplate.submodelElements);
+            }
+        }
+    }, [props.submodels]);
 
     /**
      * Prepare marking texts from the SubmodelElementCollection by extracting the 'MarkingName' properties.
