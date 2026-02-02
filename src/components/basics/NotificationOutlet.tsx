@@ -1,22 +1,18 @@
 import { Alert, AlertTitle, Snackbar, SnackbarCloseReason } from '@mui/material';
 import { useNotificationContext } from 'components/contexts/NotificationContext';
-import { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 
 export function NotificationOutlet() {
     const { notification } = useNotificationContext();
     const [open, setOpen] = useState(false);
-    const [lastNotification, setLastNotification] = useState<typeof notification>(null);
-    const [keyCounter, setKeyCounter] = useState(0);
 
-    // Adjust state during render when notification changes
-    if (notification !== lastNotification) {
-        setOpen(!!notification);
-        setLastNotification(notification);
-        setKeyCounter((prev) => prev + 1);
-    }
-
-    // Generate key for remounting when notification changes
-    const notificationKey = notification?.id ?? keyCounter;
+    useEffect(() => {
+        if (notification) {
+            // useEffect is the best way to react to notification changes without unwanted re-renders
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setOpen(true);
+        }
+    }, [notification]);
 
     const handleClose = (event: Event | SyntheticEvent, reason: SnackbarCloseReason) => {
         if (reason === 'clickaway') {
@@ -33,7 +29,6 @@ export function NotificationOutlet() {
         <Snackbar
             open={open}
             autoHideDuration={4000}
-            key={notificationKey}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             onClose={handleClose}
         >

@@ -1,6 +1,6 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Box, Button, IconButton, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MappingInfoData } from 'lib/types/MappingInfoData';
 import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
 import mappingInfoDataJson from './mapping-info-data.json';
@@ -14,12 +14,21 @@ interface MappingInfoEditComponentProps {
 
 export function MappingInfoEditComponent(props: MappingInfoEditComponentProps) {
     const mappingInfoData = mappingInfoDataJson as MappingInfoData;
-    const getMappingInfo = (): Qualifier | undefined => {
-        return props.data?.qualifiers?.find((q: Qualifier) => mappingInfoData.qualifierTypes.includes(q.type));
-    };
+    const [data, setData] = useState(props.data);
+
+    function getMappingInfo(): Qualifier | undefined {
+        return data?.qualifiers?.find((q: Qualifier) => mappingInfoData.qualifierTypes.includes(q.type));
+    }
     const [mappingInfo, setMappingInfo] = useState(getMappingInfo());
     const [valueEnabled, setValueEnabled] = useState(!!mappingInfo?.value?.length);
     const t = useTranslations('pages.templates');
+
+    useEffect(() => {
+        // useEffect is needed here to update the state when props.data changes, derived state crashed the form
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setData(props.data);
+        setMappingInfo(getMappingInfo());
+    }, [props.data]);
 
     const onValueChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         if (mappingInfo) {
@@ -60,7 +69,6 @@ export function MappingInfoEditComponent(props: MappingInfoEditComponentProps) {
         } else if (newMappingInfo) {
             updatedQualifiers = [...updatedQualifiers, newMappingInfo];
         }
-
         const updatedData = { ...props.data, qualifiers: updatedQualifiers };
         props.onChange(updatedData);
     };
