@@ -1,10 +1,7 @@
 import { Buffer } from 'buffer';
 
 export function encodeBase64(str: string): string {
-    // Use browser-compatible btoa for base64 encoding
-    const base64 =
-        typeof window !== 'undefined' ? btoa(unescape(encodeURIComponent(str))) : Buffer.from(str).toString('base64');
-    return Base64EncodeUrl(base64);
+    return Base64EncodeUrl(Buffer.from(str).toString('base64'));
 }
 
 /**
@@ -27,34 +24,16 @@ export function safeBase64Decode(str: string): string {
     }
 
     try {
-        // Use browser-compatible atob for base64 decoding
-        if (typeof window !== 'undefined') {
-            return decodeURIComponent(escape(atob(str)));
-        } else {
-            return Buffer.from(str, 'base64').toString();
-        }
+        return Buffer.from(str, 'base64').toString();
     } catch {
         throw new Error('Failed to decode base64 input');
     }
 }
 
 export async function blobToBase64(blob: Blob): Promise<string> {
-    // Use browser-compatible FileReader or Buffer depending on environment
-    if (typeof window !== 'undefined') {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64 = (reader.result as string).split(',')[1];
-                resolve(base64);
-            };
-            reader.onerror = reject;
-            reader.readAsDataURL(blob);
-        });
-    } else {
-        const arrayBuffer = await blob.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
-        return buffer.toString('base64');
-    }
+    const arrayBuffer = await blob.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    return buffer.toString('base64');
 }
 
 export function base64ToBlob(base64: string, blobType: string): Blob {
