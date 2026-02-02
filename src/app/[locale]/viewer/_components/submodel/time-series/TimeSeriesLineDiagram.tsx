@@ -13,7 +13,7 @@ import {
 import { Box, Typography, useTheme } from '@mui/material';
 import { TimeSeriesDataSet } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesUtil';
 import { useTranslations } from 'next-intl';
-import { TimeSeriesCustomTooltip } from './TimeSeriesCustomTooltipProps';
+import { TimeSeriesCustomTooltip } from './TimeSeriesCustomTooltip';
 
 function formatDate(dateString: string, onlyTime = false) {
     const date = new Date(dateString);
