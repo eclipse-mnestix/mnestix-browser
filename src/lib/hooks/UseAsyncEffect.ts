@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 // Used to trigger an asynchronous effect with a more convenient syntax.
 // Provides a optional abortion status which is true if the using component gets unmounted while async effect is running
@@ -7,12 +7,11 @@ export const useAsyncEffect = (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dependencies?: any[],
 ): void => {
-    const statusRef = useRef({ aborted: false }); // mutable status object via ref
     useEffect(() => {
-        statusRef.current.aborted = false;
-        const cleanUpFunction = effectCallback(statusRef.current);
+        const status = { aborted: false }; // fresh status object per effect invocation
+        const cleanUpFunction = effectCallback(status);
         return () => {
-            statusRef.current.aborted = true;
+            status.aborted = true;
             if (typeof cleanUpFunction === 'function') {
                 cleanUpFunction();
             }

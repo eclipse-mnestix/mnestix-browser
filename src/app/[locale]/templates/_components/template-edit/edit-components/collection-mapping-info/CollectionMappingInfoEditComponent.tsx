@@ -1,6 +1,6 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Box, Button, IconButton, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MappingInfoData } from 'lib/types/MappingInfoData';
 import collectiopnMappingInfoDataJson from './collection-mapping-info-data.json';
 import { useTranslations } from 'next-intl';
@@ -14,14 +14,21 @@ interface CollectionMappingInfoEditComponentProps {
 
 export function CollectionMappingInfoEditComponent(props: CollectionMappingInfoEditComponentProps) {
     const collectionMappingInfoData = collectiopnMappingInfoDataJson as unknown as MappingInfoData;
+    const [data, setData] = useState(props.data);
+
     const getMappingInfo = (): Qualifier | undefined => {
-        return props.data?.qualifiers?.find((q: Qualifier) =>
-            collectionMappingInfoData.qualifierTypes.includes(q.type),
-        );
+        return data?.qualifiers?.find((q: Qualifier) => collectionMappingInfoData.qualifierTypes.includes(q.type));
     };
     const [collectionMappingInfo, setCollectionMappingInfo] = useState(getMappingInfo());
     const [valueEnabled, setValueEnabled] = useState(!!collectionMappingInfo?.value?.length);
     const t = useTranslations('pages.templates');
+
+    useEffect(() => {
+        // useEffect is needed here to update the state when props.data changes, derived state crashed the form
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setData(props.data);
+        setCollectionMappingInfo(getMappingInfo());
+    }, [props.data]);
 
     const onValueChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         if (collectionMappingInfo) {

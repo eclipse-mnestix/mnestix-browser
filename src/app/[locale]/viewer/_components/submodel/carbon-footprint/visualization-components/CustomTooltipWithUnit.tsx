@@ -13,7 +13,7 @@ export function CustomTooltipWithUnit({ active, payload, label, unit }: CustomTo
         return (
             <Box sx={{ bgcolor: 'white', visibility: !active ? 'hidden' : undefined, padding: '10px' }}>
                 <Typography>{label}</Typography>
-                {payload
+                {[...payload]
                     .sort((a, b) => Number.parseFloat(a.value) - Number.parseFloat(b.value))
                     .map((p, index) => (
                         <Box key={index} sx={{ color: p.color, paddingY: '4px' }}>{`${p.name} : ${cutDecimalPlaces(

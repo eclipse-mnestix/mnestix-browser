@@ -7,7 +7,6 @@ export type Notification = {
     title?: React.ReactNode;
     message?: React.ReactNode;
     severity?: 'error' | 'info' | 'success' | 'warning';
-    id?: string | number;
 };
 
 interface NotificationContextType {

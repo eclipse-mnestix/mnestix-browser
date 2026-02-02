@@ -1,5 +1,3 @@
-import { Buffer } from 'buffer';
-
 export function encodeBase64(str: string): string {
     return Base64EncodeUrl(Buffer.from(str).toString('base64'));
 }

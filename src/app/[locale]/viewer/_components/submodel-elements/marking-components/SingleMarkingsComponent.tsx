@@ -27,7 +27,9 @@ const StyledFileImg = styled('img')(({ theme }) => ({
     padding: theme.spacing(1),
 }));
 
-const StyledMarkingImageWrapper = styled(Box)<{ rowDisplay?: boolean }>(({ rowDisplay }) => ({
+const StyledMarkingImageWrapper = styled(Box, {
+    shouldForwardProp: (prop) => prop !== 'rowDisplay',
+})<{ rowDisplay?: boolean }>(({ rowDisplay }) => ({
     maxWidth: rowDisplay ? '4rem' : 'auto',
     minWidth: rowDisplay ? '4rem' : '5rem',
     minHeight: rowDisplay ? '4rem' : '5rem',
@@ -35,7 +37,9 @@ const StyledMarkingImageWrapper = styled(Box)<{ rowDisplay?: boolean }>(({ rowDi
     flexDirection: 'column',
 }));
 
-const StyledMarkingContainer = styled(Box)<{ rowDisplay?: boolean }>(({ rowDisplay }) => ({
+const StyledMarkingContainer = styled(Box, {
+    shouldForwardProp: (prop) => prop !== 'rowDisplay',
+})<{ rowDisplay?: boolean }>(({ rowDisplay }) => ({
     maxWidth: rowDisplay ? '200px' : 'calc(25% - 15px)',
     display: 'flex',
     flexDirection: rowDisplay ? 'row' : 'column',
