@@ -58,6 +58,7 @@
     "@prisma/adapter-better-sqlite3": "^7.3.0",
     "@prisma/client": "^7.3.0",
     "@svgr/webpack": "^8.1.0",
+    "buffer": "^6.0.3",
     "date-fns": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.23",
@@ -69,7 +70,7 @@
     "pino-pretty": "^13.1.2",
     "qr-scanner": "^1.4.2",
     "react": "^19.2.4",
-    "react-dom": "^19.2.3",
+    "react-dom": "^19.2.4",
     "react-hook-form": "^7.71.1",
     "recharts": "3.7.0",
     "swr": "^2.3.6",
@@ -115,6 +116,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "resolutions": {
+    "undici": "7.20.0"
   },
   "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }
