@@ -61,7 +61,7 @@ export function MultiLangEditComponent(props: MultiLangEditComponentProps) {
                             sx={{ maxWidth: '100px', mr: 1 }}
                         />
                         <TextField
-                            defaultValue={langString.text}
+                            value={langString.text ?? ''}
                             label={t('labels.text')}
                             onChange={(e) => onTextChange(i, e)}
                             fullWidth

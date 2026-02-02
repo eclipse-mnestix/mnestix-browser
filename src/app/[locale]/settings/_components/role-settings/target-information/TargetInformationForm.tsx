@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, FormControl, MenuItem, Select, Typography } from '@mui/material';
 import { rbacRuleTargets } from 'lib/services/rbac-service/types/RbacServiceData';
 import { useTranslations } from 'next-intl';
@@ -13,11 +13,8 @@ type TargetInformationProps = {
 };
 export const TargetInformationForm = (props: TargetInformationProps) => {
     const t = useTranslations('pages.settings');
-    const initialType = props.getValues('type') as keyof typeof rbacRuleTargets;
-    const initialTypeInformation = props.getValues(`targetInformation.${initialType}` as 'targetInformation.aas');
-
-    const [keys, setKeys] = useState<string[]>(initialTypeInformation ? Object.keys(initialTypeInformation) : []);
-    const [currentType, setCurrentType] = useState<keyof typeof rbacRuleTargets>(initialType);
+    const [keys, setKeys] = useState<string[]>([]);
+    const [currentType, setCurrentType] = useState<keyof typeof rbacRuleTargets>('aas');
 
     const ruleTypes = Object.keys(rbacRuleTargets);
 
@@ -27,6 +24,11 @@ export const TargetInformationForm = (props: TargetInformationProps) => {
         setKeys(currentTypeInformation ? Object.keys(currentTypeInformation) : []);
         setCurrentType(value);
     };
+
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        adaptTargetInformationForm(props.getValues('type') as keyof typeof rbacRuleTargets);
+    }, []);
 
     return (
         <Box mt="1em">

@@ -1,6 +1,6 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
 import options from './mime-types.json';
 import { useTranslations } from 'next-intl';
@@ -12,12 +12,17 @@ interface FileEditComponentProps {
 }
 
 export function FileEditComponent(props: FileEditComponentProps) {
-    const [defaultValueEnabled, setDefaultValueEnabled] = useState(!!props.data.value?.length);
     const t = useTranslations('pages.templates');
+    const defaultValueEnabled = props.data.value !== undefined && props.data.value !== null;
 
     const onRemove = () => {
-        setDefaultValueEnabled(false);
         //TODO Reset MimeType to initial value from template on remove
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { value: _value, ...rest } = props.data;
+        props.onChange(rest as ModelFile);
+    };
+
+    const onAdd = () => {
         props.onChange({ ...props.data, value: '' });
     };
 
@@ -52,7 +57,7 @@ export function FileEditComponent(props: FileEditComponentProps) {
                     </FormControl>
                     <TextField
                         sx={{ mt: 1 }}
-                        defaultValue={props.data.value}
+                        value={props.data.value ?? ''}
                         label={t('labels.value')}
                         onChange={(e) => onTextChange(e)}
                         fullWidth
@@ -62,7 +67,7 @@ export function FileEditComponent(props: FileEditComponentProps) {
                     </Button>
                 </>
             ) : (
-                <Button size="large" startIcon={<AddCircleOutline />} onClick={() => setDefaultValueEnabled(true)}>
+                <Button size="large" startIcon={<AddCircleOutline />} onClick={onAdd}>
                     {t('actions.add')}
                 </Button>
             )}

@@ -1,6 +1,5 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Box, Button, IconButton } from '@mui/material';
-import { useState } from 'react';
 import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
 import { BooleanPropertyEditComponent } from './data-specific/BooleanPropertyEditComponent';
 import { StringPropertyEditComponent } from './data-specific/StringPropertyEditComponent';
@@ -15,15 +14,20 @@ interface PropertyEditComponentProps {
 }
 
 export function PropertyEditComponent(props: PropertyEditComponentProps) {
-    const [defaultValueEnabled, setDefaultValueEnabled] = useState(!!props.data.value?.length);
     const t = useTranslations('pages.templates');
+    const defaultValueEnabled = props.data.value !== undefined && props.data.value !== null;
 
     const onValueChange = (value: string) => {
         props.onChange({ ...props.data, value });
     };
 
     const handleValueRemove = () => {
-        setDefaultValueEnabled(false);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { value, ...rest } = props.data;
+        props.onChange(rest as Property);
+    };
+
+    const handleValueAdd = () => {
         props.onChange({ ...props.data, value: '' });
     };
 
@@ -57,7 +61,7 @@ export function PropertyEditComponent(props: PropertyEditComponentProps) {
                     </IconButton>
                 </Box>
             ) : (
-                <Button size="large" startIcon={<AddCircleOutline />} onClick={() => setDefaultValueEnabled(true)}>
+                <Button size="large" startIcon={<AddCircleOutline />} onClick={handleValueAdd}>
                     {t('actions.add')}
                 </Button>
             )}
