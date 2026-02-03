@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v16-appRouter';
 import type { Metadata } from 'next';
 import { ClientLayout } from 'app/[locale]/clientLayout';
 import { getMessages } from 'next-intl/server';

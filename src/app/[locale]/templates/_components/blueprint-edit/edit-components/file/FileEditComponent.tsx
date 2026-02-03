@@ -1,6 +1,6 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
 import options from './mime-types.json';
 import { useTranslations } from 'next-intl';
@@ -12,28 +12,26 @@ interface FileEditComponentProps {
 }
 
 export function FileEditComponent(props: FileEditComponentProps) {
-    const [data, setData] = useState(props.data);
-    const [defaultValueEnabled, setDefaultValueEnabled] = useState(!!data.value?.length);
     const t = useTranslations('pages.templates');
-
-    useEffect(() => {
-        setData(props.data);
-    }, [props.data]);
+    const defaultValueEnabled = props.data.value !== undefined && props.data.value !== null;
 
     const onRemove = () => {
-        setDefaultValueEnabled(false);
         //TODO Reset MimeType to initial value from template on remove
-        props.onChange({ ...data, value: '' });
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { value: _value, ...rest } = props.data;
+        props.onChange(rest as ModelFile);
+    };
+
+    const onAdd = () => {
+        props.onChange({ ...props.data, value: '' });
     };
 
     const onTextChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setData({ ...data, value: event.target.value });
-        props.onChange({ ...data, value: event.target.value });
+        props.onChange({ ...props.data, value: event.target.value });
     };
 
     const onMimeTypeChange = (value: string) => {
-        setData({ ...data, contentType: value });
-        props.onChange({ ...data, contentType: value });
+        props.onChange({ ...props.data, contentType: value });
     };
 
     return (
@@ -46,7 +44,7 @@ export function FileEditComponent(props: FileEditComponentProps) {
                         <Select
                             labelId="mime-type-select-label"
                             id="mime-type-select"
-                            value={data.contentType}
+                            value={props.data.contentType}
                             label="mimeType"
                             onChange={(v) => onMimeTypeChange(v.target.value)}
                         >
@@ -59,7 +57,7 @@ export function FileEditComponent(props: FileEditComponentProps) {
                     </FormControl>
                     <TextField
                         sx={{ mt: 1 }}
-                        defaultValue={data.value}
+                        value={props.data.value ?? ''}
                         label={t('labels.value')}
                         onChange={(e) => onTextChange(e)}
                         fullWidth
@@ -69,7 +67,7 @@ export function FileEditComponent(props: FileEditComponentProps) {
                     </Button>
                 </>
             ) : (
-                <Button size="large" startIcon={<AddCircleOutline />} onClick={() => setDefaultValueEnabled(true)}>
+                <Button size="large" startIcon={<AddCircleOutline />} onClick={onAdd}>
                     {t('actions.add')}
                 </Button>
             )}

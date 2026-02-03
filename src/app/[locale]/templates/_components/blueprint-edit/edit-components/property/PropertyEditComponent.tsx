@@ -1,6 +1,5 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Box, Button, IconButton } from '@mui/material';
-import { useEffect, useState } from 'react';
 import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
 import { BooleanPropertyEditComponent } from './data-specific/BooleanPropertyEditComponent';
 import { StringPropertyEditComponent } from './data-specific/StringPropertyEditComponent';
@@ -15,21 +14,21 @@ interface PropertyEditComponentProps {
 }
 
 export function PropertyEditComponent(props: PropertyEditComponentProps) {
-    const [data, setData] = useState(props.data);
-    const [defaultValueEnabled, setDefaultValueEnabled] = useState(!!data.value?.length);
     const t = useTranslations('pages.templates');
-
-    useEffect(() => {
-        setData(props.data);
-    }, [props.data]);
+    const defaultValueEnabled = props.data.value !== undefined && props.data.value !== null;
 
     const onValueChange = (value: string) => {
-        props.onChange({ ...data, value });
+        props.onChange({ ...props.data, value });
     };
 
     const handleValueRemove = () => {
-        setDefaultValueEnabled(false);
-        props.onChange({ ...data, value: '' });
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { value, ...rest } = props.data;
+        props.onChange(rest as Property);
+    };
+
+    const handleValueAdd = () => {
+        props.onChange({ ...props.data, value: '' });
     };
 
     const getEditElement = () => {
@@ -37,17 +36,17 @@ export function PropertyEditComponent(props: PropertyEditComponentProps) {
             case DataTypeDefXsd.XsBoolean:
                 return (
                     <BooleanPropertyEditComponent
-                        dataValue={data.value || ''}
+                        dataValue={props.data.value || ''}
                         onChange={onValueChange}
                         defaultValueEnabled
                     />
                 );
             case DataTypeDefXsd.XsDate:
-                return <DatePropertyEditComponent dataValue={data.value || ''} onChange={onValueChange} />;
+                return <DatePropertyEditComponent dataValue={props.data.value || ''} onChange={onValueChange} />;
             case DataTypeDefXsd.XsLong:
-                return <LongPropertyEditComponent dataValue={data.value || ''} onChange={onValueChange} />;
+                return <LongPropertyEditComponent dataValue={props.data.value || ''} onChange={onValueChange} />;
             default:
-                return <StringPropertyEditComponent dataValue={data.value || ''} onChange={onValueChange} />;
+                return <StringPropertyEditComponent dataValue={props.data.value || ''} onChange={onValueChange} />;
         }
     };
 
@@ -62,7 +61,7 @@ export function PropertyEditComponent(props: PropertyEditComponentProps) {
                     </IconButton>
                 </Box>
             ) : (
-                <Button size="large" startIcon={<AddCircleOutline />} onClick={() => setDefaultValueEnabled(true)}>
+                <Button size="large" startIcon={<AddCircleOutline />} onClick={handleValueAdd}>
                     {t('actions.add')}
                 </Button>
             )}

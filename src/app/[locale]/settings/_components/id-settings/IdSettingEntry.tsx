@@ -10,7 +10,6 @@ import {
     Typography,
 } from '@mui/material';
 import { LockedTextField } from 'components/basics/LockedTextField';
-import { useEffect, useState } from 'react';
 import {
     Control,
     Controller,
@@ -60,8 +59,8 @@ const StyledCircularProgressWrapper = styled(Box)(() => ({
 }));
 
 export function IdSettingEntry(props: IdSettingEntryProps) {
-    const [hasTriggeredChange, setHasTriggeredChange] = useState(true);
     const t = useTranslations('pages.settings.idStructure');
+    const hasTriggeredChange = props.isLoading ?? false;
 
     const validateInput = (value: string | null | undefined) => {
         if (!value) return;
@@ -74,13 +73,6 @@ export function IdSettingEntry(props: IdSettingEntryProps) {
         }
         return;
     };
-
-    // reset loading state if loading is complete
-    useEffect(() => {
-        if (!props.isLoading) {
-            setHasTriggeredChange(false);
-        }
-    }, [props.isLoading, setHasTriggeredChange]);
 
     // When there is only one allowed value, we show a locked Textfield instead of a dropdown.
     // The whole thing is wrapped in a <Controller> during render to make it work with react-hook-form

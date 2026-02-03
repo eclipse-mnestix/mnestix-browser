@@ -15,18 +15,20 @@ interface CollectionMappingInfoEditComponentProps {
 export function CollectionMappingInfoEditComponent(props: CollectionMappingInfoEditComponentProps) {
     const collectionMappingInfoData = collectiopnMappingInfoDataJson as unknown as MappingInfoData;
     const [data, setData] = useState(props.data);
+
+    const getMappingInfo = (): Qualifier | undefined => {
+        return data?.qualifiers?.find((q: Qualifier) => collectionMappingInfoData.qualifierTypes.includes(q.type));
+    };
     const [collectionMappingInfo, setCollectionMappingInfo] = useState(getMappingInfo());
     const [valueEnabled, setValueEnabled] = useState(!!collectionMappingInfo?.value?.length);
     const t = useTranslations('pages.templates');
 
     useEffect(() => {
+        // useEffect is needed here to update the state when props.data changes, derived state crashed the form
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setData(props.data);
         setCollectionMappingInfo(getMappingInfo());
     }, [props.data]);
-
-    function getMappingInfo(): Qualifier | undefined {
-        return data?.qualifiers?.find((q: Qualifier) => collectionMappingInfoData.qualifierTypes.includes(q.type));
-    }
 
     const onValueChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         if (collectionMappingInfo) {
@@ -50,22 +52,26 @@ export function CollectionMappingInfoEditComponent(props: CollectionMappingInfoE
     };
 
     const handleChange = (newMappingInfo: Qualifier | undefined) => {
-        const qualifiersIndex = data?.qualifiers?.findIndex((q: Qualifier) =>
+        const qualifiersIndex = props.data?.qualifiers?.findIndex((q: Qualifier) =>
             collectionMappingInfoData.qualifierTypes.includes(q.type),
         );
 
+        let updatedQualifiers = props.data.qualifiers ? [...props.data.qualifiers] : [];
+
         // update/remove if existing
-        if (data.qualifiers && qualifiersIndex !== undefined && qualifiersIndex > -1) {
+        if (qualifiersIndex !== undefined && qualifiersIndex > -1) {
             if (newMappingInfo) {
-                data.qualifiers[qualifiersIndex] = newMappingInfo;
+                updatedQualifiers[qualifiersIndex] = newMappingInfo;
             } else {
-                data.qualifiers.splice(qualifiersIndex, 1);
+                updatedQualifiers.splice(qualifiersIndex, 1);
             }
             // add as new
         } else if (newMappingInfo) {
-            data.qualifiers = data.qualifiers ? [...data.qualifiers, newMappingInfo] : [newMappingInfo];
+            updatedQualifiers = [...updatedQualifiers, newMappingInfo];
         }
-        props.onChange(data);
+
+        const updatedData = { ...props.data, qualifiers: updatedQualifiers };
+        props.onChange(updatedData);
     };
 
     return (

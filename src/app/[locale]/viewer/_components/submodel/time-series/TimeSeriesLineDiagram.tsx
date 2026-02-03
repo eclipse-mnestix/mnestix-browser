@@ -13,6 +13,7 @@ import {
 import { Box, Typography, useTheme } from '@mui/material';
 import { TimeSeriesDataSet } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesUtil';
 import { useTranslations } from 'next-intl';
+import { TimeSeriesCustomTooltip } from './TimeSeriesCustomTooltip';
 
 function formatDate(dateString: string, onlyTime = false) {
     const date = new Date(dateString);
@@ -57,38 +58,6 @@ export function TimeSeriesLineDiagram(props: { data: TimeSeriesDataSet; timefram
     const theme = useTheme();
     const color = theme.palette.primary.main;
 
-    const CustomTooltip = ({
-        active,
-        payload,
-        label,
-    }: {
-        active?: boolean;
-        payload?: Array<{ color: string; name: string; value: string }>;
-        label?: string;
-    }) => {
-        if (payload && payload.length && label) {
-            return (
-                <Box
-                    sx={{
-                        bgcolor: 'white',
-                        border: '1px solid #CCCCCC',
-                        visibility: !active ? 'hidden' : undefined,
-                        padding: '10px',
-                    }}
-                >
-                    <Typography>{formatDate(label, uniqueDates.length <= 2)}</Typography>
-                    {payload.map((p, index) => (
-                        <Box
-                            key={index}
-                            sx={{ fontSize: 11, color: p.color, paddingY: '4px' }}
-                        >{`${p.name} : ${p.value} `}</Box>
-                    ))}
-                </Box>
-            );
-        }
-        return null;
-    };
-
     return (
         <Box sx={{ width: '100%', height: '250px' }} data-testid="timeseries-line-chart">
             <ResponsiveContainer>
@@ -100,7 +69,9 @@ export function TimeSeriesLineDiagram(props: { data: TimeSeriesDataSet; timefram
                         tickFormatter={(v) => formatDate(v, uniqueDates.length <= 2)}
                     />
                     <YAxis fontSize={11} />
-                    <Tooltip content={<CustomTooltip />} />
+                    <Tooltip
+                        content={<TimeSeriesCustomTooltip formatDate={formatDate} onlyTime={uniqueDates.length <= 2} />}
+                    />
                     {startDayMarkerStamp.map((marker) => (
                         <ReferenceLine key={marker} x={marker} stroke="blue">
                             <Label

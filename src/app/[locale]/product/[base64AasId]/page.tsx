@@ -15,16 +15,15 @@ export default function Page() {
     const encodedRepoUrl = useSearchParams().get('repoUrl');
     const repoUrl = encodedRepoUrl ? decodeURI(encodedRepoUrl) : undefined;
     const infrastructureName = useSearchParams().get('infrastructure') || undefined;
-    try {
-        const aasIdDecoded = safeBase64Decode(base64AasId);
 
-        return (
-            <CurrentAasContextProvider aasId={aasIdDecoded} repoUrl={repoUrl} infrastructureName={infrastructureName}>
-                <ProductViewer />
-            </CurrentAasContextProvider>
-        );
+    let aasIdDecoded: string | null = null;
+    try {
+        aasIdDecoded = safeBase64Decode(base64AasId);
     } catch (e) {
         showError(e);
+    }
+
+    if (!aasIdDecoded) {
         return (
             <Box
                 sx={{
@@ -41,4 +40,10 @@ export default function Page() {
             </Box>
         );
     }
+
+    return (
+        <CurrentAasContextProvider aasId={aasIdDecoded} repoUrl={repoUrl} infrastructureName={infrastructureName}>
+            <ProductViewer />
+        </CurrentAasContextProvider>
+    );
 }

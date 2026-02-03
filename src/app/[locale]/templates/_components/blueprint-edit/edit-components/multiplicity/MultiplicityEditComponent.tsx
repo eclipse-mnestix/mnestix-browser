@@ -43,20 +43,23 @@ export function MultiplicityEditComponent(props: MultiplicityEditComponentProps)
             multiplicityData.qualifierTypes.includes(q.type),
         );
 
+        let updatedQualifiers = props.data.qualifiers ? [...props.data.qualifiers] : [];
+
         // update/remove if existing
-        if (props.data.qualifiers && qualifiersIndex !== undefined && qualifiersIndex > -1) {
+        if (qualifiersIndex !== undefined && qualifiersIndex > -1) {
             if (newMultiplicity) {
-                props.data.qualifiers[qualifiersIndex].value = newMultiplicity;
+                updatedQualifiers[qualifiersIndex] = { ...updatedQualifiers[qualifiersIndex], value: newMultiplicity };
             } else {
-                props.data.qualifiers.splice(qualifiersIndex, 1);
+                updatedQualifiers.splice(qualifiersIndex, 1);
             }
             // add as new
         } else if (newMultiplicity) {
-            const newQualifier = multiplicityData.emptyTemplate;
-            newQualifier.value = newMultiplicity;
-            props.data.qualifiers = props.data.qualifiers ? [...props.data.qualifiers, newQualifier] : [newQualifier];
+            const newQualifier = { ...multiplicityData.emptyTemplate, value: newMultiplicity };
+            updatedQualifiers = [...updatedQualifiers, newQualifier];
         }
-        props.onChange(props.data);
+
+        const updatedData = { ...props.data, qualifiers: updatedQualifiers };
+        props.onChange(updatedData);
     };
 
     const getDropdownItems = () => {

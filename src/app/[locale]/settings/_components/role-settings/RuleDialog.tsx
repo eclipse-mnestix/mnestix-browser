@@ -31,6 +31,125 @@ type RuleDialogProps = {
 
 type DialogMode = 'edit' | 'view' | 'delete' | 'create-hint' | 'delete-hint';
 
+type ViewContentProps = {
+    readonly rule: DialogRbacRule;
+    readonly t: (key: string) => string;
+    readonly onClose: () => void;
+    readonly setDialogMode: (mode: DialogMode) => void;
+};
+
+function ViewContent({ rule, t, onClose, setDialogMode }: ViewContentProps) {
+    return (
+        <>
+            <DialogContent data-testid="role-settings-dialog">
+                <Box display="flex" flexDirection="column">
+                    <Typography color="text.secondary" variant="body2">
+                        {t('tableHeader.name')}
+                    </Typography>
+                    <Box display="flex" flexDirection="row" mb="1em">
+                        <Typography
+                            variant="h2"
+                            color="primary"
+                            overflow="hidden"
+                            textOverflow="ellipsis"
+                            maxWidth="inherit"
+                            sx={{
+                                display: '-webkit-box',
+                                WebkitBoxOrient: 'vertical',
+                                WebkitLineClamp: 2,
+                                overflowWrap: 'break-word',
+                            }}
+                        >
+                            {rule.role}
+                        </Typography>
+                        <CopyButton value={rule.role} size="medium" />
+                    </Box>
+                    <Box display="flex" flexDirection="column" gap="1em">
+                        <Box>
+                            <Typography variant="h5">{t('tableHeader.action')}</Typography>
+                            <Typography>{rule?.action}</Typography>
+                        </Box>
+                        <TargetInformationView targetInformation={rule.targetInformation} />
+                    </Box>
+                </Box>
+            </DialogContent>
+            <DialogActions>
+                <Button
+                    sx={{ mr: 2 }}
+                    startIcon={<ArrowBack />}
+                    variant="outlined"
+                    data-testid="role-settings-back-button"
+                    onClick={onClose}
+                >
+                    {t('buttons.back')}
+                </Button>
+                <Button
+                    variant="outlined"
+                    startIcon={<Delete />}
+                    color="error"
+                    data-testid="role-settings-delete-button"
+                    onClick={() => setDialogMode('delete')}
+                >
+                    {t('buttons.delete')}
+                </Button>
+                <Button
+                    variant="contained"
+                    startIcon={<EditIcon />}
+                    data-testid="role-settings-edit-button"
+                    onClick={() => setDialogMode('edit')}
+                >
+                    {t('buttons.edit')}
+                </Button>
+            </DialogActions>
+        </>
+    );
+}
+
+type DialogViewContentProps = {
+    readonly dialogMode: DialogMode;
+    readonly t: (key: string) => string;
+    readonly rule: DialogRbacRule;
+    readonly onSubmit: (data: RuleFormModel) => Promise<void>;
+    readonly setDialogMode: (mode: DialogMode) => void;
+    readonly availableRoles: RoleOptions[];
+    readonly onDelete: () => Promise<void>;
+    readonly onClose: () => void;
+};
+
+function DialogViewContent({
+    dialogMode,
+    t,
+    rule,
+    onSubmit,
+    setDialogMode,
+    availableRoles,
+    onDelete,
+    onClose,
+}: DialogViewContentProps) {
+    switch (dialogMode) {
+        case 'edit':
+            return (
+                <RuleForm
+                    title={t('editRule.title')}
+                    rule={rule}
+                    onSubmit={onSubmit}
+                    onCancel={() => setDialogMode('view')}
+                    availableRoles={availableRoles}
+                />
+            );
+        case 'delete':
+            return (
+                <DeleteRuleDialogContent rule={rule} onCancelDialog={() => setDialogMode('view')} onDelete={onDelete} />
+            );
+        case 'create-hint':
+            return <KeycloakHint hint="create" onClose={onClose} />;
+        case 'delete-hint':
+            return <KeycloakHint hint="delete" onClose={onClose} />;
+        default:
+            return <ViewContent rule={rule} t={t} onClose={onClose} setDialogMode={setDialogMode} />;
+    }
+}
+
 export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }: RuleDialogProps) => {
     const t = useTranslations('pages.settings.rules');
     const [dialogMode, setDialogMode] = useState<DialogMode>('view');
@@ -87,102 +206,6 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
         await reloadRules();
     }
 
-    function ViewContent() {
-        return (
-            <>
-                <DialogContent data-testid="role-settings-dialog">
-                    <Box display="flex" flexDirection="column">
-                        <Typography color="text.secondary" variant="body2">
-                            {t('tableHeader.name')}
-                        </Typography>
-                        <Box display="flex" flexDirection="row" mb="1em">
-                            <Typography
-                                variant="h2"
-                                color="primary"
-                                overflow="hidden"
-                                textOverflow="ellipsis"
-                                maxWidth="inherit"
-                                sx={{
-                                    display: '-webkit-box',
-                                    WebkitBoxOrient: 'vertical',
-                                    WebkitLineClamp: 2,
-                                    overflowWrap: 'break-word',
-                                }}
-                            >
-                                {rule.role}
-                            </Typography>
-                            <CopyButton value={rule.role} size="medium" />
-                        </Box>
-                        <Box display="flex" flexDirection="column" gap="1em">
-                            <Box>
-                                <Typography variant="h5">{t('tableHeader.action')}</Typography>
-                                <Typography>{rule?.action}</Typography>
-                            </Box>
-                            <TargetInformationView targetInformation={rule.targetInformation} />
-                        </Box>
-                    </Box>
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        sx={{ mr: 2 }}
-                        startIcon={<ArrowBack />}
-                        variant="outlined"
-                        data-testid="role-settings-back-button"
-                        onClick={onClose}
-                    >
-                        {t('buttons.back')}
-                    </Button>
-                    <Button
-                        variant="outlined"
-                        startIcon={<Delete />}
-                        color="error"
-                        data-testid="role-settings-delete-button"
-                        onClick={() => setDialogMode('delete')}
-                    >
-                        {t('buttons.delete')}
-                    </Button>
-                    <Button
-                        variant="contained"
-                        startIcon={<EditIcon />}
-                        data-testid="role-settings-edit-button"
-                        onClick={() => setDialogMode('edit')}
-                    >
-                        {t('buttons.edit')}
-                    </Button>
-                </DialogActions>
-            </>
-        );
-    }
-
-    function DialogViewContent() {
-        switch (dialogMode) {
-            case 'edit':
-                return (
-                    <RuleForm
-                        title={t('editRule.title')}
-                        rule={rule}
-                        onSubmit={onSubmit}
-                        onCancel={() => setDialogMode('view')}
-                        availableRoles={availableRoles}
-                    />
-                );
-            case 'delete':
-                return (
-                    <DeleteRuleDialogContent
-                        rule={rule}
-                        onCancelDialog={() => setDialogMode('view')}
-                        onDelete={onDelete}
-                    />
-                );
-            case 'create-hint':
-                return <KeycloakHint hint="create" onClose={onClose} />;
-            case 'delete-hint':
-                return <KeycloakHint hint="delete" onClose={onClose} />;
-            default:
-                return <ViewContent />;
-        }
-    }
-
     return (
         <Dialog
             open={open}
@@ -196,7 +219,16 @@ export const RuleDialog = ({ onClose, reloadRules, open, rule, availableRoles }:
         >
             <Box sx={{ mx: '2rem', mt: '1.5rem', mb: '1rem' }} data-testid="role-dialog">
                 <DialogCloseButton handleClose={onClose} dataTestId="dialog-close-button" />
-                <DialogViewContent />
+                <DialogViewContent
+                    dialogMode={dialogMode}
+                    t={t}
+                    rule={rule}
+                    onSubmit={onSubmit}
+                    setDialogMode={setDialogMode}
+                    availableRoles={availableRoles}
+                    onDelete={onDelete}
+                    onClose={onClose}
+                />
             </Box>
         </Dialog>
     );
