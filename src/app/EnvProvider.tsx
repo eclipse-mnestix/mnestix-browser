@@ -10,7 +10,7 @@ export const initialEnvValues: EnvironmentalVariables = {
     AAS_LIST_FEATURE_FLAG: false,
     COMPARISON_FEATURE_FLAG: false,
     TRANSFER_FEATURE_FLAG: false,
-    PRODUCT_VIEW_FEATURE_FLAG: false,
+    EXPERIMENTAL_PRODUCT_VIEW_FEATURE_FLAG: false,
     KEYCLOAK_ENABLED: false,
     LOCK_TIMESERIES_PERIOD_FEATURE_FLAG: false,
     DISCOVERY_API_URL: undefined,
@@ -23,6 +23,7 @@ export const initialEnvValues: EnvironmentalVariables = {
     THEME_PRIMARY_COLOR: undefined,
     THEME_SECONDARY_COLOR: undefined,
     THEME_BASE64_LOGO: undefined,
+    THEME_MENU_COLOR: undefined,
     LOG_LEVEL: 'info',
     THEME_LOGO_URL: undefined,
     IMPRINT_URL: undefined,
@@ -37,6 +38,8 @@ export const initialEnvValues: EnvironmentalVariables = {
     KEYCLOAK_REALM: undefined,
     KEYCLOAK_CLIENT_ID: undefined,
     SERIALIZATION_API_URL: undefined,
+    EXPERIMENTAL_HIGHLIGHT_DATA_FLAG: false,
+    EXTERNAL_LINKS: [],
 };
 
 const EnvContext = createContext(initialEnvValues);

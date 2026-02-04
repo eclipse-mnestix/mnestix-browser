@@ -97,6 +97,7 @@ export function QrScanner(props: {
 
     // This will allow cypress to call the callback manually and circumvent a webcam mock
     if (typeof window !== 'undefined' && typeof window.Cypress !== 'undefined') {
+        // eslint-disable-next-line react-hooks/immutability
         window.Cypress.scannerCallback = handleScan;
     }
 

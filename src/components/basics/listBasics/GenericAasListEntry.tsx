@@ -25,7 +25,7 @@ export const GenericAasListEntry = ({ aasListEntry, ...config }: GenericAasListT
     const t = useTranslations('pages.aasList');
 
     const navigateToAas = () => {
-        const pageToGo = env.PRODUCT_VIEW_FEATURE_FLAG ? '/product' : '/viewer';
+        const pageToGo = env.EXPERIMENTAL_PRODUCT_VIEW_FEATURE_FLAG ? '/product' : '/viewer';
         const aasId = aasListEntry.aasId;
         const repoUrl = aasListEntry.repositoryUrl;
         const infrastructureName = aasListEntry.infrastructureName;
@@ -65,6 +65,11 @@ export const GenericAasListEntry = ({ aasListEntry, ...config }: GenericAasListT
             {config.showRepositoryUrl && (
                 <TableCell align="left" sx={tableBodyText} data-testid="list-row-repositoryUrl">
                     {aasListEntry.repositoryUrl ?? '-'}
+                </TableCell>
+            )}
+            {config.showInfrastructureName && (
+                <TableCell align="left" sx={tableBodyText} data-testid="list-row-infrastructureName">
+                    {aasListEntry.infrastructureName ?? '-'}
                 </TableCell>
             )}
             {config.showDiscoveryUrl && (

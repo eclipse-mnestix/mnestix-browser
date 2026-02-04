@@ -2,6 +2,7 @@ import { AppBar, Box, styled, Toolbar } from '@mui/material';
 import MainMenu from './menu/MainMenu';
 import { HeaderLogo } from './HeaderLogo';
 import { LanguageSelector } from './LanguageSelector';
+import { useEnv } from 'app/EnvProvider';
 
 const Offset = styled(Box)(({ theme }) => theme.mixins.toolbar);
 
@@ -18,9 +19,16 @@ const StyledLogoWrapper = styled(Box)(() => ({
 }));
 
 export function Header() {
+    const env = useEnv();
     return (
         <>
-            <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+            <AppBar
+                position="fixed"
+                sx={{
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                    ...(env.THEME_MENU_COLOR && { background: env.THEME_MENU_COLOR }),
+                }}
+            >
                 <Toolbar disableGutters>
                     <MainMenu />
                     <StyledLogoWrapper

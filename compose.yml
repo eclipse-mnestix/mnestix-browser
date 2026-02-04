@@ -10,7 +10,7 @@ volumes:
 services:
   mnestix-browser:
     container_name: mnestix-browser
-    image: mnestix/mnestix-browser:2.0.1
+    image: mnestix/mnestix-browser:2.1.0
     profiles: ['', 'frontend', 'tests']
     build:
       dockerfile: Dockerfile
@@ -30,7 +30,7 @@ services:
       AAS_LIST_FEATURE_FLAG: 'true'
       TRANSFER_FEATURE_FLAG: 'false'
       COMPARISON_FEATURE_FLAG: 'true'
-      PRODUCT_VIEW_FEATURE_FLAG: 'false'
+      EXPERIMENTAL_PRODUCT_VIEW_FEATURE_FLAG: 'false'
       AUTHENTICATION_FEATURE_FLAG: 'false'
       LOCK_TIMESERIES_PERIOD_FEATURE_FLAG: 'true'
       NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-verySecureNextAuthSecret}
@@ -68,7 +68,7 @@ services:
       - mnestix-network
 
   mnestix-aas-generator:
-    image: mnestix/mnestix-aas-generator:1.0.0
+    image: mnestix/mnestix-aas-generator:1.1.0
     container_name: mnestix-aas-generator
     profiles: ['', 'backend', 'tests']
     environment:
@@ -115,7 +115,7 @@ services:
       - mnestix-mongodb-data:/data/db
 
   aas-environment:
-    image: eclipsebasyx/aas-environment:2.0.0-milestone-07
+    image: eclipsebasyx/aas-environment:2.0.0-milestone-08
     container_name: aas-environment
     profiles: ['', 'basyx', 'tests']
     depends_on:
@@ -147,7 +147,7 @@ services:
       - mnestix-network
 
   aas-discovery:
-    image: eclipsebasyx/aas-discovery:2.0.0-milestone-07
+    image: eclipsebasyx/aas-discovery:2.0.0-milestone-08
     container_name: aas-discovery
     profiles: ['', 'basyx', 'tests']
     depends_on:
@@ -175,7 +175,7 @@ services:
       - mnestix-network
 
   aas-registry:
-    image: eclipsebasyx/aas-registry-log-mongodb:2.0.0-milestone-07
+    image: eclipsebasyx/aas-registry-log-mongodb:2.0.0-milestone-08
     container_name: aas-registry
     profiles: ['', 'basyx']
     ports:
@@ -195,7 +195,7 @@ services:
       - mnestix-network
 
   submodel-registry:
-    image: eclipsebasyx/submodel-registry-log-mongodb:2.0.0-milestone-07
+    image: eclipsebasyx/submodel-registry-log-mongodb:2.0.0-milestone-08
     container_name: submodel-registry
     profiles: ['', 'basyx']
     ports:

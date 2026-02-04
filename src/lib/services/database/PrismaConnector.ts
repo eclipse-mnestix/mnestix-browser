@@ -1,5 +1,5 @@
 import { prisma } from 'lib/database/prisma';
-import { ConnectionType, Prisma } from '@prisma/client';
+import { ConnectionType, Prisma } from '../../../../prisma/generated/client';
 import { IPrismaConnector } from 'lib/services/database/PrismaConnectorInterface';
 import { PrismaConnectorInMemory } from 'lib/services/database/PrismaConnectorInMemory';
 import type { InfrastructureFormData } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
@@ -111,6 +111,7 @@ export class PrismaConnector implements IPrismaConnector {
             id: item.id,
             infrastructureName: item.infrastructure?.name ?? '',
             url: item.url,
+            isDefault: false,
         }));
     }
 

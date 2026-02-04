@@ -1,49 +1,41 @@
 'use client';
-import { Box, Button, Typography, useTheme } from '@mui/material';
-import { useEnv } from 'app/EnvProvider';
-import { useIsMobile } from 'lib/hooks/UseBreakpoints';
+import { Box, Typography, useTheme } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 
-export const GoToListCard = () => {
-    const isMobile = useIsMobile();
-    const env = useEnv();
-    const navigate = useRouter();
-    const t = useTranslations('pages.dashboard');
+export function GoToListCard() {
     const theme = useTheme();
+    const t = useTranslations('pages.dashboard');
 
     return (
-        <>
-            {!isMobile && env.AAS_LIST_FEATURE_FLAG && (
-                <Box display="flex" flexDirection="column" sx={{ m: 2 }} alignItems="center">
-                    <Box
-                        sx={{
-                            backgroundColor: theme.palette.secondary.main,
-                            borderRadius: '8px',
-                            width: '64px',
-                            height: '64px',
-                            mb: 2,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <ArrowOutwardIcon sx={{ color: 'white' }} />
-                    </Box>
-                    <Typography textAlign="center" variant="h4">
-                        {t('listCardHeader')}
-                    </Typography>
-                    <Typography color="text.secondary" textAlign="center">
-                        {t('listBtnLabel')}
-                    </Typography>
-                    <Box display="flex" mt={1}>
-                        <Button variant="text" data-testid="aasList-Button-Home" onClick={() => navigate.push('/list')}>
-                            {t('listBtnText')}
-                        </Button>
-                    </Box>
-                </Box>
-            )}
-        </>
+        <Box
+            display="flex"
+            flex={1}
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="flex-start"
+            sx={{ px: 3, py: 4, gap: 1, height: '100%', width: '100%' }}
+        >
+            <Box
+                sx={{
+                    backgroundColor: theme.palette.secondary.main,
+                    borderRadius: '8px',
+                    width: '64px',
+                    height: '64px',
+                    mb: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+            >
+                <ArrowOutwardIcon sx={{ color: 'white' }} />
+            </Box>
+            <Typography textAlign="center" variant="h4">
+                {t('listCardHeader')}
+            </Typography>
+            <Typography color="text.secondary" textAlign="center">
+                {t('listBtnLabel')}
+            </Typography>
+        </Box>
     );
-};
+}

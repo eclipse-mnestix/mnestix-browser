@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren, useMemo } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { useLocale } from 'next-intl';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -17,14 +17,13 @@ const bundledLocales: Record<string, Locale | undefined> = {
  */
 export function Internationalization(props: PropsWithChildren<unknown>) {
     const locale = useLocale();
-    const [dateAdapterLocale, setDateAdapterLocale] = useState<Locale | undefined>(bundledLocales[locale]);
 
-    useEffect(() => {
+    const dateAdapterLocale = useMemo(() => {
         const adapterLocale = bundledLocales[locale];
         if (!adapterLocale && locale !== 'en') {
             console.warn(`No bundled locale for ${locale}`);
         }
-        setDateAdapterLocale(adapterLocale);
+        return adapterLocale;
     }, [locale]);
 
     return (

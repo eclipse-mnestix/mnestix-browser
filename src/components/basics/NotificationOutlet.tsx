@@ -8,6 +8,8 @@ export function NotificationOutlet() {
 
     useEffect(() => {
         if (notification) {
+            // useEffect is the best way to react to notification changes without unwanted re-renders
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setOpen(true);
         }
     }, [notification]);
@@ -27,8 +29,6 @@ export function NotificationOutlet() {
         <Snackbar
             open={open}
             autoHideDuration={4000}
-            // to force rerender when contents change
-            key={Date.now()}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             onClose={handleClose}
         >

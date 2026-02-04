@@ -9,6 +9,7 @@
 /cypress/results/*
 
 /prisma/database/
+/prisma/generated/
 
 /.idea/.idea.mnestix-frontend.dir/.idea/
 

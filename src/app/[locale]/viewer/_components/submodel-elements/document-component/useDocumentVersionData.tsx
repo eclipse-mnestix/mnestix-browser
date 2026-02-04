@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import { useLocale } from 'next-intl';
 import {
     SubmodelElementCollection,
@@ -6,6 +6,7 @@ import {
     SubmodelElementChoice,
     Property,
     MultiLanguageProperty,
+    SubmodelElementList,
 } from 'lib/api/aas/models';
 import { findSubmodelElementBySemanticIdsOrIdShort, getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import {
@@ -31,35 +32,12 @@ export type FileViewObject = {
  * @param submodelElement
  * @param submodelId
  */
-export function useFileViewObject(submodelElement: SubmodelElementCollection, submodelId: string) {
+export function useFileViewObject(
+    submodelElement: SubmodelElementCollection | SubmodelElementList,
+    submodelId: string,
+) {
     const locale = useLocale();
     const { aasOriginUrl } = useCurrentAasContext();
-    const [fileViewObject, setFileViewObject] = useState<FileViewObject>();
-
-    useEffect(() => {
-        setFileViewObject(getFileViewObject());
-    }, [submodelElement]);
-
-    function getFileViewObject(): FileViewObject {
-        let fileViewObject: FileViewObject = {
-            mimeType: '',
-            title: submodelElement?.idShort ?? '',
-            organizationName: '',
-            digitalFileUrl: '',
-            previewImgUrl: '',
-        };
-        if (!submodelElement?.value) return fileViewObject;
-
-        const documentVersion = findSubmodelElementBySemanticIdsOrIdShort(submodelElement.value, 'DocumentVersion', [
-            DocumentSpecificSemanticId.DocumentVersion,
-            DocumentSpecificSemanticIdIrdi.DocumentVersion,
-            DocumentSpecificSemanticIdIrdiV2.DocumentVersion,
-        ]) as SubmodelElementCollection;
-        if (documentVersion.value) {
-            fileViewObject = extractDocumentVersionData(documentVersion, fileViewObject);
-        }
-        return fileViewObject;
-    }
 
     function extractDocumentVersionData(documentVersion: SubmodelElementCollection, fileViewObject: FileViewObject) {
         const title = findSubmodelElementBySemanticIdsOrIdShort(documentVersion.value, null, [
@@ -141,6 +119,27 @@ export function useFileViewObject(submodelElement: SubmodelElementCollection, su
         }
         return '';
     }
+
+    const fileViewObject = useMemo((): FileViewObject => {
+        let fileViewObject: FileViewObject = {
+            mimeType: '',
+            title: submodelElement?.idShort ?? '',
+            organizationName: '',
+            digitalFileUrl: '',
+            previewImgUrl: '',
+        };
+        if (!submodelElement?.value) return fileViewObject;
+
+        const documentVersion = findSubmodelElementBySemanticIdsOrIdShort(submodelElement.value, 'DocumentVersion', [
+            DocumentSpecificSemanticId.DocumentVersion,
+            DocumentSpecificSemanticIdIrdi.DocumentVersion,
+            DocumentSpecificSemanticIdIrdiV2.DocumentVersion,
+        ]) as SubmodelElementCollection;
+        if (documentVersion.value) {
+            fileViewObject = extractDocumentVersionData(documentVersion, fileViewObject);
+        }
+        return fileViewObject;
+    }, [submodelElement, locale, aasOriginUrl, submodelId]);
 
     return fileViewObject;
 }

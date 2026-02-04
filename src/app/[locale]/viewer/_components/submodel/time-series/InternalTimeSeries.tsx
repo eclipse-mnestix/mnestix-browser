@@ -19,6 +19,7 @@ export function InternalTimeSeries(props: { submodelElement: SubmodelElementColl
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setIsLoading(true);
         const points = parseRecordsFromInternalSegment(props.submodelElement);
 

@@ -1,12 +1,13 @@
 /**
  * Types and Enums for handling database entities.
  */
-import { Prisma } from '@prisma/client';
+import { Prisma } from '../../../../prisma/generated/client';
 
 export type RepositoryWithInfrastructure = {
     id?: string;
     infrastructureName: string;
     url: string;
+    isDefault?: boolean;
 };
 export type InfrastructureConnection = {
     name: string;

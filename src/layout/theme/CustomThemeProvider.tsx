@@ -25,6 +25,13 @@ export function CustomThemeProvider(props: PropsWithChildren<{ readonly skipStyl
             theme.productLogo = { logo: env.THEME_BASE64_LOGO };
         }
 
+        theme.customColors = {
+            ...theme.customColors,
+            menuBackground: {
+                main: env.THEME_MENU_COLOR ?? env.THEME_PRIMARY_COLOR ?? DefaultThemeSettings.primaryColor,
+            },
+        };
+
         setMuiTheme(createTheme(theme, deDE));
     }, [env]);
 

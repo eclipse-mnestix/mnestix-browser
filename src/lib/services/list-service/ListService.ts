@@ -1,5 +1,6 @@
 import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { AssetAdministrationShellRepositoryApi, SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
+import { RegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApi';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { AssetAdministrationShell, Submodel } from 'lib/api/aas/models';
 import ServiceReachable from 'test-utils/TestUtils';
@@ -8,8 +9,10 @@ import { encodeBase64 } from 'lib/util/Base64Util';
 import { MultiLanguageValueOnly } from 'lib/api/basyx-v3/types';
 import { getInfrastructureByName } from '../database/infrastructureDatabaseActions';
 import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
-import logger, { logInfo } from 'lib/util/Logger';
+import logger, { logInfo, logWarn } from 'lib/util/Logger';
 import { RepositoryWithInfrastructure } from '../database/InfrastructureMappedTypes';
+import { IRegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApiInterface';
+import { AssetAdministrationShellDescriptor } from 'lib/types/registryServiceTypes';
 
 export type ListEntityDto = {
     aasId: string;
@@ -33,8 +36,10 @@ export type AasListDto = {
 
 export class ListService {
     private constructor(
+        protected readonly repositoryWithInfrastructure: RepositoryWithInfrastructure,
         protected readonly getTargetAasRepositoryClient: () => IAssetAdministrationShellRepositoryApi,
         protected readonly getTargetSubmodelRepositoryClient: () => ISubmodelRepositoryApi,
+        protected readonly getTargetAasRegistryClient: () => IRegistryServiceApi,
         private readonly log: typeof logger = logger,
     ) {}
 
@@ -52,9 +57,11 @@ export class ListService {
         const securityHeader = await createSecurityHeaders(infrastructure || undefined);
 
         return new ListService(
+            targetAasRepository,
             () => AssetAdministrationShellRepositoryApi.create(targetAasRepository.url, mnestixFetch(securityHeader)),
             // For now, we only use the same repository.
             () => SubmodelRepositoryApi.create(targetAasRepository.url, mnestixFetch(securityHeader)),
+            () => RegistryServiceApi.create(targetAasRepository.url, mnestixFetch(securityHeader), listServiceLogger),
             listServiceLogger,
         );
     }
@@ -64,6 +71,10 @@ export class ListService {
         submodelInRepositories: Submodel[] = [],
         targetAasRepository = ServiceReachable.Yes,
     ): ListService {
+        const repositoryWithInfrastructure = {
+            infrastructureName: 'null',
+            url: 'https://targetAasRepositoryClient.com',
+        };
         const targetAasRepositoryClient = AssetAdministrationShellRepositoryApi.createNull(
             'https://targetAasRepositoryClient.com',
             shellsInRepositories,
@@ -74,9 +85,17 @@ export class ListService {
             submodelInRepositories,
             targetAasRepository,
         );
+        const targetAasRegistryClient = RegistryServiceApi.createNull(
+            'https://targetAasRegistryClient.com',
+            shellsInRepositories,
+            [],
+            targetAasRepository,
+        );
         return new ListService(
+            repositoryWithInfrastructure,
             () => targetAasRepositoryClient,
             () => targetSubmodelRepositoryClient,
+            () => targetAasRegistryClient,
         );
     }
 
@@ -87,18 +106,60 @@ export class ListService {
      * This logic is needed to hide the configuration AASs created by the mnestix-api.
      * @param limit
      * @param cursor
+     * @param type
      */
-    async getAasListEntities(limit: number, cursor?: string): Promise<AasListDto> {
-        logInfo(this.log, 'getAasListEntities', 'Fetching aas list from repository');
-        const targetAasRepositoryClient = this.getTargetAasRepositoryClient();
-        const response = await targetAasRepositoryClient.getAllAssetAdministrationShells(limit, cursor);
+    async getAasListEntities(limit: number, cursor?: string, type?: 'repository' | 'registry'): Promise<AasListDto> {
+        let assetAdministrationShells: AssetAdministrationShell[] = [];
+        let nextCursor: string | undefined;
 
-        if (!response.isSuccess) {
-            return { success: false, error: response };
+        if (type === 'registry') {
+            logInfo(this.log, 'getAasListEntities', 'Fetching aas list from registry');
+            const targetAasRegistryClient = this.getTargetAasRegistryClient();
+            const descriptorsResponse = await targetAasRegistryClient.getAllAssetAdministrationShellDescriptors(
+                limit,
+                cursor,
+            );
+
+            if (!descriptorsResponse.isSuccess) {
+                return { success: false, error: descriptorsResponse };
+            }
+
+            const { result: descriptors, paging_metadata } = descriptorsResponse.result;
+            nextCursor = paging_metadata?.cursor;
+
+            // Fetch all AAS from their endpoints in parallel
+            const aasPromises = descriptors.map(async (descriptor: AssetAdministrationShellDescriptor) => {
+                if (!descriptor.endpoints || descriptor.endpoints.length === 0) {
+                    this.log?.warn(`Descriptor ${descriptor.id} has no endpoints`);
+                    return null;
+                }
+                let hrefValue = descriptor.endpoints[0].protocolInformation.href;
+                if (hrefValue.startsWith('/')) {
+                    const host = new URL(this.repositoryWithInfrastructure.url).origin;
+                    logWarn(this.log, 'getAasListEntities', `Descriptor with id "${descriptor.id}" does not contain a standardconform URL, trying a workaround. Please update your data.`);
+                    hrefValue = host.concat(hrefValue);
+                }   
+
+                const endpoint = new URL(hrefValue);
+                const aasResponse = await targetAasRegistryClient.getAssetAdministrationShellFromEndpoint(endpoint);
+                return aasResponse.isSuccess ? aasResponse.result : null;
+            });
+
+            const aasResults = await Promise.all(aasPromises);
+            assetAdministrationShells = aasResults.filter((aas): aas is AssetAdministrationShell => aas !== null);
+        } else {
+            logInfo(this.log, 'getAasListEntities', 'Fetching aas list from repository');
+            const targetAasRepositoryClient = this.getTargetAasRepositoryClient();
+            const response = await targetAasRepositoryClient.getAllAssetAdministrationShells(limit, cursor);
+
+            if (!response.isSuccess) {
+                return { success: false, error: response };
+            }
+
+            const { result: shells, paging_metadata } = response.result;
+            assetAdministrationShells = shells;
+            nextCursor = paging_metadata?.cursor;
         }
-
-        const { result: assetAdministrationShells, paging_metadata } = response.result;
-        const nextCursor = paging_metadata.cursor;
 
         const aasListDtos = assetAdministrationShells
             .filter((aas) => {
@@ -135,7 +196,7 @@ export class ListService {
             const submodelRepositoryClient = this.getTargetSubmodelRepositoryClient();
             const submodelResponse = await submodelRepositoryClient.getSubmodelMetaData(submodelId);
             if (submodelResponse.isSuccess) {
-                const semanticId = submodelResponse.result?.semanticId?.keys[0].value;
+                const semanticId = submodelResponse.result?.semanticId?.keys[0]?.value;
                 const nameplateKeys = [
                     SubmodelSemanticIdEnum.NameplateV1,
                     SubmodelSemanticIdEnum.NameplateV2,
@@ -152,10 +213,23 @@ export class ListService {
                         'ManufacturerProductDesignation',
                     );
 
+                    // The API might return the value directly or wrapped in an object with the property name as key
+                    // eslint-disable-next-line
+                    const extractValue = (response: any): MultiLanguageValueOnly | undefined => {
+                        if (!response) return undefined;
+                        if (Array.isArray(response)) return response;
+                        // If response is an object with a single key, extract that value
+                        const keys = Object.keys(response);
+                        if (keys.length === 1 && Array.isArray(response[keys[0]])) {
+                            return response[keys[0]];
+                        }
+                        return response;
+                    };
+
                     return {
                         success: true,
-                        manufacturerName: manufacturerName.result,
-                        manufacturerProductDesignation: manufacturerProduct.result,
+                        manufacturerName: extractValue(manufacturerName.result),
+                        manufacturerProductDesignation: extractValue(manufacturerProduct.result),
                     };
                 }
             }

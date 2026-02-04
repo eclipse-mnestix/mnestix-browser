@@ -1,6 +1,5 @@
 import pino from 'pino';
 import pretty from 'pino-pretty';
-import { v4 as uuidv4 } from 'uuid';
 import { ApiResponseWrapper, ApiResponseWrapperError } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { envs } from 'lib/env/MnestixEnv';
 
@@ -131,7 +130,7 @@ export const logResponseWarn = <T>(
 export const getCorrelationId = (headers: Headers) => {
     let correlationId = headers.get('x-correlation-id');
     if (!correlationId) {
-        correlationId = uuidv4();
+        correlationId = crypto.randomUUID();
     }
     return correlationId;
 };

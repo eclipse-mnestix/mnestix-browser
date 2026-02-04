@@ -1,9 +1,9 @@
-import { alpha, Box, Typography, useTheme } from '@mui/material';
+import { alpha, Box, useTheme } from '@mui/material';
 import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/ProductLifecycleStage.enum';
 import { Bar, BarChart, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { cutDecimalPlaces } from 'lib/util/NumberUtil';
 import { useTranslations } from 'next-intl';
 import { CO2Unit } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/CarbonFootprintVisualizations';
+import { CustomTooltipWithUnit } from '../CustomTooltipWithUnit';
 
 export function CO2EBarchart(props: {
     co2EquivalentsPerLifecycleStage: Partial<Record<ProductLifecycleStage, number>>;
@@ -25,40 +25,22 @@ export function CO2EBarchart(props: {
             />
         ));
 
-    const CustomTooltipWithUnit = ({
-        active,
-        payload,
-        label,
-    }: {
-        active?: boolean;
-        payload?: Array<{ color: string; name: string; value: string }>;
-        label?: string;
-    }) => {
-        if (payload && payload.length) {
-            return (
-                <Box sx={{ bgcolor: 'white', visibility: !active ? 'hidden' : undefined, padding: '10px' }}>
-                    <Typography>{label}</Typography>
-                    {payload
-                        .sort((a, b) => Number.parseFloat(a.value) - Number.parseFloat(b.value))
-                        .map((p, index) => (
-                            <Box key={index} sx={{ color: p.color, paddingY: '4px' }}>{`${p.name} : ${cutDecimalPlaces(
-                                Number.parseFloat(p.value),
-                                3,
-                            )} ${props.unit} CO2e`}</Box>
-                        ))}
-                </Box>
-            );
-        }
-        return null;
-    };
-
     return (
         <Box sx={{ width: '100%', height: '400px' }} data-testid="co2e-barchart">
             <ResponsiveContainer>
                 <BarChart data={data}>
                     <XAxis dataKey="name" />
                     <YAxis label={{ value: `${props.unit} CO2e`, angle: -90, position: 'insideLeft' }} />
-                    <Tooltip content={<CustomTooltipWithUnit />} />
+                    <Tooltip
+                        content={(tooltipProps) => (
+                            <CustomTooltipWithUnit
+                                active={tooltipProps.active}
+                                payload={tooltipProps.payload as Array<{ color: string; name: string; value: string }>}
+                                label={tooltipProps.label}
+                                unit={props.unit}
+                            />
+                        )}
+                    />
                     <Legend />
                     {bars}
                 </BarChart>

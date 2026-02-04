@@ -1,0 +1,12 @@
+apis/AasCreatorApi.ts
+apis/AasRelationshipApi.ts
+apis/ConfigurationApi.ts
+apis/CustomTemplatesApi.ts
+apis/DataIngestApi.ts
+apis/DefaultTemplatesApi.ts
+apis/IdGeneratorApi.ts
+apis/TemplateApi.ts
+apis/index.ts
+index.ts
+models/index.ts
+runtime.ts

@@ -7,9 +7,8 @@ export const useAsyncEffect = (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dependencies?: any[],
 ): void => {
-    const status = { aborted: false }; // mutable status object
     useEffect(() => {
-        status.aborted = false;
+        const status = { aborted: false }; // fresh status object per effect invocation
         const cleanUpFunction = effectCallback(status);
         return () => {
             status.aborted = true;

@@ -18,16 +18,17 @@ export const TargetInformationForm = (props: TargetInformationProps) => {
 
     const ruleTypes = Object.keys(rbacRuleTargets);
 
-    useEffect(() => {
-        adaptTargetInformationForm(props.getValues('type') as keyof typeof rbacRuleTargets);
-    }, []);
-
     const adaptTargetInformationForm = (value: keyof typeof rbacRuleTargets) => {
         const currentTypeInformation = props.getValues(`targetInformation.${value}` as 'targetInformation.aas');
 
         setKeys(currentTypeInformation ? Object.keys(currentTypeInformation) : []);
         setCurrentType(value);
     };
+
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        adaptTargetInformationForm(props.getValues('type') as keyof typeof rbacRuleTargets);
+    }, []);
 
     return (
         <Box mt="1em">
