@@ -166,7 +166,7 @@ POST /api/v2/DataIngest/{base64EncodedAasId}
 }
 ```
 
-For details on blueprint configuration and mapping rules, see [Data Ingest & Blueprint Guide](Mnestix-API-Data-Ingest).
+For details on blueprint configuration and mapping rules, see [Data Ingest & Blueprint Guide](Data-Ingest-&-Blueprint-Guide).
 
 ---
 
