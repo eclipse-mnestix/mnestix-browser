@@ -83,6 +83,8 @@ X-API-KEY: my-secret-key-123
 
 > Mnestix Browser adds this automatically when configured right
 
+> **Note:** GET and HEAD requests do not require an API key. Only modifying requests (POST, PUT, PATCH, DELETE) require the `X-API-KEY` header.
+
 ##### **JWT Bearer Token Authentication (OAuth 2.0)**
 
 For OAuth 2.0 authentication, you can configure either Microsoft Entra ID (Azure AD) or an OpenID Connect provider (e.g., Keycloak).
@@ -138,6 +140,22 @@ You can secure the API using Microsoft Entra ID (Azure AD) or an OpenID Connect 
   Example:  
   `ServerUrls: 'http://mnestix-proxy:5065/repo/'`
     > Adjust this value if your proxy or repository endpoint changes.
+
+**MongoDB Configuration (Used for AasRelationship Endpoint):**
+
+- `BasyxDbConnectionConfiguration__MongoConnectionString`:  
+  Connection string for MongoDB including host, port, and credentials.
+
+- `BasyxDbConnectionConfiguration__DatabaseName`:  
+  Name of the MongoDB database.
+
+    > **Important:** Must match the AAS Repository's `SPRING__DATA__MONGODB__DATABASE` value.
+
+- `BasyxDbConnectionConfiguration__AasCollectionName`:  
+  Name of the collection for AAS documents.
+    > **Important:** Must match the AAS Repository's collection name (default: `aas-repo`).
+
+> **Security:** MongoDB should not be publicly accessible in production. Update default credentials.
 
 **Separate Submodel Repositories (API v2 only):**
 
