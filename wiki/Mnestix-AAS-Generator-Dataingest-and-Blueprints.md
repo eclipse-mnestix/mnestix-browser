@@ -2,7 +2,7 @@
 
 This guide explains how to use the AAS Generator to create Submodels from structured data using Blueprints. The concepts apply to both:
 
-- **DataIngest endpoint** (`POST /api/v2/DataIngest/{aasId}`) - Adds submodels to an **existing** AAS
+- **DataIngest endpoint** (`POST /api/v2/DataIngest/{base64EncodedAasId}`) - Adds submodels to an **existing** AAS
 - **AasCreator endpoint** (`POST /api/v2/AasCreator/{assetIdShort}`) - Creates a **new** AAS with submodels
 
 For detailed endpoint specifications, see the [API Reference](Mnestix-AAS-Generator-API-Reference).
