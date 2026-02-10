@@ -112,7 +112,7 @@ X-API-KEY: your-api-key
 #### Option B: Create New AAS with Submodel (AasCreator)
 
 ```http
-POST /api/v2/AasCreator/my-machine-001
+POST /api/v2/AasCreator/{assetIdShort}
 Content-Type: application/json
 X-API-KEY: your-api-key
 ```
