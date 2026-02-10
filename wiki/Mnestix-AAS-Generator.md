@@ -83,8 +83,6 @@ X-API-KEY: my-secret-key-123
 
 > Mnestix Browser adds this automatically when configured right
 
-> **Note:** GET and HEAD requests do not require an API key. Only modifying requests (POST, PUT, PATCH, DELETE) require the `X-API-KEY` header.
-
 ##### **JWT Bearer Token Authentication (OAuth 2.0)**
 
 For OAuth 2.0 authentication, you can configure either Microsoft Entra ID (Azure AD) or an OpenID Connect provider (e.g., Keycloak).
