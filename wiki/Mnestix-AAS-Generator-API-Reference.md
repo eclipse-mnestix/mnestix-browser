@@ -87,7 +87,7 @@ POST /api/v2/AasCreator/{assetIdShort}
 
 > **Note:** If submodel generation fails mid-process, the AAS may have been partially created. Check the `submodelResults` array in the error response for details.
 
-For details on blueprint usage, see [Data Ingest & Blueprint Guide](Mnestix-API-Data-Ingest).
+For details on blueprint usage, see [Data Ingest & Blueprint Guide](Data-Ingest-&-Blueprint-Guide).
 
 ---
 
