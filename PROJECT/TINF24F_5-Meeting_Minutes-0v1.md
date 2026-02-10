@@ -15,8 +15,13 @@
 | 1.6 | 27.10.2025 | Felix Hennerich | Meeting with external |
 | 1.7 | 31.10.2025 | Felix Hennerich | Further Exercises |
 | 1.8 | 07.11.2025 | Felix Hennerich | Preparation of Pre-presentation |
+| 1.9 | 08.01.2026 | Felix Hennerich | New Year New Motivation |
+| 1.10 | 10.02.2026 | Felix Hennerich | Project Refresh after break |
+
 
 ## Table of Contents
+- [Meeting 10.02.2026 - Project Refresh after break](#refresh)
+- [Meeting 08.01.2026 - New Year New Motivation](#newYear)
 - [Meeting 07.11.2025 - Preparation of Pre-presentation](#prepres)
 - [Meeting 31.10.2025 - ReadME, Further Exercises](#readme)
 - [Meeting 27.10.2025 - External Meeting](#external)
@@ -28,12 +33,71 @@
 
 ---
 
+<a id="refresh"></a>
+## Meeting 10.02.2026 - Project Refresh after break
+| No. | Topic                     | Responsibility | Time (min) |
+|-----|----------------------------|----------------|-------------|
+| 1 | Clarification of understanding problems with the user stories | Julian Schumacher & Nils Schäffner | 10 |
+| 2 | Presented all new Features and discussed upcoming Tasks | Jan Kruske | 10 |
+| 3 | Discord screenshare session with Live Debugging | Bruno Lange | 20 |
+
+**Location:** Discord
+**Date:** 10.02.2026  
+**Time:** 40 min  
+**Moderator:** Felix Hennerich
+
+**Attendees:**  
+Julian Schumacher, Nils Schäffner, Felix Hennerich, Bruno Lange, Jan Kruske
+
+### I. To-Do’s
+| **To-Do**                             | **Responsible Person(s)** | **Due Date** |
+|--------------------------------------|----------------------------|--------------|
+| Continue Developement | All | No fixed date  |
+| Prepare an intern presentation | Bruno Lange | 09.03.2026  |
+
+### II. Goal
+The aim of the meeting is to return to the project after the three-month break due to the DHBW practical phase, to discuss the division of tasks for the coming weeks, and to get a general overview.
+
+### III. Future Meeting
+The next meeting is set to the first week of the next DHBW phase.
+
+---
+
+<a id="newYear"></a>
+## Meeting 08.01.2026 - New Year New Motivation
+| No. | Topic                     | Responsibility | Time (min) |
+|-----|----------------------------|----------------|-------------|
+| 1 | Kickoff to the new year. Motivation Speech | Felix Hennerich | 5 |
+| 2 | Overview about the Issues | Gregor Gottschewski | 10 |
+| 3 | Assinged open issues to team members | Felix Hennerich | 5 |
+
+**Location:** Discord
+**Date:** 08.01.2026  
+**Time:** 20 min  
+**Moderator:** Felix Hennerich
+
+**Attendees:**  
+Julian Schumacher, Nils Schäffner, Felix Hennerich, Bruno Lange, Jan Kruske, Robin Kelm, Gregor Gottschewski
+
+### I. To-Do’s
+| **To-Do**                             | **Responsible Person(s)** | **Due Date** |
+|--------------------------------------|----------------------------|--------------|
+| Continue Developement | All | No fixed date  |
+
+### II. Goal
+This meeting kicked off the new year. An overview of the remaining project work was presented, and a brief timeline of tasks was established. All open issues were identified on GitHub.
+
+### III. Future Meeting
+The next meeting is set to 10.02.2026 20Uhr on Discord
+
+---
+
 <a id="prepres"></a>
 ## Meeting 07.11.2025 - Preparation of Pre-presentation
 | No. | Topic                     | Responsibility | Time (min) |
 |-----|----------------------------|----------------|-------------|
 | 1 | Examine the spoken text | All | 10 |
-|2| Correct errors in the presentation | Gregor Gottschewski| 10 |
+| 2 | Correct errors in the presentation | Gregor Gottschewski | 10 |
 
 **Location:** DHBW Stuttgart
 **Date:** 07.11.2025  
