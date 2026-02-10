@@ -38,12 +38,12 @@
 | No. | Topic                     | Responsibility | Time (min) |
 |-----|----------------------------|----------------|-------------|
 | 1 | Clarification of understanding problems with the user stories | Julian Schumacher & Nils Schäffner | 10 |
-| 2 | Presented all new Features and discussed upcoming Tasks | Jan Kruske | 10 |
-| 3 | Discord screenshare session with Live Debugging | Bruno Lange | 20 |
+| 2 | Presented all new Features and discussed upcoming Tasks | Jan Kruske | 20 |
+| 3 | Discord screenshare session with Live Debugging | Bruno Lange | 40 |
 
 **Location:** Discord
 **Date:** 10.02.2026  
-**Time:** 40 min  
+**Time:** 70 min  
 **Moderator:** Felix Hennerich
 
 **Attendees:**  
