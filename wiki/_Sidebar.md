@@ -29,7 +29,7 @@
 - [How to Create Custom Submodel Views](How-to-create-custom-submodel-visualizations)
 - [Mnestix AAS Generator](Mnestix-AAS-Generator)
     - [API Reference](Mnestix-AAS-Generator-API-Reference)
-    - [Data Ingest & Blueprint Guide](Mnestix-API-Data-Ingest)
+    - [Data Ingest & Blueprint Guide](Mnestix-AAS-Generator-Dataingest-and-Blueprints)
 - [Mnestix API Documentation (deprecated)](Mnestix-API-Documentation)
 - [Configuring Mnestix for different versions](Different-versions-configuration)
 
