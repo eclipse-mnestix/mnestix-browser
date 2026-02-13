@@ -231,7 +231,7 @@ function getLineBetweenCoordinates(start: Coordinate, end: Coordinate) {
 
 function fitMapToMarkers(map: Map, markerSource: VectorSource | null) {
     const extent = markerSource?.getExtent();
-    if (markerSource && extent && extent.some((e) => e === Infinity)) {
+    if (markerSource && extent && !extent.some((e) => e === Infinity)) {
         map.getView().fit(extent, { size: map.getSize(), padding: [60, 40, 20, 40], maxZoom: 12 });
     }
 }
