@@ -1,0 +1,3 @@
+[submodule "ee"]
+	path = ee
+	url = ssh://git@gitlab.xitaso.com:12222/mnes/mnestix-browser-enterprise-edition.git

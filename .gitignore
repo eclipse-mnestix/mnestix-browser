@@ -3,6 +3,9 @@
 /node_modules
 /tsconfig.tsbuildinfo
 /.next
+/.generated
+/src/app.original
+/src/app/*/ee/
 
 /cypress/videos/
 /cypress/screenshots/
