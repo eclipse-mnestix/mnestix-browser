@@ -14,7 +14,7 @@ const unlocalizedPathsRegex = RegExp(
     `^(${unlocalizedPaths.map((str) => `(${str.startsWith('/') ? str : '/' + str})`).join('|')})(/?$|/.*)`,
 );
 
-export function proxy(req: NextRequest) {
+export function middleware(req: NextRequest) {
     // Generate a unique correlation ID for tracking requests
     const correlationId = crypto.randomUUID();
     req.headers.set('x-correlation-id', correlationId);
