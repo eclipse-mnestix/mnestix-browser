@@ -46,7 +46,7 @@ export function SubmodelsOverviewCard({
 
     const [infoItem, setInfoItem] = useState<SubModelSelectorItem>();
 
-    function getSubmodelTabs(): TabSelectorItem[] {
+    function getSubmodelTabs(): SubModelSelectorItem[] {
         if (!submodelIds) return []; // do other state stuff
 
         return submodelIds

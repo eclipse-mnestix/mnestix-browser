@@ -39,7 +39,7 @@ export function getTranslationText(
  * @returns The display name text for the given locale, then falls back to English or undefined if the selected language and English aren't found
  */
 export function getDisplayNameForLocale(
-    displayName: Array<{ language: string; text: string }> | undefined | null,
+    displayName: AbstractLangString[] | undefined | null,
     locale: string,
 ): string | undefined {
     if (!displayName?.length) {
