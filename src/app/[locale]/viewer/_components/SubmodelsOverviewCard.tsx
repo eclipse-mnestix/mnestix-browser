@@ -9,9 +9,10 @@ import LinkOffIcon from '@mui/icons-material/LinkOff';
 import { SortNameplateElements } from 'app/[locale]/viewer/_components/submodel/sorting/SortNameplateElements';
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import ErrorBoundary from 'components/basics/ErrorBoundary';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { SubmodelInfoDialog } from 'app/[locale]/viewer/_components/submodel/SubmodelInfoDialog';
 import { AssetAdministrationShell } from 'lib/api/aas/models';
+import { getDisplayNameForLocale } from 'lib/util/SubmodelResolverUtil';
 
 export type SubmodelsOverviewCardProps = {
     readonly aas: AssetAdministrationShell | undefined;
@@ -31,6 +32,7 @@ export function SubmodelsOverviewCard({
     const [submodelSelectorItems, setSubmodelSelectorItems] = useState<TabSelectorItem[]>([]);
     const [selectedItem, setSelectedItem] = useState<TabSelectorItem>();
     const t = useTranslations('pages.aasViewer.submodels');
+    const locale = useLocale();
 
     SortNameplateElements(selectedItem?.submodelData);
 
@@ -46,15 +48,17 @@ export function SubmodelsOverviewCard({
             .map(getAsTabSelectorItem)
             .filter((item) => !!item)
             .sort(function (x, y) {
-                return x.label == firstSubmodelToShowIdShort ? -1 : y.label == firstSubmodelToShowIdShort ? 1 : 0;
+                return x.idShort == firstSubmodelToShowIdShort ? -1 : y.idShort == firstSubmodelToShowIdShort ? 1 : 0;
             });
     }
 
     function getAsTabSelectorItem(submodelId: SubmodelOrIdReference): TabSelectorItem {
         if (submodelId.submodel) {
+            const displayName = getDisplayNameForLocale(submodelId.submodel.displayName, locale);
             return {
                 id: submodelId.id,
-                label: submodelId.submodel.idShort ?? '',
+                displayName: displayName,
+                idShort: submodelId.submodel.idShort ?? '',
                 submodelData: submodelId.submodel,
                 startIcon: <InfoIcon color={'primary'} />,
                 repositoryUrl: submodelId.repositoryUrl,
@@ -63,7 +67,7 @@ export function SubmodelsOverviewCard({
             const error = submodelId.error?.toString() as ErrorMessage;
             return {
                 id: submodelId.id,
-                label: submodelId.id,
+                idShort: submodelId.id,
                 startIcon: <LinkOffIcon />,
                 submodelError: error ?? 'UNKNOWN',
             };
@@ -180,8 +184,9 @@ export function SubmodelsOverviewCard({
                 onClose={() => {
                     setInfoItem(undefined);
                 }}
+                displayName={infoItem?.displayName}
                 id={infoItem?.id}
-                idShort={infoItem?.submodelData?.idShort}
+                idShort={infoItem?.idShort}
                 semanticId={infoItem?.submodelData?.semanticId}
                 repositoryUrl={infoItem?.repositoryUrl}
             />

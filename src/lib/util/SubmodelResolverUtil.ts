@@ -31,6 +31,27 @@ export function getTranslationText(
     return langStrings.find((el) => el.language === locale)?.text || langStrings[0]?.text;
 }
 
+/**
+ * Gets the display name for a given locale from a displayName array.
+ * Returns undefined if no translation is found, allowing fallback to idShort.
+ * @param displayName - Array of language strings with language and text properties
+ * @param locale - The locale to get the display name for
+ * @returns The display name text for the given locale, then fallsback to english or undefined if selected language and english aren't found
+ */
+export function getDisplayNameForLocale(
+    displayName: Array<{ language: string; text: string }> | undefined | null,
+    locale: string,
+): string | undefined {
+    if (!displayName?.length) {
+        return undefined;
+    }
+
+    return (
+        displayName.find((item) => item.language === locale)?.text ||
+        displayName.find((item) => item.language === 'en')?.text
+    );
+}
+
 export function getTranslationValue(element: DataElementChoice, locale: string): string | null {
     switch (element.modelType) {
         case KeyTypes.MultiLanguageProperty:

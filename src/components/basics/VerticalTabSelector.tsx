@@ -9,7 +9,8 @@ import { renderHighlight } from 'app/[locale]/viewer/_components/HighlightBoxExp
 
 export type TabSelectorItem = {
     readonly id: string;
-    readonly label: string;
+    readonly idShort: string;
+    readonly displayName?: string;
     readonly startIcon?: ReactElement<SvgIconProps>;
     readonly submodelData?: Submodel;
     readonly submodelError?: ErrorMessage;
@@ -149,7 +150,7 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
                                         maxWidth: '50vw',
                                     }}
                                 >
-                                    {item.label || ''}
+                                    {item.displayName ?? item.idShort ?? ''}
                                 </Typography>
                             </Box>
 

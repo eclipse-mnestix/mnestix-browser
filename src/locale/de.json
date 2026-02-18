@@ -246,6 +246,7 @@
           "view": "Ansehen"
         },
         "idLabel": "ID:",
+        "idShortLabel": "idShort:",
         "noSubmodelsToLoad": "Für diese AAS existieren keine Teilmodelle.",
         "referenceCounter": {
           "count": "Anzahl",
