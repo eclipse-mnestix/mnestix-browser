@@ -22,6 +22,11 @@ export type SubmodelsOverviewCardProps = {
     readonly disableHeadline?: boolean;
 };
 
+type SubModelSelectorItem = TabSelectorItem & {
+    readonly displayName?: string;
+    readonly idShort?: string;
+};
+
 export function SubmodelsOverviewCard({
     aas,
     submodelIds,
@@ -29,8 +34,8 @@ export function SubmodelsOverviewCard({
     firstSubmodelIdShort,
     disableHeadline,
 }: SubmodelsOverviewCardProps) {
-    const [submodelSelectorItems, setSubmodelSelectorItems] = useState<TabSelectorItem[]>([]);
-    const [selectedItem, setSelectedItem] = useState<TabSelectorItem>();
+    const [submodelSelectorItems, setSubmodelSelectorItems] = useState<SubModelSelectorItem[]>([]);
+    const [selectedItem, setSelectedItem] = useState<SubModelSelectorItem>();
     const t = useTranslations('pages.aasViewer.submodels');
     const locale = useLocale();
 
@@ -39,7 +44,7 @@ export function SubmodelsOverviewCard({
     const isMobile = useIsMobile();
     const firstSubmodelToShowIdShort = firstSubmodelIdShort ?? 'Nameplate';
 
-    const [infoItem, setInfoItem] = useState<TabSelectorItem>();
+    const [infoItem, setInfoItem] = useState<SubModelSelectorItem>();
 
     function getSubmodelTabs(): TabSelectorItem[] {
         if (!submodelIds) return []; // do other state stuff
@@ -52,13 +57,14 @@ export function SubmodelsOverviewCard({
             });
     }
 
-    function getAsTabSelectorItem(submodelId: SubmodelOrIdReference): TabSelectorItem {
+    function getAsTabSelectorItem(submodelId: SubmodelOrIdReference): SubModelSelectorItem {
         if (submodelId.submodel) {
             const displayName = getDisplayNameForLocale(submodelId.submodel.displayName, locale);
             return {
                 id: submodelId.id,
                 displayName: displayName,
-                idShort: submodelId.submodel.idShort ?? '',
+                idShort: submodelId.submodel.idShort,
+                label: displayName ?? submodelId.submodel.idShort ?? '',
                 submodelData: submodelId.submodel,
                 startIcon: <InfoIcon color={'primary'} />,
                 repositoryUrl: submodelId.repositoryUrl,
@@ -67,7 +73,7 @@ export function SubmodelsOverviewCard({
             const error = submodelId.error?.toString() as ErrorMessage;
             return {
                 id: submodelId.id,
-                idShort: submodelId.id,
+                label: submodelId.id,
                 startIcon: <LinkOffIcon />,
                 submodelError: error ?? 'UNKNOWN',
             };
