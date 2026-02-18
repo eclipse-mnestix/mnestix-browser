@@ -7,6 +7,7 @@ import { Reference } from 'lib/api/aas/models';
 type SubmodelInfoDialogProps = {
     readonly onClose: () => void;
     readonly open: boolean;
+    readonly displayName: string | null | undefined;
     readonly idShort: string | null | undefined;
     readonly semanticId: Reference | null | undefined;
     readonly id: string | undefined;
@@ -21,8 +22,13 @@ export function SubmodelInfoDialog(props: SubmodelInfoDialogProps) {
             <DialogCloseButton handleClose={props.onClose} />
             <DialogContent style={{ padding: '40px' }}>
                 <Typography variant="h2" color={'primary'} marginBottom={'1em'}>
-                    {props.idShort}
+                    {props.displayName ?? props.idShort}
                 </Typography>
+                {props.displayName && (
+                    <DataRow title={t('idShortLabel')} hasDivider={false}>
+                        {props.idShort}
+                    </DataRow>
+                )}
                 <DataRow title={t('idLabel')} hasDivider={false}>
                     {props.id}
                 </DataRow>

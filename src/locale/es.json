@@ -246,6 +246,7 @@
           "view": "Ver"
         },
         "idLabel": "ID:",
+        "idShortLabel": "idShort:",
         "noSubmodelsToLoad": "No existen submodels que cargar para este AAS.",
         "referenceCounter": {
           "count": "Recuento",

@@ -9,9 +9,10 @@ import LinkOffIcon from '@mui/icons-material/LinkOff';
 import { SortNameplateElements } from 'app/[locale]/viewer/_components/submodel/sorting/SortNameplateElements';
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import ErrorBoundary from 'components/basics/ErrorBoundary';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { SubmodelInfoDialog } from 'app/[locale]/viewer/_components/submodel/SubmodelInfoDialog';
 import { AssetAdministrationShell } from 'lib/api/aas/models';
+import { getDisplayNameForLocale } from 'lib/util/SubmodelResolverUtil';
 
 export type SubmodelsOverviewCardProps = {
     readonly aas: AssetAdministrationShell | undefined;
@@ -21,6 +22,11 @@ export type SubmodelsOverviewCardProps = {
     readonly disableHeadline?: boolean;
 };
 
+type SubModelSelectorItem = TabSelectorItem & {
+    readonly displayName?: string;
+    readonly idShort?: string;
+};
+
 export function SubmodelsOverviewCard({
     aas,
     submodelIds,
@@ -28,33 +34,37 @@ export function SubmodelsOverviewCard({
     firstSubmodelIdShort,
     disableHeadline,
 }: SubmodelsOverviewCardProps) {
-    const [submodelSelectorItems, setSubmodelSelectorItems] = useState<TabSelectorItem[]>([]);
-    const [selectedItem, setSelectedItem] = useState<TabSelectorItem>();
+    const [submodelSelectorItems, setSubmodelSelectorItems] = useState<SubModelSelectorItem[]>([]);
+    const [selectedItem, setSelectedItem] = useState<SubModelSelectorItem>();
     const t = useTranslations('pages.aasViewer.submodels');
+    const locale = useLocale();
 
     SortNameplateElements(selectedItem?.submodelData);
 
     const isMobile = useIsMobile();
     const firstSubmodelToShowIdShort = firstSubmodelIdShort ?? 'Nameplate';
 
-    const [infoItem, setInfoItem] = useState<TabSelectorItem>();
+    const [infoItem, setInfoItem] = useState<SubModelSelectorItem>();
 
-    function getSubmodelTabs(): TabSelectorItem[] {
+    function getSubmodelTabs(): SubModelSelectorItem[] {
         if (!submodelIds) return []; // do other state stuff
 
         return submodelIds
             .map(getAsTabSelectorItem)
             .filter((item) => !!item)
             .sort(function (x, y) {
-                return x.label == firstSubmodelToShowIdShort ? -1 : y.label == firstSubmodelToShowIdShort ? 1 : 0;
+                return x.idShort == firstSubmodelToShowIdShort ? -1 : y.idShort == firstSubmodelToShowIdShort ? 1 : 0;
             });
     }
 
-    function getAsTabSelectorItem(submodelId: SubmodelOrIdReference): TabSelectorItem {
+    function getAsTabSelectorItem(submodelId: SubmodelOrIdReference): SubModelSelectorItem {
         if (submodelId.submodel) {
+            const displayName = getDisplayNameForLocale(submodelId.submodel.displayName, locale);
             return {
                 id: submodelId.id,
-                label: submodelId.submodel.idShort ?? '',
+                displayName: displayName,
+                idShort: submodelId.submodel.idShort,
+                label: displayName ?? submodelId.submodel.idShort ?? '',
                 submodelData: submodelId.submodel,
                 startIcon: <InfoIcon color={'primary'} />,
                 repositoryUrl: submodelId.repositoryUrl,
@@ -180,8 +190,9 @@ export function SubmodelsOverviewCard({
                 onClose={() => {
                     setInfoItem(undefined);
                 }}
+                displayName={infoItem?.displayName}
                 id={infoItem?.id}
-                idShort={infoItem?.submodelData?.idShort}
+                idShort={infoItem?.idShort}
                 semanticId={infoItem?.submodelData?.semanticId}
                 repositoryUrl={infoItem?.repositoryUrl}
             />
