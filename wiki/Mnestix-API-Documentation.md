@@ -1,14 +1,12 @@
-> [!IMPORTANT]
+> [!CAUTION]
+> **This documentation is deprecated.**
 >
-> A new Mnestix Proxy and AAS Generator (Mnestix API v2.*) has been released. For detailed information and usage instructions, please refer to the [Mnestix-AAS-Generator](Mnestix-AAS-Generator) documentation.
-
-> [!IMPORTANT]
+> The Mnestix API has been split into two separate components:
 >
-> This part of the documentation is for the [Mnestix API](https://hub.docker.com/r/mnestix/mnestix-api) and will be moved once the API is Open Source.
-> For now the different functionalities are all combined in the Mnestix API.
-
-> [!WARNING]
-> When using the Mnestix API version `1.2.0` or above, you have to adjust the Environment variable for the `repoCluster`. It is now split into `aasRepoCluster` and `submodelRepoCluster`
+> - **Mnestix Proxy** → See [Mnestix Proxy Documentation](https://github.com/eclipse-mnestix/mnestix-proxy/wiki)
+> - **Mnestix AAS Generator** → See [Mnestix AAS Generator](Mnestix-AAS-Generator)
+>
+> The information below is kept for reference only and may be outdated.
 
 # What is Mnestix API?
 

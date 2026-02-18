@@ -18,7 +18,7 @@
 - [Maintaining](Maintaining)
 - [Role Based Access Control](Role-Based-Access-Control)
 - [Adding Languages to Mnestix](Adding-Languages)
-- [Infrastructure Configuration](Infrastructures.md)
+- [Infrastructure Configuration](Infrastructures)
 
 ## Contribution
 
@@ -27,10 +27,10 @@
 ## Advanced
 
 - [How to Create Custom Submodel Views](How-to-create-custom-submodel-visualizations)
-- [Mnestix API Documentation](Mnestix-API-Documentation)
-- [Mnestix AAS Generator Documentation](Mnestix-AAS-Generator)
-    - [AAS Generator (Data Ingest Endpoint) Usage](Mnestix-API-Data-Ingest)
-
+- [Mnestix AAS Generator](Mnestix-AAS-Generator)
+    - [API Reference](Mnestix-AAS-Generator-API-Reference)
+    - [Data Ingest & Blueprint Guide](Mnestix-AAS-Generator-Dataingest-and-Blueprints)
+- [Mnestix API Documentation (deprecated)](Mnestix-API-Documentation)
 - [Configuring Mnestix for different versions](Different-versions-configuration)
 
     <br></br>

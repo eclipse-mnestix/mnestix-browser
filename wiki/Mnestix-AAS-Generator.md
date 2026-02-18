@@ -139,6 +139,22 @@ You can secure the API using Microsoft Entra ID (Azure AD) or an OpenID Connect 
   `ServerUrls: 'http://mnestix-proxy:5065/repo/'`
     > Adjust this value if your proxy or repository endpoint changes.
 
+**MongoDB Configuration (Used for AasRelationship Endpoint):**
+
+- `BasyxDbConnectionConfiguration__MongoConnectionString`:  
+  Connection string for MongoDB including host, port, and credentials.
+
+- `BasyxDbConnectionConfiguration__DatabaseName`:  
+  Name of the MongoDB database.
+
+    > **Important:** Must match the AAS Repository's `SPRING__DATA__MONGODB__DATABASE` value.
+
+- `BasyxDbConnectionConfiguration__AasCollectionName`:  
+  Name of the collection for AAS documents.
+    > **Important:** Must match the AAS Repository's collection name (default: `aas-repo`).
+
+> **Security:** MongoDB should not be publicly accessible in production. Update default credentials.
+
 **Separate Submodel Repositories (API v2 only):**
 
 You can optionally configure separate submodel repositories for blueprints and templates in API v2:
