@@ -1,9 +1,15 @@
-import { InfoOutlined, Mediation, Repeat, Numbers, TextSnippet, Visibility } from '@mui/icons-material';
+import { InfoOutlined, Mediation, Repeat, Numbers, TextSnippet, Visibility, FilterAlt } from '@mui/icons-material';
 import { Box, Divider, Tooltip, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 
 type BlueprintEditSectionHeadingProps = {
-    readonly type: 'defaultValue' | 'displayName' | 'mappingInfo' | 'multiplicity' | 'collectionMappingInfo';
+    readonly type:
+        | 'defaultValue'
+        | 'displayName'
+        | 'mappingInfo'
+        | 'multiplicity'
+        | 'collectionMappingInfo'
+        | 'filterMappingInfo';
 };
 
 export function BlueprintEditSectionHeading(props: BlueprintEditSectionHeadingProps) {
@@ -16,6 +22,8 @@ export function BlueprintEditSectionHeading(props: BlueprintEditSectionHeadingPr
                 return <Mediation fontSize="small" />;
             case 'collectionMappingInfo':
                 return <Repeat fontSize="small" />;
+            case 'filterMappingInfo':
+                return <FilterAlt fontSize="small" />;
             case 'multiplicity':
                 return <Numbers fontSize="small" />;
             case 'defaultValue':
@@ -36,6 +44,8 @@ export function BlueprintEditSectionHeading(props: BlueprintEditSectionHeadingPr
                 return t('defaultValue');
             case 'multiplicity':
                 return t('multiplicity');
+            case 'filterMappingInfo':
+                return t('filterMappingInfo');
             default:
                 return '';
         }
@@ -47,6 +57,8 @@ export function BlueprintEditSectionHeading(props: BlueprintEditSectionHeadingPr
                 return t('mappingInfoDescription');
             case 'collectionMappingInfo':
                 return t('collectionMappingInfoDescription');
+            case 'filterMappingInfo':
+                return t('filterMappingInfoDescription');
             case 'multiplicity':
                 return t('multiplicityDescription');
             default:

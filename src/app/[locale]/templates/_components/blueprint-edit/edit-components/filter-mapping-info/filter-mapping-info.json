@@ -1,0 +1,21 @@
+{
+  "qualifierTypes": [
+    "FilterMappingInfo",
+    "SMT/FilterMappingInfo"
+  ],
+  "emptyTemplate": {
+    "semanticId": {
+      "type": "ExternalReference",
+      "keys": [
+        {
+          "type": "GlobalReference",
+          "value": "https://admin-shell.io/SubmodelTemplates/FilterMappingInfo/1/0"
+        }
+      ]
+    },
+    "kind": "TemplateQualifier",
+    "type": "SMT/FilterMappingInfo",
+    "valueType": "xs:string",
+    "value": ""
+  }
+}

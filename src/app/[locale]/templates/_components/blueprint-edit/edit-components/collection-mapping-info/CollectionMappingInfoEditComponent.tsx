@@ -1,60 +1,59 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Box, Button, IconButton, TextField } from '@mui/material';
-import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
-import { Qualifier, Submodel, SubmodelElementChoice } from 'lib/api/aas/models';
-import { MappingInfoData } from 'lib/types/MappingInfoData';
-import { useTranslations } from 'next-intl';
-import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import mappingInfoDataJson from './mapping-info-data.json';
+import { MappingInfoData } from 'lib/types/MappingInfoData';
+import collectiopnMappingInfoDataJson from './collection-mapping-info-data.json';
+import { useTranslations } from 'next-intl';
+import { Qualifier, Submodel, SubmodelElementChoice } from 'lib/api/aas/models';
+import { BlueprintEditSectionHeading } from '../../BlueprintEditSectionHeading';
 
-interface MappingInfoEditComponentProps {
+interface CollectionMappingInfoEditComponentProps {
     data: Submodel | SubmodelElementChoice;
     onChange: (data: Submodel | SubmodelElementChoice) => void;
 }
 
-export function MappingInfoEditComponent(props: MappingInfoEditComponentProps) {
-    const mappingInfoData = mappingInfoDataJson as MappingInfoData;
+export function CollectionMappingInfoEditComponent(props: CollectionMappingInfoEditComponentProps) {
+    const collectionMappingInfoData = collectiopnMappingInfoDataJson as unknown as MappingInfoData;
     const [data, setData] = useState(props.data);
 
-    function getMappingInfo(): Qualifier | undefined {
-        return data?.qualifiers?.find((q: Qualifier) => mappingInfoData.qualifierTypes.includes(q.type));
-    }
-    const [mappingInfo, setMappingInfo] = useState(getMappingInfo());
-    const [valueEnabled, setValueEnabled] = useState(!!mappingInfo?.value?.length);
+    const getMappingInfo = (): Qualifier | undefined => {
+        return data?.qualifiers?.find((q: Qualifier) => collectionMappingInfoData.qualifierTypes.includes(q.type));
+    };
+    const [collectionMappingInfo, setCollectionMappingInfo] = useState(getMappingInfo());
+    const [valueEnabled, setValueEnabled] = useState(!!collectionMappingInfo?.value?.length);
     const t = useTranslations('pages.templates');
 
     useEffect(() => {
         // useEffect is needed here to update the state when props.data changes, derived state crashed the form
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setData(props.data);
-        setMappingInfo(getMappingInfo());
+        setCollectionMappingInfo(getMappingInfo());
     }, [props.data]);
 
     const onValueChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        if (mappingInfo) {
-            setMappingInfo({ ...mappingInfo, value: event.target.value });
-            handleChange({ ...mappingInfo, value: event.target.value });
+        if (collectionMappingInfo) {
+            setCollectionMappingInfo({ ...collectionMappingInfo, value: event.target.value } as Qualifier);
+            handleChange({ ...collectionMappingInfo, value: event.target.value } as Qualifier);
         }
     };
 
     const onRemove = () => {
         setValueEnabled(false);
-        setMappingInfo(undefined);
+        setCollectionMappingInfo(undefined);
         handleChange(undefined);
     };
 
     const onAdd = () => {
         setValueEnabled(true);
-        if (!mappingInfo) {
-            setMappingInfo(mappingInfoData.emptyTemplate);
+        if (!collectionMappingInfo) {
+            setCollectionMappingInfo(collectionMappingInfoData.emptyTemplate);
         }
-        handleChange(mappingInfoData.emptyTemplate);
+        handleChange(collectionMappingInfoData.emptyTemplate);
     };
 
     const handleChange = (newMappingInfo: Qualifier | undefined) => {
         const qualifiersIndex = props.data?.qualifiers?.findIndex((q: Qualifier) =>
-            mappingInfoData.qualifierTypes.includes(q.type),
+            collectionMappingInfoData.qualifierTypes.includes(q.type),
         );
 
         let updatedQualifiers = props.data.qualifiers ? [...props.data.qualifiers] : [];
@@ -70,18 +69,18 @@ export function MappingInfoEditComponent(props: MappingInfoEditComponentProps) {
         } else if (newMappingInfo) {
             updatedQualifiers = [...updatedQualifiers, newMappingInfo];
         }
+
         const updatedData = { ...props.data, qualifiers: updatedQualifiers };
         props.onChange(updatedData);
     };
 
     return (
         <>
-            <BlueprintEditSectionHeading type="mappingInfo" />
-            {valueEnabled && mappingInfo ? (
-                <Box display="flex" alignItems="center">
-                    <Image src="/images/JsonataLogo.png" alt="JSONATA-Logo" width={30} height={30} />
+            <BlueprintEditSectionHeading type="collectionMappingInfo" />
+            {valueEnabled && collectionMappingInfo ? (
+                <Box display="flex" alignContent="center">
                     <TextField
-                        defaultValue={mappingInfo.value}
+                        defaultValue={collectionMappingInfo.value}
                         label={t('labels.value')}
                         onChange={onValueChange}
                         fullWidth

@@ -549,6 +549,8 @@
       "mappingInfoDescription": "Identificador arbitrario para importar sus datos.",
       "collectionMappingInfo": "Información de mapeo de colección",
       "collectionMappingInfoDescription": "Identificador arbitrario que puede usar para duplicar elementos en una colección durante las importaciones de datos.",
+      "filterMappingInfo": "Información de mapeo de filtro",
+      "filterMappingInfoDescription": "Identificador arbitrario que puede usar para filtrar elementos durante las importaciones de datos.",
       "messages": {
         "changesSavedSuccessfully": "Cambios guardados correctamente",
         "deleted": "eliminado"

@@ -543,18 +543,22 @@
         "notAvailable": "-",
         "semanticId": "semanticId",
         "text": "Text",
-        "value": "Value"
+        "value": "Value",
+        "modelType": "Model Type",
+        "valueType": "Value Type"
       },
-      "mappingInfo": "Mapping info",
-      "mappingInfoDescription": "Arbitrary identifier that you can use for your data imports.",
-      "collectionMappingInfo": "Collection Mapping info",
-      "collectionMappingInfoDescription": "Arbitrary identifier that you can use for duplicating elements in a collection during data imports.",
+      "mappingInfo": "Mapping Info",
+      "mappingInfoDescription": "Jsonata expression that can be used for mapping values during data imports. Note that the result of the expression has to be the same data type as this SubmodelElement.",
+      "collectionMappingInfo": "Collection Mapping Info",
+      "collectionMappingInfoDescription": "Json-Expression that can be used for duplicating SubmodelElements during data imports. Note that the specified path has to lead to an array, therefore end with [*].",
+      "filterMappingInfo": "Filter Mapping Info",
+      "filterMappingInfoDescription": "Jsonata expression that can be used for omiting SubmodelElements during data imports. Note that the result of the expression has to be a boolean.",
       "messages": {
         "changesSavedSuccessfully": "Changes saved successfully",
         "deleted": "deleted"
       },
       "multiplicity": "Multiplicity",
-      "multiplicityDescription": "A qualifier used to identify obligatory elements.",
+      "multiplicityDescription": "Options to select wheter a SubmodelElement is mandatory or optional, and if it can have multiple instances. This is used for data validation during imports.",
       "noBlueprintsFound": "No blueprints found",
       "blueprintDeletedSuccessfully": "Blueprint deleted successfully",
       "noTemplatesWarning": "No templates available. Showing only blueprints.",
