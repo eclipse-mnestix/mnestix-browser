@@ -155,11 +155,12 @@ Mapping rules are embedded as **qualifiers** within Submodel elements. The AAS G
 
 ### Available Rule Types
 
-| Qualifier Type              | Purpose                                         |
-| --------------------------- | ----------------------------------------------- |
-| `SMT/MappingInfo`           | Map a JSON path to an element's value           |
-| `SMT/CollectionMappingInfo` | Duplicate an element for each array item        |
-| `SMT/Cardinality`           | Define whether the data is required or optional |
+| Qualifier Type              | Purpose                                                                |
+| --------------------------- | ---------------------------------------------------------------------- |
+| `SMT/MappingInfo`           | Map a JSON path or Jsonata expression to an element's value            |
+| `SMT/CollectionMappingInfo` | Duplicate an element for each array item                               |
+| `SMT/FilterMappingInfo`     | Conditionally include/exclude an element based on a boolean expression |
+| `SMT/Cardinality`           | Define whether the data is required or optional                        |
 
 ---
 
@@ -186,7 +187,7 @@ For fields with constant values that don't change between instances, simply set 
 
 ### 2. Path Mapping (`SMT/MappingInfo`)
 
-Maps a JSON path from the input data to an element's value. This is the most common rule type.
+Maps a JSON path or Jsonata expression from the input data to an element's value. This is the most common rule type. See [Jsonata Expressions](#5-jsonata-expressions-in-mapping-rules) for advanced transformations.
 
 **Blueprint Element:**
 
@@ -371,7 +372,116 @@ sourceData.contactPersons[*].phone_numbers[*].value  # Value in nested collectio
 
 ---
 
-### 4. Cardinality (`SMT/Cardinality`)
+### 4. Filter Rules (`SMT/FilterMappingInfo`)
+
+Conditionally includes or excludes an element from generation based on a boolean expression evaluated against the input data using Jsonata syntax.
+
+**Use Case:** Include battery specifications only for electric vehicles, or show a section only when certain data is present.
+
+**Blueprint Element:**
+
+```json
+{
+    "modelType": "SubmodelElementCollection",
+    "idShort": "BatteryInfo",
+    "qualifiers": [
+        {
+            "kind": "TemplateQualifier",
+            "type": "SMT/FilterMappingInfo",
+            "value": "vehicle.engineType = 'electric'",
+            "valueType": "xs:string"
+        }
+    ],
+    "value": [...]
+}
+```
+
+If the expression evaluates to `true`, the element is included in the output. If `false`, the element is omitted entirely.
+
+#### Filter Expression Syntax
+
+Filter expressions use **Jsonata syntax** and must evaluate to a boolean value:
+
+| Operator | Description           | Example                                   |
+| -------- | --------------------- | ----------------------------------------- |
+| `=`      | Equals                | `type = 'electric'`                       |
+| `!=`     | Not equals            | `status != 'inactive'`                    |
+| `>`      | Greater than          | `quantity > 10`                           |
+| `<`      | Less than             | `price < 100`                             |
+| `>=`     | Greater than or equal | `rating >= 4.5`                           |
+| `<=`     | Less than or equal    | `age <= 65`                               |
+| `and`    | Logical AND           | `type = 'electric' and year >= 2020`      |
+| `or`     | Logical OR            | `status = 'active' or status = 'pending'` |
+| `in`     | Value in array        | `region in ['EU', 'NA']`                  |
+
+---
+
+### 5. Jsonata Expressions in Mapping Rules
+
+Mapping rules (`SMT/MappingInfo`) and Filter rules (`SMT/FilterMappingInfo`) support [Jsonata](https://jsonata.org/) expression syntax, enabling advanced data transformations beyond simple path navigation. Refer to the [Jsonata documentation](https://docs.jsonata.org/) and the [Jsonata.Net.Native GitHub repository](https://github.com/mikhail-barg/jsonata.net.native) for a complete reference.
+
+> **Note:** Not all exotic Jsonata features may be supported. We recommend constructing your input data as close as possible to the desired blueprint structure to minimize the need for complex transformations.
+
+#### Built-in Jsonata Functions
+
+**String Functions:**
+
+| Function                              | Description                      | Example                                |
+| ------------------------------------- | -------------------------------- | -------------------------------------- |
+| `$length(str)`                        | Returns the number of characters | `$length(name)`                        |
+| `$substring(str, start[, length])`    | Extracts substring               | `$substring(code, 0, 3)`               |
+| `$substringBefore(str, chars)`        | Text before first occurrence     | `$substringBefore(email, '@')`         |
+| `$substringAfter(str, chars)`         | Text after first occurrence      | `$substringAfter(email, '@')`          |
+| `$contains(str, pattern)`             | Tests if pattern exists          | `$contains(description, 'waterproof')` |
+| `$split(str, separator)`              | Splits string into array         | `$split(tags, ',')`                    |
+| `$join(array, separator)`             | Joins array elements             | `$join(parts, '-')`                    |
+| `$uppercase(str)`                     | Converts to uppercase            | `$uppercase(code)`                     |
+| `$lowercase(str)`                     | Converts to lowercase            | `$lowercase(code)`                     |
+| `$trim(str)`                          | Removes whitespace               | `$trim(input)`                         |
+| `$replace(str, pattern, replacement)` | Replaces occurrences             | `$replace(text, 'old', 'new')`         |
+
+**Numeric Functions:**
+
+| Function                      | Description              | Example                             |
+| ----------------------------- | ------------------------ | ----------------------------------- |
+| `$number(value)`              | Converts to number       | `$number('42')`                     |
+| `$string(value)`              | Converts to string       | `$string(42)`                       |
+| `$abs(number)`                | Absolute value           | `$abs(-5)` returns `5`              |
+| `$floor(number)`              | Rounds down              | `$floor(3.7)` returns `3`           |
+| `$ceil(number)`               | Rounds up                | `$ceil(3.2)` returns `4`            |
+| `$round(number[, precision])` | Rounds to decimal places | `$round(3.14159, 2)` returns `3.14` |
+| `$power(base, exponent)`      | Base raised to power     | `$power(2, 3)` returns `8`          |
+| `$sqrt(number)`               | Square root              | `$sqrt(16)` returns `4`             |
+
+#### Expression Examples
+
+**Extract part of a code:**
+
+```json
+{ "type": "SMT/MappingInfo", "value": "$substring(sku, 0, 3)" }
+```
+
+Input: `"sku": "ABC-12345"` → Output: `"ABC"`
+
+**Combine string operations:**
+
+```json
+{ "type": "SMT/MappingInfo", "value": "$uppercase($substringBefore(email, '@'))" }
+```
+
+Input: `"email": "john.doe@example.com"` → Output: `"JOHN.DOE"`
+
+**Pipe operator (`~>`):** Passes the left operand as the argument to the right function:
+
+```jsonata
+"John Smith" ~> $split(' ') ~> $join('-')
+```
+
+Equivalent to `$join($split("John Smith", ' '), '-')` → Result: `"John-Smith"`
+
+---
+
+### 6. Cardinality (`SMT/Cardinality`)
 
 Defines whether a mapped value is required or optional.
 
