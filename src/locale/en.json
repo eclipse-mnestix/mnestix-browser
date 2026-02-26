@@ -526,6 +526,11 @@
         "false": "false",
         "true": "true"
       },
+      "healthCheck": {
+        "label": "Mnestix AAS Generator Status: ",
+        "refresh": "Refresh health status"
+      },
+      "docsLink": "Click here to get to the documentation for using and creating templates and blueprints.",
       "chooseAStartingPoint": "Choose a template as starting point",
       "copyBlueprintId": "Copy blueprint ID",
       "createNew": "New blueprint",
