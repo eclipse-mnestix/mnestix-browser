@@ -4,7 +4,6 @@ import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/
 import { Qualifier, Submodel, SubmodelElementChoice } from 'lib/api/aas/models';
 import { MappingInfoData } from 'lib/types/MappingInfoData';
 import { useTranslations } from 'next-intl';
-import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import mappingInfoDataJson from './mapping-info-data.json';
 
@@ -79,7 +78,6 @@ export function MappingInfoEditComponent(props: MappingInfoEditComponentProps) {
             <BlueprintEditSectionHeading type="mappingInfo" />
             {valueEnabled && mappingInfo ? (
                 <Box display="flex" alignItems="center">
-                    <Image src="/images/JsonataLogo.png" alt="JSONATA-Logo" width={30} height={30} />
                     <TextField
                         defaultValue={mappingInfo.value}
                         label={t('labels.value')}

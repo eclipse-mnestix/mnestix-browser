@@ -2,7 +2,6 @@ import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Box, Button, IconButton, TextField } from '@mui/material';
 import { MappingInfoData } from 'lib/types/MappingInfoData';
 import { useTranslations } from 'next-intl';
-import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import filterMappingInfoDataJSON from './filter-mapping-info.json';
 
@@ -81,8 +80,6 @@ export function FilterMappingInfoEditComponent(props: FilterMappingInfoEditCompo
             <BlueprintEditSectionHeading type="filterMappingInfo" />
             {valueEnabled && filterMappingInfo ? (
                 <Box display="flex" alignItems="center">
-                    <Image src="/images/JsonataLogo.png" alt="JSONATA-Logo" width={30} height={30} />
-
                     <TextField
                         defaultValue={filterMappingInfo.value}
                         label={t('labels.value')}
