@@ -168,7 +168,10 @@
       "furtherInformation": "Further information",
       "generalInformation": "General information",
       "productClassification": "Product classification",
-      "technicalProperties": "Technical properties"
+      "technicalProperties": "Technical properties",
+      "expandAll": "Expand all",
+      "collapseAll": "Collapse all",
+      "search": "Search"
     },
     "verticalTabSelector": {
       "errors": {
