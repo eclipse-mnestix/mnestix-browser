@@ -173,4 +173,21 @@ describe('TechnicalDataDetail', () => {
         expect(screen.queryByTestId('collapse-all-button')).not.toBeInTheDocument();
         expect(screen.queryByTestId('search-button')).not.toBeInTheDocument();
     });
+
+    it('should include nested SubmodelElementCollection idShorts in expandedItems when expand all is clicked', () => {
+        // Arrange
+        const submodel = technicalDataTestSubmodels.nestedTechnicalData as unknown as Submodel;
+        render(<TechnicalDataDetail submodel={submodel} />);
+
+        // Act
+        fireEvent.click(screen.getByTestId('expand-all-button'));
+
+        // Assert — root section and both nested collections must all be in expandedItems
+        const expandedItems: string[] = JSON.parse(
+            screen.getByTestId('technical-data-detail').getAttribute('data-expanded-items') ?? '[]'
+        );
+        expect(expandedItems).toContain('technicalProperties');
+        expect(expandedItems).toContain('NestedGroup');
+        expect(expandedItems).toContain('DeepNestedGroup');
+    });
 });

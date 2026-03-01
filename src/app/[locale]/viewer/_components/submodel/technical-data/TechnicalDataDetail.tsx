@@ -13,6 +13,7 @@ import {
 } from 'app/[locale]/viewer/_components/submodel/generic-submodel/GenericSubmodelDetailComponent';
 import { Box, IconButton, Tooltip } from '@mui/material';
 import { UnfoldLess, UnfoldMore, Search } from '@mui/icons-material';
+import { collectAllTreeItemIds } from 'app/[locale]/viewer/_components/submodel/technical-data/TechnicalDataTreeItemUtil';
 
 export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
     const t = useTranslations('components.technicalData');
@@ -30,10 +31,22 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
 
     const allSectionIds = useMemo(() => {
         const ids: string[] = [];
-        if (technicalData?.value) ids.push('technicalProperties');
-        if (generalInformation?.value) ids.push('generalInformation');
-        if (productClassifications?.value) ids.push('productClassifications');
-        if (furtherInformation?.value) ids.push('furtherInformation');
+        if (technicalData?.value) {
+            ids.push('technicalProperties');
+            ids.push(...collectAllTreeItemIds(technicalData.value));
+        }
+        if (generalInformation?.value) {
+            ids.push('generalInformation');
+            ids.push(...collectAllTreeItemIds(generalInformation.value));
+        }
+        if (productClassifications?.value) {
+            ids.push('productClassifications');
+            ids.push(...collectAllTreeItemIds(productClassifications.value));
+        }
+        if (furtherInformation?.value) {
+            ids.push('furtherInformation');
+            ids.push(...collectAllTreeItemIds(furtherInformation.value));
+        }
         return ids;
     }, [technicalData, generalInformation, productClassifications, furtherInformation]);
 
@@ -46,7 +59,7 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
     }
 
     return (
-        <Box>
+        <Box data-testid='technical-data-detail' data-expanded-items={JSON.stringify(expandedItems)}>
             {!cannotRenderTechnicalData && (
                 <Box display='flex' justifyContent='flex-end' mb={1}>
                     <Tooltip title={t('expandAll')}>
