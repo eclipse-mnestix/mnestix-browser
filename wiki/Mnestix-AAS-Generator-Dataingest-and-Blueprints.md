@@ -498,7 +498,7 @@ Defines whether a SubmodelElement is required or optional and if there can be mu
 
 ![Cardinality](images/cardinality.png)
 
-> **⚠️ Warning**: The current AAS Generator (Version <1.2.0) only uses the cardinality qualifier to check whether a SubmodelElement is required or optional. The "Many" aspect of the cardinality is not yet implemented, meaning that `OneToMany` and `ZeroToMany` are currently treated the same as `One` and `ZeroToOne` respectively.
+> **⚠️ Warning**: The current AAS Generator (Version =<1.2.0) only uses the cardinality qualifier to check whether a SubmodelElement is required or optional. The "Many" aspect of the cardinality is not yet implemented, meaning that `OneToMany` and `ZeroToMany` are currently treated the same as `One` and `ZeroToOne` respectively.
 
 **Complete Element with Cardinality:**
 
