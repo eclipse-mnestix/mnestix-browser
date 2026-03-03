@@ -2,6 +2,7 @@ import { Box, TextField } from '@mui/material';
 import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
 import { useTranslations } from 'next-intl';
 import { Qualifier, Submodel } from 'lib/api/aas/models';
+import React from 'react';
 
 interface SubmodelEditComponentProps {
     data: Submodel;
@@ -15,7 +16,7 @@ export function SubmodelEditComponent(props: SubmodelEditComponentProps) {
         return props.data.qualifiers?.find((q: Qualifier) => q.type === 'displayName')?.value;
     };
 
-    const onDisplayNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onDisplayNameChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         if (props.data && props.data.qualifiers) {
             props.onChange({
                 ...props.data,
@@ -36,7 +37,7 @@ export function SubmodelEditComponent(props: SubmodelEditComponentProps) {
                 <TextField
                     defaultValue={getDisplayName()}
                     label={t('labels.value')}
-                    onChange={onDisplayNameChange}
+                    onBlur={onDisplayNameChange}
                     fullWidth
                     slotProps={{
                         htmlInput: {
