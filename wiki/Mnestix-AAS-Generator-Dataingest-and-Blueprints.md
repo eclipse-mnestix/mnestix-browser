@@ -76,11 +76,7 @@ Example data extracted from your existing system:
 4. Fill out static information (values that don't change)
 5. For dynamic information, create a **"Mapping Info"** field with the JSON path
 
-![Generate Template](https://github.com/user-attachments/assets/9ff4d2f9-056b-4b19-a339-7d6a38d55c84)
-
-You can find the blueprint ID in the URL after `.../templates`:
-
-`MNESTIX_HOST/en/templates/`**`Nameplate_Template_7e18dcd0-c367-4626-a97e-be44f5fe1852`**
+![Templates & Blueprints page](images/templates-blueprints-page.png)
 
 Click **"Save Changes"** to save the blueprint.
 
@@ -140,7 +136,7 @@ After the request, you should see the filled-out submodel in the AAS.
 
 ## Template Qualifiers (Mapping Rules)
 
-Mapping rules are embedded as **qualifiers** within Submodel elements. The AAS Generator reads these qualifiers during processing to determine how to populate values.
+Mapping rules are embedded as **qualifiers** within Submodel elements. The AAS Generator reads these qualifiers during processing to determine how to populate values. You can configure them in the blueprint inside the Mnestix Browser or add them in the described format directly in the blueprint JSON.
 
 ### Qualifier Format
 
@@ -155,11 +151,12 @@ Mapping rules are embedded as **qualifiers** within Submodel elements. The AAS G
 
 ### Available Rule Types
 
-| Qualifier Type              | Purpose                                         |
-| --------------------------- | ----------------------------------------------- |
-| `SMT/MappingInfo`           | Map a JSON path to an element's value           |
-| `SMT/CollectionMappingInfo` | Duplicate an element for each array item        |
-| `SMT/Cardinality`           | Define whether the data is required or optional |
+| Qualifier Type              | Purpose                                                                |
+| --------------------------- | ---------------------------------------------------------------------- |
+| `SMT/MappingInfo`           | Map a JSON path or Jsonata expression to an element's value            |
+| `SMT/CollectionMappingInfo` | Duplicate an element for each array item                               |
+| `SMT/FilterMappingInfo`     | Conditionally include/exclude an element based on a boolean expression |
+| `SMT/Cardinality`           | Define whether the data is required or optional                        |
 
 ---
 
@@ -180,13 +177,15 @@ For fields with constant values that don't change between instances, simply set 
 }
 ```
 
+![Static Values](images/static-values.png)
+
 **Result:** The value `"Germany"` is copied unchanged to every generated instance.
 
 ---
 
 ### 2. Path Mapping (`SMT/MappingInfo`)
 
-Maps a JSON path from the input data to an element's value. This is the most common rule type.
+Maps a JSON path or Jsonata expression from the input data to an element's value. This is the most common rule type. See [Jsonata Expressions](#5-jsonata-expressions-in-mapping-rules) for advanced transformations.
 
 **Blueprint Element:**
 
@@ -206,6 +205,8 @@ Maps a JSON path from the input data to an element's value. This is the most com
     ]
 }
 ```
+
+![Path Mapping](images/path-mapping.png)
 
 **Input Data:**
 
@@ -241,7 +242,7 @@ Maps a JSON path from the input data to an element's value. This is the most com
 
 ### 3. Collection Mapping (`SMT/CollectionMappingInfo`)
 
-Duplicates a Submodel element for each item in an array. This enables dynamic list generation.
+Duplicates a Submodel element for each item in an array. This enables dynamic list generation. You can use `[*]` in the mapping path of the child elements to access the current array item.
 
 **Use Case:** You have an array of contacts and want to create a `ContactPerson` collection for each one.
 
@@ -283,6 +284,8 @@ Duplicates a Submodel element for each item in an array. This enables dynamic li
     ]
 }
 ```
+
+![Collection Mapping](images/collection-mapping.png)
 
 **Input Data:**
 
@@ -371,14 +374,131 @@ sourceData.contactPersons[*].phone_numbers[*].value  # Value in nested collectio
 
 ---
 
-### 4. Cardinality (`SMT/Cardinality`)
+### 4. Filter Rules (`SMT/FilterMappingInfo`)
 
-Defines whether a mapped value is required or optional.
+Conditionally includes or excludes an element from generation based on a boolean expression evaluated against the input data using Jsonata syntax.
 
-| Value       | Behavior                                                       |
+**Use Case:** Include battery specifications only for electric vehicles, or show a section only when certain data is present.
+
+**Blueprint Element:**
+
+```json
+{
+    "modelType": "SubmodelElementCollection",
+    "idShort": "BatteryInfo",
+    "qualifiers": [
+        {
+            "kind": "TemplateQualifier",
+            "type": "SMT/FilterMappingInfo",
+            "value": "vehicle.engineType = 'electric'",
+            "valueType": "xs:string"
+        }
+    ],
+    "value": [...]
+}
+```
+
+![Filter Rules](images/filter-rules.png)
+
+If the expression evaluates to `true`, the element is included in the output. If `false`, the element is omitted entirely.
+
+#### Filter Expression Syntax
+
+Filter expressions use **Jsonata syntax** and must evaluate to a boolean value:
+
+| Operator | Description           | Example                                   |
+| -------- | --------------------- | ----------------------------------------- |
+| `=`      | Equals                | `type = 'electric'`                       |
+| `!=`     | Not equals            | `status != 'inactive'`                    |
+| `>`      | Greater than          | `quantity > 10`                           |
+| `<`      | Less than             | `price < 100`                             |
+| `>=`     | Greater than or equal | `rating >= 4.5`                           |
+| `<=`     | Less than or equal    | `age <= 65`                               |
+| `and`    | Logical AND           | `type = 'electric' and year >= 2020`      |
+| `or`     | Logical OR            | `status = 'active' or status = 'pending'` |
+| `in`     | Value in array        | `region in ['EU', 'NA']`                  |
+
+---
+
+### 5. Jsonata Expressions in Mapping Rules
+
+Mapping rules (`SMT/MappingInfo`) and Filter rules (`SMT/FilterMappingInfo`) support [Jsonata](https://jsonata.org/) expression syntax, enabling advanced data transformations beyond simple path navigation. Refer to the [Jsonata documentation](https://docs.jsonata.org/) and the [Jsonata.Net.Native GitHub repository](https://github.com/mikhail-barg/jsonata.net.native) for a complete reference.
+
+> **Note:** Not all exotic Jsonata features may be supported. We recommend constructing your input data as close as possible to the desired blueprint structure to minimize the need for complex transformations.
+
+#### Built-in Jsonata Functions
+
+**String Functions:**
+
+| Function                              | Description                      | Example                                |
+| ------------------------------------- | -------------------------------- | -------------------------------------- |
+| `$length(str)`                        | Returns the number of characters | `$length(name)`                        |
+| `$substring(str, start[, length])`    | Extracts substring               | `$substring(code, 0, 3)`               |
+| `$substringBefore(str, chars)`        | Text before first occurrence     | `$substringBefore(email, '@')`         |
+| `$substringAfter(str, chars)`         | Text after first occurrence      | `$substringAfter(email, '@')`          |
+| `$contains(str, pattern)`             | Tests if pattern exists          | `$contains(description, 'waterproof')` |
+| `$split(str, separator)`              | Splits string into array         | `$split(tags, ',')`                    |
+| `$join(array, separator)`             | Joins array elements             | `$join(parts, '-')`                    |
+| `$uppercase(str)`                     | Converts to uppercase            | `$uppercase(code)`                     |
+| `$lowercase(str)`                     | Converts to lowercase            | `$lowercase(code)`                     |
+| `$trim(str)`                          | Removes whitespace               | `$trim(input)`                         |
+| `$replace(str, pattern, replacement)` | Replaces occurrences             | `$replace(text, 'old', 'new')`         |
+
+**Numeric Functions:**
+
+| Function                      | Description              | Example                             |
+| ----------------------------- | ------------------------ | ----------------------------------- |
+| `$number(value)`              | Converts to number       | `$number('42')`                     |
+| `$string(value)`              | Converts to string       | `$string(42)`                       |
+| `$abs(number)`                | Absolute value           | `$abs(-5)` returns `5`              |
+| `$floor(number)`              | Rounds down              | `$floor(3.7)` returns `3`           |
+| `$ceil(number)`               | Rounds up                | `$ceil(3.2)` returns `4`            |
+| `$round(number[, precision])` | Rounds to decimal places | `$round(3.14159, 2)` returns `3.14` |
+| `$power(base, exponent)`      | Base raised to power     | `$power(2, 3)` returns `8`          |
+| `$sqrt(number)`               | Square root              | `$sqrt(16)` returns `4`             |
+
+#### Expression Examples
+
+**Extract part of a code:**
+
+```json
+{ "type": "SMT/MappingInfo", "value": "$substring(sku, 0, 3)" }
+```
+
+Input: `"sku": "ABC-12345"` → Output: `"ABC"`
+
+**Combine string operations:**
+
+```json
+{ "type": "SMT/MappingInfo", "value": "$uppercase($substringBefore(email, '@'))" }
+```
+
+Input: `"email": "john.doe@example.com"` → Output: `"JOHN.DOE"`
+
+**Pipe operator (`~>`):** Passes the left operand as the argument to the right function:
+
+```jsonata
+"John Smith" ~> $split(' ') ~> $join('-')
+```
+
+Equivalent to `$join($split("John Smith", ' '), '-')` → Result: `"John-Smith"`
+
+---
+
+### 6. Cardinality (`SMT/Cardinality`)
+
+_Also refered to as "Multiplicity"_
+Defines whether a SubmodelElement is required or optional and if there can be multiple intances of that SubModelElement in the local scope.
+| Value | Behavior |
 | ----------- | -------------------------------------------------------------- |
-| `One`       | **Mandatory** - Generation fails with error if data is missing |
-| `ZeroToOne` | **Optional** - Empty value is set if data is missing           |
+| `One` | **Mandatory** - Generation fails with error if data is missing |
+| `ZeroToOne` | **Optional** - Empty value is set if data is missing |
+| `OneToMany` | **Mandatory** - At least one instance required; generation fails if array is empty |
+| `ZeroToMany` | **Optional** - Zero or more instances allowed; empty collection created if data is missing |
+
+![Cardinality](images/cardinality.png)
+
+> **⚠️ Warning**: The current AAS Generator (Version =<1.2.0) only uses the cardinality qualifier to check whether a SubmodelElement is required or optional. The "Many" aspect of the cardinality is not yet implemented, meaning that `OneToMany` and `ZeroToMany` are currently treated the same as `One` and `ZeroToOne` respectively.
 
 **Complete Element with Cardinality:**
 
@@ -485,13 +605,23 @@ Set `"debug": true` in your request to receive detailed logs about the generatio
             "generatedSubmodelId": "https://example.com/submodels/abc123",
             "debugInfo": {
                 "logs": [
-                    "Started DuplicateCollectionsStep",
-                    "Processing collection at path 'company.employees[*]' (depth: 1, mandatory: false, elements: 2)",
-                    "Successfully duplicated 2 elements for collection...",
-                    "Finished DuplicateCollectionsStep",
-                    "Started MapDataToInstanceStep",
-                    "Successfully mapped value 'ACME Corporation' from path 'company.name'",
-                    "..."
+                    "INFO [03/02/2026 09:27:53] - Started DeepCloneBlueprintStep",
+                    "INFO [03/02/2026 09:27:53] - Cloning blueprint with ID/idShort: 'Nameplate_Template_b53fb9b3-1b91-4732-bb69-e40c1ac2ae82'",
+                    "INFO [03/02/2026 09:27:53] - Finished DeepCloneBlueprintStep",
+                    "INFO [03/02/2026 09:27:53] - Started SetKindInstanceStep",
+                    "INFO [03/02/2026 09:27:53] - Set kind from 'Instance' to 'Instance'",
+                    "INFO [03/02/2026 09:27:53] - Finished SetKindInstanceStep",
+                    "INFO [03/02/2026 09:27:53] - Started DuplicateCollectionsStep",
+                    "INFO [03/02/2026 09:27:53] - Finished DuplicateCollectionsStep",
+                    "INFO [03/02/2026 09:27:53] - Started MapDataToInstanceStep",
+                    "INFO [03/02/2026 09:27:53] - Successfully mapped value 'VI' from path 'DocumentVersion.CompanyName.#text'",
+                    "WARNING [03/02/2026 09:27:53] - Optional mapping 'DocumentVersion.description.#text' not found in data, skipping.",
+                    "WARNING [03/02/2026 09:27:53] - Optional mapping 'DocumentVersion.abbreviation.#text' not found in data, skipping.",
+                    "WARNING [03/02/2026 09:27:53] - Optional mapping 'Creation.creationDate.#text' not found in data, skipping.",
+                    "WARNING [03/02/2026 09:27:53] - Optional mapping 'DocumentVersion.documentVersion.#text' not found in data, skipping.",
+                    "INFO [03/02/2026 09:27:53] - Finished MapDataToInstanceStep",
+                    "INFO [03/02/2026 09:27:53] - Started RemoveTopLevelQualifiersStep",
+                    " . . . "
                 ]
             }
         }

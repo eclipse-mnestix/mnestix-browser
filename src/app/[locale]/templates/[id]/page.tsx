@@ -1,13 +1,14 @@
 'use client';
 
-import { PrivateRoute } from 'components/authentication/PrivateRoute';
 import { CheckCircle, CloudUploadOutlined, ContentCopy, Delete, MoreVert, Restore } from '@mui/icons-material';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import {
     Box,
     Button,
     Divider,
     Fade,
     IconButton,
+    Link,
     ListItemIcon,
     Menu,
     MenuItem,
@@ -15,32 +16,37 @@ import {
     Skeleton,
     Typography,
 } from '@mui/material';
-import { Breadcrumbs } from 'components/basics/Breadcrumbs';
-import { BlueprintEditTree } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditTree';
-import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
-import React, { useEffect, useState } from 'react';
-import {
-    generateSubmodelViewObjectFromSubmodelElement,
-    rewriteNodeIds,
-} from 'lib/util/submodelHelpers/SubmodelViewObjectUtil';
 import {
     BlueprintEditFields,
     BlueprintEditFieldsProps,
 } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditFields';
-import { useAuth } from 'lib/hooks/UseAuth';
-import cloneDeep from 'lodash/cloneDeep';
+import { BlueprintEditTree } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditTree';
+import { BlueprintDeleteDialog } from 'app/[locale]/templates/_components/BlueprintDeleteDialog';
+import { useEnv } from 'app/EnvProvider';
+import { PrivateRoute } from 'components/authentication/PrivateRoute';
+import { Breadcrumbs } from 'components/basics/Breadcrumbs';
+import { useHealthCheckContext } from 'components/contexts/HealthCheckContext';
 import { Qualifier, Submodel, SubmodelElementChoice, SubmodelElementCollection } from 'lib/api/aas/models';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
-import { useEnv } from 'app/EnvProvider';
-import { useParams, useRouter } from 'next/navigation';
-import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
-import { updateBlueprint } from 'lib/services/aas-generator/blueprintsApiActions';
-import { getTemplates } from 'lib/services/aas-generator/templatesApiActions';
-import { deleteBlueprintById, getBlueprintById } from 'lib/services/aas-generator/blueprintsApiActions';
-import { BlueprintDeleteDialog } from 'app/[locale]/templates/_components/BlueprintDeleteDialog';
+import { useAuth } from 'lib/hooks/UseAuth';
+import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { useShowError } from 'lib/hooks/UseShowError';
+import {
+    deleteBlueprintById,
+    getBlueprintById,
+    updateBlueprint,
+} from 'lib/services/aas-generator/blueprintsApiActions';
+import { getTemplates } from 'lib/services/aas-generator/templatesApiActions';
+import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
+import {
+    generateSubmodelViewObjectFromSubmodelElement,
+    rewriteNodeIds,
+} from 'lib/util/submodelHelpers/SubmodelViewObjectUtil';
+import cloneDeep from 'lodash/cloneDeep';
 import { useLocale, useTranslations } from 'next-intl';
-import { useHealthCheckContext } from 'components/contexts/HealthCheckContext';
+import { useParams, useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { HealthCheckIndicator } from 'components/basics/HealthCheckIndicator';
 import { AasGeneratorApiVersion } from 'lib/services/aas-generator/aasGeneratorVersioning';
 
 export default function Page() {
@@ -68,6 +74,7 @@ export default function Page() {
     const { showError } = useShowError();
     const t = useTranslations('pages.templates');
     const locale = useLocale();
+    const { fetchHealthCheck } = useHealthCheckContext();
 
     const fetchBlueprint = async () => {
         if (!id) return;
@@ -402,6 +409,29 @@ export default function Page() {
                             </Menu>
                         </Box>
                     </Box>
+                </Box>
+                <Box mb={3}>
+                    <Divider />
+                    <Box display="flex" alignItems="center" gap={1} sx={{ mt: 1 }}>
+                        <Typography variant="h6">{t('healthCheck.label')}</Typography>
+                        <HealthCheckIndicator />
+                        <IconButton
+                            onClick={fetchHealthCheck}
+                            size="small"
+                            sx={{ ml: 0 }}
+                            title={t('healthCheck.refresh')}
+                        >
+                            <RefreshIcon fontSize="small" />
+                        </IconButton>
+                    </Box>
+                    <Link
+                        href="https://github.com/eclipse-mnestix/mnestix-browser/wiki/Mnestix-AAS-Generator-Dataingest-and-Blueprints"
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mt: 1 }}
+                    >
+                        {t('docsLink')}
+                    </Link>
                 </Box>
                 <Paper sx={{ display: 'flex', maxHeight: 'calc(100vh - 220px)', overflow: 'hidden' }}>
                     <Box sx={{ p: 2, flex: 1, overflow: 'auto' }}>

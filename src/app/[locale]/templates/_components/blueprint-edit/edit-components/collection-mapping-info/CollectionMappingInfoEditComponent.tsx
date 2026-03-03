@@ -5,7 +5,7 @@ import { MappingInfoData } from 'lib/types/MappingInfoData';
 import collectiopnMappingInfoDataJson from './collection-mapping-info-data.json';
 import { useTranslations } from 'next-intl';
 import { Qualifier, Submodel, SubmodelElementChoice } from 'lib/api/aas/models';
-import { BlueprintEditSectionHeading } from '../../../blueprint-edit/BlueprintEditSectionHeading';
+import { BlueprintEditSectionHeading } from '../../BlueprintEditSectionHeading';
 
 interface CollectionMappingInfoEditComponentProps {
     data: Submodel | SubmodelElementChoice;
