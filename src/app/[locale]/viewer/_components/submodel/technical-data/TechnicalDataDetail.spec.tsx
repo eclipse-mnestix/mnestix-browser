@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 
 import { expect } from '@jest/globals';
 import { TechnicalDataDetail } from './TechnicalDataDetail';
@@ -116,5 +116,78 @@ describe('TechnicalDataDetail', () => {
 
         // Assert
         expect(screen.getByTestId('generic-submodel-detail')).toBeInTheDocument();
+    });
+
+    it('should render expand all, collapse all and search buttons', () => {
+        // Arrange
+        const submodel = technicalDataTestSubmodels.completeTechnicalData as unknown as Submodel;
+
+        // Act
+        render(<TechnicalDataDetail submodel={submodel} />);
+
+        // Assert
+        expect(screen.getByTestId('expand-all-button')).toBeInTheDocument();
+        expect(screen.getByTestId('collapse-all-button')).toBeInTheDocument();
+        expect(screen.getByTestId('search-button')).toBeInTheDocument();
+    });
+
+    it('should expand all sections when expand all button is clicked', () => {
+        // Arrange
+        const submodel = technicalDataTestSubmodels.completeTechnicalData as unknown as Submodel;
+        render(<TechnicalDataDetail submodel={submodel} />);
+
+        // Act
+        fireEvent.click(screen.getByTestId('expand-all-button'));
+
+        // Assert
+        expect(screen.getByTestId('expanded-technicalProperties')).toHaveTextContent('Expanded');
+        expect(screen.getByTestId('expanded-generalInformation')).toHaveTextContent('Expanded');
+        expect(screen.getByTestId('expanded-productClassifications')).toHaveTextContent('Expanded');
+        expect(screen.getByTestId('expanded-furtherInformation')).toHaveTextContent('Expanded');
+    });
+
+    it('should collapse all sections when collapse all button is clicked', () => {
+        // Arrange
+        const submodel = technicalDataTestSubmodels.completeTechnicalData as unknown as Submodel;
+        render(<TechnicalDataDetail submodel={submodel} />);
+
+        // Act
+        fireEvent.click(screen.getByTestId('collapse-all-button'));
+
+        // Assert
+        expect(screen.getByTestId('expanded-technicalProperties')).toHaveTextContent('Collapsed');
+        expect(screen.getByTestId('expanded-generalInformation')).toHaveTextContent('Collapsed');
+        expect(screen.getByTestId('expanded-productClassifications')).toHaveTextContent('Collapsed');
+        expect(screen.getByTestId('expanded-furtherInformation')).toHaveTextContent('Collapsed');
+    });
+
+    it('should not render toolbar buttons when no recognized technical data elements are found', () => {
+        // Arrange
+        const submodel = technicalDataTestSubmodels.unrecognizedData as unknown as Submodel;
+
+        // Act
+        render(<TechnicalDataDetail submodel={submodel} />);
+
+        // Assert
+        expect(screen.queryByTestId('expand-all-button')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('collapse-all-button')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('search-button')).not.toBeInTheDocument();
+    });
+
+    it('should include nested SubmodelElementCollection idShorts in expandedItems when expand all is clicked', () => {
+        // Arrange
+        const submodel = technicalDataTestSubmodels.nestedTechnicalData as unknown as Submodel;
+        render(<TechnicalDataDetail submodel={submodel} />);
+
+        // Act
+        fireEvent.click(screen.getByTestId('expand-all-button'));
+
+        // Assert — root section and both nested collections must all be in expandedItems
+        const expandedItems: string[] = JSON.parse(
+            screen.getByTestId('technical-data-detail').getAttribute('data-expanded-items') ?? '[]'
+        );
+        expect(expandedItems).toContain('technicalProperties');
+        expect(expandedItems).toContain('NestedGroup');
+        expect(expandedItems).toContain('DeepNestedGroup');
     });
 });

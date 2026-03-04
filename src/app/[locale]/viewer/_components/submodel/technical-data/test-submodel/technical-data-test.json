@@ -171,6 +171,54 @@
       }
     ]
   },
+  "nestedTechnicalData": {
+    "id": "test-submodel-id",
+    "idShort": "NestedTechnicalData",
+    "modelType": "Submodel",
+    "submodelElements": [
+      {
+        "idShort": "TechnicalProperties",
+        "semanticId": {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "GlobalReference",
+              "value": "0173-1#01-AKJ975#001"
+            }
+          ]
+        },
+        "modelType": "SubmodelElementCollection",
+        "value": [
+          {
+            "idShort": "NestedGroup",
+            "modelType": "SubmodelElementCollection",
+            "value": [
+              {
+                "idShort": "DeepNestedGroup",
+                "modelType": "SubmodelElementCollection",
+                "value": [
+                  {
+                    "idShort": "DeepProperty",
+                    "category": "VARIABLE",
+                    "valueType": "xs:string",
+                    "value": "Deep Value",
+                    "modelType": "Property"
+                  }
+                ]
+              },
+              {
+                "idShort": "NestedProperty",
+                "category": "VARIABLE",
+                "valueType": "xs:string",
+                "value": "Nested Value",
+                "modelType": "Property"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
   "unrecognizedData": {
     "id": "test-submodel-id",
     "idShort": "UnrecognizedData",
