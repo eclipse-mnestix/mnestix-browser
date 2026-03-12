@@ -246,6 +246,7 @@
           "view": "Ansehen"
         },
         "idLabel": "ID:",
+        "idShortLabel": "idShort:",
         "noSubmodelsToLoad": "Für diese AAS existieren keine Teilmodelle.",
         "referenceCounter": {
           "count": "Anzahl",
@@ -525,6 +526,11 @@
         "false": "falsch",
         "true": "wahr"
       },
+      "healthCheck": {
+        "label": "Status des Mnestix AAS Generators: ",
+        "refresh": "Status aktualisieren"
+      },
+      "docsLink": "Klicken Sie hier, um zur Dokumentation zum Verwenden und Erstellen von Templates und Blueprints zu gelangen.",
       "chooseAStartingPoint": "Wählen Sie ein Template als Ausgangspunkt",
       "copyBlueprintId": "Blueprint-ID kopieren",
       "createNew": "Blueprint erstellen",
@@ -542,18 +548,22 @@
         "notAvailable": "-",
         "semanticId": "semanticId",
         "text": "Text",
-        "value": "Wert"
+        "value": "Wert",
+        "modelType": "Model Type",
+        "valueType": "Value Type"
       },
-      "mappingInfo": "Mapping-Info",
-      "mappingInfoDescription": "Frei wählbarer Identifikator, auf den Sie bei Datenimporten zurückgreifen können.",
-      "collectionMappingInfo": "Information zum Mappen von Collections",
-      "collectionMappingInfoDescription": "Kennung, die Sie zum Duplizieren von Elementen in einer Sammlung während der Datenimporte verwenden können.",
+      "mappingInfo": "Mapping Info",
+      "mappingInfoDescription": "Jsonata-Ausdruck, der zum Mappen von Werten während Datenimporten verwendet werden kann. Beachten Sie, dass das Ergebnis des Ausdrucks denselben Datentyp wie dieses SubmodelElement haben muss.",
+      "collectionMappingInfo": "Collection Mapping Info",
+      "collectionMappingInfoDescription": "Json-Ausdruck, der zum Duplizieren von SubmodelElementen während Datenimporten verwendet werden kann. Der angegebene Pfad muss zu einem Array führen, daher mit [*] enden.",
+      "filterMappingInfo": "Filter Mapping Info",
+      "filterMappingInfoDescription": "Jsonata-Ausdruck, der verwendet werden kann, um SubmodelElemente während Datenimporten zu filtern. Beachten Sie, dass das Ergebnis des Ausdrucks ein boolescher Wert sein muss.",
       "messages": {
         "changesSavedSuccessfully": "Änderungen erfolgreich gespeichert.",
         "deleted": "gelöscht"
       },
       "multiplicity": "Multiplizität",
-      "multiplicityDescription": "Parameter, mit dem Sie festlegen können, welche Elemente verpflichtend sind.",
+      "multiplicityDescription": "Optionen zur Auswahl, ob ein SubmodelElement obligatorisch oder optional ist, und ob es mehrere Instanzen haben kann. Dies wird zur Datenvalidierung während Importen verwendet.",
       "noBlueprintsFound": "Keine Blueprints gefunden",
       "blueprintDeletedSuccessfully": "Blueprint erfolgreich gelöscht.",
       "noTemplatesWarning": "Keine Templates verfügbar. Es werden nur Blueprints angezeigt.",
