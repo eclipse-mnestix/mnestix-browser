@@ -10,7 +10,7 @@ volumes:
 services:
   mnestix-browser:
     container_name: mnestix-browser
-    image: mnestix/mnestix-browser:2.1.2
+    image: mnestix/mnestix-browser:2.0.0
     profiles: ["", "frontend", "tests"]
     build:
       dockerfile: Dockerfile
@@ -68,7 +68,7 @@ services:
       - mnestix-network
 
   mnestix-aas-generator:
-    image: mnestix/mnestix-aas-generator:1.1.0
+    image: mnestix/mnestix-aas-generator:1.2.0
     container_name: mnestix-aas-generator
     profiles: ["", "backend", "tests"]
     environment:
