@@ -17,9 +17,11 @@
 | 1.8 | 07.11.2025 | Felix Hennerich | Preparation of Pre-presentation |
 | 1.9 | 08.01.2026 | Felix Hennerich | New Year New Motivation |
 | 1.10 | 10.02.2026 | Felix Hennerich | Project Refresh after break |
+| 1.11 | 13.03.2026 | Felix Hennerich | Clarifications about the upcoming tasks |
 
 
 ## Table of Contents
+- [Meeting 13.03.2026 - Clarifications about the upcoming tasks](#newTrimester)
 - [Meeting 10.02.2026 - Project Refresh after break](#refresh)
 - [Meeting 08.01.2026 - New Year New Motivation](#newYear)
 - [Meeting 07.11.2025 - Preparation of Pre-presentation](#prepres)
@@ -30,6 +32,53 @@
 - [Meeting 10.10.2025 - Next Steps](#next-steps)
 - [Meeting 26.09.2025 - Conventions](#conventions)
 - [Meeting 19.09.2025 - Introduction](#intro)
+
+
+
+
+---
+
+<a id="newTrimester"></a>
+## Meeting 13.03.2026 - Clarifications about the upcoming tasks
+| No. | Topic                     | Responsibility | Time (min) |
+|-----|----------------------------|----------------|-------------|
+| 1 | Clarification about the "SM BOM" Task | Julian Schumacher | 10 |
+| 2 | Which documents have to be added |  | 20 |
+| 3 | Sharing AI License | Gregor Gottschewski | 10 |
+| 4 | Internal Deadline set | Julian Schumacher & Felix Hennerich | 5 |
+
+**Location:** DHBW Stuttgart
+**Date:** 13.03.2026  
+**Time:** 45 min  
+**Moderator:** Felix Hennerich
+
+**Attendees:**  
+Julian Schumacher, Nils Schäffner, Felix Hennerich, Bruno Lange, Jan Kruske, Gregor Gottschewski
+
+### I. To-Do’s
+| **To-Do**                             | **Responsible Person(s)** | **Due Date** |
+|--------------------------------------|----------------------------|--------------|
+| Continue Developement | All | No fixed date  |
+
+
+### II. Goal
+The purpose of this meeting is to get an update on the current status. Which project documents need to be submitted? When do they need to be submitted?
+Furthermore, questions that arose during development must be resolved and discussed with the product owners.
+
+The following Documents has to be added:
+- STP
+- STR
+
+### III. Specials
+Gregor Gottschewski personally paid for a Grok AI license, which he is now sharing with the team.
+
+### IV. Additional Info
+The deadline for the developing phase of the project is set to ```10.04.2026```
+The deadline for the presentation is set to ```08.05.2026```
+The deadline for the documentation is set to ```08.05.2026```
+
+### V. Future Meeting
+The next meeting is set to the 20.03.2026.
 
 ---
 
