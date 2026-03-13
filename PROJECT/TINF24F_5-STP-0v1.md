@@ -17,6 +17,9 @@ The testing activities described in this plan will utilize a combination of **cl
 
 By adopting this structured and hybrid testing approach, the development team ensures that the **Mnestix Product Catalogue** not only meets all functional and quality requirements but also delivers a reliable and optimized experience for its end users.
 
+Link Test:
+[TINF24F Feature FR.003](./TINF24F_5-SRS-0v1.md#fr003)
+
 To Dos:
 
 Introduction -> was ist das hier
@@ -32,6 +35,7 @@ Wie gehen wir mit Fehlern um -> Diagramm
 Einzelnen Testcases
 
 Alles verlinken (STR und requirements)
+Requirements namen anpassen, wenn gregor geändaert hat
 Ideen:
 AI
 White-Box Vorteile
