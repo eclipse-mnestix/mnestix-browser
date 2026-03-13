@@ -84,10 +84,12 @@ services:
   mongodb:
     image: mongo:8
     container_name: mongodb
+    hostname: mongodb
     profiles: ['', 'basyx', 'tests']
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongoAdmin
       MONGO_INITDB_ROOT_PASSWORD: mongoPassword
+      GLIBC_TUNABLES: glibc.cpu.hwcaps=-SHSTK
     # Set health checks to wait until mongo has started
     healthcheck:
       test: echo "db.runCommand("ping").ok" | mongosh mongodb:27017/test --quiet
