@@ -4,7 +4,8 @@ import { getAasListEntities } from 'lib/services/list-service/aasListApiActions'
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useState } from 'react';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
-import AasList, { SortOrder, SortableColumn, sortableColumns } from './AasList';
+import AasList from './AasList';
+import { SortOrder, SortableColumn, sortableColumns } from './AasListSorting';
 import { useEnv } from 'app/EnvProvider';
 import { AasListComparisonHeader } from './AasListComparisonHeader';
 import { Box, Card, CardContent, IconButton, MenuItem, Select, Typography } from '@mui/material';
@@ -16,15 +17,15 @@ import { ApiResponseWrapperError } from 'lib/util/apiResponseWrapper/apiResponse
 import { AuthenticationPrompt } from 'components/authentication/AuthenticationPrompt';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { useSearchParams } from 'next/navigation';
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation';
 
 type AasListDataWrapperProps = {
     repositoryUrl?: string;
     hideRepoSelection?: boolean;
 };
 
-const SEARCH_PARAM_SORT_BY_NAME: string = 'sortby'
-const SEARCH_PARAM_ORDER_NAME: string = 'order'
+const SEARCH_PARAM_SORT_BY_NAME: string = 'sortby';
+const SEARCH_PARAM_ORDER_NAME: string = 'order';
 
 export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }: AasListDataWrapperProps) {
     const [isLoadingList, setIsLoadingList] = useState(false);
@@ -33,7 +34,9 @@ export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }:
     const [selectedAasList, setSelectedAasList] = useState<string[]>();
     const searchParams = useSearchParams();
     const urlParam = searchParams?.get('url');
-    const [selectedRepository, setSelectedRepository] = useState<string | null | undefined>(repositoryUrl ? repositoryUrl : urlParam);
+    const [selectedRepository, setSelectedRepository] = useState<string | null | undefined>(
+        repositoryUrl ? repositoryUrl : urlParam,
+    );
     const env = useEnv();
     const t = useTranslations('pages.aasList');
     const { showError } = useShowError();
@@ -54,7 +57,8 @@ export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }:
         const sortBy = searchParams?.get(SEARCH_PARAM_SORT_BY_NAME);
         const sortOrder = searchParams?.get(SEARCH_PARAM_ORDER_NAME);
         // Check for valid data
-        if (sortBy &&
+        if (
+            sortBy &&
             sortOrder &&
             sortableColumns.includes(sortBy as SortableColumn) &&
             ['asc', 'desc'].includes(sortOrder as SortOrder)
@@ -63,12 +67,12 @@ export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }:
             return {
                 column: sortBy as SortableColumn,
                 order: sortOrder as SortOrder,
-            }
+            };
         } else {
             // invalid data
             return undefined;
         }
-    }
+    };
 
     /// Updates the sorting parameters in the url based on user selection
     const updateSortingParams = (column: SortableColumn, order: SortOrder) => {
@@ -76,7 +80,7 @@ export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }:
         params.set(SEARCH_PARAM_SORT_BY_NAME, column);
         params.set(SEARCH_PARAM_ORDER_NAME, order);
         router.replace(`${pathname}?${params.toString()}`);
-    }
+    };
 
     const clearResults = () => {
         setAasList(undefined);
@@ -161,9 +165,19 @@ export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }:
 
     const pagination = (
         <Box display="flex" justifyContent="flex-end" alignItems="center" marginTop={0}>
-            <Typography fontSize="0.75rem" paddingRight={.5}>Rows per page:</Typography>
-            <Select disableUnderline variant="standard" value={limit} onChange={(e) => setLimit(Number(e.target.value))} sx={{ fontSize: '0.75rem' }}>
-                {[10, 20, 50].map(value => (<MenuItem value={value}>{value}</MenuItem>))}
+            <Typography fontSize="0.75rem" paddingRight={0.5}>
+                Rows per page:
+            </Typography>
+            <Select
+                disableUnderline
+                variant="standard"
+                value={limit}
+                onChange={(e) => setLimit(Number(e.target.value))}
+                sx={{ fontSize: '0.75rem' }}
+            >
+                {[10, 20, 50].map((value) => (
+                    <MenuItem value={value}>{value}</MenuItem>
+                ))}
             </Select>
             <Typography paddingX="1.625rem" fontSize="0.75rem">
                 {t('page') + ': ' + (currentPage + 1)}

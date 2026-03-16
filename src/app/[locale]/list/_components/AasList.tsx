@@ -18,6 +18,13 @@ import { useTranslations, useLocale } from 'next-intl';
 import { useMemo, useState } from 'react';
 import useSWR from 'swr';
 import { translateListText } from 'lib/util/SubmodelResolverUtil';
+import {
+    sortAasList,
+    sortableColumns,
+    SortableAasListEntity,
+    SortableColumn,
+    SortOrder,
+} from 'app/[locale]/list/_components/AasListSorting';
 
 type AasListProps = {
     repositoryUrl: string;
@@ -26,22 +33,14 @@ type AasListProps = {
     selectedAasList: string[] | undefined;
     updateSelectedAasList: (isChecked: boolean, aasId: string | undefined) => void;
     initialSortOrder?: {
-        column: SortableColumn,
-        order: SortOrder,
-    },
+        column: SortableColumn;
+        order: SortOrder;
+    };
     columnSortUpdateCallback: (column: SortableColumn, order: SortOrder) => void;
 };
-export const sortableColumns: string[] = ['manufacturer', 'productDesignation', 'assetId', 'aasId'];
 
-export type SortOrder = 'asc' | 'desc';
-export type SortableColumn = (typeof sortableColumns)[number];
-
-type EnrichedListEntity = {
-    aasId: string;
-    assetId: string;
+type EnrichedListEntity = SortableAasListEntity & {
     thumbnail?: string;
-    manufacturerName?: string;
-    productDesignation?: string;
 };
 
 export default function AasList(props: AasListProps) {
@@ -51,8 +50,12 @@ export default function AasList(props: AasListProps) {
     const MAX_SELECTED_ITEMS = 3;
 
     // Set initial state for sorting based on url params
-    const [sortColumn, setSortColumn] = useState<SortableColumn | null>(props.initialSortOrder ? props.initialSortOrder.column : null);
-    const [sortOrder, setSortOrder] = useState<SortOrder>(props.initialSortOrder ? props.initialSortOrder.order : 'asc');
+    const [sortColumn, setSortColumn] = useState<SortableColumn | null>(
+        props.initialSortOrder ? props.initialSortOrder.column : null,
+    );
+    const [sortOrder, setSortOrder] = useState<SortOrder>(
+        props.initialSortOrder ? props.initialSortOrder.order : 'asc',
+    );
 
     // Fetch nameplate data for all shells
     const { data: nameplateData, isLoading: isNameplateLoading } = useSWR(
@@ -117,13 +120,11 @@ export default function AasList(props: AasListProps) {
     }, [shells, nameplateData, locale]);
 
     const handleSort = (column: SortableColumn) => {
-        if (sortColumn === column) {
-            setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-        } else {
-            setSortColumn(column);
-            setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-        }
-        props.columnSortUpdateCallback(column, sortOrder === 'asc' ? 'desc' : 'asc');
+        const nextSortOrder = sortColumn === column ? (sortOrder === 'asc' ? 'desc' : 'asc') : 'asc';
+
+        setSortColumn(column);
+        setSortOrder(nextSortOrder);
+        props.columnSortUpdateCallback(column, nextSortOrder);
     };
 
     const tableHeaders = [
@@ -135,36 +136,10 @@ export default function AasList(props: AasListProps) {
         '',
     ];
 
-    const sortedShells = useMemo(() => {
-        if (!enrichedShells || !sortColumn) return enrichedShells;
-
-        return [...enrichedShells].sort((a, b) => {
-            let aValue = '';
-            let bValue = '';
-
-            switch (sortColumn) {
-                case 'aasId':
-                    aValue = a.aasId;
-                    bValue = b.aasId;
-                    break;
-                case 'assetId':
-                    aValue = a.assetId;
-                    bValue = b.assetId;
-                    break;
-                case 'manufacturer':
-                    aValue = a.manufacturerName || '';
-                    bValue = b.manufacturerName || '';
-                    break;
-                case 'productDesignation':
-                    aValue = a.productDesignation || '';
-                    bValue = b.productDesignation || '';
-                    break;
-            }
-
-            const comparison = aValue.localeCompare(bValue);
-            return sortOrder === 'asc' ? comparison : -comparison;
-        });
-    }, [enrichedShells, sortColumn, sortOrder]);
+    const sortedShells = useMemo(
+        () => sortAasList(enrichedShells, sortColumn, sortOrder),
+        [enrichedShells, sortColumn, sortOrder],
+    );
 
     /**
      * Decides if the current checkbox should be disabled or not.
