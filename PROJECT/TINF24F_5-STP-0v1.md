@@ -17,6 +17,24 @@ The testing activities described in this plan will utilize a combination of **cl
 
 By adopting this structured and hybrid testing approach, the development team ensures that the **Mnestix Product Catalogue** not only meets all functional and quality requirements but also delivers a reliable and optimized experience for its end users.
 
+# Scope
+## In-Scope
+The scope of this Software Test Plan is to ensure that all newly developed features and functionalities of the application are thoroughly tested and meet the requirements defined in the [Software Requirement Specification (SRS)](./TINF24F_5-SRS-0v1.md). 
+
+This test plan covers:
+
+- **Newly implemented features**: All functionalities that have been added as part of the current development cycle.  
+- **Modified existing features**: Any previously existing features that have been updated, enhanced, or otherwise changed during the current implementation.  
+- **Integration of components**: Interactions between newly implemented and existing modules, ensuring proper integration and correct system behavior.  
+
+## Out-of-Scope
+Features or components **not in scope** for this testing effort include:
+
+- Legacy modules that remain unchanged and unaffected by the current development.  
+- External services or third-party systems outside the control of the development team.  
+
+By defining this scope, the test plan ensures that testing resources are focused on areas with the highest impact, while explicitly clarifying what is and is not covered during this testing cycle.
+
 Link Test:
 [TINF24F Feature FR.003](./TINF24F_5-SRS-0v1.md#fr003)
 
