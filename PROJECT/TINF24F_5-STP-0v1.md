@@ -47,10 +47,255 @@ Additionally, before any code changes are merged into the main branch, a code re
 To further enhance test effectiveness, techniques such as boundary value analysis are incorporated. This allows testers to focus on edge cases where errors are more likely to occur. Combined with carefully designed test cases, this approach enables deeper testing while maintaining efficiency.
 
 Overall, the test suites are designed with the goal of achieving high quality under economically reasonable conditions, following the principle of “as many tests as necessary, but as few as possible.” This ensures an optimal balance between test coverage, effort, and development speed.
+
+# Test specification
+<table>
+  <tr>
+    <th colspan="3">Test Case</th>
+  </tr>
+  <tr>
+    <td><b>ID</b></td>
+    <td colspan="2">TS-LOGIN-C-001</td>
+  </tr>
+  <tr>
+    <td><b>Name</b></td>
+    <td colspan="2">Login functions</td>
+  </tr>
+  <tr>
+    <td><b>REQ_ID</b></td>
+    <td colspan="2">TO DO</td>
+  </tr>
+  <tr>
+    <td><b>Description</b></td>
+    <td colspan="2">
+This test case verifies the correct functionality of the new login button. 
+It verifies the correct display of the new button and the support of every account feature. 
+The test setup consists of the latest version of mnestix and the version before the implementation commit 
+<a href="https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/commit/c01aa0f499a8e04d0220c3b361ed3c98c5483295">c01aa0f</a>.
+</td>
+<tr>
+  <th colspan="3">Test Steps</th>
+</tr>
+  <tr>
+    <th>Step</th>
+    <th>Action</th>
+    <th>Expected Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Visit Mnestix and view dashboard</td>
+    <td>Dashboard is visible</td>
+  </tr>
+  <tr>
+  <td>2</td>
+  <td>Search for the user icon in the upper right corner</td>
+  <td>User finds the icon in the upper right corner</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>Hover over or click on the user icon</td>
+  <td>A properties dialog with different account options appears</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td>Enter correct login credentials</td>
+  <td>User is successfully logged in</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td>Select "Log out"</td>
+  <td>User is logged out</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td>Log in again</td>
+  <td>User is logged in again</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td>Open the old Mnestix version, access the login menu, and collect account options</td>
+  <td>The new dropdown menu in the latest Mnestix version provides the same account options and links them correctly</td>
+</tr>
+</table>
+
+
+
+
+
+
+
+
+<table>
+  <tr>
+    <th colspan="3">Test Case</th>
+  </tr>
+  <tr>
+    <td><b>ID</b></td>
+    <td colspan="2">TS-REPCOUNT-C-002</td>
+  </tr>
+  <tr>
+    <td><b>Name</b></td>
+    <td colspan="2">Repository entry counts</td>
+  </tr>
+  <tr>
+    <td><b>REQ_ID</b></td>
+    <td colspan="2">TO DO</td>
+  </tr>
+  <tr>
+    <td><b>Description</b></td>
+    <td colspan="2">
+This test case verifies the correct functionality of the new repository setting feature. 
+It verifies that the correct number is displayed next to the repository. 
+</td>
+<tr>
+  <th colspan="3">Test Steps</th>
+</tr>
+  <tr>
+    <th>Step</th>
+    <th>Action</th>
+    <th>Expected Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Open Mnestix Browser</td>
+    <td>Dashboard is visible</td>
+  </tr>
+  <tr>
+  <td>2</td>
+  <td>Enter repository settings menu</td>
+  <td>Activated repositories are displayed </td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>Check the number next to the repository name</td>
+  <td>The correct number is displayed next to each repository depending on the amount of entries</td>
+</tr>
+</table>
+
+
+
+
+<table>
+  <tr>
+    <th colspan="3">Test Case</th>
+  </tr>
+  <tr>
+    <td><b>ID</b></td>
+    <td colspan="2">TS-SORTING-F-003</td>
+  </tr>
+  <tr>
+    <td><b>Name</b></td>
+    <td colspan="2">Asset List Sorting</td>
+  </tr>
+  <tr>
+    <td><b>REQ_ID</b></td>
+    <td colspan="2">TO DO</td>
+  </tr>
+  <tr>
+    <td><b>Description</b></td>
+    <td colspan="2">
+This test case verifies the correct functionality of the new sorting logic for the asset list. 
+It verifies the correct sorting logic for the columns ManufacturerName, ProductDesignation, OrderCode, ManufacturerCode, GlobalAssetId, and CreatedAt.
+The test setup consists of the latest version of the mnestix browser and is supported by an additional unit test.
+</td>
+<tr>
+  <th colspan="3">Test Steps</th>
+</tr>
+  <tr>
+    <th>Step</th>
+    <th>Action</th>
+    <th>Expected Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Navigate to AAS List</td>
+    <td>An unsorted AAS List is visible</td>
+  </tr>
+  <tr>
+  <td>2</td>
+  <td>Verify that the correct test data is inserted</td>
+  <td>Correct entries are shown in the table</td>
+</tr>
+  <tr>
+  <td>3</td>
+  <td>Hover over an abitrary column</td>
+  <td>Small arrows implying sorting are visible</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td>Click on any colum header</td>
+  <td>Column is sorted alphabetically</td>
+</tr>
+</table>
+
+<table>
+  <tr>
+    <th colspan="5">Test Data – TD-SORTING-F-003</th>
+  </tr>
+  <tr>
+    <td><b>Repository</b></td>
+    <td colspan="4">http://mnestix-api:5064/repo</td>
+  </tr>
+  <tr>
+    <th>#</th>
+    <th>Dataset / Column</th>
+    <th>Sort Order</th>
+    <th>First Entry</th>
+    <th>Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Manufacturer Name</td>
+    <td>A–Z</td>
+    <td>Gottfried Wilhelm Leibniz Universität Hannover</td>
+    <td>PASS</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Manufacturer Name</td>
+    <td>A–Z</td>
+    <td>XITASO GmbH</td>
+    <td>FAIL</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Asset ID</td>
+    <td>A–Z</td>
+    <td>https://aas2.uni-h.de/lni0729</td>
+    <td>PASS</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>AAS ID</td>
+    <td>Z–A</td>
+    <td>https://aas2.uni-h.de/lni0729</td>
+    <td>FAIL</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Product Designation</td>
+    <td>A–Z</td>
+    <td>Individueller Kugelschreiber</td>
+    <td>PASS</td>
+  </tr>
+</table>
+
+
+
+
+
+
+
+
+
 Link Test:
 [TINF24F Feature FR.003](./TINF24F_5-SRS-0v1.md#fr003)
 
 To Dos:
+Matrix feature / test
+jeder test überschrift
+inhaltsverzeichnis
+test suits
 
 product genau nennen mit commit
 
