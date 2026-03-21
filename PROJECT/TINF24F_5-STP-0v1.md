@@ -63,7 +63,7 @@ Overall, the test suites are designed with the goal of achieving high quality un
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">TO DO</td>
+    <td colspan="2">TO DO, 1,2</td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -139,7 +139,7 @@ The test setup consists of the latest version of mnestix and the version before 
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">TO DO</td>
+    <td colspan="2">TO DO , 3</td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -189,7 +189,7 @@ It verifies that the correct number is displayed next to the repository.
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">TO DO</td>
+    <td colspan="2">TO DO: 5,7 </td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -283,10 +283,890 @@ The test setup consists of the latest version of the mnestix browser and is supp
 
 
 
+<table>
+  <tr>
+    <th colspan="3">Test Case</th>
+  </tr>
+  <tr>
+    <td><b>ID</b></td>
+    <td colspan="2">TS-QUERY-F-004</td>
+  </tr>
+  <tr>
+    <td><b>Name</b></td>
+    <td colspan="2">AAS List Query Filter</td>
+  </tr>
+  <tr>
+    <td><b>REQ_ID</b></td>
+    <td colspan="2">TO DO: 6</td>
+  </tr>
+  <tr>
+    <td><b>Description</b></td>
+    <td colspan="2">
+This test case verifies the correct functionality of the new filtering logic for the asset list. 
+It verifies that user input filters result in an AAS list that only contains matching items
+The test setup consists of the latest version of the mnestix browser.
+</td>
+<tr>
+  <th colspan="3">Test Steps</th>
+</tr>
+  <tr>
+    <th>Step</th>
+    <th>Action</th>
+    <th>Expected Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Navigate to AAS List</td>
+    <td>All items are displayed</td>
+  </tr>
+  <tr>
+  <td>2</td>
+  <td>Verify that the correct test data is inserted</td>
+  <td>Correct entries are shown in the table</td>
+</tr>
+  <tr>
+  <td>3</td>
+  <td>Insert test data into query bar</td>
+  <td>Output as definded in TEST DATA</td>
+</tr>
+</table>
+
+<table>
+  <tr>
+    <th colspan="5">Test Data – TD-QUERY-F-004</th>
+  </tr>
+  <tr>
+    <td><b>Repository</b></td>
+    <td colspan="4">http://mnestix-api:5064/repo</td>
+  </tr>
+  <tr>
+    <th>#</th>
+    <th>Query</th>
+    <th>Contains</th>
+    <th>Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Kugelschreiber</td>
+    <td>Individueller Kugelschreiber - Gottfried Wilhelm Leibniz Universität Hannover</td>
+    <td>PASS</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Kugelschreiber</td>
+    <td>XITASO GmbH</td>
+    <td>FAIL</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>https://aas2.uni-h.de/lni0729</td>
+    <td>https://aas2.uni-h.de/lni0729</td>
+    <td>PASS</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>https://</td>
+    <td>https://aas2.uni-h.de/lni0729</td>
+    <td>FAIL</td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <th colspan="3">Test Case</th>
+  </tr>
+  <tr>
+    <td><b>ID</b></td>
+    <td colspan="2">TS-CART-F-008</td>
+  </tr>
+  <tr>
+    <td><b>Name</b></td>
+    <td colspan="2">Cart View Accessibility and Sidebar Counter</td>
+  </tr>
+  <tr>
+    <td><b>REQ_ID</b></td>
+    <td colspan="2">FR.008, FR.012</td>
+  </tr>
+  <tr>
+    <td><b>Description</b></td>
+    <td colspan="2">
+This test verifies that the cart view is accessible via the sidebar and the URL path "/cart".
+It also verifies that the sidebar correctly displays the number of items in the cart.
+    </td>
+  </tr>
+  <tr>
+    <th colspan="3">Test Steps</th>
+  </tr>
+  <tr>
+    <th>Step</th>
+    <th>Action</th>
+    <th>Expected Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Click on cart icon in sidebar</td>
+    <td>Cart view is displayed</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Navigate directly to "/cart"</td>
+    <td>Cart view is displayed</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Add products to cart</td>
+    <td>Sidebar counter increases accordingly</td>
+  </tr>
+</table>
+
+
+<table>
+  <tr>
+    <th colspan="3">Test Case</th>
+  </tr>
+  <tr>
+    <td><b>ID</b></td>
+    <td colspan="2">TS-CART-F-009</td>
+  </tr>
+  <tr>
+    <td><b>Name</b></td>
+    <td colspan="2">Add Product to Cart and Verify Listing</td>
+  </tr>
+  <tr>
+    <td><b>REQ_ID</b></td>
+    <td colspan="2">FR.009, FR.011</td>
+  </tr>
+  <tr>
+    <td><b>Description</b></td>
+    <td colspan="2">
+This test verifies that products can be added to the cart using the "Add to cart" button 
+and that all added products are correctly listed in the cart view.
+    </td>
+  </tr>
+  <tr>
+    <th colspan="3">Test Steps</th>
+  </tr>
+  <tr>
+    <th>Step</th>
+    <th>Action</th>
+    <th>Expected Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Navigate to a product detail page</td>
+    <td>Product details are displayed</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Click "Add to cart"</td>
+    <td>Product is added to cart</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Navigate to cart view</td>
+    <td>Product appears in cart list</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Add multiple different products</td>
+    <td>All products are listed correctly</td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <th colspan="5">Test Data – TD-CART-F-009</th>
+  </tr>
+  <tr>
+    <th>#</th>
+    <th>Product</th>
+    <th>Action</th>
+    <th>Expected in Cart</th>
+    <th>Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Individueller Kugelschreiber</td>
+    <td>Add once</td>
+    <td>Individueller Kugelschreiber (Qty: 1)</td>
+    <td>PASS</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Xitaso GmbH</td>
+    <td>Add twice</td>
+    <td>Xitaso GmbH (Qty: 2)</td>
+    <td>PASS</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Any product</td>
+    <td>Do not add</td>
+    <td>Not listed</td>
+    <td>PASS</td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <th colspan="3">Test Case</th>
+  </tr>
+  <tr>
+    <td><b>ID</b></td>
+    <td colspan="2">TS-CART-F-010</td>
+  </tr>
+  <tr>
+    <td><b>Name</b></td>
+    <td colspan="2">Edit Cart Quantity and Shop Feature Toggle</td>
+  </tr>
+  <tr>
+    <td><b>REQ_ID</b></td>
+    <td colspan="2">FR.010, FR.013</td>
+  </tr>
+  <tr>
+    <td><b>Description</b></td>
+    <td colspan="2">
+This test verifies that product quantities can be modified in the cart view.
+Additionally, it verifies that the shop functionality can be enabled or disabled 
+via the environment variable SHOP_ENABLED_FLAG.
+    </td>
+  </tr>
+  <tr>
+    <th colspan="3">Test Steps</th>
+  </tr>
+  <tr>
+    <th>Step</th>
+    <th>Action</th>
+    <th>Expected Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Add product to cart</td>
+    <td>Product appears with quantity = 1</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Increase quantity</td>
+    <td>Quantity is updated correctly</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Decrease quantity</td>
+    <td>Quantity decreases accordingly</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Set SHOP_ENABLED_FLAG=false and reload app</td>
+    <td>Shop/cart functionality is disabled or hidden</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Set SHOP_ENABLED_FLAG=true and reload app</td>
+    <td>Shop/cart functionality is enabled</td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <th colspan="5">Test Data – TD-CART-F-010</th>
+  </tr>
+  <tr>
+    <th>#</th>
+    <th>Initial Qty</th>
+    <th>Action</th>
+    <th>Expected Qty</th>
+    <th>Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>1</td>
+    <td>Increase by 1</td>
+    <td>2</td>
+    <td>PASS</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>2</td>
+    <td>Decrease by 1</td>
+    <td>1</td>
+    <td>PASS</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>1</td>
+    <td>Decrease by 1</td>
+    <td>0 (removed or handled)</td>
+    <td>PASS</td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <th colspan="3">Test Case</th>
+  </tr>
+  <tr>
+    <td><b>ID</b></td>
+    <td colspan="2">TS-CART-F-015</td>
+  </tr>
+  <tr>
+    <td><b>Name</b></td>
+    <td colspan="2">Display Product Price when Shop Enabled</td>
+  </tr>
+  <tr>
+    <td><b>REQ_ID</b></td>
+    <td colspan="2">FR.015</td>
+  </tr>
+  <tr>
+    <td><b>Description</b></td>
+    <td colspan="2">
+This test verifies that each product displays a price when the shop module is enabled.
+It also ensures that prices are not shown when the shop functionality is disabled.
+    </td>
+  </tr>
+  <tr>
+    <th colspan="3">Test Steps</th>
+  </tr>
+  <tr>
+    <th>Step</th>
+    <th>Action</th>
+    <th>Expected Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Set environment variable SHOP_ENABLED_FLAG=true and start the application</td>
+    <td>Application starts with shop functionality enabled</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Navigate to product listing page (e.g. "/products")</td>
+    <td>List of products is displayed</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Inspect a product card in the listing view</td>
+    <td>A price value is visible for the product (e.g. numeric value with currency)</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Navigate to a product detail page</td>
+    <td>Product details are displayed including price</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Verify multiple products in listing</td>
+    <td>Each product displays an individual price</td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td>Set environment variable SHOP_ENABLED_FLAG=false and reload the application</td>
+    <td>Application starts with shop functionality disabled</td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td>Navigate again to product listing page</td>
+    <td>Products are displayed without any price information</td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <th colspan="3">Test Case</th>
+  </tr>
+  <tr>
+    <td><b>ID</b></td>
+    <td colspan="2">TS-CONFIG-F-016</td>
+  </tr>
+  <tr>
+    <td><b>Name</b></td>
+    <td colspan="2">Enable and Disable AAS Repositories</td>
+  </tr>
+  <tr>
+    <td><b>REQ_ID</b></td>
+    <td colspan="2">FR.016</td>
+  </tr>
+  <tr>
+    <td><b>Description</b></td>
+    <td colspan="2">
+This test verifies that users can enable and disable individual AAS repositories via the configuration dialog.
+    </td>
+  </tr>
+  <tr>
+    <th colspan="3">Test Steps</th>
+  </tr>
+  <tr>
+    <th>Step</th>
+    <th>Action</th>
+    <th>Expected Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Open the application and navigate via sidebar to "Einstellungen" → "Datenquellen"</td>
+    <td>Configuration page is displayed</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Verify that a list of AAS repositories is shown</td>
+    <td>All configured repositories are visible</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Click on "Alles bearbeiten" for a repository entry</td>
+    <td>Edit dialog opens with repository details</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Toggle the active/inactive switch to disable the repository</td>
+    <td>Repository is marked as inactive</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Save changes and return to overview</td>
+    <td>Repository remains inactive in the list</td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td>Re-enable the repository using the same toggle</td>
+    <td>Repository is marked as active again</td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <th colspan="3">Test Case</th>
+  </tr>
+  <tr>
+    <td><b>ID</b></td>
+    <td colspan="2">TS-CONFIG-F-017</td>
+  </tr>
+  <tr>
+    <td><b>Name</b></td>
+    <td colspan="2">Configure CD Repositories</td>
+  </tr>
+  <tr>
+    <td><b>REQ_ID</b></td>
+    <td colspan="2">FR.017</td>
+  </tr>
+  <tr>
+    <td><b>Description</b></td>
+    <td colspan="2">
+This test verifies that users can view and modify configuration parameters of CD repositories via the configuration dialog.
+    </td>
+  </tr>
+  <tr>
+    <th colspan="3">Test Steps</th>
+  </tr>
+  <tr>
+    <th>Step</th>
+    <th>Action</th>
+    <th>Expected Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Navigate to "/de/settings" or via sidebar to "Einstellungen" → "Datenquellen"</td>
+    <td>Configuration page is displayed</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Select a CD repository entry and click "Alles bearbeiten"</td>
+    <td>Edit dialog opens</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Inspect available fields (Name, Image URL, AAS Repository URL, AAS Searcher URL)</td>
+    <td>All fields are visible and populated</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Modify one or more fields (e.g. change repository name or URL)</td>
+    <td>Updated values are accepted in input fields</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Save changes</td>
+    <td>Changes are persisted and reflected in the repository list</td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td>Reload the page</td>
+    <td>Modified values remain unchanged (persisted correctly)</td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <th colspan="3">Test Case</th>
+  </tr>
+  <tr>
+    <td><b>ID</b></td>
+    <td colspan="2">TS-CONFIG-F-018</td>
+  </tr>
+  <tr>
+    <td><b>Name</b></td>
+    <td colspan="2">Inspect CD Repository Content</td>
+  </tr>
+  <tr>
+    <td><b>REQ_ID</b></td>
+    <td colspan="2">FR.018</td>
+  </tr>
+  <tr>
+    <td><b>Description</b></td>
+    <td colspan="2">
+This test verifies that users can inspect the contents of configured CD repositories via the user interface.
+    </td>
+  </tr>
+  <tr>
+    <th colspan="3">Test Steps</th>
+  </tr>
+  <tr>
+    <th>Step</th>
+    <th>Action</th>
+    <th>Expected Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Navigate to "Einstellungen" → "Datenquellen"</td>
+    <td>Repository overview is displayed</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Select an active CD repository</td>
+    <td>Repository can be interacted with</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Trigger inspection (e.g. open details / view content via UI)</td>
+    <td>Repository content view is opened</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Verify that repository data (e.g. entries, assets, or structures) is displayed</td>
+    <td>Content is visible and structured</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Interact with content (e.g. expand elements, navigate entries)</td>
+    <td>Content can be browsed without errors</td>
+  </tr>
+</table>
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+  <tr>
+    <th colspan="3">Test Case</th>
+  </tr>
+  <tr>
+    <td><b>ID</b></td>
+    <td colspan="2">TS-NFR-PERF-002</td>
+  </tr>
+  <tr>
+    <td><b>Name</b></td>
+    <td colspan="2">Concurrent User Load Handling</td>
+  </tr>
+  <tr>
+    <td><b>REQ_ID</b></td>
+    <td colspan="2">NFR.002</td>
+  </tr>
+  <tr>
+    <td><b>Description</b></td>
+    <td colspan="2">
+This test verifies that the system can handle at least 10 concurrent users performing typical operations without significant performance degradation.
+Basic response times and system stability are observed during the test.
+    </td>
+  </tr>
+  <tr>
+    <th colspan="3">Test Steps</th>
+  </tr>
+  <tr>
+    <th>Step</th>
+    <th>Action</th>
+    <th>Expected Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Start backend and frontend services in a test environment</td>
+    <td>All services are running and reachable</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Use a load testing tool (e.g. k6, JMeter) to simulate 10 concurrent users</td>
+    <td>10 virtual users are active simultaneously</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Execute typical user flows (navigation, API calls, data loading)</td>
+    <td>All requests return valid responses (HTTP 200)</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Measure response times during load</td>
+    <td>Average response time remains within acceptable range (e.g. &lt; 1s)</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Monitor system logs and resource usage (CPU, memory)</td>
+    <td>No errors, crashes, or resource exhaustion observed</td>
+  </tr>
+</table>
+
+
+<table>
+  <tr>
+    <th colspan="3">Test Case</th>
+  </tr>
+  <tr>
+    <td><b>ID</b></td>
+    <td colspan="2">TS-NFR-SEC-003</td>
+  </tr>
+  <tr>
+    <td><b>Name</b></td>
+    <td colspan="2">Audit Logging for Repository Actions</td>
+  </tr>
+  <tr>
+    <td><b>REQ_ID</b></td>
+    <td colspan="2">NFR.003</td>
+  </tr>
+  <tr>
+    <td><b>Description</b></td>
+    <td colspan="2">
+This test verifies that all relevant actions affecting repositories are logged with sufficient detail for auditing purposes.
+    </td>
+  </tr>
+  <tr>
+    <th colspan="3">Test Steps</th>
+  </tr>
+  <tr>
+    <th>Step</th>
+    <th>Action</th>
+    <th>Expected Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Start application with logging enabled (e.g. LOG_LEVEL=info/debug)</td>
+    <td>Logging system is initialized</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Create a new repository via UI or API</td>
+    <td>A log entry is created for the action</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Update repository configuration</td>
+    <td>Change is logged with details</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Delete repository</td>
+    <td>Deletion is logged</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Inspect log output (file or console)</td>
+    <td>
+Log entries contain: timestamp, action type, affected resource, and user/context identifier
+    </td>
+  </tr>
+</table>
+
+
+<table>
+  <tr>
+    <th colspan="3">Test Case</th>
+  </tr>
+  <tr>
+    <td><b>ID</b></td>
+    <td colspan="2">TS-NFR-USE-004</td>
+  </tr>
+  <tr>
+    <td><b>Name</b></td>
+    <td colspan="2">Responsive Layout and Rendering</td>
+  </tr>
+  <tr>
+    <td><b>REQ_ID</b></td>
+    <td colspan="2">NFR.004</td>
+  </tr>
+  <tr>
+    <td><b>Description</b></td>
+    <td colspan="2">
+This test verifies that the UI adapts correctly to different viewport sizes and maintains usability.
+    </td>
+  </tr>
+  <tr>
+    <th colspan="3">Test Steps</th>
+  </tr>
+  <tr>
+    <th>Step</th>
+    <th>Action</th>
+    <th>Expected Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Open browser dev tools and set viewport to 1920x1080</td>
+    <td>Desktop layout is rendered correctly</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Resize viewport to 1024x768</td>
+    <td>Layout adapts without overflow or clipping</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Resize viewport to 375x667 (mobile)</td>
+    <td>Mobile layout is activated (e.g. stacked elements, burger menu)</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Inspect DOM and CSS behavior</td>
+    <td>No broken layouts, overlapping elements, or horizontal scrolling</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Interact with UI components in each viewport</td>
+    <td>All interactive elements remain usable</td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <th colspan="3">Test Case</th>
+  </tr>
+  <tr>
+    <td><b>ID</b></td>
+    <td colspan="2">TS-NFR-COMP-005</td>
+  </tr>
+  <tr>
+    <td><b>Name</b></td>
+    <td colspan="2">Cross-Browser Functional Compatibility</td>
+  </tr>
+  <tr>
+    <td><b>REQ_ID</b></td>
+    <td colspan="2">NFR.005</td>
+  </tr>
+  <tr>
+    <td><b>Description</b></td>
+    <td colspan="2">
+This test verifies consistent functionality and rendering across supported browsers.
+    </td>
+  </tr>
+  <tr>
+    <th colspan="3">Test Steps</th>
+  </tr>
+  <tr>
+    <th>Step</th>
+    <th>Action</th>
+    <th>Expected Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Open application in latest Chrome version</td>
+    <td>No console errors, UI renders correctly</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Open application in latest Firefox version</td>
+    <td>No console errors, UI renders correctly</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Open application in latest Safari version</td>
+    <td>No console errors, UI renders correctly</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Execute key workflows (navigation, CRUD operations)</td>
+    <td>Behavior is consistent across browsers</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Check browser console and network tab</td>
+    <td>No browser-specific errors or failed requests</td>
+  </tr>
+</table>
+
+
+<table>
+  <tr>
+    <th colspan="3">Test Case</th>
+  </tr>
+  <tr>
+    <td><b>ID</b></td>
+    <td colspan="2">TS-NFR-MAINT-007</td>
+  </tr>
+  <tr>
+    <td><b>Name</b></td>
+    <td colspan="2">Static Code Analysis Compliance</td>
+  </tr>
+  <tr>
+    <td><b>REQ_ID</b></td>
+    <td colspan="2">NFR.007</td>
+  </tr>
+  <tr>
+    <td><b>Description</b></td>
+    <td colspan="2">
+This test verifies compliance with defined linting and formatting rules using automated tools.
+    </td>
+  </tr>
+  <tr>
+    <th colspan="3">Test Steps</th>
+  </tr>
+  <tr>
+    <th>Step</th>
+    <th>Action</th>
+    <th>Expected Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Install project dependencies</td>
+    <td>All required tools are available</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Run linting tool (e.g. eslint)</td>
+    <td>No linting errors (exit code 0)</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Run formatting check (e.g. prettier --check)</td>
+    <td>All files comply with formatting rules</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Run CI pipeline (if available)</td>
+    <td>Linting/formatting stage passes successfully</td>
+  </tr>
+</table>
 
 Link Test:
 [TINF24F Feature FR.003](./TINF24F_5-SRS-0v1.md#fr003)
