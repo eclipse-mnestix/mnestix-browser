@@ -2,7 +2,7 @@
 import { GenericAasListEntry } from 'components/basics/listBasics/GenericAasListEntry';
 import { AasListConfig, AasListEntry } from 'lib/types/AasListEntry';
 import { useTranslations } from 'next-intl';
-import { useState, useMemo } from 'react';
+import { UIEvent, useEffect, useMemo, useRef, useState } from 'react';
 
 type AasListProps = {
     data: AasListEntry[];
@@ -15,10 +15,17 @@ const tableHeaderText = {
     fontWeight: 700,
 };
 
+const VIRTUAL_ROW_HEIGHT = 116;
+const VIRTUAL_TABLE_HEIGHT = 720;
+const OVERSCAN_ROWS = 5;
+
 export default function GenericAasList({ data, ...config }: AasListProps) {
     const t = useTranslations('pages.aasList.listHeader');
     const [orderBy, setOrderBy] = useState<string | null>(null);
     const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+    const [scrollTop, setScrollTop] = useState(0);
+    const [containerHeight, setContainerHeight] = useState(VIRTUAL_TABLE_HEIGHT);
+    const tableContainerRef = useRef<HTMLDivElement | null>(null);
 
     const handleRequestSort = (property: string) => {
         if (orderBy === property) {
@@ -60,9 +67,59 @@ export default function GenericAasList({ data, ...config }: AasListProps) {
         return sorted;
     }, [data, orderBy, order]);
 
+    const columnCount = useMemo(() => {
+        let count = 1;
+        if (config.showThumbnail) count += 1;
+        if (config.showAasId) count += 1;
+        if (config.showAssetId) count += 1;
+        if (config.showAasEndpoint) count += 1;
+        if (config.showRepositoryUrl) count += 1;
+        if (config.showDiscoveryUrl) count += 1;
+        if (config.showRegistryUrl) count += 1;
+        return count;
+    }, [
+        config.showAasEndpoint,
+        config.showAasId,
+        config.showAssetId,
+        config.showDiscoveryUrl,
+        config.showRegistryUrl,
+        config.showRepositoryUrl,
+        config.showThumbnail,
+    ]);
+
+    const totalRows = sortedData.length;
+    const visibleRowCount = Math.ceil(containerHeight / VIRTUAL_ROW_HEIGHT);
+    const startIndex = Math.max(0, Math.floor(scrollTop / VIRTUAL_ROW_HEIGHT) - OVERSCAN_ROWS);
+    const endIndex = Math.min(totalRows, startIndex + visibleRowCount + OVERSCAN_ROWS * 2);
+    const topSpacerHeight = startIndex * VIRTUAL_ROW_HEIGHT;
+    const bottomSpacerHeight = Math.max(0, (totalRows - endIndex) * VIRTUAL_ROW_HEIGHT);
+    const visibleRows = sortedData.slice(startIndex, endIndex);
+
+    useEffect(() => {
+        const element = tableContainerRef.current;
+        if (!element) return;
+
+        const resizeObserver = new ResizeObserver(() => {
+            setContainerHeight(element.clientHeight || VIRTUAL_TABLE_HEIGHT);
+        });
+
+        resizeObserver.observe(element);
+        setContainerHeight(element.clientHeight || VIRTUAL_TABLE_HEIGHT);
+
+        return () => resizeObserver.disconnect();
+    }, []);
+
+    const handleScroll = (event: UIEvent<HTMLDivElement>) => {
+        setScrollTop(event.currentTarget.scrollTop);
+    };
+
     return (
         <>
-            <TableContainer>
+            <TableContainer
+                ref={tableContainerRef}
+                onScroll={handleScroll}
+                sx={{ maxHeight: VIRTUAL_TABLE_HEIGHT, overflowY: 'auto' }}
+            >
                 <Table>
                     <TableHead>
                         <TableRow>
@@ -149,7 +206,12 @@ export default function GenericAasList({ data, ...config }: AasListProps) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {sortedData.map((aasListEntry) => (
+                        {topSpacerHeight > 0 && (
+                            <TableRow aria-hidden="true">
+                                <TableCell colSpan={columnCount} sx={{ p: 0, border: 0, height: topSpacerHeight }} />
+                            </TableRow>
+                        )}
+                        {visibleRows.map((aasListEntry) => (
                             <TableRow
                                 key={aasListEntry.aasId}
                                 sx={{
@@ -160,6 +222,11 @@ export default function GenericAasList({ data, ...config }: AasListProps) {
                                 <GenericAasListEntry aasListEntry={aasListEntry} {...config} />
                             </TableRow>
                         ))}
+                        {bottomSpacerHeight > 0 && (
+                            <TableRow aria-hidden="true">
+                                <TableCell colSpan={columnCount} sx={{ p: 0, border: 0, height: bottomSpacerHeight }} />
+                            </TableRow>
+                        )}
                     </TableBody>
                 </Table>
             </TableContainer>
