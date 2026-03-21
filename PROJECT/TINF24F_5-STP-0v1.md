@@ -1201,10 +1201,7 @@ Link Test:
 [TINF24F Feature FR.003](./TINF24F_5-SRS-0v1.md#fr003)
 
 To Dos:
-Matrix feature / test
-jeder test überschrift
 inhaltsverzeichnis
-test suits
 
 product genau nennen mit commit
 
