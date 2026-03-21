@@ -6,7 +6,31 @@
 # TABLE OF CONTENTS
 - [Introduction](#introduction)
 
+## TS-USER
+- [TS-LOGIN-C-001 – Login functions](#ts-login-c-001)
 
+## TS-REPOSITORY-02
+- [TS-REPCOUNT-C-002 – Repository entry counts](#ts-repcount-c-002)
+- [TS-CONFIG-F-003 – Enable/Disable AAS Repositories](#ts-config-f-003)
+- [TS-CONFIG-F-004 – Configure CD Repositories](#ts-config-f-004)
+- [TS-CONFIG-F-005 – Inspect CD Repository Content](#ts-config-f-005)
+
+## TS-AAS-LIST
+- [TS-SORTING-F-006 – Asset List Sorting](#ts-sorting-f-006)
+- [TS-QUERY-F-007 – AAS List Query Filter](#ts-query-f-007)
+
+## TS-SHOPPING-CART
+- [TS-CART-F-008 – Cart View Accessibility](#ts-cart-f-008)
+- [TS-CART-F-009 – Add Product to Cart](#ts-cart-f-009)
+- [TS-CART-F-010 – Edit Cart Quantity](#ts-cart-f-010)
+- [TS-CART-F-011 – Display Product Price](#ts-cart-f-011)
+
+## Non-Functional Tests
+- [TS-NFR-PERF-012 – Concurrent User Load](#ts-nfr-perf-012)
+- [TS-NFR-SEC-013 – Audit Logging](#ts-nfr-sec-013)
+- [TS-NFR-USE-014 – Responsive UI](#ts-nfr-use-014)
+- [TS-NFR-COMP-015 – Browser Compatibility](#ts-nfr-comp-015)
+- [TS-NFR-MAINT-016 – Code Quality](#ts-nfr-maint-016)
 # Introduction
 
 This document outlines the testing approach and procedures for the ongoing development of the **Mnestix Product Catalogue**. The purpose of this test plan is to ensure the system's functionality, reliability, and overall quality before its final release.  
@@ -49,6 +73,9 @@ To further enhance test effectiveness, techniques such as boundary value analysi
 Overall, the test suites are designed with the goal of achieving high quality under economically reasonable conditions, following the principle of “as many tests as necessary, but as few as possible.” This ensures an optimal balance between test coverage, effort, and development speed.
 
 # Test specification
+
+## TS-USER
+### TS-LOGIN-C-001
 <table>
   <tr>
     <th colspan="3">Test Case</th>
@@ -119,12 +146,8 @@ The test setup consists of the latest version of mnestix and the version before 
 </table>
 
 
-
-
-
-
-
-
+## TS-REPOSITORY-02
+### TS-REPCOUNT-C-002
 <table>
   <tr>
     <th colspan="3">Test Case</th>
@@ -172,16 +195,200 @@ It verifies that the correct number is displayed next to the repository.
 </tr>
 </table>
 
-
-
-
+### TS-CONFIG-F-003
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-SORTING-F-003</td>
+    <td colspan="2">TS-CONFIG-F-003</td>
+  </tr>
+  <tr>
+    <td><b>Name</b></td>
+    <td colspan="2">Enable and Disable AAS Repositories</td>
+  </tr>
+  <tr>
+    <td><b>REQ_ID</b></td>
+    <td colspan="2">FR.016</td>
+  </tr>
+  <tr>
+    <td><b>Description</b></td>
+    <td colspan="2">
+This test verifies that users can enable and disable individual AAS repositories via the configuration dialog.
+    </td>
+  </tr>
+  <tr>
+    <th colspan="3">Test Steps</th>
+  </tr>
+  <tr>
+    <th>Step</th>
+    <th>Action</th>
+    <th>Expected Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Open the application and navigate via sidebar to "Einstellungen" → "Datenquellen"</td>
+    <td>Configuration page is displayed</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Verify that a list of AAS repositories is shown</td>
+    <td>All configured repositories are visible</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Click on "Alles bearbeiten" for a repository entry</td>
+    <td>Edit dialog opens with repository details</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Toggle the active/inactive switch to disable the repository</td>
+    <td>Repository is marked as inactive</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Save changes and return to overview</td>
+    <td>Repository remains inactive in the list</td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td>Re-enable the repository using the same toggle</td>
+    <td>Repository is marked as active again</td>
+  </tr>
+</table>
+
+### TS-CONFIG-F-004
+<table>
+  <tr>
+    <th colspan="3">Test Case</th>
+  </tr>
+  <tr>
+    <td><b>ID</b></td>
+    <td colspan="2">TS-CONFIG-F-004</td>
+  </tr>
+  <tr>
+    <td><b>Name</b></td>
+    <td colspan="2">Configure CD Repositories</td>
+  </tr>
+  <tr>
+    <td><b>REQ_ID</b></td>
+    <td colspan="2">FR.017</td>
+  </tr>
+  <tr>
+    <td><b>Description</b></td>
+    <td colspan="2">
+This test verifies that users can view and modify configuration parameters of CD repositories via the configuration dialog.
+    </td>
+  </tr>
+  <tr>
+    <th colspan="3">Test Steps</th>
+  </tr>
+  <tr>
+    <th>Step</th>
+    <th>Action</th>
+    <th>Expected Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Navigate to "/de/settings" or via sidebar to "Einstellungen" → "Datenquellen"</td>
+    <td>Configuration page is displayed</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Select a CD repository entry and click "Alles bearbeiten"</td>
+    <td>Edit dialog opens</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Inspect available fields (Name, Image URL, AAS Repository URL, AAS Searcher URL)</td>
+    <td>All fields are visible and populated</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Modify one or more fields (e.g. change repository name or URL)</td>
+    <td>Updated values are accepted in input fields</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Save changes</td>
+    <td>Changes are persisted and reflected in the repository list</td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td>Reload the page</td>
+    <td>Modified values remain unchanged (persisted correctly)</td>
+  </tr>
+</table>
+
+### TS-CONFIG-F-005
+<table>
+  <tr>
+    <th colspan="3">Test Case</th>
+  </tr>
+  <tr>
+    <td><b>ID</b></td>
+    <td colspan="2">TS-CONFIG-F-005</td>
+  </tr>
+  <tr>
+    <td><b>Name</b></td>
+    <td colspan="2">Inspect CD Repository Content</td>
+  </tr>
+  <tr>
+    <td><b>REQ_ID</b></td>
+    <td colspan="2">FR.018</td>
+  </tr>
+  <tr>
+    <td><b>Description</b></td>
+    <td colspan="2">
+This test verifies that users can inspect the contents of configured CD repositories via the user interface.
+    </td>
+  </tr>
+  <tr>
+    <th colspan="3">Test Steps</th>
+  </tr>
+  <tr>
+    <th>Step</th>
+    <th>Action</th>
+    <th>Expected Result</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Navigate to "Einstellungen" → "Datenquellen"</td>
+    <td>Repository overview is displayed</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Select an active CD repository</td>
+    <td>Repository can be interacted with</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Trigger inspection (e.g. open details / view content via UI)</td>
+    <td>Repository content view is opened</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Verify that repository data (e.g. entries, assets, or structures) is displayed</td>
+    <td>Content is visible and structured</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Interact with content (e.g. expand elements, navigate entries)</td>
+    <td>Content can be browsed without errors</td>
+  </tr>
+</table>
+
+
+## TS-AAS-LIST
+### TS-SORTING-F-006
+<table>
+  <tr>
+    <th colspan="3">Test Case</th>
+  </tr>
+  <tr>
+    <td><b>ID</b></td>
+    <td colspan="2">TS-SORTING-F-006</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -230,7 +437,7 @@ The test setup consists of the latest version of the mnestix browser and is supp
 
 <table>
   <tr>
-    <th colspan="5">Test Data – TD-SORTING-F-003</th>
+    <th colspan="5">Test Data – TD-SORTING-F-006</th>
   </tr>
   <tr>
     <td><b>Repository</b></td>
@@ -282,14 +489,14 @@ The test setup consists of the latest version of the mnestix browser and is supp
 
 
 
-
+### TS-QUERY-F-007
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-QUERY-F-004</td>
+    <td colspan="2">TS-QUERY-F-007</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -333,7 +540,7 @@ The test setup consists of the latest version of the mnestix browser.
 
 <table>
   <tr>
-    <th colspan="5">Test Data – TD-QUERY-F-004</th>
+    <th colspan="5">Test Data – TD-QUERY-F-007</th>
   </tr>
   <tr>
     <td><b>Repository</b></td>
@@ -371,6 +578,8 @@ The test setup consists of the latest version of the mnestix browser.
   </tr>
 </table>
 
+## TS-SHOPPING-CART
+### TS-CART-F-008
 <table>
   <tr>
     <th colspan="3">Test Case</th>
@@ -419,7 +628,7 @@ It also verifies that the sidebar correctly displays the number of items in the 
   </tr>
 </table>
 
-
+### TS-CART-F-009
 <table>
   <tr>
     <th colspan="3">Test Case</th>
@@ -507,6 +716,7 @@ and that all added products are correctly listed in the cart view.
   </tr>
 </table>
 
+### TS-CART-F-010
 <table>
   <tr>
     <th colspan="3">Test Case</th>
@@ -600,13 +810,14 @@ via the environment variable SHOP_ENABLED_FLAG.
   </tr>
 </table>
 
+### TS-CART-F-011
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-CART-F-015</td>
+    <td colspan="2">TS-CART-F-011</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -668,227 +879,15 @@ It also ensures that prices are not shown when the shop functionality is disable
   </tr>
 </table>
 
+
+### TS-NFR-PERF-012
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-CONFIG-F-016</td>
-  </tr>
-  <tr>
-    <td><b>Name</b></td>
-    <td colspan="2">Enable and Disable AAS Repositories</td>
-  </tr>
-  <tr>
-    <td><b>REQ_ID</b></td>
-    <td colspan="2">FR.016</td>
-  </tr>
-  <tr>
-    <td><b>Description</b></td>
-    <td colspan="2">
-This test verifies that users can enable and disable individual AAS repositories via the configuration dialog.
-    </td>
-  </tr>
-  <tr>
-    <th colspan="3">Test Steps</th>
-  </tr>
-  <tr>
-    <th>Step</th>
-    <th>Action</th>
-    <th>Expected Result</th>
-  </tr>
-  <tr>
-    <td>1</td>
-    <td>Open the application and navigate via sidebar to "Einstellungen" → "Datenquellen"</td>
-    <td>Configuration page is displayed</td>
-  </tr>
-  <tr>
-    <td>2</td>
-    <td>Verify that a list of AAS repositories is shown</td>
-    <td>All configured repositories are visible</td>
-  </tr>
-  <tr>
-    <td>3</td>
-    <td>Click on "Alles bearbeiten" for a repository entry</td>
-    <td>Edit dialog opens with repository details</td>
-  </tr>
-  <tr>
-    <td>4</td>
-    <td>Toggle the active/inactive switch to disable the repository</td>
-    <td>Repository is marked as inactive</td>
-  </tr>
-  <tr>
-    <td>5</td>
-    <td>Save changes and return to overview</td>
-    <td>Repository remains inactive in the list</td>
-  </tr>
-  <tr>
-    <td>6</td>
-    <td>Re-enable the repository using the same toggle</td>
-    <td>Repository is marked as active again</td>
-  </tr>
-</table>
-
-<table>
-  <tr>
-    <th colspan="3">Test Case</th>
-  </tr>
-  <tr>
-    <td><b>ID</b></td>
-    <td colspan="2">TS-CONFIG-F-017</td>
-  </tr>
-  <tr>
-    <td><b>Name</b></td>
-    <td colspan="2">Configure CD Repositories</td>
-  </tr>
-  <tr>
-    <td><b>REQ_ID</b></td>
-    <td colspan="2">FR.017</td>
-  </tr>
-  <tr>
-    <td><b>Description</b></td>
-    <td colspan="2">
-This test verifies that users can view and modify configuration parameters of CD repositories via the configuration dialog.
-    </td>
-  </tr>
-  <tr>
-    <th colspan="3">Test Steps</th>
-  </tr>
-  <tr>
-    <th>Step</th>
-    <th>Action</th>
-    <th>Expected Result</th>
-  </tr>
-  <tr>
-    <td>1</td>
-    <td>Navigate to "/de/settings" or via sidebar to "Einstellungen" → "Datenquellen"</td>
-    <td>Configuration page is displayed</td>
-  </tr>
-  <tr>
-    <td>2</td>
-    <td>Select a CD repository entry and click "Alles bearbeiten"</td>
-    <td>Edit dialog opens</td>
-  </tr>
-  <tr>
-    <td>3</td>
-    <td>Inspect available fields (Name, Image URL, AAS Repository URL, AAS Searcher URL)</td>
-    <td>All fields are visible and populated</td>
-  </tr>
-  <tr>
-    <td>4</td>
-    <td>Modify one or more fields (e.g. change repository name or URL)</td>
-    <td>Updated values are accepted in input fields</td>
-  </tr>
-  <tr>
-    <td>5</td>
-    <td>Save changes</td>
-    <td>Changes are persisted and reflected in the repository list</td>
-  </tr>
-  <tr>
-    <td>6</td>
-    <td>Reload the page</td>
-    <td>Modified values remain unchanged (persisted correctly)</td>
-  </tr>
-</table>
-
-<table>
-  <tr>
-    <th colspan="3">Test Case</th>
-  </tr>
-  <tr>
-    <td><b>ID</b></td>
-    <td colspan="2">TS-CONFIG-F-018</td>
-  </tr>
-  <tr>
-    <td><b>Name</b></td>
-    <td colspan="2">Inspect CD Repository Content</td>
-  </tr>
-  <tr>
-    <td><b>REQ_ID</b></td>
-    <td colspan="2">FR.018</td>
-  </tr>
-  <tr>
-    <td><b>Description</b></td>
-    <td colspan="2">
-This test verifies that users can inspect the contents of configured CD repositories via the user interface.
-    </td>
-  </tr>
-  <tr>
-    <th colspan="3">Test Steps</th>
-  </tr>
-  <tr>
-    <th>Step</th>
-    <th>Action</th>
-    <th>Expected Result</th>
-  </tr>
-  <tr>
-    <td>1</td>
-    <td>Navigate to "Einstellungen" → "Datenquellen"</td>
-    <td>Repository overview is displayed</td>
-  </tr>
-  <tr>
-    <td>2</td>
-    <td>Select an active CD repository</td>
-    <td>Repository can be interacted with</td>
-  </tr>
-  <tr>
-    <td>3</td>
-    <td>Trigger inspection (e.g. open details / view content via UI)</td>
-    <td>Repository content view is opened</td>
-  </tr>
-  <tr>
-    <td>4</td>
-    <td>Verify that repository data (e.g. entries, assets, or structures) is displayed</td>
-    <td>Content is visible and structured</td>
-  </tr>
-  <tr>
-    <td>5</td>
-    <td>Interact with content (e.g. expand elements, navigate entries)</td>
-    <td>Content can be browsed without errors</td>
-  </tr>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<table>
-  <tr>
-    <th colspan="3">Test Case</th>
-  </tr>
-  <tr>
-    <td><b>ID</b></td>
-    <td colspan="2">TS-NFR-PERF-002</td>
+    <td colspan="2">TS-NFR-PERF-012</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -940,14 +939,14 @@ Basic response times and system stability are observed during the test.
   </tr>
 </table>
 
-
+### TS-NFR-SEC-013
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-NFR-SEC-003</td>
+    <td colspan="2">TS-NFR-SEC-013</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -1000,14 +999,14 @@ Log entries contain: timestamp, action type, affected resource, and user/context
   </tr>
 </table>
 
-
+### TS-NFR-USE-014
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-NFR-USE-004</td>
+    <td colspan="2">TS-NFR-USE-014</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -1058,13 +1057,14 @@ This test verifies that the UI adapts correctly to different viewport sizes and 
   </tr>
 </table>
 
+### TS-NFR-COMP-015
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-NFR-COMP-005</td>
+    <td colspan="2">TS-NFR-COMP-015</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -1115,14 +1115,14 @@ This test verifies consistent functionality and rendering across supported brows
   </tr>
 </table>
 
-
+### TS-NFR-MAINT-016
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-NFR-MAINT-007</td>
+    <td colspan="2">TS-NFR-MAINT-016</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -1167,6 +1167,35 @@ This test verifies compliance with defined linting and formatting rules using au
     <td>Linting/formatting stage passes successfully</td>
   </tr>
 </table>
+
+
+# Traceability Matrix
+
+| Requirement | TS-LOGIN-C-001 | TS-REPCOUNT-C-002 | TS-CONFIG-F-003 | TS-CONFIG-F-004 | TS-CONFIG-F-005 | TS-SORTING-F-006 | TS-QUERY-F-007 | TS-CART-F-008 | TS-CART-F-009 | TS-CART-F-010 | TS-CART-F-011 | TS-NFR-PERF-012 | TS-NFR-SEC-013 | TS-NFR-USE-014 | TS-NFR-COMP-015 | TS-NFR-MAINT-016 |
+|------------|---------------|-------------------|-----------------|-----------------|-----------------|------------------|----------------|----------------|----------------|----------------|----------------|------------------|------------------|------------------|------------------|------------------|
+| FR.001     | ✔             |                   |                 |                 |                 |                  |                |                |                |                |                |                  |                  |                  |                  |                  |
+| FR.002     | ✔             |                   |                 |                 |                 |                  |                |                |                |                |                |                  |                  |                  |                  |                  |
+| FR.003     |               | ✔                 |                 |                 |                 |                  |                |                |                |                |                |                  |                  |                  |                  |                  |
+| FR.005     |               |                   |                 |                 |                 | ✔                |                |                |                |                |                |                  |                  |                  |                  |                  |
+| FR.006     |               |                   |                 |                 |                 |                  | ✔              |                |                |                |                |                  |                  |                  |                  |                  |
+| FR.007     |               |                   |                 |                 |                 | ✔                |                |                |                |                |                |                  |                  |                  |                  |                  |
+| FR.008     |               |                   |                 |                 |                 |                  |                | ✔              |                |                |                |                  |                  |                  |                  |                  |
+| FR.009     |               |                   |                 |                 |                 |                  |                |                | ✔              |                |                |                  |                  |                  |                  |                  |
+| FR.010     |               |                   |                 |                 |                 |                  |                |                |                | ✔              |                |                  |                  |                  |                  |                  |
+| FR.011     |               |                   |                 |                 |                 |                  |                |                | ✔              |                |                |                  |                  |                  |                  |                  |
+| FR.012     |               |                   |                 |                 |                 |                  |                | ✔              |                |                |                |                  |                  |                  |                  |                  |
+| FR.013     |               |                   |                 |                 |                 |                  |                |                |                | ✔              |                |                  |                  |                  |                  |                  |
+| FR.015     |               |                   |                 |                 |                 |                  |                |                |                |                | ✔              |                  |                  |                  |                  |                  |
+| FR.016     |               |                   | ✔               |                 |                 |                  |                |                |                |                |                |                  |                  |                  |                  |                  |
+| FR.017     |               |                   |                 | ✔               |                 |                  |                |                |                |                |                |                  |                  |                  |                  |                  |
+| FR.018     |               |                   |                 |                 | ✔               |                  |                |                |                |                |                |                  |                  |                  |                  |                  |
+| NFR.002    |               |                   |                 |                 |                 |                  |                |                |                |                |                | ✔                |                  |                  |                  |                  |
+| NFR.003    |               |                   |                 |                 |                 |                  |                |                |                |                |                |                  | ✔                |                  |                  |                  |
+| NFR.004    |               |                   |                 |                 |                 |                  |                |                |                |                |                |                  |                  | ✔                |                  |                  |
+| NFR.005    |               |                   |                 |                 |                 |                  |                |                |                |                |                |                  |                  |                  | ✔                |                  |
+| NFR.007    |               |                   |                 |                 |                 |                  |                |                |                |                |                |                  |                  |                  |                  | ✔                |
+
+
 
 Link Test:
 [TINF24F Feature FR.003](./TINF24F_5-SRS-0v1.md#fr003)
