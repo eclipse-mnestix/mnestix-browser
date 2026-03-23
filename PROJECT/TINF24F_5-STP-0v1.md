@@ -1255,11 +1255,11 @@ flowchart TD
     J --> D
 ```
 Link Test:
-[TINF24F Feature FR.003](./TINF24F_5-SRS-0v1.md#fr003)
-
 To Dos:
-inhaltsverzeichnis
 DEBUGGING
 Requirements namen anpassen, wenn gregor geändaert hat
 Ideen:
 Test Bücher Hintergrund integrieren
+https://csrc.nist.gov/pubs/sp/800/218/final
+https://www.thetesteye.com/papers/TheLittleBlackBookOnTestDesign.pdf
+
