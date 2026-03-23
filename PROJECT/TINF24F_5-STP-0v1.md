@@ -4,33 +4,40 @@
 
 
 # TABLE OF CONTENTS
-- [Introduction](#introduction)
 
-## TS-USER-01
-- [TC-LOGIN-C-001 – Login functions](#TC-login-c-001)
-
-## TC-REPOSITORY-02
-- [TC-REPCOUNT-C-002 – Repository entry counts](#TC-repcount-c-002)
-- [TC-CONFIG-F-003 – Enable/Disable AAS Repositories](#TC-config-f-003)
-- [TC-CONFIG-F-004 – Configure CD Repositories](#TC-config-f-004)
-- [TC-CONFIG-F-005 – Inspect CD Repository Content](#TC-config-f-005)
-
-## TS-AAS-LIST-02
-- [TC-SORTING-F-006 – Asset List Sorting](#TC-sorting-f-006)
-- [TC-QUERY-F-007 – AAS List Query Filter](#TC-query-f-007)
-
-## TS-SHOPPING-CART-03
-- [TC-CART-F-008 – Cart View Accessibility](#TC-cart-f-008)
-- [TC-CART-F-009 – Add Product to Cart](#TC-cart-f-009)
-- [TC-CART-F-010 – Edit Cart Quantity](#TC-cart-f-010)
-- [TC-CART-F-011 – Display Product Price](#TC-cart-f-011)
-
-## Non-Functional Tests
-- [TC-NFR-PERF-012 – Concurrent User Load](#TC-nfr-perf-012)
-- [TC-NFR-SEC-013 – Audit Logging](#TC-nfr-sec-013)
-- [TC-NFR-USE-014 – Responsive UI](#TC-nfr-use-014)
-- [TC-NFR-COMP-015 – Browser Compatibility](#TC-nfr-comp-015)
-- [TC-NFR-MAINT-016 – Code Quality](#TC-nfr-maint-016)
+1. [**Introduction**](#introduction)
+2. [**Scope**](#scope)
+    * [In-Scope](#in-scope)
+    * [Out-of-Scope](#out-of-scope)
+3. [**Test Preparation Strategy**](#test-preperation-strategy)
+4. [**Test Specification**](#test-specification)
+    * [**TS-USER-01** (Login functions)](#ts-user-01)
+        * [TC-LOGIN-C-001](#tc-login-c-001)
+    * [**TS-REPOSITORY-02** (Repository Management)](#ts-repository-02)
+        * [TC-REPCOUNT-C-002](#tc-repcount-c-002)
+        * [TC-CONFIG-F-003](#tc-config-f-003)
+        * [TC-CONFIG-F-004](#tc-config-f-004)
+        * [TC-CONFIG-F-005](#tc-config-f-005)
+    * [**TC-AAS-LIST** (Asset Administration Shell List)](#tc-aas-list)
+        * [TC-SORTING-F-006](#tc-sorting-f-006)
+        * [TC-QUERY-F-007](#tc-query-f-007)
+    * [**TS-SHOPPING-CART-03** (Cart System)](#ts-shopping-cart-03)
+        * [TC-CART-F-008](#tc-cart-f-008)
+        * [TC-CART-F-009](#tc-cart-f-009)
+        * [TC-CART-F-010](#tc-cart-f-010)
+        * [TC-CART-F-011](#tc-cart-f-011)
+5. [**TS-NON-FUNCTIONAL-REQUIREMENTS-04**](#ts-non-functional-requirements-04)
+    * [TC-NFR-PERF-012 (Performance)](#tc-nfr-perf-012)
+    * [TC-NFR-SEC-013 (Security/Audit)](#tc-nfr-sec-013)
+    * [TC-NFR-USE-014 (Usability/Responsive)](#tc-nfr-use-014)
+    * [TC-NFR-COMP-015 (Compatibility)](#tc-nfr-comp-015)
+    * [TC-NFR-MAINT-016 (Maintenance)](#tc-nfr-maint-016)
+6. [**TS-ARTIFICIAL-INTELLIGENCE-ANALYSIS-05**](#ts-artificial-intelligence-analysis-05)
+    * [TC-QUALITY-AI-017 (Static Code Analysis)](#tc-quality-ai-017)
+    * [TC-QUALITY-AI-018 (Log Analysis)](#tc-quality-ai-018)
+7. [**Traceability Matrix**](#traceability-matrix)
+8. [**Test Execution Strategy and Roles**](#test-execution-strategy-and-roles)
+9. [**Incident Management**](#incident-management)
 # Introduction
 
 This document outlines the testing approach and procedures for the ongoing development of the **Mnestix Product Catalogue**. The purpose of this test plan is to ensure the system's functionality, reliability, and overall quality before its final release.  
