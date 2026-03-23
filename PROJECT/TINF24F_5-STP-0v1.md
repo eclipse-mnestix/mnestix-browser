@@ -6,31 +6,31 @@
 # TABLE OF CONTENTS
 - [Introduction](#introduction)
 
-## TS-USER
-- [TS-LOGIN-C-001 – Login functions](#ts-login-c-001)
+## TS-USER-01
+- [TC-LOGIN-C-001 – Login functions](#TC-login-c-001)
 
-## TS-REPOSITORY-02
-- [TS-REPCOUNT-C-002 – Repository entry counts](#ts-repcount-c-002)
-- [TS-CONFIG-F-003 – Enable/Disable AAS Repositories](#ts-config-f-003)
-- [TS-CONFIG-F-004 – Configure CD Repositories](#ts-config-f-004)
-- [TS-CONFIG-F-005 – Inspect CD Repository Content](#ts-config-f-005)
+## TC-REPOSITORY-02
+- [TC-REPCOUNT-C-002 – Repository entry counts](#TC-repcount-c-002)
+- [TC-CONFIG-F-003 – Enable/Disable AAS Repositories](#TC-config-f-003)
+- [TC-CONFIG-F-004 – Configure CD Repositories](#TC-config-f-004)
+- [TC-CONFIG-F-005 – Inspect CD Repository Content](#TC-config-f-005)
 
-## TS-AAS-LIST
-- [TS-SORTING-F-006 – Asset List Sorting](#ts-sorting-f-006)
-- [TS-QUERY-F-007 – AAS List Query Filter](#ts-query-f-007)
+## TS-AAS-LIST-02
+- [TC-SORTING-F-006 – Asset List Sorting](#TC-sorting-f-006)
+- [TC-QUERY-F-007 – AAS List Query Filter](#TC-query-f-007)
 
-## TS-SHOPPING-CART
-- [TS-CART-F-008 – Cart View Accessibility](#ts-cart-f-008)
-- [TS-CART-F-009 – Add Product to Cart](#ts-cart-f-009)
-- [TS-CART-F-010 – Edit Cart Quantity](#ts-cart-f-010)
-- [TS-CART-F-011 – Display Product Price](#ts-cart-f-011)
+## TS-SHOPPING-CART-03
+- [TC-CART-F-008 – Cart View Accessibility](#TC-cart-f-008)
+- [TC-CART-F-009 – Add Product to Cart](#TC-cart-f-009)
+- [TC-CART-F-010 – Edit Cart Quantity](#TC-cart-f-010)
+- [TC-CART-F-011 – Display Product Price](#TC-cart-f-011)
 
 ## Non-Functional Tests
-- [TS-NFR-PERF-012 – Concurrent User Load](#ts-nfr-perf-012)
-- [TS-NFR-SEC-013 – Audit Logging](#ts-nfr-sec-013)
-- [TS-NFR-USE-014 – Responsive UI](#ts-nfr-use-014)
-- [TS-NFR-COMP-015 – Browser Compatibility](#ts-nfr-comp-015)
-- [TS-NFR-MAINT-016 – Code Quality](#ts-nfr-maint-016)
+- [TC-NFR-PERF-012 – Concurrent User Load](#TC-nfr-perf-012)
+- [TC-NFR-SEC-013 – Audit Logging](#TC-nfr-sec-013)
+- [TC-NFR-USE-014 – Responsive UI](#TC-nfr-use-014)
+- [TC-NFR-COMP-015 – Browser Compatibility](#TC-nfr-comp-015)
+- [TC-NFR-MAINT-016 – Code Quality](#TC-nfr-maint-016)
 # Introduction
 
 This document outlines the testing approach and procedures for the ongoing development of the **Mnestix Product Catalogue**. The purpose of this test plan is to ensure the system's functionality, reliability, and overall quality before its final release.  
@@ -74,15 +74,15 @@ Overall, the test suites are designed with the goal of achieving high quality un
 
 # Test specification
 
-## TS-USER
-### TS-LOGIN-C-001
+## TS-USER-01
+### TC-LOGIN-C-001
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-LOGIN-C-001</td>
+    <td colspan="2">TC-LOGIN-C-001</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -147,14 +147,14 @@ The test setup consists of the latest version of mnestix and the version before 
 
 
 ## TS-REPOSITORY-02
-### TS-REPCOUNT-C-002
+### TC-REPCOUNT-C-002
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-REPCOUNT-C-002</td>
+    <td colspan="2">TC-REPCOUNT-C-002</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -195,14 +195,14 @@ It verifies that the correct number is displayed next to the repository.
 </tr>
 </table>
 
-### TS-CONFIG-F-003
+### TC-CONFIG-F-003
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-CONFIG-F-003</td>
+    <td colspan="2">TC-CONFIG-F-003</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -258,14 +258,14 @@ This test verifies that users can enable and disable individual AAS repositories
   </tr>
 </table>
 
-### TS-CONFIG-F-004
+### TC-CONFIG-F-004
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-CONFIG-F-004</td>
+    <td colspan="2">TC-CONFIG-F-004</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -321,14 +321,14 @@ This test verifies that users can view and modify configuration parameters of CD
   </tr>
 </table>
 
-### TS-CONFIG-F-005
+### TC-CONFIG-F-005
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-CONFIG-F-005</td>
+    <td colspan="2">TC-CONFIG-F-005</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -380,15 +380,15 @@ This test verifies that users can inspect the contents of configured CD reposito
 </table>
 
 
-## TS-AAS-LIST
-### TS-SORTING-F-006
+## TC-AAS-LIST
+### TC-SORTING-F-006
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-SORTING-F-006</td>
+    <td colspan="2">TC-SORTING-F-006</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -489,14 +489,14 @@ The test setup consists of the latest version of the mnestix browser and is supp
 
 
 
-### TS-QUERY-F-007
+### TC-QUERY-F-007
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-QUERY-F-007</td>
+    <td colspan="2">TC-QUERY-F-007</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -578,15 +578,15 @@ The test setup consists of the latest version of the mnestix browser.
   </tr>
 </table>
 
-## TS-SHOPPING-CART
-### TS-CART-F-008
+## TS-SHOPPING-CART-03
+### TC-CART-F-008
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-CART-F-008</td>
+    <td colspan="2">TC-CART-F-008</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -628,14 +628,14 @@ It also verifies that the sidebar correctly displays the number of items in the 
   </tr>
 </table>
 
-### TS-CART-F-009
+### TC-CART-F-009
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-CART-F-009</td>
+    <td colspan="2">TC-CART-F-009</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -716,14 +716,14 @@ and that all added products are correctly listed in the cart view.
   </tr>
 </table>
 
-### TS-CART-F-010
+### TC-CART-F-010
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-CART-F-010</td>
+    <td colspan="2">TC-CART-F-010</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -810,14 +810,14 @@ via the environment variable SHOP_ENABLED_FLAG.
   </tr>
 </table>
 
-### TS-CART-F-011
+### TC-CART-F-011
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-CART-F-011</td>
+    <td colspan="2">TC-CART-F-011</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -879,15 +879,15 @@ It also ensures that prices are not shown when the shop functionality is disable
   </tr>
 </table>
 
-
-### TS-NFR-PERF-012
+# TS-NON-FUNCTIONAL-REQUIREMENTS-04
+### TC-NFR-PERF-012
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-NFR-PERF-012</td>
+    <td colspan="2">TC-NFR-PERF-012</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -939,14 +939,14 @@ Basic response times and system stability are observed during the test.
   </tr>
 </table>
 
-### TS-NFR-SEC-013
+### TC-NFR-SEC-013
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-NFR-SEC-013</td>
+    <td colspan="2">TC-NFR-SEC-013</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -999,14 +999,14 @@ Log entries contain: timestamp, action type, affected resource, and user/context
   </tr>
 </table>
 
-### TS-NFR-USE-014
+### TC-NFR-USE-014
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-NFR-USE-014</td>
+    <td colspan="2">TC-NFR-USE-014</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -1057,14 +1057,14 @@ This test verifies that the UI adapts correctly to different viewport sizes and 
   </tr>
 </table>
 
-### TS-NFR-COMP-015
+### TC-NFR-COMP-015
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-NFR-COMP-015</td>
+    <td colspan="2">TC-NFR-COMP-015</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -1115,14 +1115,14 @@ This test verifies consistent functionality and rendering across supported brows
   </tr>
 </table>
 
-### TS-NFR-MAINT-016
+### TC-NFR-MAINT-016
 <table>
   <tr>
     <th colspan="3">Test Case</th>
   </tr>
   <tr>
     <td><b>ID</b></td>
-    <td colspan="2">TS-NFR-MAINT-016</td>
+    <td colspan="2">TC-NFR-MAINT-016</td>
   </tr>
   <tr>
     <td><b>Name</b></td>
@@ -1168,10 +1168,18 @@ This test verifies compliance with defined linting and formatting rules using au
   </tr>
 </table>
 
+# TS-ARTIFICIAL-INTELLIGENCE-ANALYSIS-05
+### TC-QUALITY-AI-017
+<table> <tr> <th colspan="3">Test Case</th> </tr> <tr> <td><b>ID</b></td> <td colspan="2">TC-QUALITY-AI-017</td> </tr> <tr> <td><b>Name</b></td> <td colspan="2">AI-Based Static Code Analysis of Software Components</td> </tr> <tr> <td><b>REQ_ID</b></td> <td colspan="2">-</td> </tr> <tr> <td><b>Description</b></td> <td colspan="2"> This test verifies that an AI-based agent can perform static code analysis across selected software components or the entire codebase. The goal is to identify potential issues such as code smells, security vulnerabilities, performance risks, and architectural inconsistencies without executing the code. </td> </tr> <tr> <th colspan="3">Test Steps</th> </tr> <tr> <th>Step</th> <th>Action</th> <th>Expected Result</th> </tr> <tr> <td>1</td> <td>Provide source code or repository access to the AI agent</td> <td>AI agent successfully ingests and indexes the codebase</td> </tr> <tr> <td>2</td> <td>Execute AI analysis with structured prompt</td> <td>AI returns categorized findings</td> </tr> <tr> <td>3</td> <td>Review reported issues (e.g. bugs, vulnerabilities, smells)</td> <td>Findings are relevant, traceable, and mapped to code locations</td> </tr> <tr> <td>4</td> <td>Validate findings against known issues or manual review</td> <td>AI results are consistent with expected issues or expert evaluation</td> </tr> </table> <table> <tr> <th colspan="4">Test Data – TD-QUALITY-AI-017</th> </tr> <tr> <th>#</th> <th>Input</th> <th>Prompt</th> <th>Expected Output</th> </tr> <tr> <td>1</td> <td>Full repository / selected modules</td> <td> Analyze the provided codebase and identify: - Security vulnerabilities - Code smells - Performance bottlenecks - Architectural issues Provide file paths, line references, and severity levels. </td> <td>Structured report with categorized findings and references</td> </tr> <tr> <td>2</td> <td>Single component (e.g. Cart Service)</td> <td> Perform static analysis on the component and list potential defects, edge cases, and maintainability concerns. Suggest improvements. </td> <td>Component-level analysis with actionable recommendations</td> </tr> </table>
+
+
+### TC-QUALITY-AI-018
+<table> <tr> <th colspan="3">Test Case</th> </tr> <tr> <td><b>ID</b></td> <td colspan="2">TC-QUALITY-AI-018</td> </tr> <tr> <td><b>Name</b></td> <td colspan="2">AI-Based Log Analysis and Failure Detection</td> </tr> <tr> <td><b>REQ_ID</b></td> <td colspan="2">-</td> </tr> <tr> <td><b>Description</b></td> <td colspan="2"> This test verifies that an AI system can analyze application logs to detect anomalies, errors, and root causes of failures. The AI should cluster related log entries, identify error patterns, and provide insights or probable causes. </td> </tr> <tr> <th colspan="3">Test Steps</th> </tr> <tr> <th>Step</th> <th>Action</th> <th>Expected Result</th> </tr> <tr> <td>1</td> <td>Provide application logs (error, warning, info)</td> <td>Logs are successfully ingested by the AI system</td> </tr> <tr> <td>2</td> <td>Run AI log analysis with structured prompt</td> <td>AI processes logs and identifies anomalies</td> </tr> <tr> <td>3</td> <td>Request clustering of related log entries</td> <td>AI groups logs into meaningful failure patterns</td> </tr> <tr> <td>4</td> <td>Review root cause hypotheses</td> <td>AI provides plausible root causes with supporting evidence</td> </tr> </table> <table> <tr> <th colspan="4">Test Data – TD-QUALITY-AI-018</th> </tr> <tr> <th>#</th> <th>Input Logs</th> <th>Prompt</th> <th>Expected Output</th> </tr> <tr> <td>1</td> <td>Mixed logs with stack traces and warnings</td> <td> Analyze the following logs. 1. Identify errors and anomalies 2. Cluster related events 3. Determine likely root causes 4. Provide severity and impacted components </td> <td>Grouped anomalies with explanations and severity classification</td> </tr> <tr> <td>2</td> <td>Error-heavy log segment (e.g. exceptions)</td> <td> Summarize the main failure, identify the root cause, and suggest potential fixes based on the log evidence. </td> <td>Concise root cause analysis with actionable recommendations</td> </tr> </table>
+
 
 # Traceability Matrix
 
-| Requirement | TS-LOGIN-C-001 | TS-REPCOUNT-C-002 | TS-CONFIG-F-003 | TS-CONFIG-F-004 | TS-CONFIG-F-005 | TS-SORTING-F-006 | TS-QUERY-F-007 | TS-CART-F-008 | TS-CART-F-009 | TS-CART-F-010 | TS-CART-F-011 | TS-NFR-PERF-012 | TS-NFR-SEC-013 | TS-NFR-USE-014 | TS-NFR-COMP-015 | TS-NFR-MAINT-016 |
+| Requirement | TC-LOGIN-C-001 | TC-REPCOUNT-C-002 | TC-CONFIG-F-003 | TC-CONFIG-F-004 | TC-CONFIG-F-005 | TC-SORTING-F-006 | TC-QUERY-F-007 | TC-CART-F-008 | TC-CART-F-009 | TC-CART-F-010 | TC-CART-F-011 | TC-NFR-PERF-012 | TC-NFR-SEC-013 | TC-NFR-USE-014 | TC-NFR-COMP-015 | TC-NFR-MAINT-016 |
 |------------|---------------|-------------------|-----------------|-----------------|-----------------|------------------|----------------|----------------|----------------|----------------|----------------|------------------|------------------|------------------|------------------|------------------|
 | FR.001     | ✔             |                   |                 |                 |                 |                  |                |                |                |                |                |                  |                  |                  |                  |                  |
 | FR.002     | ✔             |                   |                 |                 |                 |                  |                |                |                |                |                |                  |                  |                  |                  |                  |
@@ -1197,26 +1205,54 @@ This test verifies compliance with defined linting and formatting rules using au
 
 
 
+# Test Execution Strategy and Roles
+
+The overall test strategy and execution plan were developed by Nils Schäffner, who is responsible for defining the testing approach, scope, and quality standards, as well as ensuring alignment with the overall project objectives.
+
+Test execution is carried out by Jan Kruse and Robin Kelm, who work closely together following a structured four-eyes principle. For each test case, one person is responsible for executing the test, while the other reviews and validates the results. This approach ensures a high level of accuracy, reduces the likelihood of errors, and increases the overall reliability of the testing process.
+
+To guarantee independence and objectivity, developers are not permitted to test their own implemented features. This separation of responsibilities helps to avoid bias and ensures that all functionalities are validated from an independent perspective.
+
+The primary testing approach used in this project is black-box testing. In this method, test cases are derived from requirements and expected system behavior rather than internal code structures. This allows the system to be tested from an end-user perspective and ensures that it meets business requirements. Additionally, black-box testing does not require detailed knowledge of the implementation, helps to identify missing or unclear requirements, and supports independent validation by testers.
+
+All test activities are thoroughly documented in the Software Test Report (STR). This documentation includes detailed descriptions of test cases, execution steps, expected and actual results, pass or fail status, as well as reviewer confirmations. Comprehensive documentation ensures full traceability, transparency, and auditability of the testing process.
+
+Overall, the testing process follows key quality assurance principles, including the consistent application of the four-eyes principle, strict separation between development and testing responsibilities, and complete and structured documentation of all test activities.
+
+
+# Incident Management
+
+We have put considerable thought into defining a sensible and effective test strategy that ensures reliable validation of our system. Our approach is designed to handle errors efficiently by enabling quick identification, isolation, and analysis of failures. When issues occur, we follow a structured debugging process to rapidly determine the root cause and minimize resolution time. This workflow helps us maintain high quality standards while ensuring that problems are addressed in a transparent and traceable manner.
+
+```mermaid
+flowchart TD
+    A[Test Suite Initiated] --> B[Run Test Cases]
+
+    B --> C{All Tests Successful?}
+
+    C -- Yes --> D[Document Results in Test Report]
+
+    C -- No --> E[Investigate Failure Cause]
+
+    E --> F{Is it a Software Defect?}
+
+    F -- No --> G[Notify Responsible Team]
+    G --> D
+
+    F -- Yes --> H{Existing Issue in Repository?}
+
+    H -- Yes --> I[Update Existing Issue]
+    I --> D
+
+    H -- No --> J[Create New Bug Report]
+    J --> D
+```
 Link Test:
 [TINF24F Feature FR.003](./TINF24F_5-SRS-0v1.md#fr003)
 
 To Dos:
 inhaltsverzeichnis
-
-product genau nennen mit commit
-
-test preperation strategy
-test execution strategy
-material requirement + test environment
-Rollen und Verantwortliche
-Wie gehen wir mit Fehlern um -> Diagramm
 DEBUGGING
-
-Einzelnen Testcases
-
-Alles verlinken (STR und requirements)
 Requirements namen anpassen, wenn gregor geändaert hat
 Ideen:
-AI
-White-Box Vorteile
 Test Bücher Hintergrund integrieren
