@@ -11,15 +11,19 @@ import { getThumbnailFromShell } from 'lib/services/repository-access/repository
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { useState } from 'react';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { ListEntityDto } from 'lib/services/list-service/ListService';
 import { useTranslations } from 'next-intl';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import useSWR from 'swr';
 import { useEnv } from 'app/EnvProvider';
+type AasTableRowEntry = {
+    aasId: string;
+    assetId: string;
+    thumbnail: string;
+};
 
 type AasTableRowProps = {
     repositoryUrl: string;
-    aasListEntry: ListEntityDto;
+    aasListEntry: AasTableRowEntry;
     enrichedData?: {
         manufacturerName?: string;
         productDesignation?: string;
@@ -64,13 +68,13 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         },
     );
 
-    const navigateToAas = (listEntry: ListEntityDto) => {
+    const navigateToAas = (aasId: string) => {
         setAas(null);
         setAasOriginUrl(null);
         const baseUrl = window.location.origin;
         const pageToGo = env.PRODUCT_VIEW_FEATURE_FLAG ? '/product' : '/viewer';
 
-        window.open(baseUrl + `${pageToGo}/${encodeBase64(listEntry.aasId)}`, '_blank');
+        window.open(baseUrl + `${pageToGo}/${encodeBase64(aasId)}`, '_blank');
     };
 
     useAsyncEffect(async () => {
@@ -125,7 +129,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
                     src={thumbnailUrl}
                     alt={'Thumbnail image for: ' + aasListEntry.assetId}
                     size={100}
-                    onClickHandler={() => navigateToAas(aasListEntry)}
+                    onClickHandler={() => navigateToAas(aasListEntry.aasId)}
                 />
             </PictureTableCell>
             <TableCell data-testid="list-manufacturer-name" align="left" sx={tableBodyText}>
@@ -151,7 +155,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
             <TableCell align="center">
                 <RoundedIconButton
                     endIcon={<ArrowForward />}
-                    onClick={() => navigateToAas(aasListEntry)}
+                    onClick={() => navigateToAas(aasListEntry.aasId)}
                     title={t('buttonTooltip')}
                     data-testid="list-to-detailview-button"
                 />

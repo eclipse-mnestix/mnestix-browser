@@ -231,6 +231,7 @@
     },
     "aasList": {
       "buttonTooltip": "Go to AAS",
+      "assetKindFilter": "Asset Kind Filter",
       "compare": "Compare",
       "header": "AAS List",
       "listHeader": {

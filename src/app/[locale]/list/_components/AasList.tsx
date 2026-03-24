@@ -20,11 +20,11 @@ import useSWR from 'swr';
 import { translateListText } from 'lib/util/SubmodelResolverUtil';
 import {
     sortAasList,
-    sortableColumns,
     SortableAasListEntity,
     SortableColumn,
     SortOrder,
 } from 'app/[locale]/list/_components/AasListSorting';
+import { AssetKind } from 'lib/api/aas/models';
 
 type AasListProps = {
     repositoryUrl: string;
@@ -41,6 +41,9 @@ type AasListProps = {
 
 type EnrichedListEntity = SortableAasListEntity & {
     thumbnail?: string;
+    manufacturerName?: string;
+    productDesignation?: string;
+    assetKind: AssetKind;
 };
 
 export default function AasList(props: AasListProps) {
@@ -57,10 +60,12 @@ export default function AasList(props: AasListProps) {
         props.initialSortOrder ? props.initialSortOrder.order : 'asc',
     );
 
-    // Fetch nameplate data for all shells
+    // stable ID array so useSWR key does not change identity on every render
+    const aasIds = useMemo(() => shells?.entities?.map((e) => e.aasId) ?? [], [shells?.entities]);
+
     const { data: nameplateData, isLoading: isNameplateLoading } = useSWR(
-        shells?.entities ? [repositoryUrl, shells.entities.map((e) => e.aasId)] : null,
-        async ([url, aasIds]) => {
+        shells?.entities && repositoryUrl && aasIds.length > 0 ? [repositoryUrl, aasIds.join(',')] : null,
+        async ([url]) => {
             const results = await Promise.allSettled(
                 aasIds.map(async (aasId: string) => {
                     const nameplate = await getNameplateValuesForAAS(url, aasId);
@@ -100,6 +105,8 @@ export default function AasList(props: AasListProps) {
         {
             revalidateIfStale: false,
             revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+            refreshInterval: 0,
         },
     );
 
@@ -116,6 +123,7 @@ export default function AasList(props: AasListProps) {
             productDesignation: nameplateData?.[entity.aasId]?.manufacturerProductDesignation
                 ? translateListText(nameplateData[entity.aasId].manufacturerProductDesignation, locale)
                 : '',
+            assetKind: entity.assetKind,
         }));
     }, [shells, nameplateData, locale]);
 

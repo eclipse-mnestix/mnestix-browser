@@ -3,6 +3,7 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { getAasListEntities } from 'lib/services/list-service/aasListApiActions';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useState } from 'react';
+import React from 'react';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import AasList from './AasList';
 import { SortOrder, SortableColumn, sortableColumns } from './AasListSorting';
@@ -12,12 +13,14 @@ import { Box, Card, CardContent, IconButton, MenuItem, Select, Typography } from
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { SelectRepository } from './filter/SelectRepository';
+import { SelectAssetKind } from './filter/SelectAssetKind';
 import { useTranslations } from 'next-intl';
 import { ApiResponseWrapperError } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { AuthenticationPrompt } from 'components/authentication/AuthenticationPrompt';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { useSearchParams } from 'next/navigation';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation'
+import { AssetKind } from 'lib/api/aas/models';
 
 type AasListDataWrapperProps = {
     repositoryUrl?: string;
@@ -26,10 +29,13 @@ type AasListDataWrapperProps = {
 
 const SEARCH_PARAM_SORT_BY_NAME: string = 'sortby';
 const SEARCH_PARAM_ORDER_NAME: string = 'order';
+const FETCH_LIMIT = 100; // Bulk fetch for caching
 
 export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }: AasListDataWrapperProps) {
     const [isLoadingList, setIsLoadingList] = useState(false);
+    const [cachedAasList, setCachedAasList] = useState<AasListDto>();
     const [aasList, setAasList] = useState<AasListDto>();
+    const [lastRepository, setLastRepository] = useState<string | undefined>();
     const [, setAasListFiltered] = useState<ListEntityDto[]>();
     const [selectedAasList, setSelectedAasList] = useState<string[]>();
     const searchParams = useSearchParams();
@@ -44,10 +50,11 @@ export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }:
     const pathname = usePathname();
 
     //Pagination
-    const [currentCursor, setCurrentCursor] = useState<string>();
-    const [cursorHistory, setCursorHistory] = useState<(string | undefined)[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [limit, setLimit] = useState(10);
+
+    // Asset Kind Filter
+    const [selectedAssetKinds, setSelectedAssetKinds] = useState<AssetKind[]>(['Type']); // Default to Type only
 
     //Authentication
     const [needAuthentication, setNeedAuthentication] = useState<boolean>(false);
@@ -84,34 +91,45 @@ export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }:
 
     const clearResults = () => {
         setAasList(undefined);
-        setCurrentCursor(undefined);
+        setCachedAasList(undefined);
         setNeedAuthentication(false);
     };
 
     /**
-     * If the selected repository changes or the limit is updated,
+     * If the selected repository changes,
      * the list just needs to be reloaded and shows the first page.
      */
     useAsyncEffect(async () => {
         resetPagination();
         await fetchListData();
-    }, [selectedRepository, limit]);
+    }, [selectedRepository]);
 
-    const fetchListData = async (newCursor?: string | undefined, isNext = true) => {
+    // Reapply filters and pagination when filters/page/limit change
+    React.useEffect(() => {
+        if (cachedAasList) {
+            applyFiltersAndPagination(cachedAasList);
+        }
+    }, [selectedAssetKinds, currentPage, cachedAasList, limit]);
+
+    const fetchListData = async () => {
         if (!selectedRepository) return;
+
+        // if the same repo is selected and we already have cached data, do not refetch from backend
+        if (selectedRepository === lastRepository && cachedAasList) {
+            applyFiltersAndPagination(cachedAasList);
+            return;
+        }
 
         setIsLoadingList(true);
         clearResults();
-        const response = await getAasListEntities(selectedRepository!, limit, newCursor);
+
+        // Load a large batch of data for caching
+        const response = await getAasListEntities(selectedRepository!, FETCH_LIMIT);
 
         if (response.success) {
-            setAasList(response);
-            setAasListFiltered(response.entities);
-            setCurrentCursor(response.cursor);
-
-            if (isNext) {
-                setCursorHistory((prevHistory) => [...prevHistory, newCursor]);
-            }
+            setCachedAasList(response);
+            setLastRepository(selectedRepository || undefined);
+            applyFiltersAndPagination(response);
         } else {
             if ((response.error as ApiResponseWrapperError<AasListDto>).errorCode == ApiResultStatus.UNAUTHORIZED) {
                 setNeedAuthentication(true);
@@ -122,23 +140,43 @@ export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }:
         setIsLoadingList(false);
     };
 
+    const applyFiltersAndPagination = (data: AasListDto) => {
+        if (!data.entities) return;
+
+        // Filter by selected asset kinds
+        const filteredEntities = data.entities.filter(entity =>
+            selectedAssetKinds.includes(entity.assetKind)
+        );
+
+        // Apply client-side pagination (page size can be changed by user)
+        const startIndex = currentPage * limit;
+        const endIndex = startIndex + limit;
+        const paginatedEntities = filteredEntities.slice(startIndex, endIndex);
+
+        const hasNextPage = endIndex < filteredEntities.length;
+
+        const paginatedData: AasListDto = {
+            ...data,
+            entities: paginatedEntities,
+            cursor: hasNextPage ? 'next' : undefined
+        };
+
+        setAasList(paginatedData);
+        setAasListFiltered(paginatedEntities);
+    };
+
     const handleNextPage = async () => {
-        await fetchListData(currentCursor, true);
         setCurrentPage((prevPage) => prevPage + 1);
     };
 
     /**
      * Handle a click on the back button.
-     * To load the page one step back, we need to use the cursor from two pages back.
      */
     const handleGoBack = async () => {
-        const previousCursor = cursorHistory[currentPage - 2] ?? undefined;
-        await fetchListData(previousCursor, false);
-        setCurrentPage((prevPage) => prevPage - 1);
+        setCurrentPage((prevPage) => Math.max(0, prevPage - 1));
     };
 
     const resetPagination = () => {
-        setCursorHistory([]);
         setCurrentPage(0);
     };
 
@@ -172,11 +210,14 @@ export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }:
                 disableUnderline
                 variant="standard"
                 value={limit}
-                onChange={(e) => setLimit(Number(e.target.value))}
+                onChange={(e) => {
+                    setLimit(Number(e.target.value));
+                    setCurrentPage(0);
+                }}
                 sx={{ fontSize: '0.75rem' }}
             >
                 {[10, 20, 50].map((value) => (
-                    <MenuItem value={value}>{value}</MenuItem>
+                    <MenuItem key={value} value={value}>{value}</MenuItem>
                 ))}
             </Select>
             <Typography paddingX="1.625rem" fontSize="0.75rem">
@@ -185,7 +226,7 @@ export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }:
             <IconButton onClick={handleGoBack} disabled={currentPage === 0} data-testid="list-back-button">
                 <ArrowBackIosNewIcon fontSize="small" />
             </IconButton>
-            <IconButton onClick={handleNextPage} disabled={!currentCursor} data-testid="list-next-button">
+            <IconButton onClick={handleNextPage} disabled={!aasList?.cursor} data-testid="list-next-button">
                 <ArrowForwardIosIcon fontSize="small" />
             </IconButton>
         </Box>
@@ -229,6 +270,10 @@ export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }:
                     <Box display="flex" justifyContent="space-between" marginBottom="1.625rem" paddingX="1rem">
                         <Box display="flex" gap={4}>
                             <SelectRepository onSelectedRepositoryChanged={setSelectedRepository} />
+                            <SelectAssetKind
+                                selectedAssetKinds={selectedAssetKinds}
+                                onSelectedAssetKindsChanged={setSelectedAssetKinds}
+                            />
                         </Box>
                         {env.COMPARISON_FEATURE_FLAG && (
                             <AasListComparisonHeader
