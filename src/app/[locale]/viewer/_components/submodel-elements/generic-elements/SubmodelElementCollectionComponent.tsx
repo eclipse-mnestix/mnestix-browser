@@ -1,6 +1,6 @@
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { Box, Button } from '@mui/material';
-import { SubmodelElementCollection, SubmodelElementList } from 'lib/api/aas/models';
+import { KeyTypes, SubmodelElementCollection, SubmodelElementList } from 'lib/api/aas/models';
 import { NestedContentWrapper } from 'components/basics/NestedContentWrapper';
 import { ReactNode, useState } from 'react';
 import { GenericSubmodelElementComponent } from './GenericSubmodelElementComponent';
@@ -33,14 +33,16 @@ export function SubmodelElementCollectionComponent({
     ) {
         return <></>;
     }
+    const isList = submodelElementCollection.modelType === KeyTypes.SubmodelElementList;
     submodelElementCollection.value.forEach((val, index) => {
+        const childPath = isList ? `${submodelElementPath}[${index}]` : submodelElementPath;
         componentList.push(
             <GenericSubmodelElementComponent
                 key={index}
                 submodelElement={val}
                 hasDivider={!(index === 0)}
                 submodelId={submodelId}
-                submodelElementPath={submodelElementPath}
+                submodelElementPath={childPath}
             />,
         );
     });
