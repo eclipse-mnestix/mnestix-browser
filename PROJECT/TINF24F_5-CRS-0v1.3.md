@@ -2,9 +2,9 @@
 
 ## Project: Eclipse Mnestix Product Catalog
 
-**Version:** 1.2 \
+**Version:** 1.3 \
 **Author:** Julian Schumacher \
-**Date:** 20.03.2026 \
+**Date:** 25.03.2026 \
 **Institution:** DHBW Stuttgart
 
 ---
@@ -196,8 +196,8 @@ The system remains compatible with BaSyx and existing AAS servers while improvin
 
 ### 5.10 AAS Repositories (REPO)
 
-| Requirement ID |  Short Description                                                            | Details                                                                                                                           |
-| -------------- | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Requirement ID | Short Description                                                            | Details                                                                                                                           |
+| -------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | REPO-FR-001    | The system shall allow users to enable or disable individual AAS repositories | Users shall be able to enable or disable specific AAS repositories through the configuration view without removing them entirely. |
 
 ---
