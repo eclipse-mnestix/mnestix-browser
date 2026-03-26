@@ -283,6 +283,44 @@ describe('Submodel Search happy paths', () => {
         expect(search.result!.searchResult.id).toBe(submodelRef.keys[0].value);
     });
 
+    it('returns base repository URL as location when submodel is found via registry descriptor', async () => {
+        const submodelId = 'https://test.de/submodel1';
+        const submodelRef = createTestSubmodelRef(submodelId);
+        const submodel: Submodel = createTestSubmodel(submodelId, 'submodel1');
+
+        const registryEndpoint = new URL('https://repo.example.com/submodels/aHR0cHM6Ly90ZXN0LmRlL3N1Ym1vZGVsM');
+        const submodelDescriptor: SubmodelDescriptor = createTestSubmodelDescriptor(registryEndpoint, submodel.id);
+
+        const searcher = InfrastructureSearchService.createNull({
+            submodelRegistryDescriptors: [submodelDescriptor],
+        });
+        const search = await searcher.searchSubmodelInInfrastructure(
+            submodelRef,
+            'Test Infrastructure',
+            submodelDescriptor,
+        );
+
+        expect(search.isSuccess).toBe(true);
+        expect(search.result!.location).toBe('https://repo.example.com');
+    });
+
+    it('returns base repository URL as location when submodel is found via registry lookup', async () => {
+        const submodelId = 'https://test.de/submodel1';
+        const submodelRef = createTestSubmodelRef(submodelId);
+        const submodel: Submodel = createTestSubmodel(submodelId, 'submodel1');
+
+        const registryEndpoint = new URL('https://repo.example.com/api/v3/submodels/aHR0cHM6Ly90ZXN0');
+        const submodelDescriptor: SubmodelDescriptor = createTestSubmodelDescriptor(registryEndpoint, submodel.id);
+
+        const searcher = InfrastructureSearchService.createNull({
+            submodelRegistryDescriptors: [submodelDescriptor],
+        });
+        const search = await searcher.searchSubmodelInInfrastructure(submodelRef, 'Test Infrastructure');
+
+        expect(search.isSuccess).toBe(true);
+        expect(search.result!.location).toBe('https://repo.example.com/api/v3');
+    });
+
     it('returns an error when submodel was not found in any repository or registry', async () => {
         const submodelRef = createTestSubmodelRef('https://test.de/submodel1');
 

@@ -143,7 +143,8 @@ export class InfrastructureSearchService {
                 if (!submodelSearchResult.isSuccess) {
                     return wrapErrorCode(submodelSearchResult.errorCode, submodelSearchResult.message);
                 }
-                return wrapSuccess({ searchResult: submodelSearchResult.result, location: endpoint });
+                const baseUrl = extractBaseUrl(endpoint);
+                return wrapSuccess({ searchResult: submodelSearchResult.result, location: baseUrl });
             }
         }
 
@@ -162,7 +163,8 @@ export class InfrastructureSearchService {
             if (!submodelSearchResult.isSuccess) {
                 return wrapErrorCode(submodelSearchResult.errorCode, submodelSearchResult.message);
             } else {
-                return wrapSuccess({ searchResult: submodelSearchResult.result, location: endpoint });
+                const baseUrl = extractBaseUrl(endpoint);
+                return wrapSuccess({ searchResult: submodelSearchResult.result, location: baseUrl });
             }
         }
 
@@ -272,4 +274,13 @@ export class InfrastructureSearchService {
             aasData: null,
         };
     }
+}
+
+/**
+ * Extracts the base repository URL from a full registry endpoint URL.
+ * Registry endpoints include the submodel path (e.g., "https://host/submodels/BASE64_ID"),
+ * but consumers expect a base repository URL to build their own paths.
+ */
+function extractBaseUrl(endpoint: string): string {
+    return endpoint.replace(/\/submodels\/[^/]+$/, '');
 }
