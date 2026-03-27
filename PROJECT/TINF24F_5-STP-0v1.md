@@ -16,16 +16,16 @@
     * [**TS-REPOSITORY-02** (Repository Management)](#ts-repository-02)
         * [TC-REPCOUNT-C-002](#tc-repcount-c-002)
         * [TC-CONFIG-F-003](#tc-config-f-003)
-        * [TC-CONFIG-F-004](#tc-config-f-004)
-        * [TC-CONFIG-F-005](#tc-config-f-005)
+        * [TC-CONFIG-C-004](#tc-config-c-004)
+        * [TC-CONFIG-C-005](#tc-config-c-005)
     * [**TC-AAS-LIST** (Asset Administration Shell List)](#tc-aas-list)
         * [TC-SORTING-F-006](#tc-sorting-f-006)
         * [TC-QUERY-F-007](#tc-query-f-007)
     * [**TS-SHOPPING-CART-03** (Cart System)](#ts-shopping-cart-03)
-        * [TC-CART-F-008](#tc-cart-f-008)
+        * [TC-CART-C-008](#tc-cart-c-008)
         * [TC-CART-F-009](#tc-cart-f-009)
         * [TC-CART-F-010](#tc-cart-f-010)
-        * [TC-CART-F-011](#tc-cart-f-011)
+        * [TC-CART-C-011](#tc-cart-c-011)
 5. [**TS-NON-FUNCTIONAL-REQUIREMENTS-04**](#ts-non-functional-requirements-04)
     * [TC-NFR-PERF-012 (Performance)](#tc-nfr-perf-012)
     * [TC-NFR-SEC-013 (Security/Audit)](#tc-nfr-sec-013)
@@ -174,7 +174,7 @@ The test setup consists of the latest version of mnestix and the version before 
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">TO DO , 3</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-fr-ui-001-repository-aas-entry-count">SRS-FR-UI-001</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -222,7 +222,7 @@ It verifies that the correct number is displayed next to the repository.
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">FR.016</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-fr-repo-001-aas-repository-configuration">SRS-FR-REPO-001</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -270,7 +270,7 @@ This test verifies that users can enable and disable individual AAS repositories
   </tr>
 </table>
 
-### TC-CONFIG-F-004
+### TC-CONFIG-C-004
 <table>
   <tr>
     <th colspan="3">Test Case</th>
@@ -285,7 +285,7 @@ This test verifies that users can enable and disable individual AAS repositories
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">FR.017</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-fr-config-001-cd-repository-configuration">SRS-FR-CONFIG-001</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -333,7 +333,7 @@ This test verifies that users can view and modify configuration parameters of CD
   </tr>
 </table>
 
-### TC-CONFIG-F-005
+### TC-CONFIG-C-005
 <table>
   <tr>
     <th colspan="3">Test Case</th>
@@ -348,7 +348,7 @@ This test verifies that users can view and modify configuration parameters of CD
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">FR.018</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-fr-config-002-cd-repository-content-inspection">SRS-FR-CONFIG-002</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -408,7 +408,7 @@ This test verifies that users can inspect the contents of configured CD reposito
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">TO DO: 5,7 </td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-fr-list-001-changed-aas-columns">SRS-FR-LIST-001</a> <a href="TINF24F_5-SRS-0v1.1.md#srs-fr-list-003-aas-list-sorting">SRS-FR-LIST-003</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -516,7 +516,7 @@ The test setup consists of the latest version of the mnestix browser and is supp
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">TO DO: 6</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-fr-list-002-aas-list-filtering">SRS-FR-LIST-002</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -591,7 +591,7 @@ The test setup consists of the latest version of the mnestix browser.
 </table>
 
 ## TS-SHOPPING-CART-03
-### TC-CART-F-008
+### TC-CART-C-008
 <table>
   <tr>
     <th colspan="3">Test Case</th>
@@ -606,7 +606,7 @@ The test setup consists of the latest version of the mnestix browser.
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">FR.008, FR.012</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-fr-shop-001-cart-view-access">SRS-FR-SHOP-001</a> <a href="TINF24F_5-SRS-0v1.1.md#srs-fr-shop-005-cart-count-indicator">SRS-FR-SHOP-005</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -655,7 +655,7 @@ It also verifies that the sidebar correctly displays the number of items in the 
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">FR.009, FR.011</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-fr-shop-002-cart-products">SRS-FR-SHOP-002</a> <a href="TINF24F_5-SRS-0v1.1.md#srs-fr-shop-004-add-to-cart-button">SRS-FR-SHOP-004</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -743,7 +743,7 @@ and that all added products are correctly listed in the cart view.
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">FR.010, FR.013</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-fr-shop-003-cart-quantity">SRS-FR-SHOP-003</a> <a href="TINF24F_5-SRS-0v1.1.md#srs-fr-shop-006-shop-feature-configuration">SRS-FR-SHOP-006</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -822,7 +822,7 @@ via the environment variable SHOP_ENABLED_FLAG.
   </tr>
 </table>
 
-### TC-CART-F-011
+### TC-CART-C-011
 <table>
   <tr>
     <th colspan="3">Test Case</th>
@@ -837,7 +837,7 @@ via the environment variable SHOP_ENABLED_FLAG.
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">FR.015</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-fr-shop-007-product-price-display">SRS-FR-SHOP-007</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -907,7 +907,7 @@ It also ensures that prices are not shown when the shop functionality is disable
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">NFR.002</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-nfr-perform-002-concurrent-user-support">SRS-NFR-PERFORM-002</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -966,7 +966,7 @@ Basic response times and system stability are observed during the test.
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">NFR.003</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-nfr-sec-001-configuration-change-logging">SRS-NFR-SEC-001</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -1026,7 +1026,7 @@ Log entries contain: timestamp, action type, affected resource, and user/context
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">NFR.004</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-nfr-ui-001-responsive-interface">SRS-NFR-UI-001</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -1084,7 +1084,7 @@ This test verifies that the UI adapts correctly to different viewport sizes and 
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">NFR.005</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-nfr-port-001-browser-compatibility">SRS-NFR-PORT-001</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -1142,7 +1142,7 @@ This test verifies consistent functionality and rendering across supported brows
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">NFR.007</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-nfr-maint-001-code-quality-standards">SRS-NFR-MAINT-001</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
