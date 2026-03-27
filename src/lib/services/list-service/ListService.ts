@@ -1,16 +1,31 @@
 import { IAssetAdministrationShellRepositoryApi, ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { AssetAdministrationShellRepositoryApi, SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { mnestixFetch } from 'lib/api/infrastructure';
-import { AssetAdministrationShell, Submodel } from '@aas-core-works/aas-core3.0-typescript/types';
+import { AssetAdministrationShell, Submodel, AssetKind as AasAssetKind } from '@aas-core-works/aas-core3.0-typescript/types';
+import { AssetKind } from 'lib/api/aas/models';
 import ServiceReachable from 'test-utils/TestUtils';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { MultiLanguageValueOnly } from 'lib/api/basyx-v3/types';
 
+function mapAasAssetKindToLocal(aasAssetKind: AasAssetKind): AssetKind {
+    switch (aasAssetKind) {
+        case AasAssetKind.Type:
+            return AssetKind.Type;
+        case AasAssetKind.Instance:
+            return AssetKind.Instance;
+        case AasAssetKind.NotApplicable:
+            return AssetKind.NotApplicable;
+        default:
+            return AssetKind.NotApplicable;
+    }
+}
+
 export type ListEntityDto = {
     aasId: string;
     assetId: string;
     thumbnail: string;
+    assetKind: AssetKind;
 };
 
 export type NameplateValuesDto = {
@@ -92,6 +107,7 @@ export class ListService {
                     aasId: aas.id,
                     assetId: aas.assetInformation?.globalAssetId ?? '',
                     thumbnail: aas.assetInformation?.defaultThumbnail?.path ?? '',
+                    assetKind: aas.assetInformation?.assetKind ? mapAasAssetKindToLocal(aas.assetInformation.assetKind) : AssetKind.NotApplicable,
                 }));
 
             return { success: true, entities: aasListDtos, cursor: nextCursor };

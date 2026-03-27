@@ -53,9 +53,9 @@ describe('AasList', () => {
                 shells={{
                     success: true,
                     entities: [
-                        { aasId: 'aas-1', assetId: 'asset-1', thumbnail: '' },
-                        { aasId: 'aas-2', assetId: 'asset-2', thumbnail: '' },
-                        { aasId: 'aas-3', assetId: 'asset-3', thumbnail: '' },
+                        { aasId: 'aas-1', assetId: 'asset-1', thumbnail: '', assetKind: 'Type' },
+                        { aasId: 'aas-2', assetId: 'asset-2', thumbnail: '', assetKind: 'Type' },
+                        { aasId: 'aas-3', assetId: 'asset-3', thumbnail: '', assetKind: 'Type' },
                     ],
                     cursor: '',
                 }}
