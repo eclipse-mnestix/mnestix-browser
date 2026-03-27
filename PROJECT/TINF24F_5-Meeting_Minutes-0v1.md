@@ -18,9 +18,11 @@
 | 1.9 | 08.01.2026 | Felix Hennerich | New Year New Motivation |
 | 1.10 | 10.02.2026 | Felix Hennerich | Project Refresh after break |
 | 1.11 | 13.03.2026 | Felix Hennerich | Clarifications about the upcoming tasks |
+| 1.12 | 20.03.2026 | Felix Hennerich | Sprint Planning & Risk Assessment |
 
 
 ## Table of Contents
+- [Meeting 20.03.2026 - Sprint Planning & Risk Assessment](#followUpMeeting)
 - [Meeting 13.03.2026 - Clarifications about the upcoming tasks](#newTrimester)
 - [Meeting 10.02.2026 - Project Refresh after break](#refresh)
 - [Meeting 08.01.2026 - New Year New Motivation](#newYear)
@@ -34,6 +36,53 @@
 - [Meeting 19.09.2025 - Introduction](#intro)
 
 
+
+<a id="followUpMeeting"></a>  
+## Meeting 20.03.2026 - Sprint Planning & Risk Assessment  
+
+| No. | Topic                                   | Responsible           | Time (Min.) |
+|-----|----------------------------------------|------------------------|-------------|
+| 1   | Sprint Review                          | Julian Schumacher      | 10          |
+| 2   | Planning of Next Development Steps     | Gregor Gottschewski    | 15          |
+| 3   | Issue Discussion                       | Nils Schäffner         | 10          |
+| 4   | Alignment on Testing Strategy          | Jan Kruske             | 5           |
+| 5   | Open Questions & Closing               | All                    | 5           |
+
+**Location:** DHBW Stuttgart  
+**Date:** 20.03.2026  
+
+**Duration:** 45 min  
+
+**Moderator:** Felix Hennerich  
+
+**Participants:**  
+Julian Schumacher, Nils Schäffner, Felix Hennerich, Bruno Lange, Gregor Gottschewski, Robin Kelm  
+
+---
+
+## I. To-Do’s  
+
+| To-Do                                      | Responsible            | Deadline   |
+|--------------------------------------------|------------------------|------------|
+| Implementation of open features            | Gregor Gottschewski    | 09.04.2026 |
+| Revision of test cases (STP)               | Jan Kruske             | 09.04.2026 |
+| Alignment on presentation structure       | Felix Hennerich        | 09.04.2026 |
+
+---
+
+## II. Objective  
+
+The objective of this meeting is to plan the upcoming sprint and identify potential risks in the further course of the project. Additionally, the testing strategy will be refined to ensure structured quality assurance.  
+
+**The following documents were discussed:**  
+
+- Software Test Plan (STP) – Status: Under revision  
+- Software Architecture Document (SAD) – Status: Draft completed  
+
+
+## III. Next Meeting  
+
+The next meeting is scheduled for **27.03.2026**.  
 
 
 ---
