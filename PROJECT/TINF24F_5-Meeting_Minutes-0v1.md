@@ -19,9 +19,11 @@
 | 1.10 | 10.02.2026 | Felix Hennerich | Project Refresh after break |
 | 1.11 | 13.03.2026 | Felix Hennerich | Clarifications about the upcoming tasks |
 | 1.12 | 20.03.2026 | Felix Hennerich | Sprint Planning & Risk Assessment |
+| 1.13 | 27.03.2026 | Felix Hennerich | Quality Control |
 
 
 ## Table of Contents
+- [Meeting 27.03.2026 - Quality Control](#quality)
 - [Meeting 20.03.2026 - Sprint Planning & Risk Assessment](#followUpMeeting)
 - [Meeting 13.03.2026 - Clarifications about the upcoming tasks](#newTrimester)
 - [Meeting 10.02.2026 - Project Refresh after break](#refresh)
@@ -35,6 +37,47 @@
 - [Meeting 26.09.2025 - Conventions](#conventions)
 - [Meeting 19.09.2025 - Introduction](#intro)
 
+<a id="quality"></a>  
+## Meeting 27.03.2026 - Quality Control
+
+| No. | Topic                                   | Responsible           | Time (Min.) |
+|-----|----------------------------------------|------------------------|-------------|
+| 1   | Revision of task #15                    | Felix Hennerich     | 5          |
+| 2   | Feedback round for every task | Gregor Gottschewski | 20 |
+| 3   | Quality Control Compliance | Julian Schumacher | 10 |
+
+
+**Location:** DHBW Stuttgart  
+**Date:** 27.03.2026  
+
+**Duration:** 35 min  
+
+**Moderator:** Felix Hennerich  
+
+**Participants:**  
+Julian Schumacher, Nils Schäffner, Felix Hennerich, Bruno Lange, Gregor Gottschewski, Robin Kelm  
+
+
+### I. To-Do’s  
+
+| To-Do                                      | Responsible            | Deadline   |
+|--------------------------------------------|------------------------|------------|
+| Finish Features          | All   | 10.04.2026 |
+| Revision of #15            | Felix Hennerich             | 10.04.2026 |
+
+
+### II. Objective  
+
+The goal of the meeting was to review the tasks of the last week in plenary and to give everyone a little feedback. At the meeting, it was discovered that there was a small misunderstanding on a topic. This was clarified
+
+In addition, the completion of all documents and tasks was pointed out again in order to stay on schedule
+
+### III. Next Meeting  
+
+The next meeting is scheduled for **10.04.2026** due to German holiday.  
+
+
+---
 
 
 <a id="followUpMeeting"></a>  
@@ -58,9 +101,8 @@
 **Participants:**  
 Julian Schumacher, Nils Schäffner, Felix Hennerich, Bruno Lange, Gregor Gottschewski, Robin Kelm  
 
----
 
-## I. To-Do’s  
+### I. To-Do’s  
 
 | To-Do                                      | Responsible            | Deadline   |
 |--------------------------------------------|------------------------|------------|
@@ -68,9 +110,8 @@ Julian Schumacher, Nils Schäffner, Felix Hennerich, Bruno Lange, Gregor Gottsch
 | Revision of test cases (STP)               | Jan Kruske             | 09.04.2026 |
 | Alignment on presentation structure       | Felix Hennerich        | 09.04.2026 |
 
----
 
-## II. Objective  
+### II. Objective  
 
 The objective of this meeting is to plan the upcoming sprint and identify potential risks in the further course of the project. Additionally, the testing strategy will be refined to ensure structured quality assurance.  
 
@@ -80,7 +121,7 @@ The objective of this meeting is to plan the upcoming sprint and identify potent
 - Software Architecture Document (SAD) – Status: Draft completed  
 
 
-## III. Next Meeting  
+### III. Next Meeting  
 
 The next meeting is scheduled for **27.03.2026**.  
 
@@ -107,7 +148,7 @@ Julian Schumacher, Nils Schäffner, Felix Hennerich, Bruno Lange, Jan Kruske, Gr
 ### I. To-Do’s
 | **To-Do**                             | **Responsible Person(s)** | **Due Date** |
 |--------------------------------------|----------------------------|--------------|
-| Continue Developement | All | No fixed date  |
+| Continue Development | All | No fixed date  |
 
 
 ### II. Goal
@@ -150,7 +191,7 @@ Julian Schumacher, Nils Schäffner, Felix Hennerich, Bruno Lange, Jan Kruske
 ### I. To-Do’s
 | **To-Do**                             | **Responsible Person(s)** | **Due Date** |
 |--------------------------------------|----------------------------|--------------|
-| Continue Developement | All | No fixed date  |
+| Continue Development | All | No fixed date  |
 | Prepare an intern presentation | Bruno Lange | 09.03.2026  |
 
 ### II. Goal
@@ -167,7 +208,7 @@ The next meeting is set to the first week of the next DHBW phase.
 |-----|----------------------------|----------------|-------------|
 | 1 | Kickoff to the new year. Motivation Speech | Felix Hennerich | 5 |
 | 2 | Overview about the Issues | Gregor Gottschewski | 10 |
-| 3 | Assinged open issues to team members | Felix Hennerich | 5 |
+| 3 | Assigned open issues to team members | Felix Hennerich | 5 |
 
 **Location:** Discord
 **Date:** 08.01.2026  
@@ -180,7 +221,7 @@ Julian Schumacher, Nils Schäffner, Felix Hennerich, Bruno Lange, Jan Kruske, Ro
 ### I. To-Do’s
 | **To-Do**                             | **Responsible Person(s)** | **Due Date** |
 |--------------------------------------|----------------------------|--------------|
-| Continue Developement | All | No fixed date  |
+| Continue Development | All | No fixed date  |
 
 ### II. Goal
 This meeting kicked off the new year. An overview of the remaining project work was presented, and a brief timeline of tasks was established. All open issues were identified on GitHub.
@@ -219,14 +260,14 @@ Due to the Test presentation, the next weekly meeting will not be held. So the n
 ---
 
 <a id="readme"></a>
-## Meeting 31.10.2025 - External Meeting
+## Meeting 31.10.2025 - Further Exercises
 | No. | Topic                     | Responsibility | Time (min) |
 |-----|----------------------------|----------------|-------------|
 | 1   | ReadME file      | All            | 5          |
 | 2   | Outline Presentation | All           | 15          |
 
 **Location:** DHBW Stuttgart
-**Date:** 27.10.2025  
+**Date:** 31.10.2025  
 **Time:** 20 min  
 **Moderator:** Felix Hennerich
 
