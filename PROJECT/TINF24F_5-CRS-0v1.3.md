@@ -159,7 +159,7 @@ The system remains compatible with BaSyx and existing AAS servers while improvin
 ### 5.8 eShop (SHOP)
 
 | Requirement ID | Short Description                                                     | Details                                                                                                                                                                     |
-| -------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
+| -------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | SHOP-FR-001    | The system shall provide a cart view                                  | For the extended eShop funtionality, the system shall provide a cart view accesible via the sidebar or via url with the path /cart.                                         |
 | SHOP-FR-002    | The system shall list all products added to the cart in the cart view | The cart view shall list all products added to the cart, displaying at least the ManufacturerName, ProductDesignation and OrderCode of each product.                        |
 | SHOP-FR-003    | product quantities should be editable in the cart                     | The system shall provide the user with the option to modify the quantity of each product in the cart.                                                                       |
@@ -196,8 +196,8 @@ The system remains compatible with BaSyx and existing AAS servers while improvin
 
 ### 5.10 AAS Repositories (REPO)
 
-| Requirement ID | Short Description                                                            | Details                                                                                                                           |
-| -------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Requirement ID | Short Description                                                             | Details                                                                                                                           |
+| -------------- | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | REPO-FR-001    | The system shall allow users to enable or disable individual AAS repositories | Users shall be able to enable or disable specific AAS repositories through the configuration view without removing them entirely. |
 
 ---
