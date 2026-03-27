@@ -79,6 +79,15 @@ To further enhance test effectiveness, techniques such as boundary value analysi
 
 Overall, the test suites are designed with the goal of achieving high quality under economically reasonable conditions, following the principle of “as many tests as necessary, but as few as possible.” This ensures an optimal balance between test coverage, effort, and development speed.
 
+The testing strategy was further refined through targeted research and the use of established literature and industry standards. Guidelines from recognized sources such as the NIST Secure Software Development Framework (SSDF) [1] and established testing methodologies [2][3][4] were considered to ensure a structured and reliable approach. Additionally, best practices defined in international standards, such as the IEEE 829/29119 testing standards [5], were taken into account to align the testing process with widely accepted quality assurance principles.
+
+**References**  
+[1] NIST, *Secure Software Development Framework (SSDF)*, https://csrc.nist.gov/pubs/sp/800/218/final  
+[2] G. M. Weinberg, *The Little Black Book on Test Design*, https://www.thetesteye.com/papers/TheLittleBlackBookOnTestDesign.pdf  
+[3] Springer, *Testfallentwurfsverfahren*, https://link.springer.com/chapter/10.1007/978-3-662-44028-5_4  
+[4] Peter Ligessmeyer, *Software-Qualität*, https://link.springer.com/book/10.1007/978-3-8274-2203-3  
+[5] IEEE, *IEEE 829 / ISO/IEC/IEEE 29119 Software Testing Standards*
+
 # Test specification
 
 ## TS-USER-01
@@ -1259,12 +1268,3 @@ flowchart TD
     H -- No --> J[Create New Bug Report]
     J --> D
 ```
-Link Test:
-To Dos:
-DEBUGGING
-Requirements namen anpassen, wenn gregor geändaert hat
-Ideen:
-Test Bücher Hintergrund integrieren
-https://csrc.nist.gov/pubs/sp/800/218/final
-https://www.thetesteye.com/papers/TheLittleBlackBookOnTestDesign.pdf
-
