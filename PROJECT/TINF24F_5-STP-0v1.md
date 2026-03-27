@@ -97,7 +97,12 @@ Overall, the test suites are designed with the goal of achieving high quality un
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">[SRS-FR-LOGI-001](inf24f_5-srs-0v1.1.md#srs-fr-logi-001-login-status-display), [SRS-FR-LOGI-002](inf24f_5-srs-0v1.1.md#srs-fr-logi-002-login-button-functionality) </td>
+    <td colspan="2"><a href="inf24f_5-srs-0v1.1.md#srs-fr-logi-001-login-status-display">
+      SRS-FR-LOGI-001
+    </a>,
+    <a href="inf24f_5-srs-0v1.1.md#srs-fr-logi-002-login-button-functionality">
+      SRS-FR-LOGI-002
+    </a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
