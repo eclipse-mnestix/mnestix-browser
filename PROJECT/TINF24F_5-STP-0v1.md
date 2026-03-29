@@ -18,7 +18,7 @@
         * [TC-CONFIG-F-003](#tc-config-f-003)
         * [TC-CONFIG-C-004](#tc-config-c-004)
         * [TC-CONFIG-C-005](#tc-config-c-005)
-    * [**TC-AAS-LIST** (Asset Administration Shell List)](#tc-aas-list)
+    * [**TS-AAS-LIST** (Asset Administration Shell List)](#ts-aas-list)
         * [TC-SORTING-F-006](#tc-sorting-f-006)
         * [TC-QUERY-F-007](#tc-query-f-007)
     * [**TS-SHOPPING-CART-03** (Cart System)](#ts-shopping-cart-03)
@@ -401,7 +401,7 @@ This test verifies that users can inspect the contents of configured CD reposito
 </table>
 
 
-## TC-AAS-LIST
+## TS-AAS-LIST
 ### TC-SORTING-F-006
 <table>
   <tr>
@@ -1268,3 +1268,6 @@ flowchart TD
     H -- No --> J[Create New Bug Report]
     J --> D
 ```
+
+---
+### created by Nils Schäffner (inf24109@lehre.dhbw-stuttgart.de)
