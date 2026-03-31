@@ -1,15 +1,7 @@
-import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import { SubmodelElementCollection } from '@aas-core-works/aas-core3.0-typescript/types';
-import { NestedContentWrapper } from 'components/basics/NestedContentWrapper';
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import { GenericSubmodelElementComponent } from './GenericSubmodelElementComponent';
-import { useTranslations } from 'next-intl';
-
-enum ExpandButtonText {
-    show = 'show',
-    hide = 'hide',
-}
 
 type SubmodelElementComponentProps = {
     readonly submodelId?: string;
@@ -22,9 +14,7 @@ export function SubmodelElementCollectionComponent({
     submodelElementPath,
     submodelElementCollection,
 }: SubmodelElementComponentProps) {
-    const [isExpanded, setIsExpanded] = useState(false);
     const componentList: ReactNode[] = [];
-    const t = useTranslations('components.submodelElementCollection');
 
     if (
         !submodelElementCollection.value ||
@@ -46,19 +36,15 @@ export function SubmodelElementCollectionComponent({
     });
 
     return (
-        <Box>
-            <Button
-                variant="outlined"
-                startIcon={isExpanded ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-                sx={{ my: 1 }}
-                onClick={() => setIsExpanded(!isExpanded)}
-                data-testid="submodel-dropdown-button"
-            >
-                {t(`showEntriesButton.${isExpanded ? ExpandButtonText.hide : ExpandButtonText.show}`, {
-                    count: Object.keys(submodelElementCollection.value).length,
-                })}
-            </Button>
-            {isExpanded && <NestedContentWrapper>{componentList}</NestedContentWrapper>}
+        <Box
+            sx={{
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+                gap: { xs: 1, sm: 2 },
+                alignItems: 'start',
+            }}
+        >
+            {componentList}
         </Box>
     );
 }
