@@ -13,8 +13,9 @@ import ImagePreviewDialog from './ImagePreviewDialog';
 const StyledFileImg = styled('img')(() => ({
     objectFit: 'contain',
     objectPosition: 'left top',
-    maxWidth: '100%',
-    maxHeight: '100%',
+    maxWidth: '200px',
+    maxHeight: '200px',
+    borderRadius: '6px',
 }));
 
 type FileComponentProps = {
