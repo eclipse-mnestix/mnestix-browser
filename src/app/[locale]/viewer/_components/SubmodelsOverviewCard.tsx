@@ -95,22 +95,18 @@ export function SubmodelsOverviewCard({
             );
         } else if (submodelsLoading) {
             return (
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                    <Box>
-                        <Skeleton variant="text" width="60%" height={32} sx={{ mb: 1 }} />
-                        <Skeleton variant="text" width="40%" height={20} />
-                    </Box>
-                    <Divider />
-                    <Box>
-                        <Skeleton variant="text" width="50%" height={28} sx={{ mb: 2 }} />
-                        <Skeleton variant="text" width="100%" height={16} sx={{ mb: 1 }} />
-                        <Skeleton variant="text" width="85%" height={16} />
-                    </Box>
-                    <Box>
-                        <Skeleton variant="text" width="50%" height={28} sx={{ mb: 2 }} />
-                        <Skeleton variant="text" width="100%" height={16} sx={{ mb: 1 }} />
-                        <Skeleton variant="text" width="90%" height={16} />
-                    </Box>
+                <Box sx={{ mb: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    <LinearProgress />
+                    <Typography variant="body2" color="text.secondary">
+                        {t('loadingSubmodel')}
+                    </Typography>
+                </Box>
+            );
+        } else if (selectedItem?.submodelError) {
+            return (
+                <Box sx={{ mb: 2, color: 'error.main' }}>
+                    <Typography variant="body1">{t('errorLoadingSubmodel')}</Typography>
+                    <Typography variant="body2">{selectedItem.submodelError}</Typography>
                 </Box>
             );
         }
@@ -189,6 +185,23 @@ export function SubmodelsOverviewCard({
                                     gap: '12px',
                                 }}
                             >
+                                {!isMobile && (
+                                    <TextField
+                                        fullWidth
+                                        variant="outlined"
+                                        placeholder={t('searchSubmodels')}
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <SearchIcon />
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                        sx={{ mb: 2 }}
+                                    />
+                                )}
                                 <VerticalTabSelector
                                     items={submodelSelectorItems}
                                     selected={selectedItem}
@@ -196,28 +209,8 @@ export function SubmodelsOverviewCard({
                                     setInfoItem={setInfoItem}
                                 />
                                 {submodelsLoading && (
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            gap: '12px',
-                                        }}
-                                    >
-                                        <Skeleton
-                                            variant="rectangular"
-                                            height={65}
-                                            sx={{
-                                                borderRadius: '6px',
-                                            }}
-                                            data-testid="submodelOverviewLoadingSkeleton"
-                                        />
-                                        <Skeleton
-                                            variant="rectangular"
-                                            height={65}
-                                            sx={{
-                                                borderRadius: '6px',
-                                            }}
-                                        />
+                                    <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
+                                        <CircularProgress size={24} />
                                     </Box>
                                 )}
                             </Box>
