@@ -95,18 +95,22 @@ export function SubmodelsOverviewCard({
             );
         } else if (submodelsLoading) {
             return (
-                <Box sx={{ mb: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    <LinearProgress />
-                    <Typography variant="body2" color="text.secondary">
-                        {t('loadingSubmodel')}
-                    </Typography>
-                </Box>
-            );
-        } else if (selectedItem?.submodelError) {
-            return (
-                <Box sx={{ mb: 2, color: 'error.main' }}>
-                    <Typography variant="body1">{t('errorLoadingSubmodel')}</Typography>
-                    <Typography variant="body2">{selectedItem.submodelError}</Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                    <Box>
+                        <Skeleton variant="text" width="60%" height={32} sx={{ mb: 1 }} />
+                        <Skeleton variant="text" width="40%" height={20} />
+                    </Box>
+                    <Divider />
+                    <Box>
+                        <Skeleton variant="text" width="50%" height={28} sx={{ mb: 2 }} />
+                        <Skeleton variant="text" width="100%" height={16} sx={{ mb: 1 }} />
+                        <Skeleton variant="text" width="85%" height={16} />
+                    </Box>
+                    <Box>
+                        <Skeleton variant="text" width="50%" height={28} sx={{ mb: 2 }} />
+                        <Skeleton variant="text" width="100%" height={16} sx={{ mb: 1 }} />
+                        <Skeleton variant="text" width="90%" height={16} />
+                    </Box>
                 </Box>
             );
         }
@@ -115,41 +119,76 @@ export function SubmodelsOverviewCard({
 
     return (
         <>
-            <Card>
-                <CardContent>
+            <Card
+                sx={{
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                    borderRadius: '8px',
+                    transition: 'box-shadow 0.3s ease-in-out',
+                    '&:hover': {
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                    },
+                }}
+            >
+                <CardContent
+                    sx={{
+                        padding: { xs: '16px', sm: '24px' },
+                        '&:last-child': {
+                            paddingBottom: { xs: '16px', sm: '24px' },
+                        },
+                    }}
+                >
                     {!disableHeadline && (
-                        <Typography variant="h3" marginBottom="15px">
+                        <Typography
+                            variant="h3"
+                            marginBottom="24px"
+                            sx={{
+                                fontWeight: 600,
+                                color: 'text.primary',
+                                fontSize: { xs: '1.5rem', sm: '2rem' },
+                            }}
+                        >
                             {t('title')}
                         </Typography>
                     )}
                     {getSubmodelTabs().length == 0 ? (
                         // Content if there are no submodels to load
-                        <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-                            <Typography variant={'body1'} color="text.secondary">
+                        <Box
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            minHeight="300px"
+                            sx={{
+                                backgroundColor: 'action.hover',
+                                borderRadius: '8px',
+                                padding: '32px',
+                            }}
+                        >
+                            <Typography
+                                variant={'body1'}
+                                color="text.secondary"
+                                textAlign="center"
+                                sx={{ fontSize: '1rem' }}
+                            >
                                 {t('noSubmodelsToLoad')}
                             </Typography>
                         </Box>
                     ) : (
                         // Content if there are submodels
-                        <Box display="grid" gridTemplateColumns={isMobile ? '1fr' : '1fr 2fr'} gap="2rem">
-                            <Box>
-                                {!isMobile && (
-                                    <TextField
-                                        fullWidth
-                                        variant="outlined"
-                                        placeholder={t('searchSubmodels')}
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                        InputProps={{
-                                            startAdornment: (
-                                                <InputAdornment position="start">
-                                                    <SearchIcon />
-                                                </InputAdornment>
-                                            ),
-                                        }}
-                                        sx={{ mb: 2 }}
-                                    />
-                                )}
+                        <Box
+                            display="grid"
+                            gridTemplateColumns={isMobile ? '1fr' : '350px 1fr'}
+                            gap={{ xs: '16px', sm: '24px' }}
+                            sx={{
+                                minHeight: '400px',
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '12px',
+                                }}
+                            >
                                 <VerticalTabSelector
                                     items={submodelSelectorItems}
                                     selected={selectedItem}
@@ -157,25 +196,56 @@ export function SubmodelsOverviewCard({
                                     setInfoItem={setInfoItem}
                                 />
                                 {submodelsLoading && (
-                                    <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
-                                        <CircularProgress size={24} />
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            gap: '12px',
+                                        }}
+                                    >
+                                        <Skeleton
+                                            variant="rectangular"
+                                            height={65}
+                                            sx={{
+                                                borderRadius: '6px',
+                                            }}
+                                            data-testid="submodelOverviewLoadingSkeleton"
+                                        />
+                                        <Skeleton
+                                            variant="rectangular"
+                                            height={65}
+                                            sx={{
+                                                borderRadius: '6px',
+                                            }}
+                                        />
                                     </Box>
                                 )}
                             </Box>
-                            {isMobile ? (
-                                <MobileModal
-                                    selectedItem={selectedItem}
-                                    open={!!selectedItem}
-                                    handleClose={() => {
-                                        setSelectedItem(undefined);
-                                    }}
-                                    setInfoItem={setInfoItem}
-                                    content={SelectedContent}
-                                />
-                            ) : (
-                                SelectedContent
-                            )}
+                            <Box
+                                sx={{
+                                    display: isMobile ? 'none' : 'block',
+                                    backgroundColor: 'background.default',
+                                    borderRadius: '8px',
+                                    padding: '20px',
+                                    overflow: 'visible',
+                                    borderLeft: '1px solid',
+                                    borderColor: 'divider',
+                                }}
+                            >
+                                {SelectedContent}
+                            </Box>
                         </Box>
+                    )}
+                    {isMobile && (
+                        <MobileModal
+                            selectedItem={selectedItem}
+                            open={!!selectedItem}
+                            handleClose={() => {
+                                setSelectedItem(undefined);
+                            }}
+                            setInfoItem={setInfoItem}
+                            content={SelectedContent}
+                        />
                     )}
                 </CardContent>
             </Card>

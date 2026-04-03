@@ -1,23 +1,21 @@
 import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
-import { SimpleTreeView } from '@mui/x-tree-view';
 import { hasSemanticId } from 'lib/util/SubmodelResolverUtil';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 import {
     SubmodelElementCollection,
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useTranslations } from 'next-intl';
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { TechnicalDataElement } from 'app/[locale]/viewer/_components/submodel/technical-data/TechnicalDataElement';
 import {
     GenericSubmodelDetailComponent
 } from 'app/[locale]/viewer/_components/submodel/generic-submodel/GenericSubmodelDetailComponent';
-import { Box, IconButton, Tooltip } from '@mui/material';
-import { UnfoldLess, UnfoldMore, Search } from '@mui/icons-material';
-import { collectAllTreeItemIds } from 'app/[locale]/viewer/_components/submodel/technical-data/TechnicalDataTreeItemUtil';
+import { Box, Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
+import { ExpandMore } from '@mui/icons-material';
 
 export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
     const t = useTranslations('components.technicalData');
-    const [expandedItems, setExpandedItems] = useState<string[]>(['technicalProperties']);
+    const [expandedAccordion, setExpandedAccordion] = useState<string | false>('technicalProperties');
 
     const findSubmodelElementBySemanticIdOrIdShort = (semanticId: SubmodelElementSemanticIdEnum, idShort: string) =>
         submodel.submodelElements?.find((el) => hasSemanticId(el, semanticId) || el.idShort === idShort) as SubmodelElementCollection | undefined;
@@ -29,110 +27,108 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
 
     const cannotRenderTechnicalData = !generalInformation && !technicalData && !productClassifications && !furtherInformation;
 
-    const allSectionIds = useMemo(() => {
-        const ids: string[] = [];
-        if (technicalData?.value) {
-            ids.push('technicalProperties');
-            ids.push(...collectAllTreeItemIds(technicalData.value));
-        }
-        if (generalInformation?.value) {
-            ids.push('generalInformation');
-            ids.push(...collectAllTreeItemIds(generalInformation.value));
-        }
-        if (productClassifications?.value) {
-            ids.push('productClassifications');
-            ids.push(...collectAllTreeItemIds(productClassifications.value));
-        }
-        if (furtherInformation?.value) {
-            ids.push('furtherInformation');
-            ids.push(...collectAllTreeItemIds(furtherInformation.value));
-        }
-        return ids;
-    }, [technicalData, generalInformation, productClassifications, furtherInformation]);
-
-    function handleExpandAll() {
-        setExpandedItems(allSectionIds);
-    }
-
-    function handleCollapseAll() {
-        setExpandedItems([]);
-    }
+    const handleAccordionChange = (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
+        setExpandedAccordion(isExpanded ? panel : false);
+    };
 
     return (
-        <Box data-testid='technical-data-detail' data-expanded-items={JSON.stringify(expandedItems)}>
-            {!cannotRenderTechnicalData && (
-                <Box display='flex' justifyContent='flex-end' mb={1}>
-                    <Tooltip title={t('expandAll')}>
-                        <IconButton
-                            aria-label={t('expandAll')}
-                            onClick={handleExpandAll}
-                            size='small'
-                            data-testid='expand-all-button'
+        <Box data-testid='technical-data-detail' sx={{ width: '100%' }}>
+            {cannotRenderTechnicalData ? (
+                <GenericSubmodelDetailComponent submodel={submodel} />
+            ) : (
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                    {technicalData?.value && (
+                        <Accordion 
+                            expanded={expandedAccordion === 'technicalProperties'} 
+                            onChange={handleAccordionChange('technicalProperties')}
+                            defaultExpanded
+                            sx={{ boxShadow: 'none', border: '1px solid #e0e0e0', '&:before': { display: 'none' } }}
                         >
-                            <UnfoldMore />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title={t('collapseAll')}>
-                        <IconButton
-                            aria-label={t('collapseAll')}
-                            onClick={handleCollapseAll}
-                            size='small'
-                            data-testid='collapse-all-button'
+                            <AccordionSummary expandIcon={<ExpandMore />}>
+                                <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                                    {t('technicalProperties')}
+                                </Typography>
+                            </AccordionSummary>
+                            <AccordionDetails sx={{ backgroundColor: '#fafafa' }}>
+                                <TechnicalDataElement
+                                    label='technicalProperties'
+                                    header={t('technicalProperties')}
+                                    elements={technicalData.value}
+                                    submodelId={submodel.id}
+                                    isExpanded={expandedAccordion === 'technicalProperties'}
+                                    showUnits={true}
+                                />
+                            </AccordionDetails>
+                        </Accordion>
+                    )}
+                    {generalInformation?.value && (
+                        <Accordion 
+                            expanded={expandedAccordion === 'generalInformation'} 
+                            onChange={handleAccordionChange('generalInformation')}
+                            sx={{ boxShadow: 'none', border: '1px solid #e0e0e0', '&:before': { display: 'none' } }}
                         >
-                            <UnfoldLess />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title={t('search')}>
-                        <IconButton
-                            aria-label={t('search')}
-                            size='small'
-                            data-testid='search-button'
+                            <AccordionSummary expandIcon={<ExpandMore />}>
+                                <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                                    {t('generalInformation')}
+                                </Typography>
+                            </AccordionSummary>
+                            <AccordionDetails sx={{ backgroundColor: '#fafafa' }}>
+                                <TechnicalDataElement
+                                    label='generalInformation'
+                                    header={t('generalInformation')}
+                                    elements={generalInformation.value}
+                                    submodelId={submodel.id}
+                                    isExpanded={expandedAccordion === 'generalInformation'}
+                                />
+                            </AccordionDetails>
+                        </Accordion>
+                    )}
+                    {productClassifications?.value && (
+                        <Accordion 
+                            expanded={expandedAccordion === 'productClassifications'} 
+                            onChange={handleAccordionChange('productClassifications')}
+                            sx={{ boxShadow: 'none', border: '1px solid #e0e0e0', '&:before': { display: 'none' } }}
                         >
-                            <Search />
-                        </IconButton>
-                    </Tooltip>
+                            <AccordionSummary expandIcon={<ExpandMore />}>
+                                <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                                    {t('productClassification')}
+                                </Typography>
+                            </AccordionSummary>
+                            <AccordionDetails sx={{ backgroundColor: '#fafafa' }}>
+                                <TechnicalDataElement
+                                    label='productClassifications'
+                                    header={t('productClassification')}
+                                    elements={productClassifications.value}
+                                    submodelId={submodel.id}
+                                    isExpanded={expandedAccordion === 'productClassifications'}
+                                />
+                            </AccordionDetails>
+                        </Accordion>
+                    )}
+                    {furtherInformation?.value && (
+                        <Accordion 
+                            expanded={expandedAccordion === 'furtherInformation'} 
+                            onChange={handleAccordionChange('furtherInformation')}
+                            sx={{ boxShadow: 'none', border: '1px solid #e0e0e0', '&:before': { display: 'none' } }}
+                        >
+                            <AccordionSummary expandIcon={<ExpandMore />}>
+                                <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                                    {t('furtherInformation')}
+                                </Typography>
+                            </AccordionSummary>
+                            <AccordionDetails sx={{ backgroundColor: '#fafafa' }}>
+                                <TechnicalDataElement
+                                    label='furtherInformation'
+                                    header={t('furtherInformation')}
+                                    elements={furtherInformation.value}
+                                    submodelId={submodel.id}
+                                    isExpanded={expandedAccordion === 'furtherInformation'}
+                                />
+                            </AccordionDetails>
+                        </Accordion>
+                    )}
                 </Box>
             )}
-            <SimpleTreeView expandedItems={expandedItems} onExpandedItemsChange={(_event, itemIds) => setExpandedItems(itemIds)}>
-                {technicalData?.value && (
-                    <TechnicalDataElement
-                        label='technicalProperties'
-                        header={t('technicalProperties')}
-                        elements={technicalData.value}
-                        submodelId={submodel.id}
-                        isExpanded={expandedItems.includes('technicalProperties')}
-                        showUnits={true}
-                    />
-                )}
-                {generalInformation?.value && (
-                    <TechnicalDataElement
-                        label='generalInformation'
-                        header={t('generalInformation')}
-                        elements={generalInformation.value}
-                        submodelId={submodel.id}
-                        isExpanded={expandedItems.includes('generalInformation')}
-                    />
-                )}
-                {productClassifications?.value && (
-                    <TechnicalDataElement
-                        label='productClassifications'
-                        header={t('productClassification')}
-                        elements={productClassifications.value}
-                        submodelId={submodel.id}
-                        isExpanded={expandedItems.includes('productClassifications')}
-                    />
-                )}
-                {furtherInformation?.value && (
-                    <TechnicalDataElement
-                        label='furtherInformation'
-                        header={t('furtherInformation')}
-                        elements={furtherInformation.value}
-                        submodelId={submodel.id}
-                        isExpanded={expandedItems.includes('furtherInformation')}
-                    />
-                )}
-                {cannotRenderTechnicalData && <GenericSubmodelDetailComponent submodel={submodel} />}
-            </SimpleTreeView>
         </Box>
     );
 }

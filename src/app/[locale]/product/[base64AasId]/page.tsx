@@ -197,6 +197,7 @@ export default function Page() {
                         }
                         catalogConfig={manufacturerInfo}
                     />
+                    
                     <SubmodelsOverviewCard
                         submodelIds={filteredSubmodels}
                         submodelsLoading={isSubmodelsLoading}
