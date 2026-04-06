@@ -16,16 +16,16 @@
     * [**TS-REPOSITORY-02** (Repository Management)](#ts-repository-02)
         * [TC-REPCOUNT-C-002](#tc-repcount-c-002)
         * [TC-CONFIG-F-003](#tc-config-f-003)
-        * [TC-CONFIG-F-004](#tc-config-f-004)
-        * [TC-CONFIG-F-005](#tc-config-f-005)
-    * [**TC-AAS-LIST** (Asset Administration Shell List)](#tc-aas-list)
+        * [TC-CONFIG-C-004](#tc-config-c-004)
+        * [TC-CONFIG-C-005](#tc-config-c-005)
+    * [**TS-AAS-LIST** (Asset Administration Shell List)](#ts-aas-list)
         * [TC-SORTING-F-006](#tc-sorting-f-006)
         * [TC-QUERY-F-007](#tc-query-f-007)
     * [**TS-SHOPPING-CART-03** (Cart System)](#ts-shopping-cart-03)
-        * [TC-CART-F-008](#tc-cart-f-008)
+        * [TC-CART-C-008](#tc-cart-c-008)
         * [TC-CART-F-009](#tc-cart-f-009)
         * [TC-CART-F-010](#tc-cart-f-010)
-        * [TC-CART-F-011](#tc-cart-f-011)
+        * [TC-CART-C-011](#tc-cart-c-011)
 5. [**TS-NON-FUNCTIONAL-REQUIREMENTS-04**](#ts-non-functional-requirements-04)
     * [TC-NFR-PERF-012 (Performance)](#tc-nfr-perf-012)
     * [TC-NFR-SEC-013 (Security/Audit)](#tc-nfr-sec-013)
@@ -44,7 +44,7 @@ This document outlines the testing approach and procedures for the ongoing devel
 
 The **Mnestix Product Catalogue** is a web-based application that allows users to efficiently manage products, search and filter information, and access detailed product data through an intuitive, user-friendly interface. Recent enhancements include advanced filtering options, optimized search algorithms, and the integration of additional product information, all aimed at improving the overall user experience and data management capabilities.  
 
-The testing activities described in this plan will utilize a combination of **classic manual and automated testing methods** alongside **modern approaches leveraging AI-based tools**, enabling intelligent test case generation, predictive analysis of potential defects, and enhanced coverage of complex system interactions. Results from these tests will be consolidated in a **System Test Report ([STR](./TINF24F_5-STR-0v1.md))**, providing a comprehensive record of findings, identified issues, and areas for improvement.  
+The testing activities described in this plan will utilize a combination of **classic manual and automated testing methods** alongside **modern approaches leveraging AI-based tools**, enabling intelligent test case generation, predictive analysis of potential defects, and enhanced coverage of complex system interactions. Results from these tests will be consolidated in a **System Test Report ([STR](./TINF24F_5-STR-0v1.1.md))**, providing a comprehensive record of findings, identified issues, and areas for improvement.  
 
 By adopting this structured and hybrid testing approach, the development team ensures that the **Mnestix Product Catalogue** not only meets all functional and quality requirements but also delivers a reliable and optimized experience for its end users.
 
@@ -79,6 +79,15 @@ To further enhance test effectiveness, techniques such as boundary value analysi
 
 Overall, the test suites are designed with the goal of achieving high quality under economically reasonable conditions, following the principle of “as many tests as necessary, but as few as possible.” This ensures an optimal balance between test coverage, effort, and development speed.
 
+The testing strategy was further refined through targeted research and the use of established literature and industry standards. Guidelines from recognized sources such as the NIST Secure Software Development Framework (SSDF) [1] and established testing methodologies [2][3][4] were considered to ensure a structured and reliable approach. Additionally, best practices defined in international standards, such as the IEEE 829/29119 testing standards [5], were taken into account to align the testing process with widely accepted quality assurance principles.
+
+**References**  
+[1] NIST, *Secure Software Development Framework (SSDF)*, https://csrc.nist.gov/pubs/sp/800/218/final  
+[2] G. M. Weinberg, *The Little Black Book on Test Design*, https://www.thetesteye.com/papers/TheLittleBlackBookOnTestDesign.pdf  
+[3] Springer, *Testfallentwurfsverfahren*, https://link.springer.com/chapter/10.1007/978-3-662-44028-5_4  
+[4] Peter Ligessmeyer, *Software-Qualität*, https://link.springer.com/book/10.1007/978-3-8274-2203-3  
+[5] IEEE, *IEEE 829 / ISO/IEC/IEEE 29119 Software Testing Standards*
+
 # Test specification
 
 ## TS-USER-01
@@ -97,7 +106,12 @@ Overall, the test suites are designed with the goal of achieving high quality un
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">TO DO, 1,2</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-fr-logi-001-login-status-display">
+      SRS-FR-LOGI-001
+    </a>,
+    <a href="TINF24F_5-SRS-0v1.1.md#srs-fr-logi-002-login-button-functionality">
+      SRS-FR-LOGI-002
+    </a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -169,7 +183,7 @@ The test setup consists of the latest version of mnestix and the version before 
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">TO DO , 3</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-fr-ui-001-repository-aas-entry-count">SRS-FR-UI-001</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -217,7 +231,7 @@ It verifies that the correct number is displayed next to the repository.
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">FR.016</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-fr-repo-001-aas-repository-configuration">SRS-FR-REPO-001</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -265,7 +279,7 @@ This test verifies that users can enable and disable individual AAS repositories
   </tr>
 </table>
 
-### TC-CONFIG-F-004
+### TC-CONFIG-C-004
 <table>
   <tr>
     <th colspan="3">Test Case</th>
@@ -280,7 +294,7 @@ This test verifies that users can enable and disable individual AAS repositories
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">FR.017</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-fr-config-001-cd-repository-configuration">SRS-FR-CONFIG-001</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -328,7 +342,7 @@ This test verifies that users can view and modify configuration parameters of CD
   </tr>
 </table>
 
-### TC-CONFIG-F-005
+### TC-CONFIG-C-005
 <table>
   <tr>
     <th colspan="3">Test Case</th>
@@ -343,7 +357,7 @@ This test verifies that users can view and modify configuration parameters of CD
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">FR.018</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-fr-config-002-cd-repository-content-inspection">SRS-FR-CONFIG-002</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -387,7 +401,7 @@ This test verifies that users can inspect the contents of configured CD reposito
 </table>
 
 
-## TC-AAS-LIST
+## TS-AAS-LIST
 ### TC-SORTING-F-006
 <table>
   <tr>
@@ -403,7 +417,7 @@ This test verifies that users can inspect the contents of configured CD reposito
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">TO DO: 5,7 </td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-fr-list-001-changed-aas-columns">SRS-FR-LIST-001</a> <a href="TINF24F_5-SRS-0v1.1.md#srs-fr-list-003-aas-list-sorting">SRS-FR-LIST-003</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -511,7 +525,7 @@ The test setup consists of the latest version of the mnestix browser and is supp
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">TO DO: 6</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-fr-list-002-aas-list-filtering">SRS-FR-LIST-002</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -586,7 +600,7 @@ The test setup consists of the latest version of the mnestix browser.
 </table>
 
 ## TS-SHOPPING-CART-03
-### TC-CART-F-008
+### TC-CART-C-008
 <table>
   <tr>
     <th colspan="3">Test Case</th>
@@ -601,7 +615,7 @@ The test setup consists of the latest version of the mnestix browser.
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">FR.008, FR.012</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-fr-shop-001-cart-view-access">SRS-FR-SHOP-001</a> <a href="TINF24F_5-SRS-0v1.1.md#srs-fr-shop-005-cart-count-indicator">SRS-FR-SHOP-005</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -650,7 +664,7 @@ It also verifies that the sidebar correctly displays the number of items in the 
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">FR.009, FR.011</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-fr-shop-002-cart-products">SRS-FR-SHOP-002</a> <a href="TINF24F_5-SRS-0v1.1.md#srs-fr-shop-004-add-to-cart-button">SRS-FR-SHOP-004</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -738,7 +752,7 @@ and that all added products are correctly listed in the cart view.
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">FR.010, FR.013</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-fr-shop-003-cart-quantity">SRS-FR-SHOP-003</a> <a href="TINF24F_5-SRS-0v1.1.md#srs-fr-shop-006-shop-feature-configuration">SRS-FR-SHOP-006</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -817,7 +831,7 @@ via the environment variable SHOP_ENABLED_FLAG.
   </tr>
 </table>
 
-### TC-CART-F-011
+### TC-CART-C-011
 <table>
   <tr>
     <th colspan="3">Test Case</th>
@@ -832,7 +846,7 @@ via the environment variable SHOP_ENABLED_FLAG.
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">FR.015</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-fr-shop-007-product-price-display">SRS-FR-SHOP-007</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -902,7 +916,7 @@ It also ensures that prices are not shown when the shop functionality is disable
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">NFR.002</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-nfr-perform-002-concurrent-user-support">SRS-NFR-PERFORM-002</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -961,7 +975,7 @@ Basic response times and system stability are observed during the test.
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">NFR.003</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-nfr-sec-001-configuration-change-logging">SRS-NFR-SEC-001</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -1021,7 +1035,7 @@ Log entries contain: timestamp, action type, affected resource, and user/context
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">NFR.004</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-nfr-ui-001-responsive-interface">SRS-NFR-UI-001</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -1079,7 +1093,7 @@ This test verifies that the UI adapts correctly to different viewport sizes and 
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">NFR.005</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-nfr-port-001-browser-compatibility">SRS-NFR-PORT-001</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -1137,7 +1151,7 @@ This test verifies consistent functionality and rendering across supported brows
   </tr>
   <tr>
     <td><b>REQ_ID</b></td>
-    <td colspan="2">NFR.007</td>
+    <td colspan="2"><a href="TINF24F_5-SRS-0v1.1.md#srs-nfr-maint-001-code-quality-standards">SRS-NFR-MAINT-001</a></td>
   </tr>
   <tr>
     <td><b>Description</b></td>
@@ -1188,27 +1202,27 @@ This test verifies compliance with defined linting and formatting rules using au
 
 | Requirement | TC-LOGIN-C-001 | TC-REPCOUNT-C-002 | TC-CONFIG-F-003 | TC-CONFIG-F-004 | TC-CONFIG-F-005 | TC-SORTING-F-006 | TC-QUERY-F-007 | TC-CART-F-008 | TC-CART-F-009 | TC-CART-F-010 | TC-CART-F-011 | TC-NFR-PERF-012 | TC-NFR-SEC-013 | TC-NFR-USE-014 | TC-NFR-COMP-015 | TC-NFR-MAINT-016 |
 |------------|---------------|-------------------|-----------------|-----------------|-----------------|------------------|----------------|----------------|----------------|----------------|----------------|------------------|------------------|------------------|------------------|------------------|
-| FR.001     | ✔             |                   |                 |                 |                 |                  |                |                |                |                |                |                  |                  |                  |                  |                  |
-| FR.002     | ✔             |                   |                 |                 |                 |                  |                |                |                |                |                |                  |                  |                  |                  |                  |
-| FR.003     |               | ✔                 |                 |                 |                 |                  |                |                |                |                |                |                  |                  |                  |                  |                  |
-| FR.005     |               |                   |                 |                 |                 | ✔                |                |                |                |                |                |                  |                  |                  |                  |                  |
-| FR.006     |               |                   |                 |                 |                 |                  | ✔              |                |                |                |                |                  |                  |                  |                  |                  |
-| FR.007     |               |                   |                 |                 |                 | ✔                |                |                |                |                |                |                  |                  |                  |                  |                  |
-| FR.008     |               |                   |                 |                 |                 |                  |                | ✔              |                |                |                |                  |                  |                  |                  |                  |
-| FR.009     |               |                   |                 |                 |                 |                  |                |                | ✔              |                |                |                  |                  |                  |                  |                  |
-| FR.010     |               |                   |                 |                 |                 |                  |                |                |                | ✔              |                |                  |                  |                  |                  |                  |
-| FR.011     |               |                   |                 |                 |                 |                  |                |                | ✔              |                |                |                  |                  |                  |                  |                  |
-| FR.012     |               |                   |                 |                 |                 |                  |                | ✔              |                |                |                |                  |                  |                  |                  |                  |
-| FR.013     |               |                   |                 |                 |                 |                  |                |                |                | ✔              |                |                  |                  |                  |                  |                  |
-| FR.015     |               |                   |                 |                 |                 |                  |                |                |                |                | ✔              |                  |                  |                  |                  |                  |
-| FR.016     |               |                   | ✔               |                 |                 |                  |                |                |                |                |                |                  |                  |                  |                  |                  |
-| FR.017     |               |                   |                 | ✔               |                 |                  |                |                |                |                |                |                  |                  |                  |                  |                  |
-| FR.018     |               |                   |                 |                 | ✔               |                  |                |                |                |                |                |                  |                  |                  |                  |                  |
-| NFR.002    |               |                   |                 |                 |                 |                  |                |                |                |                |                | ✔                |                  |                  |                  |                  |
-| NFR.003    |               |                   |                 |                 |                 |                  |                |                |                |                |                |                  | ✔                |                  |                  |                  |
-| NFR.004    |               |                   |                 |                 |                 |                  |                |                |                |                |                |                  |                  | ✔                |                  |                  |
-| NFR.005    |               |                   |                 |                 |                 |                  |                |                |                |                |                |                  |                  |                  | ✔                |                  |
-| NFR.007    |               |                   |                 |                 |                 |                  |                |                |                |                |                |                  |                  |                  |                  | ✔                |
+| SRS-FR-LOGI-001 | ✔ | | | | | | | | | | | | | | | |
+| SRS-FR-LOGI-002 | ✔ | | | | | | | | | | | | | | | |
+| SRS-FR-UI-001   | | ✔ | | | | | | | | | | | | | | |
+| SRS-FR-REPO-001 | | | ✔ | | | | | | | | | | | | | |
+| SRS-FR-CONFIG-001 | | | | ✔ | | | | | | | | | | | | |
+| SRS-FR-CONFIG-002 | | | | | ✔ | | | | | | | | | | | |
+| SRS-FR-LIST-001 | | | | | | ✔ | | | | | | | | | | |
+| SRS-FR-LIST-003 | | | | | | ✔ | | | | | | | | | | |
+| SRS-FR-LIST-002 | | | | | | | ✔ | | | | | | | | | |
+| SRS-FR-SHOP-001 | | | | | | | | ✔ | | | | | | | | |
+| SRS-FR-SHOP-005 | | | | | | | | ✔ | | | | | | | | |
+| SRS-FR-SHOP-002 | | | | | | | | | ✔ | | | | | | | |
+| SRS-FR-SHOP-004 | | | | | | | | | ✔ | | | | | | | |
+| SRS-FR-SHOP-003 | | | | | | | | | | ✔ | | | | | | |
+| SRS-FR-SHOP-006 | | | | | | | | | | ✔ | | | | | | |
+| SRS-FR-SHOP-007 | | | | | | | | | | | ✔ | | | | | |
+| SRS-NFR-PERFORM-002 | | | | | | | | | | | | ✔ | | | | |
+| SRS-NFR-SEC-001 | | | | | | | | | | | | | ✔ | | | |
+| SRS-NFR-UI-001 | | | | | | | | | | | | | | ✔ | | |
+| SRS-NFR-PORT-001 | | | | | | | | | | | | | | | ✔ | |
+| SRS-NFR-MAINT-001 | | | | | | | | | | | | | | | | ✔ |
 
 
 
@@ -1254,12 +1268,6 @@ flowchart TD
     H -- No --> J[Create New Bug Report]
     J --> D
 ```
-Link Test:
-To Dos:
-DEBUGGING
-Requirements namen anpassen, wenn gregor geändaert hat
-Ideen:
-Test Bücher Hintergrund integrieren
-https://csrc.nist.gov/pubs/sp/800/218/final
-https://www.thetesteye.com/papers/TheLittleBlackBookOnTestDesign.pdf
 
+---
+### created by Nils Schäffner (inf24109@lehre.dhbw-stuttgart.de)
