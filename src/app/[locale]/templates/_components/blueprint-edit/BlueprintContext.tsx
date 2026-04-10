@@ -162,11 +162,7 @@ function findMatchingNames(parent: SubmodelViewObject, originalName: string): st
     return matchingNames;
 }
 
-function generateNameOfDuplicatedElement(
-    parent: SubmodelViewObject,
-    originalName: string,
-    matchingNames: string[],
-): string {
+function generateNameOfDuplicatedElement(originalName: string, matchingNames: string[]): string {
     let currentSmallestIndex = 0;
     const matchingNameIndexes: number[] = [];
     matchingNames.forEach((name) => {
@@ -310,7 +306,7 @@ export function BlueprintProvider({ children }: BlueprintProviderProps) {
 
             // Rename the duplicated element
             const matchingNames = findMatchingNames(parent, elementToDuplicate.name);
-            const elementName = generateNameOfDuplicatedElement(parent, elementToDuplicate.name, matchingNames);
+            const elementName = generateNameOfDuplicatedElement(elementToDuplicate.name, matchingNames);
             elementToDuplicate.name = elementName;
             if (elementToDuplicate.data?.idShort) {
                 elementToDuplicate.data.idShort = elementName;
