@@ -231,6 +231,7 @@
     },
     "aasList": {
       "buttonTooltip": "Zur AAS",
+      "assetKindFilter": "Asset Art Filter",
       "compare": "Vergleichen",
       "header": "AAS Liste",
       "listHeader": {

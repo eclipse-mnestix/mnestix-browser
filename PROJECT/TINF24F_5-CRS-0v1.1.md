@@ -2,18 +2,19 @@
 
 ## Project: Eclipse Mnestix Product Catalog
 
-**Version:** 1.0 \
+**Version:** 1.1 \
 **Author:** Julian Schumacher \
-**Date:** 26.10.2025 \
+**Date:** 28.02.2026 \
 **Institution:** DHBW Stuttgart
 
 ---
 
 ## Document Version History
 
-| Version | Date       | Author            | Change-description |
-| ------- | ---------- | ----------------- | ------------------ |
-| 1.0     | 05.11.2025 | Julian Schumacher | Initial Version    |
+| Version | Date       | Author            | Change-description                     |
+| ------- | ---------- | ----------------- | -------------------------------------- |
+| 1.0     | 05.11.2025 | Julian Schumacher | Initial Version                        |
+| 1.1     | 28.02.2026 | Julian Schumacher | Add cart shopping feature requirements |
 
 ## Table of Contents
 
@@ -105,6 +106,26 @@ The system remains compatible with BaSyx and existing AAS servers while improvin
 | FR-021         | Navigating through linked AAS references should be possible (Bill of material)                                     | The system shall allow navigation through linked AAS references within submodel visualizations.                                                                                                                               |
 | FR-022         | The product list view shall retrieve AAS data asynchronously to avoid blocking the interface.                      | Ensures a non-blocking interface and optimized performance, especially on mobile networks.                                                                                                                                    |
 | FR-023         | The product list view shall load thumbnails and other media content lazily, restricted to visible items on screen. | Loads only visible media elements to conserve data and improve performance.                                                                                                                                                   |
+| FR-024         | Accessible via `/cart` route                                                                                       | The shopping cart feature shall be accessible via the `/cart` route of the system                                                                                                                                             |
+| FR-025         | implement required data structures                                                                                 | Required data structures for the card feature shall be added. Already existing data structure shall be used where applicable                                                                                                  |
+| FR-026         | caching cart content locally                                                                                       | The shopping cart feature shall store the current content of the cart using the local storage mechanism                                                                                                                       |
+| FR-027         | Menu Bar Icon incl. badge                                                                                          | A new icon shall be added to the menu bar to navigate to the cart and indicate the current number of items in the cart                                                                                                        |
+| FR-028         | Navigating via menu bar icon                                                                                       | clicking the menu bar icon shall navigate to the `/cart` route specified in FR-024                                                                                                                                            |
+| FR-029         | Realtime update                                                                                                    | The cart and its content shall update in realtime                                                                                                                                                                             |
+| FR-030         | No empty card badge                                                                                                | When the cart is empty the badge defined in FR-027 shall not be displayed                                                                                                                                                     |
+| FR-031         | Cart overview                                                                                                      | The shopping cart view (which access is defined in FR-024) shall display a preview of items including multiple relevant information such as product name, quanity and price                                                   |
+| FR-032         | total price display                                                                                                | The total price of the cart shall be displayed in a sum at the bottom of the view                                                                                                                                             |
+| FR-033         | remove items                                                                                                       | the user shall be provided with the option to remove each item in the cart individually                                                                                                                                       |
+| FR-034         | adjust item count                                                                                                  | the item count per item in the cart shall be adjustable by using a numberic input field                                                                                                                                       |
+| FR-035         | checkout (preperation)                                                                                             | the cart shall implement a "checkout" button to procede to checkout. The actual checkout is not within the scope of this implementation.                                                                                      |
+| FR-036         | empty cart message                                                                                                 | If the cart is empty, a message stating that the cart is empty shall be displayed                                                                                                                                             |
+| FR-037         | responsive design                                                                                                  | the shopping cart view shall be responsive to work on both mobile and desktop                                                                                                                                                 |
+| FR-038         | add product button                                                                                                 | within the scope of this implementation, a "add to cart" button shall be implemented into the product detail view to add a product to the cart                                                                                |
+| FR-039         | navigate to cart option after adding procut                                                                        | after adding a product to the cart the user shall be provided with the option to either navigate to the cart of stay on the current page                                                                                      |
+| FR-040         | disable shopping cart feature                                                                                      | the shopping cart feature shall provide a flag to disable the use of this feature                                                                                                                                             |
+| FR-041         | configurable external checkout path                                                                                | the url to the custom checkout handler shall be configurable via config files                                                                                                                                                 |
+| FR-042         | multilangual support                                                                                               | the shopping cart feature shall be available in at least english, german and spanish                                                                                                                                          |
+| FR-043         | using existing translation files                                                                                   | the translations for the shopping cart feature shall be added to the existing translation files                                                                                                                               |
 
 ---
 

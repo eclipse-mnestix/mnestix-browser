@@ -10,11 +10,10 @@ import {
     SubmodelElementCollection,
 } from '@aas-core-works/aas-core3.0-typescript/types';
 import { useTranslations } from 'next-intl';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { getKeyType } from 'lib/util/KeyTypeUtil';
 import { DataRowWithUnit } from 'app/[locale]/viewer/_components/submodel/technical-data/ConceptDescriptionDataRow';
-import { TreeItem } from '@mui/x-tree-view';
 import { FileComponent } from 'app/[locale]/viewer/_components/submodel-elements/generic-elements/FileComponent';
 import { buildSubmodelElementPath } from 'lib/util/SubmodelResolverUtil';
 import { getConceptDescriptionById } from 'lib/services/conceptDescriptionApiActions';
@@ -30,7 +29,6 @@ export const TechnicalDataElement = (props: {
     showUnits?: boolean
 }) => {
     const t = useTranslations('pages.aasViewer.submodels');
-    const theme = useTheme();
     const [conceptDescriptions, setConceptDescriptions] = useState<Record<string, ConceptDescription>>({});
     const [loadingConceptDescriptions, setLoadingConceptDescriptions] = useState<boolean>(true);
 
@@ -112,29 +110,38 @@ export const TechnicalDataElement = (props: {
             case KeyTypes.SubmodelElementCollection:
             case KeyTypes.SubmodelElementList:
                 return (
-                    <TreeItem
-                        itemId={element.idShort || 'unknown'}
-                        label={element.idShort}
+                    <Box
                         sx={{
-                            '&& .MuiTreeItem-label': {
-                                m: 0,
-                                ...theme.typography.h5,
-                            },
+                            p: 1.5,
+                            border: '1px solid',
+                            borderColor: 'divider',
+                            borderRadius: 1,
+                            backgroundColor: '#fafafa',
                         }}
                     >
-                        {(element as SubmodelElementCollection | SubmodelElementList)?.value?.map(
-                            (child) => child && <React.Fragment key={child.idShort}>{renderSubmodelElement(child)}</React.Fragment>,
-                        )}
-                    </TreeItem>
+                        <Typography variant="h5" sx={{ fontWeight: 600, mb: 1.5, fontSize: '0.95rem' }}>
+                            {element.idShort}
+                        </Typography>
+                        <Box
+                            sx={{
+                                display: 'grid',
+                                gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(3, 1fr)' },
+                                gap: 2,
+                            }}
+                        >
+                            {(element as SubmodelElementCollection | SubmodelElementList)?.value?.map(
+                                (child) => child && <React.Fragment key={child.idShort}>{renderSubmodelElement(child)}</React.Fragment>,
+                            )}
+                        </Box>
+                    </Box>
                 );
             case KeyTypes.File: {
                 const file = element as File;
                 const path = buildSubmodelElementPath('GeneralInformation', element.idShort);
 
                 return (
-                    // With the hardcoded SubmodelElementPath, this only works for CompanyLogo and ProductLogo
                     <DataRowWithUnit submodelElement={element}>
-                        <Box height="50px" overflow="hidden" sx={{ display: 'flex', overflowWrap: 'anywhere' }}>
+                        <Box height="24px" width="24px" overflow="hidden" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '3px', backgroundColor: '#f5f5f5', minWidth: '24px' }}>
                             <FileComponent
                                 file={file}
                                 submodelId={props.submodelId}
@@ -182,28 +189,30 @@ export const TechnicalDataElement = (props: {
     };
 
     return (
-        <TreeItem
-            itemId={props.label}
-            label={props.header.toUpperCase()}
-            sx={{
-                '& .MuiTreeItem-content': {
+        <Box>
+            <Typography
+                variant="h4"
+                sx={{
+                    m: 1,
                     py: 1,
+                    textTransform: 'uppercase',
+                    fontWeight: 600,
                     borderBottom: '1px solid',
                     borderColor: 'divider',
-                },
-                '& .MuiTreeItem-content .MuiTreeItem-iconContainer': {
-                    '& svg': {
-                        fontSize: '30px',
-                    },
-                },
-                '&& .MuiTreeItem-label': {
-                    m: 1,
-                    ...theme.typography.h4,
-                },
-            }}
-            key={props.label}
-        >
-            {props.elements?.map((el, index) => el && <React.Fragment key={`${el.idShort}_${index}`}>{renderSubmodelElement(el)}</React.Fragment>)}
-        </TreeItem>
+                }}
+            >
+                {props.header}
+            </Typography>
+            <Box
+                sx={{
+                    display: 'grid',
+                    gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(3, 1fr)' },
+                    gap: 2,
+                    p: 1,
+                }}
+            >
+                {props.elements?.map((el, index) => el && <React.Fragment key={`${el.idShort}_${index}`}>{renderSubmodelElement(el)}</React.Fragment>)}
+            </Box>
+        </Box>
     );
 };

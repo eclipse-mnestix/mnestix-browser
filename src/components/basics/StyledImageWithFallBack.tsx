@@ -35,6 +35,8 @@ export const ImageWithFallback = ({ src, alt, size, onClickHandler }: StyledImag
             }}
             alt={alt}
             size={size}
+            loading="lazy"
+            decoding="async"
             onClick={() => onClickHandler?.call(this)}
             style={{
                 cursor: onClickHandler ? 'pointer' : 'auto',
