@@ -68,7 +68,7 @@ export function MappingInfoEditComponent(props: MappingInfoEditComponentProps) {
                     <TextField
                         defaultValue={mappingInfo.value}
                         label={t('labels.value')}
-                        onBlur={onValueChange}
+                        onChange={onValueChange}
                         fullWidth
                     />
                     <IconButton color="primary" onClick={onRemove} sx={{ alignSelf: 'center', ml: 1 }}>
