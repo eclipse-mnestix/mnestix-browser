@@ -292,7 +292,10 @@
         },
         "title": "Teilmodelle",
         "unknownModelType": "Unbekannter ModelType: {type}",
-        "noSubmodelsToLoad": "Für diese AAS existieren keine Teilmodelle."
+        "noSubmodelsToLoad": "Für diese AAS existieren keine Teilmodelle.",
+        "loadingSubmodel": "Lade Teilmodel-Daten...",
+        "errorLoadingSubmodel": "Fehler beim Laden des Teilmodels.",
+        "searchSubmodels": "Teilmodelle durchsuchen..."
       }
     },
     "catalog": {

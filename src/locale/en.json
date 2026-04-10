@@ -292,7 +292,10 @@
         },
         "title": "Submodels",
         "unknownModelType": "Unknown ModelType: {type}",
-        "noSubmodelsToLoad": "There do not exist any submodels for this AAS."
+        "noSubmodelsToLoad": "There do not exist any submodels for this AAS.",
+        "loadingSubmodel": "Loading submodel data...",
+        "errorLoadingSubmodel": "Error loading submodel.",
+        "searchSubmodels": "Search submodels..."
       }
     },
     "catalog": {
