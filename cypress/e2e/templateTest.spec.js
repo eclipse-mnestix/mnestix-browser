@@ -10,13 +10,28 @@ describe('Template CRUD Operations', () => {
     const editedTemplateName = `Test Template ${uniqueId} (edited)`;
 
     function loginIfNeeded() {
-        cy.getByTestId('header-burgermenu').click();
+        cy.getByTestId('header-burgermenu').should('be.visible').click();
         cy.get('body').then(($body) => {
             const hasLoginButton = $body.find('[data-testid=login-button]').length > 0;
-            if (hasLoginButton) {
-                cy.keycloakLogin(adminTestUser.login, adminTestUser.password);
+
+            if (!hasLoginButton) {
+                // Close opened menu and continue when already authenticated.
                 cy.getByTestId('header-burgermenu').click();
+                return;
             }
+
+            cy.getByTestId('login-button').click();
+            cy.origin(
+                Cypress.env('KEYCLOAK_ISSUER'),
+                { args: { login: adminTestUser.login, password: adminTestUser.password } },
+                ({ login, password }) => {
+                    cy.get('#username').invoke('focus').type(login);
+                    cy.get('#password').invoke('focus').type(password, { log: false });
+                    cy.get('#kc-login').invoke('focus').click();
+                },
+            );
+            cy.get('button').click();
+            cy.getByTestId('header-burgermenu').click();
         });
     }
 
@@ -24,14 +39,13 @@ describe('Template CRUD Operations', () => {
         cy.visit('/');
         cy.setResolution(resolutions[0]);
         loginIfNeeded();
+
+        cy.visit('/templates');
+        cy.url().should('match', /\/templates$/);
+        cy.getByTestId('templates-route-page').should('be.visible');
     });
 
     it('should create/edit and delete a template', () => {
-        cy.getByTestId('templates-menu-icon').click();
-
-        cy.url().should('match', /\/templates$/);
-        cy.getByTestId('templates-route-page').should('be.visible');
-
         cy.getByTestId('create-new-template-button').click();
         cy.getByTestId('choose-template-dialog').should('be.visible');
 
