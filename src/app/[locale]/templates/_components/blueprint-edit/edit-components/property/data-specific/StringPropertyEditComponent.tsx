@@ -12,5 +12,5 @@ export function StringPropertyEditComponent(props: StringPropertyEditComponentPr
         props.onChange(event.target.value);
     };
 
-    return <TextField defaultValue={props.dataValue} label={t('labels.value')} onChange={onValueChange} fullWidth />;
+    return <TextField defaultValue={props.dataValue} label={t('labels.value')} onBlur={onValueChange} fullWidth />;
 }

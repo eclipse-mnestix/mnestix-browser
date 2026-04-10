@@ -78,7 +78,7 @@
   },
   "scripts": {
     "build": "next build",
-    "dev": "yarn prisma:migrate && yarn prisma:generate && NODE_OPTIONS='--inspect' next dev",
+    "dev": "yarn prisma:migrate && yarn prisma:generate && next dev",
     "dev:inspect": "yarn prisma:migrate && yarn prisma:generate && NODE_OPTIONS='--inspect' next dev",
     "start": "yarn prisma:migrate && yarn prisma:generate && next start",
     "format": "prettier --write ./",
