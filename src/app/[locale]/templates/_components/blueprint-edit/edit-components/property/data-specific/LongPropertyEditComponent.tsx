@@ -30,7 +30,7 @@ export function LongPropertyEditComponent(props: LongPropertyEditComponentProps)
         <TextField
             label={t('labels.value')}
             value={data}
-            onChange={onValueChange}
+            onBlur={onValueChange}
             fullWidth
             error={!isValidInput}
             helperText={!isValidInput && t('validation.errors.invalidLong')}

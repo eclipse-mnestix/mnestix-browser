@@ -6,6 +6,9 @@ const adminTestUser = {
 };
 
 describe('Template CRUD Operations', () => {
+    const uniqueId = Date.now();
+    const editedTemplateName = `Test Template ${uniqueId} (edited)`;
+
     function loginIfNeeded() {
         cy.getByTestId('header-burgermenu').click();
         cy.get('body').then(($body) => {
@@ -23,7 +26,7 @@ describe('Template CRUD Operations', () => {
         loginIfNeeded();
     });
 
-    it('should create and delete a template', () => {
+    it('should create/edit and delete a template', () => {
         cy.getByTestId('templates-menu-icon').click();
 
         cy.url().should('match', /\/templates$/);
@@ -35,6 +38,14 @@ describe('Template CRUD Operations', () => {
         cy.getByTestId('choose-template-item-0').should('be.visible');
         cy.getByTestId('choose-template-item-0').find('h4').first().click();
         cy.url({ timeout: 60000 }).should('match', /\/templates\/.+/);
+
+        // Edit immediately after navigation while the editor is active.
+        cy.getByTestId('display-name-input', { timeout: 10000 }).should('be.visible');
+        cy.getByTestId('display-name-input').invoke('val', editedTemplateName);
+        cy.getByTestId('display-name-input').trigger('input', { force: true });
+        cy.getByTestId('display-name-input').blur({ force: true });
+
+        cy.getByTestId('save-changes-button').should('be.enabled').click();
 
         //delete the template
         cy.getByTestId('more-options-button').click();
