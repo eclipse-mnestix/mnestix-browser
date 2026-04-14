@@ -99,44 +99,6 @@
                       "value": "CLS_MANUAL",
                       "valueType": "xs:string",
                       "idShort": "ClassId"
-                    },
-                    {
-                      "modelType": "MultiLanguageProperty",
-                      "semanticId": {
-                        "keys": [
-                          {
-                            "type": "GlobalReference",
-                            "value": "0173-1#02-ABJ219#002"
-                          }
-                        ],
-                        "type": "ExternalReference"
-                      },
-                      "value": [
-                        {
-                          "language": "en",
-                          "text": "General safety"
-                        },
-                        {
-                          "language": "de",
-                          "text": "Allgemeine Sicherheit"
-                        }
-                      ],
-                      "idShort": "ClassName"
-                    },
-                    {
-                      "modelType": "Property",
-                      "semanticId": {
-                        "keys": [
-                          {
-                            "type": "GlobalReference",
-                            "value": "0173-1#02-ABH997#003"
-                          }
-                        ],
-                        "type": "ExternalReference"
-                      },
-                      "value": "VDI2770 Blatt1:2020",
-                      "valueType": "xs:string",
-                      "idShort": "ClassificationSystem"
                     }
                   ]
                 }

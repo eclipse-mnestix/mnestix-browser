@@ -37,10 +37,12 @@ export const DocumentClassification = (props: {
 
             // The ClassName has to be a MultiLanguageProperty by the AAS standard, but Mnestix should not crash if it has a different type.
             let translatedClassName = '';
-            try {
-                translatedClassName = getTranslationValue(className as MultiLanguageProperty, locale) ?? '';
-            } catch (e) {
-                console.warn('Invalid property for classname' + e);
+            if (className) {
+                try {
+                    translatedClassName = getTranslationValue(className as MultiLanguageProperty, locale) ?? '';
+                } catch (e) {
+                    console.warn('Invalid property for classname' + e);
+                }
             }
 
             const classificationSystem = findSubmodelElementBySemanticIdsOrIdShort(
@@ -50,9 +52,9 @@ export const DocumentClassification = (props: {
             );
 
             const classification: DocumentClassification = {
-                classId: (classId as Property).value || '',
+                classId: (classId as Property | null)?.value || '',
                 className: translatedClassName,
-                classificationSystem: (classificationSystem as Property).value || '',
+                classificationSystem: (classificationSystem as Property | null)?.value || '',
             };
             if (classification.classId || classification.className || classification.classificationSystem) {
                 classifications.push(classification);
@@ -77,7 +79,7 @@ export const DocumentClassification = (props: {
                             {classificationData?.classificationSystem && (
                                 <Typography fontWeight="500">{classificationData?.classificationSystem}: </Typography>
                             )}
-                            <Typography>{tooltipText(classificationData?.className, 20)}</Typography>
+                            <Typography>{tooltipText(classificationData?.className || classificationData?.classId, 20)}</Typography>
                         </Box>
                     ))}
                     {classificationData?.length > 2 && (

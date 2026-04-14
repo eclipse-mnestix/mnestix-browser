@@ -60,7 +60,7 @@ describe('DocumentComponent - V3 Handover Documentation', () => {
         expect(openButtons.length).toBe(2);
     });
 
-    it('should render document classifications for V3 format', () => {
+    it('should fall back to classId when className is missing in V3 classification', () => {
         CustomRender(
             <GenericSubmodelDetailComponent
                 submodel={handoverDocV3 as unknown as Submodel}
@@ -68,8 +68,9 @@ describe('DocumentComponent - V3 Handover Documentation', () => {
             />,
         );
 
-        // First document has classifications with ClassId "CLS_MANUAL"
-        expect(screen.getByText('VDI2770 Blatt1:2020:')).toBeInTheDocument();
+        // First document has classification with only ClassId "CLS_MANUAL" (no ClassName, no ClassificationSystem)
+        // Should fall back to showing classId as the display text
+        expect(screen.getByText('CLS_MANUAL')).toBeInTheDocument();
     });
 
     it('should render info button for each document', () => {
