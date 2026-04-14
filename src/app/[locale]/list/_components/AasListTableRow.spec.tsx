@@ -114,4 +114,84 @@ describe('AasListTableRow', () => {
         expect(screen.getByTestId('list-aasId')).toHaveTextContent('aasId');
         expect(screen.getByTestId('list-to-detailview-button')).toBeInTheDocument();
     });
+
+    it('uses resolvedRepositoryUrl for data fetching when loaded from registry', async () => {
+        const resolvedRepoUrl = 'https://resolved-aas-repo.example.com';
+        const registryUrl = 'https://registry.example.com';
+        const registryRepository: RepositoryWithInfrastructure = {
+            url: registryUrl,
+            infrastructureName: 'TestRegistry',
+            id: 'test-registry-id',
+        };
+        const registryEntry: ListEntityDto = {
+            aasId: 'registryAasId',
+            thumbnail: '',
+            assetId: 'registryAssetId',
+            resolvedRepositoryUrl: resolvedRepoUrl,
+        };
+        (nameplateDataActions.getNameplateValuesForAAS as jest.Mock).mockImplementation(
+            jest.fn(() => {
+                return {
+                    success: true,
+                    manufacturerName: [{ en: 'RegistryManufacturer' }],
+                    manufacturerProductDesignation: [{ en: 'RegistryProduct' }],
+                };
+            }),
+        );
+        listRowWrapper(
+            <AasListTableRow
+                repository={registryRepository}
+                connectionType="registry"
+                aasListEntry={registryEntry}
+                checkBoxDisabled={() => undefined}
+                comparisonFeatureFlag={true}
+                selectedAasList={undefined}
+                updateSelectedAasList={() => undefined}
+            />,
+        );
+
+        await waitFor(() => screen.getByTestId('list-manufacturer-name'));
+        expect(screen.getByTestId('list-manufacturer-name')).toHaveTextContent('RegistryManufacturer');
+        expect(screen.getByTestId('list-product-designation')).toHaveTextContent('RegistryProduct');
+
+        // Verify getNameplateValuesForAAS was called with the resolved repo URL, not the registry URL
+        expect(nameplateDataActions.getNameplateValuesForAAS).toHaveBeenCalledWith(
+            expect.objectContaining({ url: resolvedRepoUrl }),
+            'registryAasId',
+        );
+    });
+
+    it('uses original repository URL when resolvedRepositoryUrl is not set', async () => {
+        const listEntry: ListEntityDto = {
+            aasId: 'repoAasId',
+            thumbnail: '',
+            assetId: 'repoAssetId',
+        };
+        (nameplateDataActions.getNameplateValuesForAAS as jest.Mock).mockImplementation(
+            jest.fn(() => {
+                return {
+                    success: true,
+                    manufacturerName: [{ en: 'RepoManufacturer' }],
+                    manufacturerProductDesignation: [{ en: 'RepoProduct' }],
+                };
+            }),
+        );
+        listRowWrapper(
+            <AasListTableRow
+                repository={repository}
+                connectionType="repository"
+                aasListEntry={listEntry}
+                checkBoxDisabled={() => undefined}
+                comparisonFeatureFlag={true}
+                selectedAasList={undefined}
+                updateSelectedAasList={() => undefined}
+            />,
+        );
+
+        await waitFor(() => screen.getByTestId('list-manufacturer-name'));
+        expect(nameplateDataActions.getNameplateValuesForAAS).toHaveBeenCalledWith(
+            expect.objectContaining({ url: repository.url }),
+            'repoAasId',
+        );
+    });
 });

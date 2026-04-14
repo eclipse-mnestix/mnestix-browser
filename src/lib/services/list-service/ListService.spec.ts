@@ -1,8 +1,10 @@
 import { expect } from '@jest/globals';
-import { AasListDto, ListService } from 'lib/services/list-service/ListService';
+import { AasListDto, extractRepoBaseUrl, ListService } from 'lib/services/list-service/ListService';
 import testData from 'lib/services/list-service/ListService.data.json';
 import { AssetAdministrationShell, Submodel } from 'lib/api/aas/models';
 import ServiceReachable from 'test-utils/TestUtils';
+import { AssetAdministrationShellDescriptor } from 'lib/types/registryServiceTypes';
+import { AasRegistryEndpointEntryInMemory } from 'lib/api/registry-service-api/registryServiceApiInMemory';
 
 const assetAdministrationShells = testData.assetAdministrationShells as AssetAdministrationShell[];
 const expectedData = testData.expectedResult as AasListDto;
@@ -69,5 +71,79 @@ describe('ListService: Return List Entities', function () {
 
         expect(nameplateResult.manufacturerName).toEqual(undefined);
         expect(nameplateResult.manufacturerProductDesignation).toEqual(undefined);
+    });
+});
+
+describe('ListService: Registry flow', function () {
+    const repoBaseUrl = 'https://aas-repo.example.com';
+    const aasShells = testData.assetAdministrationShells as AssetAdministrationShell[];
+
+    const descriptors: AssetAdministrationShellDescriptor[] = aasShells.map((aas) => ({
+        id: aas.id,
+        idShort: aas.idShort,
+        globalAssetId: aas.assetInformation?.globalAssetId,
+        endpoints: [
+            {
+                interface: 'AAS-3.0',
+                protocolInformation: {
+                    href: `${repoBaseUrl}/shells/${encodeURIComponent(aas.id)}`,
+                },
+            },
+        ],
+    }));
+
+    const endpointEntries: AasRegistryEndpointEntryInMemory[] = aasShells.map((aas) => ({
+        endpoint: `${repoBaseUrl}/shells/${encodeURIComponent(aas.id)}`,
+        aas,
+    }));
+
+    it('returns entities with resolvedRepositoryUrl when fetching from registry', async () => {
+        const listService = ListService.createNullWithRegistry(descriptors, endpointEntries);
+
+        const result = await listService.getAasListEntities(10, undefined, 'registry');
+
+        expect(result.success).toBe(true);
+        expect(result.entities).toHaveLength(3);
+        for (const entity of result.entities!) {
+            expect(entity.resolvedRepositoryUrl).toBe(repoBaseUrl);
+        }
+    });
+
+    it('does not set resolvedRepositoryUrl when fetching from repository', async () => {
+        const listService = ListService.createNull(aasShells);
+
+        const result = await listService.getAasListEntities(10);
+
+        expect(result.success).toBe(true);
+        for (const entity of result.entities!) {
+            expect(entity.resolvedRepositoryUrl).toBeUndefined();
+        }
+    });
+
+    it('returns empty list when registry is not reachable', async () => {
+        const listService = ListService.createNullWithRegistry(descriptors, endpointEntries, ServiceReachable.No);
+
+        const result = await listService.getAasListEntities(10, undefined, 'registry');
+
+        expect(result.success).toBe(false);
+        expect(result).toHaveProperty('error');
+    });
+});
+
+describe('extractRepoBaseUrl', function () {
+    it('extracts base URL from AAS endpoint href', () => {
+        expect(extractRepoBaseUrl('https://repo.example.com/shells/abc123')).toBe('https://repo.example.com');
+    });
+
+    it('handles URL with path before /shells/', () => {
+        expect(extractRepoBaseUrl('https://repo.example.com/api/v3/shells/abc123')).toBe(
+            'https://repo.example.com/api/v3',
+        );
+    });
+
+    it('returns full URL if /shells/ not found', () => {
+        expect(extractRepoBaseUrl('https://repo.example.com/other/path')).toBe(
+            'https://repo.example.com/other/path',
+        );
     });
 });

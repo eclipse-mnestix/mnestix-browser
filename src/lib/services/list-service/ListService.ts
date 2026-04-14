@@ -13,11 +13,13 @@ import logger, { logInfo, logWarn } from 'lib/util/Logger';
 import { RepositoryWithInfrastructure } from '../database/InfrastructureMappedTypes';
 import { IRegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApiInterface';
 import { AssetAdministrationShellDescriptor } from 'lib/types/registryServiceTypes';
+import { AasRegistryEndpointEntryInMemory } from 'lib/api/registry-service-api/registryServiceApiInMemory';
 
 export type ListEntityDto = {
     aasId: string;
     assetId: string;
     thumbnail: string;
+    resolvedRepositoryUrl?: string;
 };
 
 export type NameplateValuesDto = {
@@ -99,6 +101,39 @@ export class ListService {
         );
     }
 
+    static createNullWithRegistry(
+        descriptors: AssetAdministrationShellDescriptor[],
+        endpointEntries: AasRegistryEndpointEntryInMemory[],
+        reachable = ServiceReachable.Yes,
+    ): ListService {
+        const repositoryWithInfrastructure = {
+            infrastructureName: 'null',
+            url: 'https://targetAasRegistryClient.com',
+        };
+        const targetAasRepositoryClient = AssetAdministrationShellRepositoryApi.createNull(
+            'https://targetAasRepositoryClient.com',
+            [],
+            reachable,
+        );
+        const targetSubmodelRepositoryClient = SubmodelRepositoryApi.createNull(
+            'https://targetAasRepositoryClient.com',
+            [],
+            reachable,
+        );
+        const targetAasRegistryClient = RegistryServiceApi.createNull(
+            'https://targetAasRegistryClient.com',
+            descriptors,
+            endpointEntries,
+            reachable,
+        );
+        return new ListService(
+            repositoryWithInfrastructure,
+            () => targetAasRepositoryClient,
+            () => targetSubmodelRepositoryClient,
+            () => targetAasRegistryClient,
+        );
+    }
+
     /**
      * Returns all AASs from the chosen repository.
      * Special Behaviour: If the AssetInformation contains a specificAssetId with the name "aasListFilterId",
@@ -109,7 +144,7 @@ export class ListService {
      * @param type
      */
     async getAasListEntities(limit: number, cursor?: string, type?: 'repository' | 'registry'): Promise<AasListDto> {
-        let assetAdministrationShells: AssetAdministrationShell[] = [];
+        let aasWithRepoUrls: { aas: AssetAdministrationShell; repoBaseUrl?: string }[] = [];
         let nextCursor: string | undefined;
 
         if (type === 'registry') {
@@ -138,15 +173,18 @@ export class ListService {
                     const host = new URL(this.repositoryWithInfrastructure.url).origin;
                     logWarn(this.log, 'getAasListEntities', `Descriptor with id "${descriptor.id}" does not contain a standardconform URL, trying a workaround. Please update your data.`);
                     hrefValue = host.concat(hrefValue);
-                }   
+                }
 
                 const endpoint = new URL(hrefValue);
                 const aasResponse = await targetAasRegistryClient.getAssetAdministrationShellFromEndpoint(endpoint);
-                return aasResponse.isSuccess ? aasResponse.result : null;
+                if (!aasResponse.isSuccess) return null;
+                return { aas: aasResponse.result, repoBaseUrl: extractRepoBaseUrl(hrefValue) };
             });
 
             const aasResults = await Promise.all(aasPromises);
-            assetAdministrationShells = aasResults.filter((aas): aas is AssetAdministrationShell => aas !== null);
+            aasWithRepoUrls = aasResults.filter(
+                (result): result is { aas: AssetAdministrationShell; repoBaseUrl: string } => result !== null,
+            );
         } else {
             logInfo(this.log, 'getAasListEntities', 'Fetching aas list from repository');
             const targetAasRepositoryClient = this.getTargetAasRepositoryClient();
@@ -157,21 +195,22 @@ export class ListService {
             }
 
             const { result: shells, paging_metadata } = response.result;
-            assetAdministrationShells = shells;
+            aasWithRepoUrls = shells.map((aas) => ({ aas }));
             nextCursor = paging_metadata?.cursor;
         }
 
-        const aasListDtos = assetAdministrationShells
-            .filter((aas) => {
+        const aasListDtos = aasWithRepoUrls
+            .filter(({ aas }) => {
                 const aasToRemove = aas.assetInformation?.specificAssetIds?.find(
                     (specificAssetId) => specificAssetId.name === 'aasListFilterId',
                 );
                 return !aasToRemove;
             })
-            .map((aas) => ({
+            .map(({ aas, repoBaseUrl }) => ({
                 aasId: aas.id,
                 assetId: aas.assetInformation?.globalAssetId ?? '',
                 thumbnail: aas.assetInformation?.defaultThumbnail?.path ?? '',
+                ...(repoBaseUrl ? { resolvedRepositoryUrl: repoBaseUrl } : {}),
             }));
 
         return { success: true, entities: aasListDtos, cursor: nextCursor };
@@ -237,4 +276,10 @@ export class ListService {
         // no nameplate found
         return { success: true, manufacturerProductDesignation: undefined, manufacturerName: undefined };
     }
+}
+
+export function extractRepoBaseUrl(aasEndpointHref: string): string {
+    const shellsIndex = aasEndpointHref.indexOf('/shells/');
+    if (shellsIndex === -1) return aasEndpointHref;
+    return aasEndpointHref.substring(0, shellsIndex);
 }

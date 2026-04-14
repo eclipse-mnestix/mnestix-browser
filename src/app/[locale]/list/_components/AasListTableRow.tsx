@@ -50,12 +50,18 @@ export const AasListTableRow = (props: AasTableRowProps) => {
     const t = useTranslations('pages.aasList');
     const env = useEnv();
     const locale = useLocale();
+
+    // When loaded from a registry, use the resolved repository URL for data fetching
+    const effectiveRepository: RepositoryWithInfrastructure = aasListEntry.resolvedRepositoryUrl
+        ? { ...repository, url: aasListEntry.resolvedRepositoryUrl }
+        : repository;
+
     const { data: nameplateValues, isLoading: isNameplateValueLoading } = useSWR(
-        [repository, aasListEntry.aasId],
+        [effectiveRepository, aasListEntry.aasId],
         async ([repo, aasId]) => await getNameplateValuesForAAS(repo, aasId),
     );
     const { data: thumbnailResponse } = useSWR(
-        [aasListEntry.aasId, repository],
+        [aasListEntry.aasId, effectiveRepository],
         async ([aasId, repo]) => await getThumbnailFromShell(aasId, repo),
         {
             revalidateIfStale: false,
@@ -103,7 +109,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
 
         if (isValidUrl(aasListEntry.thumbnail)) {
             setThumbnailUrl(aasListEntry.thumbnail);
-        } else if (aasListEntry.aasId && repository) {
+        } else if (aasListEntry.aasId && effectiveRepository) {
             if (thumbnailResponse?.isSuccess) {
                 const blob = mapFileDtoToBlob(thumbnailResponse?.result);
                 const blobUrl = URL.createObjectURL(blob);
