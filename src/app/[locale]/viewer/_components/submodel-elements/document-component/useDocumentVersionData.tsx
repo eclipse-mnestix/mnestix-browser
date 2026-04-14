@@ -15,7 +15,7 @@ import {
     DocumentSpecificSemanticIdIrdiV2,
     DocumentSpecificSemanticIdIrdiV3,
 } from './DocumentSemanticIds';
-import { isValidUrl } from 'lib/util/UrlUtil';
+import { encodeIdShortPath, isValidUrl } from 'lib/util/UrlUtil';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { findIdShortForLatestElement } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentUtils';
 import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
@@ -132,7 +132,7 @@ export function useFileViewObject(
                 DocumentSpecificSemanticIdIrdiV2.DigitalFile,
             );
             const submodelElementPath = `${submodelElement.idShort}.${fileSubmodelElement.idShort}.${idShort}`;
-            digitalFile.digitalFileUrl = `${aasOriginUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${submodelElementPath}/attachment`;
+            digitalFile.digitalFileUrl = `${aasOriginUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${encodeIdShortPath(submodelElementPath)}/attachment`;
             digitalFile.mimeType = (versionSubmodelEl as ModelFile).contentType;
         }
         return digitalFile;
@@ -153,7 +153,7 @@ export function useFileViewObject(
                 DocumentSpecificSemanticIdIrdiV2.PreviewFile,
             );
             const submodelElementPath = `${submodelElement.idShort}.${previewSubmodelElement?.idShort}.${idShort}`;
-            return `${aasOriginUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${submodelElementPath}/attachment`;
+            return `${aasOriginUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${encodeIdShortPath(submodelElementPath)}/attachment`;
         }
         return '';
     }
