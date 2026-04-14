@@ -32,3 +32,14 @@ export enum DocumentSpecificSemanticIdIrdiV2 {
     DigitalFile = '0173-1#02-ABK126#003',
     PreviewFile = '0173-1#02-ABK127#002',
 }
+
+/**
+ * Handover Documentation V3 (VDI 2770 with SubmodelElementLists)
+ * In V3 the structure uses SubmodelElementLists instead of directly nested collections.
+ */
+export enum DocumentSpecificSemanticIdIrdiV3 {
+    DocumentVersionsList = '0173-1#02-ABI503#003',
+    DigitalFilesList = '0173-1#02-ABK126#002',
+    DocumentClassificationsList = '0173-1#02-ABI502#003',
+    ClassName = '0173-1#02-ABJ219#002',
+}

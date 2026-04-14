@@ -14,6 +14,7 @@ export enum SubmodelElementSemanticIdEnum {
     ContactInformation = 'https://admin-shell.io/zvei/nameplate/1/0/ContactInformations/ContactInformation',
     Document = 'https://admin-shell.io/vdi/2770/1/0/Document',
     DocumentIrdi = '0173-1#02-ABI500#001/0173-1#01-AHF579#001',
+    DocumentListIrdiV3 = '0173-1#02-ABI500#003',
     GeneralInformation = 'https://admin-shell.io/ZVEI/TechnicalData/GeneralInformation/1/1',
     ProductClassifications = 'https://admin-shell.io/ZVEI/TechnicalData/ProductClassifications/1/1',
     ManufacturerName = '0173-1#02-AAO677#002',

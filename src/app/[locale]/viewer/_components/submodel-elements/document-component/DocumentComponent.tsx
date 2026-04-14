@@ -1,6 +1,6 @@
 import { InfoOutlined, OpenInNew } from '@mui/icons-material';
 import { Box, Button, IconButton, Typography } from '@mui/material';
-import { SubmodelElementCollection } from 'lib/api/aas/models';
+import { SubmodelElementCollection, SubmodelElementList } from 'lib/api/aas/models';
 import { DataRow } from 'components/basics/DataRow';
 import { useState } from 'react';
 import { findAllSubmodelElementsBySemanticIdsOrIdShort } from 'lib/util/SubmodelResolverUtil';
@@ -11,6 +11,7 @@ import { useFileViewObject } from 'app/[locale]/viewer/_components/submodel-elem
 import {
     DocumentSpecificSemanticId,
     DocumentSpecificSemanticIdIrdi,
+    DocumentSpecificSemanticIdIrdiV3,
 } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentSemanticIds';
 import { PreviewImage } from 'app/[locale]/viewer/_components/submodel-elements/document-component/PreviewImage';
 import { useSession } from 'next-auth/react';
@@ -20,10 +21,15 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { getFileUrl } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentUtils';
 import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 
-export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
+interface DocumentComponentProps extends CustomSubmodelElementComponentProps {
+    readonly documentIndex?: number;
+    readonly parentListIdShort?: string;
+}
+
+export function DocumentComponent(props: DocumentComponentProps) {
     const t = useTranslations('components.documentComponent');
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
-    const fileViewObject = useFileViewObject(props.submodelElement, props.submodelId);
+    const fileViewObject = useFileViewObject(props.submodelElement, props.submodelId, props.documentIndex, props.parentListIdShort);
     const [documentUrl, setDocumentUrl] = useState<string>('');
     const { data: session } = useSession();
     const currentAASContext = useCurrentAasContext();
@@ -50,6 +56,18 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
     };
 
     function getDocumentClassificationCollection() {
+        // V3: DocumentClassifications is a SubmodelElementList containing classification collections
+        const classificationsList = findAllSubmodelElementsBySemanticIdsOrIdShort(
+            props.submodelElement.value,
+            'DocumentClassifications',
+            [DocumentSpecificSemanticIdIrdiV3.DocumentClassificationsList],
+        );
+        if (classificationsList && classificationsList.length > 0) {
+            const list = classificationsList[0] as SubmodelElementList;
+            return (list.value ?? []) as SubmodelElementCollection[];
+        }
+
+        // V1/V2: DocumentClassification collections directly in the document
         const result = findAllSubmodelElementsBySemanticIdsOrIdShort(
             props.submodelElement.value,
             'DocumentClassification',

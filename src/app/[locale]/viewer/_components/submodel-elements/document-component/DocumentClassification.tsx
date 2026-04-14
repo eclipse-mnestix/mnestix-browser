@@ -3,6 +3,7 @@ import { findSubmodelElementBySemanticIdsOrIdShort, getTranslationValue } from '
 import {
     DocumentSpecificSemanticId,
     DocumentSpecificSemanticIdIrdi,
+    DocumentSpecificSemanticIdIrdiV3,
 } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentSemanticIds';
 import { useLocale, useTranslations } from 'next-intl';
 import { useMemo } from 'react';
@@ -31,6 +32,7 @@ export const DocumentClassification = (props: {
             const className = findSubmodelElementBySemanticIdsOrIdShort(classificationElement.value, 'ClassName', [
                 DocumentSpecificSemanticId.ClassName,
                 DocumentSpecificSemanticIdIrdi.ClassName,
+                DocumentSpecificSemanticIdIrdiV3.ClassName,
             ]);
 
             // The ClassName has to be a MultiLanguageProperty by the AAS standard, but Mnestix should not crash if it has a different type.

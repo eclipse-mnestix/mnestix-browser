@@ -13,6 +13,7 @@ import {
     DocumentSpecificSemanticId,
     DocumentSpecificSemanticIdIrdi,
     DocumentSpecificSemanticIdIrdiV2,
+    DocumentSpecificSemanticIdIrdiV3,
 } from './DocumentSemanticIds';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { encodeBase64 } from 'lib/util/Base64Util';
@@ -35,29 +36,49 @@ export type FileViewObject = {
 export function useFileViewObject(
     submodelElement: SubmodelElementCollection | SubmodelElementList,
     submodelId: string,
+    documentIndex?: number,
+    parentListIdShort?: string,
 ) {
     const locale = useLocale();
     const { aasOriginUrl } = useCurrentAasContext();
+    const isV3 = documentIndex !== undefined && parentListIdShort !== undefined;
 
-    function extractDocumentVersionData(documentVersion: SubmodelElementCollection, fileViewObject: FileViewObject) {
-        const title = findSubmodelElementBySemanticIdsOrIdShort(documentVersion.value, null, [
+    function extractDocumentVersionData(
+        documentVersion: SubmodelElementCollection,
+        fileViewObject: FileViewObject,
+        versionIndex?: number,
+    ) {
+        const title = findSubmodelElementBySemanticIdsOrIdShort(documentVersion.value, 'Title', [
             DocumentSpecificSemanticId.Title,
             DocumentSpecificSemanticIdIrdi.Title,
             DocumentSpecificSemanticIdIrdiV2.Title,
         ]);
         fileViewObject.title = getTranslationText(title as MultiLanguageProperty, locale);
 
-        const file = findSubmodelElementBySemanticIdsOrIdShort(documentVersion.value, 'DigitalFile', [
-            DocumentSpecificSemanticId.DigitalFile,
-            DocumentSpecificSemanticIdIrdi.DigitalFile,
-            DocumentSpecificSemanticIdIrdiV2.DigitalFile,
-        ]);
-        fileViewObject = file
-            ? {
-                  ...fileViewObject,
-                  ...getDigitalFile(file, documentVersion),
-              }
-            : fileViewObject;
+        // V3: DigitalFiles is a SubmodelElementList containing File elements
+        const digitalFilesList = findSubmodelElementBySemanticIdsOrIdShort(documentVersion.value, 'DigitalFiles', [
+            DocumentSpecificSemanticIdIrdiV3.DigitalFilesList,
+        ]) as SubmodelElementList | null;
+        if (digitalFilesList?.value && digitalFilesList.value.length > 0) {
+            const firstFile = digitalFilesList.value[0] as ModelFile;
+            fileViewObject = {
+                ...fileViewObject,
+                ...getDigitalFileV3(firstFile, versionIndex ?? 0),
+            };
+        } else {
+            // V1/V2: DigitalFile is directly in the version collection
+            const file = findSubmodelElementBySemanticIdsOrIdShort(documentVersion.value, 'DigitalFile', [
+                DocumentSpecificSemanticId.DigitalFile,
+                DocumentSpecificSemanticIdIrdi.DigitalFile,
+                DocumentSpecificSemanticIdIrdiV2.DigitalFile,
+            ]);
+            fileViewObject = file
+                ? {
+                      ...fileViewObject,
+                      ...getDigitalFile(file, documentVersion),
+                  }
+                : fileViewObject;
+        }
 
         const preview = findSubmodelElementBySemanticIdsOrIdShort(documentVersion.value, 'PreviewFile', [
             DocumentSpecificSemanticId.PreviewFile,
@@ -71,9 +92,26 @@ export function useFileViewObject(
             DocumentSpecificSemanticIdIrdi.OrganizationName,
             DocumentSpecificSemanticIdIrdiV2.OrganizationShortName,
         ]);
-        fileViewObject.organizationName = (organization as Property).value || '';
+        if (organization) {
+            fileViewObject.organizationName = (organization as Property).value || '';
+        }
 
         return fileViewObject;
+    }
+
+    function getDigitalFileV3(file: ModelFile, versionIndex: number) {
+        const digitalFile = {
+            digitalFileUrl: '',
+            mimeType: file.contentType || '',
+        };
+
+        if (isValidUrl(file.value)) {
+            digitalFile.digitalFileUrl = file.value || '';
+        } else if (submodelId && isV3) {
+            const submodelElementPath = `${parentListIdShort}[${documentIndex}].DocumentVersions[${versionIndex}].DigitalFiles[0]`;
+            digitalFile.digitalFileUrl = `${aasOriginUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${submodelElementPath}/attachment`;
+        }
+        return digitalFile;
     }
 
     function getDigitalFile(versionSubmodelEl: SubmodelElementChoice, fileSubmodelElement: SubmodelElementChoice) {
@@ -130,16 +168,31 @@ export function useFileViewObject(
         };
         if (!submodelElement?.value) return fileViewObject;
 
+        // V3: DocumentVersions is a SubmodelElementList containing version collections
+        const documentVersionsList = findSubmodelElementBySemanticIdsOrIdShort(
+            submodelElement.value,
+            'DocumentVersions',
+            [DocumentSpecificSemanticIdIrdiV3.DocumentVersionsList],
+        ) as SubmodelElementList | null;
+        if (documentVersionsList?.value && documentVersionsList.value.length > 0) {
+            const latestVersion = documentVersionsList.value[0] as SubmodelElementCollection;
+            if (latestVersion.value) {
+                fileViewObject = extractDocumentVersionData(latestVersion, fileViewObject, 0);
+            }
+            return fileViewObject;
+        }
+
+        // V1/V2: DocumentVersion is directly in the document collection
         const documentVersion = findSubmodelElementBySemanticIdsOrIdShort(submodelElement.value, 'DocumentVersion', [
             DocumentSpecificSemanticId.DocumentVersion,
             DocumentSpecificSemanticIdIrdi.DocumentVersion,
             DocumentSpecificSemanticIdIrdiV2.DocumentVersion,
         ]) as SubmodelElementCollection;
-        if (documentVersion.value) {
+        if (documentVersion?.value) {
             fileViewObject = extractDocumentVersionData(documentVersion, fileViewObject);
         }
         return fileViewObject;
-    }, [submodelElement, locale, aasOriginUrl, submodelId]);
+    }, [submodelElement, locale, aasOriginUrl, submodelId, documentIndex, parentListIdShort]);
 
     return fileViewObject;
 }

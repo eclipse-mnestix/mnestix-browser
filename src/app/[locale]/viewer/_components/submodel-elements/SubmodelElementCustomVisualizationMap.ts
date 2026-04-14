@@ -3,6 +3,7 @@ import { AddressComponent } from 'app/[locale]/viewer/_components/submodel-eleme
 import { ContactInformationComponent } from 'app/[locale]/viewer/_components/submodel-elements/address-component/ContactInformationComponent';
 import { MarkingsComponent } from 'app/[locale]/viewer/_components/submodel-elements/marking-components/MarkingsComponent';
 import { DocumentComponent } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentComponent';
+import { DocumentsListComponent } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentsListComponent';
 
 /**
  * This represents the mapping between the submodel elements and the submodel element components to be shown.
@@ -21,4 +22,5 @@ export const submodelElementCustomVisualizationMap = {
     [SubmodelElementSemanticIdEnum.MarkingsIrdiV3]: MarkingsComponent,
     [SubmodelElementSemanticIdEnum.Document]: DocumentComponent,
     [SubmodelElementSemanticIdEnum.DocumentIrdi]: DocumentComponent,
+    [SubmodelElementSemanticIdEnum.DocumentListIrdiV3]: DocumentsListComponent,
 };
