@@ -4,6 +4,7 @@ import url from 'url';
 import { Configuration } from './configuration';
 import { AssetAdministrationShell, Reference, Submodel } from 'lib/api/aas/models';
 import { encodeBase64 } from 'lib/util/Base64Util';
+import { encodeIdShortPath } from 'lib/util/UrlUtil';
 import {
     IAssetAdministrationShellRepositoryApi,
     ISubmodelRepositoryApi,
@@ -409,7 +410,7 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
         options: Omit<RequestInit, 'body' | 'method'> = {},
     ): Promise<ApiResponseWrapper<Response>> {
         options.headers = Object.assign({}, {}, options.headers);
-        const url = `${this.baseUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${idShortPath}`;
+        const url = `${this.baseUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${encodeIdShortPath(idShortPath)}`;
         const reqOptions = {
             ...options,
             method: 'DELETE',
@@ -613,7 +614,7 @@ export const SubmodelRepositoryApiFp = function (configuration?: Configuration) 
                     baseUrl +
                         `/submodels/{submodelIdentifier}/submodel-elements/{idShortPath}/attachment?fileName={fileName}`
                             .replace(`{submodelIdentifier}`, encodeBase64(String(submodelId)))
-                            .replace(`{idShortPath}`, attachmentDetails.idShortPath)
+                            .replace(`{idShortPath}`, encodeIdShortPath(attachmentDetails.idShortPath))
                             .replace(`{fileName}`, attachmentDetails.fileName ?? 'Document'),
                     localVarRequestOptions,
                 );
@@ -741,7 +742,7 @@ export const SubmodelRepositoryApiFetchParamCreator = function (configuration?: 
             }
             const localVarPath = `/submodels/{submodelId}/submodel-elements/{submodelElementPath}/attachment`
                 .replace(`{submodelId}`, encodeURIComponent(String(encodeBase64(submodelId))))
-                .replace(`{submodelElementPath}`, submodelElementPath);
+                .replace(`{submodelElementPath}`, encodeIdShortPath(submodelElementPath));
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
             const localVarHeaderParameter = {} as any;
@@ -768,7 +769,7 @@ export const SubmodelRepositoryApiFetchParamCreator = function (configuration?: 
             }
             const localVarPath = `/submodels/{submodelId}/submodel-elements/{idShortPath}/$value`
                 .replace(`{submodelId}`, encodeURIComponent(String(submodelId)))
-                .replace(`{idShortPath}`, String(idShortPath));
+                .replace(`{idShortPath}`, encodeIdShortPath(String(idShortPath)));
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
             const localVarHeaderParameter = {} as any;
