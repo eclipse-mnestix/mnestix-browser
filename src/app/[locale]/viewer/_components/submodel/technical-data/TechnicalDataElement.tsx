@@ -79,8 +79,9 @@ export const TechnicalDataElement = (props: {
         }
     }, [props.isExpanded, loadConceptDescriptions]);
 
-    const renderSubmodelElement = (element: SubmodelElementChoice) => {
+    const renderSubmodelElement = (element: SubmodelElementChoice, parentPath: string, index: number) => {
         const semanticId = element.semanticId?.keys?.[0]?.value || '';
+        const itemId = element.idShort || `${parentPath}-${index}`;
         switch (element.modelType) {
             case KeyTypes.Property: {
                 return (
@@ -102,7 +103,7 @@ export const TechnicalDataElement = (props: {
             case KeyTypes.SubmodelElementList:
                 return (
                     <TreeItem
-                        itemId={element.idShort || 'unknown'}
+                        itemId={itemId}
                         label={element.idShort}
                         sx={{
                             '&& .MuiTreeItem-label': {
@@ -112,9 +113,9 @@ export const TechnicalDataElement = (props: {
                         }}
                     >
                         {element?.value?.map(
-                            (child) =>
+                            (child, childIndex) =>
                                 child && (
-                                    <React.Fragment key={child.idShort}>{renderSubmodelElement(child)}</React.Fragment>
+                                    <React.Fragment key={child.idShort || childIndex}>{renderSubmodelElement(child, itemId, childIndex)}</React.Fragment>
                                 ),
                         )}
                     </TreeItem>
@@ -190,7 +191,7 @@ export const TechnicalDataElement = (props: {
         >
             {props.elements?.map(
                 (el, index) =>
-                    el && <React.Fragment key={`${el.idShort}_${index}`}>{renderSubmodelElement(el)}</React.Fragment>,
+                    el && <React.Fragment key={`${el.idShort}_${index}`}>{renderSubmodelElement(el, props.label, index)}</React.Fragment>,
             )}
         </TreeItem>
     );
