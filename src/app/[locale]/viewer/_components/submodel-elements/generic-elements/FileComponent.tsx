@@ -3,6 +3,7 @@ import { ModelFile } from 'lib/api/aas/models';
 import { useState } from 'react';
 import { getSanitizedHref } from 'lib/util/HrefUtil';
 import { isValidUrl } from 'lib/util/UrlUtil';
+import { encodeBase64 } from 'lib/util/Base64Util';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { getAttachmentFromSubmodelElement } from 'lib/services/submodel-repository-service/submodelRepositoryActions';
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
@@ -94,7 +95,7 @@ export function FileComponent({ file, submodelId, submodelElementPath, withPrevi
             setFileUrl(file.value);
         } else {
             if (submodelRepositoryUrl && submodelId && submodelElementPath) {
-                const attachmentUrl = `${submodelRepositoryUrl}/submodels/${encodeURIComponent(btoa(submodelId))}/submodel-elements/${submodelElementPath}/attachment`;
+                const attachmentUrl = `${submodelRepositoryUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${submodelElementPath}/attachment`;
                 try {
                     const resolvedUrl = await getFileUrl(attachmentUrl, session?.accessToken, {
                         infrastructureName: currentAASContext.infrastructureName || '',

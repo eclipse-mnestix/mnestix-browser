@@ -239,14 +239,15 @@ export function buildSubmodelElementPath(
     submodelElementPath: string | null | undefined,
     submodelElementIdShort: string | null | undefined,
 ): string {
-    let newSubmodelElementPath = '';
-
-    if (submodelElementPath) {
-        newSubmodelElementPath = newSubmodelElementPath.concat(submodelElementPath, '.');
+    if (!submodelElementIdShort) {
+        return submodelElementPath ?? '';
     }
 
-    newSubmodelElementPath = newSubmodelElementPath.concat(submodelElementIdShort ?? '');
-    return newSubmodelElementPath;
+    if (submodelElementPath) {
+        return `${submodelElementPath}.${submodelElementIdShort}`;
+    }
+
+    return submodelElementIdShort;
 }
 
 /**
