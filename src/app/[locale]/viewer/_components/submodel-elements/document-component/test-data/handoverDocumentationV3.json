@@ -1,0 +1,322 @@
+{
+  "modelType": "Submodel",
+  "kind": "Instance",
+  "semanticId": {
+    "keys": [
+      {
+        "type": "GlobalReference",
+        "value": "0173-1#01-AHF578#003"
+      }
+    ],
+    "type": "ExternalReference"
+  },
+  "administration": {
+    "revision": "0",
+    "version": "1"
+  },
+  "id": "https://example.com/sm/HandoverDocumentation",
+  "idShort": "HandoverDocumentation",
+  "submodelElements": [
+    {
+      "modelType": "SubmodelElementList",
+      "semanticId": {
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "0173-1#02-ABI500#003"
+          }
+        ],
+        "type": "ExternalReference"
+      },
+      "displayName": [
+        {
+          "language": "en",
+          "text": "Documents"
+        }
+      ],
+      "idShort": "Documents",
+      "orderRelevant": true,
+      "typeValueListElement": "SubmodelElementCollection",
+      "value": [
+        {
+          "modelType": "SubmodelElementCollection",
+          "semanticId": {
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "0173-1#02-ABI500#003/0173-1#01-AHF579#003"
+              }
+            ],
+            "type": "ExternalReference"
+          },
+          "displayName": [
+            {
+              "language": "en",
+              "text": "document"
+            }
+          ],
+          "idShort": "",
+          "value": [
+            {
+              "modelType": "SubmodelElementList",
+              "semanticId": {
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABI502#003"
+                  }
+                ],
+                "type": "ExternalReference"
+              },
+              "idShort": "DocumentClassifications",
+              "orderRelevant": true,
+              "typeValueListElement": "SubmodelElementCollection",
+              "value": [
+                {
+                  "modelType": "SubmodelElementCollection",
+                  "semanticId": {
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABI502#003/0173-1#01-AHF581#003"
+                      }
+                    ],
+                    "type": "ExternalReference"
+                  },
+                  "idShort": "",
+                  "value": [
+                    {
+                      "modelType": "Property",
+                      "semanticId": {
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "0173-1#02-ABH996#003"
+                          }
+                        ],
+                        "type": "ExternalReference"
+                      },
+                      "value": "CLS_MANUAL",
+                      "valueType": "xs:string",
+                      "idShort": "ClassId"
+                    },
+                    {
+                      "modelType": "MultiLanguageProperty",
+                      "semanticId": {
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "0173-1#02-ABJ219#002"
+                          }
+                        ],
+                        "type": "ExternalReference"
+                      },
+                      "value": [
+                        {
+                          "language": "en",
+                          "text": "General safety"
+                        },
+                        {
+                          "language": "de",
+                          "text": "Allgemeine Sicherheit"
+                        }
+                      ],
+                      "idShort": "ClassName"
+                    },
+                    {
+                      "modelType": "Property",
+                      "semanticId": {
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "0173-1#02-ABH997#003"
+                          }
+                        ],
+                        "type": "ExternalReference"
+                      },
+                      "value": "VDI2770 Blatt1:2020",
+                      "valueType": "xs:string",
+                      "idShort": "ClassificationSystem"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "modelType": "SubmodelElementList",
+              "semanticId": {
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABI503#003"
+                  }
+                ],
+                "type": "ExternalReference"
+              },
+              "idShort": "DocumentVersions",
+              "orderRelevant": true,
+              "typeValueListElement": "SubmodelElementCollection",
+              "value": [
+                {
+                  "modelType": "SubmodelElementCollection",
+                  "semanticId": {
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABI503#003/0173-1#01-AHF582#003"
+                      }
+                    ],
+                    "type": "ExternalReference"
+                  },
+                  "idShort": "",
+                  "value": [
+                    {
+                      "modelType": "MultiLanguageProperty",
+                      "semanticId": {
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "0173-1#02-ABG940#003"
+                          }
+                        ],
+                        "type": "ExternalReference"
+                      },
+                      "value": [
+                        {
+                          "language": "de",
+                          "text": "Kühlschrank Handbuch"
+                        },
+                        {
+                          "language": "en",
+                          "text": "Refrigerator User Manual"
+                        }
+                      ],
+                      "idShort": "Title"
+                    },
+                    {
+                      "modelType": "SubmodelElementList",
+                      "semanticId": {
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "0173-1#02-ABK126#002"
+                          }
+                        ],
+                        "type": "ExternalReference"
+                      },
+                      "idShort": "DigitalFiles",
+                      "orderRelevant": true,
+                      "typeValueListElement": "File",
+                      "value": [
+                        {
+                          "modelType": "File",
+                          "contentType": "application/pdf",
+                          "value": "https://example.com/files/manual.pdf",
+                          "semanticId": {
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "0173-1#02-ABK126#002"
+                              }
+                            ],
+                            "type": "ExternalReference"
+                          },
+                          "idShort": ""
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "modelType": "SubmodelElementCollection",
+          "semanticId": {
+            "keys": [
+              {
+                "type": "GlobalReference",
+                "value": "0173-1#02-ABI500#003/0173-1#01-AHF579#003"
+              }
+            ],
+            "type": "ExternalReference"
+          },
+          "displayName": [
+            {
+              "language": "en",
+              "text": "document"
+            }
+          ],
+          "idShort": "",
+          "value": [
+            {
+              "modelType": "SubmodelElementList",
+              "semanticId": {
+                "keys": [
+                  {
+                    "type": "GlobalReference",
+                    "value": "0173-1#02-ABI503#003"
+                  }
+                ],
+                "type": "ExternalReference"
+              },
+              "idShort": "DocumentVersions",
+              "orderRelevant": true,
+              "typeValueListElement": "SubmodelElementCollection",
+              "value": [
+                {
+                  "modelType": "SubmodelElementCollection",
+                  "semanticId": {
+                    "keys": [
+                      {
+                        "type": "GlobalReference",
+                        "value": "0173-1#02-ABI503#003/0173-1#01-AHF582#003"
+                      }
+                    ],
+                    "type": "ExternalReference"
+                  },
+                  "idShort": "",
+                  "value": [
+                    {
+                      "modelType": "SubmodelElementList",
+                      "semanticId": {
+                        "keys": [
+                          {
+                            "type": "GlobalReference",
+                            "value": "0173-1#02-ABK126#002"
+                          }
+                        ],
+                        "type": "ExternalReference"
+                      },
+                      "idShort": "DigitalFiles",
+                      "orderRelevant": true,
+                      "typeValueListElement": "File",
+                      "value": [
+                        {
+                          "modelType": "File",
+                          "contentType": "application/pdf",
+                          "value": "https://example.com/files/timeseries.pdf",
+                          "semanticId": {
+                            "keys": [
+                              {
+                                "type": "GlobalReference",
+                                "value": "0173-1#02-ABK126#002"
+                              }
+                            ],
+                            "type": "ExternalReference"
+                          },
+                          "idShort": ""
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

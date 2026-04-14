@@ -109,7 +109,7 @@ export function useFileViewObject(
             digitalFile.digitalFileUrl = file.value || '';
         } else if (submodelId && isV3) {
             const submodelElementPath = `${parentListIdShort}[${documentIndex}].DocumentVersions[${versionIndex}].DigitalFiles[0]`;
-            digitalFile.digitalFileUrl = `${aasOriginUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${submodelElementPath}/attachment`;
+            digitalFile.digitalFileUrl = `${aasOriginUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${encodeIdShortPath(submodelElementPath)}/attachment`;
         }
         return digitalFile;
     }
