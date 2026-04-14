@@ -171,6 +171,77 @@
       }
     ]
   },
+  "irdiTechnicalData": {
+    "id": "https://dsp.endress.com/sm/TechnicalData?date=1774531850#REFRI001",
+    "idShort": "TechnicalData",
+    "modelType": "Submodel",
+    "semanticId": {
+      "keys": [{ "type": "GlobalReference", "value": "0173-1#01-AHX837#002" }],
+      "type": "ExternalReference"
+    },
+    "submodelElements": [
+      {
+        "idShort": "GeneralInformation",
+        "semanticId": {
+          "keys": [{ "type": "GlobalReference", "value": "0173-1#02-ABK161#002/0173-1#01-AHX838#002" }],
+          "type": "ExternalReference"
+        },
+        "displayName": [
+          { "language": "de", "text": "Allgemeine Informationen" },
+          { "language": "en", "text": "General information" }
+        ],
+        "modelType": "SubmodelElementCollection",
+        "value": [
+          {
+            "idShort": "ManufacturerName",
+            "semanticId": {
+              "keys": [{ "type": "GlobalReference", "value": "0173-1#02-AAO677#004" }],
+              "type": "ExternalReference"
+            },
+            "value": "CoolTech Appliances",
+            "valueType": "xs:string",
+            "modelType": "Property"
+          }
+        ]
+      },
+      {
+        "idShort": "TechnicalPropertyAreas",
+        "semanticId": {
+          "keys": [{ "type": "GlobalReference", "value": "0173-1#02-ABK163#002" }],
+          "type": "ExternalReference"
+        },
+        "modelType": "SubmodelElementCollection",
+        "value": [
+          {
+            "idShort": "weight",
+            "semanticId": {
+              "keys": [{ "type": "GlobalReference", "value": "0173-1#02-AAQ808#006" }],
+              "type": "ExternalReference"
+            },
+            "value": "110 kg",
+            "valueType": "xs:float",
+            "modelType": "Property"
+          }
+        ]
+      },
+      {
+        "idShort": "ProductClassifications",
+        "semanticId": {
+          "keys": [{ "type": "GlobalReference", "value": "0173-1#02-ABK162#002" }],
+          "type": "ExternalReference"
+        },
+        "modelType": "SubmodelElementCollection",
+        "value": [
+          {
+            "idShort": "ClassificationSystem",
+            "value": "ECLASS",
+            "valueType": "xs:string",
+            "modelType": "Property"
+          }
+        ]
+      }
+    ]
+  },
   "unrecognizedData": {
     "id": "test-submodel-id",
     "idShort": "UnrecognizedData",

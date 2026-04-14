@@ -22,4 +22,5 @@ export const submodelCustomVisualizationMap = {
     [SubmodelSemanticIdEnum.BillOfApplications]: BillOfApplicationsDetail,
     [SubmodelSemanticIdEnum.TechnicalDataV11]: TechnicalDataDetail,
     [SubmodelSemanticIdEnum.TechnicalDataV12]: TechnicalDataDetail,
+    [SubmodelSemanticIdEnum.TechnicalDataIrdi]: TechnicalDataDetail,
 };

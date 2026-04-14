@@ -12,26 +12,29 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
     const t = useTranslations('components.technicalData');
     const [expandedItems, setExpandedItems] = useState<string[]>(['technicalProperties']);
 
-    const findSubmodelElementBySemanticIdOrIdShort = (semanticId: SubmodelElementSemanticIdEnum, idShort: string) =>
-        submodel.submodelElements?.find((el) => hasSemanticId(el, semanticId) || el.idShort === idShort) as
-            | SubmodelElementCollection
-            | undefined;
+    const findSubmodelElementBySemanticIdsOrIdShorts = (
+        semanticIds: SubmodelElementSemanticIdEnum[],
+        idShorts: string[],
+    ) =>
+        submodel.submodelElements?.find(
+            (el) => hasSemanticId(el, ...semanticIds) || idShorts.some((idShort) => el.idShort === idShort),
+        ) as SubmodelElementCollection | undefined;
 
-    const generalInformation = findSubmodelElementBySemanticIdOrIdShort(
-        SubmodelElementSemanticIdEnum.GeneralInformation,
-        'GeneralInformation',
+    const generalInformation = findSubmodelElementBySemanticIdsOrIdShorts(
+        [SubmodelElementSemanticIdEnum.GeneralInformation, SubmodelElementSemanticIdEnum.GeneralInformationIrdi],
+        ['GeneralInformation'],
     );
-    const technicalData = findSubmodelElementBySemanticIdOrIdShort(
-        SubmodelElementSemanticIdEnum.TechnicalProperties,
-        'TechnicalProperties',
+    const technicalData = findSubmodelElementBySemanticIdsOrIdShorts(
+        [SubmodelElementSemanticIdEnum.TechnicalProperties, SubmodelElementSemanticIdEnum.TechnicalPropertyAreas],
+        ['TechnicalProperties', 'TechnicalPropertyAreas'],
     );
-    const productClassifications = findSubmodelElementBySemanticIdOrIdShort(
-        SubmodelElementSemanticIdEnum.ProductClassifications,
-        'ProductClassifications',
+    const productClassifications = findSubmodelElementBySemanticIdsOrIdShorts(
+        [SubmodelElementSemanticIdEnum.ProductClassifications, SubmodelElementSemanticIdEnum.ProductClassificationsIrdi],
+        ['ProductClassifications'],
     );
-    const furtherInformation = findSubmodelElementBySemanticIdOrIdShort(
-        SubmodelElementSemanticIdEnum.FurtherInformation,
-        'FurtherInformation',
+    const furtherInformation = findSubmodelElementBySemanticIdsOrIdShorts(
+        [SubmodelElementSemanticIdEnum.FurtherInformation],
+        ['FurtherInformation'],
     );
 
     const cannotRenderTechnicalData =

@@ -95,6 +95,45 @@ describe('TechnicalDataDetail', () => {
         expect(screen.getByTestId('technical-data-element-generalInformation')).toBeInTheDocument();
     });
 
+    it('should render IRDI-based technical data with TechnicalPropertyAreas and IRDI semantic IDs', () => {
+        // Arrange
+        const submodel = technicalDataTestSubmodels.irdiTechnicalData as unknown as Submodel;
+
+        // Act
+        render(<TechnicalDataDetail submodel={submodel} />);
+
+        // Assert - TechnicalPropertyAreas should be rendered as technicalProperties
+        expect(screen.getByTestId('technical-data-element-technicalProperties')).toBeInTheDocument();
+        expect(screen.getByTestId('technical-data-element-generalInformation')).toBeInTheDocument();
+        expect(screen.getByTestId('technical-data-element-productClassifications')).toBeInTheDocument();
+        // No FurtherInformation in IRDI format
+        expect(screen.queryByTestId('technical-data-element-furtherInformation')).not.toBeInTheDocument();
+    });
+
+    it('should expand technicalProperties by default for IRDI-based technical data', () => {
+        // Arrange
+        const submodel = technicalDataTestSubmodels.irdiTechnicalData as unknown as Submodel;
+
+        // Act
+        render(<TechnicalDataDetail submodel={submodel} />);
+
+        // Assert
+        expect(screen.getByTestId('expanded-technicalProperties')).toHaveTextContent('Expanded');
+        expect(screen.getByTestId('expanded-generalInformation')).toHaveTextContent('Collapsed');
+        expect(screen.getByTestId('expanded-productClassifications')).toHaveTextContent('Collapsed');
+    });
+
+    it('should not show generic fallback when IRDI-based sections are found', () => {
+        // Arrange
+        const submodel = technicalDataTestSubmodels.irdiTechnicalData as unknown as Submodel;
+
+        // Act
+        render(<TechnicalDataDetail submodel={submodel} />);
+
+        // Assert
+        expect(screen.queryByTestId('generic-submodel-detail')).not.toBeInTheDocument();
+    });
+
     it('should use generic component when no recognized technical data elements are found', () => {
         // Arrange
         const submodel = technicalDataTestSubmodels.unrecognizedData as unknown as Submodel;
