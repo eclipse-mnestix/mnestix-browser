@@ -21,6 +21,7 @@ import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { useSearchParams } from 'next/navigation';
 import { useRouter, usePathname } from 'next/navigation'
 import { AssetKind } from 'lib/api/aas/models';
+import { withTimeout } from 'lib/util/timeoutWrapper';
 
 type AasListDataWrapperProps = {
     repositoryUrl?: string;
@@ -123,21 +124,34 @@ export default function AasListDataWrapper({ repositoryUrl, hideRepoSelection }:
         setIsLoadingList(true);
         clearResults();
 
-        // Load a large batch of data for caching
-        const response = await getAasListEntities(selectedRepository!, FETCH_LIMIT);
+        try {
+            // Add 15 second timeout for repository queries to prevent hanging on slow/misconfigured repos
+            const response = await withTimeout(
+                getAasListEntities(selectedRepository!, FETCH_LIMIT),
+                15000,
+                'Repository request timed out after 15 seconds',
+            );
 
-        if (response.success) {
-            setCachedAasList(response);
-            setLastRepository(selectedRepository || undefined);
-            applyFiltersAndPagination(response);
-        } else {
-            if ((response.error as ApiResponseWrapperError<AasListDto>).errorCode == ApiResultStatus.UNAUTHORIZED) {
-                setNeedAuthentication(true);
+            if (response.success) {
+                setCachedAasList(response);
+                setLastRepository(selectedRepository || undefined);
+                applyFiltersAndPagination(response);
             } else {
-                showError(response.error);
+                if ((response.error as ApiResponseWrapperError<AasListDto>).errorCode == ApiResultStatus.UNAUTHORIZED) {
+                    setNeedAuthentication(true);
+                } else {
+                    showError(response.error);
+                }
             }
+        } catch (error) {
+            if (error instanceof Error && error.message.includes('timed out')) {
+                showError('Repository request timed out. Please check if the repository is reachable.');
+            } else {
+                showError(error instanceof Error ? error.message : 'Failed to load repository data');
+            }
+        } finally {
+            setIsLoadingList(false);
         }
-        setIsLoadingList(false);
     };
 
     const applyFiltersAndPagination = (data: AasListDto) => {

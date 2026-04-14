@@ -37,14 +37,18 @@ export default function Page() {
      * When loading this page we need to fetch the following data:
      * 1. Connection Data from the Database
      * 2. Load Filter Parameters (done inside the Filter Component)
-     * 3. Load Products from the AAS Searcher
+     * 3. Load Products from the AAS Searcher (non-blocking)
      */
     useAsyncEffect(async () => {
         const connection = await fetchManufacturerData();
         if (connection && !connection.aasSearcher) {
             setFallbackToAasList(true);
         } else if (connection && connection.aasSearcher) {
-            await loadData(connection.aasSearcher);
+            // Load products non-blocking so page shows even if AAS Searcher is slow
+            loadData(connection.aasSearcher).catch((error) => {
+                console.error('Error loading catalog products:', error);
+                showError('Failed to load products from catalog');
+            });
         }
         setLoading(false);
     }, []);

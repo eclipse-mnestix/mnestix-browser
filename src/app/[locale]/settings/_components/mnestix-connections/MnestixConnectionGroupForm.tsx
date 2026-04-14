@@ -17,6 +17,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import AasList from 'app/[locale]/list/_components/AasList';
 import { AasListDto } from 'lib/services/list-service/ListService';
 import { getAasListEntities } from 'lib/services/list-service/aasListApiActions';
+import { withTimeout } from 'lib/util/timeoutWrapper';
 
 export type MnestixConnectionsGroupFormProps = {
     readonly defaultUrl: string | undefined;
@@ -50,7 +51,12 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
 
         while (hasMore) {
             try {
-                const result = await getAasListEntities(repoUrl, 100, cursor);
+                // Add timeout to prevent hanging on slow/unreachable repositories
+                const result = await withTimeout(
+                    getAasListEntities(repoUrl, 100, cursor),
+                    10000,
+                    'Repository item count request timed out',
+                );
                 if (result.success && result.entities) {
                     totalCount += result.entities.length;
                     cursor = result.cursor;
@@ -59,7 +65,7 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
                     hasMore = false;
                 }
             } catch (error) {
-                console.error('Error counting AAS items:', error);
+                console.error('Error counting AAS items:', error instanceof Error ? error.message : error);
                 hasMore = false;
             }
         }
@@ -71,10 +77,14 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
         // Load total count
         setIsLoadingItemCounts(prev => ({ ...prev, [index]: true }));
         try {
-            const totalCount = await getTotalItemCount(repoUrl);
+            const totalCount = await withTimeout(
+                getTotalItemCount(repoUrl),
+                30000, // 30 second overall timeout for counting all items
+                'Repository item count request timed out',
+            );
             setRepositoryItemCounts(prev => ({ ...prev, [index]: totalCount }));
         } catch (error) {
-            console.error('Error loading repository info:', error);
+            console.error('Error loading repository info:', error instanceof Error ? error.message : error);
             setRepositoryItemCounts(prev => ({ ...prev, [index]: null }));
         } finally {
             setIsLoadingItemCounts(prev => ({ ...prev, [index]: false }));
@@ -85,10 +95,15 @@ export function MnestixConnectionGroupForm(props: MnestixConnectionsGroupFormPro
         setSelectedRepositoryForPreview({ url: repoUrl, name: repoName });
         setIsLoadingAasList(true);
         try {
-            const result = await getAasListEntities(repoUrl, 25);
+            // Add timeout to prevent hanging when loading preview
+            const result = await withTimeout(
+                getAasListEntities(repoUrl, 25),
+                15000,
+                'Repository preview request timed out',
+            );
             setAasListData(result);
         } catch (error) {
-            console.error('Error loading AAS list:', error);
+            console.error('Error loading AAS list preview:', error instanceof Error ? error.message : error);
             setAasListData(undefined);
         } finally {
             setIsLoadingAasList(false);

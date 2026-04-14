@@ -5,6 +5,8 @@ import { FilterQuery } from 'app/[locale]/marketplace/catalog/_components/Filter
 import { createApolloClient } from 'lib/api/graphql/apolloClient';
 import { searchQuery, SearchResponse, SearchResponseEntry } from 'lib/api/graphql/catalogQueries';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { withTimeoutResponse } from 'lib/util/timeoutWrapper';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 const FilterKey = {
     ECLASS: 'ECLASS',
@@ -150,19 +152,29 @@ export async function searchProducts(
     filters?: FilterQuery[],
 ): Promise<ApiResponseWrapper<SearchResponseEntry[]>> {
     if (!aasSearcherUrl) {
-        return wrapErrorCode('NOT_FOUND', 'No aasSearcher URL provided');
+        return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'No aasSearcher URL provided');
     }
     const queryString = searchQuery(buildFilterInput(filters));
+    // eslint-disable-next-line no-console
     console.log('GraphQL Query:', queryString);
     const query = gql(queryString);
     try {
         const client = createApolloClient(aasSearcherUrl);
-        const { data } = await client.query<SearchResponse>({
+        const queryPromise = client.query<SearchResponse>({
             query,
         });
-        return wrapSuccess(data.entries);
+        // Add 10 second timeout for GraphQL queries to prevent hanging if aasSearcher is slow/unreachable
+        const result = await withTimeoutResponse(
+            queryPromise.then(result => wrapSuccess(result.data.entries)),
+            10000,
+            'GraphQL query timed out after 10 seconds',
+        );
+        return result;
     } catch (error) {
-        console.error('Error searching products:', JSON.stringify(error.result));
-        return wrapErrorCode('UNKNOWN_ERROR', error);
+        console.error('Error searching products:', error instanceof Error ? error.message : JSON.stringify(error));
+        if (error instanceof Error && error.message?.includes('timed out')) {
+            return wrapErrorCode(ApiResultStatus.GATEWAY_TIMEOUT, error.message);
+        }
+        return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, error instanceof Error ? error.message : 'Unknown error');
     }
 }
