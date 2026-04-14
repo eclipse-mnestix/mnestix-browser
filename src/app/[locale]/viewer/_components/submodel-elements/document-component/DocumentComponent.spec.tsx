@@ -26,7 +26,7 @@ describe('DocumentComponent - V3 Handover Documentation', () => {
         CustomRender(
             <GenericSubmodelDetailComponent
                 submodel={handoverDocV3 as unknown as Submodel}
-                submodelRepositoryUrl="https://example.com"
+                repositoryUrl="https://example.com"
             />,
         );
 
@@ -39,7 +39,7 @@ describe('DocumentComponent - V3 Handover Documentation', () => {
         CustomRender(
             <GenericSubmodelDetailComponent
                 submodel={handoverDocV3 as unknown as Submodel}
-                submodelRepositoryUrl="https://example.com"
+                repositoryUrl="https://example.com"
             />,
         );
 
@@ -52,7 +52,7 @@ describe('DocumentComponent - V3 Handover Documentation', () => {
         CustomRender(
             <GenericSubmodelDetailComponent
                 submodel={handoverDocV3 as unknown as Submodel}
-                submodelRepositoryUrl="https://example.com"
+                repositoryUrl="https://example.com"
             />,
         );
 
@@ -64,7 +64,7 @@ describe('DocumentComponent - V3 Handover Documentation', () => {
         CustomRender(
             <GenericSubmodelDetailComponent
                 submodel={handoverDocV3 as unknown as Submodel}
-                submodelRepositoryUrl="https://example.com"
+                repositoryUrl="https://example.com"
             />,
         );
 
@@ -77,7 +77,7 @@ describe('DocumentComponent - V3 Handover Documentation', () => {
         CustomRender(
             <GenericSubmodelDetailComponent
                 submodel={handoverDocV3 as unknown as Submodel}
-                submodelRepositoryUrl="https://example.com"
+                repositoryUrl="https://example.com"
             />,
         );
 

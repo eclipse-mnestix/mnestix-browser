@@ -41,7 +41,6 @@ export function useFileViewObject(
 ) {
     const locale = useLocale();
     const { aasOriginUrl } = useCurrentAasContext();
-    const isV3 = documentIndex !== undefined && parentListIdShort !== undefined;
 
     function extractDocumentVersionData(
         documentVersion: SubmodelElementCollection,
@@ -107,7 +106,7 @@ export function useFileViewObject(
 
         if (isValidUrl(file.value)) {
             digitalFile.digitalFileUrl = file.value || '';
-        } else if (submodelId && isV3) {
+        } else if (submodelId && documentIndex !== undefined && parentListIdShort !== undefined) {
             const submodelElementPath = `${parentListIdShort}[${documentIndex}].DocumentVersions[${versionIndex}].DigitalFiles[0]`;
             digitalFile.digitalFileUrl = `${aasOriginUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${encodeIdShortPath(submodelElementPath)}/attachment`;
         }
