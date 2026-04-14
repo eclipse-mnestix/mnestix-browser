@@ -1,12 +1,12 @@
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
-import { Box, Button, IconButton } from '@mui/material';
+import { Box, Button, IconButton, Typography } from '@mui/material';
 import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
+import { DataTypeDefXsd, Property } from 'lib/api/aas/models';
+import { useTranslations } from 'next-intl';
 import { BooleanPropertyEditComponent } from './data-specific/BooleanPropertyEditComponent';
-import { StringPropertyEditComponent } from './data-specific/StringPropertyEditComponent';
 import { DatePropertyEditComponent } from './data-specific/DatePropertyEditComponent';
 import { LongPropertyEditComponent } from './data-specific/LongPropertyEditComponent';
-import { useTranslations } from 'next-intl';
-import { DataTypeDefXsd, Property } from 'lib/api/aas/models';
+import { StringPropertyEditComponent } from './data-specific/StringPropertyEditComponent';
 
 interface PropertyEditComponentProps {
     data: Property;
@@ -52,6 +52,16 @@ export function PropertyEditComponent(props: PropertyEditComponentProps) {
 
     return (
         <>
+            <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mt: 1 }}>
+                <Typography variant="body2" color="text.secondary">
+                    {t('labels.valueType')}
+                </Typography>
+                <Box display="flex" alignItems="center">
+                    <Typography variant="subtitle2" sx={{ ml: 2 }}>
+                        {props.data.valueType}
+                    </Typography>
+                </Box>
+            </Box>
             <BlueprintEditSectionHeading type="defaultValue" />
             {defaultValueEnabled ? (
                 <Box display="flex" alignContent="center">

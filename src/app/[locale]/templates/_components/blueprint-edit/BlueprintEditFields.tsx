@@ -1,24 +1,25 @@
 import { Box, Typography } from '@mui/material';
 import { LockedTextField } from 'components/basics/LockedTextField';
-import { useEffect } from 'react';
-import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
-import { PropertyEditComponent } from './edit-components/property/PropertyEditComponent';
-import debounce from 'lodash/debounce';
 import {
-    ModelFile,
-    SubmodelElementChoice,
     KeyTypes,
+    ModelFile,
     MultiLanguageProperty,
     Property,
     Submodel,
+    SubmodelElementChoice,
 } from 'lib/api/aas/models';
-import { MappingInfoEditComponent } from './edit-components/mapping-info/MappingInfoEditComponent';
-import { MultiplicityEditComponent } from './edit-components/multiplicity/MultiplicityEditComponent';
-import { MultiLangEditComponent } from './edit-components/multi-lang/MultiLangEditComponent';
-import { SubmodelEditComponent } from './edit-components/SubmodelEditComponent';
-import { FileEditComponent } from './edit-components/file/FileEditComponent';
+import { SubmodelViewObject } from 'lib/types/SubmodelViewObject';
+import debounce from 'lodash/debounce';
 import { useTranslations } from 'next-intl';
-import { CollectionMappingInfoEditComponent } from '../template-edit/edit-components/collection-mapping-info/CollectionMappingInfoEditComponent';
+import { useEffect } from 'react';
+import { CollectionMappingInfoEditComponent } from './edit-components/collection-mapping-info/CollectionMappingInfoEditComponent';
+import { FileEditComponent } from './edit-components/file/FileEditComponent';
+import { FilterMappingInfoEditComponent } from './edit-components/filter-mapping-info/FilterMappingInfoEditComponent';
+import { MappingInfoEditComponent } from './edit-components/mapping-info/MappingInfoEditComponent';
+import { MultiLangEditComponent } from './edit-components/multi-lang/MultiLangEditComponent';
+import { MultiplicityEditComponent } from './edit-components/multiplicity/MultiplicityEditComponent';
+import { PropertyEditComponent } from './edit-components/property/PropertyEditComponent';
+import { SubmodelEditComponent } from './edit-components/SubmodelEditComponent';
 
 export type BlueprintEditFieldsProps = {
     blueprintPart?: SubmodelViewObject;
@@ -107,6 +108,18 @@ export function BlueprintEditFields(props: BlueprintEditFieldsProps) {
                 defaultValue={props.blueprintPart?.data?.idShort}
                 fullWidth
             />
+            {props.blueprintPart?.data?.modelType && (
+                <Box display="flex" alignItems="center" justifyContent="space-between" mt="16px">
+                    <Typography variant="body2" color="text.secondary">
+                        {t('labels.modelType')}
+                    </Typography>
+                    <Box display="flex" alignItems="center">
+                        <Typography variant="subtitle2" sx={{ ml: 2 }}>
+                            {props.blueprintPart.data.modelType}
+                        </Typography>
+                    </Box>
+                </Box>
+            )}
 
             {getRenderFields()}
 
@@ -121,6 +134,11 @@ export function BlueprintEditFields(props: BlueprintEditFieldsProps) {
                         data={props.blueprintPart.data}
                         onChange={debouncedOnTemplateDataChange}
                         key={'mapping-info-' + props.blueprintPart.data.idShort}
+                    />
+                    <FilterMappingInfoEditComponent
+                        data={props.blueprintPart.data}
+                        onChange={debouncedOnTemplateDataChange}
+                        key={'filter-mapping-info-' + props.blueprintPart.data.idShort}
                     />
                     <MultiplicityEditComponent
                         data={props.blueprintPart.data}

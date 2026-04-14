@@ -246,6 +246,7 @@
           "view": "Ver"
         },
         "idLabel": "ID:",
+        "idShortLabel": "idShort:",
         "noSubmodelsToLoad": "No existen submodels que cargar para este AAS.",
         "referenceCounter": {
           "count": "Recuento",
@@ -525,6 +526,11 @@
         "false": "falso",
         "true": "verdadero"
       },
+      "healthCheck": {
+        "label": "Estado del generador Mnestix AAS: ",
+        "refresh": "Actualizar estado"
+      },
+      "docsLink": "Haga clic aquí para acceder a la documentación sobre el uso y la creación de templates y blueprints.",
       "chooseAStartingPoint": "Elige una template como punto de inicio",
       "copyBlueprintId": "Copiar ID de la blueprint",
       "createNew": "Crear blueprint",
@@ -542,18 +548,22 @@
         "notAvailable": "-",
         "semanticId": "semanticId",
         "text": "Texto",
-        "value": "Valor"
+        "value": "Valor",
+        "modelType": "Tipo de modelo",
+        "valueType": "Tipo de valor"
       },
       "mappingInfo": "Información de mapeo",
-      "mappingInfoDescription": "Identificador arbitrario para importar sus datos.",
+      "mappingInfoDescription": "Expresión Jsonata que se puede usar para mapear valores durante las importaciones de datos. Tenga en cuenta que el resultado de la expresión debe tener el mismo tipo de datos que este SubmodelElement.",
       "collectionMappingInfo": "Información de mapeo de colección",
-      "collectionMappingInfoDescription": "Identificador arbitrario que puede usar para duplicar elementos en una colección durante las importaciones de datos.",
+      "collectionMappingInfoDescription": "Expresión JSON que puede usarse para duplicar SubmodelElements durante las importaciones de datos. La ruta especificada debe conducir a un array, por lo tanto terminar con [*].",
+      "filterMappingInfo": "Información de mapeo de filtro",
+      "filterMappingInfoDescription": "Expresión Jsonata que se puede usar para omitir o filtrar SubmodelElements durante las importaciones de datos. Tenga en cuenta que el resultado de la expresión debe ser booleano.",
       "messages": {
         "changesSavedSuccessfully": "Cambios guardados correctamente",
         "deleted": "eliminado"
       },
       "multiplicity": "Multiplicidad",
-      "multiplicityDescription": "Clasificador para identificar elementos obligatorios.",
+      "multiplicityDescription": "Opciones para seleccionar si un SubmodelElement es obligatorio u opcional, y si puede tener múltiples instancias. Esto se utiliza para la validación de datos durante las importaciones.",
       "noBlueprintsFound": "No se encontraron blueprints",
       "blueprintDeletedSuccessfully": "Blueprint eliminada correctamente",
       "noTemplatesWarning": "No hay templates disponibles. Solo se muestran blueprints.",

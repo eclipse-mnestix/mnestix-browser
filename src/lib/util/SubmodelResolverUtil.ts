@@ -31,6 +31,32 @@ export function getTranslationText(
     return langStrings.find((el) => el.language === locale)?.text || langStrings[0]?.text;
 }
 
+/**
+ * Gets the display name for a given locale from a displayName array.
+ * Returns undefined if no translation is found, allowing fallback to idShort.
+ * @param displayName - Array of language strings with language and text properties
+ * @param locale - The locale to get the display name for
+ * @returns The display name text for the given locale, then falls back to English or undefined if the selected language and English aren't found
+ */
+export function getDisplayNameForLocale(
+    displayName: AbstractLangString[] | undefined | null,
+    locale: string,
+): string | undefined {
+    if (!displayName?.length) {
+        return undefined;
+    }
+    const localeEntry = displayName.find((item) => item.language === locale);
+    const englishEntry = displayName.find((item) => item.language === 'en');
+
+    const text = localeEntry?.text ?? englishEntry?.text;
+
+    if (text === '') {
+        return undefined;
+    }
+
+    return text;
+}
+
 export function getTranslationValue(element: DataElementChoice, locale: string): string | null {
     switch (element.modelType) {
         case KeyTypes.MultiLanguageProperty:
@@ -213,14 +239,15 @@ export function buildSubmodelElementPath(
     submodelElementPath: string | null | undefined,
     submodelElementIdShort: string | null | undefined,
 ): string {
-    let newSubmodelElementPath = '';
-
-    if (submodelElementPath) {
-        newSubmodelElementPath = newSubmodelElementPath.concat(submodelElementPath, '.');
+    if (!submodelElementIdShort) {
+        return submodelElementPath ?? '';
     }
 
-    newSubmodelElementPath = newSubmodelElementPath.concat(submodelElementIdShort ?? '');
-    return newSubmodelElementPath;
+    if (submodelElementPath) {
+        return `${submodelElementPath}.${submodelElementIdShort}`;
+    }
+
+    return submodelElementIdShort;
 }
 
 /**
