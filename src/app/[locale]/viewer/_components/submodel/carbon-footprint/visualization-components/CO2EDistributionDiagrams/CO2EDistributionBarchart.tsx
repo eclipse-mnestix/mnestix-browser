@@ -18,7 +18,7 @@ export function CO2EBarchart(props: {
         .sort((a, b) => data[0][b]! - data[0][a]!)
         .map((val, index, arr) => (
             <Bar
-                dataKey={val}
+                dataKey={val as string}
                 stackId="a"
                 fill={getColorByIndex(theme.palette.primary.main, index, arr.length)}
                 key={index}
@@ -35,7 +35,7 @@ export function CO2EBarchart(props: {
                         content={(tooltipProps) => (
                             <CustomTooltipWithUnit
                                 active={tooltipProps.active}
-                                payload={tooltipProps.payload as Array<{ color: string; name: string; value: string }>}
+                                payload={tooltipProps.payload as ReadonlyArray<{ color: string; name: string; value: string }>}
                                 label={tooltipProps.label}
                                 unit={props.unit}
                             />
