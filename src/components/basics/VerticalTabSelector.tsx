@@ -149,7 +149,7 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
                                         maxWidth: '50vw',
                                     }}
                                 >
-                                    {item.label || ''}
+                                    {item.label ?? ''}
                                 </Typography>
                             </Box>
 

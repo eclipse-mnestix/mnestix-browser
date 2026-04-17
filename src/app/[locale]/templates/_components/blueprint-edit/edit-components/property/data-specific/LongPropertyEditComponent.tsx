@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { isValidLong } from 'lib/util/LongValidationUtil';
 import { useTranslations } from 'next-intl';
+import React from 'react';
 
 interface LongPropertyEditComponentProps {
     dataValue: string;
@@ -13,7 +14,7 @@ export function LongPropertyEditComponent(props: LongPropertyEditComponentProps)
     const [isValidInput, setIsValidInput] = useState(true);
     const t = useTranslations('pages.templates');
 
-    const onValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onValueChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         if (isValidLong(event.target.value) || event.target.value === '') {
             setData(event.target.value);
             props.onChange(event.target.value);
@@ -29,7 +30,7 @@ export function LongPropertyEditComponent(props: LongPropertyEditComponentProps)
         <TextField
             label={t('labels.value')}
             value={data}
-            onChange={onValueChange}
+            onBlur={onValueChange}
             fullWidth
             error={!isValidInput}
             helperText={!isValidInput && t('validation.errors.invalidLong')}

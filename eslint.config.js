@@ -6,7 +6,7 @@ import reactPlugin from 'eslint-plugin-react';
 import hooksPlugin from 'eslint-plugin-react-hooks';
 import nextPlugin from '@next/eslint-plugin-next';
 import formatjs from 'eslint-plugin-formatjs';
-import cypress from 'eslint-plugin-cypress/flat';
+import cypress from 'eslint-plugin-cypress';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
