@@ -1,31 +1,33 @@
-## Adding your Language to Mnestix
+# Adding Languages to Mnestix
 
-### Available Languages
+Contribute new language translations to Mnestix Browser.
+
+## Available Languages
 
 Currently, Mnestix Browser supports three languages, available from the language selector located on the top-right side:
 
--   English (default language)
--   Deutsch (German)
--   Español (Spanish)
+- English (default language)
+- Deutsch (German)
+- Español (Spanish)
 
-### Language conventions and format
+## Language Conventions and Format
 
 All languages added to the Mnestix browser follow some conventions in order to keep consistency and appearance, as well as
 providing an understandable interface across all languages.
-
 
 For writing style, we follow Carbon Design System's sentence-case taking into consideration the exceptions that each language
 might have.
 
 You can find more information about this on [Carbon Design System writing style](https://carbondesignsystem.com/guidelines/content/writing-style/)
 
-#### Translation agreements
+### Translation Agreements
+
 Additionally, some translation agreements have been made to make explicit the special characteristics that each language follows:
 
 - General translations:
 
 | Guideline                                                                                                                        | Example                                                                                                      |
-|----------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
+| -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | A translation should never change the meaning of a word or sentence.                                                             |                                                                                                              |
 | Translations should be consistent across the whole application (as long is it doesn’t make the translation less understandable). |                                                                                                              |
 | Established technical terms should always be preferred over literal translations.                                                | ‘User Interface’ instead of ‘Benutzeroberfläche’ <br>‘Asset Administration Shells’ should not be translated. |
@@ -36,7 +38,7 @@ Additionally, some translation agreements have been made to make explicit the sp
 - German translations:
 
 | Guideline                                                                                        | Example                                                                                               |
-|--------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
+| ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
 | For ‘Asset Administration Shell’ the established german word ‘Verwaltungsschale’ should be used. |                                                                                                       |
 | ‘AAS’ will stay ‘AAS’ and not be ‘VWS’.                                                          |                                                                                                       |
 | When addressing the user directly, we use the formal pronoun “Sie”                               | ‘You will find all AAS from your repository here.’ → ‘Hier finden Sie alle AAS aus Ihrem Repository.’ |
@@ -45,14 +47,17 @@ Additionally, some translation agreements have been made to make explicit the sp
 
 - Spanish translations:
 
-| Guideline                                                                                                 | Example                                                        |
-|-----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|
-| ‘AAS’ will stay ‘AAS’, there’s not an accepted and used translation in Spanish.                           |                                                                |
-| When possible, use the non-personal verbal form.                                                          | ‘Choose repository' → 'Escoger un repositorio’                 |
-| If a subject is needed, use the polite 3rd person (usted[es]). Omit the subject unless explicitly needed. | 'Choose repository' → (usted - omitted)'Escoja un repositorio' |
-| When possible, use inclusive word ending.                                                                 | ‘Welcome' → 'Bienvenido/a’                                     |
-| Spanish words for technical terms are only used if translation is well-known.                             | ‘Semantic ID’ stays the same<br/>‘template' → 'plantilla’      |
+| Guideline                                                                       | Example |
+| ------------------------------------------------------------------------------- | ------- |
+| ‘AAS’ will stay ‘AAS’, there’s not an accepted and used translation in Spanish. |         |
 
+## Related Documentation
+
+- [Contributing](Contributing)
+- [Getting Started with Developing](Getting-Started-with-Developing)| When possible, use the non-personal verbal form. | ‘Choose repository' → 'Escoger un repositorio’ |
+  | If a subject is needed, use the polite 3rd person (usted[es]). Omit the subject unless explicitly needed. | 'Choose repository' → (usted - omitted)'Escoja un repositorio' |
+  | When possible, use inclusive word ending. | ‘Welcome' → 'Bienvenido/a’ |
+  | Spanish words for technical terms are only used if translation is well-known. | ‘Semantic ID’ stays the same<br/>‘template' → 'plantilla’ |
 
 ### How do I add my own language to Mnestix?
 
@@ -60,9 +65,9 @@ Mnestix browser supports the addition of more languages locally.
 
 To add a language, changes are needed on:
 
--   ` src/locale` folder → Add JSON file with translations.
--   ` src/i18n/routing.ts` file → Add entry with language code for translations.
--   ` src/layout/LanguageSelector.tsx` file → Add entry with language code and complete language name.
+- ` src/locale` folder → Add JSON file with translations.
+- ` src/i18n/routing.ts` file → Add entry with language code for translations.
+- ` src/layout/LanguageSelector.tsx` file → Add entry with language code and complete language name.
 
 #### Add a JSON file with the translations
 
@@ -72,7 +77,7 @@ the two letter code for the language (i.e. English → en).
 To add a language create a file with these naming convention under ` src/locale` folder and copy the contents of another language
 file inside the same folder. Then, change the strings to your language for all the messages as in the example below:
 
--   In English version `en.json`
+- In English version `en.json`
 
 ```yaml
 'buttons':
@@ -87,7 +92,7 @@ file inside the same folder. Then, change the strings to your language for all t
     }
 ```
 
--   In German version `de.json`
+- In German version `de.json`
 
 ```yaml
 'buttons':

@@ -1,9 +1,18 @@
-> **Note:** Keycloak support is available starting from version 1.1.0 and above.
->
-> For Mnesitx API configuration details, please refer to the API documentation available
-> on [Docker Hub](https://hub.docker.com/r/mnestix/mnestix-api).
+# Keycloak Configuration
 
-### Setting Up Keycloak for Docker Development
+Set up and configure Keycloak authentication for Mnestix Browser.
+
+> [!NOTE]
+> Keycloak support is available starting from version 1.1.0 and above.
+> For Mnestix API configuration details, please refer to the API documentation on [Docker Hub](https://hub.docker.com/r/mnestix/mnestix-api).
+
+## Prerequisites
+
+1. **Docker** - For running Keycloak container
+2. **Docker Compose** - Version 1.29 or higher
+3. Access to [Getting Started with Developing](Getting-Started-with-Developing) environment
+
+## Setting Up Keycloak for Docker Development
 
 To start Mnestix along with Keycloak as the authorization server, use one of the following commands:
 
@@ -49,16 +58,17 @@ login credentials for this account are as follows:
 Additionally, two more test users have been configured to demonstrate role-based access control (RBAC):
 
 - **'mnestix-visitor'**: This user has access to only a specific Asset Administration Shell (AAS) with the ID **"https://vws.xitaso.com/aas/mnestix"**.
-  - **Username:** mnestix-visitor
-  - **Password:** mnestix
+
+    - **Username:** mnestix-visitor
+    - **Password:** mnestix
 
 - **'test-aas'**: This user can view AAS data but does not have permission to access submodel data.
-  - **Username:** test-aas
-  - **Password:** aas
+    - **Username:** test-aas
+    - **Password:** aas
 
 **Note:** These accounts are created solely for testing purposes and to showcase the RBAC implementation.
 
-### Configuration Variables for Keycloak Setup
+## Configuration Variables for Keycloak Setup
 
 `KEYCLOAK_LOCAL_URL`:
 
@@ -73,3 +83,10 @@ Additionally, two more test users have been configured to demonstrate role-based
 
 > ⚠️ **Important:** Ensure that you update any confidential variables from their default values before deploying to a
 > production environment.
+
+## Related Documentation
+
+- [Mnestix Configuration Settings](Mnestix-Configuration-Settings)
+- [Role-Based-Access-Control](Role-Based-Access-Control)
+- [Secret Environment Variables](Secret-Environment-Variables)
+- [Getting Started with Developing](Getting-Started-with-Developing)

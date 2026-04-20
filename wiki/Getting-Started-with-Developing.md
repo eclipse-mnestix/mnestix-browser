@@ -1,13 +1,17 @@
+# Getting Started with Developing
+
+## Quick Tip
+
 > [!TIP]
 > You may add `-d` to most `yarn docker:` scripts to start up the docker images in detached mode.
 > You will not see the output of every container, but just the startup status.
 > This might be of value if you use another service to monitor docker.
 
-### Development technologies
+## Development Technologies
 
 - Next.js
 
-### Prerequisites
+## Prerequisites
 
 Before you begin, ensure you have the following tools installed on your system:
 
@@ -24,7 +28,7 @@ Before you begin, ensure you have the following tools installed on your system:
 
 Windows users may use WSL for their docker instance.
 
-### Run Mnestix as Complete AAS Application
+## Option 1: Run as Complete AAS Application (Recommended)
 
 The easiest way to get Mnestix up and running is by using the prepared development environment.
 This setup includes:
@@ -46,7 +50,9 @@ This will build the Mnestix Browser and start all mentioned services with a defa
 have a look at [configuration](mnestix-configuration-settings).
 The Mnestix Browser is now running on http://localhost:3000.
 
-### Install Mnestix Browser from local build
+## Option 2: Run Mnestix Browser Locally from IDE
+
+### Option 2.1: Install Dependencies
 
 Install all packages for the frontend.
 
@@ -54,7 +60,7 @@ Install all packages for the frontend.
 yarn install
 ```
 
-### Run Mnestix through IDE
+### Option 2.2: Run with IDE Hot Reloading
 
 If you want to start the browser through your IDE separately start BaSyx and the backend with
 
@@ -78,6 +84,8 @@ If you want to activate debug breakpoints in the code, you may have to open the 
 
 You may need to set the initial URL to http://localhost:3000.
 
+## Available Yarn Scripts
+
 ### Other launch options
 
 To check what other options exist to run the Mnestix Browser, see the yarn scripts in `package.json`. Highlights are:
@@ -90,3 +98,10 @@ To check what other options exist to run the Mnestix Browser, see the yarn scrip
 - `yarn docker:prune` will stop all docker containers, remove them from the list and prune all volumes. Start with a
   blank slate :)
 - `yarn docker:keycloak` will setup a local keycloak instance and start Mnestix with keycloak support enabled
+
+## Related Documentation
+
+- [Mnestix Configuration Settings](Mnestix-Configuration-Settings)
+- [Docker Compose Files](Docker-Compose-Files)
+- [Keycloak Configuration](Keycloak-Configuration)
+- [Contributing](Contributing)
