@@ -20,11 +20,11 @@ export const DataRowWithUnit = React.memo(
 
         return (
             <>
-                <Box display="flex" flexDirection="row" mt={1} minHeight="30px">
-                    <Box component="span" sx={{ width: '60%', wordBreak: 'break-word' }} fontWeight="600">
+                <Box display="grid" gridTemplateColumns="60% 40%" mt={1} minHeight="30px">
+                    <Box component="span" sx={{ wordBreak: 'break-word', overflow: 'hidden' }} fontWeight="600">
                         {props.conceptDescriptionLoading ? props.submodelElement.idShort : label}
                     </Box>
-                    <Box width="40%" display={'flex'} alignItems="center">
+                    <Box display={'flex'} alignItems="center" sx={{ overflow: 'hidden' }}>
                         {props.children}
                     </Box>
                 </Box>

@@ -25,13 +25,15 @@ export function SubmodelElementCollectionComponent({
     }
     submodelElementCollection.value.forEach((val, index) => {
         componentList.push(
-            <GenericSubmodelElementComponent
-                key={index}
-                submodelElement={val}
-                hasDivider={!(index === 0)}
-                submodelId={submodelId}
-                submodelElementPath={submodelElementPath}
-            />,
+            <Box key={index} sx={{ display: 'grid', gridColumn: 'span 1' }}>
+                <GenericSubmodelElementComponent
+                    key={index}
+                    submodelElement={val}
+                    hasDivider={false}
+                    submodelId={submodelId}
+                    submodelElementPath={submodelElementPath}
+                />
+            </Box>,
         );
     });
 
@@ -39,9 +41,8 @@ export function SubmodelElementCollectionComponent({
         <Box
             sx={{
                 display: 'grid',
-                gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
-                gap: { xs: 1, sm: 2 },
-                alignItems: 'start',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(30%, 1fr))',
+                gap: 2,
             }}
         >
             {componentList}

@@ -26,7 +26,7 @@ export const TechnicalDataElement = (props: {
     label: string;
     header: string;
     isExpanded: boolean;
-    showUnits?: boolean
+    showUnits?: boolean;
 }) => {
     const t = useTranslations('pages.aasViewer.submodels');
     const [conceptDescriptions, setConceptDescriptions] = useState<Record<string, ConceptDescription>>({});
@@ -103,7 +103,8 @@ export const TechnicalDataElement = (props: {
                             property={element as Property}
                             withCopyButton={true}
                             conceptDescription={props.showUnits ? conceptDescriptions[semanticId] : undefined}
-                            conceptDescriptionLoading={props.showUnits ? loadingConceptDescriptions : undefined} />
+                            conceptDescriptionLoading={props.showUnits ? loadingConceptDescriptions : undefined}
+                        />
                     </DataRowWithUnit>
                 );
             }
@@ -119,18 +120,38 @@ export const TechnicalDataElement = (props: {
                             backgroundColor: '#fafafa',
                         }}
                     >
-                        <Typography variant="h5" sx={{ fontWeight: 600, mb: 1.5, fontSize: '0.95rem' }}>
+                        <Typography
+                            variant="h5"
+                            sx={{
+                                fontWeight: 600,
+                                mb: 1.5,
+                                fontSize: '0.95rem',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                            }}
+                        >
                             {element.idShort}
                         </Typography>
                         <Box
                             sx={{
                                 display: 'grid',
-                                gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(3, 1fr)' },
+                                gridTemplateColumns: 'repeat(auto-fit, minmax(50%, 1fr))',
                                 gap: 2,
+                                '& *': {
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap',
+                                },
                             }}
                         >
                             {(element as SubmodelElementCollection | SubmodelElementList)?.value?.map(
-                                (child) => child && <React.Fragment key={child.idShort}>{renderSubmodelElement(child)}</React.Fragment>,
+                                (child) =>
+                                    child && (
+                                        <React.Fragment key={child.idShort}>
+                                            {renderSubmodelElement(child)}
+                                        </React.Fragment>
+                                    ),
                             )}
                         </Box>
                     </Box>
@@ -141,12 +162,20 @@ export const TechnicalDataElement = (props: {
 
                 return (
                     <DataRowWithUnit submodelElement={element}>
-                        <Box height="24px" width="24px" overflow="hidden" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '3px', backgroundColor: '#f5f5f5', minWidth: '24px' }}>
-                            <FileComponent
-                                file={file}
-                                submodelId={props.submodelId}
-                                submodelElementPath={path}
-                            />
+                        <Box
+                            height="24px"
+                            width="24px"
+                            overflow="hidden"
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderRadius: '3px',
+                                backgroundColor: '#f5f5f5',
+                                minWidth: '24px',
+                            }}
+                        >
+                            <FileComponent file={file} submodelId={props.submodelId} submodelElementPath={path} />
                         </Box>
                     </DataRowWithUnit>
                 );
@@ -168,10 +197,7 @@ export const TechnicalDataElement = (props: {
             case KeyTypes.Range:
                 // Range still needs styling
                 return (
-                    <DataRowWithUnit
-                        submodelElement={element}
-                        conceptDescription={conceptDescriptions[semanticId]}
-                    >
+                    <DataRowWithUnit submodelElement={element} conceptDescription={conceptDescriptions[semanticId]}>
                         <GenericPropertyComponent
                             range={element as Range}
                             conceptDescription={props.showUnits ? conceptDescriptions[semanticId] : undefined}
@@ -206,12 +232,22 @@ export const TechnicalDataElement = (props: {
             <Box
                 sx={{
                     display: 'grid',
-                    gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(3, 1fr)' },
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(50%, 1fr))',
                     gap: 2,
                     p: 1,
+                    '& *': {
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                    },
                 }}
             >
-                {props.elements?.map((el, index) => el && <React.Fragment key={`${el.idShort}_${index}`}>{renderSubmodelElement(el)}</React.Fragment>)}
+                {props.elements?.map(
+                    (el, index) =>
+                        el && (
+                            <React.Fragment key={`${el.idShort}_${index}`}>{renderSubmodelElement(el)}</React.Fragment>
+                        ),
+                )}
             </Box>
         </Box>
     );
