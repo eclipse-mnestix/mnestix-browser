@@ -1,3 +1,9 @@
+# Maintaining Mnestix
+
+Guide for developers on maintaining and testing Mnestix Browser.
+
+## Development Environment Setup
+
 ### Setting up VSCode
 
 #### Extensions
@@ -9,11 +15,13 @@ VSCode will suggest to install them when opening the project.
 
 See `.vscode/settings.json` for defined workspace settings.
 
-### Setting up Rider
+### Setting up Rider (IntelliJ)
 
 Check the configurations for Rider under `.idea/` folder
 
-### Installing and adding/removing frontend packages
+### Installing and Adding/Removing Frontend Packages
+
+## Code Quality
 
 ### Formatting & Linting
 
@@ -41,7 +49,7 @@ yarn lint
 If you want specific files or folders to be excluded from linting (e.g. generated files), you can add them
 to `.eslintignore` and `.prettierignore`
 
-### Cypress Testing
+## End-to-End Testing with Cypress
 
 We use Cypress for End-to-End-Testing. In order to navigate to the right folder and run Cypress you can use the
 following command. In order to use cypress testing the Mnestix Browser must be running.
@@ -69,8 +77,14 @@ the `support` folder.
 Don't forget to write the method header of your custom commands inside the `e2e.ts` file as well. This way the IDE
 will stop marking your custom commands as wrong.
 
-### Reverse Proxy Configuration
+## Reverse Proxy Configuration
 
 The YARP proxy route `/repo/shells` now limits resource and list returns to 104 elements due to the lack of pagination
 support.
 This change aims to prevent server overload and ensure smoother navigation through resource lists.
+
+## Related Documentation
+
+- [Getting Started with Developing](Getting-Started-with-Developing)
+- [Contributing](Contributing)
+- [Docker Compose Files](Docker-Compose-Files)

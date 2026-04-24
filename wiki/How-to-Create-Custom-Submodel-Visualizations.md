@@ -1,6 +1,10 @@
-One of Mnestix’ goals is to make it as easy as possible to visualize data.
+# How to Create Custom Submodel Visualizations
 
-Out of the box, Mnestix offers a general visualization for submodels. Additionally, Mnestix offers a selection of tailored visualizations for standardized and not standardized submodels.
+Customize how Mnestix displays your submodels by creating your own React components.
+
+## Overview
+
+One of Mnestix' goals is to make it as easy as possible to visualize data. Out of the box, Mnestix offers a general visualization for submodels. Additionally, Mnestix offers a selection of tailored visualizations for standardized and not standardized submodels.
 Those include for example visualizations for the Product Carbon Footprint submodel, the Hierarchical Structures submodel and the Time Series submodel. Additionally, Mnestix provides tailored visualizations for a selection of submodel elements, such as Address components, Document components and Entity components.
 
 In order to realize your own use cases, Mnestix provides a means to implement your own custom visualizations for submodels and submodel elements.
@@ -13,7 +17,16 @@ The following steps will explain how you can provide these visualizations.
 > We encourage you to use this repository as a template for your own visualization.
 > Throughout this guide are tips based on this submodel visualization.
 
-# 1. Fork and Clone the Mnestix GitHub repository
+## Prerequisites
+
+1. **Git** - For cloning repositories
+2. **Node.js & Yarn** - For development
+3. **Docker** - For running Mnestix
+4. **GitHub account** - To fork the repository (optional if not contributing back)
+5. Familiarity with **React** and **TypeScript**
+6. See [Getting Started with Developing](Getting-Started-with-Developing) for full setup
+
+## Step 1: Fork and Clone the Mnestix GitHub Repository
 
 > [!NOTE]  
 > If you are not planning on contributing to Mnestix you can also skip the fork and directly clone the Mnestix repository. You will not be able to create branches and pull requests this way.
@@ -56,7 +69,7 @@ It might take a few extra seconds at the first time as node is building your pro
 > [!Tip]
 > You can try to find the Mnestix AAS in the list or search for it on the dashboard directly by entering its ID `https://vws.xitaso.com/aas/mnestix`.
 
-# 2. Create your React component
+## Step 2: Create Your React Component
 
 We suggest to create a directory for your submodel visualization inside `src/user-plugins/submodels`.
 
@@ -121,7 +134,7 @@ Important: Don’t forget to import your React component at the top of the file!
 >
 > <img src="https://github.com/user-attachments/assets/5dff3970-140c-4fba-9ed8-92822d160d22" width="75%">
 
-# 3. Reading data from your submodel
+## Step 3: Read Data from Your Submodel
 
 You probably want to display some information from the submodel.
 We provide you with a convenience method to search for a specific value in the submodel.
@@ -139,7 +152,7 @@ const value = findValueByIdShort(submodel.submodelElements, 'MyIDshort', 'en');
 
 It will automatically return the requested language value for a MultiLanguageProperty.
 
-# 4. Internationalization
+## Step 4: Add Internationalization (i18n)
 
 We support internationalization for both submodel data in MultiLanguageProperty fields as well as predefined messages.
 Make sure to import the correct hooks on top of the file.
@@ -199,7 +212,7 @@ For a full documentation of what is possible with next-intl visit their [website
 >
 > <img src="https://github.com/user-attachments/assets/e3d814ff-ceab-47a5-94c9-16afb518cb2f" width="75%">
 
-# 5. (Optional) Create a pull request
+## Step 5: Submit Your Visualization (Optional)
 
 Especially when you are creating a visualization for a standardized submodel, we encourage you to contribute it to the Open Source Mnestix repository, so that others can profit from it as well! This can be done by creating a pull request on the GitHub page, like seen in the following picture:
 
@@ -215,3 +228,9 @@ After you have created the pull request, it will get reviewed and merged, as soo
 
 In case you don’t want to share your visualization with the public, you don’t have to create the pull request. Just be aware, that your project will from now on live in its own repository and not automatically get any updates from the main repository.
 In order to get updates, you will have to manually merge the main repository in to your forked project with every new update. Furthermore, you have to build and publish the docker image by yourself if you wish to use your custom visualization in a productive environment.
+
+## Related Documentation
+
+- [Getting Started with Developing](Getting-Started-with-Developing)
+- [Contributing](Contributing)
+- [Feature Overview](Feature-Overview)
