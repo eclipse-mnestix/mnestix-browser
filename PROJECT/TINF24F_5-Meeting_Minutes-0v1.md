@@ -20,9 +20,11 @@
 | 1.11 | 13.03.2026 | Felix Hennerich | Clarifications about the upcoming tasks |
 | 1.12 | 20.03.2026 | Felix Hennerich | Sprint Planning & Risk Assessment |
 | 1.13 | 27.03.2026 | Felix Hennerich | Quality Control |
+| 1.14 | 10.04.2026 | Felix Hennerich | Code Freeze |
 
 
 ## Table of Contents
+- [Meeting 10.04.2026 - Code Freeze](#codefreeze)
 - [Meeting 27.03.2026 - Quality Control](#quality)
 - [Meeting 20.03.2026 - Sprint Planning & Risk Assessment](#followUpMeeting)
 - [Meeting 13.03.2026 - Clarifications about the upcoming tasks](#newTrimester)
@@ -36,6 +38,54 @@
 - [Meeting 10.10.2025 - Next Steps](#next-steps)
 - [Meeting 26.09.2025 - Conventions](#conventions)
 - [Meeting 19.09.2025 - Introduction](#intro)
+
+---
+
+<a id="codefreeze"></a>
+
+## Meeting 10.04.2026 - Code Freeze
+   No. | Topic                                   | Responsible           | Time (Min.) |
+ |-----|----------------------------------------|------------------------|-------------|
+ | 1   | Review of Code Freeze Compliance        | Gregor Gottschewski    | 15          |
+ | 2   | Identification of Remaining Bugs      | Jan Kruske             | 10          |
+ | 3   | Planning of Bug Fixes                   | All                    | 10          |
+ | 4   | Open Questions & Closing               | Felix Hennerich       | 5           |
+
+**Location:** DHBW Stuttgart
+**Date:** 10.04.2026
+
+**Duration:** 40 min
+
+**Moderator:** Felix Hennerich
+
+**Participants:**
+Julian Schumacher, Nils Schäffner, Felix Hennerich, Bruno Lange, Gregor Gottschewski, Robin Kelm, Jan Kruske
+
+
+### I. To-Do’s
+ | To-Do                                      | Responsible            | Deadline   |
+ |--------------------------------------------|------------------------|------------|
+ | Fix identified bugs                       | Gregor Gottschewski    | 14.04.2026 |
+ | Final review of documentation              | Jan Kruske             | 14.04.2026 |
+ | Prepare presentation for final review     | Felix Hennerich        | 15.04.2026 |
+
+
+### II. Objective
+
+The objective of this meeting was to review the **Code Freeze** status. The **Code Freeze was largely adhered to**, and the development is considered complete. Only a few minor bugs remain, which will be fixed by the specified deadline. The focus now shifts to final testing and documentation.
+
+**The following documents were discussed:**
+
+- **Bug List** – Status: Under review
+- **Software Test Plan (STP)** – Status: Finalized
+- **Software Architecture Document (SAD)** – Status: Finalized
+
+
+### III. Next Meeting
+
+The next meeting is scheduled for **17.04.2026** for the final review and presentation preparation.
+
+---
 
 <a id="quality"></a>  
 ## Meeting 27.03.2026 - Quality Control

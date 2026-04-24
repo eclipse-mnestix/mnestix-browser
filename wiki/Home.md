@@ -38,4 +38,14 @@ In the root directory run the following command and open http://localhost:3000 i
 docker compose up
 ```
 
-If you want to further configure your mnestix instance, read about [configuration](mnestix-configuration-settings).
+Open http://localhost:3000 in your web browser.
+
+If you want to further configure your mnestix instance, read about [configuration](Mnestix-Configuration-Settings).
+
+## Next Steps
+
+- **Starting to use Mnestix?** → Read [Use Mnestix](Use-Mnestix)
+- **Want to contribute to development?** → See [Getting Started with Developing](Getting-Started-with-Developing)
+- **Need to configure your instance?** → Check [Mnestix Configuration Settings](Mnestix-Configuration-Settings)
+- **Interested in features?** → Explore [Feature Overview](Feature-Overview)
+- **Want to contribute?** → Check [Contributing Guidelines](Contributing)

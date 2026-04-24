@@ -1,7 +1,10 @@
-In the following you will learn how you can use the AAS Generator together with the template builder to create AAS.
+# AAS Generator (Data Ingest Endpoint) Usage
+
+Learn how to use the AAS Generator together with the template builder to create Asset Administration Shells.
 
 ![General process](https://github.com/user-attachments/assets/7f087e28-3bac-496a-af60-31d4d9f9f158)
-### Prerequisites
+
+## Prerequisites
 
 To use this you need a fully configured Mnestix Browser and Mnestix API instance, like when starting our [`compose.yml` file](https://github.com/eclipse-mnestix/mnestix-browser/blob/main/compose.yml).
 For beginners we recommend to use Mnestix API without additional Authentication as it complicates using the AAS Generator.
@@ -10,27 +13,28 @@ For beginners we recommend to use Mnestix API without additional Authentication 
 - Mnestix Browser
 - A way to call HTTP endpoints (Python, Insomnia, ...)
 
-### 1. Setup
+## Step 1: Setup
 
-Setup a full Mnestix Infrastructure deployment by running `docker compose -f `[`compose.yml`](https://github.com/eclipse-mnestix/mnestix-browser/blob/main/compose.yml)` up`. 
+Setup a full Mnestix Infrastructure deployment by running `docker compose -f `[`compose.yml`](https://github.com/eclipse-mnestix/mnestix-browser/blob/main/compose.yml)` up`.
 This will start everything.
 
-### 2. Creating a Data JSON using ETL tools
+## Step 2: Create Data JSON Using ETL Tools
 
 The Data JSON comes from an ETL (Extract Transform Load) Tool, like [Apache Camel](https://camel.apache.org/) (Open Source), [Soffico Orchestra](https://soffico.de/produkte/) (Paid) or similar tools.
 Example data that is extracted from your existing system could look like this
+
 ```json
 {
     "basis": {
         "serialnumber": "123",
         "manufacturer": "ACME Corp",
-        "modelName": "ProductXYZ",
+        "modelName": "ProductXYZ"
     },
     "productionDate": "2023-05-15"
 }
 ```
 
-### 3. Generate Submodel Template in Mnestix Browser
+## Step 3: Generate Submodel Template in Mnestix Browser
 
 A template can be generated, by accessing the Template Builder in the Menu under "Templates".
 This opens a Menu to see all already generated templates.
@@ -48,26 +52,30 @@ You can find the identification of the Template in the URL after .../templates:
 
 Afterwards click "Save Changes" to save the changes.
 
-### 4. Make a request 
+## Related Documentation
+
+- [Mnestix API Documentation](Mnestix-API-Documentation)
+- [Mnestix Configuration Settings](Mnestix-Configuration-Settings)
+
+### 4. Make a request
 
 To create a submodel from that template you can call the corresponding endpoint in the API:
 `/api/DataIngest/{base64EncodedAasId}`
 You have to be authenticated (Adding the preconfigured API Key as a "ApiKey" Header)
 As the body you can use the defined data JSON from step 2 and append it with the corresponding template IDs.
 In our exmample it would look like this:
+
 ```json
 {
-  "data": {
-    "basis": {
-        "serialnumber": "123",
-        "manufacturer": "ACME Corp",
-        "modelName": "ProductXYZ",
+    "data": {
+        "basis": {
+            "serialnumber": "123",
+            "manufacturer": "ACME Corp",
+            "modelName": "ProductXYZ"
+        },
+        "productionDate": "2023-05-15"
     },
-    "productionDate": "2023-05-15"
-},
-  "customTemplateIds": [
-    "Nameplate_Template_7e18dcd0-c367-4626-a97e-be44f5fe1852"
-  ]
+    "customTemplateIds": ["Nameplate_Template_7e18dcd0-c367-4626-a97e-be44f5fe1852"]
 }
 ```
 

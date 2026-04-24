@@ -1,27 +1,39 @@
-### Role Based Access Control (RBAC)
+# Role-Based Access Control (RBAC)
+
+Implement role-based access control for Mnestix Browser using Keycloak or Azure Entra ID.
+
+## Overview
 
 Mnestix currently uses a basic RBAC approach when `AUTHENTICATION_FEATURE_FLAG` is set to `true`.
 
-A not logged-in user is allowed to see the following pages with all features:
+### Access Levels
+
+#### Not Logged-In Users
+
+Allowed to see the following pages with all features:
 
 - Dashboard, List (Note: If the BaSyx repository requires authentication, no data will be displayed.)
 
-Every logged-in user is allowed to visit following pages:
+#### Logged-In Users
 
-- Dashboard, List, Templates
+Allowed to visit the following pages:
 
-If a logged-in user has the 'mnestix-admin' role set, the user is able to visit following pages:
+#### Admin Users (mnestix-admin role)
+
+If a logged-in user has the 'mnestix-admin' role set, the user is able to visit the following pages:
 
 - Dashboard, List, Templates, Settings (ID Settings, Data Sources, Role Management)
 
-### Configuring RBAC:
+## Configuration
+
+### Basic Configuration
 
 Since we support Keycloak and Azure Entra ID as authentication providers, you are able to configure mnestix roles in
 both of them.
 To do so, create the role `mnestix-admin` in either Keycloak or Azure Entra ID and assign it to a chosen user.  
 Nothing needs to be configured inside Mnestix.
 
-### Keycloak
+### Configuration with Keycloak
 
 The default Mnestix realm is preconfigured with the **'mnestix-admin'** role. To grant this role to another user, follow these steps:
 
@@ -31,7 +43,7 @@ The default Mnestix realm is preconfigured with the **'mnestix-admin'** role. To
 4. Use the **Filter by Clients** option and select **mnestix-browser-client-demo mnestix-admin**.
 5. Assign the **'mnestix-admin'** role to the user.
 
-### Dynamic Role Based Access Control
+## Dynamic Role-Based Access Control
 
 To change roles and repository permissions during runtime, we use the Basyx security repository and security submodel.
 If set up correctly with the corresponding docker compose file
@@ -41,3 +53,9 @@ and their permissions to AAS IDs or Submodel IDs on the Settings UI under the ro
 In future implementations it will also be possible to change these roles and permissions in the UI.
 More information about the Basyx role based access control management can be found
 [here](https://github.com/eclipse-basyx/basyx-java-server-sdk/tree/main/examples/BaSyxDynamicRBAC).
+
+## Related Documentation
+
+- [Keycloak Configuration](Keycloak-Configuration)
+- [Mnestix Configuration Settings](Mnestix-Configuration-Settings)
+- [Getting Started with Developing](Getting-Started-with-Developing)
