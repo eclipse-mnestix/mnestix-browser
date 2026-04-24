@@ -21,9 +21,11 @@
 | 1.12 | 20.03.2026 | Felix Hennerich | Sprint Planning & Risk Assessment |
 | 1.13 | 27.03.2026 | Felix Hennerich | Quality Control |
 | 1.14 | 10.04.2026 | Felix Hennerich | Code Freeze |
+| 1.15 | 24.04.2026 | Felix Hennerich | Presentation & Discussion |
 
 
 ## Table of Contents
+- [Meeting 24.04.2026 - Code Freeze](#prepras)
 - [Meeting 10.04.2026 - Code Freeze](#codefreeze)
 - [Meeting 27.03.2026 - Quality Control](#quality)
 - [Meeting 20.03.2026 - Sprint Planning & Risk Assessment](#followUpMeeting)
@@ -38,6 +40,61 @@
 - [Meeting 10.10.2025 - Next Steps](#next-steps)
 - [Meeting 26.09.2025 - Conventions](#conventions)
 - [Meeting 19.09.2025 - Introduction](#intro)
+
+---
+
+<a id="prepras"></a>
+
+## Meeting 24.04.2026 - Code Freeze
+   No. | Topic                                   | Responsible           | Time (Min.) |
+ |-----|----------------------------------------|------------------------|-------------|
+ | 1   | Talk about the presentation       | Julian Schumacher    | 45          |
+ | 2   | Discuss a couple of issues | Felix Hennerich & Julian Schumacher | 15 |
+
+
+**Location:** DHBW Stuttgart
+**Date:** 24.04.2026
+
+**Duration:** 60 min
+
+**Moderator:** Felix Hennerich
+
+**Participants:**
+Julian Schumacher, Nils Schäffner, Felix Hennerich, Bruno Lange, Gregor Gottschewski, Jan Kruske
+
+### I. To-Do’s
+ | To-Do                                      | Responsible            | Deadline   |
+ |--------------------------------------------|------------------------|------------|
+ | Prepare Presentation (Introduction & Master Use Case) | Gregor Gottschewski    | 05.05.2026 |
+ | Prepare Black Box Presentation             | Felix Hennerich       | 05.05.2026 |
+ | Prepare Tools/White Box/Architecture        | Bruno Lange           | 05.05.2026 |
+ | Prepare Testing Section                     | Nils Schäffner        | 05.05.2026 |
+ | Prepare Test Review & Results               | Jan Kruske             | 05.05.2026 |
+ | Prepare Live Demo                           | Julian Schumacher     | 05.05.2026 |
+ | Prepare Conclusion & Outlook                | Robin                 | 05.05.2026 |
+
+
+### II. Objective
+
+The objective of this meeting was to present the Mnestix project and assign presentation sections among team members. Mnestix is a browser for Asset Administration Shells (AAS), based on the Industry 4.0 standard. The application features AI-based search, is a web application, and supports multiple repositories, linked AAS, SBOM (Software Bill of Materials), and climate impact assessment.
+
+
+### III. Meeting Notes
+
+- **Key Topics:**
+  - What is Mnestix?
+  - Division of presentation sections
+  - Responsibilities and deadlines
+
+- **Highlights:**
+  - Each team member is responsible for a specific part of the presentation.
+  - The deadline for preparing all presentation sections is **05/05/2026**.
+
+
+### IV. Next Meeting
+
+The next meeting is scheduled for **08.05.2026**. Topic: **Final rehearsal of the presentation**.
+
 
 ---
 
@@ -83,7 +140,7 @@ The objective of this meeting was to review the **Code Freeze** status. The **Co
 
 ### III. Next Meeting
 
-The next meeting is scheduled for **17.04.2026** for the final review and presentation preparation.
+The next meeting is scheduled for **24.04.2026** for the final review and presentation preparation.
 
 ---
 
