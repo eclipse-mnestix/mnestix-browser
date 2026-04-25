@@ -80,9 +80,12 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
                     [classes.focused]: focused,
                     [classes.disabled]: disabled,
                 })}
-                onClick={handleExpansionClick}
+                onClick={assetId && !showDataDirectly ? handleAssetNavigateClick : handleExpansionClick}
                 ref={ref as React.Ref<HTMLDivElement>}
                 data-testid="bom-entity"
+                sx={{
+                    cursor: assetId && !showDataDirectly ? 'pointer' : 'default',
+                }}
             >
                 <ExpandableTreeitem
                     icon={iconProp}
@@ -94,19 +97,25 @@ const CustomContent = React.forwardRef(function CustomContent(props: CustomTreeI
                 />
                 <Box sx={{ ml: 'auto', pl: 1, display: 'flex' }}>
                     {assetId && !showDataDirectly && (
-                        <>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                '&:hover': {
+                                    backgroundColor: 'action.hover',
+                                    borderRadius: '4px',
+                                },
+                                padding: '4px 8px',
+                            }}
+                        >
                             <IconButton sx={{ mr: 1 }} onClick={handleDetailsClick}>
                                 <InfoOutlined data-testid="entity-info-icon" sx={{ color: 'text.secondary' }} />
                             </IconButton>
-                            <Button
-                                endIcon={<ArrowForward />}
-                                size="small"
-                                onClick={handleAssetNavigateClick}
-                                data-testid="view-asset-button"
-                            >
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                 {t('actions.view')}
-                            </Button>
-                        </>
+                                <ArrowForward />
+                            </Box>
+                        </Box>
                     )}
                     {showDataDirectly && (
                         <GenericSubmodelElementComponent submodelElement={data} wrapInDataRow={false} />
