@@ -24,12 +24,20 @@ export function ManufacturerCard({ connection }: ManufacturerCardProps) {
     useAsyncEffect(async () => {
         setIsLoading(true);
         try {
-            if (connection && connection.aasSearcher) {
+            if (connection?.aasSearcher) {
                 const data = await searchProducts(connection.aasSearcher);
-                setResultCount(Array.isArray(data.result) ? data.result.length : 0);
+                if (data.isSuccess && Array.isArray(data.result)) {
+                    setResultCount(data.result.length);
+                } else {
+                    console.error('Error fetching article count: Repository returned error');
+                    setResultCount(null);
+                }
+            } else {
+                setResultCount(null);
             }
         } catch (error) {
-            console.error('Error fetching article count:', error);
+            console.error('Error fetching article count:', error instanceof Error ? error.message : 'Unknown error');
+            setResultCount(null);
         } finally {
             setIsLoading(false);
         }
