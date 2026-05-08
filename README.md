@@ -101,6 +101,8 @@ The technical data view has been overhauled: columns are now correctly formatted
   <img src="public/technicaldata.jpeg" alt="Technical Data View" width="60%"/>
 </div>
 
+**Associated Requirements:**
+- [SRS-FR-UI-002 TechnicalData Submodel Formatting](/PROJECT/TINF24F_5-SRS.md#srs-fr-ui-002-technicaldata-submodel-formatting)
 ---
 
 ### Further Improvements
