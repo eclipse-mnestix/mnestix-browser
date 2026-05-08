@@ -194,29 +194,29 @@ Verification methods:
 1. [SRS-FR-LOGI-001 - Login Status Display](#srs-fr-logi-001-login-status-display)
 2. [SRS-FR-LOGI-002 - Login Button Functionality](#srs-fr-logi-002-login-button-functionality)
 
-**AAS List**
-3. [SRS-FR-LIST-001 - Changed AAS Columns](#srs-fr-list-001-changed-aas-columns)
-4. [SRS-FR-LIST-002 - AAS List Filtering](#srs-fr-list-002-aas-list-filtering)
-5. [SRS-FR-LIST-003 - AAS List Sorting](#srs-fr-list-003-aas-list-sorting)
+**AAS List**  
+3. [SRS-FR-LIST-001 - Changed AAS Columns](#srs-fr-list-001-changed-aas-columns)  
+4. [SRS-FR-LIST-002 - AAS List Filtering](#srs-fr-list-002-aas-list-filtering)  
+5. [SRS-FR-LIST-003 - AAS List Sorting](#srs-fr-list-003-aas-list-sorting)  
 
-**E-Shop-Feature**
-6. [SRS-FR-SHOP-001 - Cart View Access](#srs-fr-shop-001-cart-view-access)
-7. [SRS-FR-SHOP-002 - Cart Products](#srs-fr-shop-002-cart-products)
-8. [SRS-FR-SHOP-003 - Cart Quantity](#srs-fr-shop-003-cart-quantity)
-9. [SRS-FR-SHOP-004 - Add to Cart Button](#srs-fr-shop-004-add-to-cart-button)
-10. [SRS-FR-SHOP-005 - Cart Count Indicator](#srs-fr-shop-005-cart-count-indicator)
-11. [SRS-FR-SHOP-006 - Shop Feature Configuration](#srs-fr-shop-006-shop-feature-configuration)
-12. [SRS-FR-SHOP-007 - Product Price Display](#srs-fr-shop-007-product-price-display)
+**E-Shop-Feature**  
+6. [SRS-FR-SHOP-001 - Cart View Access](#srs-fr-shop-001-cart-view-access)  
+7. [SRS-FR-SHOP-002 - Cart Products](#srs-fr-shop-002-cart-products)  
+8. [SRS-FR-SHOP-003 - Cart Quantity](#srs-fr-shop-003-cart-quantity)  
+9. [SRS-FR-SHOP-004 - Add to Cart Button](#srs-fr-shop-004-add-to-cart-button)  
+10. [SRS-FR-SHOP-005 - Cart Count Indicator](#srs-fr-shop-005-cart-count-indicator)  
+11. [SRS-FR-SHOP-006 - Shop Feature Configuration](#srs-fr-shop-006-shop-feature-configuration)  
+12. [SRS-FR-SHOP-007 - Product Price Display](#srs-fr-shop-007-product-price-display)  
 
-**CD-Repositories**
-13. [SRS-FR-CONFIG-001 - CD Repository Configuration](#srs-fr-config-001-cd-repository-configuration)
-14. [SRS-FR-CONFIG-002 - CD Repository Content Inspection](#srs-fr-config-002-cd-repository-content-inspection)
+**CD-Repositories**  
+13. [SRS-FR-CONFIG-001 - CD Repository Configuration](#srs-fr-config-001-cd-repository-configuration)  
+14. [SRS-FR-CONFIG-002 - CD Repository Content Inspection](#srs-fr-config-002-cd-repository-content-inspection)  
 
-**Minor UI changes**
+**Minor UI changes**  
 
-15. [SRS-FR-UI-002 - TechnicalData Submodel Formatting](#srs-fr-ui-002-technicaldata-submodel-formatting)
-16. [SRS-FR-UI-003 - HandoverDocumentation Submodel Formatting](#srs-fr-ui-003-handoverdocumentation-submodel-formatting)
-17. [SRS-FR-LINKED-001 - Linked AAS Navigation](#srs-fr-linked-001-linked-aas-navigation)
+15. [SRS-FR-UI-002 - TechnicalData Submodel Formatting](#srs-fr-ui-002-technicaldata-submodel-formatting)  
+16. [SRS-FR-UI-003 - HandoverDocumentation Submodel Formatting](#srs-fr-ui-003-handoverdocumentation-submodel-formatting)  
+17. [SRS-FR-LINKED-001 - Linked AAS Navigation](#srs-fr-linked-001-linked-aas-navigation)  
 
 **Other:**
 
