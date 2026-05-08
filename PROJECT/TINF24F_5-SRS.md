@@ -188,30 +188,42 @@ Verification methods:
 
 **Overview for navigation:**
 
-**Functional Requirements:**
+### Functional Requirements
 
+**Login Button**
 1. [SRS-FR-LOGI-001 - Login Status Display](#srs-fr-logi-001-login-status-display)
 2. [SRS-FR-LOGI-002 - Login Button Functionality](#srs-fr-logi-002-login-button-functionality)
-3. [SRS-FR-UI-001 - Repository AAS Entry Count](#srs-fr-ui-001-repository-aas-entry-count)
-4. [SRS-FR-NPG-001 - Nameplate Generator](#srs-fr-npg-001-nameplate-generator)
-5. [SRS-FR-LIST-001 - Changed AAS Columns](#srs-fr-list-001-changed-aas-columns)
-6. [SRS-FR-LIST-002 - AAS List Filtering](#srs-fr-list-002-aas-list-filtering)
-7. [SRS-FR-LIST-003 - AAS List Sorting](#srs-fr-list-003-aas-list-sorting)
-8. [SRS-FR-SHOP-001 - Cart View Access](#srs-fr-shop-001-cart-view-access)
-9. [SRS-FR-SHOP-002 - Cart Products](#srs-fr-shop-002-cart-products)
-10. [SRS-FR-SHOP-003 - Cart Quantity](#srs-fr-shop-003-cart-quantity)
-11. [SRS-FR-SHOP-004 - Add to Cart Button](#srs-fr-shop-004-add-to-cart-button)
-12. [SRS-FR-SHOP-005 - Cart Count Indicator](#srs-fr-shop-005-cart-count-indicator)
-13. [SRS-FR-SHOP-006 - Shop Feature Configuration](#srs-fr-shop-006-shop-feature-configuration)
-14. [SRS-FR-SHOP-007 - Product Price Display](#srs-fr-shop-007-product-price-display)
-15. [SRS-FR-SHOP-008 - AAS Repository Configuration](#srs-fr-shop-008-aas-repository-configuration)
-16. [SRS-FR-CONFIG-001 - CD Repository Configuration](#srs-fr-config-001-cd-repository-configuration)
-17. [SRS-FR-CONFIG-002 - CD Repository Content Inspection](#srs-fr-config-002-cd-repository-content-inspection)
-18. [SRS-FR-UI-002 - TechnicalData Submodel Formatting](#srs-fr-ui-002-technicaldata-submodel-formatting)
-19. [SRS-FR-UI-003 - HandoverDocumentation Submodel Formatting](#srs-fr-ui-003-handoverdocumentation-submodel-formatting)
-20. [SRS-FR-LINKED-001 - Linked AAS Navigation](#srs-fr-linked-001-linked-aas-navigation)
 
-**Non-Functional Requirements:**
+**AAS List**
+3. [SRS-FR-LIST-001 - Changed AAS Columns](#srs-fr-list-001-changed-aas-columns)
+4. [SRS-FR-LIST-002 - AAS List Filtering](#srs-fr-list-002-aas-list-filtering)
+5. [SRS-FR-LIST-003 - AAS List Sorting](#srs-fr-list-003-aas-list-sorting)
+
+**E-Shop-Feature**
+6. [SRS-FR-SHOP-001 - Cart View Access](#srs-fr-shop-001-cart-view-access)
+7. [SRS-FR-SHOP-002 - Cart Products](#srs-fr-shop-002-cart-products)
+8. [SRS-FR-SHOP-003 - Cart Quantity](#srs-fr-shop-003-cart-quantity)
+9. [SRS-FR-SHOP-004 - Add to Cart Button](#srs-fr-shop-004-add-to-cart-button)
+10. [SRS-FR-SHOP-005 - Cart Count Indicator](#srs-fr-shop-005-cart-count-indicator)
+11. [SRS-FR-SHOP-006 - Shop Feature Configuration](#srs-fr-shop-006-shop-feature-configuration)
+12. [SRS-FR-SHOP-007 - Product Price Display](#srs-fr-shop-007-product-price-display)
+
+**CD-Repositories**
+13. [SRS-FR-CONFIG-001 - CD Repository Configuration](#srs-fr-config-001-cd-repository-configuration)
+14. [SRS-FR-CONFIG-002 - CD Repository Content Inspection](#srs-fr-config-002-cd-repository-content-inspection)
+
+**Minor UI changes**
+
+15. [SRS-FR-UI-002 - TechnicalData Submodel Formatting](#srs-fr-ui-002-technicaldata-submodel-formatting)
+16. [SRS-FR-UI-003 - HandoverDocumentation Submodel Formatting](#srs-fr-ui-003-handoverdocumentation-submodel-formatting)
+17. [SRS-FR-LINKED-001 - Linked AAS Navigation](#srs-fr-linked-001-linked-aas-navigation)
+
+**Other:**
+
+18. [SRS-FR-UI-001 - Repository AAS Entry Count](#srs-fr-ui-001-repository-aas-entry-count)
+19. [SRS-FR-NPG-001 - Nameplate Generator](#srs-fr-npg-001-nameplate-generator)
+
+### Non-Functional Requirements
 
 1. [SRS-NFR-PERFORM-001 - AAS List Load Performance](#srs-nfr-perform-001-aas-list-load-performance)
 2. [SRS-NFR-PERFORM-002 - Concurrent User Support](#srs-nfr-perform-002-concurrent-user-support)
@@ -226,6 +238,7 @@ Verification methods:
 | ID                  | SRS-FR-LOGI-001                                                                                                                  |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------|
 | Reference (CRS)     | [LOGI-FR-001](/PROJECT/TINF24F_5-CRS-0v1.3.md#51-login-logi)                                                                     |
+| Reference (SAS)     | [FR.001](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                                        |
 | Description         | The system shall display a symbol in the upper-right corner of the menu bar that indicates the current login status of the user. |
 | Priority            | Required                                                                                                                         |
 | Verification Method | Inspection                                                                                                                       |
@@ -236,6 +249,7 @@ Verification methods:
 | ID                  | SRS-FR-LOGI-002                                                                                     |
 |---------------------|-----------------------------------------------------------------------------------------------------|
 | Reference (CRS)     | [LOGI-FR-002](/PROJECT/TINF24F_5-CRS-0v1.3.md#51-login-logi)                                        |
+| Reference (SAS)     | [FR.002](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                              |
 | Description         | All functions and menus of the existing login status button shall be moved to the new login button. |
 | Priority            | Optional                                                                                            |
 | Verification Method | Demonstration                                                                                       |
@@ -245,6 +259,7 @@ Verification methods:
 | ID                  | SRS-FR-UI-001                                                                                                          |
 |---------------------|------------------------------------------------------------------------------------------------------------------------|
 | Reference (CRS)     | [UI-FR-001](/PROJECT/TINF24F_5-CRS-0v1.3.md#52-uiux-ui)                                                                |
+| Reference (SAS)     | [FR.003](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The system shall display the number of AAS entries per repository in the repository view, next to the repository name. |
 | Priority            | Required                                                                                                               |
 | Verification Method | Test                                                                                                                   |
@@ -255,6 +270,7 @@ Verification methods:
 | ID                  | SRS-FR-NPG-001                                                                                                                      |
 |---------------------|-------------------------------------------------------------------------------------------------------------------------------------|
 | Reference (CRS)     | [NPG-FR-001](/PROJECT/TINF24F_5-CRS-0v1.3.md#54-nameplate-generator-npg)                                                            |
+| Reference (SAS)     | [FR.004](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The system shall provide access to the Nameplate Generator from the product context menu using the given implementation repository. |
 | Priority            | Required                                                                                                                            |
 | Verification Method | Test                                                                                                                                |
@@ -265,6 +281,7 @@ Verification methods:
 | ID                  | SRS-FR-LIST-001                                                                                                                                                   |
 |---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Reference (CRS)     | [LIST-FR-001](/PROJECT/TINF24F_5-CRS-0v1.3.md#53-aas-list-list)                                                                                                   |
+| Reference (SAS)     | [FR.005](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The system shall display the columns `ManufacturerName`, `ProductDesignation`, `OrderCode`, `ManufacturerCode`, `GlobalAssetId`, and `CreatedAt` in the AAS list. |
 | Priority            | Required                                                                                                                                                          |
 | Verification Method | Inspection                                                                                                                                                        |
@@ -275,6 +292,7 @@ Verification methods:
 | ID                  | SRS-FR-LIST-002                                                                |
 |---------------------|--------------------------------------------------------------------------------|
 | Reference (CRS)     | [LIST-FR-002](/PROJECT/TINF24F_5-CRS-0v1.3.md#53-aas-list-list)                |
+| Reference (SAS)     | [FR.006](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The system shall allow users to filter the AAS list based on query parameters. |
 | Priority            | Required                                                                       |
 | Verification Method | Test                                                                           |
@@ -285,6 +303,7 @@ Verification methods:
 | ID                  | SRS-FR-LIST-003                                                                    |
 |---------------------|------------------------------------------------------------------------------------|
 | Reference (CRS)     | [LIST-FR-003](/PROJECT/TINF24F_5-CRS-0v1.3.md#53-aas-list-list)                    |
+| Reference (SAS)     | [FR.007](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The system shall allow users to sort the AAS list entries by any available column. |
 | Priority            | Required                                                                           |
 | Verification Method | Test                                                                               |
@@ -294,6 +313,7 @@ Verification methods:
 | ID                  | SRS-FR-SHOP-001                                                  |
 |---------------------|------------------------------------------------------------------|
 | Reference (CRS)     | [SHOP-FR-001](/PROJECT/TINF24F_5-CRS-0v1.3.md#58-eshop-shop)     |
+| Reference (SAS)     | [FR.008](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The system shall provide a cart view accessible via the sidebar. |
 | Priority            | Required                                                         |
 | Verification Method | Test                                                             |
@@ -304,6 +324,7 @@ Verification methods:
 | ID                  | SRS-FR-SHOP-002                                                        |
 |---------------------|------------------------------------------------------------------------|
 | Reference (CRS)     | [SHOP-FR-002](/PROJECT/TINF24F_5-CRS-0v1.3.md#58-eshop-shop)           |
+| Reference (SAS)     | [FR.009](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The system shall list all products added to the cart in the cart view. |
 | Priority            | Required                                                               |
 | Verification Method | Test                                                                   |
@@ -314,6 +335,7 @@ Verification methods:
 | ID                  | SRS-FR-SHOP-003                                                               |
 |---------------------|-------------------------------------------------------------------------------|
 | Reference (CRS)     | [SHOP-FR-003](/PROJECT/TINF24F_5-CRS-0v1.3.md#58-eshop-shop)                  |
+| Reference (SAS)     | [FR.010](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The system shall allow users to edit product quantities within the cart view. |
 | Priority            | Required                                                                      |
 | Verification Method | Test                                                                          |
@@ -324,6 +346,7 @@ Verification methods:
 | ID                  | SRS-FR-SHOP-004                                                                                           |
 |---------------------|-----------------------------------------------------------------------------------------------------------|
 | Reference (CRS)     | [SHOP-FR-004](/PROJECT/TINF24F_5-CRS-0v1.3.md#58-eshop-shop)                                              |
+| Reference (SAS)     | [FR.011](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | Each product view shall contain an "Add to cart" button allowing the user to add the product to the cart. |
 | Priority            | Required                                                                                                  |
 | Verification Method | Test                                                                                                      |
@@ -334,6 +357,7 @@ Verification methods:
 | ID                  | SRS-FR-SHOP-005                                                               |
 |---------------------|-------------------------------------------------------------------------------|
 | Reference (CRS)     | [SHOP-FR-005](/PROJECT/TINF24F_5-CRS-0v1.3.md#58-eshop-shop)                  |
+| Reference (SAS)     | [FR.012](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The sidebar shall display the total number of products currently in the cart. |
 | Priority            | Required                                                                      |
 | Verification Method | Inspection                                                                    |
@@ -344,6 +368,7 @@ Verification methods:
 | ID                  | SRS-FR-SHOP-006                                                                                       |
 |---------------------|-------------------------------------------------------------------------------------------------------|
 | Reference (CRS)     | [SHOP-FR-006](/PROJECT/TINF24F_5-CRS-0v1.3.md#58-eshop-shop)                                          |
+| Reference (SAS)     | [FR.013](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The system should allow enabling or disabling the shop functionality through an environment variable. |
 | Priority            | Optional                                                                                              |
 | Verification Method | Inspection                                                                                            |
@@ -353,6 +378,7 @@ Verification methods:
 | ID                  | SRS-FR-SHOP-008                                                                     |
 |---------------------|-------------------------------------------------------------------------------------|
 | Reference (CRS)     | [SHOP-FR-007](/PROJECT/TINF24F_5-CRS-0v1.3.md#58-eshop-shop)                        |
+| Reference (SAS)     | [FR.015](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The system should display a price for each product when the shop module is enabled. |
 | Priority            | Optional                                                                            |
 | Verification Method | Inspection                                                                          |
@@ -363,6 +389,7 @@ Verification methods:
 | ID                  | SRS-FR-REPO-001                                                                                                |
 |---------------------|----------------------------------------------------------------------------------------------------------------|
 | Reference (CRS)     | [REPO-FR-001](/PROJECT/TINF24F_5-CRS-0v1.3.md#510-aas-repositories-repo)                                       |
+| Reference (SAS)     | [FR.016](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The system shall allow users to enable or disable individual AAS repositories within the configuration dialog. |
 | Priority            | Required                                                                                                       |
 | Verification Method | Test                                                                                                           |
@@ -373,6 +400,7 @@ Verification methods:
 | ID                  | SRS-FR-CONFIG-001                                                                           |
 |---------------------|---------------------------------------------------------------------------------------------|
 | Reference (CRS)     | [CONFIG-FR-001](/PROJECT/TINF24F_5-CRS-0v1.3.md#57-configuration-config)                    |
+| Reference (SAS)     | [FR.017](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The system shall allow users to configure CD repositories through the configuration dialog. |
 | Priority            | Required                                                                                    |
 | Verification Method | Test                                                                                        |
@@ -382,6 +410,7 @@ Verification methods:
 | ID                  | SRS-FR-CONFIG-002                                                                                    |
 |---------------------|------------------------------------------------------------------------------------------------------|
 | Reference (CRS)     | [CONFIG-FR-002](/PROJECT/TINF24F_5-CRS-0v1.3.md#57-configuration-config)                             |
+| Reference (SAS)     | [FR.018](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The system should allow users to inspect the contents of CD repositories through the user interface. |
 | Priority            | Required                                                                                             |
 | Verification Method | Demonstration                                                                                        |
@@ -391,6 +420,7 @@ Verification methods:
 | ID                  | SRS-FR-UI-002                                                                                                                                                                                                                     |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Reference (CRS)     | [UI-FR-002](/PROJECT/TINF24F_5-CRS-0v1.3.md#52-uiux-ui)                                                                                                                                                                           |
+| Reference (SAS)     | [FR.019](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The system should improve the formatting of the `SM TechnicalData` submodel for better readability. The [SMT 2.0](https://github.com/admin-shell-io/submodel-templates/tree/main/published/Technical_Data/2/0) should be noticed. |
 | Priority            | Optional                                                                                                                                                                                                                          |
 | Verification Method | Inspection                                                                                                                                                                                                                        |
@@ -400,6 +430,7 @@ Verification methods:
 | ID                  | SRS-FR-UI-003                                                                                            |
 |---------------------|----------------------------------------------------------------------------------------------------------|
 | Reference (CRS)     | [UI-FR-003](/PROJECT/TINF24F_5-CRS-0v1.3.md#52-uiux-ui)                                                  |
+| Reference (SAS)     | [FR.020](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The system should improve the formatting of the `HandoverDocumentation` submodel for better readability. |
 | Priority            | Optional                                                                                                 |
 | Verification Method | Inspection                                                                                               |
@@ -409,6 +440,7 @@ Verification methods:
 | ID                  | SRS-FR-LINKED-001                                                                                |
 |---------------------|--------------------------------------------------------------------------------------------------|
 | Reference (CRS)     | [LINKED-FR-001](/PROJECT/TINF24F_5-CRS-0v1.3.md#55-linked-aas-linked)                            |
+| Reference (SAS)     | [FR.021](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The system should allow navigation through linked AAS references within submodel visualizations. |
 | Priority            | Required                                                                                         |
 | Verification Method | Demonstration                                                                                    |
@@ -430,6 +462,7 @@ Overview over all non-functional requirements for navigation:
 | ID                  | SRS-NFR-PERFORM-001                                                                                                                    |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------|
 | Reference (CRS)     | [PERFORM-FR-001](/PROJECT/TINF24F_5-CRS-0v1.3.md#56-performance-perform), [Section 6.3](/PROJECT/TINF24F_5-CRS-0v1.3.md#63-efficiency) |
+| Reference (SAS)     | [NFR.001](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The system shall load the AAS list in a decent time.                                                                                   |
 | Category            | Performance                                                                                                                            |
 | Verification Method | Measurement                                                                                                                            |
@@ -439,6 +472,7 @@ Overview over all non-functional requirements for navigation:
 | ID                  | SRS-NFR-PERFORM-002                                                                                                         |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------|
 | Reference (CRS)     | [Section 6.2](/PROJECT/TINF24F_5-CRS-0v1.3.md#62-reliability), [Section 6.3](/PROJECT/TINF24F_5-CRS-0v1.3.md#63-efficiency) |
+| Reference (SAS)     | [NFR.002](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The system shall support concurrent access by at least 10 users without degradation of performance.                         |
 | Category            | Performance                                                                                                                 |
 | Verification Method | Load Test                                                                                                                   |
@@ -448,6 +482,7 @@ Overview over all non-functional requirements for navigation:
 | ID                  | SRS-NFR-SEC-001                                                                           |
 |---------------------|-------------------------------------------------------------------------------------------|
 | Reference (CRS)     | [Section 6.2](/PROJECT/TINF24F_5-CRS-0v1.3.md#62-reliability)                             |
+| Reference (SAS)     | [NFR.003](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The system shall log all configuration changes and user actions that affect repositories. |
 | Category            | Security                                                                                  |
 | Verification Method | Inspection                                                                                |
@@ -457,6 +492,7 @@ Overview over all non-functional requirements for navigation:
 | ID                  | SRS-NFR-UI-001                                                                                  |
 |---------------------|-------------------------------------------------------------------------------------------------|
 | Reference (CRS)     | [Section 6.1](/PROJECT/TINF24F_5-CRS-0v1.3.md#61-usability)                                     |
+| Reference (SAS)     | [NFR.004](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The interface shall remain responsive when resizing the browser window or using mobile devices. |
 | Category            | Usability                                                                                       |
 | Verification Method | Demonstration                                                                                   |
@@ -466,6 +502,7 @@ Overview over all non-functional requirements for navigation:
 | ID                  | SRS-NFR-PORT-001                                                                     |
 |---------------------|--------------------------------------------------------------------------------------|
 | Reference (CRS)     | [Section 6.5](/PROJECT/TINF24F_5-CRS-0v1.3.md#65-portability)                        |
+| Reference (SAS)     | [NFR.005](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The system shall be compatible with current versions of Chrome, Firefox, and Safari. |
 | Category            | Compatibility                                                                        |
 | Verification Method | Test                                                                                 |
@@ -475,6 +512,7 @@ Overview over all non-functional requirements for navigation:
 | ID                  | SRS-NFR-SHOP-LANG-001                                                             |
 |---------------------|-----------------------------------------------------------------------------------|
 | Reference (CRS)     | [SHOP-LANG-FR-001](/PROJECT/TINF24F_5-CRS-0v1.3.md#59-language-support-shop-lang) |
+| Reference (SAS)     | [NFR.006](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | The system shall provide localized text resources in English and German.          |
 | Category            | Maintainability                                                                   |
 | Verification Method | Inspection                                                                        |
@@ -484,6 +522,7 @@ Overview over all non-functional requirements for navigation:
 | ID                  | SRS-NFR-MAINT-001                                                                        |
 |---------------------|------------------------------------------------------------------------------------------|
 | Reference (CRS)     | [Section 6.6](/PROJECT/TINF24F_5-CRS-0v1.3.md#66-maintainability)                        |
+| Reference (SAS)     | [NFR.007](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                      |
 | Description         | Source code shall follow consistent linting and formatting rules defined in the project. |
 | Category            | Maintainability                                                                          |
 | Verification Method | Inspection                                                                               |
