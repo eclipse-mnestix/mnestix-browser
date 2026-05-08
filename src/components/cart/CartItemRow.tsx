@@ -8,16 +8,20 @@ import { CartItem } from 'lib/types/CartItem';
 import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
 
 type CartItemRowProps = {
+    /** The cart item to render in this row. */
     readonly item: CartItem;
+    /** Flag indicating whether the row should render in a mobile-friendly card layout. */
     readonly isMobile?: boolean;
 };
 
+/** Maximum allowed quantity per cart item to prevent overflow or unrealistic values. */
 const MAX_QUANTITY = 9999;
 
 /**
  * Renders a single cart item row with product details, quantity controls, and remove button.
  * Displays product image, name, quantity input with increment/decrement buttons,
- * price per unit, line total, and a remove action.
+ * price per unit, line total, and a remove action. Renders as a table row on desktop
+ * and a card on mobile when `isMobile` is true.
  */
 export function CartItemRow(props: CartItemRowProps) {
     const { item } = props;
@@ -29,12 +33,18 @@ export function CartItemRow(props: CartItemRowProps) {
     const currency = item.currency ?? 'EUR';
 
     function formatPrice(price: number): string {
+        /** Format a numeric price using the item's currency and en-US locale.
+         * Exported primarily for display; does not perform currency conversion.
+         */
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: currency,
         }).format(price);
     }
 
+    /** Handle manual quantity input changes from the text field.
+     * Validates the value and updates the cart via context when valid.
+     */
     function handleQuantityChange(event: React.ChangeEvent<HTMLInputElement>) {
         const value = parseInt(event.target.value, 10);
         if (!isNaN(value) && value >= 1 && value <= MAX_QUANTITY) {
@@ -42,12 +52,14 @@ export function CartItemRow(props: CartItemRowProps) {
         }
     }
 
+    /** Increase the item quantity by one, respecting MAX_QUANTITY. */
     function handleIncrement() {
         if (item.quantity < MAX_QUANTITY) {
             updateQuantity(item.aasId, item.quantity + 1);
         }
     }
 
+    /** Decrease the item quantity by one. If quantity would fall below 1, the item is removed. */
     function handleDecrement() {
         if (item.quantity > 1) {
             updateQuantity(item.aasId, item.quantity - 1);
@@ -56,6 +68,7 @@ export function CartItemRow(props: CartItemRowProps) {
         }
     }
 
+    /** Remove the item from the cart immediately. */
     function handleRemove() {
         removeFromCart(item.aasId);
     }

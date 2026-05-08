@@ -9,6 +9,18 @@ import { CartSummary } from 'components/cart/CartSummary';
 import { EmptyCartMessage } from 'components/cart/EmptyCartMessage';
 
 export default function Page() {
+    /**
+     * Cart page client component.
+     *
+     * Renders the shopping cart page including the header, an empty-cart
+     * message when there are no items, or the list of cart items together
+     * with the cart summary when items are present.
+     *
+     * The component uses the project Cart context (`useCart`) to read the
+     * current cart items and `next-intl` for localized strings.
+     *
+     * @returns {JSX.Element} The cart page element.
+     */
     const t = useTranslations('pages.cart');
     const { cartItems } = useCart();
 

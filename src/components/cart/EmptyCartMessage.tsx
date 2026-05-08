@@ -14,6 +14,7 @@ export function EmptyCartMessage() {
     const router = useRouter();
 
     function handleBackToProducts() {
+        /** Navigate back to the product listing / marketplace page. */
         router.push('/marketplace');
     }
 

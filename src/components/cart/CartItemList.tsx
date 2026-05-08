@@ -10,6 +10,9 @@ const tableHeaderText = {
     color: 'text.primary',
 };
 
+/** Styling used for table header cells in the desktop cart table. */
+
+
 /**
  * Displays a list of cart items in a responsive table format.
  * Shows product details, quantity controls, prices, and remove actions.

@@ -9,24 +9,32 @@ import { AddToCartDialog } from 'components/cart/AddToCartDialog';
 import { CartItem } from 'lib/types/CartItem';
 
 type AddToCartButtonProps = {
+    /** The id of the AAS (asset administration shell) used as unique identifier for cart operations. */
     readonly aasId: string;
+    /** The id of the asset variant or physical asset. */
     readonly assetId: string;
+    /** Display name of the product shown in the UI and used in accessibility labels. */
     readonly productName: string;
+    /** Optional manufacturer name shown in product listings. */
     readonly manufacturerName?: string;
+    /** Optional article number / SKU of the product. */
     readonly articleNumber?: string;
+    /** Optional price per unit used for cart calculations. */
     readonly pricePerUnit?: number;
+    /** Currency code for price formatting (e.g. 'EUR'). */
     readonly currency?: string;
+    /** Optional URL of the product image used in cart previews. */
     readonly productImageUrl?: string;
+    /** Optional repository URL where the product originates. */
     readonly repositoryUrl?: string;
+    /** If true the add-to-cart button will be disabled. */
     readonly disabled?: boolean;
+    /** Optional reason text shown when the button is disabled (as a tooltip). */
     readonly disabledReason?: string;
+    /** MUI button variant to use for the control. */
     readonly variant?: 'text' | 'outlined' | 'contained';
 };
 
-/**
- * Button component for adding a product to the shopping cart.
- * Shows a dialog after adding to let user choose to continue shopping or go to cart.
- */
 export function AddToCartButton(props: AddToCartButtonProps) {
     const {
         aasId,
@@ -61,6 +69,10 @@ export function AddToCartButton(props: AddToCartButtonProps) {
         }
     }, [disabled, disabledReason, aasId, assetId, productName]);
 
+    /** Add the current product to the cart and open the confirmation dialog.
+     * This sets a loading state while performing the add action and then
+     * shows the `AddToCartDialog` allowing the user to continue shopping or go to the cart.
+     */
     function handleAddToCart() {
         setIsLoading(true);
 
@@ -82,6 +94,7 @@ export function AddToCartButton(props: AddToCartButtonProps) {
         setIsDialogOpen(true);
     }
 
+    /** Close the add-to-cart confirmation dialog. */
     function handleDialogClose() {
         setIsDialogOpen(false);
     }

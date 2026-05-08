@@ -15,9 +15,13 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 
 type AddToCartDialogProps = {
+    /** Whether the dialog is open. */
     readonly open: boolean;
+    /** Callback to close the dialog. */
     readonly onClose: () => void;
+    /** Name of the product that was added to the cart. */
     readonly productName: string;
+    /** Quantity that was added to the cart. */
     readonly quantity: number;
 };
 
@@ -30,10 +34,12 @@ export function AddToCartDialog(props: AddToCartDialogProps) {
     const t = useTranslations('components');
     const router = useRouter();
 
+    /** Close the dialog and keep the user on the current page (continue shopping). */
     function handleContinueShopping() {
         onClose();
     }
 
+    /** Close the dialog and navigate the user to the cart page. */
     function handleGoToCart() {
         onClose();
         router.push('/cart');

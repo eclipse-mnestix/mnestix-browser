@@ -16,6 +16,7 @@ export function CartSummary() {
     const currency = cartItems[0]?.currency ?? 'EUR';
 
     function formatPrice(price: number): string {
+        /** Format a numeric price according to the detected currency and en-US locale. */
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: currency,
@@ -23,6 +24,9 @@ export function CartSummary() {
     }
 
     function handleCheckout() {
+        /** Placeholder handler for starting the checkout process.
+         * Actual checkout flow will be implemented separately (e.g. redirect to payment).
+         */
         // Checkout process is out of scope - placeholder for future implementation
     }
 
