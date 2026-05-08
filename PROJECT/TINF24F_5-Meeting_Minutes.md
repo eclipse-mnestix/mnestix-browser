@@ -6,30 +6,27 @@
 
 | Version | Date       | Author         | Comment                                      |
 |:--------:|:-----------:|:---------------:|:---------------------------------------------|
-| 1.0 | 19.09.2025 | Felix Hennerich | Initialize document structure and first Meeting Info |
-| 1.1 | 26.09.2025 | Felix Hennerich | Second Meeting and Conventions |
-| 1.2 | 10.10.2025 | Felix Hennerich | Next steps in the Project |
-| 1.3 | 17.10.2025 | Felix Hennerich | Business Case |
-| 1.4 | 24.10.2025 | Felix Hennerich | Versions at the top |
-| 1.5 | 24.10.2025 | Felix Hennerich | Presentation and Code Discussion |
-| 1.6 | 27.10.2025 | Felix Hennerich | Meeting with external |
-| 1.7 | 31.10.2025 | Felix Hennerich | Further Exercises |
-| 1.8 | 07.11.2025 | Felix Hennerich | Preparation of Pre-presentation |
-| 1.9 | 08.01.2026 | Felix Hennerich | New Year New Motivation |
-| 1.10 | 10.02.2026 | Felix Hennerich | Project Refresh after break |
-| 1.11 | 13.03.2026 | Felix Hennerich | Clarifications about the upcoming tasks |
-| 1.12 | 20.03.2026 | Felix Hennerich | Sprint Planning & Risk Assessment |
-| 1.13 | 27.03.2026 | Felix Hennerich | Quality Control |
-| 1.14 | 10.04.2026 | Felix Hennerich | Code Freeze |
-| 1.15 | 24.04.2026 | Felix Hennerich | Presentation & Discussion |
+| 1.0 | 19.09.2025 | Felix Hennerich | [Initialize document structure and first Meeting Info](#intro) |
+| 1.1 | 26.09.2025 | Felix Hennerich | [Second Meeting and Conventions](#conventions) |
+| 1.2 | 10.10.2025 | Felix Hennerich | [Next steps in the Project](#next-steps) |
+| 1.3 | 17.10.2025 | Felix Hennerich | [Business Case](#bc) |
+| 1.4 | 24.10.2025 | Felix Hennerich | [Versions at the top](#) |
+| 1.5 | 24.10.2025 | Felix Hennerich | [Presentation and Code Discussion](#presentation) |
+| 1.6 | 27.10.2025 | Felix Hennerich | [Meeting with external](#external) |
+| 1.7 | 31.10.2025 | Felix Hennerich | [Further Exercises](#readme) |
+| 1.8 | 07.11.2025 | Felix Hennerich | [Preparation of Pre-presentation](#prepres) |
+| 1.9 | 08.01.2026 | Felix Hennerich | [New Year New Motivation](#newYear) |
+| 1.10 | 10.02.2026 | Felix Hennerich | [Project Refresh after break](#refresh) |
+| 1.11 | 13.03.2026 | Felix Hennerich | [Clarifications about the upcoming tasks](#newTrimester) |
+| 1.12 | 20.03.2026 | Felix Hennerich | [Sprint Planning & Risk Assessment](#followUpMeeting) |
+| 1.13 | 27.03.2026 | Felix Hennerich | [Quality Control](#quality) |
+| 1.14 | 10.04.2026 | Felix Hennerich | [Code Freeze](#codefreeze) |
+| 1.15 | 24.04.2026 | Felix Hennerich | [Presentation & Discussion](#prepras) |
+| 1.16 | 28.04.2026 | Felix Hennerich | [Mnestix Meeting](#mnestixmeeting) |
+| 1.17 | 08.05.2026 | Felix Hennerich | [Pull Request & Issues](#prandIssues) |
 
 
 ## Table of Contents
-- [Meeting 24.04.2026 - Code Freeze](#prepras)
-- [Meeting 10.04.2026 - Code Freeze](#codefreeze)
-- [Meeting 27.03.2026 - Quality Control](#quality)
-- [Meeting 20.03.2026 - Sprint Planning & Risk Assessment](#followUpMeeting)
-- [Meeting 13.03.2026 - Clarifications about the upcoming tasks](#newTrimester)
 - [Meeting 10.02.2026 - Project Refresh after break](#refresh)
 - [Meeting 08.01.2026 - New Year New Motivation](#newYear)
 - [Meeting 07.11.2025 - Preparation of Pre-presentation](#prepres)
@@ -40,6 +37,81 @@
 - [Meeting 10.10.2025 - Next Steps](#next-steps)
 - [Meeting 26.09.2025 - Conventions](#conventions)
 - [Meeting 19.09.2025 - Introduction](#intro)
+
+---
+
+<a id="prandIssues"></a>
+
+## Meeting 08.05.2026 - Meeting with Mnestix (Moritz & Luis)
+
+| No. | Topic | Responsible | Time (Min.) |
+|-----|----------------------------------------|------------------------|-------------|
+| 1 | Overview of Current Tasks and Features | Felix Hennerich | 10 |
+| 2 | Structuring Issues in Main Repository | Gregor Gottschewski | 10 |
+| 3 | PR Workflow and Assignment of Tasks | Julian Schumacher | 10 |
+
+**Location:** DHBW Stuttgart & Teams  
+**Date:** 08.05.2026  
+**Duration:** 30 min  
+**Moderator:** Felix Hennerich  
+
+**Participants:**  
+Julian Schumacher, Nils Schäffner, Felix Hennerich, Bruno Lange, Gregor Gottschewski 
+
+
+### I. Objective
+
+The goal of the meeting was to define a clear workflow for organizing all open tasks and feature requests within the main repository.  
+It was agreed that every task, bug, feature request, and improvement should be created as an issue in the main repository to ensure transparency and centralized project management.
+
+
+### II. Additional Meeting Notes
+
+- All future tasks must be documented as GitHub issues in the main repository.
+- Issues should contain a clear description, acceptance criteria, and labels if applicable.
+- Pull requests should always reference the related issue.
+- The centralized workflow should improve coordination between the university team and Mnestix.
+
+Unfortunately, we have to complain a loss in the team. Robin Kelm was exmatriculated and is therefore out. His tasks have already been fully completed. Further testing, which he was supposed to take over, was passed on to other team members
+
+### III. Next Meeting
+
+The next meeting date will be announced later. Topic: **Review of Open Issues & PR Status**.
+
+
+---
+
+<a id="mnestixmeeting"></a>
+
+## Meeting 28.04.2026 - Meeting with Mnestix (Moritz & Luis)
+   No. | Topic                                   | Responsible           | Time (Min.) |
+ |-----|----------------------------------------|------------------------|-------------|
+ | 1 | Overview of Features | Julian Schumacher | 15 |
+ | 2 | PR and Integration | Gregor Gottschewski | 5 |
+ | 3 | Hosting on Server | Gregor Gottschewski | 5 |
+
+
+**Location:** DHBW Stuttgart & Teams
+**Date:** 28.04.2026
+**Duration:** 25 min
+**Moderator:** Felix Hennerich
+
+**Participants:**
+Julian Schumacher, Nils Schäffner, Felix Hennerich, Bruno Lange, Gregor Gottschewski, Jan Kruske, Luis (Mnestix), Moritz (Mnestix)
+
+
+### I. Objective
+In conversation with the Mnestix team, some features were recognized that are practical for Mnestix. Others are unnecessary or have already been implemented. Finally, we agreed that we would create a pull request and issues so that the Mnestix team can choose which features they want to adopt.
+
+
+### I. Additional Meeting Notes
+For the final presentation, the team requested a server to host the project. In a subsequent e-mail exchange, we were informed that unfortunately no server could be provided for compliance reasons
+
+### III. Next Meeting
+
+The next meeting is scheduled for **08.05.2026**. Topic: **PR & Issues**.
+
+
 
 ---
 
