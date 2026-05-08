@@ -1,85 +1,126 @@
+<div align="center">
+  <img src="public/android-chrome-192x192.png" alt="Mnestix Logo" height="120"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="public/DHBW-Logo.svg.png" alt="DHBW Logo" height="60"/>
+</div>
+
+<h1 align="center">Mnestix Browser Extension</h1>
+
 <p align="center">
- <img src="public/android-chrome-192x192.png" alt="Mnestix Logo">
+  <em>Team 5 · DHBW · Asset Administration Shell</em>
 </p>
-<h1 style="text-align: center">Mnestix Browser Extension</h1>
 
-## Welcome to Team 5's Mnestix Browser Extension
+---
 
-<img src="public/landing.png">
+## About Mnestix
 
-_About Mnestix_
+Mnestix Product Catalogue is a web-based open-source software designed to simplify the implementation of the **Asset Administration Shell (AAS)**. Its main purpose is to support the creation and management of digital product catalogues, offering various features for browsing and organizing catalogue data.
 
-Mnestix Product Catalogue is a web-based open-source software designed to simplify the implementation of the Asset Administration Shell (AAS). Its main purpose is to support the creation and management of digital product catalogues, offering various features for browsing and organizing catalogue data.
+<div align="center">
+  <img src="public/landing.png" alt="Landing Page" width="80%"/>
+</div>
 
-### New extension
+---
 
-Several important usability and functionality aspects were missing from a user perspective. The improvements focus on enhancing the application’s usability. Furthermore, eShop functionalities (e.g., Add to Cart, Show Cart) will be introduced, and the presentation of documentation and technical data will be refined.
+## What's New
+
+Several important usability and functionality aspects were missing from a user perspective. This extension focuses on enhancing the application's usability, introducing **eShop functionalities** (e.g., Add to Cart, Shopping Cart view), and refining the presentation of documentation and technical data.
+
+---
 
 ## Feature Overview
 
-### E-Shop functionality
-<img src="public/sidebar.png">
-The sidebar now features a new section "Shopping Cart/Einkaufswagen"
-<img src="public/cart.png">
-This page gives a view into the users shopping cart
-<img src="public/addcart.png">
-Products contain a new button, that enables to add to the users shopping cart
-<img src="public/incart.png">
-The selected items are displayed in the shopping cart and can be configured.
-Adding an external payment service enables to directly by the selected items
+### E-Shop Functionality
 
-The associated requirements can be found here:
-[SRS-FR-SHOP-001 Cart View Access](/PROJECT/TINF24F_5-SRS.md#srs-fr-shop-001-cart-view-access)
+The sidebar now features a dedicated **Shopping Cart / Einkaufswagen** section, allowing users to browse and purchase products directly within the application.
 
-[SRS-FR-SHOP-002 Cart Products](/PROJECT/TINF24F_5-SRS.md#srs-fr-shop-002-cart-products)
+<div align="center">
+  <img src="public/cart.png" alt="Shopping Cart View" height="300"/>
+</div>
 
-[SRS-FR-SHOP-003 Cart Quantity](/PROJECT/TINF24F_5-SRS.md#srs-fr-shop-003-cart-quantity)
+<br/>
 
-[SRS-FR-SHOP-004 Add to Cart Button](/PROJECT/TINF24F_5-SRS.md#srs-fr-shop-004-add-to-cart-button)
+Products now include an **Add to Cart** button. Selected items are displayed in the cart and can be individually configured. Connecting an external payment service enables direct purchasing.
 
-[SRS-FR-SHOP-005 Cart Count Indicator](/PROJECT/TINF24F_5-SRS.md#srs-fr-shop-005-cart-count-indicator)
+<div align="center">
+  <img src="public/addcart.png" alt="Add to Cart Button" width="45%"/>
+  &nbsp;&nbsp;
+  <img src="public/incart.png" alt="Items in Cart" width="45%"/>
+</div>
 
-[SRS-FR-SHOP-006 Shop Feature Configuration](/PROJECT/TINF24F_5-SRS.md#srs-fr-shop-006-shop-feature-configuration)
+**Associated Requirements:**
+- [SRS-FR-SHOP-001 Cart View Access](/PROJECT/TINF24F_5-SRS.md#srs-fr-shop-001-cart-view-access)
+- [SRS-FR-SHOP-002 Cart Products](/PROJECT/TINF24F_5-SRS.md#srs-fr-shop-002-cart-products) 
+- [SRS-FR-SHOP-003 Cart Quantity](/PROJECT/TINF24F_5-SRS.md#srs-fr-shop-003-cart-quantity) 
+- [SRS-FR-SHOP-004 Add to Cart Button](/PROJECT/TINF24F_5-SRS.md#srs-fr-shop-004-add-to-cart-button) 
+- [SRS-FR-SHOP-005 Cart Count Indicator](/PROJECT/TINF24F_5-SRS.md#srs-fr-shop-005-cart-count-indicator) 
+- [SRS-FR-SHOP-006 Shop Feature Configuration](/PROJECT/TINF24F_5-SRS.md#srs-fr-shop-006-shop-feature-configuration) 
+- [SRS-FR-SHOP-007 Product Price Display](/PROJECT/TINF24F_5-SRS.md#srs-fr-shop-007-product-price-display)
 
-[SRS-FR-SHOP-007 Product Price Display](/PROJECT/TINF24F_5-SRS.md#srs-fr-shop-007-product-price-display)
-
-
-
-### AAS list improvement
 ---
-<img src="public/sort.jpeg>
-The table content can now be sorted in the table header by every available column
-<img src="public/urlsort.jpeg>
-The sorting is also available in the associated url by a query
 
+### AAS List Improvements
 
-[SRS-FR-LIST-002 AAS List Filtering](/PROJECT/TINF24F_5-SRS.md#srs-fr-list-002-aas-list-filtering)
-[SRS-FR-LIST-003 AAS List Sorting](/PROJECT/TINF24F_5-SRS.md#srs-fr-list-003-aas-list-sorting)
+The AAS list table now supports **sorting by every available column**, directly via the table header. The sorting state is also reflected in the URL as a query parameter for easy sharing and bookmarking.
 
-### Repository Setting improvements
+<div align="center">
+  <img src="public/sort.jpeg" alt="Table Sorting" width="70%"/>
+  <br/><br/>
+  <img src="public/sorturl.jpeg" alt="Sorting via URL" width="100%"/>
+</div>
+
+**Associated Requirements:**
+- [SRS-FR-LIST-002 AAS List Filtering](/PROJECT/TINF24F_5-SRS.md#srs-fr-list-002-aas-list-filtering)
+- [SRS-FR-LIST-003 AAS List Sorting](/PROJECT/TINF24F_5-SRS.md#srs-fr-list-003-aas-list-sorting)
+
 ---
-<img src="public/preview.png>
-<img src="public/preview.png>
-For every repository there is now a button to show a preview of its content, while the user is on the settings page
-<img src="public/active.png>
-Additionaly, repositories can be activated individually in the browser
 
+### Repository Settings Improvements
 
-[SRS-FR-UI-001 Repository AAS Entry Count](/PROJECT/TINF24F_5-SRS.md#srs-fr-ui-001-repository-aas-entry-count)
+Each repository now offers a **preview button** on the settings page, giving users a quick look at its contents without navigating away. Repositories can also be **activated or deactivated individually** in the browser.
 
-[SRS-FR-REPO-001 AAS Repository Configuration](/PROJECT/TINF24F_5-SRS.md#srs-fr-repo-001-aas-repository-configuration)
+<div align="center">
+  <img src="public/preview.png" alt="Repository Preview" width="45%"/>
+  &nbsp;&nbsp;
+  <img src="public/activate.png" alt="Repository Activation" width="45%"/>
+</div>
 
-[SRS-FR-CONFIG-001 CD Repository Configuration](/PROJECT/TINF24F_5-SRS.md#srs-fr-config-001-cd-repository-configuration)
+**Associated Requirements:**
+- [SRS-FR-UI-001 Repository AAS Entry Count](/PROJECT/TINF24F_5-SRS.md#srs-fr-ui-001-repository-aas-entry-count)
+- [SRS-FR-REPO-001 AAS Repository Configuration](/PROJECT/TINF24F_5-SRS.md#srs-fr-repo-001-aas-repository-configuration) 
+- [SRS-FR-CONFIG-001 CD Repository Configuration](/PROJECT/TINF24F_5-SRS.md#srs-fr-config-001-cd-repository-configuration) 
+- [SRS-FR-CONFIG-002 CD Repository Content Inspection](/PROJECT/TINF24F_5-SRS.md#srs-fr-config-002-cd-repository-content-inspection)
 
-[SRS-FR-CONFIG-002 CD Repository Content Inspection](/PROJECT/TINF24F_5-SRS.md#srs-fr-config-002-cd-repository-content-inspection)
-
-### Product View improvements
-<img src="public/technicaldata.jpeg">
-The depiction of technical data in the product view is also improved. The columns are corretly edited and there is a button menu to unfold all available information sections
-
-### Further improvements
 ---
-Further improvements happend to login options, Nameplate-Generator integration, ...
-## Team Overview
 
-Nils Schäffner, Gregor Gottschewski, Felix Hennerich, Julian Schumacher, Bruno Lange, Jan Kruske und Robin Kelm.
+### Product View Improvements
+
+The technical data view has been overhauled: columns are now correctly formatted and a **collapsible section menu** allows users to unfold all available information at once.
+
+<div align="center">
+  <img src="public/technicaldata.jpeg" alt="Technical Data View" width="60%"/>
+</div>
+
+---
+
+### Further Improvements
+
+Additional improvements have been made to:
+
+- **Login options** – streamlined authentication flow
+- **Nameplate Generator integration** – seamless connectivity
+- And more quality-of-life refinements throughout the application
+
+---
+
+## Team
+
+| Name |
+|---|
+| Nils Schäffner |
+| Gregor Gottschewski |
+| Felix Hennerich |
+| Julian Schumacher |
+| Bruno Lange |
+| Jan Kruske |
+| Robin Kelm |
