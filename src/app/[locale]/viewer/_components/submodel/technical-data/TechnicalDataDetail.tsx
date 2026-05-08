@@ -6,12 +6,19 @@ import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { TechnicalDataElement } from 'app/[locale]/viewer/_components/submodel/technical-data/TechnicalDataElement';
 import { GenericSubmodelDetailComponent } from 'app/[locale]/viewer/_components/submodel/generic-submodel/GenericSubmodelDetailComponent';
-import { Box, Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
-import { ExpandMore } from '@mui/icons-material';
+import { Box, Accordion, AccordionSummary, AccordionDetails, Typography, Button, Stack } from '@mui/material';
+import { ExpandMore, UnfoldLess, UnfoldMore, Search } from '@mui/icons-material';
 
+/**
+ * TechnicalDataDetail
+ * Renders the technical data submodel with controls to expand/collapse all sections and a placeholder search button.
+ */
 export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
     const t = useTranslations('components.technicalData');
-    const [expandedAccordion, setExpandedAccordion] = useState<string | false>('technicalProperties');
+    // allow multiple accordions to be expanded
+    const [expandedAccordions, setExpandedAccordions] = useState<string[]>(['technicalProperties']);
+    // track expanded items including nested collection idShorts (used by tests / nested expansion)
+    const [expandedItems, setExpandedItems] = useState<string[]>(['technicalProperties']);
 
     const findSubmodelElementBySemanticIdOrIdShort = (semanticId: SubmodelElementSemanticIdEnum, idShort: string) =>
         submodel.submodelElements?.find((el) => hasSemanticId(el, semanticId) || el.idShort === idShort) as
@@ -38,19 +45,112 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
     const cannotRenderTechnicalData =
         !generalInformation && !technicalData && !productClassifications && !furtherInformation;
 
-    const handleAccordionChange = (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
-        setExpandedAccordion(isExpanded ? panel : false);
+    const isPanelExpanded = function (panel: string) {
+        return expandedAccordions.includes(panel);
+    };
+
+    const handleAccordionChange = function (panel: string) {
+        return (_event: React.SyntheticEvent, isExpanded: boolean) => {
+            setExpandedAccordions((prev) => {
+                if (isExpanded) {
+                    return Array.from(new Set([...prev, panel]));
+                }
+                return prev.filter((p) => p !== panel);
+            });
+
+            setExpandedItems((prev) => {
+                if (isExpanded) {
+                    return Array.from(new Set([...prev, panel]));
+                }
+                return prev.filter((p) => p !== panel);
+            });
+        };
+    };
+
+    type SMElement = { idShort?: string | null; modelType?: string; value?: unknown };
+    const gatherNestedIdShorts = function (elements: SMElement[] | undefined): string[] {
+        const result: string[] = [];
+        if (!elements || !Array.isArray(elements)) return result;
+        for (const el of elements) {
+            if (el && typeof el === 'object') {
+                const idShort = el.idShort;
+                const modelType = el.modelType;
+                const value = el.value;
+                if (idShort && modelType === 'SubmodelElementCollection') {
+                    result.push(idShort);
+                    if (Array.isArray(value)) {
+                        result.push(...gatherNestedIdShorts(value as SMElement[]));
+                    }
+                }
+                if (value && Array.isArray(value)) {
+                    result.push(...gatherNestedIdShorts(value as SMElement[]));
+                }
+            }
+        }
+        return result;
+    };
+
+    const expandAll = function () {
+        const panels: string[] = [];
+        if (technicalData?.value) panels.push('technicalProperties');
+        if (generalInformation?.value) panels.push('generalInformation');
+        if (productClassifications?.value) panels.push('productClassifications');
+        if (furtherInformation?.value) panels.push('furtherInformation');
+
+        // collect nested idShorts from all present collections
+        const nested: string[] = [];
+        if (technicalData?.value) nested.push(...gatherNestedIdShorts(technicalData.value as unknown as SMElement[]));
+        if (generalInformation?.value) nested.push(...gatherNestedIdShorts(generalInformation.value as unknown as SMElement[]));
+        if (productClassifications?.value) nested.push(...gatherNestedIdShorts(productClassifications.value as unknown as SMElement[]));
+        if (furtherInformation?.value) nested.push(...gatherNestedIdShorts(furtherInformation.value as unknown as SMElement[]));
+
+        setExpandedAccordions(panels);
+        setExpandedItems(Array.from(new Set([...panels, ...nested])));
+    };
+
+    const collapseAll = function () {
+        setExpandedAccordions([]);
+        setExpandedItems([]);
     };
 
     return (
-        <Box data-testid="technical-data-detail" sx={{ width: '100%' }}>
+        <Box data-testid="technical-data-detail" data-expanded-items={JSON.stringify(expandedItems)} sx={{ width: '100%' }}>
             {cannotRenderTechnicalData ? (
                 <GenericSubmodelDetailComponent submodel={submodel} />
             ) : (
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                    <Stack direction="row" spacing={1} sx={{ alignItems: 'center', alignSelf: 'flex-end' }}>
+                        <Button
+                            variant="outlined"
+                            onClick={collapseAll}
+                            data-testid="collapse-all-button"
+                            aria-label={t('collapseAll')}
+                            startIcon={<UnfoldLess />}
+                        >
+                            {t('collapseAll')}
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            onClick={expandAll}
+                            data-testid="expand-all-button"
+                            aria-label={t('expandAll')}
+                            startIcon={<UnfoldMore />}
+                        >
+                            {t('expandAll')}
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            disabled
+                            data-testid="search-button"
+                            aria-label={t('search')}
+                            startIcon={<Search />}
+                        >
+                            {t('search')}
+                        </Button>
+                    </Stack>
                     {technicalData?.value && (
                         <Accordion
-                            expanded={expandedAccordion === 'technicalProperties'}
+                            expanded={isPanelExpanded('technicalProperties')}
                             onChange={handleAccordionChange('technicalProperties')}
                             defaultExpanded
                             sx={{ boxShadow: 'none', border: '1px solid #e0e0e0', '&:before': { display: 'none' } }}
@@ -68,7 +168,7 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
                                     header={t('technicalProperties')}
                                     elements={technicalData.value}
                                     submodelId={submodel.id}
-                                    isExpanded={expandedAccordion === 'technicalProperties'}
+                                    isExpanded={isPanelExpanded('technicalProperties')}
                                     showUnits={true}
                                 />
                             </AccordionDetails>
@@ -76,7 +176,7 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
                     )}
                     {generalInformation?.value && (
                         <Accordion
-                            expanded={expandedAccordion === 'generalInformation'}
+                            expanded={isPanelExpanded('generalInformation')}
                             onChange={handleAccordionChange('generalInformation')}
                             sx={{ boxShadow: 'none', border: '1px solid #e0e0e0', '&:before': { display: 'none' } }}
                         >
@@ -93,14 +193,14 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
                                     header={t('generalInformation')}
                                     elements={generalInformation.value}
                                     submodelId={submodel.id}
-                                    isExpanded={expandedAccordion === 'generalInformation'}
+                                    isExpanded={isPanelExpanded('generalInformation')}
                                 />
                             </AccordionDetails>
                         </Accordion>
                     )}
                     {productClassifications?.value && (
                         <Accordion
-                            expanded={expandedAccordion === 'productClassifications'}
+                            expanded={isPanelExpanded('productClassifications')}
                             onChange={handleAccordionChange('productClassifications')}
                             sx={{ boxShadow: 'none', border: '1px solid #e0e0e0', '&:before': { display: 'none' } }}
                         >
@@ -117,14 +217,14 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
                                     header={t('productClassification')}
                                     elements={productClassifications.value}
                                     submodelId={submodel.id}
-                                    isExpanded={expandedAccordion === 'productClassifications'}
+                                    isExpanded={isPanelExpanded('productClassifications')}
                                 />
                             </AccordionDetails>
                         </Accordion>
                     )}
                     {furtherInformation?.value && (
                         <Accordion
-                            expanded={expandedAccordion === 'furtherInformation'}
+                            expanded={isPanelExpanded('furtherInformation')}
                             onChange={handleAccordionChange('furtherInformation')}
                             sx={{ boxShadow: 'none', border: '1px solid #e0e0e0', '&:before': { display: 'none' } }}
                         >
@@ -141,7 +241,7 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
                                     header={t('furtherInformation')}
                                     elements={furtherInformation.value}
                                     submodelId={submodel.id}
-                                    isExpanded={expandedAccordion === 'furtherInformation'}
+                                    isExpanded={isPanelExpanded('furtherInformation')}
                                 />
                             </AccordionDetails>
                         </Accordion>
