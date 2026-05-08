@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Box, Button, Checkbox, FormControlLabel, IconButton, TextField, Typography } from '@mui/material';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import RemoveCircleOutlinedIcon from '@mui/icons-material/RemoveCircleOutlined';
 import { Control, Controller, useFieldArray, UseFormGetValues, UseFormSetValue } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { RuleFormModel } from 'app/[locale]/settings/_components/role-settings/RuleForm';
@@ -74,7 +74,7 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
                                     />
 
                                     <IconButton>
-                                        <RemoveCircleOutlineIcon
+                                        <RemoveCircleOutlinedIcon
                                             data-testid={`remove-${props.type}-${props.rule}-${idx}`}
                                             onClick={() => {
                                                 if (idx === 0) {
