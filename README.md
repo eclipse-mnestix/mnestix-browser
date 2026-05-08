@@ -45,11 +45,41 @@ The associated requirements can be found here:
 
 
 
-* Shop functionality
-* AAS list querying
-* Redesign of elemantary elements
-* Implementation of the Nameplate Generator
+### AAS list improvement
+---
+<img src="public/sort.jpeg>
+The table content can now be sorted in the table header by every available column
+<img src="public/urlsort.jpeg>
+The sorting is also available in the associated url by a query
 
+
+[SRS-FR-LIST-002 AAS List Filtering](/PROJECT/TINF24F_5-SRS.md#srs-fr-list-002-aas-list-filtering)
+[SRS-FR-LIST-003 AAS List Sorting](/PROJECT/TINF24F_5-SRS.md#srs-fr-list-003-aas-list-sorting)
+
+### Repository Setting improvements
+---
+<img src="public/preview.png>
+<img src="public/preview.png>
+For every repository there is now a button to show a preview of its content, while the user is on the settings page
+<img src="public/active.png>
+Additionaly, repositories can be activated individually in the browser
+
+
+[SRS-FR-UI-001 Repository AAS Entry Count](/PROJECT/TINF24F_5-SRS.md#srs-fr-ui-001-repository-aas-entry-count)
+
+[SRS-FR-REPO-001 AAS Repository Configuration](/PROJECT/TINF24F_5-SRS.md#srs-fr-repo-001-aas-repository-configuration)
+
+[SRS-FR-CONFIG-001 CD Repository Configuration](/PROJECT/TINF24F_5-SRS.md#srs-fr-config-001-cd-repository-configuration)
+
+[SRS-FR-CONFIG-002 CD Repository Content Inspection](/PROJECT/TINF24F_5-SRS.md#srs-fr-config-002-cd-repository-content-inspection)
+
+### Product View improvements
+<img src="public/technicaldata.jpeg">
+The depiction of technical data in the product view is also improved. The columns are corretly edited and there is a button menu to unfold all available information sections
+
+### Further improvements
+---
+Further improvements happend to login options, Nameplate-Generator integration, ...
 ## Team Overview
 
 Nils Schäffner, Gregor Gottschewski, Felix Hennerich, Julian Schumacher, Bruno Lange, Jan Kruske und Robin Kelm.
