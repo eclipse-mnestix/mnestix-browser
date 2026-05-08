@@ -119,10 +119,10 @@ Additional improvements have been made to:
 
 | Name |
 |---|
-| Nils Schäffner |
 | Gregor Gottschewski |
 | Felix Hennerich |
 | Julian Schumacher |
+| Nils Schäffner |
 | Bruno Lange |
 | Jan Kruske |
 | Robin Kelm |
