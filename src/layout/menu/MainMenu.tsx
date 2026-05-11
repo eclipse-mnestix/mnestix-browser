@@ -10,7 +10,6 @@ import ListIcon from '@mui/icons-material/List';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import packageJson from '../../../package.json';
 import { useEnv } from 'app/EnvProvider';
-import BottomMenu from 'layout/menu/BottomMenu';
 import { useTranslations } from 'next-intl';
 import { MnestixRole } from 'components/authentication/AllowedRoutes';
 import { useCart } from 'components/contexts/CartContext';
@@ -187,9 +186,7 @@ export default function MainMenu() {
                     <Typography>{versionString}</Typography>
                     <Typography>{buildDate}</Typography>
                 </Box>
-                {useAuthentication && (
-                    <BottomMenu mnestixRole={mnestixRole} name={getAuthName() ?? ''} isLoggedIn={auth.isLoggedIn} />
-                )}
+
             </StyledDrawer>
         </>
     );
