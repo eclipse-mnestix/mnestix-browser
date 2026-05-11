@@ -36,13 +36,13 @@ The software and this specification was developed in connection with a universit
    2.3. [User Characteristics](#23-user-characteristics)  
    2.4. [Limitations](#24-limitations)  
    2.5. [Assumptions and dependencies](#25-assumptions-and-dependencies)
-3. [Specific features](#3-specific-features)
-   3.1. [Non-Functional Requirements](#31-non-functional-requirements-nfr)
+3. [Specific features](#3-specific-features)  
+   3.1. [Non-Functional Requirements](#31-non-functional-requirements-nfr)  
    3.2. [External interface requirements](#32-external-interface-requirements)  
     3.2.1. [Availability](#321-availability)  
     3.2.2. [Security and privacy](#322-security-and-privacy)  
-    3.2.3. [Maintainability](#323-maintainability)
-4. [Verification](#4verification)
+    3.2.3. [Maintainability](#323-maintainability)  
+4. [Verification](#4verification)  
 
 ## 1. Introduction
 
