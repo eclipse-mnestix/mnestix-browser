@@ -227,11 +227,12 @@ Verification methods:
 
 1. [SRS-NFR-PERFORM-001 - AAS List Load Performance](#srs-nfr-perform-001-aas-list-load-performance)
 2. [SRS-NFR-PERFORM-002 - Concurrent User Support](#srs-nfr-perform-002-concurrent-user-support)
-3. [SRS-NFR-SEC-001 - Configuration Change Logging](#srs-nfr-sec-001-configuration-change-logging)
-4. [SRS-NFR-UI-001 - Responsive Interface](#srs-nfr-ui-001-responsive-interface)
-5. [SRS-NFR-PORT-001 - Browser Compatibility](#srs-nfr-port-001-browser-compatibility)
-6. [SRS-NFR-SHOP-LANG-001 - Multilingual Support](#srs-nfr-shop-lang-001-multilingual-support)
-7. [SRS-NFR-MAINT-001 - Code Quality Standards](#srs-nfr-maint-001-code-quality-standards)
+3. [SRS-NFR-PERFORM-003 - Thumbnail Lazy Loading](#srs-nfr-perform-003-thumbnail-lazy-loading)
+4. [SRS-NFR-SEC-001 - Configuration Change Logging](#srs-nfr-sec-001-configuration-change-logging)
+5. [SRS-NFR-UI-001 - Responsive Interface](#srs-nfr-ui-001-responsive-interface)
+6. [SRS-NFR-PORT-001 - Browser Compatibility](#srs-nfr-port-001-browser-compatibility)
+7. [SRS-NFR-SHOP-LANG-001 - Multilingual Support](#srs-nfr-shop-lang-001-multilingual-support)
+8. [SRS-NFR-MAINT-001 - Code Quality Standards](#srs-nfr-maint-001-code-quality-standards)
 
 ### SRS-FR-LOGI-001 Login Status Display
 
@@ -451,11 +452,12 @@ Overview over all non-functional requirements for navigation:
 
 1. [SRS-NFR-PERFORM-001 - AAS List Load Performance](#srs-nfr-perform-001-aas-list-load-performance)
 2. [SRS-NFR-PERFORM-002 - Concurrent User Support](#srs-nfr-perform-002-concurrent-user-support)
-3. [SRS-NFR-SEC-001 - Configuration Change Logging](#srs-nfr-sec-001-configuration-change-logging)
-4. [SRS-NFR-UI-001 - Responsive Interface](#srs-nfr-ui-001-responsive-interface)
-5. [SRS-NFR-PORT-001 - Browser Compatibility](#srs-nfr-port-001-browser-compatibility)
-6. [SRS-NFR-SHOP-LANG-001 - Multilingual Support](#srs-nfr-shop-lang-001-multilingual-support)
-7. [SRS-NFR-MAINT-001 - Code Quality Standards](#srs-nfr-maint-001-code-quality-standards)
+3. [SRS-NFR-PERFORM-003 - Thumbnail Lazy Loading](#srs-nfr-perform-003-thumbnail-lazy-loading)
+4. [SRS-NFR-SEC-001 - Configuration Change Logging](#srs-nfr-sec-001-configuration-change-logging)
+5. [SRS-NFR-UI-001 - Responsive Interface](#srs-nfr-ui-001-responsive-interface)
+6. [SRS-NFR-PORT-001 - Browser Compatibility](#srs-nfr-port-001-browser-compatibility)
+7. [SRS-NFR-SHOP-LANG-001 - Multilingual Support](#srs-nfr-shop-lang-001-multilingual-support)
+8. [SRS-NFR-MAINT-001 - Code Quality Standards](#srs-nfr-maint-001-code-quality-standards)
 
 #### SRS-NFR-PERFORM-001 AAS List Load Performance
 
@@ -476,6 +478,16 @@ Overview over all non-functional requirements for navigation:
 | Description         | The system shall support concurrent access by at least 10 users without degradation of performance.                         |
 | Category            | Performance                                                                                                                 |
 | Verification Method | Load Test                                                                                                                   |
+
+#### SRS-NFR-PERFORM-003 Thumbnail Lazy Loading
+
+| ID                  | SRS-NFR-PERFORM-003                                                                                                                                             |
+|---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Reference (CRS)     | [PERFORM-FR-002](/PROJECT/TINF24F_5-CRS-0v1.3.md#56-performance-perform)                                                                                        |
+| Reference (SAS)     | [NFR.008](/PROJECT/TINF24F_5-SAS.md#72-requirements-traceability-matrix)                                                                                        |
+| Description         | The product list view shall load thumbnails and other media content lazily, restricting downloads and rendering to items currently visible on the user's screen. |
+| Category            | Performance                                                                                                                                                      |
+| Verification Method | Measurement / Load Test / Inspection                                                                                                                              |
 
 #### SRS-NFR-SEC-001 Configuration Change Logging
 
