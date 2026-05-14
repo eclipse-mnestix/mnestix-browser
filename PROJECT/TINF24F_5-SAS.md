@@ -43,25 +43,7 @@ Key concerns: performance, reliability, interoperability, scalability, maintaina
 ## 3. Context & System Overview
 
 ### 3.1 System Context Diagram
-<!--
-@startuml
-left to right direction
-
-rectangle "Users" as User
-rectangle "Frontend (Mnestix Catalog)" as FE
-rectangle "AAS Servers (REST APIs)" as AAS
-rectangle "Nameplate Generator" as Nameplate
-rectangle "Optional Backend / API Gateway" as OptBackend
-
-User PFEIL FE
-FE PFEIL AAS
-FE PFEIL Nameplate
-FE PFEIL OptBackend
-
-@enduml
-replace PFEIL with -->
-
-![Context Diagram](assets/sas/context_diagram.svg)
+![Context Diagram](assets/sas/mnestix-architecture.drawio.png)
 
 **Architecture Style:** Client–server, REST/JSON, asynchronous data loading.  
 **Data:** Distributed across multiple AAS servers; local browser persistence for preferences.
@@ -101,36 +83,6 @@ A short timeline and the existing Mnestix codebase can interfere with fast devel
 ---
 
 ## 7. Architectural Views
-
-### 7.1 Logical Architecture Diagram
-```mermaid
-graph LR
-  subgraph UI[UI Layer]
-    Header[Header / Login Status]
-    RepoConfig[Repository Config]
-    Catalog[Product List]
-    Details[Product Detail]
-    CartView[Cart]
-  end
-
-  subgraph Services[Service Layer]
-    CatalogService
-    FilterSortService
-    RepositoryManager
-    CartManager
-    HttpClient["HTTP Client (Async)"]
-  end
-
-  subgraph Integrations[Integrations]
-    NameplateGen[Nameplate Generator]
-    AASAPI[AAS REST Endpoints]
-  end
-
-  UI --> Services
-  Services --> Integrations
-```
-
-### 7.2 Requirements Traceability Matrix
 
 This section maps each SRS requirement to the implementing software module(s) and architectural layer.
 
