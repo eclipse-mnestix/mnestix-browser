@@ -136,41 +136,41 @@ This section maps each SRS requirement to the implementing software module(s) an
 
 #### Functional Requirements
 
-| SRS Requirement | Module/Component | Implementation Path | Layer |
-|----------------|------------------|---------------------|-------|
-| **FR.001** - Login status symbol in menu bar | Header Component | `/src/components/Header/LoginStatusIndicator.tsx` [To be implemented] | UI Layer |
-| **FR.002** - Integrate login functions into status symbol | Header Component | `/src/components/Header/LoginStatusIndicator.tsx` [To be implemented] | UI Layer |
-| **FR.003** - Display AAS entry count per repository | Repository Config Dialog, RepositoryManager Service | `/src/components/RepositoryConfig/RepositoryList.tsx` [To be implemented]<br>`/src/services/RepositoryManager.ts` [To be implemented] | UI Layer / Service Layer |
-| **FR.004** - Nameplate Generator access from product context menu | Product Detail Component, Nameplate Integration | `/src/components/ProductDetail/ContextMenu.tsx` [To be implemented]<br>`/src/lib/integrations/NameplateGenerator.ts` [To be implemented] | UI Layer / Integration Layer |
-| **FR.005** - Display specific columns in AAS list | Product List Component | `/src/components/Catalog/ProductList.tsx` [To be implemented]<br>`/src/components/Catalog/ProductTable.tsx` [To be implemented] | UI Layer |
-| **FR.006** - Filter AAS list by query parameters | Filter Component, FilterSortService | `/src/components/Catalog/FilterPanel.tsx` [To be implemented]<br>`/src/services/FilterSortService.ts` [To be implemented] | UI Layer / Service Layer |
-| **FR.007** - Sort AAS list by columns | Product List Component, FilterSortService | `/src/components/Catalog/ProductTable.tsx` [To be implemented]<br>`/src/services/FilterSortService.ts` [To be implemented] | UI Layer / Service Layer |
-| **FR.008** - Cart view accessible via sidebar at `/cart` | Cart View, Sidebar Navigation | `/src/app/cart/page.tsx` [To be implemented]<br>`/src/components/Sidebar/Navigation.tsx` [To be implemented] | UI Layer |
-| **FR.009** - List all cart products in cart view | Cart View Component | `/src/app/cart/page.tsx` [To be implemented]<br>`/src/components/Cart/CartList.tsx` [To be implemented] | UI Layer |
-| **FR.010** - Edit product quantities in cart | Cart Item Component, CartManager Service | `/src/components/Cart/CartItem.tsx` [To be implemented]<br>`/src/services/CartManager.ts` [To be implemented] | UI Layer / Service Layer |
-| **FR.011** - "Add to cart" button in product view | Product Detail Component, CartManager Service | `/src/components/ProductDetail/AddToCartButton.tsx` [To be implemented]<br>`/src/services/CartManager.ts` [To be implemented] | UI Layer / Service Layer |
-| **FR.012** - Display cart product count in sidebar | Sidebar Component, CartManager Service | `/src/components/Sidebar/CartBadge.tsx` [To be implemented]<br>`/src/services/CartManager.ts` [To be implemented] | UI Layer / Service Layer |
-| **FR.013** - Enable/disable shop via `.env` flag | Configuration Service | `/src/lib/config/shopConfig.ts` [To be implemented]<br>`.env` file variable `SHOP_ENABLED_FLAG` | Service Layer |
-| **FR.014** - External payment provider integration | Payment Integration Module | `/src/lib/integrations/PaymentProvider.ts` [To be implemented] | Integration Layer |
-| **FR.015** - Display product price when shop enabled | Product List Component, Product Detail Component | `/src/components/Catalog/ProductCard.tsx` [To be implemented]<br>`/src/components/ProductDetail/PriceDisplay.tsx` [To be implemented] | UI Layer |
-| **FR.016** - Enable/disable individual repositories | Repository Config Dialog, RepositoryManager Service | `/src/components/RepositoryConfig/RepositoryToggle.tsx` [To be implemented]<br>`/src/services/RepositoryManager.ts` [To be implemented] | UI Layer / Service Layer |
-| **FR.017** - Configure CD repositories | Repository Config Dialog | `/src/components/RepositoryConfig/CDRepositoryConfig.tsx` [To be implemented] | UI Layer |
-| **FR.018** - Inspect CD repository contents | CD Repository Browser Component | `/src/components/RepositoryConfig/CDRepositoryBrowser.tsx` [To be implemented] | UI Layer |
-| **FR.019** - Improve `SM TechnicalData` submodel formatting | Submodel Renderer Component | `/src/components/Submodels/TechnicalDataRenderer.tsx` [To be implemented] | UI Layer |
-| **FR.020** - Improve `HandoverDocumentation` submodel formatting | Submodel Renderer Component | `/src/components/Submodels/HandoverDocumentationRenderer.tsx` [To be implemented] | UI Layer |
-| **FR.021** - Navigate through linked AAS references | Submodel Navigation Component | `/src/components/Submodels/AASReferenceLink.tsx` [To be implemented] | UI Layer |
+| SRS Requirement                                                   | Module/Component                                    | Implementation Path                                                                               | Layer                        | GH Issue                                                              |
+| ----------------------------------------------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ---------------------------- | --------------------------------------------------------------------- |
+| **FR.001** - Login status symbol in menu bar                      | Header Component                                    | `/src/components/Header/LoginStatusIndicator.tsx`                                                 | UI Layer                     | [#566](https://github.com/eclipse-mnestix/mnestix-browser/issues/566) |
+| **FR.002** - Integrate login functions into status symbol         | Header Component                                    | `/src/components/Header/LoginStatusIndicator.tsx`                                                 | UI Layer                     | [#566](https://github.com/eclipse-mnestix/mnestix-browser/issues/566) |
+| **FR.003** - Display AAS entry count per repository               | Repository Config Dialog, RepositoryManager Service | `/src/components/RepositoryConfig/RepositoryList.tsx` <br>`/src/services/RepositoryManager.ts`    | UI Layer / Service Layer     | [@Gregor/ Felix TODO](https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/issues/5)      |
+| **FR.004** - Nameplate Generator access from product context menu | Product Detail Component, Nameplate Integration     | `/src/components/ProductDetail/ContextMenu.tsx` <br>`/src/lib/integrations/NameplateGenerator.ts` | UI Layer / Integration Layer | [#578](https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/issues/578)      |
+| **FR.005** - Display specific columns in AAS list                 | Product List Component                              | `/src/components/Catalog/ProductList.tsx` <br>`/src/components/Catalog/ProductTable.tsx`          | UI Layer                     | [@Nils TODO](https://github.com/eclipse-mnestix/mnestix-browser/issues/5)      |
+| **FR.006** - Filter AAS list by asset kind                        | Filter Component, FilterSortService                 | `/src/components/Catalog/FilterPanel.tsx` <br>`/src/services/FilterSortService.ts`                | UI Layer / Service Layer     | [#568](https://github.com/eclipse-mnestix/mnestix-browser/issues/568)      |
+| **FR.007** - Sort AAS list by columns                             | Product List Component, FilterSortService           | `/src/components/Catalog/ProductTable.tsx` <br>`/src/services/FilterSortService.ts`               | UI Layer / Service Layer     | [#575](https://github.com/eclipse-mnestix/mnestix-browser/issues/575)      |
+| **FR.008** - Cart view accessible via sidebar at `/cart`          | Cart View, Sidebar Navigation                       | `/src/app/cart/page.tsx` <br>`/src/components/Sidebar/Navigation.tsx`                             | UI Layer                     | [#573](https://github.com/eclipse-mnestix/mnestix-browser/issues/573)      |
+| **FR.009** - List all cart products in cart view                  | Cart View Component                                 | `/src/app/cart/page.tsx` <br>`/src/components/Cart/CartList.tsx`                                  | UI Layer                     | [#573](https://github.com/eclipse-mnestix/mnestix-browser/issues/573)      |
+| **FR.010** - Edit product quantities in cart                      | Cart Item Component, CartManager Service            | `/src/components/Cart/CartItem.tsx` <br>`/src/services/CartManager.ts`                            | UI Layer / Service Layer     | [#573](https://github.com/eclipse-mnestix/mnestix-browser/issues/573)      |
+| **FR.011** - "Add to cart" button in product view                 | Product Detail Component, CartManager Service       | `/src/components/ProductDetail/AddToCartButton.tsx` <br>`/src/services/CartManager.ts`            | UI Layer / Service Layer     | [#573](https://github.com/eclipse-mnestix/mnestix-browser/issues/573)      |
+| **FR.012** - Display cart product count in sidebar                | Sidebar Component, CartManager Service              | `/src/components/Sidebar/CartBadge.tsx` <br>`/src/services/CartManager.ts`                        | UI Layer / Service Layer     | [#573](https://github.com/eclipse-mnestix/mnestix-browser/issues/573)      |
+| **FR.013** - Enable/disable shop via `.env` flag                  | Configuration Service                               | `/src/lib/config/shopConfig.ts` <br>`.env` file variable `SHOP_ENABLED_FLAG`                      | Service Layer                | [#573](https://github.com/eclipse-mnestix/mnestix-browser/issues/573)      |
+| **FR.014** - External payment provider integration                | Payment Integration Module                          | `/src/lib/integrations/PaymentProvider.ts`                                                        | Integration Layer            | ---      |
+| **FR.015** - Display product price when shop enabled              | Product List Component, Product Detail Component    | `/src/components/Catalog/ProductCard.tsx` <br>`/src/components/ProductDetail/PriceDisplay.tsx`    | UI Layer                     | [#573](https://github.com/eclipse-mnestix/mnestix-browser/issues/573)      |
+| **FR.016** - Enable/disable individual repositories               | Repository Config Dialog, RepositoryManager Service | `/src/components/RepositoryConfig/RepositoryToggle.tsx` <br>`/src/services/RepositoryManager.ts`  | UI Layer / Service Layer     | [#571](https://github.com/eclipse-mnestix/mnestix-browser/issues/571)      |
+| **FR.017** - Configure CD repositories                            | Repository Config Dialog                            | `/src/components/RepositoryConfig/CDRepositoryConfig.tsx`                                         | UI Layer                     | [#571](https://github.com/eclipse-mnestix/mnestix-browser/issues/571)      |
+| **FR.018** - Inspect CD repository contents                       | CD Repository Browser Component                     | `/src/components/RepositoryConfig/CDRepositoryBrowser.tsx`                                        | UI Layer                     | [#572](https://github.com/eclipse-mnestix/mnestix-browser/issues/572)      |
+| **FR.019** - Improve `SM TechnicalData` submodel formatting       | Submodel Renderer Component                         | `/src/components/Submodels/TechnicalDataRenderer.tsx`                                             | UI Layer                     | [#567](https://github.com/eclipse-mnestix/mnestix-browser/issues/567)      |
+| **FR.020** - Improve `HandoverDocumentation` submodel formatting  | Submodel Renderer Component                         | `/src/components/Submodels/HandoverDocumentationRenderer.tsx`                                     | UI Layer                     | [#576](https://github.com/eclipse-mnestix/mnestix-browser/issues/576)      |
+| **FR.021** - Navigate through linked AAS references               | Submodel Navigation Component                       | `/src/components/Submodels/AASReferenceLink.tsx`                                                  | UI Layer                     | [#577](https://github.com/eclipse-mnestix/mnestix-browser/issues/577)      |
 
 #### Non-Functional Requirements
 
-| SRS Requirement | Module/Component | Implementation Path | Layer |
-|----------------|------------------|---------------------|-------|
-| **NFR.001** - Load 100 AAS entries in <3s | CatalogService, Lazy Loading Implementation | `/src/services/CatalogService.ts` [To be implemented]<br>`/src/hooks/useLazyLoad.ts` [To be implemented] | Service Layer / UI Layer |
-| **NFR.002** - Support 10 concurrent users | Server Configuration, Async Loading Architecture | Next.js server configuration<br>`/src/lib/httpClient.ts` [To be implemented] | Service Layer |
-| **NFR.003** - Log configuration changes | RepositoryManager Service, Logging Service | `/src/services/RepositoryManager.ts` [To be implemented]<br>`/src/lib/logging/Logger.ts` [To be implemented] | Service Layer |
-| **NFR.004** - Responsive UI on resize/mobile | CSS Responsive Design, Layout Components | Global CSS framework<br>`/src/styles/responsive.css` [To be implemented]<br>All UI components with responsive breakpoints | UI Layer |
-| **NFR.005** - Browser compatibility (Chrome, Firefox, Safari) | Next.js Build Configuration | `next.config.js`<br>`package.json` (browserslist) | Build Configuration |
-| **NFR.006** - Localization (English, German) | i18n Service, Translation Files | `/src/lib/i18n/translations.ts` [To be implemented]<br>`/public/locales/en.json` [To be implemented]<br>`/public/locales/de.json` [To be implemented] | Service Layer |
-| **NFR.007** - Consistent linting and formatting | ESLint, Prettier Configuration | `.eslintrc.json`<br>`.prettierrc`<br>Development tooling | Build Configuration |
+| SRS Requirement                                               | Module/Component                                 | Implementation Path                                                                                    | Layer                    |
+| ------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------ |
+| **NFR.001** - Load 100 AAS entries in <3s                     | CatalogService, Lazy Loading Implementation      | `/src/services/CatalogService.ts` <br>`/src/hooks/useLazyLoad.ts`                                      | Service Layer / UI Layer |
+| **NFR.002** - Support 10 concurrent users                     | Server Configuration, Async Loading Architecture | Next.js server configuration<br>`/src/lib/httpClient.ts`                                               | Service Layer            |
+| **NFR.003** - Log configuration changes                       | RepositoryManager Service, Logging Service       | `/src/services/RepositoryManager.ts` <br>`/src/lib/logging/Logger.ts`                                  | Service Layer            |
+| **NFR.004** - Responsive UI on resize/mobile                  | CSS Responsive Design, Layout Components         | Global CSS framework<br>`/src/styles/responsive.css` <br>All UI components with responsive breakpoints | UI Layer                 |
+| **NFR.005** - Browser compatibility (Chrome, Firefox, Safari) | Next.js Build Configuration                      | `next.config.js`<br>`package.json` (browserslist)                                                      | Build Configuration      |
+| **NFR.006** - Localization (English, German)                  | i18n Service, Translation Files                  | `/src/lib/i18n/translations.ts` <br>`/public/locales/en.json` <br>`/public/locales/de.json`            | Service Layer            |
+| **NFR.007** - Consistent linting and formatting               | ESLint, Prettier Configuration                   | `.eslintrc.json`<br>`.prettierrc`<br>Development tooling                                               | Build Configuration      |
 
 ---
 
@@ -188,13 +188,11 @@ This section describes the internal service architecture with specific file loca
 #### **CatalogService**
 **Responsibility:** Manages product catalog data fetching, caching, and state management.
 
-**Implementation Path:** `/src/services/CatalogService.ts` [To be implemented]
-
-**Repository Link:** [https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/services/CatalogService.ts](https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/services/CatalogService.ts)
+**Implementation Path:** `/src/services/CatalogService.ts`
 
 **Related Components:**
-- `/src/hooks/useCatalog.ts` [To be implemented] - React hook for catalog data
-- `/src/types/Catalog.ts` [To be implemented] - TypeScript type definitions
+- `/src/hooks/useCatalog.ts` - React hook for catalog data
+- `/src/types/Catalog.ts` - TypeScript type definitions
 
 **Implements Requirements:** FR.005, NFR.001
 
@@ -203,14 +201,12 @@ This section describes the internal service architecture with specific file loca
 #### **FilterSortService**
 **Responsibility:** Handles frontend filtering and sorting logic for product lists.
 
-**Implementation Path:** `/src/services/FilterSortService.ts` [To be implemented]
-
-**Repository Link:** [https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/services/FilterSortService.ts](https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/services/FilterSortService.ts)
+**Implementation Path:** `/src/services/FilterSortService.ts` 
 
 **Related Components:**
-- `/src/components/Catalog/FilterPanel.tsx` [To be implemented] - UI for filters
-- `/src/hooks/useFilterSort.ts` [To be implemented] - React hook for filter/sort state
-- `/src/types/Filter.ts` [To be implemented] - Filter type definitions
+- `/src/components/Catalog/FilterPanel.tsx` - UI for filters
+- `/src/hooks/useFilterSort.ts` - React hook for filter/sort state
+- `/src/types/Filter.ts` - Filter type definitions
 
 **Implements Requirements:** FR.006, FR.007
 
@@ -219,15 +215,13 @@ This section describes the internal service architecture with specific file loca
 #### **RepositoryManager**
 **Responsibility:** Manages AAS repository connections, enabling/disabling repositories, and fetching repository metadata.
 
-**Implementation Path:** `/src/services/RepositoryManager.ts` [To be implemented]
-
-**Repository Link:** [https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/services/RepositoryManager.ts](https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/services/RepositoryManager.ts)
+**Implementation Path:** `/src/services/RepositoryManager.ts`
 
 **Related Components:**
-- `/src/components/RepositoryConfig/RepositoryList.tsx` [To be implemented] - Repository list UI
-- `/src/components/RepositoryConfig/RepositoryToggle.tsx` [To be implemented] - Enable/disable toggle
-- `/src/contexts/RepositoryContext.tsx` [To be implemented] - React Context for repository state
-- `/src/types/Repository.ts` [To be implemented] - Repository type definitions
+- `/src/components/RepositoryConfig/RepositoryList.tsx` - Repository list UI
+- `/src/components/RepositoryConfig/RepositoryToggle.tsx` - Enable/disable toggle
+- `/src/contexts/RepositoryContext.tsx` - React Context for repository state
+- `/src/types/Repository.ts` - Repository type definitions
 
 **Implements Requirements:** FR.003, FR.016, FR.017, FR.018, NFR.003
 
@@ -236,16 +230,14 @@ This section describes the internal service architecture with specific file loca
 #### **CartManager**
 **Responsibility:** Manages shopping cart state, add/remove items, quantity updates, and cart persistence.
 
-**Implementation Path:** `/src/services/CartManager.ts` [To be implemented]
-
-**Repository Link:** [https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/services/CartManager.ts](https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/services/CartManager.ts)
+**Implementation Path:** `/src/services/CartManager.ts` 
 
 **Related Components:**
-- `/src/contexts/CartContext.tsx` [To be implemented] - React Context for cart state
-- `/src/hooks/useCart.ts` [To be implemented] - React hook for cart operations
-- `/src/components/Cart/CartList.tsx` [To be implemented] - Cart list UI
-- `/src/components/Cart/CartItem.tsx` [To be implemented] - Individual cart item
-- `/src/types/Cart.ts` [To be implemented] - Cart type definitions
+- `/src/contexts/CartContext.tsx` - React Context for cart state
+- `/src/hooks/useCart.ts` - React hook for cart operations
+- `/src/components/Cart/CartList.tsx` - Cart list UI
+- `/src/components/Cart/CartItem.tsx` - Individual cart item
+- `/src/types/Cart.ts` - Cart type definitions
 
 **Implements Requirements:** FR.008, FR.009, FR.010, FR.011, FR.012
 
@@ -254,13 +246,11 @@ This section describes the internal service architecture with specific file loca
 #### **HTTP Client**
 **Responsibility:** Provides async HTTP communication with AAS REST endpoints, handles errors, retries, and request cancellation.
 
-**Implementation Path:** `/src/lib/httpClient.ts` [To be implemented]
-
-**Repository Link:** [https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/lib/httpClient.ts](https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/lib/httpClient.ts)
+**Implementation Path:** `/src/lib/httpClient.ts`
 
 **Related Components:**
-- `/src/lib/api/aasEndpoints.ts` [To be implemented] - AAS API endpoint definitions
-- `/src/types/ApiResponse.ts` [To be implemented] - API response types
+- `/src/lib/api/aasEndpoints.ts` - AAS API endpoint definitions
+- `/src/types/ApiResponse.ts` - API response types
 
 **Implements Requirements:** NFR.002
 
@@ -274,10 +264,8 @@ This section describes the UI layer organization with file locations.
 **Location:** `/src/components/Header/`
 
 **Components:**
-- `LoginStatusIndicator.tsx` [To be implemented] - FR.001, FR.002
+- `LoginStatusIndicator.tsx` - FR.001, FR.002
 - `NavigationBar.tsx` - Existing Mnestix component
-
-**Repository Link:** [https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/components/Header/](https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/components/Header/)
 
 ---
 
@@ -285,13 +273,11 @@ This section describes the UI layer organization with file locations.
 **Location:** `/src/components/Catalog/`
 
 **Components:**
-- `ProductList.tsx` [To be implemented] - FR.005
-- `ProductTable.tsx` [To be implemented] - FR.005, FR.007
-- `ProductCard.tsx` [To be implemented] - FR.015
-- `FilterPanel.tsx` [To be implemented] - FR.006
-- `LazyImage.tsx` [To be implemented] - NFR.001
-
-**Repository Link:** [https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/components/Catalog/](https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/components/Catalog/)
+- `ProductList.tsx` - FR.005
+- `ProductTable.tsx` - FR.005, FR.007
+- `ProductCard.tsx` - FR.015
+- `FilterPanel.tsx` - FR.006
+- `LazyImage.tsx` - NFR.001
 
 ---
 
@@ -299,11 +285,9 @@ This section describes the UI layer organization with file locations.
 **Location:** `/src/components/ProductDetail/`
 
 **Components:**
-- `AddToCartButton.tsx` [To be implemented] - FR.011
-- `ContextMenu.tsx` [To be implemented] - FR.004
-- `PriceDisplay.tsx` [To be implemented] - FR.015
-
-**Repository Link:** [https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/components/ProductDetail/](https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/components/ProductDetail/)
+- `AddToCartButton.tsx` - FR.011
+- `ContextMenu.tsx` - FR.004
+- `PriceDisplay.tsx` - FR.015
 
 ---
 
@@ -311,12 +295,10 @@ This section describes the UI layer organization with file locations.
 **Location:** `/src/components/RepositoryConfig/`
 
 **Components:**
-- `RepositoryList.tsx` [To be implemented] - FR.003
-- `RepositoryToggle.tsx` [To be implemented] - FR.016
-- `CDRepositoryConfig.tsx` [To be implemented] - FR.017
-- `CDRepositoryBrowser.tsx` [To be implemented] - FR.018
-
-**Repository Link:** [https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/components/RepositoryConfig/](https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/components/RepositoryConfig/)
+- `RepositoryList.tsx` - FR.003
+- `RepositoryToggle.tsx` - FR.016
+- `CDRepositoryConfig.tsx` - FR.017
+- `CDRepositoryBrowser.tsx` - FR.018
 
 ---
 
@@ -324,10 +306,8 @@ This section describes the UI layer organization with file locations.
 **Location:** `/src/components/Cart/`
 
 **Components:**
-- `CartList.tsx` [To be implemented] - FR.009
-- `CartItem.tsx` [To be implemented] - FR.010
-
-**Repository Link:** [https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/components/Cart/](https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/components/Cart/)
+- `CartList.tsx` - FR.009
+- `CartItem.tsx` - FR.010
 
 ---
 
@@ -335,11 +315,9 @@ This section describes the UI layer organization with file locations.
 **Location:** `/src/components/Submodels/`
 
 **Components:**
-- `TechnicalDataRenderer.tsx` [To be implemented] - FR.019
-- `HandoverDocumentationRenderer.tsx` [To be implemented] - FR.020
-- `AASReferenceLink.tsx` [To be implemented] - FR.021
-
-**Repository Link:** [https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/components/Submodels/](https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/components/Submodels/)
+- `TechnicalDataRenderer.tsx` - FR.019
+- `HandoverDocumentationRenderer.tsx` - FR.020
+- `AASReferenceLink.tsx` - FR.021
 
 ---
 
@@ -347,10 +325,8 @@ This section describes the UI layer organization with file locations.
 **Location:** `/src/components/Sidebar/`
 
 **Components:**
-- `Navigation.tsx` [To be implemented] - FR.008
-- `CartBadge.tsx` [To be implemented] - FR.012
-
-**Repository Link:** [https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/components/Sidebar/](https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/components/Sidebar/)
+- `Navigation.tsx` - FR.008
+- `CartBadge.tsx` - FR.012
 
 ---
 
@@ -359,16 +335,12 @@ This section describes the UI layer organization with file locations.
 #### **Nameplate Generator Integration**
 **Location:** `/src/lib/integrations/NameplateGenerator.ts` [To be implemented]
 
-**Repository Link:** [https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/lib/integrations/NameplateGenerator.ts](https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/lib/integrations/NameplateGenerator.ts)
-
 **Implements Requirements:** FR.004
 
 ---
 
 #### **Payment Provider Integration**
 **Location:** `/src/lib/integrations/PaymentProvider.ts` [To be implemented]
-
-**Repository Link:** [https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/lib/integrations/PaymentProvider.ts](https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/lib/integrations/PaymentProvider.ts)
 
 **Implements Requirements:** FR.014
 
@@ -379,11 +351,9 @@ This section describes the UI layer organization with file locations.
 **Location:** `/src/app/`
 
 **Pages:**
-- `/src/app/cart/page.tsx` [To be implemented] - Cart view page (FR.008)
+- `/src/app/cart/page.tsx` - Cart view page (FR.008)
 - `/src/app/catalog/page.tsx` - Existing catalog page (enhanced)
 - `/src/app/product/[id]/page.tsx` - Existing product detail page (enhanced)
-
-**Repository Link:** [https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/app/](https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/tree/1.5.0-product-catalog/src/app/)
 
 ---
 
