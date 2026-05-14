@@ -67,7 +67,8 @@ export function useFileViewObject(submodelElement: SubmodelElementCollection, su
             DocumentSpecificSemanticIdIrdi.Title,
             DocumentSpecificSemanticIdIrdiV2.Title,
         ]);
-        fileViewObject.title = getTranslationText(title as MultiLanguageProperty, locale);
+        const translatedTitle = getTranslationText(title as MultiLanguageProperty, locale);
+        fileViewObject.title = translatedTitle?.trim() ? translatedTitle : fileViewObject.title;
 
         const file = findSubmodelElementBySemanticIdsOrIdShort(documentVersion.value, 'DigitalFile', [
             DocumentSpecificSemanticId.DigitalFile,

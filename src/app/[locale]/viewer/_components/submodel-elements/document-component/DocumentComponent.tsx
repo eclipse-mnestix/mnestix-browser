@@ -22,6 +22,7 @@ type DocumentComponentProps = {
 
 export function DocumentComponent(props: DocumentComponentProps) {
     const t = useTranslations('components.documentComponent');
+    const tComponents = useTranslations('components');
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
     const fileViewObject = useFileViewObject(props.submodelElement, props.submodelId);
 
@@ -34,11 +35,16 @@ export function DocumentComponent(props: DocumentComponentProps) {
     };
 
     function getDocumentClassificationCollection() {
-        return findAllSubmodelElementsBySemanticIdsOrIdShort(props.submodelElement.value, 'DocumentClassification', [
+        return (findAllSubmodelElementsBySemanticIdsOrIdShort(props.submodelElement.value, 'DocumentClassification', [
             DocumentSpecificSemanticId.DocumentClassification,
             DocumentSpecificSemanticIdIrdi.DocumentClassification,
-        ]) as SubmodelElementCollection[];
+        ]) as SubmodelElementCollection[]) ?? [];
     }
+
+    const hasDigitalFileUrl = !!fileViewObject?.digitalFileUrl?.trim();
+    const documentTitle = fileViewObject?.title?.trim()
+        ? fileViewObject.title
+        : tComponents('propertyComponent.labels.notAvailable');
 
     return (
         <DataRow hasDivider={props.hasDivider}>
@@ -52,31 +58,51 @@ export function DocumentComponent(props: DocumentComponentProps) {
                         sx={{ mb: 1 }}
                     >
                         <Box display="flex" gap={1} flexDirection="row" sx={{ mb: 1 }}>
-                            <Link href={fileViewObject.digitalFileUrl} target="_blank">
+                            {hasDigitalFileUrl ? (
+                                <Link href={fileViewObject.digitalFileUrl} target="_blank">
+                                    <PreviewImage
+                                        previewImgUrl={fileViewObject.previewImgUrl}
+                                        mimeType={fileViewObject.mimeType}
+                                    />
+                                </Link>
+                            ) : (
                                 <PreviewImage
                                     previewImgUrl={fileViewObject.previewImgUrl}
                                     mimeType={fileViewObject.mimeType}
                                 />
-                            </Link>
+                            )}
                             <Box>
                                 <Typography data-testid="document-title" variant="h5">
-                                    {fileViewObject.title}
+                                    {documentTitle}
                                 </Typography>
                                 {fileViewObject.organizationName && (
                                     <Typography variant="body2" data-testid="document-organization">
                                         {fileViewObject.organizationName}
                                     </Typography>
                                 )}
-                                <Button
-                                    variant="outlined"
-                                    startIcon={<OpenInNew />}
-                                    sx={{ mt: 1 }}
-                                    href={fileViewObject.digitalFileUrl}
-                                    target="_blank"
-                                    data-testid="document-open-button"
-                                >
-                                    {t('open')}
-                                </Button>
+                                {hasDigitalFileUrl ? (
+                                    <Button
+                                        variant="outlined"
+                                        startIcon={<OpenInNew />}
+                                        sx={{ mt: 1 }}
+                                        href={fileViewObject.digitalFileUrl}
+                                        target="_blank"
+                                        data-testid="document-open-button"
+                                    >
+                                        {t('open')}
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        variant="outlined"
+                                        startIcon={<OpenInNew />}
+                                        sx={{ mt: 1 }}
+                                        disabled={true}
+                                        title={t('fileNotFound')}
+                                        data-testid="document-open-button"
+                                    >
+                                        {t('open')}
+                                    </Button>
+                                )}
                             </Box>
                         </Box>
                         <DocumentClassification
