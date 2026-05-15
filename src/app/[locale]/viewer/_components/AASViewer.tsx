@@ -99,10 +99,19 @@ export function AASViewer() {
         }
     }, [infrastructureName]);
 
+    let aasIdDecoded: string;
     try {
-        const aasIdDecoded = safeBase64Decode(base64AasId);
+        aasIdDecoded = safeBase64Decode(base64AasId);
+    } catch (e) {
+        showError(e);
+        return (
+            <Box sx={pageStyles}>
+                <NoSearchResult base64AasId={base64AasId} />
+            </Box>
+        );
+    }
 
-        const startComparison = () => {
+    const startComparison = () => {
             navigate.push(`/compare?aasId=${encodeURIComponent(aasIdDecoded)}`);
         };
 
@@ -197,12 +206,4 @@ export function AASViewer() {
                 )}
             </Box>
         );
-    } catch (e) {
-        showError(e);
-        return (
-            <Box sx={pageStyles}>
-                <NoSearchResult base64AasId={base64AasId} />
-            </Box>
-        );
-    }
 }

@@ -1,5 +1,5 @@
 import { Box, Card, CardContent, Divider, Grid, Skeleton, Typography } from '@mui/material';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { SubmodelDetail } from './submodel/SubmodelDetail';
 import { ErrorMessage, TabSelectorItem, VerticalTabSelector } from 'components/basics/VerticalTabSelector';
@@ -34,28 +34,14 @@ export function SubmodelsOverviewCard({
     firstSubmodelIdShort,
     disableHeadline,
 }: SubmodelsOverviewCardProps) {
-    const [submodelSelectorItems, setSubmodelSelectorItems] = useState<SubModelSelectorItem[]>([]);
     const [selectedItem, setSelectedItem] = useState<SubModelSelectorItem>();
     const t = useTranslations('pages.aasViewer.submodels');
     const locale = useLocale();
-
-    SortNameplateElements(selectedItem?.submodelData);
 
     const isMobile = useIsMobile();
     const firstSubmodelToShowIdShort = firstSubmodelIdShort ?? 'Nameplate';
 
     const [infoItem, setInfoItem] = useState<SubModelSelectorItem>();
-
-    function getSubmodelTabs(): SubModelSelectorItem[] {
-        if (!submodelIds) return []; // do other state stuff
-
-        return submodelIds
-            .map(getAsTabSelectorItem)
-            .filter((item) => !!item)
-            .sort(function (x, y) {
-                return x.idShort == firstSubmodelToShowIdShort ? -1 : y.idShort == firstSubmodelToShowIdShort ? 1 : 0;
-            });
-    }
 
     function getAsTabSelectorItem(submodelId: SubmodelOrIdReference): SubModelSelectorItem {
         if (submodelId.submodel) {
@@ -80,19 +66,25 @@ export function SubmodelsOverviewCard({
         }
     }
 
-    useEffect(() => {
-        const submodelTabs = getSubmodelTabs();
-        setSubmodelSelectorItems(submodelTabs);
-    }, [submodelIds]);
+    const submodelSelectorItems = useMemo<SubModelSelectorItem[]>(() => {
+        if (!submodelIds) return [];
+        return submodelIds
+            .map(getAsTabSelectorItem)
+            .filter((item) => !!item)
+            .sort(function (x, y) {
+                return x.idShort == firstSubmodelToShowIdShort ? -1 : y.idShort == firstSubmodelToShowIdShort ? 1 : 0;
+            });
+    }, [submodelIds, locale, firstSubmodelToShowIdShort]);
 
-    useEffect(() => {
-        const nameplateTab = submodelSelectorItems.find(
-            (tab) => tab.submodelData?.idShort === firstSubmodelToShowIdShort,
-        );
-        if (!selectedItem && !isMobile && nameplateTab) {
-            setSelectedItem(nameplateTab);
+    const effectiveSelectedItem = useMemo(() => {
+        if (selectedItem) return selectedItem;
+        if (!isMobile) {
+            return submodelSelectorItems.find((tab) => tab.submodelData?.idShort === firstSubmodelToShowIdShort);
         }
-    }, [isMobile, submodelSelectorItems]);
+        return undefined;
+    }, [selectedItem, submodelSelectorItems, isMobile, firstSubmodelToShowIdShort]);
+
+    SortNameplateElements(effectiveSelectedItem?.submodelData);
 
     const SubmodelDetailsSkeleton = (
         <Box sx={{ mb: 2 }}>
@@ -108,12 +100,12 @@ export function SubmodelsOverviewCard({
     );
 
     const SelectedContent = useMemo(() => {
-        if (selectedItem?.submodelData && !submodelsLoading && selectedItem.repositoryUrl) {
+        if (effectiveSelectedItem?.submodelData && !submodelsLoading && effectiveSelectedItem.repositoryUrl) {
             return (
-                <ErrorBoundary key={selectedItem.submodelData.id} message={t('renderError')}>
+                <ErrorBoundary key={effectiveSelectedItem.submodelData.id} message={t('renderError')}>
                     <SubmodelDetail
-                        submodel={selectedItem.submodelData}
-                        submodelRepositoryUrl={selectedItem.repositoryUrl}
+                        submodel={effectiveSelectedItem.submodelData}
+                        submodelRepositoryUrl={effectiveSelectedItem.repositoryUrl}
                     />
                 </ErrorBoundary>
             );
@@ -121,7 +113,7 @@ export function SubmodelsOverviewCard({
             return SubmodelDetailsSkeleton;
         }
         return null;
-    }, [selectedItem, submodelsLoading, t]);
+    }, [effectiveSelectedItem, submodelsLoading, t]);
 
     return (
         <>
@@ -153,7 +145,7 @@ export function SubmodelsOverviewCard({
                             <Grid size={{ md: 4, xs: 12 }}>
                                 <VerticalTabSelector
                                     items={submodelSelectorItems}
-                                    selected={selectedItem}
+                                    selected={effectiveSelectedItem}
                                     setSelected={setSelectedItem}
                                     setInfoItem={setInfoItem}
                                 />
@@ -168,8 +160,8 @@ export function SubmodelsOverviewCard({
                             <Grid size={{ md: 8, xs: 12 }}>
                                 {isMobile ? (
                                     <MobileModal
-                                        selectedItem={selectedItem}
-                                        open={!!selectedItem}
+                                        selectedItem={effectiveSelectedItem}
+                                        open={!!effectiveSelectedItem}
                                         handleClose={() => {
                                             setSelectedItem(undefined);
                                         }}

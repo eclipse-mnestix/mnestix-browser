@@ -63,10 +63,6 @@ export function IdSettingsCard() {
     });
 
     // Fetch id settings initially
-    useAsyncEffect(async () => {
-        await fetchIdSettings();
-    }, [bearerToken]);
-
     const fetchIdSettings = async () => {
         setIsLoading(true);
         const response = await getIdGenerationSettings();
@@ -119,6 +115,10 @@ export function IdSettingsCard() {
         reset({ idSettings: settings });
         setIsLoading(false);
     };
+
+    useAsyncEffect(async () => {
+        await fetchIdSettings();
+    }, [bearerToken]);
 
     async function saveIdSettings(data: IdSettingsFormData) {
         try {
