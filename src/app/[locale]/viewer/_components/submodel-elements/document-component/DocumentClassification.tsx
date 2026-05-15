@@ -64,16 +64,29 @@ export const DocumentClassification = (props: {
         <>
             {classificationData && classificationData.length > 0 && (
                 <Box>
-                    <Typography variant="body2" color="text.secondary" mb={1}>
+                    <Typography
+                        variant="body2"
+                        sx={{
+                            color: 'text.secondary',
+                            mb: 1
+                        }}>
                         {t('classification')}:
                     </Typography>
                     {classificationData?.slice(0, 2).map((classificationData) => (
-                        <Box display="flex" flexDirection="row" gap={1} key={classificationData?.classId}>
+                        <Box
+                            key={classificationData?.classId}
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                gap: 1
+                            }}>
                             <Typography component="span" sx={{ mx: 1 }}>
                                 •
                             </Typography>
                             {classificationData?.classificationSystem && (
-                                <Typography fontWeight="500">{classificationData?.classificationSystem}: </Typography>
+                                <Typography sx={{
+                                    fontWeight: '500'
+                                }}>{classificationData?.classificationSystem}: </Typography>
                             )}
                             <Typography>{tooltipText(classificationData?.className, 20)}</Typography>
                         </Box>

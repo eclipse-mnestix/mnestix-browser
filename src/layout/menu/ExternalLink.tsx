@@ -8,11 +8,13 @@ export type ExternalLinkProps = {
 export function ExternalLink({ href, descriptor }: ExternalLinkProps) {
     return (
         <Link
-            color="primary.contrastText"
             href={href}
             rel="noopener noreferrer"
             target="_blank"
             data-testid="external-link"
+            sx={{
+                color: 'primary.contrastText'
+            }}
         >
             {descriptor}
         </Link>

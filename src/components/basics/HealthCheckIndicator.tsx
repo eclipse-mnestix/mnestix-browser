@@ -13,7 +13,13 @@ export function HealthCheckIndicator() {
 
     if (isLoading && !healthStatus) {
         return (
-            <Box display="flex" alignItems="center" gap={1} data-testid="health-loading-indicator">
+            <Box
+                data-testid="health-loading-indicator"
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1
+                }}>
                 <CircularProgress size={20} />
                 <Typography variant="body2">{t('healthCheck.checking')}</Typography>
             </Box>
@@ -42,7 +48,13 @@ export function HealthCheckIndicator() {
             <Chip
                 icon={healthStatus.status === 'Healthy' ? <CheckCircleIcon /> : <ErrorIcon />}
                 label={
-                    <Box component="span" display="inline-flex" alignItems="center" gap={0.5}>
+                    <Box
+                        component="span"
+                        sx={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 0.5
+                        }}>
                         <span>
                             {t('healthCheck.applicationVersion')}: {applicationData.applicationVersion}
                         </span>

@@ -27,8 +27,14 @@ export function DynamicPartText(props: DynamicPartTextProps) {
                     {props.text}
                 </Typography>
             ) : (
-                <Box display="flex" alignItems="center">
-                    <Link color="secondary" fontSize="small" />
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center'
+                    }}>
+                    <Link color="secondary" sx={{
+                        fontSize: 'small'
+                    }} />
                     <Typography color="secondary" sx={{ fontWeight: 'bold' }}>
                         {props.text}
                     </Typography>

@@ -99,7 +99,12 @@ export const RuleSettings = () => {
                     <CenteredLoadingSpinner sx={{ my: 10 }} />
                 ) : (
                     <>
-                        <Box display="flex" flexDirection="column" alignItems="flex-end">
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'flex-end'
+                            }}>
                             <Button
                                 variant="contained"
                                 startIcon={<AddIcon />}
@@ -108,7 +113,11 @@ export const RuleSettings = () => {
                                 {t('buttons.create')}
                             </Button>
                         </Box>
-                        <Box width="100%" mt={2}>
+                        <Box
+                            sx={{
+                                width: '100%',
+                                mt: 2
+                            }}>
                             {Object.entries(groupedRules).map(([roleName, rules]) => (
                                 <RoleAccordion
                                     key={roleName}
@@ -123,7 +132,6 @@ export const RuleSettings = () => {
                     </>
                 )}
             </Box>
-
             <RuleDialog
                 onClose={() => setRuleDetailDialogOpen(false)}
                 reloadRules={loadRbacData}

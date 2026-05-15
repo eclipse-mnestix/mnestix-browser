@@ -76,10 +76,18 @@ export function RuleForm({ onCancel, onSubmit, rule, title, availableRoles, sele
                 <Typography variant="h2" color="primary">
                     {title}
                 </Typography>
-                <Typography color="text.secondary" mb="1em">
+                <Typography
+                    sx={{
+                        color: 'text.secondary',
+                        mb: '1em'
+                    }}>
                     {selectedRole ? t('createRule.subtitle2', { role: selectedRole }) : t('createRule.subtitle')}
                 </Typography>
-                <Box display="flex" flexDirection="column">
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }}>
                     <Typography variant="h5">{t('tableHeader.name')}</Typography>
                     <Controller
                         rules={{
@@ -157,7 +165,12 @@ export function RuleForm({ onCancel, onSubmit, rule, title, availableRoles, sele
                         )}
                     />
                 </Box>
-                <Box display="flex" flexDirection="column" mt={2}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        mt: 2
+                    }}>
                     <Typography variant="h5">{t('tableHeader.action')}</Typography>
                     <Controller
                         name="action"

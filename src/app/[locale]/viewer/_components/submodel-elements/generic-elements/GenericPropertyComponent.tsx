@@ -85,11 +85,12 @@ export function GenericPropertyComponent(props: GenericPropertyComponentProps) {
     if (property && property.value && (property.value === 'true' || property.value === 'false')) {
         return (
             <Box
-                display="flex"
-                alignItems="center"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
-            >
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center'
+                }}>
                 <Typography data-testid="property-content">{t(`boolean.${property.value}`)}</Typography>
                 {renderCopyButton()}
             </Box>
@@ -100,11 +101,12 @@ export function GenericPropertyComponent(props: GenericPropertyComponentProps) {
     if (isValidUrl(value)) {
         return (
             <Box
-                display="flex"
-                alignItems="center"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
-            >
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center'
+                }}>
                 <Typography data-testid="property-content">
                     <Link component="a" href={value!} target="_blank" rel="noopener noreferrer">
                         {value}
@@ -119,11 +121,12 @@ export function GenericPropertyComponent(props: GenericPropertyComponentProps) {
     // Default case for normal text values
     return (
         <Box
-            display="flex"
-            alignItems="center"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-        >
+            sx={{
+                display: 'flex',
+                alignItems: 'center'
+            }}>
             {renderHighlight(highlightData, property)}
             <Typography data-testid="property-content">
                 {value || t('labels.notAvailable')}
@@ -134,9 +137,7 @@ export function GenericPropertyComponent(props: GenericPropertyComponentProps) {
                         <span data-testid="property-unit"> {getUnitFromConceptDescription(conceptDescription)}</span>
                     )}
             </Typography>
-
             {conceptDescriptionLoading && <Skeleton width="30px" sx={{ ml: 0.5 }} />}
-
             {renderCopyButton()}
         </Box>
     );

@@ -21,7 +21,9 @@ export function SubmodelInfoDialog(props: SubmodelInfoDialogProps) {
         <Dialog open={props.open} onClose={props.onClose}>
             <DialogCloseButton handleClose={props.onClose} />
             <DialogContent style={{ padding: '40px' }}>
-                <Typography variant="h2" color={'primary'} marginBottom={'1em'}>
+                <Typography variant="h2" color={'primary'} sx={{
+                    marginBottom: '1em'
+                }}>
                     {props.displayName ?? props.idShort}
                 </Typography>
                 {props.displayName && (

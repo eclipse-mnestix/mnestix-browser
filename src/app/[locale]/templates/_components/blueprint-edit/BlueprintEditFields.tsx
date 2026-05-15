@@ -77,11 +77,23 @@ export function BlueprintEditFields() {
                 fullWidth
             />
             {selectedElement?.data?.modelType && (
-                <Box display="flex" alignItems="center" justifyContent="space-between" mt="16px">
-                    <Typography variant="body2" color="text.secondary">
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        mt: '16px'
+                    }}>
+                    <Typography variant="body2" sx={{
+                        color: 'text.secondary'
+                    }}>
                         {t('labels.modelType')}
                     </Typography>
-                    <Box display="flex" alignItems="center">
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center'
+                        }}>
                         <Typography variant="subtitle2" sx={{ ml: 2 }}>
                             {selectedElement.data.modelType}
                         </Typography>
@@ -90,7 +102,6 @@ export function BlueprintEditFields() {
             )}
             {/* Render the SME-Fields */}
             {getRenderFields()}
-
             {/* Render the Mapping-Qualifiers */}
             {selectedElement?.data && (
                 <>

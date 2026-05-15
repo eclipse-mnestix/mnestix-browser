@@ -1,4 +1,4 @@
-import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
+import { AddCircleOutlined, RemoveCircleOutlined } from '@mui/icons-material';
 import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select } from '@mui/material';
 import { useState } from 'react';
 import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
@@ -85,7 +85,11 @@ export function MultiplicityEditComponent(props: MultiplicityEditComponentProps)
             {valueEnabled ? (
                 <>
                     {allowMultiplicityToBeSet ? (
-                        <Box display="flex" alignContent="center">
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignContent: 'center'
+                            }}>
                             <FormControl variant="filled" fullWidth sx={{ mt: 1 }}>
                                 <InputLabel id="multiplicity-select-label">Multiplicity</InputLabel>
                                 <Select
@@ -105,7 +109,7 @@ export function MultiplicityEditComponent(props: MultiplicityEditComponentProps)
                                 </Select>
                             </FormControl>
                             <IconButton color="primary" onClick={() => onRemove()} sx={{ alignSelf: 'center', ml: 1 }}>
-                                <RemoveCircleOutline />
+                                <RemoveCircleOutlined />
                             </IconButton>
                         </Box>
                     ) : (
@@ -115,7 +119,7 @@ export function MultiplicityEditComponent(props: MultiplicityEditComponentProps)
             ) : (
                 <Button
                     size="large"
-                    startIcon={<AddCircleOutline />}
+                    startIcon={<AddCircleOutlined />}
                     onClick={() => onAdd()}
                     disabled={!allowMultiplicityToBeSet}
                 >

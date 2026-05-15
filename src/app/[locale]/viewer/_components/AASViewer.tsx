@@ -116,7 +116,12 @@ export function AASViewer() {
             <Box sx={pageStyles}>
                 {aas || isLoadingAas ? (
                     <Box sx={viewerStyles}>
-                        <Box display="flex" flexDirection="row" alignContent="flex-end">
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignContent: 'flex-end'
+                            }}>
                             <Typography
                                 variant="h2"
                                 style={{

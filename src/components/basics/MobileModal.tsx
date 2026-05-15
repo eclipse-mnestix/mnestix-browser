@@ -41,9 +41,16 @@ export function MobileModal(props: MobileModalProps) {
     return (
         <Modal open={props.open}>
             <Slide direction="up" in={props.open} mountOnEnter unmountOnExit>
-                <Box sx={modalStyle} width="100%">
+                <Box
+                    sx={[{
+                        width: '100%'
+                    }, ...(Array.isArray(modalStyle) ? modalStyle : [modalStyle])]}>
                     <Box sx={headerStyle}>
-                        <Box display="flex" alignItems="center">
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center'
+                            }}>
                             <Typography
                                 variant="h3"
                                 sx={{ pr: '.5rem' }}

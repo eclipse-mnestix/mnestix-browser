@@ -68,8 +68,19 @@ export function BlueprintEditSectionHeading(props: BlueprintEditSectionHeadingPr
     return (
         <>
             <Divider sx={{ my: 3 }} />
-            <Box display="flex" alignItems="center" color="text.secondary" sx={{ mb: 1 }}>
-                <Box display="flex" alignItems="center" sx={{ mr: '3px' }}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: 'text.secondary',
+                    mb: 1
+                }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        mr: '3px'
+                    }}>
                     {getIcon()}
                 </Box>
                 <Typography variant="body2">{getTitle()}</Typography>

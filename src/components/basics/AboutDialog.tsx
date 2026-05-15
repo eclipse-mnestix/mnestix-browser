@@ -18,8 +18,18 @@ export function AboutDialog(props: AboutDialogProps) {
         <Dialog open={props.open} onClose={props.onClose} maxWidth="md" fullWidth={true}>
             <DialogCloseButton handleClose={props.onClose} />
             <DialogContent style={{ padding: '40px' }}>
-                <Box display="flex" flexDirection="column" gap="20px">
-                    <Box display="flex" flexDirection="row" justifyContent="space-between">
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '20px'
+                    }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between'
+                        }}>
                         <Box>
                             <Typography variant="h2" color={'primary'}>
                                 {t('about')}
@@ -29,21 +39,24 @@ export function AboutDialog(props: AboutDialogProps) {
                         </Box>
                         {!isMobile && (
                             <Box
-                                bgcolor={theme.palette.primary.main}
-                                borderRadius={'0.5rem'}
-                                justifyContent={'center'}
-                                alignItems={'center'}
-                                display={'flex'}
-                                p={'1rem'}
-                                m={'0.5rem'}
-                                mr={'1rem'}
-                            >
+                                sx={{
+                                    bgcolor: theme.palette.primary.main,
+                                    borderRadius: '0.5rem',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    display: 'flex',
+                                    p: '1rem',
+                                    m: '0.5rem',
+                                    mr: '1rem'
+                                }}>
                                 <MnestixLogo width={'15rem'} />
                             </Box>
                         )}
                     </Box>
                     <Box>
-                        <Typography color="text.secondary">
+                        <Typography sx={{
+                            color: 'text.secondary'
+                        }}>
                             Permission is hereby granted, free of charge, to any person obtaining a copy of this
                             software and associated documentation files (the &quot;Software&quot;), to deal in the
                             Software without restriction, including without limitation the rights to use, copy, modify,

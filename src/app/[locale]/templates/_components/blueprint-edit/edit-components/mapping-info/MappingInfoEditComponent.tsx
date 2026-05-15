@@ -1,4 +1,4 @@
-import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
+import { AddCircleOutlined, RemoveCircleOutlined } from '@mui/icons-material';
 import { Box, Button, IconButton, TextField } from '@mui/material';
 import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
 import { Qualifier, Submodel, SubmodelElementChoice } from 'lib/api/aas/models';
@@ -64,7 +64,11 @@ export function MappingInfoEditComponent(props: MappingInfoEditComponentProps) {
         <>
             <BlueprintEditSectionHeading type={headingType} />
             {mappingInfo ? (
-                <Box display="flex" alignItems="center">
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center'
+                    }}>
                     <TextField
                         defaultValue={mappingInfo.value}
                         label={t('labels.value')}
@@ -72,11 +76,11 @@ export function MappingInfoEditComponent(props: MappingInfoEditComponentProps) {
                         fullWidth
                     />
                     <IconButton color="primary" onClick={onRemove} sx={{ alignSelf: 'center', ml: 1 }}>
-                        <RemoveCircleOutline />
+                        <RemoveCircleOutlined />
                     </IconButton>
                 </Box>
             ) : (
-                <Button size="large" startIcon={<AddCircleOutline />} onClick={onAdd}>
+                <Button size="large" startIcon={<AddCircleOutlined />} onClick={onAdd}>
                     {t('actions.add')}
                 </Button>
             )}

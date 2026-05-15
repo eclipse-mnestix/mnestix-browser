@@ -1,4 +1,4 @@
-import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
+import { AddCircleOutlined, RemoveCircleOutlined } from '@mui/icons-material';
 import { Autocomplete, Box, Button, IconButton, TextField } from '@mui/material';
 import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
 import options from './language-suggestions.json';
@@ -49,7 +49,13 @@ export function MultiLangEditComponent(props: MultiLangEditComponentProps) {
             <BlueprintEditSectionHeading type="defaultValue" />
             {Array.isArray(langStrings) &&
                 langStrings.map((langString, i) => (
-                    <Box display="flex" alignContent="center" sx={{ mb: 1 }} key={i + '-' + langStrings.length}>
+                    <Box
+                        key={i + '-' + langStrings.length}
+                        sx={{
+                            display: 'flex',
+                            alignContent: 'center',
+                            mb: 1
+                        }}>
                         <Autocomplete
                             value={langString.language}
                             renderInput={(params) => <TextField {...params} label={t('labels.language')} />}
@@ -67,11 +73,11 @@ export function MultiLangEditComponent(props: MultiLangEditComponentProps) {
                             fullWidth
                         />
                         <IconButton color="primary" sx={{ alignSelf: 'center', ml: 1 }} onClick={() => onRemove(i)}>
-                            <RemoveCircleOutline />
+                            <RemoveCircleOutlined />
                         </IconButton>
                     </Box>
                 ))}
-            <Button size="large" startIcon={<AddCircleOutline />} onClick={() => onAdd()}>
+            <Button size="large" startIcon={<AddCircleOutlined />} onClick={() => onAdd()}>
                 {t('actions.add')}
             </Button>
         </>
