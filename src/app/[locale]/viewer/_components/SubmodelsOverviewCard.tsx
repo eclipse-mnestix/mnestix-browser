@@ -38,8 +38,6 @@ export function SubmodelsOverviewCard({
     const t = useTranslations('pages.aasViewer.submodels');
     const locale = useLocale();
 
-    SortNameplateElements(effectiveSelectedItem?.submodelData);
-
     const isMobile = useIsMobile();
     const firstSubmodelToShowIdShort = firstSubmodelIdShort ?? 'Nameplate';
 
@@ -85,6 +83,8 @@ export function SubmodelsOverviewCard({
         }
         return undefined;
     }, [selectedItem, submodelSelectorItems, isMobile, firstSubmodelToShowIdShort]);
+
+    SortNameplateElements(effectiveSelectedItem?.submodelData);
 
     const SubmodelDetailsSkeleton = (
         <Box sx={{ mb: 2 }}>
