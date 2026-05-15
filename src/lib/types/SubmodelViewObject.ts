@@ -6,6 +6,5 @@ export interface SubmodelViewObject {
     data?: Submodel | SubmodelElementChoice;
     children: SubmodelViewObject[];
     hasValue?: boolean;
-    isAboutToBeDeleted?: boolean;
     propertyValue?: string;
 }

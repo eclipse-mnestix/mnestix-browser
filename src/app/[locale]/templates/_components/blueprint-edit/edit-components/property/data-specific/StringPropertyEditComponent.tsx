@@ -8,9 +8,9 @@ interface StringPropertyEditComponentProps {
 
 export function StringPropertyEditComponent(props: StringPropertyEditComponentProps) {
     const t = useTranslations('pages.templates');
-    const onValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onValueChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         props.onChange(event.target.value);
     };
 
-    return <TextField defaultValue={props.dataValue} label={t('labels.value')} onChange={onValueChange} fullWidth />;
+    return <TextField defaultValue={props.dataValue} label={t('labels.value')} onBlur={onValueChange} fullWidth />;
 }

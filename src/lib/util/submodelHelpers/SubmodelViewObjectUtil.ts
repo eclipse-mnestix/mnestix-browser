@@ -25,7 +25,6 @@ export function generateSubmodelViewObjectFromSubmodelElement(
         name,
         children: [],
         hasValue: false,
-        isAboutToBeDeleted: false,
         propertyValue: (localEl as Property).value ?? undefined,
     };
 
@@ -90,10 +89,10 @@ export function getParentOfElement(id: string, submodel: SubmodelViewObject) {
     return parentElement;
 }
 
-export async function rewriteNodeIds(elementToUpdate: SubmodelViewObject, newId: string) {
+export function rewriteNodeIds(elementToUpdate: SubmodelViewObject, newId: string) {
     elementToUpdate.id = newId;
     for (let i = 0; i < elementToUpdate.children.length; i++) {
-        await rewriteNodeIds(elementToUpdate.children[i], newId + '-' + i);
+        rewriteNodeIds(elementToUpdate.children[i], newId + '-' + i);
     }
 }
 

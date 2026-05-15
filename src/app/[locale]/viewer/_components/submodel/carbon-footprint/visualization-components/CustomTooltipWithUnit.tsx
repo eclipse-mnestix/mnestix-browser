@@ -3,7 +3,7 @@ import { cutDecimalPlaces } from 'lib/util/NumberUtil';
 
 export interface CustomTooltipWithUnitProps {
     active?: boolean;
-    payload?: Array<{ color: string; name: string; value: string }>;
+    payload?: ReadonlyArray<{ color: string; name: string; value: string }>;
     label?: string | number;
     unit: string;
 }
