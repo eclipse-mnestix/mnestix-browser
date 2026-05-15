@@ -1,4 +1,4 @@
-﻿{
+{
   "id": "https://mnestix.io/cyTimeSeriesInternalLinked",
   "idShort": "TimeSeries",
   "administration": {
@@ -380,7 +380,7 @@
                           }
                         ]
                       },
-                      "valueType": "xs:dateTime",
+                      "valueType": "xs:datetime",
                       "value": "2024-10-05T12:48:00.000Z",
                       "modelType": "Property"
                     },
@@ -459,7 +459,7 @@
                           }
                         ]
                       },
-                      "valueType": "xs:dateTime",
+                      "valueType": "xs:datetime",
                       "value": "2024-10-05T14:48:00.000Z",
                       "modelType": "Property"
                     },

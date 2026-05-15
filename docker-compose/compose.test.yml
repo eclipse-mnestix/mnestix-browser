@@ -27,8 +27,8 @@ services:
         condition: service_started
       mnestix-aas-generator:
         condition: service_started
-      aas-environment:
-        condition: service_started
+      aas-repository:
+        condition: service_healthy
       keycloak:
         condition: service_healthy # keycloak needs to be healthy before tests
     networks:
@@ -65,6 +65,9 @@ services:
       OpenId__Issuer: 'http://keycloak:8080/realms/Mnestix'
       OpenId__ClientID: 'mnestixApi-demo'
       OpenId__RequireHttpsMetadata: 'false'
+    depends_on:
+      keycloak:
+        condition: service_healthy # keycloak needs to be healthy before starting the generator
 
   keycloak:
     profiles: ['', 'tests']
