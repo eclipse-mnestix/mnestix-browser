@@ -117,12 +117,13 @@ Additional improvements have been made to:
 
 ## Team
 
-| Name |
-|---|
-| Gregor Gottschewski |
-| Felix Hennerich |
-| Julian Schumacher |
-| Nils Schäffner |
-| Bruno Lange |
-| Jan Kruske |
-| Robin Kelm |
+| Role | Name | E-mail | Matrikelnr | Github |
+|:--------:|:-----------:|:---------------:|:------:|:----:|
+|Project Manager| Hennerich, Felix | ``inf24030@lehre.dhbw-stuttgart.de`` | 2594549 | FelixHennerich |
+|Product Manager | Schumacher, Julian | ``inf24102@lehre.dhbw-stuttgart.de``| 4931903 | juliandevelops |
+|Test Manager| Schäffner, Nils | ``inf24109@lehre.dhbw-stuttgart.de``| 5152735 | NSZock |
+|Test Manager| Kruske, Jan| ``inf24027@lehre.dhbw-stuttgart.de`` | 1609477 | jankrus |
+|System Architect | Lange, Bruno| ``inf24077@lehre.dhbw-stuttgart.de`` | 4086963 | brvn0 |
+|Technical Editor | Gottschewski, Gregor| ``inf24065@lehre.dhbw-stuttgart.de``| 3661830 | Gregor-Gottschewski |
+|Technical Editor | Kelm, Robin | ``inf24243@lehre.dhbw-stuttgart.de`` | 9130160 | robk42 |
+
