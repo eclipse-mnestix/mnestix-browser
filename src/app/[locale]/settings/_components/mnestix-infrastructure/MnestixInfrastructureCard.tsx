@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { alpha, Box, Button, Collapse, IconButton, Typography } from '@mui/material';
 import { Add, Delete, Edit } from '@mui/icons-material';
 import { CardHeading } from 'components/basics/CardHeading';
@@ -271,8 +271,8 @@ function MnestixInfrastructureCard() {
         ));
     }
 
-    useEffect(() => {
-        getInfrastructureData();
+    useAsyncEffect(async () => {
+        await getInfrastructureData();
     }, []);
 
     return (

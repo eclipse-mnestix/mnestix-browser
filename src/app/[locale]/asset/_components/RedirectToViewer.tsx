@@ -21,6 +21,44 @@ export const RedirectToViewer = () => {
     const [isError, setIsError] = useState(false);
     const { showError } = useShowError();
 
+    async function getAasIdsOfAsset(assetId: string | undefined) {
+        if (!assetId) {
+            throw new NotFoundError();
+        }
+        const response = await searchInAllDiscoveries(assetId);
+        if (response.isSuccess) return response;
+        return wrapSuccess([]);
+    }
+
+    function assertAtLeastOneAasIdExists(aasIds: string[]) {
+        if (aasIds.length === 0) {
+            throw new NotFoundError();
+        }
+    }
+
+    function determineViewerTargetUrl(aasIds: string[]) {
+        const encodedAasId = encodeBase64(aasIds[0]);
+        return '/viewer/' + encodedAasId;
+    }
+
+    async function navigateToViewerOfAsset(assetId: string | undefined): Promise<void> {
+        try {
+            const { isSuccess, result: discoverySearchResult } = await getAasIdsOfAsset(assetId);
+
+            if (!isSuccess) {
+                throw new LocalizedError('navigation.errors.urlNotFound');
+            }
+            const aasIds = discoverySearchResult.map((result) => result.aasId);
+            assertAtLeastOneAasIdExists(aasIds);
+            const targetUrl = determineViewerTargetUrl(aasIds);
+            navigate.replace(targetUrl);
+        } catch (e) {
+            showError(e);
+            setIsError(true);
+            setIsLoading(false);
+        }
+    }
+
     useAsyncEffect(async () => {
         try {
             setIsLoading(true);
@@ -43,43 +81,6 @@ export const RedirectToViewer = () => {
         }
     }, []);
 
-    async function navigateToViewerOfAsset(assetId: string | undefined): Promise<void> {
-        try {
-            const { isSuccess, result: discoverySearchResult } = await getAasIdsOfAsset(assetId);
-
-            if (!isSuccess) {
-                throw new LocalizedError('navigation.errors.urlNotFound');
-            }
-            const aasIds = discoverySearchResult.map((result) => result.aasId);
-            assertAtLeastOneAasIdExists(aasIds);
-            const targetUrl = determineViewerTargetUrl(aasIds);
-            navigate.replace(targetUrl);
-        } catch (e) {
-            showError(e);
-            setIsError(true);
-            setIsLoading(false);
-        }
-    }
-
-    async function getAasIdsOfAsset(assetId: string | undefined) {
-        if (!assetId) {
-            throw new NotFoundError();
-        }
-        const response = await searchInAllDiscoveries(assetId);
-        if (response.isSuccess) return response;
-        return wrapSuccess([]);
-    }
-
-    function assertAtLeastOneAasIdExists(aasIds: string[]) {
-        if (aasIds.length === 0) {
-            throw new NotFoundError();
-        }
-    }
-
-    function determineViewerTargetUrl(aasIds: string[]) {
-        const encodedAasId = encodeBase64(aasIds[0]);
-        return '/viewer/' + encodedAasId;
-    }
 
     return (
         <Box sx={{ p: 2, m: 'auto' }}>
