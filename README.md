@@ -119,7 +119,7 @@ Additional improvements have been made to:
 
 | Role | Name | E-mail | Matrikelnr | Github |
 |:--------:|:-----------:|:---------------:|:------:|:----:|
-|Project Manager| Hennerich, Felix | ``inf24030@lehre.dhbw-stuttgart.de`` | 2594549 | FelixHennerich |
+|Project Manager| Hennerich, Felix | ``inf24030@lehre.dhbw-stuttgart.de`` | 2594549 | FelixHennerich & privat@felixhenneri.ch |
 |Product Manager | Schumacher, Julian | ``inf24102@lehre.dhbw-stuttgart.de``| 4931903 | juliandevelops |
 |Test Manager| Schäffner, Nils | ``inf24109@lehre.dhbw-stuttgart.de``| 5152735 | NSZock |
 |Test Manager| Kruske, Jan| ``inf24027@lehre.dhbw-stuttgart.de`` | 1609477 | jankrus |
