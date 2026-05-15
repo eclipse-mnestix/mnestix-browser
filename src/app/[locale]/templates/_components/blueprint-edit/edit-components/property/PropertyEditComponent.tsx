@@ -1,4 +1,4 @@
-import { AddCircleOutlined, RemoveCircleOutlined } from '@mui/icons-material';
+import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Box, Button, IconButton, Typography } from '@mui/material';
 import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
 import { DataTypeDefXsd, Property } from 'lib/api/aas/models';
@@ -67,11 +67,11 @@ export function PropertyEditComponent(props: PropertyEditComponentProps) {
                 <Box display="flex" alignContent="center">
                     {getEditElement()}
                     <IconButton color="primary" onClick={() => handleValueRemove()} sx={{ alignSelf: 'center', ml: 1 }}>
-                        <RemoveCircleOutlined />
+                        <RemoveCircleOutline />
                     </IconButton>
                 </Box>
             ) : (
-                <Button size="large" startIcon={<AddCircleOutlined />} onClick={handleValueAdd}>
+                <Button size="large" startIcon={<AddCircleOutline />} onClick={handleValueAdd}>
                     {t('actions.add')}
                 </Button>
             )}

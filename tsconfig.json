@@ -27,8 +27,8 @@
     "strict": false,
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "ignoreDeprecations": "6.0",
     "strictPropertyInitialization": false,
-    "baseUrl": "src",
     "plugins": [
       {
         "name": "next"
@@ -37,11 +37,12 @@
     // needed for jest
     "paths": {
       "@src": [
-        "./src"
+        "./src/src"
       ],
       "@util": [
-        "./src/util"
-      ]
+        "./src/src/util"
+      ],
+      "*": ["./src/*"]
     },
     "types": [
       "./svgr.d.ts",

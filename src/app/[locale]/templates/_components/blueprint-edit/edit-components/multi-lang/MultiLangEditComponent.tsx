@@ -1,4 +1,4 @@
-import { AddCircleOutlined, RemoveCircleOutlined } from '@mui/icons-material';
+import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Autocomplete, Box, Button, IconButton, TextField } from '@mui/material';
 import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
 import options from './language-suggestions.json';
@@ -67,11 +67,11 @@ export function MultiLangEditComponent(props: MultiLangEditComponentProps) {
                             fullWidth
                         />
                         <IconButton color="primary" sx={{ alignSelf: 'center', ml: 1 }} onClick={() => onRemove(i)}>
-                            <RemoveCircleOutlined />
+                            <RemoveCircleOutline />
                         </IconButton>
                     </Box>
                 ))}
-            <Button size="large" startIcon={<AddCircleOutlined />} onClick={() => onAdd()}>
+            <Button size="large" startIcon={<AddCircleOutline />} onClick={() => onAdd()}>
                 {t('actions.add')}
             </Button>
         </>

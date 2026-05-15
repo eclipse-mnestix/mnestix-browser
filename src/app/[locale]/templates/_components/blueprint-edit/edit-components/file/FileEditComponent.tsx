@@ -1,4 +1,4 @@
-import { AddCircleOutlined, RemoveCircleOutlined } from '@mui/icons-material';
+import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import React from 'react';
 import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
@@ -62,12 +62,12 @@ export function FileEditComponent(props: FileEditComponentProps) {
                         onChange={(e) => onTextChange(e)}
                         fullWidth
                     />
-                    <Button size="large" startIcon={<RemoveCircleOutlined />} onClick={() => onRemove()}>
+                    <Button size="large" startIcon={<RemoveCircleOutline />} onClick={() => onRemove()}>
                         {t('actions.remove')}
                     </Button>
                 </>
             ) : (
-                <Button size="large" startIcon={<AddCircleOutlined />} onClick={onAdd}>
+                <Button size="large" startIcon={<AddCircleOutline />} onClick={onAdd}>
                     {t('actions.add')}
                 </Button>
             )}
