@@ -31,7 +31,9 @@ export const TargetInformationForm = (props: TargetInformationProps) => {
     }, []);
 
     return (
-        <Box mt="1em">
+        <Box sx={{
+            mt: '1em'
+        }}>
             <Typography variant="h5">{t('rules.tableHeader.type')}</Typography>
             <Controller
                 name="type"

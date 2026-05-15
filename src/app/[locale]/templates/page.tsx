@@ -278,11 +278,18 @@ export default function Page() {
                             })}
                         {filteredBlueprintItems?.length === 0 && !isLoading && (
                             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', m: 2 }}>
-                                <Typography align="center" variant="h3" color="text.secondary">
+                                <Typography align="center" variant="h3" sx={{
+                                    color: 'text.secondary'
+                                }}>
                                     {t('noBlueprintsFound')}
                                 </Typography>
                                 <TemplatesInfoGraphic style={{ display: 'block', maxWidth: '250px' }} />
-                                <Typography sx={{ maxWidth: '350px' }} align="center" color="text.secondary">
+                                <Typography
+                                    align="center"
+                                    sx={{
+                                        color: 'text.secondary',
+                                        maxWidth: '350px'
+                                    }}>
                                     {t('blueprintUseExplanation')}
                                 </Typography>
                             </Box>

@@ -38,7 +38,9 @@ export function DeleteRuleDialogContent({ onCancelDialog, onDelete, rule }: Rule
                 <Typography variant="h2" color="primary" sx={{ mb: '1rem' }} data-testid="role-delete-question">
                     {t('deleteRule.question')}
                 </Typography>
-                <Typography mb={'1rem'} data-testid="role-delete-info">
+                <Typography data-testid="role-delete-info" sx={{
+                    mb: '1rem'
+                }}>
                     {t('deleteRule.ruleInfo', {
                         role: rule.role,
                         action: rule.action,

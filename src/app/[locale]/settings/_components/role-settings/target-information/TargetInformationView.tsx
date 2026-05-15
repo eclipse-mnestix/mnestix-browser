@@ -20,7 +20,9 @@ export const TargetInformationView = (props: TargetInformationProps) => {
         }
         const ids = element as string[];
         permissions.push(
-            <Box key={key} mt="1em">
+            <Box key={key} sx={{
+                mt: '1em'
+            }}>
                 <Typography variant="h5">{key}</Typography>
                 <Typography>{ids.join(', ')}</Typography>
             </Box>,

@@ -78,15 +78,41 @@ export function CompareView() {
 
     return (
         <>
-            <Box width="90%" maxWidth="1125px" margin="0 auto">
-                <Typography variant="h2" textAlign="left" marginBottom="30px">
+            <Box
+                sx={{
+                    width: '90%',
+                    maxWidth: '1125px',
+                    margin: '0 auto'
+                }}>
+                <Typography
+                    variant="h2"
+                    sx={{
+                        textAlign: 'left',
+                        marginBottom: '30px'
+                    }}>
                     {t('title')}
                 </Typography>
                 {compareAas.length !== 0 || isLoadingAas ? (
-                    <Box display="flex" flexDirection="column" gap="20px">
-                        <Box display="flex" flexDirection="row" gap="20px">
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '20px'
+                        }}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                gap: '20px'
+                            }}>
                             {compareAas.map((compareAas, index) => (
-                                <Box position="relative" key={index} width={1 / 3} data-testid={`compare-aas-${index}`}>
+                                <Box
+                                    key={index}
+                                    data-testid={`compare-aas-${index}`}
+                                    sx={{
+                                        position: 'relative',
+                                        width: 1 / 3
+                                    }}>
                                     <DialogCloseButton
                                         handleClose={() => handleDeleteAas(compareAas.aas.id)}
                                         dataTestId={`delete-compare-aas-${index}`}
@@ -104,7 +130,9 @@ export function CompareView() {
                             ))}
                             {compareAas.length < 3 && <AddAasToCompareCard onClick={handleDetailsModalOpen} />}
                         </Box>
-                        <Box width={compareAas.length / 3}>
+                        <Box sx={{
+                            width: compareAas.length / 3
+                        }}>
                             <CompareSubmodelsAccordion />
                         </Box>
                     </Box>

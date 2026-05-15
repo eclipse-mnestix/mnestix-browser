@@ -18,7 +18,12 @@ export default function AssetNotFound({ id }: AssetNotFoundProps) {
             </Typography>
             <Typography align="center" sx={{ mt: 2 }}>
                 {t('text', { id: id ?? '' })}
-                <Box display="flex" justifyContent="center" sx={{ mt: 2 }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        mt: 2
+                    }}>
                     <Button variant="contained" onClick={() => navigate.push('/')}>
                         {t('toHome')}
                     </Button>

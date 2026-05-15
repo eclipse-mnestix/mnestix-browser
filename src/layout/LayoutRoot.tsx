@@ -23,9 +23,19 @@ type Props = {
  */
 export function LayoutRoot({ children }: Props) {
     return (
-        <Box display="flex" height="100%" flexDirection="column">
-            <Box display="flex" flex={1} flexDirection="column">
-                <StyledBox flex={1} display="flex">
+        <Box
+            sx={{
+                display: 'flex',
+                height: '100%',
+                flexDirection: 'column'
+            }}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flex: 1,
+                    flexDirection: 'column'
+                }}>
+                <StyledBox sx={{ flex: 1, display: 'flex' }}>
                     <Header />
                     {children}
                 </StyledBox>

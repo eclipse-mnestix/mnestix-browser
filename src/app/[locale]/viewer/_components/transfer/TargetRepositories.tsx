@@ -76,12 +76,26 @@ export function TargetRepositories(props: TargetRepositoryProps) {
                 })
             ) : (
                 <form>
-                    <Box display="flex" flexDirection="column">
-                        <Box display="flex" flexDirection="row" alignItems="flex-start">
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column'
+                        }}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'flex-start'
+                            }}>
                             <Typography variant="h4" sx={{ minWidth: '250px', mr: 2 }}>
                                 {t('chooseRepository')}
                             </Typography>
-                            <Box display="flex" flexDirection="column" width="100%">
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    width: '100%'
+                                }}>
                                 <FormControl fullWidth>
                                     <Controller
                                         name="repository"
@@ -111,7 +125,13 @@ export function TargetRepositories(props: TargetRepositoryProps) {
                                 </FormControl>
                             </Box>
                         </Box>
-                        <Box display="flex" flexDirection="row" mt={5} alignItems="flex-start">
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                mt: 5,
+                                alignItems: 'flex-start'
+                            }}>
                             <Typography variant="h4" sx={{ minWidth: '250px', mr: 2 }}>
                                 {t('chooseSubmodelRepository')}
                             </Typography>

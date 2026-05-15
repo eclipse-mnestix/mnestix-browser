@@ -128,28 +128,45 @@ export function SubmodelsOverviewCard({
             <Card>
                 <CardContent>
                     {!disableHeadline && (
-                        <Typography variant="h3" marginBottom="15px">
+                        <Typography variant="h3" sx={{
+                            marginBottom: '15px'
+                        }}>
                             {t('title')}
                         </Typography>
                     )}
                     {!aas && ( // workaround for faster loading skeletons when the aas is not yet loaded
-                        <Box display="grid" gridTemplateColumns={isMobile ? '1fr' : '1fr 2fr'} gap="2rem">
+                        (<Box
+                            sx={{
+                                display: 'grid',
+                                gridTemplateColumns: isMobile ? '1fr' : '1fr 2fr',
+                                gap: '2rem'
+                            }}>
                             <Box>
                                 <Skeleton height={70} sx={{ mb: 2 }} data-testid="submodelOverviewLoadingSkeleton" />
                             </Box>
                             {!isMobile && SubmodelDetailsSkeleton}
-                        </Box>
+                        </Box>)
                     )}
                     {aas && !aas?.submodels?.length ? (
                         // Content if there are no submodels to load
-                        <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-                            <Typography variant={'body1'} color="text.secondary">
+                        (<Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                height: '100%'
+                            }}>
+                            <Typography variant={'body1'} sx={{
+                                color: 'text.secondary'
+                            }}>
                                 {t('noSubmodelsToLoad')}
                             </Typography>
-                        </Box>
+                        </Box>)
                     ) : (
                         // Content if there are submodels
-                        <Grid container spacing={2} alignItems="stretch">
+                        (<Grid container spacing={2} sx={{
+                            alignItems: 'stretch'
+                        }}>
                             <Grid size={{ md: 4, xs: 12 }}>
                                 <VerticalTabSelector
                                     items={submodelSelectorItems}
@@ -180,11 +197,10 @@ export function SubmodelsOverviewCard({
                                     SelectedContent
                                 )}
                             </Grid>
-                        </Grid>
+                        </Grid>)
                     )}
                 </CardContent>
             </Card>
-
             <SubmodelInfoDialog
                 open={!!infoItem}
                 onClose={() => {

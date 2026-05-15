@@ -33,11 +33,12 @@ export function AuthenticationPrompt({ isDefaultRepo }: AuthenticationPromptProp
             ) : (
                 <Typography
                     variant="body1"
-                    sx={{ mt: 3 }}
-                    color="text.primary"
                     align="center"
                     data-testid="authentication-prompt-contact-admin"
-                >
+                    sx={{
+                        color: 'text.primary',
+                        mt: 3
+                    }}>
                     {t('nonDefaultRepositoryInfo')}
                 </Typography>
             )}

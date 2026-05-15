@@ -99,7 +99,9 @@ const CustomContent = React.forwardRef(function CustomContent(
                         }}
                         onClick={handleSelectionClick}
                     >
-                        <Box display="flex">
+                        <Box sx={{
+                            display: 'flex'
+                        }}>
                             <Typography component="div" className={treeItemClasses.label}>
                                 {label}
                             </Typography>

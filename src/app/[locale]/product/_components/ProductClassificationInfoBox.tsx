@@ -56,13 +56,15 @@ export function ProductClassificationInfoBox({ productClassifications }: Product
 
     return (
         <Box>
-            <StyledBox bgcolor={'grey.100'}>
+            <StyledBox sx={{ bgcolor: 'grey.100' }}>
                 <LabelContainer>
                     <Typography
-                        sx={{ borderBottom: '2px solid', borderColor: 'primary' }}
                         color="primary"
-                        fontWeight="bold"
-                    >
+                        sx={{
+                            fontWeight: 'bold',
+                            borderBottom: '2px solid',
+                            borderColor: 'primary'
+                        }}>
                         {t('summary')}
                     </Typography>
                 </LabelContainer>
@@ -73,7 +75,9 @@ export function ProductClassificationInfoBox({ productClassifications }: Product
                             label={classification.ProductClassificationSystem || 'Classification'}
                             icon={classification.ProductClassificationSystem === 'ECLASS' ? eClassIcon : vecIcon}
                         ></Chip>
-                        <Typography variant="body1" ml={1}>
+                        <Typography variant="body1" sx={{
+                            ml: 1
+                        }}>
                             {tooltipText(classification.ProductClassId, 35) || '-'}
                         </Typography>
                     </ValueContainer>

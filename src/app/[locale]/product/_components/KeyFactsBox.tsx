@@ -55,9 +55,15 @@ export function KeyFactsBox({
 
     return (
         <Box>
-            <StyledBox bgcolor={'grey.100'}>
+            <StyledBox sx={{ bgcolor: 'grey.100' }}>
                 <LabelContainer>
-                    <Typography sx={{ borderBottom: '2px solid', borderColor: 'primary' }} color="primary" fontWeight="bold">
+                    <Typography
+                        color="primary"
+                        sx={{
+                            fontWeight: 'bold',
+                            borderBottom: '2px solid',
+                            borderColor: 'primary'
+                        }}>
                         {t('summary')}
                     </Typography>
                 </LabelContainer>

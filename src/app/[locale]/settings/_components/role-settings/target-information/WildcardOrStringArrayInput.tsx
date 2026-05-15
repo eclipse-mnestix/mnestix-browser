@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Box, Button, Checkbox, FormControlLabel, IconButton, TextField, Typography } from '@mui/material';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutlined';
 import { Control, Controller, useFieldArray, UseFormGetValues, UseFormSetValue } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { RuleFormModel } from 'app/[locale]/settings/_components/role-settings/RuleForm';
@@ -38,9 +38,10 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
     };
 
     return (
-        <Box mt="1em">
+        <Box sx={{
+            mt: '1em'
+        }}>
             <Typography variant="h5">{props.rule}</Typography>
-
             <FormControlLabel
                 control={
                     <Checkbox
@@ -61,7 +62,12 @@ export const WildcardOrStringArrayInput = (props: WildcardOrStringArrayInputProp
                             }
                             control={control}
                             render={({ field }) => (
-                                <Box display="flex" flexDirection="row" mb="1em">
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        mb: '1em'
+                                    }}>
                                     <TextField
                                         data-testid={`input-${props.type}-${props.rule}-${idx}`}
                                         onChange={field.onChange}

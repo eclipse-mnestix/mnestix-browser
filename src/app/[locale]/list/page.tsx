@@ -8,9 +8,24 @@ import { useTranslations } from 'next-intl';
 export default function Page() {
     const t = useTranslations('pages.aasList');
     return (
-        <Box display="flex" flexDirection="column" marginTop="0px" marginBottom="50px" width="100%">
-            <Box width="90%" margin="auto">
-                <Box marginTop="2rem" marginBottom="2.25rem">
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                marginTop: '0px',
+                marginBottom: '50px',
+                width: '100%'
+            }}>
+            <Box
+                sx={{
+                    width: '90%',
+                    margin: 'auto'
+                }}>
+                <Box
+                    sx={{
+                        marginTop: '2rem',
+                        marginBottom: '2.25rem'
+                    }}>
                     <ListHeader header={t('header')} subHeader={t('subHeader')} />
                 </Box>
                 <AasListDataWrapper />

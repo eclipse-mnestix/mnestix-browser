@@ -9,13 +9,18 @@ export function GoToListCard() {
 
     return (
         <Box
-            display="flex"
-            flex={1}
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="flex-start"
-            sx={{ px: 3, py: 4, gap: 1, height: '100%', width: '100%' }}
-        >
+            sx={{
+                display: 'flex',
+                flex: 1,
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                px: 3,
+                py: 4,
+                gap: 1,
+                height: '100%',
+                width: '100%'
+            }}>
             <Box
                 sx={{
                     backgroundColor: theme.palette.secondary.main,
@@ -30,10 +35,16 @@ export function GoToListCard() {
             >
                 <ArrowOutwardIcon sx={{ color: 'white' }} />
             </Box>
-            <Typography textAlign="center" variant="h4">
+            <Typography variant="h4" sx={{
+                textAlign: 'center'
+            }}>
                 {t('listCardHeader')}
             </Typography>
-            <Typography color="text.secondary" textAlign="center">
+            <Typography
+                sx={{
+                    color: 'text.secondary',
+                    textAlign: 'center'
+                }}>
                 {t('listBtnLabel')}
             </Typography>
         </Box>

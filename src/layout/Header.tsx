@@ -32,13 +32,15 @@ export function Header() {
                 <Toolbar disableGutters>
                     <MainMenu />
                     <StyledLogoWrapper
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        width="100%"
-                        marginRight="18%"
-                        position="absolute"
-                        alignSelf="center"
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '100%',
+                            marginRight: '18%',
+                            position: 'absolute',
+                            alignSelf: 'center',
+                        }}
                     >
                         <Box className="logo">
                             <HeaderLogo />

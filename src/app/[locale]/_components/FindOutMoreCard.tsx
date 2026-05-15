@@ -10,13 +10,18 @@ export function FindOutMoreCard() {
 
     return (
         <Box
-            display="flex"
-            flex={1}
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="flex-start"
-            sx={{ px: 3, py: 4, gap: 1, height: '100%', width: '100%' }}
-        >
+            sx={{
+                display: 'flex',
+                flex: 1,
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                px: 3,
+                py: 4,
+                gap: 1,
+                height: '100%',
+                width: '100%'
+            }}>
             <Box
                 sx={{
                     backgroundColor: theme.palette.secondary.main,
@@ -34,7 +39,9 @@ export function FindOutMoreCard() {
             <Typography align="center" variant="h4">
                 {t('findOutMoreHeader')}
             </Typography>
-            <Typography align="center" color="text.secondary">
+            <Typography align="center" sx={{
+                color: 'text.secondary'
+            }}>
                 {t('findOutMoreText')}
             </Typography>
         </Box>

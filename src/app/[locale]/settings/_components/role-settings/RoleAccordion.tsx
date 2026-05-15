@@ -75,44 +75,68 @@ export function RoleAccordion({
     function AccordionHeader({ roleName, rules }: { roleName: string; rules: BaSyxRbacRule[] }) {
         const { actions, types, permissions } = aggregateRoleData(rules);
         return (
-            <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-evenly">
-                <Box sx={{ width: '12rem' }} p={'1rem'}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-evenly'
+                }}>
+                <Box
+                    sx={{
+                        p: '1rem',
+                        width: '12rem'
+                    }}>
                     <Typography
-                        fontWeight="bold"
-                        overflow="hidden"
-                        textOverflow="ellipsis"
-                        maxWidth="inherit"
                         sx={{
+                            fontWeight: 'bold',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            maxWidth: 'inherit',
                             display: '-webkit-box',
                             WebkitBoxOrient: 'vertical',
                             WebkitLineClamp: 3,
-                            overflowWrap: 'break-word',
-                        }}
-                    >
+                            overflowWrap: 'break-word'
+                        }}>
                         {roleName}
                     </Typography>
                 </Box>
                 <Box
-                    sx={{ width: '16rem', display: 'flex', justifyContent: 'flex-start', flexWrap: 'wrap' }}
-                    p={'16px'}
-                >
+                    sx={{
+                        p: '16px',
+                        width: '16rem',
+                        display: 'flex',
+                        justifyContent: 'flex-start',
+                        flexWrap: 'wrap'
+                    }}>
                     {actions.map((action) => (
                         <Chip key={action} sx={{ fontWeight: 'normal', m: 0.5 }} label={action} />
                     ))}
                 </Box>
-                <Box sx={{ width: '16rem' }} p={'1rem'}>
+                <Box
+                    sx={{
+                        p: '1rem',
+                        width: '16rem'
+                    }}>
                     <Typography
                         variant="body2"
                         color="textSecondary"
-                        overflow="hidden"
-                        textOverflow="ellipsis"
-                        width="inherit"
-                    >
+                        sx={{
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            width: 'inherit'
+                        }}>
                         {types.join(', ')}
                     </Typography>
                 </Box>
                 {!isMobile && (
-                    <Box p={'1rem'} maxWidth="32rem" overflow="hidden" textOverflow="ellipsis">
+                    <Box
+                        sx={{
+                            p: '1rem',
+                            maxWidth: '32rem',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis'
+                        }}>
                         <RulePermissions permissions={permissions} />
                     </Box>
                 )}
@@ -203,26 +227,38 @@ export function RoleAccordion({
             (e): e is [string, string[]] => e[0] !== '@type',
         );
         return (
-            <Box display="flex" flexDirection="column" maxWidth="100%">
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    maxWidth: '100%'
+                }}>
                 {permissions.map(([category, perms]) => {
                     const idString = perms.join(', ');
                     return (
                         <Box
-                            display="flex"
-                            flexDirection="row"
-                            maxWidth="32rem"
                             key={`permission-row-${entry.idShort}-${category}`}
-                        >
-                            <Typography variant="body2" fontWeight="bold" mr="0.5rem">
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                maxWidth: '32rem'
+                            }}>
+                            <Typography
+                                variant="body2"
+                                sx={{
+                                    fontWeight: 'bold',
+                                    mr: '0.5rem'
+                                }}>
                                 {`${category}: `}
                             </Typography>
                             <Typography
                                 variant="body2"
-                                width="fill"
-                                overflow="hidden"
-                                textOverflow="ellipsis"
-                                maxWidth="100%"
-                            >
+                                sx={{
+                                    width: 'fill',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    maxWidth: '100%'
+                                }}>
                                 {idString}
                             </Typography>
                         </Box>
@@ -244,23 +280,40 @@ export function RoleAccordion({
         }
 
         return (
-            <Box display="flex" flexDirection="column" maxWidth="100%">
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    maxWidth: '100%'
+                }}>
                 {accumulatedCategories.map((category) => {
                     const idString = Array.from(permissions[category]).join(', ');
 
                     return (
-                        <Box display="flex" flexDirection="row" key={category} maxWidth="100%">
-                            <Typography variant="body2" fontWeight="bold" mr="0.5rem">
+                        <Box
+                            key={category}
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                maxWidth: '100%'
+                            }}>
+                            <Typography
+                                variant="body2"
+                                sx={{
+                                    fontWeight: 'bold',
+                                    mr: '0.5rem'
+                                }}>
                                 {`${category}: `}
                             </Typography>
                             <Typography
                                 variant="body2"
-                                width="fill"
-                                overflow="hidden"
-                                textOverflow="ellipsis"
-                                whiteSpace="nowrap"
-                                maxWidth="100%"
-                            >
+                                sx={{
+                                    width: 'fill',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap',
+                                    maxWidth: '100%'
+                                }}>
                                 {idString}
                             </Typography>
                         </Box>

@@ -1,4 +1,4 @@
-import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
+import { AddCircleOutlined, RemoveCircleOutlined } from '@mui/icons-material';
 import { Box, Button, IconButton, Typography } from '@mui/material';
 import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
 import { DataTypeDefXsd, Property } from 'lib/api/aas/models';
@@ -52,11 +52,23 @@ export function PropertyEditComponent(props: PropertyEditComponentProps) {
 
     return (
         <>
-            <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mt: 1 }}>
-                <Typography variant="body2" color="text.secondary">
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    mt: 1
+                }}>
+                <Typography variant="body2" sx={{
+                    color: 'text.secondary'
+                }}>
                     {t('labels.valueType')}
                 </Typography>
-                <Box display="flex" alignItems="center">
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center'
+                    }}>
                     <Typography variant="subtitle2" sx={{ ml: 2 }}>
                         {props.data.valueType}
                     </Typography>
@@ -64,14 +76,18 @@ export function PropertyEditComponent(props: PropertyEditComponentProps) {
             </Box>
             <BlueprintEditSectionHeading type="defaultValue" />
             {defaultValueEnabled ? (
-                <Box display="flex" alignContent="center">
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignContent: 'center'
+                    }}>
                     {getEditElement()}
                     <IconButton color="primary" onClick={() => handleValueRemove()} sx={{ alignSelf: 'center', ml: 1 }}>
-                        <RemoveCircleOutline />
+                        <RemoveCircleOutlined />
                     </IconButton>
                 </Box>
             ) : (
-                <Button size="large" startIcon={<AddCircleOutline />} onClick={handleValueAdd}>
+                <Button size="large" startIcon={<AddCircleOutlined />} onClick={handleValueAdd}>
                     {t('actions.add')}
                 </Button>
             )}

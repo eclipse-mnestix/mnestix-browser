@@ -72,7 +72,9 @@ export default function () {
                     <Typography variant="h3">{t('digitalTwinMadeEasyText')}</Typography>
                 </Box>
 
-                <Grid container spacing={2} alignItems="stretch">
+                <Grid container spacing={2} sx={{
+                    alignItems: 'stretch'
+                }}>
                     <Grid size={{ md: 6, xs: 12 }}>
                         <Card sx={{ backgroundColor: theme.palette.primary.main, borderRadius: '12px' }}>
                             <QrScanner searchInput={searchInput} />
