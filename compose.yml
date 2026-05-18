@@ -57,8 +57,8 @@ services:
       ReverseProxy__Clusters__aasRepoCluster__Destinations__destination1__Address: "http://aas-repository:8081/"
       ReverseProxy__Clusters__submodelRepoCluster__Destinations__destination1__Address: "http://submodel-repository:8081/"
       ReverseProxy__Clusters__conceptDescriptionRepoCluster__Destinations__destination1__Address: "http://concept-description-repository:8081/"
-      ReverseProxy__Clusters__aasRegistryCluster__Destinations__destination1__Address: "http://aas-registry:8080/"
-      ReverseProxy__Clusters__submodelRegistryCluster__Destinations__destination1__Address: "http://submodel-registry:8080/"
+      ReverseProxy__Clusters__aasRegistryCluster__Destinations__destination1__Address: "http://aas-registry:8081/"
+      ReverseProxy__Clusters__submodelRegistryCluster__Destinations__destination1__Address: "http://submodel-registry:8081/"
       ReverseProxy__Clusters__discoveryCluster__Destinations__destination1__Address: "http://aas-discovery:8081/"
       # InfluxDB Configuration
       # URL to specify the host and port where InfluxDB is running:
@@ -240,7 +240,7 @@ services:
     image: eclipsebasyx/aasregistry-go:1.0.0-rc.1
     container_name: aas-registry
     ports:
-      - "8084:8080"
+      - "8084:8081"
     depends_on:
       basyx-db:
         condition: service_healthy
@@ -270,7 +270,7 @@ services:
     image: eclipsebasyx/submodelregistry-go:1.0.0-rc.1
     container_name: submodel-registry
     ports:
-      - "8085:8080"
+      - "8085:8081"
     depends_on:
       basyx-db:
         condition: service_healthy

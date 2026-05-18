@@ -64,8 +64,7 @@
       ]
     },
     "id": "https://mnestix.io/aas/listTest3",
-    "idShort": "aas_cypressTest3",
-    "submodels": []
+    "idShort": "aas_cypressTest3"
   },
   {
     "modelType": "AssetAdministrationShell",
@@ -80,7 +79,6 @@
       ]
     },
     "id": "https://mnestix.io/aas/listTest4",
-    "idShort": "aas_cypressTest4",
-    "submodels": []
+    "idShort": "aas_cypressTest4"
   }
 ]
