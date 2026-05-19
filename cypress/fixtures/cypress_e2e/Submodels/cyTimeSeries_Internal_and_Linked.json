@@ -81,7 +81,6 @@
                 ]
               },
               "valueType": "xs:long",
-              "value": "",
               "modelType": "Property"
             },
             {
@@ -229,7 +228,6 @@
                 ]
               },
               "valueType": "xs:long",
-              "value": "",
               "modelType": "Property"
             },
             {
@@ -293,7 +291,6 @@
                 ]
               },
               "valueType": "xs:long",
-              "value": "",
               "modelType": "Property"
             },
             {
@@ -309,7 +306,6 @@
                 ]
               },
               "valueType": "xs:long",
-              "value": "",
               "modelType": "Property"
             },
             {
@@ -357,7 +353,7 @@
               },
               "value": [
                 {
-                  "idShort": "Record",
+                  "idShort": "Record01",
                   "semanticId": {
                     "type": "ExternalReference",
                     "keys": [
@@ -380,7 +376,7 @@
                           }
                         ]
                       },
-                      "valueType": "xs:datetime",
+                      "valueType": "xs:dateTime",
                       "value": "2024-10-05T12:48:00.000Z",
                       "modelType": "Property"
                     },
@@ -436,7 +432,7 @@
                   "modelType": "SubmodelElementCollection"
                 },
                 {
-                  "idShort": "Record",
+                  "idShort": "Record02",
                   "semanticId": {
                     "type": "ExternalReference",
                     "keys": [
@@ -459,7 +455,7 @@
                           }
                         ]
                       },
-                      "valueType": "xs:datetime",
+                      "valueType": "xs:dateTime",
                       "value": "2024-10-05T14:48:00.000Z",
                       "modelType": "Property"
                     },
@@ -585,7 +581,6 @@
                 ]
               },
               "valueType": "xs:long",
-              "value": "",
               "modelType": "Property"
             },
             {
@@ -612,7 +607,7 @@
                 "keys": [
                   {
                     "type": "GlobalReference",
-                    "value": "https://admin-shell.io/idta/TimeSeries/Segment/EndTime/1/1 "
+                    "value": "https://admin-shell.io/idta/TimeSeries/Segment/EndTime/1/1"
                   }
                 ]
               },
@@ -649,7 +644,6 @@
                 ]
               },
               "valueType": "xs:long",
-              "value": "",
               "modelType": "Property"
             },
             {
@@ -665,7 +659,6 @@
                 ]
               },
               "valueType": "xs:long",
-              "value": "",
               "modelType": "Property"
             },
             {

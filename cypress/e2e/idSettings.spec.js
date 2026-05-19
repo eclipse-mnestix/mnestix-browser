@@ -42,25 +42,29 @@ describe('Visit the Settings page', function () {
         const prefixValues = ['new-prefix-value-0', 'new-prefix-value-1'];
         const urlValues = ['https://example2.com', 'https://example3.com', 'https://example4.com'];
 
+        // Fields 0 and 3 are idShort-type (assetIdShort, aasIdShort), fields 1, 2, 4 are IRI-type
+        const shortIdFields = [0, 3];
+        const iriFields = [1, 2, 4];
+
         prefixValues.forEach((value, i) => {
-            cy.getByTestId(`settings-edit-text-field-${i}`).click();
-            cy.getByTestId(`settings-edit-input-field-${i}`).clear();
-            cy.getByTestId(`settings-edit-input-field-${i}`).type(value);
+            cy.getByTestId(`settings-edit-text-field-${shortIdFields[i]}`).click();
+            cy.getByTestId(`settings-edit-input-field-${shortIdFields[i]}`).clear();
+            cy.getByTestId(`settings-edit-input-field-${shortIdFields[i]}`).type(value);
         });
         urlValues.forEach((value, i) => {
-            cy.getByTestId(`settings-edit-text-field-${i + 2}`).click();
-            cy.getByTestId(`settings-edit-input-field-${i + 2}`).clear();
-            cy.getByTestId(`settings-edit-input-field-${i + 2}`).type(value);
+            cy.getByTestId(`settings-edit-text-field-${iriFields[i]}`).click();
+            cy.getByTestId(`settings-edit-input-field-${iriFields[i]}`).clear();
+            cy.getByTestId(`settings-edit-input-field-${iriFields[i]}`).type(value);
         });
 
         cy.getByTestId('settings-save-button').click();
 
         // Verify updated values are visible
         prefixValues.forEach((value, i) => {
-            cy.getByTestId(`settings-text-field-${i}`).should('contain', value);
+            cy.getByTestId(`settings-text-field-${shortIdFields[i]}`).should('contain', value);
         });
         urlValues.forEach((value, i) => {
-            cy.getByTestId(`settings-text-field-${i + 2}`).should('contain', value);
+            cy.getByTestId(`settings-text-field-${iriFields[i]}`).should('contain', value);
         });
 
         // Verify edit mode is exited
