@@ -5,7 +5,11 @@
     "assetInformation": {
         "assetKind": "Instance",
         "globalAssetId": "https://mnestix.io/cypressTest",
-        "specificAssetId": "cypressTest"
-    },
-    "submodels": []
+        "specificAssetIds": [
+            {
+                "name": "assetIdShort",
+                "value": "cypressTest"
+            }
+        ]
+    }
 }

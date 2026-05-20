@@ -8,17 +8,17 @@
     "modelType": "Submodel",
     "submodelElements": [
         {
-            "idShort": "Cypress Test 01",
+            "idShort": "Cypress_Test_01",
             "entityType": "SelfManagedEntity",
             "statements": [
                 {
-                    "idShort": "Cy BoM Component",
+                    "idShort": "Cy_BoM_Component",
                     "entityType": "SelfManagedEntity",
                     "modelType": "Entity",
                     "globalAssetId": "https://mnestix.io/cypressTestBomComponent"
                 },
                 {
-                    "idShort": "Cypress Test 02",
+                    "idShort": "Cypress_Test_02",
                     "entityType": "SelfManagedEntity",
                     "statements": [
                         {
@@ -42,7 +42,8 @@
                             "modelType": "Property"
                         }
                     ],
-                    "modelType": "Entity"
+                    "modelType": "Entity",
+                    "globalAssetId": "https://mnestix.io/cypressTestBomComponent"
                 }
             ],
             "modelType": "Entity",

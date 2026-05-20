@@ -5,7 +5,11 @@
     "assetInformation": {
         "assetKind": "Instance",
         "globalAssetId": "https://mnestix.io/cypressTestBomComponent",
-        "specificAssetId": "BoM Component"
-    },
-    "submodels": []
+        "specificAssetIds": [
+            {
+                "name": "assetIdShort",
+                "value": "BoM Component"
+            }
+        ]
+    }
 }
