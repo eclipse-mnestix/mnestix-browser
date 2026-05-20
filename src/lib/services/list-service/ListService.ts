@@ -195,6 +195,7 @@ export class ListService {
             const submodelId = reference.keys[0].value;
             const submodelRepositoryClient = this.getTargetSubmodelRepositoryClient();
             //TODO change request to submodel metadata once Basyx Go supports it
+            //https://github.com/eclipse-basyx/basyx-go-components/issues/307
             const submodelResponse = await submodelRepositoryClient.getSubmodelById(submodelId);
             if (submodelResponse.isSuccess) {
                 const semanticId = submodelResponse.result?.semanticId?.keys[0]?.value;
