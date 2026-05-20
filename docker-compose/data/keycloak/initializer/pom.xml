@@ -8,7 +8,7 @@
 	<version>1.0-SNAPSHOT</version>
 
 	<properties>
-		<keycloak.version>24.0.3</keycloak.version>
+		<keycloak.version>26.1.3</keycloak.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<bytebuddy.version>1.14.11</bytebuddy.version>
 		<slf4j.version>2.0.13</slf4j.version>
