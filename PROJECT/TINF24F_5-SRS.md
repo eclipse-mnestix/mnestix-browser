@@ -420,7 +420,7 @@ Verification methods:
 
 | ID                  | SRS-FR-UI-002                                                                                                                                                                                                                     |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Reference (CRS)     | [UI-FR-002](/PROJECT/TINF24F_5-CRS-0v1.3.md#52-uiux-ui)                                                                                                                                                                           |
+| Reference (CRS)     | [UI-FR-002](https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/blob/1.5.0-product-catalog/PROJECT/TINF24F_5-CRS.md#52-uiux-ui)                                                                           |
 | Reference (SAS)     | [FR.019](/PROJECT/TINF24F_5-SAS.md#7-architectural-views)                                      |
 | Description         | The system should improve the formatting of the `SM TechnicalData` submodel for better readability. The [SMT 2.0](https://github.com/admin-shell-io/submodel-templates/tree/main/published/Technical_Data/2/0) should be noticed. |
 | Priority            | Optional                                                                                                                                                                                                                          |
@@ -430,7 +430,7 @@ Verification methods:
 
 | ID                  | SRS-FR-UI-003                                                                                            |
 |---------------------|----------------------------------------------------------------------------------------------------------|
-| Reference (CRS)     | [UI-FR-003](/PROJECT/TINF24F_5-CRS-0v1.3.md#52-uiux-ui)                                                  |
+| Reference (CRS)     | [UI-FR-003](https://github.com/DHBW-TINF24F/Team5-mnestix-product-catalogue/blob/1.5.0-product-catalog/PROJECT/TINF24F_5-CRS.md#52-uiux-ui)                                                  |
 | Reference (SAS)     | [FR.020](/PROJECT/TINF24F_5-SAS.md#7-architectural-views)                                      |
 | Description         | The system should improve the formatting of the `HandoverDocumentation` submodel for better readability. |
 | Priority            | Optional                                                                                                 |
