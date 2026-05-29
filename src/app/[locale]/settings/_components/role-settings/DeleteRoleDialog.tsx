@@ -1,6 +1,6 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Delete } from '@mui/icons-material';
 import { DialogCloseButton } from 'components/basics/DialogCloseButton';
 import { useShowError } from 'lib/hooks/UseShowError';
@@ -65,7 +65,7 @@ export const DeleteRoleDialog = ({ onClose, afterClose, reloadRules, open, roleN
         await reloadRules();
     }
 
-    function RoleDeleteContent() {
+    function renderRoleDeleteContent() {
         return (
             <>
                 <DialogContent data-testid="role-settings-delete-role-dialog">
@@ -104,19 +104,14 @@ export const DeleteRoleDialog = ({ onClose, afterClose, reloadRules, open, roleN
         );
     }
 
-    function DialogViewContent() {
+    function renderDialogContent() {
         switch (dialogMode) {
             case 'delete-role':
-                return <RoleDeleteContent />;
+                return renderRoleDeleteContent();
             case 'delete-hint':
                 return <KeycloakHint hint="delete" onClose={onClose} />;
         }
     }
-
-    useEffect(() => {
-        // Reset dialog mode when the dialog opens
-        if (open) setDialogMode('delete-role');
-    }, [open]);
 
     function resetState() {
         setDialogMode('delete-role');
@@ -127,7 +122,7 @@ export const DeleteRoleDialog = ({ onClose, afterClose, reloadRules, open, roleN
         <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth={true} onTransitionExited={() => resetState()}>
             <Box sx={{ mx: '2rem', mt: '1.5rem', mb: '1rem' }} data-testid="role-dialog">
                 <DialogCloseButton handleClose={onClose} dataTestId="dialog-close-button" />
-                <DialogViewContent />
+                {renderDialogContent()}
             </Box>
         </Dialog>
     );
