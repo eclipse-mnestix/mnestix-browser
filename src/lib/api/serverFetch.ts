@@ -69,6 +69,6 @@ export async function performServerFetchRaw(
             throw e;
         }
         log.error({ Reason: 'An unexpected error occurred during server fetch (raw)' }, `Request: ${input}`);
-        throw new Error('Unknown error');
+        throw new Error('Unknown error', { cause: e });
     }
 }
