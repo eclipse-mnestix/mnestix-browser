@@ -1,8 +1,7 @@
 ﻿{
   "compilerOptions": {
-    "skipLibCheck": true,
-    "module": "es6",
-    "target": "es5",
+    "module": "preserve",
+    "target": "es2017",
     "jsx": "react",
     "allowJs": true,
     "types": ["cypress", "node"],
