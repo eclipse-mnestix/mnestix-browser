@@ -91,6 +91,7 @@ export function ManufacturerCard({ connection }: ManufacturerCardProps) {
                 <IconButton
                     onClick={onNavigate}
                     sx={{
+                        ml: 'auto',
                         bgcolor: theme.palette.primary.light,
                         color: theme.palette.primary.contrastText,
                         '&:hover': { bgcolor: theme.palette.primary.main },
