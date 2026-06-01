@@ -84,9 +84,9 @@ export function ManufacturerCard({ connection }: ManufacturerCardProps) {
                         {t('articleCount', { count: resultCount ?? 0 })}
                     </Typography>
                 ) : (
-                    <Typography color="text.secondary" fontSize="1.1rem">
-                        {t('articleCountUnavailable')}
-                    </Typography>
+                    // If there is no filter configured, we don't want to show anything
+                    // As in Markus' Email: Und bitte das „Filterung nicht konfiguriert“ in den Kacheln entfernen. Es ist eine Negativaussage und man kann es ja auch an der Anzeige der Artikelanzahl erkennen, ob Filterung existiert.
+                    <></>
                 )}
                 <IconButton
                     onClick={onNavigate}
