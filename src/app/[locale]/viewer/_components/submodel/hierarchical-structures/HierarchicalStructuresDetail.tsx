@@ -138,11 +138,11 @@ const buildRelationTree = (entryNode: Entity, relationShips: RelationshipElement
 const selectRelationship = (entryNode: Entity, relationShips: RelationshipElement, entityNodes: Entity[]) => {
     switch (relationShips.semanticId?.keys[0].value) {
         case RelationShipTypes.SameAs:
-            return (entityNodes = buildSameAsRelationship(entryNode, relationShips, entityNodes));
+            return buildSameAsRelationship(entryNode, relationShips, entityNodes);
         case RelationShipTypes.IsPartOf:
-            return (entityNodes = buildIsPartOfRelationship(entryNode, relationShips, entityNodes));
+            return buildIsPartOfRelationship(entryNode, relationShips, entityNodes);
         case RelationShipTypes.HasPart:
-            return (entityNodes = buildHasPartRelationship(entryNode, relationShips, entityNodes));
+            return buildHasPartRelationship(entryNode, relationShips, entityNodes);
         default:
             return entityNodes;
     }

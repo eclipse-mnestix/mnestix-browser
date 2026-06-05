@@ -1,6 +1,6 @@
-﻿import { MultiplicityEnum } from 'lib/enums/Multiplicity.enum';
+import { MultiplicityEnum } from 'lib/enums/Multiplicity.enum';
 import { IconButton, ListItemIcon, Menu, MenuItem } from '@mui/material';
-import { ContentCopy, Delete, MoreVert, Restore } from '@mui/icons-material';
+import { ContentCopy, Delete, MoreVert } from '@mui/icons-material';
 import * as React from 'react';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -10,14 +10,10 @@ interface BlueprintEditTreeItemMenuProps {
     numberOfThisElement: number;
     onDuplicate: (nodeId: string) => void;
     onDelete: (nodeId: string) => void;
-    onRestore: (nodeId: string) => void;
     nodeId: string;
-    isElementAboutToBeDeleted: boolean | undefined;
-    isParentAboutToBeDeleted: boolean | undefined;
 }
 
 export const BlueprintEditTreeItemMenu = (props: BlueprintEditTreeItemMenuProps) => {
-    const isElementAboutToBeDeleted = props.isElementAboutToBeDeleted;
     const menuElements = generateMenuElementsBasedOnMultiplicity(props.elementMultiplicity, props.numberOfThisElement);
     const [editMenuOpen, setEditMenuOpen] = useState(false);
     const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
@@ -27,32 +23,26 @@ export const BlueprintEditTreeItemMenu = (props: BlueprintEditTreeItemMenuProps)
         elementMultiplicity: MultiplicityEnum | string | undefined,
         numberOfThisElement: number,
     ) {
-        if (props.isParentAboutToBeDeleted) {
-            return undefined;
-        } else if (isElementAboutToBeDeleted) {
-            return [<RevertButton key={'revert-' + props.nodeId} />];
-        } else {
-            switch (elementMultiplicity) {
-                case MultiplicityEnum.OneToMany: // Can be duplicated, Can be deleted if number > 1
-                    if (numberOfThisElement > 1) {
-                        return [
-                            <DuplicateButton key={'duplicate-' + props.nodeId} />,
-                            <DeleteButton key={'delete-' + props.nodeId} />,
-                        ];
-                    } else {
-                        return [<DuplicateButton key={'duplicate-' + props.nodeId} />];
-                    }
-                case MultiplicityEnum.ZeroToOne: // Can be deleted
-                    return [<DeleteButton key={'delete-' + props.nodeId} />];
-                case MultiplicityEnum.ZeroToMany: //Can be deleted & duplicated
+        switch (elementMultiplicity) {
+            case MultiplicityEnum.OneToMany: // Can be duplicated, Can be deleted if number > 1
+                if (numberOfThisElement > 1) {
                     return [
                         <DuplicateButton key={'duplicate-' + props.nodeId} />,
                         <DeleteButton key={'delete-' + props.nodeId} />,
                     ];
-                case MultiplicityEnum.One:
-                default:
-                    return undefined;
-            }
+                } else {
+                    return [<DuplicateButton key={'duplicate-' + props.nodeId} />];
+                }
+            case MultiplicityEnum.ZeroToOne: // Can be deleted
+                return [<DeleteButton key={'delete-' + props.nodeId} />];
+            case MultiplicityEnum.ZeroToMany: //Can be deleted & duplicated
+                return [
+                    <DuplicateButton key={'duplicate-' + props.nodeId} />,
+                    <DeleteButton key={'delete-' + props.nodeId} />,
+                ];
+            case MultiplicityEnum.One:
+            default:
+                return undefined;
         }
     }
 
@@ -79,11 +69,6 @@ export const BlueprintEditTreeItemMenu = (props: BlueprintEditTreeItemMenuProps)
         props.onDelete(props.nodeId);
     };
 
-    const handleRestoreClick = (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
-        handleMoreMenuClose(event);
-        props.onRestore(props.nodeId);
-    };
-
     //components
     function DuplicateButton() {
         return (
@@ -103,17 +88,6 @@ export const BlueprintEditTreeItemMenu = (props: BlueprintEditTreeItemMenuProps)
                     <Delete fontSize="small" />
                 </ListItemIcon>
                 {t('actions.delete')}
-            </MenuItem>
-        );
-    }
-
-    function RevertButton() {
-        return (
-            <MenuItem onClick={(e) => handleRestoreClick(e)}>
-                <ListItemIcon>
-                    <Restore fontSize="small" />
-                </ListItemIcon>
-                {t('actions.restore')}
             </MenuItem>
         );
     }

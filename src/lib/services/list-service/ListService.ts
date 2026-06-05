@@ -109,7 +109,7 @@ export class ListService {
      * @param type
      */
     async getAasListEntities(limit: number, cursor?: string, type?: 'repository' | 'registry'): Promise<AasListDto> {
-        let assetAdministrationShells: AssetAdministrationShell[] = [];
+        let assetAdministrationShells: AssetAdministrationShell[];
         let nextCursor: string | undefined;
 
         if (type === 'registry') {

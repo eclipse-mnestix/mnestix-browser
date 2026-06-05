@@ -14,7 +14,7 @@
     "allowJs": true,
     "jsx": "react-jsx",
     "noEmit": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -28,7 +28,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "strictPropertyInitialization": false,
-    "baseUrl": "src",
     "plugins": [
       {
         "name": "next"
@@ -37,11 +36,12 @@
     // needed for jest
     "paths": {
       "@src": [
-        "./src"
+        "./src/src"
       ],
       "@util": [
-        "./src/util"
-      ]
+        "./src/src/util"
+      ],
+      "*": ["./src/*"]
     },
     "types": [
       "./svgr.d.ts",

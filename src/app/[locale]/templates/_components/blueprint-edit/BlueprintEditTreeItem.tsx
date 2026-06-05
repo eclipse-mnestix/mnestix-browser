@@ -1,12 +1,10 @@
 import * as React from 'react';
-import { useState } from 'react';
 import { treeItemClasses, TreeItemRoot } from '@mui/x-tree-view';
 import Typography from '@mui/material/Typography';
 import { Box, styled } from '@mui/material';
 import { TextSnippet } from '@mui/icons-material';
 import { MultiplicityEnum } from 'lib/enums/Multiplicity.enum';
 import { BlueprintEditTreeItemMenu } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditTreeItemMenu';
-import { useTranslations } from 'next-intl';
 import { useTreeItem, UseTreeItemParameters } from '@mui/x-tree-view/useTreeItem';
 import {
     TreeItemCheckbox,
@@ -38,12 +36,10 @@ interface CustomTreeItemProps
     multiplicity: MultiplicityEnum | undefined;
     onDuplicate: (nodeId: string) => void;
     onDelete: (nodeId: string) => void;
-    onRestore: (nodeId: string) => void;
     getNumberOfElementsWithSameSemanticId: (semanticId: string | undefined) => number;
     semanticId: string | undefined;
-    isParentAboutToBeDeleted: boolean | undefined;
-    isAboutToBeDeleted: boolean | undefined;
 }
+
 const CustomContent = React.forwardRef(function CustomContent(
     props: CustomTreeItemProps,
     ref: React.Ref<HTMLLIElement>,
@@ -61,9 +57,6 @@ const CustomContent = React.forwardRef(function CustomContent(
         disabled,
         onDuplicate,
         onDelete,
-        onRestore,
-        isParentAboutToBeDeleted,
-        isAboutToBeDeleted,
         ...other
     } = props;
 
@@ -72,23 +65,9 @@ const CustomContent = React.forwardRef(function CustomContent(
         getContentProps,
         getIconContainerProps,
         getCheckboxProps,
-
         getGroupTransitionProps,
         status,
     } = useTreeItem({ id, itemId, children, label, disabled, rootRef: ref });
-
-    const [isMarkedForDeletion, setIsMarkedForDeletion] = useState(false);
-    const t = useTranslations('pages.templates');
-
-    React.useEffect(() => {
-        setIsMarkedForDeletion(false);
-    }, [label, semanticId]);
-
-    React.useEffect(() => {
-        if (props.isAboutToBeDeleted) {
-            setIsMarkedForDeletion(true);
-        }
-    }, [props.isAboutToBeDeleted]);
 
     React.useEffect(() => {
         // Trigger the customOnSelect initially for the first selected element, so the edit fields are displayed
@@ -99,16 +78,6 @@ const CustomContent = React.forwardRef(function CustomContent(
 
     const handleSelectionClick = () => {
         customOnSelect();
-    };
-
-    const handleDelete = () => {
-        onDelete(itemId);
-        setIsMarkedForDeletion(true);
-    };
-
-    const handleRestore = () => {
-        onRestore(itemId);
-        setIsMarkedForDeletion(false);
     };
 
     return (
@@ -130,40 +99,20 @@ const CustomContent = React.forwardRef(function CustomContent(
                         }}
                         onClick={handleSelectionClick}
                     >
-                        <Box>
-                            {isMarkedForDeletion || isParentAboutToBeDeleted ? (
-                                <Box display="flex">
-                                    <Typography
-                                        component="div"
-                                        className={treeItemClasses.label}
-                                        sx={{ color: 'text.disabled' }}
-                                    >
-                                        {`${label} (${t('messages.deleted')})`}
-                                    </Typography>
-                                    {hasValue && (
-                                        <TextSnippet fontSize="small" sx={{ color: 'text.disabled', ml: '3px' }} />
-                                    )}
-                                </Box>
-                            ) : (
-                                <Box display="flex">
-                                    <Typography component="div" className={treeItemClasses.label}>
-                                        {label}
-                                    </Typography>
-                                    {hasValue && (
-                                        <TextSnippet fontSize="small" sx={{ color: 'text.secondary', ml: '3px' }} />
-                                    )}
-                                </Box>
+                        <Box display="flex">
+                            <Typography component="div" className={treeItemClasses.label}>
+                                {label}
+                            </Typography>
+                            {hasValue && (
+                                <TextSnippet fontSize="small" sx={{ color: 'text.secondary', ml: '3px' }} />
                             )}
                         </Box>
                         <BlueprintEditTreeItemMenu
                             elementMultiplicity={multiplicity}
                             numberOfThisElement={getNumberOfElementsWithSameSemanticId(semanticId)}
                             onDuplicate={onDuplicate}
-                            onDelete={handleDelete}
-                            onRestore={handleRestore}
+                            onDelete={onDelete}
                             nodeId={itemId}
-                            isElementAboutToBeDeleted={isAboutToBeDeleted || isMarkedForDeletion}
-                            isParentAboutToBeDeleted={isParentAboutToBeDeleted}
                         />
                     </Box>
                 </CustomTreeItemContent>

@@ -2,7 +2,7 @@ import { SubmodelElementCollection } from 'lib/api/aas/models';
 import { Box, Typography } from '@mui/material';
 import { StyledDataRow } from 'components/basics/StyledDataRow';
 import { InfluxTimeSeriesDiagram } from './InfluxTimeSeriesDiagram';
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { TimeFrameSelection as TimeFrameSelection } from './TimeFrameSelection';
 import { TimeSeriesSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/time-series/TimeSeriesSubmodelElementSemanticId.enum';
 import { isValidUrl } from 'lib/util/UrlUtil';
@@ -48,12 +48,8 @@ export function InfluxTimeSeries(props: { submodelElement: SubmodelElementCollec
     );
 
     const [selectedTimeFrame, setSelectedTimeFrame] = useState('1d');
-    const [query, setQuery] = useState(replaceTimeFrameInQuery(queryInAas, selectedTimeFrame));
+    const query = useMemo(() => replaceTimeFrameInQuery(queryInAas, selectedTimeFrame), [queryInAas, selectedTimeFrame]);
     const showTimeSelection = env.LOCK_TIMESERIES_PERIOD_FEATURE_FLAG;
-
-    useEffect(() => {
-        setQuery(replaceTimeFrameInQuery(queryInAas, selectedTimeFrame));
-    }, [queryInAas, selectedTimeFrame]);
 
     return endpoint && query ? (
         <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="timeseries-influx-wrapper">

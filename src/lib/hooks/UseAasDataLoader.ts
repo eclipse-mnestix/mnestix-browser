@@ -94,13 +94,9 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
             }
         }
 
-        let response: ApiResponseWrapper<AasSearchResult> | undefined = undefined;
-
-        if (infrastructureName) {
-            response = await searchAasInInfrastructure(aasIdToLoad, infrastructureName);
-        } else {
-            response = await performFullAasSearch(aasIdToLoad);
-        }
+        const response: ApiResponseWrapper<AasSearchResult> = infrastructureName
+            ? await searchAasInInfrastructure(aasIdToLoad, infrastructureName)
+            : await performFullAasSearch(aasIdToLoad);
 
         const { isSuccess, result } = response;
 
