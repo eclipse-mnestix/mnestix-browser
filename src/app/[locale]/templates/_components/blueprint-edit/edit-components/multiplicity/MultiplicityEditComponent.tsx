@@ -1,4 +1,4 @@
-import { AddCircleOutlined, RemoveCircleOutlined } from '@mui/icons-material';
+import { AddCircleOutlineOutlined, RemoveCircleOutlineOutlined } from '@mui/icons-material';
 import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select } from '@mui/material';
 import { useState } from 'react';
 import { BlueprintEditSectionHeading } from 'app/[locale]/templates/_components/blueprint-edit/BlueprintEditSectionHeading';
@@ -109,7 +109,7 @@ export function MultiplicityEditComponent(props: MultiplicityEditComponentProps)
                                 </Select>
                             </FormControl>
                             <IconButton color="primary" onClick={() => onRemove()} sx={{ alignSelf: 'center', ml: 1 }}>
-                                <RemoveCircleOutlined />
+                                <RemoveCircleOutlineOutlined />
                             </IconButton>
                         </Box>
                     ) : (
@@ -119,7 +119,7 @@ export function MultiplicityEditComponent(props: MultiplicityEditComponentProps)
             ) : (
                 <Button
                     size="large"
-                    startIcon={<AddCircleOutlined />}
+                    startIcon={<AddCircleOutlineOutlined />}
                     onClick={() => onAdd()}
                     disabled={!allowMultiplicityToBeSet}
                 >

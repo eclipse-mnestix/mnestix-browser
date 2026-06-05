@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Box, Button, Checkbox, FormControlLabel, IconButton, TextField, Typography } from '@mui/material';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutlined';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 import { Control, Controller, useFieldArray, UseFormGetValues, UseFormSetValue } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { RuleFormModel } from 'app/[locale]/settings/_components/role-settings/RuleForm';
