@@ -4,6 +4,11 @@
   "type": "module",
   "private": true,
   "license": "MIT",
+  "resolutions": {
+    "undici": "7.26.0",
+    "lodash": "4.18.1",
+    "hono": "4.12.23"
+  },
   "engines": {
     "node": "^24.13.0"
   },
@@ -36,7 +41,7 @@
     "jest": "^30.2.0",
     "jest-environment-jsdom": "^30.2.0",
     "prettier": "^3.8.2",
-    "prisma": "^7.7.0",
+    "prisma": "^7.8.0",
     "ts-node": "^10.9.2",
     "typescript": "~6.0",
     "typescript-eslint": "^8.58.1"
@@ -55,8 +60,8 @@
     "@mui/system": "^7.1.0",
     "@mui/x-date-pickers": "^8.26.0",
     "@mui/x-tree-view": "^8.10.2",
-    "@prisma/adapter-better-sqlite3": "^7.7.0",
-    "@prisma/client": "^7.7.0",
+    "@prisma/adapter-better-sqlite3": "^7.8.0",
+    "@prisma/client": "^7.8.0",
     "@svgr/webpack": "^8.1.0",
     "buffer": "^6.0.3",
     "date-fns": "^4.1.0",
@@ -117,12 +122,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "resolutions": {
-    "undici": "7.20.0",
-    "lodash": "4.18.1",
-    "hono": "4.12.4",
-    "@hono/node-server": "1.19.10"
   },
   "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }
