@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { alpha, Box, Button, Collapse, IconButton, Typography } from '@mui/material';
-import { Add, Delete, Edit } from '@mui/icons-material';
+import { Add, Delete, Edit, Search } from '@mui/icons-material';
 import { CardHeading } from 'components/basics/CardHeading';
 import { useTranslations } from 'next-intl';
 import Divider from '@mui/material/Divider';
@@ -21,10 +21,14 @@ import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner
 import { DefaultInfrastructure } from 'app/[locale]/settings/_components/mnestix-infrastructure/DefaultInfrastructure';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { InfrastructureConnection, InfrastructureWithRelations } from 'lib/services/database/InfrastructureMappedTypes';
+import { useRouter } from 'next/navigation';
+import { useEnv } from 'app/EnvProvider';
 
 function MnestixInfrastructureCard() {
     const t = useTranslations('pages.settings.infrastructure');
     const theme = useTheme();
+    const router = useRouter();
+    const env = useEnv();
     const [isLoading, setIsLoading] = useState(true);
     const [infrastructures, setInfrastructures] = useState<InfrastructureFormData[]>([]);
     const [editingInfrastructure, setEditingInfrastructure] = useState<string | null>(null);
@@ -277,17 +281,30 @@ function MnestixInfrastructureCard() {
 
     return (
         <Box sx={{ p: 3, width: '100%' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2, gap: 1 }}>
                 <CardHeading title={t('title')} subtitle={t('subtitle')} />
-                <Button
-                    variant="contained"
-                    startIcon={<Add />}
-                    onClick={handleCreateNew}
-                    aria-label="Create new infrastructure"
-                    disabled={isCreatingNew || editingInfrastructure !== null}
-                >
-                    {t('form.createNew')}
-                </Button>
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                    {env.COMPANY_LOOKUP_API_URL && (
+                        <Button
+                            variant="outlined"
+                            startIcon={<Search />}
+                            onClick={() => router.push('/settings/company-lookup')}
+                            aria-label="Add infrastructure from company lookup"
+                            disabled={isCreatingNew || editingInfrastructure !== null}
+                        >
+                            {t('form.companyLookup') || 'Company Lookup'}
+                        </Button>
+                    )}
+                    <Button
+                        variant="contained"
+                        startIcon={<Add />}
+                        onClick={handleCreateNew}
+                        aria-label="Create new infrastructure"
+                        disabled={isCreatingNew || editingInfrastructure !== null}
+                    >
+                        {t('form.createNew')}
+                    </Button>
+                </Box>
             </Box>
             <Divider sx={{ my: 2 }} />
 

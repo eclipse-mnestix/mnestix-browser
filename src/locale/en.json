@@ -385,6 +385,7 @@
           "saveSuccess": "Infrastructure saved successfully",
           "saveError": "Error saving infrastructure",
           "createNew": "Create New Infrastructure",
+          "companyLookup": "Add from Company Lookup",
           "deleteConfirm": "Are you sure you want to delete the infrastructure? This action cannot be undone.",
           "deleteSuccess": "Infrastructure deleted successfully",
           "deleteError": "Failed to delete infrastructure",
@@ -418,6 +419,23 @@
         "title": "Infrastructures",
         "urlFieldNoTrailingSlash": "The URL must not end with a slash (/).",
         "noInfrastructuresFound": "No infrastructures found"
+      },
+      "companyLookup": {
+        "title": "Company Lookup",
+        "subtitle": "Search for companies and add their endpoints as a new infrastructure",
+        "searchPlaceholder": "Enter company name (e.g., Siemens, Festo)",
+        "searchButton": "Search",
+        "noResults": "No companies found",
+        "searchError": "Error searching for companies",
+        "domain": "Domain",
+        "endpoints": "Endpoints",
+        "endpointCount": "{count} endpoint | {count} endpoints",
+        "addButton": "Add as Infrastructure",
+        "addedButton": "Added",
+        "addSuccess": "Company endpoints added as infrastructure",
+        "addError": "Error adding company as infrastructure",
+        "addErrorDuplicate": "An infrastructure with this name already exists. Please edit the existing infrastructure or create one with a different name.",
+        "backButton": "Back to Infrastructures"
       },
       "header": "Settings",
       "idStructure": {

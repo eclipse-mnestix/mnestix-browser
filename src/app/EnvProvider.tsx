@@ -38,6 +38,7 @@ export const initialEnvValues: EnvironmentalVariables = {
     KEYCLOAK_REALM: undefined,
     KEYCLOAK_CLIENT_ID: undefined,
     SERIALIZATION_API_URL: undefined,
+    COMPANY_LOOKUP_API_URL: undefined,
     EXPERIMENTAL_HIGHLIGHT_DATA_FLAG: false,
     EXTERNAL_LINKS: [],
 };

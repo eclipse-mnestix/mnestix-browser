@@ -385,6 +385,7 @@
           "saveSuccess": "Infrastruktur erfolgreich gespeichert",
           "saveError": "Fehler beim Speichern der Infrastruktur",
           "createNew": "Neue Infrastruktur erstellen",
+          "companyLookup": "Aus Unternehmenssuche hinzufügen",
           "deleteConfirm": "Sind Sie sicher, dass Sie die Infrastruktur löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
           "deleteSuccess": "Infrastruktur erfolgreich gelöscht",
           "deleteError": "Fehler beim Löschen der Infrastruktur",
@@ -418,6 +419,23 @@
         "title": "Infrastrukturen",
         "urlFieldNoTrailingSlash": "Die URL darf nicht mit einem Schrägstrich (/) enden.",
         "noInfrastructuresFound": "Keine Infrastrukturen gefunden"
+      },
+      "companyLookup": {
+        "title": "Unternehmenssuche",
+        "subtitle": "Suchen Sie nach Unternehmen und fügen Sie deren Endpunkte als neue Infrastruktur hinzu",
+        "searchPlaceholder": "Geben Sie den Unternehmensnamen ein (z. B. Siemens, Festo)",
+        "searchButton": "Suchen",
+        "noResults": "Keine Unternehmen gefunden",
+        "searchError": "Fehler bei der Unternehmenssuche",
+        "domain": "Domäne",
+        "endpoints": "Endpunkte",
+        "endpointCount": "{count} Endpunkt | {count} Endpunkte",
+        "addButton": "Als Infrastruktur hinzufügen",
+        "addedButton": "Hinzugefügt",
+        "addSuccess": "Unternehmensendpunkte als Infrastruktur hinzugefügt",
+        "addError": "Fehler beim Hinzufügen des Unternehmens als Infrastruktur",
+        "addErrorDuplicate": "Eine Infrastruktur mit diesem Namen existiert bereits. Bitte bearbeiten Sie die existierende Infrastruktur oder erstellen Sie eine mit einem anderen Namen.",
+        "backButton": "Zurück zu Infrastrukturen"
       },
       "header": "Einstellungen",
       "idStructure": {
