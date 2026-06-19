@@ -69,11 +69,20 @@ export const DeleteRoleDialog = ({ onClose, afterClose, reloadRules, open, roleN
         return (
             <>
                 <DialogContent data-testid="role-settings-delete-role-dialog">
-                    <Box display="flex" flexDirection="column">
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column'
+                        }}>
                         <Typography variant="h2" color="primary" sx={{ mb: '1rem' }}>
                             {t('deleteRole.header')}
                         </Typography>
-                        <Typography variant="body1" color="text.secondary" sx={{ mb: '0.5rem' }}>
+                        <Typography
+                            variant="body1"
+                            sx={{
+                                color: 'text.secondary',
+                                mb: '0.5rem'
+                            }}>
                             {t('deleteRole.description', { roleName: roleName, count: rules.length })}
                         </Typography>
                     </Box>

@@ -50,22 +50,18 @@ const getHighlighting = (qualifiable: Qualifiable) => {
  */
 export const renderHighlight = (highlightData: boolean, property: Qualifiable | undefined) => {
     const highlighting = property ? getHighlighting(property) : { highlight: false, highlightColor: '' };
-    return (
-        highlightData &&
-        property &&
-        highlighting.highlight && (
-            // EXPERIMENTAL FEATURE
-            <Box
-                sx={{
-                    width: '8px',
-                    borderRadius: '2px',
-                    backgroundColor: highlighting.highlightColor,
-                    marginRight: '12px',
-                    height: '1.5em',
-                    flexShrink: 0,
-                }}
-            />
-            // ----
-        )
-    );
+    return (highlightData &&
+    property &&
+    highlighting.highlight && // EXPERIMENTAL FEATURE
+    // ----
+    (<Box
+        sx={{
+            width: '8px',
+            borderRadius: '2px',
+            backgroundColor: highlighting.highlightColor,
+            marginRight: '12px',
+            height: '1.5em',
+            flexShrink: 0,
+        }}
+    />));
 };

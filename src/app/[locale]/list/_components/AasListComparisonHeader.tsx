@@ -24,9 +24,21 @@ export const AasListComparisonHeader = (props: CompareAasListBarType) => {
 
     return (
         <>
-            <Box display="flex" gap={2} alignItems="center" justifyContent="flex-end">
+            <Box
+                sx={{
+                    display: 'flex',
+                    gap: 2,
+                    alignItems: 'center',
+                    justifyContent: 'flex-end'
+                }}>
                 {selectedAasList?.map((selectedAas) => (
-                    <Box display="flex" flexDirection="row" alignItems="center" key={selectedAas}>
+                    <Box
+                        key={selectedAas}
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center'
+                        }}>
                         <Typography data-testid={`selected-${selectedAas}`}>{tooltipText(selectedAas, 15)}</Typography>
                         <IconButton onClick={() => updateSelectedAasList(false, selectedAas)}>
                             <CloseIcon />

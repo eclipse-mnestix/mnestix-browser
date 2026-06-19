@@ -62,15 +62,28 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
     return (
         <DataRow hasDivider={props.hasDivider}>
             {fileViewObject && (
-                <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ my: 1 }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        my: 1
+                    }}>
                     <Box
-                        display="flex"
-                        justifyContent="space-between"
-                        gap={{ xs: 1, sm: 6 }}
-                        flexDirection={{ xs: 'column', sm: 'row' }}
-                        sx={{ mb: 1 }}
-                    >
-                        <Box display="flex" gap={1} flexDirection="row" sx={{ mb: 1 }}>
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            gap: { xs: 1, sm: 6 },
+                            flexDirection: { xs: 'column', sm: 'row' },
+                            mb: 1
+                        }}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                gap: 1,
+                                flexDirection: 'row',
+                                mb: 1
+                            }}>
                             {documentUrl ? (
                                 <Link href={documentUrl} target="_blank">
                                     <PreviewImage

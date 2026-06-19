@@ -34,7 +34,9 @@ export function NoSearchResult(props: { base64AasId: string }) {
             >
                 {t('header')}
             </Typography>
-            <Typography color="text.secondary">{t('noDataFound', { name: aas_id })}</Typography>
+            <Typography sx={{
+                color: 'text.secondary'
+            }}>{t('noDataFound', { name: aas_id })}</Typography>
             <Button variant="contained" startIcon={<ArrowForward />} href="/">
                 {t('toHomeButton')}
             </Button>

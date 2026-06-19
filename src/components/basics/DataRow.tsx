@@ -46,17 +46,20 @@ export function DataRow(props: DataRowProps) {
         >
             {props.hasDivider !== false && <Divider style={{ marginBottom: '10px' }} />}
             {props.title && (
-                <Typography noWrap color="text.secondary" variant="body2" data-testid="data-row-title">
+                <Typography noWrap variant="body2" data-testid="data-row-title" sx={{
+                    color: 'text.secondary'
+                }}>
                     {props.title}
                 </Typography>
             )}
             {props.value && (
                 <Box
-                    display="flex"
-                    alignItems="center"
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
-                >
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center'
+                    }}>
                     <Typography
                         style={{ overflowWrap: 'break-word', wordBreak: 'break-word', display: 'inline-block' }}
                         data-testid="data-row-value"

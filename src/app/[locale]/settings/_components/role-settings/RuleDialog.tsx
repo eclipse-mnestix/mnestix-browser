@@ -42,29 +42,44 @@ function ViewContent({ rule, t, onClose, setDialogMode }: ViewContentProps) {
     return (
         <>
             <DialogContent data-testid="role-settings-dialog">
-                <Box display="flex" flexDirection="column">
-                    <Typography color="text.secondary" variant="body2">
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }}>
+                    <Typography variant="body2" sx={{
+                        color: 'text.secondary'
+                    }}>
                         {t('tableHeader.name')}
                     </Typography>
-                    <Box display="flex" flexDirection="row" mb="1em">
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            mb: '1em'
+                        }}>
                         <Typography
                             variant="h2"
                             color="primary"
-                            overflow="hidden"
-                            textOverflow="ellipsis"
-                            maxWidth="inherit"
                             sx={{
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                maxWidth: 'inherit',
                                 display: '-webkit-box',
                                 WebkitBoxOrient: 'vertical',
                                 WebkitLineClamp: 2,
-                                overflowWrap: 'break-word',
-                            }}
-                        >
+                                overflowWrap: 'break-word'
+                            }}>
                             {rule.role}
                         </Typography>
                         <CopyButton value={rule.role} size="medium" />
                     </Box>
-                    <Box display="flex" flexDirection="column" gap="1em">
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '1em'
+                        }}>
                         <Box>
                             <Typography variant="h5">{t('tableHeader.action')}</Typography>
                             <Typography>{rule?.action}</Typography>

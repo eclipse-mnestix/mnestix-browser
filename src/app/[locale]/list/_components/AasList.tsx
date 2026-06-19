@@ -63,9 +63,10 @@ export default function AasList(props: AasListProps) {
                                         <Typography
                                             variant="h5"
                                             color="secondary"
-                                            letterSpacing={0.16}
-                                            fontWeight={700}
-                                        >
+                                            sx={{
+                                                letterSpacing: 0.16,
+                                                fontWeight: 700
+                                            }}>
                                             {header.label}
                                         </Typography>
                                     </TableCell>

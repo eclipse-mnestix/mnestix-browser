@@ -34,7 +34,12 @@ export function AddressElement({ el, index }: { el: DataElementChoice; index?: n
 
     return (
         <Box key={index} sx={{ display: 'flex' }}>
-            <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
+            <Typography
+                sx={{
+                    color: 'text.secondary',
+                    minWidth: '190px',
+                    mr: '5px'
+                }}>
                 {addressType}
             </Typography>
             <Typography>{actualAddress}</Typography>
@@ -58,7 +63,12 @@ export function PhoneElement({ el, index }: { el: SubmodelElementCollection; ind
     return (
         <Box key={index} sx={{ display: 'flex' }}>
             {addressType && (
-                <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
+                <Typography
+                    sx={{
+                        color: 'text.secondary',
+                        minWidth: '190px',
+                        mr: '5px'
+                    }}>
                     {addressType}
                 </Typography>
             )}
@@ -87,7 +97,12 @@ export function FaxElement({ el, index }: { el: SubmodelElementCollection; index
     return (
         <Box key={index} sx={{ display: 'flex' }}>
             {addressType && (
-                <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
+                <Typography
+                    sx={{
+                        color: 'text.secondary',
+                        minWidth: '190px',
+                        mr: '5px'
+                    }}>
                     {addressType}
                 </Typography>
             )}
@@ -112,7 +127,12 @@ export function EmailElement({ el, index }: { el: SubmodelElementCollection; ind
     return (
         <Box key={index} sx={{ display: 'flex' }}>
             {addressType && (
-                <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
+                <Typography
+                    sx={{
+                        color: 'text.secondary',
+                        minWidth: '190px',
+                        mr: '5px'
+                    }}>
                     {addressType}
                 </Typography>
             )}
@@ -128,7 +148,12 @@ export function EmailElement({ el, index }: { el: SubmodelElementCollection; ind
 export function IpElement({ el, index }: { el: SubmodelElementCollection; index?: number }) {
     return (
         <Box key={index} sx={{ display: 'flex' }}>
-            <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
+            <Typography
+                sx={{
+                    color: 'text.secondary',
+                    minWidth: '190px',
+                    mr: '5px'
+                }}>
                 {el.idShort}
             </Typography>
             <GenericSubmodelElementComponent submodelElement={el} wrapInDataRow={false} />
@@ -139,7 +164,12 @@ export function IpElement({ el, index }: { el: SubmodelElementCollection; index?
 export function PersonElement({ el, index }: { el: SubmodelElementCollection; index?: number }) {
     return (
         <Box key={index} sx={{ display: 'flex' }}>
-            <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
+            <Typography
+                sx={{
+                    color: 'text.secondary',
+                    minWidth: '190px',
+                    mr: '5px'
+                }}>
                 {el.idShort}
             </Typography>
             <GenericSubmodelElementComponent submodelElement={el} wrapInDataRow={false} />
@@ -155,7 +185,12 @@ export function VatElement({ el, index }: { el: DataElementChoice; index?: numbe
 
     return (
         <Box key={index} sx={{ display: 'flex' }}>
-            <Typography color="text.secondary" sx={{ minWidth: '190px', mr: '5px' }}>
+            <Typography
+                sx={{
+                    color: 'text.secondary',
+                    minWidth: '190px',
+                    mr: '5px'
+                }}>
                 {t('VAT')}
             </Typography>
             <Typography>{VATNumber}</Typography>

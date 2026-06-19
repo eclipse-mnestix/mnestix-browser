@@ -73,7 +73,7 @@ export function viewObjectHasDataValue(el: SubmodelViewObject) {
 }
 
 export function splitIdIntoArray(id: string): number[] {
-    return id.split('-').map(function (i) {
+    return String(id).split('-').map(function (i) {
         return parseInt(i);
     });
 }

@@ -17,16 +17,16 @@ export const ExpandableTreeitem = React.forwardRef(function CustomContent(props:
         <>
             <Box
                 sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+
                     [theme.breakpoints.down(480)]: {
                         flex: 1,
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
-                    },
-                }}
-                display="flex"
-                alignItems="center"
-            >
+                    }
+                }}>
                 <IconCircleWrapper>{dataIcon}</IconCircleWrapper>
                 <Typography
                     component="div"

@@ -33,7 +33,11 @@ export function SubmodelEditComponent(props: SubmodelEditComponentProps) {
     return (
         <>
             <BlueprintEditSectionHeading type="displayName" />
-            <Box display="flex" alignContent="center">
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignContent: 'center'
+                }}>
                 <TextField
                     defaultValue={getDisplayName()}
                     label={t('labels.value')}

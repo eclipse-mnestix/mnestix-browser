@@ -15,20 +15,31 @@ export function AddAasToCompareCard(props: AddAasToCompareCardProps) {
 
     return (
         <Box
-            width="33%"
-            display="flex"
             onClick={props.onClick}
-            sx={{ cursor: 'pointer' }}
             data-testid="add-aas-to-compare-button"
-        >
+            sx={{
+                width: '33%',
+                display: 'flex',
+                cursor: 'pointer'
+            }}>
             <Card>
                 <CardContent>
                     {isFirst ? (
-                        <Typography variant="h2" textAlign="center" margin="30px 0">
+                        <Typography
+                            variant="h2"
+                            sx={{
+                                textAlign: 'center',
+                                margin: '30px 0'
+                            }}>
                             {t('addFirstAasButton')}
                         </Typography>
                     ) : (
-                        <Typography variant="h2" textAlign="center" margin="30px 0">
+                        <Typography
+                            variant="h2"
+                            sx={{
+                                textAlign: 'center',
+                                margin: '30px 0'
+                            }}>
                             {t('addButton')}
                         </Typography>
                     )}

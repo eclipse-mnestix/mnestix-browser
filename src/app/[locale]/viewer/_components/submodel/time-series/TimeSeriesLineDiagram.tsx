@@ -102,9 +102,10 @@ export function TimeSeriesLineDiagram(props: { data: TimeSeriesDataSet; timefram
                     )}
                 </LineChart>
             </ResponsiveContainer>
-
             {props.timeframeSelectable && (
-                <Typography color="text.secondary" variant="body2" align="center">
+                <Typography variant="body2" align="center" sx={{
+                    color: 'text.secondary'
+                }}>
                     {t('selectTimeframe')}
                 </Typography>
             )}

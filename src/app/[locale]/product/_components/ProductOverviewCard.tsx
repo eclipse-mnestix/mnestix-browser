@@ -380,7 +380,9 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
     const classificationInfo = (
         <Box sx={infoBoxStyle} data-testid="asset-data">
             {!isAccordion && (
-                <Box display="flex">
+                <Box sx={{
+                    display: 'flex'
+                }}>
                     <IconCircleWrapper sx={{ mr: 1 }}>
                         <AssetIcon fontSize="small" color="primary" />
                     </IconCircleWrapper>
@@ -420,7 +422,9 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                             sx={{ height: '300px', maxWidth: '300px', width: '100%' }}
                             data-testid="aas-loading-skeleton"
                         ></Skeleton>
-                        <Box width="100%">
+                        <Box sx={{
+                            width: '100%'
+                        }}>
                             {isAccordion ? (
                                 <Box sx={{ m: 1 }}>
                                     <Skeleton width="100%" />
@@ -490,12 +494,14 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                             {overviewData?.URIOfTheProduct && (
                                                 <Tooltip title={overviewData.URIOfTheProduct}>
                                                     <LinkIcon
-                                                        sx={{ ml: 1, cursor: 'pointer' }}
-                                                        fontSize="small"
                                                         role="button"
                                                         onClick={navigateToProduct}
                                                         data-testid="product-uri-link"
-                                                    />
+                                                        sx={{
+                                                            fontSize: 'small',
+                                                            ml: 1,
+                                                            cursor: 'pointer'
+                                                        }} />
                                                 </Tooltip>
                                             )}
                                         </Typography>
