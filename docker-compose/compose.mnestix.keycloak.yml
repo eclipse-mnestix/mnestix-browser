@@ -33,7 +33,8 @@ services:
       NEXTAUTH_URL: 'http://localhost:3000'
       KEYCLOAK_ENABLED: 'true'
       KEYCLOAK_CLIENT_ID: 'mnestix-browser-client-demo'
-      KEYCLOAK_ISSUER: 'http://localhost:8080'
+      # server-side calls (discovery/token/userinfo) use the in-network host; the browser redirect uses localhost
+      KEYCLOAK_ISSUER: 'http://keycloak:8080'
       KEYCLOAK_LOCAL_URL: 'http://localhost:8080'
       KEYCLOAK_REALM: 'Mnestix'
 
