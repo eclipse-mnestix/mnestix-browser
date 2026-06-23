@@ -4,6 +4,7 @@ export const SECURITY_TYPES = {
     NONE: 'NONE',
     HEADER_SECURITY: 'HEADER',
     MNESTIX_PROXY: 'PROXY',
+    STS: 'STS',
 } as const;
 
 export const CONNECTION_TYPES = [

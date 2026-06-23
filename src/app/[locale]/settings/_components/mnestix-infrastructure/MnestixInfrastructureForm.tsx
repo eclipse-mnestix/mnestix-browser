@@ -466,6 +466,7 @@ function MnestixInfrastructureForm({
                                     <MenuItem value={SECURITY_TYPES.HEADER_SECURITY}>
                                         {t('form.securityTypeHeaderSecurity')}
                                     </MenuItem>
+                                    <MenuItem value={SECURITY_TYPES.STS}>{t('form.securityTypeSts')}</MenuItem>
                                 </TextField>
                             )}
                         />

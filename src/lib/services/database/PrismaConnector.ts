@@ -6,6 +6,7 @@ import type { InfrastructureFormData } from 'app/[locale]/settings/_components/m
 import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 import { validateHeaderKey, validateHeaderValue } from 'lib/util/securityHelpers/ValidateSecurityInput';
 import { encryptSecret } from 'lib/util/securityHelpers/Encryption';
+import { applyConsumerGatewayPrefix } from 'lib/util/securityHelpers/consumerGatewayUrl';
 
 export type DataSourceFormData = {
     id: string;
@@ -103,16 +104,26 @@ export class PrismaConnector implements IPrismaConnector {
                 },
             },
             include: {
-                infrastructure: true,
+                infrastructure: {
+                    include: {
+                        securityType: true,
+                    },
+                },
             },
         });
 
-        return connections.map((item) => ({
-            id: item.id,
-            infrastructureName: item.infrastructure?.name ?? '',
-            url: item.url,
-            isDefault: false,
-        }));
+        return connections.map((item) => {
+            const securityType = item.infrastructure?.securityType?.typeName;
+            // STS infrastructures are routed through the Factory-X Consumer Gateway.
+            const url = securityType === 'STS' ? applyConsumerGatewayPrefix(item.url) : item.url;
+            return {
+                id: item.id,
+                infrastructureName: item.infrastructure?.name ?? '',
+                url,
+                securityType,
+                isDefault: false,
+            };
+        });
     }
 
     static create() {

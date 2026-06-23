@@ -234,6 +234,59 @@ describe('createSecurityHeaders', () => {
         });
     });
 
+    describe('when security type is STS', () => {
+        it('should return a bearer Authorization header from the session token', async () => {
+            const mockInfrastructure = createMockInfrastructure({
+                isDefault: false,
+                infrastructureSecurity: {
+                    securityType: 'STS',
+                },
+            });
+
+            mockedGetServerSession.mockResolvedValue({
+                accessToken: 'session-access-token',
+            });
+
+            const result = await createSecurityHeaders(mockInfrastructure);
+
+            expect(result).toEqual({
+                Authorization: 'Bearer session-access-token',
+            });
+        });
+
+        it('should return null when there is no session token to exchange', async () => {
+            const mockInfrastructure = createMockInfrastructure({
+                isDefault: false,
+                infrastructureSecurity: {
+                    securityType: 'STS',
+                },
+            });
+
+            mockedGetServerSession.mockResolvedValue({
+                accessToken: '',
+            });
+
+            const result = await createSecurityHeaders(mockInfrastructure);
+
+            expect(result).toBeNull();
+        });
+
+        it('should return null when the session is null', async () => {
+            const mockInfrastructure = createMockInfrastructure({
+                isDefault: false,
+                infrastructureSecurity: {
+                    securityType: 'STS',
+                },
+            });
+
+            mockedGetServerSession.mockResolvedValue(null);
+
+            const result = await createSecurityHeaders(mockInfrastructure);
+
+            expect(result).toBeNull();
+        });
+    });
+
     describe('when security data is invalid', () => {
         it('should return null when securityType is undefined', async () => {
             const mockInfrastructure = createMockInfrastructure({

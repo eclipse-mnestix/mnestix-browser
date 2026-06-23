@@ -7,6 +7,7 @@ import {
     mapCompanyToInfrastructureFormDataWithSelected,
     getSupportedEndpointsSummary,
     mapEndpointInterfaceToConnectionType,
+    companyHasStsEndpoint,
 } from 'lib/services/company-lookup-service/companyEndpointMapper';
 import { Company } from 'lib/api/company-lookup-api/companyLookupServiceApiTypes';
 
@@ -258,6 +259,64 @@ describe('companyEndpointMapper', () => {
 
             expect(result.connections).toHaveLength(1);
             expect(result.connections[0].url).toBe('');
+        });
+    });
+
+    describe('STS security type auto-detection', () => {
+        const companyWithSts: Company = {
+            name: 'Secured Company',
+            domain: 'secured.com',
+            endpoints: [
+                {
+                    protocolInformation: {
+                        href: 'https://registry.secured.com/api/v3.0/shell-descriptors',
+                        endpointProtocol: 'HTTPS',
+                    },
+                    interface: 'AAS-REGISTRY-3.1',
+                },
+                {
+                    protocolInformation: {
+                        href: 'https://tokenservice.secured.com/sts/token',
+                        endpointProtocol: 'HTTPS',
+                    },
+                    interface: 'STS-1.0',
+                },
+            ],
+        };
+
+        it('companyHasStsEndpoint should return true when an STS endpoint is present', () => {
+            expect(companyHasStsEndpoint(companyWithSts)).toBe(true);
+        });
+
+        it('companyHasStsEndpoint should return false when no STS endpoint is present', () => {
+            expect(companyHasStsEndpoint(mockCompany)).toBe(false);
+        });
+
+        it('mapCompanyToInfrastructureFormData should set securityType STS when an STS endpoint exists', () => {
+            const result = mapCompanyToInfrastructureFormData(companyWithSts);
+
+            expect(result.securityType).toBe('STS');
+        });
+
+        it('mapCompanyToInfrastructureFormData should set securityType NONE without an STS endpoint', () => {
+            const result = mapCompanyToInfrastructureFormData(mockCompany);
+
+            expect(result.securityType).toBe('NONE');
+        });
+
+        it('should not create a connection for the STS endpoint itself', () => {
+            const result = mapCompanyToInfrastructureFormData(companyWithSts);
+
+            const urls = result.connections.map((connection) => connection.url);
+            expect(urls).not.toContain('https://tokenservice.secured.com/sts/token');
+        });
+
+        it('mapCompanyToInfrastructureFormDataWithSelected should set securityType STS when an STS endpoint exists', () => {
+            const result = mapCompanyToInfrastructureFormDataWithSelected(companyWithSts, [
+                'https://registry.secured.com/api/v3.0/shell-descriptors',
+            ]);
+
+            expect(result.securityType).toBe('STS');
         });
     });
 });

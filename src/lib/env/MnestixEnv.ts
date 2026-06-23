@@ -85,6 +85,7 @@ const otherVariables = {
             'MNESTIX_AAS_GENERATOR_API_URL',
             'SERIALIZATION_API_URL',
             'COMPANY_LOOKUP_API_URL',
+            'CONSUMER_GATEWAY_URL',
             'IMPRINT_URL',
             'DATA_PRIVACY_URL',
         ] as const,

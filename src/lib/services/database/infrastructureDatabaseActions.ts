@@ -11,6 +11,7 @@ import {
     InfrastructureWithRelations,
     RepositoryWithInfrastructure,
 } from 'lib/services/database/InfrastructureMappedTypes';
+import { applyConsumerGatewayPrefix } from 'lib/util/securityHelpers/consumerGatewayUrl';
 
 const DEFAULT_INFRASTRUCTURE_NAME = 'Default Infrastructure';
 
@@ -135,28 +136,33 @@ export async function deleteInfrastructureAction(infrastructureId: string): Prom
 }
 
 function infrastructureMapper(infra: InfrastructureWithRelations): InfrastructureConnection {
+    // STS infrastructures are routed through the Factory-X Consumer Gateway. The raw
+    // provider URLs are stored unchanged and rewritten to the gateway form on load.
+    const isSts = infra.securityType.typeName === 'STS';
+    const transform = isSts ? applyConsumerGatewayPrefix : (url: string) => url;
+
     return {
         name: infra.name,
         discoveryUrls: infra.connections.flatMap((conn) =>
-            conn.types.filter((t) => t.type.typeName === 'DISCOVERY_SERVICE').map(() => conn.url),
+            conn.types.filter((t) => t.type.typeName === 'DISCOVERY_SERVICE').map(() => transform(conn.url)),
         ),
         aasRegistryUrls: infra.connections.flatMap((conn) =>
-            conn.types.filter((t) => t.type.typeName === 'AAS_REGISTRY').map(() => conn.url),
+            conn.types.filter((t) => t.type.typeName === 'AAS_REGISTRY').map(() => transform(conn.url)),
         ),
         aasRepositoryUrls: infra.connections.flatMap((conn) =>
-            conn.types.filter((t) => t.type.typeName === 'AAS_REPOSITORY').map(() => conn.url),
+            conn.types.filter((t) => t.type.typeName === 'AAS_REPOSITORY').map(() => transform(conn.url)),
         ),
         submodelRepositoryUrls: infra.connections.flatMap((conn) =>
-            conn.types.filter((t) => t.type.typeName === 'SUBMODEL_REPOSITORY').map(() => conn.url),
+            conn.types.filter((t) => t.type.typeName === 'SUBMODEL_REPOSITORY').map(() => transform(conn.url)),
         ),
         submodelRegistryUrls: infra.connections.flatMap((conn) =>
-            conn.types.filter((t) => t.type.typeName === 'SUBMODEL_REGISTRY').map(() => conn.url),
+            conn.types.filter((t) => t.type.typeName === 'SUBMODEL_REGISTRY').map(() => transform(conn.url)),
         ),
         conceptDescriptionRepositoryUrls: infra.connections.flatMap((conn) =>
-            conn.types.filter((t) => t.type.typeName === 'CONCEPT_DESCRIPTION').map(() => conn.url),
+            conn.types.filter((t) => t.type.typeName === 'CONCEPT_DESCRIPTION').map(() => transform(conn.url)),
         ),
         serializationEndpointUrls: infra.connections.flatMap((conn) =>
-            conn.types.filter((t) => t.type.typeName === 'SERIALIZATION_ENDPOINT').map(() => conn.url),
+            conn.types.filter((t) => t.type.typeName === 'SERIALIZATION_ENDPOINT').map(() => transform(conn.url)),
         ),
         isDefault: false,
         infrastructureSecurity: {

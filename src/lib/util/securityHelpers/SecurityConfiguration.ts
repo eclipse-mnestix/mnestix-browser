@@ -53,6 +53,16 @@ export async function createSecurityHeaders(
                 [mnestixProxyHeaderName]: headerValue,
             };
         }
+        case 'STS': {
+            // Factory-X token exchange: forward the user's session bearer token to the
+            // Consumer Gateway, which performs the RFC 8693 exchange. Requires an
+            // authenticated session; without one there is no token to exchange.
+            const bearerToken = await getBearerToken();
+            if (!bearerToken) return null;
+            return {
+                Authorization: `Bearer ${bearerToken}`,
+            };
+        }
         default:
             return null;
     }

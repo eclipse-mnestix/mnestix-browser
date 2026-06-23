@@ -380,6 +380,7 @@
           "securityTypeNone": "Keine",
           "securityTypeMnestixProxy": "Mnestix API Key",
           "securityTypeHeaderSecurity": "Custom Header",
+          "securityTypeSts": "STS (Factory-X-Gateway)",
           "proxyHeaderValue": "Mnestix API Key Header Wert",
           "proxyHeaderValueRequired": "Mnestix API Key Header Wert ist erforderlich",
           "saveSuccess": "Infrastruktur erfolgreich gespeichert",

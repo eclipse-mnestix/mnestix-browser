@@ -47,6 +47,16 @@ export function mapEndpointInterfaceToConnectionType(interfaceType: string): str
 }
 
 /**
+ * Detects whether a company advertises a Factory-X STS (Token Exchange Service)
+ * endpoint. Its presence signals that the provider is gateway-secured, so the
+ * imported infrastructure should use the `STS` security type and be routed through
+ * the Consumer Gateway.
+ */
+export function companyHasStsEndpoint(company: Company): boolean {
+    return company.endpoints.some((endpoint) => endpoint.interface.split('-')[0] === 'STS');
+}
+
+/**
  * Groups endpoints by their connection type
  */
 function groupEndpointsByType(endpoints: CompanyEndpoint[]): Map<string, string[]> {
@@ -83,7 +93,7 @@ export function mapCompanyToInfrastructureFormData(company: Company): Infrastruc
         id: '',
         name: company.name,
         logo: undefined,
-        securityType: 'NONE',
+        securityType: companyHasStsEndpoint(company) ? 'STS' : 'NONE',
         connections:
             connections.length > 0
                 ? connections
@@ -119,7 +129,7 @@ export function mapCompanyToInfrastructureFormDataWithSelected(
         id: '',
         name: company.name,
         logo: undefined,
-        securityType: 'NONE',
+        securityType: companyHasStsEndpoint(company) ? 'STS' : 'NONE',
         connections:
             connections.length > 0
                 ? connections

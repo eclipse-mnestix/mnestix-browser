@@ -98,7 +98,7 @@ describe('MnestixInfrastructureForm', () => {
         expect(screen.getByText('pages.settings.infrastructure.form.securityTypeNone')).toBeInTheDocument();
 
         // Check if all security types are present
-        const securityTypes = ['NONE', 'HEADER', 'PROXY'];
+        const securityTypes = ['NONE', 'HEADER', 'PROXY', 'STS'];
         for (const type of securityTypes) {
             const securityTypeSwitch = screen.getAllByLabelText('pages.settings.infrastructure.form.securityType')[0];
             fireEvent.mouseDown(securityTypeSwitch);
@@ -107,6 +107,7 @@ describe('MnestixInfrastructureForm', () => {
                 NONE: 'pages.settings.infrastructure.form.securityTypeNone',
                 HEADER: 'pages.settings.infrastructure.form.securityTypeHeaderSecurity',
                 PROXY: 'pages.settings.infrastructure.form.securityTypeMnestixProxy',
+                STS: 'pages.settings.infrastructure.form.securityTypeSts',
             };
 
             const option = await screen.getByRole('option', { name: optionTextMap[type] });
@@ -140,6 +141,17 @@ describe('MnestixInfrastructureForm', () => {
                         expect(
                             screen.getByLabelText('pages.settings.infrastructure.form.proxyHeaderValue'),
                         ).toBeInTheDocument();
+                        expect(
+                            screen.queryByLabelText('pages.settings.infrastructure.form.headerName'),
+                        ).not.toBeInTheDocument();
+                        expect(
+                            screen.queryByLabelText('pages.settings.infrastructure.form.headerValue'),
+                        ).not.toBeInTheDocument();
+                        break;
+                    case 'STS':
+                        expect(
+                            screen.queryByLabelText('pages.settings.infrastructure.form.proxyHeaderValue'),
+                        ).not.toBeInTheDocument();
                         expect(
                             screen.queryByLabelText('pages.settings.infrastructure.form.headerName'),
                         ).not.toBeInTheDocument();

@@ -7,6 +7,7 @@ export type RepositoryWithInfrastructure = {
     id?: string;
     infrastructureName: string;
     url: string;
+    securityType?: string;
     isDefault?: boolean;
 };
 export type InfrastructureConnection = {

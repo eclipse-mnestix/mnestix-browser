@@ -1,0 +1,34 @@
+# Factory-X Consumer Gateway
+#
+# Deploys the OpenResty-based consumer gateway that performs RFC 8693 token
+# exchange (via the Consumer STS) for infrastructures imported with the
+# "STS" security type. Mnestix routes provider requests through this gateway
+# using the /external/<provider_host>/<provider_path> URL convention.
+#
+# Usage (merged with the base compose file):
+#   docker compose -f compose.yml -f docker-compose/compose.factory-x-gateway.yml up
+#
+# The Consumer STS (token-exchange service) must be reachable at STS_URL.
+# Configure STS_URL and, if your providers are not HTTPS, PROVIDER_SCHEME.
+
+services:
+  factory-x-gateway:
+    container_name: factory-x-gateway
+    build:
+      context: ./docker-compose/factory-x-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8088:80"
+    environment:
+      # Consumer STS token-exchange endpoint (RFC 8693).
+      STS_URL: ${CONSUMER_STS_URL:-http://factory-x-sts:8080/sts/token}
+      # Scheme used to reach downstream providers (https or http).
+      PROVIDER_SCHEME: ${CONSUMER_GATEWAY_PROVIDER_SCHEME:-https}
+    networks:
+      - mnestix-network
+
+  # Make the gateway URL available to the Mnestix frontend so that STS
+  # infrastructures are routed through it.
+  mnestix-browser:
+    environment:
+      CONSUMER_GATEWAY_URL: ${CONSUMER_GATEWAY_URL:-http://factory-x-gateway}
