@@ -50,6 +50,7 @@ There are three security configuration types:
 ### 2. Mnestix Repository Proxy
 
 - Used when the infrastructure is deployed as part of a **Mnestix ecosystem with Mnestix Proxy**.
+  See the [Mnestix Proxy Wiki](https://github.com/eclipse-mnestix/mnestix-proxy/wiki) for proxy setup and configuration.
 - Requires an **API key configuration** from the Proxy and Template Builder.
 - The API key is **encrypted** and cannot be retrieved later.
 - The correct header is created automatically:
