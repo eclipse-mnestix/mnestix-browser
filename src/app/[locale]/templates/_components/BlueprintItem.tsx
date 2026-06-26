@@ -97,7 +97,9 @@ export function BlueprintItem(props: BlueprintItemProps) {
                 </Box>
                 <Box>
                     <Typography variant="h4">{props.item.displayName}</Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" sx={{
+                        color: 'text.secondary'
+                    }}>
                         {props.item.basedOnTemplate}
                     </Typography>
                 </Box>

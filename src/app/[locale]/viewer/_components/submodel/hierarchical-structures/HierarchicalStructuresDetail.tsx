@@ -54,9 +54,10 @@ export function HierarchicalStructuresDetail({ submodel }: SubmodelVisualization
     };
 
     return (
-        <Box width="100%">
+        <Box sx={{
+            width: '100%'
+        }}>
             <EntityComponent entity={entryNode as Entity} />
-
             {archeTypePropertylElement && (
                 <>
                     <Box sx={{ mt: 2, display: 'flex' }}>

@@ -100,9 +100,10 @@ export function SelectListSource(props: {
                                     <Typography
                                         component="span"
                                         variant="body2"
-                                        color="text.secondary"
-                                        sx={{ ml: '5px' }}
-                                    >
+                                        sx={{
+                                            color: 'text.secondary',
+                                            ml: '5px'
+                                        }}>
                                         ({conn.infrastructureName})
                                     </Typography>
                                 </MenuItem>
@@ -121,9 +122,10 @@ export function SelectListSource(props: {
                                     <Typography
                                         component="span"
                                         variant="body2"
-                                        color="text.secondary"
-                                        sx={{ ml: '5px' }}
-                                    >
+                                        sx={{
+                                            color: 'text.secondary',
+                                            ml: '5px'
+                                        }}>
                                         ({conn.infrastructureName})
                                     </Typography>
                                 </MenuItem>

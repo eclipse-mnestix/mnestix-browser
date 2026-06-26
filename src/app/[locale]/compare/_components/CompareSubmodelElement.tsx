@@ -26,9 +26,15 @@ export function CompareSubmodelElement(props: CompareSubmodelElementProps) {
             case KeyTypes.Property:
                 return (
                     <>
-                        <Box display="flex" alignItems="center">
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center'
+                            }}>
                             {isMarked && <DifferenceSymbol />}
-                            <Box display="inline-block">
+                            <Box sx={{
+                                display: 'inline-block'
+                            }}>
                                 <GenericPropertyComponent property={props.submodelElement} withCopyButton={true} />
                             </Box>
                         </Box>
@@ -43,9 +49,15 @@ export function CompareSubmodelElement(props: CompareSubmodelElementProps) {
             case KeyTypes.MultiLanguageProperty:
                 return (
                     <>
-                        <Box display="flex" alignItems={'center'}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center'
+                            }}>
                             {isMarked && <DifferenceSymbol />}
-                            <Box display="inline-block">
+                            <Box sx={{
+                                display: 'inline-block'
+                            }}>
                                 <MultiLanguagePropertyComponent mLangProp={props.submodelElement} />
                             </Box>
                         </Box>

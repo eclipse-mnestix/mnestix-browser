@@ -62,12 +62,13 @@ export function MarkingsComponent(props: MarkingsComponentProps) {
     return (
         <DataRow title={props.submodelElement?.idShort} hasDivider={props.hasDivider}>
             <Box
-                display="flex"
-                gap="20px"
-                flexWrap="wrap"
-                flexDirection={props.columnDisplay ? 'column' : 'row'}
-                sx={{ my: 1 }}
-            >
+                sx={{
+                    display: 'flex',
+                    gap: '20px',
+                    flexWrap: 'wrap',
+                    flexDirection: props.columnDisplay ? 'column' : 'row',
+                    my: 1
+                }}>
                 {markingImages}
             </Box>
         </DataRow>

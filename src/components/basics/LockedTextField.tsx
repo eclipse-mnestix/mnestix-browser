@@ -6,16 +6,17 @@ function _LockedTextField(props: TextFieldProps, ref: ForwardedRef<HTMLDivElemen
     return (
         <TextField
             disabled
-            InputProps={{
-                endAdornment: (
-                    <InputAdornment position="end">
-                        <Lock fontSize="small" style={{ opacity: 0.5 }} />
-                    </InputAdornment>
-                ),
-            }}
             ref={ref}
             {...props}
-        />
+            slotProps={{
+                input: {
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <Lock fontSize="small" style={{ opacity: 0.5 }} />
+                        </InputAdornment>
+                    ),
+                }
+            }} />
     );
 }
 

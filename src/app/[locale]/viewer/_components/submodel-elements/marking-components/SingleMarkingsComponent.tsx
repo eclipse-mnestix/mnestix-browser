@@ -70,32 +70,32 @@ export function SingleMarkingsComponent(props: SingleMarkingsComponentProps) {
         }
     }, [props.file]);
 
-    return (
-        !!file && (
-            <StyledMarkingContainer rowDisplay={props.rowDisplay}>
-                <StyledMarkingImageWrapper rowDisplay={props.rowDisplay} sx={{ boxShadow: 2 }}>
-                    <StyledFileImg src={markingImage} />
+    return (!!file && (<StyledMarkingContainer rowDisplay={props.rowDisplay}>
+        <StyledMarkingImageWrapper rowDisplay={props.rowDisplay} sx={{ boxShadow: 2 }}>
+            <StyledFileImg src={markingImage} />
 
-                    {/* TODO get this value from concept description if there is only an IRDI? */}
-                    {name?.value === '0173-1#07-DAA603#004' && (
-                        <Box sx={{ backgroundColor: 'grey.200', p: 0.5, flexGrow: '0' }}>
-                            <Typography variant="body2" color="text.secondary">
-                                CE
-                            </Typography>
-                        </Box>
-                    )}
-                </StyledMarkingImageWrapper>
-                {(!!name || !!additionalText) && (
-                    <Box sx={{ p: 1, flexGrow: '0' }}>
-                        {!!name && <Typography>{name.value}</Typography>}
-                        {!!additionalText && (
-                            <Typography variant="body2" color="text.secondary">
-                                {additionalText.value}
-                            </Typography>
-                        )}
-                    </Box>
+            {/* TODO get this value from concept description if there is only an IRDI? */}
+            {name?.value === '0173-1#07-DAA603#004' && (
+                <Box sx={{ backgroundColor: 'grey.200', p: 0.5, flexGrow: '0' }}>
+                    <Typography variant="body2" sx={{
+                        color: 'text.secondary'
+                    }}>
+                        CE
+                    </Typography>
+                </Box>
+            )}
+        </StyledMarkingImageWrapper>
+        {(!!name || !!additionalText) && (
+            <Box sx={{ p: 1, flexGrow: '0' }}>
+                {!!name && <Typography>{name.value}</Typography>}
+                {!!additionalText && (
+                    <Typography variant="body2" sx={{
+                        color: 'text.secondary'
+                    }}>
+                        {additionalText.value}
+                    </Typography>
                 )}
-            </StyledMarkingContainer>
-        )
-    );
+            </Box>
+        )}
+    </StyledMarkingContainer>));
 }

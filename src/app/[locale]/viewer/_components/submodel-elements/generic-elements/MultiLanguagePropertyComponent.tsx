@@ -53,11 +53,12 @@ export function MultiLanguagePropertyComponent(props: MultiLanguagePropertyCompo
     if (isValidUrl(value)) {
         return (
             <Box
-                display="flex"
-                alignItems="center"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
-            >
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center'
+                }}>
                 <Typography data-testid="mlproperty-content">
                     <Link component="a" href={value!} target="_blank" rel="noopener noreferrer">
                         {value}
@@ -71,11 +72,12 @@ export function MultiLanguagePropertyComponent(props: MultiLanguagePropertyCompo
 
     return (
         <Box
-            display="flex"
-            alignItems="center"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-        >
+            sx={{
+                display: 'flex',
+                alignItems: 'center'
+            }}>
             {renderHighlight(highlightData, props.mLangProp)}
             <Typography data-testid="mlproperty-content">{value || '-'}</Typography>
             {renderCopyButton()}

@@ -194,7 +194,9 @@ function TemplateBuilderContent() {
                             {/* TODO: Make this editable as an input field */}
                             {isLoading ? <Skeleton width="40%" /> : blueprintDisplayName || ''}
                         </Typography>
-                        <Typography color="text.secondary">
+                        <Typography sx={{
+                            color: 'text.secondary'
+                        }}>
                             {isLoading ? <Skeleton width="60%" /> : templateSemanticId}
                         </Typography>
                     </Box>
@@ -254,9 +256,17 @@ function TemplateBuilderContent() {
                         </Box>
                     </Box>
                 </Box>
-                <Box mb={3}>
+                <Box sx={{
+                    mb: 3
+                }}>
                     <Divider />
-                    <Box display="flex" alignItems="center" gap={1} sx={{ mt: 1 }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 1,
+                            mt: 1
+                        }}>
                         <Typography variant="h6">{t('healthCheck.label')}</Typography>
                         <HealthCheckIndicator />
                         <IconButton
@@ -271,9 +281,10 @@ function TemplateBuilderContent() {
                     <Link
                         href="https://github.com/eclipse-mnestix/mnestix-browser/wiki/Mnestix-AAS-Generator-Dataingest-and-Blueprints"
                         variant="body2"
-                        color="text.secondary"
-                        sx={{ mt: 1 }}
-                    >
+                        sx={{
+                            color: 'text.secondary',
+                            mt: 1
+                        }}>
                         {t('docsLink')}
                     </Link>
                 </Box>

@@ -38,13 +38,23 @@ export function RelationShipDetailsDialog(props: RelationShipDetailsModalProps) 
                     {relationship.idShort}
                 </Typography>
                 <DataRow hasDivider={false}>
-                    <Box display="flex" width="100%" gap={1}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            width: '100%',
+                            gap: 1
+                        }}>
                         <Box sx={{ color: 'text.secondary' }}>Entity:</Box>
                         {relationship.first.keys[relationship.first.keys.length - 1]?.value || t('error.entityError')}
                     </Box>
                 </DataRow>
                 <DataRow hasDivider={false}>
-                    <Box display="flex" justifyContent="space-between" width="100%">
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            width: '100%'
+                        }}>
                         <Typography color={'primary'}>{getRelationshipType(semanticId ?? '')} </Typography>
                         <Tooltip
                             data-testid="relShip-dialog-tooltip"
@@ -55,7 +65,12 @@ export function RelationShipDetailsDialog(props: RelationShipDetailsModalProps) 
                     </Box>
                 </DataRow>
                 <DataRow hasDivider={false}>
-                    <Box display="flex" width="100%" gap={1}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            width: '100%',
+                            gap: 1
+                        }}>
                         <Box sx={{ color: 'text.secondary' }}>Entity:</Box>
                         {relationship.second.keys[relationship.second.keys.length - 1]?.value || t('error.entityError')}
                     </Box>
