@@ -1,0 +1,608 @@
+{
+    "components": {
+        "addressComponent": {
+            "VAT": "Btw-nummer",
+            "addressTypes": {
+                "CityTown": "Stad/Plaats",
+                "Company": "Bedrijf",
+                "Department": "Afdeling",
+                "NationalCode": "Landcode",
+                "POBox": "Postbus",
+                "StateCounty": "Provincie/Regio",
+                "Street": "Straat",
+                "TimeZone": "Tijdzone",
+                "ZipCodeOfPOBox": "Postcode van postbus",
+                "Zipcode": "Postcode"
+            }
+        },
+        "assetNotFound": {
+            "header": "AAS kon niet worden geladen.",
+            "text": "Kan AAS voor het opgegeven ID ''{id}'' niet laden",
+            "toHome": "Naar Home"
+        },
+        "authentication": {
+            "authenticationNeeded": "Authenticatie vereist",
+            "contactAdmin": "U kunt deze pagina niet bezoeken. Neem contact op met uw beheerder.",
+            "nonDefaultRepositoryInfo": "Neem contact op met uw systeembeheerder om de infrastructuurauthenticatie bij te werken.",
+            "sessionExpired": "Uw sessie is verlopen. Log opnieuw in."
+        },
+        "carbonFootprint": {
+            "beech": "Eén beukenboom",
+            "calculationMethod": "Berekeningsmethode",
+            "co2EComparison": "Vergelijking",
+            "co2EDistribution": "CO2e-verdeling",
+            "comparisonAssumption": "Ervan uitgaande dat één beukenboom 12,5 kg CO2e per jaar opslaat.",
+            "comparisonNeeds": "heeft nodig",
+            "completedStages": "Emissies berekend op basis van de productlevenscyclus",
+            "equivalents": "CO2-equivalenten",
+            "inTotal": "in totaal",
+            "notIncludedHint": "nog niet inbegrepen",
+            "productJourney": "Productreis",
+            "stages": {
+                "A1": "A1 - Levering van grondstoffen (en upstream-productie)",
+                "A1-A3": "A1-A3 - Levering van grondstoffen tot productie",
+                "A2": "A2 - Transport van grondstof naar fabriek",
+                "A3": "A3 - Productie",
+                "A4": "A4 - Transport naar eindbestemming",
+                "A4-A5": "A4-A5 - Transport naar montage",
+                "A5": "A5 - Installatie",
+                "B1": "B1 - Gebruiksfase",
+                "B1-B7": "B1-B7 - Gebruiksfase",
+                "B2": "B2 - Onderhoud",
+                "B3": "B3 - Reparatie",
+                "B4": "B4 - Vervanging",
+                "B5": "B5 - Update/upgrade, renovatie",
+                "B6": "B6 - Energieverbruik tijdens gebruik",
+                "B7": "B7 - Waterverbruik tijdens gebruik",
+                "C1": "C1 - Demontage",
+                "C1-C4": "C1-C4 - Afvalfase",
+                "C2": "C2 - Transport naar recycler",
+                "C2-C4": "C2-C4 - Recycling tot stortplaats",
+                "C3": "C3 - Recycling, afvalverwerking",
+                "C4": "C4 - Stortplaats",
+                "D": "D - Hergebruik"
+            },
+            "timeUnit": {
+                "month": "{count, plural, =0 {minder dan een maand} =1 {1 maand} other {# maanden}}",
+                "year": "{count, plural, =0 {minder dan een jaar} =1 {1 jaar} other {# jaar}}"
+            },
+            "totalCO2Equivalents": "CO2-emissies van het product (tot nu toe)"
+        },
+        "constructionDialog": {
+            "buttonText": "Sluiten",
+            "message": "Deze functie is momenteel in ontwikkeling en zal binnenkort beschikbaar zijn.",
+            "title": "In ontwikkeling"
+        },
+        "contactInformation": {
+            "contactTypes": {
+                "0173-1#07-AAS754#001": "Kantoor",
+                "0173-1#07-AAS755#001": "Kantoor mobiel",
+                "0173-1#07-AAS756#001": "Secretariaat",
+                "0173-1#07-AAS757#001": "Vervanger",
+                "0173-1#07-AAS758#001": "Thuis",
+                "0173-1#07-AAS759#001": "Privé mobiel",
+                "home": "Thuis",
+                "home mobile": "Thuis mobiel",
+                "office": "Kantoor",
+                "office mobile": "Kantoor mobiel",
+                "secretary": "Secretariaat",
+                "substitute": "Vervanger"
+            }
+        },
+        "copyButton": {
+            "copied": "Gekopieerd naar klembord",
+            "copy": "Kopiëren",
+            "copyBase64": "Base64-gecodeerd kopiëren",
+            "copyFailed": "Kopiëren naar klembord mislukt"
+        },
+        "documentComponent": {
+            "classification": "Documentclassificatie",
+            "documentDetails": "Documentdetails",
+            "fileNotFound": "Bestand niet gevonden",
+            "open": "Openen",
+            "showMoreButton": "meer tonen"
+        },
+        "dummyComponent": {
+            "dummyText": "Dit is een dummy-component. Het wordt gebruikt om de lay-out en het ontwerp van de applicatie te testen."
+        },
+        "noSearchResult": {
+            "header": "Geen gegevens gevonden",
+            "noDataFound": "Geen gegevens gevonden voor ''{name}''.",
+            "toHomeButton": "Naar Home"
+        },
+        "propertyComponent": {
+            "boolean": {
+                "false": "onwaar",
+                "true": "waar"
+            },
+            "labels": {
+                "copied": "Gekopieerd naar klembord",
+                "copy": "Kopiëren",
+                "copyBase64": "Base64-gecodeerd kopiëren",
+                "notAvailable": "-",
+                "value": "Waarde"
+            }
+        },
+        "qrScanner": {
+            "errors": {
+                "defaultCallbackErrorMsg": "Kon de QR-code niet openen!",
+                "errorOnQrScannerOpen": "Kon de QR-scanner niet openen!"
+            }
+        },
+        "relationShipDetailsDialog": {
+            "error": {
+                "entityError": "Relatie-entiteit niet gevonden",
+                "semanticError": "Semantisch ID niet gevonden",
+                "unknownRelationship": "Onbekende relatie"
+            },
+            "hasPart": "heeft onderdeel",
+            "isPartOf": "is onderdeel van",
+            "sameAs": "gelijk aan",
+            "semanticId": "Semantisch ID"
+        },
+        "submodelElementCollection": {
+            "allAvailableData": "Alle beschikbare gegevens",
+            "showEntriesButton": {
+                "hide": "Verbergen",
+                "show": "{count} items tonen"
+            }
+        },
+        "technicalData": {
+            "cannotRenderContent": "Inhoud van dit submodel kan niet worden weergegeven.",
+            "furtherInformation": "Meer informatie",
+            "generalInformation": "Algemene informatie",
+            "productClassification": "Productclassificatie",
+            "technicalProperties": "Technische eigenschappen"
+        },
+        "verticalTabSelector": {
+            "errors": {
+                "INTERNAL_SERVER_ERROR": "Interne serverfout",
+                "NOT_FOUND": "Submodel niet gevonden",
+                "UNAUTHORIZED": "Niet geautoriseerd",
+                "UNKNOWN": "Onbekende fout"
+            }
+        }
+    },
+    "navigation": {
+        "errors": {
+            "notFound": "Niet gevonden",
+            "unauthorizedError": {
+                "content": "U heeft geen toegang tot deze bron. Log in of vraag uw beheerder om toegang.",
+                "title": "Ongeautoriseerde toegang"
+            },
+            "unexpectedError": "Onverwachte fout",
+            "urlNotFound": "Geen AAS met het opgegeven ID.",
+            "generic": "Er is iets misgegaan."
+        },
+        "footer": {
+            "about": "Over Mnestix",
+            "dataPrivacy": "Gegevensbescherming",
+            "imprint": "Colofon"
+        },
+        "mainMenu": {
+            "aasList": "AAS-lijst",
+            "dashboard": "Dashboard",
+            "findOutMore": "Meer informatie",
+            "login": "Inloggen",
+            "logout": "Uitloggen",
+            "repository": "Repository",
+            "settings": "Instellingen",
+            "templates": "Sjablonen & blauwdrukken"
+        }
+    },
+    "pages": {
+        "aasList": {
+            "buttonTooltip": "Ga naar AAS",
+            "compare": "Vergelijken",
+            "header": "AAS-lijst",
+            "listHeader": {
+                "aasEndpoint": "AAS-URL",
+                "aasId": "AAS-ID",
+                "assetId": "Asset-ID",
+                "discoveryUrl": "Discovery-URL",
+                "manufacturer": "Naam fabrikant",
+                "picture": "Afbeelding",
+                "productClass": "Productklasse",
+                "productDesignation": "Productaanduiding fabrikant",
+                "registryUrl": "Registry-URL",
+                "repositoryUrl": "Repository-URL",
+                "infrastructureName": "Infrastructuur",
+                "viewAASButton": "AAS bekijken"
+            },
+            "maxElementsWarning": "Kan niet meer dan 3 elementen vergelijken",
+            "page": "Pagina",
+            "repositoryDropdownLabel": "AAS-repository of AAS-registry (infrastructuur)",
+            "selectListSource": "Selecteer een repository of AAS-registry",
+            "subHeader": "Hier vindt u alle AAS uit uw repository of AAS-registry. U kunt een AAS-repository of AAS-registry selecteren om tussen gegevensbronnen te schakelen.",
+            "titleComparisonAddButton": "AAS toevoegen aan vergelijking"
+        },
+        "aasViewer": {
+            "actions": {
+                "compareButton": "Vergelijken",
+                "toProductView": "Productweergave",
+                "download": "AAS downloaden"
+            },
+            "asset": "Asset",
+            "assetAdministrationShell": "Asset Administration Shell",
+            "errors": {
+                "influxError": "Er is een probleem opgetreden bij het ophalen van de tijdreeksgegevens.",
+                "downloadError": "Fout bij het downloaden van AAS."
+            },
+            "messages": {
+                "downloadSuccess": "Download geslaagd van: {endpoint} (Infrastructuur: {infrastructure})"
+            },
+            "labels": {
+                "copied": "Gekopieerd naar klembord",
+                "copy": "Kopiëren",
+                "copyBase64": "Base64-gecodeerd kopiëren",
+                "language": "Taal",
+                "notAvailable": "-",
+                "text": "Tekst",
+                "value": "Waarde"
+            },
+            "submodels": {
+                "actions": {
+                    "open": "Openen",
+                    "view": "Bekijken"
+                },
+                "idLabel": "ID:",
+                "idShortLabel": "idShort:",
+                "noSubmodelsToLoad": "Er bestaan geen submodellen voor deze AAS.",
+                "referenceCounter": {
+                    "count": "Aantal",
+                    "elementName": "Element"
+                },
+                "renderError": "Submodel kan niet worden weergegeven.",
+                "semanticIdLabel": "Semantische IDs:",
+                "timeSeries": {
+                    "internalSegments": "Interne segmenten",
+                    "linkedSegments": "Gekoppelde segmenten",
+                    "selectTimeframe": "Selecteer tijdsbestek",
+                    "noTimeSeriesSegments": "Geen tijdreekssegmenten gevonden."
+                },
+                "title": "Submodellen",
+                "unknownModelType": "Mnestix ondersteunt dit modeltype nog niet ({type}).",
+                "repositoryUrlLabel": "Repository-URL:"
+            }
+        },
+        "catalog": {
+            "articleCount": "{count, plural, =1 {# artikel} other {# artikelen}}",
+            "eclassCategories": {
+                "15": "Onderhoud (service)",
+                "27": "Elektrotechniek, automatisering, procesbesturingstechniek ",
+                "44": "Automotive engineering, voertuigcomponent",
+                "default": "Categorie "
+            },
+            "filter": "Filter",
+            "manufacturerCatalog": "Productcatalogus fabrikant",
+            "manufacturerSelect": "Selecteer fabrikant",
+            "marketplaceSubtitle": "Asset Administration Shell voor kabelbomen",
+            "marketplaceTitle": "VWS4LS - Marktplaats",
+            "noSearcherWarning": "Geen AAS-zoeker geconfigureerd. AAS-lijst wordt als terugval getoond, filters werken niet.",
+            "searchPlaceholder": "Zoeken momenteel niet beschikbaar...",
+            "title": "Fabrikantcatalogus"
+        },
+        "compare": {
+            "addAnother": "Nog een AAS toevoegen",
+            "addButton": "Nog een AAS toevoegen",
+            "addFirstAasButton": "AAS toevoegen",
+            "collection": {
+                "hide": "Verbergen",
+                "show": "{idShort}"
+            },
+            "errors": {
+                "aasAddError": "AAS kon niet worden toegevoegd.",
+                "aasAlreadyAdded": "AAS kan niet meer dan één keer worden toegevoegd.",
+                "moreAasFound": "Meer dan één AAS gevonden in de discovery-service, geef in plaats daarvan het AAS-ID op.",
+                "unknownModelType": "Mnestix ondersteunt dit modeltype nog niet ({type})."
+            },
+            "title": "AAS vergelijken"
+        },
+        "dashboard": {
+            "aasOrAssetId": "AAS-ID of Asset-ID",
+            "infrastructure": "Infrastructuur",
+            "searchAllInfrastructures": "Alles doorzoeken",
+            "digitalTwinMadeEasyText": "Digital Twin eenvoudig gemaakt.",
+            "findOutMoreHeader": "Meer informatie",
+            "findOutMoreText": "De nieuwste versie van Mnestix",
+            "listCardHeader": "Selecteren via lijst",
+            "listBtnLabel": "Bekijk wat er al in uw repository staat",
+            "listBtnText": "Ga naar AAS-lijst",
+            "scanIdLabel": "Scan AAS-ID of Asset-ID",
+            "welcomeText": "Welkom bij Mnestix",
+            "enterManuallyLabel": "Handmatig invoeren"
+        },
+        "discoveryList": {
+            "errors": {
+                "noAasFound": "Geen AAS gevonden voor het opgegeven ID",
+                "noAssetId": "Geen Asset-ID opgegeven.",
+                "searchFailed": "Zoeken mislukt"
+            },
+            "subtitle": "Hier vindt u alle gerelateerde AAS bij het opgegeven Asset-ID.",
+            "title": "Gerelateerde AAS bij Asset-ID"
+        },
+        "productViewer": {
+            "actions": {
+                "compareButton": "Vergelijken",
+                "download": "AAS downloaden",
+                "downloadError": "Fout bij het downloaden van AAS.",
+                "downloadErrorNoRepo": "Geen repository gevonden voor de geselecteerde AAS.",
+                "toAasView": "AAS-weergave"
+            },
+            "classification": "Classificatie",
+            "error": {
+                "technicalDataSubmodelNotFound": "Submodel technische gegevens niet gevonden"
+            },
+            "home": "Home",
+            "markings": "Productmarkeringen",
+            "productInfo": {
+                "articleNumber": "Artikelnummer",
+                "manufacturer": "Fabrikant",
+                "orderCode": "Bestelcode",
+                "productDesignation": "Productaanduiding fabrikant"
+            },
+            "summary": "Kerngegevens",
+            "title": "Product"
+        },
+        "registryList": {
+            "errors": {
+                "noAasFound": "Geen AAS gevonden voor het opgegeven ID",
+                "noAasId": "Geen AAS-ID opgegeven.",
+                "searchFailed": "Zoeken mislukt"
+            },
+            "subtitle": "Hier vindt u alle gerelateerde AAS bij het opgegeven AAS-ID.",
+            "title": "Gerelateerde AAS bij AAS-ID"
+        },
+        "settings": {
+            "actions": {
+                "cancel": "Annuleren",
+                "editButton": "Alles bewerken",
+                "resetButton": "Terugzetten naar standaard",
+                "saveButton": "Alles opslaan"
+            },
+            "infrastructure": {
+                "form": {
+                    "name": "Naam",
+                    "logoUrl": "Logo-URL",
+                    "endpoints": "Endpoints",
+                    "endpointUrl": "Endpoint-URL",
+                    "addEndpoint": "Endpoint toevoegen",
+                    "security": "Infrastructuurbeveiliging",
+                    "securityType": "Beveiligingstype",
+                    "headerName": "Headernaam",
+                    "headerValue": "Headerwaarde",
+                    "nameRequired": "Naam is verplicht",
+                    "urlFieldRequired": "URL-veld is verplicht",
+                    "urlFieldInvalid": "Moet een geldige URL zijn",
+                    "securityTypeRequired": "Beveiligingstype is verplicht",
+                    "headerNameRequired": "Headernaam is verplicht",
+                    "headerValueRequired": "Headerwaarde is verplicht",
+                    "securityTypeNone": "Geen",
+                    "securityTypeMnestixProxy": "Mnestix API-sleutel",
+                    "securityTypeHeaderSecurity": "Aangepaste header",
+                    "proxyHeaderValue": "Headerwaarde Mnestix API-sleutel",
+                    "proxyHeaderValueRequired": "Headerwaarde Mnestix API-sleutel is verplicht",
+                    "saveSuccess": "Infrastructuur succesvol opgeslagen",
+                    "saveError": "Fout bij opslaan van infrastructuur",
+                    "createNew": "Nieuwe infrastructuur aanmaken",
+                    "deleteConfirm": "Weet u zeker dat u de infrastructuur wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+                    "deleteSuccess": "Infrastructuur succesvol verwijderd",
+                    "deleteError": "Verwijderen van infrastructuur mislukt",
+                    "deleteDialogTitle": "Infrastructuur verwijderen",
+                    "deleteWarning": "Deze actie kan niet ongedaan worden gemaakt en verwijdert permanent alle bijbehorende verbindingen en beveiligingsinstellingen.",
+                    "cancel": "Annuleren",
+                    "delete": "Verwijderen",
+                    "connectionTypes": "Verbindingsinterfacetypes",
+                    "connectionTypesRequired": "Er moet ten minste één verbindingsinterfacetype worden geselecteerd",
+                    "save": "Opslaan",
+                    "nameAlreadyExists": "Er bestaat al een infrastructuur met deze naam",
+                    "defaultInfrastructureReadonly": "De standaardinfrastructuur kan alleen in de deployment via de omgevingsvariabelen worden gewijzigd. Neem contact op met uw beheerder om wijzigingen aan te brengen.",
+                    "headerKeyDangerous": "De headersleutel wordt als gevaarlijk beschouwd.",
+                    "headerKeyInvalidFormat": "De headersleutel heeft geen geldig formaat.",
+                    "headerKeyCrLfNotAllowed": "De headersleutel mag geen CRLF-sequenties bevatten.",
+                    "headerValueTooLong": "De headerwaarde is te lang.",
+                    "headerValueCrLfNotAllowed": "De headerwaarde mag geen CRLF-sequenties bevatten.",
+                    "headerValueIllegalChars": "De headerwaarde mag geen ongeldige tekens bevatten."
+                },
+                "healthCheck": {
+                    "checking": "Controleren...",
+                    "unreachable": "Mnestix AAS Generator niet bereikbaar (Let op: Mnestix Generator V1 ondersteunt geen health checks en wordt altijd als offline weergegeven. Werk bij naar versie 2 om health checks te gebruiken)",
+                    "offline": "Offline",
+                    "version": "API-versie: ",
+                    "buildDate": "Builddatum",
+                    "aasGeneratorLabel": "Mnestix AAS Generator",
+                    "applicationVersion": "Applicatieversie",
+                    "refresh": "Health-status vernieuwen"
+                },
+                "subtitle": "Bepaal welke infrastructuren gebruikt moeten worden.",
+                "title": "Infrastructuren",
+                "urlFieldNoTrailingSlash": "De URL mag niet eindigen met een schuine streep (/).",
+                "noInfrastructuresFound": "Geen infrastructuren gevonden"
+            },
+            "header": "Instellingen",
+            "idStructure": {
+                "assetIdDocumentation": {
+                    "assetId": "Asset-ID",
+                    "dnsHeading": "Toegang via DNS",
+                    "dnsText": "Vooral voor de brownfield-aanpak en de distributeur van een product is het zinvol om aanvullend DNS-toegang via de asset-ID in te stellen en zo gegevensophaling vanuit conventionele browserapplicaties mogelijk te maken.",
+                    "endResult": "Eindresultaat",
+                    "exampleHeading": "Voorbeeldcase",
+                    "industry40Heading": "Industrie 4.0-context",
+                    "industry40Text": "Producten hebben een wereldwijd uniek ID dat aan een of meer asset administration shells kan worden toegewezen. In de context van Industrie 4.0 wordt de verbinding tussen asset en AAS tot stand gebracht via de I4.0-infrastructuur.",
+                    "redirectsTo": "Verwijst door naar",
+                    "title": "Hoe verbindt u uw Asset-ID met uw AAS-repository"
+                },
+                "errors": {
+                    "idStructureError": "Fout bij opslaan van ''{name}'' ({reason}).",
+                    "invalidIri": "Moet een geldige IRI zijn, bijv. https://example.com/",
+                    "invalidIriPart": "Moet werken als onderdeel van een IRI (geen schuine strepen, spaties of speciale tekens)"
+                },
+                "labels": {
+                    "dynamicPart": "dynamisch deel",
+                    "idStructureExplanation": "Bepaal hoe uw IDs worden weergegeven. Dit is een standaardinstelling die voor afzonderlijke imports kan worden aangepast.",
+                    "staticPrefix": "statisch voorvoegsel"
+                },
+                "messages": {
+                    "successfullyUpdated": "Succesvol bijgewerkt"
+                },
+                "title": "ID-structuur"
+            },
+            "messages": {
+                "changesSavedSuccessfully": "Wijzigingen succesvol opgeslagen."
+            },
+            "rules": {
+                "buttons": {
+                    "add": "Toevoegen",
+                    "back": "Terug",
+                    "cancel": "Annuleren",
+                    "create": "Toestemming toevoegen",
+                    "delete": "Verwijderen",
+                    "edit": "Bewerken",
+                    "save": "Opslaan"
+                },
+                "createRule": {
+                    "placeholderText": "Nieuwe of bestaande rolnaam",
+                    "saveSuccess": "Nieuwe regel succesvol opgeslagen.",
+                    "subtitle": "Voeg een toestemming toe aan een nieuwe of bestaande rol.",
+                    "subtitle2": "Voeg een toestemming toe aan de rol ''{role}''.",
+                    "title": "Nieuwe toestemming toevoegen"
+                },
+                "deleteRole": {
+                    "delete": "Rol verwijderen",
+                    "description": "U staat op het punt de rol ''{roleName}'' met {count} toestemmingen te verwijderen. Weet u zeker dat u de hele rol wilt verwijderen?",
+                    "header": "Hele rol verwijderen",
+                    "partiallySuccess": "{count} van de {total} toestemmingen zijn verwijderd. De rol bestaat nog met de resterende toestemmingen!",
+                    "success": "Rol ''{roleName}'' is succesvol verwijderd."
+                },
+                "deleteRule": {
+                    "question": "Deze regel permanent verwijderen?",
+                    "ruleInfo": "Gebruikers met de toegewezen rol ''{role}'' hebben geen toestemming om de volgende gegevens te {action}!",
+                    "success": "Regel succesvol verwijderd."
+                },
+                "editRule": {
+                    "saveSuccess": "Regel succesvol bewerkt.",
+                    "title": "Regel bewerken"
+                },
+                "errors": {
+                    "uniqueIdShort": "De combinatie van rolnaam, actie en type bestaat al in een andere regel.\nBewerk de bestaande regel."
+                },
+                "keycloakHint": {
+                    "acknowledge": "Bevestigen",
+                    "create": "Deze rol is nog niet gebruikt. Vergeet niet deze in Keycloak te configureren!",
+                    "delete": "Vergeet niet deze rol ook in Keycloak te verwijderen!",
+                    "title": "Keycloak bijwerken"
+                },
+                "roleNameMaxLength": "Rolnaam mag niet langer zijn dan {maxLength} tekens.",
+                "roleNameNoTrailSpace": "Rolnaam mag niet eindigen met een spatie.",
+                "roleRequired": "Rol is verplicht",
+                "subtitle": "Beheer rollen en toestemmingen.",
+                "tableHeader": {
+                    "aasIds": "AAS-IDs",
+                    "action": "Actie",
+                    "name": "Rol",
+                    "permissions": "Toestemmingen",
+                    "submodelIds": "Submodel-IDs",
+                    "type": "Type"
+                },
+                "title": "Rolbeheer",
+                "wildcardLabel": "Alles toestaan"
+            },
+            "subHeader": "Voeg instellingen en configuraties voor verschillende functies binnen uw AAS-omgeving toe, verwijder of wijzig ze."
+        },
+        "templates": {
+            "actions": {
+                "add": "Toevoegen",
+                "cancel": "Annuleren",
+                "delete": "Verwijderen",
+                "duplicate": "Dupliceren",
+                "edit": "Bewerken",
+                "remove": "Verwijderen",
+                "restore": "Herstellen",
+                "revertChanges": "Wijzigingen terugdraaien",
+                "saveChanges": "Wijzigingen opslaan"
+            },
+            "all": "Alle",
+            "boolean": {
+                "false": "onwaar",
+                "true": "waar"
+            },
+            "healthCheck": {
+                "label": "Status Mnestix AAS Generator: ",
+                "refresh": "Health-status vernieuwen"
+            },
+            "docsLink": "Klik hier om naar de documentatie voor het gebruiken en aanmaken van sjablonen en blauwdrukken te gaan.",
+            "chooseAStartingPoint": "Kies een sjabloon als startpunt",
+            "copyBlueprintId": "Blauwdruk-ID kopiëren",
+            "createNew": "Nieuwe blauwdruk",
+            "custom": "Aangepast",
+            "defaultValue": "Standaardwaarde",
+            "deleteBlueprintQuestion": "Blauwdruk ''{name}'' onherstelbaar verwijderen?",
+            "displayName": "Weergavenaam",
+            "emptyTemplate": "Leeg (aangepast)",
+            "emptyTemplateDescription": "Is niet gebaseerd op een gestandaardiseerd sjabloon",
+            "errors": {
+                "unknownModelType": "Mnestix ondersteunt dit modeltype nog niet ({type})."
+            },
+            "labels": {
+                "language": "Taal",
+                "notAvailable": "-",
+                "semanticId": "semanticId",
+                "text": "Tekst",
+                "value": "Waarde",
+                "modelType": "Modeltype",
+                "valueType": "Waardetype"
+            },
+            "mappingInfo": "Mapping-info",
+            "mappingInfoDescription": "Jsonata-expressie die kan worden gebruikt voor het mappen van waarden tijdens gegevensimports. Let op dat het resultaat van de expressie hetzelfde gegevenstype moet zijn als dit SubmodelElement.",
+            "collectionMappingInfo": "Collectie-mapping-info",
+            "collectionMappingInfoDescription": "Json-expressie die kan worden gebruikt voor het dupliceren van SubmodelElements tijdens gegevensimports. Let op dat het opgegeven pad naar een array moet leiden en dus moet eindigen met [*].",
+            "filterMappingInfo": "Filter-mapping-info",
+            "filterMappingInfoDescription": "Jsonata-expressie die kan worden gebruikt voor het weglaten van SubmodelElements tijdens gegevensimports. Let op dat het resultaat van de expressie een boolean moet zijn.",
+            "messages": {
+                "changesSavedSuccessfully": "Wijzigingen succesvol opgeslagen",
+                "deleted": "verwijderd"
+            },
+            "multiplicity": "Multipliciteit",
+            "multiplicityDescription": "Opties om te selecteren of een SubmodelElement verplicht of optioneel is, en of het meerdere instanties kan hebben. Dit wordt gebruikt voor gegevensvalidatie tijdens imports.",
+            "noBlueprintsFound": "Geen blauwdrukken gevonden",
+            "blueprintDeletedSuccessfully": "Blauwdruk succesvol verwijderd",
+            "noTemplatesWarning": "Geen sjablonen beschikbaar. Alleen blauwdrukken worden getoond.",
+            "blueprintIdCopied": "Blauwdruk-ID gekopieerd naar klembord: {id}",
+            "blueprintUseExplanation": "Met blauwdrukken kunt u een herbruikbare submodelstructuur aanmaken, aangepast aan uw vereisten.",
+            "title": "Sjablonen & blauwdrukken",
+            "validation": {
+                "errors": {
+                    "invalidDate": "Moet een geldige datum zijn in formaat ''jjjj-mm-dd''",
+                    "invalidLong": "Moet een geldige long zijn"
+                }
+            },
+            "noBlueprintsWarning": "Geen blauwdrukken beschikbaar."
+        },
+        "transfer": {
+            "aasRepository": "AAS-repository",
+            "chooseRepository": "Kies AAS-repository om naar over te dragen:",
+            "chooseSubmodelRepository": "Kies submodel-repository (optioneel)",
+            "errorToast": "Overdracht van AAS niet geslaagd",
+            "partiallyFailedToast": "Overdracht van element mislukt",
+            "repositoryApiKey": "API-sleutel AAS-repository",
+            "repositoryLabel": "Lijst van AAS-repositories",
+            "repositoryRequired": "AAS-repository is verplicht",
+            "submodelRepository": "Submodel-repository",
+            "submodelRepositoryApiKey": "API-sleutel submodel-repository",
+            "submodelRepositoryLabel": "Lijst van submodel-repositories",
+            "subtitle": "Draag \"{aasId}\" over van \"{repoUrl}\" naar:",
+            "successfulToast": "Overdracht van AAS geslaagd",
+            "title": "Overdracht",
+            "useAasRepository": "AAS-repository gebruiken",
+            "warningToast": "AAS is slechts gedeeltelijk overgedragen.",
+            "aasIdentifier": {
+                "display": "\"{aasId}\"",
+                "default": "Onbekend AAS-ID"
+            },
+            "aasOriginUrl": {
+                "display": "\"{repoUrl}\"",
+                "default": "Onbekende AAS-oorsprong-URL"
+            }
+        }
+    }
+}
