@@ -12,26 +12,29 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
     const t = useTranslations('components.technicalData');
     const [expandedItems, setExpandedItems] = useState<string[]>(['technicalProperties']);
 
-    const findSubmodelElementBySemanticIdOrIdShort = (semanticId: SubmodelElementSemanticIdEnum, idShort: string) =>
-        submodel.submodelElements?.find((el) => hasSemanticId(el, semanticId) || el.idShort === idShort) as
-            | SubmodelElementCollection
-            | undefined;
+    const findSubmodelElementBySemanticIdOrIdShort = (
+        semanticIds: SubmodelElementSemanticIdEnum[],
+        idShorts: string[],
+    ) =>
+        submodel.submodelElements?.find(
+            (el) => hasSemanticId(el, ...semanticIds) || (el.idShort ? idShorts.includes(el.idShort) : false),
+        ) as SubmodelElementCollection | undefined;
 
     const generalInformation = findSubmodelElementBySemanticIdOrIdShort(
-        SubmodelElementSemanticIdEnum.GeneralInformation,
-        'GeneralInformation',
+        [SubmodelElementSemanticIdEnum.GeneralInformation, SubmodelElementSemanticIdEnum.GeneralInformationV20],
+        ['GeneralInformation'],
     );
     const technicalData = findSubmodelElementBySemanticIdOrIdShort(
-        SubmodelElementSemanticIdEnum.TechnicalProperties,
-        'TechnicalProperties',
+        [SubmodelElementSemanticIdEnum.TechnicalProperties, SubmodelElementSemanticIdEnum.TechnicalPropertyAreasV20],
+        ['TechnicalProperties', 'TechnicalPropertyAreas'],
     );
     const productClassifications = findSubmodelElementBySemanticIdOrIdShort(
-        SubmodelElementSemanticIdEnum.ProductClassifications,
-        'ProductClassifications',
+        [SubmodelElementSemanticIdEnum.ProductClassifications, SubmodelElementSemanticIdEnum.ProductClassificationsV20],
+        ['ProductClassifications'],
     );
     const furtherInformation = findSubmodelElementBySemanticIdOrIdShort(
-        SubmodelElementSemanticIdEnum.FurtherInformation,
-        'FurtherInformation',
+        [SubmodelElementSemanticIdEnum.FurtherInformation, SubmodelElementSemanticIdEnum.FurtherInformationV20],
+        ['FurtherInformation'],
     );
 
     const cannotRenderTechnicalData =

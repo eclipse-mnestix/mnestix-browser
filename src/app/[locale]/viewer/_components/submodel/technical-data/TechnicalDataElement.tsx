@@ -79,7 +79,7 @@ export const TechnicalDataElement = (props: {
         }
     }, [props.isExpanded, loadConceptDescriptions]);
 
-    const renderSubmodelElement = (element: SubmodelElementChoice) => {
+    const renderSubmodelElement = (element: SubmodelElementChoice, itemPath: string) => {
         const semanticId = element.semanticId?.keys?.[0]?.value || '';
         switch (element.modelType) {
             case KeyTypes.Property: {
@@ -102,7 +102,7 @@ export const TechnicalDataElement = (props: {
             case KeyTypes.SubmodelElementList:
                 return (
                     <TreeItem
-                        itemId={element.idShort || 'unknown'}
+                        itemId={itemPath}
                         label={element.idShort}
                         sx={{
                             '&& .MuiTreeItem-label': {
@@ -112,9 +112,11 @@ export const TechnicalDataElement = (props: {
                         }}
                     >
                         {element?.value?.map(
-                            (child) =>
+                            (child, index) =>
                                 child && (
-                                    <React.Fragment key={child.idShort}>{renderSubmodelElement(child)}</React.Fragment>
+                                    <React.Fragment key={`${itemPath}.${child.idShort ?? index}`}>
+                                        {renderSubmodelElement(child, `${itemPath}.${child.idShort ?? index}`)}
+                                    </React.Fragment>
                                 ),
                         )}
                     </TreeItem>
@@ -131,8 +133,9 @@ export const TechnicalDataElement = (props: {
                                 height: '50px',
                                 overflow: 'hidden',
                                 display: 'flex',
-                                overflowWrap: 'anywhere'
-                            }}>
+                                overflowWrap: 'anywhere',
+                            }}
+                        >
                             <FileComponent file={file} submodelId={props.submodelId} submodelElementPath={path} />
                         </Box>
                     </DataRowWithUnit>
@@ -196,7 +199,11 @@ export const TechnicalDataElement = (props: {
         >
             {props.elements?.map(
                 (el, index) =>
-                    el && <React.Fragment key={`${el.idShort}_${index}`}>{renderSubmodelElement(el)}</React.Fragment>,
+                    el && (
+                        <React.Fragment key={`${el.idShort}_${index}`}>
+                            {renderSubmodelElement(el, `${props.label}.${el.idShort ?? index}`)}
+                        </React.Fragment>
+                    ),
             )}
         </TreeItem>
     );

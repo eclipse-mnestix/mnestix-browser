@@ -105,4 +105,19 @@ describe('TechnicalDataDetail', () => {
         // Assert
         expect(screen.getByTestId('generic-submodel-detail')).toBeInTheDocument();
     });
+
+    it('should render all elements of a Technical Data 2.0 submodel with IRDI semantic IDs', () => {
+        // Arrange
+        const submodel = technicalDataTestSubmodels.v20TechnicalData as unknown as Submodel;
+
+        // Act
+        render(<TechnicalDataDetail submodel={submodel} />);
+
+        // Assert
+        expect(screen.getByTestId('technical-data-element-technicalProperties')).toBeInTheDocument();
+        expect(screen.getByTestId('technical-data-element-generalInformation')).toBeInTheDocument();
+        expect(screen.getByTestId('technical-data-element-productClassifications')).toBeInTheDocument();
+        expect(screen.getByTestId('technical-data-element-furtherInformation')).toBeInTheDocument();
+        expect(screen.queryByTestId('generic-submodel-detail')).not.toBeInTheDocument();
+    });
 });
