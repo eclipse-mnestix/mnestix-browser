@@ -262,7 +262,20 @@
         },
         "title": "Submodellen",
         "unknownModelType": "Mnestix ondersteunt dit modeltype nog niet ({type}).",
-        "repositoryUrlLabel": "Repository-URL:"
+        "repositoryUrlLabel": "Repository-URL:",
+        "conceptDescription": {
+          "title": "Concept Description",
+          "showInfo": "Details van concept description tonen",
+          "semanticId": "Semantic ID",
+          "preferredName": "Voorkeursnaam",
+          "shortName": "Korte naam",
+          "definition": "Definitie",
+          "description": "Beschrijving",
+          "unit": "Eenheid",
+          "symbol": "Symbool",
+          "dataType": "Gegevenstype",
+          "sourceOfDefinition": "Bron van de definitie"
+        }
       }
     },
     "catalog": {
