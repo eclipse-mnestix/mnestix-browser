@@ -11,6 +11,7 @@ const languageOptions = [
     { language: 'English', code: 'en' },
     { language: 'Deutsch', code: 'de' },
     { language: 'Español', code: 'es' },
+    { language: 'Nederlands', code: 'nl' },
 ];
 
 /**
