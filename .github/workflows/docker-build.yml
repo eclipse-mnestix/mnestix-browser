@@ -39,7 +39,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
@@ -57,7 +57,7 @@ jobs:
           load: true
 
       - name: Cache buildx
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         with:
           path: |
             /tmp/buildx-amd64-cache
@@ -68,7 +68,7 @@ jobs:
         run: docker save mnestix/mnestix-browser:latest -o mnestix-browser.tar
 
       - name: Cache image
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         with:
           path: mnestix-browser.tar
           key: docker-image-${{github.ref}}-${{ github.run_id }}
@@ -87,10 +87,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Restore image
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: mnestix-browser.tar
           key: docker-image-${{github.ref}}-${{ github.run_id }}
@@ -140,7 +140,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
@@ -163,7 +163,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
@@ -204,7 +204,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
@@ -219,7 +219,7 @@ jobs:
           push: false
 
       - name: Cache buildx
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         with:
           path: |
             /tmp/buildx-arm64-cache
@@ -239,7 +239,7 @@ jobs:
 
     steps:
       - name: Restore amd64 cache
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: |
             /tmp/buildx-amd64-cache
@@ -247,7 +247,7 @@ jobs:
           # can be build without cache
           fail-on-cache-miss: false
       - name: Restore arm64 cache
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: |
             /tmp/buildx-arm64-cache
@@ -256,7 +256,7 @@ jobs:
           fail-on-cache-miss: true
 
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
