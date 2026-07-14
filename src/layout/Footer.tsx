@@ -21,34 +21,46 @@ export function Footer() {
     return (
         <>
             <Box
-                sx={{ my: 2, backgroundColor: 'transparent' }}
-                flexGrow={1}
-                display={'flex'}
-                justifyContent={'center'}
-                alignItems={'center'}
-                flexDirection={'row'}
-            >
+                sx={{
+                    flexGrow: 1,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    my: 2,
+                    backgroundColor: 'transparent'
+                }}>
                 <Grid container spacing={2}>
                     <Grid
                         size={{ xs: 12, md: 'auto' }}
-                        display={'flex'}
-                        justifyContent={'center'}
-                        alignItems={'center'}
-                    >
-                        <Typography color="text.secondary" fontSize="small">
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                        <Typography
+                            sx={{
+                                color: 'text.secondary',
+                                fontSize: 'small'
+                            }}>
                             {copyrightString}
                         </Typography>
                     </Grid>
 
                     <Grid
                         size={{ xs: 12, md: 'auto' }}
-                        flexDirection={'row'}
-                        display={'flex'}
-                        justifyContent={'center'}
-                        alignItems={'center'}
-                    >
+                        sx={{
+                            flexDirection: 'row',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
                         {dataPrivacyString && (
-                            <Typography fontSize="small" maxWidth="10rem">
+                            <Typography
+                                sx={{
+                                    fontSize: 'small',
+                                    maxWidth: '10rem'
+                                }}>
                                 <Link href={dataPrivacyString} target="_blank">
                                     {t('dataPrivacy')}
                                 </Link>
@@ -56,13 +68,22 @@ export function Footer() {
                         )}
 
                         {dataPrivacyString && (
-                            <Typography mx={2} color="text.secondary" fontSize="small">
+                            <Typography
+                                sx={{
+                                    mx: 2,
+                                    color: 'text.secondary',
+                                    fontSize: 'small'
+                                }}>
                                 |
                             </Typography>
                         )}
 
                         {imprintString && (
-                            <Typography fontSize="small" maxWidth="10rem">
+                            <Typography
+                                sx={{
+                                    fontSize: 'small',
+                                    maxWidth: '10rem'
+                                }}>
                                 <Link href={imprintString} target="_blank">
                                     {t('imprint')}
                                 </Link>
@@ -70,16 +91,22 @@ export function Footer() {
                         )}
 
                         {imprintString && (
-                            <Typography mx={2} color="text.secondary" fontSize="small">
+                            <Typography
+                                sx={{
+                                    mx: 2,
+                                    color: 'text.secondary',
+                                    fontSize: 'small'
+                                }}>
                                 |
                             </Typography>
                         )}
 
                         <Typography
-                            fontSize="small"
-                            maxWidth="10rem"
                             onClick={() => setAboutDialogOpen(!aboutDialogOpen)}
-                        >
+                            sx={{
+                                fontSize: 'small',
+                                maxWidth: '10rem'
+                            }}>
                             <Link href="#">{t('about')}</Link>
                         </Typography>
                     </Grid>

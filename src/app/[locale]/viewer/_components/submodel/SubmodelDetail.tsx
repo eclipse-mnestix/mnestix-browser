@@ -21,7 +21,9 @@ export function SubmodelDetail(props: SubmodelDetailProps) {
 
     return (
         <SubmodelRepositoryUrlProvider repositoryUrl={props.submodelRepositoryUrl}>
-            <Box width="100%" key={props.submodel?.id}>
+            <Box key={props.submodel?.id} sx={{
+                width: '100%'
+            }}>
                 {CustomSubmodelComponent ? (
                     <CustomSubmodelComponent submodel={props.submodel} />
                 ) : (

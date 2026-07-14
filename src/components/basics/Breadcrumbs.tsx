@@ -9,7 +9,11 @@ type BreadcrumbsProps = {
 
 export function Breadcrumbs(props: BreadcrumbsProps) {
     return (
-        <Box display="flex" alignItems="center">
+        <Box
+            sx={{
+                display: 'flex',
+                alignItems: 'center'
+            }}>
             <MuiLink
                 component={NextLink}
                 href="/"
@@ -26,7 +30,6 @@ export function Breadcrumbs(props: BreadcrumbsProps) {
                 <Home fontSize="small" />
             </MuiLink>
             <ChevronRight sx={{ color: 'text.secondary', mt: '2px' }} fontSize="small" />
-
             {props.links &&
                 props.links.map((link, i) => {
                     const isLast = i === props.links!.length - 1;

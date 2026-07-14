@@ -13,7 +13,12 @@ export function MobileAccordion(props: MobileAccordionProps) {
     return (
         <Accordion disableGutters elevation={0} style={{ width: '100%' }}>
             <AccordionSummary expandIcon={<ArrowDropDownIcon sx={{ color: 'grey.600' }} />}>
-                <Box display="flex" alignItems="center" data-testid="mobile-accordion-header">
+                <Box
+                    data-testid="mobile-accordion-header"
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center'
+                    }}>
                     {props.icon && <IconCircleWrapper sx={{ mr: 1 }}>{props.icon}</IconCircleWrapper>}
                     <Typography>{props.title}</Typography>
                 </Box>

@@ -103,28 +103,32 @@ export function QrScanner(props: {
 
     return (
         <Box
-            position="relative"
-            margin="auto"
-            height={size}
-            width={size}
             style={{ cursor: 'pointer', backgroundColor: theme.palette.primary.main }}
-        >
+            sx={{
+                position: 'relative',
+                margin: 'auto',
+                height: size,
+                width: size
+            }}>
             {state === State.Stopped && (
                 <Box
                     onClick={() => setState(State.LoadScanner)}
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
-                    justifyContent="center"
-                    height={size}
-                    width={size}
-                    gap={1}
-                    color="white"
                     data-testid="scanner-start"
-                >
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: size,
+                        width: size,
+                        gap: 1,
+                        color: 'white'
+                    }}>
                     <ScannerLogo alt="Scanner Logo" width="50px" />
                     <Typography variant="h2">Scan Code</Typography>
-                    <Box position="absolute">
+                    <Box sx={{
+                        position: 'absolute'
+                    }}>
                         <ScannerOutlineThin></ScannerOutlineThin>
                     </Box>
                 </Box>
@@ -145,7 +149,13 @@ export function QrScanner(props: {
                 </IconButton>
             )}
             {(state === State.LoadScanner || state === State.HandleQr) && (
-                <Box padding="50px" position="absolute" height={size} width={size}>
+                <Box
+                    sx={{
+                        padding: '50px',
+                        position: 'absolute',
+                        height: size,
+                        width: size
+                    }}>
                     <CircularProgress
                         style={{ margin: 'auto', position: 'absolute', top: 0, right: 0, bottom: 0, left: 0 }}
                     />

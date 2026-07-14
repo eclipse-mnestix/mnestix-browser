@@ -16,7 +16,12 @@ export function KeycloakHint({ onClose, hint }: { onClose: () => void; hint: 'cr
                 <Typography variant="h2" color="primary" sx={{ mb: '1rem' }}>
                     {t('title')}
                 </Typography>
-                <Typography variant="body1" color="text.secondary" sx={{ mb: '0.5rem' }}>
+                <Typography
+                    variant="body1"
+                    sx={{
+                        color: 'text.secondary',
+                        mb: '0.5rem'
+                    }}>
                     {t(hint)}
                 </Typography>
                 <Button

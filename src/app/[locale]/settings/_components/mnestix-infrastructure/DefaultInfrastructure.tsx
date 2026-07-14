@@ -66,7 +66,13 @@ export function DefaultInfrastructure() {
                     <Alert severity="info">{t('form.defaultInfrastructureReadonly')}</Alert>
 
                     {env.MNESTIX_AAS_GENERATOR_API_URL && (
-                        <Box display="flex" gap={2} my={2} alignItems="center">
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                gap: 2,
+                                my: 2,
+                                alignItems: 'center'
+                            }}>
                             <Typography sx={{ minWidth: 320 }} variant="h5">
                                 {t('healthCheck.aasGeneratorLabel')}
                             </Typography>
@@ -91,7 +97,13 @@ export function DefaultInfrastructure() {
                             const value = env[ENV_KEY_BY_CONNECTION_ID[type.id]];
                             const displayValue = typeof value === 'string' ? value : '-';
                             return (
-                                <Box key={type.id} display="flex" gap={2} mb={1}>
+                                <Box
+                                    key={type.id}
+                                    sx={{
+                                        display: 'flex',
+                                        gap: 2,
+                                        mb: 1
+                                    }}>
                                     <Typography sx={{ minWidth: 320 }} variant="h5">
                                         {type.label}
                                     </Typography>

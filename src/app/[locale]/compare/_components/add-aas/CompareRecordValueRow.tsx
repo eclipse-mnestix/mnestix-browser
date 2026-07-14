@@ -12,7 +12,13 @@ export function CompareRecordValueRow(props: { data: SubmodelCompareDataRecord; 
     const markedIndexes = compareRowValues(dataRecord.submodelElements, locale);
 
     return (
-        <Grid container data-testid={'compare-Record'} justifyContent="space-between" alignItems="center">
+        <Grid
+            container
+            data-testid={'compare-Record'}
+            sx={{
+                justifyContent: 'space-between',
+                alignItems: 'center'
+            }}>
             {dataRecord.submodelElements?.map((subElement, valueIndex) => {
                 return (
                     <Grid

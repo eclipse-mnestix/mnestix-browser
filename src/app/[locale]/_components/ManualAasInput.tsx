@@ -76,7 +76,13 @@ export function ManualAasInput(props: {
     };
 
     return (
-        <Box m={2} display="flex" flexDirection="column" gap={1}>
+        <Box
+            sx={{
+                m: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 1
+            }}>
             <Typography
                 variant="h5"
                 sx={{
@@ -85,7 +91,12 @@ export function ManualAasInput(props: {
             >
                 {t('pages.dashboard.enterManuallyLabel')}
             </Typography>
-            <Box display="flex" flexDirection={isMobile ? 'column' : 'row'} gap={1}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: isMobile ? 'column' : 'row',
+                    gap: 1
+                }}>
                 <TextField
                     sx={{ width: isMobile ? '100%' : '75%' }}
                     id="manual-input"
@@ -98,18 +109,20 @@ export function ManualAasInput(props: {
                     autoFocus={true}
                     value={inputValue}
                     inputRef={inputRef}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton
-                                    onClick={() => {
-                                        setInputValue('');
-                                    }}
-                                >
-                                    <CloseIcon />
-                                </IconButton>
-                            </InputAdornment>
-                        ),
+                    slotProps={{
+                        input: {
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={() => {
+                                            setInputValue('');
+                                        }}
+                                    >
+                                        <CloseIcon />
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }
                     }}
                 />
                 <TextField

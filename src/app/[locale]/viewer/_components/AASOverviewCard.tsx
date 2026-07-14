@@ -69,7 +69,9 @@ export function AASOverviewCard(props: AASOverviewCardProps) {
     const aasInfo = (
         <Box sx={infoBoxStyle} data-testid="aas-data">
             {!isAccordion && (
-                <Box display="flex">
+                <Box sx={{
+                    display: 'flex'
+                }}>
                     <IconCircleWrapper sx={{ mr: 1 }}>
                         <ShellIcon fontSize="small" color="primary" />
                     </IconCircleWrapper>
@@ -94,7 +96,9 @@ export function AASOverviewCard(props: AASOverviewCardProps) {
     const assetInfo = (
         <Box sx={infoBoxStyle} data-testid="asset-data">
             {!isAccordion && (
-                <Box display="flex">
+                <Box sx={{
+                    display: 'flex'
+                }}>
                     <IconCircleWrapper sx={{ mr: 1 }}>
                         <AssetIcon fontSize="small" color="primary" />
                     </IconCircleWrapper>
@@ -132,7 +136,9 @@ export function AASOverviewCard(props: AASOverviewCardProps) {
                             sx={{ height: '300px', maxWidth: '300px', width: '100%' }}
                             data-testid="aas-loading-skeleton"
                         ></Skeleton>
-                        <Box width="100%">
+                        <Box sx={{
+                            width: '100%'
+                        }}>
                             {isAccordion ? (
                                 <Box sx={{ m: 1 }}>
                                     <Skeleton width="100%" />

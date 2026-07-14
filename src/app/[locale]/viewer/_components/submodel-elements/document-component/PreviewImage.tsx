@@ -51,12 +51,12 @@ export const PreviewImage = (props: { previewImgUrl: string; mimeType: string; r
         <StyledImageWrapper>
             {!imageError && imageUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element -- logo can be an arbitrary url which conflicts with https://nextjs.org/docs/pages/api-reference/components/image#remotepatterns
-                <img
+                (<img
                     src={imageUrl}
                     alt="File Preview"
                     onError={handleImageError}
                     data-testid="document-preview-image"
-                />
+                />)
             ) : props?.mimeType === 'application/pdf' ? (
                 <PdfDocumentIcon color="primary" />
             ) : (

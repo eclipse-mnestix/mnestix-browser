@@ -23,21 +23,43 @@ export function CompareAasAddDialog(props: AddAasModalProps) {
         >
             <DialogCloseButton handleClose={props.onClose} />
             <DialogContent style={{ paddingLeft: '60px', paddingRight: '60px' }}>
-                <Box display="flex" flexDirection="column" gap="20px">
-                    <Typography variant="h2" textAlign="center" margin="30px 0">
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '20px'
+                    }}>
+                    <Typography
+                        variant="h2"
+                        sx={{
+                            textAlign: 'center',
+                            margin: '30px 0'
+                        }}>
                         {t('compare.addAnother')}:
                     </Typography>
                     <Box>
-                        <Typography color="text.secondary" textAlign="center">
+                        <Typography
+                            sx={{
+                                color: 'text.secondary',
+                                textAlign: 'center'
+                            }}>
                             {t('dashboard.scanIdLabel')}
                         </Typography>
                         <QrScanner searchInput={props.onSubmit} size={400} />
-                        <Typography color="text.secondary" textAlign="center" sx={{ mb: 2, fontSize: '14px' }}>
+                        <Typography
+                            sx={{
+                                color: 'text.secondary',
+                                textAlign: 'center',
+                                mb: 2,
+                                fontSize: '14px'
+                            }}>
                             {t('dashboard.enterManuallyLabel')}
                         </Typography>
                     </Box>
                 </Box>
-                <Box paddingY="20px">
+                <Box sx={{
+                    paddingY: '20px'
+                }}>
                     <ManualAasInput searchInput={props.onSubmit} />
                 </Box>
             </DialogContent>
