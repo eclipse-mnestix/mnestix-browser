@@ -1,0 +1,1231 @@
+{
+    "administration": {
+        "revision": "0",
+        "templateId": "https://admin-shell.io/idta-02035-8",
+        "version": "1"
+    },
+    "description": [
+        {
+            "language": "en",
+            "text": "Technical specifications and performance characteristics of battery"
+        }
+    ],
+    "displayName": [
+        {
+            "language": "en",
+            "text": "TechnicalData"
+        }
+    ],
+    "id": "https://i40.xitaso.com/sm/daa13f6a1789423c85e806c545ef423f",
+    "idShort": "TechnicalData",
+    "kind": "Instance",
+    "modelType": "Submodel",
+    "semanticId": {
+        "keys": [
+            {
+                "type": "GlobalReference",
+                "value": "https://admin-shell.io/idta/SubmodelTemplate/DigitalBatteryPassport/TechnicalData/1/0"
+            }
+        ],
+        "type": "ExternalReference"
+    },
+    "submodelElements": [
+        {
+            "displayName": [
+                {
+                    "language": "en",
+                    "text": "General Information"
+                }
+            ],
+            "idShort": "GeneralInformation",
+            "modelType": "SubmodelElementCollection",
+            "value": [
+                {
+                    "displayName": [
+                        {
+                            "language": "en",
+                            "text": "Manufacturer Name"
+                        }
+                    ],
+                    "idShort": "ManufacturerName",
+                    "modelType": "MultiLanguageProperty",
+                    "qualifiers": [
+                        {
+                            "semanticId": {
+                                "keys": [
+                                    {
+                                        "type": "GlobalReference",
+                                        "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                    }
+                                ],
+                                "type": "ExternalReference"
+                            },
+                            "type": "SMT/MappingInfo/value",
+                            "value": "TD.GenInfo.MfrName",
+                            "valueType": "xs:string"
+                        }
+                    ],
+                    "value": [
+                        {
+                            "language": "en",
+                            "text": "Example Battery Manufacturer GmbH"
+                        }
+                    ]
+                },
+                {
+                    "displayName": [
+                        {
+                            "language": "en",
+                            "text": "Company Logo"
+                        }
+                    ],
+                    "idShort": "CompanyLogo",
+                    "modelType": "File",
+                    "qualifiers": [
+                        {
+                            "semanticId": {
+                                "keys": [
+                                    {
+                                        "type": "GlobalReference",
+                                        "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                    }
+                                ],
+                                "type": "ExternalReference"
+                            },
+                            "type": "SMT/MappingInfo",
+                            "value": "TD.GenInfo.CompanyLogo",
+                            "valueType": "xs:string"
+                        }
+                    ],
+                    "value": "logo.svg"
+                },
+                {
+                    "displayName": [
+                        {
+                            "language": "en",
+                            "text": "Manufacturer ID"
+                        }
+                    ],
+                    "idShort": "ManufacturerId",
+                    "modelType": "Property",
+                    "qualifiers": [
+                        {
+                            "semanticId": {
+                                "keys": [
+                                    {
+                                        "type": "GlobalReference",
+                                        "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                    }
+                                ],
+                                "type": "ExternalReference"
+                            },
+                            "type": "SMT/MappingInfo",
+                            "value": "TD.GenInfo.MfrId",
+                            "valueType": "xs:string"
+                        }
+                    ],
+                    "value": "DE-MFR-001234567",
+                    "valueType": "xs:string"
+                },
+                {
+                    "displayName": [
+                        {
+                            "language": "en",
+                            "text": "Battery Category"
+                        }
+                    ],
+                    "idShort": "BatteryCategory",
+                    "modelType": "Property",
+                    "qualifiers": [
+                        {
+                            "semanticId": {
+                                "keys": [
+                                    {
+                                        "type": "GlobalReference",
+                                        "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                    }
+                                ],
+                                "type": "ExternalReference"
+                            },
+                            "type": "SMT/MappingInfo",
+                            "value": "TD.GenInfo.BatCategory",
+                            "valueType": "xs:string"
+                        }
+                    ],
+                    "value": "LPF",
+                    "valueType": "xs:string"
+                },
+                {
+                    "displayName": [
+                        {
+                            "language": "en",
+                            "text": "Battery Mass"
+                        }
+                    ],
+                    "idShort": "BatteryMass",
+                    "modelType": "Property",
+                    "qualifiers": [
+                        {
+                            "semanticId": {
+                                "keys": [
+                                    {
+                                        "type": "GlobalReference",
+                                        "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                    }
+                                ],
+                                "type": "ExternalReference"
+                            },
+                            "type": "SMT/MappingInfo",
+                            "value": "TD.GenInfo.BatMass",
+                            "valueType": "xs:string"
+                        }
+                    ],
+                    "value": "650.0",
+                    "valueType": "xs:float"
+                },
+                {
+                    "displayName": [
+                        {
+                            "language": "en",
+                            "text": "Product Image"
+                        }
+                    ],
+                    "idShort": "ProductImage",
+                    "modelType": "SubmodelElementList",
+                    "orderRelevant": false,
+                    "typeValueListElement": "File",
+                    "value": [
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Image"
+                                }
+                            ],
+                            "idShort": "Image_0",
+                            "modelType": "File",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.GenInfo.ProdImg[0].Image",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "product_front.jpg"
+                        },
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Image"
+                                }
+                            ],
+                            "idShort": "Image_1",
+                            "modelType": "File",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.GenInfo.ProdImg[1].Image",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "product_side.jpg"
+                        }
+                    ]
+                },
+                {
+                    "displayName": [
+                        {
+                            "language": "en",
+                            "text": "Warranty"
+                        }
+                    ],
+                    "idShort": "Warranty",
+                    "modelType": "SubmodelElementCollection",
+                    "value": [
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Warranty Period"
+                                }
+                            ],
+                            "idShort": "WarrantyPeriod",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.GenInfo.Warranty.Period",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "60 months",
+                            "valueType": "xs:string"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "displayName": [
+                {
+                    "language": "en",
+                    "text": "Technical Performance Analysis"
+                }
+            ],
+            "idShort": "TechnicalPerformanceAnalysis",
+            "modelType": "SubmodelElementCollection",
+            "value": [
+                {
+                    "displayName": [
+                        {
+                            "language": "en",
+                            "text": "Capacity And Energy"
+                        }
+                    ],
+                    "idShort": "CapacityAndEnergy",
+                    "modelType": "SubmodelElementCollection",
+                    "value": [
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Nominal Voltage"
+                                }
+                            ],
+                            "idShort": "NominalVoltage",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.CapEnVolt.NomVoltage",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "400.0",
+                            "valueType": "xs:float"
+                        },
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Minimum Voltage"
+                                }
+                            ],
+                            "idShort": "MinimumVoltage",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.CapEnVolt.MinVoltage",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "300.0",
+                            "valueType": "xs:float"
+                        },
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Maximum Voltage"
+                                }
+                            ],
+                            "idShort": "MaximumVoltage",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.CapEnVolt.MaxVoltage",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "480.0",
+                            "valueType": "xs:float"
+                        },
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Rated Capacity"
+                                }
+                            ],
+                            "idShort": "RatedCapacity",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.CapEnVolt.RatedCap",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "100.0",
+                            "valueType": "xs:float"
+                        },
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Capacity Fade"
+                                }
+                            ],
+                            "idShort": "CapacityFade",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.CapEnVolt.CapFade",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "2.5",
+                            "valueType": "xs:float"
+                        },
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Certified Usable Energy"
+                                }
+                            ],
+                            "idShort": "CertifiedUsableEnergy",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.CapEnVolt.CertUsableEn",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "38.5",
+                            "valueType": "xs:float"
+                        }
+                    ]
+                },
+                {
+                    "displayName": [
+                        {
+                            "language": "en",
+                            "text": "Round Trip Efficiency"
+                        }
+                    ],
+                    "idShort": "RoundTripEfficiency",
+                    "modelType": "SubmodelElementCollection",
+                    "value": [
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Initial RTE"
+                                }
+                            ],
+                            "idShort": "InitialRTE",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.RTE.InitRTE",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "94.2",
+                            "valueType": "xs:float"
+                        },
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "RTE at 50pct Cycle"
+                                }
+                            ],
+                            "idShort": "RTEat50pctCycle",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.RTE.RTEat50pctCycle",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "93.8",
+                            "valueType": "xs:float"
+                        },
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "RTE Fade"
+                                }
+                            ],
+                            "idShort": "RTEFade",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.RTE.RTEFade",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "0.5",
+                            "valueType": "xs:float"
+                        },
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Initial Self Discharge"
+                                }
+                            ],
+                            "idShort": "InitialSelfDischarge",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.RTE.InitSelfDischarge",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "0.3",
+                            "valueType": "xs:float"
+                        }
+                    ]
+                },
+                {
+                    "displayName": [
+                        {
+                            "language": "en",
+                            "text": "Resistance"
+                        }
+                    ],
+                    "idShort": "Resistance",
+                    "modelType": "SubmodelElementCollection",
+                    "value": [
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Initial Resistance Cell"
+                                }
+                            ],
+                            "idShort": "InitialResistanceCell",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.Resist.InitResCell",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "0.008",
+                            "valueType": "xs:float"
+                        },
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Initial Resistance Pack"
+                                }
+                            ],
+                            "idShort": "InitialResistancePack",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.Resist.InitResPack",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "0.045",
+                            "valueType": "xs:float"
+                        },
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Initial Resistance Module"
+                                }
+                            ],
+                            "idShort": "InitialResistanceModule",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.Resist.InitResModule",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "0.025",
+                            "valueType": "xs:float"
+                        },
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Resistance Increase Cell"
+                                }
+                            ],
+                            "idShort": "ResistanceIncreaseCell",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.Resist.ResIncCell",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "0.0005",
+                            "valueType": "xs:float"
+                        },
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Resistance Increase Pack"
+                                }
+                            ],
+                            "idShort": "ResistanceIncreasePack",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.Resist.ResIncPack",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "0.002",
+                            "valueType": "xs:float"
+                        },
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Resistance Increase Module"
+                                }
+                            ],
+                            "idShort": "ResistanceIncreaseModule",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.Resist.ResIncModule",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "0.001",
+                            "valueType": "xs:float"
+                        }
+                    ]
+                },
+                {
+                    "displayName": [
+                        {
+                            "language": "en",
+                            "text": "Power"
+                        }
+                    ],
+                    "idShort": "Power",
+                    "modelType": "SubmodelElementCollection",
+                    "value": [
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Maximum Permissible Power"
+                                }
+                            ],
+                            "idShort": "MaximumPermissiblePower",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.Power.MaxPermPower",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "120.0",
+                            "valueType": "xs:float"
+                        },
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Power Fade"
+                                }
+                            ],
+                            "idShort": "PowerFade",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.Power.PowerFade",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "1.2",
+                            "valueType": "xs:float"
+                        },
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Power Energy Ratio"
+                                }
+                            ],
+                            "idShort": "PowerEnergyRatio",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.Power.PowerEnergyRatio",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "3.12",
+                            "valueType": "xs:float"
+                        },
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Original Capacity"
+                                }
+                            ],
+                            "idShort": "OriginalCapacity",
+                            "modelType": "SubmodelElementList",
+                            "orderRelevant": false,
+                            "typeValueListElement": "SubmodelElementCollection",
+                            "value": [
+                                {
+                                    "displayName": [
+                                        {
+                                            "language": "en",
+                                            "text": "Capacity At SOC"
+                                        }
+                                    ],
+                                    "idShort": "CapacityAtSOC_0",
+                                    "modelType": "SubmodelElementCollection",
+                                    "value": [
+                                        {
+                                            "displayName": [
+                                                {
+                                                    "language": "en",
+                                                    "text": "SOC"
+                                                }
+                                            ],
+                                            "idShort": "SOC",
+                                            "modelType": "Property",
+                                            "qualifiers": [
+                                                {
+                                                    "semanticId": {
+                                                        "keys": [
+                                                            {
+                                                                "type": "GlobalReference",
+                                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                                            }
+                                                        ],
+                                                        "type": "ExternalReference"
+                                                    },
+                                                    "type": "SMT/MappingInfo",
+                                                    "value": "TD.TPA.Power.OrigCap[0].atSoc",
+                                                    "valueType": "xs:string"
+                                                }
+                                            ],
+                                            "value": "50.0",
+                                            "valueType": "xs:float"
+                                        },
+                                        {
+                                            "displayName": [
+                                                {
+                                                    "language": "en",
+                                                    "text": "Capacity"
+                                                }
+                                            ],
+                                            "idShort": "Capacity",
+                                            "modelType": "Property",
+                                            "qualifiers": [
+                                                {
+                                                    "semanticId": {
+                                                        "keys": [
+                                                            {
+                                                                "type": "GlobalReference",
+                                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                                            }
+                                                        ],
+                                                        "type": "ExternalReference"
+                                                    },
+                                                    "type": "SMT/MappingInfo",
+                                                    "value": "TD.TPA.Power.OrigCap[0].CapAt",
+                                                    "valueType": "xs:string"
+                                                }
+                                            ],
+                                            "value": "50.0",
+                                            "valueType": "xs:float"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "displayName": [
+                                        {
+                                            "language": "en",
+                                            "text": "Capacity At SOC"
+                                        }
+                                    ],
+                                    "idShort": "CapacityAtSOC_1",
+                                    "modelType": "SubmodelElementCollection",
+                                    "value": [
+                                        {
+                                            "displayName": [
+                                                {
+                                                    "language": "en",
+                                                    "text": "SOC"
+                                                }
+                                            ],
+                                            "idShort": "SOC",
+                                            "modelType": "Property",
+                                            "qualifiers": [
+                                                {
+                                                    "semanticId": {
+                                                        "keys": [
+                                                            {
+                                                                "type": "GlobalReference",
+                                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                                            }
+                                                        ],
+                                                        "type": "ExternalReference"
+                                                    },
+                                                    "type": "SMT/MappingInfo",
+                                                    "value": "TD.TPA.Power.OrigCap[1].atSoc",
+                                                    "valueType": "xs:string"
+                                                }
+                                            ],
+                                            "value": "100.0",
+                                            "valueType": "xs:float"
+                                        },
+                                        {
+                                            "displayName": [
+                                                {
+                                                    "language": "en",
+                                                    "text": "Capacity"
+                                                }
+                                            ],
+                                            "idShort": "Capacity",
+                                            "modelType": "Property",
+                                            "qualifiers": [
+                                                {
+                                                    "semanticId": {
+                                                        "keys": [
+                                                            {
+                                                                "type": "GlobalReference",
+                                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                                            }
+                                                        ],
+                                                        "type": "ExternalReference"
+                                                    },
+                                                    "type": "SMT/MappingInfo",
+                                                    "value": "TD.TPA.Power.OrigCap[1].CapAt",
+                                                    "valueType": "xs:string"
+                                                }
+                                            ],
+                                            "value": "100.0",
+                                            "valueType": "xs:float"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "displayName": [
+                        {
+                            "language": "en",
+                            "text": "Temperature"
+                        }
+                    ],
+                    "idShort": "Temperature",
+                    "modelType": "SubmodelElementCollection",
+                    "value": [
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Idle Temperature Range Lower"
+                                }
+                            ],
+                            "idShort": "IdleTemperatureRangeLower",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.Temp.IdleRangeLower",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "-20.0",
+                            "valueType": "xs:float"
+                        },
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Idle Temperature Range Upper"
+                                }
+                            ],
+                            "idShort": "IdleTemperatureRangeUpper",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.Temp.IdleRangeUpper",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "60.0",
+                            "valueType": "xs:float"
+                        }
+                    ]
+                },
+                {
+                    "displayName": [
+                        {
+                            "language": "en",
+                            "text": "Life Data"
+                        }
+                    ],
+                    "idShort": "LifeData",
+                    "modelType": "SubmodelElementCollection",
+                    "value": [
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Expected Life Years"
+                                }
+                            ],
+                            "idShort": "ExpectedLifeYears",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.Life.ExpLifeYears",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "10",
+                            "valueType": "xs:integer"
+                        },
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Expected Number Of Cycles"
+                                }
+                            ],
+                            "idShort": "ExpectedNumberOfCycles",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.Life.ExpNumCycles",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "5000",
+                            "valueType": "xs:integer"
+                        },
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "Capacity Threshold Exhaustion"
+                                }
+                            ],
+                            "idShort": "CapacityThresholdExhaustion",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.Life.CapThreshExhaust",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "80.0",
+                            "valueType": "xs:float"
+                        },
+                        {
+                            "displayName": [
+                                {
+                                    "language": "en",
+                                    "text": "C Rate Cycle Test"
+                                }
+                            ],
+                            "idShort": "CRateCycleTest",
+                            "modelType": "Property",
+                            "qualifiers": [
+                                {
+                                    "semanticId": {
+                                        "keys": [
+                                            {
+                                                "type": "GlobalReference",
+                                                "value": "https://admin-shell.io/SubmodelTemplates/MappingInfo/1/0"
+                                            }
+                                        ],
+                                        "type": "ExternalReference"
+                                    },
+                                    "type": "SMT/MappingInfo",
+                                    "value": "TD.TPA.Life.CRateCycleTest",
+                                    "valueType": "xs:string"
+                                }
+                            ],
+                            "value": "0.5",
+                            "valueType": "xs:float"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

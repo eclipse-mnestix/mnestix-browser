@@ -294,5 +294,60 @@
         ]
       }
     ]
+  },
+  "batteryPassportTechnicalData": {
+    "id": "test-submodel-id",
+    "idShort": "TechnicalData",
+    "modelType": "Submodel",
+    "semanticId": {
+      "type": "ExternalReference",
+      "keys": [
+        {
+          "type": "GlobalReference",
+          "value": "https://admin-shell.io/idta/SubmodelTemplate/DigitalBatteryPassport/TechnicalData/1/0"
+        }
+      ]
+    },
+    "submodelElements": [
+      {
+        "idShort": "GeneralInformation",
+        "modelType": "SubmodelElementCollection",
+        "value": [
+          {
+            "idShort": "ManufacturerId",
+            "category": "VARIABLE",
+            "valueType": "xs:string",
+            "value": "Test Value",
+            "modelType": "Property"
+          }
+        ]
+      },
+      {
+        "idShort": "TechnicalPerformanceAnalysis",
+        "displayName": [
+          {
+            "language": "en",
+            "text": "Technical Performance Analysis"
+          }
+        ],
+        "semanticId": {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "GlobalReference",
+              "value": "0173-1#02-ABK163#002"
+            }
+          ]
+        },
+        "modelType": "SubmodelElementCollection",
+        "value": [
+          {
+            "idShort": "CapacityAndEnergy",
+            "modelType": "SubmodelElementCollection",
+            "value": []
+          }
+        ]
+      }
+    ]
   }
 }
