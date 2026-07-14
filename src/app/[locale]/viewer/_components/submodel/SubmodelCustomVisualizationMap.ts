@@ -24,5 +24,6 @@ export const submodelCustomVisualizationMap = {
     [SubmodelSemanticIdEnum.TechnicalDataV11]: TechnicalDataDetail,
     [SubmodelSemanticIdEnum.TechnicalDataV12]: TechnicalDataDetail,
     [SubmodelSemanticIdEnum.TechnicalDataV20]: TechnicalDataDetail,
+    [SubmodelSemanticIdEnum.BatteryPassportTechnicalDataV10]: TechnicalDataDetail,
     [SubmodelSemanticIdEnum.HandoverDocumentationV20]: HandoverDocumentationDetail,
 };
