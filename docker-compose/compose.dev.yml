@@ -13,17 +13,10 @@ services:
       - ./public:/app/public
 
   mnestix-aas-generator:
+    image: mnestix/mnestix-aas-generator:dev
     ports:
       - '5064:5064'
-
-  mongodb:
-    ports:
-      - '27017:27017'
 
   aas-environment:
     ports:
       - '8081:8081'
-
-  aas-discovery:
-    ports:
-      - '8082:8081'
