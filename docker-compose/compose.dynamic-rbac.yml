@@ -5,6 +5,7 @@ services:
       NEXTAUTH_URL: 'http://localhost:3000'
       KEYCLOAK_ENABLED: 'true'
       KEYCLOAK_CLIENT_ID: 'mnestix-browser-client-demo'
+      # server-side calls (discovery/token/userinfo) use the in-network host; the browser redirect uses localhost
       KEYCLOAK_ISSUER: 'http://keycloak:8080'
       KEYCLOAK_LOCAL_URL: 'http://localhost:8080'
       KEYCLOAK_REALM: 'Mnestix'
@@ -52,7 +53,9 @@ services:
       basyx.feature.authorization.enabled: 'true'
       basyx.feature.authorization.type: rbac
       basyx.feature.authorization.jwtBearerTokenProvider: keycloak
-      spring.security.oauth2.resourceserver.jwt.issuer-uri: 'http://keycloak:8080/realms/Mnestix'
+      # token issuer is the front-channel host (localhost); keys are fetched from the in-network host (keycloak)
+      spring.security.oauth2.resourceserver.jwt.issuer-uri: 'http://localhost:8080/realms/Mnestix'
+      spring.security.oauth2.resourceserver.jwt.jwk-set-uri: 'http://keycloak:8080/realms/Mnestix/protocol/openid-connect/certs'
     depends_on:
       security-submodel:
         condition: service_healthy
@@ -60,7 +63,7 @@ services:
         condition: service_completed_successfully
 
   security-submodel:
-    image: eclipsebasyx/submodel-repository:2.0.0-milestone-07
+    image: eclipsebasyx/submodel-repository:2.0.0-milestone-11
     container_name: security-submodel
     depends_on:
       keycloak:
@@ -79,7 +82,9 @@ services:
       basyx.feature.authorization.type: rbac
       basyx.feature.authorization.jwtBearerTokenProvider: keycloak
       basyx.feature.authorization.rbac.file: file:/data/rbac_rules.json
-      spring.security.oauth2.resourceserver.jwt.issuer-uri: 'http://keycloak:8080/realms/Mnestix'
+      # token issuer is the front-channel host (localhost); keys are fetched from the in-network host (keycloak)
+      spring.security.oauth2.resourceserver.jwt.issuer-uri: 'http://localhost:8080/realms/Mnestix'
+      spring.security.oauth2.resourceserver.jwt.jwk-set-uri: 'http://keycloak:8080/realms/Mnestix/protocol/openid-connect/certs'
       # Allow mnestix frontend and backend to call basyx
       BASYX_CORS_ALLOWED-ORIGINS: '*'
       BASYX_CORS_ALLOWED-METHODS: GET,POST,PATCH,DELETE,PUT,OPTIONS,HEAD
@@ -116,25 +121,26 @@ services:
       - mnestix-network
 
   keycloak:
-    build:
-      context: ./docker-compose/data/keycloak
+    image: keycloak/keycloak:26.6.3
     container_name: keycloak
     volumes:
-      - ./docker-compose/data/keycloak/realm:/opt/jboss/keycloak/imports
+      - ./docker-compose/data/keycloak/realm/Mnestix-realm.json:/opt/keycloak/data/import/realm-config.json
     ports:
       - '8080:8080'
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_HOSTNAME: localhost
-      KC_SPI_INITIALIZER_ISSUER_BASE_URI: http://keycloak:8080
+      # hostname v2: the browser uses this URL directly, so it stays localhost (no /etc/hosts entry needed).
+      # backchannel-dynamic lets in-network services resolve the token/JWKS endpoints at their own host (keycloak:8080).
+      KC_HOSTNAME: http://localhost:8080
+      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: 'true'
       KC_HEALTH_ENABLED: 'true'
     command: ['start-dev', '--import-realm']
-    healthcheck: # check the endpoint for a valid response (service ready)
-      test: #keycloak has no curl in image
+    healthcheck: # check the management port for a valid response (service ready)
+      test: #keycloak has no curl in image; health moved to the 9000 management port in KC 25+
         [
           'CMD-SHELL',
-          "exec 3<>/dev/tcp/localhost/8080 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'",
+          "exec 3<>/dev/tcp/localhost/9000 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'",
         ]
       interval: 30s
       timeout: 10s

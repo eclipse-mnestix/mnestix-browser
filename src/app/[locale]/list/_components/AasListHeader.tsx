@@ -6,7 +6,13 @@ export default async function AasListHeader() {
 
     return (
         <>
-            <Typography variant="h2" color="text.primary" textAlign="left" marginBottom={2}>
+            <Typography
+                variant="h2"
+                sx={{
+                    color: 'text.primary',
+                    textAlign: 'left',
+                    marginBottom: 2
+                }}>
                 {t('header')}
             </Typography>
         </>

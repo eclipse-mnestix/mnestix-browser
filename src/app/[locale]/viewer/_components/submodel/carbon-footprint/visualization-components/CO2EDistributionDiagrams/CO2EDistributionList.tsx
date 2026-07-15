@@ -41,7 +41,9 @@ export function CO2EList(props: {
         ));
 
     return (
-        <Grid container spacing={1} columns={12} alignItems="stretch" data-testid="co2e-list">
+        <Grid container spacing={1} columns={12} data-testid="co2e-list" sx={{
+            alignItems: 'stretch'
+        }}>
             {rows}
         </Grid>
     );

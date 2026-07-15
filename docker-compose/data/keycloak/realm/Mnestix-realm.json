@@ -3039,7 +3039,7 @@
     "frontendUrl": "",
     "acr.loa.map": "{}"
   },
-  "keycloakVersion": "24.0.4",
+  "keycloakVersion": "26.6.3",
   "userManagedAccessAllowed": false,
   "clientProfiles": {
     "profiles": []

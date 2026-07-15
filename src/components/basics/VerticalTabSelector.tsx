@@ -72,13 +72,14 @@ export function SubmodelInfoTooltip({
     return (
         <Tooltip title={item.id.toString()}>
             <Box
-                display="flex"
-                sx={{ cursor: 'pointer' }}
                 onClick={(event) => {
                     setInfoItem?.(item);
                     event.stopPropagation(); // don't open the tab
                 }}
-            >
+                sx={{
+                    display: 'flex',
+                    cursor: 'pointer'
+                }}>
                 {item.startIcon}
             </Box>
         </Tooltip>
@@ -98,7 +99,11 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
         if (item.submodelError) {
             return (
                 <Tooltip title={`${t(item.submodelError)}: ${item.id}`}>
-                    <Box display="flex" sx={{ cursor: 'pointer' }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            cursor: 'pointer'
+                        }}>
                         {item.startIcon}
                     </Box>
                 </Tooltip>
@@ -129,8 +134,6 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
                             disabled={!!item.submodelError}
                         >
                             <Box
-                                display="flex"
-                                alignItems="left"
                                 style={{
                                     whiteSpace: 'nowrap',
                                     paddingRight: '20px',
@@ -138,7 +141,10 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
                                     minWidth: 0,
                                     flex: 1,
                                 }}
-                            >
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'left'
+                                }}>
                                 {renderHighlight(highlightData, item.submodelData)}
 
                                 <Typography
@@ -153,7 +159,14 @@ export function VerticalTabSelector(props: VerticalTabSelectorProps) {
                                 </Typography>
                             </Box>
 
-                            <Box display="flex" alignItems="center" gap={2} sx={{ minWidth: 0, flexShrink: 0 }}>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 2,
+                                    minWidth: 0,
+                                    flexShrink: 0
+                                }}>
                                 <TooltipContent item={item} />
                                 <ArrowForward color={item.submodelError ? 'disabled' : 'primary'} />
                             </Box>

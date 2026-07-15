@@ -208,6 +208,10 @@ Notably, the following flags must be set `AUTHENTICATION_FEATURE_FLAG: true` and
 
 To have the full functionality of the Mnestix Browser you can configure the environment variables for the mnestix-aas-generator
 service in the `compose.yml` file.
+For the AAS Generator's own configuration, endpoints and authentication options, see the
+[Mnestix AAS Generator Wiki](https://github.com/eclipse-mnestix/mnestix-aas-generator/wiki).
+The repository proxy that secures the AAS infrastructure is documented in the
+[Mnestix Proxy Wiki](https://github.com/eclipse-mnestix/mnestix-proxy/wiki).
 It is also necessary to set `MNESTIX_BACKEND_API_KEY`.
 This may be any string and acts as your password for the aas generator backend api and the repo proxy.
 This can be done directly in the `compose.yml` or by defining the environment variable in your `.env` file:
@@ -238,14 +242,18 @@ found [on the IDTA website](https://industrialdigitaltwin.org/wp-content/uploads
 
 #### Running Mnestix with its API
 
-There also exists the [Mnestix API](https://hub.docker.com/r/mnestix/mnestix-api), that provides different business
+> **Note:** The former "Mnestix API" has been split into two components, each with its own documentation:
+> the [Mnestix Proxy](https://github.com/eclipse-mnestix/mnestix-proxy/wiki) (secures and routes the AAS infrastructure)
+> and the [Mnestix AAS Generator](https://github.com/eclipse-mnestix/mnestix-aas-generator/wiki) (template/blueprint based AAS generation).
+
+There also exists the Mnestix API, that provides different business
 comfort features.
 Here it is possible to set an API Key, for example, to secure your backend services like the repository or the discovery
 service.
-When running the [Mnestix API](https://hub.docker.com/r/mnestix/mnestix-api) you can change the paths to the different
-services like described in the [Mnestix API Documentation](https://hub.docker.com/r/mnestix/mnestix-api).
+When running the proxy you can change the paths to the different
+services like described in the [Mnestix Proxy Wiki](https://github.com/eclipse-mnestix/mnestix-proxy/wiki).
 For example (change `{{MNESTIX_AAS_GENERATOR_API_URL}}` to the URL of the
-running [Mnestix API](https://hub.docker.com/r/mnestix/mnestix-api))
+running proxy)
 
 ```yaml
 DISCOVERY_API_URL: '{{MNESTIX_AAS_GENERATOR_API_URL}}/discovery'

@@ -18,9 +18,21 @@ export type SettingsCardHeaderProps = {
 export function SettingsCardHeader(props: SettingsCardHeaderProps) {
     const t = useTranslations('pages.settings');
     return (
-        <Box display="flex" flexDirection="row" justifyContent="space-between" data-testid="settings-card-header">
+        <Box
+            data-testid="settings-card-header"
+            sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between'
+            }}>
             <CardHeading title={props.title} subtitle={props.subtitle} />
-            <Box display="flex" gap={2} alignContent="center" flexWrap="wrap">
+            <Box
+                sx={{
+                    display: 'flex',
+                    gap: 2,
+                    alignContent: 'center',
+                    flexWrap: 'wrap'
+                }}>
                 {props.isEditMode ? (
                     <>
                         <Button

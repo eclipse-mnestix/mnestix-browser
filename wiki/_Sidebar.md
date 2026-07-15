@@ -26,12 +26,14 @@
 
 ## Advanced
 
+- [Templates and Blueprints](Templates-and-Blueprints)
 - [How to Create Custom Submodel Views](How-to-create-custom-submodel-visualizations)
-- [Mnestix AAS Generator](Mnestix-AAS-Generator)
-    - [API Reference](Mnestix-AAS-Generator-API-Reference)
-    - [Data Ingest & Blueprint Guide](Mnestix-AAS-Generator-Dataingest-and-Blueprints)
-- [Mnestix API Documentation (deprecated)](Mnestix-API-Documentation)
 - [Configuring Mnestix for different versions](Different-versions-configuration)
+
+## Related Mnestix Components
+
+- [Mnestix AAS Generator Wiki ↗](https://github.com/eclipse-mnestix/mnestix-aas-generator/wiki)
+- [Mnestix Proxy Wiki ↗](https://github.com/eclipse-mnestix/mnestix-proxy/wiki)
 
     <br></br>
     <br></br>

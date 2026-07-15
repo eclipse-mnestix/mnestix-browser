@@ -36,7 +36,9 @@ export const ClientLayout = ({ children }: Readonly<ClientLayoutProps>) => {
                                 <AasStoreProvider>
                                     <LayoutRoot>
                                         <ErrorBoundary message={t('errors.generic')}>
-                                            <Box flexGrow={1} data-testid="notifications">
+                                            <Box data-testid="notifications" sx={{
+                                                flexGrow: 1
+                                            }}>
                                                 {children}
                                             </Box>
                                         </ErrorBoundary>

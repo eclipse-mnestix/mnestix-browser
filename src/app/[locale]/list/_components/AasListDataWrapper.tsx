@@ -118,8 +118,18 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
     };
 
     const pagination = (
-        <Box display="flex" justifyContent="flex-end" alignItems="center" marginTop={0}>
-            <Typography paddingRight="1.625rem" fontSize="0.75rem">
+        <Box
+            sx={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                marginTop: 0
+            }}>
+            <Typography
+                sx={{
+                    paddingRight: '1.625rem',
+                    fontSize: '0.75rem'
+                }}>
                 {t('page') + ' ' + (currentPage + 1)}
             </Typography>
             <IconButton onClick={handleGoBack} disabled={currentPage === 0} data-testid="list-back-button">
@@ -135,8 +145,18 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
         <Card>
             <CardContent sx={{ paddingX: 0, paddingY: '1.625rem', '&:last-child': { paddingBottom: '0' } }}>
                 {!hideRepoSelection && (
-                    <Box display="flex" justifyContent="space-between" marginBottom="1.625rem" paddingX="1rem">
-                        <Box display="flex" gap={4}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            marginBottom: '1.625rem',
+                            paddingX: '1rem'
+                        }}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                gap: 4
+                            }}>
                             <SelectListSource
                                 onSelectedRepositoryChanged={setSelectedRepository}
                                 onSelectedTypeChanged={setSelectedType}

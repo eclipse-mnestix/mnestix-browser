@@ -32,7 +32,9 @@ export function ProductLifecycle(props: { completedStages: ProductLifecycleStage
             {props.completedStages.map((step, index) => (
                 <Step key={index} data-testid="product-lifecycle-completed-step">
                     <StepLabel>
-                        <Typography fontSize={24} data-testid="product-lifecycle-step-text">
+                        <Typography data-testid="product-lifecycle-step-text" sx={{
+                            fontSize: 24
+                        }}>
                             {!!step && t(`stages.${step}`)}
                         </Typography>
                     </StepLabel>
@@ -40,8 +42,10 @@ export function ProductLifecycle(props: { completedStages: ProductLifecycleStage
             ))}
             {nextStage && (
                 <Step key="20" active={false} data-testid="product-lifecycle-next-step">
-                    <StepLabel StepIconComponent={CustomCircle} data-testid="product-lifecycle-step-label">
-                        <Typography fontSize={24} color={colorOfNextStep}>
+                    <StepLabel slots={{ stepIcon: CustomCircle }} data-testid="product-lifecycle-step-label">
+                        <Typography color={colorOfNextStep} sx={{
+                            fontSize: 24
+                        }}>
                             {t(`stages.${nextStage}`)} ({t('notIncludedHint')})
                         </Typography>
                     </StepLabel>

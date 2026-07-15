@@ -34,15 +34,14 @@ export function ChooseTemplateItem(props: ChooseTemplateItemProps) {
                     {!!subLabel && (
                         <Typography
                             variant="body2"
-                            color="text.secondary"
                             sx={{
+                                color: 'text.secondary',
                                 mt: '5px',
                                 mr: description ? 2 : 0,
                                 overflowWrap: 'break-word',
                                 wordBreak: 'break-word',
-                                display: 'inline-block',
-                            }}
-                        >
+                                display: 'inline-block'
+                            }}>
                             {subLabel}
                         </Typography>
                     )}

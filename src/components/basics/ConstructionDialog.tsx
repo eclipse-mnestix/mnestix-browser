@@ -32,7 +32,13 @@ export function ConstructionDialog(props: ConstructionDialogProps) {
                 </Typography>
             </Box>
             <DialogContent style={{ padding: '2em' }}>
-                <Box display="flex" flexDirection="column" alignItems="center" gap={3}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: 3
+                    }}>
                     <ConstructionIcon
                         sx={{
                             fontSize: 80,

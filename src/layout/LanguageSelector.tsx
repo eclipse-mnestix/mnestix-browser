@@ -11,6 +11,7 @@ const languageOptions = [
     { language: 'English', code: 'en' },
     { language: 'Deutsch', code: 'de' },
     { language: 'Español', code: 'es' },
+    { language: 'Nederlands', code: 'nl' },
 ];
 
 /**
@@ -113,14 +114,16 @@ export function LanguageSelector() {
                 )}
                 //Styling of child: Dropdown menu
                 MenuProps={{
-                    MenuListProps: {
-                        //No additional padding for the dropdown
-                        sx: {
-                            paddingTop: 0,
-                            paddingBottom: 0,
+                    slotProps: {
+                        list: {
+                            //No additional padding for the dropdown
+                            sx: {
+                                paddingTop: 0,
+                                paddingBottom: 0,
+                            },
                         },
+                        paper: { sx: { borderTopLeftRadius: 0, borderTopRightRadius: 0 } }, //Sharp edges for the dropdown menu,
                     },
-                    PaperProps: { sx: { borderTopLeftRadius: 0, borderTopRightRadius: 0 } }, //Sharp edges for the dropdown menu,
                 }}
             >
                 {

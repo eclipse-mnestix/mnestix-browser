@@ -46,7 +46,7 @@ services:
       KEYCLOAK_ENABLED: 'true'
       KEYCLOAK_CLIENT_ID: 'mnestix-browser-client-demo'
       KEYCLOAK_ISSUER: 'http://keycloak:8080'
-      KEYCLOAK_LOCAL_URL: 'http://localhost:8080'
+      KEYCLOAK_LOCAL_URL: 'http://keycloak:8080'
       KEYCLOAK_REALM: 'Mnestix'
       NEXTAUTH_SECRET: 'test'
 
@@ -71,7 +71,7 @@ services:
 
   keycloak:
     profiles: ['', 'tests']
-    image: keycloak/keycloak:24.0.4
+    image: keycloak/keycloak:26.6.3
     container_name: keycloak
     volumes:
       - ./docker-compose/data/keycloak/realm/Mnestix-realm.json:/opt/keycloak/data/import/realm-config.json
@@ -80,16 +80,15 @@ services:
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_HOSTNAME: keycloak
-      KC_HOSTNAME_DEBUG: 'true'
-      KC_SPI_INITIALIZER_ISSUER_BASE_URI: http://keycloak:8080
+      # hostname v2: containers (and the in-network Cypress runner) reach Keycloak at this canonical URL.
+      KC_HOSTNAME: http://keycloak:8080
       KC_HEALTH_ENABLED: 'true'
     command: ['start-dev', '--import-realm']
     healthcheck:
-      test: #keycloak has no curl in image
+      test: #keycloak has no curl in image; health moved to the 9000 management port in KC 25+
         [
           'CMD-SHELL',
-          "exec 3<>/dev/tcp/localhost/8080 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'",
+          "exec 3<>/dev/tcp/localhost/9000 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'",
         ]
       interval: 30s
       timeout: 5s

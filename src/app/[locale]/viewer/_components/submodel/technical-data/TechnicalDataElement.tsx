@@ -126,7 +126,13 @@ export const TechnicalDataElement = (props: {
                 return (
                     // With the hardcoded SubmodelElementPath, this only works for CompanyLogo and ProductLogo
                     <DataRowWithUnit submodelElement={element}>
-                        <Box height="50px" overflow="hidden" sx={{ display: 'flex', overflowWrap: 'anywhere' }}>
+                        <Box
+                            sx={{
+                                height: '50px',
+                                overflow: 'hidden',
+                                display: 'flex',
+                                overflowWrap: 'anywhere'
+                            }}>
                             <FileComponent file={file} submodelId={props.submodelId} submodelElementPath={path} />
                         </Box>
                     </DataRowWithUnit>
