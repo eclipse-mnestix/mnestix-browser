@@ -45,6 +45,19 @@ Cypress.Commands.add('repoRequest', (requestMethod, urlPath, requestBody) => {
     });
 });
 
+Cypress.Commands.add('registryRequest', (requestMethod, urlPath) => {
+    // The integrated BaSyx registry is exposed through the proxy under /registry,
+    // next to the /repo path used by repoRequest.
+    cy.request({
+        method: requestMethod,
+        url: `${Cypress.env('AAS_REPO_API_URL').replace(/\/repo$/, '/registry')}${urlPath}`,
+        headers: {
+            'X-API-KEY': Cypress.env('MNESTIX_API_KEY'),
+        },
+        failOnStatusCode: false,
+    });
+});
+
 Cypress.Commands.add('waitForRepoReady', () => {
     // On a freshly started backend the proxy still needs a moment before it can
     // forward requests to the BaSyx repository. Because `repoRequest` uses
@@ -70,6 +83,110 @@ Cypress.Commands.add('waitForRepoReady', () => {
                     `AAS repository was not ready after ${maxAttempts} attempts (last status: ${response.status}).`,
                 );
             }
+            // eslint-disable-next-line cypress/no-unnecessary-waiting -- deliberate backoff between readiness polls
+            cy.wait(1000);
+            attempt(attemptNumber + 1);
+        });
+    }
+    attempt(1);
+});
+
+Cypress.Commands.add('postSeed', (urlPath, body) => {
+    // Seeding POSTs must actually land before the specs run against them. A plain
+    // `repoRequest` uses `failOnStatusCode: false`, so a transient cold-start error
+    // (proxy/basyx still warming up) is swallowed silently and the data is missing
+    // for the whole spec run. Retry on transient failures and throw loudly if the
+    // resource still cannot be created, so a real problem fails fast instead of
+    // running into minutes of timeouts against missing data.
+    const maxAttempts = 30;
+    function attempt(attemptNumber: number) {
+        cy.request({
+            method: 'POST',
+            url: `${Cypress.env('AAS_REPO_API_URL')}${urlPath}`,
+            headers: {
+                'X-API-KEY': Cypress.env('MNESTIX_API_KEY'),
+            },
+            body,
+            failOnStatusCode: false,
+            timeout: 10000,
+        }).then((response) => {
+            // 2xx: created. 409: already exists, which is fine for idempotent seeding.
+            if ((response.status >= 200 && response.status < 300) || response.status === 409) {
+                return;
+            }
+            if (attemptNumber >= maxAttempts) {
+                throw new Error(
+                    `Seeding POST ${urlPath} failed after ${maxAttempts} attempts (last status: ${response.status}).`,
+                );
+            }
+            // eslint-disable-next-line cypress/no-unnecessary-waiting -- deliberate backoff between seeding retries
+            cy.wait(1000);
+            attempt(attemptNumber + 1);
+        });
+    }
+    attempt(1);
+});
+
+Cypress.Commands.add('postShell', (aasBody) => {
+    // Seeding a shell against basyx-go is surprisingly fragile: POSTing a shell
+    // auto-registers an AAS descriptor in the integrated registry, and a leftover
+    // descriptor from an earlier run makes the next POST /shells fail with 409 while
+    // the shell is never created in the repository. Cleanup is complicated by two
+    // basyx-go quirks:
+    //   1. Ids are encoded differently per verb - the registry keys descriptors by
+    //      PADDED base64 (btoa) while the repository DELETE only matches UNPADDED
+    //      base64 (toBase64); the wrong encoding is a silent 404 no-op.
+    //   2. The registry and repository are eventually consistent, so a single
+    //      delete-then-post can still race and 409.
+    // Rather than trusting any single response, clear both stores and then verify the
+    // shell is actually readable from the repository, retrying until it converges.
+    const paddedId = btoa(aasBody.id);
+    const unpaddedId = toBase64(aasBody.id);
+    const maxAttempts = 30;
+    function attempt(attemptNumber: number) {
+        cy.registryRequest('DELETE', '/shell-descriptors/' + paddedId);
+        cy.repoRequest('DELETE', '/shells/' + unpaddedId, null);
+        cy.repoRequest('POST', '/shells', aasBody);
+        cy.repoRequest('GET', '/shells/' + paddedId, null).then((response) => {
+            if (response.status === 200) {
+                return;
+            }
+            if (attemptNumber >= maxAttempts) {
+                throw new Error(
+                    `Seeding shell ${aasBody.id} did not land in the repository after ${maxAttempts} attempts ` +
+                        `(last GET status: ${response.status}).`,
+                );
+            }
+            // eslint-disable-next-line cypress/no-unnecessary-waiting -- backoff for basyx-go registry/repo eventual consistency
+            cy.wait(1000);
+            attempt(attemptNumber + 1);
+        });
+    }
+    attempt(1);
+});
+
+Cypress.Commands.add('postSubmodel', (submodelBody) => {
+    // Submodels have the same integrated-registry orphan + per-verb encoding + eventual
+    // consistency problems as shells (see postShell). Clear both stores and verify the
+    // submodel is readable from the repository, retrying until it converges.
+    const paddedId = btoa(submodelBody.id);
+    const unpaddedId = toBase64(submodelBody.id);
+    const maxAttempts = 30;
+    function attempt(attemptNumber: number) {
+        cy.registryRequest('DELETE', '/submodel-descriptors/' + paddedId);
+        cy.repoRequest('DELETE', '/submodels/' + unpaddedId, null);
+        cy.repoRequest('POST', '/submodels', submodelBody);
+        cy.repoRequest('GET', '/submodels/' + paddedId, null).then((response) => {
+            if (response.status === 200) {
+                return;
+            }
+            if (attemptNumber >= maxAttempts) {
+                throw new Error(
+                    `Seeding submodel ${submodelBody.id} did not land in the repository after ${maxAttempts} attempts ` +
+                        `(last GET status: ${response.status}).`,
+                );
+            }
+            // eslint-disable-next-line cypress/no-unnecessary-waiting -- backoff for basyx-go registry/repo eventual consistency
             cy.wait(1000);
             attempt(attemptNumber + 1);
         });
@@ -79,10 +196,10 @@ Cypress.Commands.add('waitForRepoReady', () => {
 
 Cypress.Commands.add('postCompareMockData', () => {
     compareAAS.forEach((aas) => {
-        cy.repoRequest('POST', '/shells', aas);
+        cy.postShell(aas);
     });
     compareSubmodels.forEach((submodel) => {
-        cy.repoRequest('POST', '/submodels', submodel);
+        cy.postSubmodel(submodel);
     });
 });
 
@@ -99,10 +216,10 @@ Cypress.Commands.add('deleteCompareMockData', () => {
 
 Cypress.Commands.add('postQrScannerMockData', () => {
     qrAAS.forEach((aas) => {
-        cy.repoRequest('POST', '/shells', aas);
+        cy.postShell(aas);
     });
     qrSubmodels.forEach((submodel) => {
-        cy.repoRequest('POST', '/submodels', submodel);
+        cy.postSubmodel(submodel);
     });
 });
 
@@ -119,7 +236,7 @@ Cypress.Commands.add('deleteQrScannerMockData', () => {
 
 Cypress.Commands.add('postTestAas', () => {
     const encodedAasId = toBase64(testAAS.id);
-    cy.repoRequest('POST', '/shells', testAAS);
+    cy.postShell(testAAS);
     cy.postSubmodelToAas(encodedAasId, testDropdown, testDropdownSubRef);
     cy.postSubmodelToAas(encodedAasId, testBom, testBomSubRef);
 });
@@ -134,8 +251,8 @@ Cypress.Commands.add('deleteTestAas', () => {
 });
 
 Cypress.Commands.add('postSubmodelToAas', (base64EncodedAasId, submodelBody, submodelRef) => {
-    cy.repoRequest('POST', '/submodels', submodelBody);
-    cy.repoRequest('POST', '/shells/' + base64EncodedAasId + '/submodel-refs', submodelRef);
+    cy.postSubmodel(submodelBody);
+    cy.postSeed('/shells/' + base64EncodedAasId + '/submodel-refs', submodelRef);
 });
 
 Cypress.Commands.add('deleteTestAasBomComponent', () => {
@@ -145,10 +262,10 @@ Cypress.Commands.add('deleteTestAasBomComponent', () => {
 
 Cypress.Commands.add('postListAasMockData', () => {
     listAasMockData.forEach((aas) => {
-        cy.repoRequest('POST', '/shells', aas);
+        cy.postShell(aas);
     });
     listAasSubmodelMockData.forEach((submodel) => {
-        cy.repoRequest('POST', '/submodels', submodel);
+        cy.postSubmodel(submodel);
     });
 });
 
@@ -176,7 +293,7 @@ Cypress.Commands.add('isNotificationSent', (msg: string) => {
 });
 
 Cypress.Commands.add('postTestThumbnailAas', () => {
-    cy.repoRequest('POST', '/shells', thumbnailAasMockData);
+    cy.postShell(thumbnailAasMockData);
 });
 
 Cypress.Commands.add('deleteTestThumbnailAas', () => {

@@ -17,8 +17,7 @@ const testdata = {
 describe('Test the Bill-of-Material', function () {
     before(function () {
         cy.postTestAas();
-        cy.repoRequest('POST', '/shells', AASBomComponent);
-        cy.repoRequest('GET', '/shells/aHR0cHM6Ly9tbmVzdGl4LmlvL2Fhcy9jeXByZXNzVGVzdA');
+        cy.postShell(AASBomComponent);
     });
     resolutions.forEach((res) => {
         describe('test on resolution: ' + res, function () {
