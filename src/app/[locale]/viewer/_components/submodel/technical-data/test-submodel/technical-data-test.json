@@ -190,5 +190,164 @@
         ]
       }
     ]
+  },
+  "v20TechnicalData": {
+    "id": "test-submodel-id",
+    "idShort": "TestTechnicalDataV20",
+    "modelType": "Submodel",
+    "semanticId": {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "Submodel",
+          "value": "0173-1#01-AHX837#002"
+        }
+      ]
+    },
+    "submodelElements": [
+      {
+        "idShort": "TechnicalPropertyAreas",
+        "semanticId": {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "GlobalReference",
+              "value": "0173-1#02-ABK163#002"
+            }
+          ]
+        },
+        "modelType": "SubmodelElementCollection",
+        "value": [
+          {
+            "idShort": "TestProperty",
+            "category": "VARIABLE",
+            "valueType": "xs:string",
+            "value": "Test Value",
+            "modelType": "Property"
+          }
+        ]
+      },
+      {
+        "idShort": "GeneralInformation",
+        "semanticId": {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "GlobalReference",
+              "value": "0173-1#02-ABK161#002/0173-1#01-AHX838#002"
+            }
+          ]
+        },
+        "modelType": "SubmodelElementCollection",
+        "value": [
+          {
+            "idShort": "TestProperty",
+            "category": "VARIABLE",
+            "valueType": "xs:string",
+            "value": "Test Value",
+            "modelType": "Property"
+          }
+        ]
+      },
+      {
+        "idShort": "ProductClassifications",
+        "semanticId": {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "GlobalReference",
+              "value": "0173-1#02-ABK162#002"
+            }
+          ]
+        },
+        "modelType": "SubmodelElementCollection",
+        "value": [
+          {
+            "idShort": "TestProperty",
+            "category": "VARIABLE",
+            "valueType": "xs:string",
+            "value": "Test Value",
+            "modelType": "Property"
+          }
+        ]
+      },
+      {
+        "idShort": "FurtherInformation",
+        "semanticId": {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "GlobalReference",
+              "value": "0173-1#02-ABK164#002"
+            }
+          ]
+        },
+        "modelType": "SubmodelElementCollection",
+        "value": [
+          {
+            "idShort": "TestProperty",
+            "category": "VARIABLE",
+            "valueType": "xs:string",
+            "value": "Test Value",
+            "modelType": "Property"
+          }
+        ]
+      }
+    ]
+  },
+  "batteryPassportTechnicalData": {
+    "id": "test-submodel-id",
+    "idShort": "TechnicalData",
+    "modelType": "Submodel",
+    "semanticId": {
+      "type": "ExternalReference",
+      "keys": [
+        {
+          "type": "GlobalReference",
+          "value": "https://admin-shell.io/idta/SubmodelTemplate/DigitalBatteryPassport/TechnicalData/1/0"
+        }
+      ]
+    },
+    "submodelElements": [
+      {
+        "idShort": "GeneralInformation",
+        "modelType": "SubmodelElementCollection",
+        "value": [
+          {
+            "idShort": "ManufacturerId",
+            "category": "VARIABLE",
+            "valueType": "xs:string",
+            "value": "Test Value",
+            "modelType": "Property"
+          }
+        ]
+      },
+      {
+        "idShort": "TechnicalPerformanceAnalysis",
+        "displayName": [
+          {
+            "language": "en",
+            "text": "Technical Performance Analysis"
+          }
+        ],
+        "semanticId": {
+          "type": "ExternalReference",
+          "keys": [
+            {
+              "type": "GlobalReference",
+              "value": "0173-1#02-ABK163#002"
+            }
+          ]
+        },
+        "modelType": "SubmodelElementCollection",
+        "value": [
+          {
+            "idShort": "CapacityAndEnergy",
+            "modelType": "SubmodelElementCollection",
+            "value": []
+          }
+        ]
+      }
+    ]
   }
 }

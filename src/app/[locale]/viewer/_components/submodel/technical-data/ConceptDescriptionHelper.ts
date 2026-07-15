@@ -53,17 +53,19 @@ export const getDataSpecContentFromConceptDescription = (
 };
 
 /**
- * Determine which unit from the concept description should be displayed.
+ * Determine which unit from the concept description should be displayed next to a value.
+ * The IEC 61360 `unit` (e.g. "V") is preferred over `symbol` (e.g. the quantity symbol "U"),
+ * falling back to `symbol` only when no unit is defined.
  * @param conceptDescription
  */
 export const getUnitFromConceptDescription = (conceptDescription: ConceptDescription) => {
     const dataSpecContent = getDataSpecContentFromConceptDescription(conceptDescription);
     if (dataSpecContent) {
-        if (dataSpecContent.symbol) {
-            return dataSpecContent.symbol;
-        }
         if (dataSpecContent.unit) {
             return dataSpecContent.unit;
+        }
+        if (dataSpecContent.symbol) {
+            return dataSpecContent.symbol;
         }
     }
     return '';
