@@ -1,41 +1,53 @@
 import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
 import { SimpleTreeView } from '@mui/x-tree-view';
-import { hasSemanticId } from 'lib/util/SubmodelResolverUtil';
+import { getDisplayNameForLocale, hasSemanticId } from 'lib/util/SubmodelResolverUtil';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { SubmodelElementCollection } from 'lib/api/aas/models';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { TechnicalDataElement } from 'app/[locale]/viewer/_components/submodel/technical-data/TechnicalDataElement';
 import { GenericSubmodelDetailComponent } from 'app/[locale]/viewer/_components/submodel/generic-submodel/GenericSubmodelDetailComponent';
 
 export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
     const t = useTranslations('components.technicalData');
+    const locale = useLocale();
     const [expandedItems, setExpandedItems] = useState<string[]>(['technicalProperties']);
 
-    const findSubmodelElementBySemanticIdOrIdShort = (semanticId: SubmodelElementSemanticIdEnum, idShort: string) =>
-        submodel.submodelElements?.find((el) => hasSemanticId(el, semanticId) || el.idShort === idShort) as
-            | SubmodelElementCollection
-            | undefined;
+    const findSubmodelElementBySemanticIdOrIdShort = (
+        semanticIds: SubmodelElementSemanticIdEnum[],
+        idShorts: string[],
+    ) =>
+        submodel.submodelElements?.find(
+            (el) => hasSemanticId(el, ...semanticIds) || (el.idShort ? idShorts.includes(el.idShort) : false),
+        ) as SubmodelElementCollection | undefined;
 
     const generalInformation = findSubmodelElementBySemanticIdOrIdShort(
-        SubmodelElementSemanticIdEnum.GeneralInformation,
-        'GeneralInformation',
+        [SubmodelElementSemanticIdEnum.GeneralInformation, SubmodelElementSemanticIdEnum.GeneralInformationV20],
+        ['GeneralInformation'],
     );
     const technicalData = findSubmodelElementBySemanticIdOrIdShort(
-        SubmodelElementSemanticIdEnum.TechnicalProperties,
-        'TechnicalProperties',
+        [SubmodelElementSemanticIdEnum.TechnicalProperties, SubmodelElementSemanticIdEnum.TechnicalPropertyAreasV20],
+        ['TechnicalProperties', 'TechnicalPropertyAreas'],
     );
     const productClassifications = findSubmodelElementBySemanticIdOrIdShort(
-        SubmodelElementSemanticIdEnum.ProductClassifications,
-        'ProductClassifications',
+        [SubmodelElementSemanticIdEnum.ProductClassifications, SubmodelElementSemanticIdEnum.ProductClassificationsV20],
+        ['ProductClassifications'],
     );
     const furtherInformation = findSubmodelElementBySemanticIdOrIdShort(
-        SubmodelElementSemanticIdEnum.FurtherInformation,
-        'FurtherInformation',
+        [SubmodelElementSemanticIdEnum.FurtherInformation, SubmodelElementSemanticIdEnum.FurtherInformationV20],
+        ['FurtherInformation'],
     );
 
     const cannotRenderTechnicalData =
         !generalInformation && !technicalData && !productClassifications && !furtherInformation;
+
+    // The technical properties collection can have a battery-passport specific idShort/displayName
+    // (e.g. "TechnicalPerformanceAnalysis") while sharing the standard semanticId, so we prefer its
+    // own displayName, falling back to the idShort and finally to the generic translated label.
+    const technicalPropertiesHeader =
+        getDisplayNameForLocale(technicalData?.displayName, locale) ??
+        technicalData?.idShort ??
+        t('technicalProperties');
 
     return (
         <SimpleTreeView
@@ -45,7 +57,7 @@ export function TechnicalDataDetail({ submodel }: SubmodelVisualizationProps) {
             {technicalData?.value && (
                 <TechnicalDataElement
                     label="technicalProperties"
-                    header={t('technicalProperties')}
+                    header={technicalPropertiesHeader}
                     elements={technicalData.value}
                     submodelId={submodel.id}
                     isExpanded={true}

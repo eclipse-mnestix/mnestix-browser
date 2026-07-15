@@ -11,6 +11,7 @@ import technicalDataTestSubmodels from './test-submodel/technical-data-test.json
 // Mock the dependencies
 jest.mock('next-intl', () => ({
     useTranslations: () => (key: string) => key,
+    useLocale: () => 'en',
 }));
 
 // Mock the TechnicalDataElement component
@@ -104,5 +105,35 @@ describe('TechnicalDataDetail', () => {
 
         // Assert
         expect(screen.getByTestId('generic-submodel-detail')).toBeInTheDocument();
+    });
+
+    it('should render all elements of a Technical Data 2.0 submodel with IRDI semantic IDs', () => {
+        // Arrange
+        const submodel = technicalDataTestSubmodels.v20TechnicalData as unknown as Submodel;
+
+        // Act
+        render(<TechnicalDataDetail submodel={submodel} />);
+
+        // Assert
+        expect(screen.getByTestId('technical-data-element-technicalProperties')).toBeInTheDocument();
+        expect(screen.getByTestId('technical-data-element-generalInformation')).toBeInTheDocument();
+        expect(screen.getByTestId('technical-data-element-productClassifications')).toBeInTheDocument();
+        expect(screen.getByTestId('technical-data-element-furtherInformation')).toBeInTheDocument();
+        expect(screen.queryByTestId('generic-submodel-detail')).not.toBeInTheDocument();
+    });
+
+    it('should render the battery passport technical performance analysis section', () => {
+        // Arrange
+        const submodel = technicalDataTestSubmodels.batteryPassportTechnicalData as unknown as Submodel;
+
+        // Act
+        render(<TechnicalDataDetail submodel={submodel} />);
+
+        // Assert: the property areas section is matched via the shared standard semanticId
+        expect(screen.getByTestId('technical-data-element-generalInformation')).toBeInTheDocument();
+        expect(screen.getByTestId('technical-data-element-technicalProperties')).toBeInTheDocument();
+        // The header falls back to the element's displayName when it differs from the standard name
+        expect(screen.getByTestId('header-technicalProperties')).toHaveTextContent('Technical Performance Analysis');
+        expect(screen.queryByTestId('generic-submodel-detail')).not.toBeInTheDocument();
     });
 });
