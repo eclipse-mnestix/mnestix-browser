@@ -45,6 +45,38 @@ Cypress.Commands.add('repoRequest', (requestMethod, urlPath, requestBody) => {
     });
 });
 
+Cypress.Commands.add('waitForRepoReady', () => {
+    // On a freshly started backend the proxy still needs a moment before it can
+    // forward requests to the BaSyx repository. Because `repoRequest` uses
+    // `failOnStatusCode: false`, seeding POSTs fired during that window are lost
+    // silently, leaving specs to run against missing data. Poll the repository
+    // until it answers successfully before any data is seeded.
+    const maxAttempts = 60;
+    function attempt(attemptNumber: number) {
+        cy.request({
+            method: 'GET',
+            url: `${Cypress.env('AAS_REPO_API_URL')}/shells`,
+            headers: {
+                'X-API-KEY': Cypress.env('MNESTIX_API_KEY'),
+            },
+            failOnStatusCode: false,
+            timeout: 10000,
+        }).then((response) => {
+            if (response.status === 200) {
+                return;
+            }
+            if (attemptNumber >= maxAttempts) {
+                throw new Error(
+                    `AAS repository was not ready after ${maxAttempts} attempts (last status: ${response.status}).`,
+                );
+            }
+            cy.wait(1000);
+            attempt(attemptNumber + 1);
+        });
+    }
+    attempt(1);
+});
+
 Cypress.Commands.add('postCompareMockData', () => {
     compareAAS.forEach((aas) => {
         cy.repoRequest('POST', '/shells', aas);

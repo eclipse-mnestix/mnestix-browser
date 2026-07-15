@@ -41,6 +41,12 @@ declare global {
             repoRequest(requestMethod: string, urlPath: string, requestBody: string | object | null): Chainable;
 
             /**
+             * @description Poll the AAS repository (through the proxy) until it answers
+             * successfully, so data seeding does not run against a not-yet-ready backend.
+             */
+            waitForRepoReady(): Chainable;
+
+            /**
              * @description Put the test AAS found under cypress/fixtures/ to the repo
              */
             postTestAas(): Chainable;
@@ -125,3 +131,9 @@ declare global {
         }
     }
 }
+
+// Ensure the backend data path is ready before any spec seeds or reads data.
+// This prevents cold-start races where seeding POSTs are silently dropped.
+before(() => {
+    cy.waitForRepoReady();
+});
