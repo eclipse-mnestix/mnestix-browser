@@ -10,7 +10,7 @@ import {
 } from 'lib/util/SubmodelResolverUtil';
 import { useParams } from 'next/navigation';
 import { SubmodelsOverviewCard } from 'app/[locale]/viewer/_components/SubmodelsOverviewCard';
-import { ProductOverviewCard } from '../_components/ProductOverviewCard';
+import { ProductOverviewCard } from '../_components/product/ProductOverviewCard';
 import { NoSearchResult } from 'components/basics/detailViewBasics/NoSearchResult';
 import { useLocale } from 'next-intl';
 import { useMemo, useState } from 'react';

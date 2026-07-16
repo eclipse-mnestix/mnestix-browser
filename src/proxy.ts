@@ -40,12 +40,6 @@ export function proxy(req: NextRequest) {
     if (!envs.COMPARISON_FEATURE_FLAG && pathname.includes('compare')) {
         return NextResponse.rewrite(new URL('/404', req.url));
     }
-    if (
-        !envs.EXPERIMENTAL_PRODUCT_VIEW_FEATURE_FLAG &&
-        (pathname.includes('product') || pathname.includes('catalog'))
-    ) {
-        return NextResponse.rewrite(new URL('/404', req.url));
-    }
 
     if (req.nextUrl.pathname.match(unlocalizedPathsRegex)) {
         return NextResponse.next();

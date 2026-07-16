@@ -219,8 +219,11 @@
     "aasViewer": {
       "actions": {
         "compareButton": "Vergleichen",
-        "toProductView": "Produktansicht",
         "download": "AAS herunterladen"
+      },
+      "views": {
+        "default": "AAS-Ansicht",
+        "product": "Produktansicht"
       },
       "asset": "Asset",
       "assetAdministrationShell": "Verwaltungsschale",
@@ -339,8 +342,7 @@
         "compareButton": "Vergleichen",
         "download": "AAS herunterladen",
         "downloadError": "Fehler beim Herunterladen der AAS.",
-        "downloadErrorNoRepo": "Kein Repository für die ausgewählte AAS gefunden.",
-        "toAasView": "AAS Ansicht"
+        "downloadErrorNoRepo": "Kein Repository für die ausgewählte AAS gefunden."
       },
       "classification": "Produktklassifikation",
       "error": {

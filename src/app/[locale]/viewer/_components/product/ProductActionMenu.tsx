@@ -3,7 +3,6 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useTranslations } from 'use-intl';
-import { encodeBase64 } from 'lib/util/Base64Util';
 import { useEnv } from 'app/EnvProvider';
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import { useShowError } from 'lib/hooks/UseShowError';
@@ -19,7 +18,7 @@ type ActionMenuProps = {
     readonly className?: string;
 };
 
-export function ActionMenu({ aas, submodels, className, infrastructureName, repositoryUrl }: ActionMenuProps) {
+export function ActionMenu({ aas, submodels, className, infrastructureName }: ActionMenuProps) {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const navigate = useRouter();
     const t = useTranslations('pages');
@@ -38,15 +37,6 @@ export function ActionMenu({ aas, submodels, className, infrastructureName, repo
     const startComparison = () => {
         if (aas?.id) {
             navigate.push(`/compare?aasId=${encodeURIComponent(aas?.id)}`);
-        }
-        handleMenuClose();
-    };
-
-    const goToAASView = () => {
-        if (aas?.id) {
-            navigate.push(
-                `/viewer/${encodeBase64(aas?.id)}?repoUrl=${encodeURIComponent(repositoryUrl || '')}&infrastructure=${infrastructureName || ''}`,
-            );
         }
         handleMenuClose();
     };
@@ -103,11 +93,6 @@ export function ActionMenu({ aas, submodels, className, infrastructureName, repo
                 {env.COMPARISON_FEATURE_FLAG && (
                     <MenuItem onClick={startComparison} data-testid="detail-compare-button">
                         {t('productViewer.actions.compareButton')}
-                    </MenuItem>
-                )}
-                {env.EXPERIMENTAL_PRODUCT_VIEW_FEATURE_FLAG && (
-                    <MenuItem onClick={goToAASView} data-testid="detail-aas-view-button">
-                        {t('productViewer.actions.toAasView')}
                     </MenuItem>
                 )}
                 <MenuItem onClick={downloadAAS} data-testid="detail-download-button">

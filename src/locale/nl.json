@@ -219,8 +219,11 @@
     "aasViewer": {
       "actions": {
         "compareButton": "Vergelijken",
-        "toProductView": "Productweergave",
         "download": "AAS downloaden"
+      },
+      "views": {
+        "default": "AAS-weergave",
+        "product": "Productweergave"
       },
       "asset": "Asset",
       "assetAdministrationShell": "Asset Administration Shell",
@@ -339,8 +342,7 @@
         "compareButton": "Vergelijken",
         "download": "AAS downloaden",
         "downloadError": "Fout bij het downloaden van de AAS.",
-        "downloadErrorNoRepo": "Geen repository gevonden voor de geselecteerde AAS.",
-        "toAasView": "AAS-weergave"
+        "downloadErrorNoRepo": "Geen repository gevonden voor de geselecteerde AAS."
       },
       "classification": "Productclassificatie",
       "error": {
