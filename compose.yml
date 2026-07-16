@@ -168,9 +168,17 @@ services:
       - CORS_ALLOWEDHEADERS=*
       - CORS_ALLOWEDCREDENTIALS=true
       - ABAC_ENABLED=false
-      - GENERAL_AASREGISTRYINTEGRATION=true
+      # Registry integration is intentionally disabled: with it enabled, basyx-go 1.0.2 writes a
+      # separate AAS/Submodel descriptor record on every POST /shells (and /submodels) in addition
+      # to the repository row. For several shells this second insert violates the unique constraint
+      # "aas_descriptor_id_key" (Postgres 23505), which basyx-go surfaces as a 409
+      # AASREG-INSERTAASDESC-CONFLICT and aborts the whole write, so the shell never lands in the
+      # repository. This breaks the Mnestix AAS Generator's required-shell seeding (0-2 of 5 loaded).
+      # With integration disabled the registry endpoints still serve descriptors as a read-through
+      # view of the repository, so no read functionality is lost while writes succeed reliably.
+      - GENERAL_AASREGISTRYINTEGRATION=false
       - GENERAL_DISCOVERYINTEGRATION=true
-      - GENERAL_SUBMODELREGISTRYINTEGRATION=true
+      - GENERAL_SUBMODELREGISTRYINTEGRATION=false
       - GENERAL_EXTERNALURL=http://mnestix-proxy:5065/repo
     depends_on:
       basyx-configuration:
