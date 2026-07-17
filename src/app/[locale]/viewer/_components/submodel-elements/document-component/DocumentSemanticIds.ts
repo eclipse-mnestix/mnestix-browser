@@ -27,7 +27,8 @@ export enum DocumentSpecificSemanticIdIrdi {
 
 export enum DocumentSpecificSemanticIdIrdiV2 {
     DocumentVersion = '0173-1#02-ABI503#003/0173-1#01-AHF582#003',
-    Title = '0173-1#02-ABG940#004',
+    DocumentVersionsList = '0173-1#02-ABI503#003',
+    Title = '0173-1#02-ABG940#003',
     OrganizationShortName = '0173-1#02-ABI002#003',
     DigitalFile = '0173-1#02-ABK126#003',
     PreviewFile = '0173-1#02-ABK127#002',
