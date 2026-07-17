@@ -32,38 +32,17 @@ initial Keycloak configuration.
 
 The Keycloak Admin Console will be accessible at [http://localhost:8080/admin](http://localhost:8080/admin).
 
-For initial access of the Keycloak Admin Console, use the following temporary credentials:
+The preconfigured realm ships with the following accounts:
 
-- **Username:** admin
-- **Password:** admin
+| Username          | Password  | Login target             | Notes                                                                                                                                                       |
+|-------------------|-----------|---------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `admin`           | `admin`   | Keycloak Admin Console    | Temporary admin credentials for the Keycloak Admin Console itself — not a Mnestix Browser login.                                                             |
+| `test`            | `test`    | Mnestix Browser           | The `mnestix-admin` role is **not** assigned by default. See [Role Based Access Control](Role-Based-Access-Control) for details.                             |
+| `test-admin`      | `admin`   | Mnestix Browser           | Has the `mnestix-admin` role assigned. **Not** an admin account for the Keycloak Admin Console.                                                              |
+| `mnestix-visitor` | `mnestix` | Mnestix Browser (RBAC demo) | Access limited to a single Asset Administration Shell (AAS) with the ID `https://vws.xitaso.com/aas/mnestix`.                                                |
+| `test-aas`        | `aas`     | Mnestix Browser (RBAC demo) | Can view AAS data but has no permission to access submodel data.                                                                                             |
 
-A test user is preconfigured with the following credentials allowing login to Mnestix Browser:
-
-- **Username:** test
-- **Password:** test  
-  The role 'mnestix-admin' is not assigned to this test user by default. More information regarding Role Based Access
-  Control
-  can be found [here](Role-Based-Access-Control)
-
-To access Mnestix as a test admin user, an additional account has been configured with the 'mnestix-admin' role. The
-login credentials for this account are as follows:
-
-- **Username:** test-admin
-- **Password:** admin
-
-**Note:** This is not an admin account for accessing the Keycloak Admin Console.
-
-Additionally, two more test users have been configured to demonstrate role-based access control (RBAC):
-
-- **'mnestix-visitor'**: This user has access to only a specific Asset Administration Shell (AAS) with the ID **"https://vws.xitaso.com/aas/mnestix"**.
-    - **Username:** mnestix-visitor
-    - **Password:** mnestix
-
-- **'test-aas'**: This user can view AAS data but does not have permission to access submodel data.
-    - **Username:** test-aas
-    - **Password:** aas
-
-**Note:** These accounts are created solely for testing purposes and to showcase the RBAC implementation.
+**Note:** The `test`, `test-admin`, `mnestix-visitor`, and `test-aas` accounts exist solely for testing purposes and to showcase the RBAC implementation.
 
 ### Configuration Variables for Keycloak Setup
 
