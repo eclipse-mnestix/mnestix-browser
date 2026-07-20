@@ -164,6 +164,20 @@ declare global {
     }
 }
 
+// Next.js throws "An unexpected response was received from the server." when an
+// in-flight Server Action POST resolves against a page that is already navigating
+// (e.g. the rapid login -> logout -> visit sequence between authenticated specs such
+// as loginKeycloak, idSettings and templateTest). The auth flow itself succeeds, but
+// as an uncaught promise rejection this benign navigation race would otherwise fail
+// unrelated tests and beforeEach hooks (and cascade-skip the remaining tests in the
+// describe). Ignore only this specific framework error; any other exception still fails.
+Cypress.on('uncaught:exception', (err) => {
+    if (err.message.includes('An unexpected response was received from the server')) {
+        return false;
+    }
+    return undefined;
+});
+
 // Ensure the backend data path is ready before any spec seeds or reads data.
 // This prevents cold-start races where seeding POSTs are silently dropped.
 before(() => {
