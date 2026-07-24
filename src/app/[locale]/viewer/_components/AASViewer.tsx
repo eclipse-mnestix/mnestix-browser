@@ -35,7 +35,7 @@ export function AASViewer() {
         useCurrentAasContext();
 
     const params = useParams<{ base64AasId: string }>();
-    const base64AasId = decodeURIComponent(params.base64AasId).replace(/=+$|[%3D]+$/, '');
+    const base64AasId = decodeURIComponent(params.base64AasId).replace(/(=|%3D)+$/i, '');
     const pageStyles = {
         display: 'flex',
         flexDirection: 'column',

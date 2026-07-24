@@ -11,7 +11,7 @@ import { ProductViewer } from '../_components/ProductViewer';
 export default function Page() {
     const { showError } = useShowError();
     const params = useParams<{ base64AasId: string }>();
-    const base64AasId = decodeURIComponent(params.base64AasId).replace(/=+$|[%3D]+$/, '');
+    const base64AasId = decodeURIComponent(params.base64AasId).replace(/(=|%3D)+$/i, '');
     const encodedRepoUrl = useSearchParams().get('repoUrl');
     const repoUrl = encodedRepoUrl ? decodeURI(encodedRepoUrl) : undefined;
     const infrastructureName = useSearchParams().get('infrastructure') || undefined;
