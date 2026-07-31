@@ -5,10 +5,10 @@
   "private": true,
   "license": "MIT",
   "resolutions": {
-    "undici": "7.26.0",
+    "undici": "7.28.0",
     "lodash": "4.18.1",
-    "hono": "4.12.23",
-    "postcss": "^8.5.10",
+    "hono": "4.12.27",
+    "postcss": "^8.5.18",
     "uuid": "^11.1.1"
   },
   "engines": {
@@ -69,8 +69,8 @@
     "date-fns": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.18.1",
-    "next": "16.2.7",
-    "next-auth": "^4.24.13",
+    "next": "16.2.11",
+    "next-auth": "^4.24.15",
     "next-intl": "^4.9.2",
     "ol": "^10.7.0",
     "pino": "^10.3.0",
