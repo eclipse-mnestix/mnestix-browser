@@ -337,7 +337,10 @@ Cypress.Commands.add('keycloakLogin', (login: string, password: string) => {
         cy.get('#password').invoke('focus').type(password, { log: false });
         cy.get('#kc-login').invoke('focus').click();
     });
-    cy.get('button').click();
+    // Wait for the redirect back from Keycloak to land before continuing;
+    // the dashboard now has multiple <button> elements (CardActionArea cards),
+    // so a bare cy.get('button').click() here is ambiguous and was a no-op anyway.
+    cy.getByTestId('header-burgermenu').should('be.visible');
 });
 
 Cypress.Commands.add('keycloakLogout', () => {
