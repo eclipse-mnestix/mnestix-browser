@@ -1,0 +1,94 @@
+{
+    "handoverV20": {
+        "id": "handover-submodel-id",
+        "idShort": "HandoverDocumentation",
+        "modelType": "Submodel",
+        "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+                {
+                    "type": "Submodel",
+                    "value": "0173-1#01-AHF578#003"
+                }
+            ]
+        },
+        "submodelElements": [
+            {
+                "idShort": "Documents",
+                "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                        {
+                            "type": "GlobalReference",
+                            "value": "0173-1#02-ABI500#003"
+                        }
+                    ]
+                },
+                "modelType": "SubmodelElementList",
+                "value": [
+                    {
+                        "idShort": "Document01",
+                        "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                                {
+                                    "type": "GlobalReference",
+                                    "value": "0173-1#02-ABI500#003/0173-1#01-AHF579#003"
+                                }
+                            ]
+                        },
+                        "modelType": "SubmodelElementCollection",
+                        "value": []
+                    },
+                    {
+                        "idShort": "Document02",
+                        "semanticId": {
+                            "type": "ExternalReference",
+                            "keys": [
+                                {
+                                    "type": "GlobalReference",
+                                    "value": "0173-1#02-ABI500#003/0173-1#01-AHF579#003"
+                                }
+                            ]
+                        },
+                        "modelType": "SubmodelElementCollection",
+                        "value": []
+                    }
+                ]
+            }
+        ]
+    },
+    "handoverFlat": {
+        "id": "handover-submodel-id",
+        "idShort": "HandoverDocumentation",
+        "modelType": "Submodel",
+        "submodelElements": [
+            {
+                "idShort": "Document01",
+                "semanticId": {
+                    "type": "ExternalReference",
+                    "keys": [
+                        {
+                            "type": "GlobalReference",
+                            "value": "0173-1#02-ABI500#001/0173-1#01-AHF579#001"
+                        }
+                    ]
+                },
+                "modelType": "SubmodelElementCollection",
+                "value": []
+            }
+        ]
+    },
+    "handoverWithoutDocuments": {
+        "id": "handover-submodel-id",
+        "idShort": "HandoverDocumentation",
+        "modelType": "Submodel",
+        "submodelElements": [
+            {
+                "idShort": "SomethingElse",
+                "modelType": "SubmodelElementCollection",
+                "value": []
+            }
+        ]
+    }
+}

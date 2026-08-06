@@ -262,7 +262,20 @@
         },
         "title": "Teilmodelle",
         "unknownModelType": "Mnestix unterstützt diesen ModelType noch nicht ({type}).",
-        "repositoryUrlLabel": "Repository URL:"
+        "repositoryUrlLabel": "Repository URL:",
+        "conceptDescription": {
+          "title": "Concept Description",
+          "showInfo": "Concept-Description-Details anzeigen",
+          "semanticId": "Semantic ID",
+          "preferredName": "Bevorzugter Name",
+          "shortName": "Kurzname",
+          "definition": "Definition",
+          "description": "Beschreibung",
+          "unit": "Einheit",
+          "symbol": "Symbol",
+          "dataType": "Datentyp",
+          "sourceOfDefinition": "Quelle der Definition"
+        }
       }
     },
     "catalog": {

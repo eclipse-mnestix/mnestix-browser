@@ -42,25 +42,29 @@ describe('Visit the Settings page', function () {
         const prefixValues = ['new-prefix-value-0', 'new-prefix-value-1'];
         const urlValues = ['https://example2.com', 'https://example3.com', 'https://example4.com'];
 
+        // Fields 1 and 3 are idShort-type (assetIdShort, aasIdShort), fields 0, 2, 4 are IRI-type
+        const shortIdFields = [1, 3];
+        const iriFields = [0, 2, 4];
+
         prefixValues.forEach((value, i) => {
-            cy.getByTestId(`settings-edit-text-field-${i}`).click();
-            cy.getByTestId(`settings-edit-input-field-${i}`).clear();
-            cy.getByTestId(`settings-edit-input-field-${i}`).type(value);
+            cy.getByTestId(`settings-edit-text-field-${shortIdFields[i]}`).click();
+            cy.getByTestId(`settings-edit-input-field-${shortIdFields[i]}`).clear();
+            cy.getByTestId(`settings-edit-input-field-${shortIdFields[i]}`).type(value);
         });
         urlValues.forEach((value, i) => {
-            cy.getByTestId(`settings-edit-text-field-${i + 2}`).click();
-            cy.getByTestId(`settings-edit-input-field-${i + 2}`).clear();
-            cy.getByTestId(`settings-edit-input-field-${i + 2}`).type(value);
+            cy.getByTestId(`settings-edit-text-field-${iriFields[i]}`).click();
+            cy.getByTestId(`settings-edit-input-field-${iriFields[i]}`).clear();
+            cy.getByTestId(`settings-edit-input-field-${iriFields[i]}`).type(value);
         });
 
         cy.getByTestId('settings-save-button').click();
 
         // Verify updated values are visible
         prefixValues.forEach((value, i) => {
-            cy.getByTestId(`settings-text-field-${i}`).should('contain', value);
+            cy.getByTestId(`settings-text-field-${shortIdFields[i]}`).should('contain', value);
         });
         urlValues.forEach((value, i) => {
-            cy.getByTestId(`settings-text-field-${i + 2}`).should('contain', value);
+            cy.getByTestId(`settings-text-field-${iriFields[i]}`).should('contain', value);
         });
 
         // Verify edit mode is exited
@@ -122,24 +126,26 @@ describe('Visit the Settings page', function () {
             cy.getByTestId('settings-menu-icon').click();
             cy.getByTestId('settings-edit-button').click();
 
+            //AasId field
             cy.getByTestId('settings-edit-text-field-0').click();
             cy.getByTestId('settings-edit-input-field-0').clear();
             cy.getByTestId('settings-edit-input-field-0').type('invalid iri');
 
-            cy.getByTestId('settings-edit-text-field-2').click();
-            cy.getByTestId('settings-edit-input-field-2').clear();
-            cy.getByTestId('settings-edit-input-field-2').type('invalid iri');
+            //AssetIdShort field
+            cy.getByTestId('settings-edit-text-field-1').click();
+            cy.getByTestId('settings-edit-input-field-1').clear();
+            cy.getByTestId('settings-edit-input-field-1').type('invalid iri');
 
             cy.getByTestId('settings-save-button').click();
 
             // Verify error messages are displayed
             cy.getByTestId('settings-edit-text-field-0-error').as('error0');
             cy.get('@error0').should('be.visible');
-            cy.get('@error0').should('contain', 'Has to work as part of an IRI');
+            cy.get('@error0').should('contain', 'Has to be a valid IRI');
 
-            cy.getByTestId('settings-edit-text-field-2-error').as('error2');
-            cy.get('@error2').should('be.visible');
-            cy.get('@error2').should('contain', 'Has to be a valid IRI');
+            cy.getByTestId('settings-edit-text-field-1-error').as('error1');
+            cy.get('@error1').should('be.visible');
+            cy.get('@error1').should('contain', 'Has to work as part of an IRI');
         },
     );
 

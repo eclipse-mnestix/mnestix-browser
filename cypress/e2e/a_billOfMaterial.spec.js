@@ -6,8 +6,8 @@ import AASBomComponent from '../fixtures/cypress_e2e/cyTestAas_BoM_Component.jso
 const testdata = {
     entityToTest: 0,
     bomSubmodelName: 'BillOfMaterial',
-    redirectComponentName: 'Cy BoM Component',
-    propertyTestCollection: 'Cypress Test 02',
+    redirectComponentName: 'Cy_BoM_Component',
+    propertyTestCollection: 'Cypress_Test_02',
     multiLanguageTest: 'MultiLanguageProperty',
     multiLangEn: 'Bill Of Material Multilanguage',
     booleanTest: 'Boolean',
@@ -17,8 +17,7 @@ const testdata = {
 describe('Test the Bill-of-Material', function () {
     before(function () {
         cy.postTestAas();
-        cy.repoRequest('POST', '/shells', AASBomComponent);
-        cy.repoRequest('GET', '/shells/aHR0cHM6Ly9tbmVzdGl4LmlvL2Fhcy9jeXByZXNzVGVzdA');
+        cy.postShell(AASBomComponent);
     });
     resolutions.forEach((res) => {
         describe('test on resolution: ' + res, function () {

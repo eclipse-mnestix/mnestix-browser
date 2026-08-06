@@ -40,8 +40,30 @@ services:
       keycloak:
         condition: service_healthy
 
+  # Overridden to the BaSyx *Java* environment (Mongo-backed): the dynamic RBAC example relies
+  # on Spring's submodel-backed authorization rules, which the BaSyx Go aas-environment used in
+  # the main compose.yml (Postgres-backed) does not support.
   aas-environment:
-    environment:
+    image: eclipsebasyx/aas-environment:2.0.0-milestone-11
+    command: !reset null
+    depends_on: !override
+      mongodb:
+        condition: service_healthy
+      security-submodel:
+        condition: service_healthy
+      security-sm-setup:
+        condition: service_completed_successfully
+    environment: !override
+      BASYX__BACKEND: MongoDB
+      SPRING__DATA__MONGODB__HOST: mongodb
+      SPRING__DATA__MONGODB__DATABASE: basyxdb
+      SPRING__DATA__MONGODB__authentication-database: admin
+      SPRING__DATA__MONGODB__USERNAME: mongoAdmin
+      SPRING__DATA__MONGODB__PASSWORD: mongoPassword
+      SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE: 100000KB
+      SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE: 100000KB
+      BASYX_CORS_ALLOWED-ORIGINS: '*'
+      BASYX_CORS_ALLOWED-METHODS: GET,POST,PATCH,DELETE,PUT,OPTIONS,HEAD
       # Dynamic Roles configuration part:
       basyx.feature.authorization.rules.backend: 'Submodel'
       basyx.feature.authorization.rules.backend.submodel.authorization.endpoint: 'http://security-submodel:8081/submodels/U2VjdXJpdHlTdWJtb2RlbA=='
@@ -56,17 +78,42 @@ services:
       # token issuer is the front-channel host (localhost); keys are fetched from the in-network host (keycloak)
       spring.security.oauth2.resourceserver.jwt.issuer-uri: 'http://localhost:8080/realms/Mnestix'
       spring.security.oauth2.resourceserver.jwt.jwk-set-uri: 'http://keycloak:8080/realms/Mnestix/protocol/openid-connect/certs'
-    depends_on:
-      security-submodel:
-        condition: service_healthy
-      security-sm-setup:
-        condition: service_completed_successfully
+    healthcheck: !override
+      test: curl -f http://localhost:8081/actuator/health
+      interval: 10s
+      timeout: 15s
+      retries: 8
+
+  # This service is a BaSyx *Java* submodel repository, kept independent of the BaSyx Go
+  # environment used by the main compose.yml, so it ships its own MongoDB instance.
+  mongodb:
+    image: mongo:8
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoAdmin
+      MONGO_INITDB_ROOT_PASSWORD: mongoPassword
+    healthcheck:
+      test: echo "db.runCommand(\"ping\").ok" | mongosh mongodb:27017/test --quiet
+      interval: 3s
+      timeout: 3s
+      retries: 5
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '5'
+        max-size: '100m'
+    networks:
+      - mnestix-network
+    volumes:
+      - mnestix-rbac-mongodb-data:/data/db
 
   security-submodel:
     image: eclipsebasyx/submodel-repository:2.0.0-milestone-11
     container_name: security-submodel
     depends_on:
       keycloak:
+        condition: service_healthy
+      mongodb:
         condition: service_healthy
     environment:
       BASYX__BACKEND: MongoDB
@@ -147,3 +194,6 @@ services:
       retries: 6
     networks:
       - mnestix-network
+
+volumes:
+  mnestix-rbac-mongodb-data:

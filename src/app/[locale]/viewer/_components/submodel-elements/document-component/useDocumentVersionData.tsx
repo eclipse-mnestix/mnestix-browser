@@ -7,6 +7,7 @@ import {
     Property,
     MultiLanguageProperty,
     SubmodelElementList,
+    KeyTypes,
 } from 'lib/api/aas/models';
 import { findSubmodelElementBySemanticIdsOrIdShort, getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import {
@@ -28,6 +29,55 @@ export type FileViewObject = {
 };
 
 /**
+ * Resolves the document version collection for both the flat Handover Documentation (V1.0 / V1.2)
+ * and the V2.0 structure, where the versions are wrapped inside a `DocumentVersions` list.
+ * @param documentElements the value of a single document collection
+ */
+function findDocumentVersion(
+    documentElements: SubmodelElementChoice[] | null | undefined,
+): SubmodelElementCollection | null {
+    const directVersion = findSubmodelElementBySemanticIdsOrIdShort(documentElements, 'DocumentVersion', [
+        DocumentSpecificSemanticId.DocumentVersion,
+        DocumentSpecificSemanticIdIrdi.DocumentVersion,
+        DocumentSpecificSemanticIdIrdiV2.DocumentVersion,
+    ]) as SubmodelElementCollection | null;
+    if (directVersion) return directVersion;
+
+    const versionList = findSubmodelElementBySemanticIdsOrIdShort(documentElements, 'DocumentVersions', [
+        DocumentSpecificSemanticIdIrdiV2.DocumentVersionsList,
+    ]) as SubmodelElementList | null;
+    const versions = (versionList?.value ?? []) as SubmodelElementCollection[];
+    return versions.at(-1) ?? null;
+}
+
+/**
+ * Resolves the digital file element for both the flat Handover Documentation (V1.0 / V1.2) and the
+ * V2.0 structure, where the files are wrapped inside a `DigitalFiles` list.
+ *
+ * Note: The semantic id matching is version-agnostic (see `irdiPathEquals`), so a lookup for the
+ * digital file (`0173-1#02-ABK126#003`) also matches the V2.0 `DigitalFiles` list
+ * (`0173-1#02-ABK126#002`). We therefore disambiguate on the `modelType`: a matched list contains
+ * the actual file elements, while a direct match already is the file.
+ * @param versionElements the value of a single document version collection
+ */
+function findDigitalFileElement(
+    versionElements: SubmodelElementChoice[] | null | undefined,
+): SubmodelElementChoice | null {
+    const fileMatch = findSubmodelElementBySemanticIdsOrIdShort(versionElements, 'DigitalFile', [
+        DocumentSpecificSemanticId.DigitalFile,
+        DocumentSpecificSemanticIdIrdi.DigitalFile,
+        DocumentSpecificSemanticIdIrdiV2.DigitalFile,
+    ]);
+
+    if (fileMatch?.modelType === KeyTypes.SubmodelElementList) {
+        const files = ((fileMatch as SubmodelElementList).value ?? []) as SubmodelElementChoice[];
+        return files.at(-1) ?? null;
+    }
+
+    return fileMatch ?? null;
+}
+
+/**
  * Custom hook which prepares the data from HandoverDocumentation to be displayed.
  * @param submodelElement
  * @param submodelId
@@ -40,18 +90,14 @@ export function useFileViewObject(
     const { aasOriginUrl } = useCurrentAasContext();
 
     function extractDocumentVersionData(documentVersion: SubmodelElementCollection, fileViewObject: FileViewObject) {
-        const title = findSubmodelElementBySemanticIdsOrIdShort(documentVersion.value, null, [
+        const title = findSubmodelElementBySemanticIdsOrIdShort(documentVersion.value, 'Title', [
             DocumentSpecificSemanticId.Title,
             DocumentSpecificSemanticIdIrdi.Title,
             DocumentSpecificSemanticIdIrdiV2.Title,
         ]);
         fileViewObject.title = getTranslationText(title as MultiLanguageProperty, locale);
 
-        const file = findSubmodelElementBySemanticIdsOrIdShort(documentVersion.value, 'DigitalFile', [
-            DocumentSpecificSemanticId.DigitalFile,
-            DocumentSpecificSemanticIdIrdi.DigitalFile,
-            DocumentSpecificSemanticIdIrdiV2.DigitalFile,
-        ]);
+        const file = findDigitalFileElement(documentVersion.value);
         fileViewObject = file
             ? {
                   ...fileViewObject,
@@ -66,12 +112,16 @@ export function useFileViewObject(
         ]);
         fileViewObject.previewImgUrl = preview ? getPreviewImageUrl(preview, documentVersion) : '';
 
-        const organization = findSubmodelElementBySemanticIdsOrIdShort(documentVersion.value, 'OrganizationName', [
-            DocumentSpecificSemanticId.OrganizationName,
-            DocumentSpecificSemanticIdIrdi.OrganizationName,
-            DocumentSpecificSemanticIdIrdiV2.OrganizationShortName,
-        ]);
-        fileViewObject.organizationName = (organization as Property).value || '';
+        const organization =
+            findSubmodelElementBySemanticIdsOrIdShort(documentVersion.value, 'OrganizationName', [
+                DocumentSpecificSemanticId.OrganizationName,
+                DocumentSpecificSemanticIdIrdi.OrganizationName,
+                DocumentSpecificSemanticIdIrdiV2.OrganizationShortName,
+            ]) ??
+            findSubmodelElementBySemanticIdsOrIdShort(documentVersion.value, 'OrganizationShortName', [
+                DocumentSpecificSemanticIdIrdiV2.OrganizationShortName,
+            ]);
+        fileViewObject.organizationName = (organization as Property)?.value || '';
 
         return fileViewObject;
     }
@@ -130,12 +180,8 @@ export function useFileViewObject(
         };
         if (!submodelElement?.value) return fileViewObject;
 
-        const documentVersion = findSubmodelElementBySemanticIdsOrIdShort(submodelElement.value, 'DocumentVersion', [
-            DocumentSpecificSemanticId.DocumentVersion,
-            DocumentSpecificSemanticIdIrdi.DocumentVersion,
-            DocumentSpecificSemanticIdIrdiV2.DocumentVersion,
-        ]) as SubmodelElementCollection;
-        if (documentVersion.value) {
+        const documentVersion = findDocumentVersion(submodelElement.value);
+        if (documentVersion?.value) {
             fileViewObject = extractDocumentVersionData(documentVersion, fileViewObject);
         }
         return fileViewObject;

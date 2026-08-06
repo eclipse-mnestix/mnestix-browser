@@ -262,7 +262,20 @@
         },
         "title": "Submodels",
         "unknownModelType": "Mnestix doesn't support this model type yet ({type}).",
-        "repositoryUrlLabel": "Repository URL:"
+        "repositoryUrlLabel": "Repository URL:",
+        "conceptDescription": {
+          "title": "Concept Description",
+          "showInfo": "Show concept description details",
+          "semanticId": "Semantic ID",
+          "preferredName": "Preferred name",
+          "shortName": "Short name",
+          "definition": "Definition",
+          "description": "Description",
+          "unit": "Unit",
+          "symbol": "Symbol",
+          "dataType": "Data type",
+          "sourceOfDefinition": "Source of definition"
+        }
       }
     },
     "catalog": {
