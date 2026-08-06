@@ -35,7 +35,7 @@ export function AboutDialog(props: AboutDialogProps) {
                                 {t('about')}
                             </Typography>
                             <Typography color={'primary'}>MIT License</Typography>
-                            <Typography color={'primary'}>Copyright (c) 2024 XITASO GmbH</Typography>
+                            <Typography color={'primary'}>Copyright (c) 2026 XITASO GmbH</Typography>
                         </Box>
                         {!isMobile && (
                             <Box
