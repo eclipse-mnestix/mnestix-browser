@@ -1,12 +1,18 @@
+# Contributing to Mnestix
+
 Right now, we are building a community around Mnestix.
 If you are looking for a way to support us, you can start contributing to Mnestix right away.
 For this purpose, issues which are particularly suitable for a first contribution are labeled with the tag
-`good first issue`.  
+`good first issue`.
 
 If this is your first time contributing to an eclipse project, we recommend having a look at this
-guide: [Contributing to a Eclipse project](https://www.eclipse.org/contribute/).  
+guide: [Contributing to a Eclipse project](https://www.eclipse.org/contribute/).
 We would be more than happy to have you on board. If there is anything you want to know, feel free to contact
-us [mnestix@xitaso.com](mailto:mnestix@xitaso.com) or through our website [here](https://xitaso.com/kompetenzen/mnestix/#support).   
+us [mnestix@xitaso.com](mailto:mnestix@xitaso.com) or through our website [here](https://xitaso.com/kompetenzen/mnestix/#support).
+
+## Eclipse Contributor Agreement (ECA)
+
+All contributors must sign the [Eclipse Contributor Agreement (ECA)](https://www.eclipse.org/legal/eca/) to ensure that the necessary intellectual property (IP) rights to the contribution are granted. You can sign the ECA here: **[accounts.eclipse.org/user/eca](https://accounts.eclipse.org/user/eca)**.
 
 <p align="center">
   <a href="https://xitaso.com/en/competences/mnestix-2/#optin_form">

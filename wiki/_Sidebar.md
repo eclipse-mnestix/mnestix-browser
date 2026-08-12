@@ -22,7 +22,7 @@
 
 ## Contribution
 
-- [Contributing](Contributing)
+- [Contributing ↗](https://github.com/eclipse-mnestix/mnestix-browser/blob/main/CONTRIBUTING.md)
 
 ## Advanced
 
