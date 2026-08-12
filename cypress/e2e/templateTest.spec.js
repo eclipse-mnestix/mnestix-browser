@@ -30,7 +30,7 @@ describe('Template CRUD Operations', () => {
                     cy.get('#kc-login').invoke('focus').click();
                 },
             );
-            cy.get('button').click();
+            cy.getByTestId('header-burgermenu').should('be.visible');
             cy.getByTestId('header-burgermenu').click();
         });
     }

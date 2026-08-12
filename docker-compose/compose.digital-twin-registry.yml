@@ -1,4 +1,29 @@
 services:
+  # This override keeps the BaSyx *Java* Digital Twin Registry stack. It ships its own
+  # MongoDB instance so it stays self-contained and independent of the BaSyx Go environment
+  # used by the main compose.yml.
+  # See https://github.com/eclipse-mnestix/mnestix-browser/issues/498
+  mongodb:
+    image: mongo:8
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoAdmin
+      MONGO_INITDB_ROOT_PASSWORD: mongoPassword
+    healthcheck:
+      test: echo "db.runCommand(\"ping\").ok" | mongosh mongodb:27017/test --quiet
+      interval: 3s
+      timeout: 3s
+      retries: 5
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '5'
+        max-size: '100m'
+    networks:
+      - mnestix-network
+    volumes:
+      - mnestix-mongodb-data:/data/db
+
   aas-digital-twin-registry:
     image: eclipsebasyx/digitaltwinregistry:2.0.0-SNAPSHOT
     ports:
@@ -36,11 +61,8 @@ services:
     environment:
       ReverseProxy__Clusters__discoveryCluster__Destinations__destination1__Address: 'http://aas-digital-twin-registry:8081/'
 
-  aas-registry:
-    profiles: ['do-not-start']
-    restart: 'no'
-    entrypoint: ['echo', 'AAS Registry disabled in Digital Twin Registry setup.']
-  aas-discovery:
-    profiles: ['do-not-start']
-    restart: 'no'
-    entrypoint: ['echo', 'AAS Discovery disabled in Digital Twin Registry setup.']
+  # The browser and proxy above are rerouted to the BaSyx Java Digital Twin Registry, so the
+  # registry/discovery endpoints integrated into the BaSyx Go aas-environment are simply left unused.
+
+volumes:
+  mnestix-mongodb-data:

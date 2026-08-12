@@ -21,7 +21,7 @@ import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemantic
 
 export function ProductViewer() {
     const searchParams = useParams<{ base64AasId: string }>();
-    const base64AasId = decodeURIComponent(searchParams.base64AasId).replace(/=+$|[%3D]+$/, '');
+    const base64AasId = decodeURIComponent(searchParams.base64AasId).replace(/(=|%3D)+$/i, '');
     const isMobile = useIsMobile();
     const locale = useLocale();
     const [breadcrumbLinks] = useState<Array<{ label: string; path: string }>>([]);

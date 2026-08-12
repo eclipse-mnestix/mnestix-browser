@@ -31,10 +31,7 @@ This setup includes:
 
 - Mnestix Browser (This repository)
 - Mnestix Backend
-- BaSyx Repository
-- BaSyx Discovery Service
-- BaSyx Registry
-- BaSyx Submodel Registry
+- BaSyx Go AAS Environment (unified AAS/Submodel/Concept Description repositories, AAS/Submodel registries and Discovery Service, backed by PostgreSQL)
 
 To start all mentioned services together, run the following command:
 

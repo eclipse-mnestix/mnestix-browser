@@ -6,7 +6,7 @@
 docker compose up
 ```
 
-- **docker-compose/compose.frontend.yml** - runs Mnestix Browser with a Basyx environment (AAS-Environment with MongoDB, Discovery Service, AAS/Submodel Registry) but without the Mnestix-API.<br>
+- **docker-compose/compose.frontend.yml** - runs Mnestix Browser with a BaSyx Go environment (unified AAS-Environment backed by PostgreSQL, providing the AAS/Submodel/Concept Description repositories, AAS/Submodel registries and Discovery Service) but without the Mnestix-API.<br>
   **Mnestix Browser on port 3000 - http://localhost:3000**
 
 ```shell
@@ -65,12 +65,14 @@ Additional services used by the Mnestix browser:
   generation. (**On port 5054 - http://localhost:5064/swagger/index.html#/**)
   This component has been split into the [Mnestix Proxy](https://github.com/eclipse-mnestix/mnestix-proxy/wiki)
   and the [Mnestix AAS Generator](https://github.com/eclipse-mnestix/mnestix-aas-generator/wiki); see their wikis for details.
-- **mongodb** - NoSql database to store data
-- **aas-environment** - service of AAS repository (BaSyx
-  component [aas-environment](https://github.com/eclipse-basyx/basyx-java-server-sdk/tree/main/basyx.aasenvironment))
-- **aas-registry** - registry to register and search for AAS in multiple repositories
-- **submodel-registry** - registry to register and search for submodels in multiple repositories
-- **aas-discovery** - discovery service to register and search for an AAS by assetId
+
+  > **Note:** The BaSyx Go environment requires **Mnestix AAS Generator >= 1.3.0** for compatibility. See the
+  > [Migrate to AAS Generator 1.3.0](https://github.com/eclipse-mnestix/mnestix-aas-generator/wiki/Migrate-to-aas-generator-1.3.0) guide.
+- **basyx-db** - PostgreSQL database used by the BaSyx Go environment to store AAS and Submodel data
+- **basyx-configuration** - one-shot service (`eclipsebasyx/basyxconfigurationservice-go`) that initializes the PostgreSQL schema before the environment starts
+- **aas-environment** - unified BaSyx Go environment (`eclipsebasyx/aasenvironment-go`) that serves the AAS repository,
+  Submodel repository, Concept Description repository, AAS/Submodel registries and Discovery Service from a single service
+  (BaSyx component [aas-environment](https://github.com/eclipse-basyx/basyx-go-sdk))
 
 ### Additional Command to view the logs for specific service:
 
