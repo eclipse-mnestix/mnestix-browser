@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
-import { aasViewerConfig } from 'app/[locale]/viewer/_visualizations/viewer.config';
+import { getAasViewerConfig } from 'app/[locale]/viewer/_visualizations/viewer.config';
+import { publicEnvs } from 'lib/env/MnestixEnv';
 
 type ViewerPageProps = {
     params: Promise<{ base64AasId: string }>;
@@ -19,5 +20,5 @@ export default async function ViewerPage({ params, searchParams }: ViewerPagePro
     if (typeof sp.infrastructure === 'string') query.set('infrastructure', sp.infrastructure);
     const suffix = query.toString() ? `?${query.toString()}` : '';
 
-    redirect(`/viewer/${base64AasId}/${aasViewerConfig.default}${suffix}`);
+    redirect(`/viewer/${base64AasId}/${getAasViewerConfig(publicEnvs).default}${suffix}`);
 }

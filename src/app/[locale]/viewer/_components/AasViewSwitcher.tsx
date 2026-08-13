@@ -4,11 +4,12 @@ import { Box, Tab, Tabs } from '@mui/material';
 import Link from 'next/link';
 import { useParams, useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { aasViewerConfig } from 'app/[locale]/viewer/_visualizations/viewer.config';
+import { getAasViewerConfig } from 'app/[locale]/viewer/_visualizations/viewer.config';
+import { useEnv } from 'app/EnvProvider';
 
 /**
  * User-facing switcher between the AAS visualizations declared as `switchable`
- * in {@link aasViewerConfig}. Rendered once by the viewer layout so it persists
+ * in {@link getAasViewerConfig}. Rendered once by the viewer layout so it persists
  * across view navigations. Each tab is a real navigation link, so views are
  * deep-linkable and keyboard/screen-reader friendly.
  */
@@ -16,6 +17,7 @@ export function AasViewSwitcher() {
     const params = useParams<{ base64AasId: string; view?: string }>();
     const searchParams = useSearchParams();
     const t = useTranslations();
+    const aasViewerConfig = getAasViewerConfig(useEnv());
 
     if (aasViewerConfig.switchable.length <= 1) {
         return null;

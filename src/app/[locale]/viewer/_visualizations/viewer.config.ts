@@ -26,11 +26,26 @@ export type AasViewerConfig = {
     views: Record<string, AasView>;
 };
 
-export const aasViewerConfig: AasViewerConfig = {
-    default: 'default',
-    switchable: ['default', 'product'],
-    views: {
+/** The env flags that gate optional views. Both `publicEnvs` (server) and
+ *  `useEnv()` (client) satisfy this shape structurally. */
+type ViewerFlags = { EXPERIMENTAL_PRODUCT_VIEW_FEATURE_FLAG?: boolean };
+
+/**
+ * Builds the viewer registry for the given feature flags. Optional views are
+ * included only when their flag is on, so a deployment can toggle them via env
+ * without a rebuild. Call with `publicEnvs` in server components and `useEnv()`
+ * in client components.
+ */
+export function getAasViewerConfig(flags: ViewerFlags): AasViewerConfig {
+    const views: Record<string, AasView> = {
         default: { label: 'pages.aasViewer.views.default', component: DefaultViewer },
-        product: { label: 'pages.aasViewer.views.product', component: ProductViewer },
-    },
-};
+    };
+    const switchable = ['default'];
+
+    if (flags.EXPERIMENTAL_PRODUCT_VIEW_FEATURE_FLAG) {
+        views.product = { label: 'pages.aasViewer.views.product', component: ProductViewer };
+        switchable.push('product');
+    }
+
+    return { default: 'default', switchable, views };
+}
