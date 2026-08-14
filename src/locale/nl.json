@@ -221,6 +221,11 @@
         "compareButton": "Vergelijken",
         "download": "AAS downloaden"
       },
+      "viewNotFound": {
+        "header": "Weergave niet gevonden",
+        "description": "De weergave ''{view}'' bestaat niet voor deze Asset Administration Shell.",
+        "toHomeButton": "Naar startpagina"
+      },
       "views": {
         "default": "AAS-weergave",
         "product": "Productweergave"

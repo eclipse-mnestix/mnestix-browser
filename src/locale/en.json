@@ -221,6 +221,11 @@
         "compareButton": "Compare",
         "download": "Download AAS"
       },
+      "viewNotFound": {
+        "header": "View not found",
+        "description": "The view ''{view}'' does not exist for this Asset Administration Shell.",
+        "toHomeButton": "To Home"
+      },
       "views": {
         "default": "AAS View",
         "product": "Product view"

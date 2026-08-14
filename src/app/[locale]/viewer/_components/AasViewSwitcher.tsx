@@ -19,11 +19,15 @@ export function AasViewSwitcher() {
     const t = useTranslations();
     const aasViewerConfig = getAasViewerConfig(useEnv());
 
-    if (aasViewerConfig.switchable.length <= 1) {
+    const currentView = params.view ?? aasViewerConfig.default;
+
+    // Hide the switcher when there's nothing to switch, or when the current view
+    // isn't part of the switchable set (e.g. a direct-URL-only view). Rendering
+    // Tabs with a value that matches no Tab makes MUI warn and breaks the
+    // indicator, and there'd be no correct tab to highlight anyway.
+    if (aasViewerConfig.switchable.length <= 1 || !aasViewerConfig.switchable.includes(currentView)) {
         return null;
     }
-
-    const currentView = params.view ?? aasViewerConfig.default;
     const query = searchParams.toString();
     const suffix = query ? `?${query}` : '';
 

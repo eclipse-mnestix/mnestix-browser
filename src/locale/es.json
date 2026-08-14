@@ -221,6 +221,11 @@
         "compareButton": "Comparar",
         "download": "Descargar AAS"
       },
+      "viewNotFound": {
+        "header": "Vista no encontrada",
+        "description": "La vista ''{view}'' no existe para este Asset Administration Shell.",
+        "toHomeButton": "Ir al inicio"
+      },
       "views": {
         "default": "Vista AAS",
         "product": "Vista de producto"

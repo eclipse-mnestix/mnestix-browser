@@ -221,6 +221,11 @@
         "compareButton": "Vergleichen",
         "download": "AAS herunterladen"
       },
+      "viewNotFound": {
+        "header": "Ansicht nicht gefunden",
+        "description": "Die Ansicht ''{view}'' existiert für diese Verwaltungsschale nicht.",
+        "toHomeButton": "Zur Startseite"
+      },
       "views": {
         "default": "AAS-Ansicht",
         "product": "Produktansicht"
