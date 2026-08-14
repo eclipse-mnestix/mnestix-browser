@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Button, Skeleton, Typography } from '@mui/material';
-import { safeBase64Decode } from 'lib/util/Base64Util';
+import { safeBase64Decode, stripBase64Padding } from 'lib/util/Base64Util';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import { useParams, useRouter } from 'next/navigation';
@@ -10,7 +10,6 @@ import { AASOverviewCard } from 'app/[locale]/viewer/_components/AASOverviewCard
 import { useEnv } from 'app/EnvProvider';
 import { TransferButton } from 'app/[locale]/viewer/_components/transfer/TransferButton';
 import { useLocale, useTranslations } from 'next-intl';
-import { NoSearchResult } from 'components/basics/detailViewBasics/NoSearchResult';
 import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 import { useShowError } from 'lib/hooks/UseShowError';
 import {
@@ -20,6 +19,7 @@ import {
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useState } from 'react';
+import { ViewerShell } from './ViewerShell';
 
 export function DefaultViewer() {
     const navigate = useRouter();
@@ -35,25 +35,7 @@ export function DefaultViewer() {
         useCurrentAasContext();
 
     const params = useParams<{ base64AasId: string }>();
-    const base64AasId = decodeURIComponent(params.base64AasId).replace(/=+$|[%3D]+$/, '');
-    const pageStyles = {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '30px',
-        alignItems: 'center',
-        width: '100vw',
-        marginBottom: '50px',
-        marginTop: '20px',
-    };
-
-    const viewerStyles = {
-        maxWidth: '1125px',
-        width: '90%',
-        margin: '0 auto',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '20px',
-    };
+    const base64AasId = stripBase64Padding(decodeURIComponent(params.base64AasId));
 
     async function downloadAAS() {
         if (!aas?.id || !infrastructureName) {
@@ -99,94 +81,74 @@ export function DefaultViewer() {
         }
     }, [infrastructureName]);
 
-    let aasIdDecoded: string;
-    try {
-        aasIdDecoded = safeBase64Decode(base64AasId);
-    } catch (e) {
-        showError(e);
-        return (
-            <Box sx={pageStyles}>
-                <NoSearchResult base64AasId={base64AasId} />
-            </Box>
-        );
-    }
-
     const startComparison = () => {
-        navigate.push(`/compare?aasId=${encodeURIComponent(aasIdDecoded)}`);
+        navigate.push(`/compare?aasId=${encodeURIComponent(safeBase64Decode(base64AasId))}`);
     };
 
     return (
-        <Box sx={pageStyles}>
-            {aas || isLoadingAas ? (
-                <Box sx={viewerStyles}>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignContent: 'flex-end',
-                        }}
+        <ViewerShell>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignContent: 'flex-end',
+                }}
+            >
+                <Typography
+                    variant="h2"
+                    style={{
+                        width: '90%',
+                        margin: '0 auto',
+                        marginTop: '10px',
+                        overflowWrap: 'break-word',
+                        wordBreak: 'break-word',
+                        textAlign: 'center',
+                        display: 'inline-block',
+                    }}
+                >
+                    {isLoadingAas ? (
+                        <Skeleton width="40%" sx={{ margin: '0 auto' }} />
+                    ) : aas?.displayName ? (
+                        getTranslationText(aas?.displayName, locale)
+                    ) : (
+                        ''
+                    )}
+                </Typography>
+                {env.COMPARISON_FEATURE_FLAG && !isMobile && (
+                    <Button
+                        sx={{ mr: 2 }}
+                        variant="contained"
+                        onClick={startComparison}
+                        data-testid="detail-compare-button"
                     >
-                        <Typography
-                            variant="h2"
-                            style={{
-                                width: '90%',
-                                margin: '0 auto',
-                                marginTop: '10px',
-                                overflowWrap: 'break-word',
-                                wordBreak: 'break-word',
-                                textAlign: 'center',
-                                display: 'inline-block',
-                            }}
-                        >
-                            {isLoadingAas ? (
-                                <Skeleton width="40%" sx={{ margin: '0 auto' }} />
-                            ) : aas?.displayName ? (
-                                getTranslationText(aas?.displayName, locale)
-                            ) : (
-                                ''
-                            )}
-                        </Typography>
-                        {env.COMPARISON_FEATURE_FLAG && !isMobile && (
-                            <Button
-                                sx={{ mr: 2 }}
-                                variant="contained"
-                                onClick={startComparison}
-                                data-testid="detail-compare-button"
-                            >
-                                {t('actions.compareButton')}
-                            </Button>
-                        )}
-                        {env.TRANSFER_FEATURE_FLAG && <TransferButton />}
-                        {showDownloadButton && (
-                            <Button
-                                variant="contained"
-                                sx={{
-                                    whiteSpace: 'nowrap',
-                                    ml: 2,
-                                    minWidth: 'auto',
-                                    padding: '6px 16px',
-                                }}
-                                onClick={downloadAAS}
-                            >
-                                {t('actions.download')}
-                            </Button>
-                        )}
-                    </Box>
-                    <AASOverviewCard
-                        aas={aas ?? null}
-                        productImage={aas?.assetInformation?.defaultThumbnail?.path}
-                        isLoading={isLoadingAas}
-                        isAccordion={isMobile}
-                        repositoryURL={aasOriginUrl}
-                        infrastructureName={infrastructureName}
-                    />
-                    <SubmodelsOverviewCard aas={aas} submodelIds={submodels} submodelsLoading={isLoadingSubmodels} />
-                </Box>
-            ) : (
-                <Box sx={pageStyles}>
-                    <NoSearchResult base64AasId={base64AasId} />
-                </Box>
-            )}
-        </Box>
+                        {t('actions.compareButton')}
+                    </Button>
+                )}
+                {env.TRANSFER_FEATURE_FLAG && <TransferButton />}
+                {showDownloadButton && (
+                    <Button
+                        variant="contained"
+                        sx={{
+                            whiteSpace: 'nowrap',
+                            ml: 2,
+                            minWidth: 'auto',
+                            padding: '6px 16px',
+                        }}
+                        onClick={downloadAAS}
+                    >
+                        {t('actions.download')}
+                    </Button>
+                )}
+            </Box>
+            <AASOverviewCard
+                aas={aas ?? null}
+                productImage={aas?.assetInformation?.defaultThumbnail?.path}
+                isLoading={isLoadingAas}
+                isAccordion={isMobile}
+                repositoryURL={aasOriginUrl}
+                infrastructureName={infrastructureName}
+            />
+            <SubmodelsOverviewCard aas={aas} submodelIds={submodels} submodelsLoading={isLoadingSubmodels} />
+        </ViewerShell>
     );
 }

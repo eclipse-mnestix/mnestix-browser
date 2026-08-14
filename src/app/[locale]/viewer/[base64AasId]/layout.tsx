@@ -2,7 +2,7 @@
 
 import { Box } from '@mui/material';
 import { PropsWithChildren } from 'react';
-import { safeBase64Decode } from 'lib/util/Base64Util';
+import { safeBase64Decode, stripBase64Padding } from 'lib/util/Base64Util';
 import { useParams, useSearchParams } from 'next/navigation';
 import { CurrentAasContextProvider } from 'components/contexts/CurrentAasContext';
 import { NoSearchResult } from 'components/basics/detailViewBasics/NoSearchResult';
@@ -17,7 +17,7 @@ import { AasViewSwitcher } from 'app/[locale]/viewer/_components/AasViewSwitcher
 export default function AasViewerLayout({ children }: PropsWithChildren) {
     const { showError } = useShowError();
     const params = useParams<{ base64AasId: string }>();
-    const base64AasId = decodeURIComponent(params.base64AasId).replace(/(=|%3D)+$/i, '');
+    const base64AasId = stripBase64Padding(decodeURIComponent(params.base64AasId));
     const encodedRepoUrl = useSearchParams().get('repoUrl');
     const repoUrl = encodedRepoUrl ? decodeURI(encodedRepoUrl) : undefined;
     const infrastructureName = useSearchParams().get('infrastructure') || undefined;

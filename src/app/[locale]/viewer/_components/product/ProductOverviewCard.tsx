@@ -324,7 +324,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                     infrastructureName: props.infrastructureName,
                 },
             });
-            const url = `/product/${encodeBase64(props.aas.id)}`;
+            const url = `/viewer/${encodeBase64(props.aas.id)}/product`;
             navigate.push(url);
         }
     };
