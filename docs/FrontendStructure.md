@@ -73,5 +73,3 @@ Files that are shared between route segments are located in the following shared
 |--- stores
 |--- i18n
 ```
-</content>
-</invoke>
