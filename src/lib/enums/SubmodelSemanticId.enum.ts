@@ -17,5 +17,5 @@ export enum SubmodelSemanticIdEnum {
     TechnicalDataV20 = '0173-1#01-AHX837#002',
     BatteryPassportTechnicalDataV10 = 'https://admin-shell.io/idta/digitalbatterypassport/TechnicalData/1/0',
     HandoverDocumentationV20 = '0173-1#01-AHF578#003',
-    BatteryPassportHandoverDocumentationV10 = 'https://admin-shell.io/idta/SubmodelTemplate/DigitalBatteryPassport/HandoverDocumentation/1/0',
+    BatteryPassportHandoverDocumentationV10 = '0173-1#01-AHF578#003',
 }
