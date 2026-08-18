@@ -15,7 +15,7 @@ export enum SubmodelSemanticIdEnum {
     TechnicalDataV11 = 'http://admin-shell.io/ZVEI/TechnicalData/Submodel/1/1',
     TechnicalDataV12 = 'https://admin-shell.io/ZVEI/TechnicalData/Submodel/1/2',
     TechnicalDataV20 = '0173-1#01-AHX837#002',
-    BatteryPassportTechnicalDataV10 = 'https://admin-shell.io/idta/SubmodelTemplate/DigitalBatteryPassport/TechnicalData/1/0',
+    BatteryPassportTechnicalDataV10 = 'https://admin-shell.io/idta/digitalbatterypassport/TechnicalData/1/0',
     HandoverDocumentationV20 = '0173-1#01-AHF578#003',
     BatteryPassportHandoverDocumentationV10 = 'https://admin-shell.io/idta/SubmodelTemplate/DigitalBatteryPassport/HandoverDocumentation/1/0',
 }
