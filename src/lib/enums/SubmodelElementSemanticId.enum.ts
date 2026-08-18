@@ -23,6 +23,7 @@ export enum SubmodelElementSemanticIdEnum {
     ManufacturerName = '0173-1#02-AAO677#002',
     ManufacturerNameV20 = '0173-1#02-AAO677#004',
     ManufacturerLogo = 'https://admin-shell.io/ZVEI/TechnicalData/ManufacturerLogo/1/1',
+    ManufacturerLogoV20 = '0173-1#02-ABI776#002',
     ManufacturerProductDesignation = '0173-1#02-AAW338#001',
     ManufacturerProductDesignationV20 = '0173-1#02-AAW338#003',
     ManufacturerProductRoot = '0173-1#02-AAU732#001',
