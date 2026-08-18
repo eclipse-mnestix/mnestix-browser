@@ -5,7 +5,7 @@ export enum SubmodelSemanticIdEnum {
     CarbonFootprint = 'https://admin-shell.io/idta/CarbonFootprint/CarbonFootprint/0/9',
     CarbonFootprintV1 = 'https://admin-shell.io/idta/CarbonFootprint/CarbonFootprint/1/0',
     TimeSeries = 'https://admin-shell.io/idta/TimeSeries/1/1',
-    HierarchicalStructuresV10 = 'https://admin-shell.io/idta/HierarchicalStructures/1/0/Submodel',
+    HierarchicalStructuresV10 = 'https://adminshell.io/idta/HierarchicalStructures/1/0/Submodel',
     HierarchicalStructuresV11 = 'https://admin-shell.io/idta/HierarchicalStructures/1/1/Submodel',
     NameplateV1 = 'https://admin-shell.io/zvei/nameplate/1/0/Nameplate',
     NameplateV2 = 'https://admin-shell.io/zvei/nameplate/2/0/Nameplate',
