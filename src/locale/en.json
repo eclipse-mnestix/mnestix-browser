@@ -590,32 +590,6 @@
         }
       },
       "noBlueprintsWarning": "No blueprints available."
-    },
-    "transfer": {
-      "aasRepository": "AAS repository",
-      "chooseRepository": "Choose AAS repository to transfer into:",
-      "chooseSubmodelRepository": "Choose submodel repository (optional)",
-      "errorToast": "Transfer of AAS not successful",
-      "partiallyFailedToast": "Failed to transfer element",
-      "repositoryApiKey": "AAS repository APIKey",
-      "repositoryLabel": "List of AAS repositories",
-      "repositoryRequired": "AAS repository is required",
-      "submodelRepository": "Submodel repository",
-      "submodelRepositoryApiKey": "Submodel repository APIKey",
-      "submodelRepositoryLabel": "List of submodel repositories",
-      "subtitle": "Transfer \"{aasId}\" from \"{repoUrl}\" to:",
-      "successfulToast": "Transfer of AAS successful",
-      "title": "Transfer",
-      "useAasRepository": "Use AAS repository",
-      "warningToast": "AAS was only partially transferred.",
-      "aasIdentifier": {
-        "display": "\"{aasId}\"",
-        "default": "Unknown AAS ID"
-      },
-      "aasOriginUrl": {
-        "display": "\"{repoUrl}\"",
-        "default": "Unknown AAS Origin URL"
-      }
     }
   }
 }

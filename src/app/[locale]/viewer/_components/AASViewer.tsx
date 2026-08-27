@@ -8,7 +8,6 @@ import { useParams, useRouter } from 'next/navigation';
 import { SubmodelsOverviewCard } from '../_components/SubmodelsOverviewCard';
 import { AASOverviewCard } from 'app/[locale]/viewer/_components/AASOverviewCard';
 import { useEnv } from 'app/EnvProvider';
-import { TransferButton } from 'app/[locale]/viewer/_components/transfer/TransferButton';
 import { useLocale, useTranslations } from 'next-intl';
 import { NoSearchResult } from 'components/basics/detailViewBasics/NoSearchResult';
 import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
@@ -174,7 +173,6 @@ export function AASViewer() {
                                     {t('actions.toProductView')}
                                 </Button>
                             )}
-                            {env.TRANSFER_FEATURE_FLAG && <TransferButton />}
                             {showDownloadButton && (
                                 <Button
                                     variant="contained"

@@ -590,32 +590,6 @@
         }
       },
       "noBlueprintsWarning": "Keine Blueprints verfügbar."
-    },
-    "transfer": {
-      "aasRepository": "AAS Repository",
-      "chooseRepository": "Wählen Sie das AAS-Repository, in das übertragen werden soll:",
-      "chooseSubmodelRepository": "Submodel Repository auswählen (optional)",
-      "errorToast": "Transfer der AAS nicht erfolgreich",
-      "partiallyFailedToast": "Teil des Transfers fehlgeschlagen",
-      "repositoryApiKey": "AAS Repository ApiKey",
-      "repositoryLabel": "Liste der AAS Repositorys",
-      "repositoryRequired": "AAS Repository wird benötigt",
-      "submodelRepository": "Submodel Repository",
-      "submodelRepositoryApiKey": "Submodel Repository ApiKey",
-      "submodelRepositoryLabel": "Liste der Submodel Repositorys",
-      "subtitle": "Transfer \"{aasId}\" von \"{repoUrl}\" zu:",
-      "successfulToast": "Transfer der AAS erfolgreich",
-      "title": "Transfer",
-      "useAasRepository": "AAS Repository verwenden",
-      "warningToast": "Transfer der AAS nur teilweise erfolgreich.",
-      "aasIdentifier": {
-        "display": "\"{aasId}\"",
-        "default": "Unbekannte AAS-ID"
-      },
-      "aasOriginUrl": {
-        "display": "\"{repoUrl}\"",
-        "default": "Unbekannte AAS-Origin-URL"
-      }
     }
   }
 }

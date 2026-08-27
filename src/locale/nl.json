@@ -590,32 +590,6 @@
         }
       },
       "noBlueprintsWarning": "Geen blauwdrukken beschikbaar."
-    },
-    "transfer": {
-      "aasRepository": "AAS-repository",
-      "chooseRepository": "Kies AAS-repository om naar over te dragen:",
-      "chooseSubmodelRepository": "Kies submodel-repository (optioneel)",
-      "errorToast": "Overdracht van AAS niet geslaagd",
-      "partiallyFailedToast": "Overdracht van element mislukt",
-      "repositoryApiKey": "API-sleutel AAS-repository",
-      "repositoryLabel": "Lijst van AAS-repositories",
-      "repositoryRequired": "AAS-repository is verplicht",
-      "submodelRepository": "Submodel-repository",
-      "submodelRepositoryApiKey": "API-sleutel submodel-repository",
-      "submodelRepositoryLabel": "Lijst van submodel-repositories",
-      "subtitle": "Draag \"{aasId}\" over van \"{repoUrl}\" naar:",
-      "successfulToast": "Overdracht van AAS geslaagd",
-      "title": "Overdracht",
-      "useAasRepository": "AAS-repository gebruiken",
-      "warningToast": "AAS is slechts gedeeltelijk overgedragen.",
-      "aasIdentifier": {
-        "display": "\"{aasId}\"",
-        "default": "Onbekend AAS-ID"
-      },
-      "aasOriginUrl": {
-        "display": "\"{repoUrl}\"",
-        "default": "Onbekende AAS-oorsprong-URL"
-      }
     }
   }
 }
