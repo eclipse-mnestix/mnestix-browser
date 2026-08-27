@@ -98,9 +98,9 @@ export function AASViewer() {
         }
     }, [infrastructureName]);
 
-    let aasIdDecoded: string;
     try {
-        aasIdDecoded = safeBase64Decode(base64AasId);
+        // Validates the route parameter; an undecodable id renders the no-result view below.
+        safeBase64Decode(base64AasId);
     } catch (e) {
         showError(e);
         return (
@@ -109,10 +109,6 @@ export function AASViewer() {
             </Box>
         );
     }
-
-    const startComparison = () => {
-            navigate.push(`/compare?aasId=${encodeURIComponent(aasIdDecoded)}`);
-        };
 
         const goToProductView = () => {
             navigate.push(
@@ -150,16 +146,6 @@ export function AASViewer() {
                                     ''
                                 )}
                             </Typography>
-                            {env.COMPARISON_FEATURE_FLAG && !isMobile && (
-                                <Button
-                                    sx={{ mr: 2 }}
-                                    variant="contained"
-                                    onClick={startComparison}
-                                    data-testid="detail-compare-button"
-                                >
-                                    {t('actions.compareButton')}
-                                </Button>
-                            )}
                             {env.EXPERIMENTAL_PRODUCT_VIEW_FEATURE_FLAG && (
                                 <Button
                                     variant="contained"

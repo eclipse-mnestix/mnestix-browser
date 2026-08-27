@@ -8,7 +8,6 @@ type EnvironmentalVariables = Awaited<ReturnType<typeof getEnv>>;
 
 export const initialEnvValues: EnvironmentalVariables = {
     AAS_LIST_FEATURE_FLAG: false,
-    COMPARISON_FEATURE_FLAG: false,
     EXPERIMENTAL_PRODUCT_VIEW_FEATURE_FLAG: false,
     KEYCLOAK_ENABLED: false,
     LOCK_TIMESERIES_PERIOD_FEATURE_FLAG: false,

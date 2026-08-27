@@ -193,7 +193,6 @@
   "pages": {
     "aasList": {
       "buttonTooltip": "Zur AAS",
-      "compare": "Vergleichen",
       "header": "AAS Liste",
       "listHeader": {
         "aasEndpoint": "AAS URL",
@@ -209,16 +208,13 @@
         "infrastructureName": "Infrastruktur",
         "viewAASButton": "AAS anzeigen"
       },
-      "maxElementsWarning": "Maximal 3 Elemente selektierbar",
       "page": "Seite",
       "repositoryDropdownLabel": "AAS Repository oder AAS Registry (Infrastruktur)",
       "selectListSource": "Bitte wählen Sie ein Repository oder AAS Registry aus",
-      "subHeader": "Hier finden Sie alle AAS aus Ihrem Repository oder AAS Registry. Sie können ein AAS-Repository oder AAS Registry auswählen, um zwischen den Datenquellen zu wechseln.",
-      "titleComparisonAddButton": "AAS zum Vergleich hinzufügen"
+      "subHeader": "Hier finden Sie alle AAS aus Ihrem Repository oder AAS Registry. Sie können ein AAS-Repository oder AAS Registry auswählen, um zwischen den Datenquellen zu wechseln."
     },
     "aasViewer": {
       "actions": {
-        "compareButton": "Vergleichen",
         "toProductView": "Produktansicht",
         "download": "AAS herunterladen"
       },
@@ -295,22 +291,6 @@
       "searchPlaceholder": "Suche aktuell nicht verfügbar...",
       "title": "Hersteller Produktkatalog"
     },
-    "compare": {
-      "addAnother": "Eine weitere AAS hinzufügen",
-      "addButton": "Eine weitere AAS hinzufügen",
-      "addFirstAasButton": "AAS hinzufügen",
-      "collection": {
-        "hide": "Verbergen",
-        "show": "{idShort}"
-      },
-      "errors": {
-        "aasAddError": "AAS konnte nicht hinzugefügt werden.",
-        "aasAlreadyAdded": "AAS kann nicht mehrmals hinzugefügt werden.",
-        "moreAasFound": "Mehr als eine AAS im Discovery Service gefunden, bitte geben Sie die AAS-ID an.",
-        "unknownModelType": "Mnestix unterstützt diesen ModelType noch nicht ({type})."
-      },
-      "title": "AAS vergleichen"
-    },
     "dashboard": {
       "aasOrAssetId": "AAS ID oder Asset ID",
       "infrastructure": "Infrastruktur",
@@ -336,7 +316,6 @@
     },
     "productViewer": {
       "actions": {
-        "compareButton": "Vergleichen",
         "download": "AAS herunterladen",
         "downloadError": "Fehler beim Herunterladen der AAS.",
         "downloadErrorNoRepo": "Kein Repository für die ausgewählte AAS gefunden.",

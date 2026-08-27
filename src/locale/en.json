@@ -193,7 +193,6 @@
   "pages": {
     "aasList": {
       "buttonTooltip": "Go to AAS",
-      "compare": "Compare",
       "header": "AAS List",
       "listHeader": {
         "aasEndpoint": "AAS URL",
@@ -209,16 +208,13 @@
         "infrastructureName": "Infrastructure",
         "viewAASButton": "View AAS"
       },
-      "maxElementsWarning": "Cannot compare more than 3 elements",
       "page": "Page",
       "repositoryDropdownLabel": "AAS Repository or AAS Registry (Infrastructure)",
       "selectListSource": "Please select a repository or AAS registry",
-      "subHeader": "You will find all AAS from your repository or AAS registry here. You can select an AAS repository or AAS registry to switch between data sources.",
-      "titleComparisonAddButton": "Add AAS to comparison"
+      "subHeader": "You will find all AAS from your repository or AAS registry here. You can select an AAS repository or AAS registry to switch between data sources."
     },
     "aasViewer": {
       "actions": {
-        "compareButton": "Compare",
         "toProductView": "Product view",
         "download": "Download AAS"
       },
@@ -295,22 +291,6 @@
       "searchPlaceholder": "Search currently unavailable...",
       "title": "Manufacturer catalog"
     },
-    "compare": {
-      "addAnother": "Add another AAS",
-      "addButton": "Add another AAS",
-      "addFirstAasButton": "Add AAS",
-      "collection": {
-        "hide": "Hide",
-        "show": "{idShort}"
-      },
-      "errors": {
-        "aasAddError": "AAS could not be added.",
-        "aasAlreadyAdded": "AAS cannot be added more than once.",
-        "moreAasFound": "More than one AAS found in the discovery service, please provide the AAS ID instead.",
-        "unknownModelType": "Mnestix doesn't support this model type yet ({type})."
-      },
-      "title": "Compare AAS"
-    },
     "dashboard": {
       "aasOrAssetId": "AAS ID or Asset ID",
       "infrastructure": "Infrastructure",
@@ -336,7 +316,6 @@
     },
     "productViewer": {
       "actions": {
-        "compareButton": "Compare",
         "download": "Download AAS",
         "downloadError": "Error while downloading AAS.",
         "downloadErrorNoRepo": "No repository found for the selected AAS.",

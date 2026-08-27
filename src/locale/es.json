@@ -193,7 +193,6 @@
   "pages": {
     "aasList": {
       "buttonTooltip": "Ir a AAS",
-      "compare": "Comparar",
       "header": "Lista de AAS",
       "listHeader": {
         "aasEndpoint": "AAS URL",
@@ -209,16 +208,13 @@
         "infrastructureName": "Infraestructura",
         "viewAASButton": "Ver AAS"
       },
-      "maxElementsWarning": "No se pueden comparar más de 3 elementos",
       "page": "Página",
       "repositoryDropdownLabel": "AAS repository o AAS registry (Infrastructure)",
       "selectListSource": "Por favor, seleccione un repositorio o AAS registry",
-      "subHeader": "Todos los AAS de su repositorio o AAS registry se muestran aquí. Puede seleccionar otro repositorio o AAS registry para cambiar la fuente de los datos.",
-      "titleComparisonAddButton": "Añadir AAS a la comparación"
+      "subHeader": "Todos los AAS de su repositorio o AAS registry se muestran aquí. Puede seleccionar otro repositorio o AAS registry para cambiar la fuente de los datos."
     },
     "aasViewer": {
       "actions": {
-        "compareButton": "Comparar",
         "toProductView": "Vista de producto",
         "download": "Descargar AAS"
       },
@@ -295,22 +291,6 @@
       "searchPlaceholder": "Búsqueda no disponible actualmente...",
       "title": "Catálogo de productos"
     },
-    "compare": {
-      "addAnother": "Añadir otro AAS",
-      "addButton": "Añadir otro AAS",
-      "addFirstAasButton": "Añadir AAS",
-      "collection": {
-        "hide": "Ocultar",
-        "show": "{idShort}"
-      },
-      "errors": {
-        "aasAddError": "No se pudo añadir el AAS.",
-        "aasAlreadyAdded": "No se puede añadir este AAS más de una vez.",
-        "moreAasFound": "Más de un AAS encontrado en el servicio de descubrimiento, introduzca el ID del AAS, por favor.",
-        "unknownModelType": "Mnestix aún no admite este ModelType ({type})."
-      },
-      "title": "Comparar AAS"
-    },
     "dashboard": {
       "aasOrAssetId": "AAS ID o Asset ID",
       "infrastructure": "Infraestructura",
@@ -336,7 +316,6 @@
     },
     "productViewer": {
       "actions": {
-        "compareButton": "Comparar",
         "download": "Descargar AAS",
         "downloadError": "Error al descargar el AAS.",
         "downloadErrorNoRepo": "No se encontró ningún repositorio para el AAS seleccionado.",

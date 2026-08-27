@@ -61,18 +61,9 @@ describe('AasListTableRow', () => {
                 };
             }),
         );
-        listRowWrapper(
-            <AasListTableRow
-                repository={repository}
-                aasListEntry={listEntry1}
-                checkBoxDisabled={() => undefined}
-                comparisonFeatureFlag={true}
-                selectedAasList={undefined}
-                updateSelectedAasList={() => undefined}
-            />,
-        );
+        listRowWrapper(<AasListTableRow repository={repository} aasListEntry={listEntry1} />);
 
-        await waitFor(() => screen.getByTestId('list-checkbox'));
+        await waitFor(() => screen.getByTestId('list-thumbnail'));
         expect(screen.getByTestId('list-thumbnail')).toBeInTheDocument();
         expect(screen.getByTestId('list-manufacturer-name')).toHaveTextContent('ManufacturerEN');
         expect(screen.getByTestId('list-product-designation')).toHaveTextContent('ProductDesignationEN');
@@ -96,17 +87,8 @@ describe('AasListTableRow', () => {
                 };
             }),
         );
-        listRowWrapper(
-            <AasListTableRow
-                repository={repository}
-                aasListEntry={listEntry2}
-                checkBoxDisabled={() => undefined}
-                comparisonFeatureFlag={true}
-                selectedAasList={undefined}
-                updateSelectedAasList={() => undefined}
-            />,
-        );
-        await waitFor(() => screen.getByTestId('list-checkbox'));
+        listRowWrapper(<AasListTableRow repository={repository} aasListEntry={listEntry2} />);
+        await waitFor(() => screen.getByTestId('list-thumbnail'));
         expect(screen.getByTestId('list-thumbnail')).toBeInTheDocument();
         expect(screen.getByTestId('list-manufacturer-name')).toHaveTextContent('');
         expect(screen.getByTestId('list-product-designation')).toHaveTextContent('');
