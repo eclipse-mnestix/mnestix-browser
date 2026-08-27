@@ -1,4 +1,4 @@
-import logger, { logInfo } from 'lib/util/Logger';
+import logger, { logInfo, logWarn } from 'lib/util/Logger';
 import { AasRegistryService } from 'lib/services/aas-registry-service/AasRegistryService';
 import { DiscoveryService } from 'lib/services/discovery-service/DiscoveryService';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
@@ -143,7 +143,10 @@ export class InfrastructureSearchService {
                 if (!submodelSearchResult.isSuccess) {
                     return wrapErrorCode(submodelSearchResult.errorCode, submodelSearchResult.message);
                 }
-                return wrapSuccess({ searchResult: submodelSearchResult.result, location: endpoint });
+                return wrapSuccess({
+                    searchResult: submodelSearchResult.result,
+                    location: this.getRepoBaseFromSubmodelEndpoint(endpoint),
+                });
             }
         }
 
@@ -162,7 +165,10 @@ export class InfrastructureSearchService {
             if (!submodelSearchResult.isSuccess) {
                 return wrapErrorCode(submodelSearchResult.errorCode, submodelSearchResult.message);
             } else {
-                return wrapSuccess({ searchResult: submodelSearchResult.result, location: endpoint });
+                return wrapSuccess({
+                    searchResult: submodelSearchResult.result,
+                    location: this.getRepoBaseFromSubmodelEndpoint(endpoint),
+                });
             }
         }
 
@@ -249,6 +255,27 @@ export class InfrastructureSearchService {
         }
 
         return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'No AAS found for the given ID');
+    }
+
+    /**
+     * A submodel registry descriptor's endpoint href is the full submodel URL
+     * (`<repo-base>/submodels/<id>`). Downstream consumers treat `location` as a plain repo base
+     * and re-append `/submodels/<id>/submodel-elements/...`, so the href must be trimmed back to the
+     * base to avoid a doubled `/submodels/<id>` segment. base64url ids never contain '/', so the
+     * last `/submodels/` is always the descriptor's resource segment; a base that itself contains
+     * `/submodels/` stays intact.
+     */
+    private getRepoBaseFromSubmodelEndpoint(endpoint: string): string {
+        const index = endpoint.lastIndexOf('/submodels/');
+        if (index === -1) {
+            logWarn(
+                this.log,
+                'searchSubmodelInInfrastructure',
+                `Registry endpoint "${endpoint}" is not standard-conform (no /submodels/ segment); using as-is.`,
+            );
+            return endpoint;
+        }
+        return endpoint.substring(0, index);
     }
 
     private createAasResult(aas: AssetAdministrationShell, data: AasData): AasSearchResult {
