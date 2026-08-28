@@ -22,7 +22,7 @@ const mockEnvVariables = jest.fn(() => {
 const mockEnvVariablesWithExternalLinks = jest.fn(() => {
     return {
         AAS_LIST_FEATURE_FLAG: true,
-        MNESTIX_BACKEND_API_URL: 'http://localhost:5064/backend',
+        MNESTIX_AAS_GENERATOR_API_URL: 'http://localhost:5064/backend',
         AUTHENTICATION_FEATURE_FLAG: true,
         EXTERNAL_LINKS: [
             {
@@ -43,7 +43,7 @@ const mockEnvVariablesWithExternalLinks = jest.fn(() => {
 const mockEnvVariablesWithI18nExternalLinks = jest.fn(() => {
     return {
         AAS_LIST_FEATURE_FLAG: true,
-        MNESTIX_BACKEND_API_URL: 'http://localhost:5064/backend',
+        MNESTIX_AAS_GENERATOR_API_URL: 'http://localhost:5064/backend',
         AUTHENTICATION_FEATURE_FLAG: true,
         EXTERNAL_LINKS: [
             {

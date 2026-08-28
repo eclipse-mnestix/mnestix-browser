@@ -33,10 +33,6 @@ const keycloak = {
     KEYCLOAK_CLIENT_ID: process_env.KEYCLOAK_CLIENT_ID,
 };
 
-const mnestix_v2 = {
-    MNESTIX_V2_ENABLED: process_env.MNESTIX_V2_ENABLED?.trim().toLocaleLowerCase() !== 'false',
-};
-
 const security = {
     SECRET_ENC_KEY: process_env.SECRET_ENC_KEY,
 };
@@ -181,7 +177,7 @@ export const publicEnvs = {
  *
  * Can be used in the backend. When used in frontend all envs are undefined.
  */
-export const envs = { ...publicEnvs, ...privateEnvs, ...privateAzure, ...mnestix_v2, ...security };
+export const envs = { ...publicEnvs, ...privateEnvs, ...privateAzure, ...security };
 
 function parseFlag(value: string | undefined) {
     if (value === undefined) {

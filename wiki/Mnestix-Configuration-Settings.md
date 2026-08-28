@@ -14,7 +14,6 @@ Mnestix provides the following configuration options. You can adapt the values i
 | `MNESTIX_AAS_GENERATOR_API_URL`    |               | Mnestix Aas Generator with a lot of business comfort features to create AAS via templates                                                        |
 | `CONCEPT_DESCRIPTION_REPO_API_URL` |               | Default Concept Description Repository                                                                                                           |
 | `LOG_LEVEL`                        | "info"        | Server side log level of Mnestix Browser. "fatal" or "error" or "warn" or "info" or "debug" or "trace" or "silent"                               |
-| `MNESTIX_V2_ENABLED`               | "true"        | Setting to 'false' to support older Mnestix API versions (v1._._), the support for those Mnestix API versions will be stopped in the near future |
 
 #### Features
 

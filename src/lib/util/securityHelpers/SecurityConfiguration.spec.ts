@@ -38,7 +38,6 @@ function createMockInfrastructure(overrides: Partial<InfrastructureConnection> =
 describe('createSecurityHeaders', () => {
     beforeEach(() => {
         jest.clearAllMocks();
-        mockedEnvs.MNESTIX_V2_ENABLED = false;
         mockedEnvs.AUTHENTICATION_FEATURE_FLAG = false;
         mockedEnvs.MNESTIX_BACKEND_API_KEY = 'test-api-key';
     });
@@ -65,23 +64,9 @@ describe('createSecurityHeaders', () => {
             });
         });
 
-        it('should return API key headers when authentication is disabled and V2 is disabled', async () => {
+        it('should return X-API-KEY headers when authentication is disabled', async () => {
             const mockDefaultInfrastructure = createMockInfrastructure({ isDefault: true });
             mockedEnvs.AUTHENTICATION_FEATURE_FLAG = false;
-            mockedEnvs.MNESTIX_V2_ENABLED = false;
-            mockedEnvs.MNESTIX_BACKEND_API_KEY = 'test-api-key';
-
-            const result = await createSecurityHeaders(mockDefaultInfrastructure);
-
-            expect(result).toEqual({
-                ApiKey: 'test-api-key',
-            });
-        });
-
-        it('should return X-API-KEY headers when authentication is disabled and V2 is enabled', async () => {
-            const mockDefaultInfrastructure = createMockInfrastructure({ isDefault: true });
-            mockedEnvs.AUTHENTICATION_FEATURE_FLAG = false;
-            mockedEnvs.MNESTIX_V2_ENABLED = true;
             mockedEnvs.MNESTIX_BACKEND_API_KEY = 'test-api-key';
 
             const result = await createSecurityHeaders(mockDefaultInfrastructure);
@@ -169,7 +154,7 @@ describe('createSecurityHeaders', () => {
     });
 
     describe('when security type is PROXY', () => {
-        it('should return API key header when security proxy is valid and V2 is disabled', async () => {
+        it('should return X-API-KEY header when security proxy is valid', async () => {
             const mockInfrastructure = createMockInfrastructure({
                 isDefault: false,
                 infrastructureSecurity: {
@@ -182,35 +167,6 @@ describe('createSecurityHeaders', () => {
                 },
             });
 
-            mockedEnvs.MNESTIX_V2_ENABLED = false;
-            mockedDecryptSecret.mockReturnValue('decrypted-proxy-value');
-
-            const result = await createSecurityHeaders(mockInfrastructure);
-
-            expect(mockedDecryptSecret).toHaveBeenCalledWith(
-                'encrypted-proxy-value',
-                'proxy-init-vector',
-                'proxy-auth-tag',
-            );
-            expect(result).toEqual({
-                ApiKey: 'decrypted-proxy-value',
-            });
-        });
-
-        it('should return X-API-KEY header when security proxy is valid and V2 is enabled', async () => {
-            const mockInfrastructure = createMockInfrastructure({
-                isDefault: false,
-                infrastructureSecurity: {
-                    securityType: 'PROXY',
-                    securityProxy: {
-                        value: 'encrypted-proxy-value',
-                        initVector: 'proxy-init-vector',
-                        authTag: 'proxy-auth-tag',
-                    },
-                },
-            });
-
-            mockedEnvs.MNESTIX_V2_ENABLED = true;
             mockedDecryptSecret.mockReturnValue('decrypted-proxy-value');
 
             const result = await createSecurityHeaders(mockInfrastructure);

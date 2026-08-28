@@ -13,7 +13,6 @@ export async function createSecurityHeaders(
 
     const securityType = infrastructure.infrastructureSecurity?.securityType;
     const securityData = infrastructure.infrastructureSecurity as InfrastructureSecurity;
-    const mnestixProxyHeaderName = envs.MNESTIX_V2_ENABLED ? 'X-API-KEY' : 'ApiKey';
 
     if (infrastructure.isDefault) {
         return createDefaultSecurityHeaders(await getBearerToken());
@@ -50,7 +49,7 @@ export async function createSecurityHeaders(
                 securityData.securityProxy.authTag,
             );
             return {
-                [mnestixProxyHeaderName]: headerValue,
+                ['X-API-KEY']: headerValue,
             };
         }
         default:
@@ -64,9 +63,8 @@ function createDefaultSecurityHeaders(bearerToken: string): Record<string, strin
             Authorization: `Bearer ${bearerToken}`,
         };
     } else if (!envs.AUTHENTICATION_FEATURE_FLAG) {
-        const mnestixProxyHeaderName = envs.MNESTIX_V2_ENABLED ? 'X-API-KEY' : 'ApiKey';
         return {
-            [mnestixProxyHeaderName]: envs.MNESTIX_BACKEND_API_KEY || '',
+            ['X-API-KEY']: envs.MNESTIX_BACKEND_API_KEY || '',
         };
     }
     return null;
