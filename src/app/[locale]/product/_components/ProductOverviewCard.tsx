@@ -83,7 +83,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             );
             const manufacturerArticleNumber = findValue(technicalDataSubmodelElements, 'ManufacturerArticleNumber', [
                 SubmodelElementSemanticIdEnum.ManufacturerArticleNumber,
-                SubmodelElementSemanticIdEnum.ManufacturerArticleNumberV20,
+                SubmodelElementSemanticIdEnum.ManufacturerArticleNumberV3,
             ]);
             const manufacturerOrderCode = findValue(technicalDataSubmodelElements, 'ManufacturerOrderCode', [
                 SubmodelElementSemanticIdEnum.ManufacturerOrderCode,
