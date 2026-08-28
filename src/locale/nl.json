@@ -68,11 +68,6 @@
       },
       "totalCO2Equivalents": "CO2-emissies van het product (tot nu toe)"
     },
-    "constructionDialog": {
-      "buttonText": "Sluiten",
-      "message": "Deze functie is momenteel in ontwikkeling en zal binnenkort beschikbaar zijn.",
-      "title": "In ontwikkeling"
-    },
     "contactInformation": {
       "contactTypes": {
         "0173-1#07-AAS754#001": "Kantoor",

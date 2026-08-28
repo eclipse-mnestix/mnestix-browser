@@ -68,11 +68,6 @@
       },
       "totalCO2Equivalents": "(Bisherige) CO2 Emissionen des Produkts"
     },
-    "constructionDialog": {
-      "buttonText": "Schließen",
-      "message": "Diese Funktion befindet sich derzeit im Aufbau und wird in Kürze verfügbar sein.",
-      "title": "In Bearbeitung"
-    },
     "contactInformation": {
       "contactTypes": {
         "0173-1#07-AAS754#001": "Geschäftlich",

@@ -68,11 +68,6 @@
       },
       "totalCO2Equivalents": "CO2 emissions from product (so far)"
     },
-    "constructionDialog": {
-      "buttonText": "Close",
-      "message": "This feature is currently under construction and will be available soon.",
-      "title": "Under Construction"
-    },
     "contactInformation": {
       "contactTypes": {
         "0173-1#07-AAS754#001": "Office",
