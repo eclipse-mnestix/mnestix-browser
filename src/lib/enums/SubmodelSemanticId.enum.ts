@@ -5,7 +5,7 @@ export enum SubmodelSemanticIdEnum {
     CarbonFootprint = 'https://admin-shell.io/idta/CarbonFootprint/CarbonFootprint/0/9',
     CarbonFootprintV1 = 'https://admin-shell.io/idta/CarbonFootprint/CarbonFootprint/1/0',
     TimeSeries = 'https://admin-shell.io/idta/TimeSeries/1/1',
-    HierarchicalStructuresV10 = 'https://adminshell.io/idta/HierarchicalStructures/1/0/Submodel',
+    HierarchicalStructuresV10 = 'https://admin-shell.io/idta/HierarchicalStructures/1/0/Submodel',
     HierarchicalStructuresV11 = 'https://admin-shell.io/idta/HierarchicalStructures/1/1/Submodel',
     NameplateV1 = 'https://admin-shell.io/zvei/nameplate/1/0/Nameplate',
     NameplateV2 = 'https://admin-shell.io/zvei/nameplate/2/0/Nameplate',
@@ -17,5 +17,10 @@ export enum SubmodelSemanticIdEnum {
     TechnicalDataV20 = '0173-1#01-AHX837#002',
     BatteryPassportTechnicalDataV10 = 'https://admin-shell.io/idta/digitalbatterypassport/TechnicalData/1/0',
     HandoverDocumentationV20 = '0173-1#01-AHF578#003',
-    BatteryPassportHandoverDocumentationV10 = '0173-1#01-AHF578#003',
+    /**
+     * Commented out because it has the same semanticId as HandoverDocumentationV20
+     * which causes warnings/errors in the pipeline
+     *
+     * BatteryPassportHandoverDocumentationV10 = '0173-1#01-AHF578#003',
+     */
 }
