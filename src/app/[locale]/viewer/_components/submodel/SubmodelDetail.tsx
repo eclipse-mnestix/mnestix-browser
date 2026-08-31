@@ -26,9 +26,9 @@ export function SubmodelDetail(props: SubmodelDetailProps) {
                 width: '100%'
             }}>
                 {CustomSubmodelComponent ? (
-                    <CustomSubmodelComponent submodel={props.submodel} />
+                    <CustomSubmodelComponent submodel={props.submodel} repositoryUrl={props.submodelRepositoryUrl} />
                 ) : (
-                    <GenericSubmodelDetailComponent submodel={props.submodel} />
+                    <GenericSubmodelDetailComponent submodel={props.submodel} repositoryUrl={props.submodelRepositoryUrl} />
                 )}
             </Box>
         </SubmodelRepositoryUrlProvider>

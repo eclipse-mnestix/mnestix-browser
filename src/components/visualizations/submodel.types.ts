@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react';
-import { Submodel, SubmodelElementCollection, SubmodelElementList } from 'lib/api/aas/models';
+import type { Submodel, SubmodelElementCollection, SubmodelElementList } from 'lib/api/aas/models';
 
 /**
  * Public contract for submodel and submodel-element visualizations. Part of the

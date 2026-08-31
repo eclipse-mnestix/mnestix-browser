@@ -72,7 +72,7 @@ You might want to have a look at them for further examples.
 After you created the sub-directory for your own visualization, you can create your `.tsx`-file and start developing the component.
 Custom submodel visualizations use the input type `SubmodelVisualizationProps`, which contains the submodel data.
 
-You can use this stump to develop a custom submodel visualization:
+You can use this stub to develop a custom submodel visualization:
 
 ```tsx
 import { SubmodelVisualizationProps } from 'components/visualizations/submodel.types';
