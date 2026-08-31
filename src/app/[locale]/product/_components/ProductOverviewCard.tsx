@@ -69,26 +69,26 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
 
     const prepareTechnicalDataSubmodel = useCallback(
         (technicalDataSubmodelElements: Array<SubmodelElementChoice>): Partial<OverviewData> => {
-            const manufacturerName = findValue(
-                technicalDataSubmodelElements,
-                'ManufacturerName',
+            const manufacturerName = findValue(technicalDataSubmodelElements, 'ManufacturerName', [
                 SubmodelElementSemanticIdEnum.ManufacturerName,
-            );
+                SubmodelElementSemanticIdEnum.ManufacturerNameV20,
+            ]);
             const manufacturerProductDesignation = findValue(
                 technicalDataSubmodelElements,
                 'ManufacturerProductDesignation',
-                SubmodelElementSemanticIdEnum.ManufacturerProductDesignation,
+                [
+                    SubmodelElementSemanticIdEnum.ManufacturerProductDesignation,
+                    SubmodelElementSemanticIdEnum.ManufacturerProductDesignationV20,
+                ],
             );
-            const manufacturerArticleNumber = findValue(
-                technicalDataSubmodelElements,
-                'ManufacturerArticleNumber',
+            const manufacturerArticleNumber = findValue(technicalDataSubmodelElements, 'ManufacturerArticleNumber', [
                 SubmodelElementSemanticIdEnum.ManufacturerArticleNumber,
-            );
-            const manufacturerOrderCode = findValue(
-                technicalDataSubmodelElements,
-                'ManufacturerOrderCode',
+                SubmodelElementSemanticIdEnum.ManufacturerArticleNumberV3,
+            ]);
+            const manufacturerOrderCode = findValue(technicalDataSubmodelElements, 'ManufacturerOrderCode', [
                 SubmodelElementSemanticIdEnum.ManufacturerOrderCode,
-            );
+                SubmodelElementSemanticIdEnum.ManufacturerOrderCodeV20,
+            ]);
             const manufacturerLogo = findSubmodelElementByIdShort(
                 technicalDataSubmodelElements,
                 'ManufacturerLogo',
@@ -109,17 +109,15 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             ) {
                 const classification = {
                     ProductClassificationSystem:
-                        findValue(
-                            productClassifications.value,
-                            'ProductClassificationSystem',
+                        findValue(productClassifications.value, 'ProductClassificationSystem', [
                             SubmodelElementSemanticIdEnum.ProductClassificationSystem,
-                        ) || undefined,
+                            SubmodelElementSemanticIdEnum.ProductClassificationSystemV20,
+                        ]) || undefined,
                     ProductClassId:
-                        findValue(
-                            productClassifications.value,
-                            'ProductClassId',
+                        findValue(productClassifications.value, 'ProductClassId', [
                             SubmodelElementSemanticIdEnum.ProductClassId,
-                        ) || undefined,
+                            SubmodelElementSemanticIdEnum.ProductClassIdV20,
+                        ]) || undefined,
                 };
                 classifications.push(classification);
             } else {
@@ -128,17 +126,15 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                     if (submodelClassification?.value) {
                         const classification = {
                             ProductClassificationSystem:
-                                findValue(
-                                    submodelClassification.value,
-                                    'ProductClassificationSystem',
+                                findValue(submodelClassification.value, 'ProductClassificationSystem', [
                                     SubmodelElementSemanticIdEnum.ProductClassificationSystem,
-                                ) || undefined,
+                                    SubmodelElementSemanticIdEnum.ProductClassificationSystemV20,
+                                ]) || undefined,
                             ProductClassId:
-                                findValue(
-                                    submodelClassification.value,
-                                    'ProductClassId',
+                                findValue(submodelClassification.value, 'ProductClassId', [
                                     SubmodelElementSemanticIdEnum.ProductClassId,
-                                ) || undefined,
+                                    SubmodelElementSemanticIdEnum.ProductClassIdV20,
+                                ]) || undefined,
                         };
                         // Filter out classifications without a ProductClassId
                         if (!classification.ProductClassId) {
@@ -194,21 +190,18 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             nameplateSubmodelElements: Array<SubmodelElementChoice>,
             prevData?: Partial<OverviewData>,
         ): Partial<OverviewData> => {
-            const manufacturerProductRoot = findValue(
-                nameplateSubmodelElements,
-                'ManufacturerProductRoot',
+            const manufacturerProductRoot = findValue(nameplateSubmodelElements, 'ManufacturerProductRoot', [
                 SubmodelElementSemanticIdEnum.ManufacturerProductRoot,
-            );
-            const manufacturerProductFamily = findValue(
-                nameplateSubmodelElements,
-                'ManufacturerProductFamily',
+                SubmodelElementSemanticIdEnum.ManufacturerProductRootV3,
+            ]);
+            const manufacturerProductFamily = findValue(nameplateSubmodelElements, 'ManufacturerProductFamily', [
                 SubmodelElementSemanticIdEnum.ManufacturerProductFamily,
-            );
-            const manufacturerProductType = findValue(
-                nameplateSubmodelElements,
-                'ManufacturerProductType',
+                SubmodelElementSemanticIdEnum.ManufacturerProductFamilyV3,
+            ]);
+            const manufacturerProductType = findValue(nameplateSubmodelElements, 'ManufacturerProductType', [
                 SubmodelElementSemanticIdEnum.ManufacturerProductType,
-            );
+                SubmodelElementSemanticIdEnum.ManufacturerProductTypeV3,
+            ]);
             const markingsElement = findSubmodelElementByIdShort(
                 nameplateSubmodelElements,
                 'Markings',
@@ -220,32 +213,36 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
             const companyLogo = findSubmodelElementByIdShort(
                 nameplateSubmodelElements,
                 'CompanyLogo',
-                SubmodelElementSemanticIdEnum.CompanyLogo,
+                SubmodelElementSemanticIdEnum.CompanyLogoV3,
             );
             const URIOfTheProduct = findValue(nameplateSubmodelElements, 'URIOfTheProducts', [
                 SubmodelElementSemanticIdEnum.URIOfTheProductV2,
                 SubmodelElementSemanticIdEnum.URIOfTheProductV3,
             ]);
-            const manufacturerName = findValue(
-                nameplateSubmodelElements,
-                'ManufacturerName',
+            const manufacturerName = findValue(nameplateSubmodelElements, 'ManufacturerName', [
                 SubmodelElementSemanticIdEnum.ManufacturerName,
-            );
+                SubmodelElementSemanticIdEnum.ManufacturerNameV20,
+            ]);
             const manufacturerProductDesignation = findValue(
                 nameplateSubmodelElements,
                 'ManufacturerProductDesignation',
-                SubmodelElementSemanticIdEnum.ManufacturerProductDesignation,
+                [
+                    SubmodelElementSemanticIdEnum.ManufacturerProductDesignation,
+                    SubmodelElementSemanticIdEnum.ManufacturerProductDesignationV20,
+                ],
             );
             const manufacturerArticleNumber = findValue(
                 nameplateSubmodelElements,
                 'ProductArticleNumberOfManufacturer',
-                SubmodelElementSemanticIdEnum.ManufacturerArticleNumber,
+                [
+                    SubmodelElementSemanticIdEnum.ManufacturerArticleNumber,
+                    SubmodelElementSemanticIdEnum.ManufacturerArticleNumberV3,
+                ],
             );
-            const manufacturerOrderCode = findValue(
-                nameplateSubmodelElements,
-                'OrderCodeOfManufacturer',
+            const manufacturerOrderCode = findValue(nameplateSubmodelElements, 'OrderCodeOfManufacturer', [
                 SubmodelElementSemanticIdEnum.ManufacturerOrderCode,
-            );
+                SubmodelElementSemanticIdEnum.ManufacturerOrderCodeV20,
+            ]);
             return {
                 ...prevData,
                 manufacturerName: prevData?.manufacturerName ? prevData.manufacturerName : (manufacturerName ?? '-'),
@@ -380,9 +377,11 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
     const classificationInfo = (
         <Box sx={infoBoxStyle} data-testid="asset-data">
             {!isAccordion && (
-                <Box sx={{
-                    display: 'flex'
-                }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                    }}
+                >
                     <IconCircleWrapper sx={{ mr: 1 }}>
                         <AssetIcon fontSize="small" color="primary" />
                     </IconCircleWrapper>
@@ -422,9 +421,11 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                             sx={{ height: '300px', maxWidth: '300px', width: '100%' }}
                             data-testid="aas-loading-skeleton"
                         ></Skeleton>
-                        <Box sx={{
-                            width: '100%'
-                        }}>
+                        <Box
+                            sx={{
+                                width: '100%',
+                            }}
+                        >
                             {isAccordion ? (
                                 <Box sx={{ m: 1 }}>
                                     <Skeleton width="100%" />
@@ -500,8 +501,9 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                                         sx={{
                                                             fontSize: 'small',
                                                             ml: 1,
-                                                            cursor: 'pointer'
-                                                        }} />
+                                                            cursor: 'pointer',
+                                                        }}
+                                                    />
                                                 </Tooltip>
                                             )}
                                         </Typography>
