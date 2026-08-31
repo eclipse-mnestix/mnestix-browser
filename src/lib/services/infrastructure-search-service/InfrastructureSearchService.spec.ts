@@ -241,6 +241,8 @@ describe('Submodel Search happy paths', () => {
 
         expect(search.isSuccess).toBeTruthy();
         expect(search.result!.searchResult.id).toBe(submodelRef.keys[0].value);
+        // repo branch already returns a plain base; must stay untouched
+        expect(search.result!.location).toBe(testUrl);
     });
 
     it('returns submodel for given submodel descriptor', async () => {
@@ -248,7 +250,7 @@ describe('Submodel Search happy paths', () => {
         const submodel: Submodel = createTestSubmodel('https://test.de/submodel1', 'submodel1');
 
         const submodelDescriptor: SubmodelDescriptor = createTestSubmodelDescriptor(
-            new URL('https://test.de/submodel1/endpoint'),
+            new URL(`https://env-demo.dti/submodels/${encodeBase64(submodel.id)}`),
             submodel.id,
         );
 
@@ -263,6 +265,8 @@ describe('Submodel Search happy paths', () => {
 
         expect(search.isSuccess).toBe(true);
         expect(search.result!.searchResult.id).toBe(submodelRef.keys[0].value);
+        // MNE-398: full submodel href must be trimmed to the repo base so the attachment path is not doubled
+        expect(search.result!.location).toBe('https://env-demo.dti');
     });
 
     it('returns submodel if submodel was found in a submodel registry', async () => {
@@ -270,7 +274,7 @@ describe('Submodel Search happy paths', () => {
         const submodel: Submodel = createTestSubmodel('https://test.de/submodel1', 'submodel1');
 
         const submodelDescriptor: SubmodelDescriptor = createTestSubmodelDescriptor(
-            new URL('https://test.de/submodel1/endpoint'),
+            new URL(`https://env-demo.dti/submodels/${encodeBase64(submodel.id)}`),
             submodel.id,
         );
 
@@ -281,6 +285,42 @@ describe('Submodel Search happy paths', () => {
 
         expect(search.isSuccess).toBeTruthy();
         expect(search.result!.searchResult.id).toBe(submodelRef.keys[0].value);
+        // MNE-398: registry-lookup branch must also trim the full href to the repo base
+        expect(search.result!.location).toBe('https://env-demo.dti');
+    });
+
+    it('keeps a base that itself contains /submodels/ intact, trimming only the last segment', async () => {
+        const submodelRef = createTestSubmodelRef('https://test.de/submodel1');
+        const submodel: Submodel = createTestSubmodel('https://test.de/submodel1', 'submodel1');
+
+        const submodelDescriptor: SubmodelDescriptor = createTestSubmodelDescriptor(
+            new URL(`https://host/submodels/env/submodels/${encodeBase64(submodel.id)}`),
+            submodel.id,
+        );
+
+        const searcher = InfrastructureSearchService.createNull({
+            submodelRegistryDescriptors: [submodelDescriptor],
+        });
+        const search = await searcher.searchSubmodelInInfrastructure(submodelRef, 'Test Infrastructure');
+
+        expect(search.isSuccess).toBeTruthy();
+        expect(search.result!.location).toBe('https://host/submodels/env');
+    });
+
+    it('returns the endpoint unchanged when the registry href has no /submodels/ segment', async () => {
+        const submodelRef = createTestSubmodelRef('https://test.de/submodel1');
+        const submodel: Submodel = createTestSubmodel('https://test.de/submodel1', 'submodel1');
+
+        const nonConformHref = 'https://env-demo.dti/submodel1/endpoint';
+        const submodelDescriptor: SubmodelDescriptor = createTestSubmodelDescriptor(new URL(nonConformHref), submodel.id);
+
+        const searcher = InfrastructureSearchService.createNull({
+            submodelRegistryDescriptors: [submodelDescriptor],
+        });
+        const search = await searcher.searchSubmodelInInfrastructure(submodelRef, 'Test Infrastructure');
+
+        expect(search.isSuccess).toBeTruthy();
+        expect(search.result!.location).toBe(nonConformHref);
     });
 
     it('returns an error when submodel was not found in any repository or registry', async () => {

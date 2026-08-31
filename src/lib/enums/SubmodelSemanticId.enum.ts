@@ -12,10 +12,15 @@ export enum SubmodelSemanticIdEnum {
     NameplateV3 = 'https://admin-shell.io/zvei/nameplate/3/0/Nameplate',
     NameplateV4 = 'https://admin-shell.io/idta/nameplate/3/0/Nameplate',
     BillOfApplications = 'https://xitaso.com/BillOfApplications',
-    TechnicalDataV11 = 'https://admin-shell.io/ZVEI/TechnicalData/Submodel/1/1',
+    TechnicalDataV11 = 'http://admin-shell.io/ZVEI/TechnicalData/Submodel/1/1',
     TechnicalDataV12 = 'https://admin-shell.io/ZVEI/TechnicalData/Submodel/1/2',
     TechnicalDataV20 = '0173-1#01-AHX837#002',
-    BatteryPassportTechnicalDataV10 = 'https://admin-shell.io/idta/SubmodelTemplate/DigitalBatteryPassport/TechnicalData/1/0',
+    BatteryPassportTechnicalDataV10 = 'https://admin-shell.io/idta/digitalbatterypassport/TechnicalData/1/0',
     HandoverDocumentationV20 = '0173-1#01-AHF578#003',
-    BatteryPassportHandoverDocumentationV10 = 'https://admin-shell.io/idta/SubmodelTemplate/DigitalBatteryPassport/HandoverDocumentation/1/0',
+    /**
+     * Commented out because it has the same semanticId as HandoverDocumentationV20
+     * which causes warnings/errors in the pipeline
+     *
+     * BatteryPassportHandoverDocumentationV10 = '0173-1#01-AHF578#003',
+     */
 }
