@@ -11,13 +11,13 @@ import { useTranslations } from 'next-intl';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import { findSubmodelByIdOrSemanticId, findSubmodelElementByIdShort } from 'lib/util/SubmodelResolverUtil';
 import { MobileAccordion } from 'components/basics/detailViewBasics/MobileAccordion';
-import { KeyFactsBox } from 'app/[locale]/product/_components/KeyFactsBox';
+import { KeyFactsBox } from 'app/[locale]/viewer/_components/product/KeyFactsBox';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { useProductImageUrl } from 'lib/hooks/UseProductImageUrl';
 import { useFindValueByIdShort } from 'lib/hooks/useFindValueByIdShort';
 import { ActionMenu } from './ProductActionMenu';
 import LinkIcon from '@mui/icons-material/Link';
-import { MnestixConnection } from '../../../../../prisma/generated/client';
+import { MnestixConnection } from '../../../../../../prisma/generated/client';
 import {
     AssetAdministrationShell,
     Property,
@@ -321,7 +321,7 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                     infrastructureName: props.infrastructureName,
                 },
             });
-            const url = `/product/${encodeBase64(props.aas.id)}`;
+            const url = `/viewer/${encodeBase64(props.aas.id)}/product`;
             navigate.push(url);
         }
     };

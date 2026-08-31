@@ -219,8 +219,16 @@
     "aasViewer": {
       "actions": {
         "compareButton": "Compare",
-        "toProductView": "Product view",
         "download": "Download AAS"
+      },
+      "viewNotFound": {
+        "header": "View not found",
+        "description": "The view ''{view}'' does not exist for this Asset Administration Shell.",
+        "toHomeButton": "To Home"
+      },
+      "views": {
+        "default": "AAS View",
+        "product": "Product view"
       },
       "asset": "Asset",
       "assetAdministrationShell": "Asset Administration Shell",
@@ -339,8 +347,7 @@
         "compareButton": "Compare",
         "download": "Download AAS",
         "downloadError": "Error while downloading AAS.",
-        "downloadErrorNoRepo": "No repository found for the selected AAS.",
-        "toAasView": "AAS View"
+        "downloadErrorNoRepo": "No repository found for the selected AAS."
       },
       "classification": "Classification",
       "error": {
