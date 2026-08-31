@@ -1,5 +1,5 @@
 import { ReferenceCounterVisualizations } from './ReferenceCounterVisualizations';
-import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
+import { SubmodelVisualizationProps } from 'components/visualizations/submodel.types';
 
 export function ReferenceCounterDetail({ submodel }: SubmodelVisualizationProps) {
     return (

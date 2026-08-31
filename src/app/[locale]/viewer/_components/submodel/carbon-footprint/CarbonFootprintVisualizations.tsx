@@ -14,7 +14,7 @@ import {
 import { ProductLifecycleStage } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/ProductLifecycleStage.enum';
 import { StyledDataRow } from 'components/basics/StyledDataRow';
 import { Property, Submodel, SubmodelElementCollection, SubmodelElementList } from 'lib/api/aas/models';
-import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
+import { SubmodelVisualizationProps } from 'components/visualizations/submodel.types';
 import { useLocale, useTranslations } from 'next-intl';
 import { PcfSubmodelElementSemanticIdEnum } from 'app/[locale]/viewer/_components/submodel/carbon-footprint/PcfSubmodelElementSemanticId.enum';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
