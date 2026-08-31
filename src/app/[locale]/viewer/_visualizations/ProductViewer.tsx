@@ -45,12 +45,12 @@ export function ProductViewer() {
 
     if (nameplate) {
         const productBreadcrumbProperties = [
-            { idShort: 'ManufacturerProductRoot', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductRoot },
+            { idShort: 'ManufacturerProductRoot', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductRootV3 },
             {
                 idShort: 'ManufacturerProductFamily',
-                semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductFamily,
+                semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductFamilyV3,
             },
-            { idShort: 'ManufacturerProductType', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductType },
+            { idShort: 'ManufacturerProductType', semanticId: SubmodelElementSemanticIdEnum.ManufacturerProductTypeV3 },
         ];
 
         productBreadcrumbProperties.forEach((prop) => {
