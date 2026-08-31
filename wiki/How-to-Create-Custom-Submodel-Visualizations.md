@@ -72,15 +72,21 @@ You might want to have a look at them for further examples.
 After you created the sub-directory for your own visualization, you can create your `.tsx`-file and start developing the component.
 Custom submodel visualizations use the input type `SubmodelVisualizationProps`, which contains the submodel data.
 
-You can use this stump to develop a custom submodel visualization:
+You can use this stub to develop a custom submodel visualization:
 
 ```tsx
-import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
+import { SubmodelVisualizationProps } from 'components/visualizations/submodel.types';
 
 export default function CustomSubmodel({ submodel }: SubmodelVisualizationProps) {
     return <h1>This is the custom visualization for submodel {submodel.idShort}</h1>;
 }
 ```
+
+> [!NOTE]
+> `SubmodelVisualizationProps` (and `CustomSubmodelElementComponentProps` for submodel-element
+> visualizations) live in `src/components/visualizations/submodel.types.ts`, the stable public
+> contract. Older guides imported them from
+> `app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps` — update that import line.
 
 > [!TIP]
 > For now the custom visualization exists but will not be shown for the SoftwareNameplate submodel.
@@ -91,13 +97,12 @@ export default function CustomSubmodel({ submodel }: SubmodelVisualizationProps)
 ## Map the visualization
 
 In order for Mnestix to automatically use your visualization, you have to provide the mapping between your visualization and the semantic id which your custom visualization should be used for.
-This is done in the file `src/app/[locale]/viewer/_components/submodel/SubmodelsCustomVisualizationMap.ts` which looks similar to this:
+This is done in the file `src/app/[locale]/viewer/_components/submodel/SubmodelCustomVisualizationMap.ts` which looks similar to this:
 
 ```ts
-export const submodelsCustomVisualizationMap = {
-    [SubmodelSemanticIdEnum.CoffeeConsumptionContainer]: CoffeeConsumptionDetail,
+export const submodelCustomVisualizationMap = {
     [SubmodelSemanticIdEnum.CarbonFootprint]: CarbonFootprintDetail,
-    [SubmodelSemanticIdEnum.CarbonFootprintIRDI]: CarbonFootprintDetail,
+    [SubmodelSemanticIdEnum.CarbonFootprintIrdi]: CarbonFootprintDetail,
     [SubmodelSemanticIdEnum.ReferenceCounterContainer]: ReferenceCounterDetail,
     [SubmodelSemanticIdEnum.TimeSeries]: TimeSeriesDetail,
     [SubmodelSemanticIdEnum.HierarchicalStructuresV10]: HierarchicalStructuresDetail,
@@ -109,6 +114,17 @@ export const submodelsCustomVisualizationMap = {
 
 Just add an entry containing the semantic id as a key and your React component as the value.
 Important: Don’t forget to import your React component at the top of the file!
+
+Submodel *element* visualizations work the same way, via
+`src/app/[locale]/viewer/_components/submodel-elements/SubmodelElementCustomVisualizationMap.ts`.
+
+## Registering without editing the map
+
+The viewer never reads those maps directly. It resolves visualizations through two small
+factories:
+
+- `src/app/[locale]/viewer/_components/submodel/submodel.config.ts` → `getSubmodelVisualizationMap()`
+- `src/app/[locale]/viewer/_components/submodel-elements/submodel-element.config.ts` → `getSubmodelElementVisualizationMap()`
 
 > [!NOTE]
 > You might also want to add your semantic id to the `SubmodelSemanticIdEnum` used in the examples above.

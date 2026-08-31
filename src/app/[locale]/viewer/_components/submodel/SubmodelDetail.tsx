@@ -1,5 +1,5 @@
 import { Submodel } from 'lib/api/aas/models';
-import { submodelCustomVisualizationMap } from './SubmodelCustomVisualizationMap';
+import { getSubmodelVisualizationMap } from './submodel.config';
 import { GenericSubmodelDetailComponent } from './generic-submodel/GenericSubmodelDetailComponent';
 import { Box } from '@mui/material';
 import { findSemanticIdInMap } from 'lib/util/SubmodelResolverUtil';
@@ -15,9 +15,10 @@ export function SubmodelDetail(props: SubmodelDetailProps) {
     const submodelElements = props.submodel?.submodelElements;
     if (!props.submodel || !submodelElements) return <></>;
 
-    const key = findSemanticIdInMap(props.submodel.semanticId, submodelCustomVisualizationMap);
+    const visualizationMap = getSubmodelVisualizationMap();
+    const key = findSemanticIdInMap(props.submodel.semanticId, visualizationMap);
 
-    const CustomSubmodelComponent = key ? submodelCustomVisualizationMap[key] : undefined;
+    const CustomSubmodelComponent = key ? visualizationMap[key] : undefined;
 
     return (
         <SubmodelRepositoryUrlProvider repositoryUrl={props.submodelRepositoryUrl}>
@@ -25,9 +26,9 @@ export function SubmodelDetail(props: SubmodelDetailProps) {
                 width: '100%'
             }}>
                 {CustomSubmodelComponent ? (
-                    <CustomSubmodelComponent submodel={props.submodel} />
+                    <CustomSubmodelComponent submodel={props.submodel} repositoryUrl={props.submodelRepositoryUrl} />
                 ) : (
-                    <GenericSubmodelDetailComponent submodel={props.submodel} />
+                    <GenericSubmodelDetailComponent submodel={props.submodel} repositoryUrl={props.submodelRepositoryUrl} />
                 )}
             </Box>
         </SubmodelRepositoryUrlProvider>

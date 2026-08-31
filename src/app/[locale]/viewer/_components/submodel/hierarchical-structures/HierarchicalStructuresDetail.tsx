@@ -8,7 +8,7 @@ import { GenericSubmodelElementComponent } from '../../submodel-elements/generic
 import { InfoOutlined } from '@mui/icons-material';
 import React from 'react';
 import { ArchetypeDetailsDialog } from './ArchetypeDetailsDialog';
-import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
+import { SubmodelVisualizationProps } from 'components/visualizations/submodel.types';
 import { RelationShipTypes } from 'lib/enums/RelationShipTypes.enum';
 
 export function HierarchicalStructuresDetail({ submodel }: SubmodelVisualizationProps) {
