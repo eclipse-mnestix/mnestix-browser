@@ -38,6 +38,17 @@ export async function initializeAasGeneratorApiDependencies(): Promise<ApiDepend
     const configurationV1 = new ConfigurationV1({
         basePath: envs.MNESTIX_AAS_GENERATOR_API_URL,
         fetchApi: (input: RequestInfo | URL, init?: RequestInit) => fetchRaw.fetch(input, init),
+        // The generated client's spec paths (e.g. /api/Template/...) are unversioned; the proxy now serves
+        // them under /api/v1/... and only 308-redirects the old path for compatibility. Server-side fetches
+        // refuse redirects (SSRF hardening), so we rewrite the path here instead of relying on the redirect.
+        middleware: [
+            {
+                pre: async (context) => ({
+                    url: context.url.replace(/\/api\//, '/api/v1/'),
+                    init: context.init,
+                }),
+            },
+        ],
     });
 
     const configurationV2 = new ConfigurationV2({

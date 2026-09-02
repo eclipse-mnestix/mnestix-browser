@@ -29,7 +29,7 @@ export class ConfigurationShellApiV2 implements IConfigurationShellApi {
     }
 
     async getIdGenerationSettings(): Promise<ApiResponseWrapper<Submodel>> {
-        let url = this.baseUrl + '/api/configuration';
+        let url = this.baseUrl + '/api/v1/configuration';
         url = url.replace(/[?&]$/, '');
 
         const options: RequestInit = {
@@ -66,7 +66,7 @@ export class ConfigurationShellApiV2 implements IConfigurationShellApi {
     }
 
     async putSingleSettingValue(path: string, value: string): Promise<ApiResponseWrapper<void>> {
-        let url = `${this.baseUrl}/api/configuration?idShortPath=${path}&value=${value}`;
+        let url = `${this.baseUrl}/api/v1/configuration?idShortPath=${path}&value=${value}`;
         url = url.replace(/[?&]$/, '');
 
         const options: RequestInit = {
