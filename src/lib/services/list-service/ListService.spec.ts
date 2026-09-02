@@ -166,6 +166,61 @@ describe('ListService: Return List Entities', function () {
             });
         });
 
+        describe('getAasListEntities (registry) — per-descriptor endpoint', () => {
+            const registryRepository: RepositoryWithInfrastructure = {
+                infrastructureName: 'Default Infrastructure',
+                url: 'http://registry.configured:8081',
+            };
+
+            function withDescriptorHref(href: string, endpointResponse?: unknown) {
+                const infrastructure = createTestInfrastructure({ name: registryRepository.infrastructureName });
+                mockedGetInfrastructureByName.mockResolvedValue(infrastructure);
+                const descriptor = { id: 'aas-1', endpoints: [{ protocolInformation: { href } }] };
+                const fetchMock = jest.fn();
+                fetchMock.mockResolvedValueOnce({
+                    isSuccess: true,
+                    result: { result: [descriptor], paging_metadata: {} },
+                });
+                if (endpointResponse) fetchMock.mockResolvedValueOnce(endpointResponse);
+                mockedMnestixFetch.mockReturnValue({ fetch: fetchMock });
+                return { infrastructure, fetchMock };
+            }
+
+            it('guards the descriptor endpoint href and skips it when egress is blocked', async () => {
+                mockedAssertEgressAllowed.mockImplementation(async (u: string) => {
+                    if (u.includes('169.254.169.254')) throw new Error('Egress blocked: internal target.');
+                });
+                const { fetchMock } = withDescriptorHref('http://169.254.169.254/aas');
+
+                const listService = await ListService.create(registryRepository);
+                const result = await listService.getAasListEntities(5, undefined, 'registry');
+
+                expect(mockedAssertEgressAllowed).toHaveBeenCalledWith(
+                    'http://169.254.169.254/aas',
+                    registryRepository.infrastructureName,
+                );
+                expect(result.success).toBe(true);
+                expect(result.entities).toEqual([]);
+                expect(fetchMock).toHaveBeenCalledTimes(1); // descriptors only; endpoint never fetched
+            });
+
+            it('derives credentials for the descriptor endpoint host, not the registry base host', async () => {
+                mockedAssertEgressAllowed.mockResolvedValue(undefined);
+                mockedSecurityHeadersForUrl.mockResolvedValue(null);
+                const { infrastructure, fetchMock } = withDescriptorHref('http://backend:8081/aas/x', {
+                    isSuccess: false,
+                    errorCode: ApiResultStatus.NOT_FOUND,
+                    message: 'nope',
+                });
+
+                const listService = await ListService.create(registryRepository);
+                await listService.getAasListEntities(5, undefined, 'registry');
+
+                expect(mockedSecurityHeadersForUrl).toHaveBeenCalledWith('http://backend:8081/aas/x', infrastructure);
+                expect(fetchMock).toHaveBeenCalledTimes(2); // descriptors + endpoint
+            });
+        });
+
         describe('getNameplateValuesForAAS', () => {
             it('returns a forbidden failure and never fetches when egress is blocked', async () => {
                 mockedAssertEgressAllowed.mockRejectedValue(new Error('Egress blocked: internal target.'));

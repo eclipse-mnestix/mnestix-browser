@@ -152,7 +152,7 @@ export class ListService {
                 }
                 let hrefValue = descriptor.endpoints[0].protocolInformation.href;
                 if (hrefValue.startsWith('/')) {
-                    const host = new URL(this.repositoryWithInfrastructure.url).origin;
+                    const host = new URL(url).origin;
                     logWarn(
                         this.log,
                         'getAasListEntities',
@@ -161,8 +161,26 @@ export class ListService {
                     hrefValue = host.concat(hrefValue);
                 }
 
+                // The endpoint URL comes from the descriptor (data), not the configured repository — guard it
+                // and re-derive credentials for its own host, so we never fetch an internal target or leak
+                // the infrastructure's credentials to a non-configured host.
+                try {
+                    await assertEgressAllowed(hrefValue, infrastructureName);
+                } catch (e) {
+                    logWarn(
+                        this.log,
+                        'getAasListEntities',
+                        `Skipping descriptor "${descriptor.id}" endpoint blocked by egress guard: ${(e as Error).message}`,
+                    );
+                    return null;
+                }
+
                 const endpoint = new URL(hrefValue);
-                const aasResponse = await targetAasRegistryClient.getAssetAdministrationShellFromEndpoint(endpoint);
+                const endpointHeader = await securityHeadersForUrl(hrefValue, infrastructure);
+                const aasResponse =
+                    await this.getTargetAasRegistryClient(endpointHeader).getAssetAdministrationShellFromEndpoint(
+                        endpoint,
+                    );
                 return aasResponse.isSuccess ? aasResponse.result : null;
             });
 
