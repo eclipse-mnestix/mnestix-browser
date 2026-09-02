@@ -2,8 +2,11 @@
 
 import { TransferService } from 'lib/services/transfer-service/TransferService';
 import { TransferDto, TransferResult } from 'lib/types/TransferServiceData';
+import { requireAdmin } from 'lib/util/securityHelpers/authGuard';
 
 export async function transferAasWithSubmodels(transferDto: TransferDto): Promise<TransferResult[]> {
+    await requireAdmin();
+
     const transfer = await TransferService.create({
         targetAasRepo: transferDto.targetAasRepository,
         sourceAasRepo: transferDto.sourceAasRepository,

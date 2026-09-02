@@ -3,6 +3,7 @@
 import { ConnectionType } from '../../../../prisma/generated/client';
 import logger from 'lib/util/Logger';
 import { PrismaConnector } from 'lib/services/database/PrismaConnector';
+import { requireAdmin } from 'lib/util/securityHelpers/authGuard';
 import type { InfrastructureFormData } from 'app/[locale]/settings/_components/mnestix-infrastructure/InfrastructureTypes';
 import { envs } from 'lib/env/MnestixEnv';
 import { ConnectionTypeEnum, getTypeAction } from 'lib/services/database/ConnectionTypeEnum';
@@ -19,6 +20,7 @@ export async function getDefaultInfrastructureName() {
 }
 
 export async function getInfrastructuresAction() {
+    await requireAdmin();
     const prismaConnector = PrismaConnector.create();
     return prismaConnector.getInfrastructures();
 }
@@ -120,16 +122,19 @@ export async function getSubmodelRepositoriesIncludingDefault() {
 }
 
 export async function createInfrastructureAction(infrastructureData: InfrastructureFormData) {
+    await requireAdmin();
     const prismaConnector = PrismaConnector.create();
     return prismaConnector.createInfrastructure(infrastructureData);
 }
 
 export async function updateInfrastructureAction(infrastructureData: InfrastructureFormData) {
+    await requireAdmin();
     const prismaConnector = PrismaConnector.create();
     return prismaConnector.updateInfrastructure(infrastructureData);
 }
 
 export async function deleteInfrastructureAction(infrastructureId: string): Promise<void> {
+    await requireAdmin();
     const connector = PrismaConnector.create();
     await connector.deleteInfrastructureAction(infrastructureId);
 }

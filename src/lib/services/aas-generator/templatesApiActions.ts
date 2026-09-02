@@ -12,8 +12,11 @@ import {
     createVersionedAasGeneratorClients,
 } from './aasGeneratorVersioning';
 import { handleResponseError } from './apiHelper';
+import { requireRole } from 'lib/util/securityHelpers/authGuard';
+import { MnestixRole } from 'components/authentication/AllowedRoutes';
 
 export async function getTemplates(apiVersion?: AasGeneratorApiVersion): Promise<ApiResponseWrapper<Submodel[]>> {
+    await requireRole(MnestixRole.MnestixAdmin, MnestixRole.MnestixUser);
     const version = resolveTemplateApiVersion(apiVersion);
     const clients = await createVersionedAasGeneratorClients();
 
