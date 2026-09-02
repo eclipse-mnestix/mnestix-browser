@@ -10,8 +10,8 @@ Mnestix Browser connects to the Mnestix AAS Generator v2.* (formerly known as Mn
 - **Mnestix AAS Generator v2.*** - Active development and recommended
 - **Mnestix Browser v2.*** - Active development and recommended
 
-### Removed Support
-- **Mnestix API v1.*** - No longer supported
+### Removed Support (in Browser)
+- **Mnestix API v1.*** - No longer supported by Mnestix Browser
 - **Mnestix Browser v1.*** - No longer supported
 
 > **Important**: If you are still running Mnestix API v1.*, migrate to the Mnestix AAS Generator before upgrading the Browser. See the migration guide below.
