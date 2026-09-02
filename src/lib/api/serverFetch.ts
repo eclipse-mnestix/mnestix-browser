@@ -30,6 +30,15 @@ function logServerFetchDebug(
     );
 }
 
+// Redirect statuses we refuse to follow. Server-side fetches target BaSyx REST APIs that do not rely on
+// redirects; following them would let an attacker-controlled (or compromised) host bounce the request to an
+// internal target after the egress guard has already cleared the original URL.
+const REDIRECT_STATUSES = [301, 302, 303, 307, 308];
+
+function isRedirectResponse(response: Response): boolean {
+    return response.type === 'opaqueredirect' || REDIRECT_STATUSES.includes(response.status);
+}
+
 export async function performServerFetch<T>(
     input: string | Request | URL,
     init?: RequestInit | undefined,
@@ -37,7 +46,11 @@ export async function performServerFetch<T>(
     const log = await createServerFetchLogger();
 
     try {
-        const response = await fetch(input, init);
+        const response = await fetch(input, { ...init, redirect: 'manual' });
+        if (isRedirectResponse(response)) {
+            log.warn({ Reason: 'Refusing to follow redirect', Http_Status: response.status }, `Request URL: ${input}`);
+            return wrapErrorCode(ApiResultStatus.FORBIDDEN, 'Refusing to follow redirect for a server-side fetch.');
+        }
         logServerFetchDebug(log, input, response, 'Initiating server fetch');
 
         return await wrapResponse<T>(response);
@@ -59,7 +72,14 @@ export async function performServerFetchRaw(
     const log = await createServerFetchLogger();
 
     try {
-        const response = await fetch(input, init);
+        const response = await fetch(input, { ...init, redirect: 'manual' });
+        if (isRedirectResponse(response)) {
+            log.warn(
+                { Reason: 'Refusing to follow redirect', Http_Status: response.status },
+                `Request URL: ${input}`,
+            );
+            throw new Error('Refusing to follow redirect for a server-side fetch.');
+        }
         logServerFetchDebug(log, input, response, 'Initiating server fetch (raw)');
 
         return response;
