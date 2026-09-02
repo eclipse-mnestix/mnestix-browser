@@ -1,5 +1,6 @@
 import net from 'net';
 import dns from 'dns';
+import ipaddr from 'ipaddr.js';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
 import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
@@ -60,7 +61,9 @@ export async function securityHeadersForUrl(
 }
 
 function hostnameOf(url: string): string {
-    return new URL(url).hostname.replace(/^\[|\]$/g, '');
+    // Lowercased so host matching is case-insensitive (DNS hostnames are). This is the single seam
+    // through which every host — configured or requested — is derived, so both sides always agree.
+    return new URL(url).hostname.replace(/^\[|\]$/g, '').toLowerCase();
 }
 
 const CONFIGURED_URL_FIELDS: Array<keyof InfrastructureConnection> = [
@@ -73,7 +76,13 @@ const CONFIGURED_URL_FIELDS: Array<keyof InfrastructureConnection> = [
     'serializationEndpointUrls',
 ];
 
-/** Every hostname configured on an infrastructure, across all of its connection URL lists (host-only, port/scheme ignored). */
+/**
+ * Every hostname configured on an infrastructure, across all of its connection URL lists (host-only,
+ * port/scheme ignored, case-insensitive). Matching is deliberately literal per host string: if the same
+ * backend is reachable under multiple spellings (e.g. a service name AND an IP), each spelling that
+ * should carry credentials must be listed on the infrastructure — otherwise the unlisted spelling is
+ * treated as an unconfigured (potentially attacker) host and gets no credentials.
+ */
 function configuredHostnames(infrastructure: InfrastructureConnection): Set<string> {
     const hosts = new Set<string>();
     for (const field of CONFIGURED_URL_FIELDS) {
@@ -86,50 +95,38 @@ function configuredHostnames(infrastructure: InfrastructureConnection): Set<stri
     return hosts;
 }
 
+/**
+ * True for any address that is not a normal public unicast address — loopback, private (RFC1918),
+ * link-local (incl. the cloud-metadata 169.254.169.254), unique-local, carrier-grade NAT, multicast,
+ * broadcast, reserved, and the IPv6 transition ranges (IPv4-mapped, NAT64, 6to4, Teredo). ipaddr.js's
+ * range() does the classification: everything except "unicast" is refused. We only add the one thing
+ * it does not flag — an IPv4 embedded in IPv6 — which must be judged by that embedded IPv4 instead.
+ */
 function isInternalIp(ip: string): boolean {
-    const family = net.isIP(ip);
-    if (family === 4) return isInternalIpv4(ip);
-    if (family === 6) return isInternalIpv6(ip);
-    return false;
-}
-
-function isInternalIpv4(ip: string): boolean {
-    const parts = ip.split('.').map(Number);
-    if (parts.length !== 4 || parts.some((n) => Number.isNaN(n))) return false;
-    const [a, b] = parts;
-    if (a === 0) return true; // "this" network
-    if (a === 127) return true; // loopback
-    if (a === 10) return true; // RFC1918
-    if (a === 172 && b >= 16 && b <= 31) return true; // RFC1918
-    if (a === 192 && b === 168) return true; // RFC1918
-    if (a === 169 && b === 254) return true; // link-local (incl. metadata 169.254.169.254)
-    return false;
-}
-
-function isInternalIpv6(ip: string): boolean {
-    const lower = ip.toLowerCase();
-    if (lower === '::1' || lower === '::') return true; // loopback / unspecified
-    // IPv4-mapped/embedded addresses: classify by the embedded IPv4. Node's URL parser normalizes
-    // e.g. [::ffff:169.254.169.254] to the hex form [::ffff:a9fe:a9fe], so both forms must be decoded.
-    const embedded = embeddedIpv4(lower);
-    if (embedded) return isInternalIpv4(embedded);
-    const first = parseInt(lower.split(':')[0] || '0', 16);
-    if (first >= 0xfe80 && first <= 0xfebf) return true; // link-local fe80::/10
-    if (first >= 0xfc00 && first <= 0xfdff) return true; // unique local fc00::/7
-    return false;
-}
-
-/** Extracts the embedded IPv4 (as dotted-quad) from an IPv4-mapped IPv6 address, in either dotted or hex form. */
-function embeddedIpv4(lower: string): string | null {
-    const dotted = lower.match(/^::ffff:(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$/);
-    if (dotted) return dotted[1];
-    const hex = lower.match(/^::ffff:([0-9a-f]{1,4}):([0-9a-f]{1,4})$/);
-    if (hex) {
-        const hi = parseInt(hex[1], 16);
-        const lo = parseInt(hex[2], 16);
-        return `${(hi >> 8) & 0xff}.${hi & 0xff}.${(lo >> 8) & 0xff}.${lo & 0xff}`;
+    let addr: ReturnType<typeof ipaddr.parse>;
+    try {
+        addr = ipaddr.parse(ip);
+    } catch {
+        return false;
     }
-    return null;
+    if (addr instanceof ipaddr.IPv6) {
+        // ipaddr.js does not treat IPv4-in-IPv6 as internal on its own: the IPv4-mapped form
+        // (::ffff:a.b.c.d) it labels "ipv4Mapped", and the deprecated IPv4-compatible form
+        // (::a.b.c.d, which Node normalizes to e.g. ::7f00:1) it reports as plain "unicast".
+        // Both carry the IPv4 in the final two hextets — decode it and classify by that instead.
+        const { parts } = addr;
+        const embedsIpv4 = parts.slice(0, 5).every((h) => h === 0) && (parts[5] === 0 || parts[5] === 0xffff);
+        if (embedsIpv4) {
+            const embedded = new ipaddr.IPv4([
+                (parts[6] >> 8) & 0xff,
+                parts[6] & 0xff,
+                (parts[7] >> 8) & 0xff,
+                parts[7] & 0xff,
+            ]);
+            return embedded.range() !== 'unicast';
+        }
+    }
+    return addr.range() !== 'unicast';
 }
 
 type GuardDeps = {
