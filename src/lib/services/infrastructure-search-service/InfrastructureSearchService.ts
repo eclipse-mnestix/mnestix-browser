@@ -12,6 +12,7 @@ import { AasRegistryEndpointEntryInMemory } from 'lib/api/registry-service-api/r
 import { SubmodelRepositoryService } from 'lib/services/submodel-repository-service/SubmodelRepositoryService';
 import { SubmodelRegistryService } from 'lib/services/submodel-registry-service/SubmodelRegistryService';
 import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
+import { assertEgressAllowed } from 'lib/util/securityHelpers/repositoryFetchGuard';
 
 export type AasSearchResult = {
     redirectUrl: string;
@@ -139,6 +140,14 @@ export class InfrastructureSearchService {
         if (smDescriptor && smDescriptor.endpoints.length > 0 && smDescriptor.endpoints[0].protocolInformation.href) {
             const endpoint = smDescriptor.endpoints[0].protocolInformation.href;
             if (endpoint) {
+                // The descriptor (and thus this href) is client-supplied via the `performSubmodelSearch`
+                // server action, so it must clear the egress guard before we fetch it — otherwise it is an
+                // SSRF vector into internal targets. Mirrors ListService's per-descriptor guard.
+                try {
+                    await assertEgressAllowed(endpoint, infrastructureName);
+                } catch (e) {
+                    return wrapErrorCode(ApiResultStatus.FORBIDDEN, (e as Error).message);
+                }
                 const submodelSearchResult = await this.submodelRegistrySearchService.getSubmodelFromEndpoint(endpoint);
                 if (!submodelSearchResult.isSuccess) {
                     return wrapErrorCode(submodelSearchResult.errorCode, submodelSearchResult.message);
@@ -161,6 +170,13 @@ export class InfrastructureSearchService {
         if (descriptorById && descriptorById.result?.endpoints && descriptorById.result.endpoints.length > 0) {
             const endpoint = descriptorById.result.endpoints[0].protocolInformation.href;
 
+            // Registry-returned hrefs are data, not operator config: a compromised or federated registry can
+            // point this at an internal target. Guard before fetching, consistent with the client-descriptor path above.
+            try {
+                await assertEgressAllowed(endpoint, infrastructureName);
+            } catch (e) {
+                return wrapErrorCode(ApiResultStatus.FORBIDDEN, (e as Error).message);
+            }
             const submodelSearchResult = await this.submodelRegistrySearchService.getSubmodelFromEndpoint(endpoint);
             if (!submodelSearchResult.isSuccess) {
                 return wrapErrorCode(submodelSearchResult.errorCode, submodelSearchResult.message);

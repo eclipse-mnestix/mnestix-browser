@@ -1,5 +1,26 @@
 'use server';
 
+/**
+ * Low-level server-side fetch primitive. Every outbound HTTP request the server makes funnels through here,
+ * reached only via the `mnestixFetch` / `mnestixFetchRaw` wrappers in `infrastructure.ts` — never called
+ * directly from feature code.
+ *
+ * SECURITY CONTRACT — read before adding a caller:
+ *
+ * 1. This module does NOT perform SSRF/egress validation. Its only network-safety behaviour is refusing to
+ *    follow redirects (see below). Any request whose URL is client-supplied or data-derived (e.g. a registry
+ *    descriptor's `href`) MUST be cleared with `assertEgressAllowed(url, infrastructureName)` from
+ *    `securityHelpers/repositoryFetchGuard` BEFORE it reaches here. The guard is applied per-action at the
+ *    call site (decision D1: guard on the client-supplied base URL, not centrally in `mnestixFetch`), so a new
+ *    fetch path that skips it is an unguarded SSRF hole. Operator-configured URLs (infrastructure DB / env
+ *    vars) are trusted by definition and are exempt.
+ *
+ * 2. These exports are Next.js Server Actions (this file carries the top-level `'use server'` directive).
+ *    Do NOT import or reference them from a Client Component: that ships their action ID to the browser and
+ *    turns an unguarded, arbitrary-URL server fetch into a client-invocable SSRF/credential-relay endpoint.
+ *    They are internal helpers — keep them reachable only through the server-side wrappers above.
+ */
+
 import { ApiResponseWrapper, wrapErrorCode, wrapResponse } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { headers } from 'next/headers';
@@ -39,6 +60,10 @@ function isRedirectResponse(response: Response): boolean {
     return response.type === 'opaqueredirect' || REDIRECT_STATUSES.includes(response.status);
 }
 
+/**
+ * Performs a server-side fetch and wraps the result in an {@link ApiResponseWrapper}. The caller owns egress
+ * validation: guard any untrusted `input` with `assertEgressAllowed` first (see the file-level contract).
+ */
 export async function performServerFetch<T>(
     input: string | Request | URL,
     init?: RequestInit | undefined,
@@ -65,6 +90,10 @@ export async function performServerFetch<T>(
     }
 }
 
+/**
+ * Like {@link performServerFetch} but returns the raw {@link Response} and throws on redirect/error instead of
+ * wrapping. Same egress contract: the caller must guard untrusted `input` with `assertEgressAllowed` first.
+ */
 export async function performServerFetchRaw(
     input: string | Request | URL,
     init?: RequestInit | undefined,

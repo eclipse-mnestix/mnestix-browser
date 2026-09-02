@@ -5,6 +5,7 @@ import { encodeBase64 } from 'lib/util/Base64Util';
 import { Log } from 'lib/util/Log';
 import { InfrastructureSearchService } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
 import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
+import { assertEgressAllowed } from 'lib/util/securityHelpers/repositoryFetchGuard';
 import {
     createTestAas,
     createTestShellDescriptor,
@@ -14,6 +15,12 @@ import {
 } from 'test-utils/TestUtils';
 
 jest.mock('./../database/infrastructureDatabaseActions');
+jest.mock('lib/util/securityHelpers/repositoryFetchGuard', () => ({
+    assertEgressAllowed: jest.fn(),
+    securityHeadersForUrl: jest.fn(),
+}));
+
+const mockedAssertEgressAllowed = assertEgressAllowed as jest.MockedFunction<typeof assertEgressAllowed>;
 
 const AAS_ENDPOINT = new URL('https://www.origin.com/route/for/aas/');
 
@@ -226,6 +233,7 @@ describe('Submodel Search happy paths', () => {
                 submodelRegistryUrls: ['https://registry1.com'],
             },
         ]);
+        mockedAssertEgressAllowed.mockResolvedValue(undefined);
     });
 
     it('returns submodel if submodel was found in a submodel repository', async () => {
@@ -332,6 +340,69 @@ describe('Submodel Search happy paths', () => {
         expect(search.isSuccess).toBeFalsy();
         if (!search.isSuccess) {
             expect(search.errorCode).toContain('NOT_FOUND');
+        }
+    });
+});
+
+describe('Submodel Search egress guard (SSRF)', () => {
+    const INTERNAL_HREF = 'http://169.254.169.254/submodels/aHR0cA';
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+        (getInfrastructuresIncludingDefault as jest.Mock).mockResolvedValue([
+            {
+                name: 'Test Infrastructure',
+                submodelRepositoryUrls: ['https://repository1.com'],
+                submodelRegistryUrls: ['https://registry1.com'],
+            },
+        ]);
+    });
+
+    it('blocks a client-supplied descriptor whose endpoint targets an internal address (never fetches it)', async () => {
+        mockedAssertEgressAllowed.mockRejectedValue(new Error('Egress blocked: internal address'));
+        const submodelRef = createTestSubmodelRef('https://test.de/submodel1');
+        const submodel = createTestSubmodel('https://test.de/submodel1', 'submodel1');
+        const maliciousDescriptor = createTestSubmodelDescriptor(new URL(INTERNAL_HREF), submodel.id);
+        const expectedHref = maliciousDescriptor.endpoints[0].protocolInformation.href;
+
+        const searcher = InfrastructureSearchService.createNull({});
+        const fetchSpy = jest.spyOn(searcher.submodelRegistrySearchService, 'getSubmodelFromEndpoint');
+
+        const search = await searcher.searchSubmodelInInfrastructure(
+            submodelRef,
+            'Test Infrastructure',
+            maliciousDescriptor,
+        );
+
+        expect(mockedAssertEgressAllowed).toHaveBeenCalledWith(expectedHref, 'Test Infrastructure');
+        expect(fetchSpy).not.toHaveBeenCalled();
+        expect(search.isSuccess).toBe(false);
+        if (!search.isSuccess) {
+            expect(search.errorCode).toContain('FORBIDDEN');
+        }
+    });
+
+    it('blocks a registry-returned descriptor whose endpoint targets an internal address (never fetches it)', async () => {
+        mockedAssertEgressAllowed.mockRejectedValue(new Error('Egress blocked: internal address'));
+        const submodelRef = createTestSubmodelRef('https://test.de/submodel1');
+        const submodel = createTestSubmodel('https://test.de/submodel1', 'submodel1');
+        const maliciousDescriptor = createTestSubmodelDescriptor(new URL(INTERNAL_HREF), submodel.id);
+        const expectedHref = maliciousDescriptor.endpoints[0].protocolInformation.href;
+
+        const searcher = InfrastructureSearchService.createNull({
+            submodelRegistryDescriptors: [maliciousDescriptor],
+        });
+        const fetchSpy = jest.spyOn(searcher.submodelRegistrySearchService, 'getSubmodelFromEndpoint');
+
+        // No descriptor passed in → falls through to the registry-lookup branch, which returns the
+        // (attacker-influenceable) descriptor href — that href must clear the guard before any fetch.
+        const search = await searcher.searchSubmodelInInfrastructure(submodelRef, 'Test Infrastructure');
+
+        expect(mockedAssertEgressAllowed).toHaveBeenCalledWith(expectedHref, 'Test Infrastructure');
+        expect(fetchSpy).not.toHaveBeenCalled();
+        expect(search.isSuccess).toBe(false);
+        if (!search.isSuccess) {
+            expect(search.errorCode).toContain('FORBIDDEN');
         }
     });
 });
