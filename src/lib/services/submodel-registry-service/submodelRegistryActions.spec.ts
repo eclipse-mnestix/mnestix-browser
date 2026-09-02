@@ -45,6 +45,7 @@ describe('getSubmodelFromSubmodelDescriptor', () => {
 
         const result = await getSubmodelFromSubmodelDescriptor(repository);
 
+        expect(mockedAssertEgressAllowed).toHaveBeenCalledWith(repository.url, repository.infrastructureName);
         expect(result.isSuccess).toBe(false);
         expect(mockedMnestixFetch).not.toHaveBeenCalled();
         expect(fetchMock).not.toHaveBeenCalled();

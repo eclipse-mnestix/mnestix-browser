@@ -2,6 +2,7 @@ import { GET, POST } from 'app/api/mnestixConnections/route';
 import { prisma } from 'lib/database/prisma';
 import { getAuthError } from 'lib/util/securityHelpers/authGuard';
 import { NextRequest } from 'next/server';
+import { MnestixRole } from 'components/authentication/AllowedRoutes';
 
 jest.mock('lib/util/securityHelpers/authGuard', () => ({
     requireAdmin: jest.fn(),
@@ -40,6 +41,7 @@ describe('GET /api/mnestixConnections', () => {
         const response = await GET();
 
         expect(response.status).toBe(401);
+        expect(await response.json()).toEqual({ error: 'Unauthorized' });
         expect(findManyMock).not.toHaveBeenCalled();
     });
 
@@ -49,6 +51,7 @@ describe('GET /api/mnestixConnections', () => {
         const response = await GET();
 
         expect(response.status).toBe(403);
+        expect(await response.json()).toEqual({ error: 'Forbidden' });
         expect(findManyMock).not.toHaveBeenCalled();
     });
 
@@ -60,6 +63,7 @@ describe('GET /api/mnestixConnections', () => {
 
         expect(response.status).toBe(200);
         expect(findManyMock).toHaveBeenCalledTimes(1);
+        expect(getAuthErrorMock).toHaveBeenCalledWith([MnestixRole.MnestixAdmin]);
     });
 });
 
@@ -75,6 +79,7 @@ describe('POST /api/mnestixConnections', () => {
         const response = await POST(req);
 
         expect(response.status).toBe(401);
+        expect(await response.json()).toEqual({ error: 'Unauthorized' });
         expect(findFirstMock).not.toHaveBeenCalled();
         expect(createMock).not.toHaveBeenCalled();
     });
@@ -86,6 +91,7 @@ describe('POST /api/mnestixConnections', () => {
         const response = await POST(req);
 
         expect(response.status).toBe(403);
+        expect(await response.json()).toEqual({ error: 'Forbidden' });
         expect(findFirstMock).not.toHaveBeenCalled();
         expect(createMock).not.toHaveBeenCalled();
     });
@@ -101,5 +107,6 @@ describe('POST /api/mnestixConnections', () => {
         expect(response.status).toBe(200);
         expect(findFirstMock).toHaveBeenCalledTimes(1);
         expect(createMock).toHaveBeenCalledTimes(1);
+        expect(getAuthErrorMock).toHaveBeenCalledWith([MnestixRole.MnestixAdmin]);
     });
 });

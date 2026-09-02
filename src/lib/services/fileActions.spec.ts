@@ -3,6 +3,7 @@ import { assertEgressAllowed, securityHeadersForUrl } from 'lib/util/securityHel
 import { getInfrastructureByName } from './database/infrastructureDatabaseActions';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { RepositoryWithInfrastructure } from './database/InfrastructureMappedTypes';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 jest.mock('lib/util/securityHelpers/repositoryFetchGuard', () => ({
     assertEgressAllowed: jest.fn(),
@@ -44,7 +45,9 @@ describe('fetchFileServerSide', () => {
 
         const result = await fetchFileServerSide(repository);
 
+        expect(mockedAssertEgressAllowed).toHaveBeenCalledWith(repository.url, repository.infrastructureName);
         expect(result.isSuccess).toBe(false);
+        expect((result as { errorCode: ApiResultStatus }).errorCode).toBe(ApiResultStatus.FORBIDDEN);
         expect(mockedMnestixFetch).not.toHaveBeenCalled();
         expect(fetchMock).not.toHaveBeenCalled();
     });

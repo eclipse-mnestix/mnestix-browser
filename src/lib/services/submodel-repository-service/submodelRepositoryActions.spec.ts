@@ -50,6 +50,7 @@ describe('getAttachmentFromSubmodelElement', () => {
 
         const result = await getAttachmentFromSubmodelElement('s', 'e', repository);
 
+        expect(mockedAssertEgressAllowed).toHaveBeenCalledWith(repository.url, repository.infrastructureName);
         expect(result.isSuccess).toBe(false);
         expect(mockedCreate).not.toHaveBeenCalled();
         expect(mockedMnestixFetch).not.toHaveBeenCalled();

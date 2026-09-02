@@ -565,4 +565,76 @@ describe('TransferService: create() credential gate', function () {
             expect(call[0]).toBeNull();
         });
     });
+
+    it('resolves headers for the optional repos (discovery, aas registry, submodel registry) against the target infrastructure and passes each to mnestixFetch', async () => {
+        const targetInfrastructure = createTestInfrastructure({ name: 'TargetInfra' });
+        const sourceInfrastructure = createTestInfrastructure({ name: 'SourceInfra' });
+        const mandatoryHeader = { 'X-API-KEY': 'mandatory-secret' };
+        const discoveryHeader = { 'X-API-KEY': 'discovery-secret' };
+        const aasRegistryHeader = { 'X-API-KEY': 'aas-registry-secret' };
+        const submodelRegistryHeader = { 'X-API-KEY': 'submodel-registry-secret' };
+
+        const configWithOptionalRepos: TransferServiceConfig = {
+            ...config,
+            targetDiscovery: { url: 'https://target-discovery.example', infrastructureName: 'TargetInfra' },
+            targetAasRegistry: { url: 'https://target-aas-registry.example', infrastructureName: 'TargetInfra' },
+            targetSubmodelRegistry: {
+                url: 'https://target-submodel-registry.example',
+                infrastructureName: 'TargetInfra',
+            },
+        };
+
+        getInfrastructureByNameMock.mockImplementation((name: string) =>
+            Promise.resolve(name === 'TargetInfra' ? targetInfrastructure : sourceInfrastructure),
+        );
+        securityHeadersForUrlMock.mockImplementation((url: string) => {
+            if (url === configWithOptionalRepos.targetDiscovery!.url) return Promise.resolve(discoveryHeader);
+            if (url === configWithOptionalRepos.targetAasRegistry!.url) return Promise.resolve(aasRegistryHeader);
+            if (url === configWithOptionalRepos.targetSubmodelRegistry!.url) {
+                return Promise.resolve(submodelRegistryHeader);
+            }
+            return Promise.resolve(mandatoryHeader);
+        });
+
+        await TransferService.create(configWithOptionalRepos);
+
+        expect(securityHeadersForUrlMock).toHaveBeenCalledWith(
+            configWithOptionalRepos.targetDiscovery!.url,
+            targetInfrastructure,
+        );
+        expect(securityHeadersForUrlMock).toHaveBeenCalledWith(
+            configWithOptionalRepos.targetAasRegistry!.url,
+            targetInfrastructure,
+        );
+        expect(securityHeadersForUrlMock).toHaveBeenCalledWith(
+            configWithOptionalRepos.targetSubmodelRegistry!.url,
+            targetInfrastructure,
+        );
+
+        // Creation order: targetAasRepo, sourceAasRepo, targetSubmodelRepo, sourceSubmodelRepo,
+        // targetDiscovery, targetAasRegistry, targetSubmodelRegistry.
+        expect(mnestixFetchMock.mock.calls).toEqual([
+            [mandatoryHeader],
+            [mandatoryHeader],
+            [mandatoryHeader],
+            [mandatoryHeader],
+            [discoveryHeader],
+            [aasRegistryHeader],
+            [submodelRegistryHeader],
+        ]);
+    });
+
+    it('does not resolve headers or build clients for optional repos that are absent from the config', async () => {
+        getInfrastructureByNameMock.mockResolvedValue(createTestInfrastructure({ name: 'TargetInfra' }));
+        securityHeadersForUrlMock.mockResolvedValue({});
+
+        const service = await TransferService.create(config);
+
+        // Only the 4 mandatory repos should trigger header resolution and client creation.
+        expect(securityHeadersForUrlMock).toHaveBeenCalledTimes(4);
+        expect(mnestixFetchMock).toHaveBeenCalledTimes(4);
+        expect(service.targetAasDiscoveryClient).toBeUndefined();
+        expect(service.targetAasRegistryClient).toBeUndefined();
+        expect(service.targetSubmodelRegistryClient).toBeUndefined();
+    });
 });

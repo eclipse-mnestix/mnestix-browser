@@ -117,6 +117,7 @@ describe('ListService: Return List Entities', function () {
                 expect(result.success).toBe(false);
                 expect((result.error as { errorCode: ApiResultStatus })?.errorCode).toBe(ApiResultStatus.FORBIDDEN);
                 expect(mockedSecurityHeadersForUrl).not.toHaveBeenCalled();
+                expect(mockedMnestixFetch).not.toHaveBeenCalled();
             });
 
             it('fetches without security headers when the target host is not configured', async () => {
@@ -232,6 +233,7 @@ describe('ListService: Return List Entities', function () {
                 expect(result.success).toBe(false);
                 expect((result.error as { errorCode: ApiResultStatus })?.errorCode).toBe(ApiResultStatus.FORBIDDEN);
                 expect(mockedSecurityHeadersForUrl).not.toHaveBeenCalled();
+                expect(mockedMnestixFetch).not.toHaveBeenCalled();
             });
 
             it('fetches without security headers when the target host is not configured', async () => {
