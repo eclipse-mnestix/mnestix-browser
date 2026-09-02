@@ -6,8 +6,25 @@ import {
     createShellDescriptorFromAas,
     createSubmodelDescriptorFromSubmodel,
 } from 'lib/services/transfer-service/TransferUtil';
-import { TransferAas, TransferResult, TransferSubmodel } from 'lib/types/TransferServiceData';
-import ServiceReachable from 'test-utils/TestUtils';
+import { TransferAas, TransferResult, TransferServiceConfig, TransferSubmodel } from 'lib/types/TransferServiceData';
+import ServiceReachable, { createTestInfrastructure } from 'test-utils/TestUtils';
+import { assertEgressAllowed, securityHeadersForUrl } from 'lib/util/securityHelpers/repositoryFetchGuard';
+import { getInfrastructureByName } from 'lib/services/database/infrastructureDatabaseActions';
+import { mnestixFetch } from 'lib/api/infrastructure';
+
+jest.mock('lib/util/securityHelpers/repositoryFetchGuard', () => ({
+    assertEgressAllowed: jest.fn(),
+    securityHeadersForUrl: jest.fn(),
+}));
+jest.mock('lib/services/database/infrastructureDatabaseActions');
+jest.mock('lib/api/infrastructure', () => ({
+    mnestixFetch: jest.fn(),
+}));
+
+const assertEgressAllowedMock = assertEgressAllowed as jest.Mock;
+const securityHeadersForUrlMock = securityHeadersForUrl as jest.Mock;
+const getInfrastructureByNameMock = getInfrastructureByName as jest.Mock;
+const mnestixFetchMock = mnestixFetch as jest.Mock;
 
 const aas = testData.transferAas as unknown as AssetAdministrationShell;
 const transferAas = { aas: aas, originalAasId: aas.id } as TransferAas;
@@ -28,6 +45,11 @@ function expectTransferResult(result: TransferResult[], successMask: number = 0x
 }
 
 describe('TransferService: Export AAS', function () {
+    beforeEach(() => {
+        assertEgressAllowedMock.mockReset();
+        assertEgressAllowedMock.mockResolvedValue(undefined);
+    });
+
     it('All services given', async () => {
         const service = TransferService.createNull({
             targetAasRepository: ServiceReachable.Yes,
@@ -349,5 +371,198 @@ describe('TransferService: Export AAS', function () {
 
         // error for repository and registry of submodel
         expectTransferResult(transferResult, 0b1111101);
+    });
+});
+
+describe('TransferService: egress guard', function () {
+    beforeEach(() => {
+        assertEgressAllowedMock.mockReset();
+        assertEgressAllowedMock.mockResolvedValue(undefined);
+    });
+
+    it('blocks the transfer when the target AAS repository is not egress-allowed, and writes nothing', async () => {
+        const blockedUrl = 'http://10.0.0.5/aas';
+        assertEgressAllowedMock.mockImplementation((url: string) =>
+            url === blockedUrl ? Promise.reject(new Error(`Egress blocked: "${url}" is an internal address.`)) : Promise.resolve(),
+        );
+
+        const service = TransferService.createNull({
+            targetAasRepository: ServiceReachable.Yes,
+            sourceAasRepository: ServiceReachable.Yes,
+            targetSubmodelRepository: ServiceReachable.Yes,
+            sourceSubmodelRepository: ServiceReachable.Yes,
+            sourceAasEntries: [aas],
+            sourceSubmodelEntries: [nameplate, technical],
+            config: {
+                targetAasRepo: { url: blockedUrl, infrastructureName: 'Default' },
+            },
+        });
+
+        const transferResult = await service.transferAasWithSubmodels(
+            transferAas,
+            [transferNameplate, transferTechnical],
+            0,
+        );
+
+        expect(transferResult).toHaveLength(1);
+        expect(transferResult[0].success).toBe(false);
+        expect(transferResult[0].resourceId).toBe(blockedUrl);
+
+        expect((await service.targetAasRepositoryClient.getAssetAdministrationShellById(aas.id)).isSuccess).toBe(
+            false,
+        );
+        expect((await service.targetSubmodelRepositoryClient.getSubmodelById(nameplate.id)).isSuccess).toBe(false);
+    });
+
+    it('blocks the transfer when the source AAS repository is not egress-allowed, and writes nothing', async () => {
+        const blockedUrl = 'http://10.0.0.5/source-aas';
+        assertEgressAllowedMock.mockImplementation((url: string) =>
+            url === blockedUrl ? Promise.reject(new Error(`Egress blocked: "${url}" is an internal address.`)) : Promise.resolve(),
+        );
+
+        const service = TransferService.createNull({
+            targetAasRepository: ServiceReachable.Yes,
+            sourceAasRepository: ServiceReachable.Yes,
+            targetSubmodelRepository: ServiceReachable.Yes,
+            sourceSubmodelRepository: ServiceReachable.Yes,
+            sourceAasEntries: [aas],
+            sourceSubmodelEntries: [nameplate, technical],
+            config: {
+                sourceAasRepo: { url: blockedUrl, infrastructureName: 'Default' },
+            },
+        });
+
+        const transferResult = await service.transferAasWithSubmodels(
+            transferAas,
+            [transferNameplate, transferTechnical],
+            0,
+        );
+
+        expect(transferResult).toHaveLength(1);
+        expect(transferResult[0].success).toBe(false);
+        expect(transferResult[0].resourceId).toBe(blockedUrl);
+
+        expect((await service.targetAasRepositoryClient.getAssetAdministrationShellById(aas.id)).isSuccess).toBe(
+            false,
+        );
+        expect((await service.targetSubmodelRepositoryClient.getSubmodelById(nameplate.id)).isSuccess).toBe(false);
+    });
+
+    it('guards all 7 configured repository URLs before transferring', async () => {
+        const config = {
+            targetAasRepo: { url: 'https://target-aas.example', infrastructureName: 'Default' },
+            sourceAasRepo: { url: 'https://source-aas.example', infrastructureName: 'Default' },
+            targetSubmodelRepo: { url: 'https://target-submodel.example', infrastructureName: 'Default' },
+            sourceSubmodelRepo: { url: 'https://source-submodel.example', infrastructureName: 'Default' },
+            targetDiscovery: { url: 'https://target-discovery.example', infrastructureName: 'Default' },
+            targetAasRegistry: { url: 'https://target-aas-registry.example', infrastructureName: 'Default' },
+            targetSubmodelRegistry: { url: 'https://target-submodel-registry.example', infrastructureName: 'Default' },
+        };
+
+        const service = TransferService.createNull({
+            targetAasRepository: ServiceReachable.Yes,
+            sourceAasRepository: ServiceReachable.Yes,
+            targetSubmodelRepository: ServiceReachable.Yes,
+            sourceSubmodelRepository: ServiceReachable.Yes,
+            targetAasDiscovery: ServiceReachable.Yes,
+            targetAasRegistry: ServiceReachable.Yes,
+            targetSubmodelRegistry: ServiceReachable.Yes,
+            sourceAasEntries: [aas],
+            sourceSubmodelEntries: [nameplate, technical],
+            config,
+        });
+
+        await service.transferAasWithSubmodels(transferAas, [transferNameplate, transferTechnical], 0);
+
+        expect(assertEgressAllowedMock).toHaveBeenCalledTimes(7);
+        Object.values(config).forEach((repo) => {
+            expect(assertEgressAllowedMock).toHaveBeenCalledWith(repo.url, repo.infrastructureName);
+        });
+    });
+
+    it('does not guard optional repositories that are absent', async () => {
+        const config = {
+            targetAasRepo: { url: 'https://target-aas.example', infrastructureName: 'Default' },
+            sourceAasRepo: { url: 'https://source-aas.example', infrastructureName: 'Default' },
+            targetSubmodelRepo: { url: 'https://target-submodel.example', infrastructureName: 'Default' },
+            sourceSubmodelRepo: { url: 'https://source-submodel.example', infrastructureName: 'Default' },
+        };
+
+        const service = TransferService.createNull({
+            targetAasRepository: ServiceReachable.Yes,
+            sourceAasRepository: ServiceReachable.Yes,
+            targetSubmodelRepository: ServiceReachable.Yes,
+            sourceSubmodelRepository: ServiceReachable.Yes,
+            sourceAasEntries: [aas],
+            sourceSubmodelEntries: [nameplate, technical],
+            config,
+        });
+
+        await service.transferAasWithSubmodels(transferAas, [transferNameplate, transferTechnical], 0);
+
+        // Only the 4 required repositories are present; no calls for discovery/registries.
+        expect(assertEgressAllowedMock).toHaveBeenCalledTimes(4);
+    });
+});
+
+describe('TransferService: create() credential gate', function () {
+    const config: TransferServiceConfig = {
+        targetAasRepo: { url: 'https://target-aas.example', infrastructureName: 'TargetInfra' },
+        sourceAasRepo: { url: 'https://source-aas.example', infrastructureName: 'SourceInfra' },
+        targetSubmodelRepo: { url: 'https://target-submodel.example', infrastructureName: 'TargetInfra' },
+        sourceSubmodelRepo: { url: 'https://source-submodel.example', infrastructureName: 'SourceInfra' },
+    };
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+        mnestixFetchMock.mockReturnValue({});
+    });
+
+    it('resolves headers per URL against the matching target/source infrastructure and passes each to mnestixFetch', async () => {
+        const targetInfrastructure = createTestInfrastructure({ name: 'TargetInfra' });
+        const sourceInfrastructure = createTestInfrastructure({ name: 'SourceInfra' });
+        const targetHeader = { 'X-API-KEY': 'target-secret' };
+        const sourceHeader = { 'X-API-KEY': 'source-secret' };
+
+        getInfrastructureByNameMock.mockImplementation((name: string) =>
+            Promise.resolve(name === 'TargetInfra' ? targetInfrastructure : sourceInfrastructure),
+        );
+        securityHeadersForUrlMock.mockImplementation((url: string) => {
+            if (url === config.targetAasRepo.url || url === config.targetSubmodelRepo.url) {
+                return Promise.resolve(targetHeader);
+            }
+            return Promise.resolve(sourceHeader);
+        });
+
+        await TransferService.create(config);
+
+        // Target-side URLs resolve headers via the target infrastructure, source-side via the source infrastructure.
+        expect(securityHeadersForUrlMock).toHaveBeenCalledWith(config.targetAasRepo.url, targetInfrastructure);
+        expect(securityHeadersForUrlMock).toHaveBeenCalledWith(config.sourceAasRepo.url, sourceInfrastructure);
+        expect(securityHeadersForUrlMock).toHaveBeenCalledWith(config.targetSubmodelRepo.url, targetInfrastructure);
+        expect(securityHeadersForUrlMock).toHaveBeenCalledWith(config.sourceSubmodelRepo.url, sourceInfrastructure);
+
+        // Each client's mnestixFetch call carries exactly the header resolved for its own URL, in creation order
+        // (targetAasRepo, sourceAasRepo, targetSubmodelRepo, sourceSubmodelRepo).
+        expect(mnestixFetchMock.mock.calls).toEqual([[targetHeader], [sourceHeader], [targetHeader], [sourceHeader]]);
+    });
+
+    it('passes null to mnestixFetch (no key leak) when the URL is not configured for its infrastructure', async () => {
+        getInfrastructureByNameMock.mockResolvedValue(undefined);
+        securityHeadersForUrlMock.mockResolvedValue(null);
+
+        const attackerConfig: TransferServiceConfig = {
+            targetAasRepo: { url: 'http://attacker.example/target-aas', infrastructureName: 'Default' },
+            sourceAasRepo: { url: 'http://attacker.example/source-aas', infrastructureName: 'Default' },
+            targetSubmodelRepo: { url: 'http://attacker.example/target-submodel', infrastructureName: 'Default' },
+            sourceSubmodelRepo: { url: 'http://attacker.example/source-submodel', infrastructureName: 'Default' },
+        };
+
+        await TransferService.create(attackerConfig);
+
+        expect(mnestixFetchMock).toHaveBeenCalledTimes(4);
+        mnestixFetchMock.mock.calls.forEach((call) => {
+            expect(call[0]).toBeNull();
+        });
     });
 });

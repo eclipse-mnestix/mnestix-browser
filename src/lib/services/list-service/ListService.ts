@@ -8,11 +8,13 @@ import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { MultiLanguageValueOnly } from 'lib/api/basyx-v3/types';
 import { getInfrastructureByName } from '../database/infrastructureDatabaseActions';
-import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
+import { assertEgressAllowed, securityHeadersForUrl } from 'lib/util/securityHelpers/repositoryFetchGuard';
 import logger, { logInfo, logWarn } from 'lib/util/Logger';
 import { RepositoryWithInfrastructure } from '../database/InfrastructureMappedTypes';
 import { IRegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApiInterface';
 import { AssetAdministrationShellDescriptor } from 'lib/types/registryServiceTypes';
+import { wrapErrorCode } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 export type ListEntityDto = {
     aasId: string;
@@ -37,31 +39,37 @@ export type AasListDto = {
 export class ListService {
     private constructor(
         protected readonly repositoryWithInfrastructure: RepositoryWithInfrastructure,
-        protected readonly getTargetAasRepositoryClient: () => IAssetAdministrationShellRepositoryApi,
-        protected readonly getTargetSubmodelRepositoryClient: () => ISubmodelRepositoryApi,
-        protected readonly getTargetAasRegistryClient: () => IRegistryServiceApi,
+        protected readonly getTargetAasRepositoryClient: (
+            securityHeader: Record<string, string> | null,
+        ) => IAssetAdministrationShellRepositoryApi,
+        protected readonly getTargetSubmodelRepositoryClient: (
+            securityHeader: Record<string, string> | null,
+        ) => ISubmodelRepositoryApi,
+        protected readonly getTargetAasRegistryClient: (
+            securityHeader: Record<string, string> | null,
+        ) => IRegistryServiceApi,
         private readonly log: typeof logger = logger,
     ) {}
 
     /**
      * Factory method to create a ListService instance with real API clients.
-     * Retrieves infrastructure configuration and security headers for the specified repository.
-     * If the infrastructure is not found, uses the provided repository URL directly.
+     * The security header for the target repository is resolved per-call, inside each method, once it
+     * is known that egress to the client-supplied repository URL is allowed (see `assertEgressAllowed`).
      * @param targetAasRepository - RepositoryWithInfrastructure object containing repository details
      * @param log - Optional logger instance for logging
      * @returns Promise that resolves to a configured ListService instance
      */
     static async create(targetAasRepository: RepositoryWithInfrastructure, log?: typeof logger): Promise<ListService> {
         const listServiceLogger = log?.child({ Service: 'ListService' });
-        const infrastructure = await getInfrastructureByName(targetAasRepository.infrastructureName);
-        const securityHeader = await createSecurityHeaders(infrastructure || undefined);
 
         return new ListService(
             targetAasRepository,
-            () => AssetAdministrationShellRepositoryApi.create(targetAasRepository.url, mnestixFetch(securityHeader)),
+            (securityHeader) =>
+                AssetAdministrationShellRepositoryApi.create(targetAasRepository.url, mnestixFetch(securityHeader)),
             // For now, we only use the same repository.
-            () => SubmodelRepositoryApi.create(targetAasRepository.url, mnestixFetch(securityHeader)),
-            () => RegistryServiceApi.create(targetAasRepository.url, mnestixFetch(securityHeader), listServiceLogger),
+            (securityHeader) => SubmodelRepositoryApi.create(targetAasRepository.url, mnestixFetch(securityHeader)),
+            (securityHeader) =>
+                RegistryServiceApi.create(targetAasRepository.url, mnestixFetch(securityHeader), listServiceLogger),
             listServiceLogger,
         );
     }
@@ -109,12 +117,21 @@ export class ListService {
      * @param type
      */
     async getAasListEntities(limit: number, cursor?: string, type?: 'repository' | 'registry'): Promise<AasListDto> {
+        const { url, infrastructureName } = this.repositoryWithInfrastructure;
+        try {
+            await assertEgressAllowed(url, infrastructureName);
+        } catch (e) {
+            return { success: false, error: wrapErrorCode(ApiResultStatus.FORBIDDEN, (e as Error).message) };
+        }
+        const infrastructure = await getInfrastructureByName(infrastructureName);
+        const securityHeader = await securityHeadersForUrl(url, infrastructure);
+
         let assetAdministrationShells: AssetAdministrationShell[];
         let nextCursor: string | undefined;
 
         if (type === 'registry') {
             logInfo(this.log, 'getAasListEntities', 'Fetching aas list from registry');
-            const targetAasRegistryClient = this.getTargetAasRegistryClient();
+            const targetAasRegistryClient = this.getTargetAasRegistryClient(securityHeader);
             const descriptorsResponse = await targetAasRegistryClient.getAllAssetAdministrationShellDescriptors(
                 limit,
                 cursor,
@@ -153,7 +170,7 @@ export class ListService {
             assetAdministrationShells = aasResults.filter((aas): aas is AssetAdministrationShell => aas !== null);
         } else {
             logInfo(this.log, 'getAasListEntities', 'Fetching aas list from repository');
-            const targetAasRepositoryClient = this.getTargetAasRepositoryClient();
+            const targetAasRepositoryClient = this.getTargetAasRepositoryClient(securityHeader);
             const response = await targetAasRepositoryClient.getAllAssetAdministrationShells(limit, cursor);
 
             if (!response.isSuccess) {
@@ -182,7 +199,21 @@ export class ListService {
     }
 
     async getNameplateValuesForAAS(aasId: string): Promise<NameplateValuesDto> {
-        const targetAasRepositoryClient = this.getTargetAasRepositoryClient();
+        const { url, infrastructureName } = this.repositoryWithInfrastructure;
+        try {
+            await assertEgressAllowed(url, infrastructureName);
+        } catch (e) {
+            return {
+                success: false,
+                manufacturerName: undefined,
+                manufacturerProductDesignation: undefined,
+                error: wrapErrorCode(ApiResultStatus.FORBIDDEN, (e as Error).message),
+            };
+        }
+        const infrastructure = await getInfrastructureByName(infrastructureName);
+        const securityHeader = await securityHeadersForUrl(url, infrastructure);
+
+        const targetAasRepositoryClient = this.getTargetAasRepositoryClient(securityHeader);
         const submodelReferencesResponse = await targetAasRepositoryClient.getSubmodelReferencesFromShell(
             encodeBase64(aasId),
         );
@@ -197,7 +228,7 @@ export class ListService {
         }
         for (const reference of submodelReferences.result) {
             const submodelId = reference.keys[0].value;
-            const submodelRepositoryClient = this.getTargetSubmodelRepositoryClient();
+            const submodelRepositoryClient = this.getTargetSubmodelRepositoryClient(securityHeader);
             const submodelMetadataResponse = await submodelRepositoryClient.getSubmodelMetaData(submodelId);
             if (submodelMetadataResponse.isSuccess) {
                 const semanticId = submodelMetadataResponse.result?.semanticId?.keys[0]?.value;

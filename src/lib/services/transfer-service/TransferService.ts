@@ -33,7 +33,8 @@ import { ApiResponseWrapperError } from 'lib/util/apiResponseWrapper/apiResponse
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { ServiceReachable } from 'test-utils/TestUtils';
 import { getInfrastructureByName } from '../database/infrastructureDatabaseActions';
-import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
+import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
+import { assertEgressAllowed, securityHeadersForUrl } from 'lib/util/securityHelpers/repositoryFetchGuard';
 
 export type TransferServiceNullParams = {
     targetAasRepository: ServiceReachable;
@@ -45,6 +46,8 @@ export type TransferServiceNullParams = {
     targetAasDiscovery?: ServiceReachable;
     targetAasRegistry?: ServiceReachable;
     targetSubmodelRegistry?: ServiceReachable;
+    /** Repository URLs/infrastructure names the egress guard checks against. Defaults to harmless null-object repos. */
+    config?: Partial<TransferServiceConfig>;
 };
 
 export class TransferService {
@@ -53,6 +56,7 @@ export class TransferService {
         readonly sourceAasRepositoryClient: IAssetAdministrationShellRepositoryApi,
         readonly targetSubmodelRepositoryClient: ISubmodelRepositoryApi,
         readonly sourceSubmodelRepositoryClient: ISubmodelRepositoryApi,
+        private readonly config: TransferServiceConfig,
         readonly targetAasDiscoveryClient?: IDiscoveryServiceApi,
         readonly targetAasRegistryClient?: IRegistryServiceApi,
         readonly targetSubmodelRegistryClient?: ISubmodelRegistryServiceApi,
@@ -60,41 +64,49 @@ export class TransferService {
 
     static async create(config: TransferServiceConfig): Promise<TransferService> {
         const targetInfrastructure = await getInfrastructureByName(config.targetAasRepo.infrastructureName);
-        const targetSecurityHeader = await createSecurityHeaders(targetInfrastructure || undefined);
-
         const sourceInfrastructure = await getInfrastructureByName(config.sourceAasRepo.infrastructureName);
-        const sourceSecurityHeader = await createSecurityHeaders(sourceInfrastructure || undefined);
 
         const targetAasRepositoryClient = AssetAdministrationShellRepositoryApi.create(
             config.targetAasRepo.url,
-            mnestixFetch(targetSecurityHeader),
+            mnestixFetch(await securityHeadersForUrl(config.targetAasRepo.url, targetInfrastructure ?? undefined)),
         );
 
         const sourceAasRepositoryClient = AssetAdministrationShellRepositoryApi.create(
             config.sourceAasRepo.url,
-            mnestixFetch(sourceSecurityHeader),
+            mnestixFetch(await securityHeadersForUrl(config.sourceAasRepo.url, sourceInfrastructure ?? undefined)),
         );
 
         const targetSubmodelRepositoryClient = SubmodelRepositoryApi.create(
             config.targetSubmodelRepo.url,
-            mnestixFetch(targetSecurityHeader),
+            mnestixFetch(await securityHeadersForUrl(config.targetSubmodelRepo.url, targetInfrastructure ?? undefined)),
         );
 
         const sourceSubmodelRepositoryClient = SubmodelRepositoryApi.create(
             config.sourceSubmodelRepo.url,
-            mnestixFetch(sourceSecurityHeader),
+            mnestixFetch(await securityHeadersForUrl(config.sourceSubmodelRepo.url, sourceInfrastructure ?? undefined)),
         );
 
         const targetAasDiscoveryClient = config.targetDiscovery?.url
-            ? DiscoveryServiceApi.create(config.targetDiscovery.url, mnestixFetch(targetSecurityHeader))
+            ? DiscoveryServiceApi.create(
+                  config.targetDiscovery.url,
+                  mnestixFetch(await securityHeadersForUrl(config.targetDiscovery.url, targetInfrastructure ?? undefined)),
+              )
             : undefined;
 
         const targetAasRegistryClient = config.targetAasRegistry?.url
-            ? RegistryServiceApi.create(config.targetAasRegistry.url, mnestixFetch(targetSecurityHeader))
+            ? RegistryServiceApi.create(
+                  config.targetAasRegistry.url,
+                  mnestixFetch(await securityHeadersForUrl(config.targetAasRegistry.url, targetInfrastructure ?? undefined)),
+              )
             : undefined;
 
         const targetSubmodelRegistryClient = config.targetSubmodelRegistry?.url
-            ? SubmodelRegistryServiceApi.create(config.targetSubmodelRegistry.url, mnestixFetch(targetSecurityHeader))
+            ? SubmodelRegistryServiceApi.create(
+                  config.targetSubmodelRegistry.url,
+                  mnestixFetch(
+                      await securityHeadersForUrl(config.targetSubmodelRegistry.url, targetInfrastructure ?? undefined),
+                  ),
+              )
             : undefined;
 
         return new TransferService(
@@ -102,6 +114,7 @@ export class TransferService {
             sourceAasRepositoryClient,
             targetSubmodelRepositoryClient,
             sourceSubmodelRepositoryClient,
+            config,
             targetAasDiscoveryClient,
             targetAasRegistryClient,
             targetSubmodelRegistryClient,
@@ -118,7 +131,22 @@ export class TransferService {
         targetAasDiscovery,
         targetAasRegistry,
         targetSubmodelRegistry,
+        config,
     }: TransferServiceNullParams): TransferService {
+        const nullRepo = (url: string): RepositoryWithInfrastructure => ({ url, infrastructureName: 'TestInfra' });
+        const resolvedConfig: TransferServiceConfig = {
+            targetAasRepo: config?.targetAasRepo ?? nullRepo('https://targetAasRepositoryClient.com'),
+            sourceAasRepo: config?.sourceAasRepo ?? nullRepo('https://sourceAasRepositoryClient.com'),
+            targetSubmodelRepo: config?.targetSubmodelRepo ?? nullRepo('https://targetSubmodelRepositoryClient.com'),
+            sourceSubmodelRepo: config?.sourceSubmodelRepo ?? nullRepo('https://sourceSubmodelRepositoryClient.com'),
+            targetDiscovery:
+                config?.targetDiscovery ?? (targetAasDiscovery ? nullRepo('https://targetDiscoveryClient.com') : undefined),
+            targetAasRegistry:
+                config?.targetAasRegistry ?? (targetAasRegistry ? nullRepo('https://targetAasRegistryClient.com') : undefined),
+            targetSubmodelRegistry:
+                config?.targetSubmodelRegistry ??
+                (targetSubmodelRegistry ? nullRepo('https://targetSubmodelRegistryClient.com') : undefined),
+        };
         const targetAasRepositoryClient = AssetAdministrationShellRepositoryApi.createNull(
             'https://targetAasRepositoryClient.com',
             [],
@@ -164,6 +192,7 @@ export class TransferService {
             sourceAasRepositoryClient,
             targetSubmodelRepositoryClient,
             sourceSubmodelRepositoryClient,
+            resolvedConfig,
             targetAasDiscoveryClient,
             targetAasRegistryClient,
             targetSubmodelRegistryClient,
@@ -175,6 +204,11 @@ export class TransferService {
         transferSubmodels: TransferSubmodel[],
         attachmentTimeout: number = 5000,
     ): Promise<TransferResult[]> {
+        const guardFailures = await this.guardEgress();
+        if (guardFailures) {
+            return guardFailures;
+        }
+
         const submodelDescriptors = transferSubmodels.map((transferSubmodel) =>
             createSubmodelDescriptorFromSubmodel(
                 transferSubmodel.submodel,
@@ -237,6 +271,47 @@ export class TransferService {
         });
 
         return [...mainResults, ...attachmentResults];
+    }
+
+    /**
+     * Guards every repository URL in this transfer's config before anything is fetched or written.
+     * Returns an aggregated list of failing TransferResults if any repository is not egress-allowed,
+     * or null if the transfer may proceed.
+     */
+    private async guardEgress(): Promise<TransferResult[] | null> {
+        const checks: Array<{ repo?: RepositoryWithInfrastructure; operationKind: TransferResult['operationKind'] }> = [
+            { repo: this.config.targetAasRepo, operationKind: 'AasRepository' },
+            { repo: this.config.sourceAasRepo, operationKind: 'AasRepository' },
+            { repo: this.config.targetSubmodelRepo, operationKind: 'SubmodelRepository' },
+            { repo: this.config.sourceSubmodelRepo, operationKind: 'SubmodelRepository' },
+            { repo: this.config.targetDiscovery, operationKind: 'Discovery' },
+            { repo: this.config.targetAasRegistry, operationKind: 'AasRegistry' },
+            { repo: this.config.targetSubmodelRegistry, operationKind: 'SubmodelRegistry' },
+        ];
+
+        const results = await Promise.all(
+            checks
+                .filter(
+                    (check): check is { repo: RepositoryWithInfrastructure; operationKind: TransferResult['operationKind'] } =>
+                        !!check.repo,
+                )
+                .map(async ({ repo, operationKind }) => {
+                    try {
+                        await assertEgressAllowed(repo.url, repo.infrastructureName);
+                        return null;
+                    } catch (error) {
+                        return {
+                            success: false,
+                            operationKind,
+                            resourceId: repo.url,
+                            error: (error as Error).message,
+                        } as TransferResult;
+                    }
+                }),
+        );
+
+        const failures = results.filter((result): result is TransferResult => result !== null);
+        return failures.length > 0 ? failures : null;
     }
 
     private async postAasToRepository(aas: AssetAdministrationShell): Promise<TransferResult> {
