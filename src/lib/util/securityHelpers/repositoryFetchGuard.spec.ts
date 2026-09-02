@@ -85,7 +85,22 @@ describe('assertEgressAllowed', () => {
     it.each([
         ['http://127.0.0.1:8081/shells', 'loopback'],
         ['http://10.0.0.5/internal', 'RFC1918'],
+        ['http://172.16.0.1/x', 'RFC1918 172.16/12'],
+        ['http://192.168.1.1/x', 'RFC1918 192.168/16'],
     ])('rejects the internal IP literal %s (%s)', async (url) => {
+        await expect(assertEgressAllowed(url, 'Default Infrastructure', deps)).rejects.toThrow();
+        expect(lookup).not.toHaveBeenCalled();
+    });
+
+    it.each([
+        ['http://[::1]/x', 'IPv6 loopback'],
+        ['http://[fe80::1]/x', 'IPv6 link-local'],
+        ['http://[fc00::1]/x', 'IPv6 ULA'],
+        ['http://[::ffff:169.254.169.254]/latest/meta-data/', 'IPv4-mapped metadata (dotted)'],
+        ['http://[::ffff:a9fe:a9fe]/latest/meta-data/', 'IPv4-mapped metadata (hex)'],
+        ['http://[::ffff:127.0.0.1]/x', 'IPv4-mapped loopback (dotted)'],
+        ['http://[::ffff:7f00:1]/x', 'IPv4-mapped loopback (hex)'],
+    ])('rejects the internal IPv6 literal %s (%s)', async (url) => {
         await expect(assertEgressAllowed(url, 'Default Infrastructure', deps)).rejects.toThrow();
         expect(lookup).not.toHaveBeenCalled();
     });

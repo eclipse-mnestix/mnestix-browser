@@ -109,12 +109,27 @@ function isInternalIpv4(ip: string): boolean {
 function isInternalIpv6(ip: string): boolean {
     const lower = ip.toLowerCase();
     if (lower === '::1' || lower === '::') return true; // loopback / unspecified
-    const mapped = lower.match(/^::ffff:(\d+\.\d+\.\d+\.\d+)$/);
-    if (mapped) return isInternalIpv4(mapped[1]);
+    // IPv4-mapped/embedded addresses: classify by the embedded IPv4. Node's URL parser normalizes
+    // e.g. [::ffff:169.254.169.254] to the hex form [::ffff:a9fe:a9fe], so both forms must be decoded.
+    const embedded = embeddedIpv4(lower);
+    if (embedded) return isInternalIpv4(embedded);
     const first = parseInt(lower.split(':')[0] || '0', 16);
     if (first >= 0xfe80 && first <= 0xfebf) return true; // link-local fe80::/10
     if (first >= 0xfc00 && first <= 0xfdff) return true; // unique local fc00::/7
     return false;
+}
+
+/** Extracts the embedded IPv4 (as dotted-quad) from an IPv4-mapped IPv6 address, in either dotted or hex form. */
+function embeddedIpv4(lower: string): string | null {
+    const dotted = lower.match(/^::ffff:(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$/);
+    if (dotted) return dotted[1];
+    const hex = lower.match(/^::ffff:([0-9a-f]{1,4}):([0-9a-f]{1,4})$/);
+    if (hex) {
+        const hi = parseInt(hex[1], 16);
+        const lo = parseInt(hex[2], 16);
+        return `${(hi >> 8) & 0xff}.${hi & 0xff}.${(lo >> 8) & 0xff}.${lo & 0xff}`;
+    }
+    return null;
 }
 
 type GuardDeps = {
