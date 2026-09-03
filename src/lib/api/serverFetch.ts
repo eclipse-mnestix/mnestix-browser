@@ -35,6 +35,15 @@ async function createServerFetchLogger(): Promise<pino.Logger<never, boolean>> {
     }
 }
 
+function sanitizeForLog(value: string): string {
+    return value.replace(/[\r\n\u2028\u2029]/g, '');
+}
+
+function formatFetchInputForLog(input: string | Request | URL): string {
+    const raw = typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url;
+    return sanitizeForLog(raw);
+}
+
 function logServerFetchDebug(
     log: pino.Logger<never, boolean>,
     input: string | Request | URL,
@@ -43,7 +52,7 @@ function logServerFetchDebug(
 ): void {
     log.debug(
         {
-            Request_Url: input,
+            Request_Url: formatFetchInputForLog(input),
             Http_Status: response?.status,
             Http_Message: response?.statusText,
         },
@@ -69,11 +78,12 @@ export async function performServerFetch<T>(
     init?: RequestInit | undefined,
 ): Promise<ApiResponseWrapper<T>> {
     const log = await createServerFetchLogger();
+    const safeInput = formatFetchInputForLog(input);
 
     try {
         const response = await fetch(input, { ...init, redirect: 'manual' });
         if (isRedirectResponse(response)) {
-            log.warn({ Reason: 'Refusing to follow redirect', Http_Status: response.status }, `Request URL: ${input}`);
+            log.warn({ Reason: 'Refusing to follow redirect', Http_Status: response.status }, `Request URL: ${safeInput}`);
             return wrapErrorCode(ApiResultStatus.FORBIDDEN, 'Refusing to follow redirect for a server-side fetch.');
         }
         logServerFetchDebug(log, input, response, 'Initiating server fetch');
@@ -81,10 +91,10 @@ export async function performServerFetch<T>(
         return await wrapResponse<T>(response);
     } catch (e) {
         if (e instanceof Error) {
-            log.warn({ Reason: 'An unexpected error occurred during server fetch' }, `Request URL: ${input}`);
+            log.warn({ Reason: 'An unexpected error occurred during server fetch' }, `Request URL: ${safeInput}`);
             return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, e.message);
         } else {
-            log.error({ Reason: 'An unexpected error occurred during server fetch' }, `Request: ${input}`);
+            log.error({ Reason: 'An unexpected error occurred during server fetch' }, `Request: ${safeInput}`);
             return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Unknown error');
         }
     }
@@ -99,13 +109,14 @@ export async function performServerFetchRaw(
     init?: RequestInit | undefined,
 ): Promise<Response> {
     const log = await createServerFetchLogger();
+    const safeInput = formatFetchInputForLog(input);
 
     try {
         const response = await fetch(input, { ...init, redirect: 'manual' });
         if (isRedirectResponse(response)) {
             log.warn(
                 { Reason: 'Refusing to follow redirect', Http_Status: response.status },
-                `Request URL: ${input}`,
+                `Request URL: ${safeInput}`,
             );
             throw new Error('Refusing to follow redirect for a server-side fetch.');
         }
@@ -114,10 +125,10 @@ export async function performServerFetchRaw(
         return response;
     } catch (e) {
         if (e instanceof Error) {
-            log.warn({ Reason: 'An unexpected error occurred during server fetch (raw)' }, `Request URL: ${input}`);
+            log.warn({ Reason: 'An unexpected error occurred during server fetch (raw)' }, `Request URL: ${safeInput}`);
             throw e;
         }
-        log.error({ Reason: 'An unexpected error occurred during server fetch (raw)' }, `Request: ${input}`);
+        log.error({ Reason: 'An unexpected error occurred during server fetch (raw)' }, `Request: ${safeInput}`);
         throw new Error('Unknown error', { cause: e });
     }
 }
