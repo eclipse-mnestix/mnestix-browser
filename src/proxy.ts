@@ -37,9 +37,6 @@ export function proxy(req: NextRequest) {
     if (!envs.AAS_LIST_FEATURE_FLAG && pathname.includes('list')) {
         return NextResponse.rewrite(new URL('/404', req.url));
     }
-    if (!envs.COMPARISON_FEATURE_FLAG && pathname.includes('compare')) {
-        return NextResponse.rewrite(new URL('/404', req.url));
-    }
     if (
         !envs.EXPERIMENTAL_PRODUCT_VIEW_FEATURE_FLAG &&
         (pathname.includes('product') || pathname.includes('catalog'))

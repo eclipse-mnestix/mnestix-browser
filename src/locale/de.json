@@ -68,11 +68,6 @@
       },
       "totalCO2Equivalents": "(Bisherige) CO2 Emissionen des Produkts"
     },
-    "constructionDialog": {
-      "buttonText": "Schließen",
-      "message": "Diese Funktion befindet sich derzeit im Aufbau und wird in Kürze verfügbar sein.",
-      "title": "In Bearbeitung"
-    },
     "contactInformation": {
       "contactTypes": {
         "0173-1#07-AAS754#001": "Geschäftlich",
@@ -193,7 +188,6 @@
   "pages": {
     "aasList": {
       "buttonTooltip": "Zur AAS",
-      "compare": "Vergleichen",
       "header": "AAS Liste",
       "listHeader": {
         "aasEndpoint": "AAS URL",
@@ -209,16 +203,13 @@
         "infrastructureName": "Infrastruktur",
         "viewAASButton": "AAS anzeigen"
       },
-      "maxElementsWarning": "Maximal 3 Elemente selektierbar",
       "page": "Seite",
       "repositoryDropdownLabel": "AAS Repository oder AAS Registry (Infrastruktur)",
       "selectListSource": "Bitte wählen Sie ein Repository oder AAS Registry aus",
-      "subHeader": "Hier finden Sie alle AAS aus Ihrem Repository oder AAS Registry. Sie können ein AAS-Repository oder AAS Registry auswählen, um zwischen den Datenquellen zu wechseln.",
-      "titleComparisonAddButton": "AAS zum Vergleich hinzufügen"
+      "subHeader": "Hier finden Sie alle AAS aus Ihrem Repository oder AAS Registry. Sie können ein AAS-Repository oder AAS Registry auswählen, um zwischen den Datenquellen zu wechseln."
     },
     "aasViewer": {
       "actions": {
-        "compareButton": "Vergleichen",
         "toProductView": "Produktansicht",
         "download": "AAS herunterladen"
       },
@@ -295,22 +286,6 @@
       "searchPlaceholder": "Suche aktuell nicht verfügbar...",
       "title": "Hersteller Produktkatalog"
     },
-    "compare": {
-      "addAnother": "Eine weitere AAS hinzufügen",
-      "addButton": "Eine weitere AAS hinzufügen",
-      "addFirstAasButton": "AAS hinzufügen",
-      "collection": {
-        "hide": "Verbergen",
-        "show": "{idShort}"
-      },
-      "errors": {
-        "aasAddError": "AAS konnte nicht hinzugefügt werden.",
-        "aasAlreadyAdded": "AAS kann nicht mehrmals hinzugefügt werden.",
-        "moreAasFound": "Mehr als eine AAS im Discovery Service gefunden, bitte geben Sie die AAS-ID an.",
-        "unknownModelType": "Mnestix unterstützt diesen ModelType noch nicht ({type})."
-      },
-      "title": "AAS vergleichen"
-    },
     "dashboard": {
       "aasOrAssetId": "AAS ID oder Asset ID",
       "infrastructure": "Infrastruktur",
@@ -336,7 +311,6 @@
     },
     "productViewer": {
       "actions": {
-        "compareButton": "Vergleichen",
         "download": "AAS herunterladen",
         "downloadError": "Fehler beim Herunterladen der AAS.",
         "downloadErrorNoRepo": "Kein Repository für die ausgewählte AAS gefunden.",
@@ -590,32 +564,6 @@
         }
       },
       "noBlueprintsWarning": "Keine Blueprints verfügbar."
-    },
-    "transfer": {
-      "aasRepository": "AAS Repository",
-      "chooseRepository": "Wählen Sie das AAS-Repository, in das übertragen werden soll:",
-      "chooseSubmodelRepository": "Submodel Repository auswählen (optional)",
-      "errorToast": "Transfer der AAS nicht erfolgreich",
-      "partiallyFailedToast": "Teil des Transfers fehlgeschlagen",
-      "repositoryApiKey": "AAS Repository ApiKey",
-      "repositoryLabel": "Liste der AAS Repositorys",
-      "repositoryRequired": "AAS Repository wird benötigt",
-      "submodelRepository": "Submodel Repository",
-      "submodelRepositoryApiKey": "Submodel Repository ApiKey",
-      "submodelRepositoryLabel": "Liste der Submodel Repositorys",
-      "subtitle": "Transfer \"{aasId}\" von \"{repoUrl}\" zu:",
-      "successfulToast": "Transfer der AAS erfolgreich",
-      "title": "Transfer",
-      "useAasRepository": "AAS Repository verwenden",
-      "warningToast": "Transfer der AAS nur teilweise erfolgreich.",
-      "aasIdentifier": {
-        "display": "\"{aasId}\"",
-        "default": "Unbekannte AAS-ID"
-      },
-      "aasOriginUrl": {
-        "display": "\"{repoUrl}\"",
-        "default": "Unbekannte AAS-Origin-URL"
-      }
     }
   }
 }
