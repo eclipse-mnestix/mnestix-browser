@@ -38,15 +38,8 @@ Files that are shared between route segments are located in the following shared
 |------- _components
 |--------- blueprint-edit
 |------- [id]
-|--------- page.tsx
-|------- page.tsx
-|----- product
-|------- _components
-|------- ...
-|----- compare
-|------- _components
-|--------- add-aas
-|------- ...
+|--------- *page.tsx*
+|------- *page.tsx*
 |----- list
 |------- _components
 |--------- filter

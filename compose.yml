@@ -28,8 +28,6 @@ services:
       MNESTIX_AAS_GENERATOR_API_URL: 'http://mnestix-proxy:5065'
       MNESTIX_BACKEND_API_KEY: ${MNESTIX_BACKEND_API_KEY:-verySecureApiKey}
       AAS_LIST_FEATURE_FLAG: 'true'
-      TRANSFER_FEATURE_FLAG: 'false'
-      COMPARISON_FEATURE_FLAG: 'true'
       EXPERIMENTAL_PRODUCT_VIEW_FEATURE_FLAG: 'false'
       AUTHENTICATION_FEATURE_FLAG: 'false'
       LOCK_TIMESERIES_PERIOD_FEATURE_FLAG: 'true'
@@ -127,7 +125,7 @@ services:
 
   # One-shot service that initializes the PostgreSQL schema before the environment starts.
   basyx-configuration:
-    image: eclipsebasyx/basyxconfigurationservice-go:1.0.2
+    image: eclipsebasyx/basyxconfigurationservice-go:1.0.9
     container_name: basyx-configuration
     profiles: ['', 'basyx', 'tests']
     environment:
@@ -150,7 +148,7 @@ services:
   # Unified BaSyx Go environment: serves the AAS repository, Submodel repository,
   # Concept Description repository, AAS/Submodel registries and Discovery from a single service.
   aas-environment:
-    image: eclipsebasyx/aasenvironment-go:1.0.2
+    image: eclipsebasyx/aasenvironment-go:1.0.9
     container_name: aas-environment
     profiles: ['', 'basyx', 'tests']
     command: ['/app/aasenvironmentservice']
