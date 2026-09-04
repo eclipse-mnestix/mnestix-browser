@@ -27,7 +27,7 @@
 ## Advanced
 
 - [Templates and Blueprints](Templates-and-Blueprints)
-- [How to Create Custom Submodel Views](How-to-create-custom-submodel-visualizations)
+- [How to Create Custom Submodel Views](How-to-Create-Custom-Submodel-Visualizations)
 - [Configuring Mnestix for different versions](Different-versions-configuration)
 
 ## Related Mnestix Components
