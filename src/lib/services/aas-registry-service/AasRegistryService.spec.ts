@@ -2,6 +2,14 @@ import { AasRegistryService } from 'lib/services/aas-registry-service/AasRegistr
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { createTestAas, createTestInfrastructure, createTestShellDescriptor } from 'test-utils/TestUtils';
 
+// The real guard resolves the endpoint host via DNS and fails closed when it cannot. Test hosts like
+// registry1.com are not resolvable in CI, so without this mock the search returns FORBIDDEN there
+// while passing on a machine with outbound DNS. Egress rules are covered in repositoryFetchGuard.spec.ts.
+jest.mock('lib/util/securityHelpers/repositoryFetchGuard', () => ({
+    assertEgressAllowed: jest.fn(),
+    securityHeadersForUrl: jest.fn(),
+}));
+
 describe('AasRegistryService', () => {
     it('returns AAS when one is found in a registry', async () => {
         const aasId = 'testAasId';

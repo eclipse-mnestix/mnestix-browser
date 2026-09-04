@@ -1,13 +1,11 @@
 import {
-    getDefaultInfrastructure,
     getInfrastructureByName,
     getInfrastructuresIncludingDefault,
-} from '../database/infrastructureDatabaseActions';
+} from '../database/infrastructureData';
 import { ConceptDescriptionRepositoryService } from './ConceptDescriptionRepositoryService';
 
-jest.mock('../database/infrastructureDatabaseActions', () => ({
+jest.mock('../database/infrastructureData', () => ({
     getInfrastructuresIncludingDefault: jest.fn(),
-    getDefaultInfrastructure: jest.fn(),
     getInfrastructureByName: jest.fn(),
 }));
 
@@ -32,10 +30,6 @@ describe('ConceptDescriptionRepositoryService', () => {
     beforeEach(() => {
         jest.clearAllMocks();
         (getInfrastructuresIncludingDefault as jest.Mock).mockResolvedValue(infrastructures);
-
-        (getDefaultInfrastructure as jest.Mock).mockResolvedValue(
-            infrastructures.filter((infra) => infra.name === 'default')[0],
-        );
 
         (getInfrastructureByName as jest.Mock).mockImplementation((name: string) => {
             return infrastructures.find((infra) => infra.name === name);

@@ -9,16 +9,14 @@ import { getDefaultInfrastructure } from '../database/infrastructureDatabaseActi
 import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
 import { TemplateApi } from 'lib/api/mnestix-aas-generator/v1';
 
-export enum AasGeneratorApiVersion {
-    V1 = 'v1',
-    V2 = 'v2',
-}
-
-export const DEFAULT_TEMPLATE_API_VERSION: AasGeneratorApiVersion = AasGeneratorApiVersion.V1;
-
-export function resolveTemplateApiVersion(version?: AasGeneratorApiVersion): AasGeneratorApiVersion {
-    return version ?? DEFAULT_TEMPLATE_API_VERSION;
-}
+// Re-exported for existing server-side importers. Client Components must import these from
+// './aasGeneratorApiVersion' directly — importing them from here pulls this whole server module,
+// and everything it reaches (`infrastructure.ts` → `serverFetch.ts`), into the client graph.
+export {
+    AasGeneratorApiVersion,
+    DEFAULT_TEMPLATE_API_VERSION,
+    resolveTemplateApiVersion,
+} from './aasGeneratorApiVersion';
 
 type ApiDependencies = {
     fetchWrapped: MnestixFetch;
@@ -38,6 +36,17 @@ export async function initializeAasGeneratorApiDependencies(): Promise<ApiDepend
     const configurationV1 = new ConfigurationV1({
         basePath: envs.MNESTIX_AAS_GENERATOR_API_URL,
         fetchApi: (input: RequestInfo | URL, init?: RequestInit) => fetchRaw.fetch(input, init),
+        // The generated client's spec paths (e.g. /api/Template/...) are unversioned; the proxy now serves
+        // them under /api/v1/... and only 308-redirects the old path for compatibility. Server-side fetches
+        // refuse redirects (SSRF hardening), so we rewrite the path here instead of relying on the redirect.
+        middleware: [
+            {
+                pre: async (context) => ({
+                    url: context.url.replace(/\/api\//, '/api/v1/'),
+                    init: context.init,
+                }),
+            },
+        ],
     });
 
     const configurationV2 = new ConfigurationV2({

@@ -9,8 +9,10 @@ import { IConfigurationShellApi } from 'lib/api/configuration-shell-api/configur
 import { ConfigurationShellApiV2 } from 'lib/api/configuration-shell-api/configurationShellApiV2';
 import { getDefaultInfrastructure } from '../database/infrastructureDatabaseActions';
 import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
+import { requireAdmin } from 'lib/util/securityHelpers/authGuard';
 
 export async function getIdGenerationSettings(): Promise<ApiResponseWrapper<Submodel>> {
+    await requireAdmin();
     const configurationShellApi = await getConfigurationApi();
     return configurationShellApi.getIdGenerationSettings();
 }
@@ -22,6 +24,7 @@ export async function putSingleIdGenerationSetting(
         dynamicPart: string;
     },
 ): Promise<ApiResponseWrapper<void>> {
+    await requireAdmin();
     const configurationShellApi = await getConfigurationApi();
     return configurationShellApi.putSingleIdGenerationSetting(idShort, values);
 }

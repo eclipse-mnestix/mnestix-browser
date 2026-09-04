@@ -12,7 +12,8 @@ export const VALIDATION_ERROR_KEYS = {
 export type ValidationErrorKey = (typeof VALIDATION_ERROR_KEYS)[keyof typeof VALIDATION_ERROR_KEYS];
 
 function isDangerousHeader(key: string) {
-    return (DANGEROUS_HEADERS as readonly string[]).includes(key);
+    const normalized = key.toLowerCase();
+    return DANGEROUS_HEADERS.some((header) => header.toLowerCase() === normalized);
 }
 
 export interface ValidationResult {

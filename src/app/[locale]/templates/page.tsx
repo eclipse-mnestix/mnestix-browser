@@ -24,7 +24,7 @@ import { deleteBlueprintById, getBlueprints } from 'lib/services/aas-generator/b
 import { useTranslations } from 'next-intl';
 import { findSemanticIdOfType } from 'lib/util/SubmodelResolverUtil';
 import { useHealthCheckContext } from 'components/contexts/HealthCheckContext';
-import { AasGeneratorApiVersion } from 'lib/services/aas-generator/aasGeneratorVersioning';
+import { AasGeneratorApiVersion } from 'lib/services/aas-generator/aasGeneratorApiVersion';
 
 enum SpecialDefaultTabIds {
     All = 'all',

@@ -1,7 +1,12 @@
 import { prisma } from 'lib/database/prisma';
 import { NextRequest } from 'next/server';
+import { getAuthError } from 'lib/util/securityHelpers/authGuard';
+import { MnestixRole } from 'components/authentication/AllowedRoutes';
 
 export async function GET() {
+    const err = await getAuthError([MnestixRole.MnestixAdmin]);
+    if (err) return Response.json({ error: err.message }, { status: err.status });
+
     try {
         const mnestixConnections = await prisma.mnestixConnection.findMany({ include: { types: true } });
 
@@ -12,6 +17,9 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+    const err = await getAuthError([MnestixRole.MnestixAdmin]);
+    if (err) return Response.json({ error: err.message }, { status: err.status });
+
     const mnestixConnectionRequest = await req.json();
 
     if (!mnestixConnectionRequest.url || !mnestixConnectionRequest.type) {

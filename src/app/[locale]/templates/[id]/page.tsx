@@ -32,7 +32,7 @@ import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useAuth } from 'lib/hooks/UseAuth';
 import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
 import { useShowError } from 'lib/hooks/UseShowError';
-import { AasGeneratorApiVersion } from 'lib/services/aas-generator/aasGeneratorVersioning';
+import { AasGeneratorApiVersion } from 'lib/services/aas-generator/aasGeneratorApiVersion';
 import {
     deleteBlueprintById,
     getBlueprintById,

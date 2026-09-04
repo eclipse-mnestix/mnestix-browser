@@ -4,7 +4,7 @@ import { ApiResponseWrapper, wrapErrorCode } from 'lib/util/apiResponseWrapper/a
 import { ISerializationApi } from 'lib/api/basyx-v3/apiInterface';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import logger from 'lib/util/Logger';
-import { getInfrastructureByName } from 'lib/services/database/infrastructureDatabaseActions';
+import { getInfrastructureByName } from 'lib/services/database/infrastructureData';
 import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
 import { SerializationApiInMemory } from 'lib/api/basyx-v3/apiInMemory';

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { Session } from 'next-auth';
-import { sessionLogOut } from 'lib/api/infrastructure';
+import { sessionLogOut } from 'lib/api/sessionLogOut';
 import AllowedRoutes, { MnestixRole } from 'components/authentication/AllowedRoutes';
 import { useEnv } from 'app/EnvProvider';
 
