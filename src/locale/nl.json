@@ -210,8 +210,16 @@
     },
     "aasViewer": {
       "actions": {
-        "toProductView": "Productweergave",
         "download": "AAS downloaden"
+      },
+      "viewNotFound": {
+        "header": "Weergave niet gevonden",
+        "description": "De weergave ''{view}'' bestaat niet voor deze Asset Administration Shell.",
+        "toHomeButton": "Naar startpagina"
+      },
+      "views": {
+        "default": "AAS-weergave",
+        "product": "Productweergave"
       },
       "asset": "Asset",
       "assetAdministrationShell": "Asset Administration Shell",
@@ -313,8 +321,7 @@
       "actions": {
         "download": "AAS downloaden",
         "downloadError": "Fout bij het downloaden van de AAS.",
-        "downloadErrorNoRepo": "Geen repository gevonden voor de geselecteerde AAS.",
-        "toAasView": "AAS-weergave"
+        "downloadErrorNoRepo": "Geen repository gevonden voor de geselecteerde AAS."
       },
       "classification": "Productclassificatie",
       "error": {

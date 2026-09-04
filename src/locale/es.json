@@ -210,8 +210,16 @@
     },
     "aasViewer": {
       "actions": {
-        "toProductView": "Vista de producto",
         "download": "Descargar AAS"
+      },
+      "viewNotFound": {
+        "header": "Vista no encontrada",
+        "description": "La vista ''{view}'' no existe para este Asset Administration Shell.",
+        "toHomeButton": "Ir al inicio"
+      },
+      "views": {
+        "default": "Vista AAS",
+        "product": "Vista de producto"
       },
       "asset": "Asset",
       "assetAdministrationShell": "Asset Administration Shell",
@@ -313,8 +321,7 @@
       "actions": {
         "download": "Descargar AAS",
         "downloadError": "Error al descargar el AAS.",
-        "downloadErrorNoRepo": "No se encontró ningún repositorio para el AAS seleccionado.",
-        "toAasView": "Vista del AAS"
+        "downloadErrorNoRepo": "No se encontró ningún repositorio para el AAS seleccionado."
       },
       "classification": "Clasificación del producto",
       "error": {
