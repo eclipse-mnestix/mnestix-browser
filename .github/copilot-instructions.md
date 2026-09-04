@@ -55,8 +55,6 @@ Passing a client-controlled `url` to a server-side `fetch` with infrastructure c
 - Deny-list dangerous request headers (`Authorization`, `Cookie`, …) **case-insensitively** — see `lib/util/securityHelpers/ValidateSecurityInput.ts`. A case-sensitive check is a bypass.
 - Encrypted infrastructure secrets must never cross the server/client boundary in an action's return value or props.
 
-Background and threat models: `docs/MNE-492-ssrf-and-key-disclosure.md`, `docs/MNE-493-server-side-authorization.md`.
-
 ## Documentation
 
 - Add JSDoc comments for exported functions and components
