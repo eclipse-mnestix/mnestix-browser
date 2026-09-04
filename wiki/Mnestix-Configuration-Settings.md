@@ -12,6 +12,7 @@ Mnestix provides the following configuration options. You can adapt the values i
 | `REGISTRY_API_URL`                 |               | Address of the AAS Registry Service to retrieve the related descriptor for an AAS                                                                |
 | `SUBMODEL_REGISTRY_API_URL`        |               | Address of the Submodel Registry Service to retrieve the related descriptor for a Submodel                                                       |
 | `MNESTIX_AAS_GENERATOR_API_URL`    |               | Mnestix Aas Generator with a lot of business comfort features to create AAS via templates                                                        |
+| `SERIALIZATION_API_URL`            |               | Address of the service used to serialize AAS (e.g. for the AASX export/download). Typically points to the AAS repository or the Mnestix Proxy.   |
 | `CONCEPT_DESCRIPTION_REPO_API_URL` |               | Default Concept Description Repository                                                                                                           |
 | `LOG_LEVEL`                        | "info"        | Server side log level of Mnestix Browser. "fatal" or "error" or "warn" or "info" or "debug" or "trace" or "silent"                               |
 | `MNESTIX_V2_ENABLED`               | "true"        | Setting to 'false' to support older Mnestix API versions (v1._._), the support for those Mnestix API versions will be stopped in the near future |
@@ -244,8 +245,8 @@ found [on the IDTA website](https://industrialdigitaltwin.org/wp-content/uploads
 > the [Mnestix Proxy](https://github.com/eclipse-mnestix/mnestix-proxy/wiki) (secures and routes the AAS infrastructure)
 > and the [Mnestix AAS Generator](https://github.com/eclipse-mnestix/mnestix-aas-generator/wiki) (template/blueprint based AAS generation).
 
-There also exists the Mnestix API, that provides different business
-comfort features.
+The Mnestix AAS Generator provides different business
+comfort features, while the Mnestix Proxy secures them.
 Here it is possible to set an API Key, for example, to secure your backend services like the repository or the discovery
 service.
 When running the proxy you can change the paths to the different
@@ -402,23 +403,13 @@ backend environment variable `Features__AllowRetrievingAllShellsAndSubmodels: fa
 Remember that this also means that the functionality to list all AAS won't work anymore in the Mnestix Browser, so
 disable this functionality with the environment variable `AAS_LIST_FEATURE_FLAG: false`.
 
-#### AAS List V2 Feature Details
-
-The `AAS_LIST_V2_FEATURE_FLAG` is a feature flag introduced as part of a preview release.
-It enables access to an updated list implementation that operates independently of the Mnestix API.
-
-This flag is currently disabled by default (false) and is available only in preview.
-It is not yet recommended for production environments.
-
-To enable the feature for testing or preview purposes, set the flag to true in your configuration.
-
 #### AzureAD Service
 
 One can also add an AzureAD Service to give people deeper access, this enables the "Login" Button in the Mnestix
 Browser.
 After logging in, users have access to even more functionality.
 To see how to connect to an Azure Tenant and enable the login functionality see
-the [official Mnestix API documentation](https://hub.docker.com/r/mnestix/mnestix-api).
+the [official Mnestix AAS Generator documentation](https://hub.docker.com/r/mnestix/mnestix-aas-generator).
 
 #### I want to create multiple AAS
 
@@ -427,13 +418,13 @@ the [previous section](#i-want-to-use-more-advanced-features).
 After logging in it is possible to configure the ID Generation Functionality of the backend.
 Here it is possible to automatically generate AAS using only a short ID of the Asset.
 How the AAS Creator in conjunction with the ID Generations Functionality works can be seen in
-the [official Mnestix API documentation](https://hub.docker.com/r/mnestix/mnestix-api).
+the [official Mnestix AAS Generator documentation](https://hub.docker.com/r/mnestix/mnestix-aas-generator).
 
 One can also use the Template Builder with the Data Ingest Endpoint to send arbitrary JSON files to the API and
 automatically add them to a specified AAS.
 This enables easy integration into existing ETL processes.
 How exactly this works can be seen in
-the [official Mnestix API documentation](https://hub.docker.com/r/mnestix/mnestix-api).
+the [official Mnestix AAS Generator documentation](https://hub.docker.com/r/mnestix/mnestix-aas-generator).
 
 Below you'll find a small overview on how the components interact with each other:
 ![Overview of all Mnestix Functionality](https://xitaso.com/wp-content/uploads/final_LP_Desktop_Mnestix_AAS_0424_cor.svg)
