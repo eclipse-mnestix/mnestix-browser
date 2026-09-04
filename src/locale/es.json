@@ -68,11 +68,6 @@
       },
       "totalCO2Equivalents": "Emisiones de CO2 del producto (hasta el momento)"
     },
-    "constructionDialog": {
-      "buttonText": "Cerrar",
-      "message": "Esta función está actualmente en construcción y estará disponible próximamente.",
-      "title": "En Construcción"
-    },
     "contactInformation": {
       "contactTypes": {
         "0173-1#07-AAS754#001": "Oficina",
@@ -193,7 +188,6 @@
   "pages": {
     "aasList": {
       "buttonTooltip": "Ir a AAS",
-      "compare": "Comparar",
       "header": "Lista de AAS",
       "listHeader": {
         "aasEndpoint": "AAS URL",
@@ -209,16 +203,13 @@
         "infrastructureName": "Infraestructura",
         "viewAASButton": "Ver AAS"
       },
-      "maxElementsWarning": "No se pueden comparar más de 3 elementos",
       "page": "Página",
       "repositoryDropdownLabel": "AAS repository o AAS registry (Infrastructure)",
       "selectListSource": "Por favor, seleccione un repositorio o AAS registry",
-      "subHeader": "Todos los AAS de su repositorio o AAS registry se muestran aquí. Puede seleccionar otro repositorio o AAS registry para cambiar la fuente de los datos.",
-      "titleComparisonAddButton": "Añadir AAS a la comparación"
+      "subHeader": "Todos los AAS de su repositorio o AAS registry se muestran aquí. Puede seleccionar otro repositorio o AAS registry para cambiar la fuente de los datos."
     },
     "aasViewer": {
       "actions": {
-        "compareButton": "Comparar",
         "download": "Descargar AAS"
       },
       "viewNotFound": {
@@ -303,22 +294,6 @@
       "searchPlaceholder": "Búsqueda no disponible actualmente...",
       "title": "Catálogo de productos"
     },
-    "compare": {
-      "addAnother": "Añadir otro AAS",
-      "addButton": "Añadir otro AAS",
-      "addFirstAasButton": "Añadir AAS",
-      "collection": {
-        "hide": "Ocultar",
-        "show": "{idShort}"
-      },
-      "errors": {
-        "aasAddError": "No se pudo añadir el AAS.",
-        "aasAlreadyAdded": "No se puede añadir este AAS más de una vez.",
-        "moreAasFound": "Más de un AAS encontrado en el servicio de descubrimiento, introduzca el ID del AAS, por favor.",
-        "unknownModelType": "Mnestix aún no admite este ModelType ({type})."
-      },
-      "title": "Comparar AAS"
-    },
     "dashboard": {
       "aasOrAssetId": "AAS ID o Asset ID",
       "infrastructure": "Infraestructura",
@@ -344,7 +319,6 @@
     },
     "productViewer": {
       "actions": {
-        "compareButton": "Comparar",
         "download": "Descargar AAS",
         "downloadError": "Error al descargar el AAS.",
         "downloadErrorNoRepo": "No se encontró ningún repositorio para el AAS seleccionado."
@@ -597,32 +571,6 @@
         }
       },
       "noBlueprintsWarning": "No hay planos disponibles."
-    },
-    "transfer": {
-      "aasRepository": "Repositorio AAS",
-      "chooseRepository": "Elija el repositorio AAS al que desea transferir:",
-      "chooseSubmodelRepository": "Escoja repositorio de submodels (opcional)",
-      "errorToast": "Transferencia de AAS errónea",
-      "partiallyFailedToast": "Fallo al transferir el elemento",
-      "repositoryApiKey": "Clave API del repositorio AAS",
-      "repositoryLabel": "Lista de repositorios AAS",
-      "repositoryRequired": "Se requiere repositorio AAS",
-      "submodelRepository": "Repositorio de submodels",
-      "submodelRepositoryApiKey": "Clave API del repositorio de submodels",
-      "submodelRepositoryLabel": "Lista de repositorios de submodels",
-      "subtitle": "Transferir \"{aasId}\" desde \"{repoUrl}\" a:",
-      "successfulToast": "Transferencia de AAS exitosa",
-      "title": "Transferencia",
-      "useAasRepository": "Usar repositorio de AAS",
-      "warningToast": "El AAS solo se transfirió parcialmente.",
-      "aasIdentifier": {
-        "display": "\"{aasId}\"",
-        "default": "ID de AAS desconocido"
-      },
-      "aasOriginUrl": {
-        "display": "\"{repoUrl}\"",
-        "default": "URL de origen de AAS desconocida"
-      }
     }
   }
 }

@@ -8,7 +8,6 @@ import { useParams, useRouter } from 'next/navigation';
 import { SubmodelsOverviewCard } from '../_components/SubmodelsOverviewCard';
 import { AASOverviewCard } from 'app/[locale]/viewer/_components/AASOverviewCard';
 import { useEnv } from 'app/EnvProvider';
-import { TransferButton } from 'app/[locale]/viewer/_components/transfer/TransferButton';
 import { useLocale, useTranslations } from 'next-intl';
 import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 import { useShowError } from 'lib/hooks/UseShowError';
@@ -114,17 +113,6 @@ export function DefaultViewer() {
                         ''
                     )}
                 </Typography>
-                {env.COMPARISON_FEATURE_FLAG && !isMobile && (
-                    <Button
-                        sx={{ mr: 2 }}
-                        variant="contained"
-                        onClick={startComparison}
-                        data-testid="detail-compare-button"
-                    >
-                        {t('actions.compareButton')}
-                    </Button>
-                )}
-                {env.TRANSFER_FEATURE_FLAG && <TransferButton />}
                 {showDownloadButton && (
                     <Button
                         variant="contained"
