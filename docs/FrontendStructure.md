@@ -35,8 +35,6 @@ Files that are shared between route segments, are located in the following share
 |------- [id]
 |--------- *page.tsx*
 |------- *page.tsx*
-|----- compare
-|------- ...
 |----- list
 |------- ...
 |----- asset

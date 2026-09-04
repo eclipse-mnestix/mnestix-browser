@@ -136,9 +136,13 @@ export class ListService {
                 let hrefValue = descriptor.endpoints[0].protocolInformation.href;
                 if (hrefValue.startsWith('/')) {
                     const host = new URL(this.repositoryWithInfrastructure.url).origin;
-                    logWarn(this.log, 'getAasListEntities', `Descriptor with id "${descriptor.id}" does not contain a standardconform URL, trying a workaround. Please update your data.`);
+                    logWarn(
+                        this.log,
+                        'getAasListEntities',
+                        `Descriptor with id "${descriptor.id}" does not contain a standardconform URL, trying a workaround. Please update your data.`,
+                    );
                     hrefValue = host.concat(hrefValue);
-                }   
+                }
 
                 const endpoint = new URL(hrefValue);
                 const aasResponse = await targetAasRegistryClient.getAssetAdministrationShellFromEndpoint(endpoint);
@@ -194,11 +198,9 @@ export class ListService {
         for (const reference of submodelReferences.result) {
             const submodelId = reference.keys[0].value;
             const submodelRepositoryClient = this.getTargetSubmodelRepositoryClient();
-            //TODO change request to submodel metadata once Basyx Go supports it
-            //https://github.com/eclipse-basyx/basyx-go-components/issues/307
-            const submodelResponse = await submodelRepositoryClient.getSubmodelById(submodelId);
-            if (submodelResponse.isSuccess) {
-                const semanticId = submodelResponse.result?.semanticId?.keys[0]?.value;
+            const submodelMetadataResponse = await submodelRepositoryClient.getSubmodelMetaData(submodelId);
+            if (submodelMetadataResponse.isSuccess) {
+                const semanticId = submodelMetadataResponse.result?.semanticId?.keys[0]?.value;
                 const nameplateKeys = [
                     SubmodelSemanticIdEnum.NameplateV1,
                     SubmodelSemanticIdEnum.NameplateV2,
