@@ -13,7 +13,7 @@ export class TemplateShellApi {
     private http: MnestixFetch;
 
     constructor(backendApiUrl: string, http: MnestixFetch) {
-        this.basePathOwnApi = `${backendApiUrl}/api/v2/Template`;
+        this.basePathOwnApi = `${backendApiUrl}/api/v2/Templates`;
         this.basePathCustoms = `${backendApiUrl}/templates/custom`;
         this.http = http;
     }
