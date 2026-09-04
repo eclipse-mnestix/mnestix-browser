@@ -1,4 +1,4 @@
-﻿## Folder Structure
+## Folder Structure
 
 ### Naming Conventions:
 
@@ -8,36 +8,44 @@ Naming convention for folders: Kebab Case (e.g. folder-name)
 ### Folder Structure:
 
 In general, we want to group code by pages and features, not by file type.
-Each route segment has a `/components` folder which contains all elements which are solely used in this route.  
-Files that are shared between route segments, are located in the following shared folders:
+Each route segment has a `_components` folder which contains all elements which are solely used in this route.  
+Files that are shared between route segments are located in the following shared folders:
 
 -   `\layout`: Overall application appearance including theming, menu etc.
 -   `\lib`: Shared logic and types as well as interfaces to external apis.
 -   `\components`: All components which can be shared between several routes.
--   `\assets`: Static assets such as images, icons oder other similar files.
+-   `\assets`: Static assets such as images, icons or other similar files.
+-   `\stores`: Shared client-side state stores.
 
 ```
 |- src
 |--- app/[locale]
+|----- _components
+|------- shared components for the [locale] segment
 |----- viewer
-|------- components
+|------- _components
 |--------- submodel
 |--------- submodel-elements
+|--------- transfer
 |------- page.tsx
 |----- settings
-|------- components
-|--------- theme-settings
-|--------- id-generation-settings
-|------- *page.tsx*
+|------- _components
+|--------- id-settings
+|--------- role-settings
+|--------- mnestix-infrastructure
+|------- page.tsx
 |----- templates
-|------- components
-|--------- template-edit
+|------- _components
+|--------- blueprint-edit
 |------- [id]
 |--------- *page.tsx*
 |------- *page.tsx*
 |----- list
+|------- _components
+|--------- filter
 |------- ...
 |----- asset
+|------- _components
 |------- ...
 |--- assets
 |--- components
@@ -46,10 +54,15 @@ Files that are shared between route segments, are located in the following share
 |----- menu
 |----- theme
 |--- lib
-|----- apis
-|----- utils
+|----- api
+|----- util
 |----- hooks
 |----- types
 |----- enums
+|----- services
+|----- errors
+|----- database
 |----- ...
+|--- stores
+|--- i18n
 ```
