@@ -9,12 +9,11 @@ import { encodeBase64 } from 'lib/util/Base64Util';
 import { MultiLanguageValueOnly } from 'lib/api/basyx-v3/types';
 import { getInfrastructureByName } from '../database/infrastructureData';
 import { assertEgressAllowed, securityHeadersForUrl } from 'lib/util/securityHelpers/repositoryFetchGuard';
+import { egressBlockedError } from 'lib/util/securityHelpers/egressBlockedError';
 import logger, { logInfo, logWarn } from 'lib/util/Logger';
-import { RepositoryWithInfrastructure } from '../database/InfrastructureMappedTypes';
+import { RepositoryWithInfrastructure, InfrastructureConnection } from '../database/InfrastructureMappedTypes';
 import { IRegistryServiceApi } from 'lib/api/registry-service-api/registryServiceApiInterface';
 import { AssetAdministrationShellDescriptor } from 'lib/types/registryServiceTypes';
-import { wrapErrorCode } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 export type ListEntityDto = {
     aasId: string;
@@ -35,6 +34,12 @@ export type AasListDto = {
     error?: object;
     cursor?: string;
 };
+
+/** Internal result of fetching shells from either a repository or a registry. */
+type ShellsFetchResult =
+    | { success: true; shells: AssetAdministrationShell[]; cursor?: string }
+    | { success: false; error: object };
+
 
 export class ListService {
     private constructor(
@@ -118,114 +123,151 @@ export class ListService {
      */
     async getAasListEntities(limit: number, cursor?: string, type?: 'repository' | 'registry'): Promise<AasListDto> {
         const { url, infrastructureName } = this.repositoryWithInfrastructure;
-        try {
-            await assertEgressAllowed(url, infrastructureName);
-        } catch (e) {
-            return { success: false, error: wrapErrorCode(ApiResultStatus.FORBIDDEN, (e as Error).message) };
+        const blocked = await egressBlockedError(url, infrastructureName);
+        if (blocked) {
+            return { success: false, error: blocked };
         }
         const infrastructure = await getInfrastructureByName(infrastructureName);
         const securityHeader = await securityHeadersForUrl(url, infrastructure);
 
-        let assetAdministrationShells: AssetAdministrationShell[];
-        let nextCursor: string | undefined;
+        const shellsResult =
+            type === 'registry'
+                ? await this.fetchShellsFromRegistry(limit, cursor, securityHeader, infrastructure)
+                : await this.fetchShellsFromRepository(limit, cursor, securityHeader);
 
-        if (type === 'registry') {
-            logInfo(this.log, 'getAasListEntities', 'Fetching aas list from registry');
-            const targetAasRegistryClient = this.getTargetAasRegistryClient(securityHeader);
-            const descriptorsResponse = await targetAasRegistryClient.getAllAssetAdministrationShellDescriptors(
-                limit,
-                cursor,
-            );
-
-            if (!descriptorsResponse.isSuccess) {
-                return { success: false, error: descriptorsResponse };
-            }
-
-            const { result: descriptors, paging_metadata } = descriptorsResponse.result;
-            nextCursor = paging_metadata?.cursor;
-
-            // Fetch all AAS from their endpoints in parallel
-            const aasPromises = descriptors.map(async (descriptor: AssetAdministrationShellDescriptor) => {
-                if (!descriptor.endpoints || descriptor.endpoints.length === 0) {
-                    this.log?.warn(`Descriptor ${descriptor.id} has no endpoints`);
-                    return null;
-                }
-                let hrefValue = descriptor.endpoints[0].protocolInformation.href;
-                if (hrefValue.startsWith('/')) {
-                    const host = new URL(url).origin;
-                    logWarn(
-                        this.log,
-                        'getAasListEntities',
-                        `Descriptor with id "${descriptor.id}" does not contain a standardconform URL, trying a workaround. Please update your data.`,
-                    );
-                    hrefValue = host.concat(hrefValue);
-                }
-
-                // The endpoint URL comes from the descriptor (data), not the configured repository — guard it
-                // and re-derive credentials for its own host, so we never fetch an internal target or leak
-                // the infrastructure's credentials to a non-configured host.
-                try {
-                    await assertEgressAllowed(hrefValue, infrastructureName);
-                } catch (e) {
-                    logWarn(
-                        this.log,
-                        'getAasListEntities',
-                        `Skipping descriptor "${descriptor.id}" endpoint blocked by egress guard: ${(e as Error).message}`,
-                    );
-                    return null;
-                }
-
-                const endpoint = new URL(hrefValue);
-                const endpointHeader = await securityHeadersForUrl(hrefValue, infrastructure);
-                const aasResponse =
-                    await this.getTargetAasRegistryClient(endpointHeader).getAssetAdministrationShellFromEndpoint(
-                        endpoint,
-                    );
-                return aasResponse.isSuccess ? aasResponse.result : null;
-            });
-
-            const aasResults = await Promise.all(aasPromises);
-            assetAdministrationShells = aasResults.filter((aas): aas is AssetAdministrationShell => aas !== null);
-        } else {
-            logInfo(this.log, 'getAasListEntities', 'Fetching aas list from repository');
-            const targetAasRepositoryClient = this.getTargetAasRepositoryClient(securityHeader);
-            const response = await targetAasRepositoryClient.getAllAssetAdministrationShells(limit, cursor);
-
-            if (!response.isSuccess) {
-                return { success: false, error: response };
-            }
-
-            const { result: shells, paging_metadata } = response.result;
-            assetAdministrationShells = shells;
-            nextCursor = paging_metadata?.cursor;
+        if (!shellsResult.success) {
+            return { success: false, error: shellsResult.error };
         }
 
-        const aasListDtos = assetAdministrationShells
-            .filter((aas) => {
-                const aasToRemove = aas.assetInformation?.specificAssetIds?.find(
-                    (specificAssetId) => specificAssetId.name === 'aasListFilterId',
-                );
-                return !aasToRemove;
-            })
+        return { success: true, entities: this.mapShellsToListDtos(shellsResult.shells), cursor: shellsResult.cursor };
+    }
+
+    /** Fetches shells directly from the AAS repository. */
+    private async fetchShellsFromRepository(
+        limit: number,
+        cursor: string | undefined,
+        securityHeader: Record<string, string> | null,
+    ): Promise<ShellsFetchResult> {
+        logInfo(this.log, 'getAasListEntities', 'Fetching aas list from repository');
+        const response = await this.getTargetAasRepositoryClient(securityHeader).getAllAssetAdministrationShells(
+            limit,
+            cursor,
+        );
+        if (!response.isSuccess) {
+            return { success: false, error: response };
+        }
+        const { result: shells, paging_metadata } = response.result;
+        return { success: true, shells, cursor: paging_metadata?.cursor };
+    }
+
+    /** Fetches descriptors from the registry, then resolves each shell from its own endpoint in parallel. */
+    private async fetchShellsFromRegistry(
+        limit: number,
+        cursor: string | undefined,
+        securityHeader: Record<string, string> | null,
+        infrastructure: InfrastructureConnection | undefined,
+    ): Promise<ShellsFetchResult> {
+        logInfo(this.log, 'getAasListEntities', 'Fetching aas list from registry');
+        const descriptorsResponse = await this.getTargetAasRegistryClient(
+            securityHeader,
+        ).getAllAssetAdministrationShellDescriptors(limit, cursor);
+        if (!descriptorsResponse.isSuccess) {
+            return { success: false, error: descriptorsResponse };
+        }
+
+        const { result: descriptors, paging_metadata } = descriptorsResponse.result;
+        const shells = await Promise.all(
+            descriptors.map((descriptor: AssetAdministrationShellDescriptor) =>
+                this.fetchShellFromDescriptor(descriptor, infrastructure),
+            ),
+        );
+
+        return {
+            success: true,
+            shells: shells.filter((aas): aas is AssetAdministrationShell => aas !== null),
+            cursor: paging_metadata?.cursor,
+        };
+    }
+
+    /**
+     * Resolves a single shell from a registry descriptor's endpoint.
+     * The endpoint URL comes from the descriptor (data), not the configured repository — it is guarded
+     * and credentials are re-derived for its own host, so we never fetch an internal target or leak the
+     * infrastructure's credentials to a non-configured host. Returns null when the descriptor is unusable.
+     */
+    private async fetchShellFromDescriptor(
+        descriptor: AssetAdministrationShellDescriptor,
+        infrastructure: InfrastructureConnection | undefined,
+    ): Promise<AssetAdministrationShell | null> {
+        const { url, infrastructureName } = this.repositoryWithInfrastructure;
+        const hrefValue = this.resolveDescriptorHref(descriptor, url);
+        if (!hrefValue) return null;
+
+        try {
+            await assertEgressAllowed(hrefValue, infrastructureName);
+        } catch (e) {
+            logWarn(
+                this.log,
+                'getAasListEntities',
+                `Skipping descriptor "${descriptor.id}" endpoint blocked by egress guard: ${(e as Error).message}`,
+            );
+            return null;
+        }
+
+        const endpointHeader = await securityHeadersForUrl(hrefValue, infrastructure);
+        const aasResponse =
+            await this.getTargetAasRegistryClient(endpointHeader).getAssetAdministrationShellFromEndpoint(
+                new URL(hrefValue),
+            );
+        return aasResponse.isSuccess ? aasResponse.result : null;
+    }
+
+    /**
+     * Extracts the AAS endpoint URL from a descriptor, applying a workaround for non-standard relative
+     * hrefs by prefixing the configured repository origin. Returns null when the descriptor has no endpoint.
+     */
+    private resolveDescriptorHref(descriptor: AssetAdministrationShellDescriptor, repositoryUrl: string): string | null {
+        if (!descriptor.endpoints || descriptor.endpoints.length === 0) {
+            this.log?.warn(`Descriptor ${descriptor.id} has no endpoints`);
+            return null;
+        }
+        const hrefValue = descriptor.endpoints[0].protocolInformation.href;
+        if (hrefValue.startsWith('/')) {
+            logWarn(
+                this.log,
+                'getAasListEntities',
+                `Descriptor with id "${descriptor.id}" does not contain a standardconform URL, trying a workaround. Please update your data.`,
+            );
+            return new URL(repositoryUrl).origin.concat(hrefValue);
+        }
+        return hrefValue;
+    }
+
+    /**
+     * Maps shells to list DTOs, filtering out the configuration AASs created by the mnestix-api
+     * (identified by a specificAssetId named "aasListFilterId").
+     */
+    private mapShellsToListDtos(shells: AssetAdministrationShell[]): ListEntityDto[] {
+        return shells
+            .filter(
+                (aas) => !aas.assetInformation?.specificAssetIds?.some((id) => id.name === 'aasListFilterId'),
+            )
             .map((aas) => ({
                 aasId: aas.id,
                 assetId: aas.assetInformation?.globalAssetId ?? '',
                 thumbnail: aas.assetInformation?.defaultThumbnail?.path ?? '',
             }));
-
-        return { success: true, entities: aasListDtos, cursor: nextCursor };
     }
 
     async getNameplateValuesForAAS(aasId: string): Promise<NameplateValuesDto> {
         const { url, infrastructureName } = this.repositoryWithInfrastructure;
-        try {
-            await assertEgressAllowed(url, infrastructureName);
-        } catch (e) {
+        const blocked = await egressBlockedError(url, infrastructureName);
+        if (blocked) {
             return {
                 success: false,
                 manufacturerName: undefined,
                 manufacturerProductDesignation: undefined,
-                error: wrapErrorCode(ApiResultStatus.FORBIDDEN, (e as Error).message),
+                error: blocked,
             };
         }
         const infrastructure = await getInfrastructureByName(infrastructureName);

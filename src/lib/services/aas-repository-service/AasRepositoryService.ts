@@ -20,7 +20,8 @@ import {
     RepositoryWithInfrastructure,
 } from 'lib/services/database/InfrastructureMappedTypes';
 import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
-import { assertEgressAllowed, securityHeadersForUrl } from 'lib/util/securityHelpers/repositoryFetchGuard';
+import { securityHeadersForUrl } from 'lib/util/securityHelpers/repositoryFetchGuard';
+import { egressBlockedError } from 'lib/util/securityHelpers/egressBlockedError';
 
 export type RepoSearchResult<T> = {
     searchResult: T;
@@ -107,11 +108,8 @@ export class AasRepositoryService {
         repository: RepositoryWithInfrastructure,
     ): Promise<ApiResponseWrapper<AssetAdministrationShell>> {
         const infrastructure = await getInfrastructureByName(repository.infrastructureName);
-        try {
-            await assertEgressAllowed(repository.url, repository.infrastructureName);
-        } catch (e) {
-            return wrapErrorCode(ApiResultStatus.FORBIDDEN, (e as Error).message);
-        }
+        const blocked = await egressBlockedError(repository.url, repository.infrastructureName);
+        if (blocked) return blocked;
         const securityHeader = await securityHeadersForUrl(repository.url, infrastructure);
         const client = this.getAasRepositoryClient(repository.url, securityHeader);
         return client.getAssetAdministrationShellById(aasId);
@@ -122,11 +120,8 @@ export class AasRepositoryService {
         repository: RepositoryWithInfrastructure,
     ): Promise<ApiResponseWrapper<ApiFileDto>> {
         const infrastructure = await getInfrastructureByName(repository.infrastructureName);
-        try {
-            await assertEgressAllowed(repository.url, repository.infrastructureName);
-        } catch (e) {
-            return wrapErrorCode(ApiResultStatus.FORBIDDEN, (e as Error).message);
-        }
+        const blocked = await egressBlockedError(repository.url, repository.infrastructureName);
+        if (blocked) return blocked;
         const securityHeader = await securityHeadersForUrl(repository.url, infrastructure);
         const client = this.getAasRepositoryClient(repository.url, securityHeader);
         const searchResponse = await client.getThumbnailFromShell(aasId);
