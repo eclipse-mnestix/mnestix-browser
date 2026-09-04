@@ -16,6 +16,7 @@ import {
 } from 'lib/api/registry-service-api/registryServiceApiInMemory';
 import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
 import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
+import { egressBlockedError } from 'lib/util/securityHelpers/egressBlockedError';
 
 export type RegistrySearchResult = {
     endpoints: URL[];
@@ -96,6 +97,13 @@ export class AasRegistryService {
         }
 
         const endpoint = firstResult.endpoints[0];
+
+        // The registry-returned href is data, not operator config: a compromised or federated registry can point
+        // it at an internal target, and refusing redirects does not block the initial request. Guard before
+        // fetching, consistent with the per-descriptor guards in InfrastructureSearchService.
+        const blocked = await egressBlockedError(endpoint.toString(), firstResult.infrastructureName ?? '');
+        if (blocked) return blocked;
+
         const aasSearchResult = await this.getAasFromEndpoint(endpoint, firstResult.location);
 
         if (!aasSearchResult.isSuccess) {

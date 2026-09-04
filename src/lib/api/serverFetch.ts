@@ -1,5 +1,3 @@
-'use server';
-
 /**
  * Low-level server-side fetch primitive. Every outbound HTTP request the server makes funnels through here,
  * reached only via the `mnestixFetch` / `mnestixFetchRaw` wrappers in `infrastructure.ts` — never called
@@ -15,11 +13,16 @@
  *    fetch path that skips it is an unguarded SSRF hole. Operator-configured URLs (infrastructure DB / env
  *    vars) are trusted by definition and are exempt.
  *
- * 2. These exports are Next.js Server Actions (this file carries the top-level `'use server'` directive).
- *    Do NOT import or reference them from a Client Component: that ships their action ID to the browser and
- *    turns an unguarded, arbitrary-URL server fetch into a client-invocable SSRF/credential-relay endpoint.
- *    They are internal helpers — keep them reachable only through the server-side wrappers above.
+ * 2. This module must NEVER carry a top-level `'use server'` directive. These exports take a fully
+ *    caller-controlled url, method, headers and body and perform no egress validation, so registering them as
+ *    Server Actions publishes an unauthenticated, arbitrary-URL fetch endpoint — a public SSRF and
+ *    internal-request-forgery primitive with none of `repositoryFetchGuard`'s protections. This file did carry
+ *    the directive, and a Client Component reached it through `infrastructure.ts` (which also held a
+ *    browser-side logout helper), so the action IDs shipped in the client bundle. The `import 'server-only'`
+ *    below is what enforces the boundary now: a client import is a build error, not a silent action endpoint.
  */
+
+import 'server-only';
 
 import { ApiResponseWrapper, wrapErrorCode, wrapResponse } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';

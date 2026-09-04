@@ -39,6 +39,26 @@ export class RequiredError extends Error {
 }
 
 /**
+ * Encodes a client-supplied idShort path for safe insertion into a request path.
+ *
+ * Both guards are needed. Percent-encoding each `/`-delimited segment stops `?`/`#`/reserved characters from
+ * re-shaping the URL, but `encodeURIComponent` deliberately leaves `.` untouched — so dot segments have to be
+ * refused explicitly. Without that, a path such as `../../../actuator/env` survives `url.format` (Node's legacy
+ * API does not collapse dot segments) and is then normalized by `fetch`, redirecting the request to an operator
+ * endpoint the caller chose — with the infrastructure's credentials already attached.
+ */
+function encodeSubmodelElementPath(submodelElementPath: string): string {
+    const segments = submodelElementPath.split('/');
+    if (segments.some((segment) => segment === '' || segment === '.' || segment === '..')) {
+        throw new RequiredError(
+            'submodelElementPath',
+            'Invalid submodelElementPath: empty or relative path segments are not allowed.',
+        );
+    }
+    return segments.map(encodeURIComponent).join('/');
+}
+
+/**
  * AssetAdministrationShellRepositoryApi - object-oriented interface
  * @class AssetAdministrationShellRepositoryApi
  */
@@ -599,7 +619,7 @@ export const SubmodelRepositoryApiFetchParamCreator = function (configuration?: 
             }
             const localVarPath = `/submodels/{submodelId}/submodel-elements/{submodelElementPath}/attachment`
                 .replace(`{submodelId}`, encodeURIComponent(String(encodeBase64(submodelId))))
-                .replace(`{submodelElementPath}`, submodelElementPath);
+                .replace(`{submodelElementPath}`, encodeSubmodelElementPath(submodelElementPath));
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
             const localVarHeaderParameter = {} as any;
