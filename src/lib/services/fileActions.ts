@@ -1,6 +1,6 @@
 'use server';
 import { mnestixFetch } from 'lib/api/infrastructure';
-import { getInfrastructureByName } from './database/infrastructureDatabaseActions';
+import { getInfrastructureByName } from './database/infrastructureData';
 import { assertEgressAllowed, securityHeadersForUrl } from 'lib/util/securityHelpers/repositoryFetchGuard';
 import { RepositoryWithInfrastructure } from './database/InfrastructureMappedTypes';
 import { ApiResponseWrapper, wrapErrorCode } from 'lib/util/apiResponseWrapper/apiResponseWrapper';

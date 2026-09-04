@@ -13,7 +13,7 @@ import logger, { logResponseDebug } from 'lib/util/Logger';
 import {
     getInfrastructureByName,
     getInfrastructuresIncludingDefault,
-} from 'lib/services/database/infrastructureDatabaseActions';
+} from 'lib/services/database/infrastructureData';
 import { fetchFromMultipleEndpoints } from 'lib/services/shared/parallelFetch';
 import {
     InfrastructureConnection,

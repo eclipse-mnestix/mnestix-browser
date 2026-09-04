@@ -3,7 +3,7 @@ import dns from 'dns';
 import ipaddr from 'ipaddr.js';
 import { isValidUrl } from 'lib/util/UrlUtil';
 import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
-import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
+import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureData';
 import { createSecurityHeaders } from './SecurityConfiguration';
 
 export class EgressNotAllowedError extends Error {
@@ -15,7 +15,7 @@ export class EgressNotAllowedError extends Error {
 
 export async function assertEgressAllowed(url: string, infrastructureName: string, deps = defaultDeps): Promise<void> {
     if (!isValidUrl(url)) {
-        throw new EgressNotAllowedError(`Egress blocked: unsupported URL scheme for "${url}".`);
+        throw new EgressNotAllowedError(`Egress blocked: invalid URL or unsupported scheme for "${url}".`);
     }
 
     const host = hostnameOf(url);

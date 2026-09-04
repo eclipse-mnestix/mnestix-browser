@@ -4,14 +4,14 @@ import { createTestAas, createTestInfrastructure } from 'test-utils/TestUtils';
 import {
     getInfrastructureByName,
     getInfrastructuresIncludingDefault,
-} from 'lib/services/database/infrastructureDatabaseActions';
+} from 'lib/services/database/infrastructureData';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 import { assertEgressAllowed, securityHeadersForUrl } from 'lib/util/securityHelpers/repositoryFetchGuard';
 import { mnestixFetch } from 'lib/api/infrastructure';
 
-jest.mock('./../database/infrastructureDatabaseActions');
+jest.mock('./../database/infrastructureData');
 jest.mock('lib/util/securityHelpers/repositoryFetchGuard', () => ({
     assertEgressAllowed: jest.fn(),
     securityHeadersForUrl: jest.fn(),

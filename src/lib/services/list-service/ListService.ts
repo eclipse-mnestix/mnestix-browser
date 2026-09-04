@@ -7,7 +7,7 @@ import ServiceReachable from 'test-utils/TestUtils';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { MultiLanguageValueOnly } from 'lib/api/basyx-v3/types';
-import { getInfrastructureByName } from '../database/infrastructureDatabaseActions';
+import { getInfrastructureByName } from '../database/infrastructureData';
 import { assertEgressAllowed, securityHeadersForUrl } from 'lib/util/securityHelpers/repositoryFetchGuard';
 import logger, { logInfo, logWarn } from 'lib/util/Logger';
 import { RepositoryWithInfrastructure } from '../database/InfrastructureMappedTypes';

@@ -1,8 +1,8 @@
 import { SerializationService } from 'lib/services/serialization-service/SerializationService';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
-import { getInfrastructureByName } from 'lib/services/database/infrastructureDatabaseActions';
+import { getInfrastructureByName } from 'lib/services/database/infrastructureData';
 
-jest.mock('lib/services/database/infrastructureDatabaseActions', () => ({
+jest.mock('lib/services/database/infrastructureData', () => ({
     getInfrastructuresIncludingDefault: jest.fn(),
     getInfrastructureByName: jest.fn(),
 }));

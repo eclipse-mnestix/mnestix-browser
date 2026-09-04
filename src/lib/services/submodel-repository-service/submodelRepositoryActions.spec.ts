@@ -1,6 +1,6 @@
 import { getAttachmentFromSubmodelElement } from './submodelRepositoryActions';
 import { assertEgressAllowed, securityHeadersForUrl } from 'lib/util/securityHelpers/repositoryFetchGuard';
-import { getInfrastructureByName } from '../database/infrastructureDatabaseActions';
+import { getInfrastructureByName } from '../database/infrastructureData';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { RepositoryWithInfrastructure } from '../database/InfrastructureMappedTypes';
@@ -9,7 +9,7 @@ jest.mock('lib/util/securityHelpers/repositoryFetchGuard', () => ({
     assertEgressAllowed: jest.fn(),
     securityHeadersForUrl: jest.fn(),
 }));
-jest.mock('../database/infrastructureDatabaseActions', () => ({
+jest.mock('../database/infrastructureData', () => ({
     getInfrastructureByName: jest.fn(),
     getInfrastructuresIncludingDefault: jest.fn(),
 }));

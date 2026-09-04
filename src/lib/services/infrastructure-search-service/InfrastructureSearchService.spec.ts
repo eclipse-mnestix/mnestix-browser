@@ -4,7 +4,7 @@ import { Submodel } from 'lib/api/aas/models';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { Log } from 'lib/util/Log';
 import { InfrastructureSearchService } from 'lib/services/infrastructure-search-service/InfrastructureSearchService';
-import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
+import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureData';
 import { assertEgressAllowed } from 'lib/util/securityHelpers/repositoryFetchGuard';
 import {
     createTestAas,
@@ -14,7 +14,7 @@ import {
     createTestSubmodelRef,
 } from 'test-utils/TestUtils';
 
-jest.mock('./../database/infrastructureDatabaseActions');
+jest.mock('./../database/infrastructureData');
 jest.mock('lib/util/securityHelpers/repositoryFetchGuard', () => ({
     assertEgressAllowed: jest.fn(),
     securityHeadersForUrl: jest.fn(),

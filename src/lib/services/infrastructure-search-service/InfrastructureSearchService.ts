@@ -5,7 +5,7 @@ import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResp
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { AssetAdministrationShell, Reference, Submodel } from 'lib/api/aas/models';
-import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
+import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureData';
 import { AssetAdministrationShellDescriptor, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { AasRepositoryService, RepoSearchResult } from 'lib/services/aas-repository-service/AasRepositoryService';
 import { AasRegistryEndpointEntryInMemory } from 'lib/api/registry-service-api/registryServiceApiInMemory';

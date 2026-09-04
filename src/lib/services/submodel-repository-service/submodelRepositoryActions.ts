@@ -11,7 +11,7 @@ import { headers } from 'next/headers';
 import { SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { RepositoryWithInfrastructure } from '../database/InfrastructureMappedTypes';
-import { getInfrastructureByName } from '../database/infrastructureDatabaseActions';
+import { getInfrastructureByName } from '../database/infrastructureData';
 import { assertEgressAllowed, securityHeadersForUrl } from 'lib/util/securityHelpers/repositoryFetchGuard';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 

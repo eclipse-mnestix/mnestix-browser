@@ -4,7 +4,7 @@ import testData from 'lib/services/list-service/ListService.data.json';
 import { AssetAdministrationShell, Submodel } from 'lib/api/aas/models';
 import ServiceReachable, { createTestInfrastructure } from 'test-utils/TestUtils';
 import { assertEgressAllowed, securityHeadersForUrl } from 'lib/util/securityHelpers/repositoryFetchGuard';
-import { getInfrastructureByName } from 'lib/services/database/infrastructureDatabaseActions';
+import { getInfrastructureByName } from 'lib/services/database/infrastructureData';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
@@ -13,7 +13,7 @@ jest.mock('lib/util/securityHelpers/repositoryFetchGuard', () => ({
     assertEgressAllowed: jest.fn(),
     securityHeadersForUrl: jest.fn(),
 }));
-jest.mock('lib/services/database/infrastructureDatabaseActions', () => ({
+jest.mock('lib/services/database/infrastructureData', () => ({
     getInfrastructureByName: jest.fn(),
     getInfrastructuresIncludingDefault: jest.fn(),
 }));

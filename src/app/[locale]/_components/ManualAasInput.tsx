@@ -5,7 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { SquaredIconButton } from 'components/basics/Buttons';
 import { LocalizedError } from 'lib/util/LocalizedError';
 import { useTranslations } from 'next-intl';
-import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
+import { getInfrastructureNamesAction } from 'lib/services/database/infrastructureDatabaseActions';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 
@@ -33,8 +33,8 @@ export function ManualAasInput(props: {
     }, []);
 
     useAsyncEffect(async () => {
-        const infrastructures = await getInfrastructuresIncludingDefault();
-        setInfrastructures(infrastructures.map((infra) => infra.name));
+        const names = await getInfrastructureNamesAction();
+        setInfrastructures(names);
     }, []);
 
     const setError = (msg: string) => {
