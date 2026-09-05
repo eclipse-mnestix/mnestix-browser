@@ -15,7 +15,6 @@ Mnestix provides the following configuration options. You can adapt the values i
 | `SERIALIZATION_API_URL`            |               | Address of the service used to serialize AAS (e.g. for the AASX export/download). Typically points to the AAS repository or the Mnestix Proxy.   |
 | `CONCEPT_DESCRIPTION_REPO_API_URL` |               | Default Concept Description Repository                                                                                                           |
 | `LOG_LEVEL`                        | "info"        | Server side log level of Mnestix Browser. "fatal" or "error" or "warn" or "info" or "debug" or "trace" or "silent"                               |
-| `MNESTIX_V2_ENABLED`               | "true"        | Setting to 'false' to support older Mnestix API versions (v1._._), the support for those Mnestix API versions will be stopped in the near future |
 
 #### Features
 

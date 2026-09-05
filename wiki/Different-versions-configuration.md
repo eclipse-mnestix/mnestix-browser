@@ -2,7 +2,7 @@
 
 ## Overview
 
-With the release of Mnestix AAS Generator v2.* (formerly known as Mnestix API v1.*), new configuration options have been introduced to support version compatibility and migration paths. 
+Mnestix Browser connects to the Mnestix AAS Generator v2.* (formerly known as Mnestix API v1.*). Support for the legacy Mnestix API v1.* has been removed, together with the `MNESTIX_V2_ENABLED` feature flag.
 
 ## Version Support Status
 
@@ -10,51 +10,20 @@ With the release of Mnestix AAS Generator v2.* (formerly known as Mnestix API v1
 - **Mnestix AAS Generator v2.*** - Active development and recommended
 - **Mnestix Browser v2.*** - Active development and recommended
 
-### Legacy Support (Temporary)
-- **Mnestix API v1.*** - No further development, temporary support only
-- **Mnestix Browser v1.*** - No further development, temporary support only
+### Removed Support (in Browser)
+- **Mnestix API v1.*** - No longer supported by Mnestix Browser
+- **Mnestix Browser v1.*** - No longer supported
 
-> **Important**: Support for v1.* versions is temporary and will end in the future. Migration to v2.* is strongly recommended.
-
-## Feature Flag Configuration
-
-### MNESTIX_V2_ENABLED
-
-A new feature flag has been introduced to control version compatibility:
-
-```bash
-# Enable Mnestix AAS Generator v2.* (default)
-MNESTIX_V2_ENABLED=true
-
-# Enable legacy Mnestix API v1.* support
-MNESTIX_V2_ENABLED=false
-```
-
-- **Default value**: `true`
-- **Purpose**: Easy switching between backend versions
-- **Recommendation**: Keep as `true` for new deployments
+> **Important**: If you are still running Mnestix API v1.*, migrate to the Mnestix AAS Generator before upgrading the Browser. See the migration guide below.
 
 ## Configuration Variables
-
-### For Mnestix AAS Generator v2.*
 
 ```bash
 # Primary endpoint for AAS Generator
 MNESTIX_AAS_GENERATOR_API_URL=<your-aas-generator-endpoint>
-
-# Feature flag (default: true)
-MNESTIX_V2_ENABLED=true
 ```
 
-### For Legacy Mnestix API v1.*
-
-```bash
-# Legacy backend endpoint (deprecated)
-MNESTIX_BACKEND_API_URL=<your-legacy-api-endpoint>
-
-# Feature flag for legacy support
-MNESTIX_V2_ENABLED=false
-```
+The `MNESTIX_V2_ENABLED` flag and the legacy `MNESTIX_BACKEND_API_URL` endpoint no longer exist. Setting either has no effect.
 
 ## Mnestix Proxy Integration
 
@@ -69,6 +38,8 @@ Mnestix Proxy is now available as a separate open-source project and serves as a
 ### Configuration Requirements
 
 > **Critical**: The API key configured in Mnestix Proxy **must match** the API key configured in Mnestix AAS Generator.
+
+Mnestix Browser sends the API key in the `X-API-KEY` header. The legacy `ApiKey` header used by Mnestix API v1.* is no longer sent.
 
 ### Endpoint Configuration
 
@@ -94,10 +65,12 @@ MNESTIX_AAS_GENERATOR_API_URL=https://your-aas-generator-endpoint
    ```bash
    # Replace
    MNESTIX_BACKEND_API_URL=<old-endpoint>
-   
+
    # With
    MNESTIX_AAS_GENERATOR_API_URL=<new-endpoint>
    ```
+
+   If you previously set `MNESTIX_V2_ENABLED=false`, remove it. The variable is gone and v1.* endpoints are no longer called.
 
 2. **Review API Integration**:
    - Update API calls to use new AAS Generator endpoints
@@ -111,7 +84,7 @@ MNESTIX_AAS_GENERATOR_API_URL=https://your-aas-generator-endpoint
 | Component | v1.* Support | v2.* Support | Recommended |
 |-----------|--------------|--------------|-------------|
 | Mnestix Browser v1.* | ✅ | ❌ | Migrate to v2.* |
-| Mnestix Browser v2.* | ✅ (temporary) | ✅ | Use v2.* features |
+| Mnestix Browser v2.* | ❌ | ✅ | Use v2.* features |
 | Mnestix API v1.* | ✅ | ❌ | Migrate to AAS Generator |
 | Mnestix AAS Generator v2.* | ❌ | ✅ | Recommended |
 
@@ -133,11 +106,9 @@ MNESTIX_AAS_GENERATOR_API_URL=https://your-aas-generator-endpoint
 
 ## Future Considerations
 
-- Legacy v1.* support will be removed in future releases
-- Migration timeline will be communicated in advance
 - New features will only be available in v2.* versions
 - Security updates will focus on v2.* architecture
 
 ---
 
-*Last updated: September 2025*
+*Last updated: August 2026*

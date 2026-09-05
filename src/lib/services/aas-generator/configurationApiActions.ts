@@ -1,6 +1,5 @@
 'use server';
 
-import { ConfigurationShellApi } from 'lib/api/configuration-shell-api/configurationShellApi';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { Submodel } from 'lib/api/aas/models';
 import { envs } from 'lib/env/MnestixEnv';
@@ -27,17 +26,9 @@ export async function putSingleIdGenerationSetting(
 }
 
 async function getConfigurationApi(): Promise<IConfigurationShellApi> {
-    const isMnestixApiV2Enabled = envs.MNESTIX_V2_ENABLED;
     const defaultInfrastructure = await getDefaultInfrastructure();
     const securityHeaders = await createSecurityHeaders(defaultInfrastructure);
-    if (isMnestixApiV2Enabled) {
-        return ConfigurationShellApiV2.create(
-            envs.MNESTIX_AAS_GENERATOR_API_URL,
-            envs.AUTHENTICATION_FEATURE_FLAG,
-            mnestixFetch(securityHeaders),
-        );
-    }
-    return ConfigurationShellApi.create(
+    return ConfigurationShellApiV2.create(
         envs.MNESTIX_AAS_GENERATOR_API_URL,
         envs.AUTHENTICATION_FEATURE_FLAG,
         mnestixFetch(securityHeaders),

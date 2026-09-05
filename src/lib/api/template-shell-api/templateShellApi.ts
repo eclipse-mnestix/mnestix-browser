@@ -2,19 +2,16 @@ import { encodeBase64 } from 'lib/util/Base64Util';
 import { Submodel } from 'lib/api/aas/models';
 import { MnestixFetch } from '../infrastructure';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { envs } from 'lib/env/MnestixEnv';
 
 /**
  * @deprecated use TemplateClient from generated-api instead!
  */
 export class TemplateShellApi {
     basePathOwnApi: string;
-    basePathCustoms: string;
     private http: MnestixFetch;
 
     constructor(backendApiUrl: string, http: MnestixFetch) {
         this.basePathOwnApi = `${backendApiUrl}/api/Template`;
-        this.basePathCustoms = `${backendApiUrl}/templates/custom`;
         this.http = http;
     }
 
@@ -61,9 +58,7 @@ export class TemplateShellApi {
     public async deleteBlueprintById(id: string): Promise<ApiResponseWrapper<string | number>> {
         // We use the regular delete endpoint, which expects an idShort, but because of our backend interception, we saved the actual id in the idShort field earlier.
         // That's why this works.
-        const isMnestixApiV2Enabled = envs.MNESTIX_V2_ENABLED;
-        const basePath = isMnestixApiV2Enabled ? this.basePathOwnApi : this.basePathCustoms;
-        const response = await this.http.fetch<string | number>(`${basePath}/${encodeBase64(id)}`, {
+        const response = await this.http.fetch<string | number>(`${this.basePathOwnApi}/${encodeBase64(id)}`, {
             method: 'DELETE',
             headers: {
                 Accept: 'application/json',
