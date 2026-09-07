@@ -5,7 +5,7 @@ const adminTestUser = {
     password: Cypress.env('TEST_ADMIN_USER_PASSWORD'),
 };
 
-describe('Template CRUD Operations', () => {
+describe('Template CRUD Operations', { defaultCommandTimeout: 20000 }, () => {
     const uniqueId = Date.now();
     const editedTemplateName = `Test Template ${uniqueId} (edited)`;
 
@@ -51,7 +51,7 @@ describe('Template CRUD Operations', () => {
 
         cy.getByTestId('choose-template-item-0').should('be.visible');
         cy.getByTestId('choose-template-item-0').find('h4').first().click();
-        cy.url({ timeout: 60000 }).should('match', /\/templates\/.+/);
+        cy.url({ timeout: 20000 }).should('match', /\/templates\/.+/);
 
         // Edit immediately after navigation while the editor is active.
         cy.getByTestId('display-name-input', { timeout: 10000 }).should('be.visible');

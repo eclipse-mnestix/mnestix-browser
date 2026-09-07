@@ -13,6 +13,8 @@ import { ApiResponseWrapper, wrapSuccess } from 'lib/util/apiResponseWrapper/api
 import { mapStatusToResult } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { handleResponseError } from './apiHelper';
+import { requireRole } from 'lib/util/securityHelpers/authGuard';
+import { MnestixRole } from 'components/authentication/AllowedRoutes';
 
 const isResponseError = (error: unknown): error is ResponseErrorV1 | ResponseErrorV2 =>
     error instanceof ResponseErrorV1 || error instanceof ResponseErrorV2;
@@ -24,6 +26,7 @@ export async function createBlueprint(
     template: Submodel | typeof EmptyDefaultTemplate,
     apiVersion?: AasGeneratorApiVersion,
 ): Promise<ApiResponseWrapper<string>> {
+    await requireRole(MnestixRole.MnestixAdmin, MnestixRole.MnestixUser);
     const version = resolveTemplateApiVersion(apiVersion);
     const clients = await createVersionedAasGeneratorClients();
 
@@ -57,6 +60,7 @@ export async function updateBlueprint(
     submodelId: string,
     apiVersion?: AasGeneratorApiVersion,
 ): Promise<ApiResponseWrapper<void>> {
+    await requireRole(MnestixRole.MnestixAdmin, MnestixRole.MnestixUser);
     const version = resolveTemplateApiVersion(apiVersion);
     const clients = await createVersionedAasGeneratorClients();
 
@@ -87,6 +91,7 @@ export async function updateBlueprint(
 }
 
 export async function getBlueprints(apiVersion?: AasGeneratorApiVersion): Promise<ApiResponseWrapper<Submodel[]>> {
+    await requireRole(MnestixRole.MnestixAdmin, MnestixRole.MnestixUser);
     const version = resolveTemplateApiVersion(apiVersion);
     const clients = await createVersionedAasGeneratorClients();
 
@@ -109,6 +114,7 @@ export async function getBlueprintById(
     id: string,
     apiVersion?: AasGeneratorApiVersion,
 ): Promise<ApiResponseWrapper<Submodel>> {
+    await requireRole(MnestixRole.MnestixAdmin, MnestixRole.MnestixUser);
     const version = resolveTemplateApiVersion(apiVersion);
     const clients = await createVersionedAasGeneratorClients();
 
@@ -133,6 +139,7 @@ export async function deleteBlueprintById(
     id: string,
     apiVersion?: AasGeneratorApiVersion,
 ): Promise<ApiResponseWrapper<string | number>> {
+    await requireRole(MnestixRole.MnestixAdmin, MnestixRole.MnestixUser);
     const version = resolveTemplateApiVersion(apiVersion);
     const clients = await createVersionedAasGeneratorClients();
 
