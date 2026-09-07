@@ -1,6 +1,10 @@
 ﻿import { performServerFetch, performServerFetchRaw } from 'lib/api/serverFetch';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 
+// Server-only: these wrappers hand a caller-supplied url straight to `serverFetch`'s unvalidated fetch
+// primitive, so a client import must fail the build rather than pull that module into the browser bundle.
+import 'server-only';
+
 const initializeRequestOptions = async (init?: RequestInit, securityHeader?: Record<string, string> | null) => {
     init = init || {};
     if (securityHeader) {
@@ -39,12 +43,3 @@ export function mnestixFetchRaw(securityHeader: Record<string, string> | null): 
         },
     };
 }
-
-export const sessionLogOut = async (keycloakEnabled: boolean) => {
-    if (!keycloakEnabled) return;
-    try {
-        await fetch('/api/auth/logout', { method: 'GET' });
-    } catch (err) {
-        console.error(err);
-    }
-};

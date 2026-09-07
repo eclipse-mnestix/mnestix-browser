@@ -8,7 +8,7 @@ import {
     wrapErrorCode,
     wrapSuccess,
 } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { getInfrastructureByName, getInfrastructuresIncludingDefault } from '../database/infrastructureDatabaseActions';
+import { getInfrastructureByName, getInfrastructuresIncludingDefault } from '../database/infrastructureData';
 import { ConceptDescription } from 'lib/api/aas/models';
 import { IConceptDescriptionApi } from 'lib/api/concept-description-api/conceptDescriptionApiInterface';
 import { RepoSearchResult } from 'lib/services/aas-repository-service/AasRepositoryService';

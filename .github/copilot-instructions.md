@@ -32,6 +32,29 @@
 - All frontend-backend communication is wrapped in `apiResponseWrapper.ts` to ensure correct typing
 - Primary call from frontend to backend should be a stateless async function in `Actions.ts` files in `src/lib/services` directory, marked with `use server;`
 
+## Security
+
+Server actions (`use server`) and route handlers are **public, unauthenticated POST endpoints** reachable by anyone on the network. Client-side gating (`<PrivateRoute>`, conditionally rendered UI) protects only what the browser draws — never the endpoint itself. Two classes of flaw have shipped here before; guard against both in every new action.
+
+### Authorize mutating/config/admin actions on the server
+
+- The authorization check is the **first line inside the action**, not middleware. `src/proxy.ts` and edge middleware cannot see `next-action` calls, so they cannot enforce it.
+- Use the shared guard in `lib/util/securityHelpers/authGuard.ts`: `requireAdmin()` / `requireRole(...)` in server actions (they throw), and `getAuthError(...)` in REST route handlers (return a `Response` — a thrown error there becomes a 500).
+- The guard is flag-aware: `AUTHENTICATION_FEATURE_FLAG=false` → open by design; `true` → **401** when no session, **403** on wrong role. Never bypass the flag with a manual check.
+- Guard **writes, config, and admin-only reads** (infrastructure/connection CRUD, id-generation settings, blueprints/templates, `/api/mnestixConnections`). Do **not** role-gate the browsing/read path or internal resolvers (`getInfrastructureByName`, `getInfrastructuresIncludingDefault`, `search*`/`get*` data actions, `getEnv`) — that breaks the default auth-off deployment and normal viewing.
+
+### Never fetch a client-supplied URL with credentials attached
+
+Passing a client-controlled `url` to a server-side `fetch` with infrastructure credentials attached is full-read SSRF (CWE-918) **plus** credential disclosure (CWE-522): the attacker names a real infrastructure to borrow its key but points `url` at their own host or an internal address. In any action that fetches a client-supplied `repository.url`, apply both guards from `lib/util/securityHelpers/repositoryFetchGuard.ts`:
+
+- `assertEgressAllowed(url, infrastructureName)` — rejects non-`http(s)` schemes and targets that resolve to loopback / link-local / cloud-metadata (`169.254.169.254`) / RFC1918 / ULA, **unless** the target is a configured infrastructure host. (The operator's own backend often lives on a private address such as `backend:8081`, so private targets can't be blanket-blocked — only *unconfigured* ones.)
+- `securityHeadersForUrl(url, infrastructure)` — returns credentials **only** when the URL's host matches a configured origin of that infrastructure; otherwise the fetch goes out without them. Never call `createSecurityHeaders` directly on a client-supplied URL.
+
+### Validate untrusted input
+
+- Deny-list dangerous request headers (`Authorization`, `Cookie`, …) **case-insensitively** — see `lib/util/securityHelpers/ValidateSecurityInput.ts`. A case-sensitive check is a bypass.
+- Encrypted infrastructure secrets must never cross the server/client boundary in an action's return value or props.
+
 ## Documentation
 
 - Add JSDoc comments for exported functions and components
