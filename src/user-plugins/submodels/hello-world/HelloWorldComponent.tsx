@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl';
-import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
+import { SubmodelVisualizationProps } from 'components/visualizations/submodel.types';
 
 export const HelloWorldComponent = ({ submodel }: SubmodelVisualizationProps) => {
     const t = useTranslations('user-plugins.submodels.hello-world-component');
