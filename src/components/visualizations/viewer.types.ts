@@ -20,7 +20,7 @@ export type AasView = {
 /**
  * Registry of AAS visualizations shown on the viewer page.
  * - `default`: the view key the bare `/viewer/<id>` URL redirects to.
- * - `switchable`: keys shown in the user-facing view switcher (Tabs).
+ * - `switchable`: keys shown in the user-facing action bar as view buttons.
  * - `views`: all registered views; a key may be renderable by direct URL
  *   without appearing in `switchable`.
  */

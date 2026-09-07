@@ -318,11 +318,6 @@
       "title": "Gerelateerde AAS bij Asset-ID"
     },
     "productViewer": {
-      "actions": {
-        "download": "AAS downloaden",
-        "downloadError": "Fout bij het downloaden van de AAS.",
-        "downloadErrorNoRepo": "Geen repository gevonden voor de geselecteerde AAS."
-      },
       "classification": "Productclassificatie",
       "error": {
         "technicalDataSubmodelNotFound": "Submodel technische gegevens niet gevonden"

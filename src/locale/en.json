@@ -318,11 +318,6 @@
       "title": "Related AAS to Asset ID"
     },
     "productViewer": {
-      "actions": {
-        "download": "Download AAS",
-        "downloadError": "Error while downloading AAS.",
-        "downloadErrorNoRepo": "No repository found for the selected AAS."
-      },
       "classification": "Classification",
       "error": {
         "technicalDataSubmodelNotFound": "Technical Data Submodel not found"

@@ -7,12 +7,12 @@ import { useParams, useSearchParams } from 'next/navigation';
 import { CurrentAasContextProvider } from 'components/contexts/CurrentAasContext';
 import { NoSearchResult } from 'components/basics/detailViewBasics/NoSearchResult';
 import { useShowError } from 'lib/hooks/UseShowError';
-import { AasViewSwitcher } from 'app/[locale]/viewer/_components/AasViewSwitcher';
+import { AasViewerActionBar } from 'app/[locale]/viewer/_components/AasViewerActionBar';
 
 /**
  * Shared layout for a single AAS. Hoists {@link CurrentAasContextProvider} so
  * AAS + submodel data is fetched once and preserved across view switches under
- * the `[view]` segment, and renders the {@link AasViewSwitcher} above the view.
+ * the `[view]` segment, and renders the {@link AasViewerActionBar} above the view.
  */
 export default function AasViewerLayout({ children }: PropsWithChildren) {
     const { showError } = useShowError();
@@ -46,7 +46,7 @@ export default function AasViewerLayout({ children }: PropsWithChildren) {
 
     return (
         <CurrentAasContextProvider aasId={aasIdDecoded} repoUrl={repoUrl} infrastructureName={infrastructureName}>
-            <AasViewSwitcher />
+            <AasViewerActionBar />
             {children}
         </CurrentAasContextProvider>
     );
