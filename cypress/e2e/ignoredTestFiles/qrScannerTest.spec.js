@@ -17,7 +17,7 @@ describe('Use the QR Scanner', function () {
 
     resolutions.forEach((res) => {
         describe('test on resolution: ' + res, function () {
-            const [qr1, qr2] = qrAas;
+            const [qr1] = qrAas;
 
             beforeEach(function () {
                 cy.setResolution(res);
@@ -46,63 +46,6 @@ describe('Use the QR Scanner', function () {
                 cy.getByTestId('scanner-video').should('not.exist');
                 cy.isNotificationSent('No AAS with the given ID.');
                 cy.getByTestId('scanner-video').should('exist');
-            });
-            xit('should add AAS in comparison view', () => {
-                cy.visit('/compare');
-                cy.getByTestId('compare-aas-0').should('not.exist');
-
-                cy.getByTestId('add-aas-to-compare-button').click();
-                cy.getByTestId('scanner-start').click();
-                cy.getByTestId('scanner-video').should('exist');
-                cy.callScannerCallback(qr1.id);
-                cy.getByTestId('scanner-video').should('not.exist');
-                cy.getByTestId('compare-aas-aad-dialog').should('not.exist');
-                cy.getByTestId('compare-aas-0').should('exist');
-                cy.getByTestId('compare-aas-1').should('not.exist');
-
-                cy.getByTestId('add-aas-to-compare-button').click();
-                cy.getByTestId('scanner-start').click();
-                cy.getByTestId('scanner-video').should('exist');
-                cy.callScannerCallback(qr2.id);
-                cy.getByTestId('scanner-video').should('not.exist');
-                cy.getByTestId('compare-aas-aad-dialog').should('not.exist');
-                cy.getByTestId('compare-aas-0').should('exist');
-                cy.getByTestId('compare-aas-1').should('exist');
-            });
-            xit('should show duplicate AAS error on same AAS QR code', () => {
-                cy.visit('/compare?aasId=' + encodeURIComponent(qr1.id));
-                cy.getByTestId('compare-aas-0').should('exist');
-                cy.getByTestId('add-aas-to-compare-button').click();
-                cy.getByTestId('scanner-start').click();
-                cy.getByTestId('scanner-video').should('exist');
-                cy.callScannerCallback(qr1.id);
-                cy.getByTestId('scanner-video').should('not.exist');
-                cy.isNotificationSent('AAS cannot be added more than once.');
-                cy.getByTestId('scanner-video').should('exist');
-                cy.getByTestId('compare-aas-1').should('not.exist');
-            });
-            xit('should add AAS in comparison view with assetId', () => {
-                cy.visit('/compare');
-                cy.getByTestId('compare-aas-0').should('not.exist');
-                cy.getByTestId('add-aas-to-compare-button').click();
-                cy.getByTestId('scanner-start').click();
-                cy.getByTestId('scanner-video').should('exist');
-                cy.callScannerCallback(qr1.assetInformation.globalAssetId);
-                cy.getByTestId('scanner-video').should('not.exist');
-                cy.getByTestId('compare-aas-aad-dialog').should('not.exist');
-                cy.getByTestId('compare-aas-0').should('exist');
-            });
-            xit('should show multiple AAS error on multiple asset QR code', () => {
-                cy.visit('/compare');
-                cy.getByTestId('compare-aas-0').should('not.exist');
-                cy.getByTestId('add-aas-to-compare-button').click();
-                cy.getByTestId('scanner-start').click();
-                cy.getByTestId('scanner-video').should('exist');
-                cy.callScannerCallback(qr2.assetInformation.globalAssetId);
-                cy.getByTestId('scanner-video').should('not.exist');
-                cy.isNotificationSent('More than one AAS found in the discovery service');
-                cy.getByTestId('scanner-video').should('exist');
-                cy.getByTestId('compare-aas-0').should('not.exist');
             });
         });
     });

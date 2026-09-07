@@ -91,18 +91,20 @@ export default function CustomSubmodel({ submodel }: SubmodelVisualizationProps)
 ## Map the visualization
 
 In order for Mnestix to automatically use your visualization, you have to provide the mapping between your visualization and the semantic id which your custom visualization should be used for.
-This is done in the file `src/app/[locale]/viewer/_components/submodel/SubmodelsCustomVisualizationMap.ts` which looks similar to this:
+This is done in the file `src/app/[locale]/viewer/_components/submodel/SubmodelCustomVisualizationMap.ts` which looks similar to this:
 
 ```ts
-export const submodelsCustomVisualizationMap = {
-    [SubmodelSemanticIdEnum.CoffeeConsumptionContainer]: CoffeeConsumptionDetail,
+export const submodelCustomVisualizationMap = {
     [SubmodelSemanticIdEnum.CarbonFootprint]: CarbonFootprintDetail,
-    [SubmodelSemanticIdEnum.CarbonFootprintIRDI]: CarbonFootprintDetail,
+    [SubmodelSemanticIdEnum.CarbonFootprintV1]: CarbonFootprintDetail,
+    [SubmodelSemanticIdEnum.CarbonFootprintIrdi]: CarbonFootprintDetail,
     [SubmodelSemanticIdEnum.ReferenceCounterContainer]: ReferenceCounterDetail,
     [SubmodelSemanticIdEnum.TimeSeries]: TimeSeriesDetail,
     [SubmodelSemanticIdEnum.HierarchicalStructuresV10]: HierarchicalStructuresDetail,
     [SubmodelSemanticIdEnum.HierarchicalStructuresV11]: HierarchicalStructuresDetail,
     [SubmodelSemanticIdEnum.BillOfApplications]: BillOfApplicationsDetail,
+    [SubmodelSemanticIdEnum.TechnicalDataV11]: TechnicalDataDetail,
+    [SubmodelSemanticIdEnum.HandoverDocumentationV20]: HandoverDocumentationDetail,
     [/*Your semantic id as a string*/]: /*React component name*/,
 };
 ```
@@ -134,9 +136,10 @@ import { findValueByIdShort } from 'lib/util/SubmodelResolverUtil';
 and use it in your component
 
 ```ts
-const value = findValueByIdShort(submodel.submodelElements, 'MyIDshort', 'en');
+const value = findValueByIdShort(submodel.submodelElements, 'MyIDshort', null, 'en');
 ```
 
+The third argument is an optional `semanticId` (pass `null` to match by `idShort` only); the fourth is the locale.
 It will automatically return the requested language value for a MultiLanguageProperty.
 
 # 4. Internationalization
@@ -155,7 +158,7 @@ This may be changed to always use the currently selected language by calling the
 
 ```ts
 const locale = useLocale();
-const value = findValueByIdShort(submodel.submodelElements, 'MyIDshort', locale);
+const value = findValueByIdShort(submodel.submodelElements, 'MyIDshort', null, locale);
 ```
 
 ## Using current locale for internationalized messages

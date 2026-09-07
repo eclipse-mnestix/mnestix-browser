@@ -15,7 +15,6 @@ import {
     SubmodelRepositoryApiInMemory,
 } from 'lib/api/basyx-v3/apiInMemory';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { AttachmentDetails } from 'lib/types/TransferServiceData';
 import { ServiceReachable } from 'test-utils/TestUtils';
 import { MultiLanguageValueOnly, PaginationData } from 'lib/api/basyx-v3/types';
 
@@ -37,6 +36,26 @@ export class RequiredError extends Error {
     ) {
         super(msg);
     }
+}
+
+/**
+ * Encodes a client-supplied idShort path for safe insertion into a request path.
+ *
+ * Both guards are needed. Percent-encoding each `/`-delimited segment stops `?`/`#`/reserved characters from
+ * re-shaping the URL, but `encodeURIComponent` deliberately leaves `.` untouched — so dot segments have to be
+ * refused explicitly. Without that, a path such as `../../../actuator/env` survives `url.format` (Node's legacy
+ * API does not collapse dot segments) and is then normalized by `fetch`, redirecting the request to an operator
+ * endpoint the caller chose — with the infrastructure's credentials already attached.
+ */
+function encodeSubmodelElementPath(submodelElementPath: string): string {
+    const segments = submodelElementPath.split('/');
+    if (segments.some((segment) => segment === '' || segment === '.' || segment === '..')) {
+        throw new RequiredError(
+            'submodelElementPath',
+            'Invalid submodelElementPath: empty or relative path segments are not allowed.',
+        );
+    }
+    return segments.map(encodeURIComponent).join('/');
 }
 
 /**
@@ -101,29 +120,6 @@ export class AssetAdministrationShellRepositoryApi implements IAssetAdministrati
         )(this.http, this.basePath);
     }
 
-    async putThumbnailToShell(
-        aasId: string,
-        image: Blob,
-        fileName: string,
-        options?: any,
-    ): Promise<ApiResponseWrapper<Response>> {
-        return AssetAdministrationShellRepositoryApiFp(this.configuration).putThumbnailToShell(
-            aasId,
-            image,
-            fileName,
-            options,
-        )(this.http, this.basePath);
-    }
-
-    async postAssetAdministrationShell(
-        aas: AssetAdministrationShell,
-        options?: object | undefined,
-    ): Promise<ApiResponseWrapper<AssetAdministrationShell>> {
-        return AssetAdministrationShellRepositoryApiFp(this.configuration).createAssetAdministrationShell(aas, options)(
-            this.http,
-            this.basePath,
-        );
-    }
 }
 
 /**
@@ -200,59 +196,6 @@ export const AssetAdministrationShellRepositoryApiFp = function (configuration?:
             };
         },
 
-        /**
-         * @summary Uploads a thumbnail to the specified Asset Administration Shell (AAS).
-         * @param {string} aasId - The unique identifier of the Asset Administration Shell.
-         * @param {Blob} image - The image file to be uploaded as the thumbnail.
-         * @param fileName - Name of the image file to be uploaded.
-         * @param {object} [options] - Optional. Override HTTP request options.
-         * @throws {RequiredError}
-         */
-        putThumbnailToShell(aasId: string, image: Blob, fileName: string, options?: any) {
-            return async (requestHandler: FetchAPI, basePath: string) => {
-                const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
-                const localVarHeaderParameter = {
-                    Accept: 'application/json',
-                } as any;
-
-                localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options?.headers);
-                const formData = new FormData();
-                formData.append('file', image);
-
-                localVarRequestOptions.body = formData;
-                return await requestHandler.fetch<Response>(
-                    basePath +
-                        `/shells/{aasId}/asset-information/thumbnail?fileName={fileName}`
-                            .replace(`{aasId}`, encodeBase64(String(aasId)))
-                            .replace(`{fileName}`, fileName),
-                    localVarRequestOptions,
-                );
-            };
-        },
-
-        /**
-         * @summary Creates a new Asset Administration Shell (AAS) in the repository.
-         * @param {AssetAdministrationShell} aas - The Asset Administration Shell object to be created.
-         * @param {object} [options] - Optional. Additional options to override the default HTTP request settings.
-         * @throws {RequiredError}
-         */
-        createAssetAdministrationShell(aas: AssetAdministrationShell, options?: any) {
-            return async (requestHandler: FetchAPI, basePath: string) => {
-                const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
-                const localVarHeaderParameter = {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                } as any;
-
-                localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options?.headers);
-                localVarRequestOptions.body = JSON.stringify(aas);
-
-                return await requestHandler.fetch<AssetAdministrationShell>(
-                    basePath + '/shells',
-                    localVarRequestOptions,
-                );
-            };
-        },
     };
 };
 
@@ -469,21 +412,6 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
         )(this.http, this.baseUrl);
     }
 
-    postSubmodel(submodel: Submodel, options?: object): Promise<ApiResponseWrapper<Submodel>> {
-        return SubmodelRepositoryApiFp(this.configuration).createSubmodel(submodel, options)(this.http, this.baseUrl);
-    }
-
-    putAttachmentToSubmodelElement(
-        submodelId: string,
-        attachmentDetails: AttachmentDetails,
-        options?: any,
-    ): Promise<ApiResponseWrapper<Response>> {
-        return SubmodelRepositoryApiFp(this.configuration).putAttachmentToSubmodelElement(
-            submodelId,
-            attachmentDetails,
-            options,
-        )(this.http, this.baseUrl);
-    }
 }
 
 /**
@@ -569,56 +497,6 @@ export const SubmodelRepositoryApiFp = function (configuration?: Configuration) 
             };
         },
 
-        /**
-         * @summary Creates a new submodel in the Submodel repository.
-         * @param {Submodel} submodel - The submodel object to be created.
-         * @param {object} [options] - Optional. Additional options to override default HTTP request settings.
-         * @throws {RequiredError}
-         */
-        createSubmodel(submodel: Submodel, options?: any) {
-            return async (requestHandler: FetchAPI, baseUrl: string) => {
-                const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
-                const localVarHeaderParameter = {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                } as any;
-
-                localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options?.headers);
-                localVarRequestOptions.body = JSON.stringify(submodel);
-
-                return await requestHandler.fetch<Submodel>(baseUrl + '/submodels', localVarRequestOptions);
-            };
-        },
-
-        /**
-         * @summary Uploads an attachment to a specific submodel element.
-         * @param {string} submodelId - The unique identifier of the submodel containing the submodel element.
-         * @param {AttachmentDetails} attachmentDetails - The attachment data to be uploaded to the submodel element.
-         * @param {object} [options] - Optional. Additional options to override default HTTP request settings.
-         * @throws {RequiredError}
-         */
-        putAttachmentToSubmodelElement(submodelId: string, attachmentDetails: AttachmentDetails, options: any) {
-            return async (requestHandler: FetchAPI, baseUrl: string) => {
-                const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
-                const localVarHeaderParameter = {
-                    Accept: 'application/json',
-                } as any;
-
-                localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options?.headers);
-                const formData = new FormData();
-                formData.append('file', attachmentDetails.file!);
-
-                localVarRequestOptions.body = formData;
-                return await requestHandler.fetch<Response>(
-                    baseUrl +
-                        `/submodels/{submodelIdentifier}/submodel-elements/{idShortPath}/attachment?fileName={fileName}`
-                            .replace(`{submodelIdentifier}`, encodeBase64(String(submodelId)))
-                            .replace(`{idShortPath}`, attachmentDetails.idShortPath)
-                            .replace(`{fileName}`, attachmentDetails.fileName ?? 'Document'),
-                    localVarRequestOptions,
-                );
-            };
-        },
     };
 };
 
@@ -741,7 +619,7 @@ export const SubmodelRepositoryApiFetchParamCreator = function (configuration?: 
             }
             const localVarPath = `/submodels/{submodelId}/submodel-elements/{submodelElementPath}/attachment`
                 .replace(`{submodelId}`, encodeURIComponent(String(encodeBase64(submodelId))))
-                .replace(`{submodelElementPath}`, submodelElementPath);
+                .replace(`{submodelElementPath}`, encodeSubmodelElementPath(submodelElementPath));
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
             const localVarHeaderParameter = {} as any;

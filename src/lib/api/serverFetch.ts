@@ -1,4 +1,28 @@
-'use server';
+/**
+ * Low-level server-side fetch primitive. Every outbound HTTP request the server makes funnels through here,
+ * reached only via the `mnestixFetch` / `mnestixFetchRaw` wrappers in `infrastructure.ts` — never called
+ * directly from feature code.
+ *
+ * SECURITY CONTRACT — read before adding a caller:
+ *
+ * 1. This module does NOT perform SSRF/egress validation. Its only network-safety behaviour is refusing to
+ *    follow redirects (see below). Any request whose URL is client-supplied or data-derived (e.g. a registry
+ *    descriptor's `href`) MUST be cleared with `assertEgressAllowed(url, infrastructureName)` from
+ *    `securityHelpers/repositoryFetchGuard` BEFORE it reaches here. The guard is applied per-action at the
+ *    call site (decision D1: guard on the client-supplied base URL, not centrally in `mnestixFetch`), so a new
+ *    fetch path that skips it is an unguarded SSRF hole. Operator-configured URLs (infrastructure DB / env
+ *    vars) are trusted by definition and are exempt.
+ *
+ * 2. This module must NEVER carry a top-level `'use server'` directive. These exports take a fully
+ *    caller-controlled url, method, headers and body and perform no egress validation, so registering them as
+ *    Server Actions publishes an unauthenticated, arbitrary-URL fetch endpoint — a public SSRF and
+ *    internal-request-forgery primitive with none of `repositoryFetchGuard`'s protections. This file did carry
+ *    the directive, and a Client Component reached it through `infrastructure.ts` (which also held a
+ *    browser-side logout helper), so the action IDs shipped in the client bundle. The `import 'server-only'`
+ *    below is what enforces the boundary now: a client import is a build error, not a silent action endpoint.
+ */
+
+import 'server-only';
 
 import { ApiResponseWrapper, wrapErrorCode, wrapResponse } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
@@ -14,6 +38,15 @@ async function createServerFetchLogger(): Promise<pino.Logger<never, boolean>> {
     }
 }
 
+function sanitizeForLog(value: string): string {
+    return value.replace(/[\r\n\u2028\u2029]/g, '');
+}
+
+function formatFetchInputForLog(input: string | Request | URL): string {
+    const raw = typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url;
+    return sanitizeForLog(raw);
+}
+
 function logServerFetchDebug(
     log: pino.Logger<never, boolean>,
     input: string | Request | URL,
@@ -22,7 +55,7 @@ function logServerFetchDebug(
 ): void {
     log.debug(
         {
-            Request_Url: input,
+            Request_Url: formatFetchInputForLog(input),
             Http_Status: response?.status,
             Http_Message: response?.statusText,
         },
@@ -30,45 +63,75 @@ function logServerFetchDebug(
     );
 }
 
+// Redirect statuses we refuse to follow. Server-side fetches target BaSyx REST APIs that do not rely on
+// redirects; following them would let an attacker-controlled (or compromised) host bounce the request to an
+// internal target after the egress guard has already cleared the original URL.
+const REDIRECT_STATUSES = [301, 302, 303, 307, 308];
+
+function isRedirectResponse(response: Response): boolean {
+    return response.type === 'opaqueredirect' || REDIRECT_STATUSES.includes(response.status);
+}
+
+/**
+ * Performs a server-side fetch and wraps the result in an {@link ApiResponseWrapper}. The caller owns egress
+ * validation: guard any untrusted `input` with `assertEgressAllowed` first (see the file-level contract).
+ */
 export async function performServerFetch<T>(
     input: string | Request | URL,
     init?: RequestInit | undefined,
 ): Promise<ApiResponseWrapper<T>> {
     const log = await createServerFetchLogger();
+    const safeInput = formatFetchInputForLog(input);
 
     try {
-        const response = await fetch(input, init);
+        const response = await fetch(input, { ...init, redirect: 'manual' });
+        if (isRedirectResponse(response)) {
+            log.warn({ Reason: 'Refusing to follow redirect', Http_Status: response.status }, `Request URL: ${safeInput}`);
+            return wrapErrorCode(ApiResultStatus.FORBIDDEN, 'Refusing to follow redirect for a server-side fetch.');
+        }
         logServerFetchDebug(log, input, response, 'Initiating server fetch');
 
         return await wrapResponse<T>(response);
     } catch (e) {
         if (e instanceof Error) {
-            log.warn({ Reason: 'An unexpected error occurred during server fetch' }, `Request URL: ${input}`);
+            log.warn({ Reason: 'An unexpected error occurred during server fetch' }, `Request URL: ${safeInput}`);
             return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, e.message);
         } else {
-            log.error({ Reason: 'An unexpected error occurred during server fetch' }, `Request: ${input}`);
+            log.error({ Reason: 'An unexpected error occurred during server fetch' }, `Request: ${safeInput}`);
             return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Unknown error');
         }
     }
 }
 
+/**
+ * Like {@link performServerFetch} but returns the raw {@link Response} and throws on redirect/error instead of
+ * wrapping. Same egress contract: the caller must guard untrusted `input` with `assertEgressAllowed` first.
+ */
 export async function performServerFetchRaw(
     input: string | Request | URL,
     init?: RequestInit | undefined,
 ): Promise<Response> {
     const log = await createServerFetchLogger();
+    const safeInput = formatFetchInputForLog(input);
 
     try {
-        const response = await fetch(input, init);
+        const response = await fetch(input, { ...init, redirect: 'manual' });
+        if (isRedirectResponse(response)) {
+            log.warn(
+                { Reason: 'Refusing to follow redirect', Http_Status: response.status },
+                `Request URL: ${safeInput}`,
+            );
+            throw new Error('Refusing to follow redirect for a server-side fetch.');
+        }
         logServerFetchDebug(log, input, response, 'Initiating server fetch (raw)');
 
         return response;
     } catch (e) {
         if (e instanceof Error) {
-            log.warn({ Reason: 'An unexpected error occurred during server fetch (raw)' }, `Request URL: ${input}`);
+            log.warn({ Reason: 'An unexpected error occurred during server fetch (raw)' }, `Request URL: ${safeInput}`);
             throw e;
         }
-        log.error({ Reason: 'An unexpected error occurred during server fetch (raw)' }, `Request: ${input}`);
+        log.error({ Reason: 'An unexpected error occurred during server fetch (raw)' }, `Request: ${safeInput}`);
         throw new Error('Unknown error', { cause: e });
     }
 }

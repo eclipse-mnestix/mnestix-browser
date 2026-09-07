@@ -4,8 +4,6 @@ import testDropdownSubRef from '../fixtures/cypress_e2e/Submodels/cyDropdown_Sub
 import testBom from '../fixtures/cypress_e2e/Submodels/cyBillOfMaterial.json';
 import testBomSubRef from '../fixtures/cypress_e2e/Submodels/cyBillOfMaterial_SubmodelReference.json';
 import AASBomComponent from '../fixtures/cypress_e2e/cyTestAas_BoM_Component.json';
-import compareAAS from '../fixtures/cypress_e2e/CompareMockData/cy_compareAas.json';
-import compareSubmodels from '../fixtures/cypress_e2e/CompareMockData/cy_compareNameplateSubmodel.json';
 import qrAAS from '../fixtures/cypress_e2e/QrScannerMockData/cy_qrScannerAas.json';
 import qrSubmodels from '../fixtures/cypress_e2e/QrScannerMockData/cy_qrScannerNameplateSubmodel.json';
 import listAasMockData from '../fixtures/cypress_e2e/AasListMockData/cyListAasMockData.json';
@@ -192,26 +190,6 @@ Cypress.Commands.add('postSubmodel', (submodelBody) => {
         });
     }
     attempt(1);
-});
-
-Cypress.Commands.add('postCompareMockData', () => {
-    compareAAS.forEach((aas) => {
-        cy.postShell(aas);
-    });
-    compareSubmodels.forEach((submodel) => {
-        cy.postSubmodel(submodel);
-    });
-});
-
-Cypress.Commands.add('deleteCompareMockData', () => {
-    compareAAS.forEach((aas) => {
-        const encodedAasId = btoa(aas.id);
-        cy.repoRequest('DELETE', '/shells/' + encodedAasId, null);
-    });
-    compareSubmodels.forEach((submodel) => {
-        const encodedSubmodelId = btoa(submodel.id);
-        cy.repoRequest('DELETE', '/submodels/' + encodedSubmodelId, null);
-    });
 });
 
 Cypress.Commands.add('postQrScannerMockData', () => {

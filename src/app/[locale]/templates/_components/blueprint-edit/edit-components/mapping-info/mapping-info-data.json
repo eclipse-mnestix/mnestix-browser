@@ -1,5 +1,5 @@
 {
-    "qualifierTypes": ["MappingInfo", "SMT/MappingInfo"],
+    "qualifierTypes": ["MappingInfo", "SMT/MappingInfo", "MnestixAASGenerator/MappingInfo"],
     "emptyTemplate": {
         "semanticId": {
             "type": "ExternalReference",
@@ -11,7 +11,7 @@
             ]
         },
         "kind": "TemplateQualifier",
-        "type": "SMT/MappingInfo",
+        "type": "MnestixAASGenerator/MappingInfo",
         "valueType": "xs:string",
         "value": ""
     }

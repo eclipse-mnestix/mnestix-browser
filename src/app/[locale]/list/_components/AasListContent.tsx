@@ -11,9 +11,6 @@ type AasListContentProps = {
     selectedType: 'repository' | 'registry' | undefined;
     needAuthentication: boolean;
     aasList: AasListDto | undefined;
-    selectedAasList: string[] | undefined;
-    updateSelectedAasList: (isChecked: boolean, aasId: string | undefined) => void;
-    comparisonFeatureFlag: boolean;
     pagination: ReactNode;
 };
 
@@ -39,9 +36,6 @@ export function AasListContent(props: AasListContentProps) {
                 repositoryUrl={props.selectedRepository}
                 connectionType={props.selectedType}
                 shells={props.aasList}
-                selectedAasList={props.selectedAasList}
-                updateSelectedAasList={props.updateSelectedAasList}
-                comparisonFeatureFlag={props.comparisonFeatureFlag}
             ></AasList>
             {props.pagination}
         </>

@@ -20,12 +20,6 @@ Check the configurations for Rider under `.idea/` folder
 We use Prettier and ESLint to keep our frontend code clean. Having a ESLint warning **will break the pipeline**. It's
 therefore always a good idea to run `yarn format` and `yarn lint` before you commit.
 
-#### Run prettier check
-
-```sh
-yarn prettier
-```
-
 #### Run prettier (be aware, this changes files!)
 
 ```sh
@@ -39,7 +33,7 @@ yarn lint
 ```
 
 If you want specific files or folders to be excluded from linting (e.g. generated files), you can add them
-to `.eslintignore` and `.prettierignore`
+to the `ignores` config in `eslint.config.js` and to `.prettierignore`
 
 ### Cypress Testing
 
@@ -76,10 +70,12 @@ support.
 This change aims to prevent server overload and ensure smoother navigation through resource lists.
 
 
-### Regenerate the OpenAPI client
-If you need to regenerate the OpenAPI client, you can do so by running:
+### Regenerate the OpenAPI clients
+There are two generated OpenAPI clients. Regenerate them with:
 
 ```sh
-yarn openapi:generate
+yarn generate-aas-apis        # BaSyx AAS client
+yarn generate-mnestix-apis    # Mnestix AAS Generator client
 ```
-By adapting `src/lib/api/openapitools.json`, you can change the OpenAPI client generation settings e.g. the input spec and its version.
+By adapting the respective `openapitools.json` (`src/lib/api/aas/openapitools.json` and
+`src/lib/api/mnestix-aas-generator/openapitools.json`), you can change the OpenAPI client generation settings e.g. the input spec and its version.
