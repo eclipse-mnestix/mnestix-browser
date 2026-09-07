@@ -16,6 +16,7 @@ import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
+import { AasViewerActionBar } from 'app/[locale]/viewer/_components/AasViewerActionBar';
 import { ViewerShell } from './ViewerShell';
 
 export function ProductViewer() {
@@ -66,8 +67,18 @@ export function ProductViewer() {
 
     return (
         <ViewerShell>
-            <Box>
-                <Breadcrumbs links={breadcrumbLinks} />
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 2,
+                }}
+            >
+                <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Breadcrumbs links={breadcrumbLinks} />
+                </Box>
+                <AasViewerActionBar />
             </Box>
             <ProductOverviewCard
                 aas={aas ?? null}

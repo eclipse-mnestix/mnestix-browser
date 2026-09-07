@@ -14,7 +14,7 @@ export const viewerPageStyles = {
     gap: '30px',
     alignItems: 'center',
     marginBottom: '50px',
-    marginTop: '8px',
+    marginTop: '20px',
 } as const;
 
 export const viewerContentStyles = {
@@ -23,7 +23,7 @@ export const viewerContentStyles = {
     margin: '0 auto',
     display: 'flex',
     flexDirection: 'column',
-    gap: '8px',
+    gap: '20px',
 } as const;
 
 /**

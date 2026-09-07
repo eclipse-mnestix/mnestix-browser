@@ -105,14 +105,11 @@ export function AasViewerActionBar() {
     return (
         <Box
             sx={{
-                width: '90%',
-                maxWidth: '1125px',
-                margin: '0 auto',
-                mt: 4,
                 display: 'flex',
                 justifyContent: 'flex-end',
                 alignItems: 'center',
                 gap: 1,
+                flex: '0 0 auto',
             }}
         >
             {primaryAction === 'download' && (

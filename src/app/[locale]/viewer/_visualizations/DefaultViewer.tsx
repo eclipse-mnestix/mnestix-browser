@@ -5,6 +5,7 @@ import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import { SubmodelsOverviewCard } from '../_components/SubmodelsOverviewCard';
 import { AASOverviewCard } from 'app/[locale]/viewer/_components/AASOverviewCard';
+import { AasViewerActionBar } from 'app/[locale]/viewer/_components/AasViewerActionBar';
 import { useLocale } from 'next-intl';
 import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 import { ViewerShell } from './ViewerShell';
@@ -22,29 +23,29 @@ export function DefaultViewer() {
                 sx={{
                     display: 'flex',
                     flexDirection: 'row',
-                    alignContent: 'flex-end',
+                    alignItems: 'center',
+                    gap: 2,
                 }}
             >
-                <Typography
-                    variant="h2"
-                    style={{
-                        width: '90%',
-                        margin: '0 auto',
-                        marginTop: '2px',
-                        overflowWrap: 'break-word',
-                        wordBreak: 'break-word',
-                        textAlign: 'center',
-                        display: 'inline-block',
-                    }}
-                >
-                    {isLoadingAas ? (
-                        <Skeleton width="40%" sx={{ margin: '0 auto' }} />
-                    ) : aas?.displayName ? (
-                        getTranslationText(aas?.displayName, locale)
-                    ) : (
-                        ''
-                    )}
-                </Typography>
+                <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Typography
+                        variant="h2"
+                        style={{
+                            overflowWrap: 'break-word',
+                            wordBreak: 'break-word',
+                            textAlign: 'left',
+                        }}
+                    >
+                        {isLoadingAas ? (
+                            <Skeleton width="40%" />
+                        ) : aas?.displayName ? (
+                            getTranslationText(aas?.displayName, locale)
+                        ) : (
+                            ''
+                        )}
+                    </Typography>
+                </Box>
+                <AasViewerActionBar />
             </Box>
             <AASOverviewCard
                 aas={aas ?? null}
