@@ -2,8 +2,8 @@
 
 describe('Visit the Settings page', function () {
     const adminTestUser = {
-        login: Cypress.env('TEST_ADMIN_USER_LOGIN'),
-        password: Cypress.env('TEST_ADMIN_USER_PASSWORD'),
+        login: Cypress.expose('TEST_ADMIN_USER_LOGIN'),
+        password: Cypress.expose('TEST_ADMIN_USER_PASSWORD'),
     };
 
     beforeEach(function () {

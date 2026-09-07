@@ -1,8 +1,8 @@
 import resolutions from '../fixtures/resolutions';
 
 const adminTestUser = {
-    login: Cypress.env('TEST_ADMIN_USER_LOGIN'),
-    password: Cypress.env('TEST_ADMIN_USER_PASSWORD'),
+    login: Cypress.expose('TEST_ADMIN_USER_LOGIN'),
+    password: Cypress.expose('TEST_ADMIN_USER_PASSWORD'),
 };
 
 describe('Template CRUD Operations', () => {
@@ -22,7 +22,7 @@ describe('Template CRUD Operations', () => {
 
             cy.getByTestId('login-button').click();
             cy.origin(
-                Cypress.env('KEYCLOAK_ISSUER'),
+                Cypress.expose('KEYCLOAK_ISSUER'),
                 { args: { login: adminTestUser.login, password: adminTestUser.password } },
                 ({ login, password }) => {
                     cy.get('#username').invoke('focus').type(login);
