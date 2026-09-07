@@ -66,7 +66,7 @@ services:
 
   # One-shot service that initializes the PostgreSQL schema before the environment starts.
   basyx-configuration:
-    image: eclipsebasyx/basyxconfigurationservice-go:1.0.2
+    image: eclipsebasyx/basyxconfigurationservice-go:1.0.11
     container_name: basyx-configuration
     environment:
       - POSTGRES_HOST=basyx-db
@@ -83,7 +83,7 @@ services:
   # Unified BaSyx Go environment: serves the AAS repository, Submodel repository,
   # Concept Description repository, AAS/Submodel registries and Discovery from a single service.
   aas-environment:
-    image: eclipsebasyx/aasenvironment-go:1.0.2
+    image: eclipsebasyx/aasenvironment-go:1.0.11
     container_name: aas-environment
     command: ['/app/aasenvironmentservice']
     ports:
