@@ -27,7 +27,7 @@ import {
 export function AasViewerActionBar() {
     const params = useParams<{ base64AasId: string; view?: string }>();
     const searchParams = useSearchParams();
-    const t = useTranslations('pages.aasViewer');
+    const t = useTranslations();
     const env = useEnv();
     const { showError } = useShowError();
     const { spawn } = useNotificationSpawner();
@@ -49,7 +49,7 @@ export function AasViewerActionBar() {
 
     async function downloadAAS() {
         if (!aas?.id || !infrastructureName) {
-            showError(t('errors.downloadError'));
+            showError(t('pages.aasViewer.errors.downloadError'));
             return;
         }
         const submodelIds = Array.isArray(submodels) ? submodels.map((s) => s.id) : [];
@@ -67,15 +67,15 @@ export function AasViewerActionBar() {
                 window.URL.revokeObjectURL(url);
 
                 spawn({
-                    title: t('actions.download'),
-                    message: t('messages.downloadSuccess', { endpoint: endpointUrl, infrastructure: infra }),
+                    title: t('pages.aasViewer.actions.download'),
+                    message: t('pages.aasViewer.messages.downloadSuccess', { endpoint: endpointUrl, infrastructure: infra }),
                     severity: 'success',
                 });
             } else if (!response.isSuccess) {
                 showError(response.message);
             }
         } catch {
-            showError(t('errors.downloadError'));
+            showError(t('pages.aasViewer.errors.downloadError'));
         }
     }
 
@@ -117,7 +117,7 @@ export function AasViewerActionBar() {
         >
             {primaryAction === 'download' && (
                 <Button variant="contained" onClick={downloadAAS} data-testid="aas-download-button">
-                    {t('actions.download')}
+                    {t('pages.aasViewer.actions.download')}
                 </Button>
             )}
             {primaryAction !== 'download' && primaryAction && (

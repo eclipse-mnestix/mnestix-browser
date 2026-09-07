@@ -100,4 +100,27 @@ describe('AasViewerActionBar', () => {
         expect(screen.queryByTestId('aas-view-button-product')).not.toBeInTheDocument();
         expect(screen.getByTestId('aas-view-button-default')).toBeInTheDocument();
     });
+
+    it('resolves an i18n-key label against the message tree instead of showing the key', () => {
+        mockState.config = {
+            default: 'default',
+            switchable: ['default', 'product'],
+            views: {
+                default: { label: 'pages.aasViewer.views.default', component: () => null },
+                product: { label: 'pages.aasViewer.views.product', component: () => null },
+            },
+        };
+
+        CustomRender(<AasViewerActionBar />);
+
+        expect(screen.getByTestId('aas-view-button-product')).toHaveTextContent('Product view');
+    });
+
+    it('shows the raw label when it is not an i18n key', () => {
+        mockState.config = makeConfig(['default', 'timeseries']);
+
+        CustomRender(<AasViewerActionBar />);
+
+        expect(screen.getByTestId('aas-view-button-timeseries')).toHaveTextContent('timeseries');
+    });
 });
