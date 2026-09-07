@@ -1,5 +1,4 @@
-import { Box, Checkbox, Skeleton, TableCell, Typography } from '@mui/material';
-import { useNotificationSpawner } from 'lib/hooks/UseNotificationSpawner';
+import { Skeleton, TableCell, Typography } from '@mui/material';
 import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
 import { tooltipText } from 'lib/util/ToolTipText';
 import PictureTableCell from 'components/basics/listBasics/PictureTableCell';
@@ -22,10 +21,6 @@ type AasTableRowProps = {
     repository: RepositoryWithInfrastructure;
     connectionType?: 'repository' | 'registry';
     aasListEntry: ListEntityDto;
-    comparisonFeatureFlag: boolean | undefined;
-    checkBoxDisabled: (aasId: string | undefined) => boolean | undefined;
-    selectedAasList: string[] | undefined;
-    updateSelectedAasList: (isChecked: boolean, aasId: string | undefined) => void;
 };
 
 const tableBodyText = {
@@ -35,16 +30,7 @@ const tableBodyText = {
     wordWrap: 'break-word',
 };
 export const AasListTableRow = (props: AasTableRowProps) => {
-    const {
-        repository,
-        connectionType,
-        aasListEntry,
-        comparisonFeatureFlag,
-        checkBoxDisabled,
-        selectedAasList,
-        updateSelectedAasList,
-    } = props;
-    const notificationSpawner = useNotificationSpawner();
+    const { repository, connectionType, aasListEntry } = props;
     const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
     const t = useTranslations('pages.aasList');
     const locale = useLocale();
@@ -119,37 +105,8 @@ export const AasListTableRow = (props: AasTableRowProps) => {
         };
     }, [thumbnailUrl]);
 
-    const showMaxElementsNotification = () => {
-        notificationSpawner.spawn({
-            message: (
-                <Typography variant="body2" sx={{ opacity: 0.7 }}>
-                    {t('maxElementsWarning')}
-                </Typography>
-            ),
-            severity: 'warning',
-        });
-    };
-
     return (
         <>
-            {comparisonFeatureFlag && (
-                <TableCell align="center" sx={tableBodyText}>
-                    <Box
-                        component="span"
-                        onClick={() => {
-                            if (checkBoxDisabled(aasListEntry.aasId)) showMaxElementsNotification();
-                        }}
-                    >
-                        <Checkbox
-                            checked={!!(selectedAasList && selectedAasList.some((el) => el == aasListEntry.aasId))}
-                            disabled={checkBoxDisabled(aasListEntry.aasId)}
-                            onChange={(evt) => updateSelectedAasList(evt.target.checked, aasListEntry.aasId)}
-                            data-testid="list-checkbox"
-                            title={t('titleComparisonAddButton')}
-                        />
-                    </Box>
-                </TableCell>
-            )}
             <PictureTableCell>
                 <ImageWithFallback
                     src={thumbnailUrl}

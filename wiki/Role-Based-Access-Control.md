@@ -16,7 +16,7 @@ Every logged-in user is allowed to visit following pages:
 
 If a logged-in user has the 'mnestix-admin' role set, the user is able to visit following pages:
 
-- Dashboard, List, Templates, Settings (ID Settings, Data Sources, Role Management)
+- Dashboard, List, Templates, Settings (ID structure, Infrastructures, Role management)
 
 ### Configuring RBAC:
 

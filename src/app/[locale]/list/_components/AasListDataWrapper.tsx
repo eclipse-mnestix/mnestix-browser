@@ -4,8 +4,6 @@ import { getAasListEntities } from 'lib/services/list-service/aasListApiActions'
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useState } from 'react';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
-import { useEnv } from 'app/EnvProvider';
-import { AasListComparisonHeader } from './AasListComparisonHeader';
 import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -25,10 +23,8 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
     const [isLoadingList, setIsLoadingList] = useState(false);
     const [aasList, setAasList] = useState<AasListDto>();
     const [, setAasListFiltered] = useState<ListEntityDto[]>();
-    const [selectedAasList, setSelectedAasList] = useState<string[]>();
     const [selectedRepository, setSelectedRepository] = useState<RepositoryWithInfrastructure | null | undefined>();
     const [selectedType, setSelectedType] = useState<'repository' | 'registry' | undefined>();
-    const env = useEnv();
     const t = useTranslations('pages.aasList');
     const { showError } = useShowError();
 
@@ -96,27 +92,6 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
         setCurrentPage((prevPage) => prevPage - 1);
     };
 
-    /**
-     * Update the list of currently selected aas
-     */
-    const updateSelectedAasList = (isChecked: boolean, aasId: string | undefined) => {
-        if (!aasId) return;
-        let selected: string[] = [];
-
-        if (isChecked) {
-            selected = selected.concat(selectedAasList ? selectedAasList : [], [aasId]);
-            selected = [...new Set(selected)];
-        } else if (!isChecked && selectedAasList) {
-            selected = selectedAasList.filter((aas) => {
-                return aas !== aasId;
-            });
-        } else {
-            return;
-        }
-
-        setSelectedAasList(selected);
-    };
-
     const pagination = (
         <Box
             sx={{
@@ -148,26 +123,14 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
                     <Box
                         sx={{
                             display: 'flex',
-                            justifyContent: 'space-between',
+                            gap: 4,
                             marginBottom: '1.625rem',
                             paddingX: '1rem'
                         }}>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                gap: 4
-                            }}>
-                            <SelectListSource
-                                onSelectedRepositoryChanged={setSelectedRepository}
-                                onSelectedTypeChanged={setSelectedType}
-                            />
-                        </Box>
-                        {env.COMPARISON_FEATURE_FLAG && (
-                            <AasListComparisonHeader
-                                selectedAasList={selectedAasList}
-                                updateSelectedAasList={updateSelectedAasList}
-                            />
-                        )}
+                        <SelectListSource
+                            onSelectedRepositoryChanged={setSelectedRepository}
+                            onSelectedTypeChanged={setSelectedType}
+                        />
                     </Box>
                 )}
                 {isLoadingList ? (
@@ -178,9 +141,6 @@ export default function AasListDataWrapper({ hideRepoSelection }: AasListDataWra
                         selectedType={selectedType}
                         needAuthentication={needAuthentication}
                         aasList={aasList}
-                        selectedAasList={selectedAasList}
-                        updateSelectedAasList={updateSelectedAasList}
-                        comparisonFeatureFlag={env.COMPARISON_FEATURE_FLAG}
                         pagination={pagination}
                     />
                 )}

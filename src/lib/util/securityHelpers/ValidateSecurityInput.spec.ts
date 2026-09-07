@@ -47,6 +47,17 @@ describe('ValidateSecurityInput', () => {
                     errorKey: VALIDATION_ERROR_KEYS.HEADER_KEY_DANGEROUS,
                 });
             });
+
+            it.each(['authorization', 'AUTHORIZATION', 'CoOkIe', 'set-cookie'])(
+                'should reject dangerous header %s regardless of casing',
+                (key) => {
+                    const result = validateHeaderKey(key);
+                    expect(result).toEqual({
+                        isValid: false,
+                        errorKey: VALIDATION_ERROR_KEYS.HEADER_KEY_DANGEROUS,
+                    });
+                },
+            );
         });
 
         describe('invalid format', () => {

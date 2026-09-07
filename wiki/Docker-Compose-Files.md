@@ -26,7 +26,7 @@ docker command.
 - **docker-compose/compose.dev.yml** - override file to run Mnestix Browser in a development environment. A development
   image will be built if it is not found in the local Docker Image Cache.<br>
   **Mnestix Browser on port 3000 - http://localhost:3000** <br>
-  **Mnestix Api on port 5064 - http://localhost:5064** <br>
+  **Mnestix AAS Generator on port 5064 - http://localhost:5064** <br>
   **AAS Repo on port 8081 - http://localhost:8081/swagger-ui/index.html**
 
 - **docker-compose/compose.digital-twin-registry.yml** - adds the BaSyx Digital Twin registry instead
@@ -60,10 +60,10 @@ docker compose -f compose.yml -f docker-compose/compose.dev.yml -f docker-compos
 
 Additional services used by the Mnestix browser:
 
-- **mnestix-api** - API service from the Mnestix ecosystem designed to expand Mnestix Browser functionalities, adding
+- **mnestix-aas-generator** - service from the Mnestix ecosystem designed to expand Mnestix Browser functionalities, adding
   AAS List, Template Builder and allowing for the configuration of custom settings such as themes and aasId
-  generation. (**On port 5054 - http://localhost:5064/swagger/index.html#/**)
-  This component has been split into the [Mnestix Proxy](https://github.com/eclipse-mnestix/mnestix-proxy/wiki)
+  generation. (**On port 5064 - http://localhost:5064/swagger/index.html#/**)
+  The former **Mnestix API** has been split into the [Mnestix Proxy](https://github.com/eclipse-mnestix/mnestix-proxy/wiki)
   and the [Mnestix AAS Generator](https://github.com/eclipse-mnestix/mnestix-aas-generator/wiki); see their wikis for details.
 
   > **Note:** The BaSyx Go environment requires **Mnestix AAS Generator >= 1.3.0** for compatibility. See the
@@ -86,7 +86,7 @@ section.
 ### Existing images in dockerhub
 
 Our Docker images are available on Docker Hub [Mnestix Browser](https://hub.docker.com/r/mnestix/mnestix-browser)
-and [Mnestix Api](https://hub.docker.com/r/mnestix/mnestix-api). You can pull the images using the following commands:
+and [Mnestix AAS Generator](https://hub.docker.com/r/mnestix/mnestix-aas-generator). You can pull the images using the following commands:
 
 #### To pull a specific version, use the version tag:
 
@@ -95,5 +95,5 @@ docker pull mnestix/mnestix-browser:tag
 ```
 
 ```sh
-docker pull mnestix/mnestix-api:latest
+docker pull mnestix/mnestix-aas-generator:latest
 ```

@@ -5,13 +5,14 @@ import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResp
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { AssetAdministrationShell, Reference, Submodel } from 'lib/api/aas/models';
-import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
+import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureData';
 import { AssetAdministrationShellDescriptor, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { AasRepositoryService, RepoSearchResult } from 'lib/services/aas-repository-service/AasRepositoryService';
 import { AasRegistryEndpointEntryInMemory } from 'lib/api/registry-service-api/registryServiceApiInMemory';
 import { SubmodelRepositoryService } from 'lib/services/submodel-repository-service/SubmodelRepositoryService';
 import { SubmodelRegistryService } from 'lib/services/submodel-registry-service/SubmodelRegistryService';
 import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
+import { egressBlockedError } from 'lib/util/securityHelpers/egressBlockedError';
 
 export type AasSearchResult = {
     redirectUrl: string;
@@ -139,6 +140,11 @@ export class InfrastructureSearchService {
         if (smDescriptor && smDescriptor.endpoints.length > 0 && smDescriptor.endpoints[0].protocolInformation.href) {
             const endpoint = smDescriptor.endpoints[0].protocolInformation.href;
             if (endpoint) {
+                // The descriptor (and thus this href) is client-supplied via the `performSubmodelSearch`
+                // server action, so it must clear the egress guard before we fetch it — otherwise it is an
+                // SSRF vector into internal targets. Mirrors ListService's per-descriptor guard.
+                const blocked = await egressBlockedError(endpoint, infrastructureName);
+                if (blocked) return blocked;
                 const submodelSearchResult = await this.submodelRegistrySearchService.getSubmodelFromEndpoint(endpoint);
                 if (!submodelSearchResult.isSuccess) {
                     return wrapErrorCode(submodelSearchResult.errorCode, submodelSearchResult.message);
@@ -161,6 +167,10 @@ export class InfrastructureSearchService {
         if (descriptorById && descriptorById.result?.endpoints && descriptorById.result.endpoints.length > 0) {
             const endpoint = descriptorById.result.endpoints[0].protocolInformation.href;
 
+            // Registry-returned hrefs are data, not operator config: a compromised or federated registry can
+            // point this at an internal target. Guard before fetching, consistent with the client-descriptor path above.
+            const blocked = await egressBlockedError(endpoint, infrastructureName);
+            if (blocked) return blocked;
             const submodelSearchResult = await this.submodelRegistrySearchService.getSubmodelFromEndpoint(endpoint);
             if (!submodelSearchResult.isSuccess) {
                 return wrapErrorCode(submodelSearchResult.errorCode, submodelSearchResult.message);

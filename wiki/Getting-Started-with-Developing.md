@@ -80,7 +80,7 @@ You may need to set the initial URL to http://localhost:3000.
 To check what other options exist to run the Mnestix Browser, see the yarn scripts in `package.json`. Highlights are:
 
 - `yarn dev` to start the browser in a hot reloading dev environment.
-- `yarn prettier`, `yarn format` and `yarn lint` to apply code formatting and linting.
+- `yarn format` and `yarn lint` to apply code formatting and linting.
 - `yarn test` and `yarn test:headless` to run cypress tests locally.
 - `yarn docker:prod` will build everything with the production flag.
 - `yarn docker:test` will run all tests in the docker environment.

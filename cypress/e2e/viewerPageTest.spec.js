@@ -115,10 +115,6 @@ describe('Test the viewer page', function () {
             cy.get('@mobileDropdown').click();
             cy.get('@mobileDropdownContent').should('be.visible');
         });
-
-        xit('should not show the compare button for mobile users', function () {
-            cy.getByTestId('detail-compare-button').should('not.exist');
-        });
     });
 
     after(function () {

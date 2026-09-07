@@ -15,7 +15,6 @@ import { KeyFactsBox } from 'app/[locale]/viewer/_components/product/KeyFactsBox
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
 import { useProductImageUrl } from 'lib/hooks/UseProductImageUrl';
 import { useFindValueByIdShort } from 'lib/hooks/useFindValueByIdShort';
-import { ActionMenu } from './ProductActionMenu';
 import LinkIcon from '@mui/icons-material/Link';
 import { MnestixConnection } from '../../../../../../prisma/generated/client';
 import {
@@ -507,12 +506,6 @@ export function ProductOverviewCard(props: ProductOverviewCardProps) {
                                                 </Tooltip>
                                             )}
                                         </Typography>
-                                        <ActionMenu
-                                            aas={props.aas}
-                                            infrastructureName={props.infrastructureName}
-                                            submodels={props.submodels}
-                                            className="product-action-menu"
-                                        />
                                     </Box>
                                     <Divider sx={{ mb: 2 }} />
                                     <Box sx={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>{productInfo}</Box>

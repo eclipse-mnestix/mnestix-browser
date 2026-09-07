@@ -9,7 +9,7 @@ import logger, { logInfo, logResponseDebug } from 'lib/util/Logger';
 import { IDiscoveryServiceApi } from 'lib/api/discovery-service-api/discoveryServiceApiInterface';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { DiscoveryServiceApi } from 'lib/api/discovery-service-api/discoveryServiceApi';
-import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
+import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureData';
 import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
 import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
 

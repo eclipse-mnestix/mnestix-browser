@@ -16,11 +16,14 @@ import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
+import { AasViewerActionBar } from 'app/[locale]/viewer/_components/AasViewerActionBar';
+import { useAasViewerActions } from 'app/[locale]/viewer/_components/useAasViewerActions';
 import { ViewerShell } from './ViewerShell';
 
 export function ProductViewer() {
     const isMobile = useIsMobile();
     const locale = useLocale();
+    const actions = useAasViewerActions();
     const [breadcrumbLinks] = useState<Array<{ label: string; path: string }>>([]);
 
     const { aas, aasOriginUrl, isLoadingAas, isLoadingSubmodels, submodels, infrastructureName } =
@@ -66,8 +69,18 @@ export function ProductViewer() {
 
     return (
         <ViewerShell>
-            <Box>
-                <Breadcrumbs links={breadcrumbLinks} />
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 2,
+                }}
+            >
+                <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Breadcrumbs links={breadcrumbLinks} />
+                </Box>
+                <AasViewerActionBar actions={actions} />
             </Box>
             <ProductOverviewCard
                 aas={aas ?? null}
