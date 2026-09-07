@@ -30,6 +30,15 @@ export function safeBase64Decode(str: string): string {
     }
 }
 
+/**
+ * Strips trailing base64 padding from a URL segment, handling both a literal
+ * `=` and its percent-encoded form `%3D` (case-insensitive). Used to normalize
+ * a `base64AasId` route param before decoding.
+ */
+export function stripBase64Padding(str: string): string {
+    return str.replace(/(=|%3D)+$/i, '');
+}
+
 export async function blobToBase64(blob: Blob): Promise<string> {
     const arrayBuffer = await blob.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);

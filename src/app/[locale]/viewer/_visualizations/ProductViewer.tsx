@@ -8,22 +8,22 @@ import {
     findValueByIdShort,
     getTranslationText,
 } from 'lib/util/SubmodelResolverUtil';
-import { useParams } from 'next/navigation';
 import { SubmodelsOverviewCard } from 'app/[locale]/viewer/_components/SubmodelsOverviewCard';
-import { ProductOverviewCard } from '../_components/ProductOverviewCard';
-import { NoSearchResult } from 'components/basics/detailViewBasics/NoSearchResult';
+import { ProductOverviewCard } from '../_components/product/ProductOverviewCard';
 import { useLocale } from 'next-intl';
 import { useMemo, useState } from 'react';
 import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 import { SubmodelSemanticIdEnum } from 'lib/enums/SubmodelSemanticId.enum';
 import { Breadcrumbs } from 'components/basics/Breadcrumbs';
 import { SubmodelElementSemanticIdEnum } from 'lib/enums/SubmodelElementSemanticId.enum';
+import { AasViewerActionBar } from 'app/[locale]/viewer/_components/AasViewerActionBar';
+import { useAasViewerActions } from 'app/[locale]/viewer/_components/useAasViewerActions';
+import { ViewerShell } from './ViewerShell';
 
 export function ProductViewer() {
-    const searchParams = useParams<{ base64AasId: string }>();
-    const base64AasId = decodeURIComponent(searchParams.base64AasId).replace(/(=|%3D)+$/i, '');
     const isMobile = useIsMobile();
     const locale = useLocale();
+    const actions = useAasViewerActions();
     const [breadcrumbLinks] = useState<Array<{ label: string; path: string }>>([]);
 
     const { aas, aasOriginUrl, isLoadingAas, isLoadingSubmodels, submodels, infrastructureName } =
@@ -67,52 +67,38 @@ export function ProductViewer() {
         });
     }
 
-    const pageStyles = {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '30px',
-        alignItems: 'center',
-        marginBottom: '50px',
-        marginTop: '20px',
-    };
-
-    const viewerStyles = {
-        maxWidth: '1125px',
-        width: '90%',
-        margin: '0 auto',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '20px',
-    };
-
     return (
-        <Box sx={pageStyles}>
-            {aas || isLoadingAas ? (
-                <Box sx={viewerStyles}>
-                    <Box>
-                        <Breadcrumbs links={breadcrumbLinks} />
-                    </Box>
-                    <ProductOverviewCard
-                        aas={aas ?? null}
-                        infrastructureName={infrastructureName}
-                        submodels={submodels}
-                        productImage={aas?.assetInformation?.defaultThumbnail?.path}
-                        isLoading={isLoadingAas || isLoadingSubmodels}
-                        isAccordion={isMobile}
-                        repositoryURL={aasOriginUrl}
-                        displayName={aas?.displayName ? getTranslationText(aas.displayName, locale) : null}
-                    />
-                    <SubmodelsOverviewCard
-                        aas={aas}
-                        submodelIds={filteredSubmodels}
-                        submodelsLoading={isLoadingSubmodels}
-                        firstSubmodelIdShort="TechnicalData"
-                        disableHeadline={true}
-                    />
+        <ViewerShell>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 2,
+                }}
+            >
+                <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Breadcrumbs links={breadcrumbLinks} />
                 </Box>
-            ) : (
-                <NoSearchResult base64AasId={base64AasId} />
-            )}
-        </Box>
+                <AasViewerActionBar actions={actions} />
+            </Box>
+            <ProductOverviewCard
+                aas={aas ?? null}
+                infrastructureName={infrastructureName}
+                submodels={submodels}
+                productImage={aas?.assetInformation?.defaultThumbnail?.path}
+                isLoading={isLoadingAas || isLoadingSubmodels}
+                isAccordion={isMobile}
+                repositoryURL={aasOriginUrl}
+                displayName={aas?.displayName ? getTranslationText(aas.displayName, locale) : null}
+            />
+            <SubmodelsOverviewCard
+                aas={aas}
+                submodelIds={filteredSubmodels}
+                submodelsLoading={isLoadingSubmodels}
+                firstSubmodelIdShort="TechnicalData"
+                disableHeadline={true}
+            />
+        </ViewerShell>
     );
 }
