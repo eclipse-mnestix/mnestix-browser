@@ -24,6 +24,12 @@ export default defineConfig({
         experimentalRunAllSpecs: true,
         setupNodeEvents(on, config) {
             cypressSplit(on, config);
+            // Cypress 16 removed Cypress.env(); only Cypress.expose() can be read
+            // synchronously in the browser. Keep the values under `env` in this config so
+            // CYPRESS_* environment variables (see docker-compose/compose.test.yml) still
+            // override them, and mirror the resolved values into `expose` here so specs
+            // and custom commands can read them without an async cy.env() callback.
+            config.expose = { ...config.expose, ...config.env };
             return config;
         },
     },
