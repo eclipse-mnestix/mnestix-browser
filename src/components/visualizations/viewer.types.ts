@@ -18,6 +18,19 @@ export type AasView = {
 };
 
 /**
+ * A single action rendered by the {@link AasViewerActionBar}. Carries either an
+ * `href` (rendered as a navigation link) or an `onClick` (rendered as a button).
+ * `label` is an i18n key (resolved via next-intl `t.has()` fallback) or a raw
+ * display string. Order in the list decides the slot: first action is primary
+ * (contained), second secondary (outlined), the rest fold into the overflow menu.
+ */
+export type AasViewerAction = {
+    label: string;
+    href?: string;
+    onClick?: () => void;
+};
+
+/**
  * Registry of AAS visualizations shown on the viewer page.
  * - `default`: the view key the bare `/viewer/<id>` URL redirects to.
  * - `switchable`: keys shown in the user-facing action bar as view buttons.

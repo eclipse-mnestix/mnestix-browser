@@ -6,6 +6,7 @@ import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import { SubmodelsOverviewCard } from '../_components/SubmodelsOverviewCard';
 import { AASOverviewCard } from 'app/[locale]/viewer/_components/AASOverviewCard';
 import { AasViewerActionBar } from 'app/[locale]/viewer/_components/AasViewerActionBar';
+import { useAasViewerActions } from 'app/[locale]/viewer/_components/useAasViewerActions';
 import { useLocale } from 'next-intl';
 import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 import { ViewerShell } from './ViewerShell';
@@ -13,6 +14,7 @@ import { ViewerShell } from './ViewerShell';
 export function DefaultViewer() {
     const isMobile = useIsMobile();
     const locale = useLocale();
+    const actions = useAasViewerActions();
 
     const { aas, submodels, isLoadingAas, isLoadingSubmodels, aasOriginUrl, infrastructureName } =
         useCurrentAasContext();
@@ -45,7 +47,7 @@ export function DefaultViewer() {
                         )}
                     </Typography>
                 </Box>
-                <AasViewerActionBar />
+                <AasViewerActionBar actions={actions} />
             </Box>
             <AASOverviewCard
                 aas={aas ?? null}
