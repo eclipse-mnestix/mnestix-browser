@@ -35,7 +35,7 @@ export function DefaultViewer() {
                         style={{
                             overflowWrap: 'break-word',
                             wordBreak: 'break-word',
-                            textAlign: 'left',
+                            textAlign: 'center',
                         }}
                     >
                         {isLoadingAas ? (
