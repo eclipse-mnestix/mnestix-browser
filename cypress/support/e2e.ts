@@ -116,22 +116,12 @@ declare global {
             ): Chainable;
 
             /**
-             * @description Posts compare mock data into the repository
-             */
-            postCompareMockData(): Chainable;
-
-            /**
-             * @description Deletes compare mock data into the repository
-             */
-            deleteCompareMockData(): Chainable;
-
-            /**
-             * @description Posts compare mock data into the repository
+             * @description Posts QR scanner mock data into the repository
              */
             postQrScannerMockData(): Chainable;
 
             /**
-             * @description Deletes compare mock data into the repository
+             * @description Deletes QR scanner mock data from the repository
              */
             deleteQrScannerMockData(): Chainable;
 

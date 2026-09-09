@@ -2,11 +2,12 @@
 
 ### Available Languages
 
-Currently, Mnestix Browser supports three languages, available from the language selector located on the top-right side:
+Currently, Mnestix Browser supports four languages, available from the language selector located on the top-right side:
 
 -   English (default language)
 -   Deutsch (German)
 -   Español (Spanish)
+-   Nederlands (Dutch)
 
 ### Language conventions and format
 

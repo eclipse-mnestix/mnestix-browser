@@ -1,7 +1,7 @@
 > **Note:** Keycloak support is available starting from version 1.1.0 and above.
 >
-> For Mnesitx API configuration details, please refer to the API documentation available
-> on [Docker Hub](https://hub.docker.com/r/mnestix/mnestix-api).
+> For Mnestix AAS Generator configuration details, please refer to the documentation available
+> on [Docker Hub](https://hub.docker.com/r/mnestix/mnestix-aas-generator).
 
 ### Setting Up Keycloak for Docker Development
 

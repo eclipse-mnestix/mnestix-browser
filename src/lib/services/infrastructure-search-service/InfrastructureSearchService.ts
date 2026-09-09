@@ -1,17 +1,18 @@
-import logger, { logInfo } from 'lib/util/Logger';
+import logger, { logInfo, logWarn } from 'lib/util/Logger';
 import { AasRegistryService } from 'lib/services/aas-registry-service/AasRegistryService';
 import { DiscoveryService } from 'lib/services/discovery-service/DiscoveryService';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { AssetAdministrationShell, Reference, Submodel } from 'lib/api/aas/models';
-import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureDatabaseActions';
+import { getInfrastructuresIncludingDefault } from 'lib/services/database/infrastructureData';
 import { AssetAdministrationShellDescriptor, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { AasRepositoryService, RepoSearchResult } from 'lib/services/aas-repository-service/AasRepositoryService';
 import { AasRegistryEndpointEntryInMemory } from 'lib/api/registry-service-api/registryServiceApiInMemory';
 import { SubmodelRepositoryService } from 'lib/services/submodel-repository-service/SubmodelRepositoryService';
 import { SubmodelRegistryService } from 'lib/services/submodel-registry-service/SubmodelRegistryService';
 import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
+import { egressBlockedError } from 'lib/util/securityHelpers/egressBlockedError';
 
 export type AasSearchResult = {
     redirectUrl: string;
@@ -139,11 +140,19 @@ export class InfrastructureSearchService {
         if (smDescriptor && smDescriptor.endpoints.length > 0 && smDescriptor.endpoints[0].protocolInformation.href) {
             const endpoint = smDescriptor.endpoints[0].protocolInformation.href;
             if (endpoint) {
+                // The descriptor (and thus this href) is client-supplied via the `performSubmodelSearch`
+                // server action, so it must clear the egress guard before we fetch it — otherwise it is an
+                // SSRF vector into internal targets. Mirrors ListService's per-descriptor guard.
+                const blocked = await egressBlockedError(endpoint, infrastructureName);
+                if (blocked) return blocked;
                 const submodelSearchResult = await this.submodelRegistrySearchService.getSubmodelFromEndpoint(endpoint);
                 if (!submodelSearchResult.isSuccess) {
                     return wrapErrorCode(submodelSearchResult.errorCode, submodelSearchResult.message);
                 }
-                return wrapSuccess({ searchResult: submodelSearchResult.result, location: endpoint });
+                return wrapSuccess({
+                    searchResult: submodelSearchResult.result,
+                    location: this.getRepoBaseFromSubmodelEndpoint(endpoint),
+                });
             }
         }
 
@@ -158,11 +167,18 @@ export class InfrastructureSearchService {
         if (descriptorById && descriptorById.result?.endpoints && descriptorById.result.endpoints.length > 0) {
             const endpoint = descriptorById.result.endpoints[0].protocolInformation.href;
 
+            // Registry-returned hrefs are data, not operator config: a compromised or federated registry can
+            // point this at an internal target. Guard before fetching, consistent with the client-descriptor path above.
+            const blocked = await egressBlockedError(endpoint, infrastructureName);
+            if (blocked) return blocked;
             const submodelSearchResult = await this.submodelRegistrySearchService.getSubmodelFromEndpoint(endpoint);
             if (!submodelSearchResult.isSuccess) {
                 return wrapErrorCode(submodelSearchResult.errorCode, submodelSearchResult.message);
             } else {
-                return wrapSuccess({ searchResult: submodelSearchResult.result, location: endpoint });
+                return wrapSuccess({
+                    searchResult: submodelSearchResult.result,
+                    location: this.getRepoBaseFromSubmodelEndpoint(endpoint),
+                });
             }
         }
 
@@ -249,6 +265,27 @@ export class InfrastructureSearchService {
         }
 
         return wrapErrorCode(ApiResultStatus.NOT_FOUND, 'No AAS found for the given ID');
+    }
+
+    /**
+     * A submodel registry descriptor's endpoint href is the full submodel URL
+     * (`<repo-base>/submodels/<id>`). Downstream consumers treat `location` as a plain repo base
+     * and re-append `/submodels/<id>/submodel-elements/...`, so the href must be trimmed back to the
+     * base to avoid a doubled `/submodels/<id>` segment. base64url ids never contain '/', so the
+     * last `/submodels/` is always the descriptor's resource segment; a base that itself contains
+     * `/submodels/` stays intact.
+     */
+    private getRepoBaseFromSubmodelEndpoint(endpoint: string): string {
+        const index = endpoint.lastIndexOf('/submodels/');
+        if (index === -1) {
+            logWarn(
+                this.log,
+                'searchSubmodelInInfrastructure',
+                `Registry endpoint "${endpoint}" is not standard-conform (no /submodels/ segment); using as-is.`,
+            );
+            return endpoint;
+        }
+        return endpoint.substring(0, index);
     }
 
     private createAasResult(aas: AssetAdministrationShell, data: AasData): AasSearchResult {

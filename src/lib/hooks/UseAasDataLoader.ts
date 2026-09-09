@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Reference, Submodel } from 'lib/api/aas/models';
 import { useEnv } from 'app/EnvProvider';
 import { LocalizedError } from 'lib/util/LocalizedError';
@@ -25,6 +26,7 @@ import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapp
  */
 export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string, repoUrl: string | undefined) {
     const env = useEnv();
+    const router = useRouter();
     const setIsLoadingAas = context.isLoadingAas[1];
     const setIsLoadingSubmodels = context.isLoadingSubmodels[1];
     const setAasOriginUrl = context.aasOriginUrl[1];
@@ -142,7 +144,11 @@ export function useAasLoader(context: CurrentAasContextType, aasIdToLoad: string
             return;
         }
         setIsLoadingAas(true);
-        await loadAasContent();
+        const result = await loadAasContent();
+        if (!result.success && result.redirectUrl) {
+            router.push(result.redirectUrl);
+            return;
+        }
         setIsLoadingAas(false);
     }, [aasIdToLoad, env, repoUrl]);
 }

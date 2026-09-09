@@ -68,11 +68,6 @@
       },
       "totalCO2Equivalents": "CO2 emissions from product (so far)"
     },
-    "constructionDialog": {
-      "buttonText": "Close",
-      "message": "This feature is currently under construction and will be available soon.",
-      "title": "Under Construction"
-    },
     "contactInformation": {
       "contactTypes": {
         "0173-1#07-AAS754#001": "Office",
@@ -193,7 +188,6 @@
   "pages": {
     "aasList": {
       "buttonTooltip": "Go to AAS",
-      "compare": "Compare",
       "header": "AAS List",
       "listHeader": {
         "aasEndpoint": "AAS URL",
@@ -209,16 +203,13 @@
         "infrastructureName": "Infrastructure",
         "viewAASButton": "View AAS"
       },
-      "maxElementsWarning": "Cannot compare more than 3 elements",
       "page": "Page",
       "repositoryDropdownLabel": "AAS Repository or AAS Registry (Infrastructure)",
       "selectListSource": "Please select a repository or AAS registry",
-      "subHeader": "You will find all AAS from your repository or AAS registry here. You can select an AAS repository or AAS registry to switch between data sources.",
-      "titleComparisonAddButton": "Add AAS to comparison"
+      "subHeader": "You will find all AAS from your repository or AAS registry here. You can select an AAS repository or AAS registry to switch between data sources."
     },
     "aasViewer": {
       "actions": {
-        "compareButton": "Compare",
         "toProductView": "Product view",
         "download": "Download AAS"
       },
@@ -295,22 +286,6 @@
       "searchPlaceholder": "Search currently unavailable...",
       "title": "Manufacturer catalog"
     },
-    "compare": {
-      "addAnother": "Add another AAS",
-      "addButton": "Add another AAS",
-      "addFirstAasButton": "Add AAS",
-      "collection": {
-        "hide": "Hide",
-        "show": "{idShort}"
-      },
-      "errors": {
-        "aasAddError": "AAS could not be added.",
-        "aasAlreadyAdded": "AAS cannot be added more than once.",
-        "moreAasFound": "More than one AAS found in the discovery service, please provide the AAS ID instead.",
-        "unknownModelType": "Mnestix doesn't support this model type yet ({type})."
-      },
-      "title": "Compare AAS"
-    },
     "dashboard": {
       "aasOrAssetId": "AAS ID or Asset ID",
       "infrastructure": "Infrastructure",
@@ -336,7 +311,6 @@
     },
     "productViewer": {
       "actions": {
-        "compareButton": "Compare",
         "download": "Download AAS",
         "downloadError": "Error while downloading AAS.",
         "downloadErrorNoRepo": "No repository found for the selected AAS.",
@@ -590,32 +564,6 @@
         }
       },
       "noBlueprintsWarning": "No blueprints available."
-    },
-    "transfer": {
-      "aasRepository": "AAS repository",
-      "chooseRepository": "Choose AAS repository to transfer into:",
-      "chooseSubmodelRepository": "Choose submodel repository (optional)",
-      "errorToast": "Transfer of AAS not successful",
-      "partiallyFailedToast": "Failed to transfer element",
-      "repositoryApiKey": "AAS repository APIKey",
-      "repositoryLabel": "List of AAS repositories",
-      "repositoryRequired": "AAS repository is required",
-      "submodelRepository": "Submodel repository",
-      "submodelRepositoryApiKey": "Submodel repository APIKey",
-      "submodelRepositoryLabel": "List of submodel repositories",
-      "subtitle": "Transfer \"{aasId}\" from \"{repoUrl}\" to:",
-      "successfulToast": "Transfer of AAS successful",
-      "title": "Transfer",
-      "useAasRepository": "Use AAS repository",
-      "warningToast": "AAS was only partially transferred.",
-      "aasIdentifier": {
-        "display": "\"{aasId}\"",
-        "default": "Unknown AAS ID"
-      },
-      "aasOriginUrl": {
-        "display": "\"{repoUrl}\"",
-        "default": "Unknown AAS Origin URL"
-      }
     }
   }
 }

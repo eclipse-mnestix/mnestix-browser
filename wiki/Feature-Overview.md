@@ -10,10 +10,13 @@ Mnestix AAS Browser is also **optimized for mobile view** to have a **great user
 Mnestix can **visualize every submodel** even if it is not standardized by IDTA. There are some submodels **visualized
 in an extra user-friendly manner**. These are:
 
-- Digital Nameplate
-- Handover Documentation
 - Carbon Footprint
-- **and more!**
+- Technical Data
+- Handover Documentation
+- Time Series
+- Hierarchical Structures
+- Bill of Applications
+- Reference Counter
 
 Moreover, dedicated visualizations for submodels can be added as a further feature.
 
