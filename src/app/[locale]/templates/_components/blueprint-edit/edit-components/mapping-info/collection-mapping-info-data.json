@@ -1,5 +1,5 @@
 {
-  "qualifierTypes": ["CollectionMappingInfo", "SMT/CollectionMappingInfo"],
+  "qualifierTypes": ["CollectionMappingInfo", "SMT/CollectionMappingInfo", "MnestixAASGenerator/CollectionMappingInfo"],
   "emptyTemplate": {
     "semanticId": {
       "type": "ExternalReference",
@@ -11,7 +11,7 @@
       ]
     },
     "kind": "TemplateQualifier",
-    "type": "SMT/CollectionMappingInfo",
+    "type": "MnestixAASGenerator/CollectionMappingInfo",
     "valueType": "xs:string",
     "value": ""
   }

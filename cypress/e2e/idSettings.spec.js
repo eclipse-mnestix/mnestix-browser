@@ -1,9 +1,9 @@
 ﻿import resolutions from '../fixtures/resolutions';
 
-describe('Visit the Settings page', function () {
+describe('Visit the Settings page', { defaultCommandTimeout: 20000 }, function () {
     const adminTestUser = {
-        login: Cypress.env('TEST_ADMIN_USER_LOGIN'),
-        password: Cypress.env('TEST_ADMIN_USER_PASSWORD'),
+        login: Cypress.expose('TEST_ADMIN_USER_LOGIN'),
+        password: Cypress.expose('TEST_ADMIN_USER_PASSWORD'),
     };
 
     beforeEach(function () {

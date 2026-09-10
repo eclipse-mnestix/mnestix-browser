@@ -35,13 +35,6 @@ export function ActionMenu({ aas, submodels, className, infrastructureName, repo
         setAnchorEl(null);
     };
 
-    const startComparison = () => {
-        if (aas?.id) {
-            navigate.push(`/compare?aasId=${encodeURIComponent(aas?.id)}`);
-        }
-        handleMenuClose();
-    };
-
     const goToAASView = () => {
         if (aas?.id) {
             navigate.push(
@@ -100,11 +93,6 @@ export function ActionMenu({ aas, submodels, className, infrastructureName, repo
                 <MoreVertIcon />
             </IconButton>
             <Menu id="product-actions-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-                {env.COMPARISON_FEATURE_FLAG && (
-                    <MenuItem onClick={startComparison} data-testid="detail-compare-button">
-                        {t('productViewer.actions.compareButton')}
-                    </MenuItem>
-                )}
                 {env.EXPERIMENTAL_PRODUCT_VIEW_FEATURE_FLAG && (
                     <MenuItem onClick={goToAASView} data-testid="detail-aas-view-button">
                         {t('productViewer.actions.toAasView')}

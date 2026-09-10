@@ -20,7 +20,6 @@ import {
     wrapResponse,
     wrapSuccess,
 } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
-import { AttachmentDetails } from 'lib/types/TransferServiceData';
 import { encodeBase64, safeBase64Decode } from 'lib/util/Base64Util';
 import { ServiceReachable } from 'test-utils/TestUtils';
 import { MultiLanguageValueOnly, PaginationData } from 'lib/api/basyx-v3/types';
@@ -77,30 +76,6 @@ export class AssetAdministrationShellRepositoryApiInMemory implements IAssetAdmi
             options,
         );
         return await wrapResponse(response);
-    }
-
-    async postAssetAdministrationShell(
-        aas: AssetAdministrationShell,
-        _options?: object | undefined,
-    ): Promise<ApiResponseWrapper<AssetAdministrationShell>> {
-        if (this.reachable !== ServiceReachable.Yes)
-            return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Service not reachable');
-        if (this.shellsInRepository.get(aas.id))
-            return wrapErrorCode(
-                ApiResultStatus.INTERNAL_SERVER_ERROR,
-                `AAS repository already has an AAS with id '${aas.id}`,
-            );
-        this.shellsInRepository.set(aas.id, aas);
-        return wrapSuccess(aas);
-    }
-
-    putThumbnailToShell(
-        _aasId: string,
-        _image: Blob,
-        _fileName: string,
-        _options?: object,
-    ): Promise<ApiResponseWrapper<Response>> {
-        throw new Error('Method not implemented.');
     }
 
     async getAssetAdministrationShellById(
@@ -185,26 +160,6 @@ export class SubmodelRepositoryApiInMemory implements ISubmodelRepositoryApi {
 
     getBaseUrl(): string {
         return this.baseUrl;
-    }
-
-    putAttachmentToSubmodelElement(
-        _submodelId: string,
-        _attachmentData: AttachmentDetails,
-        _options?: object,
-    ): Promise<ApiResponseWrapper<Response>> {
-        throw new Error('Method not implemented.');
-    }
-
-    async postSubmodel(submodel: Submodel, _options?: object): Promise<ApiResponseWrapper<Submodel>> {
-        if (this.reachable !== ServiceReachable.Yes)
-            return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Service not reachable');
-        if (this.submodelsInRepository.has(submodel.id))
-            return wrapErrorCode(
-                ApiResultStatus.UNKNOWN_ERROR,
-                `Submodel repository '${this.getBaseUrl()}' already has a submodel '${submodel.id}'`,
-            );
-        this.submodelsInRepository.set(submodel.id, submodel);
-        return wrapSuccess(submodel);
     }
 
     async getSubmodelById(submodelId: string, _options?: object): Promise<ApiResponseWrapper<Submodel>> {
