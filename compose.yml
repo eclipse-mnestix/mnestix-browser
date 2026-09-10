@@ -75,7 +75,7 @@ services:
   # NOTE: Requires Mnestix AAS Generator >= 1.3.0 for BaSyx Go (PostgreSQL) compatibility.
   # See https://github.com/eclipse-mnestix/mnestix-aas-generator/wiki/Migrate-to-aas-generator-1.3.0
   mnestix-aas-generator:
-    image: mnestix/mnestix-aas-generator:1.4.0
+    image: mnestix/mnestix-aas-generator:1.5.0
     container_name: mnestix-aas-generator
     profiles: ['', 'backend', 'tests']
     environment:
