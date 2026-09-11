@@ -39,7 +39,7 @@ FROM base AS production
 WORKDIR /app
 
 ENV NODE_ENV=production
-RUN yarn add prisma@7.10.0 --production && yarn cache clean
+RUN yarn add prisma@7.10.0 && yarn cache clean
 
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
