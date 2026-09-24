@@ -2,7 +2,7 @@
 import { AasListConfig, AasListEntry } from 'lib/types/AasListEntry';
 import PictureTableCell from 'components/basics/listBasics/PictureTableCell';
 import { encodeBase64 } from 'lib/util/Base64Util';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'i18n/navigation';
 import { RoundedIconButton } from 'components/basics/Buttons';
 import { ArrowForward } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';

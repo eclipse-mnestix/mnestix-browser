@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import { CustomRender } from 'test-utils/CustomRender';
-import { screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { AasListTableRow } from 'app/[locale]/list/_components/AasListTableRow';
 import { ListEntityDto } from 'lib/services/list-service/ListService';
 import * as nameplateDataActions from 'lib/services/list-service/aasListApiActions';
@@ -93,7 +93,42 @@ describe('AasListTableRow', () => {
         expect(screen.getByTestId('list-manufacturer-name')).toHaveTextContent('');
         expect(screen.getByTestId('list-product-designation')).toHaveTextContent('');
         expect(screen.getByTestId('list-assetId')).toHaveTextContent('assetId');
-        expect(screen.getByTestId('list-aasId')).toHaveTextContent('aasId');
+        expect(screen.getByTestId('list-aasId')).toHaveTextContent('aasId2');
         expect(screen.getByTestId('list-to-detailview-button')).toBeInTheDocument();
+    });
+
+    it('opens the viewer in the current language', async () => {
+        const windowOpenSpy = jest.spyOn(window, 'open').mockImplementation(() => null);
+        const listEntry: ListEntityDto = {
+            aasId: 'aasId1',
+            thumbnail: '',
+            assetId: 'assetId',
+        };
+        (nameplateDataActions.getNameplateValuesForAAS as jest.Mock).mockImplementation(
+            jest.fn(() => {
+                return {
+                    success: true,
+                    manufacturerName: [],
+                    manufacturerProductDesignation: [],
+                };
+            }),
+        );
+        CustomRender(
+            <AasStoreProvider>
+                <table>
+                    <tbody>
+                        <tr>
+                            <AasListTableRow repository={repository} aasListEntry={listEntry} />
+                        </tr>
+                    </tbody>
+                </table>
+            </AasStoreProvider>,
+            { locale: 'de' },
+        );
+
+        await waitFor(() => screen.getByTestId('list-to-detailview-button'));
+        fireEvent.click(screen.getByTestId('list-to-detailview-button'));
+
+        expect(windowOpenSpy).toHaveBeenCalledWith(expect.stringContaining('/de/viewer/'), '_blank');
     });
 });

@@ -1,6 +1,6 @@
 ﻿'use client';
 import { Box, Button, Typography } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'i18n/navigation';
 import { useTranslations } from 'next-intl';
 
 type AssetNotFoundProps = {
