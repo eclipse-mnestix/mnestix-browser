@@ -41,7 +41,7 @@ import {
 import { getTemplates } from 'lib/services/aas-generator/templatesApiActions';
 import { useLocale, useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
-import { useRouter } from 'i18n/routing';
+import { useRouter } from 'i18n/navigation';
 import React, { useState } from 'react';
 
 export default function Page() {

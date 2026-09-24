@@ -47,7 +47,7 @@ describe('Language persistence across navigation', () => {
         cy.visit('/');
         switchLanguageToGerman();
 
-        cy.get('[aria-label="Zur AAS Liste"]').click();
+        cy.getByTestId('go-to-list-card').click();
 
         cy.url().should('contain', '/de/list');
         cy.contains('AAS Liste').should('be.visible');

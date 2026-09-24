@@ -9,7 +9,7 @@ import { isValidUrl } from 'lib/util/UrlUtil';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'i18n/routing';
+import { useRouter } from 'i18n/navigation';
 import { useProductImageUrl } from 'lib/hooks/UseProductImageUrl';
 import { MobileAccordion } from 'components/basics/detailViewBasics/MobileAccordion';
 import { useAasStore } from 'stores/AasStore';

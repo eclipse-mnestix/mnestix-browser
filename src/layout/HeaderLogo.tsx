@@ -1,5 +1,5 @@
 ﻿import { Box, useTheme } from '@mui/material';
-import { useRouter } from 'i18n/routing';
+import { useRouter } from 'i18n/navigation';
 import { MnestixLogo } from 'components/basics/MnestixLogo';
 
 export function HeaderLogo() {

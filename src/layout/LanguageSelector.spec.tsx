@@ -2,12 +2,12 @@ import { expect } from '@jest/globals';
 import { fireEvent, screen } from '@testing-library/react';
 import { CustomRender } from 'test-utils/CustomRender';
 import { LanguageSelector } from 'layout/LanguageSelector';
-import { usePathname } from '../i18n/routing';
+import { usePathname } from '../i18n/navigation';
 import { useSearchParams } from 'next/navigation';
 
 const mockNextIntlRouterReplace = jest.fn();
 
-jest.mock('../i18n/routing', () => ({
+jest.mock('../i18n/navigation', () => ({
     useRouter: () => ({
         push: jest.fn(),
         replace: mockNextIntlRouterReplace,

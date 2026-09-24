@@ -3,7 +3,7 @@ import { useLocale } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import TranslateIcon from '@mui/icons-material/Translate';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
-import { usePathname, useRouter } from 'i18n/routing';
+import { usePathname, useRouter } from 'i18n/navigation';
 
 /**
  * Language options to translate the language codes i18n uses to Menu options.
@@ -73,7 +73,7 @@ export function LanguageSelector() {
 
     /**
      * Implementation of language switching via the locale-aware router from
-     * i18n/routing: it applies the target locale to the current internal
+     * i18n/navigation: it applies the target locale to the current internal
      * path, keeps search params, and syncs the NEXT_LOCALE cookie.
      */
     function switchLanguage(language: string) {

@@ -3,7 +3,7 @@ import { ArrowForward } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
 import { safeBase64Decode } from 'lib/util/Base64Util';
 import { useShowError } from 'lib/hooks/UseShowError';
-import { Link } from 'i18n/routing';
+import { Link } from 'i18n/navigation';
 
 export function NoSearchResult(props: { base64AasId: string }) {
     const { showError } = useShowError();

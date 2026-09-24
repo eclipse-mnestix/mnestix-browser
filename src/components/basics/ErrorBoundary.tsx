@@ -1,7 +1,7 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
 import { Alert, Box, Button, Typography } from '@mui/material';
 import { ArrowForward } from '@mui/icons-material';
-import { Link } from 'i18n/routing';
+import { Link } from 'i18n/navigation';
 
 interface Props {
     children?: ReactNode;

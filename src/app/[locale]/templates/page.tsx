@@ -17,7 +17,7 @@ import { useAuth } from 'lib/hooks/UseAuth';
 import { Qualifier, Submodel } from 'lib/api/aas/models';
 import { sortWithNullableValues } from 'lib/util/SortingUtil';
 import { useEnv } from 'app/EnvProvider';
-import { useRouter } from 'i18n/routing';
+import { useRouter } from 'i18n/navigation';
 import { createBlueprint } from 'lib/services/aas-generator/blueprintsApiActions';
 import { getTemplates } from 'lib/services/aas-generator/templatesApiActions';
 import { deleteBlueprintById, getBlueprints } from 'lib/services/aas-generator/blueprintsApiActions';

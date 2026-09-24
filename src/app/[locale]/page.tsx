@@ -13,7 +13,7 @@ import { ManualAasInput } from 'app/[locale]/_components/ManualAasInput';
 import { useTranslations } from 'next-intl';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useAasStore } from 'stores/AasStore';
-import { useRouter } from 'i18n/routing';
+import { useRouter } from 'i18n/navigation';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { useEnv } from 'app/EnvProvider';
 
@@ -86,6 +86,7 @@ export default function () {
                                 <CardActionArea
                                     onClick={() => navigate.push('/list')}
                                     aria-label={t('listBtnText')}
+                                    data-testid="go-to-list-card"
                                     sx={{ height: '100%', display: 'flex', alignItems: 'stretch' }}
                                 >
                                     <GoToListCard />

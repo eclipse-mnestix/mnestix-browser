@@ -7,7 +7,7 @@ import { CurrentAasContextType } from 'components/contexts/CurrentAasContext';
 
 const mockI18nRouterPush = jest.fn();
 
-jest.mock('../../i18n/routing', () => ({
+jest.mock('../../i18n/navigation', () => ({
     useRouter: () => ({
         push: mockI18nRouterPush,
         replace: jest.fn(),

@@ -5,7 +5,7 @@ import { HeaderLogo } from 'layout/HeaderLogo';
 
 const mockPush = jest.fn();
 
-jest.mock('../i18n/routing', () => ({
+jest.mock('../i18n/navigation', () => ({
     useRouter: () => ({
         push: mockPush,
         replace: jest.fn(),

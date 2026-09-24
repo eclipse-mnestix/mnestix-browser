@@ -6,7 +6,7 @@ import { NotFoundError } from 'lib/errors/NotFoundError';
 import { useState } from 'react';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { useSearchParams } from 'next/navigation';
-import { useRouter } from 'i18n/routing';
+import { useRouter } from 'i18n/navigation';
 import AssetNotFound from 'components/basics/AssetNotFound';
 import { wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { LocalizedError } from 'lib/util/LocalizedError';

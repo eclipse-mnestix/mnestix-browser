@@ -14,7 +14,7 @@ import { getNameplateValuesForAAS } from 'lib/services/list-service/aasListApiAc
 import { MultiLanguageValueOnly } from 'lib/api/basyx-v3/types';
 import { useLocale, useTranslations } from 'next-intl';
 import { encodeBase64 } from 'lib/util/Base64Util';
-import { getPathname } from 'i18n/routing';
+import { getPathname } from 'i18n/navigation';
 import useSWR from 'swr';
 import { useEnv } from 'app/EnvProvider';
 import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';

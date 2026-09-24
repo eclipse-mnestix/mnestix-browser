@@ -5,7 +5,7 @@ import { safeBase64Decode } from 'lib/util/Base64Util';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { getTranslationText } from 'lib/util/SubmodelResolverUtil';
 import { useParams } from 'next/navigation';
-import { useRouter } from 'i18n/routing';
+import { useRouter } from 'i18n/navigation';
 import { SubmodelsOverviewCard } from '../_components/SubmodelsOverviewCard';
 import { AASOverviewCard } from 'app/[locale]/viewer/_components/AASOverviewCard';
 import { useEnv } from 'app/EnvProvider';
