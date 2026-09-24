@@ -1,6 +1,6 @@
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { ArrowForward } from '@mui/icons-material';
-import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
+import { SubmodelVisualizationProps } from 'components/visualizations/submodel.types';
 import { useTranslations } from 'next-intl';
 
 export function ReferenceCounterVisualizations({ submodel }: SubmodelVisualizationProps) {

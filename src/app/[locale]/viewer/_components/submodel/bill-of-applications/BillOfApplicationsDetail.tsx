@@ -1,6 +1,6 @@
 import { Entity, KeyTypes } from 'lib/api/aas/models';
 import { ApplicationComponent } from './visualization-components/ApplicationComponent';
-import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
+import { SubmodelVisualizationProps } from 'components/visualizations/submodel.types';
 
 export function BillOfApplicationsDetail({ submodel }: SubmodelVisualizationProps) {
     const submodelElements = submodel.submodelElements;

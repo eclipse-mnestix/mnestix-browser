@@ -286,9 +286,9 @@ export function checkIfSubmodelHasIdShortOrSemanticId(
  * @param semanticId - The reference object containing semantic ID keys to search.
  * @param map - The semanticIds map to check against the possible semanticIds
  *
- * @returns The string of the matching semanticId key as a key of `submodelCustomVisualizationMap`, or `undefined` if no match is found.
+ * @returns The string of the matching semanticId key as a key of the given map, or `undefined` if no match is found.
  */
-export function findSemanticIdInMap<T extends Record<string, string | ((...args: unknown[]) => unknown)>>(
+export function findSemanticIdInMap<T extends Record<string, unknown>>(
     semanticId: Reference | null | undefined,
     map: T,
 ): keyof T | undefined {

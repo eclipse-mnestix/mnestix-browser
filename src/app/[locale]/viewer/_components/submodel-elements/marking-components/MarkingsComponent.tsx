@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import { ModelFile, Property, SubmodelElementCollection } from 'lib/api/aas/models';
 import { DataRow } from 'components/basics/DataRow';
 import { SingleMarkingsComponent } from 'app/[locale]/viewer/_components/submodel-elements/marking-components/SingleMarkingsComponent';
-import { CustomSubmodelElementComponentProps } from 'app/[locale]/viewer/_components/submodel/generic-submodel/GenericSubmodelDetailComponent';
+import { CustomSubmodelElementComponentProps } from 'components/visualizations/submodel.types';
 
 interface MarkingsComponentProps extends CustomSubmodelElementComponentProps {
     readonly columnDisplay?: boolean;
