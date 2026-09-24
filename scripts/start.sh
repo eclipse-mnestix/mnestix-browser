@@ -31,4 +31,4 @@ fi
 # Validate envs for production
 node "$SCRIPT_DIR/validateEnvs.js"
 
-HOSTNAME=0.0.0.0 PORT=3000 node server.js
+HOSTNAME=0.0.0.0 PORT=3000 exec node server.js
