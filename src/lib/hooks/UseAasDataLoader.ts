@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'i18n/routing';
 import { Reference, Submodel } from 'lib/api/aas/models';
 import { useEnv } from 'app/EnvProvider';
 import { LocalizedError } from 'lib/util/LocalizedError';

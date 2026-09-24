@@ -3,6 +3,7 @@ import { ArrowForward } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
 import { safeBase64Decode } from 'lib/util/Base64Util';
 import { useShowError } from 'lib/hooks/UseShowError';
+import { Link } from 'i18n/routing';
 
 export function NoSearchResult(props: { base64AasId: string }) {
     const { showError } = useShowError();
@@ -37,7 +38,7 @@ export function NoSearchResult(props: { base64AasId: string }) {
             <Typography sx={{
                 color: 'text.secondary'
             }}>{t('noDataFound', { name: aas_id })}</Typography>
-            <Button variant="contained" startIcon={<ArrowForward />} href="/">
+            <Button variant="contained" startIcon={<ArrowForward />} href="/" component={Link}>
                 {t('toHomeButton')}
             </Button>
         </>

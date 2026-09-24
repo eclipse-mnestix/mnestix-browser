@@ -40,7 +40,8 @@ import {
 } from 'lib/services/aas-generator/blueprintsApiActions';
 import { getTemplates } from 'lib/services/aas-generator/templatesApiActions';
 import { useLocale, useTranslations } from 'next-intl';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
+import { useRouter } from 'i18n/routing';
 import React, { useState } from 'react';
 
 export default function Page() {

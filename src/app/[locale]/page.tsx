@@ -13,7 +13,7 @@ import { ManualAasInput } from 'app/[locale]/_components/ManualAasInput';
 import { useTranslations } from 'next-intl';
 import { useShowError } from 'lib/hooks/UseShowError';
 import { useAasStore } from 'stores/AasStore';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'i18n/routing';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
 import { useEnv } from 'app/EnvProvider';
 

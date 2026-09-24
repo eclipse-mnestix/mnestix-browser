@@ -4,7 +4,7 @@ import { DataRow } from 'components/basics/DataRow';
 import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
 import { encodeBase64 } from 'lib/util/Base64Util';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'i18n/routing';
 import { SubmodelOrIdReference } from 'components/contexts/CurrentAasContext';
 import { ImageWithFallback } from 'components/basics/StyledImageWithFallBack';
 import { useTranslations } from 'next-intl';

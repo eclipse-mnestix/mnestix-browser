@@ -1,8 +1,9 @@
 import { Box, MenuItem, Select, styled } from '@mui/material';
 import { useLocale } from 'next-intl';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import TranslateIcon from '@mui/icons-material/Translate';
 import { useIsMobile } from 'lib/hooks/UseBreakpoints';
+import { usePathname, useRouter } from 'i18n/routing';
 
 /**
  * Language options to translate the language codes i18n uses to Menu options.
@@ -67,18 +68,18 @@ const DropDownItem = styled(MenuItem)(({ theme }) => ({
 export function LanguageSelector() {
     const locale = useLocale();
     const router = useRouter();
-    const pathName = usePathname();
+    const pathname = usePathname();
     const searchParams = useSearchParams();
 
     /**
-     * Implementation of language switching by changing 3 first character or url to language (/ + language code in i18n)
+     * Implementation of language switching via the locale-aware router from
+     * i18n/routing: it applies the target locale to the current internal
+     * path, keeps search params, and syncs the NEXT_LOCALE cookie.
      */
     function switchLanguage(language: string) {
-        const oldPathname = pathName.slice(4);
-        const newPathname = `/${language}/${oldPathname}`;
         const queryString = searchParams.toString();
-        const finalUrl = queryString ? `${newPathname}?${queryString}` : newPathname;
-        router.push(finalUrl);
+        const href = queryString ? `${pathname}?${queryString}` : pathname;
+        router.replace(href, { locale: language });
     }
 
     /**
