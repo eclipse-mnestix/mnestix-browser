@@ -1,4 +1,5 @@
 import en from '../locale/en.json';
 import userPluginEn from '../user-plugins/locale/en.json';
+import overlayEn from './locale/en.json';
 
-export type IntlMessages = typeof en & typeof userPluginEn;
+export type IntlMessages = typeof en & typeof userPluginEn & typeof overlayEn;

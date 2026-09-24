@@ -1,29 +1,31 @@
 'use client';
 
 import { Box } from '@mui/material';
-import { safeBase64Decode } from 'lib/util/Base64Util';
+import { PropsWithChildren } from 'react';
+import { safeBase64Decode, stripBase64Padding } from 'lib/util/Base64Util';
 import { useParams, useSearchParams } from 'next/navigation';
-import { NoSearchResult } from 'components/basics/detailViewBasics/NoSearchResult';
 import { CurrentAasContextProvider } from 'components/contexts/CurrentAasContext';
+import { NoSearchResult } from 'components/basics/detailViewBasics/NoSearchResult';
 import { useShowError } from 'lib/hooks/UseShowError';
-import { ProductViewer } from '../_components/ProductViewer';
 
-export default function Page() {
+/**
+ * Shared layout for a single AAS. Hoists {@link CurrentAasContextProvider} so
+ * AAS + submodel data is fetched once and preserved across view switches under
+ * the `[view]` segment. Each view renders its own action bar.
+ */
+export default function AasViewerLayout({ children }: PropsWithChildren) {
     const { showError } = useShowError();
     const params = useParams<{ base64AasId: string }>();
-    const base64AasId = decodeURIComponent(params.base64AasId).replace(/(=|%3D)+$/i, '');
+    const base64AasId = stripBase64Padding(decodeURIComponent(params.base64AasId));
     const encodedRepoUrl = useSearchParams().get('repoUrl');
     const repoUrl = encodedRepoUrl ? decodeURI(encodedRepoUrl) : undefined;
     const infrastructureName = useSearchParams().get('infrastructure') || undefined;
 
-    let aasIdDecoded: string | null = null;
+    let aasIdDecoded: string;
     try {
         aasIdDecoded = safeBase64Decode(base64AasId);
     } catch (e) {
         showError(e);
-    }
-
-    if (!aasIdDecoded) {
         return (
             <Box
                 sx={{
@@ -43,7 +45,7 @@ export default function Page() {
 
     return (
         <CurrentAasContextProvider aasId={aasIdDecoded} repoUrl={repoUrl} infrastructureName={infrastructureName}>
-            <ProductViewer />
+            {children}
         </CurrentAasContextProvider>
     );
 }
