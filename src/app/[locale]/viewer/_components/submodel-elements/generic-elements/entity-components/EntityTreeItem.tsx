@@ -4,7 +4,7 @@ import { Box, Button, IconButton } from '@mui/material';
 import { Entity, KeyTypes, RelationshipElement, SubmodelElementChoice } from 'lib/api/aas/models';
 import { AssetIcon } from 'components/custom-icons/AssetIcon';
 import { ArrowForward, ArticleOutlined, InfoOutlined, PinDropOutlined } from '@mui/icons-material';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'i18n/navigation';
 import { GenericSubmodelElementComponent } from '../GenericSubmodelElementComponent';
 import { EntityDetailsDialog } from './EntityDetailsDialog';
 import { RelationShipDetailsDialog } from './RelationShipDetailsDialog';
@@ -66,8 +66,10 @@ const CustomContent = React.forwardRef(function CustomContent(
                     // if not null -> new tab was opened
                     popup.location.href = assetId;
                 } else {
-                    // popup was blocked open in same tab
-                    navigate.push(assetId);
+                    // popup was blocked, open in same tab. The assetId may be an
+                    // arbitrary external URL, so use plain browser navigation
+                    // instead of the locale-aware router for internal routes.
+                    window.location.assign(assetId);
                 }
             } else {
                 navigate.push('/asset?assetId=' + encodeURIComponent(assetId));

@@ -1,13 +1,13 @@
 import { expect } from '@jest/globals';
 import { screen } from '@testing-library/react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'i18n/navigation';
 import { CustomRender } from 'test-utils/CustomRender';
 import { ProductOverviewCard } from './ProductOverviewCard';
 import { useAasStore } from 'stores/AasStore';
 import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 
-// Mock the next/navigation router
-jest.mock('next/navigation', () => ({
+// Mock the locale-aware router
+jest.mock('../../../../i18n/navigation', () => ({
     useRouter: jest.fn(),
 }));
 
