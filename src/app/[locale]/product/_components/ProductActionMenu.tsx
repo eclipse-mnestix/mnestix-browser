@@ -1,6 +1,6 @@
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'i18n/navigation';
 import { useState } from 'react';
 import { useTranslations } from 'use-intl';
 import { encodeBase64 } from 'lib/util/Base64Util';

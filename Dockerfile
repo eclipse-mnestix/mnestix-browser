@@ -26,11 +26,20 @@ ENV NO_TYPECHECK=1
 ENV NO_LINT=1
 RUN yarn build
 
+FROM deps AS dev
+ENV NODE_ENV=development
+COPY . .
+
+RUN yarn prisma:migrate
+RUN yarn prisma:generate
+
+CMD [ "yarn", "dev"]
+
 FROM base AS production
 WORKDIR /app
 
 ENV NODE_ENV=production
-RUN yarn add prisma@7.2.0
+RUN yarn add prisma@7.10.0 && yarn cache clean
 
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
@@ -45,14 +54,4 @@ COPY --from=builder --chown=nextjs:nodejs /app/dist/static ./public/_next/static
 
 COPY ./scripts scripts
 
-ENTRYPOINT [ "/bin/sh" ]
-CMD [ "/app/scripts/start.sh" ]
-
-FROM deps AS dev
-ENV NODE_ENV=development
-COPY . .
-
-RUN yarn prisma:migrate
-RUN yarn prisma:generate
-
-CMD [ "yarn", "dev"]
+ENTRYPOINT [ "/app/scripts/start.sh" ]

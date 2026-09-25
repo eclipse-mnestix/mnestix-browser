@@ -5,7 +5,9 @@ import cypressSplit from 'cypress-split';
 dotenv.config();
 
 export default defineConfig({
-    defaultCommandTimeout: 150000, // 150
+    defaultCommandTimeout: 15000, // 15
+    // Page load and network timeouts stay high: seeding and cold-backend
+    // requests on a freshly started BaSyx need them.
     pageLoadTimeout: 600000, // 600
     requestTimeout: 150000, // 150
     responseTimeout: 200000, // 200
