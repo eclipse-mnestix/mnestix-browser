@@ -1528,17 +1528,22 @@
   dependencies:
     "@formatjs/icu-skeleton-parser" "2.1.11"
 
-"@formatjs/icu-messageformat-parser@3.5.17", "@formatjs/icu-messageformat-parser@^3.4.0":
-  version "3.5.17"
-  resolved "https://registry.yarnpkg.com/@formatjs/icu-messageformat-parser/-/icu-messageformat-parser-3.5.17.tgz#7ac90ff6dde99468cd0b4a3f55344ccf8ae2ed87"
-  integrity sha512-cN9jhVqT7u0K9tix43fhjoUwL0nazyW6zsNIXs2QdPADr+nurPfYyssUiMqcSCGlPcCiqnYVxgSn7zBSuI+5Bg==
+"@formatjs/icu-messageformat-parser@3.5.19", "@formatjs/icu-messageformat-parser@^3.4.0":
+  version "3.5.19"
+  resolved "https://registry.yarnpkg.com/@formatjs/icu-messageformat-parser/-/icu-messageformat-parser-3.5.19.tgz#fdbf1c4c515f4651ad15ea8753ef1fe37db5bb68"
+  integrity sha512-a5PAqgd3QPUge635SxrjPLIlTErcGwm3AMyTdmZXl0IqWXTdCx9AnuioEmvEZAV2HpeFdynLPXMvHv7dXGEWWw==
   dependencies:
-    "@formatjs/icu-skeleton-parser" "2.1.11"
+    "@formatjs/icu-skeleton-parser" "2.1.12"
 
 "@formatjs/icu-skeleton-parser@2.1.11":
   version "2.1.11"
   resolved "https://registry.yarnpkg.com/@formatjs/icu-skeleton-parser/-/icu-skeleton-parser-2.1.11.tgz#09226edf55a18e3fea80304d2cc95aaeb0095436"
   integrity sha512-j8cUmOJzVgkHuS0QiQ6ga76UIoLOFSAMWhs7aZJztH3aAdCOAE6vpC8KVvFB4cU10ON0y2/5oOVmPJ43s2lTwA==
+
+"@formatjs/icu-skeleton-parser@2.1.12":
+  version "2.1.12"
+  resolved "https://registry.yarnpkg.com/@formatjs/icu-skeleton-parser/-/icu-skeleton-parser-2.1.12.tgz#5471028b1f2516c63456aba92d109a0d230d2a0f"
+  integrity sha512-ca7tZMLpfHX3sUD7hP6gE/qr6Iq89EDd3ZLeRhbsB7r0UD55DGJq+tmFLzrGrnx5StahUevQmQQVtbDRHsfDHA==
 
 "@formatjs/intl-localematcher@^0.8.1":
   version "0.8.13"
@@ -1547,12 +1552,12 @@
   dependencies:
     "@formatjs/fast-memoize" "3.1.7"
 
-"@formatjs/ts-transformer@4.4.19":
-  version "4.4.19"
-  resolved "https://registry.yarnpkg.com/@formatjs/ts-transformer/-/ts-transformer-4.4.19.tgz#d93c851fb8d14a6b947141f121903c8f78e437cb"
-  integrity sha512-TWxL1btx29333yEQc1/eJsU9SUjDJBruzkrR4TVXBLgPaCWbhxg7haOztGXTLgLx+X3ONat7F0kRzcCHksyJyA==
+"@formatjs/ts-transformer@4.4.21":
+  version "4.4.21"
+  resolved "https://registry.yarnpkg.com/@formatjs/ts-transformer/-/ts-transformer-4.4.21.tgz#67b33dc61e79914a271c3d73bbbb6b5ca504f775"
+  integrity sha512-j39Amc55/f93h/Nm+NhSrKGyzl+x6+aGVoMFm55qtKLeGwPT8iAaWOgrickqIT6RTJihPIyW/x6vSMcBcEhRnA==
   dependencies:
-    "@formatjs/icu-messageformat-parser" "3.5.17"
+    "@formatjs/icu-messageformat-parser" "3.5.19"
     "@types/babel__core" "7"
     "@types/node" "22 || 24"
     json-stable-stringify "1"
@@ -5251,10 +5256,15 @@ dot-case@^3.0.4:
     no-case "^3.0.4"
     tslib "^2.0.3"
 
-dotenv@^17.3.1, dotenv@^17.4.1:
+dotenv@^17.3.1:
   version "17.4.2"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-17.4.2.tgz#c07e54a746e11eba021dd9e1047ced5afdc1c034"
   integrity sha512-nI4U3TottKAcAD9LLud4Cb7b2QztQMUEfHbvhTH09bqXTxnSie8WnjPALV/WMCrJZ6UV/qHJ6L03OqO3LcdYZw==
+
+dotenv@^18.0.0:
+  version "18.0.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-18.0.0.tgz#a34cd3dd095fbfd46c282b835e380cd38f13b9e4"
+  integrity sha512-16YSUvsKtKbwrTbESvtTSZzzJUug6jdFdqiBFg9Q6Bk1JY9r0hAtrtTiWxdI9YrsgOTmkjZRdgU0n3LnwGpECw==
 
 dunder-proto@^1.0.0, dunder-proto@^1.0.1:
   version "1.0.1"
@@ -5659,13 +5669,13 @@ eslint-plugin-cypress@^7.0.2:
   dependencies:
     globals "^17.12.0"
 
-eslint-plugin-formatjs@^6.6.2:
-  version "6.6.2"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-formatjs/-/eslint-plugin-formatjs-6.6.2.tgz#48bfcd6fd023f5458c02e4910cdef6bc3f77e912"
-  integrity sha512-wDdCQvbs/NB2N4i2PkJGRIHZFZDDpVKkGaW8pMwzhtq2u2GXlVmBuMk5dcZ/dP7RN/N0rDKntK96xTJDCg+Evw==
+eslint-plugin-formatjs@^8.0.3:
+  version "8.0.3"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-formatjs/-/eslint-plugin-formatjs-8.0.3.tgz#3fea4e569c14071f745d2eea68a1ac5a4c07b32e"
+  integrity sha512-wtYWlUrt5TUN4mOd26hlUAtAY7K9lzaTqUjBtkVkq5o+ZPykqUPThiL0Weqf3Y/IxMcx/gfiubgmOEmMBlo+Ew==
   dependencies:
-    "@formatjs/icu-messageformat-parser" "3.5.17"
-    "@formatjs/ts-transformer" "4.4.19"
+    "@formatjs/icu-messageformat-parser" "3.5.19"
+    "@formatjs/ts-transformer" "4.4.21"
     "@types/estree-jsx" "1"
     "@types/picomatch" "4"
     "@unicode/unicode-17.0.0" "2"
