@@ -8,7 +8,6 @@ import { getAttachmentFromSubmodelElement } from 'lib/services/submodel-reposito
 import { mapFileDtoToBlob } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { useTranslations } from 'next-intl';
 import ImagePreviewDialog from './ImagePreviewDialog';
-import { useSession } from 'next-auth/react';
 import { getFileUrl } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentUtils';
 import { useSubmodelRepositoryUrl } from 'app/[locale]/viewer/_components/submodel/SubmodelRepositoryUrlProvider';
 import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
@@ -33,7 +32,6 @@ export function FileComponent({ file, submodelId, submodelElementPath, withPrevi
     const [loading, setLoading] = useState<boolean>(true);
     const [, setLoadError] = useState<boolean>(false);
     const submodelRepositoryUrl = useSubmodelRepositoryUrl();
-    const { data: session } = useSession();
     const currentAASContext = useCurrentAasContext();
 
     const [previewOpen, setPreviewOpen] = useState(false);
@@ -96,7 +94,7 @@ export function FileComponent({ file, submodelId, submodelElementPath, withPrevi
             if (submodelRepositoryUrl && submodelId && submodelElementPath) {
                 const attachmentUrl = `${submodelRepositoryUrl}/submodels/${encodeURIComponent(btoa(submodelId))}/submodel-elements/${submodelElementPath}/attachment`;
                 try {
-                    const resolvedUrl = await getFileUrl(attachmentUrl, session?.accessToken, {
+                    const resolvedUrl = await getFileUrl(attachmentUrl, {
                         infrastructureName: currentAASContext.infrastructureName || '',
                         url: submodelRepositoryUrl,
                     });
@@ -114,7 +112,7 @@ export function FileComponent({ file, submodelId, submodelElementPath, withPrevi
     useAsyncEffect(async () => {
         await getImage();
         await resolveFileUrl();
-    }, [file.value, session?.accessToken, submodelRepositoryUrl, submodelId, submodelElementPath]);
+    }, [file.value, submodelRepositoryUrl, submodelId, submodelElementPath]);
 
     if (!file) {
         return <></>;

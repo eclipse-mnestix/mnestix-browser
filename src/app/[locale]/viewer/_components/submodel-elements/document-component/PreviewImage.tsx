@@ -2,7 +2,6 @@ import { PdfDocumentIcon } from 'components/custom-icons/PdfDocumentIcon';
 import { InsertDriveFileOutlined } from '@mui/icons-material';
 import { Box, styled } from '@mui/material';
 import { useState } from 'react';
-import { useSession } from 'next-auth/react';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { getFileUrl } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentUtils';
 import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
@@ -32,16 +31,15 @@ const StyledImageWrapper = styled(Box)(({ theme }) => ({
 export const PreviewImage = (props: { previewImgUrl: string; mimeType: string; repositoryUrl?: string }) => {
     const [imageError, setImageError] = useState<boolean>(false);
     const [imageUrl, setImageUrl] = useState<string>();
-    const { data: session } = useSession();
     const currentAASContext = useCurrentAasContext();
 
     useAsyncEffect(async () => {
-        const url = await getFileUrl(props.previewImgUrl, session?.accessToken, {
+        const url = await getFileUrl(props.previewImgUrl, {
             url: props.previewImgUrl,
             infrastructureName: currentAASContext.infrastructureName || '',
         });
         setImageUrl(url);
-    }, [props.previewImgUrl, session?.accessToken, props.repositoryUrl]);
+    }, [props.previewImgUrl, props.repositoryUrl]);
 
     const handleImageError = () => {
         setImageError(true);
@@ -51,12 +49,12 @@ export const PreviewImage = (props: { previewImgUrl: string; mimeType: string; r
         <StyledImageWrapper>
             {!imageError && imageUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element -- logo can be an arbitrary url which conflicts with https://nextjs.org/docs/pages/api-reference/components/image#remotepatterns
-                (<img
+                <img
                     src={imageUrl}
                     alt="File Preview"
                     onError={handleImageError}
                     data-testid="document-preview-image"
-                />)
+                />
             ) : props?.mimeType === 'application/pdf' ? (
                 <PdfDocumentIcon color="primary" />
             ) : (
