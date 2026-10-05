@@ -13,6 +13,7 @@ import {
     DocumentSpecificSemanticIdIrdi,
 } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentSemanticIds';
 import { PreviewImage } from 'app/[locale]/viewer/_components/submodel-elements/document-component/PreviewImage';
+import { useSession } from 'next-auth/react';
 import { CustomSubmodelElementComponentProps } from 'app/[locale]/viewer/_components/submodel/generic-submodel/GenericSubmodelDetailComponent';
 import Link from 'next/link';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
@@ -24,20 +25,21 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
     const [detailsModalOpen, setDetailsModalOpen] = useState(false);
     const fileViewObject = useFileViewObject(props.submodelElement, props.submodelId);
     const [documentUrl, setDocumentUrl] = useState<string>('');
+    const { data: session } = useSession();
     const currentAASContext = useCurrentAasContext();
 
     useAsyncEffect(async () => {
         if (!fileViewObject?.digitalFileUrl) {
             return;
         }
-        const url = await getFileUrl(fileViewObject?.digitalFileUrl, {
+        const url = await getFileUrl(fileViewObject?.digitalFileUrl, session?.accessToken, {
             url: fileViewObject?.digitalFileUrl,
             infrastructureName: currentAASContext.infrastructureName || '',
         });
         if (url) {
             setDocumentUrl(url);
         }
-    }, [fileViewObject?.digitalFileUrl, props.repositoryUrl]);
+    }, [fileViewObject?.digitalFileUrl, session?.accessToken, props.repositoryUrl]);
 
     const handleDetailsClick = () => {
         setDetailsModalOpen(true);
@@ -65,26 +67,23 @@ export function DocumentComponent(props: CustomSubmodelElementComponentProps) {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
-                        my: 1,
-                    }}
-                >
+                        my: 1
+                    }}>
                     <Box
                         sx={{
                             display: 'flex',
                             justifyContent: 'space-between',
                             gap: { xs: 1, sm: 6 },
                             flexDirection: { xs: 'column', sm: 'row' },
-                            mb: 1,
-                        }}
-                    >
+                            mb: 1
+                        }}>
                         <Box
                             sx={{
                                 display: 'flex',
                                 gap: 1,
                                 flexDirection: 'row',
-                                mb: 1,
-                            }}
-                        >
+                                mb: 1
+                            }}>
                             {documentUrl ? (
                                 <Link href={documentUrl} target="_blank">
                                     <PreviewImage

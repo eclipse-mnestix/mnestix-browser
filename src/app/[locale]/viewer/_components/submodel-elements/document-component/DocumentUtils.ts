@@ -43,13 +43,14 @@ export function findIdShortForLatestElement(
 }
 
 /**
- * Fetches a file URL from a repository. Files are always proxied through the server, since the
- * repository origin (e.g. an internal Docker hostname) is often not reachable directly from the browser.
+ * Fetches a file URL from a repository. When the file URL matches the repository URL of the submodel,
+ * the bearer token is sent in the request.
  * @param fileUrl
+ * @param accessToken
  * @param repositoryUrl
  */
-export async function getFileUrl(fileUrl: string, repository?: RepositoryWithInfrastructure) {
-    if (!repository?.url || !fileUrl.startsWith(repository.url)) {
+export async function getFileUrl(fileUrl: string, accessToken?: string, repository?: RepositoryWithInfrastructure) {
+    if (!accessToken || !repository?.url || !fileUrl.startsWith(repository.url)) {
         return fileUrl;
     }
 
@@ -60,7 +61,7 @@ export async function getFileUrl(fileUrl: string, repository?: RepositoryWithInf
         }
         return;
     } catch (e) {
-        console.warn(`Failed to fetch file via server proxy: ${e}`);
+        console.warn(`Failed to open file with auth: ${e}`);
         return fileUrl;
     }
 }
