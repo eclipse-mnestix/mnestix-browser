@@ -99,8 +99,11 @@ export class SubmodelRegistryService {
         }
     }
 
-    async getSubmodelFromEndpoint(endpoint: string): Promise<ApiResponseWrapper<Submodel>> {
-        const response = await this.getSubmodelRegistryClient('', null).getSubmodelFromEndpoint(endpoint);
+    async getSubmodelFromEndpoint(
+        endpoint: string,
+        securityHeader: Record<string, string> | null = null,
+    ): Promise<ApiResponseWrapper<Submodel>> {
+        const response = await this.getSubmodelRegistryClient('', securityHeader).getSubmodelFromEndpoint(endpoint);
         if (response.isSuccess) {
             logResponseDebug(
                 this.log,
