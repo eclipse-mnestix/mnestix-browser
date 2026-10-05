@@ -90,6 +90,7 @@
     "react-hook-form": "^7.88.0",
     "recharts": "3.10.1",
     "server-only": "0.0.1",
+    "sharp": "^0.35.4",
     "swr": "^2.5.0",
     "url": "^0.11.3"
   },
