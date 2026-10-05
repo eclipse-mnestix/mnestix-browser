@@ -20,10 +20,7 @@ describe('Test DocumentComponent', function () {
                 .should('exist')
                 .should('be.visible')
                 .should('have.attr', 'src')
-                .and(
-                    'contain',
-                    'repo/submodels/aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvc20vNzc5MV8xMzA3XzMxMzFfNTg3Mw/submodel-elements/Document.DocumentVersion.PreviewFile/attachment',
-                );
+                .and('match', /^blob:/);
         });
 
         it('should have working open button', function () {
