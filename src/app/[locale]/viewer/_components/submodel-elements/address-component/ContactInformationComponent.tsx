@@ -12,7 +12,7 @@ import {
     PhoneElement,
 } from './ContactElements';
 import { idShortsOfSubmodelElementsContainingAddressData } from './AddressComponent';
-import { CustomSubmodelElementComponentProps } from 'app/[locale]/viewer/_components/submodel/generic-submodel/GenericSubmodelDetailComponent';
+import { CustomSubmodelElementComponentProps } from 'components/visualizations/submodel.types';
 
 export const idShortsOfSubmodelElementsContainingPersonData: string[] = [
     'NameOfContact',
