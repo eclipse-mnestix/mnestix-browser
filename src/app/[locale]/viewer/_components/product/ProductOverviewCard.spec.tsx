@@ -7,7 +7,7 @@ import { useAasStore } from 'stores/AasStore';
 import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 
 // Mock the locale-aware router
-jest.mock('../../../../i18n/navigation', () => ({
+jest.mock('../../../../../i18n/navigation', () => ({
     useRouter: jest.fn(),
 }));
 
