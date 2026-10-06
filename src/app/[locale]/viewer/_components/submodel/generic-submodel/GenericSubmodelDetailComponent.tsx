@@ -1,17 +1,10 @@
-import { SubmodelElementCollection, SubmodelElementList } from 'lib/api/aas/models';
-import { idEquals } from 'lib/util/IdValidationUtil';
-import { submodelElementCustomVisualizationMap } from '../../submodel-elements/SubmodelElementCustomVisualizationMap';
+import { SubmodelElementCollection } from 'lib/api/aas/models';
+import { getSubmodelElementVisualizationMap } from '../../submodel-elements/submodel-element.config';
 import { Fragment } from 'react';
 import { GenericSubmodelElementComponent } from '../../submodel-elements/generic-elements/GenericSubmodelElementComponent';
-import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
+import { SubmodelVisualizationProps } from 'components/visualizations/submodel.types';
+import { findSemanticIdInMap } from 'lib/util/SubmodelResolverUtil';
 import { KeyTypes } from 'lib/api/aas/models';
-
-export interface CustomSubmodelElementComponentProps {
-    readonly submodelElement: SubmodelElementCollection | SubmodelElementList;
-    readonly hasDivider: boolean;
-    readonly submodelId: string;
-    readonly repositoryUrl?: string;
-}
 
 export function GenericSubmodelDetailComponent({ submodel, repositoryUrl }: SubmodelVisualizationProps) {
     const submodelElements = (submodel.submodelElements ?? []).filter(
@@ -22,17 +15,15 @@ export function GenericSubmodelDetailComponent({ submodel, repositoryUrl }: Subm
     const isEntityElementAbove = (index: number) => submodelElements[index - 1].modelType === KeyTypes.Entity;
     const hasDivider = (index: number) => !(index === 0) && !isEntityElementAbove(index);
 
+    const visualizationMap = getSubmodelElementVisualizationMap();
+
     return (
         <>
             {submodelElements.map((el, index) => {
-                const semanticId = el.semanticId?.keys?.[0]?.value;
-
-                // We have to use the idEquals function here to correctly handle IRDIs
-                const visualizationMapKey = (Object.keys(submodelElementCustomVisualizationMap) as Array<string>).find(
-                    (key) => idEquals(semanticId, key),
-                ) as keyof typeof submodelElementCustomVisualizationMap | undefined;
+                // findSemanticIdInMap handles IRDIs and checks every semanticId key, not just the first
+                const visualizationMapKey = findSemanticIdInMap(el.semanticId, visualizationMap);
                 const CustomSubmodelElementComponent = visualizationMapKey
-                    ? submodelElementCustomVisualizationMap[visualizationMapKey]
+                    ? visualizationMap[visualizationMapKey]
                     : undefined;
 
                 return (

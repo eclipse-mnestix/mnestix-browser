@@ -14,7 +14,7 @@ import {
 } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentSemanticIds';
 import { PreviewImage } from 'app/[locale]/viewer/_components/submodel-elements/document-component/PreviewImage';
 import { useSession } from 'next-auth/react';
-import { CustomSubmodelElementComponentProps } from 'app/[locale]/viewer/_components/submodel/generic-submodel/GenericSubmodelDetailComponent';
+import { CustomSubmodelElementComponentProps } from 'components/visualizations/submodel.types';
 import Link from 'next/link';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { getFileUrl } from 'app/[locale]/viewer/_components/submodel-elements/document-component/DocumentUtils';
