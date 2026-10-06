@@ -1,6 +1,6 @@
 import { ChevronRight, Home } from '@mui/icons-material';
 import { Box, Typography, Link as MuiLink } from '@mui/material';
-import NextLink from 'next/link';
+import { Link as NextLink } from 'i18n/navigation';
 import { Fragment } from 'react';
 
 type BreadcrumbsProps = {

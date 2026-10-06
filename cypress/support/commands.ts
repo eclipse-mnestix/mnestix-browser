@@ -34,9 +34,9 @@ Cypress.Commands.add('findByTestId', { prevSubject: true }, (subject, dataTestId
 Cypress.Commands.add('repoRequest', (requestMethod, urlPath, requestBody) => {
     cy.request({
         method: requestMethod,
-        url: `${Cypress.env('AAS_REPO_API_URL')}${urlPath}`,
+        url: `${Cypress.expose('AAS_REPO_API_URL')}${urlPath}`,
         headers: {
-            'X-API-KEY': Cypress.env('MNESTIX_API_KEY'),
+            'X-API-KEY': Cypress.expose('MNESTIX_API_KEY'),
         },
         body: requestBody,
         failOnStatusCode: false,
@@ -48,9 +48,9 @@ Cypress.Commands.add('registryRequest', (requestMethod, urlPath) => {
     // next to the /repo path used by repoRequest.
     cy.request({
         method: requestMethod,
-        url: `${Cypress.env('AAS_REPO_API_URL').replace(/\/repo$/, '/registry')}${urlPath}`,
+        url: `${Cypress.expose('AAS_REPO_API_URL').replace(/\/repo$/, '/registry')}${urlPath}`,
         headers: {
-            'X-API-KEY': Cypress.env('MNESTIX_API_KEY'),
+            'X-API-KEY': Cypress.expose('MNESTIX_API_KEY'),
         },
         failOnStatusCode: false,
     });
@@ -66,9 +66,9 @@ Cypress.Commands.add('waitForRepoReady', () => {
     function attempt(attemptNumber: number) {
         cy.request({
             method: 'GET',
-            url: `${Cypress.env('AAS_REPO_API_URL')}/shells`,
+            url: `${Cypress.expose('AAS_REPO_API_URL')}/shells`,
             headers: {
-                'X-API-KEY': Cypress.env('MNESTIX_API_KEY'),
+                'X-API-KEY': Cypress.expose('MNESTIX_API_KEY'),
             },
             failOnStatusCode: false,
             timeout: 10000,
@@ -100,9 +100,9 @@ Cypress.Commands.add('postSeed', (urlPath, body) => {
     function attempt(attemptNumber: number) {
         cy.request({
             method: 'POST',
-            url: `${Cypress.env('AAS_REPO_API_URL')}${urlPath}`,
+            url: `${Cypress.expose('AAS_REPO_API_URL')}${urlPath}`,
             headers: {
-                'X-API-KEY': Cypress.env('MNESTIX_API_KEY'),
+                'X-API-KEY': Cypress.expose('MNESTIX_API_KEY'),
             },
             body,
             failOnStatusCode: false,
@@ -289,14 +289,14 @@ Cypress.Commands.add('uploadThumbnailToAas', (aasId: string) => {
             cy.request({
                 method: 'PUT',
                 url:
-                    `${Cypress.env('AAS_REPO_API_URL')}` +
+                    `${Cypress.expose('AAS_REPO_API_URL')}` +
                     '/shells/' +
                     encodedAasId +
                     '/asset-information/thumbnail?fileName=test_thumbnail.png',
                 body: formData,
                 encoding: 'binary',
                 headers: {
-                    'X-API-KEY': Cypress.env('MNESTIX_API_KEY'),
+                    'X-API-KEY': Cypress.expose('MNESTIX_API_KEY'),
                 },
             });
         });
@@ -310,7 +310,7 @@ Cypress.Commands.add('deleteThumbnailFromAas', (aasId: string) => {
 Cypress.Commands.add('keycloakLogin', (login: string, password: string) => {
     cy.getByTestId('header-burgermenu').click();
     cy.getByTestId('login-button').click();
-    cy.origin(Cypress.env('KEYCLOAK_ISSUER'), { args: { login, password } }, ({ login, password }) => {
+    cy.origin(Cypress.expose('KEYCLOAK_ISSUER'), { args: { login, password } }, ({ login, password }) => {
         cy.get('#username').invoke('focus').type(login);
         cy.get('#password').invoke('focus').type(password, { log: false });
         cy.get('#kc-login').invoke('focus').click();

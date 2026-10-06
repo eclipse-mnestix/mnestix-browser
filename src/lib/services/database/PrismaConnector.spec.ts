@@ -21,7 +21,7 @@ jest.mock('lib/database/prisma', () => {
     };
 });
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const tx = (jest.requireMock('lib/database/prisma') as any).prisma.__tx;
 
 function formData(overrides: Partial<InfrastructureFormData> = {}): InfrastructureFormData {

@@ -4,7 +4,7 @@ import { IconCircleWrapper } from 'components/basics/IconCircleWrapper';
 import { TemplateIcon } from 'components/custom-icons/TemplateIcon';
 import React, { useState } from 'react';
 import { BlueprintDeleteDialog } from 'app/[locale]/templates/_components/BlueprintDeleteDialog';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'i18n/navigation';
 import { useTranslations } from 'next-intl';
 
 export type BlueprintItemType = {
