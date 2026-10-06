@@ -1,11 +1,11 @@
 describe('Login Keycloak user roles', function () {
     const adminTestUser = {
-        login: Cypress.env('TEST_ADMIN_USER_LOGIN'),
-        password: Cypress.env('TEST_ADMIN_USER_PASSWORD'),
+        login: Cypress.expose('TEST_ADMIN_USER_LOGIN'),
+        password: Cypress.expose('TEST_ADMIN_USER_PASSWORD'),
     };
     const testUser = {
-        login: Cypress.env('TEST_USER_LOGIN'),
-        password: Cypress.env('TEST_USER_PASSWORD'),
+        login: Cypress.expose('TEST_USER_LOGIN'),
+        password: Cypress.expose('TEST_USER_PASSWORD'),
     };
 
     beforeEach(function () {
