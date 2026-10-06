@@ -7,16 +7,16 @@ import { useAasStore } from 'stores/AasStore';
 import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
 
 // Mock the locale-aware router
-jest.mock('../../../../i18n/navigation', () => ({
+jest.mock('../../../../../i18n/navigation', () => ({
     useRouter: jest.fn(),
 }));
 
 // Mock the AAS context
-jest.mock('./../../../../stores/AasStore', () => ({
+jest.mock('./../../../../../stores/AasStore', () => ({
     useAasStore: jest.fn(),
 }));
 
-jest.mock('./../../../../lib/hooks/useFindValueByIdShort', () => ({
+jest.mock('./../../../../../lib/hooks/useFindValueByIdShort', () => ({
     useFindValueByIdShort: jest.fn().mockImplementation(() => {
         /* eslint-disable @typescript-eslint/no-explicit-any */
         return (idShort: any) => {
@@ -43,12 +43,12 @@ jest.mock('./../../../../lib/hooks/useFindValueByIdShort', () => ({
 }));
 
 // Mock the CurrentAasContext
-jest.mock('../../../../components/contexts/CurrentAasContext', () => ({
+jest.mock('../../../../../components/contexts/CurrentAasContext', () => ({
     useCurrentAasContext: jest.fn(),
 }));
 
 // Mock utility functions
-jest.mock('./../../../../lib/util/SubmodelResolverUtil', () => ({
+jest.mock('./../../../../../lib/util/SubmodelResolverUtil', () => ({
     findSubmodelByIdOrSemanticId: jest.fn().mockImplementation((submodels, semanticId, idShort) => {
         if (idShort === 'TechnicalData') {
             return {

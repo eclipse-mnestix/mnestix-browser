@@ -17,7 +17,17 @@ export default getRequestConfig(async ({ requestLocale }) => {
         console.error('Plugin localization messages not found');
     }
 
-    const messages = { ...(await import(`../locale/${locale}.json`)).default, ...pluginMessages };
+    // Overlay-localization slot: these files are intentionally EMPTY ({}) in OSS.
+    // An overlay/bundler layer replaces them wholesale at merge time, and its keys
+    // resolve through this same provider — no second translator needed. Last layer
+    // wins, so the overlay can also override OSS keys deliberately.
+    const overlayMessages = (await import(`./locale/${locale}.json`)).default;
+
+    const messages = {
+        ...(await import(`../locale/${locale}.json`)).default,
+        ...pluginMessages,
+        ...overlayMessages,
+    };
     return {
         locale,
         messages,
