@@ -68,7 +68,9 @@ Additional services used by the Mnestix browser:
 
   > **Note:** The BaSyx Go environment requires **Mnestix AAS Generator >= 1.3.0** for compatibility. See the
   > [Migrate to AAS Generator 1.3.0](https://github.com/eclipse-mnestix/mnestix-aas-generator/wiki/Migrate-to-aas-generator-1.3.0) guide.
-- **basyx-db** - PostgreSQL database used by the BaSyx Go environment to store AAS and Submodel data
+- **basyx-db** - PostgreSQL database (18) used by the BaSyx Go environment to store AAS and Submodel data. If you
+  still have a data volume from PostgreSQL 16 or older, see
+  [Upgrading the PostgreSQL Database](Upgrading-the-PostgreSQL-Database).
 - **basyx-configuration** - one-shot service (`eclipsebasyx/basyxconfigurationservice-go`) that initializes the PostgreSQL schema before the environment starts
 - **aas-environment** - unified BaSyx Go environment (`eclipsebasyx/aasenvironment-go`) that serves the AAS repository,
   Submodel repository, Concept Description repository, AAS/Submodel registries and Discovery Service from a single service

@@ -14,6 +14,7 @@
 - [Mnestix Configuration Settings](Mnestix-Configuration-Settings)
 - [Secret Environment Variables](Secret-environment-variables)
 - [Docker Compose Files](Docker-Compose-Files)
+- [Upgrading the PostgreSQL Database](Upgrading-the-PostgreSQL-Database)
 - [Keycloak Configuration](Keycloak-Configuration)
 - [Maintaining](Maintaining)
 - [Role Based Access Control](Role-Based-Access-Control)
