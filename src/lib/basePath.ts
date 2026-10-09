@@ -4,4 +4,4 @@
  * NOTE: baked into the client bundles at `yarn build` time — changing this
  * requires a rebuild, it cannot be changed at runtime.
  */
-export const BASE_PATH = '';
+export const BASE_PATH: string = '';
