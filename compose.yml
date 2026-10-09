@@ -98,6 +98,10 @@ services:
     networks:
       - mnestix-network
 
+  # PostgreSQL 18 requires the volume at /var/lib/postgresql (it stores data
+  # in major-version subdirectories). A volume written by an older PostgreSQL
+  # major version must be migrated first:
+  # https://github.com/eclipse-mnestix/mnestix-browser/wiki/Upgrading-the-PostgreSQL-Database
   basyx-db:
     image: postgres:18-alpine
     container_name: basyx-db
@@ -108,13 +112,17 @@ services:
       - POSTGRES_USER=basyx
       - POSTGRES_PASSWORD=basyx
       - POSTGRES_DB=basyxdb
+    # start_period and retries keep the service_healthy gate open long enough
+    # for a one-time pg_upgrade if the image is temporarily switched to
+    # pgautoupgrade; see the wiki page above.
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U basyx -d basyxdb']
       interval: 5s
       timeout: 3s
-      retries: 10
+      retries: 30
+      start_period: 60s
     volumes:
-      - basyx-db-data:/var/lib/postgresql/data
+      - basyx-db-data:/var/lib/postgresql
     networks:
       - mnestix-network
     logging:
