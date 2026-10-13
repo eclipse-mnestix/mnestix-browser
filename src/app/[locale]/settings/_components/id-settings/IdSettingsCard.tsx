@@ -50,7 +50,6 @@ export function IdSettingsCard() {
     const t = useTranslations('pages.settings.idStructure');
 
     const {
-        register,
         control,
         handleSubmit,
         reset,
@@ -192,7 +191,6 @@ export function IdSettingsCard() {
                             isLoading={isLoading}
                             control={control}
                             errors={errors}
-                            register={register}
                         />
                     );
                 })}
