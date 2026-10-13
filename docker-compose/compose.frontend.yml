@@ -42,8 +42,11 @@ services:
     volumes:
       - mnestix-database:/app/prisma/database
 
+  # PostgreSQL 18 requires the volume at /var/lib/postgresql; older data
+  # volumes must be migrated first - see compose.yml and
+  # https://github.com/eclipse-mnestix/mnestix-browser/wiki/Upgrading-the-PostgreSQL-Database
   basyx-db:
-    image: postgres:16-alpine
+    image: postgres:18-alpine
     container_name: basyx-db
     environment:
       - POSTGRES_USER=basyx
@@ -53,9 +56,10 @@ services:
       test: ['CMD-SHELL', 'pg_isready -U basyx -d basyxdb']
       interval: 5s
       timeout: 3s
-      retries: 10
+      retries: 30
+      start_period: 60s
     volumes:
-      - basyx-db-data:/var/lib/postgresql/data
+      - basyx-db-data:/var/lib/postgresql
     logging:
       driver: 'json-file'
       options:

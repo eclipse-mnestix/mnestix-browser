@@ -1,5 +1,5 @@
 import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import Link from 'next/link';
+import { Link } from 'i18n/navigation';
 
 export interface MenuListItemProps {
     icon?: React.ReactElement;

@@ -9,6 +9,7 @@ import { getInfrastructuresIncludingDefault } from 'lib/services/database/infras
 import { AssetAdministrationShellDescriptor, SubmodelDescriptor } from 'lib/types/registryServiceTypes';
 import { AasRepositoryService, RepoSearchResult } from 'lib/services/aas-repository-service/AasRepositoryService';
 import { AasRegistryEndpointEntryInMemory } from 'lib/api/registry-service-api/registryServiceApiInMemory';
+import { securityHeadersForUrl } from 'lib/util/securityHelpers/repositoryFetchGuard';
 import { SubmodelRepositoryService } from 'lib/services/submodel-repository-service/SubmodelRepositoryService';
 import { SubmodelRegistryService } from 'lib/services/submodel-registry-service/SubmodelRegistryService';
 import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
@@ -145,7 +146,11 @@ export class InfrastructureSearchService {
                 // SSRF vector into internal targets. Mirrors ListService's per-descriptor guard.
                 const blocked = await egressBlockedError(endpoint, infrastructureName);
                 if (blocked) return blocked;
-                const submodelSearchResult = await this.submodelRegistrySearchService.getSubmodelFromEndpoint(endpoint);
+                const securityHeader = await securityHeadersForUrl(endpoint, filteredInfrastructure);
+                const submodelSearchResult = await this.submodelRegistrySearchService.getSubmodelFromEndpoint(
+                    endpoint,
+                    securityHeader,
+                );
                 if (!submodelSearchResult.isSuccess) {
                     return wrapErrorCode(submodelSearchResult.errorCode, submodelSearchResult.message);
                 }
@@ -171,7 +176,11 @@ export class InfrastructureSearchService {
             // point this at an internal target. Guard before fetching, consistent with the client-descriptor path above.
             const blocked = await egressBlockedError(endpoint, infrastructureName);
             if (blocked) return blocked;
-            const submodelSearchResult = await this.submodelRegistrySearchService.getSubmodelFromEndpoint(endpoint);
+            const securityHeader = await securityHeadersForUrl(endpoint, filteredInfrastructure);
+            const submodelSearchResult = await this.submodelRegistrySearchService.getSubmodelFromEndpoint(
+                endpoint,
+                securityHeader,
+            );
             if (!submodelSearchResult.isSuccess) {
                 return wrapErrorCode(submodelSearchResult.errorCode, submodelSearchResult.message);
             } else {

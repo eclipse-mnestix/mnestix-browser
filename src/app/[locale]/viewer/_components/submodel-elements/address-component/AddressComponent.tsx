@@ -11,7 +11,7 @@ import {
     PhoneElement,
     VatElement,
 } from './ContactElements';
-import { CustomSubmodelElementComponentProps } from 'app/[locale]/viewer/_components/submodel/generic-submodel/GenericSubmodelDetailComponent';
+import { CustomSubmodelElementComponentProps } from 'components/visualizations/submodel.types';
 
 export const idShortsOfSubmodelElementsContainingAddressData: string[] = [
     'Company',

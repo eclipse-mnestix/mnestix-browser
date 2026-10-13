@@ -4,7 +4,7 @@ import { DataRow } from 'components/basics/DataRow';
 import { NestedContentWrapper } from 'components/basics/NestedContentWrapper';
 import { useState } from 'react';
 import { GenericSubmodelDetailComponent } from 'app/[locale]/viewer/_components/submodel/generic-submodel/GenericSubmodelDetailComponent';
-import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
+import { SubmodelVisualizationProps } from 'components/visualizations/submodel.types';
 import { useTranslations } from 'next-intl';
 
 export function ExpandableDefaultSubmodelDisplay({ submodel }: SubmodelVisualizationProps) {

@@ -134,12 +134,14 @@ export const AssetAdministrationShellRepositoryApiFp = function (configuration?:
                     Accept: 'application/json',
                 } as any;
 
-                const cursorQueryParameter = cursor ?? '';
-
                 localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options?.headers);
 
+                const queryParams = new URLSearchParams();
+                if (limit !== undefined) queryParams.set('limit', String(limit));
+                if (cursor) queryParams.set('cursor', cursor);
+
                 return await requestHandler.fetch<PaginationData<AssetAdministrationShell[]>>(
-                    basePath + `/shells?limit=${limit}&cursor=${cursorQueryParameter}`,
+                    basePath + `/shells?${queryParams.toString()}`,
                     localVarRequestOptions,
                 );
             };

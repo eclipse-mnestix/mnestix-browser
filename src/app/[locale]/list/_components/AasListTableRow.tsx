@@ -14,8 +14,8 @@ import { getNameplateValuesForAAS } from 'lib/services/list-service/aasListApiAc
 import { MultiLanguageValueOnly } from 'lib/api/basyx-v3/types';
 import { useLocale, useTranslations } from 'next-intl';
 import { encodeBase64 } from 'lib/util/Base64Util';
+import { getPathname } from 'i18n/navigation';
 import useSWR from 'swr';
-import { useEnv } from 'app/EnvProvider';
 import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 
 type AasTableRowProps = {
@@ -34,7 +34,6 @@ export const AasListTableRow = (props: AasTableRowProps) => {
     const { repository, connectionType, aasListEntry } = props;
     const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
     const t = useTranslations('pages.aasList');
-    const env = useEnv();
     const locale = useLocale();
     const { data: nameplateValues, isLoading: isNameplateValueLoading } = useSWR(
         [repository, aasListEntry.aasId],
@@ -52,17 +51,15 @@ export const AasListTableRow = (props: AasTableRowProps) => {
 
     const navigateToAas = (listEntry: ListEntityDto) => {
         const baseUrl = window.location.origin;
-        const pageToGo = env.EXPERIMENTAL_PRODUCT_VIEW_FEATURE_FLAG ? '/product' : '/viewer';
+        const pageToGo = '/viewer';
 
         // Only send repoUrl parameter if it's a repository, not a registry
         const repoUrlParam = connectionType === 'repository' && repository.url ? `?repoUrl=${repository.url}` : '';
         const infrastructureParam = repository.infrastructureName
             ? `${repoUrlParam ? '&' : '?'}infrastructure=${repository.infrastructureName}`
             : '';
-        window.open(
-            baseUrl + `${pageToGo}/${encodeBase64(listEntry.aasId)}${repoUrlParam}${infrastructureParam}`,
-            '_blank',
-        );
+        const localizedPath = getPathname({ locale, href: `${pageToGo}/${encodeBase64(listEntry.aasId)}` });
+        window.open(baseUrl + `${localizedPath}${repoUrlParam}${infrastructureParam}`, '_blank');
     };
 
     const translateListText = (property: MultiLanguageValueOnly | undefined) => {

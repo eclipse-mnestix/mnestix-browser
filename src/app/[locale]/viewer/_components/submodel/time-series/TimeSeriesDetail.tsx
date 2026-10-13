@@ -1,6 +1,6 @@
 import { ExpandableDefaultSubmodelDisplay } from 'components/basics/ExpandableNestedContentWrapper';
 import { TimeSeriesVisualizations } from './TimeSeriesVisualizations';
-import { SubmodelVisualizationProps } from 'app/[locale]/viewer/_components/submodel/SubmodelVisualizationProps';
+import { SubmodelVisualizationProps } from 'components/visualizations/submodel.types';
 
 export function TimeSeriesDetail({ submodel }: SubmodelVisualizationProps) {
     return (
