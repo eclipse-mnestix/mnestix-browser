@@ -126,15 +126,15 @@ describe('Visit the Settings page', { defaultCommandTimeout: 20000 }, function (
             cy.getByTestId('settings-menu-icon').click();
             cy.getByTestId('settings-edit-button').click();
 
-            //AasId field
+            //AasId field (index 0, IRI type)
             cy.getByTestId('settings-edit-text-field-0').click();
             cy.getByTestId('settings-edit-input-field-0').clear();
             cy.getByTestId('settings-edit-input-field-0').type('invalid iri');
 
-            //AssetIdShort field
-            cy.getByTestId('settings-edit-text-field-1').click();
-            cy.getByTestId('settings-edit-input-field-1').clear();
-            cy.getByTestId('settings-edit-input-field-1').type('invalid iri');
+            //AssetIdShort field (index 3, idShort type)
+            cy.getByTestId('settings-edit-text-field-3').click();
+            cy.getByTestId('settings-edit-input-field-3').clear();
+            cy.getByTestId('settings-edit-input-field-3').type('invalid iri');
 
             cy.getByTestId('settings-save-button').click();
 
@@ -143,7 +143,7 @@ describe('Visit the Settings page', { defaultCommandTimeout: 20000 }, function (
             cy.get('@error0').should('be.visible');
             cy.get('@error0').should('contain', 'Has to be a valid IRI');
 
-            cy.getByTestId('settings-edit-text-field-1-error').as('error1');
+            cy.getByTestId('settings-edit-text-field-3-error').as('error1');
             cy.get('@error1').should('be.visible');
             cy.get('@error1').should('contain', 'Has to work as part of an IRI');
         },
