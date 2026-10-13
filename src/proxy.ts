@@ -2,6 +2,18 @@ import { NextRequest, NextResponse } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 import { routing } from 'i18n/routing';
 import { envs } from 'lib/env/MnestixEnv';
+import { BASE_PATH } from 'lib/basePath';
+
+// With basePath set, req.nextUrl.pathname includes the prefix — strip it for the
+// checks below and re-add it to redirect/rewrite targets.
+function stripBasePath(pathname: string): string {
+    return BASE_PATH && pathname.startsWith(BASE_PATH) ? pathname.slice(BASE_PATH.length) || '/' : pathname;
+}
+
+function withBasePath(pathname: string): string {
+    if (!BASE_PATH) return pathname;
+    return pathname === '/' ? BASE_PATH : `${BASE_PATH}${pathname}`;
+}
 
 // next-intl does also provide methods for navigation (useRouter etc.) but we
 // use the middleware as MUI does not use these methods
@@ -32,13 +44,13 @@ export function proxy(req: NextRequest) {
         return res;
     }
 
-    const { pathname } = req.nextUrl;
+    const pathname = stripBasePath(req.nextUrl.pathname);
     //paths which should be redirected to 404 page if feature flag is disabled
     if (!envs.AAS_LIST_FEATURE_FLAG && pathname.includes('list')) {
-        return NextResponse.rewrite(new URL('/404', req.url));
+        return NextResponse.rewrite(new URL(withBasePath('/404'), req.url));
     }
 
-    if (req.nextUrl.pathname.match(unlocalizedPathsRegex)) {
+    if (pathname.match(unlocalizedPathsRegex)) {
         return NextResponse.next();
     }
 
@@ -49,7 +61,7 @@ export function proxy(req: NextRequest) {
     // and remove 'es' from the url.
     if (locale.length === 2 && !locales.includes(locale)) {
         const newPathname = pathname.replace(`/${locale}`, '');
-        const newUrl = new URL(`/${defaultLocale}${newPathname}`, req.url);
+        const newUrl = new URL(withBasePath(`/${defaultLocale}${newPathname}`), req.url);
 
         return NextResponse.redirect(newUrl);
     }
