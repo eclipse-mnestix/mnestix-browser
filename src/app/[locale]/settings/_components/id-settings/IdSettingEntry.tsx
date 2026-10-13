@@ -10,14 +10,7 @@ import {
     Typography,
 } from '@mui/material';
 import { LockedTextField } from 'components/basics/LockedTextField';
-import {
-    Control,
-    Controller,
-    ControllerRenderProps,
-    FieldArrayWithId,
-    FieldErrors,
-    UseFormRegister,
-} from 'react-hook-form';
+import { Control, Controller, ControllerRenderProps, FieldArrayWithId, FieldErrors } from 'react-hook-form';
 import { isValidIdPrefix, isValidShortIdPrefix } from 'lib/util/IdValidationUtil';
 import { DynamicPartText } from './DynamicPartText';
 import { IdSettingsFormData } from 'app/[locale]/settings/_components/id-settings/IdSettingsCard';
@@ -29,7 +22,6 @@ type IdSettingEntryProps = {
     readonly isLoading?: boolean;
     readonly control: Control<IdSettingsFormData>;
     readonly field: FieldArrayWithId<IdSettingsFormData>;
-    readonly register: UseFormRegister<IdSettingsFormData>;
     readonly errors: FieldErrors<IdSettingsFormData> | undefined;
 };
 
@@ -125,13 +117,12 @@ export function IdSettingEntry(props: IdSettingEntryProps) {
                                 validate: (value) => validateInput(value),
                             }}
                             name={`idSettings.${props.index}.prefix.value`}
-                            render={() => (
+                            render={({ field }) => (
                                 <TextField
                                     label={t('labels.staticPrefix')}
                                     sx={{ flexGrow: 1, mr: 1 }}
                                     data-testid={`settings-edit-text-field-${props.index}`}
                                     fullWidth={true}
-                                    defaultValue={props.field.prefix.value}
                                     error={!!props.errors?.idSettings?.[props.index]?.prefix}
                                     helperText={props.errors?.idSettings?.[props.index]?.prefix?.value?.message}
                                     slotProps={{
@@ -144,7 +135,8 @@ export function IdSettingEntry(props: IdSettingEntryProps) {
                                             } as React.HTMLAttributes<HTMLElement>),
                                         },
                                     }}
-                                    {...props.register(`idSettings.${props.index}.prefix.value`)}
+                                    {...field}
+                                    value={field.value ?? ''}
                                 />
                             )}
                         />
