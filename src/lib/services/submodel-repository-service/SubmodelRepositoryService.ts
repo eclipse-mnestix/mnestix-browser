@@ -1,4 +1,4 @@
-import { Submodel } from 'lib/api/aas/models';
+import { Query, QueryResultSubmodelResultInner, Submodel } from 'lib/api/aas/models';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { ApiResponseWrapper, wrapErrorCode, wrapSuccess } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { RepoSearchResult } from 'lib/services/aas-repository-service/AasRepositoryService';
@@ -8,6 +8,7 @@ import { SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { ISubmodelRepositoryApi } from 'lib/api/basyx-v3/apiInterface';
 import { InfrastructureConnection } from 'lib/services/database/InfrastructureMappedTypes';
 import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
+import { PaginationData } from 'lib/api/basyx-v3/types';
 
 export class SubmodelRepositoryService {
     private constructor(
@@ -26,11 +27,16 @@ export class SubmodelRepositoryService {
         );
     }
 
-    static createNull(submodelsInRepositories: RepoSearchResult<Submodel>[] = []): SubmodelRepositoryService {
+    static createNull(
+        submodelsInRepositories: RepoSearchResult<Submodel>[] = [],
+        queryEndpointsSupported = true,
+    ): SubmodelRepositoryService {
         return new SubmodelRepositoryService((baseUrl) =>
             SubmodelRepositoryApi.createNull(
                 baseUrl,
                 submodelsInRepositories.filter((value) => value.location == baseUrl).map((value) => value.searchResult),
+                undefined,
+                queryEndpointsSupported,
             ),
         );
     }
@@ -59,6 +65,18 @@ export class SubmodelRepositoryService {
             `Submodel with id '${submodelId}' not found in repository '${repoUrl}'`,
             response.httpStatus,
         );
+    }
+
+    async querySubmodels(
+        query: Query,
+        repoUrl: string,
+        infrastructure: InfrastructureConnection,
+        limit?: number,
+        cursor?: string,
+    ): Promise<ApiResponseWrapper<PaginationData<QueryResultSubmodelResultInner[]>>> {
+        const securityHeader = await createSecurityHeaders(infrastructure);
+        const client = this.getSubmodelRepositoryClient(repoUrl, securityHeader);
+        return client.querySubmodels(query, limit, cursor);
     }
 
     async getFirstSubmodelFromAllRepos(

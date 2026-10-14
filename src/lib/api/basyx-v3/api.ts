@@ -2,7 +2,7 @@
 // TODO MNES-1605 remove url lib together with this file
 import url from 'url';
 import { Configuration } from './configuration';
-import { AssetAdministrationShell, Reference, Submodel } from 'lib/api/aas/models';
+import { AssetAdministrationShell, Query, QueryResultAssetAdministrationShellResultInner, QueryResultSubmodelResultInner, Reference, Submodel } from 'lib/api/aas/models';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import {
     IAssetAdministrationShellRepositoryApi,
@@ -83,8 +83,14 @@ export class AssetAdministrationShellRepositoryApi implements IAssetAdministrati
         baseUrl: string,
         shellsInRepositories: AssetAdministrationShell[],
         reachable: ServiceReachable = ServiceReachable.Yes,
+        queryEndpointsSupported = true,
     ): AssetAdministrationShellRepositoryApiInMemory {
-        return new AssetAdministrationShellRepositoryApiInMemory(baseUrl, shellsInRepositories, reachable);
+        return new AssetAdministrationShellRepositoryApiInMemory(
+            baseUrl,
+            shellsInRepositories,
+            reachable,
+            queryEndpointsSupported,
+        );
     }
 
     getBaseUrl(): string {
@@ -118,6 +124,27 @@ export class AssetAdministrationShellRepositoryApi implements IAssetAdministrati
             aasId,
             options,
         )(this.http, this.basePath);
+    }
+
+    async queryAssetAdministrationShells(
+        query: Query,
+        limit?: number,
+        cursor?: string,
+        options: Omit<RequestInit, 'body' | 'method'> = {},
+    ): Promise<ApiResponseWrapper<PaginationData<QueryResultAssetAdministrationShellResultInner[]>>> {
+        options.headers = Object.assign({}, { 'Content-Type': 'application/json' }, options.headers);
+        const queryParams = new URLSearchParams();
+        if (limit !== undefined) queryParams.set('limit', String(limit));
+        if (cursor) queryParams.set('cursor', cursor);
+        const reqOptions = {
+            ...options,
+            body: JSON.stringify(query),
+            method: 'POST',
+        };
+        return this.http.fetch<PaginationData<QueryResultAssetAdministrationShellResultInner[]>>(
+            `${this.basePath}/query/shells?${queryParams.toString()}`,
+            reqOptions,
+        );
     }
 
 }
@@ -323,8 +350,9 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
         basePath: string,
         submodelsInRepository: Submodel[],
         reachable: ServiceReachable = ServiceReachable.Yes,
+        queryEndpointsSupported = true,
     ): SubmodelRepositoryApiInMemory {
-        return new SubmodelRepositoryApiInMemory(basePath, submodelsInRepository, reachable);
+        return new SubmodelRepositoryApiInMemory(basePath, submodelsInRepository, reachable, queryEndpointsSupported);
     }
 
     getBaseUrl(): string {
@@ -412,6 +440,27 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
             submodelElementPath,
             options,
         )(this.http, this.baseUrl);
+    }
+
+    async querySubmodels(
+        query: Query,
+        limit?: number,
+        cursor?: string,
+        options: Omit<RequestInit, 'body' | 'method'> = {},
+    ): Promise<ApiResponseWrapper<PaginationData<QueryResultSubmodelResultInner[]>>> {
+        options.headers = Object.assign({}, { 'Content-Type': 'application/json' }, options.headers);
+        const queryParams = new URLSearchParams();
+        if (limit !== undefined) queryParams.set('limit', String(limit));
+        if (cursor) queryParams.set('cursor', cursor);
+        const reqOptions = {
+            ...options,
+            body: JSON.stringify(query),
+            method: 'POST',
+        };
+        return this.http.fetch<PaginationData<QueryResultSubmodelResultInner[]>>(
+            `${this.baseUrl}/query/submodels?${queryParams.toString()}`,
+            reqOptions,
+        );
     }
 
 }

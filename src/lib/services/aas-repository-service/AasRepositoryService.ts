@@ -1,6 +1,6 @@
 import { AssetAdministrationShellRepositoryApi } from 'lib/api/basyx-v3/api';
 import { mnestixFetch } from 'lib/api/infrastructure';
-import { AssetAdministrationShell } from 'lib/api/aas/models';
+import { AssetAdministrationShell, Query, QueryResultAssetAdministrationShellResultInner } from 'lib/api/aas/models';
 import {
     ApiFileDto,
     ApiResponseWrapper,
@@ -22,6 +22,7 @@ import {
 import { createSecurityHeaders } from 'lib/util/securityHelpers/SecurityConfiguration';
 import { securityHeadersForUrl } from 'lib/util/securityHelpers/repositoryFetchGuard';
 import { egressBlockedError } from 'lib/util/securityHelpers/egressBlockedError';
+import { PaginationData } from 'lib/api/basyx-v3/types';
 
 export type RepoSearchResult<T> = {
     searchResult: T;
@@ -47,11 +48,16 @@ export class AasRepositoryService {
         );
     }
 
-    static createNull(shellsInRepositories: RepoSearchResult<AssetAdministrationShell>[] = []): AasRepositoryService {
+    static createNull(
+        shellsInRepositories: RepoSearchResult<AssetAdministrationShell>[] = [],
+        queryEndpointsSupported = true,
+    ): AasRepositoryService {
         return new AasRepositoryService((baseUrl) =>
             AssetAdministrationShellRepositoryApi.createNull(
                 baseUrl,
                 shellsInRepositories.filter((value) => value.location == baseUrl).map((value) => value.searchResult),
+                undefined,
+                queryEndpointsSupported,
             ),
         );
     }
@@ -127,6 +133,25 @@ export class AasRepositoryService {
         const searchResponse = await client.getThumbnailFromShell(aasId);
         if (!searchResponse.isSuccess) return wrapErrorCode(searchResponse.errorCode, searchResponse.message);
         return wrapFile(searchResponse.result);
+    }
+
+    /**
+     * Searches for Asset Administration Shells matching an AASQL query (IDTA-01002 Part 2) against a
+     * single repository. Not every AAS implementation supports the `/query/shells` endpoint (e.g.
+     * basyx-java does not); in that case the returned ApiResponseWrapper carries the server's error
+     */
+    async queryAssetAdministrationShells(
+        query: Query,
+        repository: RepositoryWithInfrastructure,
+        limit?: number,
+        cursor?: string,
+    ): Promise<ApiResponseWrapper<PaginationData<QueryResultAssetAdministrationShellResultInner[]>>> {
+        const infrastructure = await getInfrastructureByName(repository.infrastructureName);
+        const blocked = await egressBlockedError(repository.url, repository.infrastructureName);
+        if (blocked) return blocked;
+        const securityHeader = await securityHeadersForUrl(repository.url, infrastructure);
+        const client = this.getAasRepositoryClient(repository.url, securityHeader);
+        return client.queryAssetAdministrationShells(query, limit, cursor);
     }
 
     private async getAasFromSingleRepo(

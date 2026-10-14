@@ -1,4 +1,11 @@
-import { AssetAdministrationShell, Reference, Submodel } from 'lib/api/aas/models';
+import {
+    AssetAdministrationShell,
+    Query,
+    QueryResultAssetAdministrationShellResultInner,
+    QueryResultSubmodelResultInner,
+    Reference,
+    Submodel,
+} from 'lib/api/aas/models';
 import { ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { MultiLanguageValueOnly, PaginationData } from 'lib/api/basyx-v3/types';
 
@@ -47,6 +54,23 @@ export interface IAssetAdministrationShellRepositoryApi {
      * @memberof AssetAdministrationShellRepositoryApi
      */
     getThumbnailFromShell(aasId: string, options?: object): Promise<ApiResponseWrapper<Blob>>;
+
+    /**
+     * @summary Searches for Asset Administration Shells matching an AASQL query (IDTA-01002 Part 2).
+     * Not every AAS implementation supports the query endpoint (e.g. basyx-java does not); in that
+     * case the returned ApiResponseWrapper carries the server's error (typically 404/405/501).
+     * @param {Query} query The AASQL query body.
+     * @param {number} [limit] Maximum number of results per page.
+     * @param {string} [cursor] Pagination cursor from a previous response.
+     * @param {*} [options] Override http request option.
+     * @memberof AssetAdministrationShellRepositoryApi
+     */
+    queryAssetAdministrationShells(
+        query: Query,
+        limit?: number,
+        cursor?: string,
+        options?: object,
+    ): Promise<ApiResponseWrapper<PaginationData<QueryResultAssetAdministrationShellResultInner[]>>>;
 }
 
 export interface ISerializationApi {
@@ -152,4 +176,21 @@ export interface ISubmodelRepositoryApi {
         submodelElementPath: string,
         options?: object,
     ): Promise<ApiResponseWrapper<Blob>>;
+
+    /**
+     * @summary Searches for Submodels matching an AASQL query (IDTA-01002 Part 2).
+     * Not every AAS implementation supports the query endpoint (e.g. basyx-java does not); in that
+     * case the returned ApiResponseWrapper carries the server's error (typically 404/405/501).
+     * @param {Query} query The AASQL query body.
+     * @param {number} [limit] Maximum number of results per page.
+     * @param {string} [cursor] Pagination cursor from a previous response.
+     * @param {*} [options] Override http request option.
+     * @memberof SubmodelRepositoryApi
+     */
+    querySubmodels(
+        query: Query,
+        limit?: number,
+        cursor?: string,
+        options?: object,
+    ): Promise<ApiResponseWrapper<PaginationData<QueryResultSubmodelResultInner[]>>>;
 }

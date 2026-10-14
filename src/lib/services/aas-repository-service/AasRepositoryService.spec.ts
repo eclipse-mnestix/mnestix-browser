@@ -268,5 +268,71 @@ describe('AasRepositorySearchService', () => {
                 expect(result.isSuccess).toBe(true);
             });
         });
+
+        describe('queryAssetAdministrationShells', () => {
+            const testQuery = { $condition: { $boolean: true } };
+
+            it('returns a forbidden failure and never creates a client when egress is blocked', async () => {
+                (getInfrastructureByName as jest.Mock).mockResolvedValue(undefined);
+                (assertEgressAllowed as jest.Mock).mockRejectedValue(new Error('Egress blocked: internal target.'));
+                const createNullSpy = jest.spyOn(AssetAdministrationShellRepositoryApi, 'createNull');
+
+                const service = AasRepositoryService.createNull([]);
+                const result = await service.queryAssetAdministrationShells(testQuery, repository);
+
+                expect(assertEgressAllowed).toHaveBeenCalledWith(repository.url, repository.infrastructureName);
+                expect(result.isSuccess).toBe(false);
+                if (!result.isSuccess) {
+                    expect(result.errorCode).toBe(ApiResultStatus.FORBIDDEN);
+                }
+                expect(securityHeadersForUrl).not.toHaveBeenCalled();
+                expect(createNullSpy).not.toHaveBeenCalled();
+            });
+
+            it('returns a successful result when the repository supports the query endpoint', async () => {
+                const testAas = createTestAas('testAasId');
+                const infrastructure = createTestInfrastructure({ name: repository.infrastructureName });
+                (getInfrastructureByName as jest.Mock).mockResolvedValue(infrastructure);
+                (assertEgressAllowed as jest.Mock).mockResolvedValue(undefined);
+                (securityHeadersForUrl as jest.Mock).mockResolvedValue(null);
+                const fetchResult = {
+                    fetch: jest.fn().mockResolvedValue({
+                        isSuccess: true,
+                        result: { paging_metadata: {}, result: [testAas] },
+                    }),
+                };
+                (mnestixFetch as jest.Mock).mockReturnValue(fetchResult);
+
+                const service = AasRepositoryService.create();
+                const result = await service.queryAssetAdministrationShells(testQuery, repository);
+
+                expect(result.isSuccess).toBe(true);
+                expect(result.result?.result).toEqual([testAas]);
+            });
+
+            it('returns the server error when the repository does not support the query endpoint', async () => {
+                const infrastructure = createTestInfrastructure({ name: repository.infrastructureName });
+                (getInfrastructureByName as jest.Mock).mockResolvedValue(infrastructure);
+                (assertEgressAllowed as jest.Mock).mockResolvedValue(undefined);
+                (securityHeadersForUrl as jest.Mock).mockResolvedValue(null);
+                const fetchResult = {
+                    fetch: jest.fn().mockResolvedValue({
+                        isSuccess: false,
+                        errorCode: ApiResultStatus.NOT_FOUND,
+                        message: 'not found',
+                        httpStatus: 404,
+                    }),
+                };
+                (mnestixFetch as jest.Mock).mockReturnValue(fetchResult);
+
+                const service = AasRepositoryService.create();
+                const result = await service.queryAssetAdministrationShells(testQuery, repository);
+
+                expect(result.isSuccess).toBe(false);
+                if (!result.isSuccess) {
+                    expect(result.errorCode).toBe(ApiResultStatus.NOT_FOUND);
+                }
+            });
+        });
     });
 });
