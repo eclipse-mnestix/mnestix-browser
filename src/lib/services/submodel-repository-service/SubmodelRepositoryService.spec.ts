@@ -41,35 +41,4 @@ describe('SubmodelRepositoryService', () => {
             expect(result.errorCode).toBe(ApiResultStatus.NOT_FOUND);
         }
     });
-
-    describe('querySubmodels', () => {
-        const testQuery = { $condition: { $boolean: true } };
-
-        it('returns submodels when the repository supports the query endpoint', async () => {
-            const submodelRepoUrl = 'https://submodel-repo.com';
-            const dummySubmodel = createTestSubmodel('submodel-123');
-            const service = SubmodelRepositoryService.createNull([
-                { searchResult: dummySubmodel, location: submodelRepoUrl },
-            ]);
-            const infrastructure = createTestInfrastructure({ submodelRepositoryUrls: [submodelRepoUrl] });
-
-            const result = await service.querySubmodels(testQuery, submodelRepoUrl, infrastructure);
-
-            expect(result.isSuccess).toBe(true);
-            expect(result.result?.result).toEqual([dummySubmodel]);
-        });
-
-        it('returns the server error when the repository does not support the query endpoint', async () => {
-            const submodelRepoUrl = 'https://submodel-repo.com';
-            const service = SubmodelRepositoryService.createNull([], false);
-            const infrastructure = createTestInfrastructure({ submodelRepositoryUrls: [submodelRepoUrl] });
-
-            const result = await service.querySubmodels(testQuery, submodelRepoUrl, infrastructure);
-
-            expect(result.isSuccess).toBe(false);
-            if (!result.isSuccess) {
-                expect(result.errorCode).toBe(ApiResultStatus.NOT_FOUND);
-            }
-        });
-    });
 });

@@ -49,8 +49,7 @@ export async function getAttachmentFromSubmodelElement(
 /**
  * Searches for Submodels matching an AASQL query in a single submodel repository if query endpoint is available.
  *
- * Note: this calls SubmodelRepositoryApi directly (egress-guarded) rather than
- * SubmodelRepositoryService.querySubmodels
+ * Note: this calls SubmodelRepositoryApi directly (egress-guarded) 
  */
 export async function querySubmodels(
     query: Query,

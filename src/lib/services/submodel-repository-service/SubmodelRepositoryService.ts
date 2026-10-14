@@ -66,19 +66,7 @@ export class SubmodelRepositoryService {
             response.httpStatus,
         );
     }
-
-    async querySubmodels(
-        query: Query,
-        repoUrl: string,
-        infrastructure: InfrastructureConnection,
-        limit?: number,
-        cursor?: string,
-    ): Promise<ApiResponseWrapper<PaginationData<QueryResultSubmodelResultInner[]>>> {
-        const securityHeader = await createSecurityHeaders(infrastructure);
-        const client = this.getSubmodelRepositoryClient(repoUrl, securityHeader);
-        return client.querySubmodels(query, limit, cursor);
-    }
-
+    
     async getFirstSubmodelFromAllRepos(
         submodelId: string,
         infrastructure: InfrastructureConnection,
