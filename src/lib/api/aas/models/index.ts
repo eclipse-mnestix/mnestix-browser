@@ -493,19 +493,19 @@ export interface AttributeItem {
      * @type {string}
      * @memberof AttributeItem
      */
-    cLAIM?: string;
+    CLAIM?: string;
     /**
      *
      * @type {string}
      * @memberof AttributeItem
      */
-    gLOBAL?: AttributeItemGLOBALEnum;
+    GLOBAL?: AttributeItemGLOBALEnum;
     /**
      *
      * @type {string}
      * @memberof AttributeItem
      */
-    rEFERENCE?: string;
+    REFERENCE?: string;
 }
 
 /**
@@ -900,6 +900,12 @@ export interface BlobValue {
  * @export
  */
 export type BoolComparisonItemsInner = BoolOperand | FieldOperand;
+/**
+ * Exactly two `boolOperand`/`fieldOperand` operands, per the AASQL `boolComparisonItems` schema.
+ * @type BoolComparisonItems
+ * @export
+ */
+export type BoolComparisonItems = [BoolComparisonItemsInner, BoolComparisonItemsInner];
 /**
  *
  * @export
@@ -1402,7 +1408,7 @@ export interface DateTimeAttributeItem {
      * @type {string}
      * @memberof DateTimeAttributeItem
      */
-    gLOBAL: DateTimeAttributeItemGLOBALEnum;
+    GLOBAL: DateTimeAttributeItemGLOBALEnum;
 }
 
 /**
@@ -1422,6 +1428,13 @@ export type DateTimeAttributeItemGLOBALEnum =
  * @export
  */
 export type DateTimeComparisonItemsInner = DateTimeOperand | FieldOperand;
+/**
+ * Exactly two `dateTimeOperand`/`fieldOperand` operands, per the AASQL `dateTimeComparisonItems`
+ * schema.
+ * @type DateTimeComparisonItems
+ * @export
+ */
+export type DateTimeComparisonItems = [DateTimeComparisonItemsInner, DateTimeComparisonItemsInner];
 /**
  *
  * @export
@@ -1755,11 +1768,19 @@ export interface Environment {
     conceptDescriptions?: Array<ConceptDescription>;
 }
 /**
- *
+ * A union of the comparison-item tuple types usable with $eq/$ne, per the AASQL
+ * `equalityComparisonItems` schema (anyOf stringItems | numericalComparisonItems |
+ * hexComparisonItems | boolComparisonItems | dateTimeComparisonItems | timeComparisonItems).
+ * @type EqualityComparisonItems
  * @export
- * @interface EqualityComparisonItems
  */
-export interface EqualityComparisonItems {}
+export type EqualityComparisonItems =
+    | StringItems
+    | NumericalComparisonItems
+    | HexComparisonItems
+    | BoolComparisonItems
+    | DateTimeComparisonItems
+    | TimeComparisonItems;
 
 /**
  *
@@ -2326,6 +2347,12 @@ export interface HasSemantics {
  */
 export type HexComparisonItemsInner = FieldOperand | HexOperand;
 /**
+ * Exactly two `hexOperand`/`fieldOperand` operands, per the AASQL `hexComparisonItems` schema.
+ * @type HexComparisonItems
+ * @export
+ */
+export type HexComparisonItems = [HexComparisonItemsInner, HexComparisonItemsInner];
+/**
  *
  * @export
  * @interface HexOperand
@@ -2617,6 +2644,46 @@ export interface LevelType {
     max: boolean;
 }
 /**
+ * Exactly two operands compared with a string operator ($contains, $starts-with, $ends-with,
+ * $regex). Mirrors the AASQL `stringValue` schema (narrower than the generic `Value` schema,
+ * which additionally allows numeric/hex/dateTime/time/boolean operands) — not to be confused with
+ * the unrelated, scalar `StringValue` schema.
+ * @export
+ * @interface StringValueOperand
+ */
+export interface StringValueOperand {
+    /**
+     *
+     * @type {string}
+     * @memberof StringValueOperand
+     */
+    $field?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof StringValueOperand
+     */
+    $strVal?: string;
+    /**
+     *
+     * @type {Value}
+     * @memberof StringValueOperand
+     */
+    $strCast?: Value | null;
+    /**
+     *
+     * @type {AttributeItem}
+     * @memberof StringValueOperand
+     */
+    $attribute?: AttributeItem | null;
+}
+/**
+ * Exactly two `stringValue` operands, per the AASQL `stringItems` schema.
+ * @type StringItems
+ * @export
+ */
+export type StringItems = [StringValueOperand, StringValueOperand];
+/**
  *
  * @export
  * @interface LogicalExpression
@@ -2684,28 +2751,28 @@ export interface LogicalExpression {
     $le?: OrderedComparisonItems;
     /**
      *
-     * @type {Array<string>}
+     * @type {StringItems}
      * @memberof LogicalExpression
      */
-    $contains?: Array<string>;
+    $contains?: StringItems;
     /**
      *
-     * @type {Array<string>}
+     * @type {StringItems}
      * @memberof LogicalExpression
      */
-    $startsWith?: Array<string>;
+    '$starts-with'?: StringItems;
     /**
      *
-     * @type {Array<string>}
+     * @type {StringItems}
      * @memberof LogicalExpression
      */
-    $endsWith?: Array<string>;
+    '$ends-with'?: StringItems;
     /**
      *
-     * @type {Array<string>}
+     * @type {StringItems}
      * @memberof LogicalExpression
      */
-    $regex?: Array<string>;
+    $regex?: StringItems;
     /**
      *
      * @type {boolean}
@@ -2763,28 +2830,28 @@ export interface MatchExpression {
     $le?: OrderedComparisonItems;
     /**
      *
-     * @type {Array<string>}
+     * @type {StringItems}
      * @memberof MatchExpression
      */
-    $contains?: Array<string>;
+    $contains?: StringItems;
     /**
      *
-     * @type {Array<string>}
+     * @type {StringItems}
      * @memberof MatchExpression
      */
-    $startsWith?: Array<string>;
+    '$starts-with'?: StringItems;
     /**
      *
-     * @type {Array<string>}
+     * @type {StringItems}
      * @memberof MatchExpression
      */
-    $endsWith?: Array<string>;
+    '$ends-with'?: StringItems;
     /**
      *
-     * @type {Array<string>}
+     * @type {StringItems}
      * @memberof MatchExpression
      */
-    $regex?: Array<string>;
+    $regex?: StringItems;
 }
 /**
  *
@@ -3112,6 +3179,13 @@ export interface MultiLanguagePropertyMetadata {
  * @export
  */
 export type NumericalComparisonItemsInner = FieldOperand | NumericalOperand;
+/**
+ * Exactly two `numericalOperand`/`fieldOperand` operands, per the AASQL `numericalComparisonItems`
+ * schema.
+ * @type NumericalComparisonItems
+ * @export
+ */
+export type NumericalComparisonItems = [NumericalComparisonItemsInner, NumericalComparisonItemsInner];
 /**
  *
  * @export
@@ -3517,11 +3591,15 @@ export interface OperationVariable {
     value: SubmodelElementChoice;
 }
 /**
- *
+ * A union of the comparison-item tuple types usable with $gt/$ge/$lt/$le, per the AASQL
+ * `orderedComparisonItems` schema (anyOf stringItems | numericalComparisonItems |
+ * hexComparisonItems | dateTimeComparisonItems | timeComparisonItems — no boolComparisonItems,
+ * since booleans have no total ordering).
+ * @type OrderedComparisonItems
  * @export
- * @interface OrderedComparisonItems
  */
-export interface OrderedComparisonItems {}
+export type OrderedComparisonItems =
+    StringItems | NumericalComparisonItems | HexComparisonItems | DateTimeComparisonItems | TimeComparisonItems;
 /**
  *
  * @export
@@ -5810,6 +5888,12 @@ export interface SubmodelRecentChange {
  * @export
  */
 export type TimeComparisonItemsInner = FieldOperand | TimeOperand;
+/**
+ * Exactly two `timeOperand`/`fieldOperand` operands, per the AASQL `timeComparisonItems` schema.
+ * @type TimeComparisonItems
+ * @export
+ */
+export type TimeComparisonItems = [TimeComparisonItemsInner, TimeComparisonItemsInner];
 /**
  *
  * @export

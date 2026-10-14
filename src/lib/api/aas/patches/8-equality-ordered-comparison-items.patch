@@ -1,0 +1,112 @@
+diff --git a/src/lib/api/aas/models/index.ts b/src/lib/api/aas/models/index.ts
+--- a/src/lib/api/aas/models/index.ts
++++ b/src/lib/api/aas/models/index.ts
+@@ -901,6 +901,12 @@
+  */
+ export type BoolComparisonItemsInner = BoolOperand | FieldOperand;
+ /**
++ * Exactly two `boolOperand`/`fieldOperand` operands, per the AASQL `boolComparisonItems` schema.
++ * @type BoolComparisonItems
++ * @export
++ */
++export type BoolComparisonItems = [BoolComparisonItemsInner, BoolComparisonItemsInner];
++/**
+  *
+  * @export
+  * @interface BoolOperand
+@@ -1423,6 +1429,13 @@
+  */
+ export type DateTimeComparisonItemsInner = DateTimeOperand | FieldOperand;
+ /**
++ * Exactly two `dateTimeOperand`/`fieldOperand` operands, per the AASQL `dateTimeComparisonItems`
++ * schema.
++ * @type DateTimeComparisonItems
++ * @export
++ */
++export type DateTimeComparisonItems = [DateTimeComparisonItemsInner, DateTimeComparisonItemsInner];
++/**
+  *
+  * @export
+  * @interface DateTimeOperand
+@@ -1755,11 +1768,19 @@
+     conceptDescriptions?: Array<ConceptDescription>;
+ }
+ /**
+- *
++ * A union of the comparison-item tuple types usable with $eq/$ne, per the AASQL
++ * `equalityComparisonItems` schema (anyOf stringItems | numericalComparisonItems |
++ * hexComparisonItems | boolComparisonItems | dateTimeComparisonItems | timeComparisonItems).
++ * @type EqualityComparisonItems
+  * @export
+- * @interface EqualityComparisonItems
+  */
+-export interface EqualityComparisonItems {}
++export type EqualityComparisonItems =
++    | StringItems
++    | NumericalComparisonItems
++    | HexComparisonItems
++    | BoolComparisonItems
++    | DateTimeComparisonItems
++    | TimeComparisonItems;
+ 
+ /**
+  *
+@@ -2326,6 +2347,12 @@
+  */
+ export type HexComparisonItemsInner = FieldOperand | HexOperand;
+ /**
++ * Exactly two `hexOperand`/`fieldOperand` operands, per the AASQL `hexComparisonItems` schema.
++ * @type HexComparisonItems
++ * @export
++ */
++export type HexComparisonItems = [HexComparisonItemsInner, HexComparisonItemsInner];
++/**
+  *
+  * @export
+  * @interface HexOperand
+@@ -3153,6 +3180,13 @@
+  */
+ export type NumericalComparisonItemsInner = FieldOperand | NumericalOperand;
+ /**
++ * Exactly two `numericalOperand`/`fieldOperand` operands, per the AASQL `numericalComparisonItems`
++ * schema.
++ * @type NumericalComparisonItems
++ * @export
++ */
++export type NumericalComparisonItems = [NumericalComparisonItemsInner, NumericalComparisonItemsInner];
++/**
+  *
+  * @export
+  * @interface NumericalOperand
+@@ -3557,11 +3591,15 @@
+     value: SubmodelElementChoice;
+ }
+ /**
+- *
++ * A union of the comparison-item tuple types usable with $gt/$ge/$lt/$le, per the AASQL
++ * `orderedComparisonItems` schema (anyOf stringItems | numericalComparisonItems |
++ * hexComparisonItems | dateTimeComparisonItems | timeComparisonItems — no boolComparisonItems,
++ * since booleans have no total ordering).
++ * @type OrderedComparisonItems
+  * @export
+- * @interface OrderedComparisonItems
+  */
+-export interface OrderedComparisonItems {}
++export type OrderedComparisonItems =
++    StringItems | NumericalComparisonItems | HexComparisonItems | DateTimeComparisonItems | TimeComparisonItems;
+ /**
+  *
+  * @export
+@@ -5851,6 +5889,12 @@
+  */
+ export type TimeComparisonItemsInner = FieldOperand | TimeOperand;
+ /**
++ * Exactly two `timeOperand`/`fieldOperand` operands, per the AASQL `timeComparisonItems` schema.
++ * @type TimeComparisonItems
++ * @export
++ */
++export type TimeComparisonItems = [TimeComparisonItemsInner, TimeComparisonItemsInner];
++/**
+  *
+  * @export
+  * @interface TimeOperand
