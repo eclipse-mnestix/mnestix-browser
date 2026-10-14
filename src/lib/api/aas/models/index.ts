@@ -80,6 +80,18 @@ export interface AdministrativeInformation {
      * @type {string}
      * @memberof AdministrativeInformation
      */
+    createdAt?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof AdministrativeInformation
+     */
+    updatedAt?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof AdministrativeInformation
+     */
     templateId?: string;
 }
 /**
@@ -132,7 +144,7 @@ export interface AnnotatedRelationshipElement {
     description?: Array<LangStringTextType>;
     /**
      *
-     * @type {string}
+     * @type {any}
      * @memberof AnnotatedRelationshipElement
      */
     modelType: 'AnnotatedRelationshipElement';
@@ -165,13 +177,13 @@ export interface AnnotatedRelationshipElement {
      * @type {Reference}
      * @memberof AnnotatedRelationshipElement
      */
-    first: Reference;
+    first?: Reference;
     /**
      *
      * @type {Reference}
      * @memberof AnnotatedRelationshipElement
      */
-    second: Reference;
+    second?: Reference;
     /**
      *
      * @type {Array<DataElementChoice>}
@@ -182,101 +194,27 @@ export interface AnnotatedRelationshipElement {
 /**
  *
  * @export
- * @interface AnnotatedRelationshipElementMetadata
- */
-export interface AnnotatedRelationshipElementMetadata {
-    /**
-     *
-     * @type {Array<Extension>}
-     * @memberof AnnotatedRelationshipElementMetadata
-     */
-    extensions?: Array<Extension>;
-    /**
-     *
-     * @type {string}
-     * @memberof AnnotatedRelationshipElementMetadata
-     */
-    category?: string;
-    /**
-     *
-     * @type {Referable1AllOfIdShort}
-     * @memberof AnnotatedRelationshipElementMetadata
-     */
-    idShort?: Referable1AllOfIdShort;
-    /**
-     *
-     * @type {Array<LangStringNameType>}
-     * @memberof AnnotatedRelationshipElementMetadata
-     */
-    displayName?: Array<LangStringNameType>;
-    /**
-     *
-     * @type {Array<LangStringTextType>}
-     * @memberof AnnotatedRelationshipElementMetadata
-     */
-    description?: Array<LangStringTextType>;
-    /**
-     *
-     * @type {ModelType}
-     * @memberof AnnotatedRelationshipElementMetadata
-     */
-    modelType: 'AnnotatedRelationshipElement';
-    /**
-     *
-     * @type {Array<EmbeddedDataSpecification>}
-     * @memberof AnnotatedRelationshipElementMetadata
-     */
-    embeddedDataSpecifications?: Array<EmbeddedDataSpecification>;
-    /**
-     *
-     * @type {Reference}
-     * @memberof AnnotatedRelationshipElementMetadata
-     */
-    semanticId?: Reference;
-    /**
-     *
-     * @type {Array<Reference>}
-     * @memberof AnnotatedRelationshipElementMetadata
-     */
-    supplementalSemanticIds?: Array<Reference>;
-    /**
-     *
-     * @type {Array<Qualifier1>}
-     * @memberof AnnotatedRelationshipElementMetadata
-     */
-    qualifiers?: Array<Qualifier1>;
-    /**
-     *
-     * @type {ModellingKind}
-     * @memberof AnnotatedRelationshipElementMetadata
-     */
-    kind?: ModellingKind;
-}
-
-/**
- *
- * @export
  * @interface AnnotatedRelationshipElementValue
  */
 export interface AnnotatedRelationshipElementValue {
     /**
      *
-     * @type {ReferenceValue}
+     * @type {Reference}
      * @memberof AnnotatedRelationshipElementValue
      */
-    first: ReferenceValue;
+    first?: Reference;
     /**
      *
-     * @type {ReferenceValue}
+     * @type {Reference}
      * @memberof AnnotatedRelationshipElementValue
      */
-    second: ReferenceValue;
+    second?: Reference;
     /**
-     *
-     * @type {Array<object>}
+     * The ValueOnly serialization (patternProperties and propertyNames will probably be supported with OpenApi 3.1). For the full description of the generic JSON validation schema see the ValueOnly-Serialization as defined in the 'Specification of the Asset Administration Shell - Part 2'.
+     * @type {object}
      * @memberof AnnotatedRelationshipElementValue
      */
-    annotations?: Array<object>;
+    annotations?: object;
 }
 /**
  *
@@ -316,7 +254,7 @@ export interface AssetAdministrationShell {
     description?: Array<LangStringTextType>;
     /**
      *
-     * @type {string}
+     * @type {any}
      * @memberof AssetAdministrationShell
      */
     modelType: 'AssetAdministrationShell';
@@ -440,6 +378,43 @@ export interface AssetAdministrationShellDescriptor {
 /**
  *
  * @export
+ * @interface AssetAdministrationShellRecentChange
+ */
+export interface AssetAdministrationShellRecentChange {
+    /**
+     *
+     * @type {string}
+     * @memberof AssetAdministrationShellRecentChange
+     */
+    createdAt: string;
+    /**
+     *
+     * @type {string}
+     * @memberof AssetAdministrationShellRecentChange
+     */
+    updatedAt: string;
+    /**
+     *
+     * @type {string}
+     * @memberof AssetAdministrationShellRecentChange
+     */
+    id: string;
+    /**
+     *
+     * @type {string}
+     * @memberof AssetAdministrationShellRecentChange
+     */
+    globalAssetId?: string;
+    /**
+     *
+     * @type {Array<SpecificAssetId>}
+     * @memberof AssetAdministrationShellRecentChange
+     */
+    specificAssetIds?: Array<SpecificAssetId>;
+}
+/**
+ *
+ * @export
  * @interface AssetInformation
  */
 export interface AssetInformation {
@@ -480,11 +455,69 @@ export interface AssetInformation {
  * @export
  */
 export const AssetKind = {
+    Batch: 'Batch',
     Instance: 'Instance',
     NotApplicable: 'NotApplicable',
+    Role: 'Role',
     Type: 'Type',
 } as const;
 export type AssetKind = (typeof AssetKind)[keyof typeof AssetKind];
+
+/**
+ *
+ * @export
+ * @interface AssetLink
+ */
+export interface AssetLink {
+    /**
+     *
+     * @type {string}
+     * @memberof AssetLink
+     */
+    name: string;
+    /**
+     *
+     * @type {string}
+     * @memberof AssetLink
+     */
+    value: string;
+}
+/**
+ *
+ * @export
+ * @interface AttributeItem
+ */
+export interface AttributeItem {
+    /**
+     *
+     * @type {string}
+     * @memberof AttributeItem
+     */
+    cLAIM?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof AttributeItem
+     */
+    gLOBAL?: AttributeItemGLOBALEnum;
+    /**
+     *
+     * @type {string}
+     * @memberof AttributeItem
+     */
+    rEFERENCE?: string;
+}
+
+/**
+ * @export
+ */
+export const AttributeItemGLOBALEnum = {
+    Localnow: 'LOCALNOW',
+    Utcnow: 'UTCNOW',
+    Clientnow: 'CLIENTNOW',
+    Anonymous: 'ANONYMOUS',
+} as const;
+export type AttributeItemGLOBALEnum = (typeof AttributeItemGLOBALEnum)[keyof typeof AttributeItemGLOBALEnum];
 
 /**
  *
@@ -550,7 +583,7 @@ export interface BasicEventElement {
     description?: Array<LangStringTextType>;
     /**
      *
-     * @type {string}
+     * @type {any}
      * @memberof BasicEventElement
      */
     modelType: 'BasicEventElement';
@@ -648,10 +681,10 @@ export interface BasicEventElementMetadata {
     category?: string;
     /**
      *
-     * @type {Referable1AllOfIdShort}
+     * @type {ReferableAllOfIdShort}
      * @memberof BasicEventElementMetadata
      */
-    idShort?: Referable1AllOfIdShort;
+    idShort?: ReferableAllOfIdShort;
     /**
      *
      * @type {Array<LangStringNameType>}
@@ -690,10 +723,10 @@ export interface BasicEventElementMetadata {
     supplementalSemanticIds?: Array<Reference>;
     /**
      *
-     * @type {Array<Qualifier1>}
+     * @type {Array<Qualifier>}
      * @memberof BasicEventElementMetadata
      */
-    qualifiers?: Array<Qualifier1>;
+    qualifiers?: Array<Qualifier>;
     /**
      *
      * @type {ModellingKind}
@@ -752,10 +785,10 @@ export interface BasicEventElementMetadata {
 export interface BasicEventElementValue {
     /**
      *
-     * @type {ReferenceValue}
+     * @type {Reference}
      * @memberof BasicEventElementValue
      */
-    observed: ReferenceValue;
+    observed: Reference;
 }
 /**
  *
@@ -795,7 +828,7 @@ export interface Blob {
     description?: Array<LangStringTextType>;
     /**
      *
-     * @type {string}
+     * @type {any}
      * @memberof Blob
      */
     modelType: 'Blob';
@@ -834,7 +867,7 @@ export interface Blob {
      * @type {BlobAllOfContentType}
      * @memberof Blob
      */
-    contentType: BlobAllOfContentType;
+    contentType?: BlobAllOfContentType;
 }
 /**
  *
@@ -842,80 +875,6 @@ export interface Blob {
  * @interface BlobAllOfContentType
  */
 export interface BlobAllOfContentType {}
-/**
- *
- * @export
- * @interface BlobMetadata
- */
-export interface BlobMetadata {
-    /**
-     *
-     * @type {Array<Extension>}
-     * @memberof BlobMetadata
-     */
-    extensions?: Array<Extension>;
-    /**
-     *
-     * @type {string}
-     * @memberof BlobMetadata
-     */
-    category?: string;
-    /**
-     *
-     * @type {Referable1AllOfIdShort}
-     * @memberof BlobMetadata
-     */
-    idShort?: Referable1AllOfIdShort;
-    /**
-     *
-     * @type {Array<LangStringNameType>}
-     * @memberof BlobMetadata
-     */
-    displayName?: Array<LangStringNameType>;
-    /**
-     *
-     * @type {Array<LangStringTextType>}
-     * @memberof BlobMetadata
-     */
-    description?: Array<LangStringTextType>;
-    /**
-     *
-     * @type {ModelType}
-     * @memberof BlobMetadata
-     */
-    modelType: 'Blob';
-    /**
-     *
-     * @type {Array<EmbeddedDataSpecification>}
-     * @memberof BlobMetadata
-     */
-    embeddedDataSpecifications?: Array<EmbeddedDataSpecification>;
-    /**
-     *
-     * @type {Reference}
-     * @memberof BlobMetadata
-     */
-    semanticId?: Reference;
-    /**
-     *
-     * @type {Array<Reference>}
-     * @memberof BlobMetadata
-     */
-    supplementalSemanticIds?: Array<Reference>;
-    /**
-     *
-     * @type {Array<Qualifier1>}
-     * @memberof BlobMetadata
-     */
-    qualifiers?: Array<Qualifier1>;
-    /**
-     *
-     * @type {ModellingKind}
-     * @memberof BlobMetadata
-     */
-    kind?: ModellingKind;
-}
-
 /**
  *
  * @export
@@ -927,13 +886,38 @@ export interface BlobValue {
      * @type {string}
      * @memberof BlobValue
      */
-    contentType: string;
+    contentType?: string;
     /**
      *
      * @type {string}
      * @memberof BlobValue
      */
     value?: string;
+}
+/**
+ * @type BoolComparisonItemsInner
+ *
+ * @export
+ */
+export type BoolComparisonItemsInner = BoolOperand | FieldOperand;
+/**
+ *
+ * @export
+ * @interface BoolOperand
+ */
+export interface BoolOperand {
+    /**
+     *
+     * @type {boolean}
+     * @memberof BoolOperand
+     */
+    $boolean?: boolean;
+    /**
+     *
+     * @type {Value}
+     * @memberof BoolOperand
+     */
+    $boolCast?: Value | null;
 }
 /**
  *
@@ -973,7 +957,7 @@ export interface Capability {
     description?: Array<LangStringTextType>;
     /**
      *
-     * @type {string}
+     * @type {any}
      * @memberof Capability
      */
     modelType: 'Capability';
@@ -1022,10 +1006,10 @@ export interface CapabilityMetadata {
     category?: string;
     /**
      *
-     * @type {Referable1AllOfIdShort}
+     * @type {ReferableAllOfIdShort}
      * @memberof CapabilityMetadata
      */
-    idShort?: Referable1AllOfIdShort;
+    idShort?: ReferableAllOfIdShort;
     /**
      *
      * @type {Array<LangStringNameType>}
@@ -1064,10 +1048,10 @@ export interface CapabilityMetadata {
     supplementalSemanticIds?: Array<Reference>;
     /**
      *
-     * @type {Array<Qualifier1>}
+     * @type {Array<Qualifier>}
      * @memberof CapabilityMetadata
      */
-    qualifiers?: Array<Qualifier1>;
+    qualifiers?: Array<Qualifier>;
     /**
      *
      * @type {ModellingKind}
@@ -1114,7 +1098,7 @@ export interface ConceptDescription {
     description?: Array<LangStringTextType>;
     /**
      *
-     * @type {string}
+     * @type {any}
      * @memberof ConceptDescription
      */
     modelType: 'ConceptDescription';
@@ -1146,71 +1130,28 @@ export interface ConceptDescription {
 /**
  *
  * @export
- * @interface DataElement
+ * @interface ConceptDescriptionRecentChange
  */
-export interface DataElement {
-    /**
-     *
-     * @type {Array<Extension>}
-     * @memberof DataElement
-     */
-    extensions?: Array<Extension>;
+export interface ConceptDescriptionRecentChange {
     /**
      *
      * @type {string}
-     * @memberof DataElement
+     * @memberof ConceptDescriptionRecentChange
      */
-    category?: string;
+    createdAt: string;
     /**
      *
-     * @type {ReferableAllOfIdShort}
-     * @memberof DataElement
+     * @type {string}
+     * @memberof ConceptDescriptionRecentChange
      */
-    idShort?: ReferableAllOfIdShort;
+    updatedAt: string;
     /**
      *
-     * @type {Array<LangStringNameType>}
-     * @memberof DataElement
+     * @type {string}
+     * @memberof ConceptDescriptionRecentChange
      */
-    displayName?: Array<LangStringNameType>;
-    /**
-     *
-     * @type {Array<LangStringTextType>}
-     * @memberof DataElement
-     */
-    description?: Array<LangStringTextType>;
-    /**
-     *
-     * @type {ModelType}
-     * @memberof DataElement
-     */
-    modelType: ModelType;
-    /**
-     *
-     * @type {Reference}
-     * @memberof DataElement
-     */
-    semanticId?: Reference;
-    /**
-     *
-     * @type {Array<Reference>}
-     * @memberof DataElement
-     */
-    supplementalSemanticIds?: Array<Reference>;
-    /**
-     *
-     * @type {Array<Qualifier>}
-     * @memberof DataElement
-     */
-    qualifiers?: Array<Qualifier>;
-    /**
-     *
-     * @type {Array<EmbeddedDataSpecification>}
-     * @memberof DataElement
-     */
-    embeddedDataSpecifications?: Array<EmbeddedDataSpecification>;
+    id: string;
 }
-
 /**
  * @type DataElementChoice
  *
@@ -1232,6 +1173,12 @@ export interface DataSpecificationContent {
 }
 
 /**
+ * @type DataSpecificationContentChoice
+ *
+ * @export
+ */
+export type DataSpecificationContentChoice = DataSpecificationIec61360 | DataSpecificationUom;
+/**
  *
  * @export
  * @interface DataSpecificationIec61360
@@ -1239,10 +1186,10 @@ export interface DataSpecificationContent {
 export interface DataSpecificationIec61360 {
     /**
      *
-     * @type {string}
+     * @type {any}
      * @memberof DataSpecificationIec61360
      */
-    modelType: string;
+    modelType: any | null;
     /**
      *
      * @type {Array<LangStringPreferredNameTypeIec61360>}
@@ -1320,6 +1267,68 @@ export interface DataSpecificationIec61360 {
 /**
  *
  * @export
+ * @interface DataSpecificationUom
+ */
+export interface DataSpecificationUom {
+    /**
+     *
+     * @type {any}
+     * @memberof DataSpecificationUom
+     */
+    modelType: any | null;
+    /**
+     *
+     * @type {Array<LangStringUom>}
+     * @memberof DataSpecificationUom
+     */
+    preferredName: Array<LangStringUom>;
+    /**
+     *
+     * @type {string}
+     * @memberof DataSpecificationUom
+     */
+    symbol: string;
+    /**
+     *
+     * @type {string}
+     * @memberof DataSpecificationUom
+     */
+    specificUnitId?: string;
+    /**
+     *
+     * @type {Array<LangStringDefinitionTypeUom>}
+     * @memberof DataSpecificationUom
+     */
+    definition?: Array<LangStringDefinitionTypeUom>;
+    /**
+     *
+     * @type {Array<LangStringUom>}
+     * @memberof DataSpecificationUom
+     */
+    preferredNameQuantity?: Array<LangStringUom>;
+    /**
+     *
+     * @type {string}
+     * @memberof DataSpecificationUom
+     */
+    quantityId?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof DataSpecificationUom
+     */
+    classificationSystem?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof DataSpecificationUom
+     */
+    classificationSystemVersion?: string;
+}
+
+/**
+ *
+ * @export
  */
 export const DataTypeDefXsd = {
     XsAnyUri: 'xs:anyURI',
@@ -1385,6 +1394,62 @@ export type DataTypeIec61360 = (typeof DataTypeIec61360)[keyof typeof DataTypeIe
 /**
  *
  * @export
+ * @interface DateTimeAttributeItem
+ */
+export interface DateTimeAttributeItem {
+    /**
+     *
+     * @type {string}
+     * @memberof DateTimeAttributeItem
+     */
+    gLOBAL: DateTimeAttributeItemGLOBALEnum;
+}
+
+/**
+ * @export
+ */
+export const DateTimeAttributeItemGLOBALEnum = {
+    Localnow: 'LOCALNOW',
+    Utcnow: 'UTCNOW',
+    Clientnow: 'CLIENTNOW',
+} as const;
+export type DateTimeAttributeItemGLOBALEnum =
+    (typeof DateTimeAttributeItemGLOBALEnum)[keyof typeof DateTimeAttributeItemGLOBALEnum];
+
+/**
+ * @type DateTimeComparisonItemsInner
+ *
+ * @export
+ */
+export type DateTimeComparisonItemsInner = DateTimeOperand | FieldOperand;
+/**
+ *
+ * @export
+ * @interface DateTimeOperand
+ */
+export interface DateTimeOperand {
+    /**
+     *
+     * @type {string}
+     * @memberof DateTimeOperand
+     */
+    $dateTimeVal?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof DateTimeOperand
+     */
+    $dateTimeCast?: string;
+    /**
+     *
+     * @type {DateTimeAttributeItem}
+     * @memberof DateTimeOperand
+     */
+    $attribute?: DateTimeAttributeItem;
+}
+/**
+ *
+ * @export
  * @interface Descriptor
  */
 export interface Descriptor {
@@ -1426,16 +1491,16 @@ export type Direction = (typeof Direction)[keyof typeof Direction];
 export interface EmbeddedDataSpecification {
     /**
      *
-     * @type {DataSpecificationIec61360}
-     * @memberof EmbeddedDataSpecification
-     */
-    dataSpecificationContent: DataSpecificationIec61360;
-    /**
-     *
      * @type {Reference}
      * @memberof EmbeddedDataSpecification
      */
     dataSpecification: Reference;
+    /**
+     *
+     * @type {DataSpecificationContentChoice}
+     * @memberof EmbeddedDataSpecification
+     */
+    dataSpecificationContent: DataSpecificationContentChoice;
 }
 /**
  *
@@ -1494,7 +1559,7 @@ export interface Entity {
     description?: Array<LangStringTextType>;
     /**
      *
-     * @type {string}
+     * @type {any}
      * @memberof Entity
      */
     modelType: 'Entity';
@@ -1533,7 +1598,7 @@ export interface Entity {
      * @type {EntityType}
      * @memberof Entity
      */
-    entityType: EntityType;
+    entityType?: EntityType;
     /**
      *
      * @type {string}
@@ -1568,10 +1633,10 @@ export interface EntityMetadata {
     category?: string;
     /**
      *
-     * @type {Referable1AllOfIdShort}
+     * @type {ReferableAllOfIdShort}
      * @memberof EntityMetadata
      */
-    idShort?: Referable1AllOfIdShort;
+    idShort?: ReferableAllOfIdShort;
     /**
      *
      * @type {Array<LangStringNameType>}
@@ -1610,10 +1675,10 @@ export interface EntityMetadata {
     supplementalSemanticIds?: Array<Reference>;
     /**
      *
-     * @type {Array<Qualifier1>}
+     * @type {Array<Qualifier>}
      * @memberof EntityMetadata
      */
-    qualifiers?: Array<Qualifier1>;
+    qualifiers?: Array<Qualifier>;
     /**
      *
      * @type {ModellingKind}
@@ -1643,7 +1708,7 @@ export interface EntityValue {
      * @type {EntityType}
      * @memberof EntityValue
      */
-    entityType: EntityType;
+    entityType?: EntityType;
     /**
      *
      * @type {string}
@@ -1657,11 +1722,11 @@ export interface EntityValue {
      */
     specificAssetIds?: Array<object>;
     /**
-     *
-     * @type {Array<object>}
+     * The ValueOnly serialization (patternProperties and propertyNames will probably be supported with OpenApi 3.1). For the full description of the generic JSON validation schema see the ValueOnly-Serialization as defined in the 'Specification of the Asset Administration Shell - Part 2'.
+     * @type {object}
      * @memberof EntityValue
      */
-    statements?: Array<object>;
+    statements?: object;
 }
 
 /**
@@ -1692,70 +1757,9 @@ export interface Environment {
 /**
  *
  * @export
- * @interface EventElement
+ * @interface EqualityComparisonItems
  */
-export interface EventElement {
-    /**
-     *
-     * @type {Array<Extension>}
-     * @memberof EventElement
-     */
-    extensions?: Array<Extension>;
-    /**
-     *
-     * @type {string}
-     * @memberof EventElement
-     */
-    category?: string;
-    /**
-     *
-     * @type {ReferableAllOfIdShort}
-     * @memberof EventElement
-     */
-    idShort?: ReferableAllOfIdShort;
-    /**
-     *
-     * @type {Array<LangStringNameType>}
-     * @memberof EventElement
-     */
-    displayName?: Array<LangStringNameType>;
-    /**
-     *
-     * @type {Array<LangStringTextType>}
-     * @memberof EventElement
-     */
-    description?: Array<LangStringTextType>;
-    /**
-     *
-     * @type {ModelType}
-     * @memberof EventElement
-     */
-    modelType: ModelType;
-    /**
-     *
-     * @type {Reference}
-     * @memberof EventElement
-     */
-    semanticId?: Reference;
-    /**
-     *
-     * @type {Array<Reference>}
-     * @memberof EventElement
-     */
-    supplementalSemanticIds?: Array<Reference>;
-    /**
-     *
-     * @type {Array<Qualifier>}
-     * @memberof EventElement
-     */
-    qualifiers?: Array<Qualifier>;
-    /**
-     *
-     * @type {Array<EmbeddedDataSpecification>}
-     * @memberof EventElement
-     */
-    embeddedDataSpecifications?: Array<EmbeddedDataSpecification>;
-}
+export interface EqualityComparisonItems {}
 
 /**
  *
@@ -1818,9 +1822,28 @@ export interface Extension {
 /**
  *
  * @export
+ * @interface FieldOperand
+ */
+export interface FieldOperand {
+    /**
+     *
+     * @type {string}
+     * @memberof FieldOperand
+     */
+    $field: string;
+}
+/**
+ *
+ * @export
  * @interface FileAllOfContentType
  */
 export type FileAllOfContentType = string;
+/**
+ *
+ * @export
+ * @interface FileAllOfValue
+ */
+export interface FileAllOfValue {}
 /**
  *
  * @export
@@ -1841,10 +1864,10 @@ export interface FileMetadata {
     category?: string;
     /**
      *
-     * @type {Referable1AllOfIdShort}
+     * @type {ReferableAllOfIdShort}
      * @memberof FileMetadata
      */
-    idShort?: Referable1AllOfIdShort;
+    idShort?: ReferableAllOfIdShort;
     /**
      *
      * @type {Array<LangStringNameType>}
@@ -1883,10 +1906,10 @@ export interface FileMetadata {
     supplementalSemanticIds?: Array<Reference>;
     /**
      *
-     * @type {Array<Qualifier1>}
+     * @type {Array<Qualifier>}
      * @memberof FileMetadata
      */
-    qualifiers?: Array<Qualifier1>;
+    qualifiers?: Array<Qualifier>;
     /**
      *
      * @type {ModellingKind}
@@ -1906,13 +1929,13 @@ export interface FileValue {
      * @type {string}
      * @memberof FileValue
      */
-    contentType: string;
+    contentType?: string;
     /**
      *
      * @type {string}
      * @memberof FileValue
      */
-    value: string;
+    value?: string;
 }
 /**
  *
@@ -1932,6 +1955,63 @@ export interface GetAllAssetAdministrationShellIdsByAssetLink200Response {
      * @memberof GetAllAssetAdministrationShellIdsByAssetLink200Response
      */
     result?: Array<string>;
+}
+/**
+ *
+ * @export
+ * @interface GetAllAssetAdministrationShellsRecentChangesResult
+ */
+export interface GetAllAssetAdministrationShellsRecentChangesResult {
+    /**
+     *
+     * @type {PagedResultPagingMetadata}
+     * @memberof GetAllAssetAdministrationShellsRecentChangesResult
+     */
+    pagingMetadata: PagedResultPagingMetadata;
+    /**
+     *
+     * @type {Array<AssetAdministrationShellRecentChange>}
+     * @memberof GetAllAssetAdministrationShellsRecentChangesResult
+     */
+    result?: Array<AssetAdministrationShellRecentChange>;
+}
+/**
+ *
+ * @export
+ * @interface GetAllConceptDescriptionsRecentChangesResult
+ */
+export interface GetAllConceptDescriptionsRecentChangesResult {
+    /**
+     *
+     * @type {PagedResultPagingMetadata}
+     * @memberof GetAllConceptDescriptionsRecentChangesResult
+     */
+    pagingMetadata: PagedResultPagingMetadata;
+    /**
+     *
+     * @type {Array<ConceptDescriptionRecentChange>}
+     * @memberof GetAllConceptDescriptionsRecentChangesResult
+     */
+    result?: Array<ConceptDescriptionRecentChange>;
+}
+/**
+ *
+ * @export
+ * @interface GetAllSubmodelsRecentChangesResult
+ */
+export interface GetAllSubmodelsRecentChangesResult {
+    /**
+     *
+     * @type {PagedResultPagingMetadata}
+     * @memberof GetAllSubmodelsRecentChangesResult
+     */
+    pagingMetadata: PagedResultPagingMetadata;
+    /**
+     *
+     * @type {Array<SubmodelRecentChange>}
+     * @memberof GetAllSubmodelsRecentChangesResult
+     */
+    result?: Array<SubmodelRecentChange>;
 }
 /**
  *
@@ -2174,7 +2254,7 @@ export interface GetSubmodelsValueResult {
      */
     pagingMetadata: PagedResultPagingMetadata;
     /**
-     * The ValueOnly serialization (patternProperties and propertyNames will be supported probably with OpenApi 3.1). For the full description of the generic JSON validation schema see the ValueOnly-Serialization as defined in the 'Specification of the Asset Administration Shell - Part 2'.
+     * The ValueOnly serialization (patternProperties and propertyNames will probably be supported with OpenApi 3.1). For the full description of the generic JSON validation schema see the ValueOnly-Serialization as defined in the 'Specification of the Asset Administration Shell - Part 2'.
      * @type {object}
      * @memberof GetSubmodelsValueResult
      */
@@ -2223,20 +2303,6 @@ export interface HasKind {
 /**
  *
  * @export
- * @interface HasKind1
- */
-export interface HasKind1 {
-    /**
-     *
-     * @type {ModellingKind}
-     * @memberof HasKind1
-     */
-    kind?: ModellingKind;
-}
-
-/**
- *
- * @export
  * @interface HasSemantics
  */
 export interface HasSemantics {
@@ -2254,23 +2320,29 @@ export interface HasSemantics {
     supplementalSemanticIds?: Array<Reference>;
 }
 /**
+ * @type HexComparisonItemsInner
  *
  * @export
- * @interface HasSemantics1
  */
-export interface HasSemantics1 {
+export type HexComparisonItemsInner = FieldOperand | HexOperand;
+/**
+ *
+ * @export
+ * @interface HexOperand
+ */
+export interface HexOperand {
     /**
      *
-     * @type {Reference}
-     * @memberof HasSemantics1
+     * @type {string}
+     * @memberof HexOperand
      */
-    semanticId?: Reference;
+    $hexVal?: string;
     /**
      *
-     * @type {Array<Reference>}
-     * @memberof HasSemantics1
+     * @type {Value}
+     * @memberof HexOperand
      */
-    supplementalSemanticIds?: Array<Reference>;
+    $hexCast?: Value | null;
 }
 /**
  *
@@ -2402,6 +2474,25 @@ export interface LangStringDefinitionTypeIec61360 {
 /**
  *
  * @export
+ * @interface LangStringDefinitionTypeUom
+ */
+export interface LangStringDefinitionTypeUom {
+    /**
+     *
+     * @type {string}
+     * @memberof LangStringDefinitionTypeUom
+     */
+    language: string;
+    /**
+     *
+     * @type {any}
+     * @memberof LangStringDefinitionTypeUom
+     */
+    text: any | null;
+}
+/**
+ *
+ * @export
  * @interface LangStringNameType
  */
 export interface LangStringNameType {
@@ -2478,6 +2569,25 @@ export interface LangStringTextType {
 /**
  *
  * @export
+ * @interface LangStringUom
+ */
+export interface LangStringUom {
+    /**
+     *
+     * @type {string}
+     * @memberof LangStringUom
+     */
+    language: string;
+    /**
+     *
+     * @type {any}
+     * @memberof LangStringUom
+     */
+    text: any | null;
+}
+/**
+ *
+ * @export
  * @interface LevelType
  */
 export interface LevelType {
@@ -2505,6 +2615,176 @@ export interface LevelType {
      * @memberof LevelType
      */
     max: boolean;
+}
+/**
+ *
+ * @export
+ * @interface LogicalExpression
+ */
+export interface LogicalExpression {
+    /**
+     *
+     * @type {Array<LogicalExpression>}
+     * @memberof LogicalExpression
+     */
+    $and?: Array<LogicalExpression>;
+    /**
+     *
+     * @type {Array<MatchExpression>}
+     * @memberof LogicalExpression
+     */
+    $match?: Array<MatchExpression>;
+    /**
+     *
+     * @type {Array<LogicalExpression>}
+     * @memberof LogicalExpression
+     */
+    $or?: Array<LogicalExpression>;
+    /**
+     *
+     * @type {LogicalExpression}
+     * @memberof LogicalExpression
+     */
+    $not?: LogicalExpression | null;
+    /**
+     *
+     * @type {EqualityComparisonItems}
+     * @memberof LogicalExpression
+     */
+    $eq?: EqualityComparisonItems;
+    /**
+     *
+     * @type {EqualityComparisonItems}
+     * @memberof LogicalExpression
+     */
+    $ne?: EqualityComparisonItems;
+    /**
+     *
+     * @type {OrderedComparisonItems}
+     * @memberof LogicalExpression
+     */
+    $gt?: OrderedComparisonItems;
+    /**
+     *
+     * @type {OrderedComparisonItems}
+     * @memberof LogicalExpression
+     */
+    $ge?: OrderedComparisonItems;
+    /**
+     *
+     * @type {OrderedComparisonItems}
+     * @memberof LogicalExpression
+     */
+    $lt?: OrderedComparisonItems;
+    /**
+     *
+     * @type {OrderedComparisonItems}
+     * @memberof LogicalExpression
+     */
+    $le?: OrderedComparisonItems;
+    /**
+     *
+     * @type {Array<string>}
+     * @memberof LogicalExpression
+     */
+    $contains?: Array<string>;
+    /**
+     *
+     * @type {Array<string>}
+     * @memberof LogicalExpression
+     */
+    $startsWith?: Array<string>;
+    /**
+     *
+     * @type {Array<string>}
+     * @memberof LogicalExpression
+     */
+    $endsWith?: Array<string>;
+    /**
+     *
+     * @type {Array<string>}
+     * @memberof LogicalExpression
+     */
+    $regex?: Array<string>;
+    /**
+     *
+     * @type {boolean}
+     * @memberof LogicalExpression
+     */
+    $boolean?: boolean;
+}
+/**
+ *
+ * @export
+ * @interface MatchExpression
+ */
+export interface MatchExpression {
+    /**
+     *
+     * @type {Array<MatchExpression>}
+     * @memberof MatchExpression
+     */
+    $match?: Array<MatchExpression>;
+    /**
+     *
+     * @type {EqualityComparisonItems}
+     * @memberof MatchExpression
+     */
+    $eq?: EqualityComparisonItems;
+    /**
+     *
+     * @type {EqualityComparisonItems}
+     * @memberof MatchExpression
+     */
+    $ne?: EqualityComparisonItems;
+    /**
+     *
+     * @type {OrderedComparisonItems}
+     * @memberof MatchExpression
+     */
+    $gt?: OrderedComparisonItems;
+    /**
+     *
+     * @type {OrderedComparisonItems}
+     * @memberof MatchExpression
+     */
+    $ge?: OrderedComparisonItems;
+    /**
+     *
+     * @type {OrderedComparisonItems}
+     * @memberof MatchExpression
+     */
+    $lt?: OrderedComparisonItems;
+    /**
+     *
+     * @type {OrderedComparisonItems}
+     * @memberof MatchExpression
+     */
+    $le?: OrderedComparisonItems;
+    /**
+     *
+     * @type {Array<string>}
+     * @memberof MatchExpression
+     */
+    $contains?: Array<string>;
+    /**
+     *
+     * @type {Array<string>}
+     * @memberof MatchExpression
+     */
+    $startsWith?: Array<string>;
+    /**
+     *
+     * @type {Array<string>}
+     * @memberof MatchExpression
+     */
+    $endsWith?: Array<string>;
+    /**
+     *
+     * @type {Array<string>}
+     * @memberof MatchExpression
+     */
+    $regex?: Array<string>;
 }
 /**
  *
@@ -2594,7 +2874,7 @@ export interface ModelFile {
     description?: Array<LangStringTextType>;
     /**
      *
-     * @type {string}
+     * @type {any}
      * @memberof ModelFile
      */
     modelType: 'File';
@@ -2624,16 +2904,16 @@ export interface ModelFile {
     embeddedDataSpecifications?: Array<EmbeddedDataSpecification>;
     /**
      *
-     * @type {string}
+     * @type {FileAllOfValue}
      * @memberof ModelFile
      */
-    value?: string;
+    value?: FileAllOfValue;
     /**
      *
      * @type {FileAllOfContentType}
      * @memberof ModelFile
      */
-    contentType: FileAllOfContentType;
+    contentType?: FileAllOfContentType;
 }
 
 /**
@@ -2648,6 +2928,7 @@ export const ModelType = {
     Capability: 'Capability',
     ConceptDescription: 'ConceptDescription',
     DataSpecificationIec61360: 'DataSpecificationIec61360',
+    DataSpecificationUom: 'DataSpecificationUom',
     Entity: 'Entity',
     File: 'File',
     MultiLanguageProperty: 'MultiLanguageProperty',
@@ -2710,7 +2991,7 @@ export interface MultiLanguageProperty {
     description?: Array<LangStringTextType>;
     /**
      *
-     * @type {string}
+     * @type {any}
      * @memberof MultiLanguageProperty
      */
     modelType: 'MultiLanguageProperty';
@@ -2771,10 +3052,10 @@ export interface MultiLanguagePropertyMetadata {
     category?: string;
     /**
      *
-     * @type {Referable1AllOfIdShort}
+     * @type {ReferableAllOfIdShort}
      * @memberof MultiLanguagePropertyMetadata
      */
-    idShort?: Referable1AllOfIdShort;
+    idShort?: ReferableAllOfIdShort;
     /**
      *
      * @type {Array<LangStringNameType>}
@@ -2813,10 +3094,10 @@ export interface MultiLanguagePropertyMetadata {
     supplementalSemanticIds?: Array<Reference>;
     /**
      *
-     * @type {Array<Qualifier1>}
+     * @type {Array<Qualifier>}
      * @memberof MultiLanguagePropertyMetadata
      */
-    qualifiers?: Array<Qualifier1>;
+    qualifiers?: Array<Qualifier>;
     /**
      *
      * @type {ModellingKind}
@@ -2825,6 +3106,55 @@ export interface MultiLanguagePropertyMetadata {
     kind?: ModellingKind;
 }
 
+/**
+ * @type NumericalComparisonItemsInner
+ *
+ * @export
+ */
+export type NumericalComparisonItemsInner = FieldOperand | NumericalOperand;
+/**
+ *
+ * @export
+ * @interface NumericalOperand
+ */
+export interface NumericalOperand {
+    /**
+     *
+     * @type {number}
+     * @memberof NumericalOperand
+     */
+    $numVal?: number;
+    /**
+     *
+     * @type {Value}
+     * @memberof NumericalOperand
+     */
+    $numCast?: Value | null;
+    /**
+     *
+     * @type {DateTimeOperand}
+     * @memberof NumericalOperand
+     */
+    $dayOfWeek?: DateTimeOperand | null;
+    /**
+     *
+     * @type {DateTimeOperand}
+     * @memberof NumericalOperand
+     */
+    $dayOfMonth?: DateTimeOperand | null;
+    /**
+     *
+     * @type {DateTimeOperand}
+     * @memberof NumericalOperand
+     */
+    $month?: DateTimeOperand | null;
+    /**
+     *
+     * @type {DateTimeOperand}
+     * @memberof NumericalOperand
+     */
+    $year?: DateTimeOperand | null;
+}
 /**
  *
  * @export
@@ -2863,7 +3193,7 @@ export interface Operation {
     description?: Array<LangStringTextType>;
     /**
      *
-     * @type {string}
+     * @type {any}
      * @memberof Operation
      */
     modelType: 'Operation';
@@ -2913,6 +3243,19 @@ export interface Operation {
 /**
  *
  * @export
+ * @interface OperationHandle
+ */
+export interface OperationHandle {
+    /**
+     *
+     * @type {string}
+     * @memberof OperationHandle
+     */
+    handleId?: string;
+}
+/**
+ *
+ * @export
  * @interface OperationMetadata
  */
 export interface OperationMetadata {
@@ -2930,10 +3273,10 @@ export interface OperationMetadata {
     category?: string;
     /**
      *
-     * @type {Referable1AllOfIdShort}
+     * @type {ReferableAllOfIdShort}
      * @memberof OperationMetadata
      */
-    idShort?: Referable1AllOfIdShort;
+    idShort?: ReferableAllOfIdShort;
     /**
      *
      * @type {Array<LangStringNameType>}
@@ -2972,10 +3315,10 @@ export interface OperationMetadata {
     supplementalSemanticIds?: Array<Reference>;
     /**
      *
-     * @type {Array<Qualifier1>}
+     * @type {Array<Qualifier>}
      * @memberof OperationMetadata
      */
-    qualifiers?: Array<Qualifier1>;
+    qualifiers?: Array<Qualifier>;
     /**
      *
      * @type {ModellingKind}
@@ -3012,17 +3355,67 @@ export interface OperationRequest {
 /**
  *
  * @export
+ * @interface OperationRequestAsync
+ */
+export interface OperationRequestAsync {
+    /**
+     *
+     * @type {Array<OperationVariable>}
+     * @memberof OperationRequestAsync
+     */
+    inoutputArguments?: Array<OperationVariable>;
+    /**
+     *
+     * @type {Array<OperationVariable>}
+     * @memberof OperationRequestAsync
+     */
+    inputArguments?: Array<OperationVariable>;
+    /**
+     *
+     * @type {string}
+     * @memberof OperationRequestAsync
+     */
+    clientTimeoutDuration: string;
+}
+/**
+ *
+ * @export
+ * @interface OperationRequestAsyncValueOnly
+ */
+export interface OperationRequestAsyncValueOnly {
+    /**
+     * The ValueOnly serialization (patternProperties and propertyNames will probably be supported with OpenApi 3.1). For the full description of the generic JSON validation schema see the ValueOnly-Serialization as defined in the 'Specification of the Asset Administration Shell - Part 2'.
+     * @type {object}
+     * @memberof OperationRequestAsyncValueOnly
+     */
+    inoutputArguments?: object;
+    /**
+     * The ValueOnly serialization (patternProperties and propertyNames will probably be supported with OpenApi 3.1). For the full description of the generic JSON validation schema see the ValueOnly-Serialization as defined in the 'Specification of the Asset Administration Shell - Part 2'.
+     * @type {object}
+     * @memberof OperationRequestAsyncValueOnly
+     */
+    inputArguments?: object;
+    /**
+     *
+     * @type {string}
+     * @memberof OperationRequestAsyncValueOnly
+     */
+    clientTimeoutDuration: string;
+}
+/**
+ *
+ * @export
  * @interface OperationRequestValueOnly
  */
 export interface OperationRequestValueOnly {
     /**
-     * The ValueOnly serialization (patternProperties and propertyNames will be supported probably with OpenApi 3.1). For the full description of the generic JSON validation schema see the ValueOnly-Serialization as defined in the 'Specification of the Asset Administration Shell - Part 2'.
+     * The ValueOnly serialization (patternProperties and propertyNames will probably be supported with OpenApi 3.1). For the full description of the generic JSON validation schema see the ValueOnly-Serialization as defined in the 'Specification of the Asset Administration Shell - Part 2'.
      * @type {object}
      * @memberof OperationRequestValueOnly
      */
     inoutputArguments?: object;
     /**
-     * The ValueOnly serialization (patternProperties and propertyNames will be supported probably with OpenApi 3.1). For the full description of the generic JSON validation schema see the ValueOnly-Serialization as defined in the 'Specification of the Asset Administration Shell - Part 2'.
+     * The ValueOnly serialization (patternProperties and propertyNames will probably be supported with OpenApi 3.1). For the full description of the generic JSON validation schema see the ValueOnly-Serialization as defined in the 'Specification of the Asset Administration Shell - Part 2'.
      * @type {object}
      * @memberof OperationRequestValueOnly
      */
@@ -3032,7 +3425,7 @@ export interface OperationRequestValueOnly {
      * @type {string}
      * @memberof OperationRequestValueOnly
      */
-    clientTimeoutDuration: string;
+    clientTimeoutDuration?: string;
 }
 /**
  *
@@ -3097,13 +3490,13 @@ export interface OperationResultValueOnly {
      */
     success?: boolean;
     /**
-     * The ValueOnly serialization (patternProperties and propertyNames will be supported probably with OpenApi 3.1). For the full description of the generic JSON validation schema see the ValueOnly-Serialization as defined in the 'Specification of the Asset Administration Shell - Part 2'.
+     * The ValueOnly serialization (patternProperties and propertyNames will probably be supported with OpenApi 3.1). For the full description of the generic JSON validation schema see the ValueOnly-Serialization as defined in the 'Specification of the Asset Administration Shell - Part 2'.
      * @type {object}
      * @memberof OperationResultValueOnly
      */
     inoutputArguments?: object;
     /**
-     * The ValueOnly serialization (patternProperties and propertyNames will be supported probably with OpenApi 3.1). For the full description of the generic JSON validation schema see the ValueOnly-Serialization as defined in the 'Specification of the Asset Administration Shell - Part 2'.
+     * The ValueOnly serialization (patternProperties and propertyNames will probably be supported with OpenApi 3.1). For the full description of the generic JSON validation schema see the ValueOnly-Serialization as defined in the 'Specification of the Asset Administration Shell - Part 2'.
      * @type {object}
      * @memberof OperationResultValueOnly
      */
@@ -3123,6 +3516,12 @@ export interface OperationVariable {
      */
     value: SubmodelElementChoice;
 }
+/**
+ *
+ * @export
+ * @interface OrderedComparisonItems
+ */
+export interface OrderedComparisonItems {}
 /**
  *
  * @export
@@ -3206,7 +3605,7 @@ export interface Property {
     description?: Array<LangStringTextType>;
     /**
      *
-     * @type {string}
+     * @type {any}
      * @memberof Property
      */
     modelType: 'Property';
@@ -3280,10 +3679,10 @@ export interface PropertyMetadata {
     category?: string;
     /**
      *
-     * @type {Referable1AllOfIdShort}
+     * @type {ReferableAllOfIdShort}
      * @memberof PropertyMetadata
      */
-    idShort?: Referable1AllOfIdShort;
+    idShort?: ReferableAllOfIdShort;
     /**
      *
      * @type {Array<LangStringNameType>}
@@ -3322,10 +3721,10 @@ export interface PropertyMetadata {
     supplementalSemanticIds?: Array<Reference>;
     /**
      *
-     * @type {Array<Qualifier1>}
+     * @type {Array<Qualifier>}
      * @memberof PropertyMetadata
      */
-    qualifiers?: Array<Qualifier1>;
+    qualifiers?: Array<Qualifier>;
     /**
      *
      * @type {ModellingKind}
@@ -3449,26 +3848,6 @@ export interface Qualifiable {
 /**
  *
  * @export
- * @interface Qualifiable1
- */
-export interface Qualifiable1 {
-    /**
-     *
-     * @type {Array<Qualifier1>}
-     * @memberof Qualifiable1
-     */
-    qualifiers?: Array<Qualifier1>;
-    /**
-     *
-     * @type {ModelType}
-     * @memberof Qualifiable1
-     */
-    modelType: ModelType;
-}
-
-/**
- *
- * @export
  * @interface Qualifier
  */
 export interface Qualifier {
@@ -3519,56 +3898,6 @@ export interface Qualifier {
 /**
  *
  * @export
- * @interface Qualifier1
- */
-export interface Qualifier1 {
-    /**
-     *
-     * @type {Reference}
-     * @memberof Qualifier1
-     */
-    semanticId?: Reference;
-    /**
-     *
-     * @type {Array<Reference>}
-     * @memberof Qualifier1
-     */
-    supplementalSemanticIds?: Array<Reference>;
-    /**
-     *
-     * @type {QualifierKind}
-     * @memberof Qualifier1
-     */
-    kind?: QualifierKind;
-    /**
-     *
-     * @type {string}
-     * @memberof Qualifier1
-     */
-    type: string;
-    /**
-     *
-     * @type {DataTypeDefXsd}
-     * @memberof Qualifier1
-     */
-    valueType: DataTypeDefXsd;
-    /**
-     *
-     * @type {string}
-     * @memberof Qualifier1
-     */
-    value?: string;
-    /**
-     *
-     * @type {Reference}
-     * @memberof Qualifier1
-     */
-    valueId?: Reference;
-}
-
-/**
- *
- * @export
  */
 export const QualifierKind = {
     ConceptQualifier: 'ConceptQualifier',
@@ -3577,6 +3906,318 @@ export const QualifierKind = {
 } as const;
 export type QualifierKind = (typeof QualifierKind)[keyof typeof QualifierKind];
 
+/**
+ *
+ * @export
+ * @interface Query
+ */
+export interface Query {
+    /**
+     *
+     * @type {string}
+     * @memberof Query
+     */
+    $select?: string;
+    /**
+     *
+     * @type {LogicalExpression}
+     * @memberof Query
+     */
+    $condition: LogicalExpression | null;
+    /**
+     *
+     * @type {Array<QueryFilter>}
+     * @memberof Query
+     */
+    $filters?: Array<QueryFilter>;
+}
+/**
+ *
+ * @export
+ * @interface QueryFilter
+ */
+export interface QueryFilter {
+    /**
+     *
+     * @type {string}
+     * @memberof QueryFilter
+     */
+    $fragment: string;
+    /**
+     *
+     * @type {LogicalExpression}
+     * @memberof QueryFilter
+     */
+    $condition: LogicalExpression | null;
+}
+/**
+ *
+ * @export
+ * @interface QueryResultAssetAdministrationShell
+ */
+export interface QueryResultAssetAdministrationShell {
+    /**
+     *
+     * @type {QueryResultAssetAdministrationShellPagingMetadata}
+     * @memberof QueryResultAssetAdministrationShell
+     */
+    pagingMetadata?: QueryResultAssetAdministrationShellPagingMetadata;
+    /**
+     *
+     * @type {Array<QueryResultAssetAdministrationShellResultInner>}
+     * @memberof QueryResultAssetAdministrationShell
+     */
+    result?: Array<QueryResultAssetAdministrationShellResultInner>;
+}
+/**
+ *
+ * @export
+ * @interface QueryResultAssetAdministrationShellDescriptor
+ */
+export interface QueryResultAssetAdministrationShellDescriptor {
+    /**
+     *
+     * @type {QueryResultAssetAdministrationShellDescriptorPagingMetadata}
+     * @memberof QueryResultAssetAdministrationShellDescriptor
+     */
+    pagingMetadata: QueryResultAssetAdministrationShellDescriptorPagingMetadata;
+    /**
+     *
+     * @type {Array<AssetAdministrationShellDescriptor>}
+     * @memberof QueryResultAssetAdministrationShellDescriptor
+     */
+    result?: Array<AssetAdministrationShellDescriptor>;
+}
+/**
+ *
+ * @export
+ * @interface QueryResultAssetAdministrationShellDescriptorPagingMetadata
+ */
+export interface QueryResultAssetAdministrationShellDescriptorPagingMetadata {
+    /**
+     *
+     * @type {string}
+     * @memberof QueryResultAssetAdministrationShellDescriptorPagingMetadata
+     */
+    cursor?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof QueryResultAssetAdministrationShellDescriptorPagingMetadata
+     */
+    resultType?: QueryResultAssetAdministrationShellDescriptorPagingMetadataResultTypeEnum;
+}
+
+/**
+ * @export
+ */
+export const QueryResultAssetAdministrationShellDescriptorPagingMetadataResultTypeEnum = {
+    AssetAdministrationShellDescriptor: 'AssetAdministrationShellDescriptor',
+} as const;
+export type QueryResultAssetAdministrationShellDescriptorPagingMetadataResultTypeEnum =
+    (typeof QueryResultAssetAdministrationShellDescriptorPagingMetadataResultTypeEnum)[keyof typeof QueryResultAssetAdministrationShellDescriptorPagingMetadataResultTypeEnum];
+
+/**
+ *
+ * @export
+ * @interface QueryResultAssetAdministrationShellPagingMetadata
+ */
+export interface QueryResultAssetAdministrationShellPagingMetadata {
+    /**
+     *
+     * @type {string}
+     * @memberof QueryResultAssetAdministrationShellPagingMetadata
+     */
+    cursor?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof QueryResultAssetAdministrationShellPagingMetadata
+     */
+    resultType?: QueryResultAssetAdministrationShellPagingMetadataResultTypeEnum;
+}
+
+/**
+ * @export
+ */
+export const QueryResultAssetAdministrationShellPagingMetadataResultTypeEnum = {
+    AssetAdministrationShell: 'AssetAdministrationShell',
+    Identifier: 'Identifier',
+} as const;
+export type QueryResultAssetAdministrationShellPagingMetadataResultTypeEnum =
+    (typeof QueryResultAssetAdministrationShellPagingMetadataResultTypeEnum)[keyof typeof QueryResultAssetAdministrationShellPagingMetadataResultTypeEnum];
+
+/**
+ * @type QueryResultAssetAdministrationShellResultInner
+ *
+ * @export
+ */
+export type QueryResultAssetAdministrationShellResultInner = AssetAdministrationShell | string;
+/**
+ *
+ * @export
+ * @interface QueryResultConceptDescription
+ */
+export interface QueryResultConceptDescription {
+    /**
+     *
+     * @type {QueryResultConceptDescriptionPagingMetadata}
+     * @memberof QueryResultConceptDescription
+     */
+    pagingMetadata: QueryResultConceptDescriptionPagingMetadata;
+    /**
+     *
+     * @type {Array<QueryResultConceptDescriptionResultInner>}
+     * @memberof QueryResultConceptDescription
+     */
+    result?: Array<QueryResultConceptDescriptionResultInner>;
+}
+/**
+ *
+ * @export
+ * @interface QueryResultConceptDescriptionPagingMetadata
+ */
+export interface QueryResultConceptDescriptionPagingMetadata {
+    /**
+     *
+     * @type {string}
+     * @memberof QueryResultConceptDescriptionPagingMetadata
+     */
+    cursor?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof QueryResultConceptDescriptionPagingMetadata
+     */
+    resultType?: QueryResultConceptDescriptionPagingMetadataResultTypeEnum;
+}
+
+/**
+ * @export
+ */
+export const QueryResultConceptDescriptionPagingMetadataResultTypeEnum = {
+    ConceptDescription: 'ConceptDescription',
+    Identifier: 'Identifier',
+} as const;
+export type QueryResultConceptDescriptionPagingMetadataResultTypeEnum =
+    (typeof QueryResultConceptDescriptionPagingMetadataResultTypeEnum)[keyof typeof QueryResultConceptDescriptionPagingMetadataResultTypeEnum];
+
+/**
+ * @type QueryResultConceptDescriptionResultInner
+ *
+ * @export
+ */
+export type QueryResultConceptDescriptionResultInner = ConceptDescription | string;
+/**
+ *
+ * @export
+ * @interface QueryResultSubmodel
+ */
+export interface QueryResultSubmodel {
+    /**
+     *
+     * @type {QueryResultSubmodelPagingMetadata}
+     * @memberof QueryResultSubmodel
+     */
+    pagingMetadata: QueryResultSubmodelPagingMetadata;
+    /**
+     *
+     * @type {Array<QueryResultSubmodelResultInner>}
+     * @memberof QueryResultSubmodel
+     */
+    result?: Array<QueryResultSubmodelResultInner>;
+}
+/**
+ *
+ * @export
+ * @interface QueryResultSubmodelDescriptor
+ */
+export interface QueryResultSubmodelDescriptor {
+    /**
+     *
+     * @type {QueryResultSubmodelDescriptorPagingMetadata}
+     * @memberof QueryResultSubmodelDescriptor
+     */
+    pagingMetadata: QueryResultSubmodelDescriptorPagingMetadata;
+    /**
+     *
+     * @type {Array<QueryResultSubmodelDescriptorResultInner>}
+     * @memberof QueryResultSubmodelDescriptor
+     */
+    result?: Array<QueryResultSubmodelDescriptorResultInner>;
+}
+/**
+ *
+ * @export
+ * @interface QueryResultSubmodelDescriptorPagingMetadata
+ */
+export interface QueryResultSubmodelDescriptorPagingMetadata {
+    /**
+     *
+     * @type {string}
+     * @memberof QueryResultSubmodelDescriptorPagingMetadata
+     */
+    cursor?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof QueryResultSubmodelDescriptorPagingMetadata
+     */
+    resultType?: QueryResultSubmodelDescriptorPagingMetadataResultTypeEnum;
+}
+
+/**
+ * @export
+ */
+export const QueryResultSubmodelDescriptorPagingMetadataResultTypeEnum = {
+    SubmodelDescriptor: 'SubmodelDescriptor',
+    Identifier: 'Identifier',
+} as const;
+export type QueryResultSubmodelDescriptorPagingMetadataResultTypeEnum =
+    (typeof QueryResultSubmodelDescriptorPagingMetadataResultTypeEnum)[keyof typeof QueryResultSubmodelDescriptorPagingMetadataResultTypeEnum];
+
+/**
+ * @type QueryResultSubmodelDescriptorResultInner
+ *
+ * @export
+ */
+export type QueryResultSubmodelDescriptorResultInner = SubmodelDescriptor | string;
+/**
+ *
+ * @export
+ * @interface QueryResultSubmodelPagingMetadata
+ */
+export interface QueryResultSubmodelPagingMetadata {
+    /**
+     *
+     * @type {string}
+     * @memberof QueryResultSubmodelPagingMetadata
+     */
+    cursor?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof QueryResultSubmodelPagingMetadata
+     */
+    resultType?: QueryResultSubmodelPagingMetadataResultTypeEnum;
+}
+
+/**
+ * @export
+ */
+export const QueryResultSubmodelPagingMetadataResultTypeEnum = {
+    Submodel: 'Submodel',
+    Identifier: 'Identifier',
+} as const;
+export type QueryResultSubmodelPagingMetadataResultTypeEnum =
+    (typeof QueryResultSubmodelPagingMetadataResultTypeEnum)[keyof typeof QueryResultSubmodelPagingMetadataResultTypeEnum];
+
+/**
+ * @type QueryResultSubmodelResultInner
+ *
+ * @export
+ */
+export type QueryResultSubmodelResultInner = Submodel | string;
 /**
  *
  * @export
@@ -3615,7 +4256,7 @@ export interface Range {
     description?: Array<LangStringTextType>;
     /**
      *
-     * @type {string}
+     * @type {any}
      * @memberof Range
      */
     modelType: 'Range';
@@ -3689,10 +4330,10 @@ export interface RangeMetadata {
     category?: string;
     /**
      *
-     * @type {Referable1AllOfIdShort}
+     * @type {ReferableAllOfIdShort}
      * @memberof RangeMetadata
      */
-    idShort?: Referable1AllOfIdShort;
+    idShort?: ReferableAllOfIdShort;
     /**
      *
      * @type {Array<LangStringNameType>}
@@ -3731,10 +4372,10 @@ export interface RangeMetadata {
     supplementalSemanticIds?: Array<Reference>;
     /**
      *
-     * @type {Array<Qualifier1>}
+     * @type {Array<Qualifier>}
      * @memberof RangeMetadata
      */
-    qualifiers?: Array<Qualifier1>;
+    qualifiers?: Array<Qualifier>;
     /**
      *
      * @type {ModellingKind}
@@ -3751,23 +4392,36 @@ export interface RangeMetadata {
 export interface RangeValue {
     /**
      *
-     * @type {RangeValueType}
+     * @type {number}
      * @memberof RangeValue
      */
-    max?: RangeValueType;
+    max: number;
     /**
      *
-     * @type {RangeValueType}
+     * @type {number}
      * @memberof RangeValue
      */
-    min?: RangeValueType;
+    min: number;
 }
 /**
- * @type RangeValueType
  *
  * @export
+ * @interface RecentChange
  */
-export type RangeValueType = boolean | number | string;
+export interface RecentChange {
+    /**
+     *
+     * @type {string}
+     * @memberof RecentChange
+     */
+    createdAt: string;
+    /**
+     *
+     * @type {string}
+     * @memberof RecentChange
+     */
+    updatedAt: string;
+}
 /**
  *
  * @export
@@ -3815,56 +4469,6 @@ export interface Referable {
 /**
  *
  * @export
- * @interface Referable1
- */
-export interface Referable1 {
-    /**
-     *
-     * @type {Array<Extension>}
-     * @memberof Referable1
-     */
-    extensions?: Array<Extension>;
-    /**
-     *
-     * @type {string}
-     * @memberof Referable1
-     */
-    category?: string;
-    /**
-     *
-     * @type {Referable1AllOfIdShort}
-     * @memberof Referable1
-     */
-    idShort?: Referable1AllOfIdShort;
-    /**
-     *
-     * @type {Array<LangStringNameType>}
-     * @memberof Referable1
-     */
-    displayName?: Array<LangStringNameType>;
-    /**
-     *
-     * @type {Array<LangStringTextType>}
-     * @memberof Referable1
-     */
-    description?: Array<LangStringTextType>;
-    /**
-     *
-     * @type {ModelType}
-     * @memberof Referable1
-     */
-    modelType: ModelType;
-}
-
-/**
- *
- * @export
- * @interface Referable1AllOfIdShort
- */
-export interface Referable1AllOfIdShort {}
-/**
- *
- * @export
  * @interface ReferableAllOfIdShort
  */
 export type ReferableAllOfIdShort = string;
@@ -3882,16 +4486,16 @@ export interface Reference {
     type: ReferenceTypes;
     /**
      *
+     * @type {Reference}
+     * @memberof Reference
+     */
+    referredSemanticId?: Reference;
+    /**
+     *
      * @type {Array<Key>}
      * @memberof Reference
      */
     keys: Array<Key>;
-    /**
-     *
-     * @type {ReferenceParent}
-     * @memberof Reference
-     */
-    referredSemanticId?: ReferenceParent;
 }
 
 /**
@@ -3932,7 +4536,7 @@ export interface ReferenceElement {
     description?: Array<LangStringTextType>;
     /**
      *
-     * @type {string}
+     * @type {any}
      * @memberof ReferenceElement
      */
     modelType: 'ReferenceElement';
@@ -3987,10 +4591,10 @@ export interface ReferenceElementMetadata {
     category?: string;
     /**
      *
-     * @type {Referable1AllOfIdShort}
+     * @type {ReferableAllOfIdShort}
      * @memberof ReferenceElementMetadata
      */
-    idShort?: Referable1AllOfIdShort;
+    idShort?: ReferableAllOfIdShort;
     /**
      *
      * @type {Array<LangStringNameType>}
@@ -4029,10 +4633,10 @@ export interface ReferenceElementMetadata {
     supplementalSemanticIds?: Array<Reference>;
     /**
      *
-     * @type {Array<Qualifier1>}
+     * @type {Array<Qualifier>}
      * @memberof ReferenceElementMetadata
      */
-    qualifiers?: Array<Qualifier1>;
+    qualifiers?: Array<Qualifier>;
     /**
      *
      * @type {ModellingKind}
@@ -4044,72 +4648,12 @@ export interface ReferenceElementMetadata {
 /**
  *
  * @export
- * @interface ReferenceElementValue
- */
-export interface ReferenceElementValue {
-    /**
-     *
-     * @type {ReferenceTypes}
-     * @memberof ReferenceElementValue
-     */
-    type?: ReferenceTypes;
-    /**
-     *
-     * @type {Array<Key>}
-     * @memberof ReferenceElementValue
-     */
-    keys?: Array<Key>;
-}
-
-/**
- *
- * @export
- * @interface ReferenceParent
- */
-export interface ReferenceParent {
-    /**
-     *
-     * @type {ReferenceTypes}
-     * @memberof ReferenceParent
-     */
-    type: ReferenceTypes;
-    /**
-     *
-     * @type {Array<Key>}
-     * @memberof ReferenceParent
-     */
-    keys: Array<Key>;
-}
-
-/**
- *
- * @export
  */
 export const ReferenceTypes = {
     ExternalReference: 'ExternalReference',
     ModelReference: 'ModelReference',
 } as const;
 export type ReferenceTypes = (typeof ReferenceTypes)[keyof typeof ReferenceTypes];
-
-/**
- *
- * @export
- * @interface ReferenceValue
- */
-export interface ReferenceValue {
-    /**
-     *
-     * @type {ReferenceTypes}
-     * @memberof ReferenceValue
-     */
-    type?: ReferenceTypes;
-    /**
-     *
-     * @type {Array<Key>}
-     * @memberof ReferenceValue
-     */
-    keys?: Array<Key>;
-}
 
 /**
  *
@@ -4149,7 +4693,7 @@ export interface RelationshipElement {
     description?: Array<LangStringTextType>;
     /**
      *
-     * @type {string}
+     * @type {any}
      * @memberof RelationshipElement
      */
     modelType: 'RelationshipElement';
@@ -4182,13 +4726,13 @@ export interface RelationshipElement {
      * @type {Reference}
      * @memberof RelationshipElement
      */
-    first: Reference;
+    first?: Reference;
     /**
      *
      * @type {Reference}
      * @memberof RelationshipElement
      */
-    second: Reference;
+    second?: Reference;
 }
 /**
  *
@@ -4261,13 +4805,13 @@ export interface RelationshipElementAbstract {
      * @type {Reference}
      * @memberof RelationshipElementAbstract
      */
-    first: Reference;
+    first?: Reference;
     /**
      *
      * @type {Reference}
      * @memberof RelationshipElementAbstract
      */
-    second: Reference;
+    second?: Reference;
 }
 
 /**
@@ -4290,10 +4834,10 @@ export interface RelationshipElementMetadata {
     category?: string;
     /**
      *
-     * @type {Referable1AllOfIdShort}
+     * @type {ReferableAllOfIdShort}
      * @memberof RelationshipElementMetadata
      */
-    idShort?: Referable1AllOfIdShort;
+    idShort?: ReferableAllOfIdShort;
     /**
      *
      * @type {Array<LangStringNameType>}
@@ -4332,10 +4876,10 @@ export interface RelationshipElementMetadata {
     supplementalSemanticIds?: Array<Reference>;
     /**
      *
-     * @type {Array<Qualifier1>}
+     * @type {Array<Qualifier>}
      * @memberof RelationshipElementMetadata
      */
-    qualifiers?: Array<Qualifier1>;
+    qualifiers?: Array<Qualifier>;
     /**
      *
      * @type {ModellingKind}
@@ -4352,16 +4896,16 @@ export interface RelationshipElementMetadata {
 export interface RelationshipElementValue {
     /**
      *
-     * @type {ReferenceValue}
+     * @type {Reference}
      * @memberof RelationshipElementValue
      */
-    first: ReferenceValue;
+    first?: Reference;
     /**
      *
-     * @type {ReferenceValue}
+     * @type {Reference}
      * @memberof RelationshipElementValue
      */
-    second: ReferenceValue;
+    second?: Reference;
 }
 /**
  *
@@ -4402,7 +4946,7 @@ export interface Result {
  */
 export interface ServiceDescription {
     /**
-     *
+     * The list of profiles implemented by the server. The profiles are identified by their URI. Note that the list of example profiles is not exhaustive, but only includes the profiles defined in the current version of the specification. The server might also include proprietary profiles, which are not defined in the specification. Clients should be designed to ignore unknown profiles, but might use them to implement additional functionality if they are known.
      * @type {Array<string>}
      * @memberof ServiceDescription
      */
@@ -4451,8 +4995,8 @@ export interface SpecificAssetId {
  * @export
  */
 export const StateOfEvent = {
-    Off: 'off',
-    On: 'on',
+    False: 'false',
+    True: 'true',
 } as const;
 export type StateOfEvent = (typeof StateOfEvent)[keyof typeof StateOfEvent];
 
@@ -4494,7 +5038,7 @@ export interface Submodel {
     description?: Array<LangStringTextType>;
     /**
      *
-     * @type {string}
+     * @type {any}
      * @memberof Submodel
      */
     modelType: 'Submodel';
@@ -4589,7 +5133,7 @@ export interface SubmodelDescriptor {
      * @type {Array<Reference>}
      * @memberof SubmodelDescriptor
      */
-    supplementalSemanticId?: Array<Reference>;
+    supplementalSemanticIds?: Array<Reference>;
     /**
      *
      * @type {Array<LangStringTextType>}
@@ -4697,10 +5241,10 @@ export interface SubmodelElementAttributes {
     category?: string;
     /**
      *
-     * @type {Referable1AllOfIdShort}
+     * @type {ReferableAllOfIdShort}
      * @memberof SubmodelElementAttributes
      */
-    idShort?: Referable1AllOfIdShort;
+    idShort?: ReferableAllOfIdShort;
     /**
      *
      * @type {Array<LangStringNameType>}
@@ -4739,10 +5283,10 @@ export interface SubmodelElementAttributes {
     supplementalSemanticIds?: Array<Reference>;
     /**
      *
-     * @type {Array<Qualifier1>}
+     * @type {Array<Qualifier>}
      * @memberof SubmodelElementAttributes
      */
-    qualifiers?: Array<Qualifier1>;
+    qualifiers?: Array<Qualifier>;
     /**
      *
      * @type {ModellingKind}
@@ -4809,7 +5353,7 @@ export interface SubmodelElementCollection {
     description?: Array<LangStringTextType>;
     /**
      *
-     * @type {string}
+     * @type {any}
      * @memberof SubmodelElementCollection
      */
     modelType: 'SubmodelElementCollection';
@@ -4864,10 +5408,10 @@ export interface SubmodelElementCollectionMetadata {
     category?: string;
     /**
      *
-     * @type {Referable1AllOfIdShort}
+     * @type {ReferableAllOfIdShort}
      * @memberof SubmodelElementCollectionMetadata
      */
-    idShort?: Referable1AllOfIdShort;
+    idShort?: ReferableAllOfIdShort;
     /**
      *
      * @type {Array<LangStringNameType>}
@@ -4906,10 +5450,10 @@ export interface SubmodelElementCollectionMetadata {
     supplementalSemanticIds?: Array<Reference>;
     /**
      *
-     * @type {Array<Qualifier1>}
+     * @type {Array<Qualifier>}
      * @memberof SubmodelElementCollectionMetadata
      */
-    qualifiers?: Array<Qualifier1>;
+    qualifiers?: Array<Qualifier>;
     /**
      *
      * @type {ModellingKind}
@@ -4956,7 +5500,7 @@ export interface SubmodelElementList {
     description?: Array<LangStringTextType>;
     /**
      *
-     * @type {string}
+     * @type {any}
      * @memberof SubmodelElementList
      */
     modelType: 'SubmodelElementList';
@@ -5060,10 +5604,10 @@ export interface SubmodelElementListMetadata {
     category?: string;
     /**
      *
-     * @type {Referable1AllOfIdShort}
+     * @type {ReferableAllOfIdShort}
      * @memberof SubmodelElementListMetadata
      */
-    idShort?: Referable1AllOfIdShort;
+    idShort?: ReferableAllOfIdShort;
     /**
      *
      * @type {Array<LangStringNameType>}
@@ -5102,10 +5646,10 @@ export interface SubmodelElementListMetadata {
     supplementalSemanticIds?: Array<Reference>;
     /**
      *
-     * @type {Array<Qualifier1>}
+     * @type {Array<Qualifier>}
      * @memberof SubmodelElementListMetadata
      */
-    qualifiers?: Array<Qualifier1>;
+    qualifiers?: Array<Qualifier>;
     /**
      *
      * @type {ModellingKind}
@@ -5119,21 +5663,7 @@ export interface SubmodelElementListMetadata {
  *
  * @export
  */
-export type SubmodelElementMetadata =
-    | AnnotatedRelationshipElementMetadata
-    | BasicEventElementMetadata
-    | BlobMetadata
-    | CapabilityMetadata
-    | EntityMetadata
-    | FileMetadata
-    | MultiLanguagePropertyMetadata
-    | OperationMetadata
-    | PropertyMetadata
-    | RangeMetadata
-    | ReferenceElementMetadata
-    | RelationshipElementMetadata
-    | SubmodelElementCollectionMetadata
-    | SubmodelElementListMetadata;
+export type SubmodelElementMetadata = SubmodelElementAttributes;
 /**
  * @type SubmodelElementValue
  *
@@ -5148,7 +5678,7 @@ export type SubmodelElementValue =
     | FileValue
     | PropertyValue
     | RangeValue
-    | ReferenceElementValue
+    | Reference
     | RelationshipElementValue
     | object;
 /**
@@ -5240,6 +5770,183 @@ export interface SubmodelMetadata {
 /**
  *
  * @export
+ * @interface SubmodelRecentChange
+ */
+export interface SubmodelRecentChange {
+    /**
+     *
+     * @type {string}
+     * @memberof SubmodelRecentChange
+     */
+    createdAt: string;
+    /**
+     *
+     * @type {string}
+     * @memberof SubmodelRecentChange
+     */
+    updatedAt: string;
+    /**
+     *
+     * @type {string}
+     * @memberof SubmodelRecentChange
+     */
+    id: string;
+    /**
+     *
+     * @type {Reference}
+     * @memberof SubmodelRecentChange
+     */
+    semanticId?: Reference;
+    /**
+     *
+     * @type {Array<Reference>}
+     * @memberof SubmodelRecentChange
+     */
+    supplementalSemanticIds?: Array<Reference>;
+}
+/**
+ * @type TimeComparisonItemsInner
+ *
+ * @export
+ */
+export type TimeComparisonItemsInner = FieldOperand | TimeOperand;
+/**
+ *
+ * @export
+ * @interface TimeOperand
+ */
+export interface TimeOperand {
+    /**
+     *
+     * @type {string}
+     * @memberof TimeOperand
+     */
+    $timeVal?: string;
+    /**
+     *
+     * @type {string | DateTimeOperand}
+     * @memberof TimeOperand
+     */
+    $timeCast?: string | DateTimeOperand | null;
+}
+/**
+ *
+ * @export
+ * @interface Value
+ */
+export interface Value {
+    /**
+     *
+     * @type {string}
+     * @memberof Value
+     */
+    $field?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof Value
+     */
+    $strVal?: string;
+    /**
+     *
+     * @type {AttributeItem}
+     * @memberof Value
+     */
+    $attribute?: AttributeItem | null;
+    /**
+     *
+     * @type {number}
+     * @memberof Value
+     */
+    $numVal?: number;
+    /**
+     *
+     * @type {string}
+     * @memberof Value
+     */
+    $hexVal?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof Value
+     */
+    $dateTimeVal?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof Value
+     */
+    $timeVal?: string;
+    /**
+     *
+     * @type {boolean}
+     * @memberof Value
+     */
+    $boolean?: boolean;
+    /**
+     *
+     * @type {Value}
+     * @memberof Value
+     */
+    $strCast?: Value | null;
+    /**
+     *
+     * @type {Value}
+     * @memberof Value
+     */
+    $numCast?: Value | null;
+    /**
+     *
+     * @type {Value}
+     * @memberof Value
+     */
+    $hexCast?: Value | null;
+    /**
+     *
+     * @type {Value}
+     * @memberof Value
+     */
+    $boolCast?: Value | null;
+    /**
+     *
+     * @type {string}
+     * @memberof Value
+     */
+    $dateTimeCast?: string;
+    /**
+     *
+     * @type {string | DateTimeOperand}
+     * @memberof Value
+     */
+    $timeCast?: string | DateTimeOperand | null;
+    /**
+     *
+     * @type {DateTimeOperand}
+     * @memberof Value
+     */
+    $dayOfWeek?: DateTimeOperand | null;
+    /**
+     *
+     * @type {DateTimeOperand}
+     * @memberof Value
+     */
+    $dayOfMonth?: DateTimeOperand | null;
+    /**
+     *
+     * @type {DateTimeOperand}
+     * @memberof Value
+     */
+    $month?: DateTimeOperand | null;
+    /**
+     *
+     * @type {DateTimeOperand}
+     * @memberof Value
+     */
+    $year?: DateTimeOperand | null;
+}
+/**
+ *
+ * @export
  * @interface ValueList
  */
 export interface ValueList {
@@ -5267,5 +5974,5 @@ export interface ValueReferencePair {
      * @type {Reference}
      * @memberof ValueReferencePair
      */
-    valueId: Reference;
+    valueId?: Reference;
 }

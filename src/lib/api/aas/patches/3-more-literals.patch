@@ -1,21 +1,20 @@
 diff --git a/src/lib/api/aas/models/index.ts b/src/lib/api/aas/models/index.ts
-index 7e2685f..2302fdc 100644
 --- a/src/lib/api/aas/models/index.ts
 +++ b/src/lib/api/aas/models/index.ts
-@@ -1117,7 +1117,7 @@ export interface ConceptDescription {
-      * @type {string}
+@@ -1089,7 +1089,7 @@
+      * @type {any}
       * @memberof ConceptDescription
       */
--    modelType: string;
+-    modelType: any | null;
 +    modelType: 'ConceptDescription';
      /**
       *
       * @type {AdministrativeInformation}
-@@ -4497,7 +4497,7 @@ export interface Submodel {
-      * @type {string}
+@@ -5029,7 +5029,7 @@
+      * @type {any}
       * @memberof Submodel
       */
--    modelType: string;
+-    modelType: any | null;
 +    modelType: 'Submodel';
      /**
       *
