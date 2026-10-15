@@ -141,8 +141,18 @@ export class AssetAdministrationShellRepositoryApi implements IAssetAdministrati
             body: JSON.stringify(query),
             method: 'POST',
         };
+        // basePath is a client-supplied, egress-guarded repository URL (see AasRepositoryService):
+        // the guard only validates its host, not its path/query/fragment, so appending the endpoint
+        // via naive string concatenation lets a crafted basePath (e.g. ending in "#") push "/query/shells"
+        // into the URL fragment, which is never sent over the wire — the request would then silently hit
+        // "/shells" (the repository's create-shell endpoint) instead. Building on the parsed URL and
+        // clearing search/hash keeps the intended request path regardless of what basePath contains.
+        const requestUrl = new URL(this.basePath);
+        requestUrl.pathname = `${requestUrl.pathname.replace(/\/+$/, '')}/query/shells`;
+        requestUrl.search = queryParams.toString();
+        requestUrl.hash = '';
         return this.http.fetch<PaginationData<QueryResultAssetAdministrationShellResultInner[]>>(
-            `${this.basePath}/query/shells?${queryParams.toString()}`,
+            requestUrl.toString(),
             reqOptions,
         );
     }
@@ -457,10 +467,17 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
             body: JSON.stringify(query),
             method: 'POST',
         };
-        return this.http.fetch<PaginationData<QueryResultSubmodelResultInner[]>>(
-            `${this.baseUrl}/query/submodels?${queryParams.toString()}`,
-            reqOptions,
-        );
+        // baseUrl is a client-supplied, egress-guarded repository URL (see submodelRepositoryActions):
+        // the guard only validates its host, not its path/query/fragment, so appending the endpoint
+        // via naive string concatenation lets a crafted baseUrl (e.g. ending in "#") push "/query/submodels"
+        // into the URL fragment, which is never sent over the wire — the request would then silently hit
+        // "/submodels" (the repository's create-submodel endpoint) instead. Building on the parsed URL and
+        // clearing search/hash keeps the intended request path regardless of what baseUrl contains.
+        const requestUrl = new URL(this.baseUrl);
+        requestUrl.pathname = `${requestUrl.pathname.replace(/\/+$/, '')}/query/submodels`;
+        requestUrl.search = queryParams.toString();
+        requestUrl.hash = '';
+        return this.http.fetch<PaginationData<QueryResultSubmodelResultInner[]>>(requestUrl.toString(), reqOptions);
     }
 
 }
