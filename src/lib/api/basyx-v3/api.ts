@@ -132,7 +132,14 @@ export class AssetAdministrationShellRepositoryApi implements IAssetAdministrati
         cursor?: string,
         options: Omit<RequestInit, 'body' | 'method'> = {},
     ): Promise<ApiResponseWrapper<PaginationData<QueryResultAssetAdministrationShellResultInner[]>>> {
-        options.headers = Object.assign({}, { 'Content-Type': 'application/json' }, options.headers);
+        // `Object.assign` only copies a plain object's own enumerable properties, so it silently drops
+        // every entry of a `Headers` instance or a header-tuple array (both valid `RequestInit.headers`
+        // shapes) instead of merging them — a caller-supplied Authorization header would vanish. Going
+        // through `Headers` normalizes all three accepted shapes and also de-dupes a caller's
+        // differently-cased 'content-type' against our default instead of sending both.
+        const requestHeaders = new Headers(options.headers);
+        if (!requestHeaders.has('Content-Type')) requestHeaders.set('Content-Type', 'application/json');
+        options.headers = Object.fromEntries(requestHeaders.entries());
         const queryParams = new URLSearchParams();
         if (limit !== undefined) queryParams.set('limit', String(limit));
         if (cursor) queryParams.set('cursor', cursor);
@@ -458,7 +465,14 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
         cursor?: string,
         options: Omit<RequestInit, 'body' | 'method'> = {},
     ): Promise<ApiResponseWrapper<PaginationData<QueryResultSubmodelResultInner[]>>> {
-        options.headers = Object.assign({}, { 'Content-Type': 'application/json' }, options.headers);
+        // `Object.assign` only copies a plain object's own enumerable properties, so it silently drops
+        // every entry of a `Headers` instance or a header-tuple array (both valid `RequestInit.headers`
+        // shapes) instead of merging them — a caller-supplied Authorization header would vanish. Going
+        // through `Headers` normalizes all three accepted shapes and also de-dupes a caller's
+        // differently-cased 'content-type' against our default instead of sending both.
+        const requestHeaders = new Headers(options.headers);
+        if (!requestHeaders.has('Content-Type')) requestHeaders.set('Content-Type', 'application/json');
+        options.headers = Object.fromEntries(requestHeaders.entries());
         const queryParams = new URLSearchParams();
         if (limit !== undefined) queryParams.set('limit', String(limit));
         if (cursor) queryParams.set('cursor', cursor);

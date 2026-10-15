@@ -85,3 +85,82 @@ describe('query endpoint URL construction (fragment/query-string injection regre
         expect(requestedUrl).toBe('https://configured-host.example/submodels/query/submodels');
     });
 });
+
+describe('query endpoint header merging (Headers/tuple-array preservation regression)', () => {
+    const testQuery = { $condition: { $boolean: true } };
+
+    function fetchMock() {
+        const fetch = jest.fn().mockResolvedValue({ isSuccess: true, result: { paging_metadata: {}, result: [] } });
+        return { fetch };
+    }
+
+    it('queryAssetAdministrationShells preserves an Authorization header passed as a Headers instance', async () => {
+        const http = fetchMock();
+        const client = AssetAdministrationShellRepositoryApi.create('https://configured-host.example', http);
+
+        await client.queryAssetAdministrationShells(testQuery, undefined, undefined, {
+            headers: new Headers({ Authorization: 'Bearer secret' }),
+        });
+
+        const requestInit = http.fetch.mock.calls[0][1] as RequestInit;
+        const headers = new Headers(requestInit.headers);
+        expect(headers.get('Authorization')).toBe('Bearer secret');
+        expect(headers.get('Content-Type')).toBe('application/json');
+    });
+
+    it('queryAssetAdministrationShells preserves an Authorization header passed as a tuple array', async () => {
+        const http = fetchMock();
+        const client = AssetAdministrationShellRepositoryApi.create('https://configured-host.example', http);
+
+        await client.queryAssetAdministrationShells(testQuery, undefined, undefined, {
+            headers: [['Authorization', 'Bearer secret']],
+        });
+
+        const requestInit = http.fetch.mock.calls[0][1] as RequestInit;
+        const headers = new Headers(requestInit.headers);
+        expect(headers.get('Authorization')).toBe('Bearer secret');
+        expect(headers.get('Content-Type')).toBe('application/json');
+    });
+
+    it('queryAssetAdministrationShells does not duplicate a caller-supplied lowercase content-type', async () => {
+        const http = fetchMock();
+        const client = AssetAdministrationShellRepositoryApi.create('https://configured-host.example', http);
+
+        await client.queryAssetAdministrationShells(testQuery, undefined, undefined, {
+            headers: { 'content-type': 'application/xml' },
+        });
+
+        const requestInit = http.fetch.mock.calls[0][1] as RequestInit;
+        const headers = new Headers(requestInit.headers);
+        expect(headers.get('Content-Type')).toBe('application/xml');
+        expect(Array.from(headers.entries()).filter(([name]) => name === 'content-type')).toHaveLength(1);
+    });
+
+    it('querySubmodels preserves an Authorization header passed as a Headers instance', async () => {
+        const http = fetchMock();
+        const client = SubmodelRepositoryApi.create('https://configured-host.example', http);
+
+        await client.querySubmodels(testQuery, undefined, undefined, {
+            headers: new Headers({ Authorization: 'Bearer secret' }),
+        });
+
+        const requestInit = http.fetch.mock.calls[0][1] as RequestInit;
+        const headers = new Headers(requestInit.headers);
+        expect(headers.get('Authorization')).toBe('Bearer secret');
+        expect(headers.get('Content-Type')).toBe('application/json');
+    });
+
+    it('querySubmodels preserves an Authorization header passed as a tuple array', async () => {
+        const http = fetchMock();
+        const client = SubmodelRepositoryApi.create('https://configured-host.example', http);
+
+        await client.querySubmodels(testQuery, undefined, undefined, {
+            headers: [['Authorization', 'Bearer secret']],
+        });
+
+        const requestInit = http.fetch.mock.calls[0][1] as RequestInit;
+        const headers = new Headers(requestInit.headers);
+        expect(headers.get('Authorization')).toBe('Bearer secret');
+        expect(headers.get('Content-Type')).toBe('application/json');
+    });
+});
