@@ -1,44 +1,34 @@
 diff --git a/src/lib/api/aas/models/index.ts b/src/lib/api/aas/models/index.ts
-index a17e953..f9f0fd7 100644
 --- a/src/lib/api/aas/models/index.ts
 +++ b/src/lib/api/aas/models/index.ts
-@@ -135,7 +135,7 @@ export interface AnnotatedRelationshipElement {
-      * @type {string}
+@@ -147,7 +147,7 @@
+      * @type {any}
       * @memberof AnnotatedRelationshipElement
       */
--    modelType: string;
+-    modelType: any | null;
 +    modelType: 'AnnotatedRelationshipElement';
      /**
       *
       * @type {Reference}
-@@ -220,7 +220,7 @@ export interface AnnotatedRelationshipElementMetadata {
-      * @type {ModelType}
-      * @memberof AnnotatedRelationshipElementMetadata
-      */
--    modelType: ModelType;
-+    modelType: 'AnnotatedRelationshipElement';
-     /**
-      *
-      * @type {Array<EmbeddedDataSpecification>}
-@@ -319,7 +319,7 @@ export interface AssetAdministrationShell {
-      * @type {string}
+@@ -257,7 +257,7 @@
+      * @type {any}
       * @memberof AssetAdministrationShell
       */
--    modelType: string;
+-    modelType: any | null;
 +    modelType: 'AssetAdministrationShell';
      /**
       *
       * @type {AdministrativeInformation}
-@@ -553,7 +553,7 @@ export interface BasicEventElement {
-      * @type {string}
+@@ -574,7 +574,7 @@
+      * @type {any}
       * @memberof BasicEventElement
       */
--    modelType: string;
+-    modelType: any | null;
 +    modelType: 'BasicEventElement';
      /**
       *
       * @type {Reference}
-@@ -669,7 +669,7 @@ export interface BasicEventElementMetadata {
+@@ -690,7 +690,7 @@
       * @type {ModelType}
       * @memberof BasicEventElementMetadata
       */
@@ -47,34 +37,25 @@ index a17e953..f9f0fd7 100644
      /**
       *
       * @type {Array<EmbeddedDataSpecification>}
-@@ -798,7 +798,7 @@ export interface Blob {
-      * @type {string}
+@@ -819,7 +819,7 @@
+      * @type {any}
       * @memberof Blob
       */
--    modelType: string;
+-    modelType: any | null;
 +    modelType: 'Blob';
      /**
       *
       * @type {Reference}
-@@ -883,7 +883,7 @@ export interface BlobMetadata {
-      * @type {ModelType}
-      * @memberof BlobMetadata
-      */
--    modelType: ModelType;
-+    modelType: 'Blob';
-     /**
-      *
-      * @type {Array<EmbeddedDataSpecification>}
-@@ -976,7 +976,7 @@ export interface Capability {
-      * @type {string}
+@@ -948,7 +948,7 @@
+      * @type {any}
       * @memberof Capability
       */
--    modelType: string;
+-    modelType: any | null;
 +    modelType: 'Capability';
      /**
       *
       * @type {Reference}
-@@ -1043,7 +1043,7 @@ export interface CapabilityMetadata {
+@@ -1015,7 +1015,7 @@
       * @type {ModelType}
       * @memberof CapabilityMetadata
       */
@@ -83,16 +64,16 @@ index a17e953..f9f0fd7 100644
      /**
       *
       * @type {Array<EmbeddedDataSpecification>}
-@@ -1497,7 +1497,7 @@ export interface Entity {
-      * @type {string}
+@@ -1550,7 +1550,7 @@
+      * @type {any}
       * @memberof Entity
       */
--    modelType: string;
+-    modelType: any | null;
 +    modelType: 'Entity';
      /**
       *
       * @type {Reference}
-@@ -1589,7 +1589,7 @@ export interface EntityMetadata {
+@@ -1642,7 +1642,7 @@
       * @type {ModelType}
       * @memberof EntityMetadata
       */
@@ -101,7 +82,7 @@ index a17e953..f9f0fd7 100644
      /**
       *
       * @type {Array<EmbeddedDataSpecification>}
-@@ -1862,7 +1862,7 @@ export interface FileMetadata {
+@@ -1873,7 +1873,7 @@
       * @type {ModelType}
       * @memberof FileMetadata
       */
@@ -110,25 +91,25 @@ index a17e953..f9f0fd7 100644
      /**
       *
       * @type {Array<EmbeddedDataSpecification>}
-@@ -2597,7 +2597,7 @@ export interface ModelFile {
-      * @type {string}
+@@ -2865,7 +2865,7 @@
+      * @type {any}
       * @memberof ModelFile
       */
--    modelType: string;
+-    modelType: any | null;
 +    modelType: 'File';
      /**
       *
       * @type {Reference}
-@@ -2713,7 +2713,7 @@ export interface MultiLanguageProperty {
-      * @type {string}
+@@ -2982,7 +2982,7 @@
+      * @type {any}
       * @memberof MultiLanguageProperty
       */
--    modelType: string;
+-    modelType: any | null;
 +    modelType: 'MultiLanguageProperty';
      /**
       *
       * @type {Reference}
-@@ -2792,7 +2792,7 @@ export interface MultiLanguagePropertyMetadata {
+@@ -3061,7 +3061,7 @@
       * @type {ModelType}
       * @memberof MultiLanguagePropertyMetadata
       */
@@ -137,16 +118,16 @@ index a17e953..f9f0fd7 100644
      /**
       *
       * @type {Array<EmbeddedDataSpecification>}
-@@ -2866,7 +2866,7 @@ export interface Operation {
-      * @type {string}
+@@ -3184,7 +3184,7 @@
+      * @type {any}
       * @memberof Operation
       */
--    modelType: string;
+-    modelType: any | null;
 +    modelType: 'Operation';
      /**
       *
       * @type {Reference}
-@@ -2951,7 +2951,7 @@ export interface OperationMetadata {
+@@ -3282,7 +3282,7 @@
       * @type {ModelType}
       * @memberof OperationMetadata
       */
@@ -155,16 +136,16 @@ index a17e953..f9f0fd7 100644
      /**
       *
       * @type {Array<EmbeddedDataSpecification>}
-@@ -3209,7 +3209,7 @@ export interface Property {
-      * @type {string}
+@@ -3596,7 +3596,7 @@
+      * @type {any}
       * @memberof Property
       */
--    modelType: string;
+-    modelType: any | null;
 +    modelType: 'Property';
      /**
       *
       * @type {Reference}
-@@ -3301,7 +3301,7 @@ export interface PropertyMetadata {
+@@ -3688,7 +3688,7 @@
       * @type {ModelType}
       * @memberof PropertyMetadata
       */
@@ -173,25 +154,25 @@ index a17e953..f9f0fd7 100644
      /**
       *
       * @type {Array<EmbeddedDataSpecification>}
-@@ -3618,7 +3618,7 @@ export interface Range {
-      * @type {string}
+@@ -4247,7 +4247,7 @@
+      * @type {any}
       * @memberof Range
       */
--    modelType: string;
+-    modelType: any | null;
 +    modelType: 'Range';
      /**
       *
       * @type {Reference}
-@@ -3935,7 +3935,7 @@ export interface ReferenceElement {
-      * @type {string}
+@@ -4527,7 +4527,7 @@
+      * @type {any}
       * @memberof ReferenceElement
       */
--    modelType: string;
+-    modelType: any | null;
 +    modelType: 'ReferenceElement';
      /**
       *
       * @type {Reference}
-@@ -4008,7 +4008,7 @@ export interface ReferenceElementMetadata {
+@@ -4600,7 +4600,7 @@
       * @type {ModelType}
       * @memberof ReferenceElementMetadata
       */
@@ -200,16 +181,16 @@ index a17e953..f9f0fd7 100644
      /**
       *
       * @type {Array<EmbeddedDataSpecification>}
-@@ -4152,7 +4152,7 @@ export interface RelationshipElement {
-      * @type {string}
+@@ -4684,7 +4684,7 @@
+      * @type {any}
       * @memberof RelationshipElement
       */
--    modelType: string;
+-    modelType: any | null;
 +    modelType: 'RelationshipElement';
      /**
       *
       * @type {Reference}
-@@ -4231,7 +4231,7 @@ export interface RelationshipElementAbstract {
+@@ -4763,7 +4763,7 @@
       * @type {ModelType}
       * @memberof RelationshipElementAbstract
       */
@@ -218,7 +199,7 @@ index a17e953..f9f0fd7 100644
      /**
       *
       * @type {Reference}
-@@ -4311,7 +4311,7 @@ export interface RelationshipElementMetadata {
+@@ -4843,7 +4843,7 @@
       * @type {ModelType}
       * @memberof RelationshipElementMetadata
       */
@@ -227,16 +208,16 @@ index a17e953..f9f0fd7 100644
      /**
       *
       * @type {Array<EmbeddedDataSpecification>}
-@@ -4812,7 +4812,7 @@ export interface SubmodelElementCollection {
-      * @type {string}
+@@ -5344,7 +5344,7 @@
+      * @type {any}
       * @memberof SubmodelElementCollection
       */
--    modelType: string;
+-    modelType: any | null;
 +    modelType: 'SubmodelElementCollection';
      /**
       *
       * @type {Reference}
-@@ -4885,7 +4885,7 @@ export interface SubmodelElementCollectionMetadata {
+@@ -5417,7 +5417,7 @@
       * @type {ModelType}
       * @memberof SubmodelElementCollectionMetadata
       */
@@ -245,16 +226,16 @@ index a17e953..f9f0fd7 100644
      /**
       *
       * @type {Array<EmbeddedDataSpecification>}
-@@ -4959,7 +4959,7 @@ export interface SubmodelElementList {
-      * @type {string}
+@@ -5491,7 +5491,7 @@
+      * @type {any}
       * @memberof SubmodelElementList
       */
--    modelType: string;
+-    modelType: any | null;
 +    modelType: 'SubmodelElementList';
      /**
       *
       * @type {Reference}
-@@ -5081,7 +5081,7 @@ export interface SubmodelElementListMetadata {
+@@ -5613,7 +5613,7 @@
       * @type {ModelType}
       * @memberof SubmodelElementListMetadata
       */

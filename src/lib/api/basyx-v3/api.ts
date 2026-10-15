@@ -2,7 +2,7 @@
 // TODO MNES-1605 remove url lib together with this file
 import url from 'url';
 import { Configuration } from './configuration';
-import { AssetAdministrationShell, Reference, Submodel } from 'lib/api/aas/models';
+import { AssetAdministrationShell, Query, QueryResultAssetAdministrationShellResultInner, QueryResultSubmodelResultInner, Reference, Submodel } from 'lib/api/aas/models';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import {
     IAssetAdministrationShellRepositoryApi,
@@ -83,8 +83,14 @@ export class AssetAdministrationShellRepositoryApi implements IAssetAdministrati
         baseUrl: string,
         shellsInRepositories: AssetAdministrationShell[],
         reachable: ServiceReachable = ServiceReachable.Yes,
+        queryEndpointsSupported = true,
     ): AssetAdministrationShellRepositoryApiInMemory {
-        return new AssetAdministrationShellRepositoryApiInMemory(baseUrl, shellsInRepositories, reachable);
+        return new AssetAdministrationShellRepositoryApiInMemory(
+            baseUrl,
+            shellsInRepositories,
+            reachable,
+            queryEndpointsSupported,
+        );
     }
 
     getBaseUrl(): string {
@@ -118,6 +124,44 @@ export class AssetAdministrationShellRepositoryApi implements IAssetAdministrati
             aasId,
             options,
         )(this.http, this.basePath);
+    }
+
+    async queryAssetAdministrationShells(
+        query: Query,
+        limit?: number,
+        cursor?: string,
+        options: Omit<RequestInit, 'body' | 'method'> = {},
+    ): Promise<ApiResponseWrapper<PaginationData<QueryResultAssetAdministrationShellResultInner[]>>> {
+        // `Object.assign` only copies a plain object's own enumerable properties, so it silently drops
+        // every entry of a `Headers` instance or a header-tuple array (both valid `RequestInit.headers`
+        // shapes) instead of merging them — a caller-supplied Authorization header would vanish. Going
+        // through `Headers` normalizes all three accepted shapes and also de-dupes a caller's
+        // differently-cased 'content-type' against our default instead of sending both.
+        const requestHeaders = new Headers(options.headers);
+        if (!requestHeaders.has('Content-Type')) requestHeaders.set('Content-Type', 'application/json');
+        options.headers = Object.fromEntries(requestHeaders.entries());
+        const queryParams = new URLSearchParams();
+        if (limit !== undefined) queryParams.set('limit', String(limit));
+        if (cursor) queryParams.set('cursor', cursor);
+        const reqOptions = {
+            ...options,
+            body: JSON.stringify(query),
+            method: 'POST',
+        };
+        // basePath is a client-supplied, egress-guarded repository URL (see AasRepositoryService):
+        // the guard only validates its host, not its path/query/fragment, so appending the endpoint
+        // via naive string concatenation lets a crafted basePath (e.g. ending in "#") push "/query/shells"
+        // into the URL fragment, which is never sent over the wire — the request would then silently hit
+        // "/shells" (the repository's create-shell endpoint) instead. Building on the parsed URL and
+        // clearing search/hash keeps the intended request path regardless of what basePath contains.
+        const requestUrl = new URL(this.basePath);
+        requestUrl.pathname = `${requestUrl.pathname.replace(/\/+$/, '')}/query/shells`;
+        requestUrl.search = queryParams.toString();
+        requestUrl.hash = '';
+        return this.http.fetch<PaginationData<QueryResultAssetAdministrationShellResultInner[]>>(
+            requestUrl.toString(),
+            reqOptions,
+        );
     }
 
 }
@@ -323,8 +367,9 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
         basePath: string,
         submodelsInRepository: Submodel[],
         reachable: ServiceReachable = ServiceReachable.Yes,
+        queryEndpointsSupported = true,
     ): SubmodelRepositoryApiInMemory {
-        return new SubmodelRepositoryApiInMemory(basePath, submodelsInRepository, reachable);
+        return new SubmodelRepositoryApiInMemory(basePath, submodelsInRepository, reachable, queryEndpointsSupported);
     }
 
     getBaseUrl(): string {
@@ -412,6 +457,41 @@ export class SubmodelRepositoryApi implements ISubmodelRepositoryApi {
             submodelElementPath,
             options,
         )(this.http, this.baseUrl);
+    }
+
+    async querySubmodels(
+        query: Query,
+        limit?: number,
+        cursor?: string,
+        options: Omit<RequestInit, 'body' | 'method'> = {},
+    ): Promise<ApiResponseWrapper<PaginationData<QueryResultSubmodelResultInner[]>>> {
+        // `Object.assign` only copies a plain object's own enumerable properties, so it silently drops
+        // every entry of a `Headers` instance or a header-tuple array (both valid `RequestInit.headers`
+        // shapes) instead of merging them — a caller-supplied Authorization header would vanish. Going
+        // through `Headers` normalizes all three accepted shapes and also de-dupes a caller's
+        // differently-cased 'content-type' against our default instead of sending both.
+        const requestHeaders = new Headers(options.headers);
+        if (!requestHeaders.has('Content-Type')) requestHeaders.set('Content-Type', 'application/json');
+        options.headers = Object.fromEntries(requestHeaders.entries());
+        const queryParams = new URLSearchParams();
+        if (limit !== undefined) queryParams.set('limit', String(limit));
+        if (cursor) queryParams.set('cursor', cursor);
+        const reqOptions = {
+            ...options,
+            body: JSON.stringify(query),
+            method: 'POST',
+        };
+        // baseUrl is a client-supplied, egress-guarded repository URL (see submodelRepositoryActions):
+        // the guard only validates its host, not its path/query/fragment, so appending the endpoint
+        // via naive string concatenation lets a crafted baseUrl (e.g. ending in "#") push "/query/submodels"
+        // into the URL fragment, which is never sent over the wire — the request would then silently hit
+        // "/submodels" (the repository's create-submodel endpoint) instead. Building on the parsed URL and
+        // clearing search/hash keeps the intended request path regardless of what baseUrl contains.
+        const requestUrl = new URL(this.baseUrl);
+        requestUrl.pathname = `${requestUrl.pathname.replace(/\/+$/, '')}/query/submodels`;
+        requestUrl.search = queryParams.toString();
+        requestUrl.hash = '';
+        return this.http.fetch<PaginationData<QueryResultSubmodelResultInner[]>>(requestUrl.toString(), reqOptions);
     }
 
 }
