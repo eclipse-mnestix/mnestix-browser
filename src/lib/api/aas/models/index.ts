@@ -1449,10 +1449,10 @@ export interface DateTimeOperand {
     $dateTimeVal?: string;
     /**
      *
-     * @type {string}
+     * @type {StringValueOperand}
      * @memberof DateTimeOperand
      */
-    $dateTimeCast?: string;
+    $dateTimeCast?: StringValueOperand;
     /**
      *
      * @type {DateTimeAttributeItem}
@@ -5908,10 +5908,10 @@ export interface TimeOperand {
     $timeVal?: string;
     /**
      *
-     * @type {string | DateTimeOperand}
+     * @type {StringValueOperand | DateTimeOperand}
      * @memberof TimeOperand
      */
-    $timeCast?: string | DateTimeOperand | null;
+    $timeCast?: StringValueOperand | DateTimeOperand | null;
 }
 /**
  *
@@ -5993,16 +5993,16 @@ export interface Value {
     $boolCast?: Value | null;
     /**
      *
-     * @type {string}
+     * @type {StringValueOperand}
      * @memberof Value
      */
-    $dateTimeCast?: string;
+    $dateTimeCast?: StringValueOperand;
     /**
      *
-     * @type {string | DateTimeOperand}
+     * @type {StringValueOperand | DateTimeOperand}
      * @memberof Value
      */
-    $timeCast?: string | DateTimeOperand | null;
+    $timeCast?: StringValueOperand | DateTimeOperand | null;
     /**
      *
      * @type {DateTimeOperand}
