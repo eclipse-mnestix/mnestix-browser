@@ -13,6 +13,8 @@ import BottomMenu from 'layout/menu/BottomMenu';
 import { useTranslations, useLocale } from 'next-intl';
 import { MnestixRole } from 'components/authentication/AllowedRoutes';
 import { DynamicIcon } from 'components/basics/DynamicIcon';
+import { getUserPagesConfig } from 'app/[locale]/pages/pages.config';
+import ExtensionIcon from '@mui/icons-material/Extension';
 
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
     '.MuiDrawer-paper': {
@@ -64,6 +66,11 @@ export default function MainMenu() {
     const mnestixRole = auth.getAccount()?.user.mnestixRole ?? MnestixRole.MnestixGuest;
     const allowedRoutes = auth.getAccount()?.user.allowedRoutes ?? [];
     const t = useTranslations('navigation.mainMenu');
+    // Resolves user-plugin page labels, which may be an i18n key or a raw display
+    // string (same convention as AasViewerAction.label, see AasViewerActionBar).
+    const tRoot = useTranslations();
+    const looseT = tRoot as unknown as ((key: string) => string) & { has: (key: string) => boolean };
+    const resolveLabel = (label: string) => (looseT.has(label) ? looseT(label) : label);
     const locale = useLocale();
 
     const getAuthName = () => {
@@ -122,6 +129,17 @@ export default function MainMenu() {
         };
         basicMenu.push(settingsMenu);
     }
+
+    const userPagesConfig = getUserPagesConfig();
+    userPagesConfig.menu.forEach((key) => {
+        const userPage = userPagesConfig.pages[key];
+        if (!userPage) return;
+        basicMenu.push({
+            label: resolveLabel(userPage.label),
+            to: `/pages/${key}`,
+            icon: userPage.icon ?? <ExtensionIcon />,
+        });
+    });
 
     if (env.EXTERNAL_LINKS && env.EXTERNAL_LINKS.length > 0) {
         env.EXTERNAL_LINKS.forEach((link) => {
