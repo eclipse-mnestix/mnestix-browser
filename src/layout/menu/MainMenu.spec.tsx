@@ -5,12 +5,12 @@ import { expect } from '@jest/globals';
 import { useAuth } from 'lib/hooks/UseAuth';
 import AllowedRoutes, { MnestixRole } from 'components/authentication/AllowedRoutes';
 import { useEnv } from 'app/EnvProvider';
-import { getUserPagesConfig } from 'app/[locale]/pages/pages.config';
+import { getUserPagesMenuConfig } from 'app/[locale]/pages/pages.menu.config';
 
 jest.mock('next-auth/react');
 jest.mock('../../lib/hooks/UseAuth');
 jest.mock('../../app/EnvProvider');
-jest.mock('../../app/[locale]/pages/pages.config');
+jest.mock('../../app/[locale]/pages/pages.menu.config');
 
 const mockEnvVariables = jest.fn(() => {
     return {
@@ -118,7 +118,7 @@ describe('MainMenu', () => {
     });
 
     beforeEach(() => {
-        (getUserPagesConfig as jest.Mock).mockReturnValue({ menu: [], pages: {} });
+        (getUserPagesMenuConfig as jest.Mock).mockReturnValue({ menu: [], entries: {} });
     });
 
     it('should be able to open the menu', () => {
@@ -204,10 +204,10 @@ describe('MainMenu', () => {
 
     describe('user-plugin pages', () => {
         it('should render menu entries for pages listed in menu', () => {
-            (getUserPagesConfig as jest.Mock).mockReturnValue({
+            (getUserPagesMenuConfig as jest.Mock).mockReturnValue({
                 menu: ['alerts'],
-                pages: {
-                    alerts: { label: 'Alerts', component: () => null },
+                entries: {
+                    alerts: { label: 'Alerts' },
                 },
             });
             (useEnv as jest.Mock).mockImplementation(mockEnvVariables);
@@ -220,10 +220,10 @@ describe('MainMenu', () => {
         });
 
         it('should not render pages absent from menu', () => {
-            (getUserPagesConfig as jest.Mock).mockReturnValue({
+            (getUserPagesMenuConfig as jest.Mock).mockReturnValue({
                 menu: [],
-                pages: {
-                    alerts: { label: 'Alerts', component: () => null },
+                entries: {
+                    alerts: { label: 'Alerts' },
                 },
             });
             (useEnv as jest.Mock).mockImplementation(mockEnvVariables);
@@ -235,12 +235,12 @@ describe('MainMenu', () => {
         });
 
         it('should render multiple registered pages, including sub-page keys', () => {
-            (getUserPagesConfig as jest.Mock).mockReturnValue({
+            (getUserPagesMenuConfig as jest.Mock).mockReturnValue({
                 menu: ['alerts', 'reports'],
-                pages: {
-                    alerts: { label: 'Alerts', component: () => null },
-                    'alerts/history': { label: 'Alert History', component: () => null },
-                    reports: { label: 'Reports', component: () => null },
+                entries: {
+                    alerts: { label: 'Alerts' },
+                    'alerts/history': { label: 'Alert History' },
+                    reports: { label: 'Reports' },
                 },
             });
             (useEnv as jest.Mock).mockImplementation(mockEnvVariables);
@@ -251,6 +251,18 @@ describe('MainMenu', () => {
             expect(screen.getByTestId('/pages/reports')).toBeInTheDocument();
             // Sub-pages are reachable by URL but intentionally not rendered in the menu.
             expect(screen.queryByTestId('/pages/alerts/history')).not.toBeInTheDocument();
+        });
+
+        it('should not render a menu key that resolves only to an inherited Object.prototype member', () => {
+            (getUserPagesMenuConfig as jest.Mock).mockReturnValue({
+                menu: ['toString'],
+                entries: {},
+            });
+            (useEnv as jest.Mock).mockImplementation(mockEnvVariables);
+            (useAuth as jest.Mock).mockImplementation(mockUseAuthAdmin);
+            renderAndOpenMenu();
+
+            expect(screen.queryByTestId('/pages/toString')).not.toBeInTheDocument();
         });
     });
 });

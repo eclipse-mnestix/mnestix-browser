@@ -17,13 +17,17 @@ type UserPluginPageProps = {
 export default async function UserPluginPage({ params }: UserPluginPageProps) {
     const { pageKey } = await params;
     const key = pageKey.join('/');
-    const page = getUserPagesConfig().pages[key];
+    const pages = getUserPagesConfig();
+    // Object.hasOwn guards against keys like "toString"/"constructor"/"__proto__" that
+    // resolve to inherited Object.prototype members instead of a registered page —
+    // those would pass a plain truthiness check but have no `component`, causing a
+    // render error instead of the intended 404.
+    const PageComponent = Object.hasOwn(pages, key) ? pages[key] : undefined;
 
-    if (!page) {
+    if (!PageComponent) {
         notFound();
         return null;
     }
 
-    const PageComponent = page.component;
     return <PageComponent />;
 }

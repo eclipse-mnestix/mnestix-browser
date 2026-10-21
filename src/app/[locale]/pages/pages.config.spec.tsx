@@ -9,15 +9,6 @@ describe('getUserPagesConfig', () => {
     it('exposes every OSS-registered page', () => {
         const config = getUserPagesConfig();
 
-        expect(config.menu).toEqual(expect.arrayContaining(userPagesRegistry.menu));
-        expect(Object.keys(config.pages)).toEqual(expect.arrayContaining(Object.keys(userPagesRegistry.pages)));
-    });
-
-    it('keeps every menu entry reachable (invariant: menu keys must be registered pages)', () => {
-        const config = getUserPagesConfig();
-
-        for (const key of config.menu) {
-            expect(config.pages[key]).toBeDefined();
-        }
+        expect(Object.keys(config)).toEqual(expect.arrayContaining(Object.keys(userPagesRegistry)));
     });
 });

@@ -13,7 +13,7 @@ import BottomMenu from 'layout/menu/BottomMenu';
 import { useTranslations, useLocale } from 'next-intl';
 import { MnestixRole } from 'components/authentication/AllowedRoutes';
 import { DynamicIcon } from 'components/basics/DynamicIcon';
-import { getUserPagesConfig } from 'app/[locale]/pages/pages.config';
+import { getUserPagesMenuConfig } from 'app/[locale]/pages/pages.menu.config';
 import ExtensionIcon from '@mui/icons-material/Extension';
 
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
@@ -130,14 +130,14 @@ export default function MainMenu() {
         basicMenu.push(settingsMenu);
     }
 
-    const userPagesConfig = getUserPagesConfig();
-    userPagesConfig.menu.forEach((key) => {
-        const userPage = userPagesConfig.pages[key];
-        if (!userPage) return;
+    const userPagesMenuConfig = getUserPagesMenuConfig();
+    userPagesMenuConfig.menu.forEach((key) => {
+        if (!Object.hasOwn(userPagesMenuConfig.entries, key)) return;
+        const menuEntry = userPagesMenuConfig.entries[key];
         basicMenu.push({
-            label: resolveLabel(userPage.label),
+            label: resolveLabel(menuEntry.label),
             to: `/pages/${key}`,
-            icon: userPage.icon ?? <ExtensionIcon />,
+            icon: menuEntry.icon ?? <ExtensionIcon />,
         });
     });
 
