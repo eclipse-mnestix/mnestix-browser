@@ -134,7 +134,7 @@ export function useFileViewObject(
 
         if (isValidUrl((versionSubmodelEl as ModelFile).value)) {
             digitalFile.digitalFileUrl = (versionSubmodelEl as ModelFile).value || '';
-            digitalFile.mimeType = (versionSubmodelEl as ModelFile).contentType;
+            digitalFile.mimeType = (versionSubmodelEl as ModelFile).contentType ?? '';
         } else if (submodelId && fileSubmodelElement.idShort && fileSubmodelElement?.idShort) {
             const idShort = findIdShortForLatestElement(
                 fileSubmodelElement as SubmodelElementCollection,
@@ -145,7 +145,7 @@ export function useFileViewObject(
             );
             const submodelElementPath = `${submodelElement.idShort}.${fileSubmodelElement.idShort}.${idShort}`;
             digitalFile.digitalFileUrl = `${aasOriginUrl}/submodels/${encodeBase64(submodelId)}/submodel-elements/${submodelElementPath}/attachment`;
-            digitalFile.mimeType = (versionSubmodelEl as ModelFile).contentType;
+            digitalFile.mimeType = (versionSubmodelEl as ModelFile).contentType ?? '';
         }
         return digitalFile;
     }
