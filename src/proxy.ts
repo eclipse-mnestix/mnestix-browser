@@ -3,16 +3,12 @@ import createMiddleware from 'next-intl/middleware';
 import { routing } from 'i18n/routing';
 import { envs } from 'lib/env/MnestixEnv';
 import { BASE_PATH } from 'lib/basePath';
+import { withBasePath } from 'lib/basePathHelpers';
 
 // With basePath set, req.nextUrl.pathname includes the prefix — strip it for the
 // checks below and re-add it to redirect/rewrite targets.
 function stripBasePath(pathname: string): string {
     return BASE_PATH && pathname.startsWith(BASE_PATH) ? pathname.slice(BASE_PATH.length) || '/' : pathname;
-}
-
-function withBasePath(pathname: string): string {
-    if (!BASE_PATH) return pathname;
-    return pathname === '/' ? BASE_PATH : `${BASE_PATH}${pathname}`;
 }
 
 // next-intl does also provide methods for navigation (useRouter etc.) but we
