@@ -55,7 +55,7 @@ The preconfigured realm ships with the following accounts:
   services still talk to Keycloak at `http://keycloak:8080` over the Docker network (resolved dynamically via
   `KC_HOSTNAME_BACKCHANNEL_DYNAMIC`).
 
-`NEXTAUTH_URL`: Required variable to configure redirect URL for NextAuth.
+`NEXTAUTH_URL`: Required variable to configure redirect URL for NextAuth. If the app is built with a custom `BASE_PATH`, the URL has to include it (e.g. `https://host.example.com/viewer`) — it is used as the post-logout redirect target, which leaves the app when the prefix is missing.
 
 `NEXTAUTH_SECRET`: Required variable used to encrypt the NextAuth.js JWT, and to hash email verification tokens.
 
