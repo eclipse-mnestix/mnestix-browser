@@ -13,11 +13,15 @@ describe('getUserPagesMenuConfig', () => {
         expect(Object.keys(config.entries)).toEqual(expect.arrayContaining(Object.keys(userPagesMenuRegistry.entries)));
     });
 
-    it('keeps every menu entry reachable (invariant: menu keys must be registered entries)', () => {
+    it('keeps every menu entry reachable (invariant: menu keys must have metadata and page components)', async () => {
         const config = getUserPagesMenuConfig();
+        const { getUserPagesConfig } = await import('./pages.config');
+        const pages = getUserPagesConfig();
 
         for (const key of config.menu) {
             expect(Object.hasOwn(config.entries, key)).toBe(true);
+            expect(Object.hasOwn(pages, key)).toBe(true);
+            expect(pages[key]).toBeTruthy();
         }
     });
 });
