@@ -5,18 +5,20 @@
   "private": true,
   "license": "MIT",
   "resolutions": {
-    "undici": "8.10.2",
+    "undici": "8.12.3",
     "lodash": "4.18.1",
     "hono": "4.13.11",
     "postcss": "^8.5.18",
     "uuid": "^11.1.1",
     "brace-expansion": "5.0.12",
-    "fast-uri": "^3.1.5",
+    "fast-uri": "^3.1.9",
     "cosmiconfig/js-yaml": "4.3.2",
     "load-nyc-config/js-yaml": "3.15.2",
     "find-my-way": "^9.7.0",
+    "qs": "^6.16.1",
     "sharp": "^0.35.4",
     "svgo": "^3.3.4",
+    "systeminformation": "^5.33.16",
     "valibot": "^1.4.2"
   },
   "engines": {
