@@ -17,6 +17,7 @@ import { ProductJourneyAddressList } from './ProductJourneyAddressList';
 import { CenteredLoadingSpinner } from 'components/basics/CenteredLoadingSpinner';
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { useShowError } from 'lib/hooks/UseShowError';
+import { withBasePath } from 'lib/basePathHelpers';
 
 export type Address = {
     street?: string;
@@ -194,7 +195,7 @@ function getMarkerLayers(coordinatesPerLifeCyclePhase: AddressPerLifeCyclePhase[
                 style: new Style({
                     image: new Icon({
                         anchor: [0.5, 1],
-                        src: `/LocationMarkers/${markerIconName}.svg`,
+                        src: withBasePath(`/LocationMarkers/${markerIconName}.svg`),
                     }),
                 }),
             });

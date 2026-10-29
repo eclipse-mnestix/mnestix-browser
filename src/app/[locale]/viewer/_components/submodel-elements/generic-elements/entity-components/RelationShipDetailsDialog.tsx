@@ -16,6 +16,8 @@ export function RelationShipDetailsDialog(props: RelationShipDetailsModalProps) 
     const t = useTranslations('components.relationShipDetailsDialog');
     const relationship = props.relationship;
     const semanticId = relationship.semanticId?.keys[0].value;
+    const firstKeys = relationship.first?.keys;
+    const secondKeys = relationship.second?.keys;
 
     const getRelationshipType = (semanticId: string): string => {
         switch (semanticId) {
@@ -45,7 +47,7 @@ export function RelationShipDetailsDialog(props: RelationShipDetailsModalProps) 
                             gap: 1
                         }}>
                         <Box sx={{ color: 'text.secondary' }}>Entity:</Box>
-                        {relationship.first.keys[relationship.first.keys.length - 1]?.value || t('error.entityError')}
+                        {firstKeys?.[firstKeys.length - 1]?.value || t('error.entityError')}
                     </Box>
                 </DataRow>
                 <DataRow hasDivider={false}>
@@ -72,7 +74,7 @@ export function RelationShipDetailsDialog(props: RelationShipDetailsModalProps) 
                             gap: 1
                         }}>
                         <Box sx={{ color: 'text.secondary' }}>Entity:</Box>
-                        {relationship.second.keys[relationship.second.keys.length - 1]?.value || t('error.entityError')}
+                        {secondKeys?.[secondKeys.length - 1]?.value || t('error.entityError')}
                     </Box>
                 </DataRow>
             </DialogContent>

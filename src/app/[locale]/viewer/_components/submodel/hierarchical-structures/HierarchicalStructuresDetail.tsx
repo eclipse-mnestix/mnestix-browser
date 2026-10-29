@@ -150,6 +150,7 @@ const selectRelationship = (entryNode: Entity, relationShips: RelationshipElemen
 };
 
 function buildSameAsRelationship(entryNode: Entity, rel: RelationshipElement, entityNodes: Entity[]) {
+    if (!rel.first) return entityNodes;
     const entityName = rel.first.keys[rel.first.keys.length - 1]?.value;
 
     const entity = findEntity(entityNodes, entityName);
@@ -161,6 +162,7 @@ function buildSameAsRelationship(entryNode: Entity, rel: RelationshipElement, en
 }
 
 function buildIsPartOfRelationship(entryNode: Entity, rel: RelationshipElement, entityNodes: Entity[]) {
+    if (!rel.first || !rel.second) return entityNodes;
     const firstEntityName = rel.first.keys[rel.first.keys.length - 1]?.value;
     const secondEntityName = rel.second.keys[rel.second.keys.length - 1]?.value;
 
@@ -179,6 +181,7 @@ function buildIsPartOfRelationship(entryNode: Entity, rel: RelationshipElement, 
 }
 
 function buildHasPartRelationship(entryNode: Entity, rel: RelationshipElement, entityNodes: Entity[]) {
+    if (!rel.first || !rel.second) return entityNodes;
     const firstEntityName = rel.first.keys[rel.first.keys.length - 1]?.value;
     const secondEntityName = rel.second.keys[rel.second.keys.length - 1]?.value;
 

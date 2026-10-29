@@ -26,11 +26,16 @@ export class SubmodelRepositoryService {
         );
     }
 
-    static createNull(submodelsInRepositories: RepoSearchResult<Submodel>[] = []): SubmodelRepositoryService {
+    static createNull(
+        submodelsInRepositories: RepoSearchResult<Submodel>[] = [],
+        queryEndpointsSupported = true,
+    ): SubmodelRepositoryService {
         return new SubmodelRepositoryService((baseUrl) =>
             SubmodelRepositoryApi.createNull(
                 baseUrl,
                 submodelsInRepositories.filter((value) => value.location == baseUrl).map((value) => value.searchResult),
+                undefined,
+                queryEndpointsSupported,
             ),
         );
     }
@@ -60,7 +65,7 @@ export class SubmodelRepositoryService {
             response.httpStatus,
         );
     }
-
+    
     async getFirstSubmodelFromAllRepos(
         submodelId: string,
         infrastructure: InfrastructureConnection,

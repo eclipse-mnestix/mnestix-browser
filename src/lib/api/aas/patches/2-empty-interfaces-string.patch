@@ -1,8 +1,7 @@
 diff --git a/src/lib/api/aas/models/index.ts b/src/lib/api/aas/models/index.ts
-index f9f0fd7..7e2685f 100644
 --- a/src/lib/api/aas/models/index.ts
 +++ b/src/lib/api/aas/models/index.ts
-@@ -1820,7 +1820,7 @@ export interface Extension {
+@@ -1825,7 +1825,7 @@
   * @export
   * @interface FileAllOfContentType
   */
@@ -11,7 +10,7 @@ index f9f0fd7..7e2685f 100644
  /**
   *
   * @export
-@@ -3867,7 +3867,7 @@ export interface Referable1AllOfIdShort {}
+@@ -4459,7 +4459,7 @@
   * @export
   * @interface ReferableAllOfIdShort
   */
