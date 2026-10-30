@@ -22,7 +22,7 @@
     "valibot": "^1.4.2"
   },
   "engines": {
-    "node": "^24.13.0"
+    "node": "^24.22.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
