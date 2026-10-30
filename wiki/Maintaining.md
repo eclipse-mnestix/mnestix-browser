@@ -77,5 +77,33 @@ There are two generated OpenAPI clients. Regenerate them with:
 yarn generate-aas-apis        # BaSyx AAS client
 yarn generate-mnestix-apis    # Mnestix AAS Generator client
 ```
-By adapting the respective `openapitools.json` (`src/lib/api/aas/openapitools.json` and
-`src/lib/api/mnestix-aas-generator/openapitools.json`), you can change the OpenAPI client generation settings e.g. the input spec and its version.
+
+#### Mnestix AAS Generator client
+
+Configured via `src/lib/api/mnestix-aas-generator/openapitools.json`. This one runs `openapi-generator-cli` directly,
+so the `inputSpec` and `generator-cli.version` can be freely changed, e.g. to point at a different swagger/OpenAPI
+URL or version.
+
+#### BaSyx AAS client
+
+Configured via `src/lib/api/aas/openapitools.json`, but **not every setting can be changed freely here**.
+`src/lib/api/aas/openapi-generate.js` wraps the generator call with a workaround for an
+[openapi-generator bug](https://github.com/OpenAPITools/openapi-generator/issues/22587) that crashes on the AAS
+spec's recursive AASQL schemas when the spec is processed via the OpenAPI 3.1 code path. This imposes the following
+constraints:
+
+- **`inputSpec` must be a `raw.githubusercontent.com` URL** of the form
+  `https://raw.githubusercontent.com/<owner>/<repo>/<ref>/<path-to-entry-file>`. The script parses the owner, repo,
+  ref and entry file path out of this URL to `git clone` the spec repository (needed to keep relative `$ref`s
+  between the spec's files intact). Pointing it at a URL that doesn't match this pattern (e.g. a SwaggerHub or local
+  file URL) will make the script throw an opaque `TypeError` instead of a helpful error message.
+- **`git` must be available on `PATH`**, since the script shells out to `git clone`.
+- The script **rewrites the entry file's `openapi: 3.1.x` version declaration down to `3.0.3`** in the cloned repo
+  before generating, so that `openapi-generator` uses its OpenAPI 3.0 code path. This only works if the spec doesn't
+  actually rely on any OpenAPI-3.1-only features (e.g. `type` arrays, `const`, `prefixItems`, numeric
+  `exclusiveMinimum`/`exclusiveMaximum`). If a future spec version starts using such features, this downgrade will
+  silently produce an incorrect client, and the workaround/version pin will need to be revisited.
+
+If you only need to bump the spec version (same repo, same constraints as above), you can still just change the
+`ref` segment of the `inputSpec` URL and the `generator-cli.version`. Changing the spec source to something other
+than a GitHub-raw URL requires adjusting `openapi-generate.js` itself.
