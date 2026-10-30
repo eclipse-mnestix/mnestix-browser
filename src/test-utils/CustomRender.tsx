@@ -6,6 +6,7 @@ import deMessages from 'locale/de.json';
 import { NotificationContextProvider } from 'components/contexts/NotificationContext';
 import { SessionProvider } from 'next-auth/react';
 import { Session } from 'next-auth';
+import { withBasePath } from 'lib/basePathHelpers';
 
 interface WrapperProps {
     children: ReactNode;
@@ -35,7 +36,7 @@ export const CustomRender = (
     const messages = loadMessages(locale);
     const Wrapper: React.FC<WrapperProps> = ({ children }) =>
         session !== undefined ? (
-            <SessionProvider refetchOnWindowFocus={false} session={session}>
+            <SessionProvider basePath={withBasePath('/api/auth')} refetchOnWindowFocus={false} session={session}>
                 <NextIntlClientProvider locale={locale} messages={messages}>
                     <NotificationContextProvider>{children}</NotificationContextProvider>
                 </NextIntlClientProvider>

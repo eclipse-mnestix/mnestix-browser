@@ -7,6 +7,7 @@ import { CustomThemeProvider } from 'layout/theme/CustomThemeProvider';
 import { Internationalization } from 'lib/i18n/Internationalization';
 import { ReactNode } from 'react';
 import { SessionProvider } from 'next-auth/react';
+import { withBasePath } from 'lib/basePathHelpers';
 import { EnvProvider } from 'app/EnvProvider';
 import { InvalidSessionHandler } from 'components/authentication/InvalidSessionHandler';
 import { AasStoreProvider } from 'stores/AasStore';
@@ -27,7 +28,14 @@ export const ClientLayout = ({ children }: Readonly<ClientLayoutProps>) => {
     const t = useTranslations('navigation');
     return (
         <EnvProvider>
-            <SessionProvider refetchInterval={FIVE_MIN} refetchOnWindowFocus={true}>
+            {/* basePath: next-auth v4's client does not inherit Next.js basePath —
+                without this prop every client call (session, csrf, providers,
+                signIn, signOut) hits /api/auth and 404s when BASE_PATH is set. */}
+            <SessionProvider
+                refetchInterval={FIVE_MIN}
+                refetchOnWindowFocus={true}
+                basePath={withBasePath('/api/auth')}
+            >
                 <InvalidSessionHandler />
                 <Internationalization>
                     <CustomThemeProvider>
