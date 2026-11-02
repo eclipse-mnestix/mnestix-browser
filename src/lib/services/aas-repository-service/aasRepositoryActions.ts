@@ -1,11 +1,12 @@
 'use server';
 
-import { AssetAdministrationShell } from 'lib/api/aas/models';
+import { AssetAdministrationShell, Query, QueryResultAssetAdministrationShellResultInner } from 'lib/api/aas/models';
 import { AasRepositoryService, RepoSearchResult } from 'lib/services/aas-repository-service/AasRepositoryService';
 import { ApiFileDto, ApiResponseWrapper } from 'lib/util/apiResponseWrapper/apiResponseWrapper';
 import { headers } from 'next/headers';
 import { createRequestLogger, logInfo } from 'lib/util/Logger';
 import { RepositoryWithInfrastructure } from '../database/InfrastructureMappedTypes';
+import { PaginationData } from 'lib/api/basyx-v3/types';
 
 export async function searchAasInAllRepositories(
     searchInput: string,
@@ -37,4 +38,22 @@ export async function getAasFromRepository(
     });
     const aasRepoService = AasRepositoryService.create(logger);
     return aasRepoService.getAasFromRepository(aasId, repository);
+}
+
+/**
+ * Searches for Asset Administration Shells matching an AASQL query in a single
+ * repository if query endpoint is available. 
+ */
+export async function queryAssetAdministrationShells(
+    query: Query,
+    repository: RepositoryWithInfrastructure,
+    limit?: number,
+    cursor?: string,
+): Promise<ApiResponseWrapper<PaginationData<QueryResultAssetAdministrationShellResultInner[]>>> {
+    const logger = createRequestLogger(await headers());
+    logInfo(logger, 'queryAssetAdministrationShells', 'Requested AAS query', {
+        repositoryUrl: repository.url,
+    });
+    const aasRepoService = AasRepositoryService.create(logger);
+    return aasRepoService.queryAssetAdministrationShells(query, repository, limit, cursor);
 }

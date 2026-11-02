@@ -1,9 +1,10 @@
-import { getAttachmentFromSubmodelElement } from './submodelRepositoryActions';
+import { getAttachmentFromSubmodelElement, querySubmodels } from './submodelRepositoryActions';
 import { assertEgressAllowed, securityHeadersForUrl } from 'lib/util/securityHelpers/repositoryFetchGuard';
 import { getInfrastructureByName } from '../database/infrastructureData';
 import { mnestixFetch } from 'lib/api/infrastructure';
 import { SubmodelRepositoryApi } from 'lib/api/basyx-v3/api';
 import { RepositoryWithInfrastructure } from '../database/InfrastructureMappedTypes';
+import { ApiResultStatus } from 'lib/util/apiResponseWrapper/apiResultStatus';
 
 jest.mock('lib/util/securityHelpers/repositoryFetchGuard', () => ({
     assertEgressAllowed: jest.fn(),
@@ -73,5 +74,65 @@ describe('getAttachmentFromSubmodelElement', () => {
 
         expect(mockedMnestixFetch).toHaveBeenCalledWith({ 'X-API-KEY': 'secret' });
         expect(result.isSuccess).toBe(true);
+    });
+});
+
+describe('querySubmodels', () => {
+    const queryFn = jest.fn();
+    const testQuery = { $condition: { $boolean: true } };
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+        mockedAssertEgressAllowed.mockResolvedValue(undefined);
+        mockedSecurityHeadersForUrl.mockResolvedValue(null);
+        mockedGetInfrastructureByName.mockResolvedValue(undefined);
+        queryFn.mockResolvedValue({ isSuccess: true, result: { paging_metadata: {}, result: [] } });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        mockedCreate.mockReturnValue({ querySubmodels: queryFn } as any);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        mockedMnestixFetch.mockReturnValue({ fetch: jest.fn() } as any);
+    });
+
+    it('returns a failure and makes no outbound fetch when egress is blocked', async () => {
+        mockedAssertEgressAllowed.mockRejectedValue(new Error('Egress blocked'));
+        const repository: RepositoryWithInfrastructure = { ...DEFAULT_REPO, url: 'http://169.254.169.254/x' };
+
+        const result = await querySubmodels(testQuery, repository);
+
+        expect(mockedAssertEgressAllowed).toHaveBeenCalledWith(repository.url, repository.infrastructureName);
+        expect(result.isSuccess).toBe(false);
+        expect(mockedCreate).not.toHaveBeenCalled();
+        expect(mockedMnestixFetch).not.toHaveBeenCalled();
+        expect(queryFn).not.toHaveBeenCalled();
+    });
+
+    it('attaches no credentials (null header) for a non-configured host', async () => {
+        mockedSecurityHeadersForUrl.mockResolvedValue(null);
+        const repository: RepositoryWithInfrastructure = { ...DEFAULT_REPO, url: 'http://attacker.example/x' };
+
+        await querySubmodels(testQuery, repository);
+
+        expect(mockedMnestixFetch).toHaveBeenCalledWith(null);
+    });
+
+    it('attaches the security header for a configured host', async () => {
+        mockedSecurityHeadersForUrl.mockResolvedValue({ 'X-API-KEY': 'secret' });
+
+        const result = await querySubmodels(testQuery, DEFAULT_REPO);
+
+        expect(mockedMnestixFetch).toHaveBeenCalledWith({ 'X-API-KEY': 'secret' });
+        expect(queryFn).toHaveBeenCalledWith(testQuery, undefined, undefined);
+        expect(result.isSuccess).toBe(true);
+    });
+
+    it('returns the server error when the repository does not support the query endpoint', async () => {
+        queryFn.mockResolvedValue({ isSuccess: false, errorCode: ApiResultStatus.NOT_FOUND, message: 'not found' });
+
+        const result = await querySubmodels(testQuery, DEFAULT_REPO);
+
+        expect(result.isSuccess).toBe(false);
+        if (!result.isSuccess) {
+            expect(result.errorCode).toBe(ApiResultStatus.NOT_FOUND);
+        }
     });
 });

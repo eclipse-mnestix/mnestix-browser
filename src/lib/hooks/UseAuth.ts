@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { Session } from 'next-auth';
 import { sessionLogOut } from 'lib/api/sessionLogOut';
+import { withBasePath } from 'lib/basePathHelpers';
 import AllowedRoutes, { MnestixRole } from 'components/authentication/AllowedRoutes';
 import { useEnv } from 'app/EnvProvider';
 
@@ -47,7 +48,9 @@ export function useAuth() {
         },
         logout: async (): Promise<void> => {
             await sessionLogOut(env.KEYCLOAK_ENABLED).then(() =>
-                signOut({ callbackUrl: '/' }).catch((e) => {
+                // next-auth redirects via `window.location.href`, which bypasses
+                // Next's router — the callbackUrl must carry the basePath itself.
+                signOut({ callbackUrl: withBasePath('/') }).catch((e) => {
                     console.error(e);
                 }),
             );

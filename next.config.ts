@@ -1,9 +1,11 @@
 import { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
+import { BASE_PATH } from './src/lib/basePath';
 
 const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
+    basePath: BASE_PATH || undefined, // Sets the base path for the application.
     output: 'standalone', // Outputs a Single-Page Application (SPA).
     distDir: './dist', // Changes the build output directory to `./dist/`.
     images: {

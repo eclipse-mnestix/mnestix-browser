@@ -17,3 +17,6 @@
 !.env.local
 /.env*.local
 /cypress-artifacts
+
+# Temporary clone of the AAS OpenAPI spec repository used by generate-aas-apis (see openapi-generate.js)
+/src/lib/api/aas/.tmp-spec-repo

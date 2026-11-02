@@ -1,3 +1,5 @@
+import { withBasePath } from 'lib/basePathHelpers';
+
 /**
  * Browser-side logout helper. Lives in its own module on purpose: it used to sit in `infrastructure.ts`
  * alongside the `mnestixFetch` wrappers, which made `UseAuth` — and therefore every Client Component using it —
@@ -8,7 +10,7 @@
 export const sessionLogOut = async (keycloakEnabled: boolean) => {
     if (!keycloakEnabled) return;
     try {
-        await fetch('/api/auth/logout', { method: 'GET' });
+        await fetch(withBasePath('/api/auth/logout'), { method: 'GET' });
     } catch (err) {
         console.error(err);
     }

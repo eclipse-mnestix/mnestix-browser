@@ -1,0 +1,22 @@
+diff --git a/src/lib/api/aas/models/index.ts b/src/lib/api/aas/models/index.ts
+--- a/src/lib/api/aas/models/index.ts
++++ b/src/lib/api/aas/models/index.ts
+@@ -507,6 +507,18 @@
+      */
+     rEFERENCE?: string;
+ }
++
++/**
++ * @export
++ */
++export const AttributeItemGLOBALEnum = {
++    Localnow: 'LOCALNOW',
++    Utcnow: 'UTCNOW',
++    Clientnow: 'CLIENTNOW',
++    Anonymous: 'ANONYMOUS',
++} as const;
++export type AttributeItemGLOBALEnum = (typeof AttributeItemGLOBALEnum)[keyof typeof AttributeItemGLOBALEnum];
++
+ /**
+  *
+  * @export

@@ -14,6 +14,8 @@ import { RepositoryWithInfrastructure } from '../database/InfrastructureMappedTy
 import { getInfrastructureByName } from '../database/infrastructureData';
 import { securityHeadersForUrl } from 'lib/util/securityHelpers/repositoryFetchGuard';
 import { egressBlockedError } from 'lib/util/securityHelpers/egressBlockedError';
+import { Query, QueryResultSubmodelResultInner } from 'lib/api/aas/models';
+import { PaginationData } from 'lib/api/basyx-v3/types';
 
 /**
  * Fetches an attachment from a submodel element in a submodel repository.
@@ -42,4 +44,28 @@ export async function getAttachmentFromSubmodelElement(
     const searchResponse = await fileSearcher.getAttachmentFromSubmodelElement(submodelId, submodelElementPath);
     if (!searchResponse.isSuccess) return wrapErrorCode(searchResponse.errorCode, searchResponse.message);
     return wrapFile(searchResponse.result);
+}
+
+/**
+ * Searches for Submodels matching an AASQL query in a single submodel repository if query endpoint is available.
+ *
+ * Note: this calls SubmodelRepositoryApi directly (egress-guarded) 
+ */
+export async function querySubmodels(
+    query: Query,
+    repository: RepositoryWithInfrastructure,
+    limit?: number,
+    cursor?: string,
+): Promise<ApiResponseWrapper<PaginationData<QueryResultSubmodelResultInner[]>>> {
+    const logger = createRequestLogger(await headers());
+    logInfo(logger, querySubmodels.name, 'Requested Submodel query', { repositoryUrl: repository.url });
+
+    const blocked = await egressBlockedError(repository.url, repository.infrastructureName);
+    if (blocked) return blocked;
+
+    const infrastructure = await getInfrastructureByName(repository.infrastructureName);
+    const securityHeader = await securityHeadersForUrl(repository.url, infrastructure);
+
+    const submodelRepositoryClient = SubmodelRepositoryApi.create(repository.url, mnestixFetch(securityHeader));
+    return submodelRepositoryClient.querySubmodels(query, limit, cursor);
 }

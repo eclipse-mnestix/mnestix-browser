@@ -1,0 +1,35 @@
+diff --git a/src/lib/api/aas/models/index.ts b/src/lib/api/aas/models/index.ts
+--- a/src/lib/api/aas/models/index.ts
++++ b/src/lib/api/aas/models/index.ts
+@@ -493,19 +493,19 @@
+      * @type {string}
+      * @memberof AttributeItem
+      */
+-    cLAIM?: string;
++    CLAIM?: string;
+     /**
+      *
+      * @type {string}
+      * @memberof AttributeItem
+      */
+-    gLOBAL?: AttributeItemGLOBALEnum;
++    GLOBAL?: AttributeItemGLOBALEnum;
+     /**
+      *
+      * @type {string}
+      * @memberof AttributeItem
+      */
+-    rEFERENCE?: string;
++    REFERENCE?: string;
+ }
+ 
+ /**
+@@ -1402,7 +1402,7 @@
+      * @type {string}
+      * @memberof DateTimeAttributeItem
+      */
+-    gLOBAL: DateTimeAttributeItemGLOBALEnum;
++    GLOBAL: DateTimeAttributeItemGLOBALEnum;
+ }
+ 
+ /**

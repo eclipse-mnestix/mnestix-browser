@@ -1,0 +1,37 @@
+diff --git a/src/lib/api/aas/models/index.ts b/src/lib/api/aas/models/index.ts
+--- a/src/lib/api/aas/models/index.ts
++++ b/src/lib/api/aas/models/index.ts
+@@ -99,13 +99,13 @@
+  * @export
+  * @interface AdministrativeInformationAllOfRevision
+  */
+-export interface AdministrativeInformationAllOfRevision {}
++export type AdministrativeInformationAllOfRevision = string;
+ /**
+  *
+  * @export
+  * @interface AdministrativeInformationAllOfVersion
+  */
+-export interface AdministrativeInformationAllOfVersion {}
++export type AdministrativeInformationAllOfVersion = string;
+ /**
+  *
+  * @export
+@@ -874,7 +874,7 @@
+  * @export
+  * @interface BlobAllOfContentType
+  */
+-export interface BlobAllOfContentType {}
++export type BlobAllOfContentType = string;
+ /**
+  *
+  * @export
+@@ -1843,7 +1843,7 @@
+  * @export
+  * @interface FileAllOfValue
+  */
+-export interface FileAllOfValue {}
++export type FileAllOfValue = string;
+ /**
+  *
+  * @export

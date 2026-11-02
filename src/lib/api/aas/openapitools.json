@@ -6,7 +6,7 @@
     "generators": {
       "aas-api": {
         "generatorName": "typescript-fetch",
-        "inputSpec": "https://api.swaggerhub.com/apis/Plattform_i40/Entire-API-Collection/V3.0.4#/",
+        "inputSpec": "https://raw.githubusercontent.com/admin-shell-io/aas-specs-api/v3.2.0/Entire-API-Collection/V3.2.yaml",
         "output": ".",
         "additionalProperties": {
           "supportsES6": true,

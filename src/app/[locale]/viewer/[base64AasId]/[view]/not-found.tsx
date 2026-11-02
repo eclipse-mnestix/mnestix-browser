@@ -4,6 +4,7 @@ import { Box, Button, Typography } from '@mui/material';
 import { ArrowForward } from '@mui/icons-material';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { withBasePath } from 'lib/basePathHelpers';
 
 /**
  * Boundary for an unknown `[view]` segment (the dispatcher calls `notFound()`
@@ -37,7 +38,7 @@ export default function ViewNotFound() {
             <Typography sx={{ color: 'text.secondary', textAlign: 'center' }}>
                 {t('description', { view: params.view })}
             </Typography>
-            <Button variant="contained" startIcon={<ArrowForward />} href="/">
+            <Button variant="contained" startIcon={<ArrowForward />} href={withBasePath('/')}>
                 {t('toHomeButton')}
             </Button>
         </Box>

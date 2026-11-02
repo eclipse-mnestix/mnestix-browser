@@ -15,6 +15,7 @@ import { MultiLanguageValueOnly } from 'lib/api/basyx-v3/types';
 import { useLocale, useTranslations } from 'next-intl';
 import { encodeBase64 } from 'lib/util/Base64Util';
 import { getPathname } from 'i18n/navigation';
+import { withBasePath } from 'lib/basePathHelpers';
 import useSWR from 'swr';
 import { RepositoryWithInfrastructure } from 'lib/services/database/InfrastructureMappedTypes';
 
@@ -59,7 +60,7 @@ export const AasListTableRow = (props: AasTableRowProps) => {
             ? `${repoUrlParam ? '&' : '?'}infrastructure=${repository.infrastructureName}`
             : '';
         const localizedPath = getPathname({ locale, href: `${pageToGo}/${encodeBase64(listEntry.aasId)}` });
-        window.open(baseUrl + `${localizedPath}${repoUrlParam}${infrastructureParam}`, '_blank');
+        window.open(baseUrl + withBasePath(`${localizedPath}${repoUrlParam}${infrastructureParam}`), '_blank');
     };
 
     const translateListText = (property: MultiLanguageValueOnly | undefined) => {

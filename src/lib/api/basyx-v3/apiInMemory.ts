@@ -8,6 +8,9 @@ import type {
     AssetAdministrationShell,
     SubmodelElementChoice,
     Property,
+    Query,
+    QueryResultAssetAdministrationShellResultInner,
+    QueryResultSubmodelResultInner,
     Reference,
     Submodel,
     SubmodelElementCollection,
@@ -38,6 +41,7 @@ export class AssetAdministrationShellRepositoryApiInMemory implements IAssetAdmi
         readonly baseUrl: string,
         shellsInRepository: AssetAdministrationShell[] = [],
         readonly reachable: ServiceReachable = ServiceReachable.Yes,
+        readonly queryEndpointsSupported: boolean = true,
     ) {
         this.shellsInRepository = new Map<string, AssetAdministrationShell>();
         shellsInRepository.forEach((value) => this.shellsInRepository.set(encodeBase64(value.id), value));
@@ -129,6 +133,31 @@ export class AssetAdministrationShellRepositoryApiInMemory implements IAssetAdmi
     async getThumbnailFromShell(_aasId: string, _options?: object): Promise<ApiResponseWrapper<Blob>> {
         throw new Error('Method not implemented.');
     }
+
+    async queryAssetAdministrationShells(
+        _query: Query,
+        _limit?: number,
+        _cursor?: string,
+        _options?: object,
+    ): Promise<ApiResponseWrapper<PaginationData<QueryResultAssetAdministrationShellResultInner[]>>> {
+        if (this.reachable !== ServiceReachable.Yes)
+            return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Service not reachable');
+        if (!this.queryEndpointsSupported) {
+            return wrapErrorCode(
+                ApiResultStatus.NOT_FOUND,
+                `query endpoint not supported by repository '${this.baseUrl}'`,
+                404,
+            );
+        }
+        const response = new Response(
+            JSON.stringify({
+                paging_metadata: {},
+                result: Array.from(this.shellsInRepository.values()),
+            }),
+            options,
+        );
+        return wrapResponse(response);
+    }
 }
 
 export class SubmodelRepositoryApiInMemory implements ISubmodelRepositoryApi {
@@ -138,6 +167,7 @@ export class SubmodelRepositoryApiInMemory implements ISubmodelRepositoryApi {
         readonly baseUrl: string,
         submodelsInRepository: Submodel[],
         readonly reachable: ServiceReachable = ServiceReachable.Yes,
+        readonly queryEndpointsSupported: boolean = true,
     ) {
         this.submodelsInRepository = new Map<string, Submodel>();
         submodelsInRepository.forEach((submodel) => {
@@ -199,6 +229,31 @@ export class SubmodelRepositoryApiInMemory implements ISubmodelRepositoryApi {
         _options?: object,
     ): Promise<ApiResponseWrapper<Blob>> {
         throw new Error('Method not implemented.');
+    }
+
+    async querySubmodels(
+        _query: Query,
+        _limit?: number,
+        _cursor?: string,
+        _options?: object,
+    ): Promise<ApiResponseWrapper<PaginationData<QueryResultSubmodelResultInner[]>>> {
+        if (this.reachable !== ServiceReachable.Yes)
+            return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Service not reachable');
+        if (!this.queryEndpointsSupported) {
+            return wrapErrorCode(
+                ApiResultStatus.NOT_FOUND,
+                `query endpoint not supported by repository '${this.baseUrl}'`,
+                404,
+            );
+        }
+        const response = new Response(
+            JSON.stringify({
+                paging_metadata: {},
+                result: Array.from(this.submodelsInRepository.values()),
+            }),
+            options,
+        );
+        return wrapResponse(response);
     }
 
     /**
