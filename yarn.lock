@@ -999,11 +999,6 @@
   integrity sha512-NpugTzbKgGrNe45Ui32cN8vCFFMxVtP/9rtfwv0nP5FRDAjvYBxJcLVpYA9mr1jxP6cnIT7x9LUzuDTbWYYNRA==
 
 "@babel/runtime@^7.29.7 || ^8.0.0", "@babel/runtime@^7.29.7 || ^8.0.5":
-  version "8.0.8"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-8.0.8.tgz#d11580496fd44ad3bf10c4a0cb70a029c2dd464c"
-  integrity sha512-dEu8nGlRqjsJsvviUUoSMfcRHpwomCiRlXsc2mPfJ79+ffTpDm+JtfUtTMzUrqCApHQnCsVPD3gT1ZT8RgBRCQ==
-
-"@babel/runtime@^7.29.7 || ^8.0.0", "@babel/runtime@^7.29.7 || ^8.0.5":
   version "8.0.7"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-8.0.7.tgz#4f4d0371d27c93c269b57dba49b8427027ddd25e"
   integrity sha512-k0hagDDq/6w4v+0Sp4wFvIz/yswH5O7Va6aRTnD7N62Tnborp4X+YB+H3XUcWVSR4aE47WPEXiIIZchBs0GmYg==
@@ -2218,28 +2213,6 @@
     "@base-ui/utils" "^0.5.0"
     "@mui/utils" "^9.5.0"
     "@mui/x-internals" "9.16.0"
-    clsx "^2.1.1"
-    prop-types "^15.8.1"
-
-"@mui/x-internals@^9.15.0":
-  version "9.15.0"
-  resolved "https://registry.yarnpkg.com/@mui/x-internals/-/x-internals-9.15.0.tgz#44fd86c0ac3bd5f8ee7d1d50ccf24987fa9c067b"
-  integrity sha512-1ELNplhYtGt+54f6o3CHcP7Oz7tyLSgYt20D7WItCyD8ssui3fah7gzZdPGGPggSE/it0UbNwQNOHlqJfLAVgQ==
-  dependencies:
-    "@babel/runtime" "^7.29.7 || ^8.0.0"
-    "@base-ui/utils" "^0.4.0"
-    "@mui/utils" "^9.4.0"
-    reselect "^5.3.0"
-
-"@mui/x-tree-view@^9.15.0":
-  version "9.15.0"
-  resolved "https://registry.yarnpkg.com/@mui/x-tree-view/-/x-tree-view-9.15.0.tgz#b415906e3b427368a9567266305558c03b2af18c"
-  integrity sha512-1Qsu/1oViKGFU/sF2w32c8OydY3GDozx85bNEsr0f8A53q9kzomrbOwPiW0EHKXjBZ/OeQuiBhxPn6D5m8YsDQ==
-  dependencies:
-    "@babel/runtime" "^7.29.7 || ^8.0.0"
-    "@base-ui/utils" "^0.4.0"
-    "@mui/utils" "^9.4.0"
-    "@mui/x-internals" "^9.15.0"
     clsx "^2.1.1"
     prop-types "^15.8.1"
 
@@ -6526,16 +6499,6 @@ hookified@^2.1.1:
   resolved "https://registry.yarnpkg.com/hookified/-/hookified-2.2.0.tgz#1d024ac1668973dd5bcc4a96ab9ccdb7639ef8d4"
   integrity sha512-p/LgFzRN5FeoD3DLS6bkUapeye6E4SI6yJs6KetENd18S+FBthqYq2amJUWpt5z0EQwwHemidjY5OqJGEKm5uA==
 
-hookified@^1.15.0, hookified@^1.15.1:
-  version "1.15.1"
-  resolved "https://registry.yarnpkg.com/hookified/-/hookified-1.15.1.tgz#b1fafeaa5489cdc29cb85546a8f837ed4ffbbcb6"
-  integrity sha512-MvG/clsADq1GPM2KGo2nyfaWVyn9naPiXrqIe4jYjXNZQt238kWyOGrsyc/DmRAQ+Re6yeo6yX/yoNCG5KAEVg==
-
-hookified@^2.1.1:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/hookified/-/hookified-2.2.0.tgz#1d024ac1668973dd5bcc4a96ab9ccdb7639ef8d4"
-  integrity sha512-p/LgFzRN5FeoD3DLS6bkUapeye6E4SI6yJs6KetENd18S+FBthqYq2amJUWpt5z0EQwwHemidjY5OqJGEKm5uA==
-
 html-encoding-sniffer@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/html-encoding-sniffer/-/html-encoding-sniffer-4.0.0.tgz#696df529a7cfd82446369dc5193e590a3735b448"
@@ -10012,7 +9975,7 @@ typescript-eslint@^8.56.0, typescript-eslint@^8.72.0:
     "@typescript-eslint/typescript-estree" "8.72.1"
     "@typescript-eslint/utils" "8.72.1"
 
-"typescript@^5.6 || 6 || 7":
+"typescript@^5.6 || 6 || 7", typescript@~7.0:
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-7.0.2.tgz#9ec773d7954a8c182c17cc5bbd575aa28bc51582"
   integrity sha512-8FYau96o3NKOhbjKi/qNvG/W5jhzxkbdm5sj9AbZ/5T5sWqn3hJgLfGx27sRKZWTvyzCP8dLRBTf5tBTSRVUNA==
@@ -10042,11 +10005,6 @@ typescript@^5.9.3:
   version "5.9.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.9.3.tgz#5b4f59e15310ab17a216f5d6cf53ee476ede670f"
   integrity sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==
-
-typescript@~6.0:
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-6.0.3.tgz#90251dc007916e972786cb94d74d15b185577d21"
-  integrity sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==
 
 unbox-primitive@^1.1.0:
   version "1.1.0"
