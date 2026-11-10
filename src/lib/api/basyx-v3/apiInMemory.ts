@@ -34,6 +34,31 @@ const options = {
     headers: { 'Content-type': 'application/json; charset=utf-8' },
 };
 
+/**
+ * Shared in-memory implementation of the query endpoints, used by
+ * {@link AssetAdministrationShellRepositoryApiInMemory.queryAssetAdministrationShells} and
+ * {@link SubmodelRepositoryApiInMemory.querySubmodels}.
+ */
+async function queryInMemoryRepository<T>(
+    reachable: ServiceReachable,
+    queryEndpointsSupported: boolean,
+    baseUrl: string,
+    results: T[],
+): Promise<ApiResponseWrapper<PaginationData<T[]>>> {
+    if (reachable !== ServiceReachable.Yes) return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Service not reachable');
+    if (!queryEndpointsSupported) {
+        return wrapErrorCode(ApiResultStatus.NOT_FOUND, `query endpoint not supported by repository '${baseUrl}'`, 404);
+    }
+    const response = new Response(
+        JSON.stringify({
+            paging_metadata: {},
+            result: results,
+        }),
+        options,
+    );
+    return wrapResponse(response);
+}
+
 export class AssetAdministrationShellRepositoryApiInMemory implements IAssetAdministrationShellRepositoryApi {
     readonly shellsInRepository: Map<string, AssetAdministrationShell>;
 
@@ -140,23 +165,12 @@ export class AssetAdministrationShellRepositoryApiInMemory implements IAssetAdmi
         _cursor?: string,
         _options?: object,
     ): Promise<ApiResponseWrapper<PaginationData<QueryResultAssetAdministrationShellResultInner[]>>> {
-        if (this.reachable !== ServiceReachable.Yes)
-            return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Service not reachable');
-        if (!this.queryEndpointsSupported) {
-            return wrapErrorCode(
-                ApiResultStatus.NOT_FOUND,
-                `query endpoint not supported by repository '${this.baseUrl}'`,
-                404,
-            );
-        }
-        const response = new Response(
-            JSON.stringify({
-                paging_metadata: {},
-                result: Array.from(this.shellsInRepository.values()),
-            }),
-            options,
+        return queryInMemoryRepository(
+            this.reachable,
+            this.queryEndpointsSupported,
+            this.baseUrl,
+            Array.from(this.shellsInRepository.values()),
         );
-        return wrapResponse(response);
     }
 }
 
@@ -237,23 +251,12 @@ export class SubmodelRepositoryApiInMemory implements ISubmodelRepositoryApi {
         _cursor?: string,
         _options?: object,
     ): Promise<ApiResponseWrapper<PaginationData<QueryResultSubmodelResultInner[]>>> {
-        if (this.reachable !== ServiceReachable.Yes)
-            return wrapErrorCode(ApiResultStatus.UNKNOWN_ERROR, 'Service not reachable');
-        if (!this.queryEndpointsSupported) {
-            return wrapErrorCode(
-                ApiResultStatus.NOT_FOUND,
-                `query endpoint not supported by repository '${this.baseUrl}'`,
-                404,
-            );
-        }
-        const response = new Response(
-            JSON.stringify({
-                paging_metadata: {},
-                result: Array.from(this.submodelsInRepository.values()),
-            }),
-            options,
+        return queryInMemoryRepository(
+            this.reachable,
+            this.queryEndpointsSupported,
+            this.baseUrl,
+            Array.from(this.submodelsInRepository.values()),
         );
-        return wrapResponse(response);
     }
 
     /**
