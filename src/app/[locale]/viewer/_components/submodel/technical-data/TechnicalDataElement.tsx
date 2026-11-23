@@ -10,6 +10,12 @@ import { getConceptDescriptionById } from 'lib/services/concept-description-serv
 import { useAsyncEffect } from 'lib/hooks/UseAsyncEffect';
 import { GenericPropertyComponent } from '../../submodel-elements/generic-elements/GenericPropertyComponent';
 import { useCurrentAasContext } from 'components/contexts/CurrentAasContext';
+import { useBestLabelForSmElement } from 'app/[locale]/viewer/_components/submodel/technical-data/ConceptDescriptionHelper';
+
+// Same label rule as leaf rows (displayName → concept description → idShort), but no "Not available" for groups; hooks need their own component.
+function ElementLabel(props: { element: SubmodelElementChoice; conceptDescription?: ConceptDescription }) {
+    return <>{useBestLabelForSmElement(props.element, props.conceptDescription, '')}</>;
+}
 
 export const TechnicalDataElement = (props: {
     elements: SubmodelElementChoice[];
@@ -103,7 +109,7 @@ export const TechnicalDataElement = (props: {
                 return (
                     <TreeItem
                         itemId={itemPath}
-                        label={element.idShort}
+                        label={<ElementLabel element={element} conceptDescription={conceptDescriptions[semanticId]} />}
                         sx={{
                             '&& .MuiTreeItem-label': {
                                 m: 0,
