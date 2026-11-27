@@ -75,7 +75,7 @@ services:
   # NOTE: Requires Mnestix AAS Generator >= 1.3.0 for BaSyx Go (PostgreSQL) compatibility.
   # See https://github.com/eclipse-mnestix/mnestix-aas-generator/wiki/Migrate-to-aas-generator-1.3.0
   mnestix-aas-generator:
-    image: mnestix/mnestix-aas-generator:1.5.0
+    image: mnestix/mnestix-aas-generator:1.6.1
     container_name: mnestix-aas-generator
     profiles: ['', 'backend', 'tests']
     environment:
@@ -103,7 +103,7 @@ services:
   # major version must be migrated first:
   # https://github.com/eclipse-mnestix/mnestix-browser/wiki/Upgrading-the-PostgreSQL-Database
   basyx-db:
-    image: postgres:18-alpine
+    image: postgres:19-alpine
     container_name: basyx-db
     profiles: ['', 'basyx', 'tests']
     ports:
@@ -133,7 +133,7 @@ services:
 
   # One-shot service that initializes the PostgreSQL schema before the environment starts.
   basyx-configuration:
-    image: eclipsebasyx/basyxconfigurationservice-go:1.1.2
+    image: eclipsebasyx/basyxconfigurationservice-go:1.1.4
     container_name: basyx-configuration
     profiles: ['', 'basyx', 'tests']
     environment:
@@ -156,7 +156,7 @@ services:
   # Unified BaSyx Go environment: serves the AAS repository, Submodel repository,
   # Concept Description repository, AAS/Submodel registries and Discovery from a single service.
   aas-environment:
-    image: eclipsebasyx/aasenvironment-go:1.1.2
+    image: eclipsebasyx/aasenvironment-go:1.1.4
     container_name: aas-environment
     profiles: ['', 'basyx', 'tests']
     command: ['/app/aasenvironmentservice']
