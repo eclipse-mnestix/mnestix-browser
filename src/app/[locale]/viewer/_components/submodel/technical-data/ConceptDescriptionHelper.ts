@@ -10,10 +10,12 @@ import { useLocale } from 'next-intl';
 /**
  * The Standardized way to get the best label for a submodel element as defined by the IDTA.
  * The order of preference is: submodelElement.displayName, conceptDescription.preferredName, conceptDescription.shortName, submodelElement.idShort.
+ * If none is available, `fallback` is returned.
  */
 export const useBestLabelForSmElement = (
     submodelElement: SubmodelElementChoice,
     conceptDescription?: ConceptDescription,
+    fallback = 'Not available',
 ) => {
     const locale = useLocale();
 
@@ -40,7 +42,7 @@ export const useBestLabelForSmElement = (
     if (submodelElement.idShort) {
         return submodelElement.idShort;
     }
-    return 'Not available';
+    return fallback;
 };
 
 export const getDataSpecContentFromConceptDescription = (
